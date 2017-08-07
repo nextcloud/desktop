@@ -2407,7 +2407,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/servernotificationhandler.cpp" line="103"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Terzijde leggen</translation>
     </message>
 </context>
 <context>

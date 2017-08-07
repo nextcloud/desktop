@@ -2391,7 +2391,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/gui/servernotificationhandler.cpp" line="103"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Jäta vahele</translation>
     </message>
 </context>
 <context>

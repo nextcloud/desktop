@@ -2392,7 +2392,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/servernotificationhandler.cpp" line="103"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Odmietnuť</translation>
     </message>
 </context>
 <context>

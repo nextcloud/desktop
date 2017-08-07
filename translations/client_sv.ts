@@ -2396,7 +2396,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/servernotificationhandler.cpp" line="103"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Avfärda</translation>
     </message>
 </context>
 <context>

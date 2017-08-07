@@ -2403,7 +2403,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/servernotificationhandler.cpp" line="103"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Rejeitar</translation>
     </message>
 </context>
 <context>

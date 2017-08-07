@@ -68,12 +68,12 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="56"/>
         <source>Lorem ipsum dolor sit amet</source>
-        <translation type="unfinished"/>
+        <translation>Lorem ipsum dolor sit amet</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="69"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
-        <translation type="unfinished"/>
+        <translation>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="89"/>
@@ -106,17 +106,17 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
         <source>Synchronize all</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronizatu dena</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="205"/>
         <source>Synchronize none</source>
-        <translation type="unfinished"/>
+        <translation>Ez sinkronizatu ezer</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="212"/>
         <source>Apply manual changes</source>
-        <translation type="unfinished"/>
+        <translation>Aplikatu eskuzko aldaketak</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="260"/>
@@ -163,12 +163,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="235"/>
         <source>Force sync now</source>
-        <translation type="unfinished"/>
+        <translation>Behartu orain sinkronizatzen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="237"/>
         <source>Restart sync</source>
-        <translation type="unfinished"/>
+        <translation>Berrabiarazi sinkronizazioa</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="246"/>
@@ -208,7 +208,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="537"/>
         <source>%1 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 erabiltzen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="559"/>
@@ -1591,7 +1591,7 @@ Ezabatzeko baimena duten itemak ezabatuko dira hauek karpeta bat ezabatzea uzten
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="101"/>
         <source>Closing in a few seconds...</source>
-        <translation type="unfinished"/>
+        <translation>Ixten segundo gutxi barru...</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="135"/>
@@ -3701,7 +3701,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/libsync/utility.cpp" line="512"/>
         <source>Less than a minute ago</source>
-        <translation>Orain dela minutu bat baino gutxiago</translation>
+        <translation>orain dela minutu bat baino gutxiago</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/libsync/utility.cpp" line="515"/>

@@ -2392,7 +2392,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/servernotificationhandler.cpp" line="103"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Desbotar</translation>
     </message>
 </context>
 <context>

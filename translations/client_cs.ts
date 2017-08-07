@@ -2401,7 +2401,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/servernotificationhandler.cpp" line="103"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Zamítnout</translation>
     </message>
 </context>
 <context>
