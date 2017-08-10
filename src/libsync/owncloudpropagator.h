@@ -65,6 +65,11 @@ class PropagatorJob : public QObject
 public:
     explicit PropagatorJob(OwncloudPropagator *propagator);
 
+    enum AbortType {
+        Synchronous,
+        Asynchronous
+    };
+
     enum JobState {
         NotYetStarted,
         Running,
@@ -98,7 +103,14 @@ public:
     virtual qint64 committedDiskSpace() const { return 0; }
 
 public slots:
-    virtual void abort() {}
+    /*
+     * Asynchronous abort requires emit of abortFinished() signal,
+     * while synchronous is expected to abort immedietaly.
+    */
+    virtual void abort(PropagatorJob::AbortType abortType) {
+        if (abortType == AbortType::Asynchronous)
+            emit abortFinished();
+    }
 
     /** Starts this job, or a new subjob
      * returns true if a job was started.
@@ -110,10 +122,13 @@ signals:
      */
     void finished(SyncFileItem::Status);
 
+    /**
+     * Emitted when the abort is fully finished
+     */
+    void abortFinished(SyncFileItem::Status status = SyncFileItem::NormalError);
 protected:
     OwncloudPropagator *propagator() const;
 };
-
 
 /*
  * Abstract class to propagate a single item
@@ -185,10 +200,11 @@ public:
     SyncFileItemVector _tasksToDo;
     QVector<PropagatorJob *> _runningJobs;
     SyncFileItem::Status _hasError; // NoStatus,  or NormalError / SoftError if there was an error
+    quint64 _abortsCount;
 
     explicit PropagatorCompositeJob(OwncloudPropagator *propagator)
         : PropagatorJob(propagator)
-        , _hasError(SyncFileItem::NoStatus)
+        , _hasError(SyncFileItem::NoStatus), _abortsCount(0)
     {
     }
 
@@ -209,15 +225,32 @@ public:
 
     virtual bool scheduleSelfOrChild() Q_DECL_OVERRIDE;
     virtual JobParallelism parallelism() Q_DECL_OVERRIDE;
-    virtual void abort() Q_DECL_OVERRIDE
+
+    /*
+     * Abort synchronously or asynchronously - some jobs
+     * require to be finished without immediete abort (abort on job might
+     * cause conflicts/duplicated files - owncloud/client/issues/5949)
+     */
+    virtual void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE
     {
-        foreach (PropagatorJob *j, _runningJobs)
-            j->abort();
+        if (!_runningJobs.empty()) {
+            _abortsCount = _runningJobs.size();
+            foreach (PropagatorJob *j, _runningJobs) {
+                if (abortType == AbortType::Asynchronous) {
+                    connect(j, &PropagatorJob::abortFinished,
+                            this, &PropagatorCompositeJob::slotSubJobAbortFinished);
+                }
+                j->abort(abortType);
+            }
+        } else if (abortType == AbortType::Asynchronous){
+            emit abortFinished();
+        }
     }
 
     qint64 committedDiskSpace() const Q_DECL_OVERRIDE;
 
 private slots:
+    void slotSubJobAbortFinished();
     bool possiblyRunNextJob(PropagatorJob *next)
     {
         if (next->_state == NotYetStarted) {
@@ -258,11 +291,17 @@ public:
 
     virtual bool scheduleSelfOrChild() Q_DECL_OVERRIDE;
     virtual JobParallelism parallelism() Q_DECL_OVERRIDE;
-    virtual void abort() Q_DECL_OVERRIDE
+    virtual void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE
     {
         if (_firstJob)
-            _firstJob->abort();
-        _subJobs.abort();
+            // Force first job to abort synchronously
+            // even if caller allows async abort (asyncAbort)
+            _firstJob->abort(AbortType::Synchronous);
+
+        if (abortType == AbortType::Asynchronous){
+            connect(&_subJobs, &PropagatorCompositeJob::abortFinished, this, &PropagateDirectory::abortFinished);
+        }
+        _subJobs.abort(abortType);
     }
 
     void increaseAffectedCount()
@@ -280,6 +319,7 @@ private slots:
 
     void slotFirstJobFinished(SyncFileItem::Status status);
     void slotSubJobsFinished(SyncFileItem::Status status);
+
 };
 
 
@@ -324,6 +364,7 @@ public:
         , _chunkSize(10 * 1000 * 1000) // 10 MB, overridden in setSyncOptions
         , _account(account)
     {
+        qRegisterMetaType<PropagatorJob::AbortType>("PropagatorJob::AbortType");
     }
 
     ~OwncloudPropagator();
@@ -406,11 +447,19 @@ public:
     {
         _abortRequested.fetchAndStoreOrdered(true);
         if (_rootJob) {
-            // We're possibly already in an item's finished stack
-            QMetaObject::invokeMethod(_rootJob.data(), "abort", Qt::QueuedConnection);
+            // Connect to abortFinished  which signals that abort has been asynchronously finished
+            connect(_rootJob.data(), &PropagateDirectory::abortFinished, this, &OwncloudPropagator::emitFinished);
+
+            // Use Queued Connection because we're possibly already in an item's finished stack
+            QMetaObject::invokeMethod(_rootJob.data(), "abort", Qt::QueuedConnection,
+                                      Q_ARG(PropagatorJob::AbortType, PropagatorJob::AbortType::Asynchronous));
+
+            // Give asynchronous abort 5000 msec to finish on its own
+            QTimer::singleShot(5000, this, SLOT(abortTimeout()));
+        } else {
+            // No root job, call emitFinished
+            emitFinished(SyncFileItem::NormalError);
         }
-        // abort() of all jobs will likely have already resulted in finished being emitted, but just in case.
-        QMetaObject::invokeMethod(this, "emitFinished", Qt::QueuedConnection, Q_ARG(SyncFileItem::Status, SyncFileItem::NormalError));
     }
 
     // timeout in seconds
@@ -430,6 +479,13 @@ public:
     DiskSpaceResult diskSpaceCheck() const;
 
 private slots:
+
+    void abortTimeout()
+    {
+        // Abort synchronously and finish
+        _rootJob.data()->abort(PropagatorJob::AbortType::Synchronous);
+        emitFinished(SyncFileItem::NormalError);
+    }
 
     /** Emit the finished signal and make sure it is only emitted once */
     void emitFinished(SyncFileItem::Status status)

@@ -129,6 +129,11 @@ public:
         return true;
     }
 
+    QIODevice *device()
+    {
+        return _device;
+    }
+
     QString errorString()
     {
         return _errorString.isEmpty() ? AbstractNetworkJob::errorString() : _errorString;
@@ -205,6 +210,7 @@ protected:
     QVector<AbstractNetworkJob *> _jobs; /// network jobs that are currently in transit
     bool _finished BITFIELD(1); /// Tells that all the jobs have been finished
     bool _deleteExisting BITFIELD(1);
+    quint64 _abortCount; /// Keep track of number of aborted items
 
 // measure the performance of checksum calc and upload
 #ifdef WITH_TESTING
@@ -218,6 +224,7 @@ public:
         : PropagateItemJob(propagator, item)
         , _finished(false)
         , _deleteExisting(false)
+        , _abortCount(0)
     {
     }
 
@@ -248,13 +255,20 @@ public:
     void abortWithError(SyncFileItem::Status status, const QString &error);
 
 public slots:
-    void abort() Q_DECL_OVERRIDE;
+    void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE;
     void slotJobDestroyed(QObject *job);
 
 private slots:
+    void slotReplyAbortFinished();
     void slotPollFinished();
 
 protected:
+    /**
+     * Prepares the abort e.g. connects proper signals and slots
+     * to the subjobs to abort asynchronously
+     */
+    void prepareAbort(PropagatorJob::AbortType abortType);
+
     /**
      * Checks whether the current error is one that should reset the whole
      * transfer if it happens too often. If so: Bump UploadInfo::errorCount
@@ -303,7 +317,6 @@ private:
         return propagator()->syncOptions()._initialChunkSize;
     }
 
-
 public:
     PropagateUploadFileV1(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
         : PropagateUploadFileCommon(propagator, item)
@@ -311,7 +324,8 @@ public:
     }
 
     void doStartUpload() Q_DECL_OVERRIDE;
-
+public slots:
+    void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE;
 private slots:
     void startNextChunk();
     void slotPutFinished();
@@ -361,6 +375,8 @@ public:
 private:
     void startNewUpload();
     void startNextChunk();
+public slots:
+    void abort(AbortType abortType) Q_DECL_OVERRIDE;
 private slots:
     void slotPropfindFinished();
     void slotPropfindFinishedWithError();
