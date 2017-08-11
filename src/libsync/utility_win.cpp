@@ -28,8 +28,20 @@ namespace OCC {
 
 static void setupFavLink_private(const QString &folder)
 {
-    // Windows Explorer: Place under "Favorites" (Links)
+    // First create a Desktop.ini so that the folder and favorite link show our application's icon.
+    QFile desktopIni(folder + QLatin1String("/Desktop.ini"));
+    if (desktopIni.exists()) {
+        qCWarning(lcUtility) << desktopIni.fileName() << "already exists, not overwriting it to set the folder icon.";
+    } else {
+        qCInfo(lcUtility) << "Creating" << desktopIni.fileName() << "to set a folder icon in Explorer.";
+        desktopIni.open(QFile::WriteOnly);
+        desktopIni.write("[.ShellClassInfo]\r\nIconResource=");
+        desktopIni.write(QDir::toNativeSeparators(qApp->applicationFilePath()).toUtf8());
+        desktopIni.write(",0\r\n");
+        desktopIni.close();
+    }
 
+    // Windows Explorer: Place under "Favorites" (Links)
     QString linkName;
     QDir folderDir(QDir::fromNativeSeparators(folder));
 
@@ -41,7 +53,7 @@ static void setupFavLink_private(const QString &folder)
         linkName = QDir(links).filePath(folderDir.dirName() + QLatin1String(".lnk"));
         CoTaskMemFree(path);
     }
-    qCDebug(lcUtility) << " creating link from " << linkName << " to " << folder;
+    qCInfo(lcUtility) << "Creating favorite link from" << folder << "to" << linkName;
     if (!QFile::link(folder, linkName))
         qCWarning(lcUtility) << "linking" << folder << "to" << linkName << "failed!";
 }
