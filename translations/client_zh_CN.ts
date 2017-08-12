@@ -755,14 +755,19 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>同步文件夹&apos;%1&apos;的所有文件已经在服务器端删除。
+删除动作会被同步到本地的同步文件夹，内部的文件将不可用，您需要有相应权限来恢复。
+如果您想保留这些文件，同时您有相应权限的话，它们将被重新同步到服务器。
+如果您决定删除这些文件，它们将不再可用，除非您是其所有者。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="899"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>本地文件夹&apos;%1&apos;的所有文件都已经被删除。这些删除动作会被同步到您的服务器，相应的文件将不再可用，除非被回复。
+确定要把这些动作同步到服务器吗？
+如果这是一个意外而您想要保留这些文件，他们会被重新从服务器同步过来。</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="903"/>
@@ -2221,12 +2226,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="472"/>
         <source>Missing File ID from server</source>
-        <translation type="unfinished"/>
+        <translation>服务器端文件 ID缺失</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="485"/>
         <source>Missing ETag from server</source>
-        <translation type="unfinished"/>
+        <translation>服务器端ETag缺失</translation>
     </message>
 </context>
 <context>
@@ -2366,7 +2371,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="71"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>反选您不想同步的那些远端文件夹</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="91"/>
@@ -2593,7 +2598,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="505"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation type="unfinished"/>
+        <translation>启动email客户端并创建新消息时发生错误。是不是没有设定默认的email客户端？</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="533"/>
