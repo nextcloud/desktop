@@ -180,8 +180,6 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
     set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
 endif()
 
-configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
-
 include(OwnCloudCPack.cmake)
 
 add_definitions(-DUNICODE)
@@ -213,6 +211,14 @@ endif()
 file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/client_*.ts)
 set(TRANSLATIONS ${TRANS_FILES})
 
+if(UNIT_TESTING)
+    # Make sure we set this before recursing into child folders.
+    set(WITH_TESTING ON)
+    include(CTest)
+    enable_testing()
+    add_subdirectory(test)
+endif(UNIT_TESTING)
+
 add_subdirectory(csync)
 add_subdirectory(src)
 if(NOT BUILD_LIBRARIES_ONLY)
@@ -222,11 +228,7 @@ add_subdirectory(doc/dev)
 add_subdirectory(admin)
 endif(NOT BUILD_LIBRARIES_ONLY)
 
-if(UNIT_TESTING)
-    include(CTest)
-    enable_testing()
-    add_subdirectory(test)
-endif(UNIT_TESTING)
+configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
     install(FILES sync-exclude.lst DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/)

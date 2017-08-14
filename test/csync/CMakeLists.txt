@@ -3,6 +3,7 @@ project(tests C)
 set(TORTURE_LIBRARY torture)
 
 include_directories(
+  ${CMAKE_CURRENT_SOURCE_DIR}
   ${CSYNC_PUBLIC_INCLUDE_DIRS}
   ${CSTDLIB_PUBLIC_INCLUDE_DIRS}
   ${CMAKE_BINARY_DIR}
