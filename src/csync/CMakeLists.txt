@@ -73,7 +73,7 @@ set(csync_SRCS
   csync_update.c
   csync_reconcile.c
 
-  csync_rename.cc
+  csync_rename.cpp
 
   vio/csync_vio.c
   vio/csync_vio_file_stat.c
