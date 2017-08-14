@@ -20,7 +20,7 @@ set(cstdlib_SRCS
   c_rbtree.c
   c_string.c
   c_time.c
-  c_utf8.cc
+  c_utf8.cpp
 )
 
 if(NOT HAVE_ASPRINTF AND NOT HAVE___MINGW_ASPRINTF)
