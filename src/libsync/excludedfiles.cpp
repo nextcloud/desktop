@@ -12,6 +12,7 @@
  * for more details.
  */
 
+#include "config.h"
 #include "excludedfiles.h"
 #include "utility.h"
 
