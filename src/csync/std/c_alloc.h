@@ -34,6 +34,10 @@
 #ifndef _C_ALLOC_H
 #define _C_ALLOC_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdlib.h>
 
 #include "c_macro.h"
@@ -113,4 +117,9 @@ char *c_strndup(const char *str, size_t size);
 /**
  * }@
  */
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* _C_ALLOC_H */

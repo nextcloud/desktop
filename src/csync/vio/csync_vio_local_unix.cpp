@@ -48,7 +48,7 @@ csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
   dhandle_t *handle = NULL;
   mbchar_t *dirname = NULL;
 
-  handle = c_malloc(sizeof(dhandle_t));
+  handle = (dhandle_t*)c_malloc(sizeof(dhandle_t));
 
   dirname = c_utf8_path_to_locale(name);
 
@@ -89,6 +89,7 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
   csync_vio_file_stat_t *file_stat = NULL;
 
   handle = (dhandle_t *) dhandle;
+  struct _tdirent *dirent = NULL;
 
   errno = 0;
   file_stat = csync_vio_file_stat_new();
@@ -96,8 +97,6 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
     goto err;
   }
   file_stat->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
-
-  struct _tdirent *dirent = NULL;
 
   dirent = _treaddir(handle->dh);
   if (dirent == NULL) {

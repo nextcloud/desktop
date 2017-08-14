@@ -29,28 +29,28 @@ add_cmocka_test(check_std_c_time std_tests/check_std_c_time.c ${TEST_TARGET_LIBR
 
 # csync tests
 # This will be rewritten soon anyway.
-#add_cmocka_test(check_logger log_tests/check_log.c ${TEST_TARGET_LIBRARIES})
+#add_cmocka_test(check_logger log_tests/check_log.cpp ${TEST_TARGET_LIBRARIES})
 
-add_cmocka_test(check_csync_create csync_tests/check_csync_create.c ${TEST_TARGET_LIBRARIES})
-add_cmocka_test(check_csync_log csync_tests/check_csync_log.c ${TEST_TARGET_LIBRARIES})
-add_cmocka_test(check_csync_exclude csync_tests/check_csync_exclude.c ${TEST_TARGET_LIBRARIES})
-add_cmocka_test(check_csync_statedb_load csync_tests/check_csync_statedb_load.c ${TEST_TARGET_LIBRARIES})
-add_cmocka_test(check_csync_util csync_tests/check_csync_util.c ${TEST_TARGET_LIBRARIES})
-add_cmocka_test(check_csync_misc csync_tests/check_csync_misc.c ${TEST_TARGET_LIBRARIES})
+add_cmocka_test(check_csync_create csync_tests/check_csync_create.cpp ${TEST_TARGET_LIBRARIES})
+add_cmocka_test(check_csync_log csync_tests/check_csync_log.cpp ${TEST_TARGET_LIBRARIES})
+add_cmocka_test(check_csync_exclude csync_tests/check_csync_exclude.cpp ${TEST_TARGET_LIBRARIES})
+add_cmocka_test(check_csync_statedb_load csync_tests/check_csync_statedb_load.cpp ${TEST_TARGET_LIBRARIES})
+add_cmocka_test(check_csync_util csync_tests/check_csync_util.cpp ${TEST_TARGET_LIBRARIES})
+add_cmocka_test(check_csync_misc csync_tests/check_csync_misc.cpp ${TEST_TARGET_LIBRARIES})
 
 # csync tests which require init
-add_cmocka_test(check_csync_init csync_tests/check_csync_init.c ${TEST_TARGET_LIBRARIES})
-add_cmocka_test(check_csync_statedb_query csync_tests/check_csync_statedb_query.c ${TEST_TARGET_LIBRARIES})
-add_cmocka_test(check_csync_commit csync_tests/check_csync_commit.c ${TEST_TARGET_LIBRARIES})
+add_cmocka_test(check_csync_init csync_tests/check_csync_init.cpp ${TEST_TARGET_LIBRARIES})
+add_cmocka_test(check_csync_statedb_query csync_tests/check_csync_statedb_query.cpp ${TEST_TARGET_LIBRARIES})
+add_cmocka_test(check_csync_commit csync_tests/check_csync_commit.cpp ${TEST_TARGET_LIBRARIES})
 
 # vio
-add_cmocka_test(check_vio_file_stat vio_tests/check_vio_file_stat.c ${TEST_TARGET_LIBRARIES})
-add_cmocka_test(check_vio vio_tests/check_vio.c ${TEST_TARGET_LIBRARIES})
-add_cmocka_test(check_vio_ext vio_tests/check_vio_ext.c ${TEST_TARGET_LIBRARIES})
+add_cmocka_test(check_vio_file_stat vio_tests/check_vio_file_stat.cpp ${TEST_TARGET_LIBRARIES})
+add_cmocka_test(check_vio vio_tests/check_vio.cpp ${TEST_TARGET_LIBRARIES})
+add_cmocka_test(check_vio_ext vio_tests/check_vio_ext.cpp ${TEST_TARGET_LIBRARIES})
 
 # sync
-add_cmocka_test(check_csync_update csync_tests/check_csync_update.c ${TEST_TARGET_LIBRARIES})
+add_cmocka_test(check_csync_update csync_tests/check_csync_update.cpp ${TEST_TARGET_LIBRARIES})
 
 # encoding
-add_cmocka_test(check_encoding_functions encoding_tests/check_encoding.c ${TEST_TARGET_LIBRARIES})
+add_cmocka_test(check_encoding_functions encoding_tests/check_encoding.cpp ${TEST_TARGET_LIBRARIES})
 

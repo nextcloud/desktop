@@ -34,6 +34,10 @@
 #ifndef ASPRINTF_H
 #define ASPRINTF_H 1
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdarg.h>
 
 /**
@@ -55,6 +59,10 @@ vasprintf (char **, const char *, va_list);
 
 int
 asprintf (char **, const char *, ...);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 #endif

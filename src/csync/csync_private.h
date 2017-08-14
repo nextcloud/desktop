@@ -163,7 +163,7 @@ struct csync_file_stat_s {
   size_t pathlen;   /* u64 */
   uint64_t inode;   /* u64 */
   mode_t mode;      /* u32 */
-  unsigned int type                   : 4;
+  enum csync_ftw_type_e type          : 4;
   unsigned int child_modified         : 1;
   unsigned int has_ignored_files      : 1; /* specify that a directory, or child directory contains ignored files */
 

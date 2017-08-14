@@ -18,10 +18,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-extern "C" {
 #include "csync_private.h"
 #include "csync_rename.h"
-}
 
 #include <map>
 #include <string>
@@ -55,7 +53,6 @@ struct csync_rename_s {
     std::vector<renameop> todo;
 };
 
-extern "C" {
 void csync_rename_destroy(CSYNC* ctx)
 {
     delete reinterpret_cast<csync_rename_s *>(ctx->rename_info);
@@ -97,6 +94,4 @@ char* csync_rename_adjust_path_source(CSYNC* ctx, const char* path)
 bool csync_rename_count(CSYNC *ctx) {
     csync_rename_s* d = csync_rename_s::get(ctx);
     return d->folder_renamed_from.size();
-}
-
 }

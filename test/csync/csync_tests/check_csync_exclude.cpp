@@ -25,7 +25,7 @@
 #include "torture.h"
 
 #define CSYNC_TEST 1
-#include "csync_exclude.c"
+#include "csync_exclude.cpp"
 
 #define EXCLUDE_LIST_FILE SOURCEDIR"/../../sync-exclude.lst"
 
@@ -64,7 +64,7 @@ static int setup_init(void **state) {
 }
 
 static int teardown(void **state) {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     int rc;
 
     rc = csync_destroy(csync);
@@ -82,14 +82,14 @@ static int teardown(void **state) {
 
 static void check_csync_exclude_add(void **state)
 {
-  CSYNC *csync = *state;
+  CSYNC *csync = (CSYNC*)*state;
   _csync_exclude_add(&(csync->excludes), "/tmp/check_csync1/*");
   assert_string_equal(csync->excludes->vector[0], "/tmp/check_csync1/*");
 }
 
 static void check_csync_exclude_load(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     int rc;
 
     rc = csync_exclude_load(EXCLUDE_LIST_FILE, &(csync->excludes) );
@@ -101,7 +101,7 @@ static void check_csync_exclude_load(void **state)
 
 static void check_csync_excluded(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     int rc;
 
     rc = csync_excluded_no_ctx(csync->excludes, "", CSYNC_FTW_TYPE_FILE);
@@ -221,7 +221,7 @@ static void check_csync_excluded(void **state)
 
 static void check_csync_excluded_traversal(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     int rc;
 
     _csync_exclude_add( &(csync->excludes), "/exclude" );
@@ -271,7 +271,7 @@ static void check_csync_excluded_traversal(void **state)
 
 static void check_csync_pathes(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     int rc;
 
     _csync_exclude_add( &(csync->excludes), "/exclude" );
@@ -319,7 +319,7 @@ static void check_csync_pathes(void **state)
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 }
 
-static void check_csync_is_windows_reserved_word() {
+static void check_csync_is_windows_reserved_word(void **) {
     assert_true(csync_is_windows_reserved_word("CON"));
     assert_true(csync_is_windows_reserved_word("con"));
     assert_true(csync_is_windows_reserved_word("CON."));
@@ -339,7 +339,7 @@ static void check_csync_is_windows_reserved_word() {
 
 static void check_csync_excluded_performance(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
 
     const int N = 10000;
     int totalRc = 0;

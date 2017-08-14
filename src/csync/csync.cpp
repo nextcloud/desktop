@@ -86,7 +86,7 @@ void csync_create(CSYNC **csync, const char *local) {
   CSYNC *ctx;
   size_t len = 0;
 
-  ctx = c_malloc(sizeof(CSYNC));
+  ctx = (CSYNC*)c_malloc(sizeof(CSYNC));
 
   ctx->status_code = CSYNC_STATUS_OK;
 
@@ -604,7 +604,7 @@ int csync_set_status(CSYNC *ctx, int status) {
 
 CSYNC_STATUS csync_get_status(CSYNC *ctx) {
   if (ctx == NULL) {
-    return -1;
+    return CSYNC_STATUS_ERROR;
   }
 
   return ctx->status_code;

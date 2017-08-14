@@ -28,6 +28,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <stdio.h>
+#include <time.h>
 
 #include "c_jhash.h"
 #include "csync_util.h"

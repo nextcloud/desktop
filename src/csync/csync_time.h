@@ -21,11 +21,19 @@
 #ifndef _CSYNC_TIME_H
 #define _CSYNC_TIME_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <time.h>
 
 #include "csync_private.h"
 
 int csync_gettime(struct timespec *tp);
 void csync_sleep(unsigned int msecs);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _CSYNC_TIME_H */

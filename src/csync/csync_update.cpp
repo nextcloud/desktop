@@ -28,7 +28,6 @@
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
-#include <inttypes.h>
 #include <time.h>
 #include <math.h>
 
@@ -47,6 +46,10 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.updater"
 #include "csync_log.h"
 #include "csync_rename.h"
+
+// Needed for PRIu64 on MinGW in C++ mode.
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
 
 /* calculate the hash of a given uri */
 static uint64_t _hash_of_file(CSYNC *ctx, const char *file) {
@@ -159,7 +162,7 @@ static bool _csync_mtime_equal(time_t a, time_t b)
  * See doc/dev/sync-algorithm.md for an overview.
  */
 static int _csync_detect_update(CSYNC *ctx, const char *file,
-    const csync_vio_file_stat_t *fs, const int type) {
+    const csync_vio_file_stat_t *fs, enum csync_ftw_type_e type) {
   uint64_t h = 0;
   size_t len = 0;
   size_t size = 0;
@@ -224,7 +227,7 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   }
   size = sizeof(csync_file_stat_t) + len + 1;
 
-  st = c_malloc(size);
+  st = static_cast<csync_file_stat_t *>(c_malloc(size));
 
   /* Set instruction by default to none */
   st->instruction = CSYNC_INSTRUCTION_NONE;
@@ -540,9 +543,9 @@ out:
 }
 
 int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
-    enum csync_ftw_flags_e flag) {
+    int flag) {
   int rc = -1;
-  int type = CSYNC_FTW_TYPE_SKIP;
+  enum csync_ftw_type_e type = CSYNC_FTW_TYPE_SKIP;
   csync_file_stat_t *st = NULL;
   uint64_t h;
 
@@ -648,12 +651,12 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   int rc = 0;
   int res = 0;
 
+  bool do_read_from_db = (ctx->current == REMOTE_REPLICA && ctx->remote.read_from_db);
+
   if (!depth) {
     mark_current_item_ignored(ctx, previous_fs, CSYNC_STATUS_INDIVIDUAL_TOO_DEEP);
     goto done;
   }
-
-  bool do_read_from_db = (ctx->current == REMOTE_REPLICA && ctx->remote.read_from_db);
 
   read_from_db = ctx->remote.read_from_db;
 

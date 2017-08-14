@@ -20,6 +20,10 @@
 #ifndef _TORTURE_H
 #define _TORTURE_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdarg.h>
 #include <stddef.h>
 #include <setjmp.h>
@@ -40,5 +44,9 @@ int torture_csync_verbosity(void);
  * This function must be defined in every unit test file.
  */
 int torture_run_tests(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _TORTURE_H */

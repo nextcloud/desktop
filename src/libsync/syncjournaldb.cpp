@@ -21,8 +21,6 @@
 
 #include "ownsql.h"
 
-#include <inttypes.h>
-
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
 #include "utility.h"

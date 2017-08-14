@@ -198,7 +198,7 @@ char *csync_normalize_etag(const char *etag)
         len -= 2;
     }
 
-    buf = c_malloc( len+1 );
+    buf = (char*)c_malloc( len+1 );
     strncpy( buf, etag, len );
     buf[len] = '\0';
     return buf;
