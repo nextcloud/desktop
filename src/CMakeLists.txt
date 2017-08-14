@@ -8,6 +8,7 @@ if(NOT TOKEN_AUTH_ONLY)
     find_package(Qt5Keychain REQUIRED)
 endif()
 
+add_subdirectory(csync)
 add_subdirectory(libsync)
 if (NOT BUILD_LIBRARIES_ONLY)
     add_subdirectory(gui)

@@ -27,7 +27,7 @@
 #define CSYNC_TEST 1
 #include "csync_exclude.c"
 
-#define EXCLUDE_LIST_FILE SOURCEDIR"/../sync-exclude.lst"
+#define EXCLUDE_LIST_FILE SOURCEDIR"/../../sync-exclude.lst"
 
 static int setup(void **state) {
     CSYNC *csync;

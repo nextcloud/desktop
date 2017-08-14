@@ -1,7 +1,17 @@
-include_directories(${CMAKE_BINARY_DIR}/csync ${CMAKE_BINARY_DIR}/csync/src ${CMAKE_BINARY_DIR}/src)
-include_directories(${CMAKE_SOURCE_DIR}/csync/src/)
-include_directories(${CMAKE_SOURCE_DIR}/csync/src/std ${CMAKE_SOURCE_DIR}/src)
-include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer)
+include_directories(${QT_INCLUDES}
+                    ${CMAKE_SOURCE_DIR}/src
+                    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer
+                    ${CMAKE_SOURCE_DIR}/src/csync
+                    ${CMAKE_SOURCE_DIR}/src/csync/std
+                    ${CMAKE_SOURCE_DIR}/src/gui
+                    ${CMAKE_SOURCE_DIR}/src/libsync
+                    ${CMAKE_BINARY_DIR}/src/csync
+                    ${CMAKE_BINARY_DIR}/src/libsync
+                    ${CMAKE_CURRENT_SOURCE_DIR}
+                    ${CMAKE_CURRENT_BINARY_DIR}
+                   )
+
+include_directories()
 
 include(QtVersionAbstraction)
 setup_qt()
