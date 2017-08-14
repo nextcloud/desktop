@@ -40,10 +40,6 @@
 #include <sys/types.h>
 #include <config_csync.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 enum csync_status_codes_e {
   CSYNC_STATUS_OK         = 0,
 
@@ -221,7 +217,7 @@ struct csync_vio_file_stat_s {
   int fields; // actually enum csync_vio_file_stat_fields_e fields;
   enum csync_vio_file_type_e type;
 
-  enum csync_vio_file_flags_e flags;
+  int flags;
 
   char *original_name; // only set if locale conversion fails
 
@@ -503,10 +499,6 @@ int  OCSYNC_EXPORT csync_abort_requested(CSYNC *ctx);
 
 char OCSYNC_EXPORT *csync_normalize_etag(const char *);
 time_t OCSYNC_EXPORT oc_httpdate_parse( const char *date );
-
-#ifdef __cplusplus
-}
-#endif
 
 /**
  * }@

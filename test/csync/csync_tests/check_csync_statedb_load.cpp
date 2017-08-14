@@ -22,7 +22,7 @@
 #include "torture.h"
 
 #define CSYNC_TEST 1
-#include "csync_statedb.c"
+#include "csync_statedb.cpp"
 
 #define TESTDB "/tmp/check_csync1/test.db"
 
@@ -52,7 +52,7 @@ static int setup(void **state) {
 }
 
 static int teardown(void **state) {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     int rc;
 
     rc = csync_destroy(csync);
@@ -68,7 +68,7 @@ static int teardown(void **state) {
 
 static void check_csync_statedb_load(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     int rc;
 
     rc = csync_statedb_load(csync, TESTDB, &csync->statedb.db);
@@ -79,7 +79,7 @@ static void check_csync_statedb_load(void **state)
 
 static void check_csync_statedb_close(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     csync_stat_t sb;
     time_t modtime;
     mbchar_t *testdb = c_utf8_path_to_locale(TESTDB);

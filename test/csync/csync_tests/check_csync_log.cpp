@@ -23,7 +23,7 @@
 #include "torture.h"
 
 #include "csync.h"
-#include "csync_log.c"
+#include "csync_log.cpp"
 #include "c_private.h"
 
 static int setup(void **state) {
@@ -41,7 +41,7 @@ static int setup(void **state) {
 }
 
 static int teardown(void **state) {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     int rc;
 
     rc = csync_destroy(csync);

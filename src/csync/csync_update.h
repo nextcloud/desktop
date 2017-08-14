@@ -53,7 +53,7 @@ enum csync_ftw_flags_e {
 };
 
 typedef int (*csync_walker_fn) (CSYNC *ctx, const char *file,
-    const csync_vio_file_stat_t *fs, enum csync_ftw_flags_e flag);
+    const csync_vio_file_stat_t *fs, int flag);
 
 /**
  * @brief The walker function to use in the file tree walker.
@@ -68,8 +68,7 @@ typedef int (*csync_walker_fn) (CSYNC *ctx, const char *file,
  *
  * @return 0 on success, < 0 on error.
  */
-int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
-    enum csync_ftw_flags_e flag);
+int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, int flag);
 
 /**
  * @brief The file tree walker.

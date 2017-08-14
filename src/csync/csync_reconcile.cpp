@@ -31,6 +31,8 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.reconciler"
 #include "csync_log.h"
 
+// Needed for PRIu64 on MinGW in C++ mode.
+#define __STDC_FORMAT_MACROS
 #include "inttypes.h"
 
 /* Check if a file is ignored because one parent is ignored.

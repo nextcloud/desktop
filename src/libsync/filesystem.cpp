@@ -39,14 +39,11 @@
 
 // We use some internals of csync:
 extern "C" int c_utimes(const char *, const struct timeval *);
-extern "C" void csync_win32_set_file_hidden(const char *file, bool h);
 
-extern "C" {
 #include "csync.h"
 #include "vio/csync_vio_local.h"
 #include "std/c_path.h"
 #include "std/c_string.h"
-}
 
 namespace OCC {
 

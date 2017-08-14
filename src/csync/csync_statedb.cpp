@@ -31,7 +31,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <inttypes.h>
 
 #include "c_lib.h"
 #include "csync_private.h"
@@ -47,6 +46,10 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.statedb"
 #include "csync_log.h"
 #include "csync_rename.h"
+
+// Needed for PRIu64 on MinGW in C++ mode.
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
 
 #define BUF_SIZE 16
 
@@ -257,7 +260,7 @@ static int _csync_file_stat_from_metadata_table( csync_file_stat_t **st, sqlite3
 
             /* phash, pathlen, path, inode, uid, gid, mode, modtime */
             len = sqlite3_column_int(stmt, 1);
-            *st = c_malloc(sizeof(csync_file_stat_t) + len + 1);
+            *st = (csync_file_stat_t*)c_malloc(sizeof(csync_file_stat_t) + len + 1);
             /* clear the whole structure */
             ZERO_STRUCTP(*st);
 
@@ -272,7 +275,7 @@ static int _csync_file_stat_from_metadata_table( csync_file_stat_t **st, sqlite3
             (*st)->modtime = strtoul((char*)sqlite3_column_text(stmt, 7), NULL, 10);
 
             if(*st && column_count > 8 ) {
-                (*st)->type = sqlite3_column_int(stmt, 8);
+                (*st)->type = static_cast<enum csync_ftw_type_e>(sqlite3_column_int(stmt, 8));
             }
 
             if(column_count > 9 && sqlite3_column_text(stmt, 9)) {

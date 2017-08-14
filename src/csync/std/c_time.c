@@ -25,10 +25,6 @@
 #include "c_path.h"
 #include "c_time.h"
 
-#ifndef _WIN32
-#include <sys/time.h>
-#endif
-
 struct timespec c_tspecdiff(struct timespec time1, struct timespec time0) {
   struct timespec ret;
   int xsec = 0;

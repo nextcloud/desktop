@@ -53,7 +53,7 @@ static int setup_module(void **state) {
 }
 
 static int teardown(void **state) {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     int rc;
 
     rc = csync_destroy(csync);
@@ -71,7 +71,7 @@ static int teardown(void **state) {
 
 static void check_csync_commit(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     int rc;
 
     rc = csync_commit(csync);
@@ -82,7 +82,7 @@ static void check_csync_commit(void **state)
 
 static void check_csync_commit_dummy(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     int rc;
 
     rc = csync_commit(csync);

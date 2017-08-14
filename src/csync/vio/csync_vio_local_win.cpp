@@ -52,7 +52,7 @@ csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
   dhandle_t *handle = NULL;
   mbchar_t *dirname = NULL;
 
-  handle = c_malloc(sizeof(dhandle_t));
+  handle = (dhandle_t*)c_malloc(sizeof(dhandle_t));
 
   // the file wildcard has to be attached
   int len_name = strlen(name);
@@ -60,7 +60,7 @@ csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
       char *h = NULL;
 
       // alloc an enough large buffer to take the name + '/*' + the closing zero.
-      h = c_malloc(len_name+3);
+      h = (char*)c_malloc(len_name+3);
       strncpy( h, name, 1+len_name);
       strncat(h, "/*", 2);
 

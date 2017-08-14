@@ -21,7 +21,15 @@
 #ifndef _C_TIME_H
 #define _C_TIME_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef _WIN32
 #include <time.h>
+#else
+#include <sys/time.h>
+#endif
 
 /**
  * @brief Calculate time difference
@@ -51,5 +59,9 @@ struct timespec c_tspecdiff(struct timespec time1, struct timespec time0);
 double c_secdiff(struct timespec clock1, struct timespec clock0);
 
 int c_utimes(const char *uri, const struct timeval *times);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _C_TIME_H */
