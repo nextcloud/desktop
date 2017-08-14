@@ -181,11 +181,9 @@ set(3rdparty_INC
 include_directories(${3rdparty_INC})
 
 # csync is required.
-include_directories(${CMAKE_SOURCE_DIR}/csync/src
-                    ${CMAKE_BINARY_DIR}/csync
-                    ${CMAKE_BINARY_DIR}/csync/src
+include_directories(${CMAKE_SOURCE_DIR}/src/csync
+                    ${CMAKE_BINARY_DIR}/src/csync
                    )
-
 include_directories(../libsync ${CMAKE_CURRENT_BINARY_DIR}/../libsync)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}
                     ${CMAKE_CURRENT_BINARY_DIR}

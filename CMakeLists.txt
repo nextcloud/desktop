@@ -219,7 +219,6 @@ if(UNIT_TESTING)
     add_subdirectory(test)
 endif(UNIT_TESTING)
 
-add_subdirectory(csync)
 add_subdirectory(src)
 if(NOT BUILD_LIBRARIES_ONLY)
 add_subdirectory(shell_integration)

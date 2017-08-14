@@ -31,7 +31,7 @@
 #include "asserts.h"
 #include "checksums.h"
 
-#include "../../csync/src/std/c_jhash.h"
+#include "std/c_jhash.h"
 
 namespace OCC {
 
