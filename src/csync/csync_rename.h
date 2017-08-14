@@ -22,10 +22,6 @@
 
 #include "csync.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* Return the final destination path of a given patch in case of renames */
 char OCSYNC_EXPORT *csync_rename_adjust_path(CSYNC *ctx, const char *path);
 /* Return the source of a given path in case of renames */
@@ -34,7 +30,3 @@ void OCSYNC_EXPORT csync_rename_destroy(CSYNC *ctx);
 void OCSYNC_EXPORT csync_rename_record(CSYNC *ctx, const char *from, const char *to);
 /*  Return the amount of renamed item recorded */
 bool OCSYNC_EXPORT csync_rename_count(CSYNC *ctx);
-
-#ifdef __cplusplus
-}
-#endif

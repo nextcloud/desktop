@@ -62,30 +62,30 @@ if(NO_RENAME_EXTENSION)
 endif()
 
 set(csync_SRCS
-  csync.c
-  csync_exclude.c
-  csync_log.c
-  csync_statedb.c
+  csync.cpp
+  csync_exclude.cpp
+  csync_log.cpp
+  csync_statedb.cpp
   csync_time.c
-  csync_util.c
-  csync_misc.c
+  csync_util.cpp
+  csync_misc.cpp
 
-  csync_update.c
-  csync_reconcile.c
+  csync_update.cpp
+  csync_reconcile.cpp
 
   csync_rename.cpp
 
-  vio/csync_vio.c
-  vio/csync_vio_file_stat.c
+  vio/csync_vio.cpp
+  vio/csync_vio_file_stat.cpp
 )
 
 if (WIN32)
     list(APPEND csync_SRCS
-        vio/csync_vio_local_win.c
+        vio/csync_vio_local_win.cpp
     )
 else()
     list(APPEND csync_SRCS
-        vio/csync_vio_local_unix.c
+        vio/csync_vio_local_unix.cpp
     )
 endif()
 

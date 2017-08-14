@@ -93,7 +93,7 @@ static void setup_testenv(void **state) {
     c_free_locale_string(dir);
 
     /* --- initialize csync */
-    statevar *mystate = malloc( sizeof(statevar) );
+    statevar *mystate = (statevar*)malloc( sizeof(statevar) );
     mystate->result = NULL;
 
     csync_create(&(mystate->csync), "/tmp/csync1");
@@ -140,7 +140,7 @@ static void teardown(void **state) {
 static void create_dirs( const char *path )
 {
   int rc;
-  char *mypath = c_malloc( 2+strlen(CSYNC_TEST_DIR)+strlen(path));
+  char *mypath = (char*)c_malloc( 2+strlen(CSYNC_TEST_DIR)+strlen(path));
   *mypath = '\0';
   strcat(mypath, CSYNC_TEST_DIR);
   strcat(mypath, "/");
@@ -229,7 +229,7 @@ static void traverse_dir(void **state, const char *dir, int *cnt)
             } else {
                 int newlen = 1+strlen(sv->result)+strlen(subdir_out);
                 char *tmp = sv->result;
-                sv->result = c_malloc(newlen);
+                sv->result = (char*)c_malloc(newlen);
                 strcpy( sv->result, tmp);
                 SAFE_FREE(tmp);
 
@@ -284,7 +284,7 @@ static void create_file( const char *path, const char *name, const char *content
   SAFE_FREE(dst);
   c_free_locale_string(w_fname);
 #else
-   char *filepath = c_malloc( 1+strlen(path) + strlen(name) );
+   char *filepath = (char*)c_malloc( 1+strlen(path) + strlen(name) );
    *filepath = '\0';
 
    strcpy(filepath, path);
@@ -406,7 +406,7 @@ static void check_readdir_longtree(void **state)
     /* assemble the result string ... */
     int overall_len = 1+strlen(r1)+strlen(r2)+strlen(r3);
     int files_cnt = 0;
-    char *result = c_malloc(overall_len);
+    char *result = (char*)c_malloc(overall_len);
     *result = '\0';
 
     strcat(result, r1);

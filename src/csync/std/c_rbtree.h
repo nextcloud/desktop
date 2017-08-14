@@ -66,6 +66,10 @@
 #ifndef _C_RBTREE_H
 #define _C_RBTREE_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Forward declarations */
 struct c_rbtree_s; typedef struct c_rbtree_s c_rbtree_t;
 struct c_rbnode_s; typedef struct c_rbnode_s c_rbnode_t;
@@ -306,4 +310,9 @@ int c_rbtree_check_sanity(c_rbtree_t *tree);
 /**
  * }@
  */
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* _C_RBTREE_H */

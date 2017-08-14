@@ -33,10 +33,6 @@
 #ifndef _CSYNC_STATEDB_H
 #define _CSYNC_STATEDB_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "c_lib.h"
 #include "csync_private.h"
 
@@ -95,10 +91,6 @@ int csync_statedb_get_below_path(CSYNC *ctx, const char *path);
  *           nothing has been found. NULL on error.
  */
 c_strlist_t *csync_statedb_query(sqlite3 *db, const char *statement);
-
-#ifdef __cplusplus
-}
-#endif
 
 /**
  * }@

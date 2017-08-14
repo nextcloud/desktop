@@ -71,7 +71,7 @@ int _csync_exclude_add(c_strlist_t **inList, const char *string) {
 static const char *csync_exclude_expand_escapes(const char * input)
 {
     size_t i_len = strlen(input) + 1;
-    char *out = c_malloc(i_len); // out can only be shorter
+    char *out = (char*)c_malloc(i_len); // out can only be shorter
 
     size_t i = 0;
     size_t o = 0;
@@ -141,7 +141,7 @@ int csync_exclude_load(const char *fname, c_strlist_t **list) {
     rc = 0;
     goto out;
   }
-  buf = c_malloc(size + 1);
+  buf = (char*)c_malloc(size + 1);
   if (read(fd, buf, size) != size) {
     rc = -1;
     goto out;
@@ -220,6 +220,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
     int rc = -1;
     CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
     CSYNC_EXCLUDE_TYPE type  = CSYNC_NOT_EXCLUDED;
+    c_strlist_t *path_components = NULL;
 
     /* split up the path */
     bname = strrchr(path, '/');
@@ -274,8 +275,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
     }
 
     // Filter out characters not allowed in a filename on windows
-    const char *p = NULL;
-    for (p = path; *p; p++) {
+    for (const char *p = path; *p; p++) {
         switch (*p) {
         case '\\':
         case ':':
@@ -331,7 +331,6 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
         goto out;
     }
 
-    c_strlist_t *path_components = NULL;
     if (check_leading_dirs) {
         /* Build a list of path components to check. */
         path_components = c_strlist_new(32);

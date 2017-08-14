@@ -19,7 +19,7 @@
  */
 #include "torture.h"
 
-#include "csync_update.c"
+#include "csync_update.cpp"
 
 #define TESTDB "/tmp/check_csync/journal.db"
 
@@ -150,7 +150,7 @@ static int setup_ftw(void **state)
 
 static int teardown(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     int rc;
 
     unlink( csync->statedb.file);
@@ -233,7 +233,7 @@ static csync_vio_file_stat_t* create_fstat(const char *name,
 static int failing_fn(CSYNC *ctx,
                       const char *file,
                       const csync_vio_file_stat_t *fs,
-                      enum csync_ftw_flags_e flag)
+                      int flag)
 {
   (void) ctx;
   (void) file;
@@ -246,7 +246,7 @@ static int failing_fn(CSYNC *ctx,
 /* detect a new file */
 static void check_csync_detect_update(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     csync_file_stat_t *st;
     csync_vio_file_stat_t *fs;
     int rc;
@@ -261,7 +261,7 @@ static void check_csync_detect_update(void **state)
     assert_int_equal(rc, 0);
 
     /* the instruction should be set to new  */
-    st = c_rbtree_node_data(csync->local.tree->root);
+    st = (csync_file_stat_t*)c_rbtree_node_data(csync->local.tree->root);
     assert_int_equal(st->instruction, CSYNC_INSTRUCTION_NEW);
 
     /* create a statedb */
@@ -275,7 +275,7 @@ static void check_csync_detect_update(void **state)
  */
 static void check_csync_detect_update_db_none(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     csync_file_stat_t *st;
     csync_vio_file_stat_t *fs;
     int rc;
@@ -290,7 +290,7 @@ static void check_csync_detect_update_db_none(void **state)
     assert_int_equal(rc, 0);
 
     /* the instruction should be set to new  */
-    st = c_rbtree_node_data(csync->local.tree->root);
+    st = (csync_file_stat_t*)c_rbtree_node_data(csync->local.tree->root);
     assert_int_equal(st->instruction, CSYNC_INSTRUCTION_NEW);
 
 
@@ -302,7 +302,7 @@ static void check_csync_detect_update_db_none(void **state)
 
 static void check_csync_detect_update_db_eval(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     csync_file_stat_t *st;
     csync_vio_file_stat_t *fs;
     int rc;
@@ -317,7 +317,7 @@ static void check_csync_detect_update_db_eval(void **state)
     assert_int_equal(rc, 0);
 
     /* the instruction should be set to new  */
-    st = c_rbtree_node_data(csync->local.tree->root);
+    st = (csync_file_stat_t*)c_rbtree_node_data(csync->local.tree->root);
     assert_int_equal(st->instruction, CSYNC_INSTRUCTION_NEW);
 
     /* create a statedb */
@@ -329,7 +329,7 @@ static void check_csync_detect_update_db_eval(void **state)
 
 static void check_csync_detect_update_db_rename(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     // csync_file_stat_t *st;
 
     csync_vio_file_stat_t *fs;
@@ -348,7 +348,7 @@ static void check_csync_detect_update_db_rename(void **state)
     /* the instruction should be set to rename */
     /*
      * temporarily broken.
-    st = c_rbtree_node_data(csync->local.tree->root);
+    st = (csync_file_stat_t*)c_rbtree_node_data(csync->local.tree->root);
     assert_int_equal(st->instruction, CSYNC_INSTRUCTION_RENAME);
 
     st->instruction = CSYNC_INSTRUCTION_UPDATED;
@@ -361,7 +361,7 @@ static void check_csync_detect_update_db_rename(void **state)
 
 static void check_csync_detect_update_db_new(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     csync_file_stat_t *st;
     csync_vio_file_stat_t *fs;
     int rc;
@@ -376,7 +376,7 @@ static void check_csync_detect_update_db_new(void **state)
     assert_int_equal(rc, 0);
 
     /* the instruction should be set to new  */
-    st = c_rbtree_node_data(csync->local.tree->root);
+    st = (csync_file_stat_t*)c_rbtree_node_data(csync->local.tree->root);
     assert_int_equal(st->instruction, CSYNC_INSTRUCTION_NEW);
 
 
@@ -388,7 +388,7 @@ static void check_csync_detect_update_db_new(void **state)
 
 static void check_csync_detect_update_null(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     csync_vio_file_stat_t *fs;
     int rc;
 
@@ -412,7 +412,7 @@ static void check_csync_detect_update_null(void **state)
 
 static void check_csync_ftw(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     int rc;
 
     rc = csync_ftw(csync, "/tmp", csync_walker, MAX_DEPTH);
@@ -421,7 +421,7 @@ static void check_csync_ftw(void **state)
 
 static void check_csync_ftw_empty_uri(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     int rc;
 
     rc = csync_ftw(csync, "", csync_walker, MAX_DEPTH);
@@ -430,7 +430,7 @@ static void check_csync_ftw_empty_uri(void **state)
 
 static void check_csync_ftw_failing_fn(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     int rc;
 
     rc = csync_ftw(csync, "/tmp", failing_fn, MAX_DEPTH);
@@ -454,4 +454,3 @@ int torture_run_tests(void)
 
     return cmocka_run_group_tests(tests, NULL, NULL);
 }
-

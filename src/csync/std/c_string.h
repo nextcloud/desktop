@@ -32,6 +32,10 @@
 #ifndef _C_STR_H
 #define _C_STR_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "c_private.h"
 #include "c_macro.h"
 
@@ -217,5 +221,10 @@ mbchar_t* c_utf8_string_to_locale(const char *wstr);
 /**
  * }@
  */
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* _C_STR_H */
 

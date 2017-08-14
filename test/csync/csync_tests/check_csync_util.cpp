@@ -30,7 +30,7 @@ static void check_csync_instruction_str(void **state)
   str = csync_instruction_str(CSYNC_INSTRUCTION_ERROR);
   assert_string_equal(str, "INSTRUCTION_ERROR");
 
-  str = csync_instruction_str(0xFFFF);
+  str = csync_instruction_str((enum csync_instructions_e)0xFFFF);
   assert_string_equal(str, "ERROR!");
 }
 

@@ -20,7 +20,7 @@
 #include "torture.h"
 
 #define CSYNC_TEST 1
-#include "csync_statedb.c"
+#include "csync_statedb.cpp"
 
 #define TESTDB "/tmp/check_csync1/test.db"
 #define TESTDBTMP "/tmp/check_csync1/test.db.ctmp"
@@ -97,7 +97,7 @@ static int setup_db(void **state)
 }
 
 static int teardown(void **state) {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     int rc = 0;
 
     rc = csync_destroy(csync);
@@ -115,7 +115,7 @@ static int teardown(void **state) {
 
 static void check_csync_statedb_query_statement(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     c_strlist_t *result;
 
     result = csync_statedb_query(csync->statedb.db, "");
@@ -133,7 +133,7 @@ static void check_csync_statedb_query_statement(void **state)
 
 static void check_csync_statedb_drop_tables(void **state)
 {
-    // CSYNC *csync = *state;
+    // CSYNC *csync = (CSYNC*)*state;
     int rc = 0;
     (void) state;
 
@@ -147,7 +147,7 @@ static void check_csync_statedb_drop_tables(void **state)
 
 static void check_csync_statedb_insert_metadata(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     csync_file_stat_t *st;
     int i, rc = 0;
 
@@ -155,7 +155,7 @@ static void check_csync_statedb_insert_metadata(void **state)
     assert_int_equal(rc, 0);
 
     for (i = 0; i < 100; i++) {
-        st = c_malloc(sizeof(csync_file_stat_t) + 30 );
+        st = (csync_file_stat_t*)c_malloc(sizeof(csync_file_stat_t) + 30 );
         snprintf(st->path, 29, "file_%d" , i );
         st->phash = i;
 
@@ -169,12 +169,12 @@ static void check_csync_statedb_insert_metadata(void **state)
 
 static void check_csync_statedb_write(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     csync_file_stat_t *st;
     int i, rc;
 
     for (i = 0; i < 100; i++) {
-        st = c_malloc(sizeof(csync_file_stat_t) + 30);
+        st = (csync_file_stat_t*)c_malloc(sizeof(csync_file_stat_t) + 30);
         snprintf(st->path, 29, "file_%d" , i );
         st->phash = i;
 
@@ -189,7 +189,7 @@ static void check_csync_statedb_write(void **state)
 
 static void check_csync_statedb_get_stat_by_hash_not_found(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     csync_file_stat_t *tmp;
 
     tmp = csync_statedb_get_stat_by_hash(csync, (uint64_t) 666);
@@ -201,7 +201,7 @@ static void check_csync_statedb_get_stat_by_hash_not_found(void **state)
 
 static void check_csync_statedb_get_stat_by_inode_not_found(void **state)
 {
-    CSYNC *csync = *state;
+    CSYNC *csync = (CSYNC*)*state;
     csync_file_stat_t *tmp;
 
     tmp = csync_statedb_get_stat_by_inode(csync, (ino_t) 666);

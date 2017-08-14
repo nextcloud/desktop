@@ -18,11 +18,9 @@
 
 #include <QFileInfo>
 
-extern "C" {
 #include "std/c_string.h"
 #include "csync.h"
 #include "csync_exclude.h"
-}
 
 using namespace OCC;
 
