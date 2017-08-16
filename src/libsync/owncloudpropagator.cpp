@@ -23,7 +23,7 @@
 #include "propagateremotemkdir.h"
 #include "propagatorjobs.h"
 #include "configfile.h"
-#include "utility.h"
+#include "common/utility.h"
 #include "account.h"
 #include "asserts.h"
 

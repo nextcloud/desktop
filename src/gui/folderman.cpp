@@ -199,7 +199,7 @@ int FolderMan::setupFolders()
 {
     unloadAndDeleteAllFolders();
 
-    auto settings = Utility::settingsWithGroup(QLatin1String("Accounts"));
+    auto settings = ConfigFile::settingsWithGroup(QLatin1String("Accounts"));
     const auto accountsWithSettings = settings->childGroups();
     if (accountsWithSettings.isEmpty()) {
         int r = setupFoldersMigration();

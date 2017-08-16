@@ -9,7 +9,7 @@
 #include <QTemporaryDir>
 #endif
 
-#include "utility.h"
+#include "common/utility.h"
 
 using namespace OCC::Utility;
 

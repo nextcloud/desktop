@@ -14,7 +14,7 @@
  */
 
 #include "openfilemanager.h"
-#include "utility.h"
+#include "common/utility.h"
 #include <QProcess>
 #include <QSettings>
 #include <QDir>

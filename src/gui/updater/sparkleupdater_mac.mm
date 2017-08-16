@@ -20,8 +20,6 @@
 
 #include "updater/sparkleupdater.h"
 
-#include "utility.h"
-
 // Does not work yet
 @interface DelegateObject : NSObject <SUUpdaterDelegate>
 - (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle;

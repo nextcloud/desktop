@@ -15,7 +15,7 @@
 #include <QRegExp>
 
 #include "syncrunfilelog.h"
-#include "utility.h"
+#include "common/utility.h"
 #include "filesystem.h"
 #include <qfileinfo.h>
 

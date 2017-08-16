@@ -20,7 +20,7 @@
 #include <QDateTime>
 #include <QHash>
 
-#include "utility.h"
+#include "common/utility.h"
 #include "ownsql.h"
 #include "syncjournalfilerecord.h"
 

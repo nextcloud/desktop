@@ -23,7 +23,7 @@
 
 #include "application.h"
 #include "theme.h"
-#include "utility.h"
+#include "common/utility.h"
 #include "cocoainitializer.h"
 
 #include "updater/updater.h"

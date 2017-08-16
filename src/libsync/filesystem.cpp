@@ -14,7 +14,7 @@
 
 #include "filesystem.h"
 
-#include "utility.h"
+#include "common/utility.h"
 #include <QFile>
 #include <QFileInfo>
 #include <QLoggingCategory>

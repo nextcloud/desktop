@@ -23,7 +23,7 @@
 
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
-#include "utility.h"
+#include "common/utility.h"
 #include "version.h"
 #include "filesystem.h"
 #include "asserts.h"

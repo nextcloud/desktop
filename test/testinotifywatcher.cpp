@@ -7,7 +7,7 @@
 #include <QtTest>
 
 #include "folderwatcher_linux.h"
-#include "utility.h"
+#include "common/utility.h"
 
 using namespace OCC;
 
