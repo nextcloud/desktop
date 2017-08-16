@@ -21,7 +21,7 @@
 
 #include "creds/credentialscommon.h"
 
-#include "utility.h"
+#include "common/utility.h"
 #include "account.h"
 #include "syncengine.h"
 

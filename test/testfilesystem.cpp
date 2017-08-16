@@ -8,7 +8,7 @@
 #include <QDebug>
 
 #include "filesystem.h"
-#include "utility.h"
+#include "common/utility.h"
 
 using namespace OCC::Utility;
 using namespace OCC::FileSystem;

@@ -13,6 +13,7 @@
  */
 
 #include "accountmanager.h"
+#include "configfile.h"
 #include "sslerrordialog.h"
 #include "proxyauthhandler.h"
 #include <theme.h>
@@ -47,7 +48,7 @@ AccountManager *AccountManager::instance()
 
 bool AccountManager::restore()
 {
-    auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
+    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     if (settings->status() != QSettings::NoError) {
         qCWarning(lcAccountManager) << "Could not read settings from" << settings->fileName()
                                     << settings->status();
@@ -81,7 +82,7 @@ bool AccountManager::restoreFromLegacySettings()
                              << Theme::instance()->appName();
 
     // try to open the correctly themed settings
-    auto settings = Utility::settingsWithGroup(Theme::instance()->appName());
+    auto settings = ConfigFile::settingsWithGroup(Theme::instance()->appName());
 
     // if the settings file could not be opened, the childKeys list is empty
     // then try to load settings from a very old place
@@ -134,7 +135,7 @@ bool AccountManager::restoreFromLegacySettings()
 
 void AccountManager::save(bool saveCredentials)
 {
-    auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
+    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->setValue(QLatin1String(versionC), 2);
     foreach (const auto &acc, _accounts) {
         settings->beginGroup(acc->account()->id());
@@ -150,7 +151,7 @@ void AccountManager::save(bool saveCredentials)
 void AccountManager::saveAccount(Account *a)
 {
     qCInfo(lcAccountManager) << "Saving account" << a->url().toString();
-    auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
+    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->beginGroup(a->id());
     saveAccountHelper(a, *settings, false); // don't save credentials they might not have been loaded yet
     settings->endGroup();
@@ -162,7 +163,7 @@ void AccountManager::saveAccount(Account *a)
 void AccountManager::saveAccountState(AccountState *a)
 {
     qCInfo(lcAccountManager) << "Saving account state" << a->account()->url().toString();
-    auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
+    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->beginGroup(a->account()->id());
     a->writeToSettings(*settings);
     settings->endGroup();
@@ -308,7 +309,7 @@ void AccountManager::deleteAccount(AccountState *account)
     account->account()->credentials()->forgetSensitiveData();
     QFile::remove(account->account()->cookieJarPath());
 
-    auto settings = Utility::settingsWithGroup(QLatin1String(accountsC));
+    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->remove(account->account()->id());
 
     emit accountRemoved(account);

@@ -41,7 +41,13 @@ endif()
 include(Warnings)
 
 include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
+# For config.h
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
+# Allows includes based on src/ like #include "common/utility.h" or #include "csync/csync.h"
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}/src
+)
 
 # disable the crashreporter if libcrashreporter-qt is not available or we're building for ARM
 if( CMAKE_SYSTEM_PROCESSOR MATCHES "arm" OR NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/3rdparty/libcrashreporter-qt/CMakeLists.txt")
@@ -211,13 +217,8 @@ endif()
 file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/client_*.ts)
 set(TRANSLATIONS ${TRANS_FILES})
 
-if(UNIT_TESTING)
-    # Make sure we set this before recursing into child folders.
-    set(WITH_TESTING ON)
-    include(CTest)
-    enable_testing()
-    add_subdirectory(test)
-endif(UNIT_TESTING)
+# Make sure we set this before recursing into child folders.
+set(WITH_TESTING ${UNIT_TESTING})
 
 add_subdirectory(src)
 if(NOT BUILD_LIBRARIES_ONLY)
@@ -227,7 +228,14 @@ add_subdirectory(doc/dev)
 add_subdirectory(admin)
 endif(NOT BUILD_LIBRARIES_ONLY)
 
+if(UNIT_TESTING)
+    include(CTest)
+    enable_testing()
+    add_subdirectory(test)
+endif(UNIT_TESTING)
+
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+configure_file(version.h.in ${CMAKE_CURRENT_BINARY_DIR}/version.h)
 
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
     install(FILES sync-exclude.lst DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/)

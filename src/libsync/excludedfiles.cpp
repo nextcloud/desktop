@@ -14,7 +14,7 @@
 
 #include "config.h"
 #include "excludedfiles.h"
-#include "utility.h"
+#include "common/utility.h"
 
 #include <QFileInfo>
 

@@ -14,7 +14,7 @@
 
 #include "syncjournalfilerecord.h"
 #include "syncfileitem.h"
-#include "utility.h"
+#include "common/utility.h"
 #include "filesystem.h"
 
 #include <QLoggingCategory>

@@ -14,7 +14,7 @@
 
 #include "theme.h"
 #include "configfile.h"
-#include "utility.h"
+#include "common/utility.h"
 #include "accessmanager.h"
 
 #include "updater/ocupdater.h"

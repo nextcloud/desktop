@@ -8,7 +8,7 @@
 #include <QtTest>
 
 #include "folderwatcher.h"
-#include "utility.h"
+#include "common/utility.h"
 
 void touch(const QString &file)
 {

@@ -7,7 +7,7 @@
 
 #include <QtTest>
 
-#include "utility.h"
+#include "common/utility.h"
 #include "folder.h"
 
 using namespace OCC;

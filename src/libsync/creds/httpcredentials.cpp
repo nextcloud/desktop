@@ -25,7 +25,7 @@
 
 #include "account.h"
 #include "accessmanager.h"
-#include "utility.h"
+#include "configfile.h"
 #include "theme.h"
 #include "syncengine.h"
 #include "creds/credentialscommon.h"
@@ -94,7 +94,7 @@ private:
 static void addSettingsToJob(Account *account, QKeychain::Job *job)
 {
     Q_UNUSED(account);
-    auto settings = Utility::settingsWithGroup(Theme::instance()->appName());
+    auto settings = ConfigFile::settingsWithGroup(Theme::instance()->appName());
     settings->setParent(job); // make the job parent to make setting deleted properly
     job->setSettings(settings.release());
 }

@@ -22,7 +22,9 @@
 #include <QTextStream>
 #include <qmutex.h>
 
-#include "utility.h"
+#include "common/utility.h"
+#include "logger.h"
+#include "owncloudlib.h"
 
 namespace OCC {
 

@@ -19,9 +19,9 @@
 #include "updater/sparkleupdater.h"
 #include "updater/ocupdater.h"
 
-#include "version.h"
 #include "theme.h"
-#include "utility.h"
+#include "common/utility.h"
+#include "version.h"
 
 #include "config.h"
 
