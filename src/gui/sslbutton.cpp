@@ -15,7 +15,6 @@
 #include "sslbutton.h"
 #include "account.h"
 #include "accountstate.h"
-#include "utility.h"
 #include "theme.h"
 
 #include <QMenu>

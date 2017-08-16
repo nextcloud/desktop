@@ -1,8 +1,6 @@
 project(libsync)
 set(CMAKE_AUTOMOC TRUE)
 
-configure_file( version.h.in "${CMAKE_CURRENT_BINARY_DIR}/version.h" )
-
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 # csync is required.
 include_directories(${CMAKE_SOURCE_DIR}/src/csync
@@ -59,7 +57,6 @@ set(libsync_SRCS
     syncjournalfilerecord.cpp
     syncresult.cpp
     theme.cpp
-    utility.cpp
     ownsql.cpp
     checksums.cpp
     excludedfiles.cpp

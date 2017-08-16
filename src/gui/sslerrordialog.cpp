@@ -12,7 +12,6 @@
  * for more details.
  */
 #include "configfile.h"
-#include "utility.h"
 #include "sslerrordialog.h"
 
 #include <QtGui>

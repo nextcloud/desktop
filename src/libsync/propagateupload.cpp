@@ -19,7 +19,7 @@
 #include "account.h"
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
-#include "utility.h"
+#include "common/utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
 #include "checksums.h"

@@ -13,9 +13,9 @@
  */
 
 #include "theme.h"
-#include "version.h"
 #include "config.h"
-#include "utility.h"
+#include "common/utility.h"
+#include "version.h"
 
 #include <QtCore>
 #ifndef TOKEN_AUTH_ONLY

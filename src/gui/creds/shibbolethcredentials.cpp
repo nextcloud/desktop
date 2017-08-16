@@ -26,6 +26,7 @@
 
 #include "accessmanager.h"
 #include "account.h"
+#include "configfile.h"
 #include "theme.h"
 #include "cookiejar.h"
 #include "owncloudgui.h"
@@ -131,7 +132,7 @@ void ShibbolethCredentials::fetchFromKeychain()
     } else {
         _url = _account->url();
         ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
-        job->setSettings(Utility::settingsWithGroup(Theme::instance()->appName(), job).release());
+        job->setSettings(ConfigFile::settingsWithGroup(Theme::instance()->appName(), job).release());
         job->setInsecureFallback(false);
         job->setKey(keychainKey(_account->url().toString(), user()));
         connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotReadJobDone(QKeychain::Job *)));
@@ -250,7 +251,7 @@ void ShibbolethCredentials::slotReadJobDone(QKeychain::Job *job)
             addToCookieJar(_shibCookie);
         }
         // access
-        job->setSettings(Utility::settingsWithGroup(Theme::instance()->appName(), job).release());
+        job->setSettings(ConfigFile::settingsWithGroup(Theme::instance()->appName(), job).release());
 
         _ready = true;
         _stillValid = true;
@@ -309,7 +310,7 @@ QByteArray ShibbolethCredentials::shibCookieName()
 void ShibbolethCredentials::storeShibCookie(const QNetworkCookie &cookie)
 {
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
-    job->setSettings(Utility::settingsWithGroup(Theme::instance()->appName(), job).release());
+    job->setSettings(ConfigFile::settingsWithGroup(Theme::instance()->appName(), job).release());
     // we don't really care if it works...
     //connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotWriteJobDone(QKeychain::Job*)));
     job->setKey(keychainKey(_account->url().toString(), user()));
@@ -320,7 +321,7 @@ void ShibbolethCredentials::storeShibCookie(const QNetworkCookie &cookie)
 void ShibbolethCredentials::removeShibCookie()
 {
     DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
-    job->setSettings(Utility::settingsWithGroup(Theme::instance()->appName(), job).release());
+    job->setSettings(ConfigFile::settingsWithGroup(Theme::instance()->appName(), job).release());
     job->setKey(keychainKey(_account->url().toString(), user()));
     job->start();
 }

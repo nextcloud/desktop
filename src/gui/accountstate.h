@@ -17,8 +17,8 @@
 #define ACCOUNTINFO_H
 
 #include <QByteArray>
+#include <QElapsedTimer>
 #include <QPointer>
-#include "utility.h"
 #include "connectionvalidator.h"
 #include "creds/abstractcredentials.h"
 #include <memory>

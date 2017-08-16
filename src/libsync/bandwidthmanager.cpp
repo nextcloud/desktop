@@ -16,7 +16,7 @@
 #include "propagatedownload.h"
 #include "propagateupload.h"
 #include "propagatorjobs.h"
-#include "utility.h"
+#include "common/utility.h"
 
 #ifdef Q_OS_WIN
 #include <windef.h>

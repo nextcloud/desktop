@@ -21,7 +21,7 @@
 #include "folderwizard.h"
 #include "folderstatusmodel.h"
 #include "folderstatusdelegate.h"
-#include "utility.h"
+#include "common/utility.h"
 #include "application.h"
 #include "configfile.h"
 #include "account.h"

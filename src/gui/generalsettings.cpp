@@ -18,7 +18,6 @@
 #include "theme.h"
 #include "configfile.h"
 #include "application.h"
-#include "utility.h"
 #include "configfile.h"
 #include "owncloudsetupwizard.h"
 #include "accountmanager.h"

@@ -34,7 +34,7 @@
 #include "excludedfiles.h"
 #include "syncfileitem.h"
 #include "progressdispatcher.h"
-#include "utility.h"
+#include "common/utility.h"
 #include "syncfilestatustracker.h"
 #include "accountfwd.h"
 #include "discoveryphase.h"

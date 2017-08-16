@@ -28,7 +28,7 @@
 #include <QSharedPointer>
 #include <QPixmap>
 
-#include "utility.h"
+#include "common/utility.h"
 #include <memory>
 #include "capabilities.h"
 

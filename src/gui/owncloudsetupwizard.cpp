@@ -24,7 +24,6 @@
 #include "owncloudsetupwizard.h"
 #include "configfile.h"
 #include "folderman.h"
-#include "utility.h"
 #include "accessmanager.h"
 #include "account.h"
 #include "networkjobs.h"
