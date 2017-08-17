@@ -279,9 +279,8 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
     int rc = 0;
     csync_file_stat_t *cur         = NULL;
     CSYNC *ctx                     = NULL;
-    c_rbtree_visit_func *visitor   = NULL;
+    csync_treewalk_visit_func *visitor   = NULL;
     _csync_treewalk_context *twctx = NULL;
-    TREE_WALK_FILE trav;
     c_rbtree_t *other_tree = NULL;
     c_rbnode_t *other_node = NULL;
 
@@ -334,6 +333,8 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
         SAFE_FREE(renamed_path);
     }
 
+    csync_file_stat_t *other = other_node ? (csync_file_stat_t*)other_node->data : NULL;
+
     if (obj == NULL || data == NULL) {
       ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
       return -1;
@@ -351,45 +352,9 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
         return 0;
     }
 
-    visitor = (c_rbtree_visit_func*)(twctx->user_visitor);
+    visitor = (csync_treewalk_visit_func*)(twctx->user_visitor);
     if (visitor != NULL) {
-      trav.path         = cur->path;
-      trav.size         = cur->size;
-      trav.modtime      = cur->modtime;
-      trav.type         = cur->type;
-      trav.instruction  = cur->instruction;
-      trav.rename_path  = cur->rename_path;
-      trav.etag         = cur->etag;
-      trav.file_id      = cur->file_id;
-      trav.remotePerm = cur->remotePerm;
-      trav.directDownloadUrl = cur->directDownloadUrl.data();
-      trav.directDownloadCookies = cur->directDownloadCookies.data();
-      trav.inode        = cur->inode;
-
-      trav.error_status = cur->error_status;
-      trav.has_ignored_files = cur->has_ignored_files;
-      trav.checksumHeader = cur->checksumHeader;
-
-      if( other_node ) {
-          csync_file_stat_t *other_stat = (csync_file_stat_t*)other_node->data;
-          trav.other.etag = other_stat->etag;
-          trav.other.file_id = other_stat->file_id;
-          trav.other.instruction = other_stat->instruction;
-          trav.other.modtime = other_stat->modtime;
-          trav.other.size = other_stat->size;
-      } else {
-          trav.other.etag = 0;
-          trav.other.file_id = 0;
-          trav.other.instruction = CSYNC_INSTRUCTION_NONE;
-          trav.other.modtime = 0;
-          trav.other.size = 0;
-      }
-
-      rc = (*visitor)(&trav, twctx->userdata);
-      cur->instruction = trav.instruction;
-      if (trav.etag != cur->etag) { // FIXME It would be nice to have this documented
-          cur->etag = trav.etag;
-      }
+      rc = (*visitor)(cur, other, twctx->userdata);
 
       return rc;
     }
