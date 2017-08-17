@@ -196,47 +196,6 @@ struct csync_file_stat_s {
 };
 
 /**
- * CSync File Traversal structure.
- *
- * This structure is passed to the visitor function for every file
- * which is seen.
- *
- */
-
-struct csync_tree_walk_file_s {
-    const char *path;
-    int64_t     size;
-    int64_t     inode;
-    time_t      modtime;
-    mode_t      mode;
-    enum csync_ftw_type_e     type;
-    enum csync_instructions_e instruction;
-
-    /* For directories: Does it have children that were ignored (hidden or ignore pattern) */
-    int         has_ignored_files;
-
-    const char *rename_path;
-    const char *etag;
-    const char *file_id;
-    const char *remotePerm;
-    char *directDownloadUrl;
-    char *directDownloadCookies;
-
-    const char *checksumHeader;
-
-    struct {
-        int64_t     size;
-        time_t      modtime;
-        const char *etag;
-        const char *file_id;
-        enum csync_instructions_e instruction;
-    } other;
-
-    CSYNC_STATUS error_status;
-};
-typedef struct csync_tree_walk_file_s TREE_WALK_FILE;
-
-/**
  * csync handle
  */
 typedef struct csync_s CSYNC;
@@ -402,7 +361,7 @@ CSYNC_STATUS OCSYNC_EXPORT csync_get_status(CSYNC *ctx);
 /* Used for special modes or debugging */
 int OCSYNC_EXPORT csync_set_status(CSYNC *ctx, int status);
 
-typedef int csync_treewalk_visit_func(TREE_WALK_FILE* ,void*);
+typedef int csync_treewalk_visit_func(csync_file_stat_t *cur, csync_file_stat_t *other, void*);
 
 /**
  * @brief Walk the local file tree and call a visitor function for each file.
