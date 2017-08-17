@@ -43,14 +43,6 @@ struct csync_rename_s {
 
     std::map<std::string, std::string> folder_renamed_to; // map from->to
     std::map<std::string, std::string> folder_renamed_from; // map to->from
-
-    struct renameop {
-        csync_file_stat_t *st;
-        bool operator<(const renameop &other) const {
-            return strlen(st->destpath) < strlen(other.st->destpath);
-        }
-    };
-    std::vector<renameop> todo;
 };
 
 void csync_rename_destroy(CSYNC* ctx)

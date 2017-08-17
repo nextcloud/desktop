@@ -356,15 +356,14 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
       trav.path         = cur->path;
       trav.size         = cur->size;
       trav.modtime      = cur->modtime;
-      trav.mode         = cur->mode;
       trav.type         = cur->type;
       trav.instruction  = cur->instruction;
-      trav.rename_path  = cur->destpath;
+      trav.rename_path  = cur->rename_path;
       trav.etag         = cur->etag;
       trav.file_id      = cur->file_id;
       trav.remotePerm = cur->remotePerm;
-      trav.directDownloadUrl = cur->directDownloadUrl;
-      trav.directDownloadCookies = cur->directDownloadCookies;
+      trav.directDownloadUrl = cur->directDownloadUrl.data();
+      trav.directDownloadCookies = cur->directDownloadCookies.data();
       trav.inode        = cur->inode;
 
       trav.error_status = cur->error_status;
@@ -389,8 +388,7 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
       rc = (*visitor)(&trav, twctx->userdata);
       cur->instruction = trav.instruction;
       if (trav.etag != cur->etag) { // FIXME It would be nice to have this documented
-          SAFE_FREE(cur->etag);
-          cur->etag = c_strdup(trav.etag);
+          cur->etag = trav.etag;
       }
 
       return rc;
@@ -480,7 +478,7 @@ static void _tree_destructor(void *data) {
   csync_file_stat_t *freedata = NULL;
 
   freedata = (csync_file_stat_t *) data;
-  csync_file_stat_free(freedata);
+  delete freedata;
 }
 
 /* reset all the list to empty.
@@ -635,17 +633,5 @@ int  csync_abort_requested(CSYNC *ctx)
     return ctx->abort;
   } else {
     return (1 == 0);
-  }
-}
-
-void csync_file_stat_free(csync_file_stat_t *st)
-{
-  if (st) {
-    SAFE_FREE(st->directDownloadUrl);
-    SAFE_FREE(st->directDownloadCookies);
-    SAFE_FREE(st->etag);
-    SAFE_FREE(st->destpath);
-    SAFE_FREE(st->checksumHeader);
-    SAFE_FREE(st);
   }
 }

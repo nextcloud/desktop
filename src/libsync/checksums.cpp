@@ -230,23 +230,19 @@ CSyncChecksumHook::CSyncChecksumHook()
 {
 }
 
-const char *CSyncChecksumHook::hook(const char *path, const char *otherChecksumHeader, void * /*this_obj*/)
+QByteArray CSyncChecksumHook::hook(const QByteArray &path, const QByteArray &otherChecksumHeader, void * /*this_obj*/)
 {
     QByteArray type = parseChecksumHeaderType(QByteArray(otherChecksumHeader));
     if (type.isEmpty())
         return NULL;
 
-    QByteArray checksum = ComputeChecksum::computeNow(path, type);
+    QByteArray checksum = ComputeChecksum::computeNow(QString::fromUtf8(path), type);
     if (checksum.isNull()) {
         qCWarning(lcChecksums) << "Failed to compute checksum" << type << "for" << path;
         return NULL;
     }
 
-    QByteArray checksumHeader = makeChecksumHeader(type, checksum);
-    char *result = (char *)malloc(checksumHeader.size() + 1);
-    memcpy(result, checksumHeader.constData(), checksumHeader.size());
-    result[checksumHeader.size()] = 0;
-    return result;
+    return makeChecksumHeader(type, checksum);
 }
 
 }
