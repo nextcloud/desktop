@@ -110,7 +110,7 @@ static bool _csync_is_collision_safe_hash(const char *checksum_header)
 static int _csync_merge_algorithm_visitor(void *obj, void *data) {
     csync_file_stat_t *cur = NULL;
     csync_file_stat_t *other = NULL;
-    csync_file_stat_t *tmp = NULL;
+    std::unique_ptr<csync_file_stat_t> tmp;
     uint64_t h = 0;
     int len = 0;
 
@@ -138,7 +138,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
     if (!node) {
         /* Check the renamed path as well. */
         char *renamed_path = csync_rename_adjust_path(ctx, cur->path);
-        if (!c_streq(renamed_path, cur->path)) {
+        if (renamed_path != cur->path) {
             len = strlen( renamed_path );
             h = c_jhash64((uint8_t *) renamed_path, len, 0);
             node = c_rbtree_find(tree, &h);
@@ -147,7 +147,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
     }
     if (!node) {
         /* Check if it is ignored */
-        node = _csync_check_ignored(tree, cur->path, cur->pathlen);
+        node = _csync_check_ignored(tree, cur->path, cur->path.size());
         /* If it is ignored, other->instruction will be  IGNORE so this one will also be ignored */
     }
 
@@ -181,7 +181,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             } else if( ctx->current == REMOTE_REPLICA ) {
                 tmp = csync_statedb_get_stat_by_file_id(ctx, cur->file_id);
                 CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Finding opposite temp through file ID %s: %s",
-                          cur->file_id, tmp ? "true":"false");
+                          cur->file_id.constData(), tmp ? "true":"false");
             } else {
                 CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Unknown replica...");
             }
@@ -189,16 +189,16 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
             if( tmp ) {
                 len = strlen( tmp->path );
                 if( len > 0 ) {
-                    h = c_jhash64((uint8_t *) tmp->path, len, 0);
+                    h = c_jhash64((uint8_t *) tmp->path.constData(), len, 0);
                     /* First, check that the file is NOT in our tree (another file with the same name was added) */
                     node = c_rbtree_find(ctx->current == REMOTE_REPLICA ? ctx->remote.tree : ctx->local.tree, &h);
                     if (node) {
-                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Origin found in our tree : %s", tmp->path);
+                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Origin found in our tree : %s", tmp->path.constData());
                     } else {
                         /* Find the temporar file in the other tree. */
                         node = c_rbtree_find(tree, &h);
                         CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "PHash of temporary opposite (%s): %" PRIu64 " %s",
-                                tmp->path , h, node ? "found": "not found" );
+                                tmp->path.constData() , h, node ? "found": "not found" );
                         if (node) {
                             other = (csync_file_stat_t*)node->data;
                         } else {
@@ -216,18 +216,18 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                            || other->instruction == CSYNC_INSTRUCTION_UPDATE_METADATA
                            || cur->type == CSYNC_FTW_TYPE_DIR) {
                     other->instruction = CSYNC_INSTRUCTION_RENAME;
-                    other->destpath = c_strdup( cur->path );
-                    if( !c_streq(cur->file_id, "") ) {
-                        csync_vio_set_file_id( other->file_id, cur->file_id );
+                    other->rename_path = cur->path;
+                    if( !cur->file_id.isEmpty() ) {
+                        other->file_id = cur->file_id;
                     }
                     other->inode = cur->inode;
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                 } else if (other->instruction == CSYNC_INSTRUCTION_REMOVE) {
                     other->instruction = CSYNC_INSTRUCTION_RENAME;
-                    other->destpath = c_strdup( cur->path );
+                    other->rename_path = cur->path;
 
-                    if( !c_streq(cur->file_id, "") ) {
-                        csync_vio_set_file_id( other->file_id, cur->file_id );
+                    if( !cur->file_id.isEmpty() ) {
+                        other->file_id = cur->file_id;
                     }
                     other->inode = cur->inode;
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
@@ -239,7 +239,6 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                     other->instruction = CSYNC_INSTRUCTION_SYNC;
                 }
-                csync_file_stat_free(tmp);
            }
 
             break;
@@ -270,7 +269,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
         case CSYNC_INSTRUCTION_NEW:
             // This operation is usually a no-op and will by default return false
             if (csync_file_locked_or_open(ctx->local.uri, cur->path)) {
-                CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "[Reconciler] IGNORING file %s/%s since it is locked / open", ctx->local.uri, cur->path);
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "[Reconciler] IGNORING file %s/%s since it is locked / open", ctx->local.uri, cur->path.constData());
                 cur->instruction = CSYNC_INSTRUCTION_ERROR;
                 if (cur->error_status == CSYNC_STATUS_OK) // don't overwrite error
                     cur->error_status = CYSNC_STATUS_FILE_LOCKED_OR_OPEN;
@@ -361,7 +360,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                       "%-30s %s dir:  %s",
                       csync_instruction_str(cur->instruction),
                       repo,
-                      cur->path);
+                      cur->path.constData());
         }
         else
         {
@@ -369,7 +368,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                       "%-30s %s file: %s",
                       csync_instruction_str(cur->instruction),
                       repo,
-                      cur->path);
+                      cur->path.constData());
         }
     }
     else
@@ -380,7 +379,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                       "%-30s %s dir:  %s",
                       csync_instruction_str(cur->instruction),
                       repo,
-                      cur->path);
+                      cur->path.constData());
         }
         else
         {
@@ -388,7 +387,7 @@ static int _csync_merge_algorithm_visitor(void *obj, void *data) {
                       "%-30s %s file: %s",
                       csync_instruction_str(cur->instruction),
                       repo,
-                      cur->path);
+                      cur->path.constData());
         }
     }
 

@@ -64,8 +64,6 @@ enum csync_replica_e {
   REMOTE_REPLICA
 };
 
-typedef struct csync_file_stat_s csync_file_stat_t;
-
 /**
  * @brief csync public structure
  */
@@ -151,49 +149,6 @@ struct csync_s {
 
   bool ignore_hidden_files;
 };
-
-
-#ifdef _MSC_VER
-#pragma pack(1)
-#endif
-struct csync_file_stat_s {
-  uint64_t phash;   /* u64 */
-  time_t modtime;   /* u64 */
-  int64_t size;       /* u64 */
-  size_t pathlen;   /* u64 */
-  uint64_t inode;   /* u64 */
-  mode_t mode;      /* u32 */
-  enum csync_ftw_type_e type          : 4;
-  unsigned int child_modified         : 1;
-  unsigned int has_ignored_files      : 1; /* specify that a directory, or child directory contains ignored files */
-
-  char *destpath;   /* for renames */
-  const char *etag;
-  char file_id[FILE_ID_BUF_SIZE+1];  /* the ownCloud file id is fixed width in ownCloud. */
-  char *directDownloadUrl;
-  char *directDownloadCookies;
-  char remotePerm[REMOTE_PERM_BUF_SIZE+1];
-
-  // In the local tree, this can hold a checksum and its type if it is
-  //   computed during discovery for some reason.
-  // In the remote tree, this will have the server checksum, if available.
-  // In both cases, the format is "SHA1:baff".
-  const char *checksumHeader;
-
-  CSYNC_STATUS error_status;
-
-  enum csync_instructions_e instruction; /* u32 */
-  char path[1]; /* u8 */
-}
-#if !defined(__SUNPRO_C) && !defined(_MSC_VER)
-__attribute__ ((packed))
-#endif
-#ifdef _MSC_VER
-#pragma pack()
-#endif
-;
-
-OCSYNC_EXPORT void csync_file_stat_free(csync_file_stat_t *st);
 
 /*
  * context for the treewalk function
