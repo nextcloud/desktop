@@ -437,7 +437,7 @@ int SyncEngine::treewalkFile(TREE_WALK_FILE *file, bool remote)
      * files are often read from database rather than being pulled from remote.
      */
     if (remote) {
-        item->_serverHasIgnoredFiles = (file->has_ignored_files > 0);
+        item->_serverHasIgnoredFiles = file->has_ignored_files;
     }
 
     // Sometimes the discovery computes checksums for local files

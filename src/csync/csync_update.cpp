@@ -164,11 +164,9 @@ static bool _csync_mtime_equal(time_t a, time_t b)
 static int _csync_detect_update(CSYNC *ctx, const char *file,
     const csync_vio_file_stat_t *fs, enum csync_ftw_type_e type) {
   uint64_t h = 0;
-  size_t len = 0;
-  size_t size = 0;
   const char *path = NULL;
-  csync_file_stat_t *st = NULL;
-  csync_file_stat_t *tmp = NULL;
+  std::unique_ptr<csync_file_stat_t> st;
+  std::unique_ptr<csync_file_stat_t> tmp;
   CSYNC_EXCLUDE_TYPE excluded;
 
   if ((file == NULL) || (fs == NULL)) {
@@ -185,8 +183,6 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
       }
       path += strlen(ctx->local.uri) + 1;
   }
-
-  len = strlen(path);
 
   if (type == CSYNC_FTW_TYPE_SKIP) {
       excluded =CSYNC_FILE_EXCLUDE_STAT_FAILED;
@@ -225,15 +221,9 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
   if( h == 0 ) {
     return -1;
   }
-  size = sizeof(csync_file_stat_t) + len + 1;
 
-  st = static_cast<csync_file_stat_t *>(c_malloc(size));
+  st.reset(new csync_file_stat_t);
 
-  /* Set instruction by default to none */
-  st->instruction = CSYNC_INSTRUCTION_NONE;
-  st->etag = NULL;
-  st->child_modified = 0;
-  st->has_ignored_files = 0;
   if (type == CSYNC_FTW_TYPE_FILE ) {
     if (fs->mtime == 0) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - mtime is zero!", path);
@@ -258,8 +248,6 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     tmp = csync_statedb_get_stat_by_hash(ctx, h);
 
     if(_last_db_return_error(ctx)) {
-        csync_file_stat_free(st);
-        csync_file_stat_free(tmp);
         ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
         return -1;
     }
@@ -270,14 +258,14 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
                                             ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64
                                             ", size: %" PRId64 " <-> %" PRId64 ", perms: %s <-> %s, ignore: %d",
                   ((int64_t) fs->mtime), ((int64_t) tmp->modtime),
-                  fs->etag, tmp->etag, (uint64_t) fs->inode, (uint64_t) tmp->inode,
-                  (uint64_t) fs->size, (uint64_t) tmp->size, fs->remotePerm, tmp->remotePerm, tmp->has_ignored_files );
+                  fs->etag, tmp->etag.constData(), (uint64_t) fs->inode, (uint64_t) tmp->inode,
+                  (uint64_t) fs->size, (uint64_t) tmp->size, fs->remotePerm, tmp->remotePerm.constData(), tmp->has_ignored_files );
         if (ctx->current == REMOTE_REPLICA && !c_streq(fs->etag, tmp->etag)) {
             st->instruction = CSYNC_INSTRUCTION_EVAL;
 
             // Preserve the EVAL flag later on if the type has changed.
-            if (_csync_filetype_different(tmp, fs)) {
-                st->child_modified = 1;
+            if (_csync_filetype_different(tmp.get(), fs)) {
+                st->child_modified = true;
             }
 
             goto out;
@@ -290,15 +278,15 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             // Checksum comparison at this stage is only enabled for .eml files,
             // check #4754 #4755
             bool isEmlFile = csync_fnmatch("*.eml", file, FNM_CASEFOLD) == 0;
-            if (isEmlFile && fs->size == tmp->size && tmp->checksumHeader) {
+            if (isEmlFile && fs->size == tmp->size && !tmp->checksumHeader.isEmpty()) {
                 if (ctx->callbacks.checksum_hook) {
                     st->checksumHeader = ctx->callbacks.checksum_hook(
                         file, tmp->checksumHeader,
                         ctx->callbacks.checksum_userdata);
                 }
                 bool checksumIdentical = false;
-                if (st->checksumHeader) {
-                    checksumIdentical = strncmp(st->checksumHeader, tmp->checksumHeader, 1000) == 0;
+                if (!st->checksumHeader.isEmpty()) {
+                    checksumIdentical = st->checksumHeader == tmp->checksumHeader;
                 }
                 if (checksumIdentical) {
                     CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "NOTE: Checksums are identical, file did not actually change: %s", path);
@@ -308,8 +296,8 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             }
 
             // Preserve the EVAL flag later on if the type has changed.
-            if (_csync_filetype_different(tmp, fs)) {
-                st->child_modified = 1;
+            if (_csync_filetype_different(tmp.get(), fs)) {
+                st->child_modified = true;
             }
 
             st->instruction = CSYNC_INSTRUCTION_EVAL;
@@ -344,9 +332,6 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     } else {
         enum csync_vio_file_type_e tmp_vio_type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
 
-        /* tmp might point to malloc mem, so free it here before reusing tmp  */
-        csync_file_stat_free(tmp);
-
         /* check if it's a file and has been renamed */
         if (ctx->current == LOCAL_REPLICA) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Checking for rename based on inode # %" PRId64 "", (uint64_t) fs->inode);
@@ -354,7 +339,6 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
 
             if(_last_db_return_error(ctx)) {
-                csync_file_stat_free(st);
                 ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
                 return -1;
             }
@@ -383,14 +367,14 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
 
             // Verify the checksum where possible
-            if (isRename && tmp->checksumHeader && ctx->callbacks.checksum_hook
+            if (isRename && !tmp->checksumHeader.isEmpty() && ctx->callbacks.checksum_hook
                 && fs->type == CSYNC_VIO_FILE_TYPE_REGULAR) {
                 st->checksumHeader = ctx->callbacks.checksum_hook(
                     file, tmp->checksumHeader,
                     ctx->callbacks.checksum_userdata);
-                if (st->checksumHeader) {
-                    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "checking checksum of potential rename %s %s <-> %s", path, st->checksumHeader, tmp->checksumHeader);
-                    isRename = strncmp(st->checksumHeader, tmp->checksumHeader, 1000) == 0;
+                if (!st->checksumHeader.isEmpty()) {
+                    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "checking checksum of potential rename %s %s <-> %s", path, st->checksumHeader.constData(), tmp->checksumHeader.constData());
+                    isRename = st->checksumHeader == tmp->checksumHeader;
                 }
             }
 
@@ -409,17 +393,16 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
             tmp = csync_statedb_get_stat_by_file_id(ctx, fs->file_id);
 
             if(_last_db_return_error(ctx)) {
-                csync_file_stat_free(st);
                 ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
                 return -1;
             }
             if(tmp ) {                           /* tmp existing at all */
-                if ( _csync_filetype_different(tmp, fs)) {
+                if ( _csync_filetype_different(tmp.get(), fs)) {
                     CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "file types different is not!");
                     st->instruction = CSYNC_INSTRUCTION_NEW;
                     goto out;
                 }
-                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "remote rename detected based on fileid %s %s", tmp->path, file);
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "remote rename detected based on fileid %s %s", tmp->path.constData(), file);
                 st->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
                 if (fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY) {
                     csync_rename_record(ctx, tmp->path, path);
@@ -438,7 +421,6 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
 
                 if (fs->type == CSYNC_VIO_FILE_TYPE_DIRECTORY && ctx->current == REMOTE_REPLICA && ctx->callbacks.checkSelectiveSyncNewFolderHook) {
                     if (ctx->callbacks.checkSelectiveSyncNewFolderHook(ctx->callbacks.update_callback_userdata, path, fs->remotePerm)) {
-                        csync_file_stat_free(st);
                         return 1;
                     }
                 }
@@ -448,7 +430,6 @@ static int _csync_detect_update(CSYNC *ctx, const char *file,
     }
   } else  {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Unable to open statedb" );
-      csync_file_stat_free(st);
       ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
       return -1;
   }
@@ -481,54 +462,49 @@ out:
       && st->instruction != CSYNC_INSTRUCTION_IGNORE
       && st->instruction != CSYNC_INSTRUCTION_UPDATE_METADATA
       && type != CSYNC_FTW_TYPE_DIR) {
-    st->child_modified = 1;
+    st->child_modified = true;
   }
-  ctx->current_fs = st;
+  ctx->current_fs = st.get();
 
-  csync_file_stat_free(tmp);
   st->inode = fs->inode;
-  st->mode  = fs->mode;
   st->size  = fs->size;
   st->modtime = fs->mtime;
   st->type  = type;
   st->etag   = NULL;
   if( fs->etag ) {
-      SAFE_FREE(st->etag);
-      st->etag  = c_strdup(fs->etag);
+      st->etag = fs->etag;
   }
-  csync_vio_set_file_id(st->file_id, fs->file_id);
+  st->file_id = fs->file_id;
   if (fs->fields & CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADURL) {
-      SAFE_FREE(st->directDownloadUrl);
-      st->directDownloadUrl = c_strdup(fs->directDownloadUrl);
+      st->directDownloadUrl = fs->directDownloadUrl;
   }
   if (fs->fields & CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADCOOKIES) {
-      SAFE_FREE(st->directDownloadCookies);
-      st->directDownloadCookies = c_strdup(fs->directDownloadCookies);
+      st->directDownloadCookies = fs->directDownloadCookies;
   }
   if (fs->fields & CSYNC_VIO_FILE_STAT_FIELDS_PERM) {
-      strncpy(st->remotePerm, fs->remotePerm, REMOTE_PERM_BUF_SIZE);
+      st->remotePerm = fs->remotePerm;
   }
 
   // For the remote: propagate the discovered checksum
   if (fs->checksumHeader && ctx->current == REMOTE_REPLICA) {
-      st->checksumHeader = c_strdup(fs->checksumHeader);
+      st->checksumHeader = fs->checksumHeader;
   }
 
   st->phash = h;
-  st->pathlen = len;
-  memcpy(st->path, (len ? path : ""), len + 1);
+  st->path = path;
+
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "file: %s, instruction: %s <<=", st->path.constData(),
+      csync_instruction_str(st->instruction));
 
   switch (ctx->current) {
     case LOCAL_REPLICA:
-      if (c_rbtree_insert(ctx->local.tree, (void *) st) < 0) {
-        csync_file_stat_free(st);
+      if (c_rbtree_insert(ctx->local.tree, (void *) st.release()) < 0) {
         ctx->status_code = CSYNC_STATUS_TREE_ERROR;
         return -1;
       }
       break;
     case REMOTE_REPLICA:
-      if (c_rbtree_insert(ctx->remote.tree, (void *) st) < 0) {
-        csync_file_stat_free(st);
+      if (c_rbtree_insert(ctx->remote.tree, (void *) st.release()) < 0) {
         ctx->status_code = CSYNC_STATUS_TREE_ERROR;
         return -1;
       }
@@ -536,8 +512,6 @@ out:
     default:
       break;
   }
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "file: %s, instruction: %s <<=", st->path,
-      csync_instruction_str(st->instruction));
 
   return 0;
 }
@@ -546,7 +520,7 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
     int flag) {
   int rc = -1;
   enum csync_ftw_type_e type = CSYNC_FTW_TYPE_SKIP;
-  csync_file_stat_t *st = NULL;
+  std::unique_ptr<csync_file_stat_t> st;
   uint64_t h;
 
   if (ctx->abort) {
@@ -587,8 +561,7 @@ int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs,
     if( !st ) {
       return 0;
     }
-    csync_file_stat_free(st);
-    st = NULL;
+    st.reset();
 
     type = CSYNC_FTW_TYPE_SKIP;
     break;

@@ -56,11 +56,11 @@ OCSYNC_EXPORT int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **
 
 OCSYNC_EXPORT int csync_statedb_close(CSYNC *ctx);
 
-OCSYNC_EXPORT csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash);
+OCSYNC_EXPORT std::unique_ptr<csync_file_stat_t> csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash);
 
-OCSYNC_EXPORT csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx, uint64_t inode);
+OCSYNC_EXPORT std::unique_ptr<csync_file_stat_t> csync_statedb_get_stat_by_inode(CSYNC *ctx, uint64_t inode);
 
-OCSYNC_EXPORT csync_file_stat_t *csync_statedb_get_stat_by_file_id(CSYNC *ctx, const char *file_id);
+OCSYNC_EXPORT std::unique_ptr<csync_file_stat_t> csync_statedb_get_stat_by_file_id(CSYNC *ctx, const char *file_id);
 
 /**
  * @brief Query all files metadata inside and below a path.
