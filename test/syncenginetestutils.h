@@ -8,6 +8,7 @@
 
 #include "account.h"
 #include "creds/abstractcredentials.h"
+#include "logger.h"
 #include "filesystem.h"
 #include "syncengine.h"
 #include "syncjournaldb.h"
@@ -806,7 +807,7 @@ public:
     {
         // Needs to be done once
         OCC::SyncEngine::minimumFileAgeForUpload = 0;
-        csync_set_log_level(11);
+        OCC::Logger::instance()->setLogFile("-");
 
         QDir rootDir{_tempDir.path()};
         toDisk(rootDir, fileTemplate);
