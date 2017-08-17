@@ -205,14 +205,10 @@ static std::unique_ptr<csync_file_stat_t> create_fstat(const char *name,
 }
 
 static int failing_fn(CSYNC *ctx,
-                      const char *file,
-                      const csync_file_stat_t *fs,
-                      int flag)
+                      std::unique_ptr<csync_file_stat_t> fs)
 {
   (void) ctx;
-  (void) file;
   (void) fs;
-  (void) flag;
 
   return -1;
 }
@@ -227,10 +223,7 @@ static void check_csync_detect_update(void **state)
 
     fs = create_fstat("file.txt", 0, 1217597845);
 
-    rc = _csync_detect_update(csync,
-                              "/tmp/check_csync1/file.txt",
-                              fs.get(),
-                              CSYNC_FTW_TYPE_FILE);
+    rc = _csync_detect_update(csync, std::move(fs));
     assert_int_equal(rc, 0);
 
     /* the instruction should be set to new  */
@@ -253,10 +246,7 @@ static void check_csync_detect_update_db_none(void **state)
 
     fs = create_fstat("file.txt", 0, 1217597845);
 
-    rc = _csync_detect_update(csync,
-                              "/tmp/check_csync1/file.txt",
-                              fs.get(),
-                              CSYNC_FTW_TYPE_FILE);
+    rc = _csync_detect_update(csync, std::move(fs));
     assert_int_equal(rc, 0);
 
     /* the instruction should be set to new  */
@@ -277,10 +267,7 @@ static void check_csync_detect_update_db_eval(void **state)
 
     fs = create_fstat("file.txt", 0, 42);
 
-    rc = _csync_detect_update(csync,
-                              "/tmp/check_csync1/file.txt",
-                              fs.get(),
-                              CSYNC_FTW_TYPE_FILE);
+    rc = _csync_detect_update(csync, std::move(fs));
     assert_int_equal(rc, 0);
 
     /* the instruction should be set to new  */
@@ -303,10 +290,7 @@ static void check_csync_detect_update_db_rename(void **state)
     fs = create_fstat("wurst.txt", 0, 42);
     csync_set_statedb_exists(csync, 1);
 
-    rc = _csync_detect_update(csync,
-                              "/tmp/check_csync1/wurst.txt",
-                              fs.get(),
-                              CSYNC_FTW_TYPE_FILE);
+    rc = _csync_detect_update(csync, std::move(fs));
     assert_int_equal(rc, 0);
 
     /* the instruction should be set to rename */
@@ -330,10 +314,7 @@ static void check_csync_detect_update_db_new(void **state)
 
     fs = create_fstat("file.txt", 42000, 0);
 
-    rc = _csync_detect_update(csync,
-                              "/tmp/check_csync1/file.txt",
-                              fs.get(),
-                              CSYNC_FTW_TYPE_FILE);
+    rc = _csync_detect_update(csync, std::move(fs));
     assert_int_equal(rc, 0);
 
     /* the instruction should be set to new  */
@@ -351,18 +332,7 @@ static void check_csync_detect_update_null(void **state)
     std::unique_ptr<csync_file_stat_t> fs;
     int rc;
 
-    fs = create_fstat("file.txt", 0, 0);
-
-    rc = _csync_detect_update(csync,
-                              NULL,
-                              fs.get(),
-                              CSYNC_FTW_TYPE_FILE);
-    assert_int_equal(rc, -1);
-
-    rc = _csync_detect_update(csync,
-                              "/tmp/check_csync1/file.txt",
-                              NULL,
-                              CSYNC_FTW_TYPE_FILE);
+    rc = _csync_detect_update(csync, NULL);
     assert_int_equal(rc, -1);
 }
 
