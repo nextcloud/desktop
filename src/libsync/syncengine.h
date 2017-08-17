@@ -170,9 +170,9 @@ private:
 
     QString journalDbFilePath() const;
 
-    static int treewalkLocal(TREE_WALK_FILE *, void *);
-    static int treewalkRemote(TREE_WALK_FILE *, void *);
-    int treewalkFile(TREE_WALK_FILE *, bool);
+    static int treewalkLocal(csync_file_stat_t *file, csync_file_stat_t *other, void *);
+    static int treewalkRemote(csync_file_stat_t *file, csync_file_stat_t *other, void *);
+    int treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, bool);
     bool checkErrorBlacklisting(SyncFileItem &item);
 
     // Cleans up unnecessary downloadinfo entries in the journal as well
