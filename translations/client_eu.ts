@@ -218,7 +218,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="565"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Zerbitzariaren bertsioa %1 zaharra eta euskarririk gabekoa da! Zure ardurapean aritu.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="567"/>
@@ -238,7 +238,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="573"/>
         <source>No connection to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Konexiorik ez %1-ekin %2-etan</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="597"/>
@@ -536,17 +536,17 @@
     <message>
         <location filename="../src/gui/application.cpp" line="171"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Errorea ezarpen fitxategia atzitzean</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="172"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Errore bat gertatu da ezarpen fitxategia atzitzean %1-etan</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="174"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Irten ownCloud-etik</translation>
     </message>
 </context>
 <context>
@@ -577,7 +577,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="900"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Errorea metadatuak datu-basean idaztean</translation>
     </message>
 </context>
 <context>
@@ -1537,7 +1537,7 @@ Ezabatzeko baimena duten itemak ezabatuko dira hauek karpeta bat ezabatzea uzten
         <location filename="../src/gui/networksettings.ui" line="250"/>
         <location filename="../src/gui/networksettings.ui" line="282"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Mugatu estimatutako banda zabaleraren 3/4etara</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="269"/>
@@ -1662,7 +1662,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="180"/>
         <source>Update Check</source>
-        <translation type="unfinished"/>
+        <translation>Begiratu bertsio berririk ba ote den</translation>
     </message>
 </context>
 <context>
@@ -1830,7 +1830,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="225"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>Baliogabeko URLa</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="388"/>
@@ -1840,7 +1840,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="391"/>
         <source>Creating local sync folder %1...</source>
-        <translation type="unfinished"/>
+        <translation>Bertako %1 sinkronizazio karpeta sortzen...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
@@ -1987,7 +1987,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="846"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Errorea metadatuak datu-basean idaztean</translation>
     </message>
 </context>
 <context>
@@ -2035,7 +2035,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="819"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Errorea metadatuak datu-basean idaztean</translation>
     </message>
 </context>
 <context>
@@ -2076,7 +2076,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Errorea metadatuak datu-basean idaztean</translation>
     </message>
 </context>
 <context>
@@ -2108,7 +2108,7 @@ Ez da gomendagarria erabltzea.</translation>
         <location filename="../src/libsync/propagatorjobs.cpp" line="246"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="251"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Errorea metadatuak datu-basean idaztean</translation>
     </message>
 </context>
 <context>
@@ -2134,7 +2134,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="148"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Errorea metadatuak datu-basean idaztean</translation>
     </message>
 </context>
 <context>
@@ -2163,7 +2163,7 @@ Ez da gomendagarria erabltzea.</translation>
         <location filename="../src/libsync/propagateremotemove.cpp" line="189"/>
         <location filename="../src/libsync/propagateremotemove.cpp" line="195"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Errorea metadatuak datu-basean idaztean</translation>
     </message>
 </context>
 <context>
@@ -2191,7 +2191,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="590"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Errorea metadatuak datu-basean idaztean</translation>
     </message>
 </context>
 <context>
@@ -3783,7 +3783,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="38"/>
         <source>System Tray not available</source>
-        <translation type="unfinished"/>
+        <translation>Sistemaren erretilua ez dago erabilgarri</translation>
     </message>
     <message>
         <location filename="../src/gui/main.cpp" line="39"/>
