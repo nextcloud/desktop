@@ -208,6 +208,9 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
 GenericName[oc]=Dorsièr de Sincronizacion
 Name[oc]=@APPLICATION_NAME@ sincronizacion del client
@@ -352,7 +355,10 @@ GenericName[zh_CN]=文件夹同步
 Name[zh_CN]=@APPLICATION_NAME@ 桌面同步客户端
 Icon[zh_CN]=@APPLICATION_EXECUTABLE@
 Comment[zh_HK]=桌面版同步客户端
+Comment[zh_TW]=@APPLICATION_NAME@ 桌面同步客戶端
 GenericName[zh_TW]=資料夾同步
+Name[zh_TW]=@APPLICATION_NAME@ 桌面同步客戶端
+Icon[zh_TW]=@APPLICATION_EXECUTABLE@
 Comment[es_AR]=Cliente de sincronización para escritorio @APPLICATION_NAME@ 
 GenericName[es_AR]=Sincronización de directorio
 Name[es_AR]=Cliente de sincronización para escritorio @APPLICATION_NAME@ 
