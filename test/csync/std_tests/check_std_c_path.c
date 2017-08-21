@@ -172,14 +172,14 @@ static void check_c_parse_uri(void **state)
 
 int torture_run_tests(void)
 {
-  const UnitTest tests[] = {
-      unit_test(check_c_basename),
-      unit_test(check_c_basename_uri),
-      unit_test(check_c_dirname),
-      unit_test(check_c_dirname_uri),
-      unit_test(check_c_parse_uri),
+  const struct CMUnitTest tests[] = {
+      cmocka_unit_test(check_c_basename),
+      cmocka_unit_test(check_c_basename_uri),
+      cmocka_unit_test(check_c_dirname),
+      cmocka_unit_test(check_c_dirname_uri),
+      cmocka_unit_test(check_c_parse_uri),
   };
 
-  return run_tests(tests);
+  return cmocka_run_group_tests(tests, NULL, NULL);
 }
 

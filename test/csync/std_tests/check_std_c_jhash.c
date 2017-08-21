@@ -278,15 +278,15 @@ static void check_c_jhash64_null_strings(void **state)
 
 int torture_run_tests(void)
 {
-  const UnitTest tests[] = {
-      unit_test(check_c_jhash_trials),
-      unit_test(check_c_jhash_alignment_problems),
-      unit_test(check_c_jhash_null_strings),
-      unit_test(check_c_jhash64_trials),
-      unit_test(check_c_jhash64_alignment_problems),
-      unit_test(check_c_jhash64_null_strings),
+  const struct CMUnitTest tests[] = {
+      cmocka_unit_test(check_c_jhash_trials),
+      cmocka_unit_test(check_c_jhash_alignment_problems),
+      cmocka_unit_test(check_c_jhash_null_strings),
+      cmocka_unit_test(check_c_jhash64_trials),
+      cmocka_unit_test(check_c_jhash64_alignment_problems),
+      cmocka_unit_test(check_c_jhash64_null_strings),
   };
 
-  return run_tests(tests);
+  return cmocka_run_group_tests(tests, NULL, NULL);
 }
 

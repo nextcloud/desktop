@@ -27,16 +27,6 @@
 #endif
 
 
-static void setup(void **state)
-{
-    (void) state; /* unused */
-}
-
-static void teardown(void **state)
-{
-    (void) state; /* unused */
-}
-
 static void check_iconv_to_native_normalization(void **state)
 {
     mbchar_t *out = NULL;
@@ -191,15 +181,15 @@ static void check_long_win_path(void **state)
 
 int torture_run_tests(void)
 {
-    const UnitTest tests[] = {
-        unit_test_setup_teardown(check_long_win_path,                    setup, teardown),
-        unit_test_setup_teardown(check_to_multibyte,                    setup, teardown),
-        unit_test_setup_teardown(check_iconv_ascii,                     setup, teardown),
-        unit_test_setup_teardown(check_iconv_to_native_normalization,   setup, teardown),
-        unit_test_setup_teardown(check_iconv_from_native_normalization, setup, teardown),
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test(check_long_win_path),
+        cmocka_unit_test(check_to_multibyte),
+        cmocka_unit_test(check_iconv_ascii),
+        cmocka_unit_test(check_iconv_to_native_normalization),
+        cmocka_unit_test(check_iconv_from_native_normalization),
 
     };
 
-    return run_tests(tests);
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
 

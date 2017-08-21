@@ -38,7 +38,7 @@
 
 static char wd_buffer[WD_BUFFER_SIZE];
 
-static void setup(void **state)
+static int setup(void **state)
 {
     CSYNC *csync;
     int rc;
@@ -53,9 +53,10 @@ static void setup(void **state)
     csync->replica = LOCAL_REPLICA;
 
     *state = csync;
+    return 0;
 }
 
-static void setup_dir(void **state) {
+static int setup_dir(void **state) {
     int rc;
     mbchar_t *dir = c_utf8_path_to_locale(CSYNC_TEST_DIR);
 
@@ -69,9 +70,10 @@ static void setup_dir(void **state) {
 
     rc = chdir(CSYNC_TEST_DIR);
     assert_int_equal(rc, 0);
+    return 0;
 }
 
-static void teardown(void **state) {
+static int teardown(void **state) {
     CSYNC *csync = (CSYNC*)*state;
     int rc;
 
@@ -85,6 +87,7 @@ static void teardown(void **state) {
     assert_int_equal(rc, 0);
 
     *state = NULL;
+    return 0;
 }
 
 
@@ -155,12 +158,12 @@ static void check_csync_vio_readdir(void **state)
 
 int torture_run_tests(void)
 {
-    const UnitTest tests[] = {
-        unit_test_setup_teardown(check_csync_vio_opendir, setup_dir, teardown),
-        unit_test_setup_teardown(check_csync_vio_opendir_perm, setup, teardown),
-        unit_test(check_csync_vio_closedir_null),
-        unit_test_setup_teardown(check_csync_vio_readdir, setup_dir, teardown),
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test_setup_teardown(check_csync_vio_opendir, setup_dir, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_vio_opendir_perm, setup, teardown),
+        cmocka_unit_test(check_csync_vio_closedir_null),
+        cmocka_unit_test_setup_teardown(check_csync_vio_readdir, setup_dir, teardown),
     };
 
-    return run_tests(tests);
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
