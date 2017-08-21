@@ -88,13 +88,13 @@ static void check_c_secdiff_three(void **state)
 
 int torture_run_tests(void)
 {
-    const UnitTest tests[] = {
-        unit_test(check_c_tspecdiff),
-        unit_test(check_c_tspecdiff_five),
-        unit_test(check_c_secdiff),
-        unit_test(check_c_secdiff_three),
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test(check_c_tspecdiff),
+        cmocka_unit_test(check_c_tspecdiff_five),
+        cmocka_unit_test(check_c_secdiff),
+        cmocka_unit_test(check_c_secdiff_three),
     };
 
-    return run_tests(tests);
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
 

@@ -36,10 +36,10 @@ static void check_csync_vio_file_stat_new(void **state)
 
 int torture_run_tests(void)
 {
-    const UnitTest tests[] = {
-        unit_test(check_csync_vio_file_stat_new),
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test(check_csync_vio_file_stat_new),
     };
 
-    return run_tests(tests);
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
 
