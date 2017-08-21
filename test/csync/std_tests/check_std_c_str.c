@@ -117,15 +117,15 @@ static void check_c_strlist_expand(void **state)
 
 int torture_run_tests(void)
 {
-    const UnitTest tests[] = {
-        unit_test(check_c_streq_equal),
-        unit_test(check_c_streq_not_equal),
-        unit_test(check_c_streq_null),
-        unit_test(check_c_strlist_new),
-        unit_test(check_c_strlist_add),
-        unit_test(check_c_strlist_expand),
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test(check_c_streq_equal),
+        cmocka_unit_test(check_c_streq_not_equal),
+        cmocka_unit_test(check_c_streq_null),
+        cmocka_unit_test(check_c_strlist_new),
+        cmocka_unit_test(check_c_strlist_add),
+        cmocka_unit_test(check_c_strlist_expand),
     };
 
-    return run_tests(tests);
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
 

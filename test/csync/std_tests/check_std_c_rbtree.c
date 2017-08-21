@@ -82,15 +82,16 @@ static void destructor(void *data) {
     SAFE_FREE(freedata);
 }
 
-static void setup(void **state) {
+static int setup(void **state) {
     c_rbtree_t *tree = NULL;
 
     c_rbtree_create(&tree, key_cmp, data_cmp);
 
     *state = tree;
+    return 0;
 }
 
-static void setup_complete_tree(void **state) {
+static int setup_complete_tree(void **state) {
     c_rbtree_t *tree = NULL;
     int i = 0;
     int rc;
@@ -110,15 +111,17 @@ static void setup_complete_tree(void **state) {
     }
 
     *state = tree;
+    return 0;
 }
 
-static void teardown(void **state) {
+static int teardown(void **state) {
     c_rbtree_t *tree = *state;
 
     c_rbtree_destroy(tree, destructor);
     c_rbtree_free(tree);
 
     *state = NULL;
+    return 0;
 }
 
 static void check_c_rbtree_create_free(void **state)
@@ -345,19 +348,19 @@ static void check_c_rbtree_x)
 
 int torture_run_tests(void)
 {
-  const UnitTest tests[] = {
-      unit_test(check_c_rbtree_create_free),
-      unit_test(check_c_rbtree_free_null),
-      unit_test(check_c_rbtree_insert_delete),
-      unit_test_setup_teardown(check_c_rbtree_insert_random, setup, teardown),
-      unit_test_setup_teardown(check_c_rbtree_insert_duplicate, setup, teardown),
-      unit_test_setup_teardown(check_c_rbtree_find, setup_complete_tree, teardown),
-      unit_test_setup_teardown(check_c_rbtree_delete, setup_complete_tree, teardown),
-      unit_test_setup_teardown(check_c_rbtree_walk, setup_complete_tree, teardown),
-      unit_test_setup_teardown(check_c_rbtree_walk_null, setup_complete_tree, teardown),
-      unit_test_setup_teardown(check_c_rbtree_dup, setup_complete_tree, teardown),
+  const struct CMUnitTest tests[] = {
+      cmocka_unit_test(check_c_rbtree_create_free),
+      cmocka_unit_test(check_c_rbtree_free_null),
+      cmocka_unit_test(check_c_rbtree_insert_delete),
+      cmocka_unit_test_setup_teardown(check_c_rbtree_insert_random, setup, teardown),
+      cmocka_unit_test_setup_teardown(check_c_rbtree_insert_duplicate, setup, teardown),
+      cmocka_unit_test_setup_teardown(check_c_rbtree_find, setup_complete_tree, teardown),
+      cmocka_unit_test_setup_teardown(check_c_rbtree_delete, setup_complete_tree, teardown),
+      cmocka_unit_test_setup_teardown(check_c_rbtree_walk, setup_complete_tree, teardown),
+      cmocka_unit_test_setup_teardown(check_c_rbtree_walk_null, setup_complete_tree, teardown),
+      cmocka_unit_test_setup_teardown(check_c_rbtree_dup, setup_complete_tree, teardown),
   };
 
-  return run_tests(tests);
+  return cmocka_run_group_tests(tests, NULL, NULL);
 }
 

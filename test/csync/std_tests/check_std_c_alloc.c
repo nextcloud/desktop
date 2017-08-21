@@ -77,13 +77,13 @@ static void check_c_strndup(void **state)
 
 int torture_run_tests(void)
 {
-  const UnitTest tests[] = {
-      unit_test(check_c_malloc),
-      unit_test(check_c_malloc_zero),
-      unit_test(check_c_strdup),
-      unit_test(check_c_strndup),
+  const struct CMUnitTest tests[] = {
+      cmocka_unit_test(check_c_malloc),
+      cmocka_unit_test(check_c_malloc_zero),
+      cmocka_unit_test(check_c_strdup),
+      cmocka_unit_test(check_c_strndup),
   };
 
-  return run_tests(tests);
+  return cmocka_run_group_tests(tests, NULL, NULL);
 }
 

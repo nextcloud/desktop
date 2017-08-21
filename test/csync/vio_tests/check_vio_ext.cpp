@@ -74,7 +74,7 @@ static int wipe_testdir()
     return rc;
 }
 
-static void setup_testenv(void **state) {
+static int setup_testenv(void **state) {
     int rc;
 
     rc = wipe_testdir();
@@ -101,6 +101,7 @@ static void setup_testenv(void **state) {
     mystate->csync->replica = LOCAL_REPLICA;
 
     *state = mystate;
+    return 0;
 }
 
 static void output( const char *text )
@@ -115,7 +116,7 @@ static void output( const char *text )
     c_free_locale_string(wtext);
 }
 
-static void teardown(void **state) {
+static int teardown(void **state) {
     statevar *sv = (statevar*) *state;
     CSYNC *csync = sv->csync;
     int rc;
@@ -132,6 +133,7 @@ static void teardown(void **state) {
     assert_int_equal(rc, 0);
 
     *state = NULL;
+    return 0;
 }
 
 /* This function takes a relative path, prepends it with the CSYNC_TEST_DIR
@@ -453,12 +455,12 @@ static void check_readdir_bigunicode(void **state)
 
 int torture_run_tests(void)
 {
-    const UnitTest tests[] = {
-        unit_test_setup_teardown(check_readdir_shorttree, setup_testenv, teardown),
-        unit_test_setup_teardown(check_readdir_with_content, setup_testenv, teardown),
-        unit_test_setup_teardown(check_readdir_longtree, setup_testenv, teardown),
-        unit_test_setup_teardown(check_readdir_bigunicode, setup_testenv, teardown),
+    const struct CMUnitTest tests[] = {
+        cmocka_unit_test_setup_teardown(check_readdir_shorttree, setup_testenv, teardown),
+        cmocka_unit_test_setup_teardown(check_readdir_with_content, setup_testenv, teardown),
+        cmocka_unit_test_setup_teardown(check_readdir_longtree, setup_testenv, teardown),
+        cmocka_unit_test_setup_teardown(check_readdir_bigunicode, setup_testenv, teardown),
     };
 
-    return run_tests(tests);
+    return cmocka_run_group_tests(tests, NULL, NULL);
 }
