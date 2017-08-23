@@ -32,7 +32,6 @@
 #include <math.h>
 
 #include "c_lib.h"
-#include "c_jhash.h"
 
 #include "csync_private.h"
 #include "csync_exclude.h"
@@ -172,14 +171,14 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
    * does not change on rename.
    */
   if (csync_get_statedb_exists(ctx)) {
-    tmp = csync_statedb_get_stat_by_hash(ctx, fs->phash);
+    tmp = csync_statedb_get_stat_by_path(ctx, fs->path);
 
     if(_last_db_return_error(ctx)) {
         ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
         return -1;
     }
 
-    if(tmp && tmp->phash == fs->phash ) { /* there is an entry in the database */
+    if(tmp && tmp->path == fs->path ) { /* there is an entry in the database */
         /* we have an update! */
         CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Database entry found, compare: %" PRId64 " <-> %" PRId64
                                             ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64
@@ -594,8 +593,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         // "len + 1" to include the slash in-between.
         dirent->path = dirent->path.mid(strlen(ctx->local.uri) + 1);
     }
-    // We calculate the phash using the relative path.
-    dirent->phash = c_jhash64((const uint8_t*)dirent->path.constData(), dirent->path.size(), 0);
 
     previous_fs = ctx->current_fs;
     bool recurse = dirent->type == CSYNC_FTW_TYPE_DIR;

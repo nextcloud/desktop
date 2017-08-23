@@ -27,9 +27,8 @@ private slots:
     }
 
     void testFullResult() {
-        std::unique_ptr<csync_file_stat_t> st = csync_statedb_get_stat_by_hash( _ctx, 2081025720555645157 );
+        std::unique_ptr<csync_file_stat_t> st = csync_statedb_get_stat_by_path( _ctx, "test2/zu/zuzu" );
         QVERIFY(st.get());
-        QCOMPARE( QString::number(st->phash), QString::number(2081025720555645157) );
         QCOMPARE( QString::fromUtf8(st->path), QLatin1String("test2/zu/zuzu") );
         QCOMPARE( QString::number(st->inode), QString::number(1709554));
         QCOMPARE( QString::number(st->modtime), QString::number(1384415006));
@@ -40,11 +39,11 @@ private slots:
     }
 
     void testByHash() {
-        std::unique_ptr<csync_file_stat_t> st = csync_statedb_get_stat_by_hash(_ctx, -7147279406142960289);
+        std::unique_ptr<csync_file_stat_t> st = csync_statedb_get_stat_by_path(_ctx, "documents/c1");
         QVERIFY(st.get());
         QCOMPARE(QString::fromUtf8(st->path), QLatin1String("documents/c1"));
 
-        st = csync_statedb_get_stat_by_hash(_ctx, 5426481156826978940);
+        st = csync_statedb_get_stat_by_path(_ctx, "documents/c1/c2");
         QVERIFY(st.get());
         QCOMPARE(QString::fromUtf8(st->path), QLatin1String("documents/c1/c2"));
     }
