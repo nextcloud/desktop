@@ -21,45 +21,43 @@
 #include "csync_private.h"
 #include "csync_rename.h"
 
-#include <string>
-#include <vector>
 #include <algorithm>
 
-static std::string _parentDir(const std::string &path) {
+static QByteArray _parentDir(const QByteArray &path) {
     int len = path.length();
-    while(len > 0 && path[len-1]!='/') len--;
-    while(len > 0 && path[len-1]=='/') len--;
-    return path.substr(0, len);
+    while(len > 0 && path.at(len-1)!='/') len--;
+    while(len > 0 && path.at(len-1)=='/') len--;
+    return path.left(len);
 }
 
-void csync_rename_record(CSYNC* ctx, const char* from, const char* to)
+void csync_rename_record(CSYNC* ctx, const QByteArray &from, const QByteArray &to)
 {
     ctx->renames.folder_renamed_to[from] = to;
     ctx->renames.folder_renamed_from[to] = from;
 }
 
-char* csync_rename_adjust_path(CSYNC* ctx, const char* path)
+QByteArray csync_rename_adjust_path(CSYNC* ctx, const QByteArray &path)
 {
-    for (std::string p = _parentDir(path); !p.empty(); p = _parentDir(p)) {
-        std::map< std::string, std::string >::iterator it = ctx->renames.folder_renamed_to.find(p);
+    for (QByteArray p = _parentDir(path); !p.isEmpty(); p = _parentDir(p)) {
+        std::map< QByteArray, QByteArray >::iterator it = ctx->renames.folder_renamed_to.find(p);
         if (it != ctx->renames.folder_renamed_to.end()) {
-            std::string rep = it->second + (path + p.length());
-            return c_strdup(rep.c_str());
+            QByteArray rep = it->second + path.mid(p.length());
+            return rep;
         }
     }
-    return c_strdup(path);
+    return path;
 }
 
-char* csync_rename_adjust_path_source(CSYNC* ctx, const char* path)
+QByteArray csync_rename_adjust_path_source(CSYNC* ctx, const QByteArray &path)
 {
-    for (std::string p = _parentDir(path); !p.empty(); p = _parentDir(p)) {
-        std::map< std::string, std::string >::iterator it = ctx->renames.folder_renamed_from.find(p);
+    for (QByteArray p = _parentDir(path); !p.isEmpty(); p = _parentDir(p)) {
+        std::map< QByteArray, QByteArray >::iterator it = ctx->renames.folder_renamed_from.find(p);
         if (it != ctx->renames.folder_renamed_from.end()) {
-            std::string rep = it->second + (path + p.length());
-            return c_strdup(rep.c_str());
+            QByteArray rep = it->second + path.mid(p.length());
+            return rep;
         }
     }
-    return c_strdup(path);
+    return path;
 }
 
 bool csync_rename_count(CSYNC *ctx) {

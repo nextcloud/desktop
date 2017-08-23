@@ -210,10 +210,10 @@ class DiscoveryJob : public QObject
      * return true if the given path should be ignored,
      * false if the path should be synced
      */
-    bool isInSelectiveSyncBlackList(const char *path) const;
-    static int isInSelectiveSyncBlackListCallback(void *, const char *);
-    bool checkSelectiveSyncNewFolder(const QString &path, const char *remotePerm);
-    static int checkSelectiveSyncNewFolderCallback(void *data, const char *path, const char *remotePerm);
+    bool isInSelectiveSyncBlackList(const QByteArray &path) const;
+    static int isInSelectiveSyncBlackListCallback(void *, const QByteArray &);
+    bool checkSelectiveSyncNewFolder(const QString &path, const QByteArray &remotePerm);
+    static int checkSelectiveSyncNewFolderCallback(void *data, const QByteArray &path, const QByteArray &remotePerm);
 
     // Just for progress
     static void update_job_update_callback(bool local,

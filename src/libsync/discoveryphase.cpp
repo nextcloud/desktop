@@ -59,7 +59,7 @@ static bool findPathInList(const QStringList &list, const QString &path)
     return pathSlash.startsWith(*it);
 }
 
-bool DiscoveryJob::isInSelectiveSyncBlackList(const char *path) const
+bool DiscoveryJob::isInSelectiveSyncBlackList(const QByteArray &path) const
 {
     if (_selectiveSyncBlackList.isEmpty()) {
         // If there is no black list, everything is allowed
@@ -73,24 +73,23 @@ bool DiscoveryJob::isInSelectiveSyncBlackList(const char *path) const
 
     // Also try to adjust the path if there was renames
     if (csync_rename_count(_csync_ctx)) {
-        QScopedPointer<char, QScopedPointerPodDeleter> adjusted(
-            csync_rename_adjust_path_source(_csync_ctx, path));
-        if (strcmp(adjusted.data(), path) != 0) {
-            return findPathInList(_selectiveSyncBlackList, QString::fromUtf8(adjusted.data()));
+        QByteArray adjusted = csync_rename_adjust_path_source(_csync_ctx, path);
+        if (adjusted != path) {
+            return findPathInList(_selectiveSyncBlackList, QString::fromUtf8(adjusted));
         }
     }
 
     return false;
 }
 
-int DiscoveryJob::isInSelectiveSyncBlackListCallback(void *data, const char *path)
+int DiscoveryJob::isInSelectiveSyncBlackListCallback(void *data, const QByteArray &path)
 {
     return static_cast<DiscoveryJob *>(data)->isInSelectiveSyncBlackList(path);
 }
 
-bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString &path, const char *remotePerm)
+bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString &path, const QByteArray &remotePerm)
 {
-    if (_syncOptions._confirmExternalStorage && std::strchr(remotePerm, 'M')) {
+    if (_syncOptions._confirmExternalStorage && remotePerm.contains('M')) {
         // 'M' in the permission means external storage.
 
         /* Note: DiscoverySingleDirectoryJob::directoryListingIteratedSlot make sure that only the
@@ -145,7 +144,7 @@ bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString &path, const char *
     }
 }
 
-int DiscoveryJob::checkSelectiveSyncNewFolderCallback(void *data, const char *path, const char *remotePerm)
+int DiscoveryJob::checkSelectiveSyncNewFolderCallback(void *data, const QByteArray &path, const QByteArray &remotePerm)
 {
     return static_cast<DiscoveryJob *>(data)->checkSelectiveSyncNewFolder(QString::fromUtf8(path), remotePerm);
 }

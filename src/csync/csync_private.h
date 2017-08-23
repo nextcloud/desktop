@@ -36,6 +36,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <sqlite3.h>
+#include <map>
 
 #include "config_csync.h"
 #include "std/c_lib.h"
@@ -69,6 +70,14 @@ enum csync_replica_e {
  * @brief csync public structure
  */
 struct OCSYNC_EXPORT csync_s {
+  class FileMap : public std::map<QByteArray, std::unique_ptr<csync_file_stat_t>> {
+  public:
+      csync_file_stat_t *findFile(const QByteArray &key) const {
+          auto it = find(key);
+          return it != end() ? it->second.get() : nullptr;
+      }
+  };
+
   struct {
       csync_auth_callback auth_function = nullptr;
       void *userdata = nullptr;
@@ -76,8 +85,8 @@ struct OCSYNC_EXPORT csync_s {
       void *update_callback_userdata = nullptr;
 
       /* hooks for checking the white list (uses the update_callback_userdata) */
-      int (*checkSelectiveSyncBlackListHook)(void*, const char*) = nullptr;
-      int (*checkSelectiveSyncNewFolderHook)(void*, const char* /* path */, const char* /* remotePerm */) = nullptr;
+      int (*checkSelectiveSyncBlackListHook)(void*, const QByteArray &) = nullptr;
+      int (*checkSelectiveSyncNewFolderHook)(void*, const QByteArray &/* path */, const QByteArray &/* remotePerm */) = nullptr;
 
 
       csync_vio_opendir_hook remote_opendir_hook = nullptr;
@@ -105,17 +114,17 @@ struct OCSYNC_EXPORT csync_s {
   } statedb;
 
   struct {
-    std::map<std::string, std::string> folder_renamed_to; // map from->to
-    std::map<std::string, std::string> folder_renamed_from; // map to->from
+    std::map<QByteArray, QByteArray> folder_renamed_to; // map from->to
+    std::map<QByteArray, QByteArray> folder_renamed_from; // map to->from
   } renames;
 
   struct {
     char *uri = nullptr;
-    c_rbtree_t *tree = nullptr;
+    FileMap files;
   } local;
 
   struct {
-    c_rbtree_t *tree = nullptr;
+    FileMap files;
     bool read_from_db = false;
     QByteArray root_perms; /* Permission of the root folder. (Since the root folder is not in the db tree, we need to keep a separate entry.) */
   } remote;
@@ -151,6 +160,13 @@ struct OCSYNC_EXPORT csync_s {
   csync_s(const char *localUri, const char *db_file);
   ~csync_s();
   int reinitialize();
+
+  // For some reason MSVC references the copy constructor and/or the assignment operator
+  // if a class is exported. This is a problem since unique_ptr isn't copyable.
+  // Explicitly disable them to fix the issue.
+  // https://social.msdn.microsoft.com/Forums/en-US/vcgeneral/thread/e39ab33d-1aaf-4125-b6de-50410d9ced1d
+  csync_s(const csync_s &) = delete;
+  csync_s &operator=(const csync_s &) = delete;
 };
 
 /*

@@ -486,18 +486,15 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
             }
 
             /* store into result list. */
-            if (c_rbtree_insert(ctx->remote.tree, (void *) st.release()) < 0) {
-                st.reset();
-                ctx->status_code = CSYNC_STATUS_TREE_ERROR;
-                break;
-            }
+            QByteArray path = st->path;
+            ctx->remote.files[path] = std::move(st);
             cnt++;
         }
     } while( rc == SQLITE_ROW );
 
     ctx->statedb.lastReturnValue = rc;
     if( rc != SQLITE_DONE ) {
-        ctx->status_code = CSYNC_STATUS_TREE_ERROR;
+        ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
     } else {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "%" PRId64 " entries read below path %s from db.", cnt, path);
     }

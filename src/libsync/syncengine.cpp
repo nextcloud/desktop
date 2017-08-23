@@ -128,9 +128,6 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
     case CSYNC_STATUS_NO_MODULE:
         errStr = tr("<p>The %1 plugin for csync could not be loaded.<br/>Please verify the installation!</p>").arg(qApp->applicationName());
         break;
-    case CSYNC_STATUS_TREE_ERROR:
-        errStr = tr("CSync got an error while processing internal trees.");
-        break;
     case CSYNC_STATUS_PARAM_ERROR:
         errStr = tr("CSync fatal parameter error.");
         break;
@@ -347,7 +344,7 @@ int SyncEngine::treewalkRemote(csync_file_stat_t *file, csync_file_stat_t *other
  * Called on each entry in the local and remote trees by
  * csync_walk_local_tree()/csync_walk_remote_tree().
  *
- * It merges the two csync rbtrees into a single map of SyncFileItems.
+ * It merges the two csync file trees into a single map of SyncFileItems.
  *
  * See doc/dev/sync-algorithm.md for an overview.
  */
@@ -359,7 +356,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
     QTextCodec::ConverterState utf8State;
     static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
     ASSERT(codec);
-    QString fileUtf8 = codec->toUnicode(file->path, qstrlen(file->path), &utf8State);
+    QString fileUtf8 = codec->toUnicode(file->path, file->path.size(), &utf8State);
     QString renameTarget;
     QString key = fileUtf8;
 
@@ -368,7 +365,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         qCWarning(lcEngine) << "File ignored because of invalid utf-8 sequence: " << file->path;
         instruction = CSYNC_INSTRUCTION_IGNORE;
     } else {
-        renameTarget = codec->toUnicode(file->rename_path, qstrlen(file->rename_path), &utf8State);
+        renameTarget = codec->toUnicode(file->rename_path, file->rename_path.size(), &utf8State);
         if (utf8State.invalidChars > 0 || utf8State.remainingChars > 0) {
             qCWarning(lcEngine) << "File ignored because of invalid utf-8 sequence in the rename_path: " << file->path << file->rename_path;
             instruction = CSYNC_INSTRUCTION_IGNORE;
@@ -937,7 +934,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _backInTimeFiles = 0;
     bool walkOk = true;
     _remotePerms.clear();
-    _remotePerms.reserve(c_rbtree_size(_csync_ctx->remote.tree));
+    _remotePerms.reserve(_csync_ctx->remote.files.size());
     _seenFiles.clear();
     _temporarilyUnavailablePaths.clear();
     _renamedFolders.clear();

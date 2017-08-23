@@ -23,9 +23,9 @@
 #include "csync.h"
 
 /* Return the final destination path of a given patch in case of renames */
-char OCSYNC_EXPORT *csync_rename_adjust_path(CSYNC *ctx, const char *path);
+QByteArray OCSYNC_EXPORT csync_rename_adjust_path(CSYNC *ctx, const QByteArray &path);
 /* Return the source of a given path in case of renames */
-char OCSYNC_EXPORT *csync_rename_adjust_path_source(CSYNC *ctx, const char *path);
-void OCSYNC_EXPORT csync_rename_record(CSYNC *ctx, const char *from, const char *to);
+QByteArray OCSYNC_EXPORT csync_rename_adjust_path_source(CSYNC *ctx, const QByteArray &path);
+void OCSYNC_EXPORT csync_rename_record(CSYNC *ctx, const QByteArray &from, const QByteArray &to);
 /*  Return the amount of renamed item recorded */
 bool OCSYNC_EXPORT csync_rename_count(CSYNC *ctx);

@@ -383,18 +383,13 @@ out:
   CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "file: %s, instruction: %s <<=", fs->path.constData(),
       csync_instruction_str(fs->instruction));
 
+  QByteArray path = fs->path;
   switch (ctx->current) {
     case LOCAL_REPLICA:
-      if (c_rbtree_insert(ctx->local.tree, (void *) fs.release()) < 0) {
-        ctx->status_code = CSYNC_STATUS_TREE_ERROR;
-        return -1;
-      }
+      ctx->local.files[path] = std::move(fs);
       break;
     case REMOTE_REPLICA:
-      if (c_rbtree_insert(ctx->remote.tree, (void *) fs.release()) < 0) {
-        ctx->status_code = CSYNC_STATUS_TREE_ERROR;
-        return -1;
-      }
+      ctx->remote.files[path] = std::move(fs);
       break;
     default:
       break;
