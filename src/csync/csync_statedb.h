@@ -56,7 +56,7 @@ OCSYNC_EXPORT int csync_statedb_load(CSYNC *ctx, const char *statedb, sqlite3 **
 
 OCSYNC_EXPORT int csync_statedb_close(CSYNC *ctx);
 
-OCSYNC_EXPORT std::unique_ptr<csync_file_stat_t> csync_statedb_get_stat_by_hash(CSYNC *ctx, uint64_t phash);
+OCSYNC_EXPORT std::unique_ptr<csync_file_stat_t> csync_statedb_get_stat_by_path(CSYNC *ctx, const QByteArray &path);
 
 OCSYNC_EXPORT std::unique_ptr<csync_file_stat_t> csync_statedb_get_stat_by_inode(CSYNC *ctx, uint64_t inode);
 

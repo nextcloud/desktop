@@ -231,7 +231,7 @@ int csync_statedb_close(CSYNC *ctx) {
 }
 
 #define METADATA_QUERY                                             \
-    "phash, path, inode, modtime, type, md5, fileid, remotePerm, " \
+    "path, inode, modtime, type, md5, fileid, remotePerm, " \
     "filesize, ignoredChildrenRemote, "                            \
     "contentchecksumtype.name || ':' || contentChecksum "          \
     "FROM metadata "                                               \
@@ -251,25 +251,23 @@ static int _csync_file_stat_from_metadata_table( std::unique_ptr<csync_file_stat
     }
 
     // Callers should all use METADATA_QUERY for their column list.
-    assert(sqlite3_column_count(stmt) == 11);
+    assert(sqlite3_column_count(stmt) == 10);
 
     SQLITE_BUSY_HANDLED( sqlite3_step(stmt) );
 
     if( rc == SQLITE_ROW ) {
         st.reset(new csync_file_stat_t);
 
-        /* The query suceeded so use the phash we pass to the function. */
-        st->phash = sqlite3_column_int64(stmt, 0);
-        st->path = (char*)sqlite3_column_text(stmt, 1);
-        st->inode = sqlite3_column_int64(stmt, 2);
-        st->modtime = strtoul((char*)sqlite3_column_text(stmt, 3), NULL, 10);
-        st->type = static_cast<enum csync_ftw_type_e>(sqlite3_column_int(stmt, 4));
-        st->etag = (char*)sqlite3_column_text(stmt, 5);
-        st->file_id = (char*)sqlite3_column_text(stmt, 6);
-        st->remotePerm = (char*)sqlite3_column_text(stmt, 7);
-        st->size = sqlite3_column_int64(stmt, 8);
-        st->has_ignored_files = sqlite3_column_int(stmt, 9);
-        st->checksumHeader = (char *)sqlite3_column_text(stmt, 10);
+        st->path = (char*)sqlite3_column_text(stmt, 0);
+        st->inode = sqlite3_column_int64(stmt, 1);
+        st->modtime = strtoul((char*)sqlite3_column_text(stmt, 2), NULL, 10);
+        st->type = static_cast<enum csync_ftw_type_e>(sqlite3_column_int(stmt, 3));
+        st->etag = (char*)sqlite3_column_text(stmt, 4);
+        st->file_id = (char*)sqlite3_column_text(stmt, 5);
+        st->remotePerm = (char*)sqlite3_column_text(stmt, 6);
+        st->size = sqlite3_column_int64(stmt, 7);
+        st->has_ignored_files = sqlite3_column_int(stmt, 8);
+        st->checksumHeader = (char *)sqlite3_column_text(stmt, 9);
     } else {
         if( rc != SQLITE_DONE ) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Query results in %d", rc);
@@ -279,8 +277,7 @@ static int _csync_file_stat_from_metadata_table( std::unique_ptr<csync_file_stat
 }
 
 /* caller must free the memory */
-std::unique_ptr<csync_file_stat_t> csync_statedb_get_stat_by_hash(CSYNC *ctx,
-                                                  uint64_t phash)
+std::unique_ptr<csync_file_stat_t> csync_statedb_get_stat_by_path(CSYNC *ctx, const QByteArray &path)
 {
   std::unique_ptr<csync_file_stat_t> st;
   int rc;
@@ -304,6 +301,7 @@ std::unique_ptr<csync_file_stat_t> csync_statedb_get_stat_by_hash(CSYNC *ctx,
     return NULL;
   }
 
+  uint64_t phash = c_jhash64((const uint8_t*)path.constData(), path.size(), 0);
   sqlite3_bind_int64(ctx->statedb.by_hash_stmt, 1, (long long signed int)phash);
 
   rc = _csync_file_stat_from_metadata_table(st, ctx->statedb.by_hash_stmt);

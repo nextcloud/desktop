@@ -155,7 +155,6 @@ static void check_csync_statedb_insert_metadata(void **state)
     for (i = 0; i < 100; i++) {
         st.reset(new csync_file_stat_t);
         st->path = QString("file_%1").arg(i).toUtf8();
-        st->phash = i;
 
         csync->local.files[st->path] = std::move(st);
     }
@@ -173,7 +172,6 @@ static void check_csync_statedb_write(void **state)
     for (i = 0; i < 100; i++) {
         st.reset(new csync_file_stat_t);
         st->path = QString("file_%1").arg(i).toUtf8();
-        st->phash = i;
 
         csync->local.files[st->path] = std::move(st);
         assert_int_equal(rc, 0);
@@ -184,12 +182,12 @@ static void check_csync_statedb_write(void **state)
 }
 
 
-static void check_csync_statedb_get_stat_by_hash_not_found(void **state)
+static void check_csync_statedb_get_stat_by_path_not_found(void **state)
 {
     CSYNC *csync = (CSYNC*)*state;
     std::unique_ptr<csync_file_stat_t> tmp;
 
-    tmp = csync_statedb_get_stat_by_hash(csync, (uint64_t) 666);
+    tmp = csync_statedb_get_stat_by_path(csync, "666");
     assert_null(tmp.get());
 }
 
@@ -210,7 +208,7 @@ int torture_run_tests(void)
         cmocka_unit_test_setup_teardown(check_csync_statedb_drop_tables, setup, teardown),
         cmocka_unit_test_setup_teardown(check_csync_statedb_insert_metadata, setup, teardown),
         cmocka_unit_test_setup_teardown(check_csync_statedb_write, setup, teardown),
-        cmocka_unit_test_setup_teardown(check_csync_statedb_get_stat_by_hash_not_found, setup_db, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_statedb_get_stat_by_path_not_found, setup_db, teardown),
         cmocka_unit_test_setup_teardown(check_csync_statedb_get_stat_by_inode_not_found, setup_db, teardown),
     };
 
