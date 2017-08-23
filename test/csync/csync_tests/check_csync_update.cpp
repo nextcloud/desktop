@@ -227,7 +227,7 @@ static void check_csync_detect_update(void **state)
     assert_int_equal(rc, 0);
 
     /* the instruction should be set to new  */
-    st = (csync_file_stat_t*)c_rbtree_node_data(csync->local.tree->root);
+    st = csync->local.files.begin()->second.get();
     assert_int_equal(st->instruction, CSYNC_INSTRUCTION_NEW);
 
     /* create a statedb */
@@ -250,7 +250,7 @@ static void check_csync_detect_update_db_none(void **state)
     assert_int_equal(rc, 0);
 
     /* the instruction should be set to new  */
-    st = (csync_file_stat_t*)c_rbtree_node_data(csync->local.tree->root);
+    st = csync->local.files.begin()->second.get();
     assert_int_equal(st->instruction, CSYNC_INSTRUCTION_NEW);
 
 
@@ -271,7 +271,7 @@ static void check_csync_detect_update_db_eval(void **state)
     assert_int_equal(rc, 0);
 
     /* the instruction should be set to new  */
-    st = (csync_file_stat_t*)c_rbtree_node_data(csync->local.tree->root);
+    st = csync->local.files.begin()->second.get();
     assert_int_equal(st->instruction, CSYNC_INSTRUCTION_NEW);
 
     /* create a statedb */
@@ -296,7 +296,7 @@ static void check_csync_detect_update_db_rename(void **state)
     /* the instruction should be set to rename */
     /*
      * temporarily broken.
-    st = (csync_file_stat_t*)c_rbtree_node_data(csync->local.tree->root);
+    st = csync->local.files.begin()->second.get();
     assert_int_equal(st->instruction, CSYNC_INSTRUCTION_RENAME);
 
     st->instruction = CSYNC_INSTRUCTION_UPDATED;
@@ -318,7 +318,7 @@ static void check_csync_detect_update_db_new(void **state)
     assert_int_equal(rc, 0);
 
     /* the instruction should be set to new  */
-    st = (csync_file_stat_t*)c_rbtree_node_data(csync->local.tree->root);
+    st = csync->local.files.begin()->second.get();
     assert_int_equal(st->instruction, CSYNC_INSTRUCTION_NEW);
 
 

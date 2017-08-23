@@ -146,19 +146,18 @@ static void check_csync_statedb_drop_tables(void **state)
 static void check_csync_statedb_insert_metadata(void **state)
 {
     CSYNC *csync = (CSYNC*)*state;
-    csync_file_stat_t *st;
+    std::unique_ptr<csync_file_stat_t> st;
     int i, rc = 0;
 
     // rc = csync_statedb_create_tables(csync->statedb.db);
     assert_int_equal(rc, 0);
 
     for (i = 0; i < 100; i++) {
-        st = new csync_file_stat_t;
+        st.reset(new csync_file_stat_t);
         st->path = QString("file_%1").arg(i).toUtf8();
         st->phash = i;
 
-        rc = c_rbtree_insert(csync->local.tree, (void *) st);
-        assert_int_equal(rc, 0);
+        csync->local.files[st->path] = std::move(st);
     }
 
     // rc = csync_statedb_insert_metadata(csync, csync->statedb.db);
@@ -168,15 +167,15 @@ static void check_csync_statedb_insert_metadata(void **state)
 static void check_csync_statedb_write(void **state)
 {
     CSYNC *csync = (CSYNC*)*state;
-    csync_file_stat_t *st;
-    int i, rc;
+    std::unique_ptr<csync_file_stat_t> st;
+    int i, rc = 0;
 
     for (i = 0; i < 100; i++) {
-        st = new csync_file_stat_t;
+        st.reset(new csync_file_stat_t);
         st->path = QString("file_%1").arg(i).toUtf8();
         st->phash = i;
 
-        rc = c_rbtree_insert(csync->local.tree, (void *) st);
+        csync->local.files[st->path] = std::move(st);
         assert_int_equal(rc, 0);
     }
 
