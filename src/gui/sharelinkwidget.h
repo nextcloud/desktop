@@ -65,19 +65,20 @@ private slots:
     void slotCheckBoxPasswordClicked();
     void slotCheckBoxExpireClicked();
     void slotPasswordReturnPressed();
-    void slotCheckBoxEditingClicked();
+    void slotPermissionsCheckboxClicked();
     void slotExpireDateChanged(const QDate &date);
     void slotPasswordChanged(const QString &newText);
     void slotNameEdited(QTableWidgetItem *item);
 
-    void slotShareLinkButtonTriggered(QAction *action);
+    void slotShareLinkButtonClicked();
+    void slotShareLinkActionTriggered(QAction *action);
 
     void slotDeleteShareFetched();
     void slotCreateShareFetched(const QSharedPointer<LinkShare> share);
     void slotCreateShareRequiresPassword(const QString &message);
     void slotPasswordSet();
     void slotExpireSet();
-    void slotPublicUploadSet();
+    void slotPermissionsSet();
 
     void slotServerError(int code, const QString &message);
     void slotPasswordSetError(int code, const QString &message);

@@ -1,6 +1,3 @@
-[submodule "doc/ocdoc"]
-	path = doc/ocdoc
-    url = https://github.com/nextcloud/documentation
 [submodule "src/3rdparty/qtmacgoodies"]
 	path = src/3rdparty/qtmacgoodies
 	url = https://github.com/guruz/qtmacgoodies.git

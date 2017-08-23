@@ -70,45 +70,64 @@ macro (KDE4_ADD_APP_ICON appsources pattern)
         endif(PNG2ICO_EXECUTABLE AND WINDRES_EXECUTABLE)
     endif(WIN32)
     if (APPLE)
-        # first convert image to a tiff using the Mac OS X "sips" utility,
-        # then use tiff2icns to convert to an icon
-        find_program(SIPS_EXECUTABLE NAMES sips)
-        find_program(TIFF2ICNS_EXECUTABLE NAMES tiff2icns)
-        if (SIPS_EXECUTABLE AND TIFF2ICNS_EXECUTABLE)
-            file(GLOB_RECURSE files  "${pattern}")
-            # we can only test for the 128-icon like that - we don't use patterns anymore
-            foreach (it ${files})
-                if (it MATCHES ".*128.*" )
-                    set (_icon ${it})
-                endif (it MATCHES ".*128.*")
-            endforeach (it)
+        file(GLOB_RECURSE files "${pattern}")
+        file(MAKE_DIRECTORY ${appsources}.iconset)
 
-            if (_icon)
-                
-                # first, get the basename of our app icon
-                add_custom_command(OUTPUT ${_outfilename}.icns ${outfilename}.tiff
-                                   COMMAND ${SIPS_EXECUTABLE} -s format tiff ${_icon} --out ${outfilename}.tiff
-                                   COMMAND ${TIFF2ICNS_EXECUTABLE} ${outfilename}.tiff ${_outfilename}.icns
-                                   DEPENDS ${_icon}
-                                   )
+        # List from:
+        # https://developer.apple.com/library/content/documentation/GraphicsAnimation/Conceptual/HighResolutionOSX/Optimizing/Optimizing.html#//apple_ref/doc/uid/TP40012302-CH7-SW4
+        foreach (it ${files})
+            if (it MATCHES ".*icon-16.*")
+                configure_file(${it} ${appsources}.iconset/icon_16x16.png COPYONLY)
+            elseif (it MATCHES ".*icon-32.*")
+                configure_file(${it} ${appsources}.iconset/icon_16x16@2x.png COPYONLY)
+                configure_file(${it} ${appsources}.iconset/icon_32x32.png COPYONLY)
+            elseif (it MATCHES ".*icon-64.*")
+                configure_file(${it} ${appsources}.iconset/icon_32x32@2x.png COPYONLY)
+            elseif (it MATCHES ".*icon-128.*")
+                configure_file(${it} ${appsources}.iconset/icon_128x128.png COPYONLY)
+            elseif (it MATCHES ".*icon-256.*")
+                configure_file(${it} ${appsources}.iconset/icon_128x128@2x.png COPYONLY)
+                configure_file(${it} ${appsources}.iconset/icon_256x256.png COPYONLY)
+            elseif (it MATCHES ".*icon-512.*")
+                configure_file(${it} ${appsources}.iconset/icon_256x256@2x.png COPYONLY)
+                configure_file(${it} ${appsources}.iconset/icon_512x512.png COPYONLY)
+            elseif (it MATCHES ".*icon-1024.*")
+                configure_file(${it} ${appsources}.iconset/icon_512x512@2x.png COPYONLY)
+            endif()
+        endforeach (it)
 
-                # This will register the icon into the bundle
-                set(MACOSX_BUNDLE_ICON_FILE ${appsources}.icns)
+        # Copy the sidebar icons in the main app bundle for the FinderSync extension to pick.
+        # https://developer.apple.com/library/content/documentation/General/Conceptual/ExtensibilityPG/Finder.html#//apple_ref/doc/uid/TP40014214-CH15-SW15
+        foreach (it ${files})
+            if (it MATCHES ".*sidebar-16.*")
+                configure_file(${it} ${appsources}.iconset/sidebar_16x16.png COPYONLY)
+            elseif (it MATCHES ".*sidebar-18.*")
+                configure_file(${it} ${appsources}.iconset/sidebar_18x18.png COPYONLY)
+            elseif (it MATCHES ".*sidebar-32.*")
+                configure_file(${it} ${appsources}.iconset/sidebar_16x16@2x.png COPYONLY)
+                configure_file(${it} ${appsources}.iconset/sidebar_32x32.png COPYONLY)
+            elseif (it MATCHES ".*sidebar-36.*")
+                configure_file(${it} ${appsources}.iconset/sidebar_18x18@2x.png COPYONLY)
+            elseif (it MATCHES ".*sidebar-64.*")
+                configure_file(${it} ${appsources}.iconset/sidebar_32x32@2x.png COPYONLY)
+            endif()
+        endforeach (it)
 
-                # Append the icns file to the sources list so it will be a dependency to the
-                # main target
-                list(APPEND ${appsources} ${_outfilename}.icns)
+        add_custom_command(OUTPUT ${_outfilename}.icns
+                           COMMAND echo === Building bundle icns with iconset:
+                           COMMAND ls -1 ${appsources}.iconset
+                           COMMAND iconutil -c icns -o ${_outfilename}.icns ${appsources}.iconset
+                           DEPENDS ${files}
+                           )
 
-                # Install the icon into the Resources dir in the bundle
-                set_source_files_properties(${_outfilename}.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+        # This will register the icon into the bundle
+        set(MACOSX_BUNDLE_ICON_FILE ${appsources}.icns)
 
-            else(_icon)
-                # TODO - try to scale a non-128 icon...? Try to convert an SVG on the fly?
-                message(STATUS "Unable to find an 128x128 icon that matches pattern ${pattern} for variable ${appsources} - application will not have an application icon!")
-            endif(_icon)
+        # Append the icns file to the sources list so it will be a dependency to the
+        # main target
+        list(APPEND ${appsources} ${_outfilename}.icns)
 
-        else(SIPS_EXECUTABLE AND TIFF2ICNS_EXECUTABLE)
-            message(STATUS "Unable to find the sips and tiff2icns utilities - application will not have an application icon!")
-        endif(SIPS_EXECUTABLE AND TIFF2ICNS_EXECUTABLE)
+        # Install the icon into the Resources dir in the bundle
+        set_source_files_properties(${_outfilename}.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
     endif(APPLE)
 endmacro (KDE4_ADD_APP_ICON)

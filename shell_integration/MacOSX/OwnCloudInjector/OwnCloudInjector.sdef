@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE dictionary SYSTEM "file://localhost/System/Library/DTDs/sdef.dtd">
-<dictionary title="OwnCloudInjector Terminology">
-    <suite name="OwnCloudInjector Suite" code="OWNC" description="OwnCloud Injector commands">
-        <command name="install OwnCloud" code="OWNCload" description="Loads OwnCloud into the Finder process"/>
-        <command name="uninstall OwnCloud" code="OWNCunld" description="Unloads OwnCloud from the Finder process"/>
-        <command name="check OwnCloud" code="OWNClded" description="Checks if OwnCloud is loaded in Finder process"/>
-    </suite>
-</dictionary>

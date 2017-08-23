@@ -21,6 +21,7 @@ set(client_UI
     ignorelisteditor.ui
     networksettings.ui
     protocolwidget.ui
+    issueswidget.ui
     activitywidget.ui
     synclogdialog.ui
     settingsdialog.ui
@@ -64,6 +65,7 @@ set(client_SRCS
     owncloudgui.cpp
     owncloudsetupwizard.cpp
     protocolwidget.cpp
+    issueswidget.cpp
     activitydata.cpp
     activitylistmodel.cpp
     activitywidget.cpp
@@ -92,6 +94,8 @@ set(client_SRCS
     notificationwidget.cpp
     notificationconfirmjob.cpp
     servernotificationhandler.cpp
+    guiutility.cpp
+    elidedlabel.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/oauth.cpp
@@ -127,7 +131,6 @@ IF( APPLE )
     list(APPEND client_SRCS settingsdialogmac.cpp)
     list(APPEND client_SRCS socketapisocket_mac.mm)
     list(APPEND client_SRCS systray.mm)
-    list(APPEND client_SRCS clipboard.mm)
 
     if(SPARKLE_FOUND)
        # Define this, we need to check in updater.cpp
@@ -229,7 +232,7 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
     set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
 endif()
 
-kde4_add_app_icon( ownCloud "${theme_dir}/colored/${APPLICATION_ICON_NAME}-icon*.png")
+kde4_add_app_icon( ownCloud "${theme_dir}/colored/${APPLICATION_ICON_NAME}-*.png")
 list(APPEND final_src ${ownCloud})
 set(ownCloud ${ownCloud_old})
 

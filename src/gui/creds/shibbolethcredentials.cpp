@@ -90,7 +90,7 @@ QString ShibbolethCredentials::user() const
     return _user;
 }
 
-QNetworkAccessManager *ShibbolethCredentials::getQNAM() const
+QNetworkAccessManager *ShibbolethCredentials::createQNAM() const
 {
     QNetworkAccessManager *qnam(new AccessManager);
     connect(qnam, SIGNAL(finished(QNetworkReply *)),

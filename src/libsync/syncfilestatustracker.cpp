@@ -65,6 +65,7 @@ static inline bool showErrorInSocketApi(const SyncFileItem &item)
     return item._instruction == CSYNC_INSTRUCTION_ERROR
         || status == SyncFileItem::NormalError
         || status == SyncFileItem::FatalError
+        || status == SyncFileItem::BlacklistedError
         || item._hasBlacklistEntry;
 }
 
@@ -285,7 +286,7 @@ SyncFileStatus SyncFileStatusTracker::resolveSyncAndErrorStatus(const QString &r
     ASSERT(sharedFlag != UnknownShared,
         "The shared status needs to have been fetched from a SyncFileItem or the DB at this point.");
     if (sharedFlag == Shared)
-        status.setSharedWithMe(true);
+        status.setShared(true);
 
     return status;
 }

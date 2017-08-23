@@ -46,8 +46,10 @@ private:
 	// The name of the selected file.
 	wchar_t m_szSelectedFile[MAX_PATH];
 
-	// The method that handles the "display" verb.
-	void OnVerbDisplayFileName(HWND hWnd);
+    // The method that handles the "ocshare" verb.
+    void OnVerbShare(HWND hWnd);
+    void OnVerbCopyLink(HWND hWnd);
+    void OnVerbEmailLink(HWND hWnd);
 
 	PWSTR m_pszMenuText;
 	PCSTR m_pszVerb;

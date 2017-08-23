@@ -100,7 +100,8 @@ enum csync_status_codes_e {
     CSYNC_STATUS_INVALID_CHARACTERS,
     CSYNC_STATUS_INDIVIDUAL_STAT_FAILED,
     CSYNC_STATUS_FORBIDDEN,
-    CSYNC_STATUS_INDIVIDUAL_TOO_DEEP
+    CSYNC_STATUS_INDIVIDUAL_TOO_DEEP,
+    CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE
 };
 
 typedef enum csync_status_codes_e CSYNC_STATUS;
@@ -478,17 +479,6 @@ int OCSYNC_EXPORT csync_walk_remote_tree(CSYNC *ctx, csync_treewalk_visit_func *
  * @return               A const pointer to a string with more precise status info.
  */
 const char OCSYNC_EXPORT *csync_get_status_string(CSYNC *ctx);
-
-#ifdef WITH_ICONV
-/**
- * @brief Set iconv source codec for filenames.
- *
- * @param from          Source codec.
- *
- * @return              0 on success, or an iconv error number.
- */
-int OCSYNC_EXPORT csync_set_iconv_codec(const char *from);
-#endif
 
 /**
  * @brief Aborts the current sync run as soon as possible. Can be called from another thread.

@@ -32,7 +32,9 @@
 #include "account.h"
 #include "capabilities.h"
 #include "asserts.h"
+#include "guiutility.h"
 
+#include <array>
 #include <QBitArray>
 #include <QUrl>
 #include <QMetaMethod>
@@ -44,6 +46,8 @@
 #include <QApplication>
 #include <QLocalSocket>
 #include <QStringBuilder>
+
+#include <QClipboard>
 
 #include <sqlite3.h>
 
@@ -124,7 +128,7 @@ public:
 
     void sendMessage(const QString &message, bool doWait = false) const
     {
-        qCInfo(lcSocketApi) << "Sending SocketAPI message: " << message << "to" << socket;
+        qCInfo(lcSocketApi) << "Sending SocketAPI message -->" << message << "to" << socket;
         QString localMessage = message;
         if (!localMessage.endsWith(QLatin1Char('\n'))) {
             localMessage.append(QLatin1Char('\n'));
@@ -278,6 +282,7 @@ void SocketApi::slotReadSocket()
         // make sure that the path will match, especially on OS X.
         QString line = QString::fromUtf8(socket->readLine()).normalized(QString::NormalizationForm_C);
         line.chop(1); // remove the '\n'
+        qCInfo(lcSocketApi) << "Received SocketAPI message <--" << line << "from" << socket;
         QByteArray command = line.split(":").value(0).toAscii();
         QByteArray functionWithArguments = "command_" + command + "(QString,SocketListener*)";
         int indexOfMethod = staticMetaObject.indexOfMethod(functionWithArguments);
@@ -369,8 +374,6 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString &argument, SocketLi
 
 void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argument, SocketListener *listener)
 {
-    qCDebug(lcSocketApi) << argument;
-
     QString statusString;
 
     Folder *syncFolder = FolderMan::instance()->folderForPath(argument);
@@ -399,8 +402,6 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argument, SocketList
 
 void SocketApi::command_SHARE(const QString &localFile, SocketListener *listener)
 {
-    qCDebug(lcSocketApi) << localFile;
-
     auto theme = Theme::instance();
 
     Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
@@ -436,19 +437,10 @@ void SocketApi::command_SHARE(const QString &localFile, SocketListener *listener
             return;
         }
 
-        SyncJournalFileRecord rec = shareFolder->journalDb()->getFileRecord(localFileClean);
-
-        bool allowReshare = true; // lets assume the good
-        if (rec.isValid()) {
-            // check the permission: Is resharing allowed?
-            if (!rec._remotePerm.contains('R')) {
-                allowReshare = false;
-            }
-        }
         const QString message = QLatin1String("SHARE:OK:") + QDir::toNativeSeparators(localFile);
         listener->sendMessage(message);
 
-        emit shareCommandReceived(remotePath, localFileClean, allowReshare);
+        emit shareCommandReceived(remotePath, localFileClean);
     }
 }
 
@@ -459,8 +451,6 @@ void SocketApi::command_VERSION(const QString &, SocketListener *listener)
 
 void SocketApi::command_SHARE_STATUS(const QString &localFile, SocketListener *listener)
 {
-    qCDebug(lcSocketApi) << localFile;
-
     Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
 
     if (!shareFolder) {
@@ -514,12 +504,64 @@ void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketListener *listen
     listener->sendMessage(QLatin1String("SHARE_MENU_TITLE:") + tr("Share with %1", "parameter is ownCloud").arg(Theme::instance()->appNameGUI()));
 }
 
+void SocketApi::command_COPY_PRIVATE_LINK(const QString &localFile, SocketListener *)
+{
+    auto url = getPrivateLinkUrl(localFile);
+    if (!url.isEmpty()) {
+        QApplication::clipboard()->setText(url.toString());
+    }
+}
+
+void SocketApi::command_EMAIL_PRIVATE_LINK(const QString &localFile, SocketListener *)
+{
+    auto url = getPrivateLinkUrl(localFile);
+    if (!url.isEmpty()) {
+        Utility::openEmailComposer(
+            tr("I shared something with you"),
+            url.toString(QUrl::FullyEncoded),
+            0);
+    }
+}
+
+void SocketApi::command_GET_STRINGS(const QString &, SocketListener *listener)
+{
+    static std::array<std::pair<const char *, QString>, 5> strings { {
+        { "SHARE_MENU_TITLE", tr("Share...") },
+        { "CONTEXT_MENU_TITLE", Theme::instance()->appNameGUI() },
+        { "COPY_PRIVATE_LINK_MENU_TITLE", tr("Copy private link to clipboard") },
+        { "EMAIL_PRIVATE_LINK_MENU_TITLE", tr("Send private link by email...") },
+    } };
+    listener->sendMessage(QString("GET_STRINGS:BEGIN"));
+    for (auto key_value : strings) {
+        listener->sendMessage(QString("STRING:%1:%2").arg(key_value.first, key_value.second));
+    }
+    listener->sendMessage(QString("GET_STRINGS:END"));
+}
+
 QString SocketApi::buildRegisterPathMessage(const QString &path)
 {
     QFileInfo fi(path);
     QString message = QLatin1String("REGISTER_PATH:");
     message.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
     return message;
+}
+
+QUrl SocketApi::getPrivateLinkUrl(const QString &localFile) const
+{
+    Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
+    if (!shareFolder) {
+        qCWarning(lcSocketApi) << "Unknown path" << localFile;
+        return QUrl();
+    }
+
+    const QString localFileClean = QDir::cleanPath(localFile);
+    const QString file = localFileClean.mid(shareFolder->cleanPath().length() + 1);
+
+    SyncJournalFileRecord rec = shareFolder->journalDb()->getFileRecord(file);
+    if (rec.isValid()) {
+        return shareFolder->accountState()->account()->filePermalinkUrl(rec.numericFileId());
+    }
+    return QUrl();
 }
 
 } // namespace OCC

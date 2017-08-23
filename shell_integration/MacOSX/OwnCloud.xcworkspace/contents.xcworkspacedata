@@ -4,10 +4,4 @@
    <FileRef
       location = "group:OwnCloudFinderSync/OwnCloudFinderSync.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:OwnCloudFinder/OwnCloudFinder.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:OwnCloudInjector/OwnCloudInjector.xcodeproj">
-   </FileRef>
 </Workspace>

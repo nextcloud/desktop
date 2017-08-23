@@ -90,7 +90,8 @@ bool Progress::isWarningKind(SyncFileItem::Status kind)
 {
     return kind == SyncFileItem::SoftError || kind == SyncFileItem::NormalError
         || kind == SyncFileItem::FatalError || kind == SyncFileItem::FileIgnored
-        || kind == SyncFileItem::Conflict || kind == SyncFileItem::Restoration;
+        || kind == SyncFileItem::Conflict || kind == SyncFileItem::Restoration
+        || kind == SyncFileItem::BlacklistedError;
 }
 
 bool Progress::isIgnoredKind(SyncFileItem::Status kind)
@@ -135,6 +136,8 @@ ProgressInfo::ProgressInfo()
 
 void ProgressInfo::reset()
 {
+    _status = Starting;
+
     _currentItems.clear();
     _currentDiscoveredFolder.clear();
     _sizeProgress = Progress();
@@ -148,6 +151,11 @@ void ProgressInfo::reset()
 
     _updateEstimatesTimer.stop();
     _lastCompletedItem = SyncFileItem();
+}
+
+ProgressInfo::Status ProgressInfo::status() const
+{
+    return _status;
 }
 
 void ProgressInfo::startEstimateUpdates()

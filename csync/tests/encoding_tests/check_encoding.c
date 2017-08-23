@@ -29,30 +29,12 @@
 
 static void setup(void **state)
 {
-    int rc = 0;
-
     (void) state; /* unused */
-
-#ifdef HAVE_ICONV
-#ifdef __APPLE__
-    /* this test only works on apple because linux does not know the
-     * UTF-8-MAC encoding that we use here. */
-    rc = c_setup_iconv("UTF-8-MAC");
-#endif
-#endif
-    assert_int_equal(rc, 0);
 }
 
 static void teardown(void **state)
 {
-    int rc = 0;
-
     (void) state; /* unused */
-#ifdef HAVE_ICONV
-    // this must never crash
-    rc = c_close_iconv();
-#endif
-    assert_int_equal(rc, 0);
 }
 
 static void check_iconv_to_native_normalization(void **state)

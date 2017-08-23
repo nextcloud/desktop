@@ -22,6 +22,7 @@
 	SyncClientProxy *_syncClientProxy;
 	NSMutableSet *_registeredDirectories;
 	NSString *_shareMenuTitle;
+	NSMutableDictionary *_strings;
 }
 
 @end

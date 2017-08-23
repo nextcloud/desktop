@@ -76,12 +76,18 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
 
     // calc height
     int h = rootFolderHeightWithoutErrors(fm, aliasFm);
+    // this already includes the bottom margin
 
+    // add some space to show an conflict indicator.
+    int margin = fm.height() / 4;
+    if (!qvariant_cast<QStringList>(index.data(FolderConflictMsg)).isEmpty()) {
+        QStringList msgs = qvariant_cast<QStringList>(index.data(FolderConflictMsg));
+        h += margin + 2 * margin + msgs.count() * fm.height();
+    }
     // add some space to show an error condition.
     if (!qvariant_cast<QStringList>(index.data(FolderErrorMsg)).isEmpty()) {
-        int margin = fm.height() / 4;
         QStringList errMsgs = qvariant_cast<QStringList>(index.data(FolderErrorMsg));
-        h += margin + errMsgs.count() * fm.height();
+        h += margin + 2 * margin + errMsgs.count() * fm.height();
     }
 
     return QSize(0, h);
@@ -98,7 +104,7 @@ int FolderStatusDelegate::rootFolderHeightWithoutErrors(const QFontMetrics &fm, 
     h += fm.height(); // local path
     h += margin; // between local and remote path
     h += fm.height(); // remote path
-    h += aliasMargin; // bottom margin
+    h += margin; // bottom margin
     return h;
 }
 
@@ -151,6 +157,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     QString aliasText = qvariant_cast<QString>(index.data(HeaderRole));
     QString pathText = qvariant_cast<QString>(index.data(FolderPathRole));
     QString remotePath = qvariant_cast<QString>(index.data(FolderSecondPathRole));
+    QStringList conflictTexts = qvariant_cast<QStringList>(index.data(FolderConflictMsg));
     QStringList errorTexts = qvariant_cast<QStringList>(index.data(FolderErrorMsg));
 
     int overallPercent = qvariant_cast<int>(index.data(SyncProgressOverallPercent));
@@ -252,37 +259,40 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
             textAlign, elidedPathText);
     }
 
-    // paint an error overlay if there is an error string
+    int h = iconRect.bottom() + margin;
 
-    int h = iconRect.bottom();
-    if (!errorTexts.isEmpty()) {
-        h += margin;
-        QRect errorRect = localPathRect;
-        errorRect.setLeft(iconRect.left());
-        errorRect.setTop(h);
-        errorRect.setHeight(errorTexts.count() * subFm.height() + 2 * margin);
-        errorRect.setRight(option.rect.right() - margin);
+    // paint an error overlay if there is an error string or conflict string
+    auto drawTextBox = [&](const QStringList &texts, QColor color) {
+        QRect rect = localPathRect;
+        rect.setLeft(iconRect.left());
+        rect.setTop(h);
+        rect.setHeight(texts.count() * subFm.height() + 2 * margin);
+        rect.setRight(option.rect.right() - margin);
 
-        painter->setBrush(QColor(0xbb, 0x4d, 0x4d));
+        painter->setBrush(color);
         painter->setPen(QColor(0xaa, 0xaa, 0xaa));
-        painter->drawRoundedRect(QStyle::visualRect(option.direction, option.rect, errorRect),
+        painter->drawRoundedRect(QStyle::visualRect(option.direction, option.rect, rect),
             4, 4);
         painter->setPen(Qt::white);
         painter->setFont(errorFont);
-        QRect errorTextRect(errorRect.left() + margin,
-            errorRect.top() + margin,
-            errorRect.width() - 2 * margin,
+        QRect textRect(rect.left() + margin,
+            rect.top() + margin,
+            rect.width() - 2 * margin,
             subFm.height());
 
-        foreach (QString eText, errorTexts) {
-            painter->drawText(QStyle::visualRect(option.direction, option.rect, errorTextRect), textAlign,
-                subFm.elidedText(eText, Qt::ElideLeft, errorTextRect.width()));
-            errorTextRect.translate(0, errorTextRect.height());
+        foreach (QString eText, texts) {
+            painter->drawText(QStyle::visualRect(option.direction, option.rect, textRect), textAlign,
+                subFm.elidedText(eText, Qt::ElideLeft, textRect.width()));
+            textRect.translate(0, textRect.height());
         }
 
-        h = errorRect.bottom();
-    }
-    h += margin;
+        h = rect.bottom() + margin;
+    };
+
+    if (!conflictTexts.isEmpty())
+        drawTextBox(conflictTexts, QColor(0xba, 0xba, 0x4d));
+    if (!errorTexts.isEmpty())
+        drawTextBox(errorTexts, QColor(0xbb, 0x4d, 0x4d));
 
     // Sync File Progress Bar: Show it if syncFile is not empty.
     if (showProgess) {
@@ -371,6 +381,16 @@ QRect FolderStatusDelegate::optionsButtonRect(QRect within, Qt::LayoutDirection 
                 within.top() + within.height() / 2 - size.height() / 2),
         size);
     return QStyle::visualRect(direction, within, r);
+}
+
+QRect FolderStatusDelegate::errorsListRect(QRect within)
+{
+    QFont font = QFont();
+    QFont aliasFont = makeAliasFont(font);
+    QFontMetrics fm(font);
+    QFontMetrics aliasFm(aliasFont);
+    within.setTop(within.top() + FolderStatusDelegate::rootFolderHeightWithoutErrors(fm, aliasFm));
+    return within;
 }
 
 

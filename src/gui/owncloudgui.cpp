@@ -33,6 +33,7 @@
 #include "accountstate.h"
 #include "openfilemanager.h"
 #include "accountmanager.h"
+#include "syncjournalfilerecord.h"
 #include "creds/abstractcredentials.h"
 
 #include <QDesktopServices>
@@ -107,48 +108,6 @@ ownCloudGui::ownCloudGui(Application *parent)
         SLOT(slotShowOptionalTrayMessage(QString, QString)));
     connect(Logger::instance(), SIGNAL(guiMessage(QString, QString)),
         SLOT(slotShowGuiMessage(QString, QString)));
-
-    setupOverlayIcons();
-}
-
-// Use this to do platform specific code to make overlay icons appear
-// in the gui
-// MacOSX: perform a AppleScript code piece to load the Finder Plugin.
-
-
-void ownCloudGui::setupOverlayIcons()
-{
-#ifdef Q_OS_MAC
-    // Make sure that we only send the load event to the legacy plugin when
-    // using OS X <= 10.9 since 10.10 starts using the new FinderSync one.
-    if (QSysInfo::MacintoshVersion < QSysInfo::MV_10_10) {
-        const QLatin1String finderExtension("/Library/ScriptingAdditions/SyncStateFinder.osax");
-        if (QFile::exists(finderExtension)) {
-            QString aScript = QString::fromUtf8("tell application \"Finder\"\n"
-                                                "  try\n"
-                                                "    «event OWNCload»\n"
-                                                "  end try\n"
-                                                "end tell\n");
-
-            QString osascript = "/usr/bin/osascript";
-            QStringList processArguments;
-            // processArguments << "-l" << "AppleScript";
-
-            QProcess p;
-            p.start(osascript, processArguments);
-            p.write(aScript.toUtf8());
-            p.closeWriteChannel();
-            //p.waitForReadyRead(-1);
-            p.waitForFinished(5000);
-            QByteArray result = p.readAll();
-            QString resultAsString(result); // if appropriate
-            qCInfo(lcApplication) << "Load Finder Overlay-Plugin: " << resultAsString << ": " << p.exitCode()
-                                  << (p.exitCode() != 0 ? p.errorString() : QString::null);
-        } else {
-            qCWarning(lcApplication) << finderExtension << "does not exist! Finder Overlay Plugin loading failed";
-        }
-    }
-#endif
 }
 
 // This should rather be in application.... or rather in ConfigFile?
@@ -789,10 +748,19 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
 {
     Q_UNUSED(folder);
 
-    if (!progress._currentDiscoveredFolder.isEmpty()) {
-        _actionStatus->setText(tr("Checking for changes in '%1'")
-                                   .arg(progress._currentDiscoveredFolder));
-    } else if (progress.totalSize() == 0) {
+    if (progress.status() == ProgressInfo::Discovery) {
+        if (!progress._currentDiscoveredFolder.isEmpty()) {
+            _actionStatus->setText(tr("Checking for changes in '%1'")
+                                       .arg(progress._currentDiscoveredFolder));
+        }
+    } else if (progress.status() == ProgressInfo::Done) {
+        QTimer::singleShot(2000, this, SLOT(slotDisplayIdle()));
+    }
+    if (progress.status() != ProgressInfo::Propagation) {
+        return;
+    }
+
+    if (progress.totalSize() == 0) {
         quint64 currentFile = progress.currentFile();
         quint64 totalFileCount = qMax(progress.totalFiles(), currentFile);
         QString msg;
@@ -854,12 +822,6 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
         if (updateWhileVisible() && contextMenuVisible()) {
             slotRebuildRecentMenus();
         }
-    }
-
-    if (progress.isUpdatingEstimates()
-        && progress.completedFiles() >= progress.totalFiles()
-        && progress._currentDiscoveredFolder.isEmpty()) {
-        QTimer::singleShot(2000, this, SLOT(slotDisplayIdle()));
     }
 }
 
@@ -1039,7 +1001,7 @@ void ownCloudGui::raiseDialog(QWidget *raiseWidget)
 }
 
 
-void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &localPath, bool resharingAllowed)
+void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &localPath)
 {
     const auto folder = FolderMan::instance()->folderForPath(localPath);
     if (!folder) {
@@ -1051,6 +1013,17 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
     _settingsDialog->hide();
 
     const auto accountState = folder->accountState();
+
+    const QString file = localPath.mid(folder->cleanPath().length() + 1);
+    SyncJournalFileRecord fileRecord = folder->journalDb()->getFileRecord(file);
+
+    bool resharingAllowed = true; // lets assume the good
+    if (fileRecord.isValid()) {
+        // check the permission: Is resharing allowed?
+        if (!fileRecord._remotePerm.contains('R')) {
+            resharingAllowed = false;
+        }
+    }
 
     // As a first approximation, set the set of permissions that can be granted
     // either to everything (resharing allowed) or nothing (no resharing).
@@ -1072,7 +1045,7 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
         w = _shareDialogs[localPath];
     } else {
         qCInfo(lcApplication) << "Opening share dialog" << sharePath << localPath << maxSharingPermissions;
-        w = new ShareDialog(accountState, sharePath, localPath, maxSharingPermissions);
+        w = new ShareDialog(accountState, sharePath, localPath, maxSharingPermissions, fileRecord.numericFileId());
         w->setAttribute(Qt::WA_DeleteOnClose, true);
 
         _shareDialogs[localPath] = w;

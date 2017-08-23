@@ -53,7 +53,7 @@ public:
         SoftLink = CSYNC_FTW_TYPE_SLINK
     };
 
-    enum Status {
+    enum Status { // stored in 4 bits
         NoStatus,
 
         FatalError, ///< Error that causes the sync to stop
@@ -61,9 +61,25 @@ public:
         SoftError, ///< More like an information
 
         Success, ///< The file was properly synced
-        Conflict, ///< The file was properly synced, but a conflict was created
+
+        /** Marks a conflict, old or new.
+         *
+         * With instruction:IGNORE: detected an old unresolved old conflict
+         * With instruction:CONFLICT: a new conflict this sync run
+         */
+        Conflict,
+
         FileIgnored, ///< The file is in the ignored list (or blacklisted with no retries left)
-        Restoration ///< The file was restored because what should have been done was not allowed
+        Restoration, ///< The file was restored because what should have been done was not allowed
+
+        /** For files whose errors were blacklisted.
+         *
+         * If _instruction == IGNORE, the file wasn't even reattempted.
+         *
+         * These errors should usually be shown as NormalErrors, but not be as loud
+         * as them.
+         */
+        BlacklistedError
     };
 
     SyncFileItem()

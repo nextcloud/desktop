@@ -383,6 +383,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFo
     bool nextStep = true;
     if (fi.exists()) {
         FileSystem::setFolderMinimumPermissions(localFolder);
+        Utility::setupFavLink(localFolder);
         // there is an existing local folder. If its non empty, it can only be synced if the
         // ownCloud is newly created.
         _ocWizard->appendToConfigurationLog(

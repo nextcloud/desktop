@@ -22,7 +22,7 @@
 #include "theme.h"
 #include "configfile.h"
 #include "capabilities.h"
-
+#include "guiutility.h"
 #include "thumbnailjob.h"
 #include "sharee.h"
 #include "sharemanager.h"
@@ -39,6 +39,8 @@
 #include <QPropertyAnimation>
 #include <QMenu>
 #include <QAction>
+#include <QDesktopServices>
+#include <QMessageBox>
 
 namespace OCC {
 
@@ -46,6 +48,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     const QString &sharePath,
     const QString &localPath,
     SharePermissions maxSharingPermissions,
+    const QByteArray &numericFileId,
     QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::ShareUserGroupWidget)
@@ -53,6 +56,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     , _sharePath(sharePath)
     , _localPath(localPath)
     , _maxSharingPermissions(maxSharingPermissions)
+    , _numericFileId(numericFileId)
     , _disableCompleterActivated(false)
 {
     setAttribute(Qt::WA_DeleteOnClose);
@@ -80,6 +84,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     connect(_manager, SIGNAL(shareCreated(QSharedPointer<Share>)), SLOT(getShares()));
     connect(_manager, SIGNAL(serverError(int, QString)), this, SLOT(displayError(int, QString)));
     connect(_ui->shareeLineEdit, SIGNAL(returnPressed()), SLOT(slotLineEditReturn()));
+    connect(_ui->privateLinkText, SIGNAL(linkActivated(QString)), SLOT(slotPrivateLinkShare()));
 
     // By making the next two QueuedConnections we can override
     // the strings the completer sets on the line edit.
@@ -222,6 +227,21 @@ void ShareUserGroupWidget::slotAdjustScrollWidgetSize()
     }
 }
 
+void ShareUserGroupWidget::slotPrivateLinkShare()
+{
+    auto menu = new QMenu(this);
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+
+    menu->addAction(tr("Open link in browser"),
+        this, SLOT(slotPrivateLinkOpenBrowser()));
+    menu->addAction(tr("Copy link to clipboard"),
+        this, SLOT(slotPrivateLinkCopy()));
+    menu->addAction(tr("Send link by email"),
+        this, SLOT(slotPrivateLinkEmail()));
+
+    menu->exec(QCursor::pos());
+}
+
 void ShareUserGroupWidget::slotShareesReady()
 {
     _pi_sharee.stopAnimation();
@@ -299,6 +319,24 @@ void ShareUserGroupWidget::displayError(int code, const QString &message)
     _ui->errorLabel->setText(message);
     _ui->errorLabel->show();
     _ui->shareeLineEdit->setEnabled(true);
+}
+
+void ShareUserGroupWidget::slotPrivateLinkOpenBrowser()
+{
+    Utility::openBrowser(_account->filePermalinkUrl(_numericFileId), this);
+}
+
+void ShareUserGroupWidget::slotPrivateLinkCopy()
+{
+    QApplication::clipboard()->setText(_account->filePermalinkUrl(_numericFileId).toString());
+}
+
+void ShareUserGroupWidget::slotPrivateLinkEmail()
+{
+    Utility::openEmailComposer(
+        tr("I shared something with you"),
+        _account->filePermalinkUrl(_numericFileId).toString(),
+        this);
 }
 
 ShareUserLine::ShareUserLine(QSharedPointer<Share> share,

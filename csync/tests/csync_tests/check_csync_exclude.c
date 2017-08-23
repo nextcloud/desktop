@@ -113,9 +113,9 @@ static void check_csync_excluded(void **state)
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
     rc = csync_excluded_no_ctx(csync->excludes, ".kde/share/config/kwin.eventsrc", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
-    rc = csync_excluded_no_ctx(csync->excludes, ".htaccess/cache-maximegalon/cache1.txt", CSYNC_FTW_TYPE_FILE);
+    rc = csync_excluded_no_ctx(csync->excludes, ".directory/cache-maximegalon/cache1.txt", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
-    rc = csync_excluded_no_ctx(csync->excludes, "mozilla/.htaccess", CSYNC_FTW_TYPE_DIR);
+    rc = csync_excluded_no_ctx(csync->excludes, "mozilla/.directory", CSYNC_FTW_TYPE_DIR);
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 
     /*

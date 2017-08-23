@@ -109,7 +109,7 @@ int main(int argc, char **argv)
     // the updater is triggered
     Updater *updater = Updater::instance();
     if (updater && updater->handleStartup()) {
-        return true;
+        return 1;
     }
 
     // if the application is already running, notify it.

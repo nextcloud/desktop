@@ -18,10 +18,6 @@ include(DefineInstallationPaths)
 include(MacroAddPlugin)
 include(MacroCopyFile)
 
-if (NOT WIN32)
-    find_package(Iconv)
-endif (NOT WIN32)
-
 find_package(SQLite3 3.8.0 REQUIRED)
 
 include(ConfigureChecks.cmake)

@@ -52,6 +52,13 @@ static void statedb_create_metadata_table(sqlite3 *db)
         rc = sqlite3_exec(db, sql, NULL, NULL, NULL);
         //const char *msg = sqlite3_errmsg(db);
         assert_int_equal( rc, SQLITE_OK );
+
+        sql = "CREATE TABLE IF NOT EXISTS checksumtype("
+                        "id INTEGER PRIMARY KEY,"
+                        "name TEXT UNIQUE"
+                        ");";
+        rc = sqlite3_exec(db, sql, NULL, NULL, NULL);
+        assert_int_equal( rc, SQLITE_OK );
     }
 }
 

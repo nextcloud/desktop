@@ -62,7 +62,6 @@ Folder::Folder(const FolderDefinition &definition,
     , _fileLog(new SyncRunFileLog)
     , _saveBackwardsCompatible(false)
 {
-    qsrand(QTime::currentTime().msec());
     _timeSinceLastSyncStart.start();
     _timeSinceLastSyncDone.start();
 
@@ -89,7 +88,6 @@ Folder::Folder(const FolderDefinition &definition,
 
     connect(_engine.data(), SIGNAL(started()), SLOT(slotSyncStarted()), Qt::QueuedConnection);
     connect(_engine.data(), SIGNAL(finished(bool)), SLOT(slotSyncFinished(bool)), Qt::QueuedConnection);
-    connect(_engine.data(), SIGNAL(csyncError(QString)), SLOT(slotSyncError(QString)), Qt::QueuedConnection);
     connect(_engine.data(), SIGNAL(csyncUnavailable()), SLOT(slotCsyncUnavailable()), Qt::QueuedConnection);
 
     //direct connection so the message box is blocking the sync.
@@ -97,7 +95,6 @@ Folder::Folder(const FolderDefinition &definition,
         SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *)));
     connect(_engine.data(), SIGNAL(aboutToRestoreBackup(bool *)),
         SLOT(slotAboutToRestoreBackup(bool *)));
-    connect(_engine.data(), SIGNAL(folderDiscovered(bool, QString)), this, SLOT(slotFolderDiscovered(bool, QString)));
     connect(_engine.data(), SIGNAL(transmissionProgress(ProgressInfo)), this, SLOT(slotTransmissionProgress(ProgressInfo)));
     connect(_engine.data(), SIGNAL(itemCompleted(const SyncFileItemPtr &)),
         this, SLOT(slotItemCompleted(const SyncFileItemPtr &)));
@@ -106,6 +103,7 @@ Folder::Folder(const FolderDefinition &definition,
     connect(_engine.data(), SIGNAL(seenLockedFile(QString)), FolderMan::instance(), SLOT(slotSyncOnceFileUnlocks(QString)));
     connect(_engine.data(), SIGNAL(aboutToPropagate(SyncFileItemVector &)),
         SLOT(slotLogPropagationStart()));
+    connect(_engine.data(), &SyncEngine::syncError, this, &Folder::slotSyncError);
 
     _scheduleSelfTimer.setSingleShot(true);
     _scheduleSelfTimer.setInterval(SyncEngine::minimumFileAgeForUpload);
@@ -342,8 +340,8 @@ void Folder::showSyncResultPopup()
             _syncResult.numRenamedItems(), _syncResult.firstItemRenamed()->_renameTarget);
     }
 
-    if (_syncResult.firstConflictItem()) {
-        createGuiLog(_syncResult.firstConflictItem()->_file, LogStatusConflict, _syncResult.numConflictItems());
+    if (_syncResult.firstNewConflictItem()) {
+        createGuiLog(_syncResult.firstNewConflictItem()->_file, LogStatusConflict, _syncResult.numNewConflictItems());
     }
     if (int errorCount = _syncResult.numErrorItems()) {
         createGuiLog(_syncResult.firstItemError()->_file, LogStatusError, errorCount);
@@ -461,9 +459,8 @@ void Folder::slotWatchedPathChanged(const QString &path)
 // own process. Therefore nothing needs to be done here!
 #else
     // Use the path to figure out whether it was our own change
-    const auto maxNotificationDelay = 15 * 1000;
-    qint64 time = _engine->timeSinceFileTouched(path);
-    if (time != -1 && time < maxNotificationDelay) {
+    if (_engine->wasFileTouched(path)) {
+        qCDebug(lcFolder) << "Changed path was touched by SyncEngine, ignoring:" << path;
         return;
     }
 #endif
@@ -721,10 +718,10 @@ void Folder::setDirtyNetworkLimits()
     _engine->setNetworkLimits(uploadLimit, downloadLimit);
 }
 
-
-void Folder::slotSyncError(const QString &err)
+void Folder::slotSyncError(const QString &message, ErrorCategory category)
 {
-    _syncResult.appendErrorString(err);
+    _syncResult.appendErrorString(message);
+    emit ProgressDispatcher::instance()->syncError(alias(), message, category);
 }
 
 void Folder::slotSyncStarted()
@@ -822,16 +819,6 @@ void Folder::slotEmitFinishedDelayed()
 {
     emit syncFinished(_syncResult);
 }
-
-
-void Folder::slotFolderDiscovered(bool, QString folderName)
-{
-    ProgressInfo pi;
-    pi._currentDiscoveredFolder = folderName;
-    emit progressInfo(pi);
-    ProgressDispatcher::instance()->setProgressInfo(alias(), pi);
-}
-
 
 // the progress comes without a folder and the valid path set. Add that here
 // and hand the result over to the progress dispatcher.

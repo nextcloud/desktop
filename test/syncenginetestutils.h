@@ -289,6 +289,7 @@ public:
     QString etag = generateEtag();
     QByteArray fileId = generateFileId();
     QByteArray checksums;
+    QByteArray extraDavProperties;
     qint64 size = 0;
     char contentChar = 'W';
 
@@ -360,6 +361,7 @@ public:
             xml.writeTextElement(ocUri, QStringLiteral("permissions"), fileInfo.isShared ? QStringLiteral("SRDNVCKW") : QStringLiteral("RDNVCKW"));
             xml.writeTextElement(ocUri, QStringLiteral("id"), fileInfo.fileId);
             xml.writeTextElement(ocUri, QStringLiteral("checksums"), fileInfo.checksums);
+            buffer.write(fileInfo.extraDavProperties);
             xml.writeEndElement(); // prop
             xml.writeTextElement(davUri, QStringLiteral("status"), "HTTP/1.1 200 OK");
             xml.writeEndElement(); // propstat
@@ -778,7 +780,7 @@ public:
     FakeCredentials(QNetworkAccessManager *qnam) : _qnam{qnam} { }
     virtual QString authType() const { return "test"; }
     virtual QString user() const { return "admin"; }
-    virtual QNetworkAccessManager* getQNAM() const { return _qnam; }
+    virtual QNetworkAccessManager *createQNAM() const { return _qnam; }
     virtual bool ready() const { return true; }
     virtual void fetchFromKeychain() { }
     virtual void askFromUser() { }
@@ -826,7 +828,7 @@ public:
     OCC::SyncEngine &syncEngine() const { return *_syncEngine; }
 
     FileModifier &localModifier() { return _localModifier; }
-    FileModifier &remoteModifier() { return _fakeQnam->currentRemoteState(); }
+    FileInfo &remoteModifier() { return _fakeQnam->currentRemoteState(); }
     FileInfo currentLocalState() {
         QDir rootDir{_tempDir.path()};
         FileInfo rootTemplate;

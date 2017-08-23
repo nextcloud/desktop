@@ -181,7 +181,7 @@
       </item>
       <item row="3" column="0">
        <widget class="QWidget" name="widget_editing" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_editing">
+        <layout class="QGridLayout" name="layout_editing">
          <property name="leftMargin">
           <number>0</number>
          </property>
@@ -194,14 +194,14 @@
          <property name="bottomMargin">
           <number>0</number>
          </property>
-         <item>
+         <item row="0" column="0">
           <widget class="QCheckBox" name="checkBox_editing">
            <property name="text">
             <string>Allow editing</string>
            </property>
           </widget>
          </item>
-         <item>
+         <item row="0" column="1">
           <spacer name="horizontalSpacer">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -213,6 +213,13 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="1" column="0">
+          <widget class="QCheckBox" name="checkBox_fileListing">
+           <property name="text">
+            <string>Show file listing</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>

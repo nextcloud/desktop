@@ -293,6 +293,13 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
     }
 #endif
 
+    /* We create a desktop.ini on Windows for the sidebar icon, make sure we don't sync them. */
+    rc = csync_fnmatch("Desktop.ini", bname, 0);
+    if (rc == 0) {
+        match = CSYNC_FILE_SILENTLY_EXCLUDED;
+        goto out;
+    }
+
     rc = csync_fnmatch(".owncloudsync.log*", bname, 0);
     if (rc == 0) {
         match = CSYNC_FILE_SILENTLY_EXCLUDED;
@@ -302,7 +309,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
     /* Always ignore conflict files, not only via the exclude list */
     rc = csync_fnmatch("*_conflict-*", bname, 0);
     if (rc == 0) {
-        match = CSYNC_FILE_SILENTLY_EXCLUDED;
+        match = CSYNC_FILE_EXCLUDE_CONFLICT;
         goto out;
     }
 
@@ -313,7 +320,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
         }
         rc = csync_fnmatch(conflict, path, 0);
         if (rc == 0) {
-            match = CSYNC_FILE_SILENTLY_EXCLUDED;
+            match = CSYNC_FILE_EXCLUDE_CONFLICT;
             SAFE_FREE(conflict);
             goto out;
         }

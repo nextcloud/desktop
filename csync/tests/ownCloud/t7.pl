@@ -102,17 +102,12 @@ system("echo '__modified' > ". localDir() . "normalDirectory_PERM_CKDNV_/canBeMo
 system("echo '__modified_' > ". localDir() . "readonlyDirectory_PERM_M_/canBeModified_PERM_W_.data");
 
 #5. Create a new file in a read only folder
-# (they should not be uploaded)
-createLocalFile( localDir() . "readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data", 105 );
-
-#6. Create a new file in a read only folder
 # (should be uploaded)
 createLocalFile( localDir() . "normalDirectory_PERM_CKDNV_/newFile_PERM_WDNV_.data", 106 );
 
 #do the sync
 csync();
 assertCsyncJournalOk(localDir());
-
 
 #1.
 # File should be recovered
@@ -139,17 +134,29 @@ system("rm " . localDir().'readonlyDirectory_PERM_M_/canotBeModified_PERM_DVN__c
 #4. File should be updated, that's tested by assertLocalAndRemoteDir
 
 #5.
+# the file should be in the server and local
+assert( -e localDir() . "normalDirectory_PERM_CKDNV_/newFile_PERM_WDNV_.data" );
+
+### Both side should still be the same
+assertLocalAndRemoteDir( '', 0);
+
+# Next test
+
+#6. Create a new file in a read only folder
+# (they should not be uploaded)
+createLocalFile( localDir() . "readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data", 105 );
+
+# error: can't upload to readonly
+csync(1);
+assertCsyncJournalOk(localDir());
+
+#6.
 # The file should not exist on the remote
 # TODO: test that the file is NOT on the server
 # but still be there
 assert( -e localDir() . "readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data" );
 # remove it so assertLocalAndRemoteDir succeed.
 unlink(localDir() . "readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data");
-
-#6.
-# the file should be in the server and local
-assert( -e localDir() . "normalDirectory_PERM_CKDNV_/newFile_PERM_WDNV_.data" );
-
 
 ### Both side should still be the same
 assertLocalAndRemoteDir( '', 0);
@@ -207,7 +214,8 @@ system("mv " . localDir().'readonlyDirectory_PERM_M_/subdir_PERM_CK_ ' . localDi
 #2. move a directory from read to read only  (move the directory from previous step)
 system("mv " . localDir().'normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_ ' . localDir().'readonlyDirectory_PERM_M_/moved_PERM_CK_'  );
 
-csync();
+# error: can't upload to readonly!
+csync(1);
 assertCsyncJournalOk(localDir());
 
 #1.

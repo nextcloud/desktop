@@ -22,10 +22,10 @@
 
 #include "utility.h"
 #include "ownsql.h"
+#include "syncjournalfilerecord.h"
 
 namespace OCC {
 class SyncJournalFileRecord;
-class SyncJournalErrorBlacklistRecord;
 
 /**
  * @brief Class that handles the sync database
@@ -71,8 +71,9 @@ public:
 
     static qint64 getPHash(const QString &);
 
-    void updateErrorBlacklistEntry(const SyncJournalErrorBlacklistRecord &item);
+    void setErrorBlacklistEntry(const SyncJournalErrorBlacklistRecord &item);
     void wipeErrorBlacklistEntry(const QString &file);
+    void wipeErrorBlacklistCategory(SyncJournalErrorBlacklistRecord::Category category);
     int wipeErrorBlacklist();
     int errorBlackListEntryCount();
 

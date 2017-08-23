@@ -25,19 +25,12 @@
 extern HINSTANCE g_hInst;
 extern long g_cDllRef;
 
-#define IDM_SHARE             0
-
-
+#define IDM_SHARE 0
+#define IDM_COPYLINK 1
+#define IDM_EMAILLINK 2
 
 OCContextMenu::OCContextMenu(void) 
     : m_cRef(1)
-    , m_pszMenuText(L"&Share")
-    , m_pszVerb("ocshare")
-    , m_pwszVerb(L"ocshare")
-    , m_pszVerbCanonicalName("OCShareViaOC")
-    , m_pwszVerbCanonicalName(L"OCShareViaOC")
-    , m_pszVerbHelpText("Share via ownCloud")
-    , m_pwszVerbHelpText(L"Share via ownCloud")
 {
     InterlockedIncrement(&g_cDllRef);
 }
@@ -48,9 +41,19 @@ OCContextMenu::~OCContextMenu(void)
 }
 
 
-void OCContextMenu::OnVerbDisplayFileName(HWND hWnd)
+void OCContextMenu::OnVerbShare(HWND hWnd)
 {
-    OCClientInterface::ShareObject(std::wstring(m_szSelectedFile));
+    OCClientInterface::RequestShare(std::wstring(m_szSelectedFile));
+}
+
+void OCContextMenu::OnVerbCopyLink(HWND hWnd)
+{
+    OCClientInterface::RequestCopyLink(std::wstring(m_szSelectedFile));
+}
+
+void OCContextMenu::OnVerbEmailLink(HWND hWnd)
+{
+    OCClientInterface::RequestEmailLink(std::wstring(m_szSelectedFile));
 }
 
 
@@ -164,29 +167,61 @@ IFACEMETHODIMP OCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
         return MAKE_HRESULT(SEVERITY_SUCCESS, 0, USHORT(0));
     }
 
-    InsertSeperator(hMenu, indexMenu);
-    indexMenu++;
+    InsertSeperator(hMenu, indexMenu++);
 
-    assert(!info.shareMenuTitle.empty());
-    MENUITEMINFO mii = { sizeof(mii) };
-    mii.fMask = MIIM_STRING | MIIM_FTYPE | MIIM_ID | MIIM_STATE;
-    mii.wID = idCmdFirst + IDM_SHARE;
-    mii.fType = MFT_STRING;
-    mii.dwTypeData = &info.shareMenuTitle[0];
-    mii.fState = MFS_ENABLED;
-    if (!InsertMenuItem(hMenu, indexMenu, TRUE, &mii))
+    HMENU hSubmenu = CreateMenu();
     {
-        return HRESULT_FROM_WIN32(GetLastError());
-    }
+        MENUITEMINFO mii = { sizeof(mii) };
+        mii.fMask = MIIM_SUBMENU | MIIM_FTYPE | MIIM_STRING;
+        mii.hSubMenu = hSubmenu;
+        mii.fType = MFT_STRING;
+        mii.dwTypeData = &info.contextMenuTitle[0];
 
-    indexMenu++;
-    InsertSeperator(hMenu, indexMenu);
+        if (!InsertMenuItem(hMenu, indexMenu++, TRUE, &mii))
+            return HRESULT_FROM_WIN32(GetLastError());
+    }
+    InsertSeperator(hMenu, indexMenu++);
+
+    UINT indexSubMenu = 0;
+    {
+        assert(!info.shareMenuTitle.empty());
+        MENUITEMINFO mii = { sizeof(mii) };
+        mii.fMask = MIIM_ID | MIIM_FTYPE | MIIM_STRING;
+        mii.wID = idCmdFirst + IDM_SHARE;
+        mii.fType = MFT_STRING;
+        mii.dwTypeData = &info.shareMenuTitle[0];
+
+        if (!InsertMenuItem(hSubmenu, indexSubMenu++, TRUE, &mii))
+            return HRESULT_FROM_WIN32(GetLastError());
+    }
+    {
+        assert(!info.copyLinkMenuTitle.empty());
+        MENUITEMINFO mii = { sizeof(mii) };
+        mii.fMask = MIIM_ID | MIIM_FTYPE | MIIM_STRING;
+        mii.wID = idCmdFirst + IDM_COPYLINK;
+        mii.fType = MFT_STRING;
+        mii.dwTypeData = &info.copyLinkMenuTitle[0];
+
+        if (!InsertMenuItem(hSubmenu, indexSubMenu++, TRUE, &mii))
+            return HRESULT_FROM_WIN32(GetLastError());
+    }
+    {
+        assert(!info.emailLinkMenuTitle.empty());
+        MENUITEMINFO mii = { sizeof(mii) };
+        mii.fMask = MIIM_ID | MIIM_FTYPE | MIIM_STRING;
+        mii.wID = idCmdFirst + IDM_EMAILLINK;
+        mii.fType = MFT_STRING;
+        mii.dwTypeData = &info.emailLinkMenuTitle[0];
+
+        if (!InsertMenuItem(hSubmenu, indexSubMenu++, TRUE, &mii))
+            return HRESULT_FROM_WIN32(GetLastError());
+    }
 
 
     // Return an HRESULT value with the severity set to SEVERITY_SUCCESS. 
     // Set the code value to the offset of the largest command identifier 
     // that was assigned, plus one (1).
-    return MAKE_HRESULT(SEVERITY_SUCCESS, 0, USHORT(IDM_SHARE + 1));
+    return MAKE_HRESULT(SEVERITY_SUCCESS, 0, USHORT(IDM_EMAILLINK + 1));
 }
 
 IFACEMETHODIMP OCContextMenu::InvokeCommand(LPCMINVOKECOMMANDINFO pici)
@@ -197,12 +232,16 @@ IFACEMETHODIMP OCContextMenu::InvokeCommand(LPCMINVOKECOMMANDINFO pici)
     if (HIWORD(((CMINVOKECOMMANDINFOEX*)pici)->lpVerbW))
     {
         // Is the verb supported by this context menu extension?
-        if (StrCmpIW(((CMINVOKECOMMANDINFOEX*)pici)->lpVerbW, m_pwszVerb) == 0)
-        {
-            OnVerbDisplayFileName(pici->hwnd);
+        if (StrCmpIW(((CMINVOKECOMMANDINFOEX*)pici)->lpVerbW, L"ocshare") == 0) {
+            OnVerbShare(pici->hwnd);
         }
-        else
-        {
+        else if (StrCmpIW(((CMINVOKECOMMANDINFOEX*)pici)->lpVerbW, L"occopylink") == 0) {
+            OnVerbCopyLink(pici->hwnd);
+        }
+        else if (StrCmpIW(((CMINVOKECOMMANDINFOEX*)pici)->lpVerbW, L"ocemaillink") == 0) {
+            OnVerbEmailLink(pici->hwnd);
+        }
+        else {
             // If the verb is not recognized by the context menu handler, it 
             // must return E_FAIL to allow it to be passed on to the other 
             // context menu handlers that might implement that verb.
@@ -216,12 +255,16 @@ IFACEMETHODIMP OCContextMenu::InvokeCommand(LPCMINVOKECOMMANDINFO pici)
     {
         // Is the command identifier offset supported by this context menu 
         // extension?
-        if (LOWORD(pici->lpVerb) == IDM_SHARE)
-        {
-            OnVerbDisplayFileName(pici->hwnd);
+        if (LOWORD(pici->lpVerb) == IDM_SHARE) {
+            OnVerbShare(pici->hwnd);
         }
-        else
-        {
+        else if (LOWORD(pici->lpVerb) == IDM_COPYLINK) {
+            OnVerbCopyLink(pici->hwnd);
+        }
+        else if (LOWORD(pici->lpVerb) == IDM_EMAILLINK) {
+            OnVerbEmailLink(pici->hwnd);
+        }
+        else {
             // If the verb is not recognized by the context menu handler, it 
             // must return E_FAIL to allow it to be passed on to the other 
             // context menu handlers that might implement that verb.
@@ -237,31 +280,33 @@ IFACEMETHODIMP OCContextMenu::GetCommandString(UINT_PTR idCommand,
 {
     HRESULT hr = E_INVALIDARG;
 
-    if (idCommand == IDM_SHARE)
-    {
-        switch (uFlags)
-        {
-        case GCS_HELPTEXTW:
-            // Only useful for pre-Vista versions of Windows that have a 
-            // Status bar.
-            hr = StringCchCopy(reinterpret_cast<PWSTR>(pszName), cchMax,
-                m_pwszVerbHelpText);
-            break;
-
-        case GCS_VERBW:
-            // GCS_VERBW is an optional feature that enables a caller to 
-            // discover the canonical name for the verb passed in through 
+    switch (idCommand) {
+    case IDM_SHARE:
+        if (uFlags == GCS_VERBW) {
+            // GCS_VERBW is an optional feature that enables a caller to
+            // discover the canonical name for the verb passed in through
             // idCommand.
             hr = StringCchCopy(reinterpret_cast<PWSTR>(pszName), cchMax,
-                m_pwszVerbCanonicalName);
-            break;
-
-        default:
-            hr = S_OK;
+                L"OCShareViaOC");
         }
+        break;
+    case IDM_COPYLINK:
+        if (uFlags == GCS_VERBW) {
+            hr = StringCchCopy(reinterpret_cast<PWSTR>(pszName), cchMax,
+                L"OCCopyLink");
+        }
+        break;
+    case IDM_EMAILLINK:
+        if (uFlags == GCS_VERBW) {
+            hr = StringCchCopy(reinterpret_cast<PWSTR>(pszName), cchMax,
+                L"OCEmailLink");
+        }
+        break;
+    default:
+        break;
     }
 
-    // If the command (idCommand) is not supported by this context menu 
+    // If the idCommand or uFlags is not supported by this context menu
     // extension handler, return E_INVALIDARG.
 
     return hr;

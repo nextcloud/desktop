@@ -41,6 +41,35 @@ public:
      */
     void reset();
 
+    /** Records the status of the sync run
+     */
+    enum Status {
+        /// Emitted once at start
+        Starting,
+
+        /**
+         * Emitted once without _currentDiscoveredFolder when it starts,
+         * then for each folder.
+         */
+        Discovery,
+
+        /// Emitted once when reconcile starts
+        Reconcile,
+
+        /// Emitted during propagation, with progress data
+        Propagation,
+
+        /**
+         * Emitted once when done
+         *
+         * Except when SyncEngine jumps directly to finalize() without going
+         * through slotFinished().
+         */
+        Done
+    };
+
+    Status status() const;
+
     /**
      * Called when propagation starts.
      *
@@ -140,6 +169,8 @@ public:
         friend class ProgressInfo;
     };
 
+    Status _status;
+
     struct OWNCLOUDSYNC_EXPORT ProgressItem
     {
         SyncFileItem _item;
@@ -217,6 +248,16 @@ namespace Progress {
     OWNCLOUDSYNC_EXPORT bool isIgnoredKind(SyncFileItem::Status);
 }
 
+/** Type of error
+ *
+ * Used for ProgressDispatcher::syncError. May trigger error interactivity
+ * in IssuesWidget.
+ */
+enum class ErrorCategory {
+    Normal,
+    InsufficientRemoteStorage,
+};
+
 /**
  * @file progressdispatcher.h
  * @brief A singleton class to provide sync progress information to other gui classes.
@@ -248,6 +289,11 @@ signals:
      * @brief: the item was completed by a job
      */
     void itemCompleted(const QString &folder, const SyncFileItemPtr &item);
+
+    /**
+     * @brief A new folder-wide sync error was seen.
+     */
+    void syncError(const QString &folder, const QString &message, ErrorCategory category);
 
 protected:
     void setProgressInfo(const QString &folder, const ProgressInfo &progress);
