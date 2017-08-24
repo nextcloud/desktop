@@ -667,11 +667,8 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
     _needsUpdate = true;
 
     if (other) {
-        item->log._other_etag = other->etag;
-        item->log._other_fileId = other->file_id;
-        item->log._other_instruction = other->instruction;
-        item->log._other_modtime = other->modtime;
-        item->log._other_size = other->size;
+        item->_previousModtime = other->modtime;
+        item->_previousSize = other->size;
     }
 
     _syncItemMap.insert(key, item);
@@ -1293,11 +1290,16 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
                 (*it)->_instruction = CSYNC_INSTRUCTION_CONFLICT;
                 (*it)->_direction = SyncFileItem::Down;
                 (*it)->_isRestoration = true;
-                // take the things to write to the db from the "other" node (i.e: info from server)
-                (*it)->_modtime = (*it)->log._other_modtime;
-                (*it)->_size = (*it)->log._other_size;
-                (*it)->_fileId = (*it)->log._other_fileId;
-                (*it)->_etag = (*it)->log._other_etag;
+                // Take the things to write to the db from the "other" node (i.e: info from server).
+                // Do a lookup into the csync remote tree to get the metadata we need to restore.
+                ASSERT(_csync_ctx->status != CSYNC_STATUS_INIT);
+                auto csyncIt = _csync_ctx->remote.files.find((*it)->_file.toUtf8());
+                if (csyncIt != _csync_ctx->remote.files.end()) {
+                    (*it)->_modtime = csyncIt->second->modtime;
+                    (*it)->_size = csyncIt->second->size;
+                    (*it)->_fileId = csyncIt->second->file_id;
+                    (*it)->_etag = csyncIt->second->etag;
+                }
                 (*it)->_errorString = tr("Not allowed to upload this file because it is read-only on the server, restoring");
                 continue;
             }

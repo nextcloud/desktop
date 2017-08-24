@@ -350,8 +350,8 @@ void PropagateDownloadFile::start()
     // compare the remote checksum to the local one.
     // Maybe it's not a real conflict and no download is necessary!
     if (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT
-        && _item->_size == _item->log._other_size
-        && _item->_modtime == _item->log._other_modtime
+        && _item->_size == _item->_previousSize
+        && _item->_modtime == _item->_previousModtime
         && !_item->_checksumHeader.isEmpty()) {
         qCDebug(lcPropagateDownload) << _item->_file << "may not need download, computing checksum";
         auto computeChecksum = new ComputeChecksum(this);
@@ -813,8 +813,8 @@ void PropagateDownloadFile::downloadFinished()
         // phase by comparing size and mtime to the previous values. This
         // is necessary to avoid overwriting user changes that happened between
         // the discovery phase and now.
-        const qint64 expectedSize = _item->log._other_size;
-        const time_t expectedMtime = _item->log._other_modtime;
+        const qint64 expectedSize = _item->_previousSize;
+        const time_t expectedMtime = _item->_previousModtime;
         if (!FileSystem::verifyFileUnchanged(fn, expectedSize, expectedMtime)) {
             propagator()->_anotherSyncNeeded = true;
             done(SyncFileItem::SoftError, tr("File has changed since discovery"));
