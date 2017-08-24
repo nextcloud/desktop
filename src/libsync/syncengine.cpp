@@ -412,8 +412,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
     }
     if (!file->remotePerm.isEmpty()) {
         item->_remotePerm = file->remotePerm;
-        if (remote)
-            _remotePerms[item->_file] = item->_remotePerm;
     }
 
     /* The flag "serverHasIgnoredFiles" is true if item in question is a directory
@@ -933,8 +931,6 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _hasForwardInTimeFiles = false;
     _backInTimeFiles = 0;
     bool walkOk = true;
-    _remotePerms.clear();
-    _remotePerms.reserve(_csync_ctx->remote.files.size());
     _seenFiles.clear();
     _temporarilyUnavailablePaths.clear();
     _renamedFolders.clear();
@@ -947,13 +943,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         qCWarning(lcEngine) << "Error in remote treewalk.";
     }
 
-    if (!_csync_ctx->remote.root_perms.isEmpty()) {
-        _remotePerms[QLatin1String("")] = _csync_ctx->remote.root_perms;
-        qCInfo(lcEngine) << "Permissions of the root folder: " << _remotePerms[QLatin1String("")];
-    }
-
-    // Re-init the csync context to free memory
-    _csync_ctx->reinitialize();
+    qCInfo(lcEngine) << "Permissions of the root folder: " << _csync_ctx->remote.root_perms;
 
     // The map was used for merging trees, convert it to a list:
     SyncFileItemVector syncItems = _syncItemMap.values().toVector();
@@ -1015,6 +1005,9 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     // make sure everything is allowed
     checkForPermission(syncItems);
+
+    // Re-init the csync context to free memory
+    _csync_ctx->reinitialize();
 
     // To announce the beginning of the sync
     emit aboutToPropagate(syncItems);
@@ -1150,7 +1143,6 @@ void SyncEngine::finalize(bool success)
 
     // Delete the propagator only after emitting the signal.
     _propagator.clear();
-    _remotePerms.clear();
     _seenFiles.clear();
     _temporarilyUnavailablePaths.clear();
     _renamedFolders.clear();
@@ -1460,7 +1452,18 @@ QByteArray SyncEngine::getPermissions(const QString &file) const
             return rx.cap(1).toLatin1();
         }
     }
-    return _remotePerms.value(file);
+
+    // Fetch from the csync context while we still have it.
+    ASSERT(_csync_ctx->status != CSYNC_STATUS_INIT);
+
+    if (file == QLatin1String(""))
+        return _csync_ctx->remote.root_perms;
+
+    auto it = _csync_ctx->remote.files.find(file.toUtf8());
+    if (it != _csync_ctx->remote.files.end()) {
+        return it->second->remotePerm;
+    }
+    return QByteArray();
 }
 
 void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)
