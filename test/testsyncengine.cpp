@@ -441,8 +441,8 @@ private slots:
             QCOMPARE(a1->_size, quint64(5));
 
             QCOMPARE(Utility::qDateTimeFromTime_t(a1->_modtime), changedMtime);
-            QCOMPARE(a1->log._other_size, quint64(4));
-            QCOMPARE(Utility::qDateTimeFromTime_t(a1->log._other_modtime), initialMtime);
+            QCOMPARE(a1->_previousSize, quint64(4));
+            QCOMPARE(Utility::qDateTimeFromTime_t(a1->_previousModtime), initialMtime);
 
             // b2: should have remote size and modtime
             QVERIFY(b1);
@@ -450,8 +450,8 @@ private slots:
             QCOMPARE(b1->_direction, SyncFileItem::Down);
             QCOMPARE(b1->_size, quint64(17));
             QCOMPARE(Utility::qDateTimeFromTime_t(b1->_modtime), changedMtime);
-            QCOMPARE(b1->log._other_size, quint64(16));
-            QCOMPARE(Utility::qDateTimeFromTime_t(b1->log._other_modtime), initialMtime);
+            QCOMPARE(b1->_previousSize, quint64(16));
+            QCOMPARE(Utility::qDateTimeFromTime_t(b1->_previousModtime), initialMtime);
 
             // c1: conflicts are downloads, so remote size and modtime
             QVERIFY(c1);
@@ -459,8 +459,8 @@ private slots:
             QCOMPARE(c1->_direction, SyncFileItem::None);
             QCOMPARE(c1->_size, quint64(25));
             QCOMPARE(Utility::qDateTimeFromTime_t(c1->_modtime), changedMtime2);
-            QCOMPARE(c1->log._other_size, quint64(26));
-            QCOMPARE(Utility::qDateTimeFromTime_t(c1->log._other_modtime), changedMtime);
+            QCOMPARE(c1->_previousSize, quint64(26));
+            QCOMPARE(Utility::qDateTimeFromTime_t(c1->_previousModtime), changedMtime);
         });
 
         QVERIFY(fakeFolder.syncOnce());

@@ -101,6 +101,8 @@ public:
         , _modtime(0)
         , _size(0)
         , _inode(0)
+        , _previousSize(0)
+        , _previousModtime(0)
     {
     }
 
@@ -217,17 +219,12 @@ public:
     // - for conflicts (remote checksum) (what about eval_rename/new reconcile?)
     QByteArray _checksumHeader;
 
+    // The size and modtime of the file getting overwritten (on the disk for downloads, on the server for uploads).
+    quint64 _previousSize;
+    time_t _previousModtime;
+
     QString _directDownloadUrl;
     QString _directDownloadCookies;
-
-    struct
-    {
-        quint64 _other_size;
-        time_t _other_modtime;
-        QByteArray _other_etag;
-        QByteArray _other_fileId;
-        enum csync_instructions_e _other_instruction BITFIELD(16);
-    } log;
 };
 
 typedef QSharedPointer<SyncFileItem> SyncFileItemPtr;

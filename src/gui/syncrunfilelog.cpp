@@ -161,11 +161,11 @@ void SyncRunFileLog::logItem(const SyncFileItem &item)
     _out << item._status << L;
     _out << item._errorString << L;
     _out << QString::number(item._httpErrorCode) << L;
-    _out << QString::number(item.log._other_size) << L;
-    _out << QString::number(item.log._other_modtime) << L;
-    _out << item.log._other_etag << L;
-    _out << item.log._other_fileId << L;
-    _out << instructionToStr(item.log._other_instruction) << L;
+    _out << QString::number(item._previousSize) << L;
+    _out << QString::number(item._previousModtime) << L;
+    _out /* << other etag (removed) */ << L;
+    _out /* << other fileId (removed) */ << L;
+    _out /* << other instruction (removed) */ << L;
 
     _out << endl;
 }
