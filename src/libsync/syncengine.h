@@ -259,9 +259,6 @@ private:
     int _downloadLimit;
     SyncOptions _syncOptions;
 
-    // hash containing the permissions on the remote directory
-    QHash<QString, QByteArray> _remotePerms;
-
     /// Hook for computing checksums from csync_update
     CSyncChecksumHook _checksum_hook;
 
