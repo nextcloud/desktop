@@ -54,7 +54,7 @@ public:
     void start() Q_DECL_OVERRIDE;
     void abort() Q_DECL_OVERRIDE;
 
-    bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return !_item->_isDirectory; }
+    bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return !_item->isDirectory(); }
 
 private slots:
     void slotDeleteJobFinished();

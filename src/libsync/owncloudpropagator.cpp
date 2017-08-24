@@ -291,7 +291,7 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
     PropagateItemJob *newJob = NULL;
 
     if (httpStatusCode == 403 && propagator()->isInSharedDirectory(_item->_file)) {
-        if (!_item->_isDirectory) {
+        if (!_item->isDirectory()) {
             SyncFileItemPtr downloadItem(new SyncFileItem(*_item));
             if (downloadItem->_instruction == CSYNC_INSTRUCTION_NEW
                 || downloadItem->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
@@ -363,7 +363,7 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
             return new PropagateRemoteDelete(this, item);
     case CSYNC_INSTRUCTION_NEW:
     case CSYNC_INSTRUCTION_TYPE_CHANGE:
-        if (item->_isDirectory) {
+        if (item->isDirectory()) {
             if (item->_direction == SyncFileItem::Down) {
                 auto job = new PropagateLocalMkdir(this, item);
                 job->setDeleteExistingFile(deleteExisting);
@@ -439,7 +439,7 @@ void OwncloudPropagator::start(const SyncFileItemVector &items)
                     delDirJob->increaseAffectedCount();
                 }
                 continue;
-            } else if (item->_isDirectory
+            } else if (item->isDirectory()
                 && (item->_instruction == CSYNC_INSTRUCTION_NEW
                        || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE)) {
                 // create a new directory within a deleted directory? That can happen if the directory
@@ -463,7 +463,7 @@ void OwncloudPropagator::start(const SyncFileItemVector &items)
             directories.pop();
         }
 
-        if (item->_isDirectory) {
+        if (item->isDirectory()) {
             PropagateDirectory *dir = new PropagateDirectory(this, item);
 
             if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE

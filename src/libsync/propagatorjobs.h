@@ -91,6 +91,6 @@ public:
     {
     }
     void start() Q_DECL_OVERRIDE;
-    JobParallelism parallelism() Q_DECL_OVERRIDE { return _item->_isDirectory ? WaitForFinished : FullParallelism; }
+    JobParallelism parallelism() Q_DECL_OVERRIDE { return _item->isDirectory() ? WaitForFinished : FullParallelism; }
 };
 }

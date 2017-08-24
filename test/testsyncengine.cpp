@@ -309,7 +309,7 @@ private slots:
         QSet<QString> seen;
         for(const QList<QVariant> &args : completeSpy) {
             auto item = args[0].value<SyncFileItemPtr>();
-            qDebug() << item->_file << item->_isDirectory << item->_status;
+            qDebug() << item->_file << item->isDirectory() << item->_status;
             QVERIFY(!seen.contains(item->_file)); // signal only sent once per item
             seen.insert(item->_file);
             if (item->_file == "Y/Z/d2") {
