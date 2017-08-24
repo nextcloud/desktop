@@ -279,6 +279,23 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
             ac->setEnabled(false);
         }
 
+        qCInfo(lcAccountSettings) << "Display Client Side Encryption Options"
+            << accountsState()->account()->hasClientSideEncryption();
+
+            if (accountsState()->account()->hasClientSideEncryption()) {
+            ac = menu->addAction(tr("Encrypt"));
+            connect(ac, &QAction::triggered, [this, &index](bool triggered) {
+                Q_UNUSED(triggered);
+
+            });
+
+            ac = menu->addAction(tr("Decrypt"));
+            connect(ac, &QAction::triggered, [this, &index](bool triggered) {
+                Q_UNUSED(triggered);
+
+            });
+
+        }
         menu->exec(QCursor::pos());
 
         return;
@@ -700,6 +717,15 @@ void AccountSettings::slotAccountStateChanged()
         } else {
             _toggleSignInOutAction->setText(tr("Log out"));
         }
+    }
+
+    if (state == AccountState::State::Connected) {
+        /* TODO: We should probably do something better here.
+         * Verify if the user has a private key already uploaded to the server,
+         * if it has, do not offer to create one.
+         */
+        qCInfo(lcAccountSettings) << "Accout" << accountsState()->account()->displayName()
+            << "Client Side Encryption" << accountsState()->account()->hasClientSideEncryption();
     }
 }
 

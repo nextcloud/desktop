@@ -256,7 +256,7 @@ void ConnectionValidator::checkClientSideEncryption()
             }
         }
 
-        // _account->setHasClientSideEncryption(hasClientSideEncryption);
+        _account->setHasClientSideEncryption(hasClientSideEncryption);
     });
     job->start();
 }

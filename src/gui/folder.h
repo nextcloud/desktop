@@ -62,6 +62,8 @@ public:
     bool paused;
     /// whether the folder syncs hidden files
     bool ignoreHiddenFiles;
+    /// the folder has client side encryption
+    bool isClientSideEncrypted;
 
     /// Saves the folder definition, creating a new settings group.
     static void save(QSettings &settings, const FolderDefinition &folder);

@@ -467,5 +467,14 @@ void Account::setNonShib(bool nonShib)
     }
 }
 
+bool Account::hasClientSideEncryption() const
+{
+    return _hasClientSideEncryption;
+}
+
+void Account::setHasClientSideEncryption(bool cse)
+{
+    _hasClientSideEncryption = cse;
+}
 
 } // namespace OCC
