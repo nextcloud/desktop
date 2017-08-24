@@ -128,6 +128,7 @@ protected slots:
 private:
     void reportResult(Status status);
     void checkServerCapabilities();
+    void checkClientSideEncryption();
     void fetchUser();
 
     /** Sets the account's server version
