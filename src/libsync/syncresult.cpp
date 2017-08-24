@@ -132,7 +132,7 @@ void SyncResult::processCompletedItem(const SyncFileItemPtr &item)
         _foundFilesNotSynced = true;
     }
 
-    if (item->_isDirectory && (item->_instruction == CSYNC_INSTRUCTION_NEW
+    if (item->isDirectory() && (item->_instruction == CSYNC_INSTRUCTION_NEW
                                   || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE
                                   || item->_instruction == CSYNC_INSTRUCTION_REMOVE
                                   || item->_instruction == CSYNC_INSTRUCTION_RENAME)) {

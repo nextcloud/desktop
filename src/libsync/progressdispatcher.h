@@ -103,7 +103,7 @@ public:
     /** Return true if the size needs to be taken in account in the total amount of time */
     static inline bool isSizeDependent(const SyncFileItem &item)
     {
-        return !item._isDirectory && (item._instruction == CSYNC_INSTRUCTION_CONFLICT
+        return !item.isDirectory() && (item._instruction == CSYNC_INSTRUCTION_CONFLICT
                                          || item._instruction == CSYNC_INSTRUCTION_SYNC
                                          || item._instruction == CSYNC_INSTRUCTION_NEW
                                          || item._instruction == CSYNC_INSTRUCTION_TYPE_CHANGE);

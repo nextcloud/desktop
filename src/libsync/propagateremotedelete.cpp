@@ -120,7 +120,7 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
         return;
     }
 
-    propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->_isDirectory);
+    propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory());
     propagator()->_journal->commit("Remote Remove");
     done(SyncFileItem::Success);
 }

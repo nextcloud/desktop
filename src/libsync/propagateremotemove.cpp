@@ -187,7 +187,7 @@ void PropagateRemoteMove::finalize()
         return;
     }
 
-    if (_item->_isDirectory) {
+    if (_item->isDirectory()) {
         if (!adjustSelectiveSync(propagator()->_journal, _item->_file, _item->_renameTarget)) {
             done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
             return;

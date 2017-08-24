@@ -840,10 +840,10 @@ void Folder::slotTransmissionProgress(const ProgressInfo &pi)
 void Folder::slotItemCompleted(const SyncFileItemPtr &item)
 {
     // add new directories or remove gone away dirs to the watcher
-    if (item->_isDirectory && item->_instruction == CSYNC_INSTRUCTION_NEW) {
+    if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_NEW) {
         FolderMan::instance()->addMonitorPath(alias(), path() + item->_file);
     }
-    if (item->_isDirectory && item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+    if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
         FolderMan::instance()->removeMonitorPath(alias(), path() + item->_file);
     }
 
