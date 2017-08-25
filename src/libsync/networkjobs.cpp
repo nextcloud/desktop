@@ -800,4 +800,36 @@ bool JsonApiJob::finished()
     return true;
 }
 
+DeleteApiJob::DeleteApiJob(AccountPtr account, const QString &path, QObject *parent)
+    : AbstractNetworkJob(account, path, parent)
+{
+
+}
+
+void DeleteApiJob::start()
+{
+    QNetworkRequest req;
+    req.setRawHeader("OCS-APIREQUEST", "true");
+    QUrl url = Utility::concatUrlPath(account()->url(), path());
+    sendRequest("DELETE", url, req);
+    AbstractNetworkJob::start();
+}
+
+bool DeleteApiJob::finished()
+{
+    qCInfo(lcJsonApiJob) << "JsonApiJob of" << reply()->request().url() << "FINISHED WITH STATUS"
+                         << reply()->error()
+                         << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
+
+    int statusCode = 0;
+
+    if (reply()->error() != QNetworkReply::NoError) {
+        qCWarning(lcJsonApiJob) << "Network error: " << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        emit result(statusCode);
+        return true;
+    }
+
+    const auto replyData = QString::fromUtf8(reply()->readAll());
+    qCInfo(lcJsonApiJob()) << "TMX Delete Job" << replyData;
+}
 } // namespace OCC

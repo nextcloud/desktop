@@ -41,6 +41,27 @@ private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
 };
 
+/**
+ * @brief sends a DELETE http request to a url.
+ *
+ * See Nextcloud API usage for the possible DELETE requests.
+ *
+ * This does *not* delete files, it does a http request.
+ */
+class OWNCLOUDSYNC_EXPORT DeleteApiJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    explicit DeleteApiJob(AccountPtr account, const QString &path, QObject *parent = 0);
+    void start() override;
+
+signals:
+    void result(int httpCode);
+
+private slots:
+    virtual bool finished() override;
+};
+
 struct ExtraFolderInfo {
     QByteArray fileId;
     qint64 size = -1;
