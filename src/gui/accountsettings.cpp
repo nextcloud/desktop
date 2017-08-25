@@ -46,6 +46,7 @@
 #include <QKeySequence>
 #include <QIcon>
 #include <QVariant>
+#include <QJsonDocument>
 #include <QToolTip>
 #include <qstringlistmodel.h>
 #include <qpropertyanimation.h>
@@ -274,21 +275,30 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         if (!QFile::exists(fileName)) {
             ac->setEnabled(false);
         }
+        auto fileId = _model->data(index, FolderStatusModel::FileIdRole).toByteArray();
 
-        qCInfo(lcAccountSettings) << "Display Client Side Encryption Options"
-            << accountsState()->account()->hasClientSideEncryption();
-
-            if (accountsState()->account()->hasClientSideEncryption()) {
+        if (accountsState()->account()->hasClientSideEncryption()) {
             ac = menu->addAction(tr("Encrypt"));
-            connect(ac, &QAction::triggered, [this, &index](bool triggered) {
+            connect(ac, &QAction::triggered, [this, &fileId](bool triggered) {
                 Q_UNUSED(triggered);
+                auto job = new OCC::JsonApiJob(accountsState()->account(),
+                    "ocs/v2.php/apps/client_side_encryption/api/v1/encrypted/" + QString(fileId));
 
+                connect(job, &OCC::JsonApiJob::jsonReceived, [this](const QJsonDocument& json, int httpResponse) {
+                    qCInfo(lcAccountSettings) << "Encrypt Http Response" << httpResponse;
+                });
+                job->start();
             });
 
             ac = menu->addAction(tr("Decrypt"));
-            connect(ac, &QAction::triggered, [this, &index](bool triggered) {
+            connect(ac, &QAction::triggered, [this, &fileId](bool triggered) {
                 Q_UNUSED(triggered);
-
+                auto job = new OCC::DeleteApiJob(accountsState()->account(),
+                    "ocs/v2.php/apps/client_side_encryption/api/v1/encrypted/" + QString(fileId));
+                connect(job, &OCC::DeleteApiJob::result, [this](int httpResponse) {
+                    qCInfo(lcAccountSettings) << "Decrypt Http Response" << httpResponse;
+                });
+                job->start();
             });
 
         }
