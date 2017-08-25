@@ -30,6 +30,7 @@
 #include "accountmanager.h"
 #include "owncloudsetupwizard.h"
 #include "creds/abstractcredentials.h"
+#include "creds/httpcredentialsgui.h"
 #include "tooltipupdater.h"
 #include "filesystem.h"
 
@@ -69,6 +70,42 @@ static const char progressBarStyleC[] =
     "background-color: %1; width: 1px;"
     "}";
 
+/**
+ * Adjusts the mouse cursor based on the region it is on over the folder tree view.
+ *
+ * Used to show that one can click the red error list box by changing the cursor
+ * to the pointing hand.
+ */
+class MouseCursorChanger : public QObject
+{
+    Q_OBJECT
+public:
+    MouseCursorChanger(QObject *parent)
+        : QObject(parent)
+    {
+    }
+
+    QTreeView *folderList;
+    FolderStatusModel *model;
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override
+    {
+        if (event->type() == QEvent::HoverMove) {
+            Qt::CursorShape shape = Qt::ArrowCursor;
+            auto pos = folderList->mapFromGlobal(QCursor::pos());
+            auto index = folderList->indexAt(pos);
+            if (model->classify(index) == FolderStatusModel::RootFolder
+                && (FolderStatusDelegate::errorsListRect(folderList->visualRect(index)).contains(pos)
+                    || FolderStatusDelegate::optionsButtonRect(folderList->visualRect(index),folderList->layoutDirection()).contains(pos))) {
+                shape = Qt::PointingHandCursor;
+            }
+            folderList->setCursor(shape);
+        }
+        return QObject::eventFilter(watched, event);
+    }
+};
+
 AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::AccountSettings)
@@ -93,6 +130,13 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     ui->_folderList->setMinimumWidth(300);
 #endif
     new ToolTipUpdater(ui->_folderList);
+
+    auto mouseCursorChanger = new MouseCursorChanger(this);
+    mouseCursorChanger->folderList = ui->_folderList;
+    mouseCursorChanger->model = _model;
+    ui->_folderList->setMouseTracking(true);
+    ui->_folderList->setAttribute(Qt::WA_Hover, true);
+    ui->_folderList->installEventFilter(mouseCursorChanger);
 
     createAccountToolbox();
     connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState *)),
@@ -137,8 +181,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     ui->connectLabel->setText(tr("No account configured."));
 
-    connect(_accountState, SIGNAL(stateChanged(int)), SLOT(slotAccountStateChanged(int)));
-    slotAccountStateChanged(_accountState->state());
+    connect(_accountState, &AccountState::stateChanged, this, &AccountSettings::slotAccountStateChanged);
+    slotAccountStateChanged();
 
     connect(&_quotaInfo, SIGNAL(quotaUpdated(qint64, qint64)),
         this, SLOT(slotUpdateQuota(qint64, qint64)));
@@ -301,6 +345,10 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
             slotCustomContextMenuRequested(pos);
             return;
         }
+        if (FolderStatusDelegate::errorsListRect(tv->visualRect(indx)).contains(pos)) {
+            emit showIssuesList(_model->data(indx, FolderStatusDelegate::FolderAliasRole).toString());
+            return;
+        }
 
         // Expand root items on single click
         if (_accountState && _accountState->state() == AccountState::Connected) {
@@ -348,6 +396,7 @@ void AccountSettings::slotFolderWizardAccepted()
             }
         }
         FileSystem::setFolderMinimumPermissions(definition.localPath);
+        Utility::setupFavLink(definition.localPath);
     }
 
     /* take the value from the definition of already existing folders. All folders have
@@ -575,8 +624,9 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
     }
 }
 
-void AccountSettings::slotAccountStateChanged(int state)
+void AccountSettings::slotAccountStateChanged()
 {
+    int state = _accountState ? _accountState->state() : AccountState::Disconnected;
     if (_accountState) {
         ui->sslButton->updateAccountState(_accountState);
         AccountPtr account = _accountState->account();
@@ -607,6 +657,20 @@ void AccountSettings::slotAccountStateChanged(int state)
             showConnectionLabel(tr("Server %1 is currently in maintenance mode.").arg(server));
         } else if (state == AccountState::SignedOut) {
             showConnectionLabel(tr("Signed out from %1.").arg(serverWithUser));
+        } else if (state == AccountState::AskingCredentials) {
+            QUrl url;
+            if (auto cred = qobject_cast<HttpCredentialsGui *>(account->credentials())) {
+                connect(cred, &HttpCredentialsGui::authorisationLinkChanged,
+                    this, &AccountSettings::slotAccountStateChanged, Qt::UniqueConnection);
+                url = cred->authorisationLink();
+            }
+            if (url.isValid()) {
+                showConnectionLabel(tr("Obtaining authorization from the browser. "
+                                       "<a href='%1'>Click here</a> to re-open the browser.")
+                                        .arg(url.toString(QUrl::FullyEncoded)));
+            } else {
+                showConnectionLabel(tr("Connecting to %1...").arg(serverWithUser));
+            }
         } else {
             showConnectionLabel(tr("No connection to %1 at %2.")
                                     .arg(Utility::escape(Theme::instance()->appNameGUI()), server),
@@ -741,9 +805,12 @@ void AccountSettings::refreshSelectiveSyncStatus()
         auto anim = new QPropertyAnimation(ui->selectiveSyncStatus, "maximumHeight", ui->selectiveSyncStatus);
         anim->setEndValue(shouldBeVisible ? hint.height() : 0);
         anim->start(QAbstractAnimation::DeleteWhenStopped);
-        if (!shouldBeVisible) {
-            connect(anim, SIGNAL(finished()), ui->selectiveSyncStatus, SLOT(hide()));
-        }
+        connect(anim, &QPropertyAnimation::finished, [this, shouldBeVisible]() {
+            ui->selectiveSyncStatus->setMaximumHeight(QWIDGETSIZE_MAX);
+            if (!shouldBeVisible) {
+                ui->selectiveSyncStatus->hide();
+            }
+        });
     }
 }
 
@@ -808,3 +875,5 @@ bool AccountSettings::event(QEvent *e)
 }
 
 } // namespace OCC
+
+#include "accountsettings.moc"

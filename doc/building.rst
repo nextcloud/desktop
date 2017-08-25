@@ -30,10 +30,10 @@ you the exact sources from which the binary packages are built. These are
 hosted on the `ownCloud repository from OBS`_. Go to the `Index of 
 repositories`_ to see all the Linux client repos.
 
-1. At the `bottom of the page for each distribution 
+1. The source RPMs for CentOS, RHEL, Fedora, SLES, and openSUSE are at the `bottom of the page for each distribution 
    <https://software.opensuse.org/download/package?project=isv:ownCloud:desktop&
-   package=owncloud-client>`_ is a "Grab binary packages directly" section. 
-   These contain source RPMs for CentOS, RHEL, Fedora, SLES, and openSUSE. 
+   package=owncloud-client>`
+   the sources for DEB and Ubuntu based distributions are at e.g. http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Ubuntu_16.04/
    
    To get the .deb source packages add the source 
    repo for your Debian or Ubuntu version, like this example for Debian 8 
@@ -120,6 +120,7 @@ follow `Windows Installer Build (Cross-Compile)`_ instead.
 
    * Make sure that you have CMake_ and Git_.
    * Download the Qt_ MinGW package. You will use the MinGW version bundled with it.
+   * Download an `OpenSSL Windows Build`_ (the non-"Light" version)
 
 2. Get the QtKeychain_ sources as well as the latest versions of the ownCloud client
    from Git as follows::
@@ -129,10 +130,11 @@ follow `Windows Installer Build (Cross-Compile)`_ instead.
 
 3. Open the Qt MinGW shortcut console from the Start Menu
 
-4. Make sure that your qtkeychain source directories are in your PATH. This will
-   allow CMake to find the library and headers, as well as allow the ownCloud
-   client to find the DLLs at runtime::
+4. Make sure that OpenSSL's ``bin`` directory as well as your qtkeychain source
+   directories are in your PATH. This will allow CMake to find the library and
+   headers, as well as allow the ownCloud client to find the DLLs at runtime::
 
+    set PATH=C:\<OpenSSL Install Dir>\bin;%PATH%
     set PATH=C:\<qtkeychain Clone Dir>;%PATH%
 
 5. Build qtkeychain **directly in the source directory** so that the DLL is built
@@ -277,6 +279,7 @@ The following are known cmake parameters:
 .. _Git: http://git-scm.com
 .. _MacPorts: http://www.macports.org
 .. _Homebrew: http://mxcl.github.com/homebrew/
+.. _OpenSSL Windows Build: http://slproweb.com/products/Win32OpenSSL.html
 .. _Qt: http://www.qt.io/download
 .. _Microsoft Authenticode: https://msdn.microsoft.com/en-us/library/ie/ms537361%28v=vs.85%29.aspx
 .. _QtKeychain: https://github.com/frankosterfeld/qtkeychain

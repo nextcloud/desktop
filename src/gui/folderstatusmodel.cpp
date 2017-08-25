@@ -226,6 +226,10 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return f->shortGuiLocalPath();
     case FolderStatusDelegate::FolderSecondPathRole:
         return f->remotePath();
+    case FolderStatusDelegate::FolderConflictMsg:
+        return (f->syncResult().numNewConflictItems() + f->syncResult().numOldConflictItems() > 0)
+            ? QStringList(tr("There are unresolved conflicts. Click for details."))
+            : QStringList();
     case FolderStatusDelegate::FolderErrorMsg:
         return f->syncResult().errorStrings();
     case FolderStatusDelegate::SyncRunning:
@@ -891,11 +895,20 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
           << FolderStatusDelegate::WarningCount
           << Qt::ToolTipRole;
 
-    if (!progress._currentDiscoveredFolder.isEmpty()) {
+    if (progress.status() == ProgressInfo::Discovery
+        && !progress._currentDiscoveredFolder.isEmpty()) {
         pi->_overallSyncString = tr("Checking for changes in '%1'").arg(progress._currentDiscoveredFolder);
         emit dataChanged(index(folderIndex), index(folderIndex), roles);
         return;
     }
+
+    if (progress.status() == ProgressInfo::Reconcile) {
+        pi->_overallSyncString = tr("Reconciling changes");
+        emit dataChanged(index(folderIndex), index(folderIndex), roles);
+        return;
+    }
+
+    // Status is Starting, Propagation or Done
 
     if (!progress._lastCompletedItem.isEmpty()
         && Progress::isWarningKind(progress._lastCompletedItem._status)) {

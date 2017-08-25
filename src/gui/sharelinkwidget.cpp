@@ -19,6 +19,7 @@
 #include "capabilities.h"
 
 #include "sharemanager.h"
+#include "guiutility.h"
 
 #include "QProgressIndicator.h"
 #include <QBuffer>
@@ -67,7 +68,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     _pi_editing = new QProgressIndicator();
     _ui->horizontalLayout_create->addWidget(_pi_create);
     _ui->horizontalLayout_password->addWidget(_pi_password);
-    _ui->horizontalLayout_editing->addWidget(_pi_editing);
+    _ui->layout_editing->addWidget(_pi_editing, 0, 2);
     _ui->horizontalLayout_expire->insertWidget(_ui->horizontalLayout_expire->count() - 1, _pi_date);
 
     connect(_ui->nameLineEdit, SIGNAL(returnPressed()), SLOT(slotShareNameEntered()));
@@ -80,7 +81,8 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     connect(_ui->pushButton_setPassword, SIGNAL(clicked(bool)), SLOT(slotPasswordReturnPressed()));
     connect(_ui->checkBox_expire, SIGNAL(clicked()), this, SLOT(slotCheckBoxExpireClicked()));
     connect(_ui->calendar, SIGNAL(dateChanged(QDate)), SLOT(slotExpireDateChanged(QDate)));
-    connect(_ui->checkBox_editing, SIGNAL(clicked()), this, SLOT(slotCheckBoxEditingClicked()));
+    connect(_ui->checkBox_editing, SIGNAL(clicked()), this, SLOT(slotPermissionsCheckboxClicked()));
+    connect(_ui->checkBox_fileListing, SIGNAL(clicked(bool)), this, SLOT(slotPermissionsCheckboxClicked()));
 
     _ui->errorLabel->hide();
 
@@ -144,15 +146,18 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
         _expiryRequired = true;
     }
 
-    // File can't have public upload set.
-    _ui->widget_editing->setVisible(!_isFile);
-    _ui->checkBox_editing->setEnabled(
-        _account->capabilities().sharePublicLinkAllowUpload());
+    // File can't have public upload set; we also hide it if the capability isn't there
+    _ui->widget_editing->setVisible(
+        !_isFile && _account->capabilities().sharePublicLinkAllowUpload());
+    _ui->checkBox_fileListing->setVisible(
+        _account->capabilities().sharePublicLinkSupportsUploadOnly());
 
 
     // Prepare sharing menu
 
     _shareLinkMenu = new QMenu(this);
+    connect(_shareLinkMenu, SIGNAL(triggered(QAction *)),
+        SLOT(slotShareLinkActionTriggered(QAction *)));
     _openLinkAction = _shareLinkMenu->addAction(tr("Open link in browser"));
     _copyLinkAction = _shareLinkMenu->addAction(tr("Copy link to clipboard"));
     _copyDirectLinkAction = _shareLinkMenu->addAction(tr("Copy link to clipboard (direct download)"));
@@ -216,9 +221,10 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         connect(share.data(), SIGNAL(serverError(int, QString)), SLOT(slotServerError(int, QString)));
         connect(share.data(), SIGNAL(shareDeleted()), SLOT(slotDeleteShareFetched()));
         connect(share.data(), SIGNAL(expireDateSet()), SLOT(slotExpireSet()));
-        connect(share.data(), SIGNAL(publicUploadSet()), SLOT(slotPublicUploadSet()));
+        connect(share.data(), SIGNAL(publicUploadSet()), SLOT(slotPermissionsSet()));
         connect(share.data(), SIGNAL(passwordSet()), SLOT(slotPasswordSet()));
         connect(share.data(), SIGNAL(passwordSetError(int, QString)), SLOT(slotPasswordSetError(int, QString)));
+        connect(share.data(), SIGNAL(permissionsSet()), SLOT(slotPermissionsSet()));
 
         // Build the table row
         auto row = table->rowCount();
@@ -241,9 +247,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         auto shareButton = new QToolButton;
         shareButton->setText("...");
         shareButton->setProperty(propertyShareC, QVariant::fromValue(linkShare));
-        shareButton->setMenu(_shareLinkMenu);
-        shareButton->setPopupMode(QToolButton::InstantPopup);
-        connect(shareButton, SIGNAL(triggered(QAction *)), SLOT(slotShareLinkButtonTriggered(QAction *)));
+        connect(shareButton, SIGNAL(clicked(bool)), SLOT(slotShareLinkButtonClicked()));
         table->setCellWidget(row, 1, shareButton);
 
         auto deleteButton = new QToolButton;
@@ -324,6 +328,8 @@ void ShareLinkWidget::slotShareSelectionChanged()
     // Public upload state (box is hidden for files)
     if (!_isFile) {
         _ui->checkBox_editing->setChecked(share->getPublicUpload());
+        _ui->checkBox_fileListing->setChecked(share->getShowFileListing());
+        _ui->checkBox_fileListing->setEnabled(share->getPublicUpload());
     }
 }
 
@@ -494,61 +500,39 @@ void ShareLinkWidget::slotCheckBoxExpireClicked()
     }
 }
 
-#ifdef Q_OS_MAC
-extern void copyToPasteboard(const QString &string);
-#endif
-
-void ShareLinkWidget::copyShareLink(const QUrl &url)
-{
-#ifdef Q_OS_MAC
-    copyToPasteboard(url.toString());
-#else
-    QClipboard *clipboard = QApplication::clipboard();
-    clipboard->setText(url.toString());
-#endif
-}
-
 void ShareLinkWidget::emailShareLink(const QUrl &url)
 {
     QString fileName = _sharePath.mid(_sharePath.lastIndexOf('/') + 1);
-
-    if (!QDesktopServices::openUrl(QUrl(QString(
-                                            "mailto: "
-                                            "?subject=I shared %1 with you"
-                                            "&body=%2")
-                                            .arg(
-                                                fileName,
-                                                url.toString()),
-            QUrl::TolerantMode))) {
-        QMessageBox::warning(
-            this,
-            tr("Could not open email client"),
-            tr("There was an error when launching the email client to "
-               "create a new message. Maybe no default email client is "
-               "configured?"));
-    }
+    Utility::openEmailComposer(
+        QString("I shared %1 with you").arg(fileName),
+        url.toString(),
+        this);
 }
 
 void ShareLinkWidget::openShareLink(const QUrl &url)
 {
-    if (!QDesktopServices::openUrl(url)) {
-        QMessageBox::warning(
-            this,
-            tr("Could not open browser"),
-            tr("There was an error when launching the browser to "
-               "view the public link share. Maybe no default browser is "
-               "configured?"));
-    }
+    Utility::openBrowser(url, this);
 }
 
-void ShareLinkWidget::slotShareLinkButtonTriggered(QAction *action)
+void ShareLinkWidget::slotShareLinkButtonClicked()
+{
+    auto share = sender()->property(propertyShareC).value<QSharedPointer<LinkShare>>();
+    bool downloadEnabled = share->getShowFileListing();
+    _copyDirectLinkAction->setVisible(downloadEnabled);
+    _emailDirectLinkAction->setVisible(downloadEnabled);
+
+    _shareLinkMenu->setProperty(propertyShareC, QVariant::fromValue(share));
+    _shareLinkMenu->exec(QCursor::pos());
+}
+
+void ShareLinkWidget::slotShareLinkActionTriggered(QAction *action)
 {
     auto share = sender()->property(propertyShareC).value<QSharedPointer<LinkShare>>();
 
     if (action == _copyLinkAction) {
-        copyShareLink(share->getLink());
+        QApplication::clipboard()->setText(share->getLink().toString());
     } else if (action == _copyDirectLinkAction) {
-        copyShareLink(share->getDirectDownloadLink());
+        QApplication::clipboard()->setText(share->getDirectDownloadLink().toString());
     } else if (action == _emailLinkAction) {
         emailShareLink(share->getLink());
     } else if (action == _emailDirectLinkAction) {
@@ -564,14 +548,22 @@ void ShareLinkWidget::slotDeleteShareClicked()
     share->deleteShare();
 }
 
-void ShareLinkWidget::slotCheckBoxEditingClicked()
+void ShareLinkWidget::slotPermissionsCheckboxClicked()
 {
     if (auto current = selectedShare()) {
         _ui->checkBox_editing->setEnabled(false);
+        _ui->checkBox_fileListing->setEnabled(false);
         _pi_editing->startAnimation();
         _ui->errorLabel->hide();
 
-        current->setPublicUpload(_ui->checkBox_editing->isChecked());
+        SharePermissions perm = SharePermissionRead;
+        if (_ui->checkBox_editing->isChecked() && _ui->checkBox_fileListing->isChecked()) {
+            perm = SharePermissionRead | SharePermissionCreate
+                | SharePermissionUpdate | SharePermissionDelete;
+        } else if (_ui->checkBox_editing->isChecked() && !_ui->checkBox_fileListing->isChecked()) {
+            perm = SharePermissionCreate;
+        }
+        current->setPermissions(perm);
     }
 }
 
@@ -585,7 +577,7 @@ QSharedPointer<LinkShare> ShareLinkWidget::selectedShare() const
     return items.first()->data(Qt::UserRole).value<QSharedPointer<LinkShare>>();
 }
 
-void ShareLinkWidget::slotPublicUploadSet()
+void ShareLinkWidget::slotPermissionsSet()
 {
     if (sender() == selectedShare().data()) {
         slotShareSelectionChanged();

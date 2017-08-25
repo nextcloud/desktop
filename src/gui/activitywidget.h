@@ -35,6 +35,7 @@ namespace OCC {
 class Account;
 class AccountStatusPtr;
 class ProtocolWidget;
+class IssuesWidget;
 class JsonApiJob;
 class NotificationWidget;
 class ActivityListModel;
@@ -138,6 +139,8 @@ public slots:
 
     void setNotificationRefreshInterval(quint64 interval);
 
+    void slotShowIssuesTab(const QString &folderAlias);
+
 private slots:
     void slotCopyToClipboard();
     void setActivityTabHidden(bool hidden);
@@ -153,10 +156,12 @@ private:
 
     QTabWidget *_tab;
     int _activityTabId;
+    int _protocolTabId;
     int _syncIssueTabId;
 
     ActivityWidget *_activityWidget;
     ProtocolWidget *_protocolWidget;
+    IssuesWidget *_issuesWidget;
     QProgressIndicator *_progressIndicator;
     QTimer _notificationCheckTimer;
     QHash<AccountState *, QElapsedTimer> _timeSinceLastCheck;

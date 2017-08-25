@@ -17,6 +17,7 @@
 #include "application.h"
 
 #include <iostream>
+#include <random>
 
 #include "config.h"
 #include "account.h"
@@ -108,6 +109,8 @@ Application::Application(int &argc, char **argv)
     , _debugMode(false)
 {
     _startedAt.start();
+
+    qsrand(std::random_device()());
 
 #ifdef Q_OS_WIN
     // Ensure OpenSSL config file is only loaded from app directory
@@ -206,8 +209,8 @@ Application::Application(int &argc, char **argv)
         slotAccountStateAdded(ai.data());
     }
 
-    connect(FolderMan::instance()->socketApi(), SIGNAL(shareCommandReceived(QString, QString, bool)),
-        _gui, SLOT(slotShowShareDialog(QString, QString, bool)));
+    connect(FolderMan::instance()->socketApi(), SIGNAL(shareCommandReceived(QString, QString)),
+        _gui, SLOT(slotShowShareDialog(QString, QString)));
 
     // startup procedure.
     connect(&_checkConnectionTimer, SIGNAL(timeout()), this, SLOT(slotCheckConnection()));
@@ -308,7 +311,8 @@ void Application::slotCheckConnection()
         // Don't check if we're manually signed out or
         // when the error is permanent.
         if (state != AccountState::SignedOut
-            && state != AccountState::ConfigurationError) {
+            && state != AccountState::ConfigurationError
+            && state != AccountState::AskingCredentials) {
             accountState->checkConnectivity();
         }
     }

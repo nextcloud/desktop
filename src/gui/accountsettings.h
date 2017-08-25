@@ -60,11 +60,12 @@ public:
 signals:
     void folderChanged();
     void openFolderAlias(const QString &);
+    void showIssuesList(const QString &folderAlias);
 
 public slots:
     void slotOpenOC();
     void slotUpdateQuota(qint64, qint64);
-    void slotAccountStateChanged(int state);
+    void slotAccountStateChanged();
 
     AccountState *accountsState() { return _accountState; }
 

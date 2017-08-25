@@ -42,17 +42,6 @@
 #include "csync.h"
 #include "csync_misc.h"
 
-#ifdef WITH_ICONV
-#include <iconv.h>
-#endif
-
-#ifdef HAVE_ICONV_H
-#include <iconv.h>
-#endif
-#ifdef HAVE_SYS_ICONV_H
-#include <sys/iconv.h>
-#endif
-
 #include "csync_macros.h"
 
 /**
@@ -129,12 +118,6 @@ struct csync_s {
     const char *root_perms; /* Permission of the root folder. (Since the root folder is not in the db tree, we need to keep a separate entry.) */
   } remote;
 
-
-#if defined(HAVE_ICONV) && defined(WITH_ICONV)
-  struct {
-    iconv_t iconv_cd;
-  } options;
-#endif
 
   /* replica we are currently walking */
   enum csync_replica_e current;

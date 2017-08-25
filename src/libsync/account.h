@@ -107,6 +107,9 @@ public:
     /** Returns webdav entry URL, based on url() */
     QUrl davUrl() const;
 
+    /** Returns a permalink url for a file */
+    QUrl filePermalinkUrl(const QByteArray &numericFileId) const;
+
     /** Holds the accounts credentials */
     AbstractCredentials *credentials() const;
     void setCredentials(AbstractCredentials *cred);
@@ -186,6 +189,10 @@ public:
     /** Detects a specific bug in older server versions */
     bool rootEtagChangesNotOnlySubFolderEtags();
 
+    /** True when the server supports HTTP2  */
+    bool isHttp2Supported() { return _http2Supported; }
+    void setHttp2Supported(bool value) { _http2Supported = value; };
+
     void clearCookieJar();
     void lendCookieJarTo(QNetworkAccessManager *guest);
     QString cookieJarPath();
@@ -196,6 +203,10 @@ public:
 
     /// Called by network jobs on credential errors, emits invalidCredentials()
     void handleInvalidCredentials();
+
+public slots:
+    /// Used when forgetting credentials
+    void clearQNAMCache();
 
 signals:
     /// Emitted whenever there's network activity
@@ -239,7 +250,8 @@ private:
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
     QuotaInfo *_quotaInfo;
     QSharedPointer<QNetworkAccessManager> _am;
-    QSharedPointer<AbstractCredentials> _credentials;
+    QScopedPointer<AbstractCredentials> _credentials;
+    bool _http2Supported = false;
 
     /// Certificates that were explicitly rejected by the user
     QList<QSslCertificate> _rejectedCertificates;

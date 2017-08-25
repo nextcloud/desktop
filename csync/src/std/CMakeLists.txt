@@ -1,12 +1,8 @@
-project(cstdlib C)
+project(cstdlib)
 
 set(CSTDLIB_PUBLIC_INCLUDE_DIRS
   ${CMAKE_CURRENT_SOURCE_DIR}
   CACHE INTERNAL "cstdlib public include directories"
-)
-
-set(CSTDLIB_PRIVATE_INCLUDE_DIRS
-  ${ICONV_INCLUDE_DIR}
 )
 
 set(CSTDLIB_LIBRARY
@@ -24,6 +20,7 @@ set(cstdlib_SRCS
   c_rbtree.c
   c_string.c
   c_time.c
+  c_utf8.cc
 )
 
 if(NOT HAVE_ASPRINTF AND NOT HAVE___MINGW_ASPRINTF)
@@ -34,12 +31,12 @@ endif()
 
 include_directories(
   ${CSTDLIB_PUBLIC_INCLUDE_DIRS}
-  ${CSTDLIB_PRIVATE_INCLUDE_DIRS}
 )
 
 add_library(${CSTDLIB_LIBRARY} STATIC ${cstdlib_SRCS})
 if(NOT WIN32)
     add_definitions( -fPIC )
+    qt5_use_modules(${CSTDLIB_LIBRARY} Core)
 endif()
 if(NOT HAVE_FNMATCH AND WIN32)
   # needed for PathMatchSpec for our fnmatch replacement

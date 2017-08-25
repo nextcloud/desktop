@@ -87,11 +87,7 @@ public:
     /* Returns whether another sync is needed to complete the sync */
     AnotherSyncNeeded isAnotherSyncNeeded() { return _anotherSyncNeeded; }
 
-    /** Get the ms since a file was touched, or -1 if it wasn't.
-     *
-     * Thread-safe.
-     */
-    qint64 timeSinceFileTouched(const QString &fn) const;
+    bool wasFileTouched(const QString &fn) const;
 
     AccountPtr account() const;
     SyncJournalDb *journal() const { return _journal; }
@@ -104,12 +100,10 @@ public:
     static qint64 minimumFileAgeForUpload; // in ms
 
 signals:
-    void csyncError(const QString &);
     void csyncUnavailable();
 
     // During update, before reconcile
     void rootEtag(QString);
-    void folderDiscovered(bool local, const QString &folderUrl);
 
     // before actual syncing (after update+reconcile) for each item
     void syncItemDiscovered(const SyncFileItem &);
@@ -120,6 +114,9 @@ signals:
     void itemCompleted(const SyncFileItemPtr &);
 
     void transmissionProgress(const ProgressInfo &progress);
+
+    /// We've produced a new sync error of a type.
+    void syncError(const QString &message, ErrorCategory category);
 
     void finished(bool success);
     void started();
@@ -147,6 +144,7 @@ signals:
     void seenLockedFile(const QString &fileName);
 
 private slots:
+    void slotFolderDiscovered(bool local, const QString &folder);
     void slotRootEtagReceived(const QString &);
     void slotItemCompleted(const SyncFileItemPtr &item);
     void slotFinished(bool success);
@@ -160,8 +158,15 @@ private slots:
     /** Wipes the _touchedFiles hash */
     void slotClearTouchedFiles();
 
+    /** Emit a summary error, unless it was seen before */
+    void slotSummaryError(const QString &message);
+
+    void slotInsufficientLocalStorage();
+    void slotInsufficientRemoteStorage();
+
 private:
     void handleSyncError(CSYNC *ctx, const char *state);
+    void csyncError(const QString &message);
 
     QString journalDbFilePath() const;
 
@@ -263,10 +268,13 @@ private:
     AnotherSyncNeeded _anotherSyncNeeded;
 
     /** Stores the time since a job touched a file. */
-    QHash<QString, QElapsedTimer> _touchedFiles;
+    QMultiMap<QElapsedTimer, QString> _touchedFiles;
 
     /** For clearing the _touchedFiles variable after sync finished */
     QTimer _clearTouchedFilesTimer;
+
+    /** List of unique errors that occurred in a sync run. */
+    QSet<QString> _uniqueErrors;
 };
 }
 

@@ -79,7 +79,8 @@ printInfo("Add a file in a read only directory");
 system( "echo \"Hello World\" >> /tmp/kernelcrash.txt" );
 put_to_dir( '/tmp/kernelcrash.txt', 'test_stat' );
 
-csync();
+# Sync failed, can't download file to readonly dir
+csync(1);
 
 assert( ! -e localDir().'test_stat/kernelcrash' );
 

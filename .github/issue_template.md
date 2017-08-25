@@ -2,7 +2,7 @@
 Please try to only report a bug if it happens with the latest version
 The latest version can be seen by checking the ChangeLog: https://owncloud.org/changelog/desktop/
 
-For support try: https://central.owncloud.org/c/help/desktop-file-sync
+For support try: https://central.owncloud.org/c/desktop-client
 --->
 
 

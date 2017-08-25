@@ -28,7 +28,7 @@ public:
     QString _password;
     QString authType() const Q_DECL_OVERRIDE;
     QString user() const Q_DECL_OVERRIDE;
-    QNetworkAccessManager *getQNAM() const Q_DECL_OVERRIDE;
+    QNetworkAccessManager *createQNAM() const Q_DECL_OVERRIDE;
     bool ready() const Q_DECL_OVERRIDE;
     bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;
     void fetchFromKeychain() Q_DECL_OVERRIDE;

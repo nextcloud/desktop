@@ -84,18 +84,18 @@ int OwncloudPropagator::maximumActiveTransferJob()
         // disable parallelism when there is a network limit.
         return 1;
     }
-    return qCeil(hardMaximumActiveJob() / 2.);
+    return qMin(3, qCeil(hardMaximumActiveJob() / 2.));
 }
 
 /* The maximum number of active jobs in parallel  */
 int OwncloudPropagator::hardMaximumActiveJob()
 {
     static int max = qgetenv("OWNCLOUD_MAX_PARALLEL").toUInt();
-    if (!max) {
-        max = 6; //default (Qt cannot do more anyway)
-        // TODO: increase this number when using HTTP2
-    }
-    return max;
+    if (max)
+        return max;
+    if (_account->isHttp2Supported())
+        return 20;
+    return 6; // (Qt cannot do more anyway)
 }
 
 PropagateItemJob::~PropagateItemJob()
@@ -129,15 +129,7 @@ static time_t getMaxBlacklistTime()
 static SyncJournalErrorBlacklistRecord createBlacklistEntry(
     const SyncJournalErrorBlacklistRecord &old, const SyncFileItem &item)
 {
-    SyncJournalErrorBlacklistRecord entry;
-
-    entry._errorString = item._errorString;
-    entry._lastTryModtime = item._modtime;
-    entry._lastTryEtag = item._etag;
-    entry._lastTryTime = Utility::qDateTimeToTime_t(QDateTime::currentDateTime());
-    entry._file = item._file;
-    entry._renameTarget = item._renameTarget;
-
+    auto entry = SyncJournalErrorBlacklistRecord::fromSyncFileItem(item);
     entry._retryCount = old._retryCount + 1;
 
     static time_t minBlacklistTime(getMinBlacklistTime());
@@ -160,6 +152,10 @@ static SyncJournalErrorBlacklistRecord createBlacklistEntry(
     if (item._status == SyncFileItem::SoftError) {
         // Track these errors, but don't actively suppress them.
         entry._ignoreDuration = 0;
+    }
+
+    if (item._httpErrorCode == 507) {
+        entry._errorCategory = SyncJournalErrorBlacklistRecord::InsufficientRemoteStorage;
     }
 
     return entry;
@@ -189,14 +185,13 @@ static void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
     }
 
     auto newEntry = createBlacklistEntry(oldEntry, item);
-    journal->updateErrorBlacklistEntry(newEntry);
+    journal->setErrorBlacklistEntry(newEntry);
 
     // Suppress the error if it was and continues to be blacklisted.
     // An ignoreDuration of 0 mean we're tracking the error, but not actively
     // suppressing it.
     if (item._hasBlacklistEntry && newEntry._ignoreDuration > 0) {
-        item._status = SyncFileItem::FileIgnored;
-        item._errorString.prepend(PropagateItemJob::tr("Continue blacklisting:") + " ");
+        item._status = SyncFileItem::BlacklistedError;
 
         qCInfo(lcPropagator) << "blacklisting " << item._file
                              << " for " << newEntry._ignoreDuration
@@ -239,12 +234,18 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
         _item->_status = SyncFileItem::SoftError;
     }
 
+    // Blacklist handling
     switch (_item->_status) {
     case SyncFileItem::SoftError:
     case SyncFileItem::FatalError:
     case SyncFileItem::NormalError:
+    case SyncFileItem::BlacklistedError:
         // Check the blacklist, possibly adjusting the item (including its status)
-        blacklistUpdate(propagator()->_journal, *_item);
+        // but not if this status comes from blacklisting in the first place
+        if (!(_item->_status == SyncFileItem::BlacklistedError
+                && _item->_instruction == CSYNC_INSTRUCTION_IGNORE)) {
+            blacklistUpdate(propagator()->_journal, *_item);
+        }
         break;
     case SyncFileItem::Success:
     case SyncFileItem::Restoration:
@@ -379,7 +380,8 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
             return job;
         } else {
             PropagateUploadFileCommon *job = 0;
-            if (item->_size > _chunkSize && account()->capabilities().chunkingNg()) {
+            if (item->_size > syncOptions()._initialChunkSize && account()->capabilities().chunkingNg()) {
+                // Item is above _initialChunkSize, thus will be classified as to be chunked
                 job = new PropagateUploadFileNG(this, item);
             } else {
                 job = new PropagateUploadFileV1(this, item);

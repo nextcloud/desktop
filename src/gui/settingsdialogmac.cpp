@@ -133,6 +133,14 @@ void SettingsDialogMac::showActivityPage()
     setCurrentPanelIndex(preferencePanelCount() - 1 - 2);
 }
 
+void SettingsDialogMac::showIssuesList(const QString &folderAlias)
+{
+    // Count backwards (0-based) from the last panel (multiple accounts can be on the left)
+    setCurrentPanelIndex(preferencePanelCount() - 1 - 2);
+    _activitySettings->slotShowIssuesTab(folderAlias);
+}
+
+
 void SettingsDialogMac::accountAdded(AccountState *s)
 {
     QIcon accountIcon = MacStandardIcon::icon(MacStandardIcon::UserAccounts);
@@ -144,6 +152,7 @@ void SettingsDialogMac::accountAdded(AccountState *s)
 
     connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotFoldersChanged);
     connect(accountSettings, &AccountSettings::openFolderAlias, _gui, &ownCloudGui::slotFolderOpenAction);
+    connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialogMac::showIssuesList);
 
     connect(s->account().data(), SIGNAL(accountChangedAvatar()), this, SLOT(slotAccountAvatarChanged()));
 

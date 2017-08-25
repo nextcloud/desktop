@@ -49,11 +49,20 @@ public:
      * or call showDialog to ask the password
      */
     Q_INVOKABLE void askFromUser() Q_DECL_OVERRIDE;
+    /**
+     * In case of oauth, return an URL to the link to open the browser.
+     * An invalid URL otherwise
+     */
+    QUrl authorisationLink() const { return _asyncAuth ? _asyncAuth->authorisationLink() : QUrl(); }
+
 
     static QString requestAppPasswordText(const Account *account);
 private slots:
     void asyncAuthResult(OAuth::Result, const QString &user, const QString &accessToken, const QString &refreshToken);
     void showDialog();
+
+signals:
+    void authorisationLinkChanged();
 
 private:
     QScopedPointer<OAuth, QScopedPointerObjectDeleteLater<OAuth>> _asyncAuth;

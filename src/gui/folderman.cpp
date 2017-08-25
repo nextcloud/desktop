@@ -141,6 +141,7 @@ int FolderMan::unloadAndDeleteAllFolders()
     _lastSyncFolder = 0;
     _currentSyncFolder = 0;
     _scheduledFolders.clear();
+    emit folderListChanged(_folderMap);
     emit scheduleQueueChanged();
 
     return cnt;
@@ -1038,6 +1039,8 @@ void FolderMan::removeFolder(Folder *f)
     } else {
         delete f;
     }
+
+    emit folderListChanged(_folderMap);
 }
 
 QString FolderMan::getBackupName(QString fullPathName) const

@@ -564,7 +564,7 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("prepare _deleteFileRecordRecursively", *_deleteFileRecordRecursively);
     }
 
-    QString sql("SELECT lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration, renameTarget "
+    QString sql("SELECT lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration, renameTarget, errorCategory "
                 "FROM blacklist WHERE path=?1");
     if (Utility::fsCasePreserving()) {
         // if the file system is case preserving we have to check the blacklist
@@ -578,8 +578,8 @@ bool SyncJournalDb::checkConnect()
 
     _setErrorBlacklistQuery.reset(new SqlQuery(_db));
     if (_setErrorBlacklistQuery->prepare("INSERT OR REPLACE INTO blacklist "
-                                         "(path, lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration, renameTarget) "
-                                         "VALUES ( ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)")) {
+                                         "(path, lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration, renameTarget, errorCategory) "
+                                         "VALUES ( ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)")) {
         return sqlFail("prepare _setErrorBlacklistQuery", *_setErrorBlacklistQuery);
     }
 
@@ -800,7 +800,17 @@ bool SyncJournalDb::updateErrorBlacklistTableStructure()
             sqlFail("updateBlacklistTableStructure: Add renameTarget", query);
             re = false;
         }
-        commitInternal("update database structure: add lastTryTime, ignoreDuration cols");
+        commitInternal("update database structure: add renameTarget col");
+    }
+
+    if (columns.indexOf(QLatin1String("errorCategory")) == -1) {
+        SqlQuery query(_db);
+        query.prepare("ALTER TABLE blacklist ADD COLUMN errorCategory INTEGER(8);");
+        if (!query.exec()) {
+            sqlFail("updateBlacklistTableStructure: Add errorCategory", query);
+            re = false;
+        }
+        commitInternal("update database structure: add errorCategory col");
     }
 
     SqlQuery query(_db);
@@ -1410,6 +1420,8 @@ SyncJournalErrorBlacklistRecord SyncJournalDb::errorBlacklistEntry(const QString
                 entry._lastTryTime = _getErrorBlacklistQuery->int64Value(4);
                 entry._ignoreDuration = _getErrorBlacklistQuery->int64Value(5);
                 entry._renameTarget = _getErrorBlacklistQuery->stringValue(6);
+                entry._errorCategory = static_cast<SyncJournalErrorBlacklistRecord::Category>(
+                    _getErrorBlacklistQuery->intValue(7));
                 entry._file = file;
             }
             _getErrorBlacklistQuery->reset_and_clear_bindings();
@@ -1501,13 +1513,28 @@ void SyncJournalDb::wipeErrorBlacklistEntry(const QString &file)
     }
 }
 
-void SyncJournalDb::updateErrorBlacklistEntry(const SyncJournalErrorBlacklistRecord &item)
+void SyncJournalDb::wipeErrorBlacklistCategory(SyncJournalErrorBlacklistRecord::Category category)
+{
+    QMutexLocker locker(&_mutex);
+    if (checkConnect()) {
+        SqlQuery query(_db);
+
+        query.prepare("DELETE FROM blacklist WHERE errorCategory=?1");
+        query.bindValue(1, category);
+        if (!query.exec()) {
+            sqlFail("Deletion of blacklist category failed.", query);
+        }
+    }
+}
+
+void SyncJournalDb::setErrorBlacklistEntry(const SyncJournalErrorBlacklistRecord &item)
 {
     QMutexLocker locker(&_mutex);
 
     qCInfo(lcDb) << "Setting blacklist entry for " << item._file << item._retryCount
                  << item._errorString << item._lastTryTime << item._ignoreDuration
-                 << item._lastTryModtime << item._lastTryEtag << item._renameTarget;
+                 << item._lastTryModtime << item._lastTryEtag << item._renameTarget
+                 << item._errorCategory;
 
     if (!checkConnect()) {
         return;
@@ -1521,6 +1548,7 @@ void SyncJournalDb::updateErrorBlacklistEntry(const SyncJournalErrorBlacklistRec
     _setErrorBlacklistQuery->bindValue(6, QString::number(item._lastTryTime));
     _setErrorBlacklistQuery->bindValue(7, QString::number(item._ignoreDuration));
     _setErrorBlacklistQuery->bindValue(8, item._renameTarget);
+    _setErrorBlacklistQuery->bindValue(9, item._errorCategory);
     _setErrorBlacklistQuery->exec();
     _setErrorBlacklistQuery->reset_and_clear_bindings();
 }

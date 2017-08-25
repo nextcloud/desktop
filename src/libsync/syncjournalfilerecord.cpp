@@ -109,6 +109,31 @@ SyncFileItem SyncJournalFileRecord::toSyncFileItem()
     return item;
 }
 
+QByteArray SyncJournalFileRecord::numericFileId() const
+{
+    // Use the id up until the first non-numeric character
+    for (int i = 0; i < _fileId.size(); ++i) {
+        if (_fileId[i] < '0' || _fileId[i] > '9') {
+            return _fileId.left(i);
+        }
+    }
+    return _fileId;
+}
+
+SyncJournalErrorBlacklistRecord SyncJournalErrorBlacklistRecord::fromSyncFileItem(
+    const SyncFileItem &item)
+{
+    SyncJournalErrorBlacklistRecord record;
+    record._file = item._file;
+    record._errorString = item._errorString;
+    record._lastTryModtime = item._modtime;
+    record._lastTryEtag = item._etag;
+    record._lastTryTime = Utility::qDateTimeToTime_t(QDateTime::currentDateTime());
+    record._renameTarget = item._renameTarget;
+    record._retryCount = 1;
+    return record;
+}
+
 bool SyncJournalErrorBlacklistRecord::isValid() const
 {
     return !_file.isEmpty()

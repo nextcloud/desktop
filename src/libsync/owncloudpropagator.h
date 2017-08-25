@@ -417,7 +417,6 @@ public:
      */
     DiskSpaceResult diskSpaceCheck() const;
 
-
 private slots:
 
     /** Emit the finished signal and make sure it is only emitted once */
@@ -444,6 +443,9 @@ signals:
      * from the file watcher about these can be ignored.
      */
     void touchedFile(const QString &fileName);
+
+    void insufficientLocalStorage();
+    void insufficientRemoteStorage();
 
 private:
     AccountPtr _account;

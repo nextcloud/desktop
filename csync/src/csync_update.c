@@ -469,6 +469,8 @@ out:
               st->error_status = CSYNC_STATUS_INDIVIDUAL_EXCLUDE_HIDDEN;
           } else if (excluded == CSYNC_FILE_EXCLUDE_STAT_FAILED) {
               st->error_status = CSYNC_STATUS_INDIVIDUAL_STAT_FAILED;
+          } else if (excluded == CSYNC_FILE_EXCLUDE_CONFLICT) {
+              st->error_status = CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE;
           }
       }
   }

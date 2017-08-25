@@ -211,6 +211,14 @@ void SettingsDialog::showActivityPage()
     }
 }
 
+void SettingsDialog::showIssuesList(const QString &folderAlias)
+{
+    if (!_activityAction)
+        return;
+    _activityAction->trigger();
+    _activitySettings->slotShowIssuesTab(folderAlias);
+}
+
 void SettingsDialog::accountAdded(AccountState *s)
 {
     auto height = _toolBar->sizeHint().height();
@@ -242,6 +250,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     connect(accountSettings, SIGNAL(folderChanged()), _gui, SLOT(slotFoldersChanged()));
     connect(accountSettings, SIGNAL(openFolderAlias(const QString &)),
         _gui, SLOT(slotFolderOpenAction(QString)));
+    connect(accountSettings, SIGNAL(showIssuesList(QString)), SLOT(showIssuesList(QString)));
     connect(s->account().data(), SIGNAL(accountChangedAvatar()), SLOT(slotAccountAvatarChanged()));
 
     slotRefreshActivity(s);

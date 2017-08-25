@@ -294,15 +294,12 @@ sub localCleanup($)
     system( "rm -rf $dir" );
 }
 
-# parameter: An optional full url to the owncloud sync dir.
+# parameter: the expected return code
 sub csync( ;$ )
 {
-    my ($aurl) = @_;
+    my $expected = $_[0] // 0;
 
     my $url = testDirUrl();
-    if( $aurl ) {
-	$url = $aurl;
-    }
     if( $url =~ /^https:/ ) {
 	$url =~ s#^https://##;    # Remove the leading http://
 	$url = "ownclouds://$user:$passwd@". $url;
@@ -317,7 +314,8 @@ sub csync( ;$ )
     my $cmd = "LD_LIBRARY_PATH=$ld_libpath $csync $args $localDir $url";
     print "Starting: $cmd\n";
 
-    system( $cmd ) == 0 or die("CSync died!\n");
+    my $result = system( $cmd );
+    $result == ($expected << 8) or die("Wrong csync return code or crash! $result\n");
 }
 
 #

@@ -59,7 +59,7 @@
 
 	_syncClientProxy = [[SyncClientProxy alloc] initWithDelegate:self serverName:serverName];
 	_registeredDirectories = [[NSMutableSet alloc] init];
-	_shareMenuTitle = nil;
+	_strings = [[NSMutableDictionary alloc] init];
 	
 	[_syncClientProxy start];
 	return self;
@@ -101,11 +101,21 @@
 		}
 	}];
 
-	if (_shareMenuTitle && !onlyRootsSelected) {
-		NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
-		NSMenuItem *item = [menu addItemWithTitle:_shareMenuTitle action:@selector(shareMenuAction:) keyEquivalent:@"title"];
-		item.image = [[NSBundle mainBundle] imageForResource:@"app.icns"];
-		
+	id contextMenuTitle = [_strings objectForKey:@"CONTEXT_MENU_TITLE"];
+	id shareTitle = [_strings objectForKey:@"SHARE_MENU_TITLE"];
+	id copyLinkTitle = [_strings objectForKey:@"COPY_PRIVATE_LINK_MENU_TITLE"];
+	id emailLinkTitle = [_strings objectForKey:@"EMAIL_PRIVATE_LINK_MENU_TITLE"];
+	if (contextMenuTitle && !onlyRootsSelected) {
+        NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
+        NSMenu *subMenu = [[NSMenu alloc] initWithTitle:@""];
+        NSMenuItem *subMenuItem = [menu addItemWithTitle:contextMenuTitle action:nil keyEquivalent:@""];
+        subMenuItem.submenu = subMenu;
+        subMenuItem.image = [[NSBundle mainBundle] imageForResource:@"app.icns"];
+
+		[subMenu addItemWithTitle:shareTitle action:@selector(shareMenuAction:) keyEquivalent:@""];
+		[subMenu addItemWithTitle:copyLinkTitle action:@selector(copyLinkMenuAction:) keyEquivalent:@""];
+		[subMenu addItemWithTitle:emailLinkTitle action:@selector(emailLinkMenuAction:) keyEquivalent:@""];
+
 		return menu;
 	}
 	return nil;
@@ -114,10 +124,30 @@
 - (IBAction)shareMenuAction:(id)sender
 {
 	NSArray* items = [[FIFinderSyncController defaultController] selectedItemURLs];
-	
+
 	[items enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
 		NSString* normalizedPath = [[obj path] decomposedStringWithCanonicalMapping];
 		[_syncClientProxy askOnSocket:normalizedPath query:@"SHARE"];
+	}];
+}
+
+- (IBAction)copyLinkMenuAction:(id)sender
+{
+	NSArray* items = [[FIFinderSyncController defaultController] selectedItemURLs];
+
+	[items enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+		NSString* normalizedPath = [[obj path] decomposedStringWithCanonicalMapping];
+		[_syncClientProxy askOnSocket:normalizedPath query:@"COPY_PRIVATE_LINK"];
+	}];
+}
+
+- (IBAction)emailLinkMenuAction:(id)sender
+{
+	NSArray* items = [[FIFinderSyncController defaultController] selectedItemURLs];
+
+	[items enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+		NSString* normalizedPath = [[obj path] decomposedStringWithCanonicalMapping];
+		[_syncClientProxy askOnSocket:normalizedPath query:@"EMAIL_PRIVATE_LINK"];
 	}];
 }
 
@@ -146,15 +176,14 @@
 	[FIFinderSyncController defaultController].directoryURLs = _registeredDirectories;
 }
 
-- (void)setShareMenuTitle:(NSString*)title
+- (void)setString:(NSString*)key value:(NSString*)value
 {
-	_shareMenuTitle = title;
+	[_strings setObject:value forKey:key];
 }
 
 - (void)connectionDidDie
 {
-	_shareMenuTitle = nil;
-	
+	[_strings removeAllObjects];
 	[_registeredDirectories removeAllObjects];
 	// For some reason the FIFinderSync cache doesn't seem to be cleared for the root item when
 	// we reset the directoryURLs (seen on macOS 10.12 at least).

@@ -53,9 +53,10 @@ struct SyncOptions
     /** If a confirmation should be asked for external storages */
     bool _confirmExternalStorage;
 
-    /** The initial un-adjusted chunk size in bytes for chunked uploads
+    /** The initial un-adjusted chunk size in bytes for chunked uploads, both
+     * for old and new chunking algorithm, which classifies the item to be chunked
      *
-     * When dynamic chunk size adjustments are done, this is the
+     * In chunkingNG, when dynamic chunk size adjustments are done, this is the
      * starting value and is then gradually adjusted within the
      * minChunkSize / maxChunkSize bounds.
      */

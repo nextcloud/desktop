@@ -23,6 +23,7 @@
 #include "theme.h"
 #include "account.h"
 #include <QMessageBox>
+#include "asserts.h"
 
 using namespace QKeychain;
 
@@ -40,9 +41,13 @@ void HttpCredentialsGui::askFromUser()
         if (reply->rawHeader("WWW-Authenticate").contains("Bearer ")) {
             // OAuth
             _asyncAuth.reset(new OAuth(_account, this));
+            _asyncAuth->_expectedUser = _user;
             connect(_asyncAuth.data(), &OAuth::result,
                 this, &HttpCredentialsGui::asyncAuthResult);
+            connect(_asyncAuth.data(), &OAuth::destroyed,
+                this, &HttpCredentialsGui::authorisationLinkChanged);
             _asyncAuth->start();
+            emit authorisationLinkChanged();
         } else if (reply->error() == QNetworkReply::AuthenticationRequiredError) {
             // Show the dialog
             // We will re-enter the event loop, so better wait the next iteration
@@ -71,11 +76,8 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
         break;
     }
 
-    if (_user != user) {
-        QMessageBox::warning(nullptr, tr("Login Error"), tr("You must sign in as user %1").arg(_user));
-        _asyncAuth->openBrowser();
-        return;
-    }
+    ASSERT(_user == user); // ensured by _asyncAuth
+
     _password = token;
     _refreshToken = refreshToken;
     _ready = true;
@@ -118,6 +120,7 @@ void HttpCredentialsGui::showDialog()
     bool ok = dialog.exec();
     if (ok) {
         _password = dialog.textValue();
+        _refreshToken.clear();
         _ready = true;
         persist();
     }
