@@ -37,6 +37,8 @@ class FolderStatusModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
+    enum {FileIdRole = Qt::UserRole+1};
+
     FolderStatusModel(QObject *parent = 0);
     ~FolderStatusModel();
     void setAccountState(const AccountState *accountState);
