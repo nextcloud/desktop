@@ -16,22 +16,16 @@
 #include "cookiejar.h"
 #include "networkjobs.h"
 #include "configfile.h"
-#include "accessmanager.h"
 #include "creds/abstractcredentials.h"
 #include "capabilities.h"
 #include "theme.h"
 #include "asserts.h"
 
-#include <QSettings>
 #include <QLoggingCategory>
-#include <QMutex>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 #include <QSslSocket>
 #include <QNetworkCookieJar>
-#include <QFileInfo>
-#include <QDir>
-#include <QSslKey>
 
 namespace OCC {
 
