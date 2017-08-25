@@ -41,6 +41,11 @@ private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
 };
 
+struct ExtraFolderInfo {
+    QByteArray fileId;
+    qint64 size = -1;
+};
+
 /**
  * @brief The LsColJob class
  * @ingroup libsync
@@ -51,7 +56,9 @@ class OWNCLOUDSYNC_EXPORT LsColXMLParser : public QObject
 public:
     explicit LsColXMLParser();
 
-    bool parse(const QByteArray &xml, QHash<QString, qint64> *sizes, const QString &expectedPath);
+    bool parse(const QByteArray &xml,
+               QHash<QString, ExtraFolderInfo> *sizes,
+               const QString &expectedPath);
 
 signals:
     void directoryListingSubfolders(const QStringList &items);
@@ -67,7 +74,7 @@ public:
     explicit LsColJob(AccountPtr account, const QString &path, QObject *parent = 0);
     explicit LsColJob(AccountPtr account, const QUrl &url, QObject *parent = 0);
     void start() Q_DECL_OVERRIDE;
-    QHash<QString, qint64> _sizes;
+    QHash<QString, ExtraFolderInfo> _folderInfos;
 
     /**
      * Used to specify which properties shall be retrieved.
