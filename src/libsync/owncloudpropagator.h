@@ -25,6 +25,7 @@
 #include <QIODevice>
 #include <QMutex>
 
+#include "csync_util.h"
 #include "syncfileitem.h"
 #include "syncjournaldb.h"
 #include "bandwidthmanager.h"
@@ -34,8 +35,6 @@
 namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcPropagator)
-
-extern "C" const char *csync_instruction_str(enum csync_instructions_e instr);
 
 /** Free disk space threshold below which syncs will abort and not even start.
  */

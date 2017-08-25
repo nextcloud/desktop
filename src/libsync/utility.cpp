@@ -275,7 +275,7 @@ void Utility::usleep(int usec)
 
 bool Utility::fsCasePreserving()
 {
-#ifndef WITH_TESTING
+#ifdef WITH_TESTING
     QByteArray env = qgetenv("OWNCLOUD_TEST_CASE_PRESERVING");
     if (!env.isEmpty())
         return env.toInt();

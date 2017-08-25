@@ -12,9 +12,8 @@ include_directories(${CMAKE_SOURCE_DIR}/src/libsync
                    )
 
 # csync is required.
-include_directories(${CMAKE_SOURCE_DIR}/csync/src
-                    ${CMAKE_BINARY_DIR}/csync
-                    ${CMAKE_BINARY_DIR}/csync/src
+include_directories(${CMAKE_SOURCE_DIR}/src/csync
+                    ${CMAKE_BINARY_DIR}/src/csync
                    )
 
 # Need tokenizer for netrc parser
