@@ -185,7 +185,7 @@ LsColXMLParser::LsColXMLParser()
 {
 }
 
-bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, qint64> *sizes, const QString &expectedPath)
+bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, ExtraFolderInfo> *fileInfo, const QString &expectedPath)
 {
     // Parse DAV response
     QXmlStreamReader reader(xml);
@@ -241,9 +241,11 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, qint64> *sizes,
             } else if (name == QLatin1String("size")) {
                 bool ok = false;
                 auto s = propertyContent.toLongLong(&ok);
-                if (ok && sizes) {
-                    sizes->insert(currentHref, s);
+                if (ok && fileInfo) {
+                    (*fileInfo)[currentHref].size = s;
                 }
+            } else if (name == QLatin1String("fileid")) {
+                (*fileInfo)[currentHref].fileId = propertyContent.toUtf8();
             }
             currentTmpProperties.insert(reader.name().toString(), propertyContent);
         }
@@ -372,7 +374,7 @@ bool LsColJob::finished()
             this, &LsColJob::finishedWithoutError);
 
         QString expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/webdav/folder"
-        if (!parser.parse(reply()->readAll(), &_sizes, expectedPath)) {
+        if (!parser.parse(reply()->readAll(), &_folderInfos, expectedPath)) {
             // XML parse error
             emit finishedWithError(reply());
         }
