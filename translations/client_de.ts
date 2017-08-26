@@ -178,7 +178,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="312"/>
         <source>Folder creation failed</source>
-        <translation>Ordner anlegen fehlgeschlagen</translation>
+        <translation>Anlegen des Ordners fehlgeschlagen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="313"/>
@@ -218,7 +218,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="565"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation>Die Serververision %1 ist al und nicht unterstützt! Fortfahren auf eigenes Risiko.</translation>
+        <translation>Die Serververision %1 ist alt und nicht unterstützt! Fortfahren auf eigenes Risiko.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="567"/>
@@ -248,7 +248,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="683"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation>Einige Verzeichnisse konnten nicht synchronisiert werden, da diese zu groß sind:</translation>
+        <translation>Einige Verzeichnisse konnten nicht synchronisiert werden, da sie zu groß sind:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="684"/>
@@ -304,7 +304,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="524"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>%1 (%3%) von %2 Serverkapazität verwendet. Einige Ordner, einschließlich über das Netzwerk verbundene oder freigegebene Ordner oder geteilte ordner können unterschiedliche Beschränkungen aufweisen. </translation>
+        <translation>%1 (%3%) von %2 Serverkapazität verwendet. Einige Ordner, einschließlich über das Netzwerk verbundene oder freigegebene Ordner oder geteilte Ordner können unterschiedliche Beschränkungen aufweisen. </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="525"/>
@@ -379,7 +379,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="524"/>
         <location filename="../src/gui/activitywidget.cpp" line="580"/>
         <source>Server Activity</source>
-        <translation>Server Aktivität</translation>
+        <translation>Serveraktivität</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="531"/>
