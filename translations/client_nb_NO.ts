@@ -683,12 +683,12 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="374"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation><numerusform>%1 og %2 annen fil har blitt lastet ned.</numerusform><numerusform>%1 og %2 andre filer har blitt lastet ned.</numerusform></translation>
+        <translation><numerusform>%1 og %2 annen fil har blitt lastet ned.</numerusform><numerusform>%1 og %n andre filer har blitt lastet ned.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="381"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>%1 og %2 annen fil har blitt oppdatert.</numerusform><numerusform>%1 og %2 andre filer har blitt oppdatert.</numerusform></translation>
+        <translation><numerusform>%1 og %2 annen fil har blitt oppdatert.</numerusform><numerusform>%1 og %n andre filer har blitt oppdatert.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="388"/>
