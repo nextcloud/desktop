@@ -128,6 +128,11 @@ generate_export_header( ${CSYNC_LIBRARY}
 target_link_libraries(${CSYNC_LIBRARY} ${CSYNC_LINK_LIBRARIES})
 #target_link_libraries(${CSYNC_LIBRARY}_static ${CSYNC_LINK_LIBRARIES})
 
+if(ZLIB_FOUND)
+  target_link_libraries(${CSYNC_LIBRARY} ${ZLIB_LIBRARIES})
+  include_directories(${ZLIB_INCLUDE_DIRS})
+endif(ZLIB_FOUND)
+
 find_package(Qt5Core REQUIRED)
 qt5_use_modules(${CSYNC_LIBRARY} Core)
 

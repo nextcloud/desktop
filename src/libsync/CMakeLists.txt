@@ -115,11 +115,6 @@ if(INOTIFY_FOUND)
     link_directories(${INOTIFY_LIBRARY_DIR})
 endif()
 
-if(ZLIB_FOUND)
-    list(APPEND libsync_LINK_TARGETS ${ZLIB_LIBRARIES})
-    include_directories(${ZLIB_INCLUDE_DIRS})
-endif(ZLIB_FOUND)
-
 add_library(${synclib_NAME} SHARED ${libsync_SRCS} ${syncMoc})
 GENERATE_EXPORT_HEADER( ${synclib_NAME}
 	BASE_NAME ${synclib_NAME}

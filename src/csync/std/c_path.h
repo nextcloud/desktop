@@ -113,34 +113,6 @@ typedef struct
 } C_PATHINFO;
 
 /**
- * @brief c_path_to_UNC converts a unixoid path to UNC format.
- *
- * It converts the '/' to '\' and prepends \\?\ to the path.
- *
- * A proper windows path has to have a drive letter, otherwise it is not
- * valid UNC.
- *
- * @param str The path to convert
- *
- * @return a pointer to the converted string. Caller has to free it.
- */
-const char *c_path_to_UNC(const char *str);
-
-/**
- * @brief c_utf8_path_to_locale converts a unixoid path to the locale aware format
- *
- * On windows, it converts to UNC and multibyte.
- * On Mac, it converts to the correct utf8 using iconv.
- * On Linux, it returns utf8
- *
- * @param str The path to convert
- *
- * @return a pointer to the converted string. Caller has to free it using the
- *         function c_free_locale_string.
- */
-mbchar_t* c_utf8_path_to_locale(const char *str);
-
-/**
  * }@
  */
 

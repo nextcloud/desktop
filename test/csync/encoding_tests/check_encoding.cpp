@@ -21,6 +21,8 @@
 #include "c_string.h"
 #include "c_path.h"
 #include "c_utf8.h"
+#include "common/filesystembase.h"
+#include "torture.h"
 
 #ifdef _WIN32
 #include <string.h>
@@ -116,41 +118,36 @@ static void check_long_win_path(void **state)
     {
         const char *path = "C://DATA/FILES/MUSIC/MY_MUSIC.mp3"; // check a short path
         const char *exp_path = "\\\\?\\C:\\\\DATA\\FILES\\MUSIC\\MY_MUSIC.mp3";
-        const char *new_short = c_path_to_UNC(path);
+        QByteArray new_short = OCC::FileSystem::pathtoUNC(QByteArray::fromRawData(path, strlen(path)));
         assert_string_equal(new_short, exp_path);
-        SAFE_FREE(new_short);
     }
 
     {
         const char *path = "\\\\foo\\bar/MY_MUSIC.mp3";
         const char *exp_path = "\\\\foo\\bar\\MY_MUSIC.mp3";
-        const char *new_short = c_path_to_UNC(path);
+        QByteArray new_short = OCC::FileSystem::pathtoUNC(QByteArray::fromRawData(path, strlen(path)));
         assert_string_equal(new_short, exp_path);
-        SAFE_FREE(new_short);
     }
 
     {
         const char *path = "//foo\\bar/MY_MUSIC.mp3";
         const char *exp_path = "\\\\foo\\bar\\MY_MUSIC.mp3";
-        const char *new_short = c_path_to_UNC(path);
+        QByteArray new_short = OCC::FileSystem::pathtoUNC(QByteArray::fromRawData(path, strlen(path)));
         assert_string_equal(new_short, exp_path);
-        SAFE_FREE(new_short);
     }
 
     {
         const char *path = "\\foo\\bar";
         const char *exp_path = "\\\\?\\foo\\bar";
-        const char *new_short = c_path_to_UNC(path);
+        QByteArray new_short = OCC::FileSystem::pathtoUNC(QByteArray::fromRawData(path, strlen(path)));
         assert_string_equal(new_short, exp_path);
-        SAFE_FREE(new_short);
     }
 
     {
         const char *path = "/foo/bar";
         const char *exp_path = "\\\\?\\foo\\bar";
-        const char *new_short = c_path_to_UNC(path);
+        QByteArray new_short = OCC::FileSystem::pathtoUNC(QByteArray::fromRawData(path, strlen(path)));
         assert_string_equal(new_short, exp_path);
-        SAFE_FREE(new_short);
     }
 
     const char *longPath = "D://alonglonglonglong/blonglonglonglong/clonglonglonglong/dlonglonglonglong/"
@@ -162,14 +159,13 @@ static void check_long_win_path(void **state)
             "jlonglonglonglong\\klonglonglonglong\\llonglonglonglong\\mlonglonglonglong\\nlonglonglonglong\\"
             "olonglonglonglong\\file.txt";
 
-    const char *new_long = c_path_to_UNC(longPath);
+    QByteArray new_long = OCC::FileSystem::pathtoUNC(QByteArray::fromRawData(longPath, strlen(longPath)));
     // printf( "XXXXXXXXXXXX %s %d\n", new_long, mem_reserved);
 
     assert_string_equal(new_long, longPathConv);
 
     // printf( "YYYYYYYYYYYY %ld\n", strlen(new_long));
     assert_int_equal( strlen(new_long), 286);
-    SAFE_FREE(new_long);
 }
 
 int torture_run_tests(void)

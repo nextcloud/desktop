@@ -37,6 +37,7 @@
 
 #include "c_alloc.h"
 #include "c_string.h"
+#include "common/filesystembase.h"
 
 /* Convert a locale String to UTF8 */
 QByteArray c_utf8_from_locale(const mbchar_t *wstr)
@@ -98,5 +99,20 @@ mbchar_t* c_utf8_string_to_locale(const char *str)
     return c_strdup(QFile::encodeName(QString::fromUtf8(str)));
 #endif
 }
+
+ mbchar_t* c_utf8_path_to_locale(const char *str)
+ {
+     if( str == NULL ) {
+         return NULL;
+     } else {
+ #ifdef _WIN32
+         QByteArray unc_str = OCC::FileSystem::pathtoUNC(QByteArray::fromRawData(str, strlen(str)));
+         mbchar_t *dst = c_utf8_string_to_locale(unc_str);
+         return dst;
+ #else
+         return c_utf8_string_to_locale(str);
+ #endif
+     }
+ }
 
 }

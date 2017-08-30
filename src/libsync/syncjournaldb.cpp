@@ -12,6 +12,7 @@
  * for more details.
  */
 
+#include <QCryptographicHash>
 #include <QFile>
 #include <QLoggingCategory>
 #include <QStringList>
