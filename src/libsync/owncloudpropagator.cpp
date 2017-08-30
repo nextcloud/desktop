@@ -133,7 +133,13 @@ static time_t getMaxBlacklistTime()
 static SyncJournalErrorBlacklistRecord createBlacklistEntry(
     const SyncJournalErrorBlacklistRecord &old, const SyncFileItem &item)
 {
-    auto entry = SyncJournalErrorBlacklistRecord::fromSyncFileItem(item);
+    SyncJournalErrorBlacklistRecord entry;
+    entry._file = item._file;
+    entry._errorString = item._errorString;
+    entry._lastTryModtime = item._modtime;
+    entry._lastTryEtag = item._etag;
+    entry._lastTryTime = Utility::qDateTimeToTime_t(QDateTime::currentDateTime());
+    entry._renameTarget = item._renameTarget;
     entry._retryCount = old._retryCount + 1;
 
     static time_t minBlacklistTime(getMinBlacklistTime());
@@ -929,7 +935,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                     _item->_fileId = mkdir->_item->_fileId;
                 }
             }
-            SyncJournalFileRecord record(*_item, propagator()->_localDir + _item->_file);
+            SyncJournalFileRecord record = _item->toSyncJournalFileRecordWithInode(propagator()->_localDir + _item->_file);
             bool ok = propagator()->_journal->setFileRecordMetadata(record);
             if (!ok) {
                 status = _item->_status = SyncFileItem::FatalError;
@@ -959,8 +965,8 @@ void CleanupPollsJob::start()
     auto info = _pollInfos.first();
     _pollInfos.pop_front();
     SyncJournalFileRecord record = _journal->getFileRecord(info._file);
-    SyncFileItemPtr item(new SyncFileItem(record.toSyncFileItem()));
     if (record.isValid()) {
+        SyncFileItemPtr item = SyncFileItem::fromSyncJournalFileRecord(record);
         PollJob *job = new PollJob(_account, info._url, item, _journal, _localPath, this);
         connect(job, SIGNAL(finishedSignal()), SLOT(slotPollFinished()));
         job->start();
@@ -978,7 +984,7 @@ void CleanupPollsJob::slotPollFinished()
     } else if (job->_item->_status != SyncFileItem::Success) {
         qCWarning(lcCleanupPolls) << "There was an error with file " << job->_item->_file << job->_item->_errorString;
     } else {
-        if (!_journal->setFileRecord(SyncJournalFileRecord(*job->_item, _localPath + job->_item->_file))) {
+        if (!_journal->setFileRecord(job->_item->toSyncJournalFileRecordWithInode(_localPath + job->_item->_file))) {
             qCWarning(lcCleanupPolls) << "database error";
             job->_item->_status = SyncFileItem::FatalError;
             job->_item->_errorString = tr("Error writing metadata to the database");

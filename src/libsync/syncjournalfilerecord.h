@@ -33,16 +33,6 @@ class OWNCLOUDSYNC_EXPORT SyncJournalFileRecord
 public:
     SyncJournalFileRecord();
 
-    /// Creates a record from an existing item while updating the inode
-    SyncJournalFileRecord(const SyncFileItem &, const QString &localFileName);
-
-    /** Creates a basic SyncFileItem from the record
-     *
-     * This is intended in particular for read-update-write cycles that need
-     * to go through a a SyncFileItem, like PollJob.
-     */
-    SyncFileItem toSyncFileItem();
-
     bool isValid()
     {
         return !_path.isEmpty();
@@ -90,9 +80,6 @@ public:
         , _ignoreDuration(0)
     {
     }
-
-    /// Create a record based on an item.
-    static SyncJournalErrorBlacklistRecord fromSyncFileItem(const SyncFileItem &item);
 
     /// The number of times the operation was unsuccessful so far.
     int _retryCount;

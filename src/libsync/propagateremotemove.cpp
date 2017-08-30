@@ -170,7 +170,7 @@ void PropagateRemoteMove::finalize()
     // to the new record. It is not a problem to skip it here.
     propagator()->_journal->deleteFileRecord(_item->_originalFile);
 
-    SyncJournalFileRecord record(*_item, propagator()->getFilePath(_item->_renameTarget));
+    SyncJournalFileRecord record = _item->toSyncJournalFileRecordWithInode(propagator()->getFilePath(_item->_renameTarget));
     record._path = _item->_renameTarget;
     if (oldRecord.isValid()) {
         record._checksumHeader = oldRecord._checksumHeader;
