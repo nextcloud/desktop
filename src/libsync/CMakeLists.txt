@@ -51,6 +51,7 @@ set(libsync_SRCS
     propagateremotemove.cpp
     propagateremotemkdir.cpp
     syncengine.cpp
+    syncfileitem.cpp
     syncfilestatus.cpp
     syncfilestatustracker.cpp
     syncjournaldb.cpp

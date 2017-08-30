@@ -25,6 +25,10 @@
 
 namespace OCC {
 
+class SyncFileItem;
+class SyncJournalFileRecord;
+typedef QSharedPointer<SyncFileItem> SyncFileItemPtr;
+
 /**
  * @brief The SyncFileItem class
  * @ingroup libsync
@@ -85,6 +89,16 @@ public:
          */
         BlacklistedError
     };
+
+    SyncJournalFileRecord toSyncJournalFileRecordWithInode(const QString &localFileName);
+
+    /** Creates a basic SyncFileItem from a DB record
+     *
+     * This is intended in particular for read-update-write cycles that need
+     * to go through a a SyncFileItem, like PollJob.
+     */
+    static SyncFileItemPtr fromSyncJournalFileRecord(const SyncJournalFileRecord &rec);
+
 
     SyncFileItem()
         : _type(UnknownType)
@@ -232,7 +246,6 @@ public:
     QString _directDownloadCookies;
 };
 
-typedef QSharedPointer<SyncFileItem> SyncFileItemPtr;
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)
 {
     return *item1 < *item2;

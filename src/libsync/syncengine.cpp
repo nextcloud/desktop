@@ -590,7 +590,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
                     FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
                 }
 
-                _journal->setFileRecordMetadata(SyncJournalFileRecord(*item, filePath));
+                _journal->setFileRecordMetadata(item->toSyncJournalFileRecordWithInode(filePath));
             } else {
                 // The local tree is walked first and doesn't have all the info from the server.
                 // Update only outdated data from the disk.

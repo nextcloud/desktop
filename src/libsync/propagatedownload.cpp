@@ -873,7 +873,7 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
 {
     QString fn = propagator()->getFilePath(_item->_file);
 
-    if (!propagator()->_journal->setFileRecord(SyncJournalFileRecord(*_item, fn))) {
+    if (!propagator()->_journal->setFileRecord(_item->toSyncJournalFileRecordWithInode(fn))) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }

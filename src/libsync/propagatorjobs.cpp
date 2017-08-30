@@ -178,7 +178,7 @@ void PropagateLocalMkdir::start()
     // Adding an entry with a dummy etag to the database still makes sense here
     // so the database is aware that this folder exists even if the sync is aborted
     // before the correct etag is stored.
-    SyncJournalFileRecord record(*_item, newDirStr);
+    SyncJournalFileRecord record = _item->toSyncJournalFileRecordWithInode(newDirStr);
     record._etag = "_invalid_";
     if (!propagator()->_journal->setFileRecord(record)) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
@@ -239,7 +239,7 @@ void PropagateLocalRename::start()
     const auto oldFile = _item->_file;
     _item->_file = _item->_renameTarget;
 
-    SyncJournalFileRecord record(*_item, targetFile);
+    SyncJournalFileRecord record = _item->toSyncJournalFileRecordWithInode(targetFile);
     record._path = _item->_renameTarget;
     if (oldRecord.isValid()) {
         record._checksumHeader = oldRecord._checksumHeader;

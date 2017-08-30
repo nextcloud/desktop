@@ -142,7 +142,7 @@ void PropagateRemoteMkdir::propfindError()
 void PropagateRemoteMkdir::success()
 {
     // save the file id already so we can detect rename or remove
-    SyncJournalFileRecord record(*_item, propagator()->_localDir + _item->destination());
+    SyncJournalFileRecord record = _item->toSyncJournalFileRecordWithInode(propagator()->_localDir + _item->destination());
     if (!propagator()->_journal->setFileRecord(record)) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
