@@ -25,20 +25,49 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcStatusTracker, "sync.statustracker", QtInfoMsg)
 
-static SyncFileStatus::SyncFileStatusTag lookupProblem(const QString &pathToMatch, const std::map<QString, SyncFileStatus::SyncFileStatusTag> &problemMap)
+static int pathCompare( const QString& lhs, const QString& rhs )
+{
+    // Should match Utility::fsCasePreserving, we want don't want to pay for the runtime check on every comparison.
+    return lhs.compare(rhs,
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
+        Qt::CaseInsensitive
+#else
+        Qt::CaseSensitive
+#endif
+        );
+}
+
+static bool pathStartsWith( const QString& lhs, const QString& rhs )
+{
+    return lhs.startsWith(rhs,
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
+        Qt::CaseInsensitive
+#else
+        Qt::CaseSensitive
+#endif
+        );
+}
+
+bool SyncFileStatusTracker::PathComparator::operator()( const QString& lhs, const QString& rhs ) const
+{
+    // This will make sure that the std::map is ordered and queried case-insensitively on macOS and Windows.
+    return pathCompare(lhs, rhs) < 0;
+}
+
+SyncFileStatus::SyncFileStatusTag SyncFileStatusTracker::lookupProblem(const QString &pathToMatch, const SyncFileStatusTracker::ProblemsMap &problemMap)
 {
     auto lower = problemMap.lower_bound(pathToMatch);
     for (auto it = lower; it != problemMap.cend(); ++it) {
         const QString &problemPath = it->first;
         SyncFileStatus::SyncFileStatusTag severity = it->second;
 
-        if (problemPath == pathToMatch) {
+        if (pathCompare(problemPath, pathToMatch) == 0) {
             return severity;
         } else if (severity == SyncFileStatus::StatusError
-            && problemPath.startsWith(pathToMatch)
+            && pathStartsWith(problemPath, pathToMatch)
             && (pathToMatch.isEmpty() || problemPath.at(pathToMatch.size()) == '/')) {
             return SyncFileStatus::StatusWarning;
-        } else if (!problemPath.startsWith(pathToMatch)) {
+        } else if (!pathStartsWith(problemPath, pathToMatch)) {
             // Starting at lower_bound we get the first path that is not smaller,
             // since: "a/" < "a/aa" < "a/aa/aaa" < "a/ab/aba"
             // If problemMap keys are ["a/aa/aaa", "a/ab/aba"] and pathToMatch == "a/aa",
@@ -182,7 +211,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector &items)
 {
     ASSERT(_syncCount.isEmpty());
 
-    std::map<QString, SyncFileStatus::SyncFileStatusTag> oldProblems;
+    ProblemsMap oldProblems;
     std::swap(_syncProblems, oldProblems);
 
     foreach (const SyncFileItemPtr &item, items) {
