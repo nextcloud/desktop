@@ -7,7 +7,7 @@ if( UNIX AND NOT APPLE )
 	FOREACH( file ${files} )
 	    # the GLOB returns a absolute path. Make it relative by replacing the current src dir by nothing
 	    STRING(REPLACE "${CMAKE_CURRENT_SOURCE_DIR}/${size}/" "" shortFile ${file})
-	    STRING(REPLACE "oC" ${APPLICATION_NAME} brandedName ${shortFile})
+	    STRING(REPLACE "oC" ${APPLICATION_SHORTNAME} brandedName ${shortFile})
 	    install(FILES ${file} DESTINATION ${ICON_DIR}/${size}/apps RENAME ${brandedName})
 	ENDFOREACH(file)
     ENDFOREACH(size)
