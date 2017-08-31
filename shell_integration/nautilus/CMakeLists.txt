@@ -3,8 +3,6 @@
 if( UNIX AND NOT APPLE )
 
     configure_file(syncstate.py syncstate.py COPYONLY)
-    configure_file(syncstate.py syncstate_nemo.py COPYONLY)
-    configure_file(syncstate.py syncstate_caja.py COPYONLY)
 
     # Call the setupappname.sh script to set the custom app name.
     set (cmd "${CMAKE_CURRENT_SOURCE_DIR}/setappname.sh")
