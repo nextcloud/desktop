@@ -31,7 +31,7 @@
 #include "vio/csync_vio.h"
 #include "vio/csync_vio_local.h"
 #include "csync_statedb.h"
-#include "std/c_jhash.h"
+#include "common/c_jhash.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.vio.main"
 

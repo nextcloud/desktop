@@ -15,7 +15,7 @@
 #include "propagateremotedelete.h"
 #include "owncloudpropagator_p.h"
 #include "account.h"
-#include "asserts.h"
+#include "common/asserts.h"
 
 #include <QLoggingCategory>
 

@@ -16,8 +16,8 @@
 #include "syncengine.h"
 #include "account.h"
 #include "owncloudpropagator.h"
-#include "syncjournaldb.h"
-#include "syncjournalfilerecord.h"
+#include "common/syncjournaldb.h"
+#include "common/syncjournalfilerecord.h"
 #include "discoveryphase.h"
 #include "creds/abstractcredentials.h"
 #include "syncfilestatus.h"
@@ -25,7 +25,7 @@
 #include "filesystem.h"
 #include "propagateremotedelete.h"
 #include "propagatedownload.h"
-#include "asserts.h"
+#include "common/asserts.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>

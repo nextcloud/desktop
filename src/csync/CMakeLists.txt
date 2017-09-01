@@ -1,4 +1,5 @@
 project(libcsync)
+set(CMAKE_AUTOMOC TRUE)
 # global needed variables
 set(APPLICATION_NAME "ocsync")
 
@@ -134,7 +135,7 @@ if(ZLIB_FOUND)
 endif(ZLIB_FOUND)
 
 find_package(Qt5Core REQUIRED)
-qt5_use_modules(${CSYNC_LIBRARY} Core)
+qt5_use_modules(${CSYNC_LIBRARY} Core Concurrent)
 
 # For src/common/utility_mac.cpp
 if (APPLE)

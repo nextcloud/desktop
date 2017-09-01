@@ -8,7 +8,7 @@
 #include <QtTest>
 #include "syncenginetestutils.h"
 #include <syncengine.h>
-#include <syncjournaldb.h>
+#include <common/syncjournaldb.h>
 
 using namespace OCC;
 

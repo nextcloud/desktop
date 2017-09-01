@@ -24,7 +24,7 @@
 #include "account.h"
 #include "networkjobs.h"
 #include <QMessageBox>
-#include "asserts.h"
+#include "common/asserts.h"
 
 using namespace QKeychain;
 

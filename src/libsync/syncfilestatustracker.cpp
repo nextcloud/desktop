@@ -15,9 +15,9 @@
 
 #include "syncfilestatustracker.h"
 #include "syncengine.h"
-#include "syncjournaldb.h"
-#include "syncjournalfilerecord.h"
-#include "asserts.h"
+#include "common/syncjournaldb.h"
+#include "common/syncjournalfilerecord.h"
+#include "common/asserts.h"
 
 #include <QLoggingCategory>
 

@@ -11,7 +11,7 @@
 #include "logger.h"
 #include "filesystem.h"
 #include "syncengine.h"
-#include "syncjournaldb.h"
+#include "common/syncjournaldb.h"
 
 #include <QDir>
 #include <QNetworkReply>

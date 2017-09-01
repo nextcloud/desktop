@@ -12,7 +12,7 @@
  */
 
 /**
- * @file c_jhash.h
+ * @file common/c_jhash.h
  *
  * @brief Interface of the cynapses jhash implementation
  *

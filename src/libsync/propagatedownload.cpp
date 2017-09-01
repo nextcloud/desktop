@@ -17,13 +17,13 @@
 #include "propagatedownload.h"
 #include "networkjobs.h"
 #include "account.h"
-#include "syncjournaldb.h"
-#include "syncjournalfilerecord.h"
+#include "common/syncjournaldb.h"
+#include "common/syncjournalfilerecord.h"
 #include "common/utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
-#include "checksums.h"
-#include "asserts.h"
+#include "common/checksums.h"
+#include "common/asserts.h"
 
 #include <QLoggingCategory>
 #include <QNetworkAccessManager>

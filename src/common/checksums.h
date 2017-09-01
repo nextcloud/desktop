@@ -1,21 +1,24 @@
 /*
  * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #pragma once
 
-#include "owncloudlib.h"
-#include "accountfwd.h"
+#include "ocsynclib.h"
 
 #include <QObject>
 #include <QByteArray>
@@ -23,29 +26,37 @@
 
 namespace OCC {
 
+/**
+ * Tags for checksum headers values.
+ * They are here for being shared between Upload- and Download Job
+ */
+static const char checkSumMD5C[] = "MD5";
+static const char checkSumSHA1C[] = "SHA1";
+static const char checkSumAdlerC[] = "Adler32";
+
 class SyncJournalDb;
 
 /// Creates a checksum header from type and value.
-QByteArray makeChecksumHeader(const QByteArray &checksumType, const QByteArray &checksum);
+OCSYNC_EXPORT QByteArray makeChecksumHeader(const QByteArray &checksumType, const QByteArray &checksum);
 
 /// Parses a checksum header
-bool parseChecksumHeader(const QByteArray &header, QByteArray *type, QByteArray *checksum);
+OCSYNC_EXPORT bool parseChecksumHeader(const QByteArray &header, QByteArray *type, QByteArray *checksum);
 
 /// Convenience for getting the type from a checksum header, null if none
-QByteArray parseChecksumHeaderType(const QByteArray &header);
+OCSYNC_EXPORT QByteArray parseChecksumHeaderType(const QByteArray &header);
 
 /// Checks OWNCLOUD_DISABLE_CHECKSUM_UPLOAD
-bool uploadChecksumEnabled();
+OCSYNC_EXPORT bool uploadChecksumEnabled();
 
 /// Checks OWNCLOUD_CONTENT_CHECKSUM_TYPE (default: SHA1)
-QByteArray contentChecksumType();
+OCSYNC_EXPORT QByteArray contentChecksumType();
 
 
 /**
  * Computes the checksum of a file.
  * \ingroup libsync
  */
-class OWNCLOUDSYNC_EXPORT ComputeChecksum : public QObject
+class OCSYNC_EXPORT ComputeChecksum : public QObject
 {
     Q_OBJECT
 public:
@@ -87,7 +98,7 @@ private:
  * Checks whether a file's checksum matches the expected value.
  * @ingroup libsync
  */
-class OWNCLOUDSYNC_EXPORT ValidateChecksumHeader : public QObject
+class OCSYNC_EXPORT ValidateChecksumHeader : public QObject
 {
     Q_OBJECT
 public:
@@ -118,7 +129,7 @@ private:
  * Hooks checksum computations into csync.
  * @ingroup libsync
  */
-class OWNCLOUDSYNC_EXPORT CSyncChecksumHook : public QObject
+class OCSYNC_EXPORT CSyncChecksumHook : public QObject
 {
     Q_OBJECT
 public:

@@ -1,15 +1,19 @@
 /*
  * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #include <QCryptographicHash>
@@ -20,17 +24,13 @@
 #include <QUrl>
 #include <QDir>
 
-#include "ownsql.h"
-
-#include "syncjournaldb.h"
-#include "syncjournalfilerecord.h"
-#include "common/utility.h"
+#include "common/syncjournaldb.h"
 #include "version.h"
-#include "filesystem.h"
-#include "asserts.h"
-#include "checksums.h"
+#include "filesystembase.h"
+#include "common/asserts.h"
+#include "common/checksums.h"
 
-#include "std/c_jhash.h"
+#include "common/c_jhash.h"
 
 namespace OCC {
 

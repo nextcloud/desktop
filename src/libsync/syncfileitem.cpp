@@ -13,7 +13,7 @@
  */
 
 #include "syncfileitem.h"
-#include "syncjournalfilerecord.h"
+#include "common/syncjournalfilerecord.h"
 #include "common/utility.h"
 
 #include <QLoggingCategory>

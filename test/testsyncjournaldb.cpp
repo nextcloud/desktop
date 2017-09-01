@@ -8,8 +8,8 @@
 
 #include <sqlite3.h>
 
-#include "syncjournaldb.h"
-#include "syncjournalfilerecord.h"
+#include "common/syncjournaldb.h"
+#include "common/syncjournalfilerecord.h"
 
 using namespace OCC;
 

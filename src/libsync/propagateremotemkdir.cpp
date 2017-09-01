@@ -15,9 +15,9 @@
 #include "propagateremotemkdir.h"
 #include "owncloudpropagator_p.h"
 #include "account.h"
-#include "syncjournalfilerecord.h"
+#include "common/syncjournalfilerecord.h"
 #include "propagateremotedelete.h"
-#include "asserts.h"
+#include "common/asserts.h"
 
 #include <QFile>
 #include <QLoggingCategory>

@@ -16,7 +16,7 @@
 
 #include "account.h"
 #include "theme.h"
-#include "asserts.h"
+#include "common/asserts.h"
 
 #include <csync_private.h>
 #include <csync_rename.h>

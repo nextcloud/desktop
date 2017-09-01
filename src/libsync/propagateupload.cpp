@@ -17,15 +17,15 @@
 #include "owncloudpropagator_p.h"
 #include "networkjobs.h"
 #include "account.h"
-#include "syncjournaldb.h"
-#include "syncjournalfilerecord.h"
+#include "common/syncjournaldb.h"
+#include "common/syncjournalfilerecord.h"
 #include "common/utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
-#include "checksums.h"
+#include "common/checksums.h"
 #include "syncengine.h"
 #include "propagateremotedelete.h"
-#include "asserts.h"
+#include "common/asserts.h"
 
 #include <QNetworkAccessManager>
 #include <QFileInfo>
