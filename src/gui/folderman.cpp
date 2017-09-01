@@ -23,7 +23,7 @@
 #include "accountmanager.h"
 #include "filesystem.h"
 #include "lockwatcher.h"
-#include "asserts.h"
+#include "common/asserts.h"
 #include <syncengine.h>
 
 #ifdef Q_OS_MAC

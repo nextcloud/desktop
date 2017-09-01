@@ -20,7 +20,7 @@
 #include "creds/abstractcredentials.h"
 #include "capabilities.h"
 #include "theme.h"
-#include "asserts.h"
+#include "common/asserts.h"
 
 #include <QSettings>
 #include <QLoggingCategory>

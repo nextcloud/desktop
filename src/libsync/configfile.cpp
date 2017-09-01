@@ -17,7 +17,7 @@
 #include "configfile.h"
 #include "theme.h"
 #include "common/utility.h"
-#include "asserts.h"
+#include "common/asserts.h"
 
 #include "creds/abstractcredentials.h"
 

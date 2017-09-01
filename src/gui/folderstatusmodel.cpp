@@ -15,7 +15,7 @@
 #include "folderstatusmodel.h"
 #include "folderman.h"
 #include "accountstate.h"
-#include "asserts.h"
+#include "common/asserts.h"
 #include <theme.h>
 #include <account.h>
 #include "folderstatusdelegate.h"

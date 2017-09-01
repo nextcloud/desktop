@@ -6,7 +6,7 @@
  */
 #include "torture.h"
 
-#include "std/c_jhash.h"
+#include "common/c_jhash.h"
 
 #define HASHSTATE 1
 #define HASHLEN   1

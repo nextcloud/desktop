@@ -38,7 +38,7 @@
 #include "syncfilestatustracker.h"
 #include "accountfwd.h"
 #include "discoveryphase.h"
-#include "checksums.h"
+#include "common/checksums.h"
 
 class QProcess;
 

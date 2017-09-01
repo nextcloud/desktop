@@ -15,7 +15,7 @@
 #include "notificationwidget.h"
 #include "QProgressIndicator.h"
 #include "common/utility.h"
-#include "asserts.h"
+#include "common/asserts.h"
 
 #include <QPushButton>
 

@@ -1,15 +1,19 @@
 /*
  * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
- * for more details.
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
 #ifndef SYNCJOURNALFILERECORD_H
@@ -18,7 +22,7 @@
 #include <QString>
 #include <QDateTime>
 
-#include "owncloudlib.h"
+#include "ocsynclib.h"
 
 namespace OCC {
 
@@ -28,7 +32,7 @@ class SyncFileItem;
  * @brief The SyncJournalFileRecord class
  * @ingroup libsync
  */
-class OWNCLOUDSYNC_EXPORT SyncJournalFileRecord
+class OCSYNC_EXPORT SyncJournalFileRecord
 {
 public:
     SyncJournalFileRecord();
@@ -58,11 +62,11 @@ public:
     QByteArray _checksumHeader;
 };
 
-bool OWNCLOUDSYNC_EXPORT
+bool OCSYNC_EXPORT
 operator==(const SyncJournalFileRecord &lhs,
     const SyncJournalFileRecord &rhs);
 
-class SyncJournalErrorBlacklistRecord
+class OCSYNC_EXPORT SyncJournalErrorBlacklistRecord
 {
 public:
     enum Category {

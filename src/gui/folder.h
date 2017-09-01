@@ -19,7 +19,7 @@
 
 #include "syncresult.h"
 #include "progressdispatcher.h"
-#include "syncjournaldb.h"
+#include "common/syncjournaldb.h"
 #include "clientproxy.h"
 #include "networkjobs.h"
 

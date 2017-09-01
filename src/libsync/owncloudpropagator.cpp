@@ -14,8 +14,8 @@
  */
 
 #include "owncloudpropagator.h"
-#include "syncjournaldb.h"
-#include "syncjournalfilerecord.h"
+#include "common/syncjournaldb.h"
+#include "common/syncjournalfilerecord.h"
 #include "propagatedownload.h"
 #include "propagateupload.h"
 #include "propagateremotedelete.h"
@@ -25,7 +25,7 @@
 #include "configfile.h"
 #include "common/utility.h"
 #include "account.h"
-#include "asserts.h"
+#include "common/asserts.h"
 
 #ifdef Q_OS_WIN
 #include <windef.h>

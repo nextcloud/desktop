@@ -27,7 +27,7 @@
 
 #include "csync_util.h"
 #include "syncfileitem.h"
-#include "syncjournaldb.h"
+#include "common/syncjournaldb.h"
 #include "bandwidthmanager.h"
 #include "accountfwd.h"
 #include "discoveryphase.h"

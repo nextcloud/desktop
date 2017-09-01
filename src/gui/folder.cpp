@@ -22,7 +22,7 @@
 #include "logger.h"
 #include "configfile.h"
 #include "networkjobs.h"
-#include "syncjournalfilerecord.h"
+#include "common/syncjournalfilerecord.h"
 #include "syncresult.h"
 #include "clientproxy.h"
 #include "syncengine.h"

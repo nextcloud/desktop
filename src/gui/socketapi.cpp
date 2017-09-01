@@ -21,7 +21,7 @@
 #include "folderman.h"
 #include "folder.h"
 #include "theme.h"
-#include "syncjournalfilerecord.h"
+#include "common/syncjournalfilerecord.h"
 #include "syncengine.h"
 #include "syncfileitem.h"
 #include "filesystem.h"
@@ -30,7 +30,7 @@
 #include "accountstate.h"
 #include "account.h"
 #include "capabilities.h"
-#include "asserts.h"
+#include "common/asserts.h"
 #include "guiutility.h"
 
 #include <array>

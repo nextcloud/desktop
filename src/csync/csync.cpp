@@ -49,7 +49,7 @@
 
 #include "csync_log.h"
 #include "csync_rename.h"
-#include "c_jhash.h"
+#include "common/c_jhash.h"
 
 
 csync_s::csync_s(const char *localUri, const char *db_file) {

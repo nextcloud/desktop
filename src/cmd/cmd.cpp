@@ -31,7 +31,7 @@
 #include "creds/httpcredentials.h"
 #include "simplesslerrorhandler.h"
 #include "syncengine.h"
-#include "syncjournaldb.h"
+#include "common/syncjournaldb.h"
 #include "config.h"
 #include "connectionvalidator.h"
 

@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "c_jhash.h"
+#include "common/c_jhash.h"
 #include "csync_util.h"
 #include "vio/csync_vio.h"
 

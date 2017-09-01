@@ -17,8 +17,8 @@
 #include "owncloudpropagator_p.h"
 #include "propagateremotemove.h"
 #include "common/utility.h"
-#include "syncjournaldb.h"
-#include "syncjournalfilerecord.h"
+#include "common/syncjournaldb.h"
+#include "common/syncjournalfilerecord.h"
 #include "filesystem.h"
 #include <qfile.h>
 #include <qdir.h>

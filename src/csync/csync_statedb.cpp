@@ -41,7 +41,7 @@
 #include "csync_exclude.h"
 
 #include "c_string.h"
-#include "c_jhash.h"
+#include "common/c_jhash.h"
 #include "c_utf8.h"
 #include "csync_time.h"
 

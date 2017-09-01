@@ -9,7 +9,7 @@
 #include <QDir>
 #include <QString>
 
-#include "checksums.h"
+#include "common/checksums.h"
 #include "networkjobs.h"
 #include "common/utility.h"
 #include "filesystem.h"

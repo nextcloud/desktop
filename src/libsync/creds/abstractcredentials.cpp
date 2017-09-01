@@ -15,7 +15,7 @@
 #include <QLoggingCategory>
 #include <QString>
 
-#include "asserts.h"
+#include "common/asserts.h"
 #include "creds/abstractcredentials.h"
 
 namespace OCC {

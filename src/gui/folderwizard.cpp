@@ -22,7 +22,7 @@
 #include "accountstate.h"
 #include "creds/abstractcredentials.h"
 #include "wizard/owncloudwizard.h"
-#include "asserts.h"
+#include "common/asserts.h"
 
 #include <QDesktopServices>
 #include <QDir>

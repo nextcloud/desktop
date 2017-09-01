@@ -8,7 +8,7 @@
 
 #include <sqlite3.h>
 
-#include "ownsql.h"
+#include "common/ownsql.h"
 
 using namespace OCC;
 

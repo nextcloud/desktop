@@ -26,7 +26,7 @@
 #include "csync_util.h"
 #include "csync_statedb.h"
 #include "csync_rename.h"
-#include "c_jhash.h"
+#include "common/c_jhash.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.reconciler"
 #include "csync_log.h"

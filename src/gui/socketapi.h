@@ -18,7 +18,7 @@
 
 #include "syncfileitem.h"
 #include "syncfilestatus.h"
-#include "ownsql.h"
+// #include "ownsql.h"
 
 #if defined(Q_OS_MAC)
 #include "socketapisocket_mac.h"

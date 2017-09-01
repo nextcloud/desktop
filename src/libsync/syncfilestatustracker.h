@@ -16,7 +16,7 @@
 #ifndef SYNCFILESTATUSTRACKER_H
 #define SYNCFILESTATUSTRACKER_H
 
-#include "ownsql.h"
+// #include "ownsql.h"
 #include "syncfileitem.h"
 #include "syncfilestatus.h"
 #include <map>

@@ -29,7 +29,7 @@
 #include "accountstate.h"
 #include "account.h"
 #include "accountmanager.h"
-#include "syncjournalfilerecord.h"
+#include "common/syncjournalfilerecord.h"
 #include "elidedlabel.h"
 
 #include "ui_issueswidget.h"
