@@ -81,6 +81,12 @@ bool Capabilities::shareResharing() const
     return _capabilities["files_sharing"].toMap()["resharing"].toBool();
 }
 
+bool Capabilities::clientSideEncryptionAvaliable() const
+{
+    return _capabilities.keys().indexOf("client-side-encryption") != 1
+        ? _capabilities["client-side-encryption"].toMap()["enabled"].toBool() : false;
+}
+
 bool Capabilities::notificationsAvailable() const
 {
     // We require the OCS style API in 9.x, can't deal with the REST one only found in 8.2
