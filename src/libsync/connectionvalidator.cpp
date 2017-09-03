@@ -239,36 +239,12 @@ void ConnectionValidator::slotAuthSuccess()
     checkServerCapabilities();
 }
 
-void ConnectionValidator::checkClientSideEncryption()
-{
-    JsonApiJob *job = new JsonApiJob(_account, QLatin1String("ocs/v2.php/cloud/apps"), this);
-    job->setTimeout(timeoutToUseMsec);
-    connect(job, &JsonApiJob::jsonReceived, [this](const QJsonDocument& json, int httpResponse) {
-        Q_UNUSED(httpResponse);
-        auto apps = json.object().value("ocs").toObject().value("data").toObject().value("apps").toArray().toVariantList();
-
-        bool hasClientSideEncryption = false;
-        for(const auto& app : qAsConst(apps)) {
-            if (app.toString() == "client_side_encryption") {
-                hasClientSideEncryption = true;
-                qCInfo(lcConnectionValidator()) << "Found Client Side Encryption";
-                break;
-            }
-        }
-
-        _account->setHasClientSideEncryption(hasClientSideEncryption);
-    });
-    job->start();
-}
-
 void ConnectionValidator::checkServerCapabilities()
 {
     JsonApiJob *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/capabilities"), this);
     job->setTimeout(timeoutToUseMsec);
     QObject::connect(job, SIGNAL(jsonReceived(QJsonDocument, int)), this, SLOT(slotCapabilitiesRecieved(QJsonDocument)));
     job->start();
-
-    checkClientSideEncryption();
 }
 
 void ConnectionValidator::slotCapabilitiesRecieved(const QJsonDocument &json)

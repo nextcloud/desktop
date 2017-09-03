@@ -281,7 +281,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         }
         auto fileId = _model->data(index, FolderStatusModel::FileIdRole).toByteArray();
 
-        if (accountsState()->account()->hasClientSideEncryption()) {
+        if (accountsState()->account()->capabilities().clientSideEncryptionAvaliable()) {
             ac = menu->addAction(tr("Encrypt"));
             connect(ac, &QAction::triggered, [this, &fileId](bool triggered) {
                 Q_UNUSED(triggered);
@@ -289,6 +289,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
                     "ocs/v2.php/apps/client_side_encryption/api/v1/encrypted/" + QString(fileId));
 
                 connect(job, &OCC::JsonApiJob::jsonReceived, [this](const QJsonDocument& json, int httpResponse) {
+                    Q_UNUSED(json);
                     qCInfo(lcAccountSettings) << "Encrypt Http Response" << httpResponse;
                 });
                 job->start();
@@ -735,7 +736,7 @@ void AccountSettings::slotAccountStateChanged()
          * if it has, do not offer to create one.
          */
         qCInfo(lcAccountSettings) << "Accout" << accountsState()->account()->displayName()
-            << "Client Side Encryption" << accountsState()->account()->hasClientSideEncryption();
+            << "Client Side Encryption" << accountsState()->account()->capabilities().clientSideEncryptionAvaliable();
     }
 }
 

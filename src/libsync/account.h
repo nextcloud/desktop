@@ -204,9 +204,6 @@ public:
     /// Called by network jobs on credential errors, emits invalidCredentials()
     void handleInvalidCredentials();
 
-    bool hasClientSideEncryption() const;
-    void setHasClientSideEncryption(bool cse);
-
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -255,7 +252,6 @@ private:
     QSharedPointer<QNetworkAccessManager> _am;
     QScopedPointer<AbstractCredentials> _credentials;
     bool _http2Supported = false;
-    bool _hasClientSideEncryption;
 
     /// Certificates that were explicitly rejected by the user
     QList<QSslCertificate> _rejectedCertificates;
