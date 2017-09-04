@@ -87,10 +87,8 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
     // Everything in the SyncEngine expects a trailing slash for the localPath.
     ASSERT(localPath.endsWith(QLatin1Char('/')));
 
-    csync_create(&_csync_ctx, localPath.toUtf8().data());
-
     const QString dbFile = _journal->databaseFilePath();
-    csync_init(_csync_ctx, dbFile.toUtf8().data());
+    _csync_ctx.reset(new CSYNC(localPath.toUtf8().data(), dbFile.toUtf8().data()));
 
     _excludedFiles.reset(new ExcludedFiles(&_csync_ctx->excludes));
     _syncFileStatusTracker.reset(new SyncFileStatusTracker(this));
@@ -108,7 +106,6 @@ SyncEngine::~SyncEngine()
     _thread.quit();
     _thread.wait();
     _excludedFiles.reset();
-    csync_destroy(_csync_ctx);
 }
 
 //Convert an error code from csync to a user readable string.
@@ -786,7 +783,7 @@ void SyncEngine::startSync()
     _syncItemMap.clear();
     _needsUpdate = false;
 
-    csync_resume(_csync_ctx);
+    csync_resume(_csync_ctx.data());
 
     int fileRecordCount = -1;
     if (!_journal->exists()) {
@@ -831,7 +828,7 @@ void SyncEngine::startSync()
         finalize(false);
         return;
     }
-    csync_set_userdata(_csync_ctx, this);
+    csync_set_userdata(_csync_ctx.data(), this);
 
     // Set up checksumming hook
     _csync_ctx->callbacks.checksum_hook = &CSyncChecksumHook::hook;
@@ -861,7 +858,7 @@ void SyncEngine::startSync()
         connect(_discoveryMainThread, SIGNAL(etagConcatenation(QString)), this, SLOT(slotRootEtagReceived(QString)));
     }
 
-    DiscoveryJob *discoveryJob = new DiscoveryJob(_csync_ctx);
+    DiscoveryJob *discoveryJob = new DiscoveryJob(_csync_ctx.data());
     discoveryJob->_selectiveSyncBlackList = selectiveSyncBlackList;
     discoveryJob->_selectiveSyncWhiteList =
         _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);
@@ -909,7 +906,7 @@ void SyncEngine::slotRootEtagReceived(const QString &e)
 void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 {
     if (discoveryResult < 0) {
-        handleSyncError(_csync_ctx, "csync_update");
+        handleSyncError(_csync_ctx.data(), "csync_update");
         return;
     }
     qCInfo(lcEngine) << "#### Discovery end #################################################### " << _stopWatch.addLapTime(QLatin1String("Discovery Finished")) << "ms";
@@ -929,8 +926,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _progressInfo->_status = ProgressInfo::Reconcile;
     emit transmissionProgress(*_progressInfo);
 
-    if (csync_reconcile(_csync_ctx) < 0) {
-        handleSyncError(_csync_ctx, "csync_reconcile");
+    if (csync_reconcile(_csync_ctx.data()) < 0) {
+        handleSyncError(_csync_ctx.data(), "csync_reconcile");
         return;
     }
 
@@ -947,21 +944,21 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _temporarilyUnavailablePaths.clear();
     _renamedFolders.clear();
 
-    if (csync_walk_local_tree(_csync_ctx, &treewalkLocal, 0) < 0) {
+    if (csync_walk_local_tree(_csync_ctx.data(), &treewalkLocal, 0) < 0) {
         qCWarning(lcEngine) << "Error in local treewalk.";
         walkOk = false;
     }
-    if (walkOk && csync_walk_remote_tree(_csync_ctx, &treewalkRemote, 0) < 0) {
+    if (walkOk && csync_walk_remote_tree(_csync_ctx.data(), &treewalkRemote, 0) < 0) {
         qCWarning(lcEngine) << "Error in remote treewalk.";
     }
 
-    if (_csync_ctx->remote.root_perms) {
+    if (!_csync_ctx->remote.root_perms.isEmpty()) {
         _remotePerms[QLatin1String("")] = _csync_ctx->remote.root_perms;
         qCInfo(lcEngine) << "Permissions of the root folder: " << _remotePerms[QLatin1String("")];
     }
 
     // Re-init the csync context to free memory
-    csync_commit(_csync_ctx);
+    _csync_ctx->reinitialize();
 
     // The map was used for merging trees, convert it to a list:
     SyncFileItemVector syncItems = _syncItemMap.values().toVector();
@@ -1154,7 +1151,7 @@ void SyncEngine::finalize(bool success)
     _thread.quit();
     _thread.wait();
 
-    csync_commit(_csync_ctx);
+    _csync_ctx->reinitialize();
     _journal->close();
 
     qCInfo(lcEngine) << "CSync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished")) << "ms";
@@ -1564,7 +1561,7 @@ void SyncEngine::abort()
         qCInfo(lcEngine) << "Aborting sync";
 
     // Sets a flag for the update phase
-    csync_request_abort(_csync_ctx);
+    csync_request_abort(_csync_ctx.data());
 
     // Aborts the discovery phase job
     if (_discoveryMainThread) {

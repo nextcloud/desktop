@@ -32,7 +32,7 @@
 static int setup(void **state) {
     CSYNC *csync;
 
-    csync_create(&csync, "/tmp/check_csync1");
+    csync = new CSYNC("/tmp/check_csync1", "");
 
     *state = csync;
     return 0;
@@ -42,7 +42,7 @@ static int setup_init(void **state) {
     CSYNC *csync;
     int rc;
 
-    csync_create(&csync, "/tmp/check_csync1");
+    csync = new CSYNC("/tmp/check_csync1", "");
 
     rc = csync_exclude_load(EXCLUDE_LIST_FILE, &(csync->excludes));
     assert_int_equal(rc, 0);
@@ -67,8 +67,7 @@ static int teardown(void **state) {
     CSYNC *csync = (CSYNC*)*state;
     int rc;
 
-    rc = csync_destroy(csync);
-    assert_int_equal(rc, 0);
+    delete csync;
 
     rc = system("rm -rf /tmp/check_csync1");
     assert_int_equal(rc, 0);

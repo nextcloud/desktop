@@ -194,7 +194,7 @@ private:
     QMap<QString, SyncFileItemPtr> _syncItemMap;
 
     AccountPtr _account;
-    CSYNC *_csync_ctx;
+    QScopedPointer<CSYNC> _csync_ctx;
     bool _needsUpdate;
     bool _syncRunning;
     QString _localPath;
