@@ -49,7 +49,7 @@ static int setup(void **state)
     rc = system("rm -rf /tmp/csync_test");
     assert_int_equal(rc, 0);
 
-    csync_create(&csync, "/tmp/csync1");
+    csync = new CSYNC("/tmp/check_csync1", "");
 
     csync->current = LOCAL_REPLICA;
 
@@ -78,8 +78,7 @@ static int teardown(void **state) {
     CSYNC *csync = (CSYNC*)*state;
     int rc;
 
-    rc = csync_destroy(csync);
-    assert_int_equal(rc, 0);
+    delete csync;
 
     rc = chdir(wd_buffer);
     assert_int_equal(rc, 0);

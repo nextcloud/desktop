@@ -38,8 +38,7 @@ static int setup(void **state)
     assert_int_equal(rc, 0);
     rc = system("mkdir -p /tmp/check_csync");
     assert_int_equal(rc, 0);
-    csync_create(&csync, "/tmp/check_csync1");
-    csync_init(csync, TESTDB);
+    csync = new CSYNC("/tmp/check_csync1", TESTDB);
 
     sqlite3 *db = NULL;
     rc = sqlite3_open_v2(TESTDB, &db, SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, NULL);
@@ -100,8 +99,7 @@ static int teardown(void **state) {
     CSYNC *csync = (CSYNC*)*state;
     int rc = 0;
 
-    rc = csync_destroy(csync);
-    assert_int_equal(rc, 0);
+    delete csync;
     rc = system("rm -rf /tmp/check_csync");
     assert_int_equal(rc, 0);
     rc = system("rm -rf /tmp/check_csync1");
