@@ -23,14 +23,6 @@
 
 #include <csync.h>
 
-#if defined(Q_CC_GNU) && !defined(Q_CC_INTEL) && !defined(Q_CC_CLANG) && (__GNUC__ * 100 + __GNUC_MINOR__ < 408)
-// openSuse 12.3 didn't like enum bitfields.
-#define BITFIELD(size)
-#else
-#define BITFIELD(size) :size
-#endif
-
-
 namespace OCC {
 
 /**
