@@ -51,7 +51,7 @@ static int setup(void **state)
 
     csync_create(&csync, "/tmp/csync1");
 
-    csync->replica = LOCAL_REPLICA;
+    csync->current = LOCAL_REPLICA;
 
     *state = csync;
     return 0;

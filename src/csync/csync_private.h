@@ -106,12 +106,10 @@ struct csync_s {
   struct {
     char *uri;
     c_rbtree_t *tree;
-    enum csync_replica_e type;
   } local;
 
   struct {
     c_rbtree_t *tree;
-    enum csync_replica_e type;
     int  read_from_db;
     const char *root_perms; /* Permission of the root folder. (Since the root folder is not in the db tree, we need to keep a separate entry.) */
   } remote;
@@ -119,9 +117,6 @@ struct csync_s {
 
   /* replica we are currently walking */
   enum csync_replica_e current;
-
-  /* replica we want to work on */
-  enum csync_replica_e replica;
 
   /* Used in the update phase so changes in the sub directories can be notified to
      parent directories */

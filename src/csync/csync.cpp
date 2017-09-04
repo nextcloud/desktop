@@ -114,10 +114,6 @@ void csync_init(CSYNC *ctx, const char *db_file) {
   assert(!(ctx->status & CSYNC_STATUS_INIT));
   ctx->status_code = CSYNC_STATUS_OK;
 
-  ctx->local.type = LOCAL_REPLICA;
-
-  ctx->remote.type = REMOTE_REPLICA;
-
   SAFE_FREE(ctx->statedb.file);
   ctx->statedb.file = c_strdup(db_file);
 
@@ -159,7 +155,6 @@ int csync_update(CSYNC *ctx) {
   /* update detection for local replica */
   csync_gettime(&start);
   ctx->current = LOCAL_REPLICA;
-  ctx->replica = ctx->local.type;
 
   rc = csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
   if (rc < 0) {
@@ -179,7 +174,6 @@ int csync_update(CSYNC *ctx) {
   /* update detection for remote replica */
   csync_gettime(&start);
   ctx->current = REMOTE_REPLICA;
-  ctx->replica = ctx->remote.type;
 
   rc = csync_ftw(ctx, "", csync_walker, MAX_DEPTH);
   if (rc < 0) {
@@ -225,7 +219,6 @@ int csync_reconcile(CSYNC *ctx) {
   }
 
   ctx->current = LOCAL_REPLICA;
-  ctx->replica = ctx->local.type;
 
   rc = csync_reconcile_updates(ctx);
 
@@ -246,7 +239,6 @@ int csync_reconcile(CSYNC *ctx) {
   csync_gettime(&start);
 
   ctx->current = REMOTE_REPLICA;
-  ctx->replica = ctx->remote.type;
 
   rc = csync_reconcile_updates(ctx);
 
