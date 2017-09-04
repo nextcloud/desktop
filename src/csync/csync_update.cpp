@@ -660,7 +660,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     }
 
     /* Only for the local replica we have to stat(), for the remote one we have all data already */
-    if (ctx->replica == LOCAL_REPLICA) {
+    if (ctx->current == LOCAL_REPLICA) {
         res = csync_vio_stat(ctx, filename, dirent.get());
     } else {
         res = 0;
