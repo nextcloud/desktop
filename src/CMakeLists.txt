@@ -8,6 +8,12 @@ if(NOT TOKEN_AUTH_ONLY)
     find_package(Qt5Keychain REQUIRED)
 endif()
 
+if(WIN32)
+  # Enable DEP & ASLR
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--nxcompat -Wl,--dynamicbase")
+  set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--nxcompat -Wl,--dynamicbase")
+endif()
+
 add_subdirectory(csync)
 add_subdirectory(libsync)
 if (NOT BUILD_LIBRARIES_ONLY)
