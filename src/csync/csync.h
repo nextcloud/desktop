@@ -42,6 +42,13 @@
 #include <memory>
 #include <QByteArray>
 
+#if defined(Q_CC_GNU) && !defined(Q_CC_INTEL) && !defined(Q_CC_CLANG) && (__GNUC__ * 100 + __GNUC_MINOR__ < 408)
+// openSuse 12.3 didn't like enum bitfields.
+#define BITFIELD(size)
+#else
+#define BITFIELD(size) :size
+#endif
+
 enum csync_status_codes_e {
   CSYNC_STATUS_OK         = 0,
 
@@ -157,10 +164,10 @@ struct OCSYNC_EXPORT csync_file_stat_s {
   time_t modtime;
   int64_t size;
   uint64_t inode;
-  enum csync_ftw_type_e type  : 4;
-  bool child_modified         : 1;
-  bool has_ignored_files      : 1; /* specify that a directory, or child directory contains ignored files */
-  bool is_hidden              : 1; // Not saved in the DB, only used during discovery for local files.
+  enum csync_ftw_type_e type BITFIELD(4);
+  bool child_modified BITFIELD(1);
+  bool has_ignored_files BITFIELD(1); // Specify that a directory, or child directory contains ignored files.
+  bool is_hidden BITFIELD(1); // Not saved in the DB, only used during discovery for local files.
 
   QByteArray path;
   QByteArray rename_path;
