@@ -98,12 +98,11 @@ static int setup(void **state)
     assert_int_equal(rc, 0);
     rc = system("mkdir -p /tmp/check_csync1");
     assert_int_equal(rc, 0);
-    csync_create(&csync, "/tmp/check_csync1");
-    csync_init(csync, TESTDB);
+    csync = new CSYNC("/tmp/check_csync1", TESTDB);
 
     /* Create a new db with metadata */
     sqlite3 *db;
-    csync->statedb.file = c_strdup(TESTDB);
+    // csync->statedb.file = c_strdup(TESTDB);
     rc = sqlite3_open(csync->statedb.file, &db);
     statedb_create_metadata_table(db);
     if( firstrun ) {
@@ -129,8 +128,7 @@ static int setup_ftw(void **state)
     assert_int_equal(rc, 0);
     rc = system("mkdir -p /tmp/check_csync1");
     assert_int_equal(rc, 0);
-    csync_create(&csync, "/tmp");
-    csync_init(csync, TESTDB);
+    csync = new CSYNC("/tmp", TESTDB);
 
     sqlite3 *db = NULL;
     rc = sqlite3_open_v2(TESTDB, &db, SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, NULL);
@@ -151,11 +149,9 @@ static int setup_ftw(void **state)
 static int teardown(void **state)
 {
     CSYNC *csync = (CSYNC*)*state;
-    int rc;
 
     unlink( csync->statedb.file);
-    rc = csync_destroy(csync);
-    assert_int_equal(rc, 0);
+    delete csync;
 
     *state = NULL;
     

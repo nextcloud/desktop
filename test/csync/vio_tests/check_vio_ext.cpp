@@ -97,7 +97,7 @@ static int setup_testenv(void **state) {
     statevar *mystate = (statevar*)malloc( sizeof(statevar) );
     mystate->result = NULL;
 
-    csync_create(&(mystate->csync), "/tmp/csync1");
+    mystate->csync = new CSYNC("/tmp/check_csync1", "");
 
     mystate->csync->current = LOCAL_REPLICA;
 
@@ -124,8 +124,7 @@ static int teardown(void **state) {
 
     output("================== Tearing down!\n");
 
-    rc = csync_destroy(csync);
-    assert_int_equal(rc, 0);
+    delete csync;
 
     rc = _tchdir(wd_buffer);
     assert_int_equal(rc, 0);

@@ -82,50 +82,19 @@ static int _data_cmp(const void *key, const void *data) {
   return 0;
 }
 
-void csync_create(CSYNC **csync, const char *local) {
-  CSYNC *ctx;
+csync_s::csync_s(const char *localUri, const char *db_file) {
   size_t len = 0;
 
-  ctx = (CSYNC*)c_malloc(sizeof(CSYNC));
-
-  ctx->status_code = CSYNC_STATUS_OK;
-
   /* remove trailing slashes */
-  len = strlen(local);
-  while(len > 0 && local[len - 1] == '/') --len;
+  len = strlen(localUri);
+  while(len > 0 && localUri[len - 1] == '/') --len;
 
-  ctx->local.uri = c_strndup(local, len);
+  local.uri = c_strndup(localUri, len);
 
-  ctx->status_code = CSYNC_STATUS_OK;
+  c_rbtree_create(&local.tree, _key_cmp, _data_cmp);
+  c_rbtree_create(&remote.tree, _key_cmp, _data_cmp);
 
-  ctx->current_fs = NULL;
-
-  ctx->abort = false;
-
-  ctx->ignore_hidden_files = true;
-
-  *csync = ctx;
-}
-
-void csync_init(CSYNC *ctx, const char *db_file) {
-  assert(ctx);
-  /* Do not initialize twice */
-
-  assert(!(ctx->status & CSYNC_STATUS_INIT));
-  ctx->status_code = CSYNC_STATUS_OK;
-
-  SAFE_FREE(ctx->statedb.file);
-  ctx->statedb.file = c_strdup(db_file);
-
-  c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp);
-  c_rbtree_create(&ctx->remote.tree, _key_cmp, _data_cmp);
-
-  ctx->remote.root_perms = 0;
-
-  ctx->status = CSYNC_STATUS_INIT;
-
-  /* initialize random generator */
-  srand(time(NULL));
+  statedb.file = c_strdup(db_file);
 }
 
 int csync_update(CSYNC *ctx) {
@@ -438,88 +407,69 @@ static void _tree_destructor(void *data) {
   delete freedata;
 }
 
-/* reset all the list to empty.
- * used by csync_commit and csync_destroy */
-static void _csync_clean_ctx(CSYNC *ctx)
-{
-    /* destroy the rbtrees */
-    if (c_rbtree_size(ctx->local.tree) > 0) {
-        c_rbtree_destroy(ctx->local.tree, _tree_destructor);
-    }
-
-    if (c_rbtree_size(ctx->remote.tree) > 0) {
-        c_rbtree_destroy(ctx->remote.tree, _tree_destructor);
-    }
-
-    csync_rename_destroy(ctx);
-
-    /* free memory */
-    c_rbtree_free(ctx->local.tree);
-    c_rbtree_free(ctx->remote.tree);
-
-    SAFE_FREE(ctx->remote.root_perms);
-}
-
-int csync_commit(CSYNC *ctx) {
+int csync_s::reinitialize() {
   int rc = 0;
 
-  if (ctx == NULL) {
-    return -1;
-  }
+  status_code = CSYNC_STATUS_OK;
 
-  ctx->status_code = CSYNC_STATUS_OK;
-
-  if (ctx->statedb.db != NULL
-      && csync_statedb_close(ctx) < 0) {
+  if (statedb.db != NULL
+      && csync_statedb_close(this) < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "ERR: closing of statedb failed.");
     rc = -1;
   }
-  ctx->statedb.db = NULL;
+  statedb.db = NULL;
 
-  _csync_clean_ctx(ctx);
+  /* destroy the rbtrees */
+  if (c_rbtree_size(local.tree) > 0) {
+    c_rbtree_destroy(local.tree, _tree_destructor);
+  }
 
-  ctx->remote.read_from_db = 0;
-  ctx->read_remote_from_db = true;
-  ctx->db_is_empty = false;
+  if (c_rbtree_size(remote.tree) > 0) {
+    c_rbtree_destroy(remote.tree, _tree_destructor);
+  }
 
+  /* free memory */
+  c_rbtree_free(local.tree);
+  c_rbtree_free(remote.tree);
+
+  remote.read_from_db = 0;
+  read_remote_from_db = true;
+  db_is_empty = false;
 
   /* Create new trees */
-  c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp);
-  c_rbtree_create(&ctx->remote.tree, _key_cmp, _data_cmp);
+  c_rbtree_create(&local.tree, _key_cmp, _data_cmp);
+  c_rbtree_create(&remote.tree, _key_cmp, _data_cmp);
 
-
-  ctx->status = CSYNC_STATUS_INIT;
-  SAFE_FREE(ctx->error_string);
+  status = CSYNC_STATUS_INIT;
+  SAFE_FREE(error_string);
 
   rc = 0;
   return rc;
 }
 
-int csync_destroy(CSYNC *ctx) {
-  int rc = 0;
-
-  if (ctx == NULL) {
-    errno = EBADF;
-    return -1;
-  }
-  ctx->status_code = CSYNC_STATUS_OK;
-
-  if (ctx->statedb.db != NULL
-      && csync_statedb_close(ctx) < 0) {
+csync_s::~csync_s() {
+  if (statedb.db != NULL
+      && csync_statedb_close(this) < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "ERR: closing of statedb failed.");
-    rc = -1;
   }
-  ctx->statedb.db = NULL;
+  statedb.db = NULL;
 
-  _csync_clean_ctx(ctx);
+  /* destroy the rbtrees */
+  if (c_rbtree_size(local.tree) > 0) {
+    c_rbtree_destroy(local.tree, _tree_destructor);
+  }
 
-  SAFE_FREE(ctx->statedb.file);
-  SAFE_FREE(ctx->local.uri);
-  SAFE_FREE(ctx->error_string);
+  if (c_rbtree_size(remote.tree) > 0) {
+    c_rbtree_destroy(remote.tree, _tree_destructor);
+  }
 
-  SAFE_FREE(ctx);
+  /* free memory */
+  c_rbtree_free(local.tree);
+  c_rbtree_free(remote.tree);
 
-  return rc;
+  SAFE_FREE(statedb.file);
+  SAFE_FREE(local.uri);
+  SAFE_FREE(error_string);
 }
 
 void *csync_get_userdata(CSYNC *ctx) {

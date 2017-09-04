@@ -561,9 +561,9 @@ void DiscoveryMainThread::singleDirectoryJobFinishedWithErrorSlot(int csyncErrno
 void DiscoveryMainThread::singleDirectoryJobFirstDirectoryPermissionsSlot(const QString &p)
 {
     // Should be thread safe since the sync thread is blocked
-    if (!_discoveryJob->_csync_ctx->remote.root_perms) {
+    if (_discoveryJob->_csync_ctx->remote.root_perms.isEmpty()) {
         qCDebug(lcDiscovery) << "Permissions for root dir:" << p;
-        _discoveryJob->_csync_ctx->remote.root_perms = strdup(p.toUtf8());
+        _discoveryJob->_csync_ctx->remote.root_perms = p.toUtf8();
     }
 }
 

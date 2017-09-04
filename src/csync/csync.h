@@ -152,7 +152,7 @@ enum csync_ftw_type_e {
 
 typedef struct csync_file_stat_s csync_file_stat_t;
 
-struct csync_file_stat_s {
+struct OCSYNC_EXPORT csync_file_stat_s {
   uint64_t phash;
   time_t modtime;
   int64_t size;
@@ -226,22 +226,6 @@ typedef QByteArray (*csync_checksum_hook)(
     const QByteArray &path, const QByteArray &otherChecksumHeader, void *userdata);
 
 /**
- * @brief Allocate a csync context.
- *
- * @param csync  The context variable to allocate.
- */
-void OCSYNC_EXPORT csync_create(CSYNC **csync, const char *local);
-
-/**
- * @brief Initialize the file synchronizer.
- *
- * This function loads the configuration
- *
- * @param ctx  The context to initialize.
- */
-void OCSYNC_EXPORT csync_init(CSYNC *ctx, const char *db_file);
-
-/**
  * @brief Update detection
  *
  * @param ctx  The context to run the update detection on.
@@ -258,26 +242,6 @@ int OCSYNC_EXPORT csync_update(CSYNC *ctx);
  * @return  0 on success, less than 0 if an error occurred.
  */
 int OCSYNC_EXPORT csync_reconcile(CSYNC *ctx);
-
-/**
- * @brief Re-initializes the csync context
- *
- * @param ctx  The context to commit.
- *
- * @return  0 on success, less than 0 if an error occurred.
- */
-int OCSYNC_EXPORT csync_commit(CSYNC *ctx);
-
-/**
- * @brief Destroy the csync context
- *
- * frees the memory.
- *
- * @param ctx  The context to destroy.
- *
- * @return  0 on success, less than 0 if an error occurred.
- */
-int OCSYNC_EXPORT csync_destroy(CSYNC *ctx);
 
 /**
  * @brief Get the userdata saved in the context.

@@ -32,6 +32,7 @@
 #ifndef _CSYNC_PRIVATE_H
 #define _CSYNC_PRIVATE_H
 
+#include <map>
 #include <stdint.h>
 #include <stdbool.h>
 #include <sqlite3.h>
@@ -67,82 +68,89 @@ enum csync_replica_e {
 /**
  * @brief csync public structure
  */
-struct csync_s {
+struct OCSYNC_EXPORT csync_s {
   struct {
-      csync_auth_callback auth_function;
-      void *userdata;
-      csync_update_callback update_callback;
-      void *update_callback_userdata;
+      csync_auth_callback auth_function = nullptr;
+      void *userdata = nullptr;
+      csync_update_callback update_callback = nullptr;
+      void *update_callback_userdata = nullptr;
 
       /* hooks for checking the white list (uses the update_callback_userdata) */
-      int (*checkSelectiveSyncBlackListHook)(void*, const char*);
-      int (*checkSelectiveSyncNewFolderHook)(void*, const char* /* path */, const char* /* remotePerm */);
+      int (*checkSelectiveSyncBlackListHook)(void*, const char*) = nullptr;
+      int (*checkSelectiveSyncNewFolderHook)(void*, const char* /* path */, const char* /* remotePerm */) = nullptr;
 
 
-      csync_vio_opendir_hook remote_opendir_hook;
-      csync_vio_readdir_hook remote_readdir_hook;
-      csync_vio_closedir_hook remote_closedir_hook;
-      void *vio_userdata;
+      csync_vio_opendir_hook remote_opendir_hook = nullptr;
+      csync_vio_readdir_hook remote_readdir_hook = nullptr;
+      csync_vio_closedir_hook remote_closedir_hook = nullptr;
+      void *vio_userdata = nullptr;
 
       /* hook for comparing checksums of files during discovery */
-      csync_checksum_hook checksum_hook;
-      void *checksum_userdata;
+      csync_checksum_hook checksum_hook = nullptr;
+      void *checksum_userdata = nullptr;
 
   } callbacks;
-  c_strlist_t *excludes;
+  c_strlist_t *excludes = nullptr;
   
   struct {
-    char *file;
-    sqlite3 *db;
-    int exists;
+    char *file = nullptr;
+    sqlite3 *db = nullptr;
+    bool exists = false;
 
-    sqlite3_stmt* by_hash_stmt;
-    sqlite3_stmt* by_fileid_stmt;
-    sqlite3_stmt* by_inode_stmt;
+    sqlite3_stmt* by_hash_stmt = nullptr;
+    sqlite3_stmt* by_fileid_stmt = nullptr;
+    sqlite3_stmt* by_inode_stmt = nullptr;
 
     int lastReturnValue;
   } statedb;
 
   struct {
-    char *uri;
-    c_rbtree_t *tree;
+    std::map<std::string, std::string> folder_renamed_to; // map from->to
+    std::map<std::string, std::string> folder_renamed_from; // map to->from
+  } renames;
+
+  struct {
+    char *uri = nullptr;
+    c_rbtree_t *tree = nullptr;
   } local;
 
   struct {
-    c_rbtree_t *tree;
-    int  read_from_db;
-    const char *root_perms; /* Permission of the root folder. (Since the root folder is not in the db tree, we need to keep a separate entry.) */
+    c_rbtree_t *tree = nullptr;
+    bool read_from_db = false;
+    QByteArray root_perms; /* Permission of the root folder. (Since the root folder is not in the db tree, we need to keep a separate entry.) */
   } remote;
 
-
   /* replica we are currently walking */
-  enum csync_replica_e current;
+  enum csync_replica_e current = LOCAL_REPLICA;
 
   /* Used in the update phase so changes in the sub directories can be notified to
      parent directories */
-  csync_file_stat_t *current_fs;
+  csync_file_stat_t *current_fs = nullptr;
 
   /* csync error code */
-  enum csync_status_codes_e status_code;
+  enum csync_status_codes_e status_code = CSYNC_STATUS_OK;
 
-  char *error_string;
+  char *error_string = nullptr;
 
-  int status;
-  volatile int abort;
-  void *rename_info;
+  int status = CSYNC_STATUS_INIT;
+  volatile bool abort = false;
 
   /**
    * Specify if it is allowed to read the remote tree from the DB (default to enabled)
    */
-  bool read_remote_from_db;
+  bool read_remote_from_db = false;
 
   /**
    * If true, the DB is considered empty and all reads are skipped. (default is false)
    * This is useful during the initial local discovery as it speeds it up significantly.
    */
-  bool db_is_empty;
+  bool db_is_empty = false;
 
-  bool ignore_hidden_files;
+  bool ignore_hidden_files = true;
+
+  csync_s(const char *localUri, const char *db_file);
+  ~csync_s();
+  int reinitialize();
 };
 
 /*
