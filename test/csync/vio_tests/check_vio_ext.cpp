@@ -99,7 +99,7 @@ static int setup_testenv(void **state) {
 
     csync_create(&(mystate->csync), "/tmp/csync1");
 
-    mystate->csync->replica = LOCAL_REPLICA;
+    mystate->csync->current = LOCAL_REPLICA;
 
     *state = mystate;
     return 0;
