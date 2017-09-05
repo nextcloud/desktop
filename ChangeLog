@@ -49,7 +49,7 @@ version 2.4.0 (2017-0X-XX)
 * OpenSSL: Don't require directly, only via Qt
 * Remove iconv dependency, use Qt for file system locale encoding/decoding (emoji filename support on macOS)
 
-version 2.3.3 (2017-07-XX)
+version 2.3.3 (2017-08-29)
 * Chunking NG: Don't use old chunking on new DAV endpoint (#5855)
 * Selective Sync: Skip excluded folders when reading DB, don't let them show errors (#5772)
 * Settings: Make window bigger so Qt version is always visible (#5760)
