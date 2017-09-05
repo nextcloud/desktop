@@ -25,6 +25,7 @@
 #include "csync.h"
 #include "csync_log.cpp"
 #include "c_private.h"
+#include "std/c_utf8.h"
 
 static int setup(void **state) {
     CSYNC *csync;

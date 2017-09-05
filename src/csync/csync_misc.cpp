@@ -170,37 +170,3 @@ CSYNC_STATUS csync_errno_to_status(int error, CSYNC_STATUS default_status)
 
   return status;
 }
-
-/* Remove possible quotes, and also the -gzip at the end
- * Remove "-gzip" at the end (cf. https://github.comowncloud/client/issues/1195)
- * The caller must take ownership of the resulting string.
- */
-char *csync_normalize_etag(const char *etag)
-{
-    int len = 0;
-    char *buf = NULL;
-    if (!etag)
-        return NULL;
-
-    len = strlen(etag);
-    /* strip "XXXX-gzip" */
-    if(len >= 7 && etag[0] == '"' && c_streq(etag + len - 6, "-gzip\"")) {
-        etag++;
-        len -= 7;
-    }
-    /* strip leading -gzip */
-    if(len >= 5 && c_streq(etag + len - 5, "-gzip")) {
-        len -= 5;
-    }
-    /* strip normal quotes */
-    if (etag[0] == '"' && etag[len-1] == '"') {
-        etag++;
-        len -= 2;
-    }
-
-    buf = (char*)c_malloc( len+1 );
-    strncpy( buf, etag, len );
-    buf[len] = '\0';
-    return buf;
-}
-

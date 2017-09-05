@@ -23,6 +23,7 @@
 #include <QMutex>
 #include <QWaitCondition>
 #include <QLinkedList>
+#include <deque>
 
 namespace OCC {
 
@@ -76,48 +77,14 @@ struct SyncOptions
 };
 
 
-/**
- * @brief The FileStatPointer class
- * @ingroup libsync
- */
-class FileStatPointer
-{
-public:
-    FileStatPointer(csync_vio_file_stat_t *stat)
-        : _stat(stat)
-    {
-    }
-    FileStatPointer(const FileStatPointer &other)
-        : _stat(csync_vio_file_stat_copy(other._stat))
-    {
-    }
-    ~FileStatPointer()
-    {
-        csync_vio_file_stat_destroy(_stat);
-    }
-    FileStatPointer &operator=(const FileStatPointer &other)
-    {
-        csync_vio_file_stat_destroy(_stat);
-        _stat = csync_vio_file_stat_copy(other._stat);
-        return *this;
-    }
-    inline csync_vio_file_stat_t *data() const { return _stat; }
-    inline csync_vio_file_stat_t *operator->() const { return _stat; }
-
-private:
-    csync_vio_file_stat_t *_stat;
-};
-
 struct DiscoveryDirectoryResult
 {
     QString path;
     QString msg;
     int code;
-    QList<FileStatPointer> list;
-    int listIndex;
+    std::deque<std::unique_ptr<csync_file_stat_t>> list;
     DiscoveryDirectoryResult()
         : code(EIO)
-        , listIndex(0)
     {
     }
 };
@@ -138,12 +105,14 @@ public:
     void setIsRootPath() { _isRootPath = true; }
     void start();
     void abort();
+    std::deque<std::unique_ptr<csync_file_stat_t>> &&takeResults() { return std::move(_results); }
+
     // This is not actually a network job, it is just a job
 signals:
     void firstDirectoryPermissions(const QString &);
     void etagConcatenation(const QString &);
     void etag(const QString &);
-    void finishedWithResult(const QList<FileStatPointer> &);
+    void finishedWithResult();
     void finishedWithError(int csyncErrnoCode, const QString &msg);
 private slots:
     void directoryListingIteratedSlot(QString, const QMap<QString, QString> &);
@@ -151,7 +120,7 @@ private slots:
     void lsJobFinishedWithErrorSlot(QNetworkReply *);
 
 private:
-    QList<FileStatPointer> _results;
+    std::deque<std::unique_ptr<csync_file_stat_t>> _results;
     QString _subPath;
     QString _etagConcatenation;
     QString _firstEtag;
@@ -203,7 +172,7 @@ public slots:
     void doGetSizeSlot(const QString &path, qint64 *result);
 
     // From Job:
-    void singleDirectoryJobResultSlot(const QList<FileStatPointer> &);
+    void singleDirectoryJobResultSlot();
     void singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, const QString &msg);
     void singleDirectoryJobFirstDirectoryPermissionsSlot(const QString &);
 
@@ -250,7 +219,7 @@ class DiscoveryJob : public QObject
     // For using QNAM to get the directory listings
     static csync_vio_handle_t *remote_vio_opendir_hook(const char *url,
         void *userdata);
-    static csync_vio_file_stat_t *remote_vio_readdir_hook(csync_vio_handle_t *dhandle,
+    static std::unique_ptr<csync_file_stat_t> remote_vio_readdir_hook(csync_vio_handle_t *dhandle,
         void *userdata);
     static void remote_vio_closedir_hook(csync_vio_handle_t *dhandle,
         void *userdata);
