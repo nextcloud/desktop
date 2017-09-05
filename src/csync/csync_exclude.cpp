@@ -31,6 +31,7 @@
 
 #include "c_lib.h"
 #include "c_private.h"
+#include "c_utf8.h"
 
 #include "csync_private.h"
 #include "csync_exclude.h"

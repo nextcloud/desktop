@@ -39,6 +39,7 @@
 #include <stdint.h>
 #include <sys/types.h>
 #include <config_csync.h>
+#include <memory>
 #include <QByteArray>
 
 enum csync_status_codes_e {
@@ -54,7 +55,6 @@ enum csync_status_codes_e {
   CSYNC_STATUS_TIMESKEW,           /* OBSOLETE */
   CSYNC_STATUS_FILESYSTEM_UNKNOWN, /* UNUSED */
   CSYNC_STATUS_TREE_ERROR,         /* csync trees could not be created */
-  CSYNC_STATUS_MEMORY_ERROR,       /* not enough memory problem */
   CSYNC_STATUS_PARAM_ERROR,        /* parameter is zero where not expected */
   CSYNC_STATUS_UPDATE_ERROR,       /* general update or discovery error */
   CSYNC_STATUS_RECONCILE_ERROR,    /* general reconcile error */
@@ -150,82 +150,6 @@ enum csync_ftw_type_e {
 // currently specified at https://github.com/owncloud/core/issues/8322 are 9 to 10
 #define REMOTE_PERM_BUF_SIZE 15
 
-typedef struct csync_vio_file_stat_s csync_vio_file_stat_t;
-
-enum csync_vio_file_flags_e {
-  CSYNC_VIO_FILE_FLAGS_NONE = 0,
-  CSYNC_VIO_FILE_FLAGS_SYMLINK = 1 << 0,
-  CSYNC_VIO_FILE_FLAGS_HIDDEN = 1 << 1
-};
-
-enum csync_vio_file_type_e {
-  CSYNC_VIO_FILE_TYPE_UNKNOWN,
-  CSYNC_VIO_FILE_TYPE_REGULAR,
-  CSYNC_VIO_FILE_TYPE_DIRECTORY,
-  CSYNC_VIO_FILE_TYPE_FIFO,
-  CSYNC_VIO_FILE_TYPE_SOCKET,
-  CSYNC_VIO_FILE_TYPE_CHARACTER_DEVICE,
-  CSYNC_VIO_FILE_TYPE_BLOCK_DEVICE,
-  CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK
-};
-
-enum csync_vio_file_stat_fields_e {
-  CSYNC_VIO_FILE_STAT_FIELDS_NONE = 0,
-  CSYNC_VIO_FILE_STAT_FIELDS_TYPE = 1 << 0,
-  CSYNC_VIO_FILE_STAT_FIELDS_MODE = 1 << 1, // local POSIX mode
-  CSYNC_VIO_FILE_STAT_FIELDS_FLAGS = 1 << 2,
-//  CSYNC_VIO_FILE_STAT_FIELDS_DEVICE = 1 << 3,
-  CSYNC_VIO_FILE_STAT_FIELDS_INODE = 1 << 4,
-//  CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT = 1 << 5,
-  CSYNC_VIO_FILE_STAT_FIELDS_SIZE = 1 << 6,
-//  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT = 1 << 7, /* will be removed */
-//  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_SIZE = 1 << 8,  /* will be removed */
-  CSYNC_VIO_FILE_STAT_FIELDS_ATIME = 1 << 9,
-  CSYNC_VIO_FILE_STAT_FIELDS_MTIME = 1 << 10,
-  CSYNC_VIO_FILE_STAT_FIELDS_CTIME = 1 << 11,
-//  CSYNC_VIO_FILE_STAT_FIELDS_SYMLINK_NAME = 1 << 12,
-//  CSYNC_VIO_FILE_STAT_FIELDS_CHECKSUM = 1 << 13,
-//  CSYNC_VIO_FILE_STAT_FIELDS_ACL = 1 << 14,
-//  CSYNC_VIO_FILE_STAT_FIELDS_UID = 1 << 15,
-//  CSYNC_VIO_FILE_STAT_FIELDS_GID = 1 << 16,
-  CSYNC_VIO_FILE_STAT_FIELDS_ETAG = 1 << 17,
-  CSYNC_VIO_FILE_STAT_FIELDS_FILE_ID = 1 << 18,
-  CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADURL = 1 << 19,
-  CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADCOOKIES = 1 << 20,
-  CSYNC_VIO_FILE_STAT_FIELDS_PERM = 1 << 21 // remote oC perm
-
-};
-
-
-struct csync_vio_file_stat_s {
-  char *name;
-  char *etag; // FIXME: Should this be inlined like file_id and perm?
-  char file_id[FILE_ID_BUF_SIZE+1];
-  char *directDownloadUrl;
-  char *directDownloadCookies;
-  char remotePerm[REMOTE_PERM_BUF_SIZE+1];
-
-  time_t atime;
-  time_t mtime;
-  time_t ctime;
-  int64_t size;
-
-  mode_t mode;
-
-  uint64_t inode;
-
-  int fields; // actually enum csync_vio_file_stat_fields_e fields;
-  enum csync_vio_file_type_e type;
-
-  int flags;
-
-  char *original_name; // only set if locale conversion fails
-
-  // For remote file stats: the highest quality checksum the server provided
-  // in the "SHA1:324315da2143" form.
-  char *checksumHeader;
-};
-
 typedef struct csync_file_stat_s csync_file_stat_t;
 
 struct csync_file_stat_s {
@@ -236,6 +160,7 @@ struct csync_file_stat_s {
   enum csync_ftw_type_e type  : 4;
   bool child_modified         : 1;
   bool has_ignored_files      : 1; /* specify that a directory, or child directory contains ignored files */
+  bool is_hidden              : 1; // Not saved in the DB, only used during discovery for local files.
 
   QByteArray path;
   QByteArray rename_path;
@@ -244,6 +169,7 @@ struct csync_file_stat_s {
   QByteArray directDownloadUrl;
   QByteArray directDownloadCookies;
   QByteArray remotePerm;
+  QByteArray original_path; // only set if locale conversion fails
 
   // In the local tree, this can hold a checksum and its type if it is
   //   computed during discovery for some reason.
@@ -263,20 +189,11 @@ struct csync_file_stat_s {
     , type(CSYNC_FTW_TYPE_SKIP)
     , child_modified(false)
     , has_ignored_files(false)
+    , is_hidden(false)
     , error_status(CSYNC_STATUS_OK)
     , instruction(CSYNC_INSTRUCTION_NONE)
   { }
 };
-
-csync_vio_file_stat_t OCSYNC_EXPORT *csync_vio_file_stat_new(void);
-csync_vio_file_stat_t OCSYNC_EXPORT *csync_vio_file_stat_copy(csync_vio_file_stat_t *file_stat);
-
-void OCSYNC_EXPORT csync_vio_file_stat_destroy(csync_vio_file_stat_t *fstat);
-
-void OCSYNC_EXPORT csync_vio_file_stat_set_file_id( csync_vio_file_stat_t* dst, const char* src );
-
-void OCSYNC_EXPORT csync_vio_set_file_id(char* dst, const char *src );
-
 
 /**
  * CSync File Traversal structure.
@@ -338,7 +255,7 @@ typedef void (*csync_update_callback) (bool local,
 typedef void csync_vio_handle_t;
 typedef csync_vio_handle_t* (*csync_vio_opendir_hook) (const char *url,
                                     void *userdata);
-typedef csync_vio_file_stat_t* (*csync_vio_readdir_hook) (csync_vio_handle_t *dhhandle,
+typedef std::unique_ptr<csync_file_stat_t> (*csync_vio_readdir_hook) (csync_vio_handle_t *dhhandle,
                                                               void *userdata);
 typedef void (*csync_vio_closedir_hook) (csync_vio_handle_t *dhhandle,
                                                               void *userdata);
@@ -539,7 +456,6 @@ void OCSYNC_EXPORT csync_resume(CSYNC *ctx);
  */
 int  OCSYNC_EXPORT csync_abort_requested(CSYNC *ctx);
 
-char OCSYNC_EXPORT *csync_normalize_etag(const char *);
 time_t OCSYNC_EXPORT oc_httpdate_parse( const char *date );
 
 /**

@@ -44,6 +44,7 @@ extern "C" int c_utimes(const char *, const struct timeval *);
 #include "vio/csync_vio_local.h"
 #include "std/c_path.h"
 #include "std/c_string.h"
+#include "std/c_utf8.h"
 
 namespace OCC {
 
@@ -173,17 +174,16 @@ void FileSystem::setFileReadOnlyWeak(const QString &filename, bool readonly)
 
 time_t FileSystem::getModTime(const QString &filename)
 {
-    csync_vio_file_stat_t *stat = csync_vio_file_stat_new();
+    csync_file_stat_t stat;
     qint64 result = -1;
-    if (csync_vio_local_stat(filename.toUtf8().data(), stat) != -1
-        && (stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_MTIME)) {
-        result = stat->mtime;
+    if (csync_vio_local_stat(filename.toUtf8().data(), &stat) != -1
+        && (stat.modtime != 0)) {
+        result = stat.modtime;
     } else {
         qCWarning(lcFileSystem) << "Could not get modification time for" << filename
                                 << "with csync, using QFileInfo";
         result = Utility::qDateTimeToTime_t(QFileInfo(filename).lastModified());
     }
-    csync_vio_file_stat_destroy(stat);
     return result;
 }
 
@@ -428,14 +428,12 @@ bool FileSystem::openAndSeekFileSharedRead(QFile *file, QString *errorOrNull, qi
 static qint64 getSizeWithCsync(const QString &filename)
 {
     qint64 result = 0;
-    csync_vio_file_stat_t *stat = csync_vio_file_stat_new();
-    if (csync_vio_local_stat(filename.toUtf8().data(), stat) != -1
-        && (stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_SIZE)) {
-        result = stat->size;
+    csync_file_stat_t stat;
+    if (csync_vio_local_stat(filename.toUtf8().data(), &stat) != -1) {
+        result = stat.size;
     } else {
         qCWarning(lcFileSystem) << "Could not get size for" << filename << "with csync";
     }
-    csync_vio_file_stat_destroy(stat);
     return result;
 }
 #endif

@@ -134,9 +134,6 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
     case CSYNC_STATUS_TREE_ERROR:
         errStr = tr("CSync got an error while processing internal trees.");
         break;
-    case CSYNC_STATUS_MEMORY_ERROR:
-        errStr = tr("CSync failed to reserve memory.");
-        break;
     case CSYNC_STATUS_PARAM_ERROR:
         errStr = tr("CSync fatal parameter error.");
         break;

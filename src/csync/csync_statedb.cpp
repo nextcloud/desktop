@@ -42,6 +42,7 @@
 
 #include "c_string.h"
 #include "c_jhash.h"
+#include "c_utf8.h"
 #include "csync_time.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.statedb"

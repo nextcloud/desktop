@@ -46,14 +46,13 @@ enum csync_ftw_flags_e {
   CSYNC_FTW_FLAG_DNR,		/* Unreadable directory.  */
   CSYNC_FTW_FLAG_NSTAT,		/* Unstatable file.  */
   CSYNC_FTW_FLAG_SLINK,		/* Symbolic link.  */
-  CSYNC_FTW_FLAG_SPEC,		/* Special file (fifo, ...).  */
   /* These flags are only passed from the `nftw' function.  */
   CSYNC_FTW_FLAG_DP,		/* Directory, all subdirs have been visited. */
   CSYNC_FTW_FLAG_SLN		/* Symbolic link naming non-existing file.  */
 };
 
 typedef int (*csync_walker_fn) (CSYNC *ctx, const char *file,
-    const csync_vio_file_stat_t *fs, int flag);
+    const csync_file_stat_t *fs, int flag);
 
 /**
  * @brief The walker function to use in the file tree walker.
@@ -68,7 +67,7 @@ typedef int (*csync_walker_fn) (CSYNC *ctx, const char *file,
  *
  * @return 0 on success, < 0 on error.
  */
-int csync_walker(CSYNC *ctx, const char *file, const csync_vio_file_stat_t *fs, int flag);
+int csync_walker(CSYNC *ctx, const char *file, const csync_file_stat_t *fs, int flag);
 
 /**
  * @brief The file tree walker.

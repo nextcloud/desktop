@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include "c_string.h"
 #include "c_path.h"
+#include "c_utf8.h"
 
 #ifdef _WIN32
 #include <string.h>
@@ -48,7 +49,6 @@ static void check_iconv_to_native_normalization(void **state)
 
 static void check_iconv_from_native_normalization(void **state)
 {
-    char *out = NULL;
 #ifdef _WIN32
     const mbchar_t *in = L"\x48\xc3\xa4"; // UTF-8
 #else
@@ -60,11 +60,8 @@ static void check_iconv_from_native_normalization(void **state)
 #endif
     const char *exp_out = "\x48\xc3\xa4"; // UTF-8
 
-    out = c_utf8_from_locale(in);
+    QByteArray out = c_utf8_from_locale(in);
     assert_string_equal(out, exp_out);
-
-    c_free_locale_string(out);
-    assert_null(out);
 
     (void) state; /* unused */
 }
@@ -80,14 +77,10 @@ static void check_iconv_ascii(void **state)
     const mbchar_t *in = "abc/ABC\\123"; // UTF-8
 #endif
 #endif
-    char *out = NULL;
     const char *exp_out = "abc/ABC\\123";
 
-    out = c_utf8_from_locale(in);
+    QByteArray out = c_utf8_from_locale(in);
     assert_string_equal(out, exp_out);
-
-    c_free_locale_string(out);
-    assert_null(out);
 
     (void) state; /* unused */
 }

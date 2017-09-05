@@ -24,6 +24,7 @@
 
 #include "c_path.h"
 #include "c_time.h"
+#include "c_utf8.h"
 
 struct timespec c_tspecdiff(struct timespec time1, struct timespec time0) {
   struct timespec ret;

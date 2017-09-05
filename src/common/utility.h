@@ -131,6 +131,8 @@ namespace Utility {
 
     OCSYNC_EXPORT QString fileNameForGuiUse(const QString &fName);
 
+    OCSYNC_EXPORT QByteArray normalizeEtag(QByteArray etag);
+
     /**
      * @brief timeAgoInWords - human readable time span
      *

@@ -20,6 +20,7 @@
  */
 
 #include "config_csync.h"
+#include "c_utf8.h"
 
 #ifdef _WIN32
 #include <ctype.h>
@@ -34,31 +35,26 @@
 #include <QtCore/QFile>
 #endif
 
-extern "C" {
 #include "c_alloc.h"
 #include "c_string.h"
 
 /* Convert a locale String to UTF8 */
-char* c_utf8_from_locale(const mbchar_t *wstr)
+QByteArray c_utf8_from_locale(const mbchar_t *wstr)
 {
   if (wstr == NULL) {
-    return NULL;
+    return QByteArray();
   }
 
 #ifdef _WIN32
-  char *dst = NULL;
-  char *mdst = NULL;
+  QByteArray dst;
   int size_needed;
   size_t len;
   len = wcslen(wstr);
   /* Call once to get the required size. */
   size_needed = WideCharToMultiByte(CP_UTF8, 0, wstr, len, NULL, 0, NULL, NULL);
   if (size_needed > 0) {
-    mdst = (char*)c_malloc(size_needed + 1);
-
-    memset(mdst, 0, size_needed + 1);
-    WideCharToMultiByte(CP_UTF8, 0, wstr, len, mdst, size_needed, NULL, NULL);
-    dst = mdst;
+    dst.resize(size_needed);
+    WideCharToMultiByte(CP_UTF8, 0, wstr, len, dst.data(), size_needed, NULL, NULL);
   }
   return dst;
 #else
@@ -67,14 +63,16 @@ char* c_utf8_from_locale(const mbchar_t *wstr)
     if (s.isEmpty() || dec.hasFailure()) {
         /* Conversion error: since we can't report error from this function, just return the original
             string.  We take care of invalid utf-8 in SyncEngine::treewalkFile */
-        return c_strdup(wstr);
+        return QByteArray(wstr);
     }
 #ifdef __APPLE__
     s = s.normalized(QString::NormalizationForm_C);
 #endif
-    return c_strdup(std::move(s).toUtf8().constData());
+    return std::move(s).toUtf8();
 #endif
 }
+
+extern "C" {
 
 /* Convert a an UTF8 string to locale */
 mbchar_t* c_utf8_string_to_locale(const char *str)
