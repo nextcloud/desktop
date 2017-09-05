@@ -44,7 +44,6 @@ add_cmocka_test(check_csync_statedb_query csync_tests/check_csync_statedb_query.
 add_cmocka_test(check_csync_commit csync_tests/check_csync_commit.cpp ${TEST_TARGET_LIBRARIES})
 
 # vio
-add_cmocka_test(check_vio_file_stat vio_tests/check_vio_file_stat.cpp ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_vio vio_tests/check_vio.cpp ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_vio_ext vio_tests/check_vio_ext.cpp ${TEST_TARGET_LIBRARIES})
 

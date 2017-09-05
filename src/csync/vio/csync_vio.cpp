@@ -84,7 +84,7 @@ int csync_vio_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
   return rc;
 }
 
-csync_vio_file_stat_t *csync_vio_readdir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
+std::unique_ptr<csync_file_stat_t> csync_vio_readdir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
   switch(ctx->replica) {
     case REMOTE_REPLICA:
       if( ctx->remote.read_from_db ) {
@@ -104,7 +104,7 @@ csync_vio_file_stat_t *csync_vio_readdir(CSYNC *ctx, csync_vio_handle_t *dhandle
 }
 
 
-int csync_vio_stat(CSYNC *ctx, const char *uri, csync_vio_file_stat_t *buf) {
+int csync_vio_stat(CSYNC *ctx, const char *uri, csync_file_stat_t *buf) {
   int rc = -1;
 
   switch(ctx->replica) {

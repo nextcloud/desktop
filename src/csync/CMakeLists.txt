@@ -77,7 +77,6 @@ set(csync_SRCS
   csync_rename.cpp
 
   vio/csync_vio.cpp
-  vio/csync_vio_file_stat.cpp
 )
 
 if (WIN32)

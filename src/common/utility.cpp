@@ -380,6 +380,26 @@ QString Utility::fileNameForGuiUse(const QString &fName)
     return fName;
 }
 
+QByteArray Utility::normalizeEtag(QByteArray etag)
+{
+    /* strip "XXXX-gzip" */
+    if(etag.startsWith('"') && etag.endsWith("-gzip\"")) {
+        etag.chop(6);
+        etag.remove(0, 1);
+    }
+    /* strip trailing -gzip */
+    if(etag.endsWith("-gzip")) {
+        etag.chop(5);
+    }
+    /* strip normal quotes */
+    if (etag.startsWith('"') && etag.endsWith('"')) {
+        etag.chop(1);
+        etag.remove(0, 1);
+    }
+    etag.squeeze();
+    return etag;
+}
+
 bool Utility::hasDarkSystray()
 {
     return hasDarkSystray_private();

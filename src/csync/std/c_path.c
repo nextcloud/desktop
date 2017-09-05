@@ -33,6 +33,7 @@
 #include "c_alloc.h"
 #include "c_path.h"
 #include "c_string.h"
+#include "c_utf8.h"
 
 /*
  * dirname - parse directory component.
