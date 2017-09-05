@@ -163,6 +163,19 @@ private slots:
         QVERIFY(!wipedRecord._valid);
     }
 
+    void testNumericId()
+    {
+        SyncJournalFileRecord record;
+
+        // Typical 8-digit padded id
+        record._fileId = "00000001abcd";
+        QCOMPARE(record.numericFileId(), QByteArray("00000001"));
+
+        // When the numeric id overflows the 8-digit boundary
+        record._fileId = "123456789ocidblaabcd";
+        QCOMPARE(record.numericFileId(), QByteArray("123456789"));
+    }
+
 private:
     SyncJournalDb _db;
 };
