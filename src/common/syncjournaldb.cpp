@@ -913,7 +913,7 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
         parseChecksumHeader(record._checksumHeader, &checksumType, &checksum);
         int contentChecksumTypeId = mapChecksumType(checksumType);
         _setFileRecordQuery->reset_and_clear_bindings();
-        _setFileRecordQuery->bindValue(1, QString::number(phash));
+        _setFileRecordQuery->bindValue(1, phash);
         _setFileRecordQuery->bindValue(2, plen);
         _setFileRecordQuery->bindValue(3, record._path);
         _setFileRecordQuery->bindValue(4, record._inode);
@@ -951,7 +951,7 @@ bool SyncJournalDb::deleteFileRecord(const QString &filename, bool recursively)
 
         qlonglong phash = getPHash(filename);
         _deleteFileRecordPhash->reset_and_clear_bindings();
-        _deleteFileRecordPhash->bindValue(1, QString::number(phash));
+        _deleteFileRecordPhash->bindValue(1, phash);
 
         if (!_deleteFileRecordPhash->exec()) {
             return false;
@@ -981,7 +981,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord(const QString &filename)
 
     if (!filename.isEmpty() && checkConnect()) {
         _getFileRecordQuery->reset_and_clear_bindings();
-        _getFileRecordQuery->bindValue(1, QString::number(phash));
+        _getFileRecordQuery->bindValue(1, phash);
 
         if (!_getFileRecordQuery->exec()) {
             locker.unlock();
@@ -1108,7 +1108,7 @@ bool SyncJournalDb::updateFileRecordChecksum(const QString &filename,
     auto &query = _setFileRecordChecksumQuery;
 
     query->reset_and_clear_bindings();
-    query->bindValue(1, QString::number(phash));
+    query->bindValue(1, phash);
     query->bindValue(2, contentChecksum);
     query->bindValue(3, checksumTypeId);
 
@@ -1136,7 +1136,7 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
     auto &query = _setFileRecordLocalMetadataQuery;
 
     query->reset_and_clear_bindings();
-    query->bindValue(1, QString::number(phash));
+    query->bindValue(1, phash);
     query->bindValue(2, inode);
     query->bindValue(3, modtime);
     query->bindValue(4, size);
