@@ -936,7 +936,6 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
             return false;
         }
 
-        _setFileRecordQuery->reset_and_clear_bindings();
         return true;
     } else {
         qCWarning(lcDb) << "Failed to connect database.";
@@ -960,15 +959,12 @@ bool SyncJournalDb::deleteFileRecord(const QString &filename, bool recursively)
             return false;
         }
 
-        _deleteFileRecordPhash->reset_and_clear_bindings();
         if (recursively) {
             _deleteFileRecordRecursively->reset_and_clear_bindings();
             _deleteFileRecordRecursively->bindValue(1, filename);
             if (!_deleteFileRecordRecursively->exec()) {
                 return false;
             }
-
-            _deleteFileRecordRecursively->reset_and_clear_bindings();
         }
         return true;
     } else {
@@ -1009,7 +1005,6 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord(const QString &filename)
             rec._fileSize = _getFileRecordQuery->int64Value(10);
             rec._serverHasIgnoredFiles = (_getFileRecordQuery->intValue(11) > 0);
             rec._checksumHeader = _getFileRecordQuery->baValue(12);
-            _getFileRecordQuery->reset_and_clear_bindings();
         } else {
             int errId = _getFileRecordQuery->errorId();
             if (errId != SQLITE_DONE) { // only do this if the problem is different from SQLITE_DONE
@@ -1019,9 +1014,6 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord(const QString &filename)
                 close();
                 locker.relock();
             }
-        }
-        if (_getFileRecordQuery) {
-            _getFileRecordQuery->reset_and_clear_bindings();
         }
     }
     return rec;
@@ -1126,7 +1118,6 @@ bool SyncJournalDb::updateFileRecordChecksum(const QString &filename,
         return false;
     }
 
-    query->reset_and_clear_bindings();
     return true;
 }
 
@@ -1156,7 +1147,6 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
         return false;
     }
 
-    query->reset_and_clear_bindings();
     return true;
 }
 
@@ -1204,7 +1194,6 @@ static bool deleteBatch(SqlQuery &query, const QStringList &entries, const QStri
             return false;
         }
     }
-    query.reset_and_clear_bindings(); // viel hilft viel ;-)
 
     return true;
 }
@@ -1228,7 +1217,6 @@ SyncJournalDb::DownloadInfo SyncJournalDb::getDownloadInfo(const QString &file)
         } else {
             res._valid = false;
         }
-        _getDownloadInfoQuery->reset_and_clear_bindings();
     }
     return res;
 }
@@ -1251,9 +1239,6 @@ void SyncJournalDb::setDownloadInfo(const QString &file, const SyncJournalDb::Do
         if (!_setDownloadInfoQuery->exec()) {
             return;
         }
-
-        _setDownloadInfoQuery->reset_and_clear_bindings();
-
     } else {
         _deleteDownloadInfoQuery->reset_and_clear_bindings();
         _deleteDownloadInfoQuery->bindValue(1, file);
@@ -1261,8 +1246,6 @@ void SyncJournalDb::setDownloadInfo(const QString &file, const SyncJournalDb::Do
         if (!_deleteDownloadInfoQuery->exec()) {
             return;
         }
-
-        _deleteDownloadInfoQuery->reset_and_clear_bindings();
     }
 }
 
@@ -1343,7 +1326,6 @@ SyncJournalDb::UploadInfo SyncJournalDb::getUploadInfo(const QString &file)
             res._modtime = Utility::qDateTimeFromTime_t(_getUploadInfoQuery->int64Value(4));
             res._valid = ok;
         }
-        _getUploadInfoQuery->reset_and_clear_bindings();
     }
     return res;
 }
@@ -1368,8 +1350,6 @@ void SyncJournalDb::setUploadInfo(const QString &file, const SyncJournalDb::Uplo
         if (!_setUploadInfoQuery->exec()) {
             return;
         }
-
-        _setUploadInfoQuery->reset_and_clear_bindings();
     } else {
         _deleteUploadInfoQuery->reset_and_clear_bindings();
         _deleteUploadInfoQuery->bindValue(1, file);
@@ -1377,8 +1357,6 @@ void SyncJournalDb::setUploadInfo(const QString &file, const SyncJournalDb::Uplo
         if (!_deleteUploadInfoQuery->exec()) {
             return;
         }
-
-        _deleteUploadInfoQuery->reset_and_clear_bindings();
     }
 }
 
@@ -1438,7 +1416,6 @@ SyncJournalErrorBlacklistRecord SyncJournalDb::errorBlacklistEntry(const QString
                     _getErrorBlacklistQuery->intValue(7));
                 entry._file = file;
             }
-            _getErrorBlacklistQuery->reset_and_clear_bindings();
         }
     }
 
@@ -1554,6 +1531,7 @@ void SyncJournalDb::setErrorBlacklistEntry(const SyncJournalErrorBlacklistRecord
         return;
     }
 
+    _setErrorBlacklistQuery->reset_and_clear_bindings();
     _setErrorBlacklistQuery->bindValue(1, item._file);
     _setErrorBlacklistQuery->bindValue(2, item._lastTryEtag);
     _setErrorBlacklistQuery->bindValue(3, QString::number(item._lastTryModtime));
@@ -1564,7 +1542,6 @@ void SyncJournalDb::setErrorBlacklistEntry(const SyncJournalErrorBlacklistRecord
     _setErrorBlacklistQuery->bindValue(8, item._renameTarget);
     _setErrorBlacklistQuery->bindValue(9, item._errorCategory);
     _setErrorBlacklistQuery->exec();
-    _setErrorBlacklistQuery->reset_and_clear_bindings();
 }
 
 QVector<SyncJournalDb::PollInfo> SyncJournalDb::getPollInfos()
