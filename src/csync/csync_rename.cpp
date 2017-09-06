@@ -21,7 +21,6 @@
 #include "csync_private.h"
 #include "csync_rename.h"
 
-#include <map>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -33,44 +32,17 @@ static std::string _parentDir(const std::string &path) {
     return path.substr(0, len);
 }
 
-struct csync_rename_s {
-    static csync_rename_s *get(CSYNC *ctx) {
-        if (!ctx->rename_info) {
-            ctx->rename_info = new csync_rename_s;
-        }
-        return reinterpret_cast<csync_rename_s *>(ctx->rename_info);
-    }
-
-    std::map<std::string, std::string> folder_renamed_to; // map from->to
-    std::map<std::string, std::string> folder_renamed_from; // map to->from
-
-    struct renameop {
-        csync_file_stat_t *st;
-        bool operator<(const renameop &other) const {
-            return strlen(st->destpath) < strlen(other.st->destpath);
-        }
-    };
-    std::vector<renameop> todo;
-};
-
-void csync_rename_destroy(CSYNC* ctx)
-{
-    delete reinterpret_cast<csync_rename_s *>(ctx->rename_info);
-    ctx->rename_info = 0;
-}
-
 void csync_rename_record(CSYNC* ctx, const char* from, const char* to)
 {
-    csync_rename_s::get(ctx)->folder_renamed_to[from] = to;
-    csync_rename_s::get(ctx)->folder_renamed_from[to] = from;
+    ctx->renames.folder_renamed_to[from] = to;
+    ctx->renames.folder_renamed_from[to] = from;
 }
 
 char* csync_rename_adjust_path(CSYNC* ctx, const char* path)
 {
-    csync_rename_s* d = csync_rename_s::get(ctx);
     for (std::string p = _parentDir(path); !p.empty(); p = _parentDir(p)) {
-        std::map< std::string, std::string >::iterator it = d->folder_renamed_to.find(p);
-        if (it != d->folder_renamed_to.end()) {
+        std::map< std::string, std::string >::iterator it = ctx->renames.folder_renamed_to.find(p);
+        if (it != ctx->renames.folder_renamed_to.end()) {
             std::string rep = it->second + (path + p.length());
             return c_strdup(rep.c_str());
         }
@@ -80,10 +52,9 @@ char* csync_rename_adjust_path(CSYNC* ctx, const char* path)
 
 char* csync_rename_adjust_path_source(CSYNC* ctx, const char* path)
 {
-    csync_rename_s* d = csync_rename_s::get(ctx);
     for (std::string p = _parentDir(path); !p.empty(); p = _parentDir(p)) {
-        std::map< std::string, std::string >::iterator it = d->folder_renamed_from.find(p);
-        if (it != d->folder_renamed_from.end()) {
+        std::map< std::string, std::string >::iterator it = ctx->renames.folder_renamed_from.find(p);
+        if (it != ctx->renames.folder_renamed_from.end()) {
             std::string rep = it->second + (path + p.length());
             return c_strdup(rep.c_str());
         }
@@ -92,6 +63,5 @@ char* csync_rename_adjust_path_source(CSYNC* ctx, const char* path)
 }
 
 bool csync_rename_count(CSYNC *ctx) {
-    csync_rename_s* d = csync_rename_s::get(ctx);
-    return d->folder_renamed_from.size();
+    return ctx->renames.folder_renamed_from.size();
 }

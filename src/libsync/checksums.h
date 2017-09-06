@@ -131,6 +131,6 @@ public:
      * to be set as userdata.
      * The return value will be owned by csync.
      */
-    static const char *hook(const char *path, const char *otherChecksumHeader, void *this_obj);
+    static QByteArray hook(const QByteArray &path, const QByteArray &otherChecksumHeader, void *this_obj);
 };
 }

@@ -24,7 +24,6 @@
 #include "networkjobs.h"
 #include "syncjournalfilerecord.h"
 #include "syncresult.h"
-#include "utility.h"
 #include "clientproxy.h"
 #include "syncengine.h"
 #include "syncrunfilelog.h"

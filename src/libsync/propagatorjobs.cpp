@@ -16,7 +16,7 @@
 #include "propagatorjobs.h"
 #include "owncloudpropagator_p.h"
 #include "propagateremotemove.h"
-#include "utility.h"
+#include "common/utility.h"
 #include "syncjournaldb.h"
 #include "syncjournalfilerecord.h"
 #include "filesystem.h"

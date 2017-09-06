@@ -29,7 +29,6 @@
 #include <time.h>
 
 #include "csync_time.h"
-#include "vio/csync_vio.h"
 
 #ifndef _WIN32
 #include <unistd.h>

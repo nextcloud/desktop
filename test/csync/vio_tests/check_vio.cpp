@@ -26,6 +26,7 @@
 #include "torture.h"
 
 #include "csync_private.h"
+#include "std/c_utf8.h"
 #include "vio/csync_vio.h"
 
 #define CSYNC_TEST_DIR "/tmp/csync_test/"
@@ -48,9 +49,9 @@ static int setup(void **state)
     rc = system("rm -rf /tmp/csync_test");
     assert_int_equal(rc, 0);
 
-    csync_create(&csync, "/tmp/csync1");
+    csync = new CSYNC("/tmp/check_csync1", "");
 
-    csync->replica = LOCAL_REPLICA;
+    csync->current = LOCAL_REPLICA;
 
     *state = csync;
     return 0;
@@ -77,8 +78,7 @@ static int teardown(void **state) {
     CSYNC *csync = (CSYNC*)*state;
     int rc;
 
-    rc = csync_destroy(csync);
-    assert_int_equal(rc, 0);
+    delete csync;
 
     rc = chdir(wd_buffer);
     assert_int_equal(rc, 0);
@@ -141,16 +141,15 @@ static void check_csync_vio_readdir(void **state)
 {
     CSYNC *csync = (CSYNC*)*state;
     csync_vio_handle_t *dh;
-    csync_vio_file_stat_t *dirent;
+    std::unique_ptr<csync_file_stat_t> dirent;
     int rc;
 
     dh = csync_vio_opendir(csync, CSYNC_TEST_DIR);
     assert_non_null(dh);
 
     dirent = csync_vio_readdir(csync, dh);
-    assert_non_null(dirent);
+    assert_non_null(dirent.get());
 
-    csync_vio_file_stat_destroy(dirent);
     rc = csync_vio_closedir(csync, dh);
     assert_int_equal(rc, 0);
 }

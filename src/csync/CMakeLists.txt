@@ -20,6 +20,7 @@ include(MacroCopyFile)
 find_package(SQLite3 3.8.0 REQUIRED)
 
 include(ConfigureChecks.cmake)
+include(../common/common.cmake)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
@@ -76,7 +77,6 @@ set(csync_SRCS
   csync_rename.cpp
 
   vio/csync_vio.cpp
-  vio/csync_vio_file_stat.cpp
 )
 
 if (WIN32)
@@ -117,17 +117,26 @@ include_directories(
   ${CSYNC_PRIVATE_INCLUDE_DIRS}
 )
 
-add_library(${CSYNC_LIBRARY} SHARED ${csync_SRCS})
+add_library(${CSYNC_LIBRARY} SHARED ${common_SOURCES} ${csync_SRCS})
 #add_library(${CSYNC_LIBRARY}_static STATIC ${csync_SRCS})
 
 generate_export_header( ${CSYNC_LIBRARY}
-  BASE_NAME ${CSYNC_LIBRARY}
   EXPORT_MACRO_NAME OCSYNC_EXPORT
   EXPORT_FILE_NAME ocsynclib.h
 )
 
 target_link_libraries(${CSYNC_LIBRARY} ${CSYNC_LINK_LIBRARIES})
 #target_link_libraries(${CSYNC_LIBRARY}_static ${CSYNC_LINK_LIBRARIES})
+
+find_package(Qt5Core REQUIRED)
+qt5_use_modules(${CSYNC_LIBRARY} Core)
+
+# For src/common/utility_mac.cpp
+if (APPLE)
+    find_library(FOUNDATION_LIBRARY NAMES Foundation)
+    find_library(CORESERVICES_LIBRARY NAMES CoreServices)
+    target_link_libraries(${CSYNC_LIBRARY} ${FOUNDATION_LIBRARY} ${CORESERVICES_LIBRARY})
+endif()
 
 set_target_properties(
   ${CSYNC_LIBRARY}

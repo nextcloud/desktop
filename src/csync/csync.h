@@ -39,6 +39,15 @@
 #include <stdint.h>
 #include <sys/types.h>
 #include <config_csync.h>
+#include <memory>
+#include <QByteArray>
+
+#if defined(Q_CC_GNU) && !defined(Q_CC_INTEL) && !defined(Q_CC_CLANG) && (__GNUC__ * 100 + __GNUC_MINOR__ < 408)
+// openSuse 12.3 didn't like enum bitfields.
+#define BITFIELD(size)
+#else
+#define BITFIELD(size) :size
+#endif
 
 enum csync_status_codes_e {
   CSYNC_STATUS_OK         = 0,
@@ -53,7 +62,6 @@ enum csync_status_codes_e {
   CSYNC_STATUS_TIMESKEW,           /* OBSOLETE */
   CSYNC_STATUS_FILESYSTEM_UNKNOWN, /* UNUSED */
   CSYNC_STATUS_TREE_ERROR,         /* csync trees could not be created */
-  CSYNC_STATUS_MEMORY_ERROR,       /* not enough memory problem */
   CSYNC_STATUS_PARAM_ERROR,        /* parameter is zero where not expected */
   CSYNC_STATUS_UPDATE_ERROR,       /* general update or discovery error */
   CSYNC_STATUS_RECONCILE_ERROR,    /* general reconcile error */
@@ -149,133 +157,50 @@ enum csync_ftw_type_e {
 // currently specified at https://github.com/owncloud/core/issues/8322 are 9 to 10
 #define REMOTE_PERM_BUF_SIZE 15
 
-typedef struct csync_vio_file_stat_s csync_vio_file_stat_t;
+typedef struct csync_file_stat_s csync_file_stat_t;
 
-enum csync_vio_file_flags_e {
-  CSYNC_VIO_FILE_FLAGS_NONE = 0,
-  CSYNC_VIO_FILE_FLAGS_SYMLINK = 1 << 0,
-  CSYNC_VIO_FILE_FLAGS_HIDDEN = 1 << 1
-};
-
-enum csync_vio_file_type_e {
-  CSYNC_VIO_FILE_TYPE_UNKNOWN,
-  CSYNC_VIO_FILE_TYPE_REGULAR,
-  CSYNC_VIO_FILE_TYPE_DIRECTORY,
-  CSYNC_VIO_FILE_TYPE_FIFO,
-  CSYNC_VIO_FILE_TYPE_SOCKET,
-  CSYNC_VIO_FILE_TYPE_CHARACTER_DEVICE,
-  CSYNC_VIO_FILE_TYPE_BLOCK_DEVICE,
-  CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK
-};
-
-enum csync_vio_file_stat_fields_e {
-  CSYNC_VIO_FILE_STAT_FIELDS_NONE = 0,
-  CSYNC_VIO_FILE_STAT_FIELDS_TYPE = 1 << 0,
-  CSYNC_VIO_FILE_STAT_FIELDS_MODE = 1 << 1, // local POSIX mode
-  CSYNC_VIO_FILE_STAT_FIELDS_FLAGS = 1 << 2,
-//  CSYNC_VIO_FILE_STAT_FIELDS_DEVICE = 1 << 3,
-  CSYNC_VIO_FILE_STAT_FIELDS_INODE = 1 << 4,
-//  CSYNC_VIO_FILE_STAT_FIELDS_LINK_COUNT = 1 << 5,
-  CSYNC_VIO_FILE_STAT_FIELDS_SIZE = 1 << 6,
-//  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_COUNT = 1 << 7, /* will be removed */
-//  CSYNC_VIO_FILE_STAT_FIELDS_BLOCK_SIZE = 1 << 8,  /* will be removed */
-  CSYNC_VIO_FILE_STAT_FIELDS_ATIME = 1 << 9,
-  CSYNC_VIO_FILE_STAT_FIELDS_MTIME = 1 << 10,
-  CSYNC_VIO_FILE_STAT_FIELDS_CTIME = 1 << 11,
-//  CSYNC_VIO_FILE_STAT_FIELDS_SYMLINK_NAME = 1 << 12,
-//  CSYNC_VIO_FILE_STAT_FIELDS_CHECKSUM = 1 << 13,
-//  CSYNC_VIO_FILE_STAT_FIELDS_ACL = 1 << 14,
-//  CSYNC_VIO_FILE_STAT_FIELDS_UID = 1 << 15,
-//  CSYNC_VIO_FILE_STAT_FIELDS_GID = 1 << 16,
-  CSYNC_VIO_FILE_STAT_FIELDS_ETAG = 1 << 17,
-  CSYNC_VIO_FILE_STAT_FIELDS_FILE_ID = 1 << 18,
-  CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADURL = 1 << 19,
-  CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADCOOKIES = 1 << 20,
-  CSYNC_VIO_FILE_STAT_FIELDS_PERM = 1 << 21 // remote oC perm
-
-};
-
-
-struct csync_vio_file_stat_s {
-  char *name;
-  char *etag; // FIXME: Should this be inlined like file_id and perm?
-  char file_id[FILE_ID_BUF_SIZE+1];
-  char *directDownloadUrl;
-  char *directDownloadCookies;
-  char remotePerm[REMOTE_PERM_BUF_SIZE+1];
-
-  time_t atime;
-  time_t mtime;
-  time_t ctime;
-
+struct OCSYNC_EXPORT csync_file_stat_s {
+  uint64_t phash;
+  time_t modtime;
   int64_t size;
-
-  mode_t mode;
-
   uint64_t inode;
+  enum csync_ftw_type_e type BITFIELD(4);
+  bool child_modified BITFIELD(1);
+  bool has_ignored_files BITFIELD(1); // Specify that a directory, or child directory contains ignored files.
+  bool is_hidden BITFIELD(1); // Not saved in the DB, only used during discovery for local files.
 
-  int fields; // actually enum csync_vio_file_stat_fields_e fields;
-  enum csync_vio_file_type_e type;
+  QByteArray path;
+  QByteArray rename_path;
+  QByteArray etag;
+  QByteArray file_id;
+  QByteArray directDownloadUrl;
+  QByteArray directDownloadCookies;
+  QByteArray remotePerm;
+  QByteArray original_path; // only set if locale conversion fails
 
-  int flags;
+  // In the local tree, this can hold a checksum and its type if it is
+  //   computed during discovery for some reason.
+  // In the remote tree, this will have the server checksum, if available.
+  // In both cases, the format is "SHA1:baff".
+  QByteArray checksumHeader;
 
-  char *original_name; // only set if locale conversion fails
+  CSYNC_STATUS error_status;
 
-  // For remote file stats: the highest quality checksum the server provided
-  // in the "SHA1:324315da2143" form.
-  char *checksumHeader;
+  enum csync_instructions_e instruction; /* u32 */
+
+  csync_file_stat_s()
+    : phash(0)
+    , modtime(0)
+    , size(0)
+    , inode(0)
+    , type(CSYNC_FTW_TYPE_SKIP)
+    , child_modified(false)
+    , has_ignored_files(false)
+    , is_hidden(false)
+    , error_status(CSYNC_STATUS_OK)
+    , instruction(CSYNC_INSTRUCTION_NONE)
+  { }
 };
-
-csync_vio_file_stat_t OCSYNC_EXPORT *csync_vio_file_stat_new(void);
-csync_vio_file_stat_t OCSYNC_EXPORT *csync_vio_file_stat_copy(csync_vio_file_stat_t *file_stat);
-
-void OCSYNC_EXPORT csync_vio_file_stat_destroy(csync_vio_file_stat_t *fstat);
-
-void OCSYNC_EXPORT csync_vio_file_stat_set_file_id( csync_vio_file_stat_t* dst, const char* src );
-
-void OCSYNC_EXPORT csync_vio_set_file_id(char* dst, const char *src );
-
-
-/**
- * CSync File Traversal structure.
- *
- * This structure is passed to the visitor function for every file
- * which is seen.
- *
- */
-
-struct csync_tree_walk_file_s {
-    const char *path;
-    int64_t     size;
-    int64_t     inode;
-    time_t      modtime;
-    mode_t      mode;
-    enum csync_ftw_type_e     type;
-    enum csync_instructions_e instruction;
-
-    /* For directories: Does it have children that were ignored (hidden or ignore pattern) */
-    int         has_ignored_files;
-
-    const char *rename_path;
-    const char *etag;
-    const char *file_id;
-    const char *remotePerm;
-    char *directDownloadUrl;
-    char *directDownloadCookies;
-
-    const char *checksumHeader;
-
-    struct {
-        int64_t     size;
-        time_t      modtime;
-        const char *etag;
-        const char *file_id;
-        enum csync_instructions_e instruction;
-    } other;
-
-    CSYNC_STATUS error_status;
-};
-typedef struct csync_tree_walk_file_s TREE_WALK_FILE;
 
 /**
  * csync handle
@@ -296,7 +221,7 @@ typedef void (*csync_update_callback) (bool local,
 typedef void csync_vio_handle_t;
 typedef csync_vio_handle_t* (*csync_vio_opendir_hook) (const char *url,
                                     void *userdata);
-typedef csync_vio_file_stat_t* (*csync_vio_readdir_hook) (csync_vio_handle_t *dhhandle,
+typedef std::unique_ptr<csync_file_stat_t> (*csync_vio_readdir_hook) (csync_vio_handle_t *dhhandle,
                                                               void *userdata);
 typedef void (*csync_vio_closedir_hook) (csync_vio_handle_t *dhhandle,
                                                               void *userdata);
@@ -304,24 +229,8 @@ typedef int (*csync_vio_stat_hook) (csync_vio_handle_t *dhhandle,
                                                               void *userdata);
 
 /* Compute the checksum of the given \a checksumTypeId for \a path. */
-typedef const char *(*csync_checksum_hook)(
-    const char *path, const char *otherChecksumHeader, void *userdata);
-
-/**
- * @brief Allocate a csync context.
- *
- * @param csync  The context variable to allocate.
- */
-void OCSYNC_EXPORT csync_create(CSYNC **csync, const char *local);
-
-/**
- * @brief Initialize the file synchronizer.
- *
- * This function loads the configuration
- *
- * @param ctx  The context to initialize.
- */
-void OCSYNC_EXPORT csync_init(CSYNC *ctx, const char *db_file);
+typedef QByteArray (*csync_checksum_hook)(
+    const QByteArray &path, const QByteArray &otherChecksumHeader, void *userdata);
 
 /**
  * @brief Update detection
@@ -340,26 +249,6 @@ int OCSYNC_EXPORT csync_update(CSYNC *ctx);
  * @return  0 on success, less than 0 if an error occurred.
  */
 int OCSYNC_EXPORT csync_reconcile(CSYNC *ctx);
-
-/**
- * @brief Re-initializes the csync context
- *
- * @param ctx  The context to commit.
- *
- * @return  0 on success, less than 0 if an error occurred.
- */
-int OCSYNC_EXPORT csync_commit(CSYNC *ctx);
-
-/**
- * @brief Destroy the csync context
- *
- * frees the memory.
- *
- * @param ctx  The context to destroy.
- *
- * @return  0 on success, less than 0 if an error occurred.
- */
-int OCSYNC_EXPORT csync_destroy(CSYNC *ctx);
 
 /**
  * @brief Get the userdata saved in the context.
@@ -443,7 +332,7 @@ CSYNC_STATUS OCSYNC_EXPORT csync_get_status(CSYNC *ctx);
 /* Used for special modes or debugging */
 int OCSYNC_EXPORT csync_set_status(CSYNC *ctx, int status);
 
-typedef int csync_treewalk_visit_func(TREE_WALK_FILE* ,void*);
+typedef int csync_treewalk_visit_func(csync_file_stat_t *cur, csync_file_stat_t *other, void*);
 
 /**
  * @brief Walk the local file tree and call a visitor function for each file.
@@ -497,7 +386,6 @@ void OCSYNC_EXPORT csync_resume(CSYNC *ctx);
  */
 int  OCSYNC_EXPORT csync_abort_requested(CSYNC *ctx);
 
-char OCSYNC_EXPORT *csync_normalize_etag(const char *);
 time_t OCSYNC_EXPORT oc_httpdate_parse( const char *date );
 
 /**

@@ -1,7 +1,5 @@
 /*
- * libcsync -- a library to sync a directory with another
- *
- * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
+ * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,29 +15,24 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#include "torture.h"
 
-#include "csync.h"
+#ifndef VERSION_H
+#define VERSION_H
 
-static void check_csync_vio_file_stat_new(void **state)
-{
-    csync_vio_file_stat_t *tstat;
+#cmakedefine GIT_SHA1 "@GIT_SHA1@"
 
-    (void) state; /* unused */
+#define MIRALL_STRINGIFY(s) MIRALL_TOSTRING(s)
+#define MIRALL_TOSTRING(s) #s
 
-    tstat = csync_vio_file_stat_new();
-    assert_non_null(tstat);
+/* MIRALL version */
+#define MIRALL_VERSION_MAJOR @MIRALL_VERSION_MAJOR@
+#define MIRALL_VERSION_MINOR @MIRALL_VERSION_MINOR@
+#define MIRALL_VERSION_PATCH @MIRALL_VERSION_PATCH@
+#define MIRALL_VERSION_BUILD @MIRALL_VERSION_BUILD@
 
-    csync_vio_file_stat_destroy(tstat);
-}
+#define MIRALL_VERSION       @MIRALL_VERSION@
+#define MIRALL_VERSION_FULL  @MIRALL_VERSION_FULL@
 
+#define MIRALL_VERSION_STRING "@MIRALL_VERSION_STRING@"
 
-int torture_run_tests(void)
-{
-    const struct CMUnitTest tests[] = {
-        cmocka_unit_test(check_csync_vio_file_stat_new),
-    };
-
-    return cmocka_run_group_tests(tests, NULL, NULL);
-}
-
+#endif // VERSION_H

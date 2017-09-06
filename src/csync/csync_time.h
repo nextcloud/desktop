@@ -27,8 +27,6 @@ extern "C" {
 
 #include <time.h>
 
-#include "csync_private.h"
-
 int csync_gettime(struct timespec *tp);
 void csync_sleep(unsigned int msecs);
 

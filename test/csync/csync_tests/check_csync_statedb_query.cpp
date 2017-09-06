@@ -38,8 +38,7 @@ static int setup(void **state)
     assert_int_equal(rc, 0);
     rc = system("mkdir -p /tmp/check_csync");
     assert_int_equal(rc, 0);
-    csync_create(&csync, "/tmp/check_csync1");
-    csync_init(csync, TESTDB);
+    csync = new CSYNC("/tmp/check_csync1", TESTDB);
 
     sqlite3 *db = NULL;
     rc = sqlite3_open_v2(TESTDB, &db, SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, NULL);
@@ -100,8 +99,7 @@ static int teardown(void **state) {
     CSYNC *csync = (CSYNC*)*state;
     int rc = 0;
 
-    rc = csync_destroy(csync);
-    assert_int_equal(rc, 0);
+    delete csync;
     rc = system("rm -rf /tmp/check_csync");
     assert_int_equal(rc, 0);
     rc = system("rm -rf /tmp/check_csync1");
@@ -155,8 +153,8 @@ static void check_csync_statedb_insert_metadata(void **state)
     assert_int_equal(rc, 0);
 
     for (i = 0; i < 100; i++) {
-        st = (csync_file_stat_t*)c_malloc(sizeof(csync_file_stat_t) + 30 );
-        snprintf(st->path, 29, "file_%d" , i );
+        st = new csync_file_stat_t;
+        st->path = QString("file_%1").arg(i).toUtf8();
         st->phash = i;
 
         rc = c_rbtree_insert(csync->local.tree, (void *) st);
@@ -174,8 +172,8 @@ static void check_csync_statedb_write(void **state)
     int i, rc;
 
     for (i = 0; i < 100; i++) {
-        st = (csync_file_stat_t*)c_malloc(sizeof(csync_file_stat_t) + 30);
-        snprintf(st->path, 29, "file_%d" , i );
+        st = new csync_file_stat_t;
+        st->path = QString("file_%1").arg(i).toUtf8();
         st->phash = i;
 
         rc = c_rbtree_insert(csync->local.tree, (void *) st);
@@ -190,22 +188,20 @@ static void check_csync_statedb_write(void **state)
 static void check_csync_statedb_get_stat_by_hash_not_found(void **state)
 {
     CSYNC *csync = (CSYNC*)*state;
-    csync_file_stat_t *tmp;
+    std::unique_ptr<csync_file_stat_t> tmp;
 
     tmp = csync_statedb_get_stat_by_hash(csync, (uint64_t) 666);
-    assert_null(tmp);
-
-    free(tmp);
+    assert_null(tmp.get());
 }
 
 
 static void check_csync_statedb_get_stat_by_inode_not_found(void **state)
 {
     CSYNC *csync = (CSYNC*)*state;
-    csync_file_stat_t *tmp;
+    std::unique_ptr<csync_file_stat_t> tmp;
 
     tmp = csync_statedb_get_stat_by_inode(csync, (ino_t) 666);
-    assert_null(tmp);
+    assert_null(tmp.get());
 }
 
 int torture_run_tests(void)

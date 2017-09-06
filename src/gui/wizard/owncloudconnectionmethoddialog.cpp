@@ -14,7 +14,6 @@
  */
 
 #include "wizard/owncloudconnectionmethoddialog.h"
-#include "utility.h"
 #include <QUrl>
 
 namespace OCC {

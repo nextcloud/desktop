@@ -30,7 +30,6 @@
 #include "socketapi.h"
 #include "sslerrordialog.h"
 #include "theme.h"
-#include "utility.h"
 #include "clientproxy.h"
 #include "sharedialog.h"
 #include "accountmanager.h"

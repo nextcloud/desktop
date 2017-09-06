@@ -17,7 +17,6 @@
 #include "theme.h"
 #include "folderman.h"
 #include "configfile.h"
-#include "utility.h"
 #include "progressdispatcher.h"
 #include "owncloudsetupwizard.h"
 #include "sharedialog.h"

@@ -82,54 +82,19 @@ static int _data_cmp(const void *key, const void *data) {
   return 0;
 }
 
-void csync_create(CSYNC **csync, const char *local) {
-  CSYNC *ctx;
+csync_s::csync_s(const char *localUri, const char *db_file) {
   size_t len = 0;
 
-  ctx = (CSYNC*)c_malloc(sizeof(CSYNC));
-
-  ctx->status_code = CSYNC_STATUS_OK;
-
   /* remove trailing slashes */
-  len = strlen(local);
-  while(len > 0 && local[len - 1] == '/') --len;
+  len = strlen(localUri);
+  while(len > 0 && localUri[len - 1] == '/') --len;
 
-  ctx->local.uri = c_strndup(local, len);
+  local.uri = c_strndup(localUri, len);
 
-  ctx->status_code = CSYNC_STATUS_OK;
+  c_rbtree_create(&local.tree, _key_cmp, _data_cmp);
+  c_rbtree_create(&remote.tree, _key_cmp, _data_cmp);
 
-  ctx->current_fs = NULL;
-
-  ctx->abort = false;
-
-  ctx->ignore_hidden_files = true;
-
-  *csync = ctx;
-}
-
-void csync_init(CSYNC *ctx, const char *db_file) {
-  assert(ctx);
-  /* Do not initialize twice */
-
-  assert(!(ctx->status & CSYNC_STATUS_INIT));
-  ctx->status_code = CSYNC_STATUS_OK;
-
-  ctx->local.type = LOCAL_REPLICA;
-
-  ctx->remote.type = REMOTE_REPLICA;
-
-  SAFE_FREE(ctx->statedb.file);
-  ctx->statedb.file = c_strdup(db_file);
-
-  c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp);
-  c_rbtree_create(&ctx->remote.tree, _key_cmp, _data_cmp);
-
-  ctx->remote.root_perms = 0;
-
-  ctx->status = CSYNC_STATUS_INIT;
-
-  /* initialize random generator */
-  srand(time(NULL));
+  statedb.file = c_strdup(db_file);
 }
 
 int csync_update(CSYNC *ctx) {
@@ -159,7 +124,6 @@ int csync_update(CSYNC *ctx) {
   /* update detection for local replica */
   csync_gettime(&start);
   ctx->current = LOCAL_REPLICA;
-  ctx->replica = ctx->local.type;
 
   rc = csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
   if (rc < 0) {
@@ -179,7 +143,6 @@ int csync_update(CSYNC *ctx) {
   /* update detection for remote replica */
   csync_gettime(&start);
   ctx->current = REMOTE_REPLICA;
-  ctx->replica = ctx->remote.type;
 
   rc = csync_ftw(ctx, "", csync_walker, MAX_DEPTH);
   if (rc < 0) {
@@ -225,7 +188,6 @@ int csync_reconcile(CSYNC *ctx) {
   }
 
   ctx->current = LOCAL_REPLICA;
-  ctx->replica = ctx->local.type;
 
   rc = csync_reconcile_updates(ctx);
 
@@ -246,7 +208,6 @@ int csync_reconcile(CSYNC *ctx) {
   csync_gettime(&start);
 
   ctx->current = REMOTE_REPLICA;
-  ctx->replica = ctx->remote.type;
 
   rc = csync_reconcile_updates(ctx);
 
@@ -279,9 +240,8 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
     int rc = 0;
     csync_file_stat_t *cur         = NULL;
     CSYNC *ctx                     = NULL;
-    c_rbtree_visit_func *visitor   = NULL;
+    csync_treewalk_visit_func *visitor   = NULL;
     _csync_treewalk_context *twctx = NULL;
-    TREE_WALK_FILE trav;
     c_rbtree_t *other_tree = NULL;
     c_rbnode_t *other_node = NULL;
 
@@ -334,6 +294,8 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
         SAFE_FREE(renamed_path);
     }
 
+    csync_file_stat_t *other = other_node ? (csync_file_stat_t*)other_node->data : NULL;
+
     if (obj == NULL || data == NULL) {
       ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
       return -1;
@@ -351,47 +313,9 @@ static int _csync_treewalk_visitor(void *obj, void *data) {
         return 0;
     }
 
-    visitor = (c_rbtree_visit_func*)(twctx->user_visitor);
+    visitor = (csync_treewalk_visit_func*)(twctx->user_visitor);
     if (visitor != NULL) {
-      trav.path         = cur->path;
-      trav.size         = cur->size;
-      trav.modtime      = cur->modtime;
-      trav.mode         = cur->mode;
-      trav.type         = cur->type;
-      trav.instruction  = cur->instruction;
-      trav.rename_path  = cur->destpath;
-      trav.etag         = cur->etag;
-      trav.file_id      = cur->file_id;
-      trav.remotePerm = cur->remotePerm;
-      trav.directDownloadUrl = cur->directDownloadUrl;
-      trav.directDownloadCookies = cur->directDownloadCookies;
-      trav.inode        = cur->inode;
-
-      trav.error_status = cur->error_status;
-      trav.has_ignored_files = cur->has_ignored_files;
-      trav.checksumHeader = cur->checksumHeader;
-
-      if( other_node ) {
-          csync_file_stat_t *other_stat = (csync_file_stat_t*)other_node->data;
-          trav.other.etag = other_stat->etag;
-          trav.other.file_id = other_stat->file_id;
-          trav.other.instruction = other_stat->instruction;
-          trav.other.modtime = other_stat->modtime;
-          trav.other.size = other_stat->size;
-      } else {
-          trav.other.etag = 0;
-          trav.other.file_id = 0;
-          trav.other.instruction = CSYNC_INSTRUCTION_NONE;
-          trav.other.modtime = 0;
-          trav.other.size = 0;
-      }
-
-      rc = (*visitor)(&trav, twctx->userdata);
-      cur->instruction = trav.instruction;
-      if (trav.etag != cur->etag) { // FIXME It would be nice to have this documented
-          SAFE_FREE(cur->etag);
-          cur->etag = c_strdup(trav.etag);
-      }
+      rc = (*visitor)(cur, other, twctx->userdata);
 
       return rc;
     }
@@ -480,91 +404,72 @@ static void _tree_destructor(void *data) {
   csync_file_stat_t *freedata = NULL;
 
   freedata = (csync_file_stat_t *) data;
-  csync_file_stat_free(freedata);
+  delete freedata;
 }
 
-/* reset all the list to empty.
- * used by csync_commit and csync_destroy */
-static void _csync_clean_ctx(CSYNC *ctx)
-{
-    /* destroy the rbtrees */
-    if (c_rbtree_size(ctx->local.tree) > 0) {
-        c_rbtree_destroy(ctx->local.tree, _tree_destructor);
-    }
-
-    if (c_rbtree_size(ctx->remote.tree) > 0) {
-        c_rbtree_destroy(ctx->remote.tree, _tree_destructor);
-    }
-
-    csync_rename_destroy(ctx);
-
-    /* free memory */
-    c_rbtree_free(ctx->local.tree);
-    c_rbtree_free(ctx->remote.tree);
-
-    SAFE_FREE(ctx->remote.root_perms);
-}
-
-int csync_commit(CSYNC *ctx) {
+int csync_s::reinitialize() {
   int rc = 0;
 
-  if (ctx == NULL) {
-    return -1;
-  }
+  status_code = CSYNC_STATUS_OK;
 
-  ctx->status_code = CSYNC_STATUS_OK;
-
-  if (ctx->statedb.db != NULL
-      && csync_statedb_close(ctx) < 0) {
+  if (statedb.db != NULL
+      && csync_statedb_close(this) < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "ERR: closing of statedb failed.");
     rc = -1;
   }
-  ctx->statedb.db = NULL;
+  statedb.db = NULL;
 
-  _csync_clean_ctx(ctx);
+  /* destroy the rbtrees */
+  if (c_rbtree_size(local.tree) > 0) {
+    c_rbtree_destroy(local.tree, _tree_destructor);
+  }
 
-  ctx->remote.read_from_db = 0;
-  ctx->read_remote_from_db = true;
-  ctx->db_is_empty = false;
+  if (c_rbtree_size(remote.tree) > 0) {
+    c_rbtree_destroy(remote.tree, _tree_destructor);
+  }
 
+  /* free memory */
+  c_rbtree_free(local.tree);
+  c_rbtree_free(remote.tree);
+
+  remote.read_from_db = 0;
+  read_remote_from_db = true;
+  db_is_empty = false;
 
   /* Create new trees */
-  c_rbtree_create(&ctx->local.tree, _key_cmp, _data_cmp);
-  c_rbtree_create(&ctx->remote.tree, _key_cmp, _data_cmp);
+  c_rbtree_create(&local.tree, _key_cmp, _data_cmp);
+  c_rbtree_create(&remote.tree, _key_cmp, _data_cmp);
 
-
-  ctx->status = CSYNC_STATUS_INIT;
-  SAFE_FREE(ctx->error_string);
+  status = CSYNC_STATUS_INIT;
+  SAFE_FREE(error_string);
 
   rc = 0;
   return rc;
 }
 
-int csync_destroy(CSYNC *ctx) {
-  int rc = 0;
-
-  if (ctx == NULL) {
-    errno = EBADF;
-    return -1;
-  }
-  ctx->status_code = CSYNC_STATUS_OK;
-
-  if (ctx->statedb.db != NULL
-      && csync_statedb_close(ctx) < 0) {
+csync_s::~csync_s() {
+  if (statedb.db != NULL
+      && csync_statedb_close(this) < 0) {
     CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "ERR: closing of statedb failed.");
-    rc = -1;
   }
-  ctx->statedb.db = NULL;
+  statedb.db = NULL;
 
-  _csync_clean_ctx(ctx);
+  /* destroy the rbtrees */
+  if (c_rbtree_size(local.tree) > 0) {
+    c_rbtree_destroy(local.tree, _tree_destructor);
+  }
 
-  SAFE_FREE(ctx->statedb.file);
-  SAFE_FREE(ctx->local.uri);
-  SAFE_FREE(ctx->error_string);
+  if (c_rbtree_size(remote.tree) > 0) {
+    c_rbtree_destroy(remote.tree, _tree_destructor);
+  }
 
-  SAFE_FREE(ctx);
+  /* free memory */
+  c_rbtree_free(local.tree);
+  c_rbtree_free(remote.tree);
 
-  return rc;
+  SAFE_FREE(statedb.file);
+  SAFE_FREE(local.uri);
+  SAFE_FREE(error_string);
 }
 
 void *csync_get_userdata(CSYNC *ctx) {
@@ -635,17 +540,5 @@ int  csync_abort_requested(CSYNC *ctx)
     return ctx->abort;
   } else {
     return (1 == 0);
-  }
-}
-
-void csync_file_stat_free(csync_file_stat_t *st)
-{
-  if (st) {
-    SAFE_FREE(st->directDownloadUrl);
-    SAFE_FREE(st->directDownloadCookies);
-    SAFE_FREE(st->etag);
-    SAFE_FREE(st->destpath);
-    SAFE_FREE(st->checksumHeader);
-    SAFE_FREE(st);
   }
 }

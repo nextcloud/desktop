@@ -12,7 +12,7 @@
  * for more details.
  */
 #include "configfile.h"
-#include "utility.h"
+#include "common/utility.h"
 #include "account.h"
 #include "simplesslerrorhandler.h"
 

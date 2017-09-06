@@ -23,6 +23,7 @@
 
 #include "csync_time.h"
 #include "std/c_time.h"
+#include <unistd.h>
 
 static void check_c_tspecdiff(void **state)
 {

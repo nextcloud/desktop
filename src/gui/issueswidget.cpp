@@ -21,7 +21,6 @@
 #include "configfile.h"
 #include "syncresult.h"
 #include "logger.h"
-#include "utility.h"
 #include "theme.h"
 #include "folderman.h"
 #include "syncfileitem.h"

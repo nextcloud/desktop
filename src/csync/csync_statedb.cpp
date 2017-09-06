@@ -25,6 +25,7 @@
 #define _GNU_SOURCE
 #endif
 
+#include <assert.h>
 #include <sqlite3.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -41,6 +42,7 @@
 
 #include "c_string.h"
 #include "c_jhash.h"
+#include "c_utf8.h"
 #include "csync_time.h"
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.statedb"
@@ -228,78 +230,46 @@ int csync_statedb_close(CSYNC *ctx) {
   return rc;
 }
 
-#define METADATA_QUERY                                                                      \
-    "phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, " \
-    "filesize, ignoredChildrenRemote, "                                                     \
-    "contentchecksumtype.name || ':' || contentChecksum "                                   \
-    "FROM metadata "                                                                        \
+#define METADATA_QUERY                                             \
+    "phash, path, inode, modtime, type, md5, fileid, remotePerm, " \
+    "filesize, ignoredChildrenRemote, "                            \
+    "contentchecksumtype.name || ':' || contentChecksum "          \
+    "FROM metadata "                                               \
     "LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
 
 // This funciton parses a line from the metadata table into the given csync_file_stat
 // structure which it is also allocating.
 // Note that this function calls laso sqlite3_step to actually get the info from db and
 // returns the sqlite return type.
-static int _csync_file_stat_from_metadata_table( csync_file_stat_t **st, sqlite3_stmt *stmt )
+static int _csync_file_stat_from_metadata_table( std::unique_ptr<csync_file_stat_t> &st, sqlite3_stmt *stmt )
 {
     int rc = SQLITE_ERROR;
-    int column_count;
-    int len;
 
     if( ! stmt ) {
        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Fatal: Statement is NULL.");
        return SQLITE_ERROR;
     }
 
-    column_count = sqlite3_column_count(stmt);
+    // Callers should all use METADATA_QUERY for their column list.
+    assert(sqlite3_column_count(stmt) == 11);
 
     SQLITE_BUSY_HANDLED( sqlite3_step(stmt) );
 
     if( rc == SQLITE_ROW ) {
-        if(column_count > 7) {
-            const char *name;
+        st.reset(new csync_file_stat_t);
 
-            /* phash, pathlen, path, inode, uid, gid, mode, modtime */
-            len = sqlite3_column_int(stmt, 1);
-            *st = (csync_file_stat_t*)c_malloc(sizeof(csync_file_stat_t) + len + 1);
-            /* clear the whole structure */
-            ZERO_STRUCTP(*st);
-
-            /* The query suceeded so use the phash we pass to the function. */
-            (*st)->phash = sqlite3_column_int64(stmt, 0);
-
-            (*st)->pathlen = sqlite3_column_int(stmt, 1);
-            name = (const char*) sqlite3_column_text(stmt, 2);
-            memcpy((*st)->path, (len ? name : ""), len + 1);
-            (*st)->inode = sqlite3_column_int64(stmt,3);
-            (*st)->mode = sqlite3_column_int(stmt, 6);
-            (*st)->modtime = strtoul((char*)sqlite3_column_text(stmt, 7), NULL, 10);
-
-            if(*st && column_count > 8 ) {
-                (*st)->type = static_cast<enum csync_ftw_type_e>(sqlite3_column_int(stmt, 8));
-            }
-
-            if(column_count > 9 && sqlite3_column_text(stmt, 9)) {
-                (*st)->etag = c_strdup( (char*) sqlite3_column_text(stmt, 9) );
-            }
-            if(column_count > 10 && sqlite3_column_text(stmt,10)) {
-                csync_vio_set_file_id((*st)->file_id, (char*) sqlite3_column_text(stmt, 10));
-            }
-            if(column_count > 11 && sqlite3_column_text(stmt,11)) {
-                strncpy((*st)->remotePerm,
-                        (char*) sqlite3_column_text(stmt, 11),
-                        REMOTE_PERM_BUF_SIZE);
-            }
-            if(column_count > 12 && sqlite3_column_int64(stmt,12)) {
-                (*st)->size = sqlite3_column_int64(stmt, 12);
-            }
-            if(column_count > 13) {
-                (*st)->has_ignored_files = sqlite3_column_int(stmt, 13);
-            }
-            if (column_count > 14 && sqlite3_column_text(stmt, 14)) {
-                (*st)->checksumHeader = c_strdup((char *)sqlite3_column_text(stmt, 14));
-            }
-
-        }
+        /* The query suceeded so use the phash we pass to the function. */
+        st->phash = sqlite3_column_int64(stmt, 0);
+        st->path = (char*)sqlite3_column_text(stmt, 1);
+        st->inode = sqlite3_column_int64(stmt, 2);
+        st->modtime = strtoul((char*)sqlite3_column_text(stmt, 3), NULL, 10);
+        st->type = static_cast<enum csync_ftw_type_e>(sqlite3_column_int(stmt, 4));
+        st->etag = (char*)sqlite3_column_text(stmt, 5);
+        st->file_id = (char*)sqlite3_column_text(stmt, 6);
+        st->remotePerm = (char*)sqlite3_column_text(stmt, 7);
+        st->size = sqlite3_column_int64(stmt, 8);
+        st->has_ignored_files = sqlite3_column_int(stmt, 9);
+        st->checksumHeader = (char *)sqlite3_column_text(stmt, 10);
     } else {
         if( rc != SQLITE_DONE ) {
             CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Query results in %d", rc);
@@ -309,10 +279,10 @@ static int _csync_file_stat_from_metadata_table( csync_file_stat_t **st, sqlite3
 }
 
 /* caller must free the memory */
-csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx,
+std::unique_ptr<csync_file_stat_t> csync_statedb_get_stat_by_hash(CSYNC *ctx,
                                                   uint64_t phash)
 {
-  csync_file_stat_t *st = NULL;
+  std::unique_ptr<csync_file_stat_t> st;
   int rc;
 
   if( !ctx || ctx->db_is_empty ) {
@@ -336,7 +306,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx,
 
   sqlite3_bind_int64(ctx->statedb.by_hash_stmt, 1, (long long signed int)phash);
 
-  rc = _csync_file_stat_from_metadata_table(&st, ctx->statedb.by_hash_stmt);
+  rc = _csync_file_stat_from_metadata_table(st, ctx->statedb.by_hash_stmt);
   ctx->statedb.lastReturnValue = rc;
   if( !(rc == SQLITE_ROW || rc == SQLITE_DONE) )  {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Could not get line from metadata: %d!", rc);
@@ -346,9 +316,9 @@ csync_file_stat_t *csync_statedb_get_stat_by_hash(CSYNC *ctx,
   return st;
 }
 
-csync_file_stat_t *csync_statedb_get_stat_by_file_id(CSYNC *ctx,
+std::unique_ptr<csync_file_stat_t> csync_statedb_get_stat_by_file_id(CSYNC *ctx,
                                                       const char *file_id ) {
-    csync_file_stat_t *st = NULL;
+    std::unique_ptr<csync_file_stat_t> st;
     int rc = 0;
 
     if (!file_id) {
@@ -376,7 +346,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_file_id(CSYNC *ctx,
     /* bind the query value */
     sqlite3_bind_text(ctx->statedb.by_fileid_stmt, 1, file_id, -1, SQLITE_STATIC);
 
-    rc = _csync_file_stat_from_metadata_table(&st, ctx->statedb.by_fileid_stmt);
+    rc = _csync_file_stat_from_metadata_table(st, ctx->statedb.by_fileid_stmt);
     ctx->statedb.lastReturnValue = rc;
     if( !(rc == SQLITE_ROW || rc == SQLITE_DONE) ) {
         CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Could not get line from metadata: %d!", rc);
@@ -388,10 +358,10 @@ csync_file_stat_t *csync_statedb_get_stat_by_file_id(CSYNC *ctx,
 }
 
 /* caller must free the memory */
-csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx,
+std::unique_ptr<csync_file_stat_t> csync_statedb_get_stat_by_inode(CSYNC *ctx,
                                                   uint64_t inode)
 {
-  csync_file_stat_t *st = NULL;
+  std::unique_ptr<csync_file_stat_t> st;
   int rc;
 
   if (!inode) {
@@ -419,7 +389,7 @@ csync_file_stat_t *csync_statedb_get_stat_by_inode(CSYNC *ctx,
 
   sqlite3_bind_int64(ctx->statedb.by_inode_stmt, 1, (long long signed int)inode);
 
-  rc = _csync_file_stat_from_metadata_table(&st, ctx->statedb.by_inode_stmt);
+  rc = _csync_file_stat_from_metadata_table(st, ctx->statedb.by_inode_stmt);
   ctx->statedb.lastReturnValue = rc;
   if( !(rc == SQLITE_ROW || rc == SQLITE_DONE) ) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "WRN: Could not get line from metadata by inode: %d!", rc);
@@ -465,9 +435,9 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
 
     ctx->statedb.lastReturnValue = rc;
     do {
-        csync_file_stat_t *st = NULL;
+        std::unique_ptr<csync_file_stat_t> st;
 
-        rc = _csync_file_stat_from_metadata_table( &st, stmt);
+        rc = _csync_file_stat_from_metadata_table(st, stmt);
         if( st ) {
             /* When selective sync is used, the database may have subtrees with a parent
              * whose etag (md5) is _invalid_. These are ignored and shall not appear in the
@@ -476,21 +446,21 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
              * _invalid_, but that is not a problem as the next discovery will retrieve
              * their correct etags again and we don't run into this case.
              */
-            if( c_streq(st->etag, "_invalid_") ) {
-                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s selective sync excluded", st->path);
-                char *skipbase = c_strdup(st->path);
-                skipbase[st->pathlen] = '/';
-                int skiplen = st->pathlen + 1;
+            if( st->etag == "_invalid_") {
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s selective sync excluded", st->path.constData());
+                QByteArray skipbase = st->path;
+                skipbase += '/';
 
                 /* Skip over all entries with the same base path. Note that this depends
                  * strongly on the ordering of the retrieved items. */
                 do {
-                    csync_file_stat_free(st);
-                    rc = _csync_file_stat_from_metadata_table( &st, stmt);
-                    if( st && strncmp(st->path, skipbase, skiplen) != 0 ) {
-                        break;
+                    st.reset();
+                    rc = _csync_file_stat_from_metadata_table(st, stmt);
+                    if( st ) {
+                        if( st->path == skipbase )
+                            break;
+                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s selective sync excluded because the parent is", st->path.constData());
                     }
-                    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s selective sync excluded because the parent is", st->path);
                 } while( rc == SQLITE_ROW );
 
                 /* End of data? */
@@ -504,11 +474,11 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
              * without a full remote discovery being triggered. */
             CSYNC_EXCLUDE_TYPE excluded = csync_excluded_traversal(ctx->excludes, st->path, st->type);
             if (excluded != CSYNC_NOT_EXCLUDED) {
-                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded (%d)", st->path, excluded);
+                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded (%d)", st->path.constData(), excluded);
 
                 if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE
                         || excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
-                    csync_file_stat_free(st);
+                    st.reset();
                     continue;
                 }
 
@@ -516,8 +486,8 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
             }
 
             /* store into result list. */
-            if (c_rbtree_insert(ctx->remote.tree, (void *) st) < 0) {
-                csync_file_stat_free(st);
+            if (c_rbtree_insert(ctx->remote.tree, (void *) st.release()) < 0) {
+                st.reset();
                 ctx->status_code = CSYNC_STATUS_TREE_ERROR;
                 break;
             }

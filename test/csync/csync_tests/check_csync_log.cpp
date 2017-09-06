@@ -25,26 +25,21 @@
 #include "csync.h"
 #include "csync_log.cpp"
 #include "c_private.h"
+#include "std/c_utf8.h"
 
 static int setup(void **state) {
-    CSYNC *csync;
     int rc;
 
     rc = system("mkdir -p /tmp/check_csync1");
     assert_int_equal(rc, 0);
 
-    csync_create(&csync, "/tmp/check_csync1");
+    *state = NULL;
 
-    *state = csync;
-    
     return 0;
 }
 
 static int teardown(void **state) {
-    CSYNC *csync = (CSYNC*)*state;
     int rc;
-
-    rc = csync_destroy(csync);
 
     rc = system("rm -rf /tmp/check_csync");
     assert_int_equal(rc, 0);

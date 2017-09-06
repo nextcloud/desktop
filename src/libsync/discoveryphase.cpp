@@ -321,76 +321,50 @@ static QByteArray findBestChecksum(const QByteArray &checksums)
     return QByteArray();
 }
 
-static csync_vio_file_stat_t *propertyMapToFileStat(const QMap<QString, QString> &map)
+static std::unique_ptr<csync_file_stat_t> propertyMapToFileStat(const QMap<QString, QString> &map)
 {
-    csync_vio_file_stat_t *file_stat = csync_vio_file_stat_new();
+    std::unique_ptr<csync_file_stat_t> file_stat(new csync_file_stat_t);
 
     for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
         QString property = it.key();
         QString value = it.value();
         if (property == "resourcetype") {
             if (value.contains("collection")) {
-                file_stat->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
+                file_stat->type = CSYNC_FTW_TYPE_DIR;
             } else {
-                file_stat->type = CSYNC_VIO_FILE_TYPE_REGULAR;
+                file_stat->type = CSYNC_FTW_TYPE_FILE;
             }
-            file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
         } else if (property == "getlastmodified") {
-            file_stat->mtime = oc_httpdate_parse(value.toUtf8());
-            file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
+            file_stat->modtime = oc_httpdate_parse(value.toUtf8());
         } else if (property == "getcontentlength") {
             bool ok = false;
             qlonglong ll = value.toLongLong(&ok);
             if (ok && ll >= 0) {
                 file_stat->size = ll;
-                file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
             }
         } else if (property == "getetag") {
-            file_stat->etag = csync_normalize_etag(value.toUtf8());
-            file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ETAG;
+            file_stat->etag = Utility::normalizeEtag(value.toUtf8());
         } else if (property == "id") {
-            csync_vio_file_stat_set_file_id(file_stat, value.toUtf8());
+            file_stat->file_id = value.toUtf8();
         } else if (property == "downloadURL") {
-            file_stat->directDownloadUrl = strdup(value.toUtf8());
-            file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADURL;
+            file_stat->directDownloadUrl = value.toUtf8();
         } else if (property == "dDC") {
-            file_stat->directDownloadCookies = strdup(value.toUtf8());
-            file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_DIRECTDOWNLOADCOOKIES;
+            file_stat->directDownloadCookies = value.toUtf8();
         } else if (property == "permissions") {
-            auto v = value.toUtf8();
-            if (value.isEmpty()) {
-                // special meaning for our code: server returned permissions but are empty
-                // meaning only reading is allowed for this resource
-                file_stat->remotePerm[0] = ' ';
-                // see _csync_detect_update()
-                file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERM;
-            } else if (v.length() < int(sizeof(file_stat->remotePerm))) {
-                strcpy(file_stat->remotePerm, v.constData());
-                file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_PERM;
-            } else {
-                qCWarning(lcDiscovery) << "permissions too large" << v;
-            }
+            file_stat->remotePerm = value.toUtf8();
         } else if (property == "checksums") {
-            QByteArray checksum = findBestChecksum(value.toUtf8());
-            if (!checksum.isEmpty()) {
-                file_stat->checksumHeader = strdup(checksum.constData());
-            }
+            file_stat->checksumHeader = findBestChecksum(value.toUtf8());
         } else if (property == "share-types" && !value.isEmpty()) {
             // Since QMap is sorted, "share-types" is always "permissions".
-            if (file_stat->remotePerm[0] == '\0' || !(file_stat->fields & CSYNC_VIO_FILE_STAT_FIELDS_PERM)) {
+            if (file_stat->remotePerm.isEmpty()) {
                 qWarning() << "Server returned a share type, but no permissions?";
             } else {
                 // S means shared with me.
                 // But for our purpose, we want to know if the file is shared. It does not matter
                 // if we are the owner or not.
                 // Piggy back on the persmission field 'S'
-                if (!std::strchr(file_stat->remotePerm, 'S')) {
-                    if (std::strlen(file_stat->remotePerm) < sizeof(file_stat->remotePerm) - 1) {
-                        std::strcat(file_stat->remotePerm, "S");
-                    } else {
-                        qWarning() << "permissions too large" << file_stat->remotePerm;
-                    }
-                }
+                if (!file_stat->remotePerm.contains('S'))
+                    file_stat->remotePerm.append('S');
             }
         }
     }
@@ -423,17 +397,16 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         }
 
 
-        FileStatPointer file_stat(propertyMapToFileStat(map));
-        file_stat->name = strdup(file.toUtf8());
-        if (!file_stat->etag || strlen(file_stat->etag) == 0) {
-            qCCritical(lcDiscovery) << "etag of" << file_stat->name << "is" << file_stat->etag << " This must not happen.";
+        std::unique_ptr<csync_file_stat_t> file_stat(propertyMapToFileStat(map));
+        file_stat->path = file.toUtf8();
+        if (file_stat->etag.isEmpty()) {
+            qCCritical(lcDiscovery) << "etag of" << file_stat->path << "is" << file_stat->etag << "This must not happen.";
         }
         if (_isExternalStorage) {
             /* All the entries in a external storage have 'M' in their permission. However, for all
                purposes in the desktop client, we only need to know about the mount points.
                So replace the 'M' by a 'm' for every sub entries in an external storage */
-            std::replace(file_stat->remotePerm, file_stat->remotePerm + strlen(file_stat->remotePerm),
-                'M', 'm');
+            file_stat->remotePerm.replace('M', 'm');
         }
 
         QStringRef fileRef(&file);
@@ -441,7 +414,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         if (slashPos > -1) {
             fileRef = file.midRef(slashPos + 1);
         }
-        _results.append(file_stat);
+        _results.push_back(std::move(file_stat));
     }
 
     //This works in concerto with the RequestEtagJob and the Folder object to check if the remote folder changed.
@@ -465,7 +438,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
     }
     emit etag(_firstEtag);
     emit etagConcatenation(_etagConcatenation);
-    emit finishedWithResult(_results);
+    emit finishedWithResult();
     deleteLater();
 }
 
@@ -527,8 +500,8 @@ void DiscoveryMainThread::doOpendirSlot(const QString &subPath, DiscoveryDirecto
 
     // Schedule the DiscoverySingleDirectoryJob
     _singleDirJob = new DiscoverySingleDirectoryJob(_account, fullPath, this);
-    QObject::connect(_singleDirJob, SIGNAL(finishedWithResult(const QList<FileStatPointer> &)),
-        this, SLOT(singleDirectoryJobResultSlot(const QList<FileStatPointer> &)));
+    QObject::connect(_singleDirJob, SIGNAL(finishedWithResult()),
+        this, SLOT(singleDirectoryJobResultSlot()));
     QObject::connect(_singleDirJob, SIGNAL(finishedWithError(int, QString)),
         this, SLOT(singleDirectoryJobFinishedWithErrorSlot(int, QString)));
     QObject::connect(_singleDirJob, SIGNAL(firstDirectoryPermissions(QString)),
@@ -546,17 +519,17 @@ void DiscoveryMainThread::doOpendirSlot(const QString &subPath, DiscoveryDirecto
 }
 
 
-void DiscoveryMainThread::singleDirectoryJobResultSlot(const QList<FileStatPointer> &result)
+void DiscoveryMainThread::singleDirectoryJobResultSlot()
 {
     if (!_currentDiscoveryDirectoryResult) {
         return; // possibly aborted
     }
-    qCDebug(lcDiscovery) << "Have" << result.count() << "results for " << _currentDiscoveryDirectoryResult->path;
 
-
-    _currentDiscoveryDirectoryResult->list = result;
+    _currentDiscoveryDirectoryResult->list = _singleDirJob->takeResults();
     _currentDiscoveryDirectoryResult->code = 0;
-    _currentDiscoveryDirectoryResult->listIndex = 0;
+
+    qCDebug(lcDiscovery) << "Have" << _currentDiscoveryDirectoryResult->list.size() << "results for " << _currentDiscoveryDirectoryResult->path;
+
     _currentDiscoveryDirectoryResult = 0; // the sync thread owns it now
 
     if (!_firstFolderProcessed) {
@@ -588,9 +561,9 @@ void DiscoveryMainThread::singleDirectoryJobFinishedWithErrorSlot(int csyncErrno
 void DiscoveryMainThread::singleDirectoryJobFirstDirectoryPermissionsSlot(const QString &p)
 {
     // Should be thread safe since the sync thread is blocked
-    if (!_discoveryJob->_csync_ctx->remote.root_perms) {
+    if (_discoveryJob->_csync_ctx->remote.root_perms.isEmpty()) {
         qCDebug(lcDiscovery) << "Permissions for root dir:" << p;
-        _discoveryJob->_csync_ctx->remote.root_perms = strdup(p.toUtf8());
+        _discoveryJob->_csync_ctx->remote.root_perms = p.toUtf8();
     }
 }
 
@@ -652,7 +625,7 @@ void DiscoveryMainThread::abort()
     if (_singleDirJob) {
         _singleDirJob->disconnect(SIGNAL(finishedWithError(int, QString)), this);
         _singleDirJob->disconnect(SIGNAL(firstDirectoryPermissions(QString)), this);
-        _singleDirJob->disconnect(SIGNAL(finishedWithResult(const QList<FileStatPointer> &)), this);
+        _singleDirJob->disconnect(SIGNAL(finishedWithResult()), this);
         _singleDirJob->abort();
     }
     if (_currentDiscoveryDirectoryResult) {
@@ -704,16 +677,16 @@ csync_vio_handle_t *DiscoveryJob::remote_vio_opendir_hook(const char *url,
 }
 
 
-csync_vio_file_stat_t *DiscoveryJob::remote_vio_readdir_hook(csync_vio_handle_t *dhandle,
+std::unique_ptr<csync_file_stat_t> DiscoveryJob::remote_vio_readdir_hook(csync_vio_handle_t *dhandle,
     void *userdata)
 {
     DiscoveryJob *discoveryJob = static_cast<DiscoveryJob *>(userdata);
     if (discoveryJob) {
         DiscoveryDirectoryResult *directoryResult = static_cast<DiscoveryDirectoryResult *>(dhandle);
-        if (directoryResult->listIndex < directoryResult->list.size()) {
-            csync_vio_file_stat_t *file_stat = directoryResult->list.at(directoryResult->listIndex++).data();
-            // Make a copy, csync_update will delete the copy
-            return csync_vio_file_stat_copy(file_stat);
+        if (!directoryResult->list.empty()) {
+            auto file_stat = std::move(directoryResult->list.front());
+            directoryResult->list.pop_front();
+            return file_stat;
         }
     }
     return NULL;

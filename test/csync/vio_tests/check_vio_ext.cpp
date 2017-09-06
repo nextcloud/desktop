@@ -27,6 +27,7 @@
 #include "torture.h"
 
 #include "csync_private.h"
+#include "std/c_utf8.h"
 #include "vio/csync_vio.h"
 
 #ifdef _WIN32
@@ -96,9 +97,9 @@ static int setup_testenv(void **state) {
     statevar *mystate = (statevar*)malloc( sizeof(statevar) );
     mystate->result = NULL;
 
-    csync_create(&(mystate->csync), "/tmp/csync1");
+    mystate->csync = new CSYNC("/tmp/check_csync1", "");
 
-    mystate->csync->replica = LOCAL_REPLICA;
+    mystate->csync->current = LOCAL_REPLICA;
 
     *state = mystate;
     return 0;
@@ -123,8 +124,7 @@ static int teardown(void **state) {
 
     output("================== Tearing down!\n");
 
-    rc = csync_destroy(csync);
-    assert_int_equal(rc, 0);
+    delete csync;
 
     rc = _tchdir(wd_buffer);
     assert_int_equal(rc, 0);
@@ -184,7 +184,7 @@ static void create_dirs( const char *path )
 static void traverse_dir(void **state, const char *dir, int *cnt)
 {
     csync_vio_handle_t *dh;
-    csync_vio_file_stat_t *dirent;
+    std::unique_ptr<csync_file_stat_t> dirent;
     statevar *sv = (statevar*) *state;
     CSYNC *csync = sv->csync;
     char *subdir;
@@ -204,22 +204,21 @@ static void traverse_dir(void **state, const char *dir, int *cnt)
     assert_non_null(dh);
 
     while( (dirent = csync_vio_readdir(csync, dh)) ) {
-        assert_non_null(dirent);
-        if (dirent->original_name) {
-            sv->ignored_dir = c_strdup(dirent->original_name);
+        assert_non_null(dirent.get());
+        if (!dirent->original_path.isEmpty()) {
+            sv->ignored_dir = c_strdup(dirent->original_path);
             continue;
         }
 
-        assert_non_null(dirent->name);
-        assert_int_equal( dirent->fields & CSYNC_VIO_FILE_STAT_FIELDS_TYPE, CSYNC_VIO_FILE_STAT_FIELDS_TYPE );
+        assert_false(dirent->path.isEmpty());
 
-        if( c_streq( dirent->name, "..") || c_streq( dirent->name, "." )) {
+        if( c_streq( dirent->path, "..") || c_streq( dirent->path, "." )) {
           continue;
         }
 
-        is_dir = (dirent->type == CSYNC_VIO_FILE_TYPE_DIRECTORY) ? 1:0;
+        is_dir = (dirent->type == CSYNC_FTW_TYPE_DIR) ? 1:0;
 
-        assert_int_not_equal( asprintf( &subdir, "%s/%s", dir, dirent->name ), -1 );
+        assert_int_not_equal( asprintf( &subdir, "%s/%s", dir, dirent->path.constData() ), -1 );
 
         assert_int_not_equal( asprintf( &subdir_out, format_str,
                                         is_dir ? "<DIR>":"     ",
@@ -249,7 +248,6 @@ static void traverse_dir(void **state, const char *dir, int *cnt)
         SAFE_FREE(subdir_out);
     }
 
-    csync_vio_file_stat_destroy(dirent);
     rc = csync_vio_closedir(csync, dh);
     assert_int_equal(rc, 0);
 

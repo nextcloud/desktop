@@ -14,28 +14,24 @@ class TestCSyncSqlite : public QObject
     Q_OBJECT
 
 private:
-    CSYNC _ctx;
+    CSYNC *_ctx;
 private slots:
     void initTestCase() {
         int rc;
 
-        memset(&_ctx, 0, sizeof(CSYNC));
-
         QString db = QCoreApplication::applicationDirPath() + "/test_journal.db";
-        _ctx.statedb.file = c_strdup(db.toLocal8Bit());
+        _ctx = new CSYNC("/tmp/check_csync1", db.toLocal8Bit());
 
-        rc = csync_statedb_load((CSYNC*)(&_ctx), _ctx.statedb.file, &(_ctx.statedb.db));
+        rc = csync_statedb_load(_ctx, _ctx->statedb.file, &(_ctx->statedb.db));
         QVERIFY(rc == 0);
     }
 
     void testFullResult() {
-        csync_file_stat_t *st = csync_statedb_get_stat_by_hash((CSYNC*)(&_ctx), 2081025720555645157 );
-        QVERIFY(st);
+        std::unique_ptr<csync_file_stat_t> st = csync_statedb_get_stat_by_hash( _ctx, 2081025720555645157 );
+        QVERIFY(st.get());
         QCOMPARE( QString::number(st->phash), QString::number(2081025720555645157) );
-        QCOMPARE( QString::number(st->pathlen), QString::number(13));
         QCOMPARE( QString::fromUtf8(st->path), QLatin1String("test2/zu/zuzu") );
         QCOMPARE( QString::number(st->inode), QString::number(1709554));
-        QCOMPARE( QString::number(st->mode), QString::number(0));
         QCOMPARE( QString::number(st->modtime), QString::number(1384415006));
         QCOMPARE( QString::number(st->type), QString::number(2));
         QCOMPARE( QString::fromUtf8(st->etag), QLatin1String("52847f2090665"));
@@ -44,44 +40,39 @@ private slots:
     }
 
     void testByHash() {
-        csync_file_stat_t *st = csync_statedb_get_stat_by_hash((CSYNC*)(&_ctx), -7147279406142960289);
-        QVERIFY(st);
+        std::unique_ptr<csync_file_stat_t> st = csync_statedb_get_stat_by_hash(_ctx, -7147279406142960289);
+        QVERIFY(st.get());
         QCOMPARE(QString::fromUtf8(st->path), QLatin1String("documents/c1"));
-        csync_file_stat_free(st);
 
-        st = csync_statedb_get_stat_by_hash((CSYNC*)(&_ctx), 5426481156826978940);
-        QVERIFY(st);
+        st = csync_statedb_get_stat_by_hash(_ctx, 5426481156826978940);
+        QVERIFY(st.get());
         QCOMPARE(QString::fromUtf8(st->path), QLatin1String("documents/c1/c2"));
-        csync_file_stat_free(st);
     }
 
     void testByInode() {
-        csync_file_stat_t *st = csync_statedb_get_stat_by_inode((CSYNC*)(&_ctx), 1709555);
-        QVERIFY(st);
+        std::unique_ptr<csync_file_stat_t> st = csync_statedb_get_stat_by_inode(_ctx, 1709555);
+        QVERIFY(st.get());
         QCOMPARE(QString::fromUtf8(st->path), QLatin1String("test2/zu/zuzu/zuzuzu"));
-        csync_file_stat_free(st);
 
-        st = csync_statedb_get_stat_by_inode((CSYNC*)(&_ctx), 1706571);
-        QVERIFY(st);
+        st = csync_statedb_get_stat_by_inode(_ctx, 1706571);
+        QVERIFY(st.get());
         QCOMPARE(QString::fromUtf8(st->path), QLatin1String("Shared/for_kf/a2"));
-        csync_file_stat_free(st);
     }
 
     void testByFileId() {
-        csync_file_stat_t *st = csync_statedb_get_stat_by_file_id((CSYNC*)(&_ctx), "00000556525d5af3d9625");
-        QVERIFY(st);
+        std::unique_ptr<csync_file_stat_t> st = csync_statedb_get_stat_by_file_id(_ctx, "00000556525d5af3d9625");
+        QVERIFY(st.get());
         QCOMPARE(QString::fromUtf8(st->path), QLatin1String("test2/zu"));
-        csync_file_stat_free(st);
 
-        st = csync_statedb_get_stat_by_file_id((CSYNC*)(&_ctx), "-0000001525d5af3d9625");
-        QVERIFY(st);
+        st = csync_statedb_get_stat_by_file_id(_ctx, "-0000001525d5af3d9625");
+        QVERIFY(st.get());
         QCOMPARE(QString::fromUtf8(st->path), QLatin1String("Shared"));
-        csync_file_stat_free(st);
     }
 
     void cleanupTestCase() {
-        SAFE_FREE(_ctx.statedb.file);
-        csync_statedb_close((CSYNC*)(&_ctx));
+        csync_statedb_close(_ctx);
+        delete _ctx;
+        _ctx = nullptr;
     }
 
 };

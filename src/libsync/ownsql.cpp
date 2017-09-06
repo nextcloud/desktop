@@ -21,7 +21,7 @@
 #include <QDir>
 
 #include "ownsql.h"
-#include "utility.h"
+#include "common/utility.h"
 #include "asserts.h"
 
 #define SQLITE_SLEEP_TIME_USEC 100000

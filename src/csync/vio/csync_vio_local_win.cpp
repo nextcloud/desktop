@@ -29,7 +29,7 @@
 
 #include "c_private.h"
 #include "c_lib.h"
-#include "c_string.h"
+#include "c_utf8.h"
 #include "csync_util.h"
 #include "csync_log.h"
 #include "csync_vio.h"
@@ -134,21 +134,15 @@ static time_t FileTimeToUnixTime(FILETIME *filetime, DWORD *remainder)
     }
 }
 
-csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
+std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
 
   dhandle_t *handle = NULL;
-  csync_vio_file_stat_t *file_stat = NULL;
+  std::unique_ptr<csync_file_stat_t> file_stat;
   DWORD rem;
 
   handle = (dhandle_t *) dhandle;
 
   errno = 0;
-  file_stat = csync_vio_file_stat_new();
-  if (file_stat == NULL) {
-      errno = ENOMEM;
-      goto err;
-  }
-  file_stat->fields = CSYNC_VIO_FILE_STAT_FIELDS_NONE;
 
   // the win32 functions get the first valid entry with the opendir
   // thus we must not jump to next entry if it was the first find.
@@ -161,67 +155,46 @@ csync_vio_file_stat_t *csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
           if (dwError != ERROR_NO_MORE_FILES) {
               errno = EACCES; // no more files is fine. Otherwise EACCESS
           }
-          goto err;
+          return nullptr;
       }
   }
-  file_stat->name = c_utf8_from_locale(handle->ffd.cFileName);
+  file_stat.reset(new csync_file_stat_t);
+  file_stat->path = c_utf8_from_locale(handle->ffd.cFileName);
 
-    file_stat->flags = CSYNC_VIO_FILE_FLAGS_NONE;
-    file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
     if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
         // Detect symlinks, and treat junctions as symlinks too.
         if (handle->ffd.dwReserved0 == IO_REPARSE_TAG_SYMLINK
                 || handle->ffd.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT) {
-            file_stat->flags |= CSYNC_VIO_FILE_FLAGS_SYMLINK;
-            file_stat->type = CSYNC_VIO_FILE_TYPE_SYMBOLIC_LINK;
+            file_stat->type = CSYNC_FTW_TYPE_SLINK;
         } else {
             // The SIS and DEDUP reparse points should be treated as
             // regular files. We don't know about the other ones yet,
             // but will also treat them normally for now.
-            file_stat->type = CSYNC_VIO_FILE_TYPE_REGULAR;
+            file_stat->type = CSYNC_FTW_TYPE_FILE;
         }
     } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DEVICE
                 || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE
                 || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_TEMPORARY) {
-        file_stat->type = CSYNC_VIO_FILE_TYPE_UNKNOWN;
+        file_stat->type = CSYNC_FTW_TYPE_SKIP;
     } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-        file_stat->type = CSYNC_VIO_FILE_TYPE_DIRECTORY;
+        file_stat->type = CSYNC_FTW_TYPE_DIR;
     } else {
-        file_stat->type = CSYNC_VIO_FILE_TYPE_REGULAR;
+        file_stat->type = CSYNC_FTW_TYPE_FILE;
     }
 
     /* Check for the hidden flag */
     if( handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN ) {
-        file_stat->flags |= CSYNC_VIO_FILE_FLAGS_HIDDEN;
+        file_stat->is_hidden = true;
     }
 
-    file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_FLAGS;
-    file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_TYPE;
-
     file_stat->size = (handle->ffd.nFileSizeHigh * ((int64_t)(MAXDWORD)+1)) + handle->ffd.nFileSizeLow;
-    file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
-
-    file_stat->atime = FileTimeToUnixTime(&handle->ffd.ftLastAccessTime, &rem);
-    file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_ATIME;
-
-    file_stat->mtime = FileTimeToUnixTime(&handle->ffd.ftLastWriteTime, &rem);
-      /* CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Local File MTime: %llu", (unsigned long long) buf->mtime ); */
-    file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
-
-    file_stat->ctime = FileTimeToUnixTime(&handle->ffd.ftCreationTime, &rem);
-    file_stat->fields |= CSYNC_VIO_FILE_STAT_FIELDS_CTIME;
-
+    file_stat->modtime = FileTimeToUnixTime(&handle->ffd.ftLastWriteTime, &rem);
     return file_stat;
-
-err:
-  SAFE_FREE(file_stat);
-
-  return NULL;
 }
 
 
 
-int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
+int csync_vio_local_stat(const char *uri, csync_file_stat_t *buf) {
     /* Almost nothing to do since csync_vio_local_readdir already filled up most of the information
        But we still need to fetch the file ID.
        Possible optimisation: only fetch the file id when we need it (for new files)
@@ -257,17 +230,10 @@ int csync_vio_local_stat(const char *uri, csync_vio_file_stat_t *buf) {
     FileIndex.QuadPart &= 0x0000FFFFFFFFFFFF;
     /* printf("Index: %I64i\n", FileIndex.QuadPart); */
     buf->inode = FileIndex.QuadPart;
+    buf->size = (fileInfo.nFileSizeHigh * ((int64_t)(MAXDWORD)+1)) + fileInfo.nFileSizeLow;
 
-    if (!(buf->fields & CSYNC_VIO_FILE_STAT_FIELDS_SIZE)) {
-        buf->size = (fileInfo.nFileSizeHigh * ((int64_t)(MAXDWORD)+1)) + fileInfo.nFileSizeLow;
-        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_SIZE;
-    }
-    if (!(buf->fields & CSYNC_VIO_FILE_STAT_FIELDS_MTIME)) {
-        DWORD rem;
-        buf->mtime = FileTimeToUnixTime(&fileInfo.ftLastWriteTime, &rem);
-        /* CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Local File MTime: %llu", (unsigned long long) buf->mtime ); */
-        buf->fields |= CSYNC_VIO_FILE_STAT_FIELDS_MTIME;
-    }
+    DWORD rem;
+    buf->modtime = FileTimeToUnixTime(&fileInfo.ftLastWriteTime, &rem);
 
     c_free_locale_string(wuri);
     CloseHandle(h);

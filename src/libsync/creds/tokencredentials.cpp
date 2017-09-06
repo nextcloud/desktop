@@ -21,7 +21,7 @@
 
 #include "account.h"
 #include "accessmanager.h"
-#include "utility.h"
+#include "common/utility.h"
 #include "theme.h"
 #include "creds/credentialscommon.h"
 #include "creds/tokencredentials.h"

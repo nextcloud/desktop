@@ -18,7 +18,6 @@
 #include "folderstatusmodel.h"
 #include "folderman.h"
 #include "accountstate.h"
-#include "utility.h"
 #include <theme.h>
 #include <account.h>
 
