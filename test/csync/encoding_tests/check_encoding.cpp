@@ -17,7 +17,6 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#include "torture.h"
 #include <stdio.h>
 #include "c_string.h"
 #include "c_path.h"
@@ -27,6 +26,7 @@
 #include <string.h>
 #endif
 
+#include "torture.h"
 
 static void check_iconv_to_native_normalization(void **state)
 {

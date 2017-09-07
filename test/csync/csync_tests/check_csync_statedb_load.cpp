@@ -19,10 +19,10 @@
  */
 #include <string.h>
 
-#include "torture.h"
-
 #define CSYNC_TEST 1
 #include "csync_statedb.cpp"
+
+#include "torture.h"
 
 #define TESTDB "/tmp/check_csync1/test.db"
 

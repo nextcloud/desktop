@@ -17,14 +17,14 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#include "torture.h"
 
 #define CSYNC_TEST 1
 #include "csync_statedb.cpp"
 
+#include "torture.h"
+
 #define TESTDB "/tmp/check_csync1/test.db"
 #define TESTDBTMP "/tmp/check_csync1/test.db.ctmp"
-
 
 
 static int setup(void **state)

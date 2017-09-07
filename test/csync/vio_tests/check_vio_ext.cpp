@@ -24,8 +24,6 @@
 #include <errno.h>
 #include <stdio.h>
 
-#include "torture.h"
-
 #include "csync_private.h"
 #include "std/c_utf8.h"
 #include "vio/csync_vio.h"
@@ -38,6 +36,8 @@
 #define CSYNC_TEST_DIR "/tmp/csync_test"
 #endif
 #define MKDIR_MASK (S_IRWXU |S_IRGRP|S_IXGRP|S_IROTH|S_IXOTH)
+
+#include "torture.h"
 
 #define WD_BUFFER_SIZE 255
 

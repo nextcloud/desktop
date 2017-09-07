@@ -22,9 +22,9 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "torture.h"
-
 #include "std/c_path.h"
+
+#include "torture.h"
 
 static void check_c_basename(void **state)
 {
