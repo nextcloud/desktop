@@ -330,6 +330,32 @@ private:
     QList<QPair<QString, QString>> _additionalParams;
 };
 
+/**
+ * @brief Checks with auth type to use for a server
+ * @ingroup libsync
+ */
+class OWNCLOUDSYNC_EXPORT DetermineAuthTypeJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    enum AuthType {
+        Unknown,
+        Basic,
+        OAuth,
+        Shibboleth
+    };
+
+    explicit DetermineAuthTypeJob(AccountPtr account, QObject *parent = 0);
+    void start() Q_DECL_OVERRIDE;
+signals:
+    void authType(AuthType);
+private slots:
+    bool finished() Q_DECL_OVERRIDE;
+private:
+    void send(const QUrl &url);
+    int _redirects;
+};
+
 } // namespace OCC
 
 #endif // NETWORKJOBS_H

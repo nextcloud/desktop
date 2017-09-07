@@ -53,7 +53,7 @@ public:
     QString localFolder() const;
     void setRemoteFolder(const QString &remoteFolder);
     void setMultipleFoldersExist(bool exist);
-    void setAuthType(WizardCommon::AuthType type);
+    void setAuthType(DetermineAuthTypeJob::AuthType type);
 
 public slots:
     void setErrorString(const QString &, bool retryHTTPonly);
@@ -80,7 +80,7 @@ private:
     bool _authTypeKnown;
     bool _checking;
     bool _multipleFoldersExist;
-    WizardCommon::AuthType _authType;
+    DetermineAuthTypeJob::AuthType _authType;
 
     QProgressIndicator *_progressIndi;
     QButtonGroup *_selectiveSyncButtons;

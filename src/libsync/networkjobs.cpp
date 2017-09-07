@@ -36,6 +36,7 @@
 #include "owncloudpropagator.h"
 
 #include "creds/abstractcredentials.h"
+#include "creds/httpcredentials.h"
 
 namespace OCC {
 
@@ -47,6 +48,7 @@ Q_LOGGING_CATEGORY(lcAvatarJob, "sync.networkjob.avatar", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcMkColJob, "sync.networkjob.mkcol", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcProppatchJob, "sync.networkjob.proppatch", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcJsonApiJob, "sync.networkjob.jsonapi", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "sync.networkjob.determineauthtype", QtInfoMsg)
 
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
@@ -796,6 +798,74 @@ bool JsonApiJob::finished()
 
     emit jsonReceived(json, statusCode);
     return true;
+}
+
+DetermineAuthTypeJob::DetermineAuthTypeJob(AccountPtr account, QObject *parent)
+    : AbstractNetworkJob(account, QString(), parent)
+    , _redirects(0)
+{
+    // This job implements special redirect handling to detect redirections
+    // to pages that are indicative of Shibboleth-using servers. Hence we
+    // disable the standard job redirection handling here.
+    _followRedirects = false;
+}
+
+void DetermineAuthTypeJob::start()
+{
+    send(account()->davUrl());
+    AbstractNetworkJob::start();
+}
+
+bool DetermineAuthTypeJob::finished()
+{
+    QUrl redirection = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+    if (_redirects >= maxRedirects()) {
+        redirection.clear();
+    }
+
+    auto authChallenge = reply()->rawHeader("WWW-Authenticate").toLower();
+    if (redirection.isEmpty()) {
+        if (authChallenge.contains("bearer ")) {
+            emit authType(OAuth);
+        } else if (!authChallenge.isEmpty()) {
+            emit authType(Basic);
+        } else {
+            // This is also where we end up in case of network error.
+            emit authType(Unknown);
+        }
+    } else if (redirection.toString().endsWith(account()->davPath())) {
+        // do a new run
+        _redirects++;
+        resetTimeout();
+        send(redirection);
+        qCDebug(lcDetermineAuthTypeJob()) << "Redirected to:" << redirection.toString();
+        return false; // don't discard
+    } else {
+#ifndef NO_SHIBBOLETH
+        QRegExp shibbolethyWords("SAML|wayf");
+        shibbolethyWords.setCaseSensitivity(Qt::CaseInsensitive);
+        if (redirection.toString().contains(shibbolethyWords)) {
+            emit authType(Shibboleth);
+        } else
+#endif
+        {
+            // We got redirected to an address that doesn't look like shib
+            // and also doesn't have the davPath. Give up.
+            qCWarning(lcDetermineAuthTypeJob()) << account()->davUrl()
+                                                << "was redirected to the incompatible address"
+                                                << redirection.toString();
+            emit authType(Unknown);
+        }
+    }
+    return true;
+}
+
+void DetermineAuthTypeJob::send(const QUrl &url)
+{
+    QNetworkRequest req;
+    // Prevent HttpCredentialsAccessManager from setting an Authorization header.
+    req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
+    sendRequest("GET", url, req);
 }
 
 } // namespace OCC
