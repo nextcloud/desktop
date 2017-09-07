@@ -31,6 +31,14 @@ namespace OCC {
 
 void HttpCredentialsGui::askFromUser()
 {
+    // Unfortunately there's a bug that doesn't allow us to send the "is this
+    // OAuth2 or Basic auth?" GET request directly. Scheduling it for the event
+    // loop works though. See #5989.
+    QMetaObject::invokeMethod(this, "askFromUserAsync", Qt::QueuedConnection);
+}
+
+void HttpCredentialsGui::askFromUserAsync()
+{
     _password = QString(); // So our QNAM does not add any auth
 
     // First, we will send a call to the webdav endpoint to check what kind of auth we need.
