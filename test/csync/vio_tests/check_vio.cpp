@@ -23,11 +23,11 @@
 #include <string.h>
 #include <errno.h>
 
-#include "torture.h"
-
 #include "csync_private.h"
 #include "std/c_utf8.h"
 #include "vio/csync_vio.h"
+
+#include "torture.h"
 
 #define CSYNC_TEST_DIR "/tmp/csync_test/"
 #define CSYNC_TEST_DIRS "/tmp/csync_test/this/is/a/mkdirs/test"

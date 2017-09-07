@@ -22,10 +22,10 @@
 #include <time.h>
 #include <sys/time.h>
 
-#include "torture.h"
-
 #define CSYNC_TEST 1
 #include "csync_exclude.cpp"
+
+#include "torture.h"
 
 #define EXCLUDE_LIST_FILE SOURCEDIR"/../../sync-exclude.lst"
 
