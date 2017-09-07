@@ -40,7 +40,7 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     , _ocUser()
     , _authTypeKnown(false)
     , _checking(false)
-    , _authType(WizardCommon::HttpCreds)
+    , _authType(DetermineAuthTypeJob::Basic)
     , _progressIndi(new QProgressIndicator(this))
 {
     _ui.setupUi(this);
@@ -201,9 +201,9 @@ bool OwncloudSetupPage::urlHasChanged()
 
 int OwncloudSetupPage::nextId() const
 {
-    if (_authType == WizardCommon::HttpCreds) {
+    if (_authType == DetermineAuthTypeJob::Basic) {
         return WizardCommon::Page_HttpCreds;
-    } else if (_authType == WizardCommon::OAuth) {
+    } else if (_authType == DetermineAuthTypeJob::OAuth) {
         return WizardCommon::Page_OAuthCreds;
     } else {
         return WizardCommon::Page_ShibbolethCreds;
@@ -235,7 +235,7 @@ bool OwncloudSetupPage::validatePage()
     }
 }
 
-void OwncloudSetupPage::setAuthType(WizardCommon::AuthType type)
+void OwncloudSetupPage::setAuthType(DetermineAuthTypeJob::AuthType type)
 {
     _authTypeKnown = true;
     _authType = type;

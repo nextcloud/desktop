@@ -207,8 +207,8 @@ void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl &url, const QJsonObje
 
     DetermineAuthTypeJob *job = new DetermineAuthTypeJob(_ocWizard->account(), this);
     job->setIgnoreCredentialFailure(true);
-    connect(job, SIGNAL(authType(WizardCommon::AuthType)),
-        _ocWizard, SLOT(setAuthType(WizardCommon::AuthType)));
+    connect(job, &DetermineAuthTypeJob::authType,
+        _ocWizard, &OwncloudWizard::setAuthType);
     job->start();
 }
 
@@ -598,60 +598,6 @@ AccountState *OwncloudSetupWizard::applyAccountChanges()
     auto newState = manager->addAccount(newAccount);
     manager->save();
     return newState;
-}
-
-
-DetermineAuthTypeJob::DetermineAuthTypeJob(AccountPtr account, QObject *parent)
-    : AbstractNetworkJob(account, QString(), parent)
-    , _redirects(0)
-{
-    // This job implements special redirect handling to detect redirections
-    // to pages that are indicative of Shibboleth-using servers. Hence we
-    // disable the standard job redirection handling here.
-    _followRedirects = false;
-}
-
-void DetermineAuthTypeJob::start()
-{
-    sendRequest("GET", account()->davUrl());
-    AbstractNetworkJob::start();
-}
-
-bool DetermineAuthTypeJob::finished()
-{
-    QUrl redirection = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-    qCDebug(lcWizard) << redirection.toString();
-    if (_redirects >= maxRedirects()) {
-        redirection.clear();
-    }
-    if ((reply()->error() == QNetworkReply::AuthenticationRequiredError) || redirection.isEmpty()) {
-        if (reply()->rawHeader("WWW-Authenticate").contains("Bearer ")) {
-            emit authType(WizardCommon::OAuth);
-        } else {
-            emit authType(WizardCommon::HttpCreds);
-        }
-    } else if (redirection.toString().endsWith(account()->davPath())) {
-        // do a new run
-        _redirects++;
-        resetTimeout();
-        sendRequest("GET", redirection);
-        return false; // don't discard
-    } else {
-#ifndef NO_SHIBBOLETH
-        QRegExp shibbolethyWords("SAML|wayf");
-
-        shibbolethyWords.setCaseSensitivity(Qt::CaseInsensitive);
-        if (redirection.toString().contains(shibbolethyWords)) {
-            emit authType(WizardCommon::Shibboleth);
-        } else
-#endif
-        {
-            // TODO: Send an error.
-            // eh?
-            emit authType(WizardCommon::HttpCreds);
-        }
-    }
-    return true;
 }
 
 } // namespace OCC

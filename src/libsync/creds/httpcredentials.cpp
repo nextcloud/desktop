@@ -58,18 +58,20 @@ protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData) Q_DECL_OVERRIDE
     {
         QNetworkRequest req(request);
-        if (_cred && !_cred->password().isEmpty()) {
-            if (_cred->isUsingOAuth()) {
-                req.setRawHeader("Authorization", "Bearer " + _cred->password().toUtf8());
-            } else {
-                QByteArray credHash = QByteArray(_cred->user().toUtf8() + ":" + _cred->password().toUtf8()).toBase64();
+        if (!req.attribute(HttpCredentials::DontAddCredentialsAttribute).toBool()) {
+            if (_cred && !_cred->password().isEmpty()) {
+                if (_cred->isUsingOAuth()) {
+                    req.setRawHeader("Authorization", "Bearer " + _cred->password().toUtf8());
+                } else {
+                    QByteArray credHash = QByteArray(_cred->user().toUtf8() + ":" + _cred->password().toUtf8()).toBase64();
+                    req.setRawHeader("Authorization", "Basic " + credHash);
+                }
+            } else if (!request.url().password().isEmpty()) {
+                // Typically the requests to get or refresh the OAuth access token. The client
+                // credentials are put in the URL from the code making the request.
+                QByteArray credHash = request.url().userInfo().toUtf8().toBase64();
                 req.setRawHeader("Authorization", "Basic " + credHash);
             }
-        } else if (!request.url().password().isEmpty()) {
-            // Typically the requests to get or refresh the OAuth access token. The client
-            // credentials are put in the URL from the code making the request.
-            QByteArray credHash = request.url().userInfo().toUtf8().toBase64();
-            req.setRawHeader("Authorization", "Basic " + credHash);
         }
 
         if (_cred && !_cred->_clientSslKey.isNull() && !_cred->_clientSslCertificate.isNull()) {

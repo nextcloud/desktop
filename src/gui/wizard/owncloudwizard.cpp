@@ -167,17 +167,17 @@ void OwncloudWizard::successfulStep()
     next();
 }
 
-void OwncloudWizard::setAuthType(WizardCommon::AuthType type)
+void OwncloudWizard::setAuthType(DetermineAuthTypeJob::AuthType type)
 {
     _setupPage->setAuthType(type);
 #ifndef NO_SHIBBOLETH
-    if (type == WizardCommon::Shibboleth) {
+    if (type == DetermineAuthTypeJob::Shibboleth) {
         _credentialsPage = _shibbolethCredsPage;
     } else
 #endif
-        if (type == WizardCommon::OAuth) {
+        if (type == DetermineAuthTypeJob::OAuth) {
         _credentialsPage = _browserCredsPage;
-    } else {
+    } else { // try Basic auth even for "Unknown"
         _credentialsPage = _httpCredsPage;
     }
     next();

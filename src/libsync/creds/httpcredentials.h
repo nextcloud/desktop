@@ -19,6 +19,7 @@
 #include <QMap>
 #include <QSslCertificate>
 #include <QSslKey>
+#include <QNetworkRequest>
 #include "creds/abstractcredentials.h"
 
 class QNetworkReply;
@@ -75,6 +76,9 @@ class OWNCLOUDSYNC_EXPORT HttpCredentials : public AbstractCredentials
     friend class HttpCredentialsAccessManager;
 
 public:
+    /// Don't add credentials if this is set on a QNetworkRequest
+    static constexpr QNetworkRequest::Attribute DontAddCredentialsAttribute = QNetworkRequest::User;
+
     explicit HttpCredentials();
     HttpCredentials(const QString &user, const QString &password, const QSslCertificate &certificate = QSslCertificate(), const QSslKey &key = QSslKey());
 
