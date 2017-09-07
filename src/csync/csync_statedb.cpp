@@ -457,7 +457,7 @@ int csync_statedb_get_below_path( CSYNC *ctx, const char *path ) {
                     st.reset();
                     rc = _csync_file_stat_from_metadata_table(st, stmt);
                     if( st ) {
-                        if( st->path.startsWith(skipbase) )
+                        if( !st->path.startsWith(skipbase) )
                             break;
                         CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s selective sync excluded because the parent is", st->path.constData());
                     }
