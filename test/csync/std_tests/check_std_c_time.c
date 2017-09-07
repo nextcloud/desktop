@@ -19,11 +19,11 @@
  */
 #include <string.h>
 
-#include "torture.h"
-
 #include "csync_time.h"
 #include "std/c_time.h"
 #include <unistd.h>
+
+#include "torture.h"
 
 static void check_c_tspecdiff(void **state)
 {

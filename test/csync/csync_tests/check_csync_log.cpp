@@ -20,12 +20,12 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "torture.h"
-
 #include "csync.h"
 #include "csync_log.cpp"
 #include "c_private.h"
 #include "std/c_utf8.h"
+
+#include "torture.h"
 
 static int setup(void **state) {
     int rc;
