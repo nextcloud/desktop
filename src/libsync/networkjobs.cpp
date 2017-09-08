@@ -886,4 +886,23 @@ void DetermineAuthTypeJob::send(const QUrl &url)
     sendRequest("GET", url, req);
 }
 
+SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, QObject *parent)
+    : AbstractNetworkJob(account, QString(), parent)
+{
+}
+
+QNetworkReply *SimpleNetworkJob::startRequest(const QByteArray &verb, const QUrl &url,
+    QNetworkRequest req, QIODevice *requestBody)
+{
+    auto reply = sendRequest(verb, url, req, requestBody);
+    start();
+    return reply;
+}
+
+bool SimpleNetworkJob::finished()
+{
+    emit finishedSignal(reply());
+    return true;
+}
+
 } // namespace OCC

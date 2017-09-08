@@ -44,6 +44,7 @@ class Account;
 typedef QSharedPointer<Account> AccountPtr;
 class QuotaInfo;
 class AccessManager;
+class SimpleNetworkJob;
 
 
 /**
@@ -114,9 +115,22 @@ public:
     AbstractCredentials *credentials() const;
     void setCredentials(AbstractCredentials *cred);
 
+    /** Create a network request on the account's QNAM.
+     *
+     * Network requests in AbstractNetworkJobs are created through
+     * this function. Other places should prefer to use jobs or
+     * sendRequest().
+     */
+    QNetworkReply *sendRawRequest(const QByteArray &verb,
+        const QUrl &url,
+        QNetworkRequest req = QNetworkRequest(),
+        QIODevice *data = 0);
 
-    // For creating various network requests
-    QNetworkReply *sendRequest(const QByteArray &verb,
+    /** Create and start network job for a simple one-off request.
+     *
+     * More complicated requests typically create their own job types.
+     */
+    SimpleNetworkJob *sendRequest(const QByteArray &verb,
         const QUrl &url,
         QNetworkRequest req = QNetworkRequest(),
         QIODevice *data = 0);

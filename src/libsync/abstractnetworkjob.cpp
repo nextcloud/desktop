@@ -120,15 +120,20 @@ QNetworkReply *AbstractNetworkJob::addTimer(QNetworkReply *reply)
 QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUrl &url,
     QNetworkRequest req, QIODevice *requestBody)
 {
-    auto reply = _account->sendRequest(verb, url, req, requestBody);
+    auto reply = _account->sendRawRequest(verb, url, req, requestBody);
     _requestBody = requestBody;
     if (_requestBody) {
         _requestBody->setParent(reply);
     }
+    adoptRequest(reply);
+    return reply;
+}
+
+void AbstractNetworkJob::adoptRequest(QNetworkReply *reply)
+{
     addTimer(reply);
     setReply(reply);
     setupConnections(reply);
-    return reply;
 }
 
 QUrl AbstractNetworkJob::makeAccountUrl(const QString &relativePath) const

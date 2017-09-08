@@ -303,10 +303,8 @@ bool HttpCredentials::refreshAccessToken()
     requestToken.setPassword(Theme::instance()->oauthClientSecret());
     QNetworkRequest req;
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-    auto reply = _account->sendRequest("POST", requestToken, req);
-    QTimer::singleShot(30 * 1000, reply, &QNetworkReply::abort);
-    QObject::connect(reply, &QNetworkReply::finished, this, [this, reply] {
-        reply->deleteLater();
+    auto job = _account->sendRequest("POST", requestToken, req);
+    QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
         auto jsonData = reply->readAll();
         QJsonParseError jsonParseError;
         QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();

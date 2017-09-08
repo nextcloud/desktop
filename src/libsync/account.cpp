@@ -226,7 +226,7 @@ QSharedPointer<QNetworkAccessManager> Account::sharedNetworkAccessManager()
     return _am;
 }
 
-QNetworkReply *Account::sendRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
+QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
 {
     req.setUrl(url);
     req.setSslConfiguration(this->getOrCreateSslConfig());
@@ -242,6 +242,13 @@ QNetworkReply *Account::sendRequest(const QByteArray &verb, const QUrl &url, QNe
         return _am->deleteResource(req);
     }
     return _am->sendCustomRequest(req, verb, data);
+}
+
+SimpleNetworkJob *Account::sendRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
+{
+    auto job = new SimpleNetworkJob(sharedFromThis(), this);
+    job->startRequest(verb, url, req, data);
+    return job;
 }
 
 void Account::setSslConfiguration(const QSslConfiguration &config)
