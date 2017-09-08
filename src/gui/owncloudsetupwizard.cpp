@@ -196,13 +196,10 @@ void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl &url, const QJsonObje
     // https://github.com/owncloud/core/pull/27473/files
     _ocWizard->account()->setServerVersion(serverVersion);
 
-    QString p = url.path();
-    if (p.endsWith("/status.php")) {
+    if (url != _ocWizard->account()->url()) {
         // We might be redirected, update the account
-        QUrl redirectedUrl = url;
-        redirectedUrl.setPath(url.path().left(url.path().length() - 11));
-        _ocWizard->account()->setUrl(redirectedUrl);
-        qCInfo(lcWizard) << " was redirected to" << redirectedUrl.toString();
+        _ocWizard->account()->setUrl(url);
+        qCInfo(lcWizard) << " was redirected to" << url.toString();
     }
 
     DetermineAuthTypeJob *job = new DetermineAuthTypeJob(_ocWizard->account(), this);

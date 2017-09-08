@@ -98,6 +98,14 @@ signals:
     void networkError(QNetworkReply *reply);
     void networkActivity();
 
+    /** Emitted when a redirect is followed.
+     *
+     * \a reply The "please redirect" reply
+     * \a targetUrl Where to redirect to
+     * \a redirectCount Counts redirect hops, first is 0.
+     */
+    void redirected(QNetworkReply *reply, const QUrl &targetUrl, int redirectCount);
+
 protected:
     void setupConnections(QNetworkReply *reply);
 

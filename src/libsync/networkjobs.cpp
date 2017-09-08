@@ -397,13 +397,17 @@ namespace {
 CheckServerJob::CheckServerJob(AccountPtr account, QObject *parent)
     : AbstractNetworkJob(account, QLatin1String(statusphpC), parent)
     , _subdirFallback(false)
+    , _permanentRedirects(0)
 {
     setIgnoreCredentialFailure(true);
+    connect(this, SIGNAL(redirected(QNetworkReply *, QUrl, int)),
+        SLOT(slotRedirected(QNetworkReply *, QUrl, int)));
 }
 
 void CheckServerJob::start()
 {
-    sendRequest("GET", makeAccountUrl(path()));
+    _serverUrl = account()->url();
+    sendRequest("GET", Utility::concatUrlPath(_serverUrl, path()));
     connect(reply(), SIGNAL(metaDataChanged()), this, SLOT(metaDataChangedSlot()));
     connect(reply(), SIGNAL(encrypted()), this, SLOT(encryptedSlot()));
     AbstractNetworkJob::start();
@@ -455,6 +459,24 @@ void CheckServerJob::encryptedSlot()
     mergeSslConfigurationForSslButton(reply()->sslConfiguration(), account());
 }
 
+void CheckServerJob::slotRedirected(QNetworkReply *reply, const QUrl &targetUrl, int redirectCount)
+{
+    QByteArray slashStatusPhp("/");
+    slashStatusPhp.append(statusphpC);
+
+    int httpCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    QString path = targetUrl.path();
+    if ((httpCode == 301 || httpCode == 308) // permanent redirection
+        && redirectCount == _permanentRedirects // don't apply permanent redirects after a temporary one
+        && path.endsWith(slashStatusPhp)) {
+        _serverUrl = targetUrl;
+        _serverUrl.setPath(path.left(path.size() - slashStatusPhp.size()));
+        qCInfo(lcCheckServerJob) << "status.php was permanently redirected to"
+                                 << targetUrl << "new server url is" << _serverUrl;
+        ++_permanentRedirects;
+    }
+}
+
 void CheckServerJob::metaDataChangedSlot()
 {
     account()->setSslConfiguration(reply()->sslConfiguration());
@@ -499,7 +521,7 @@ bool CheckServerJob::finished()
 
         qCInfo(lcCheckServerJob) << "status.php returns: " << status << " " << reply()->error() << " Reply: " << reply();
         if (status.object().contains("installed")) {
-            emit instanceFound(reply()->url(), status.object());
+            emit instanceFound(_serverUrl, status.object());
         } else {
             qCWarning(lcCheckServerJob) << "No proper answer on " << reply()->url();
             emit instanceNotFound(reply());
