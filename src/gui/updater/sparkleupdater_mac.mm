@@ -18,6 +18,7 @@
 #include <Sparkle/SUUpdater.h>
 #include <AppKit/NSApplication.h>
 
+#include "common/utility.h"
 #include "updater/sparkleupdater.h"
 
 // Does not work yet
