@@ -126,6 +126,13 @@ protected:
         QNetworkRequest req = QNetworkRequest(),
         QIODevice *requestBody = 0);
 
+    /** Makes this job drive a pre-made QNetworkReply
+     *
+     * This reply cannot have a QIODevice request body because we can't get
+     * at it and thus not resend it in case of redirects.
+     */
+    void adoptRequest(QNetworkReply *reply);
+
     /// Creates a url for the account from a relative path
     QUrl makeAccountUrl(const QString &relativePath) const;
 

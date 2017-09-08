@@ -377,6 +377,28 @@ private:
     int _redirects;
 };
 
+/**
+ * @brief A basic job around a network request without extra funtionality
+ * @ingroup libsync
+ *
+ * Primarily adds timeout and redirection handling.
+ */
+class OWNCLOUDSYNC_EXPORT SimpleNetworkJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    explicit SimpleNetworkJob(AccountPtr account, QObject *parent = 0);
+
+    QNetworkReply *startRequest(const QByteArray &verb, const QUrl &url,
+        QNetworkRequest req = QNetworkRequest(),
+        QIODevice *requestBody = 0);
+
+signals:
+    void finishedSignal(QNetworkReply *reply);
+private slots:
+    bool finished() Q_DECL_OVERRIDE;
+};
+
 } // namespace OCC
 
 #endif // NETWORKJOBS_H
