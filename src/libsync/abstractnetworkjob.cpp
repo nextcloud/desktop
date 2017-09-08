@@ -182,6 +182,8 @@ void AbstractNetworkJob::slotFinished()
         } else if (verb.isEmpty()) {
             qCWarning(lcNetworkJob) << this << "cannot redirect request: could not detect original verb";
         } else {
+            emit redirected(_reply, redirectUrl, _redirectCount - 1);
+
             // Create the redirected request and send it
             qCInfo(lcNetworkJob) << "Redirecting" << verb << requestedUrl << redirectUrl;
             resetTimeout();
