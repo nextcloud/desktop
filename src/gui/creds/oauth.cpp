@@ -79,10 +79,11 @@ void OAuth::start()
                     + QLatin1String("/index.php/apps/oauth2/api/v1/token?grant_type=authorization_code&code=")
                     + code
                     + QLatin1String("&redirect_uri=http://localhost:") + QString::number(_server.serverPort()));
-                requestToken.setUserName(Theme::instance()->oauthClientId());
-                requestToken.setPassword(Theme::instance()->oauthClientSecret());
                 QNetworkRequest req;
                 req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+                QString basicAuth = QString("%1:%2").arg(
+                    Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret());
+                req.setRawHeader("Authorization", "Basic " + basicAuth.toUtf8().toBase64());
                 auto job = _account->sendRequest("POST", requestToken, req);
                 QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, socket](QNetworkReply *reply) {
                     auto jsonData = reply->readAll();
