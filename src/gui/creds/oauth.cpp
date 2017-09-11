@@ -15,6 +15,7 @@
 #include <QDesktopServices>
 #include <QNetworkReply>
 #include <QTimer>
+#include <QBuffer>
 #include "account.h"
 #include "creds/oauth.h"
 #include <QJsonObject>
@@ -75,16 +76,21 @@ void OAuth::start()
 
                 QString code = rx.cap(1); // The 'code' is the first capture of the regexp
 
-                QUrl requestToken(_account->url().toString()
-                    + QLatin1String("/index.php/apps/oauth2/api/v1/token?grant_type=authorization_code&code=")
-                    + code
-                    + QLatin1String("&redirect_uri=http://localhost:") + QString::number(_server.serverPort()));
+                QUrl requestToken(_account->url().toString() + QLatin1String("/index.php/apps/oauth2/api/v1/token"));
                 QNetworkRequest req;
                 req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+
                 QString basicAuth = QString("%1:%2").arg(
                     Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret());
                 req.setRawHeader("Authorization", "Basic " + basicAuth.toUtf8().toBase64());
-                auto job = _account->sendRequest("POST", requestToken, req);
+
+                auto requestBody = new QBuffer;
+                QUrlQuery arguments(QString(
+                    "grant_type=authorization_code&code=%1&redirect_uri=http://localhost:%2")
+                                        .arg(code, QString::number(_server.serverPort())));
+                requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
+
+                auto job = _account->sendRequest("POST", requestToken, req, requestBody);
                 QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, socket](QNetworkReply *reply) {
                     auto jsonData = reply->readAll();
                     QJsonParseError jsonParseError;

@@ -20,6 +20,7 @@
 #include <QSslKey>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QBuffer>
 
 #include <keychain.h>
 
@@ -296,14 +297,19 @@ bool HttpCredentials::refreshAccessToken()
     if (_refreshToken.isEmpty())
         return false;
 
-    QUrl requestToken(_account->url().toString()
-        + QLatin1String("/index.php/apps/oauth2/api/v1/token?grant_type=refresh_token&refresh_token=")
-        + _refreshToken);
-    requestToken.setUserName(Theme::instance()->oauthClientId());
-    requestToken.setPassword(Theme::instance()->oauthClientSecret());
+    QUrl requestToken(_account->url().toString() + QLatin1String("/index.php/apps/oauth2/api/v1/token"));
     QNetworkRequest req;
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-    auto job = _account->sendRequest("POST", requestToken, req);
+
+    QString basicAuth = QString("%1:%2").arg(
+        Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret());
+    req.setRawHeader("Authorization", "Basic " + basicAuth.toUtf8().toBase64());
+
+    auto requestBody = new QBuffer;
+    QUrlQuery arguments(QString("grant_type=refresh_token&refresh_token=%1").arg(_refreshToken));
+    requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
+
+    auto job = _account->sendRequest("POST", requestToken, req, requestBody);
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
         auto jsonData = reply->readAll();
         QJsonParseError jsonParseError;
