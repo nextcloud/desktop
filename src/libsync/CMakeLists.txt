@@ -60,6 +60,7 @@ set(libsync_SRCS
     ownsql.cpp
     checksums.cpp
     excludedfiles.cpp
+    clientsideencryption.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialscommon.cpp
