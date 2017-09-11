@@ -173,6 +173,17 @@ void AbstractNetworkJob::slotFinished()
     if (_followRedirects && !redirectUrl.isEmpty()) {
         _redirectCount++;
 
+        // For POST requests where the target url has query arguments, Qt automatically
+        // moves these arguments to the body if no explicit body is specified.
+        // This can cause problems with redirected requests, because the redirect url
+        // will no longer contain these query arguments.
+        if (reply()->operation() == QNetworkAccessManager::PostOperation
+            && requestedUrl.hasQuery()
+            && !redirectUrl.hasQuery()
+            && !_requestBody) {
+            qCWarning(lcNetworkJob) << "Redirecting a POST request with an implicit body loses that body";
+        }
+
         // ### some of the qWarnings here should be exported via displayErrors() so they
         // ### can be presented to the user if the job executor has a GUI
         QByteArray verb = requestVerb(*reply());
