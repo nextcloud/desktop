@@ -173,13 +173,37 @@ void OwncloudSetupWizard::slotContinueDetermineAuth()
 
     // Set fake credentials before we check what credential it actually is.
     account->setCredentials(CredentialsFactory::create("dummy"));
-    CheckServerJob *job = new CheckServerJob(_ocWizard->account(), this);
-    job->setIgnoreCredentialFailure(true);
-    connect(job, SIGNAL(instanceFound(QUrl, QJsonObject)), SLOT(slotOwnCloudFoundAuth(QUrl, QJsonObject)));
-    connect(job, SIGNAL(instanceNotFound(QNetworkReply *)), SLOT(slotNoOwnCloudFoundAuth(QNetworkReply *)));
-    connect(job, SIGNAL(timeout(const QUrl &)), SLOT(slotNoOwnCloudFoundAuthTimeout(const QUrl &)));
-    job->setTimeout((account->url().scheme() == "https") ? 30 * 1000 : 10 * 1000);
-    job->start();
+
+    // Before we check the auth type, resolve any permanent redirect
+    // chain there might be. We cannot do this only on url/status.php
+    // in CheckServerJob, because things like url shorteners don't
+    // redirect subpaths.
+    auto redirectCheckJob = account->sendRequest("GET", account->url());
+
+    // Grab the chain of permanent redirects and adjust the account url
+    // accordingly
+    auto permanentRedirects = std::make_shared<int>(0);
+    connect(redirectCheckJob, &AbstractNetworkJob::redirected, this,
+        [permanentRedirects, account](QNetworkReply *reply, const QUrl &targetUrl, int count) {
+            int httpCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+            if (count == *permanentRedirects && (httpCode == 301 || httpCode == 308)) {
+                qCInfo(lcWizard) << account->url() << " was redirected to" << targetUrl;
+                account->setUrl(targetUrl);
+                *permanentRedirects += 1;
+            }
+        });
+
+    // When done, start checking status.php.
+    connect(redirectCheckJob, &SimpleNetworkJob::finishedSignal, this,
+        [this, account]() {
+            CheckServerJob *job = new CheckServerJob(account, this);
+            job->setIgnoreCredentialFailure(true);
+            connect(job, SIGNAL(instanceFound(QUrl, QJsonObject)), SLOT(slotOwnCloudFoundAuth(QUrl, QJsonObject)));
+            connect(job, SIGNAL(instanceNotFound(QNetworkReply *)), SLOT(slotNoOwnCloudFoundAuth(QNetworkReply *)));
+            connect(job, SIGNAL(timeout(const QUrl &)), SLOT(slotNoOwnCloudFoundAuthTimeout(const QUrl &)));
+            job->setTimeout((account->url().scheme() == "https") ? 30 * 1000 : 10 * 1000);
+            job->start();
+        });
 }
 
 void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl &url, const QJsonObject &info)
