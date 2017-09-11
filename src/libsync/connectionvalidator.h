@@ -65,7 +65,11 @@ namespace OCC {
                                       |
   +-----------------------------------+
   |
-  +-> fetchUser
+  +-> Client Side Encryption Checks --+
+                                      |
+    +---------------------------------+
+    |
+  fetchUser
         PropfindJob
         |
         +-> slotUserFetched
@@ -126,6 +130,7 @@ protected slots:
     void slotAvatarImage(const QImage &img);
 
 private:
+    void reportConnected();
     void reportResult(Status status);
     void checkServerCapabilities();
     void fetchUser();

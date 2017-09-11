@@ -2,9 +2,27 @@
 #define CLIENTSIDEENCRYPTION_H
 
 #include <QString>
+#include <QObject>
 
-namespace ClientSideEncryption {
-    QString baseUrl = QStringLiteral("ocs/v2.php/apps/client_side_encryption/api/v1/");
+namespace OCC {
+
+class Account;
+
+class ClientSideEncryption : public QObject {
+    Q_OBJECT
+public:
+    ClientSideEncryption(OCC::Account *parent);
+    void initialize();
+
+    void fetchPrivateKey();
+signals:
+    void initializationFinished();
+
+private:
+    OCC::Account *_account;
+    bool isInitialized = false;
+};
+
 }
 
 #endif
