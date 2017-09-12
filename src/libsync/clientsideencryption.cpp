@@ -149,7 +149,12 @@ QString ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
     int             nVersion = 1;
 
     X509_REQ        *x509_req = NULL;
-    BIO             *out = NULL;
+    auto out = BIO_new(BIO_s_mem());
+    QString output;
+    char data[80];
+
+    // auto out = BIO_new_file("/home/tcanabrava/.nextcloud-keys/request.pem","w");
+
 
     // 2. set version of x509 req
     x509_req = X509_REQ_new();
@@ -179,11 +184,21 @@ QString ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
         goto free_all;
     }
 
-    out = BIO_new_file("/home/tcanabrava/.nextcloud-keys/request.pem","w");
     ret = PEM_write_bio_X509_REQ(out, x509_req);
+    do {
+        ret = BIO_gets(out, data, 80);
+        output += data;
+        if (output.endsWith("-----END CERTIFICATE REQUEST-----"))
+            break;
+    } while (ret > 0 );
+
     if (ret != 1) {
         qCInfo(lcCse()) << "Error saving the csr file";
     }
+
+    qCInfo(lcCse()) << "Returning the certificate";
+    qCInfo(lcCse()) << output;
+
 
 free_all:
     X509_REQ_free(x509_req);
