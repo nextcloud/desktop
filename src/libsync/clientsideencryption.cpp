@@ -7,6 +7,8 @@
 #include <openssl/evp.h>
 #include <openssl/pem.h>
 
+#include <cstdio>
+
 #include <QDebug>
 #include <QLoggingCategory>
 #include <QFileInfo>
@@ -109,7 +111,37 @@ void ClientSideEncryption::generateKeyPair()
     }
     EVP_PKEY_CTX_free(ctx);
     qCInfo(lcCse()) << "Key correctly generated";
+    qCInfo(lcCse()) << "Storing keys locally";
 
+    QDir dir;
+    if (!dir.mkpath(baseDirectory)) {
+        qCInfo(lcCse()) << "Could not create the folder for the keys.";
+        return;
+    }
+
+    auto privKeyPath = privateKeyPath().toLocal8Bit();
+    auto pubKeyPath = publicKeyPath().toLocal8Bit();
+    FILE *privKeyFile = fopen(privKeyPath.constData(), "w");
+    FILE *pubKeyFile = fopen(pubKeyPath.constData(), "w");
+
+    qCInfo(lcCse()) << "Private key filename" << privKeyPath;
+    qCInfo(lcCse()) << "Public key filename" << pubKeyPath;
+
+    //TODO: Verify if the key needs to be stored with a Cipher and Pass.
+    if (!PEM_write_PrivateKey(privKeyFile, localKeyPair, NULL, NULL, 0, 0, NULL)) {
+        qCInfo(lcCse()) << "Could not write the private key to a file.";
+        return;
+    }
+
+    if (!PEM_write_PUBKEY(pubKeyFile, localKeyPair)) {
+        qCInfo(lcCse()) << "Could not write the public key to a file.";
+        return;
+    }
+
+    fclose(privKeyFile);
+    fclose(pubKeyFile);
+
+    //TODO: Send to server.
     qCInfo(lcCse()) << "Keys generated correctly, sending to server.";
 }
 
