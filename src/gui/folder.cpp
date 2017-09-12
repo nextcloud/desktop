@@ -817,6 +817,17 @@ void Folder::slotSyncFinished(bool success)
 void Folder::slotEmitFinishedDelayed()
 {
     emit syncFinished(_syncResult);
+
+    // Immediately check the etag again if there was some sync activity.
+    if ((_syncResult.status() == SyncResult::Success
+            || _syncResult.status() == SyncResult::Problem)
+        && (_syncResult.firstItemDeleted()
+               || _syncResult.firstItemNew()
+               || _syncResult.firstItemRenamed()
+               || _syncResult.firstItemUpdated()
+               || _syncResult.firstNewConflictItem())) {
+        slotRunEtagJob();
+    }
 }
 
 // the progress comes without a folder and the valid path set. Add that here
