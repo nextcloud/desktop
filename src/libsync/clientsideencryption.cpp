@@ -7,6 +7,9 @@
 #include <openssl/evp.h>
 #include <openssl/pem.h>
 
+#include <map>
+#include <string>
+
 #include <cstdio>
 
 #include <QDebug>
@@ -75,22 +78,6 @@ void ClientSideEncryption::generateKeyPair()
     const int rsaKeyLen = 2048;
 
     EVP_PKEY *localKeyPair = nullptr;
-    EVP_PKEY *serverPub = nullptr;
-
-    EVP_CIPHER_CTX *rsaEncryptCtx = EVP_CIPHER_CTX_new();
-    EVP_CIPHER_CTX *aesEncryptCtx = EVP_CIPHER_CTX_new();
-    EVP_CIPHER_CTX *rsaDecryptCtx = EVP_CIPHER_CTX_new();
-    EVP_CIPHER_CTX *aesDecryptCtx = EVP_CIPHER_CTX_new();
-
-    unsigned char *aesKey = nullptr;
-    unsigned char *aesIv = nullptr;
-
-    for(auto ctx : {rsaEncryptCtx, aesEncryptCtx, rsaDecryptCtx, aesDecryptCtx}) {
-        if (!ctx) {
-            qCInfo(lcCse()) << "Failed to generate the cripto context";
-            return;
-        }
-    }
 
     // Init RSA
     EVP_PKEY_CTX *ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, NULL);
@@ -141,13 +128,67 @@ void ClientSideEncryption::generateKeyPair()
     fclose(privKeyFile);
     fclose(pubKeyFile);
 
+    generateCSR(localKeyPair);
+
     //TODO: Send to server.
     qCInfo(lcCse()) << "Keys generated correctly, sending to server.";
 }
 
-QString ClientSideEncryption::generateCSR()
+QString ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
 {
-    return {};
+    // OpenSSL expects const char.
+    auto certParams = std::map<const char *, const char*>{
+      {"C", "DE"},
+      {"ST", "Baden-Wuerttemberg"},
+      {"L", "Stuttgart"},
+      {"O","Nextcloud"},
+      {"CN", "www.nextcloud.com"}
+    };
+
+    int             ret = 0;
+    int             nVersion = 1;
+
+    X509_REQ        *x509_req = NULL;
+    BIO             *out = NULL;
+
+    // 2. set version of x509 req
+    x509_req = X509_REQ_new();
+    ret = X509_REQ_set_version(x509_req, nVersion);
+
+    // 3. set subject of x509 req
+    auto x509_name = X509_REQ_get_subject_name(x509_req);
+
+    using ucharp = const unsigned char *;
+    for(const auto& v : certParams) {
+        ret = X509_NAME_add_entry_by_txt(x509_name, v.first,  MBSTRING_ASC, (ucharp) v.second, -1, -1, 0);
+        if (ret != 1) {
+            qCInfo(lcCse()) << "Error Generating the Certificate while adding" << v.first << v.second;
+            goto free_all;
+        }
+    }
+
+    ret = X509_REQ_set_pubkey(x509_req, keyPair);
+    if (ret != 1){
+        qCInfo(lcCse()) << "Error setting the public key on the csr";
+        goto free_all;
+    }
+
+    ret = X509_REQ_sign(x509_req, keyPair, EVP_sha1());    // return x509_req->signature->length
+    if (ret <= 0){
+        qCInfo(lcCse()) << "Error setting the public key on the csr";
+        goto free_all;
+    }
+
+    out = BIO_new_file("/home/tcanabrava/.nextcloud-keys/request.pem","w");
+    ret = PEM_write_bio_X509_REQ(out, x509_req);
+    if (ret != 1) {
+        qCInfo(lcCse()) << "Error saving the csr file";
+    }
+
+free_all:
+    X509_REQ_free(x509_req);
+    BIO_free_all(out);
+    return "";
 }
 
 void ClientSideEncryption::getPrivateKeyFromServer()
