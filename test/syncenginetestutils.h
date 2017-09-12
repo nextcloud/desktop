@@ -810,6 +810,7 @@ public:
         OCC::Logger::instance()->setLogFile("-");
 
         QDir rootDir{_tempDir.path()};
+        qDebug() << "FakeFolder operating on" << rootDir;
         toDisk(rootDir, fileTemplate);
 
         _fakeQnam = new FakeQNAM(fileTemplate);
