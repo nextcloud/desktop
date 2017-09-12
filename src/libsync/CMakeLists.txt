@@ -103,6 +103,8 @@ ENDIF(NOT APPLE)
 list(APPEND libsync_LINK_TARGETS
     ${QT_LIBRARIES}
     ocsync
+    OpenSSL::Crypto
+    OpenSSL::SSL
     ${OS_SPECIFIC_LINK_LIBRARIES}
 )
 
