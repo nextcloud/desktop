@@ -767,6 +767,7 @@ bool JsonApiJob::finished()
 
     if (reply()->error() != QNetworkReply::NoError) {
         qCWarning(lcJsonApiJob) << "Network error: " << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        statusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         emit jsonReceived(QJsonDocument(), statusCode);
         return true;
     }
