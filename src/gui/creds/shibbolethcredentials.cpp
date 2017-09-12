@@ -54,6 +54,7 @@ ShibbolethCredentials::ShibbolethCredentials()
     , _ready(false)
     , _stillValid(false)
     , _browser(0)
+    , _keychainMigration(false)
 {
 }
 
@@ -62,6 +63,7 @@ ShibbolethCredentials::ShibbolethCredentials(const QNetworkCookie &cookie)
     , _stillValid(true)
     , _browser(0)
     , _shibCookie(cookie)
+    , _keychainMigration(false)
 {
 }
 
@@ -131,13 +133,20 @@ void ShibbolethCredentials::fetchFromKeychain()
         Q_EMIT fetched();
     } else {
         _url = _account->url();
-        ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
-        job->setSettings(ConfigFile::settingsWithGroup(Theme::instance()->appName(), job).release());
-        job->setInsecureFallback(false);
-        job->setKey(keychainKey(_account->url().toString(), user()));
-        connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotReadJobDone(QKeychain::Job *)));
-        job->start();
+        _keychainMigration = false;
+        fetchFromKeychainHelper();
     }
+}
+
+void ShibbolethCredentials::fetchFromKeychainHelper()
+{
+    ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+    job->setSettings(ConfigFile::settingsWithGroup(Theme::instance()->appName(), job).release());
+    job->setInsecureFallback(false);
+    job->setKey(keychainKey(_url.toString(), user(),
+        _keychainMigration ? QString() : _account->id()));
+    connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotReadJobDone(QKeychain::Job *)));
+    job->start();
 }
 
 void ShibbolethCredentials::askFromUser()
@@ -242,6 +251,16 @@ void ShibbolethCredentials::slotBrowserRejected()
 
 void ShibbolethCredentials::slotReadJobDone(QKeychain::Job *job)
 {
+    // If we can't find the credentials at the keys that include the account id,
+    // try to read them from the legacy locations that don't have a account id.
+    if (!_keychainMigration && job->error() == QKeychain::EntryNotFound) {
+        qCWarning(lcShibboleth)
+            << "Could not find keychain entry, attempting to read from legacy location";
+        _keychainMigration = true;
+        fetchFromKeychainHelper();
+        return;
+    }
+
     if (job->error() == QKeychain::NoError) {
         ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(job);
         delete readJob->settings();
@@ -259,6 +278,19 @@ void ShibbolethCredentials::slotReadJobDone(QKeychain::Job *job)
     } else {
         _ready = false;
         Q_EMIT fetched();
+    }
+
+
+    // If keychain data was read from legacy location, wipe these entries and store new ones
+    if (_keychainMigration && _ready) {
+        persist();
+
+        DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
+        job->setSettings(ConfigFile::settingsWithGroup(Theme::instance()->appName(), job).release());
+        job->setKey(keychainKey(_account->url().toString(), user(), QString()));
+        job->start();
+
+        qCWarning(lcShibboleth) << "Migrated old keychain entries";
     }
 }
 
@@ -313,7 +345,7 @@ void ShibbolethCredentials::storeShibCookie(const QNetworkCookie &cookie)
     job->setSettings(ConfigFile::settingsWithGroup(Theme::instance()->appName(), job).release());
     // we don't really care if it works...
     //connect(job, SIGNAL(finished(QKeychain::Job*)), SLOT(slotWriteJobDone(QKeychain::Job*)));
-    job->setKey(keychainKey(_account->url().toString(), user()));
+    job->setKey(keychainKey(_account->url().toString(), user(), _account->id()));
     job->setTextData(QString::fromUtf8(cookie.toRawForm()));
     job->start();
 }
@@ -322,7 +354,7 @@ void ShibbolethCredentials::removeShibCookie()
 {
     DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
     job->setSettings(ConfigFile::settingsWithGroup(Theme::instance()->appName(), job).release());
-    job->setKey(keychainKey(_account->url().toString(), user()));
+    job->setKey(keychainKey(_account->url().toString(), user(), _account->id()));
     job->start();
 }
 
@@ -335,6 +367,5 @@ void ShibbolethCredentials::addToCookieJar(const QNetworkCookie &cookie)
     jar->setCookiesFromUrl(cookies, _account->url());
     jar->blockSignals(false);
 }
-
 
 } // namespace OCC
