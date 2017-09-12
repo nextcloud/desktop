@@ -21,6 +21,7 @@
 #include <QVariantMap>
 #include <QNetworkReply>
 #include "accountfwd.h"
+#include "clientsideencryption.h"
 
 namespace OCC {
 
@@ -63,10 +64,6 @@ namespace OCC {
         |
         +-> slotCapabilitiesRecieved -+
                                       |
-  +-----------------------------------+
-  |
-  +-> Client Side Encryption Checks --+
-                                      |
     +---------------------------------+
     |
   fetchUser
@@ -75,10 +72,13 @@ namespace OCC {
         +-> slotUserFetched
               AvatarJob
               |
-              +-> slotAvatarImage --> reportResult()
-
+              +-> slotAvatarImage -->
+  +-----------------------------------+
+  |
+  +-> Client Side Encryption Checks --+ --reportResult()
     \endcode
  */
+
 class OWNCLOUDSYNC_EXPORT ConnectionValidator : public QObject
 {
     Q_OBJECT
@@ -144,6 +144,7 @@ private:
     QStringList _errors;
     AccountPtr _account;
     bool _isCheckingServerAndAuth;
+    ClientSideEncryption cse;
 };
 }
 

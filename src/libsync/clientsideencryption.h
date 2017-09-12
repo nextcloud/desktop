@@ -3,23 +3,35 @@
 
 #include <QString>
 #include <QObject>
+#include <QJsonDocument>
+
+
+#include "accountfwd.h"
 
 namespace OCC {
 
-class Account;
 
 class ClientSideEncryption : public QObject {
     Q_OBJECT
 public:
-    ClientSideEncryption(OCC::Account *parent);
+    ClientSideEncryption();
     void initialize();
+    void setAccount(AccountPtr account);
+    bool hasPrivateKey() const;
+    bool hasPublicKey() const;
+    void generateKeyPair();
+    QString generateSCR();
+    void getPrivateKeyFromServer();
+    void getPublicKeyFromServer();
+    void signPublicKey();
+    QString privateKeyPath() const;
+    QString publicKeyPath() const;
 
-    void fetchPrivateKey();
 signals:
     void initializationFinished();
 
 private:
-    OCC::Account *_account;
+    OCC::AccountPtr _account;
     bool isInitialized = false;
 };
 
