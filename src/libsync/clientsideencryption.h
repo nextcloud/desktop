@@ -5,6 +5,8 @@
 #include <QObject>
 #include <QJsonDocument>
 
+#include <openssl/rsa.h>
+#include <openssl/evp.h>
 
 #include "accountfwd.h"
 
