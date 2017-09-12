@@ -3,6 +3,10 @@
 #include "capabilities.h"
 #include "networkjobs.h"
 
+#include <openssl/rsa.h>
+#include <openssl/evp.h>
+#include <openssl/pem.h>
+
 #include <QDebug>
 #include <QLoggingCategory>
 #include <QFileInfo>
@@ -63,7 +67,50 @@ bool ClientSideEncryption::hasPublicKey() const
 
 void ClientSideEncryption::generateKeyPair()
 {
+    // AES/GCM/NoPadding,
+    // metadataKeys with RSA/ECB/OAEPWithSHA-256AndMGF1Padding
+    qCInfo(lcCse()) << "No public key, generating a pair.";
+    const int rsaKeyLen = 2048;
 
+    EVP_PKEY *localKeyPair = nullptr;
+    EVP_PKEY *serverPub = nullptr;
+
+    EVP_CIPHER_CTX *rsaEncryptCtx = EVP_CIPHER_CTX_new();
+    EVP_CIPHER_CTX *aesEncryptCtx = EVP_CIPHER_CTX_new();
+    EVP_CIPHER_CTX *rsaDecryptCtx = EVP_CIPHER_CTX_new();
+    EVP_CIPHER_CTX *aesDecryptCtx = EVP_CIPHER_CTX_new();
+
+    unsigned char *aesKey = nullptr;
+    unsigned char *aesIv = nullptr;
+
+    for(auto ctx : {rsaEncryptCtx, aesEncryptCtx, rsaDecryptCtx, aesDecryptCtx}) {
+        if (!ctx) {
+            qCInfo(lcCse()) << "Failed to generate the cripto context";
+            return;
+        }
+    }
+
+    // Init RSA
+    EVP_PKEY_CTX *ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, NULL);
+
+    if(EVP_PKEY_keygen_init(ctx) <= 0) {
+        qCInfo(lcCse()) << "Couldn't initialize the key generator";
+        return;
+    }
+
+    if(EVP_PKEY_CTX_set_rsa_keygen_bits(ctx, rsaKeyLen) <= 0) {
+        qCInfo(lcCse()) << "Couldn't initialize the key generator bits";
+        return;
+    }
+
+    if(EVP_PKEY_keygen(ctx, &localKeyPair) <= 0) {
+        qCInfo(lcCse()) << "Could not generate the key";
+        return;
+    }
+    EVP_PKEY_CTX_free(ctx);
+    qCInfo(lcCse()) << "Key correctly generated";
+
+    qCInfo(lcCse()) << "Keys generated correctly, sending to server.";
 }
 
 QString ClientSideEncryption::generateSCR()
@@ -83,7 +130,8 @@ void ClientSideEncryption::getPublicKeyFromServer()
     connect(job, &JsonApiJob::jsonReceived, [this](const QJsonDocument& doc, int retCode) {
         switch(retCode) {
             case 404: // no public key
-                qCInfo(lcCse()) << "No public key, generating a pair.";
+                qCInfo(lcCse()) << "No public key on the server";
+                generateKeyPair();
                 break;
             case 400: // internal error
                 qCInfo(lcCse()) << "Internal server error while requesting the public key, encryption aborted.";
