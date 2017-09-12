@@ -145,7 +145,7 @@ void ClientSideEncryption::generateKeyPair()
     qCInfo(lcCse()) << "Keys generated correctly, sending to server.";
 }
 
-QString ClientSideEncryption::generateSCR()
+QString ClientSideEncryption::generateCSR()
 {
     return {};
 }
