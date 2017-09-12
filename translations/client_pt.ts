@@ -84,17 +84,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="220"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="222"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>A ligação expirou</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="222"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="224"/>
         <source>Unknown error: network reply was deleted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="365"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="367"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation type="unfinished"/>
     </message>
@@ -617,27 +617,27 @@
         <translation>Não foi configurada nenhuma conta ownCloud</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="280"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="287"/>
         <source>The configured server for this client is too old</source>
         <translation>O servidor configurado para este cliente é muito antigo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="281"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="288"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Por favor, atualize para a ultima versão do servidor e reinicie o cliente.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="165"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="172"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Erro de autenticação: o nome de utilizador ou a palavra-passe estão errados.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="177"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="184"/>
         <source>timeout</source>
         <translation>tempo expirado</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="214"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="221"/>
         <source>The provided credentials are not correct</source>
         <translation>As credenciais fornecidas não estão corretas</translation>
     </message>
@@ -1309,22 +1309,22 @@ Continuando a sincronização fará com que todos os seus ficheiros sejam substi
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="99"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Por favor, insira a palavra-passe %1:&lt;br&gt;&lt;br&gt;Utilizador: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="113"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
         <translation>A leitura da cadeia de dados falhou com um erro: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="119"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="117"/>
         <source>Enter Password</source>
         <translation>Insira a Palavra-passe</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="153"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="151"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Clique aqui&lt;/a&gt; para solicitar uma palavra-passe da aplicação a partir da interface da Web.</translation>
     </message>
@@ -1411,7 +1411,7 @@ Os itens onde é permitido a eliminação serão eliminados se estes impedirem a
     <message>
         <location filename="../src/gui/issueswidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulário</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="20"/>
@@ -1421,7 +1421,7 @@ Os itens onde é permitido a eliminação serão eliminados se estes impedirem a
     <message>
         <location filename="../src/gui/issueswidget.ui" line="34"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Conta</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="42"/>
@@ -1433,7 +1433,7 @@ Os itens onde é permitido a eliminação serão eliminados se estes impedirem a
         <location filename="../src/gui/issueswidget.ui" line="50"/>
         <location filename="../src/gui/issueswidget.cpp" line="79"/>
         <source>Folder</source>
-        <translation type="unfinished"/>
+        <translation>Pasta</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="73"/>
@@ -1453,17 +1453,17 @@ Os itens onde é permitido a eliminação serão eliminados se estes impedirem a
     <message>
         <location filename="../src/gui/issueswidget.ui" line="148"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Copiar</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="77"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Tempo</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="78"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Ficheiro</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="80"/>
@@ -1901,7 +1901,7 @@ poderá pedir por privilégios adicionais durante o processo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="43"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Ligar a %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="44"/>
@@ -1947,139 +1947,139 @@ Não é aconselhada a sua utilização.</translation>
         <translation>&lt;font color=&quot;green&quot;&gt;Ligado com sucesso a %1: %2 - versão: %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="226"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="223"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>Não foi possível ligar a %1 em %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="260"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="257"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Tempo expirou enquanto tentava ligar a %1 em %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="271"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="268"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>A tentar ligar a %1 em %2...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="319"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
         <translation>O pedido de autenticação para o servidor foi redirecionado para &apos;%1&apos;. O URL é mau, o servidor está mal configurado. </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="344"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="341"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation>Houve uma resposta inválida para o pedido de autenticação webdav</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="335"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="332"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Acesso proibido pelo servidor. Para verificar que tem o acesso adequado, &lt;a href=&quot;%1&quot;&gt;clique aqui&lt;/a&gt; para aceder ao serviço com o seu navegador.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="224"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="221"/>
         <source>Invalid URL</source>
         <translation>URL inválido</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="386"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>A pasta de sincronização local %1 já existe, a configurar para sincronizar.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="392"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
         <source>Creating local sync folder %1...</source>
         <translation>A criar a pasta de sincronização local %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="396"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="393"/>
         <source>ok</source>
         <translation>ok</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
         <source>failed.</source>
         <translation>Falhou.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="400"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="397"/>
         <source>Could not create local folder %1</source>
         <translation>Não foi possível criar a pasta local %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="426"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="423"/>
         <source>No remote folder specified!</source>
         <translation>Não foi indicada a pasta remota!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="432"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="429"/>
         <source>Error: %1</source>
         <translation>Erro: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="445"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="442"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>a criar a pasta na ownCloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="461"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="458"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Criação da pasta remota %1 com sucesso!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="463"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="460"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>A pasta remota %1 já existe. Ligue-a para sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="465"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="467"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="462"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="464"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>A criação da pasta resultou num erro HTTP com o código %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="469"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="466"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>A criação da pasta remota falhou, provavelmente por ter introduzido as credenciais erradas.&lt;br/&gt;Por favor, verifique as suas credenciais.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="473"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="470"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;A criação da pasta remota falhou, provavelmente por ter introduzido as credenciais erradas.&lt;/font&gt;&lt;br/&gt;Por favor, verifique as suas credenciais.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="478"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="479"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="475"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="476"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>A criação da pasta remota %1 falhou com o erro &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="496"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="493"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>A sincronização de %1 com a pasta remota %2 foi criada com sucesso.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="501"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="498"/>
         <source>Successfully connected to %1!</source>
         <translation>Conectado com sucesso a %1!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="508"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="505"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Não foi possível ligar a %1 . Por Favor verifique novamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="522"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="519"/>
         <source>Folder rename failed</source>
         <translation>Erro ao renomear a pasta</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="523"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="520"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Não é possível remover e fazer backup à pasta porque a pasta ou um ficheiro nesta está aberto em outro programa. Por favor, feche a pasta ou o ficheiro e clique novamente ou cancele a configuração.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="568"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="565"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Pasta de sincronização local %1 criada com sucesso!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -2640,12 +2640,12 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="198"/>
         <source>Users and Groups</source>
-        <translation type="unfinished"/>
+        <translation>Utilizadores e Grupos</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="205"/>
         <source>Public Links</source>
-        <translation type="unfinished"/>
+        <translation>Ligações públicas</translation>
     </message>
 </context>
 <context>
@@ -2693,7 +2693,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="220"/>
         <source>Show file listing</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar listagem de ficheiros</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="200"/>
@@ -2754,7 +2754,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Send link by email</source>
-        <translation type="unfinished"/>
+        <translation>Enviar hiperligação por e-mail</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
@@ -2764,7 +2764,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="237"/>
         <source>Public link</source>
-        <translation type="unfinished"/>
+        <translation>Hiperligação Pública</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="460"/>
@@ -2812,7 +2812,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="239"/>
         <source>Send link by email</source>
-        <translation type="unfinished"/>
+        <translation>Enviar hiperligação por e-mail</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="249"/>
@@ -2830,42 +2830,42 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="17"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulário</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="37"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>EtiquetaTexto</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="69"/>
         <source>can edit</source>
-        <translation type="unfinished"/>
+        <translation>pode editar</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="76"/>
         <source>can share</source>
-        <translation type="unfinished"/>
+        <translation>pode partilhar</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="83"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="357"/>
         <source>create</source>
-        <translation type="unfinished"/>
+        <translation>criar</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="360"/>
         <source>change</source>
-        <translation type="unfinished"/>
+        <translation>alterar</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="363"/>
         <source>delete</source>
-        <translation type="unfinished"/>
+        <translation>eliminar</translation>
     </message>
 </context>
 <context>
@@ -3805,7 +3805,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulário</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
@@ -4165,12 +4165,12 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="55"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possivel abrir o cliente de email</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="56"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Ocorreu um erro ao lançar o cliente de email para criar uma nova mensagem. Talvez nenhum cliente de email esteja configurado?</translation>
     </message>
 </context>
 </TS>

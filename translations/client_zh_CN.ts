@@ -84,17 +84,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="220"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="222"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>连接超时</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="222"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="224"/>
         <source>Unknown error: network reply was deleted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="365"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="367"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation type="unfinished"/>
     </message>
@@ -617,27 +617,27 @@
         <translation>没有已经配置的 ownCloud 帐号</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="280"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="287"/>
         <source>The configured server for this client is too old</source>
         <translation>此客户端连接到的服务器版本过旧</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="281"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="288"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>请更新到最新的服务器版本然后重启客户端。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="165"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="172"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>认证失败：用户名或密码错误</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="177"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="184"/>
         <source>timeout</source>
         <translation>超时</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="214"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="221"/>
         <source>The provided credentials are not correct</source>
         <translation>提供的证书不正确</translation>
     </message>
@@ -1309,22 +1309,22 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="99"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>请输入 %1 密码：&lt;br&gt;&lt;br&gt;用户：%2&lt;br&gt;账户：%3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="113"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
         <translation>获取密钥链失败，错误: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="119"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="117"/>
         <source>Enter Password</source>
         <translation>输入密码</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="153"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="151"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;点击这里&lt;/a&gt;从 web 界面请求一个 app 密码。</translation>
     </message>
@@ -1411,7 +1411,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>窗体</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="20"/>
@@ -1421,7 +1421,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="34"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>账户</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="42"/>
@@ -1433,7 +1433,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/issueswidget.ui" line="50"/>
         <location filename="../src/gui/issueswidget.cpp" line="79"/>
         <source>Folder</source>
-        <translation type="unfinished"/>
+        <translation>文件夹</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="73"/>
@@ -1453,17 +1453,17 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="148"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>复制</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="77"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>时间</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="78"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>文件</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="80"/>
@@ -1901,7 +1901,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="43"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>连接到 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="44"/>
@@ -1946,139 +1946,139 @@ It is not advisable to use it.</source>
         <translation>&lt;font color=&quot;green&quot;&gt;成功连接到 %1：%2 版本 %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="226"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="223"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>连接到 %1 （%2）失败：&lt;br /&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="260"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="257"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>连接到 %1 （%2） 时超时。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="271"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="268"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>尝试连接位于 %2 的 %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="319"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
         <translation>被发送到服务器的认证请求被重定向到&apos;%1&apos;。此URL无效，服务器配置错误。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="344"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="341"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation>对于一个验证的 webdav 请求，有一个无效的响应</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="335"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="332"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>服务器拒绝了访问。&lt;a href=&quot;%1&quot;&gt;点击这里打开浏览器&lt;/a&gt; 来确认您是否有权访问。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="224"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="221"/>
         <source>Invalid URL</source>
         <translation>无效URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="386"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>本地同步文件夹 %1 已存在，将使用它来同步。&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="392"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
         <source>Creating local sync folder %1...</source>
         <translation>创建本地同步目录%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="396"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="393"/>
         <source>ok</source>
         <translation>成功</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
         <source>failed.</source>
         <translation>失败</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="400"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="397"/>
         <source>Could not create local folder %1</source>
         <translation>不能创建本地文件夹 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="426"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="423"/>
         <source>No remote folder specified!</source>
         <translation>未指定远程文件夹！</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="432"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="429"/>
         <source>Error: %1</source>
         <translation>错误：%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="445"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="442"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>在 ownCloud 创建文件夹：%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="461"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="458"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>远程目录%1成功创建。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="463"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="460"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>远程文件夹 %1 已存在。连接它以供同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="465"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="467"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="462"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="464"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>创建文件夹出现 HTTP 错误代码 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="469"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="466"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>远程文件夹创建失败，因为提供的凭证有误！&lt;br/&gt;请返回并检查您的凭证。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="473"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="470"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;远程文件夹创建失败，可能是由于提供的用户名密码不正确。&lt;/font&gt;&lt;br/&gt;请返回并检查它们。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="478"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="479"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="475"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="476"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>创建远程文件夹 %1 失败，错误为 &lt;tt&gt;%2&lt;/tt&gt;。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="496"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="493"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>已经设置了一个 %1 到远程文件夹 %2 的同步连接</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="501"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="498"/>
         <source>Successfully connected to %1!</source>
         <translation>成功连接到了 %1！</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="508"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="505"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>无法建立到 %1的链接，请稍后重试（这里“稍后”用对了，赞！）。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="522"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="519"/>
         <source>Folder rename failed</source>
         <translation>文件夹更名失败</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="523"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="520"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>无法移除和备份文件夹，由于文件夹或文件正在被另一程序占用。请关闭程序后重试，或取消安装。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="568"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="565"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;本地同步目录 %1 已成功创建&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -2639,12 +2639,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="198"/>
         <source>Users and Groups</source>
-        <translation type="unfinished"/>
+        <translation>用户和组</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="205"/>
         <source>Public Links</source>
-        <translation type="unfinished"/>
+        <translation>公共链接</translation>
     </message>
 </context>
 <context>
@@ -2692,7 +2692,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="220"/>
         <source>Show file listing</source>
-        <translation type="unfinished"/>
+        <translation>显示文件列表</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="200"/>
@@ -2753,7 +2753,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Send link by email</source>
-        <translation type="unfinished"/>
+        <translation>通过邮件发送链接</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
@@ -2811,7 +2811,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="239"/>
         <source>Send link by email</source>
-        <translation type="unfinished"/>
+        <translation>通过邮件发送链接</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="249"/>
@@ -2829,42 +2829,42 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="17"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>窗体</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="37"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>文本标签</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="69"/>
         <source>can edit</source>
-        <translation type="unfinished"/>
+        <translation>可编辑</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="76"/>
         <source>can share</source>
-        <translation type="unfinished"/>
+        <translation>可共享</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="83"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="357"/>
         <source>create</source>
-        <translation type="unfinished"/>
+        <translation>创建</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="360"/>
         <source>change</source>
-        <translation type="unfinished"/>
+        <translation>更改</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="363"/>
         <source>delete</source>
-        <translation type="unfinished"/>
+        <translation>删除</translation>
     </message>
 </context>
 <context>
@@ -3804,7 +3804,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>窗体</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
@@ -4164,12 +4164,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="55"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>无法打开邮件客户端</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="56"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation type="unfinished"/>
+        <translation>启动email客户端并创建新消息时发生错误。是不是没有设定默认的email客户端？</translation>
     </message>
 </context>
 </TS>

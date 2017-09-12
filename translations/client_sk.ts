@@ -84,17 +84,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="220"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="222"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>Pripojenie expirovalo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="222"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="224"/>
         <source>Unknown error: network reply was deleted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="365"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="367"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation type="unfinished"/>
     </message>
@@ -617,27 +617,27 @@
         <translation>Žiadny účet v ownCloude nie je nastavený</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="280"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="287"/>
         <source>The configured server for this client is too old</source>
         <translation>Server nakonfigurovaný pre tohto klienta je príliš starý</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="281"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="288"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Prosím aktualizujte na najnovšiu verziu servera a reštartujte klienta.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="165"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="172"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Chyba overenia: Používateľské meno alebo heslo nie je správne.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="177"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="184"/>
         <source>timeout</source>
         <translation>vypršal časový limit</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="214"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="221"/>
         <source>The provided credentials are not correct</source>
         <translation>Poskytnuté poverenia nie sú správne</translation>
     </message>
@@ -1300,22 +1300,22 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="99"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="113"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="119"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="117"/>
         <source>Enter Password</source>
         <translation>Vložte heslo</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="153"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="151"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation type="unfinished"/>
     </message>
@@ -1400,7 +1400,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulár</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="20"/>
@@ -1410,7 +1410,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="34"/>
         <source>Account</source>
-        <translation type="unfinished"/>
+        <translation>Účet</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="42"/>
@@ -1422,7 +1422,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/issueswidget.ui" line="50"/>
         <location filename="../src/gui/issueswidget.cpp" line="79"/>
         <source>Folder</source>
-        <translation type="unfinished"/>
+        <translation>Priečinok</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="73"/>
@@ -1442,17 +1442,17 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="148"/>
         <source>Copy</source>
-        <translation type="unfinished"/>
+        <translation>Kopírovať</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="77"/>
         <source>Time</source>
-        <translation type="unfinished"/>
+        <translation>Čas</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="78"/>
         <source>File</source>
-        <translation type="unfinished"/>
+        <translation>Súbor</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="80"/>
@@ -1890,7 +1890,7 @@ môžu byť vyžadované dodatočné oprávnenia.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="43"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Pripojiť sa k %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="44"/>
@@ -1936,139 +1936,139 @@ Nie je vhodné ju používať.</translation>
         <translation>&lt;font color=&quot;green&quot;&gt;Úspešne pripojené k %1: %2 verzie %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="226"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="223"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>Zlyhalo spojenie s %1 o %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="260"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="257"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Časový limit vypršal pri pokuse o pripojenie k %1 na %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="271"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="268"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>Pokúšam sa o pripojenie k %1 na %2...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="322"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="319"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
         <translation>Overená požiadavka na server bola presmerovaná na &apos;%1&apos;. URL je zlá, server nie je správne nakonfigurovaný.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="344"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="341"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation>Neplatná odpoveď na overenú webdav požiadavku</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="335"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="332"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Prístup zamietnutý serverom. Po overení správnych prístupových práv, &lt;a href=&quot;%1&quot;&gt;kliknite sem&lt;/a&gt; a otvorte službu v svojom prezerači.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="224"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="221"/>
         <source>Invalid URL</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="386"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Lokálny synchronizačný priečinok %1 už existuje, prebieha jeho nastavovanie pre synchronizáciu.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="392"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="389"/>
         <source>Creating local sync folder %1...</source>
         <translation>Vytváranie lokálneho synchronizačného priečinka %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="396"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="393"/>
         <source>ok</source>
         <translation>v poriadku</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
         <source>failed.</source>
         <translation>neúspešné.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="400"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="397"/>
         <source>Could not create local folder %1</source>
         <translation>Nemožno vytvoriť lokálny priečinok %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="426"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="423"/>
         <source>No remote folder specified!</source>
         <translation>Vzdialený priečinok nie je nastavený!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="432"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="429"/>
         <source>Error: %1</source>
         <translation>Chyba: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="445"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="442"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>vytváram priečinok v ownCloude: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="461"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="458"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Vzdialený priečinok %1 bol úspešne vytvorený.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="463"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="460"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Vzdialený priečinok %1 už existuje. Prebieha jeho pripájanie pre synchronizáciu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="465"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="467"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="462"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="464"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Vytváranie priečinka skončilo s HTTP chybovým kódom %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="469"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="466"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Proces vytvárania vzdialeného priečinka zlyhal, lebo použité prihlasovacie údaje nie sú správne!&lt;br/&gt;Prosím skontrolujte si vaše údaje a skúste to znovu.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="473"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="470"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Vytvorenie vzdialeného priečinka pravdepodobne zlyhalo kvôli nesprávnym prihlasovacím údajom.&lt;/font&gt;&lt;br/&gt;Prosím choďte späť a skontrolujte ich.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="478"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="479"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="475"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="476"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Vytvorenie vzdialeného priečinka %1 zlyhalo s chybou &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="496"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="493"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Synchronizačné spojenie z %1 do vzdialeného priečinka %2 bolo práve nastavené.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="501"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="498"/>
         <source>Successfully connected to %1!</source>
         <translation>Úspešne pripojené s %1!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="508"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="505"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Pripojenie k %1 nemohlo byť iniciované. Prosím skontrolujte to znovu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="522"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="519"/>
         <source>Folder rename failed</source>
         <translation>Premenovanie priečinka zlyhalo</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="523"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="520"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Nemožno odstrániť a zazálohovať priečinok, pretože priečinok alebo súbor je otvorený v inom programe. Prosím zatvorte priečinok nebo súbor a skúste to znovu alebo zrušte akciu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="568"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="565"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokálny synchronizačný priečinok %1 bol úspešne vytvorený!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -2743,7 +2743,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Send link by email</source>
-        <translation type="unfinished"/>
+        <translation>Odoslať odkaz emailom</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
@@ -2801,7 +2801,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="239"/>
         <source>Send link by email</source>
-        <translation type="unfinished"/>
+        <translation>Odoslať odkaz emailom</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="249"/>
@@ -2819,42 +2819,42 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="17"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulár</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="37"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Štítok</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="69"/>
         <source>can edit</source>
-        <translation type="unfinished"/>
+        <translation>môže upraviť</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="76"/>
         <source>can share</source>
-        <translation type="unfinished"/>
+        <translation>môže zdieľať</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="83"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="357"/>
         <source>create</source>
-        <translation type="unfinished"/>
+        <translation>vytvoriť</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="360"/>
         <source>change</source>
-        <translation type="unfinished"/>
+        <translation>zmeniť</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="363"/>
         <source>delete</source>
-        <translation type="unfinished"/>
+        <translation>vymazať</translation>
     </message>
 </context>
 <context>
@@ -3794,7 +3794,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulár</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
