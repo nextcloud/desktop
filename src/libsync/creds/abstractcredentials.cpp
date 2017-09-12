@@ -34,7 +34,7 @@ void AbstractCredentials::setAccount(Account *account)
     _account = account;
 }
 
-QString AbstractCredentials::keychainKey(const QString &url, const QString &user)
+QString AbstractCredentials::keychainKey(const QString &url, const QString &user, const QString &accountId)
 {
     QString u(url);
     if (u.isEmpty()) {
@@ -51,6 +51,9 @@ QString AbstractCredentials::keychainKey(const QString &url, const QString &user
     }
 
     QString key = user + QLatin1Char(':') + u;
+    if (!accountId.isEmpty()) {
+        key += QLatin1Char(':') + accountId;
+    }
     return key;
 }
 } // namespace OCC

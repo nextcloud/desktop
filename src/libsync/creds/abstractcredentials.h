@@ -85,7 +85,7 @@ public:
      */
     virtual void forgetSensitiveData() = 0;
 
-    static QString keychainKey(const QString &url, const QString &user);
+    static QString keychainKey(const QString &url, const QString &user, const QString &accountId);
 
 Q_SIGNALS:
     /** Emitted when fetchFromKeychain() is done.
