@@ -326,8 +326,9 @@ void ConnectionValidator::slotUserFetched(const QJsonDocument &json)
 void ConnectionValidator::slotAvatarImage(const QImage &img)
 {
     _account->setAvatar(img);
-    connect(_account->cse(), &ClientSideEncryption::initializationFinished, this, &ConnectionValidator::reportConnected);
-    _account->cse()->initialize();
+    cse.setAccount(_account);
+    connect(&cse, &ClientSideEncryption::initializationFinished, this, &ConnectionValidator::reportConnected);
+    cse.initialize();
 }
 
 void ConnectionValidator::reportConnected() {

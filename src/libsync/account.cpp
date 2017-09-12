@@ -41,7 +41,6 @@ Q_LOGGING_CATEGORY(lcAccount, "sync.account", QtInfoMsg)
 Account::Account(QObject *parent)
     : QObject(parent)
     , _capabilities(QVariantMap())
-    , _encryption(new ClientSideEncryption(this))
     , _davPath(Theme::instance()->webDavPath())
 {
     qRegisterMetaType<AccountPtr>("AccountPtr");
@@ -483,11 +482,6 @@ void Account::setNonShib(bool nonShib)
     } else {
         _davPath = Theme::instance()->webDavPath();
     }
-}
-
-ClientSideEncryption *Account::cse() const
-{
-    return _encryption;
 }
 
 } // namespace OCC

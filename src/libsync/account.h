@@ -226,7 +226,6 @@ public:
     /// Called by network jobs on credential errors, emits invalidCredentials()
     void handleInvalidCredentials();
 
-    ClientSideEncryption *cse() const;
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -276,7 +275,6 @@ private:
     QuotaInfo *_quotaInfo;
     QSharedPointer<QNetworkAccessManager> _am;
     QScopedPointer<AbstractCredentials> _credentials;
-    ClientSideEncryption *_encryption;
     bool _http2Supported = false;
 
     /// Certificates that were explicitly rejected by the user
