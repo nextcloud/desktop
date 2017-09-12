@@ -22,7 +22,7 @@ public:
     bool hasPrivateKey() const;
     bool hasPublicKey() const;
     void generateKeyPair();
-    QString generateCSR();
+    QString generateCSR(EVP_PKEY *keyPair);
     void getPrivateKeyFromServer();
     void getPublicKeyFromServer();
     void signPublicKey();
