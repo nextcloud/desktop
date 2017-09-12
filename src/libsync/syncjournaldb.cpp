@@ -323,7 +323,26 @@ bool SyncJournalDb::checkConnect()
                         ");");
 
     if (!createQuery.exec()) {
-        return sqlFail("Create table metadata", createQuery);
+        bool fail = true;
+
+        // In certain situations the io error can be avoided by switching
+        // to the DELETE journal mode, see #5723
+        if (createQuery.errorId() == SQLITE_IOERR) {
+            qCWarning(lcDb) << "IO error on table creation, attempting with DELETE journal mode";
+
+            pragma1.prepare(QString("PRAGMA journal_mode=DELETE;"));
+            if (!pragma1.exec()) {
+                return sqlFail("Set PRAGMA journal_mode", pragma1);
+            }
+            pragma1.next();
+            qCInfo(lcDb) << "sqlite3 journal_mode=" << pragma1.stringValue(0);
+
+            if (createQuery.exec()) {
+                fail = false;
+            }
+        }
+        if (fail)
+            return sqlFail("Create table metadata", createQuery);
     }
 
     createQuery.prepare("CREATE TABLE IF NOT EXISTS downloadinfo("

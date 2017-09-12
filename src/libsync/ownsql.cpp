@@ -280,6 +280,12 @@ bool SqlQuery::exec()
         if (_errId != SQLITE_DONE && _errId != SQLITE_ROW) {
             _error = QString::fromUtf8(sqlite3_errmsg(_db));
             qCWarning(lcSql) << "Sqlite exec statement error:" << _errId << _error << "in" << _sql;
+            if (_errId == SQLITE_IOERR) {
+                qCWarning(lcSql) << "IOERR extended errcode: " << sqlite3_extended_errcode(_db);
+#if SQLITE_VERSION_NUMBER >= 3012000
+                qCWarning(lcSql) << "IOERR system errno: " << sqlite3_system_errno(_db);
+#endif
+            }
         } else {
             qCDebug(lcSql) << "Last exec affected" << numRowsAffected() << "rows.";
         }
