@@ -148,13 +148,11 @@ QString ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
     int             ret = 0;
     int             nVersion = 1;
 
-    X509_REQ        *x509_req = NULL;
+    X509_REQ *x509_req = nullptr;
     auto out = BIO_new(BIO_s_mem());
-    QString output;
+    QByteArray output("csr=\"");
     char data[80];
-
-    // auto out = BIO_new_file("/home/tcanabrava/.nextcloud-keys/request.pem","w");
-
+    SignPublicKeyApiJob *job = nullptr;
 
     // 2. set version of x509 req
     x509_req = X509_REQ_new();
@@ -191,14 +189,18 @@ QString ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
         if (output.endsWith("-----END CERTIFICATE REQUEST-----"))
             break;
     } while (ret > 0 );
-
-    if (ret != 1) {
-        qCInfo(lcCse()) << "Error saving the csr file";
-    }
+    output += "\"";
 
     qCInfo(lcCse()) << "Returning the certificate";
     qCInfo(lcCse()) << output;
 
+    job = new SignPublicKeyApiJob(_account, baseUrl + "public-key", this);
+    job->setCsr(output);
+    connect(job, &SignPublicKeyApiJob::jsonReceived, [this](const QJsonDocument& doc, int retCode) {
+        qCInfo(lcCse()) << retCode;
+        qCInfo(lcCse()) << doc;
+    });
+    job->start();
 
 free_all:
     X509_REQ_free(x509_req);
