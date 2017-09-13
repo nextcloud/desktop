@@ -49,6 +49,7 @@ Q_LOGGING_CATEGORY(lcMkColJob, "sync.networkjob.mkcol", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcProppatchJob, "sync.networkjob.proppatch", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcJsonApiJob, "sync.networkjob.jsonapi", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "sync.networkjob.determineauthtype", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcSignPublicKeyApiJob, "sync.networkjob.sendcsr", QtInfoMsg);
 
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
@@ -941,4 +942,30 @@ bool DeleteApiJob::finished()
     const auto replyData = QString::fromUtf8(reply()->readAll());
     qCInfo(lcJsonApiJob()) << "TMX Delete Job" << replyData;
 }
+
+SignPublicKeyApiJob::SignPublicKeyApiJob(const AccountPtr& account, const QString& path, QObject* parent)
+: AbstractNetworkJob(account, path, parent)
+{
+}
+
+void SignPublicKeyApiJob::setCsr(const QByteArray& csr)
+{
+    _csr.setData(csr);
+}
+
+void SignPublicKeyApiJob::start()
+{
+    QNetworkRequest req;
+    req.setRawHeader("OCS-APIREQUEST", "true");
+    QUrl url = Utility::concatUrlPath(account()->url(), path());
+    sendRequest("POST", url, req, &_csr);
+    AbstractNetworkJob::start();
+}
+
+bool SignPublicKeyApiJob::finished()
+{
+    qCInfo(lcSignPublicKeyApiJob()) << "Sending CSR ended with"  << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    qCInfo(lcSignPublicKeyApiJob()) << reply()->readAll();
+}
+
 } // namespace OCC

@@ -18,6 +18,8 @@
 
 #include "abstractnetworkjob.h"
 
+#include <QBuffer>
+
 class QUrl;
 class QJsonObject;
 
@@ -425,6 +427,50 @@ signals:
     void finishedSignal(QNetworkReply *reply);
 private slots:
     bool finished() Q_DECL_OVERRIDE;
+};
+
+/*
+ * @brief Job to sigh the CSR that return JSON
+ *
+ * To be used like this:
+ * \code
+ * _job = new SignPublicKeyApiJob(account, QLatin1String("ocs/v1.php/foo/bar"), this);
+ * _job->setCsr( csr );
+ * connect(_job...);
+ * _job->start();
+ * \encode
+ *
+ * @ingroup libsync
+ */
+class OWNCLOUDSYNC_EXPORT SignPublicKeyApiJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    explicit SignPublicKeyApiJob(const AccountPtr &account, const QString &path, QObject *parent = 0);
+
+    /**
+     * @brief setCsr - the CSR with the public key.
+     * This function needs to be called before start() obviously.
+     */
+    void setCsr(const QByteArray& csr);
+
+public slots:
+    void start() override;
+
+protected:
+    bool finished() override;
+signals:
+
+    /**
+     * @brief jsonReceived - signal to report the json answer from ocs
+     * @param json - the parsed json document
+     * @param statusCode - the OCS status code: 100 (!) for success
+     */
+    void jsonReceived(const QJsonDocument &json, int statusCode);
+
+private:
+    QBuffer _csr;
+
 };
 
 } // namespace OCC
