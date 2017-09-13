@@ -30,7 +30,6 @@
 #include <QPixmap>
 #include <QJsonDocument>
 #include <QJsonObject>
-
 #include "networkjobs.h"
 #include "account.h"
 #include "owncloudpropagator.h"
@@ -950,7 +949,9 @@ SignPublicKeyApiJob::SignPublicKeyApiJob(const AccountPtr& account, const QStrin
 
 void SignPublicKeyApiJob::setCsr(const QByteArray& csr)
 {
-    _csr.setData(csr);
+    QByteArray data = "csr=";
+    data += QUrl::toPercentEncoding(csr);
+    _csr.setData(data);
 }
 
 void SignPublicKeyApiJob::start()
@@ -963,6 +964,7 @@ void SignPublicKeyApiJob::start()
     };
     url.setQueryItems(params);
 
+    qCInfo(lcSignPublicKeyApiJob) << "Sending the CSR" << _csr.data();
     sendRequest("POST", url, req, &_csr);
     AbstractNetworkJob::start();
 }
@@ -977,3 +979,4 @@ bool SignPublicKeyApiJob::finished()
 }
 
 } // namespace OCC
+

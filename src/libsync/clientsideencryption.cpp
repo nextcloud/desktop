@@ -150,7 +150,7 @@ QString ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
 
     X509_REQ *x509_req = nullptr;
     auto out = BIO_new(BIO_s_mem());
-    QByteArray output("csr=\"");
+    QByteArray output;
     char data[80];
     SignPublicKeyApiJob *job = nullptr;
 
@@ -186,10 +186,11 @@ QString ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
     do {
         ret = BIO_gets(out, data, 80);
         output += data;
-        if (output.endsWith("-----END CERTIFICATE REQUEST-----"))
+        if (output.endsWith("-----END CERTIFICATE REQUEST-----")) {
+            output = output.trimmed();
             break;
+        }
     } while (ret > 0 );
-    output += "\"";
 
     qCInfo(lcCse()) << "Returning the certificate";
     qCInfo(lcCse()) << output;
