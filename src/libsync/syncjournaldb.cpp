@@ -35,11 +35,34 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcDb, "sync.database", QtInfoMsg)
 
+static QString defaultJournalMode(const QString &dbPath)
+{
+#ifdef Q_OS_WIN
+    // See #2693: Some exFAT file systems seem unable to cope with the
+    // WAL journaling mode. They work fine with DELETE.
+    QString fileSystem = FileSystem::fileSystemForPath(dbPath);
+    qCInfo(lcDb) << "Detected filesystem" << fileSystem << "for" << dbPath;
+    if (fileSystem.contains("FAT")) {
+        qCInfo(lcDb) << "Filesystem contains FAT - using DELETE journal mode";
+        return "DELETE";
+    }
+#else
+    Q_UNUSED(dbPath)
+#endif
+    return "WAL";
+}
+
 SyncJournalDb::SyncJournalDb(const QString &dbFilePath, QObject *parent)
     : QObject(parent)
     , _dbFile(dbFilePath)
     , _transaction(0)
 {
+    // Allow forcing the journal mode for debugging
+    static QString envJournalMode = QString::fromLocal8Bit(qgetenv("OWNCLOUD_SQLITE_JOURNAL_MODE"));
+    _journalMode = envJournalMode;
+    if (_journalMode.isEmpty()) {
+        _journalMode = defaultJournalMode(_dbFile);
+    }
 }
 
 QString SyncJournalDb::makeDbName(const QString &localPath,
@@ -215,23 +238,6 @@ bool SyncJournalDb::sqlFail(const QString &log, const SqlQuery &query)
     return false;
 }
 
-static QString defaultJournalMode(const QString &dbPath)
-{
-#ifdef Q_OS_WIN
-    // See #2693: Some exFAT file systems seem unable to cope with the
-    // WAL journaling mode. They work fine with DELETE.
-    QString fileSystem = FileSystem::fileSystemForPath(dbPath);
-    qCInfo(lcDb) << "Detected filesystem" << fileSystem << "for" << dbPath;
-    if (fileSystem.contains("FAT")) {
-        qCInfo(lcDb) << "Filesystem contains FAT - using DELETE journal mode";
-        return "DELETE";
-    }
-#else
-    Q_UNUSED(dbPath)
-#endif
-    return "WAL";
-}
-
 bool SyncJournalDb::checkConnect()
 {
     if (_db.isOpen()) {
@@ -264,13 +270,7 @@ bool SyncJournalDb::checkConnect()
         qCInfo(lcDb) << "sqlite3 version" << pragma1.stringValue(0);
     }
 
-    // Allow forcing the journal mode for debugging
-    static QString env_journal_mode = QString::fromLocal8Bit(qgetenv("OWNCLOUD_SQLITE_JOURNAL_MODE"));
-    QString journal_mode = env_journal_mode;
-    if (journal_mode.isEmpty()) {
-        journal_mode = defaultJournalMode(_dbFile);
-    }
-    pragma1.prepare(QString("PRAGMA journal_mode=%1;").arg(journal_mode));
+    pragma1.prepare(QString("PRAGMA journal_mode=%1;").arg(_journalMode));
     if (!pragma1.exec()) {
         return sqlFail("Set PRAGMA journal_mode", pragma1);
     } else {
@@ -323,26 +323,22 @@ bool SyncJournalDb::checkConnect()
                         ");");
 
     if (!createQuery.exec()) {
-        bool fail = true;
-
         // In certain situations the io error can be avoided by switching
         // to the DELETE journal mode, see #5723
-        if (createQuery.errorId() == SQLITE_IOERR) {
-            qCWarning(lcDb) << "IO error on table creation, attempting with DELETE journal mode";
+        if (_journalMode != "DELETE"
+            && createQuery.errorId() == SQLITE_IOERR
+            && sqlite3_extended_errcode(_db.sqliteDb()) == SQLITE_IOERR_SHMMAP) {
+            qCWarning(lcDb) << "IO error SHMMAP on table creation, attempting with DELETE journal mode";
 
-            pragma1.prepare(QString("PRAGMA journal_mode=DELETE;"));
-            if (!pragma1.exec()) {
-                return sqlFail("Set PRAGMA journal_mode", pragma1);
-            }
-            pragma1.next();
-            qCInfo(lcDb) << "sqlite3 journal_mode=" << pragma1.stringValue(0);
-
-            if (createQuery.exec()) {
-                fail = false;
-            }
+            _journalMode = "DELETE";
+            createQuery.finish();
+            pragma1.finish();
+            commitTransaction();
+            _db.close();
+            return checkConnect();
         }
-        if (fail)
-            return sqlFail("Create table metadata", createQuery);
+
+        return sqlFail("Create table metadata", createQuery);
     }
 
     createQuery.prepare("CREATE TABLE IF NOT EXISTS downloadinfo("
