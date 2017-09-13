@@ -964,8 +964,8 @@ void CleanupPollsJob::start()
 
     auto info = _pollInfos.first();
     _pollInfos.pop_front();
-    SyncJournalFileRecord record = _journal->getFileRecord(info._file);
-    if (record.isValid()) {
+    SyncJournalFileRecord record;
+    if (_journal->getFileRecord(info._file, &record) && record.isValid()) {
         SyncFileItemPtr item = SyncFileItem::fromSyncJournalFileRecord(record);
         PollJob *job = new PollJob(_account, info._url, item, _journal, _localPath, this);
         connect(job, &PollJob::finishedSignal, this, &CleanupPollsJob::slotPollFinished);

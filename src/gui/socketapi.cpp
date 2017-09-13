@@ -504,8 +504,8 @@ void fetchPrivateLinkUrl(const QString &localFile, SocketApi *target, void (Sock
     const QString file = localFileClean.mid(shareFolder->cleanPath().length() + 1);
 
     // Generate private link ourselves: used as a fallback
-    const SyncJournalFileRecord rec = shareFolder->journalDb()->getFileRecord(file);
-    if (!rec.isValid())
+    SyncJournalFileRecord rec;
+    if (!shareFolder->journalDb()->getFileRecord(file, &rec) || !rec.isValid())
         return;
     const QString oldUrl =
         shareFolder->accountState()->account()->deprecatedPrivateLinkUrl(rec.numericFileId()).toString(QUrl::FullyEncoded);

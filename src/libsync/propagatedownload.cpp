@@ -706,8 +706,8 @@ namespace { // Anonymous namespace for the recall feature
             // Path of the recalled file in the local folder
             QString localRecalledFile = recalledFile.mid(folderPath.size());
 
-            SyncJournalFileRecord record = journal.getFileRecord(localRecalledFile);
-            if (!record.isValid()) {
+            SyncJournalFileRecord record;
+            if (!journal.getFileRecord(localRecalledFile, &record) || !record.isValid()) {
                 qCWarning(lcPropagateDownload) << "No db entry for recall of" << localRecalledFile;
                 continue;
             }

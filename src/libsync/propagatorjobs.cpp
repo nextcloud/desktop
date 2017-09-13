@@ -231,8 +231,8 @@ void PropagateLocalRename::start()
         }
     }
 
-    SyncJournalFileRecord oldRecord =
-        propagator()->_journal->getFileRecord(_item->_originalFile);
+    SyncJournalFileRecord oldRecord;
+    propagator()->_journal->getFileRecord(_item->_originalFile, &oldRecord);
     propagator()->_journal->deleteFileRecord(_item->_originalFile);
 
     // store the rename file name in the item.

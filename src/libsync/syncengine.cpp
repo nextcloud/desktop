@@ -600,8 +600,10 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
                 }
 
                 // If the 'W' remote permission changed, update the local filesystem
-                SyncJournalFileRecord prev = _journal->getFileRecord(item->_file);
-                if (prev.isValid() && prev._remotePerm.hasPermission(RemotePermissions::CanWrite) != item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
+                SyncJournalFileRecord prev;
+                if (_journal->getFileRecord(item->_file, &prev)
+                    && prev.isValid()
+                    && prev._remotePerm.hasPermission(RemotePermissions::CanWrite) != item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
                     const bool isReadOnly = !item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite);
                     FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
                 }

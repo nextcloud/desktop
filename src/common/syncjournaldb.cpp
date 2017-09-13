@@ -972,37 +972,42 @@ bool SyncJournalDb::deleteFileRecord(const QString &filename, bool recursively)
 }
 
 
-SyncJournalFileRecord SyncJournalDb::getFileRecord(const QString &filename)
+bool SyncJournalDb::getFileRecord(const QString &filename, SyncJournalFileRecord *rec)
 {
     QMutexLocker locker(&_mutex);
 
-    qlonglong phash = getPHash(filename);
-    SyncJournalFileRecord rec;
+    // Reset the output var in case the caller is reusing it.
+    Q_ASSERT(rec);
+    rec->_path.clear();
+    Q_ASSERT(!rec->isValid());
 
-    if (!filename.isEmpty() && checkConnect()) {
+    if (!checkConnect())
+        return false;
+
+    if (!filename.isEmpty()) {
         _getFileRecordQuery->reset_and_clear_bindings();
-        _getFileRecordQuery->bindValue(1, phash);
+        _getFileRecordQuery->bindValue(1, getPHash(filename));
 
         if (!_getFileRecordQuery->exec()) {
             locker.unlock();
             close();
-            return rec;
+            return false;
         }
 
         if (_getFileRecordQuery->next()) {
-            rec._path = _getFileRecordQuery->stringValue(0);
-            rec._inode = _getFileRecordQuery->intValue(1);
-            //rec._uid     = _getFileRecordQuery->value(2).toInt(&ok); Not Used
-            //rec._gid     = _getFileRecordQuery->value(3).toInt(&ok); Not Used
-            //rec._mode    = _getFileRecordQuery->intValue(4);
-            rec._modtime = Utility::qDateTimeFromTime_t(_getFileRecordQuery->int64Value(5));
-            rec._type = _getFileRecordQuery->intValue(6);
-            rec._etag = _getFileRecordQuery->baValue(7);
-            rec._fileId = _getFileRecordQuery->baValue(8);
-            rec._remotePerm = RemotePermissions(_getFileRecordQuery->baValue(9).constData());
-            rec._fileSize = _getFileRecordQuery->int64Value(10);
-            rec._serverHasIgnoredFiles = (_getFileRecordQuery->intValue(11) > 0);
-            rec._checksumHeader = _getFileRecordQuery->baValue(12);
+            rec->_path = _getFileRecordQuery->stringValue(0);
+            rec->_inode = _getFileRecordQuery->intValue(1);
+            //rec->_uid     = _getFileRecordQuery->value(2).toInt(&ok); Not Used
+            //rec->_gid     = _getFileRecordQuery->value(3).toInt(&ok); Not Used
+            //rec->_mode    = _getFileRecordQuery->intValue(4);
+            rec->_modtime = Utility::qDateTimeFromTime_t(_getFileRecordQuery->int64Value(5));
+            rec->_type = _getFileRecordQuery->intValue(6);
+            rec->_etag = _getFileRecordQuery->baValue(7);
+            rec->_fileId = _getFileRecordQuery->baValue(8);
+            rec->_remotePerm = RemotePermissions(_getFileRecordQuery->baValue(9).constData());
+            rec->_fileSize = _getFileRecordQuery->int64Value(10);
+            rec->_serverHasIgnoredFiles = (_getFileRecordQuery->intValue(11) > 0);
+            rec->_checksumHeader = _getFileRecordQuery->baValue(12);
         } else {
             int errId = _getFileRecordQuery->errorId();
             if (errId != SQLITE_DONE) { // only do this if the problem is different from SQLITE_DONE
@@ -1014,7 +1019,7 @@ SyncJournalFileRecord SyncJournalDb::getFileRecord(const QString &filename)
             }
         }
     }
-    return rec;
+    return true;
 }
 
 bool SyncJournalDb::postSyncCleanup(const QSet<QString> &filepathsToKeep,
@@ -1150,10 +1155,12 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
 
 bool SyncJournalDb::setFileRecordMetadata(const SyncJournalFileRecord &record)
 {
-    SyncJournalFileRecord existing = getFileRecord(record._path);
+    SyncJournalFileRecord existing;
+    if (!getFileRecord(record._path, &existing))
+        return false;
 
     // If there's no existing record, just insert the new one.
-    if (existing._path.isEmpty()) {
+    if (!existing.isValid()) {
         return setFileRecord(record);
     }
 

@@ -53,9 +53,8 @@ public:
     /// Migrate a csync_journal to the new path, if necessary. Returns false on error
     static bool maybeMigrateDb(const QString &localPath, const QString &absoluteJournalPath);
 
-    // to verify that the record could be queried successfully check
-    // with SyncJournalFileRecord::isValid()
-    SyncJournalFileRecord getFileRecord(const QString &filename);
+    // To verify that the record could be found check with SyncJournalFileRecord::isValid()
+    bool getFileRecord(const QString &filename, SyncJournalFileRecord *rec);
     bool setFileRecord(const SyncJournalFileRecord &record);
 
     /// Like setFileRecord, but preserves checksums

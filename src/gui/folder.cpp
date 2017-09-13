@@ -467,8 +467,10 @@ void Folder::slotWatchedPathChanged(const QString &path)
     // Check that the mtime actually changed.
     if (path.startsWith(this->path())) {
         auto relativePath = path.mid(this->path().size());
-        auto record = _journal.getFileRecord(relativePath);
-        if (record.isValid() && !FileSystem::fileChanged(path, record._fileSize, Utility::qDateTimeToTime_t(record._modtime))) {
+        SyncJournalFileRecord record;
+        if (_journal.getFileRecord(relativePath, &record)
+            && record.isValid()
+            && !FileSystem::fileChanged(path, record._fileSize, Utility::qDateTimeToTime_t(record._modtime))) {
             qCInfo(lcFolder) << "Ignoring spurious notification for file" << relativePath;
             return; // probably a spurious notification
         }

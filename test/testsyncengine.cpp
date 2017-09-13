@@ -109,7 +109,8 @@ private slots:
         fakeFolder.syncOnce();
 
         auto getDbChecksum = [&](QString path) {
-            auto record = fakeFolder.syncJournal().getFileRecord(path);
+            SyncJournalFileRecord record;
+            fakeFolder.syncJournal().getFileRecord(path, &record);
             return record._checksumHeader;
         };
 
