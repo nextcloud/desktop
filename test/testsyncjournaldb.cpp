@@ -45,7 +45,8 @@ private slots:
 
     void testFileRecord()
     {
-        SyncJournalFileRecord record = _db.getFileRecord("nonexistant");
+        SyncJournalFileRecord record;
+        QVERIFY(_db.getFileRecord("nonexistant", &record));
         QVERIFY(!record.isValid());
 
         record._path = "foo";
@@ -59,13 +60,14 @@ private slots:
         record._checksumHeader = "MD5:mychecksum";
         QVERIFY(_db.setFileRecord(record));
 
-        SyncJournalFileRecord storedRecord = _db.getFileRecord("foo");
+        SyncJournalFileRecord storedRecord;
+        QVERIFY(_db.getFileRecord("foo", &storedRecord));
         QVERIFY(storedRecord == record);
 
         // Update checksum
         record._checksumHeader = "Adler32:newchecksum";
         _db.updateFileRecordChecksum("foo", "newchecksum", "Adler32");
-        storedRecord = _db.getFileRecord("foo");
+        QVERIFY(_db.getFileRecord("foo", &storedRecord));
         QVERIFY(storedRecord == record);
 
         // Update metadata
@@ -77,11 +79,11 @@ private slots:
         record._remotePerm = RemotePermissions("NV");
         record._fileSize = 289055;
         _db.setFileRecordMetadata(record);
-        storedRecord = _db.getFileRecord("foo");
+        QVERIFY(_db.getFileRecord("foo", &storedRecord));
         QVERIFY(storedRecord == record);
 
         QVERIFY(_db.deleteFileRecord("foo"));
-        record = _db.getFileRecord("foo");
+        QVERIFY(_db.getFileRecord("foo", &record));
         QVERIFY(!record.isValid());
     }
 
@@ -96,7 +98,8 @@ private slots:
             record._modtime = QDateTime::currentDateTimeUtc();
             QVERIFY(_db.setFileRecord(record));
 
-            SyncJournalFileRecord storedRecord = _db.getFileRecord("foo-checksum");
+            SyncJournalFileRecord storedRecord;
+            QVERIFY(_db.getFileRecord("foo-checksum", &storedRecord));
             QVERIFY(storedRecord._path == record._path);
             QVERIFY(storedRecord._remotePerm == record._remotePerm);
             QVERIFY(storedRecord._checksumHeader == record._checksumHeader);
@@ -112,11 +115,12 @@ private slots:
             SyncJournalFileRecord record;
             record._path = "foo-nochecksum";
             record._remotePerm = RemotePermissions("RWN");
-	    record._modtime = QDateTime::currentDateTimeUtc();
+            record._modtime = QDateTime::currentDateTimeUtc();
 
             QVERIFY(_db.setFileRecord(record));
 
-            SyncJournalFileRecord storedRecord = _db.getFileRecord("foo-nochecksum");
+            SyncJournalFileRecord storedRecord;
+            QVERIFY(_db.getFileRecord("foo-nochecksum", &storedRecord));
             QVERIFY(storedRecord == record);
         }
     }

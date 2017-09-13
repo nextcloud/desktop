@@ -162,8 +162,8 @@ void PropagateRemoteMove::slotMoveJobFinished()
 
 void PropagateRemoteMove::finalize()
 {
-    SyncJournalFileRecord oldRecord =
-        propagator()->_journal->getFileRecord(_item->_originalFile);
+    SyncJournalFileRecord oldRecord;
+    propagator()->_journal->getFileRecord(_item->_originalFile, &oldRecord);
     // if reading from db failed still continue hoping that deleteFileRecord
     // reopens the db successfully.
     // The db is only queried to transfer the content checksum from the old
