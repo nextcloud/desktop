@@ -256,6 +256,13 @@ private:
      * that would write the etag and would void the purpose of avoidReadFromDbOnNextSync
      */
     QList<QString> _avoidReadFromDbOnNextSyncFilter;
+
+    /** The journal mode to use for the db.
+     *
+     * Typically WAL initially, but may be set to other modes via environment
+     * variable, for specific filesystems, or when WAL fails in a particular way.
+     */
+    QString _journalMode;
 };
 
 bool OWNCLOUDSYNC_EXPORT
