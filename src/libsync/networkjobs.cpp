@@ -850,6 +850,11 @@ void SignPublicKeyApiJob::start()
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
     QUrl url = Utility::concatUrlPath(account()->url(), path());
+    QList<QPair<QString, QString>> params = {
+        qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json"))
+    };
+    url.setQueryItems(params);
+
     sendRequest("POST", url, req, &_csr);
     AbstractNetworkJob::start();
 }
@@ -857,7 +862,10 @@ void SignPublicKeyApiJob::start()
 bool SignPublicKeyApiJob::finished()
 {
     qCInfo(lcSignPublicKeyApiJob()) << "Sending CSR ended with"  << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-    qCInfo(lcSignPublicKeyApiJob()) << reply()->readAll();
+
+    QJsonParseError error;
+    auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
+    emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
 }
 
 } // namespace OCC
