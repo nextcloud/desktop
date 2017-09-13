@@ -107,6 +107,8 @@ void IgnoreListEditor::slotUpdateLocalIgnoreList()
                 QByteArray prepend;
                 if (deletableItem->checkState() == Qt::Checked) {
                     prepend = "]";
+                } else if (patternItem->text().startsWith('#')) {
+                    prepend = "\\";
                 }
                 ignores.write(prepend + patternItem->text().toUtf8() + '\n');
             }

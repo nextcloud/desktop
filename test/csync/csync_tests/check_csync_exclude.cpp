@@ -387,9 +387,9 @@ static void check_csync_exclude_expand_escapes(void **state)
     (void)state;
 
     const char *str = csync_exclude_expand_escapes(
-            "keep \\' \\\" \\? \\\\ \\a \\b \\f \\n \\r \\t \\v \\z");
+            "keep \\' \\\" \\? \\\\ \\a \\b \\f \\n \\r \\t \\v \\z \\#");
     assert_true(0 == strcmp(
-            str, "keep ' \" ? \\ \a \b \f \n \r \t \v \\z"));
+            str, "keep ' \" ? \\ \a \b \f \n \r \t \v \\z #"));
     SAFE_FREE(str);
 
     str = csync_exclude_expand_escapes("");
