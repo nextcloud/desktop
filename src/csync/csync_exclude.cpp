@@ -84,6 +84,7 @@ static const char *csync_exclude_expand_escapes(const char * input)
             case '"': out[o++] = '"'; break;
             case '?': out[o++] = '?'; break;
             case '\\': out[o++] = '\\'; break;
+            case '#': out[o++] = '#'; break;
             case 'a': out[o++] = '\a'; break;
             case 'b': out[o++] = '\b'; break;
             case 'f': out[o++] = '\f'; break;
