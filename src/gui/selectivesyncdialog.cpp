@@ -90,12 +90,8 @@ SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
     _folderTree->setSortingEnabled(true);
     _folderTree->sortByColumn(0, Qt::AscendingOrder);
     _folderTree->setColumnCount(2);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     _folderTree->header()->setSectionResizeMode(0, QHeaderView::QHeaderView::ResizeToContents);
     _folderTree->header()->setSectionResizeMode(1, QHeaderView::QHeaderView::ResizeToContents);
-#else
-    _folderTree->header()->resizeSection(0, sizeHint().width() / 2);
-#endif
     _folderTree->header()->setStretchLastSection(true);
     _folderTree->headerItem()->setText(0, tr("Name"));
     _folderTree->headerItem()->setText(1, tr("Size"));

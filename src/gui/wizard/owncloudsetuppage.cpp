@@ -267,10 +267,8 @@ void OwncloudSetupPage::setErrorString(const QString &err, bool retryHTTPonly)
                     wizard()->next();
                 } break;
                 case OwncloudConnectionMethodDialog::Client_Side_TLS:
-#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
                     addCertDial->show();
                     connect(addCertDial, SIGNAL(accepted()), this, SLOT(slotCertificateAccepted()));
-#endif
                     break;
                 case OwncloudConnectionMethodDialog::Closed:
                 case OwncloudConnectionMethodDialog::Back:
@@ -305,17 +303,12 @@ void OwncloudSetupPage::stopSpinner()
 
 QString subjectInfoHelper(const QSslCertificate &cert, const QByteArray &qa)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    return cert.subjectInfo(qa);
-#else
     return cert.subjectInfo(qa).join(QLatin1Char('/'));
-#endif
 }
 
 //called during the validation of the client certificate.
 void OwncloudSetupPage::slotCertificateAccepted()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
     QList<QSslCertificate> clientCaCertificates;
     QFile certFile(addCertDial->getCertificatePath());
     certFile.open(QFile::ReadOnly);
@@ -344,7 +337,6 @@ void OwncloudSetupPage::slotCertificateAccepted()
         addCertDial->showErrorMessage("Could not load certificate");
         addCertDial->show();
     }
-#endif
 }
 
 OwncloudSetupPage::~OwncloudSetupPage()

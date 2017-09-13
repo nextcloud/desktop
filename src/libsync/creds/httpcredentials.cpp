@@ -226,12 +226,9 @@ void HttpCredentials::slotReadClientKeyPEMJobDone(QKeychain::Job *incoming)
         if (_clientSslKey.isNull()) {
             _clientSslKey = QSslKey(clientKeyPEM, QSsl::Dsa);
         }
-#if QT_VERSION >= QT_VERSION_CHECK(5, 5, 0)
-        // ec keys are Qt 5.5
         if (_clientSslKey.isNull()) {
             _clientSslKey = QSslKey(clientKeyPEM, QSsl::Ec);
         }
-#endif
         if (_clientSslKey.isNull()) {
             qCWarning(lcHttpCredentials) << "Could not load SSL key into Qt!";
         }

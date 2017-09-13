@@ -13,9 +13,7 @@
  */
 
 #include <QtGui>
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QtWidgets>
-#endif
 
 #include "activitylistmodel.h"
 #include "activitywidget.h"
@@ -269,9 +267,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
 
             _notificationsLayout->addWidget(widget);
 // _ui->_notifyScroll->setMinimumHeight( widget->height());
-#if QT_VERSION >= QT_VERSION_CHECK(5, 2, 0)
             _ui->_notifyScroll->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
-#endif
             _widgetForNotifId[activity.ident()] = widget;
             newNotificationShown = true;
         }

@@ -33,17 +33,9 @@
 #include <QThread>
 #include <QDateTime>
 #include <QSysInfo>
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-#include <QTextDocument>
-#else
 #include <QStandardPaths>
-#endif
-#if QT_VERSION >= QT_VERSION_CHECK(5, 2, 0)
 #include <QCollator>
-#endif
-#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
 #include <QSysInfo>
-#endif
 
 
 #ifdef Q_OS_UNIX
@@ -248,22 +240,8 @@ QString Utility::compactFormatDouble(double value, int prec, const QString &unit
 
 QString Utility::escape(const QString &in)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    return Qt::escape(in);
-#else
     return in.toHtmlEscaped();
-#endif
 }
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-// In Qt 4,  QThread::sleep functions are protected.
-// This is a hack to make them visible in this namespace.
-struct QThread : ::QThread
-{
-    using ::QThread::sleep;
-    using ::QThread::usleep;
-};
-#endif
 
 void Utility::sleep(int sec)
 {
@@ -408,22 +386,7 @@ bool Utility::hasDarkSystray()
 
 QString Utility::platformName()
 {
-    QString re("Windows");
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
-    if (isMac()) {
-        re = QLatin1String("MacOSX");
-    } else if (isLinux()) {
-        re = QLatin1String("Linux");
-    } else if (isBSD()) {
-        re = QLatin1String("BSD");
-    } else if (isUnix()) {
-        re = QLatin1String("Unix");
-    }
-#else
-    re = QSysInfo::prettyProductName();
-#endif
-    return re;
+    return QSysInfo::prettyProductName();
 }
 
 void Utility::crash()
@@ -553,16 +516,10 @@ quint64 Utility::StopWatch::durationOfLap(const QString &lapName) const
 
 void Utility::sortFilenames(QStringList &fileNames)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 2, 0)
     QCollator collator;
     collator.setNumericMode(true);
     collator.setCaseSensitivity(Qt::CaseInsensitive);
     qSort(fileNames.begin(), fileNames.end(), collator);
-#elif QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    fileNames.sort(Qt::CaseInsensitive);
-#else
-    fileNames.sort();
-#endif
 }
 
 QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,

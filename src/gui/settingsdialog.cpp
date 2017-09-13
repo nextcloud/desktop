@@ -179,9 +179,7 @@ void SettingsDialog::changeEvent(QEvent *e)
     switch (e->type()) {
     case QEvent::StyleChange:
     case QEvent::PaletteChange:
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     case QEvent::ThemeChange:
-#endif
         customizeStyle();
         break;
     default:

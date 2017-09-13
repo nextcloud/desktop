@@ -103,12 +103,7 @@ QSize GeneralSettings::sizeHint() const
 
 void GeneralSettings::loadMiscSettings()
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
-    QScopedValueRollback<bool> scope(_currentlyLoading);
-    _currentlyLoading = true;
-#else
     QScopedValueRollback<bool> scope(_currentlyLoading, true);
-#endif
     ConfigFile cfgFile;
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->desktopNotificationsCheckBox->setChecked(cfgFile.optionalDesktopNotifications());

@@ -5,9 +5,7 @@
 */
 
 #include <QtTest>
-#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
 #include <QTemporaryDir>
-#endif
 
 #include "common/utility.h"
 
@@ -156,15 +154,12 @@ private slots:
         QVERIFY(fsCasePreserving());
         qputenv("OWNCLOUD_TEST_CASE_PRESERVING", "0");
         QVERIFY(! fsCasePreserving());
-#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
         qunsetenv("OWNCLOUD_TEST_CASE_PRESERVING");
         QVERIFY(isMac() || isWindows() ? fsCasePreserving() : ! fsCasePreserving());
-#endif
     }
 
     void testFileNamesEqual()
     {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
         QTemporaryDir dir;
         QVERIFY(dir.isValid());
         QDir dir2(dir.path());
@@ -190,7 +185,6 @@ private slots:
 
         dir.remove();
         qunsetenv("OWNCLOUD_TEST_CASE_PRESERVING");
-#endif
     }
 
 

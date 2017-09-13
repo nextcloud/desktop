@@ -24,11 +24,7 @@
 #include <qdir.h>
 #include <qdiriterator.h>
 #include <qtemporaryfile.h>
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-#include <qabstractfileengine.h>
-#else
 #include <qsavefile.h>
-#endif
 #include <QDateTime>
 #include <qstack.h>
 #include <QCoreApplication>

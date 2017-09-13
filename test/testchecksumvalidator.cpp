@@ -15,10 +15,6 @@
 #include "filesystem.h"
 #include "propagatorjobs.h"
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-// poor man QTRY_VERIFY when Qt5 is not available.
-#define QTRY_VERIFY(Cond) QTest::qWait(1000); QVERIFY(Cond)
-#endif
 
 using namespace OCC;
 
@@ -155,16 +151,6 @@ using namespace OCC;
     }
 };
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-// Qt4 does not have QTEST_GUILESS_MAIN, so we simulate it.
-int main(int argc, char *argv[])
-{
-    QCoreApplication app(argc, argv);
-    TestChecksumValidator tc;
-    return QTest::qExec(&tc, argc, argv);
-}
-#else
     QTEST_GUILESS_MAIN(TestChecksumValidator)
-#endif
 
 #include "testchecksumvalidator.moc"

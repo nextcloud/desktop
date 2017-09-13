@@ -103,9 +103,7 @@ void AbstractNetworkJob::setPath(const QString &path)
 void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
 {
     connect(reply, SIGNAL(finished()), SLOT(slotFinished()));
-#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
     connect(reply, SIGNAL(encrypted()), SIGNAL(networkActivity()));
-#endif
     connect(reply->manager(), SIGNAL(proxyAuthenticationRequired(QNetworkProxy, QAuthenticator *)), SIGNAL(networkActivity()));
     connect(reply, SIGNAL(sslErrors(QList<QSslError>)), SIGNAL(networkActivity()));
     connect(reply, SIGNAL(metaDataChanged()), SIGNAL(networkActivity()));
@@ -364,13 +362,7 @@ QString networkReplyErrorString(const QNetworkReply &reply)
         return base;
     }
 
-    return AbstractNetworkJob::tr("Server replied \"%1 %2\" to \"%3 %4\"").arg(QString::number(httpStatus), httpReason, requestVerb(reply),
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        reply.request().url().toString()
-#else
-        reply.request().url().toDisplayString()
-#endif
-            );
+    return AbstractNetworkJob::tr("Server replied \"%1 %2\" to \"%3 %4\"").arg(QString::number(httpStatus), httpReason, requestVerb(reply), reply.request().url().toDisplayString());
 }
 
 } // namespace OCC

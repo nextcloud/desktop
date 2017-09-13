@@ -447,11 +447,9 @@ static void mergeSslConfigurationForSslButton(const QSslConfiguration &config, A
     if (!config.sessionCipher().isNull()) {
         account->_sessionCipher = config.sessionCipher();
     }
-#if QT_VERSION > QT_VERSION_CHECK(5, 2, 0)
     if (config.sessionTicket().length() > 0) {
         account->_sessionTicket = config.sessionTicket();
     }
-#endif
 }
 
 void CheckServerJob::encryptedSlot()
@@ -486,13 +484,11 @@ void CheckServerJob::metaDataChangedSlot()
 
 bool CheckServerJob::finished()
 {
-#if QT_VERSION > QT_VERSION_CHECK(5, 2, 0)
     if (reply()->request().url().scheme() == QLatin1String("https")
         && reply()->sslConfiguration().sessionTicket().isEmpty()
         && reply()->error() == QNetworkReply::NoError) {
         qCWarning(lcCheckServerJob) << "No SSL session identifier / session ticket is used, this might impact sync performance negatively.";
     }
-#endif
 
     mergeSslConfigurationForSslButton(reply()->sslConfiguration(), account());
 

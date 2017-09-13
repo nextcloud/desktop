@@ -739,9 +739,7 @@ void Folder::slotSyncFinished(bool success)
 {
     qCInfo(lcFolder) << "Client version" << qPrintable(Theme::instance()->version())
                      << " Qt" << qVersion()
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
                      << " SSL " << QSslSocket::sslLibraryVersionString().toUtf8().data()
-#endif
         ;
 
     bool syncError = !_syncResult.errorStrings().isEmpty();

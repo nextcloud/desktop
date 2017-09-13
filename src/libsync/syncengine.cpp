@@ -594,7 +594,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
                     // the file system in the DB, this is to avoid spurious upload on the next sync
                     item->_modtime = other->modtime;
                     // same for the size
-                    item->_size = other->size;                    
+                    item->_size = other->size;
                 }
 
                 // If the 'W' remote permission changed, update the local filesystem
@@ -676,7 +676,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         item->log._other_fileId = other->file_id;
         item->log._other_instruction = other->instruction;
         item->log._other_modtime = other->modtime;
-        item->log._other_size = other->size;        
+        item->log._other_size = other->size;
     }
 
     _syncItemMap.insert(key, item);
@@ -795,9 +795,7 @@ void SyncEngine::startSync()
     QString verStr("Using Qt ");
     verStr.append(qVersion());
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     verStr.append(" SSL library ").append(QSslSocket::sslLibraryVersionString().toUtf8().data());
-#endif
     verStr.append(" on ").append(Utility::platformName());
     qCInfo(lcEngine) << verStr;
 
@@ -1091,16 +1089,8 @@ void SyncEngine::setNetworkLimits(int upload, int download)
     _propagator->_uploadLimit = upload;
     _propagator->_downloadLimit = download;
 
-    int propDownloadLimit = _propagator->_downloadLimit
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-                                .load()
-#endif
-        ;
-    int propUploadLimit = _propagator->_uploadLimit
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-                              .load()
-#endif
-        ;
+    int propDownloadLimit = _propagator->_downloadLimit.load();
+    int propUploadLimit = _propagator->_uploadLimit.load();
 
     if (propDownloadLimit != 0 || propUploadLimit != 0) {
         qCInfo(lcEngine) << "Network Limits (down/up) " << propDownloadLimit << propUploadLimit;

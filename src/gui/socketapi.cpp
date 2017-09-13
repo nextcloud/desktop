@@ -50,10 +50,7 @@
 
 #include <sqlite3.h>
 
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QStandardPaths>
-#endif
 
 
 // This is the version that is returned when the client asks for the VERSION.
@@ -188,16 +185,7 @@ SocketApi::SocketApi(QObject *parent)
         socketPath = SOCKETAPI_TEAM_IDENTIFIER_PREFIX APPLICATION_REV_DOMAIN ".socketApi";
     } else if (Utility::isLinux() || Utility::isBSD()) {
         QString runtimeDir;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
         runtimeDir = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
-#else
-        runtimeDir = QFile::decodeName(qgetenv("XDG_RUNTIME_DIR"));
-        if (runtimeDir.isEmpty()) {
-            runtimeDir = QDir::tempPath() + QLatin1String("/runtime-")
-                + QString::fromLocal8Bit(qgetenv("USER"));
-            QDir().mkdir(runtimeDir);
-        }
-#endif
         socketPath = runtimeDir + "/" + Theme::instance()->appName() + "/socket";
     } else {
         qCWarning(lcSocketApi) << "An unexpected system detected, this probably won't work.";
