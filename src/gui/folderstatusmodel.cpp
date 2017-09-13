@@ -110,9 +110,7 @@ Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
     switch (classify(index)) {
     case AddButton: {
         Qt::ItemFlags ret;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
         ret = Qt::ItemNeverHasChildren;
-#endif
         if (!_accountState->isConnected()) {
             return ret;
         } else if (_folders.count() == 1) {
@@ -125,11 +123,7 @@ Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
         return Qt::ItemIsEnabled | ret;
     }
     case FetchLabel:
-        return Qt::ItemIsEnabled
-#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
-            | Qt::ItemNeverHasChildren
-#endif
-            ;
+        return Qt::ItemIsEnabled | Qt::ItemNeverHasChildren;
     case RootFolder:
         return Qt::ItemIsEnabled;
     case SubFolder:

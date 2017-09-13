@@ -25,10 +25,6 @@
 #include <zlib.h>
 #endif
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-#include <qabstractfileengine.h>
-#endif
-
 #ifdef Q_OS_WIN
 #include <windows.h>
 #include <windef.h>
@@ -300,9 +296,6 @@ bool FileSystem::uncheckedRenameReplace(const QString &originFileName,
 #ifndef Q_OS_WIN
     bool success;
     QFile orig(originFileName);
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    success = orig.fileEngine()->rename(destinationFileName);
-#else
     // We want a rename that also overwites.  QFile::rename does not overwite.
     // Qt 5.1 has QSaveFile::renameOverwrite we could use.
     // ### FIXME
@@ -316,7 +309,6 @@ bool FileSystem::uncheckedRenameReplace(const QString &originFileName,
     if (success) {
         success = orig.rename(destinationFileName);
     }
-#endif
     if (!success) {
         *errorString = orig.errorString();
         qCWarning(lcFileSystem) << "Renaming temp file to final failed: " << *errorString;

@@ -122,9 +122,7 @@ Application::Application(int &argc, char **argv)
     setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN));
     setApplicationName(_theme->appNameGUI());
     setWindowIcon(_theme->applicationIcon());
-#if QT_VERSION > QT_VERSION_CHECK(5, 0, 0)
     setAttribute(Qt::AA_UseHighDpiPixmaps, true);
-#endif
 
     parseOptions(arguments());
     //no need to waste time;
@@ -133,15 +131,6 @@ Application::Application(int &argc, char **argv)
 
     if (isRunning())
         return;
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0) && QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
-    // Workaround for QTBUG-44576: Make sure a stale QSettings lock file
-    // is deleted. (Introduced in Qt 5.4.0 and fixed in Qt 5.4.2)
-    {
-        QString lockFilePath = ConfigFile().configFile() + QLatin1String(".lock");
-        QLockFile(lockFilePath).removeStaleLockFile();
-    }
-#endif
 
 #if defined(WITH_CRASHREPORTER)
     if (ConfigFile().crashReporter())
@@ -507,9 +496,7 @@ void Application::showVersion()
     stream << "Git revision " << GIT_SHA1 << endl;
 #endif
     stream << "Using Qt " << qVersion() << ", built against Qt " << QT_VERSION_STR << endl;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     stream << "Using '" << QSslSocket::sslLibraryVersionString() << "'" << endl;
-#endif
 
     displayHelpText(helpText);
 }
@@ -604,10 +591,6 @@ void Application::setupTranslations()
         if (property("ui_lang").isNull())
             setProperty("ui_lang", "C");
     }
-// Work around Qt 5 < 5.5.0 regression, see https://bugreports.qt.io/browse/QTBUG-43447
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) && QT_VERSION < QT_VERSION_CHECK(5, 5, 0)
-    setLayoutDirection(QApplication::tr("QT_LAYOUT_DIRECTION") == QLatin1String("RTL") ? Qt::RightToLeft : Qt::LeftToRight);
-#endif
 }
 
 bool Application::giveHelp()

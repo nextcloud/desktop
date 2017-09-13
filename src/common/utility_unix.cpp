@@ -17,9 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QStandardPaths>
-#endif
 
 namespace OCC {
 
@@ -42,15 +40,7 @@ static void setupFavLink_private(const QString &folder)
 // and respects the XDG_CONFIG_HOME env variable
 QString getUserAutostartDir_private()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     QString config = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);
-#else
-    QString config = QFile::decodeName(qgetenv("XDG_CONFIG_HOME"));
-
-    if (config.isEmpty()) {
-        config = QDir::homePath() + QLatin1String("/.config");
-    }
-#endif
     config += QLatin1String("/autostart/");
     return config;
 }

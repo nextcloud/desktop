@@ -163,14 +163,6 @@ private:
      */
     QMap<QPersistentModelIndex, QElapsedTimer> _fetchingItems;
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    //the roles argument was added in Qt5
-    void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles = QVector<int>())
-    {
-        emit QAbstractItemModel::dataChanged(topLeft, bottomRight);
-    }
-#endif
-
 signals:
     void dirtyChanged();
 

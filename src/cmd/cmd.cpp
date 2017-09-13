@@ -510,12 +510,8 @@ restart_sync:
     SyncEngine engine(account, options.source_dir, folder, &db);
     engine.setIgnoreHiddenFiles(options.ignoreHiddenFiles);
     engine.setNetworkLimits(options.uplimit, options.downlimit);
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     QObject::connect(&engine, &SyncEngine::finished,
         [&app](bool result) { app.exit(result ? EXIT_SUCCESS : EXIT_FAILURE); });
-#else
-    QObject::connect(&engine, SIGNAL(finished(bool)), &app, SLOT(quit()));
-#endif
     QObject::connect(&engine, SIGNAL(transmissionProgress(ProgressInfo)), &cmd, SLOT(transmissionProgressSlot()));
 
 

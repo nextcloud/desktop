@@ -221,13 +221,9 @@ QString AccountSettings::selectedFolderAlias() const
 
 void AccountSettings::slotOpenAccountWizard()
 {
-    if (
-#if QT_VERSION > QT_VERSION_CHECK(5, 0, 0)
-        qgetenv("QT_QPA_PLATFORMTHEME") == "appmenu-qt5" ||
-// We can't call isSystemTrayAvailable with appmenu-qt5 because it breaks the systemtray
-// (issue #4693, #4944)
-#endif
-        QSystemTrayIcon::isSystemTrayAvailable()) {
+    // We can't call isSystemTrayAvailable with appmenu-qt5 because it breaks the systemtray
+    // (issue #4693, #4944)
+    if (qgetenv("QT_QPA_PLATFORMTHEME") == "appmenu-qt5" || QSystemTrayIcon::isSystemTrayAvailable()) {
         topLevelWidget()->close();
     }
 #ifdef Q_OS_MAC

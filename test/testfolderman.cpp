@@ -6,9 +6,7 @@
  */
 
 #include <qglobal.h>
-#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
 #include <QTemporaryDir>
-#endif
 #include <QtTest>
 
 #include "common/utility.h"
@@ -49,7 +47,6 @@ class TestFolderMan: public QObject
 private slots:
     void testCheckPathValidityForNewFolder()
     {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
         QTemporaryDir dir;
         ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
         QVERIFY(dir.isValid());
@@ -149,14 +146,10 @@ private slots:
         // Should not have the rights
         QVERIFY(!folderman->checkPathValidityForNewFolder("/").isNull());
         QVERIFY(!folderman->checkPathValidityForNewFolder("/usr/bin/somefolder").isNull());
-#else
-        QSKIP("Test not supported with Qt4", SkipSingle);
-#endif
     }
 
     void testFindGoodPathForNewSyncFolder()
     {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
         // SETUP
 
         QTemporaryDir dir;
@@ -197,9 +190,6 @@ private slots:
                  QString(dirPath + "/ownCloud2/bar"));
         QCOMPARE(folderman->findGoodPathForNewSyncFolder(dirPath + "/sub", url),
                  QString(dirPath + "/sub2"));
-#else
-        QSKIP("Test not supported with Qt4", SkipSingle);
-#endif
     }
 };
 

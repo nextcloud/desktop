@@ -84,15 +84,11 @@ QMenu *SslButton::buildCertMenu(QMenu *parent, const QSslCertificate &cert,
     if (issuer.isEmpty())
         issuer = QStringList(cert.issuerInfo(QSslCertificate::OrganizationalUnitName)).join(QChar(';'));
     QString sha1 = Utility::formatFingerprint(cert.digest(QCryptographicHash::Sha1).toHex(), false);
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    QString md5 = Utility::formatFingerprint(cert.digest(QCryptographicHash::Md5).toHex(), false);
-#else
     QByteArray sha265hash = cert.digest(QCryptographicHash::Sha256).toHex();
     QString sha256escaped =
         Utility::escape(Utility::formatFingerprint(sha265hash.left(sha265hash.length() / 2), false))
         + QLatin1String("<br/>")
         + Utility::escape(Utility::formatFingerprint(sha265hash.mid(sha265hash.length() / 2), false));
-#endif
     QString serial = QString::fromUtf8(cert.serialNumber());
     QString effectiveDate = cert.effectiveDate().date().toString();
     QString expiryDate = cert.expiryDate().date().toString();
@@ -126,11 +122,8 @@ QMenu *SslButton::buildCertMenu(QMenu *parent, const QSslCertificate &cert,
     stream << tr("<h3>Fingerprints</h3>");
 
     stream << QLatin1String("<table>");
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    stream << addCertDetailsField(tr("MD 5:"), Utility::escape(md5));
-#else
+
     stream << addCertDetailsField(tr("SHA-256:"), sha256escaped);
-#endif
     stream << addCertDetailsField(tr("SHA-1:"), Utility::escape(sha1));
     stream << QLatin1String("</table>");
 
@@ -218,11 +211,9 @@ void SslButton::slotUpdateMenu()
             + ", " + account->_sessionCipher.encryptionMethod();
         _menu->addAction(sslVersion)->setEnabled(false);
 
-#if QT_VERSION > QT_VERSION_CHECK(5, 2, 0)
         if (account->_sessionTicket.isEmpty()) {
             _menu->addAction(tr("No support for SSL session tickets/identifiers"))->setEnabled(false);
         }
-#endif
 
         QList<QSslCertificate> chain = account->_peerCertificateChain;
 

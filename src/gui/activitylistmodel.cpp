@@ -29,10 +29,6 @@
 #include "activitydata.h"
 #include "activitylistmodel.h"
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-Q_DECLARE_METATYPE(QPointer<OCC::AccountState>)
-#endif
-
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcActivity, "gui.activity", QtInfoMsg)

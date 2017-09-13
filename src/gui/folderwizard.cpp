@@ -161,11 +161,9 @@ FolderWizardRemotePath::FolderWizardRemotePath(const AccountPtr &account)
     _lscolTimer.setSingleShot(true);
     connect(&_lscolTimer, SIGNAL(timeout()), SLOT(slotLsColFolderEntry()));
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
     _ui.folderTreeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     // Make sure that there will be a scrollbar when the contents is too wide
     _ui.folderTreeWidget->header()->setStretchLastSection(false);
-#endif
 }
 
 void FolderWizardRemotePath::slotAddRemoteFolder()
