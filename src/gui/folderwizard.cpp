@@ -445,16 +445,10 @@ bool FolderWizardRemotePath::isComplete() const
         } else if (dir.startsWith(curDir + QLatin1Char('/'))) {
             warnStrings.append(tr("You are already syncing <i>%1</i>, which is a parent folder of <i>%2</i>.").arg(Utility::escape(curDir), Utility::escape(dir)));
         }
-
-        if (curDir == QLatin1String("/")) {
-            warnStrings.append(tr("You are already syncing all your files. Syncing another folder is <b>not</b> supported. "
-                                  "If you want to sync multiple folders, please remove the currently configured "
-                                  "root folder sync."));
-        }
     }
 
     showWarn(formatWarnings(warnStrings));
-    return warnStrings.isEmpty();
+    return true;
 }
 
 void FolderWizardRemotePath::cleanupPage()
