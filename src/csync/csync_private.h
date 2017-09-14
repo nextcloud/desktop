@@ -142,12 +142,6 @@ struct OCSYNC_EXPORT csync_s {
    */
   bool read_remote_from_db = false;
 
-  /**
-   * If true, the DB is considered empty and all reads are skipped. (default is false)
-   * This is useful during the initial local discovery as it speeds it up significantly.
-   */
-  bool db_is_empty = false;
-
   bool ignore_hidden_files = true;
 
   csync_s(const char *localUri, OCC::SyncJournalDb *statedb);

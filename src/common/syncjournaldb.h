@@ -66,7 +66,6 @@ public:
     bool setFileRecordMetadata(const SyncJournalFileRecord &record);
 
     bool deleteFileRecord(const QString &filename, bool recursively = false);
-    int getFileRecordCount();
     bool updateFileRecordChecksum(const QString &filename,
         const QByteArray &contentChecksum,
         const QByteArray &contentChecksumType);
@@ -215,6 +214,7 @@ public:
     void clearFileTable();
 
 private:
+    int getFileRecordCount();
     bool updateDatabaseStructure();
     bool updateMetadataTableStructure();
     bool updateErrorBlacklistTableStructure();
@@ -237,6 +237,7 @@ private:
     QString _dbFile;
     QMutex _mutex; // Public functions are protected with the mutex.
     int _transaction;
+    bool _metadataTableIsEmpty;
 
     // NOTE! when adding a query, don't forget to reset it in SyncJournalDb::close
     QScopedPointer<SqlQuery> _getFileRecordQuery;

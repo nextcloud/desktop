@@ -786,7 +786,6 @@ void SyncEngine::startSync()
 
     csync_resume(_csync_ctx.data());
 
-    int fileRecordCount = -1;
     if (!_journal->exists()) {
         qCInfo(lcEngine) << "New sync (no sync journal exists)";
     } else {
@@ -800,9 +799,8 @@ void SyncEngine::startSync()
     verStr.append(" on ").append(Utility::platformName());
     qCInfo(lcEngine) << verStr;
 
-    fileRecordCount = _journal->getFileRecordCount(); // this creates the DB if it does not exist yet
-
-    if (fileRecordCount == -1) {
+    // This creates the DB if it does not exist yet.
+    if (!_journal->isConnected()) {
         qCWarning(lcEngine) << "No way to create a sync journal!";
         csyncError(tr("Unable to open or create the local sync database. Make sure you have write access in the sync folder."));
         finalize(false);
@@ -811,10 +809,6 @@ void SyncEngine::startSync()
     }
 
     _csync_ctx->read_remote_from_db = true;
-
-    // This tells csync to never read from the DB if it is empty
-    // thereby speeding up the initial discovery significantly.
-    _csync_ctx->db_is_empty = (fileRecordCount == 0);
 
     bool ok;
     auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
