@@ -25,6 +25,7 @@
 #include <QMap>
 #include <QStringList>
 #include <QSharedPointer>
+#include <set>
 
 #include <csync.h>
 
@@ -92,12 +93,29 @@ public:
     AccountPtr account() const;
     SyncJournalDb *journal() const { return _journal; }
     QString localPath() const { return _localPath; }
+
     /**
      * Minimum age, in milisecond, of a file that can be uploaded.
      * Files more recent than that are not going to be uploaeded as they are considered
      * too young and possibly still changing
      */
     static qint64 minimumFileAgeForUpload; // in ms
+
+    /**
+     * Control whether local discovery should read from filesystem or db.
+     *
+     * If style is Partial, the paths is a set of file paths relative to
+     * the synced folder. All the parent directories of these paths will not
+     * be read from the db and scanned on the filesystem.
+     *
+     * Note, the style and paths are only retained for the next sync and
+     * revert afterwards. Use _lastLocalDiscoveryStyle to discover the last
+     * sync's style.
+     */
+    void setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> dirs = {});
+
+    /** Access the last sync run's local discovery style */
+    LocalDiscoveryStyle lastLocalDiscoveryStyle() const { return _lastLocalDiscoveryStyle; }
 
 signals:
     void csyncUnavailable();
@@ -272,6 +290,9 @@ private:
 
     /** List of unique errors that occurred in a sync run. */
     QSet<QString> _uniqueErrors;
+
+    /** The kind of local discovery the last sync run used */
+    LocalDiscoveryStyle _lastLocalDiscoveryStyle = LocalDiscoveryStyle::DatabaseAndFilesystem;
 };
 }
 

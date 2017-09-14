@@ -813,6 +813,7 @@ void SyncEngine::startSync()
     }
 
     _csync_ctx->read_remote_from_db = true;
+    _lastLocalDiscoveryStyle = _csync_ctx->local_discovery_style;
 
     bool ok;
     auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
@@ -1553,6 +1554,12 @@ bool SyncEngine::wasFileTouched(const QString &fn) const
 AccountPtr SyncEngine::account() const
 {
     return _account;
+}
+
+void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> dirs)
+{
+    _csync_ctx->local_discovery_style = style;
+    _csync_ctx->locally_touched_dirs = std::move(dirs);
 }
 
 void SyncEngine::abort()

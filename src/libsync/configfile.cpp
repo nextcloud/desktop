@@ -36,6 +36,7 @@
 #include <QNetworkProxy>
 
 #define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
+#define DEFAULT_FULL_LOCAL_DISCOVERY_INTERVAL (60 * 60 * 1000) // 1 hour
 #define DEFAULT_MAX_LOG_LINES 20000
 
 namespace OCC {
@@ -45,6 +46,7 @@ Q_LOGGING_CATEGORY(lcConfigFile, "sync.configfile", QtInfoMsg)
 //static const char caCertsKeyC[] = "CaCertificates"; only used from account.cpp
 static const char remotePollIntervalC[] = "remotePollInterval";
 static const char forceSyncIntervalC[] = "forceSyncInterval";
+static const char fullLocalDiscoveryIntervalC[] = "fullLocalDiscoveryInterval";
 static const char notificationRefreshIntervalC[] = "notificationRefreshInterval";
 static const char monoIconsC[] = "monoIcons";
 static const char promptDeleteC[] = "promptDeleteAllFiles";
@@ -404,6 +406,13 @@ quint64 ConfigFile::forceSyncInterval(const QString &connection) const
         interval = pollInterval;
     }
     return interval;
+}
+
+qint64 ConfigFile::fullLocalDiscoveryInterval() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.beginGroup(defaultConnection());
+    return settings.value(QLatin1String(fullLocalDiscoveryIntervalC), DEFAULT_FULL_LOCAL_DISCOVERY_INTERVAL).toLongLong();
 }
 
 quint64 ConfigFile::notificationRefreshInterval(const QString &connection) const

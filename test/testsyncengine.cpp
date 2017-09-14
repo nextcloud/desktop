@@ -613,6 +613,40 @@ private slots:
         QCOMPARE(nDELETE, 5);
         QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
     }
+
+    // Check correct behavior when local discovery is partially drawn from the db
+    void testLocalDiscoveryStyle()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+
+        // More subdirectories are useful for testing
+        fakeFolder.localModifier().mkdir("A/X");
+        fakeFolder.localModifier().mkdir("A/Y");
+        fakeFolder.localModifier().insert("A/X/x1");
+        fakeFolder.localModifier().insert("A/Y/y1");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Test begins
+        fakeFolder.localModifier().insert("A/a3");
+        fakeFolder.localModifier().insert("A/X/x2");
+        fakeFolder.localModifier().insert("A/Y/y2");
+        fakeFolder.localModifier().insert("B/b3");
+        fakeFolder.remoteModifier().insert("C/c3");
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, { "A/X" });
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentRemoteState().find("A/a3"));
+        QVERIFY(fakeFolder.currentRemoteState().find("A/X/x2"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("A/Y/y2"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("B/b3"));
+        QVERIFY(fakeFolder.currentLocalState().find("C/c3"));
+        QCOMPARE(fakeFolder.syncEngine().lastLocalDiscoveryStyle(), LocalDiscoveryStyle::DatabaseAndFilesystem);
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.syncEngine().lastLocalDiscoveryStyle(), LocalDiscoveryStyle::FilesystemOnly);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)

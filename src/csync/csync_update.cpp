@@ -435,28 +435,31 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
 {
     int64_t count = 0;
     QByteArray skipbase;
-    auto rowCallback = [ctx, &count, &skipbase](const OCC::SyncJournalFileRecord &rec) {
-        /* When selective sync is used, the database may have subtrees with a parent
-         * whose etag (md5) is _invalid_. These are ignored and shall not appear in the
-         * remote tree.
-         * Sometimes folders that are not ignored by selective sync get marked as
-         * _invalid_, but that is not a problem as the next discovery will retrieve
-         * their correct etags again and we don't run into this case.
-         */
-        if( rec._etag == "_invalid_") {
-            qCDebug(lcUpdate, "%s selective sync excluded", rec._path.constData());
-            skipbase = rec._path;
-            skipbase += '/';
-            return;
-        }
+    auto &files = ctx->current == LOCAL_REPLICA ? ctx->local.files : ctx->remote.files;
+    auto rowCallback = [ctx, &count, &skipbase, &files](const OCC::SyncJournalFileRecord &rec) {
+        if (ctx->current == REMOTE_REPLICA) {
+            /* When selective sync is used, the database may have subtrees with a parent
+             * whose etag is _invalid_. These are ignored and shall not appear in the
+             * remote tree.
+             * Sometimes folders that are not ignored by selective sync get marked as
+             * _invalid_, but that is not a problem as the next discovery will retrieve
+             * their correct etags again and we don't run into this case.
+             */
+            if (rec._etag == "_invalid_") {
+                qCDebug(lcUpdate, "%s selective sync excluded", rec._path.constData());
+                skipbase = rec._path;
+                skipbase += '/';
+                return;
+            }
 
-        /* Skip over all entries with the same base path. Note that this depends
-         * strongly on the ordering of the retrieved items. */
-        if( !skipbase.isEmpty() && rec._path.startsWith(skipbase) ) {
-            qCDebug(lcUpdate, "%s selective sync excluded because the parent is", rec._path.constData());
-            return;
-        } else {
-            skipbase.clear();
+            /* Skip over all entries with the same base path. Note that this depends
+             * strongly on the ordering of the retrieved items. */
+            if (!skipbase.isEmpty() && rec._path.startsWith(skipbase)) {
+                qCDebug(lcUpdate, "%s selective sync excluded because the parent is", rec._path.constData());
+                return;
+            } else {
+                skipbase.clear();
+            }
         }
 
         std::unique_ptr<csync_file_stat_t> st = csync_file_stat_t::fromSyncJournalFileRecord(rec);
@@ -477,7 +480,7 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
         }
 
         /* store into result list. */
-        ctx->remote.files[rec._path] = std::move(st);
+        files[rec._path] = std::move(st);
         ++count;
     };
 
@@ -522,6 +525,26 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   int rc = 0;
 
   bool do_read_from_db = (ctx->current == REMOTE_REPLICA && ctx->remote.read_from_db);
+  const char *db_uri = uri;
+
+  if (ctx->current == LOCAL_REPLICA
+      && ctx->local_discovery_style == LocalDiscoveryStyle::DatabaseAndFilesystem) {
+      const char *local_uri = uri + strlen(ctx->local.uri);
+      if (*local_uri == '/')
+          ++local_uri;
+      db_uri = local_uri;
+      do_read_from_db = true;
+
+      // Minor bug: local_uri doesn't have a trailing /. Example: Assume it's "d/foo"
+      // and we want to check whether we should read from the db. Assume "d/foo a" is
+      // in locally_touched_dirs. Then this check will say no, don't read from the db!
+      // (because "d/foo" < "d/foo a" < "d/foo/bar")
+      // C++14: Could skip the conversion to QByteArray here.
+      auto it = ctx->locally_touched_dirs.lower_bound(QByteArray(local_uri));
+      if (it != ctx->locally_touched_dirs.end() && it->startsWith(local_uri)) {
+          do_read_from_db = false;
+      }
+  }
 
   if (!depth) {
     mark_current_item_ignored(ctx, previous_fs, CSYNC_STATUS_INDIVIDUAL_TOO_DEEP);
@@ -533,7 +556,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   // if the etag of this dir is still the same, its content is restored from the
   // database.
   if( do_read_from_db ) {
-      if( ! fill_tree_from_db(ctx, uri) ) {
+      if( ! fill_tree_from_db(ctx, db_uri) ) {
         errno = ENOENT;
         ctx->status_code = CSYNC_STATUS_OPENDIR_ERROR;
         goto error;

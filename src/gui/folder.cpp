@@ -448,12 +448,26 @@ int Folder::slotWipeErrorBlacklist()
 
 void Folder::slotWatchedPathChanged(const QString &path)
 {
+    if (!path.startsWith(this->path())) {
+        qCDebug(lcFolder) << "Changed path is not contained in folder, ignoring:" << path;
+        return;
+    }
+
+    auto relativePath = path.midRef(this->path().size());
+
+    // Add to list of locally modified paths
+    //
+    // We do this before checking for our own sync-related changes to make
+    // extra sure to not miss relevant changes.
+    auto relativePathBytes = relativePath.toUtf8();
+    _localDiscoveryPaths.insert(relativePathBytes);
+    qCDebug(lcFolder) << "local discovery: inserted" << relativePath << "due to file watcher";
+
 // The folder watcher fires a lot of bogus notifications during
 // a sync operation, both for actual user files and the database
 // and log. Therefore we check notifications against operations
 // the sync is doing to filter out our own changes.
 #ifdef Q_OS_MAC
-    Q_UNUSED(path)
 // On OSX the folder watcher does not report changes done by our
 // own process. Therefore nothing needs to be done here!
 #else
@@ -465,15 +479,12 @@ void Folder::slotWatchedPathChanged(const QString &path)
 #endif
 
     // Check that the mtime actually changed.
-    if (path.startsWith(this->path())) {
-        auto relativePath = path.mid(this->path().size());
-        SyncJournalFileRecord record;
-        if (_journal.getFileRecord(relativePath, &record)
-            && record.isValid()
-            && !FileSystem::fileChanged(path, record._fileSize, record._modtime)) {
-            qCInfo(lcFolder) << "Ignoring spurious notification for file" << relativePath;
-            return; // probably a spurious notification
-        }
+    SyncJournalFileRecord record;
+    if (_journal.getFileRecord(relativePathBytes, &record)
+        && record.isValid()
+        && !FileSystem::fileChanged(path, record._fileSize, record._modtime)) {
+        qCInfo(lcFolder) << "Ignoring spurious notification for file" << relativePath;
+        return; // probably a spurious notification
     }
 
     emit watchedFileChangedExternally(path);
@@ -645,6 +656,36 @@ void Folder::startSync(const QStringList &pathList)
     setDirtyNetworkLimits();
     setSyncOptions();
 
+    static qint64 fullLocalDiscoveryInterval = []() {
+        auto interval = ConfigFile().fullLocalDiscoveryInterval();
+        QByteArray env = qgetenv("OWNCLOUD_FULL_LOCAL_DISCOVERY_INTERVAL");
+        if (!env.isEmpty()) {
+            interval = env.toLongLong();
+        }
+        return interval;
+    }();
+    if (_folderWatcher && _folderWatcher->isReliable()
+        && _timeSinceLastFullLocalDiscovery.isValid()
+        && (fullLocalDiscoveryInterval < 0
+               || _timeSinceLastFullLocalDiscovery.elapsed() < fullLocalDiscoveryInterval)) {
+        qCInfo(lcFolder) << "Allowing local discovery to read from the database";
+        _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, _localDiscoveryPaths);
+
+        if (lcFolder().isDebugEnabled()) {
+            QByteArrayList paths;
+            for (auto &path : _localDiscoveryPaths)
+                paths.append(path);
+            qCDebug(lcFolder) << "local discovery paths: " << paths;
+        }
+
+        _previousLocalDiscoveryPaths = std::move(_localDiscoveryPaths);
+    } else {
+        qCInfo(lcFolder) << "Forbidding local discovery to read from the database";
+        _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
+        _previousLocalDiscoveryPaths.clear();
+    }
+    _localDiscoveryPaths.clear();
+
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
 
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
@@ -783,6 +824,24 @@ void Folder::slotSyncFinished(bool success)
         journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, QStringList());
     }
 
+    // bug: This function uses many different criteria for "sync was successful" - investigate!
+    if ((_syncResult.status() == SyncResult::Success
+            || _syncResult.status() == SyncResult::Problem)
+        && success) {
+        if (_engine->lastLocalDiscoveryStyle() == LocalDiscoveryStyle::FilesystemOnly) {
+            _timeSinceLastFullLocalDiscovery.start();
+        }
+        qCDebug(lcFolder) << "Sync success, forgetting last sync's local discovery path list";
+    } else {
+        // On overall-failure we can't forget about last sync's local discovery
+        // paths yet, reuse them for the next sync again.
+        // C++17: Could use std::set::merge().
+        _localDiscoveryPaths.insert(
+            _previousLocalDiscoveryPaths.begin(), _previousLocalDiscoveryPaths.end());
+        qCDebug(lcFolder) << "Sync failed, keeping last sync's local discovery path list";
+    }
+    _previousLocalDiscoveryPaths.clear();
+
     emit syncStateChange();
 
     // The syncFinished result that is to be triggered here makes the folderman
@@ -851,6 +910,25 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
             _folderWatcher->removePath(path() + item->_file);
     }
 
+    // Success and failure of sync items adjust what the next sync is
+    // supposed to do.
+    //
+    // For successes, we want to wipe the file from the list to ensure we don't
+    // rediscover it even if this overall sync fails.
+    //
+    // For failures, we want to add the file to the list so the next sync
+    // will be able to retry it.
+    if (item->_status == SyncFileItem::Success
+        || item->_status == SyncFileItem::FileIgnored
+        || item->_status == SyncFileItem::Restoration
+        || item->_status == SyncFileItem::Conflict) {
+        if (_previousLocalDiscoveryPaths.erase(item->_file.toUtf8()))
+            qCDebug(lcFolder) << "local discovery: wiped" << item->_file;
+    } else {
+        _localDiscoveryPaths.insert(item->_file.toUtf8());
+        qCDebug(lcFolder) << "local discovery: inserted" << item->_file << "due to sync failure";
+    }
+
     _syncResult.processCompletedItem(item);
 
     _fileLog->logItem(*item);
@@ -903,6 +981,11 @@ void Folder::slotScheduleThisFolder()
     FolderMan::instance()->scheduleFolder(this);
 }
 
+void Folder::slotNextSyncFullLocalDiscovery()
+{
+    _timeSinceLastFullLocalDiscovery.invalidate();
+}
+
 void Folder::scheduleThisFolderSoon()
 {
     if (!_scheduleSelfTimer.isActive()) {
@@ -925,6 +1008,8 @@ void Folder::registerFolderWatcher()
     _folderWatcher.reset(new FolderWatcher(path(), this));
     connect(_folderWatcher.data(), &FolderWatcher::pathChanged,
         this, &Folder::slotWatchedPathChanged);
+    connect(_folderWatcher.data(), &FolderWatcher::lostChanges,
+        this, &Folder::slotNextSyncFullLocalDiscovery);
 }
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, bool *cancel)
