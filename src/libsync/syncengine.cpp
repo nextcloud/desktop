@@ -87,8 +87,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
     // Everything in the SyncEngine expects a trailing slash for the localPath.
     ASSERT(localPath.endsWith(QLatin1Char('/')));
 
-    const QString dbFile = _journal->databaseFilePath();
-    _csync_ctx.reset(new CSYNC(localPath.toUtf8().data(), dbFile.toUtf8().data()));
+    _csync_ctx.reset(new CSYNC(localPath.toUtf8().data(), journal));
 
     _excludedFiles.reset(new ExcludedFiles(&_csync_ctx->excludes));
     _syncFileStatusTracker.reset(new SyncFileStatusTracker(this));

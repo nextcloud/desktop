@@ -97,7 +97,7 @@ static int setup_testenv(void **state) {
     statevar *mystate = (statevar*)malloc( sizeof(statevar) );
     mystate->result = NULL;
 
-    mystate->csync = new CSYNC("/tmp/check_csync1", "");
+    mystate->csync = new CSYNC("/tmp/check_csync1", new OCC::SyncJournalDb(""));
 
     mystate->csync->current = LOCAL_REPLICA;
 
@@ -124,7 +124,9 @@ static int teardown(void **state) {
 
     output("================== Tearing down!\n");
 
+    auto statedb = csync->statedb;
     delete csync;
+    delete statedb;
 
     rc = _tchdir(wd_buffer);
     assert_int_equal(rc, 0);

@@ -24,7 +24,6 @@
 #include "csync_private.h"
 #include "csync_reconcile.h"
 #include "csync_util.h"
-#include "csync_statedb.h"
 #include "csync_rename.h"
 #include "common/c_jhash.h"
 #include "common/asserts.h"
@@ -104,8 +103,6 @@ static bool _csync_is_collision_safe_hash(const char *checksum_header)
  * source and the destination, have been changed, the newer file wins.
  */
 static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
-    std::unique_ptr<csync_file_stat_t> tmp;
-
     csync_s::FileMap *other_tree = nullptr;
 
     /* we need the opposite tree! */
@@ -153,35 +150,34 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
             }
             cur->instruction = CSYNC_INSTRUCTION_REMOVE;
             break;
-        case CSYNC_INSTRUCTION_EVAL_RENAME:
+        case CSYNC_INSTRUCTION_EVAL_RENAME: {
+            OCC::SyncJournalFileRecord base;
             if(ctx->current == LOCAL_REPLICA ) {
                 /* use the old name to find the "other" node */
-                tmp = csync_statedb_get_stat_by_inode(ctx, cur->inode);
+                ctx->statedb->getFileRecordByInode(cur->inode, &base);
                 qCDebug(lcReconcile, "Finding opposite temp through inode %" PRIu64 ": %s",
-                          cur->inode, tmp ? "true":"false");
+                          cur->inode, base.isValid() ? "true":"false");
             } else {
                 ASSERT( ctx->current == REMOTE_REPLICA );
-                tmp = csync_statedb_get_stat_by_file_id(ctx, cur->file_id);
+                ctx->statedb->getFileRecordByFileId(cur->file_id, &base);
                 qCDebug(lcReconcile, "Finding opposite temp through file ID %s: %s",
-                          cur->file_id.constData(), tmp ? "true":"false");
+                          cur->file_id.constData(), base.isValid() ? "true":"false");
             }
 
-            if( tmp ) {
-                if( !tmp->path.isEmpty() ) {
-                    /* First, check that the file is NOT in our tree (another file with the same name was added) */
-                    csync_s::FileMap *our_tree = ctx->current == REMOTE_REPLICA ? &ctx->remote.files : &ctx->local.files;
-	                if (our_tree->findFile(tmp->path)) {
-                        qCDebug(lcReconcile, "Origin found in our tree : %s", tmp->path.constData());
-                    } else {
+            if( base.isValid() ) {
+                /* First, check that the file is NOT in our tree (another file with the same name was added) */
+                csync_s::FileMap *our_tree = ctx->current == REMOTE_REPLICA ? &ctx->remote.files : &ctx->local.files;
+	                if (our_tree->findFile(base._path)) {
+                        qCDebug(lcReconcile, "Origin found in our tree : %s", base._path.constData());
+                } else {
                     /* Find the temporar file in the other tree.
                     * If the renamed file could not be found in the opposite tree, that is because it
                     * is not longer existing there, maybe because it was renamed or deleted.
                     * The journal is cleaned up later after propagation.
                     */
-                    other = other_tree->findFile(tmp->path);
+                    other = other_tree->findFile(base._path);
                     qCDebug(lcReconcile, "Temporary opposite (%s) %s",
-                            tmp->path.constData() , other ? "found": "not found" );
-                    }
+                            base._path.constData() , other ? "found": "not found" );
                 }
 
                 if(!other) {
@@ -213,9 +209,9 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                     other->instruction = CSYNC_INSTRUCTION_SYNC;
                 }
-           }
-
+            }
             break;
+        }
         default:
             break;
         }

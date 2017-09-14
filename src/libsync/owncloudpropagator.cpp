@@ -112,13 +112,13 @@ PropagateItemJob::~PropagateItemJob()
     }
 }
 
-static time_t getMinBlacklistTime()
+static qint64 getMinBlacklistTime()
 {
     return qMax(qgetenv("OWNCLOUD_BLACKLIST_TIME_MIN").toInt(),
         25); // 25 seconds
 }
 
-static time_t getMaxBlacklistTime()
+static qint64 getMaxBlacklistTime()
 {
     int v = qgetenv("OWNCLOUD_BLACKLIST_TIME_MAX").toInt();
     if (v > 0)
@@ -142,15 +142,15 @@ static SyncJournalErrorBlacklistRecord createBlacklistEntry(
     entry._renameTarget = item._renameTarget;
     entry._retryCount = old._retryCount + 1;
 
-    static time_t minBlacklistTime(getMinBlacklistTime());
-    static time_t maxBlacklistTime(qMax(getMaxBlacklistTime(), minBlacklistTime));
+    static qint64 minBlacklistTime(getMinBlacklistTime());
+    static qint64 maxBlacklistTime(qMax(getMaxBlacklistTime(), minBlacklistTime));
 
     // The factor of 5 feels natural: 25s, 2 min, 10 min, ~1h, ~5h, ~24h
     entry._ignoreDuration = old._ignoreDuration * 5;
 
     if (item._httpErrorCode == 403) {
         qCWarning(lcPropagator) << "Probably firewall error: " << item._httpErrorCode << ", blacklisting up to 1h only";
-        entry._ignoreDuration = qMin(entry._ignoreDuration, time_t(60 * 60));
+        entry._ignoreDuration = qMin(entry._ignoreDuration, qint64(60 * 60));
 
     } else if (item._httpErrorCode == 413 || item._httpErrorCode == 415) {
         qCWarning(lcPropagator) << "Fatal Error condition" << item._httpErrorCode << ", maximum blacklist ignore time!";

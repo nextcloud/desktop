@@ -34,6 +34,8 @@
 
 #include "std/c_private.h"
 #include "ocsynclib.h"
+#include "common/syncjournalfilerecord.h"
+
 #include <sys/stat.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -200,6 +202,22 @@ struct OCSYNC_EXPORT csync_file_stat_s {
     , error_status(CSYNC_STATUS_OK)
     , instruction(CSYNC_INSTRUCTION_NONE)
   { }
+
+  static std::unique_ptr<csync_file_stat_t> fromSyncJournalFileRecord(const OCC::SyncJournalFileRecord &rec)
+  {
+    std::unique_ptr<csync_file_stat_t> st(new csync_file_stat_t);
+    st->path = rec._path;
+    st->inode = rec._inode;
+    st->modtime = rec._modtime;
+    st->type = static_cast<csync_ftw_type_e>(rec._type);
+    st->etag = rec._etag;
+    st->file_id = rec._fileId;
+    st->remotePerm = rec._remotePerm;
+    st->size = rec._fileSize;
+    st->has_ignored_files = rec._serverHasIgnoredFiles;
+    st->checksumHeader = rec._checksumHeader;
+    return st;
+  }
 };
 
 /**

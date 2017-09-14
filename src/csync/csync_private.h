@@ -39,6 +39,7 @@
 #include <sqlite3.h>
 #include <map>
 
+#include "common/syncjournaldb.h"
 #include "config_csync.h"
 #include "std/c_lib.h"
 #include "std/c_private.h"
@@ -103,17 +104,7 @@ struct OCSYNC_EXPORT csync_s {
   } callbacks;
   c_strlist_t *excludes = nullptr;
   
-  struct {
-    char *file = nullptr;
-    sqlite3 *db = nullptr;
-    bool exists = false;
-
-    sqlite3_stmt* by_hash_stmt = nullptr;
-    sqlite3_stmt* by_fileid_stmt = nullptr;
-    sqlite3_stmt* by_inode_stmt = nullptr;
-
-    int lastReturnValue;
-  } statedb;
+  OCC::SyncJournalDb *statedb;
 
   struct {
     std::map<QByteArray, QByteArray> folder_renamed_to; // map from->to
@@ -159,7 +150,7 @@ struct OCSYNC_EXPORT csync_s {
 
   bool ignore_hidden_files = true;
 
-  csync_s(const char *localUri, const char *db_file);
+  csync_s(const char *localUri, OCC::SyncJournalDb *statedb);
   ~csync_s();
   int reinitialize();
 

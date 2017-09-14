@@ -32,12 +32,8 @@ add_cmocka_test(check_std_c_time std_tests/check_std_c_time.c ${TEST_TARGET_LIBR
 
 add_cmocka_test(check_csync_log csync_tests/check_csync_log.cpp ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_exclude csync_tests/check_csync_exclude.cpp ${TEST_TARGET_LIBRARIES})
-add_cmocka_test(check_csync_statedb_load csync_tests/check_csync_statedb_load.cpp ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_util csync_tests/check_csync_util.cpp ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_csync_misc csync_tests/check_csync_misc.cpp ${TEST_TARGET_LIBRARIES})
-
-# csync tests which require init
-add_cmocka_test(check_csync_statedb_query csync_tests/check_csync_statedb_query.cpp ${TEST_TARGET_LIBRARIES})
 
 # vio
 add_cmocka_test(check_vio vio_tests/check_vio.cpp ${TEST_TARGET_LIBRARIES})

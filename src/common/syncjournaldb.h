@@ -23,6 +23,7 @@
 #include <qmutex.h>
 #include <QDateTime>
 #include <QHash>
+#include <functional>
 
 #include "common/utility.h"
 #include "common/ownsql.h"
@@ -54,7 +55,11 @@ public:
     static bool maybeMigrateDb(const QString &localPath, const QString &absoluteJournalPath);
 
     // To verify that the record could be found check with SyncJournalFileRecord::isValid()
-    bool getFileRecord(const QString &filename, SyncJournalFileRecord *rec);
+    bool getFileRecord(const QString &filename, SyncJournalFileRecord *rec) { return getFileRecord(filename.toUtf8(), rec); }
+    bool getFileRecord(const QByteArray &filename, SyncJournalFileRecord *rec);
+    bool getFileRecordByInode(quint64 inode, SyncJournalFileRecord *rec);
+    bool getFileRecordByFileId(const QByteArray &fileId, SyncJournalFileRecord *rec);
+    bool getFilesBelowPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
     bool setFileRecord(const SyncJournalFileRecord &record);
 
     /// Like setFileRecord, but preserves checksums
@@ -72,7 +77,7 @@ public:
 
     QString databaseFilePath() const;
 
-    static qint64 getPHash(const QString &);
+    static qint64 getPHash(const QByteArray &);
 
     void setErrorBlacklistEntry(const SyncJournalErrorBlacklistRecord &item);
     void wipeErrorBlacklistEntry(const QString &file);
@@ -105,7 +110,7 @@ public:
         int _chunk;
         int _transferid;
         quint64 _size; //currently unused
-        QDateTime _modtime;
+        qint64 _modtime;
         int _errorCount;
         bool _valid;
     };
@@ -114,7 +119,7 @@ public:
     {
         QString _file;
         QString _url;
-        time_t _modtime;
+        qint64 _modtime;
     };
 
     DownloadInfo getDownloadInfo(const QString &file);
@@ -130,7 +135,8 @@ public:
     SyncJournalErrorBlacklistRecord errorBlacklistEntry(const QString &);
     bool deleteStaleErrorBlacklistEntries(const QSet<QString> &keep);
 
-    void avoidRenamesOnNextSync(const QString &path);
+    void avoidRenamesOnNextSync(const QString &path) { avoidRenamesOnNextSync(path.toUtf8()); }
+    void avoidRenamesOnNextSync(const QByteArray &path);
     void setPollInfo(const PollInfo &);
     QVector<PollInfo> getPollInfos();
 
@@ -164,7 +170,8 @@ public:
      * _csync_detect_update skip them), the _invalid_ marker will stay and it. And any
      * child items in the db will be ignored when reading a remote tree from the database.
      */
-    void avoidReadFromDbOnNextSync(const QString &fileName);
+    void avoidReadFromDbOnNextSync(const QString &fileName) { avoidReadFromDbOnNextSync(fileName.toUtf8()); }
+    void avoidReadFromDbOnNextSync(const QByteArray &fileName);
 
     /**
      * Ensures full remote discovery happens on the next sync.
@@ -233,6 +240,9 @@ private:
 
     // NOTE! when adding a query, don't forget to reset it in SyncJournalDb::close
     QScopedPointer<SqlQuery> _getFileRecordQuery;
+    QScopedPointer<SqlQuery> _getFileRecordQueryByInode;
+    QScopedPointer<SqlQuery> _getFileRecordQueryByFileId;
+    QScopedPointer<SqlQuery> _getFilesBelowPathQuery;
     QScopedPointer<SqlQuery> _setFileRecordQuery;
     QScopedPointer<SqlQuery> _setFileRecordChecksumQuery;
     QScopedPointer<SqlQuery> _setFileRecordLocalMetadataQuery;
@@ -258,7 +268,7 @@ private:
      * It means that they should not be written to the DB in any case since doing
      * that would write the etag and would void the purpose of avoidReadFromDbOnNextSync
      */
-    QList<QString> _avoidReadFromDbOnNextSyncFilter;
+    QList<QByteArray> _avoidReadFromDbOnNextSyncFilter;
 
     /** The journal mode to use for the db.
      *

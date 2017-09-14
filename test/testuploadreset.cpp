@@ -35,7 +35,7 @@ private slots:
         SyncJournalDb::UploadInfo uploadInfo;
         uploadInfo._transferid = 1;
         uploadInfo._valid = true;
-        uploadInfo._modtime = modTime;
+        uploadInfo._modtime = Utility::qDateTimeToTime_t(modTime);
         fakeFolder.syncEngine().journal()->setUploadInfo("A/a0", uploadInfo);
 
         fakeFolder.uploadState().mkdir("1");

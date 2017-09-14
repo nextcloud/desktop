@@ -36,7 +36,6 @@
 #include "c_lib.h"
 #include "csync_private.h"
 #include "csync_exclude.h"
-#include "csync_statedb.h"
 #include "csync_time.h"
 #include "csync_util.h"
 #include "csync_misc.h"
@@ -52,7 +51,9 @@
 #include "common/c_jhash.h"
 
 
-csync_s::csync_s(const char *localUri, const char *db_file) {
+csync_s::csync_s(const char *localUri, OCC::SyncJournalDb *statedb)
+  : statedb(statedb)
+{
   size_t len = 0;
 
   /* remove trailing slashes */
@@ -60,8 +61,6 @@ csync_s::csync_s(const char *localUri, const char *db_file) {
   while(len > 0 && localUri[len - 1] == '/') --len;
 
   local.uri = c_strndup(localUri, len);
-
-  statedb.file = c_strdup(db_file);
 }
 
 int csync_update(CSYNC *ctx) {
@@ -73,12 +72,6 @@ int csync_update(CSYNC *ctx) {
     return -1;
   }
   ctx->status_code = CSYNC_STATUS_OK;
-
-  /* Path of database file is set in csync_init */
-  if (csync_statedb_load(ctx, ctx->statedb.file, &ctx->statedb.db) < 0) {
-      rc = -1;
-      return rc;
-  }
 
   ctx->status_code = CSYNC_STATUS_OK;
 
@@ -97,7 +90,7 @@ int csync_update(CSYNC *ctx) {
     if(ctx->status_code == CSYNC_STATUS_OK) {
         ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
     }
-    goto out;
+    return rc;
   }
 
   csync_gettime(&finish);
@@ -116,7 +109,7 @@ int csync_update(CSYNC *ctx) {
       if(ctx->status_code == CSYNC_STATUS_OK) {
           ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
       }
-      goto out;
+      return rc;
   }
 
   csync_gettime(&finish);
@@ -130,9 +123,6 @@ int csync_update(CSYNC *ctx) {
   ctx->status |= CSYNC_STATUS_UPDATE;
 
   rc = 0;
-
-out:
-  csync_statedb_close(ctx);
   return rc;
 }
 
@@ -149,11 +139,6 @@ int csync_reconcile(CSYNC *ctx) {
   /* Reconciliation for local replica */
   csync_gettime(&start);
 
-  if (csync_statedb_load(ctx, ctx->statedb.file, &ctx->statedb.db) < 0) {
-    rc = -1;
-    return rc;
-  }
-
   ctx->current = LOCAL_REPLICA;
 
   rc = csync_reconcile_updates(ctx);
@@ -168,7 +153,7 @@ int csync_reconcile(CSYNC *ctx) {
       if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
           ctx->status_code = csync_errno_to_status( errno, CSYNC_STATUS_RECONCILE_ERROR );
       }
-      goto out;
+      return rc;
   }
 
   /* Reconciliation for remote replica */
@@ -188,16 +173,13 @@ int csync_reconcile(CSYNC *ctx) {
       if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
           ctx->status_code = csync_errno_to_status(errno,  CSYNC_STATUS_RECONCILE_ERROR );
       }
-      goto out;
+      return rc;
   }
 
   ctx->status |= CSYNC_STATUS_RECONCILE;
 
   rc = 0;
-
-out:
-  csync_statedb_close(ctx);
-  return 0;
+  return rc;
 }
 
 /*
@@ -326,13 +308,6 @@ int csync_s::reinitialize() {
 
   status_code = CSYNC_STATUS_OK;
 
-  if (statedb.db != NULL
-      && csync_statedb_close(this) < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "ERR: closing of statedb failed.");
-    rc = -1;
-  }
-  statedb.db = NULL;
-
   remote.read_from_db = 0;
   read_remote_from_db = true;
   db_is_empty = false;
@@ -348,13 +323,6 @@ int csync_s::reinitialize() {
 }
 
 csync_s::~csync_s() {
-  if (statedb.db != NULL
-      && csync_statedb_close(this) < 0) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "ERR: closing of statedb failed.");
-  }
-  statedb.db = NULL;
-
-  SAFE_FREE(statedb.file);
   SAFE_FREE(local.uri);
   SAFE_FREE(error_string);
 }

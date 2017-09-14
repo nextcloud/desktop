@@ -24,6 +24,7 @@
 
 #include "ocsynclib.h"
 #include "remotepermissions.h"
+#include "common/utility.h"
 
 namespace OCC {
 
@@ -50,10 +51,11 @@ public:
      * It is used in the construction of private links.
      */
     QByteArray numericFileId() const;
+    QDateTime modDateTime() const { return Utility::qDateTimeFromTime_t(_modtime); }
 
-    QString _path;
+    QByteArray _path;
     quint64 _inode;
-    QDateTime _modtime;
+    qint64 _modtime;
     int _type;
     QByteArray _etag;
     QByteArray _fileId;
@@ -94,14 +96,14 @@ public:
     /// The error category. Sometimes used for special actions.
     Category _errorCategory;
 
-    time_t _lastTryModtime;
+    qint64 _lastTryModtime;
     QByteArray _lastTryEtag;
 
     /// The last time the operation was attempted (in s since epoch).
-    time_t _lastTryTime;
+    qint64 _lastTryTime;
 
     /// The number of seconds the file shall be ignored.
-    time_t _ignoreDuration;
+    qint64 _ignoreDuration;
 
     QString _file;
     QString _renameTarget;

@@ -36,7 +36,6 @@
 
 #define CSYNC_LOG_CATEGORY_NAME "csync.util"
 #include "csync_log.h"
-#include "csync_statedb.h"
 
 typedef struct {
   const char *instr_str;

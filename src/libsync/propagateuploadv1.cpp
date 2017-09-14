@@ -43,7 +43,7 @@ void PropagateUploadFileV1::doStartUpload()
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
 
-    if (progressInfo._valid && Utility::qDateTimeToTime_t(progressInfo._modtime) == _item->_modtime) {
+    if (progressInfo._valid && progressInfo._modtime == _item->_modtime) {
         _startChunk = progressInfo._chunk;
         _transferId = progressInfo._transferid;
         qCInfo(lcPropagateUpload) << _item->_file << ": Resuming from chunk " << _startChunk;
@@ -272,7 +272,7 @@ void PropagateUploadFileV1::slotPutFinished()
         }
         pi._chunk = (currentChunk + _startChunk + 1) % _chunkCount; // next chunk to start with
         pi._transferid = _transferId;
-        pi._modtime = Utility::qDateTimeFromTime_t(_item->_modtime);
+        pi._modtime = _item->_modtime;
         pi._errorCount = 0; // successful chunk upload resets
         propagator()->_journal->setUploadInfo(_item->_file, pi);
         propagator()->_journal->commit("Upload info");

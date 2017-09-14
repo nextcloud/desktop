@@ -240,7 +240,7 @@ void PropagateLocalRename::start()
     _item->_file = _item->_renameTarget;
 
     SyncJournalFileRecord record = _item->toSyncJournalFileRecordWithInode(targetFile);
-    record._path = _item->_renameTarget;
+    record._path = _item->_renameTarget.toUtf8();
     if (oldRecord.isValid()) {
         record._checksumHeader = oldRecord._checksumHeader;
     }

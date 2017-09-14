@@ -26,9 +26,9 @@ public:
         QVERIFY(_tempDir.isValid());
     }
 
-    QDateTime dropMsecs(QDateTime time)
+    qint64 dropMsecs(QDateTime time)
     {
-        return Utility::qDateTimeFromTime_t(Utility::qDateTimeToTime_t(time));
+        return Utility::qDateTimeToTime_t(time);
     }
 
 private slots:
@@ -46,7 +46,7 @@ private slots:
     void testFileRecord()
     {
         SyncJournalFileRecord record;
-        QVERIFY(_db.getFileRecord("nonexistant", &record));
+        QVERIFY(_db.getFileRecord(QByteArrayLiteral("nonexistant"), &record));
         QVERIFY(!record.isValid());
 
         record._path = "foo";
@@ -61,13 +61,13 @@ private slots:
         QVERIFY(_db.setFileRecord(record));
 
         SyncJournalFileRecord storedRecord;
-        QVERIFY(_db.getFileRecord("foo", &storedRecord));
+        QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo"), &storedRecord));
         QVERIFY(storedRecord == record);
 
         // Update checksum
         record._checksumHeader = "Adler32:newchecksum";
         _db.updateFileRecordChecksum("foo", "newchecksum", "Adler32");
-        QVERIFY(_db.getFileRecord("foo", &storedRecord));
+        QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo"), &storedRecord));
         QVERIFY(storedRecord == record);
 
         // Update metadata
@@ -79,11 +79,11 @@ private slots:
         record._remotePerm = RemotePermissions("NV");
         record._fileSize = 289055;
         _db.setFileRecordMetadata(record);
-        QVERIFY(_db.getFileRecord("foo", &storedRecord));
+        QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo"), &storedRecord));
         QVERIFY(storedRecord == record);
 
         QVERIFY(_db.deleteFileRecord("foo"));
-        QVERIFY(_db.getFileRecord("foo", &record));
+        QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo"), &record));
         QVERIFY(!record.isValid());
     }
 
@@ -95,11 +95,11 @@ private slots:
             record._path = "foo-checksum";
             record._remotePerm = RemotePermissions("RW");
             record._checksumHeader = "MD5:mychecksum";
-            record._modtime = QDateTime::currentDateTimeUtc();
+            record._modtime = Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc());
             QVERIFY(_db.setFileRecord(record));
 
             SyncJournalFileRecord storedRecord;
-            QVERIFY(_db.getFileRecord("foo-checksum", &storedRecord));
+            QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo-checksum"), &storedRecord));
             QVERIFY(storedRecord._path == record._path);
             QVERIFY(storedRecord._remotePerm == record._remotePerm);
             QVERIFY(storedRecord._checksumHeader == record._checksumHeader);
@@ -108,19 +108,19 @@ private slots:
 
             // Attention: compare time_t types here, as QDateTime seem to maintain
             // milliseconds internally, which disappear in sqlite. Go for full seconds here.
-            QVERIFY(storedRecord._modtime.toTime_t() == record._modtime.toTime_t());
+            QVERIFY(storedRecord._modtime == record._modtime);
             QVERIFY(storedRecord == record);
         }
         {
             SyncJournalFileRecord record;
             record._path = "foo-nochecksum";
             record._remotePerm = RemotePermissions("RWN");
-            record._modtime = QDateTime::currentDateTimeUtc();
+            record._modtime = Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc());
 
             QVERIFY(_db.setFileRecord(record));
 
             SyncJournalFileRecord storedRecord;
-            QVERIFY(_db.getFileRecord("foo-nochecksum", &storedRecord));
+            QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo-nochecksum"), &storedRecord));
             QVERIFY(storedRecord == record);
         }
     }
