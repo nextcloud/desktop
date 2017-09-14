@@ -35,7 +35,6 @@
 
 #include "csync_private.h"
 #include "csync_exclude.h"
-#include "csync_statedb.h"
 #include "csync_update.h"
 #include "csync_util.h"
 #include "csync_misc.h"
@@ -74,10 +73,6 @@ static bool _csync_sameextension(const char *p1, const char *p2) {
 }
 #endif
 
-static bool _last_db_return_error(CSYNC* ctx) {
-    return ctx->statedb.lastReturnValue != SQLITE_OK && ctx->statedb.lastReturnValue != SQLITE_DONE && ctx->statedb.lastReturnValue != SQLITE_ROW;
-}
-
 static QByteArray _rel_to_abs(CSYNC* ctx, const QByteArray &relativePath) {
     return QByteArray() % const_cast<const char *>(ctx->local.uri) % '/' % relativePath;
 }
@@ -111,7 +106,7 @@ static bool _csync_mtime_equal(time_t a, time_t b)
  * See doc/dev/sync-algorithm.md for an overview.
  */
 static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs) {
-  std::unique_ptr<csync_file_stat_t> tmp;
+  OCC::SyncJournalFileRecord base;
   CSYNC_EXCLUDE_TYPE excluded;
 
   if (fs == NULL) {
@@ -173,48 +168,46 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
    * renamed, the db gets queried by the inode of the file as that one
    * does not change on rename.
    */
-  tmp = csync_statedb_get_stat_by_path(ctx, fs->path);
-
-  if(_last_db_return_error(ctx)) {
+  if(!ctx->statedb->getFileRecord(fs->path, &base)) {
       ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
       return -1;
   }
 
-  if(tmp && tmp->path == fs->path ) { /* there is an entry in the database */
+  if(base.isValid()) { /* there is an entry in the database */
       /* we have an update! */
       qCInfo(lcUpdate, "Database entry found, compare: %" PRId64 " <-> %" PRId64
                                           ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64
                                           ", size: %" PRId64 " <-> %" PRId64 ", perms: %x <-> %x, ignore: %d",
-                ((int64_t) fs->modtime), ((int64_t) tmp->modtime),
-                fs->etag.constData(), tmp->etag.constData(), (uint64_t) fs->inode, (uint64_t) tmp->inode,
-                (uint64_t) fs->size, (uint64_t) tmp->size, *reinterpret_cast<short*>(&fs->remotePerm), *reinterpret_cast<short*>(&tmp->remotePerm), tmp->has_ignored_files );
-      if (ctx->current == REMOTE_REPLICA && fs->etag != tmp->etag) {
+                ((int64_t) fs->modtime), ((int64_t) base._modtime),
+                fs->etag.constData(), base._etag.constData(), (uint64_t) fs->inode, (uint64_t) base._inode,
+                (uint64_t) fs->size, (uint64_t) base._fileSize, *reinterpret_cast<short*>(&fs->remotePerm), *reinterpret_cast<short*>(&base._remotePerm), base._serverHasIgnoredFiles );
+      if (ctx->current == REMOTE_REPLICA && fs->etag != base._etag) {
           fs->instruction = CSYNC_INSTRUCTION_EVAL;
 
           // Preserve the EVAL flag later on if the type has changed.
-          if (tmp->type != fs->type) {
+          if (base._type != fs->type) {
               fs->child_modified = true;
           }
 
           goto out;
       }
       if (ctx->current == LOCAL_REPLICA &&
-              (!_csync_mtime_equal(fs->modtime, tmp->modtime)
+              (!_csync_mtime_equal(fs->modtime, base._modtime)
                // zero size in statedb can happen during migration
-               || (tmp->size != 0 && fs->size != tmp->size))) {
+               || (base._fileSize != 0 && fs->size != base._fileSize))) {
 
           // Checksum comparison at this stage is only enabled for .eml files,
           // check #4754 #4755
           bool isEmlFile = csync_fnmatch("*.eml", fs->path, FNM_CASEFOLD) == 0;
-          if (isEmlFile && fs->size == tmp->size && !tmp->checksumHeader.isEmpty()) {
+          if (isEmlFile && fs->size == base._fileSize && !base._checksumHeader.isEmpty()) {
               if (ctx->callbacks.checksum_hook) {
                   fs->checksumHeader = ctx->callbacks.checksum_hook(
-                      _rel_to_abs(ctx, fs->path), tmp->checksumHeader,
+                      _rel_to_abs(ctx, fs->path), base._checksumHeader,
                       ctx->callbacks.checksum_userdata);
               }
               bool checksumIdentical = false;
               if (!fs->checksumHeader.isEmpty()) {
-                  checksumIdentical = fs->checksumHeader == tmp->checksumHeader;
+                  checksumIdentical = fs->checksumHeader == base._checksumHeader;
               }
               if (checksumIdentical) {
                   qCDebug(lcUpdate, "NOTE: Checksums are identical, file did not actually change: %s", fs->path.constData());
@@ -224,16 +217,16 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
           }
 
           // Preserve the EVAL flag later on if the type has changed.
-          if (tmp->type != fs->type) {
+          if (base._type != fs->type) {
               fs->child_modified = true;
           }
 
           fs->instruction = CSYNC_INSTRUCTION_EVAL;
           goto out;
       }
-      bool metadata_differ = (ctx->current == REMOTE_REPLICA && (fs->file_id != tmp->file_id
-                                                          || fs->remotePerm != tmp->remotePerm))
-                           || (ctx->current == LOCAL_REPLICA && fs->inode != tmp->inode);
+      bool metadata_differ = (ctx->current == REMOTE_REPLICA && (fs->file_id != base._fileId
+                                                          || fs->remotePerm != base._remotePerm))
+                           || (ctx->current == LOCAL_REPLICA && fs->inode != base._inode);
       if (fs->type == CSYNC_FTW_TYPE_DIR && ctx->current == REMOTE_REPLICA
               && !metadata_differ && ctx->read_remote_from_db) {
           /* If both etag and file id are equal for a directory, read all contents from
@@ -248,7 +241,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
        * that so that the reconciler can make advantage of.
        */
       if( ctx->current == REMOTE_REPLICA ) {
-          fs->has_ignored_files = tmp->has_ignored_files;
+          fs->has_ignored_files = base._serverHasIgnoredFiles;
       }
       if (metadata_differ) {
           /* file id or permissions has changed. Which means we need to update them in the DB. */
@@ -262,9 +255,8 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       if (ctx->current == LOCAL_REPLICA) {
           qCDebug(lcUpdate, "Checking for rename based on inode # %" PRId64 "", (uint64_t) fs->inode);
 
-          tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
-
-          if(_last_db_return_error(ctx)) {
+          OCC::SyncJournalFileRecord base;
+          if(!ctx->statedb->getFileRecordByInode(fs->inode, &base)) {
               ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
               return -1;
           }
@@ -273,23 +265,23 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
           fs->instruction = CSYNC_INSTRUCTION_NEW;
 
           bool isRename =
-              tmp && tmp->inode == fs->inode && tmp->type == fs->type
-                  && (tmp->modtime == fs->modtime || fs->type == CSYNC_FTW_TYPE_DIR)
+              base.isValid() && base._inode == fs->inode && base._type == fs->type
+                  && (base._modtime == fs->modtime || fs->type == CSYNC_FTW_TYPE_DIR)
 #ifdef NO_RENAME_EXTENSION
-                  && _csync_sameextension(tmp->path, fs->path)
+                  && _csync_sameextension(base._path, fs->path)
 #endif
               ;
 
 
           // Verify the checksum where possible
-          if (isRename && !tmp->checksumHeader.isEmpty() && ctx->callbacks.checksum_hook
+          if (isRename && !base._checksumHeader.isEmpty() && ctx->callbacks.checksum_hook
               && fs->type == CSYNC_FTW_TYPE_FILE) {
                   fs->checksumHeader = ctx->callbacks.checksum_hook(
-                      _rel_to_abs(ctx, fs->path), tmp->checksumHeader,
+                      _rel_to_abs(ctx, fs->path), base._checksumHeader,
                       ctx->callbacks.checksum_userdata);
               if (!fs->checksumHeader.isEmpty()) {
-                  qCDebug(lcUpdate, "checking checksum of potential rename %s %s <-> %s", fs->path.constData(), fs->checksumHeader.constData(), tmp->checksumHeader.constData());
-                  isRename = fs->checksumHeader == tmp->checksumHeader;
+                  qCDebug(lcUpdate, "checking checksum of potential rename %s %s <-> %s", fs->path.constData(), fs->checksumHeader.constData(), base._checksumHeader.constData());
+                  isRename = fs->checksumHeader == base._checksumHeader;
               }
           }
 
@@ -298,31 +290,30 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
               /* inode found so the file has been renamed */
               fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
               if (fs->type == CSYNC_FTW_TYPE_DIR) {
-                  csync_rename_record(ctx, tmp->path, fs->path);
+                  csync_rename_record(ctx, base._path, fs->path);
               }
           }
           goto out;
 
       } else {
           /* Remote Replica Rename check */
-          tmp = csync_statedb_get_stat_by_file_id(ctx, fs->file_id);
-
-          if(_last_db_return_error(ctx)) {
+          OCC::SyncJournalFileRecord base;
+          if(!ctx->statedb->getFileRecordByFileId(fs->file_id, &base)) {
               ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
               return -1;
           }
-          if(tmp ) {                           /* tmp existing at all */
-              if (tmp->type != fs->type) {
+          if (base.isValid()) {                           /* tmp existing at all */
+              if (base._type != fs->type) {
                   qCWarning(lcUpdate, "file types different is not!");
                   fs->instruction = CSYNC_INSTRUCTION_NEW;
                   goto out;
               }
-              qCDebug(lcUpdate, "remote rename detected based on fileid %s --> %s", tmp->path.constData(), fs->path.constData());
+              qCDebug(lcUpdate, "remote rename detected based on fileid %s --> %s", base._path.constData(), fs->path.constData());
               fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
               if (fs->type == CSYNC_FTW_TYPE_DIR) {
-                  csync_rename_record(ctx, tmp->path, fs->path);
+                  csync_rename_record(ctx, base._path, fs->path);
               } else {
-                  if( tmp->etag != fs->etag ) {
+                  if( base._etag != fs->etag ) {
                       /* CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ETags are different!"); */
                       /* File with different etag, don't do a rename, but download the file again */
                       fs->instruction = CSYNC_INSTRUCTION_NEW;
@@ -442,10 +433,59 @@ int csync_walker(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs) {
 
 static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
 {
-    if( csync_statedb_get_below_path(ctx, uri) < 0 ) {
-        qCWarning(lcUpdate, "StateDB could not be read!");
+    int64_t count = 0;
+    QByteArray skipbase;
+    auto rowCallback = [ctx, &count, &skipbase](const OCC::SyncJournalFileRecord &rec) {
+        /* When selective sync is used, the database may have subtrees with a parent
+         * whose etag (md5) is _invalid_. These are ignored and shall not appear in the
+         * remote tree.
+         * Sometimes folders that are not ignored by selective sync get marked as
+         * _invalid_, but that is not a problem as the next discovery will retrieve
+         * their correct etags again and we don't run into this case.
+         */
+        if( rec._etag == "_invalid_") {
+            qCDebug(lcUpdate, "%s selective sync excluded", rec._path.constData());
+            skipbase = rec._path;
+            skipbase += '/';
+            return;
+        }
+
+        /* Skip over all entries with the same base path. Note that this depends
+         * strongly on the ordering of the retrieved items. */
+        if( !skipbase.isEmpty() && rec._path.startsWith(skipbase) ) {
+            qCDebug(lcUpdate, "%s selective sync excluded because the parent is", rec._path.constData());
+            return;
+        } else {
+            skipbase.clear();
+        }
+
+        std::unique_ptr<csync_file_stat_t> st = csync_file_stat_t::fromSyncJournalFileRecord(rec);
+
+        /* Check for exclusion from the tree.
+         * Note that this is only a safety net in case the ignore list changes
+         * without a full remote discovery being triggered. */
+        CSYNC_EXCLUDE_TYPE excluded = csync_excluded_traversal(ctx->excludes, st->path, st->type);
+        if (excluded != CSYNC_NOT_EXCLUDED) {
+            qDebug(lcUpdate, "%s excluded (%d)", st->path.constData(), excluded);
+
+            if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE
+                    || excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
+                return;
+            }
+
+            st->instruction = CSYNC_INSTRUCTION_IGNORE;
+        }
+
+        /* store into result list. */
+        ctx->remote.files[rec._path] = std::move(st);
+        ++count;
+    };
+
+    if (!ctx->statedb->getFilesBelowPath(uri, rowCallback)) {
+        ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
         return false;
     }
+    qDebug(lcUpdate, "%" PRId64 " entries read below path %s from db.", count, uri);
 
     return true;
 }

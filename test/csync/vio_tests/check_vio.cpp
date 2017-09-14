@@ -49,7 +49,7 @@ static int setup(void **state)
     rc = system("rm -rf /tmp/csync_test");
     assert_int_equal(rc, 0);
 
-    csync = new CSYNC("/tmp/check_csync1", "");
+    csync = new CSYNC("/tmp/check_csync1", new OCC::SyncJournalDb(""));
 
     csync->current = LOCAL_REPLICA;
 
@@ -78,7 +78,9 @@ static int teardown(void **state) {
     CSYNC *csync = (CSYNC*)*state;
     int rc;
 
+    auto statedb = csync->statedb;
     delete csync;
+    delete statedb;
 
     rc = chdir(wd_buffer);
     assert_int_equal(rc, 0);

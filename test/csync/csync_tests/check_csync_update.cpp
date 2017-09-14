@@ -98,12 +98,10 @@ static int setup(void **state)
     assert_int_equal(rc, 0);
     rc = system("mkdir -p /tmp/check_csync1");
     assert_int_equal(rc, 0);
-    csync = new CSYNC("/tmp/check_csync1", TESTDB);
 
     /* Create a new db with metadata */
     sqlite3 *db;
-    // csync->statedb.file = c_strdup(TESTDB);
-    rc = sqlite3_open(csync->statedb.file, &db);
+    rc = sqlite3_open(TESTDB, &db);
     statedb_create_metadata_table(db);
     if( firstrun ) {
         statedb_insert_metadata(db);
@@ -111,8 +109,8 @@ static int setup(void **state)
     }
     sqlite3_close(db);
 
-    rc = csync_statedb_load(csync, TESTDB, &csync->statedb.db);
-    assert_int_equal(rc, 0);
+    csync = new CSYNC("/tmp/check_csync1", new OCC::SyncJournalDb(TESTDB));
+    assert_true(csync->statedb->isConnected());
 
     *state = csync;
     
@@ -128,7 +126,7 @@ static int setup_ftw(void **state)
     assert_int_equal(rc, 0);
     rc = system("mkdir -p /tmp/check_csync1");
     assert_int_equal(rc, 0);
-    csync = new CSYNC("/tmp", TESTDB);
+    csync = new CSYNC("/tmp", new OCC::SyncJournalDb(TESTDB));
 
     sqlite3 *db = NULL;
     rc = sqlite3_open_v2(TESTDB, &db, SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, NULL);
@@ -137,10 +135,9 @@ static int setup_ftw(void **state)
     rc = sqlite3_close(db);
     assert_int_equal(rc, SQLITE_OK);
 
-    rc = csync_statedb_load(csync, TESTDB, &csync->statedb.db);
-    assert_int_equal(rc, 0);
+    csync = new CSYNC("/tmp", new OCC::SyncJournalDb(TESTDB));
+    assert_true(csync->statedb->isConnected());
 
-    csync->statedb.file = c_strdup( TESTDB );
     *state = csync;
     
     return 0;
@@ -150,8 +147,10 @@ static int teardown(void **state)
 {
     CSYNC *csync = (CSYNC*)*state;
 
-    unlink( csync->statedb.file);
+    unlink(TESTDB);
+    auto statedb = csync->statedb;
     delete csync;
+    delete statedb;
 
     *state = NULL;
     
@@ -288,7 +287,6 @@ static void check_csync_detect_update_db_rename(void **state)
     int rc = 0;
 
     fs = create_fstat("wurst.txt", 0, 42);
-    csync_set_statedb_exists(csync, 1);
 
     rc = _csync_detect_update(csync, std::move(fs));
     assert_int_equal(rc, 0);

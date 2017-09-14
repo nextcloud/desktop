@@ -32,7 +32,7 @@
 static int setup(void **state) {
     CSYNC *csync;
 
-    csync = new CSYNC("/tmp/check_csync1", "");
+    csync = new CSYNC("/tmp/check_csync1", new OCC::SyncJournalDb(""));
 
     *state = csync;
     return 0;
@@ -42,7 +42,7 @@ static int setup_init(void **state) {
     CSYNC *csync;
     int rc;
 
-    csync = new CSYNC("/tmp/check_csync1", "");
+    csync = new CSYNC("/tmp/check_csync1", new OCC::SyncJournalDb(""));
 
     rc = csync_exclude_load(EXCLUDE_LIST_FILE, &(csync->excludes));
     assert_int_equal(rc, 0);
@@ -67,7 +67,9 @@ static int teardown(void **state) {
     CSYNC *csync = (CSYNC*)*state;
     int rc;
 
+    auto statedb = csync->statedb;
     delete csync;
+    delete statedb;
 
     rc = system("rm -rf /tmp/check_csync1");
     assert_int_equal(rc, 0);

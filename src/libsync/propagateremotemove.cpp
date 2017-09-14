@@ -171,7 +171,7 @@ void PropagateRemoteMove::finalize()
     propagator()->_journal->deleteFileRecord(_item->_originalFile);
 
     SyncJournalFileRecord record = _item->toSyncJournalFileRecordWithInode(propagator()->getFilePath(_item->_renameTarget));
-    record._path = _item->_renameTarget;
+    record._path = _item->_renameTarget.toUtf8();
     if (oldRecord.isValid()) {
         record._checksumHeader = oldRecord._checksumHeader;
         if (record._fileSize != oldRecord._fileSize) {

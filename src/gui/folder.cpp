@@ -470,7 +470,7 @@ void Folder::slotWatchedPathChanged(const QString &path)
         SyncJournalFileRecord record;
         if (_journal.getFileRecord(relativePath, &record)
             && record.isValid()
-            && !FileSystem::fileChanged(path, record._fileSize, Utility::qDateTimeToTime_t(record._modtime))) {
+            && !FileSystem::fileChanged(path, record._fileSize, record._modtime)) {
             qCInfo(lcFolder) << "Ignoring spurious notification for file" << relativePath;
             return; // probably a spurious notification
         }

@@ -52,7 +52,7 @@ bool operator==(const SyncJournalFileRecord &lhs,
 {
     return lhs._path == rhs._path
         && lhs._inode == rhs._inode
-        && lhs._modtime.toTime_t() == rhs._modtime.toTime_t()
+        && lhs._modtime == rhs._modtime
         && lhs._type == rhs._type
         && lhs._etag == rhs._etag
         && lhs._fileId == rhs._fileId

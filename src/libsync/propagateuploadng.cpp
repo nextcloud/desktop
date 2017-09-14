@@ -83,7 +83,7 @@ void PropagateUploadFileNG::doStartUpload()
     propagator()->_activeJobList.append(this);
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
-    if (progressInfo._valid && Utility::qDateTimeToTime_t(progressInfo._modtime) == _item->_modtime) {
+    if (progressInfo._valid && progressInfo._modtime == _item->_modtime) {
         _transferId = progressInfo._transferid;
         auto url = chunkUrl();
         auto job = new LsColJob(propagator()->account(), url, this);
@@ -229,7 +229,7 @@ void PropagateUploadFileNG::startNewUpload()
     SyncJournalDb::UploadInfo pi;
     pi._valid = true;
     pi._transferid = _transferId;
-    pi._modtime = Utility::qDateTimeFromTime_t(_item->_modtime);
+    pi._modtime = _item->_modtime;
     propagator()->_journal->setUploadInfo(_item->_file, pi);
     propagator()->_journal->commit("Upload info");
     QMap<QByteArray, QByteArray> headers;

@@ -30,7 +30,6 @@
 #include "csync_util.h"
 #include "vio/csync_vio.h"
 #include "vio/csync_vio_local.h"
-#include "csync_statedb.h"
 #include "common/c_jhash.h"
 
 csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name) {
