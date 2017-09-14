@@ -170,181 +170,175 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
    * renamed, the db gets queried by the inode of the file as that one
    * does not change on rename.
    */
-  if (csync_get_statedb_exists(ctx)) {
-    tmp = csync_statedb_get_stat_by_path(ctx, fs->path);
+  tmp = csync_statedb_get_stat_by_path(ctx, fs->path);
 
-    if(_last_db_return_error(ctx)) {
-        ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
-        return -1;
-    }
-
-    if(tmp && tmp->path == fs->path ) { /* there is an entry in the database */
-        /* we have an update! */
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Database entry found, compare: %" PRId64 " <-> %" PRId64
-                                            ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64
-                                            ", size: %" PRId64 " <-> %" PRId64 ", perms: %s <-> %s, ignore: %d",
-                  ((int64_t) fs->modtime), ((int64_t) tmp->modtime),
-                  fs->etag.constData(), tmp->etag.constData(), (uint64_t) fs->inode, (uint64_t) tmp->inode,
-                  (uint64_t) fs->size, (uint64_t) tmp->size, fs->remotePerm.constData(), tmp->remotePerm.constData(), tmp->has_ignored_files );
-        if (ctx->current == REMOTE_REPLICA && fs->etag != tmp->etag) {
-            fs->instruction = CSYNC_INSTRUCTION_EVAL;
-
-            // Preserve the EVAL flag later on if the type has changed.
-            if (tmp->type != fs->type) {
-                fs->child_modified = true;
-            }
-
-            goto out;
-        }
-        if (ctx->current == LOCAL_REPLICA &&
-                (!_csync_mtime_equal(fs->modtime, tmp->modtime)
-                 // zero size in statedb can happen during migration
-                 || (tmp->size != 0 && fs->size != tmp->size))) {
-
-            // Checksum comparison at this stage is only enabled for .eml files,
-            // check #4754 #4755
-            bool isEmlFile = csync_fnmatch("*.eml", fs->path, FNM_CASEFOLD) == 0;
-            if (isEmlFile && fs->size == tmp->size && !tmp->checksumHeader.isEmpty()) {
-                if (ctx->callbacks.checksum_hook) {
-                    fs->checksumHeader = ctx->callbacks.checksum_hook(
-                        _rel_to_abs(ctx, fs->path), tmp->checksumHeader,
-                        ctx->callbacks.checksum_userdata);
-                }
-                bool checksumIdentical = false;
-                if (!fs->checksumHeader.isEmpty()) {
-                    checksumIdentical = fs->checksumHeader == tmp->checksumHeader;
-                }
-                if (checksumIdentical) {
-                    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "NOTE: Checksums are identical, file did not actually change: %s", fs->path.constData());
-                    fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-                    goto out;
-                }
-            }
-
-            // Preserve the EVAL flag later on if the type has changed.
-            if (tmp->type != fs->type) {
-                fs->child_modified = true;
-            }
-
-            fs->instruction = CSYNC_INSTRUCTION_EVAL;
-            goto out;
-        }
-        bool metadata_differ = (ctx->current == REMOTE_REPLICA && (fs->file_id != tmp->file_id
-                                                            || fs->remotePerm != tmp->remotePerm))
-                             || (ctx->current == LOCAL_REPLICA && fs->inode != tmp->inode);
-        if (fs->type == CSYNC_FTW_TYPE_DIR && ctx->current == REMOTE_REPLICA
-                && !metadata_differ && ctx->read_remote_from_db) {
-            /* If both etag and file id are equal for a directory, read all contents from
-             * the database.
-             * The metadata comparison ensure that we fetch all the file id or permission when
-             * upgrading owncloud
-             */
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Reading from database: %s", fs->path.constData());
-            ctx->remote.read_from_db = true;
-        }
-        /* If it was remembered in the db that the remote dir has ignored files, store
-         * that so that the reconciler can make advantage of.
-         */
-        if( ctx->current == REMOTE_REPLICA ) {
-            fs->has_ignored_files = tmp->has_ignored_files;
-        }
-        if (metadata_differ) {
-            /* file id or permissions has changed. Which means we need to update them in the DB. */
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Need to update metadata for: %s", fs->path.constData());
-            fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-        } else {
-            fs->instruction = CSYNC_INSTRUCTION_NONE;
-        }
-    } else {
-        /* check if it's a file and has been renamed */
-        if (ctx->current == LOCAL_REPLICA) {
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Checking for rename based on inode # %" PRId64 "", (uint64_t) fs->inode);
-
-            tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
-
-            if(_last_db_return_error(ctx)) {
-                ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
-                return -1;
-            }
-
-            // Default to NEW unless we're sure it's a rename.
-            fs->instruction = CSYNC_INSTRUCTION_NEW;
-
-            bool isRename =
-                tmp && tmp->inode == fs->inode && tmp->type == fs->type
-                    && (tmp->modtime == fs->modtime || fs->type == CSYNC_FTW_TYPE_DIR)
-#ifdef NO_RENAME_EXTENSION
-                    && _csync_sameextension(tmp->path, fs->path)
-#endif
-                ;
-
-
-            // Verify the checksum where possible
-            if (isRename && !tmp->checksumHeader.isEmpty() && ctx->callbacks.checksum_hook
-                && fs->type == CSYNC_FTW_TYPE_FILE) {
-                    fs->checksumHeader = ctx->callbacks.checksum_hook(
-                        _rel_to_abs(ctx, fs->path), tmp->checksumHeader,
-                        ctx->callbacks.checksum_userdata);
-                if (!fs->checksumHeader.isEmpty()) {
-                    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "checking checksum of potential rename %s %s <-> %s", fs->path.constData(), fs->checksumHeader.constData(), tmp->checksumHeader.constData());
-                    isRename = fs->checksumHeader == tmp->checksumHeader;
-                }
-            }
-
-            if (isRename) {
-                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "pot rename detected based on inode # %" PRId64 "", (uint64_t) fs->inode);
-                /* inode found so the file has been renamed */
-                fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
-                if (fs->type == CSYNC_FTW_TYPE_DIR) {
-                    csync_rename_record(ctx, tmp->path, fs->path);
-                }
-            }
-            goto out;
-
-        } else {
-            /* Remote Replica Rename check */
-            tmp = csync_statedb_get_stat_by_file_id(ctx, fs->file_id);
-
-            if(_last_db_return_error(ctx)) {
-                ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
-                return -1;
-            }
-            if(tmp ) {                           /* tmp existing at all */
-                if (tmp->type != fs->type) {
-                    CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "file types different is not!");
-                    fs->instruction = CSYNC_INSTRUCTION_NEW;
-                    goto out;
-                }
-                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "remote rename detected based on fileid %s --> %s", tmp->path.constData(), fs->path.constData());
-                fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
-                if (fs->type == CSYNC_FTW_TYPE_DIR) {
-                    csync_rename_record(ctx, tmp->path, fs->path);
-                } else {
-                    if( tmp->etag != fs->etag ) {
-                        /* CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ETags are different!"); */
-                        /* File with different etag, don't do a rename, but download the file again */
-                        fs->instruction = CSYNC_INSTRUCTION_NEW;
-                    }
-                }
-                goto out;
-
-            } else {
-                /* file not found in statedb */
-                fs->instruction = CSYNC_INSTRUCTION_NEW;
-
-                if (fs->type == CSYNC_FTW_TYPE_DIR && ctx->current == REMOTE_REPLICA && ctx->callbacks.checkSelectiveSyncNewFolderHook) {
-                    if (ctx->callbacks.checkSelectiveSyncNewFolderHook(ctx->callbacks.update_callback_userdata, fs->path, fs->remotePerm)) {
-                        return 1;
-                    }
-                }
-                goto out;
-            }
-        }
-    }
-  } else  {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Unable to open statedb" );
+  if(_last_db_return_error(ctx)) {
       ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
       return -1;
+  }
+
+  if(tmp && tmp->path == fs->path ) { /* there is an entry in the database */
+      /* we have an update! */
+      CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Database entry found, compare: %" PRId64 " <-> %" PRId64
+                                          ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64
+                                          ", size: %" PRId64 " <-> %" PRId64 ", perms: %s <-> %s, ignore: %d",
+                ((int64_t) fs->modtime), ((int64_t) tmp->modtime),
+                fs->etag.constData(), tmp->etag.constData(), (uint64_t) fs->inode, (uint64_t) tmp->inode,
+                (uint64_t) fs->size, (uint64_t) tmp->size, fs->remotePerm.constData(), tmp->remotePerm.constData(), tmp->has_ignored_files );
+      if (ctx->current == REMOTE_REPLICA && fs->etag != tmp->etag) {
+          fs->instruction = CSYNC_INSTRUCTION_EVAL;
+
+          // Preserve the EVAL flag later on if the type has changed.
+          if (tmp->type != fs->type) {
+              fs->child_modified = true;
+          }
+
+          goto out;
+      }
+      if (ctx->current == LOCAL_REPLICA &&
+              (!_csync_mtime_equal(fs->modtime, tmp->modtime)
+               // zero size in statedb can happen during migration
+               || (tmp->size != 0 && fs->size != tmp->size))) {
+
+          // Checksum comparison at this stage is only enabled for .eml files,
+          // check #4754 #4755
+          bool isEmlFile = csync_fnmatch("*.eml", fs->path, FNM_CASEFOLD) == 0;
+          if (isEmlFile && fs->size == tmp->size && !tmp->checksumHeader.isEmpty()) {
+              if (ctx->callbacks.checksum_hook) {
+                  fs->checksumHeader = ctx->callbacks.checksum_hook(
+                      _rel_to_abs(ctx, fs->path), tmp->checksumHeader,
+                      ctx->callbacks.checksum_userdata);
+              }
+              bool checksumIdentical = false;
+              if (!fs->checksumHeader.isEmpty()) {
+                  checksumIdentical = fs->checksumHeader == tmp->checksumHeader;
+              }
+              if (checksumIdentical) {
+                  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "NOTE: Checksums are identical, file did not actually change: %s", fs->path.constData());
+                  fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+                  goto out;
+              }
+          }
+
+          // Preserve the EVAL flag later on if the type has changed.
+          if (tmp->type != fs->type) {
+              fs->child_modified = true;
+          }
+
+          fs->instruction = CSYNC_INSTRUCTION_EVAL;
+          goto out;
+      }
+      bool metadata_differ = (ctx->current == REMOTE_REPLICA && (fs->file_id != tmp->file_id
+                                                          || fs->remotePerm != tmp->remotePerm))
+                           || (ctx->current == LOCAL_REPLICA && fs->inode != tmp->inode);
+      if (fs->type == CSYNC_FTW_TYPE_DIR && ctx->current == REMOTE_REPLICA
+              && !metadata_differ && ctx->read_remote_from_db) {
+          /* If both etag and file id are equal for a directory, read all contents from
+           * the database.
+           * The metadata comparison ensure that we fetch all the file id or permission when
+           * upgrading owncloud
+           */
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Reading from database: %s", fs->path.constData());
+          ctx->remote.read_from_db = true;
+      }
+      /* If it was remembered in the db that the remote dir has ignored files, store
+       * that so that the reconciler can make advantage of.
+       */
+      if( ctx->current == REMOTE_REPLICA ) {
+          fs->has_ignored_files = tmp->has_ignored_files;
+      }
+      if (metadata_differ) {
+          /* file id or permissions has changed. Which means we need to update them in the DB. */
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Need to update metadata for: %s", fs->path.constData());
+          fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+      } else {
+          fs->instruction = CSYNC_INSTRUCTION_NONE;
+      }
+  } else {
+      /* check if it's a file and has been renamed */
+      if (ctx->current == LOCAL_REPLICA) {
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Checking for rename based on inode # %" PRId64 "", (uint64_t) fs->inode);
+
+          tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
+
+          if(_last_db_return_error(ctx)) {
+              ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+              return -1;
+          }
+
+          // Default to NEW unless we're sure it's a rename.
+          fs->instruction = CSYNC_INSTRUCTION_NEW;
+
+          bool isRename =
+              tmp && tmp->inode == fs->inode && tmp->type == fs->type
+                  && (tmp->modtime == fs->modtime || fs->type == CSYNC_FTW_TYPE_DIR)
+#ifdef NO_RENAME_EXTENSION
+                  && _csync_sameextension(tmp->path, fs->path)
+#endif
+              ;
+
+
+          // Verify the checksum where possible
+          if (isRename && !tmp->checksumHeader.isEmpty() && ctx->callbacks.checksum_hook
+              && fs->type == CSYNC_FTW_TYPE_FILE) {
+                  fs->checksumHeader = ctx->callbacks.checksum_hook(
+                      _rel_to_abs(ctx, fs->path), tmp->checksumHeader,
+                      ctx->callbacks.checksum_userdata);
+              if (!fs->checksumHeader.isEmpty()) {
+                  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "checking checksum of potential rename %s %s <-> %s", fs->path.constData(), fs->checksumHeader.constData(), tmp->checksumHeader.constData());
+                  isRename = fs->checksumHeader == tmp->checksumHeader;
+              }
+          }
+
+          if (isRename) {
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "pot rename detected based on inode # %" PRId64 "", (uint64_t) fs->inode);
+              /* inode found so the file has been renamed */
+              fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
+              if (fs->type == CSYNC_FTW_TYPE_DIR) {
+                  csync_rename_record(ctx, tmp->path, fs->path);
+              }
+          }
+          goto out;
+
+      } else {
+          /* Remote Replica Rename check */
+          tmp = csync_statedb_get_stat_by_file_id(ctx, fs->file_id);
+
+          if(_last_db_return_error(ctx)) {
+              ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+              return -1;
+          }
+          if(tmp ) {                           /* tmp existing at all */
+              if (tmp->type != fs->type) {
+                  CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "file types different is not!");
+                  fs->instruction = CSYNC_INSTRUCTION_NEW;
+                  goto out;
+              }
+              CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "remote rename detected based on fileid %s --> %s", tmp->path.constData(), fs->path.constData());
+              fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
+              if (fs->type == CSYNC_FTW_TYPE_DIR) {
+                  csync_rename_record(ctx, tmp->path, fs->path);
+              } else {
+                  if( tmp->etag != fs->etag ) {
+                      /* CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ETags are different!"); */
+                      /* File with different etag, don't do a rename, but download the file again */
+                      fs->instruction = CSYNC_INSTRUCTION_NEW;
+                  }
+              }
+              goto out;
+
+          } else {
+              /* file not found in statedb */
+              fs->instruction = CSYNC_INSTRUCTION_NEW;
+
+              if (fs->type == CSYNC_FTW_TYPE_DIR && ctx->current == REMOTE_REPLICA && ctx->callbacks.checkSelectiveSyncNewFolderHook) {
+                  if (ctx->callbacks.checkSelectiveSyncNewFolderHook(ctx->callbacks.update_callback_userdata, fs->path, fs->remotePerm)) {
+                      return 1;
+                  }
+              }
+              goto out;
+          }
+      }
   }
 
 out:
