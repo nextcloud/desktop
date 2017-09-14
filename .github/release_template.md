@@ -88,6 +88,9 @@ On Release Day (for final release):
 * [ ] Win: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
 * [ ] Linux: Smoke test 
 * [ ] Linux: Re-enable OBS publishing
+  * Let obs build and publish exactly once. then
+  * [ ] disable publishing and rebuild for the owncloud-client package and all its dependencies.
+  * [ ] double-check that there are no _aggregatepac from other projects, if so disable rebuilding there too.
 * [ ] Update ASCII Changelog on http://download.owncloud.com/download/changelog-client
 * [ ] Announce on https://central.owncloud.org
 * [ ] Announce on announcements@owncloud.org
