@@ -2060,7 +2060,7 @@ QStringList getRandomWords(int nr)
 
     QStringList randomWords;
     while(randomWords.size() != nr) {
-        QString currWord = wordList.at(rand());
+        QString currWord = wordList.at(rand() % wordList.size());
         if (!randomWords.contains(currWord)) {
             randomWords.append(currWord);
         }
