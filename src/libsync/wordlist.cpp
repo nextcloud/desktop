@@ -5,7 +5,7 @@ namespace WordList {
 
 #include <initializer_list>
 
-QStringList getRandomWords()
+QStringList getRandomWords(int nr)
 {
     QStringList wordList = {
         "abandon",
@@ -2059,13 +2059,22 @@ QStringList getRandomWords()
     };
 
     QStringList randomWords;
-    while(randomWords.size() != 16) {
+    while(randomWords.size() != nr) {
         QString currWord = wordList.at(rand());
         if (!randomWords.contains(currWord)) {
             randomWords.append(currWord);
         }
     }
     return randomWords;
+}
+
+QString getUnifiedString(const QStringList& wList)
+{
+    QString ret;
+    for(const auto& str : wList) {
+        ret += str;
+    }
+    return ret;
 }
 
 // Namespaces

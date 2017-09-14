@@ -7,6 +7,7 @@
 namespace OCC {
     namespace WordList {
         QStringList getRandomWords(int nr);
+        QString getUnifiedString(const QStringList& l);
     }
 }
 
