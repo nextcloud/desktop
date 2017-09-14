@@ -231,9 +231,11 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
     // Send the encrypted key to the server.
     // I have no idea what I'm doing.
 
-    static const char* salt = "$4$YmBjm3hk$Qb74D5IUYwghUmzsMqeNFx5z0/8$";
-    static const int iterationCount = 1024;
-    static const int keyStrength = 256;
+    using ucharp = unsigned char *;
+    const char *salt = "$4$YmBjm3hk$Qb74D5IUYwghUmzsMqeNFx5z0/8$";
+    const int saltLen = 40;
+    const int iterationCount = 1024;
+    const int keyStrength = 256;
     BIO* bio = BIO_new(BIO_s_mem());
 
     QString passPhrase = WordList::getUnifiedString(WordList::getRandomWords(12));
@@ -257,6 +259,27 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
 
     qCInfo(lcCse()) << "Private Key Extracted";
     qCInfo(lcCse()) << output;
+
+    /* Jesus. the OpenSSL docs do not help at all.
+     * This PKCS5_PBKDF2_HMAC_SHA1 call will generate
+     * a new password from the password that was submited.
+     */
+    unsigned char secretKey[keyStrength];
+
+    ret = PKCS5_PBKDF2_HMAC_SHA1(
+        passPhrasePtr,     // const char *password,
+        passPhrase.size(), // int password length,
+        (ucharp) salt,     // const unsigned char *salt,
+        saltLen,      // int saltlen,
+        iterationCount,    // int iterations,
+        keyStrength,       // int keylen,
+        secretKey          // unsigned char *out
+    );
+    qCInfo(lcCse()) << "Return of the PKCS5" << ret;
+    qCInfo(lcCse()) << "Result String" << secretKey;
+
+    const EVP_CIPHER *cipher = EVP_get_cipherbyname("aes-256-cbc");
+    // Now, Try to encrypt it.
 }
 
 void ClientSideEncryption::getPrivateKeyFromServer()
