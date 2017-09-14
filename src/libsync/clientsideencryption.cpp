@@ -18,6 +18,8 @@
 #include <QDir>
 #include <QJsonObject>
 
+#include "wordlist.h"
+
 namespace OCC
 {
 
@@ -198,18 +200,19 @@ QString ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
 
     job = new SignPublicKeyApiJob(_account, baseUrl + "public-key", this);
     job->setCsr(output);
-    // TODO: Extract this function, should not be a lambda.
-    connect(job, &SignPublicKeyApiJob::jsonReceived, [this](const QJsonDocument& json, int retCode) {
+
+    connect(job, &SignPublicKeyApiJob::jsonReceived, [this, keyPair](const QJsonDocument& json, int retCode) {
         if (retCode == 200) {
             auto caps = json.object().value("ocs").toObject().value("data").toObject().value("public-key").toString();
             qCInfo(lcCse()) << "Public Key Returned" << caps;
-            QFile file(publicKeyPath() + ".sign"); // TODO: Verify if I need to keep the old file.
+            QFile file(publicKeyPath() + ".sign");
             if (file.open(QIODevice::WriteOnly)) {
                 QTextStream s(&file);
                 s << caps;
             }
             file.close();
-            qCInfo(lcCse()) << "public key saved.";
+            qCInfo(lcCse()) << "public key saved, Encrypting Private Key.";
+            encryptPrivateKey(keyPair);
         }
         qCInfo(lcCse()) << retCode;
     });
@@ -219,6 +222,41 @@ free_all:
     X509_REQ_free(x509_req);
     BIO_free_all(out);
     return "";
+}
+
+void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
+{
+    // Write the Private File to a BIO
+    // Retrieve the BIO contents, and encrypt it.
+    // Send the encrypted key to the server.
+    // I have no idea what I'm doing.
+
+    static const char* salt = "$4$YmBjm3hk$Qb74D5IUYwghUmzsMqeNFx5z0/8$";
+    static const int iterationCount = 1024;
+    static const int keyStrength = 256;
+    BIO* bio = BIO_new(BIO_s_mem());
+
+    QString passPhrase = WordList::getUnifiedString(WordList::getRandomWords(12));
+    const char* passPhrasePtr = qPrintable(passPhrase);
+    qCInfo(lcCse()) << "Passphrase Generated:";
+    qCInfo(lcCse()) << passPhrase;
+
+    // Extract the Private key from the key pair.
+    PEM_write_bio_PrivateKey(bio, keyPair, NULL, NULL, 0, 0, NULL);
+    char data[80];
+    QString output;
+    int ret = 0;
+    do {
+        ret = BIO_gets(bio, data, 80);
+        output += data;
+        if (output.endsWith("-----END PRIVATE KEY-----")) {
+            output = output.trimmed();
+            break;
+        }
+    } while (ret > 0 );
+
+    qCInfo(lcCse()) << "Private Key Extracted";
+    qCInfo(lcCse()) << output;
 }
 
 void ClientSideEncryption::getPrivateKeyFromServer()
