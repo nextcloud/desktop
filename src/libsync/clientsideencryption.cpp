@@ -16,6 +16,7 @@
 #include <QLoggingCategory>
 #include <QFileInfo>
 #include <QDir>
+#include <QJsonObject>
 
 namespace OCC
 {
@@ -197,9 +198,20 @@ QString ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
 
     job = new SignPublicKeyApiJob(_account, baseUrl + "public-key", this);
     job->setCsr(output);
-    connect(job, &SignPublicKeyApiJob::jsonReceived, [this](const QJsonDocument& doc, int retCode) {
+    // TODO: Extract this function, should not be a lambda.
+    connect(job, &SignPublicKeyApiJob::jsonReceived, [this](const QJsonDocument& json, int retCode) {
+        if (retCode == 200) {
+            auto caps = json.object().value("ocs").toObject().value("data").toObject().value("public-key").toString();
+            qCInfo(lcCse()) << "Public Key Returned" << caps;
+            QFile file(publicKeyPath() + ".sign"); // TODO: Verify if I need to keep the old file.
+            if (file.open(QIODevice::WriteOnly)) {
+                QTextStream s(&file);
+                s << caps;
+            }
+            file.close();
+            qCInfo(lcCse()) << "public key saved.";
+        }
         qCInfo(lcCse()) << retCode;
-        qCInfo(lcCse()) << doc;
     });
     job->start();
 
