@@ -2919,7 +2919,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="528"/>
         <source>Share...</source>
-        <translation type="unfinished"/>
+        <translation>Teilen…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="530"/>
