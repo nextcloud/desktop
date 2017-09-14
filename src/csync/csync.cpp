@@ -310,7 +310,6 @@ int csync_s::reinitialize() {
 
   remote.read_from_db = 0;
   read_remote_from_db = true;
-  db_is_empty = false;
 
   local.files.clear();
   remote.files.clear();

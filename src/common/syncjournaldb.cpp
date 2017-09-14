@@ -76,7 +76,9 @@ static QString defaultJournalMode(const QString &dbPath)
 SyncJournalDb::SyncJournalDb(const QString &dbFilePath, QObject *parent)
     : QObject(parent)
     , _dbFile(dbFilePath)
+    , _mutex(QMutex::Recursive)
     , _transaction(0)
+    , _metadataTableIsEmpty(false)
 {
     // Allow forcing the journal mode for debugging
     static QString envJournalMode = QString::fromLocal8Bit(qgetenv("OWNCLOUD_SQLITE_JOURNAL_MODE"));
@@ -672,6 +674,10 @@ bool SyncJournalDb::checkConnect()
     // don't start a new transaction now
     commitInternal(QString("checkConnect End"), false);
 
+    // This avoid reading from the DB if we already know it is empty
+    // thereby speeding up the initial discovery significantly.
+    _metadataTableIsEmpty = (getFileRecordCount() == 0);
+
     // Hide 'em all!
     FileSystem::setFileHidden(databaseFilePath(), true);
     FileSystem::setFileHidden(databaseFilePath() + "-wal", true);
@@ -715,6 +721,7 @@ void SyncJournalDb::close()
 
     _db.close();
     _avoidReadFromDbOnNextSyncFilter.clear();
+    _metadataTableIsEmpty = false;
 }
 
 
@@ -973,6 +980,9 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
             return false;
         }
 
+        // Can't be true anymore.
+        _metadataTableIsEmpty = false;
+
         return true;
     } else {
         qCWarning(lcDb) << "Failed to connect database.";
@@ -1020,6 +1030,9 @@ bool SyncJournalDb::getFileRecord(const QByteArray &filename, SyncJournalFileRec
     rec->_path.clear();
     Q_ASSERT(!rec->isValid());
 
+    if (_metadataTableIsEmpty)
+        return true; // no error, yet nothing found (rec->isValid() == false)
+
     if (!checkConnect())
         return false;
 
@@ -1028,7 +1041,6 @@ bool SyncJournalDb::getFileRecord(const QByteArray &filename, SyncJournalFileRec
         _getFileRecordQuery->bindValue(1, getPHash(filename));
 
         if (!_getFileRecordQuery->exec()) {
-            locker.unlock();
             close();
             return false;
         }
@@ -1040,9 +1052,7 @@ bool SyncJournalDb::getFileRecord(const QByteArray &filename, SyncJournalFileRec
             if (errId != SQLITE_DONE) { // only do this if the problem is different from SQLITE_DONE
                 QString err = _getFileRecordQuery->error();
                 qCWarning(lcDb) << "No journal entry found for " << filename << "Error: " << err;
-                locker.unlock();
                 close();
-                locker.relock();
             }
         }
     }
@@ -1058,7 +1068,7 @@ bool SyncJournalDb::getFileRecordByInode(quint64 inode, SyncJournalFileRecord *r
     rec->_path.clear();
     Q_ASSERT(!rec->isValid());
 
-    if (!inode)
+    if (!inode || _metadataTableIsEmpty)
         return true; // no error, yet nothing found (rec->isValid() == false)
 
     if (!checkConnect())
@@ -1087,7 +1097,7 @@ bool SyncJournalDb::getFileRecordByFileId(const QByteArray &fileId, SyncJournalF
     rec->_path.clear();
     Q_ASSERT(!rec->isValid());
 
-    if (fileId.isEmpty())
+    if (fileId.isEmpty() || _metadataTableIsEmpty)
         return true; // no error, yet nothing found (rec->isValid() == false)
 
     if (!checkConnect())
@@ -1110,6 +1120,9 @@ bool SyncJournalDb::getFileRecordByFileId(const QByteArray &fileId, SyncJournalF
 bool SyncJournalDb::getFilesBelowPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback)
 {
     QMutexLocker locker(&_mutex);
+
+    if (_metadataTableIsEmpty)
+        return true; // no error, yet nothing found
 
     if (!checkConnect())
         return false;
@@ -1184,15 +1197,11 @@ int SyncJournalDb::getFileRecordCount()
 {
     QMutexLocker locker(&_mutex);
 
-    if (!checkConnect()) {
-        return -1;
-    }
-
     SqlQuery query(_db);
     query.prepare("SELECT COUNT(*) FROM metadata");
 
     if (!query.exec()) {
-        return 0;
+        return -1;
     }
 
     if (query.next()) {
@@ -1200,7 +1209,7 @@ int SyncJournalDb::getFileRecordCount()
         return count;
     }
 
-    return 0;
+    return -1;
 }
 
 bool SyncJournalDb::updateFileRecordChecksum(const QString &filename,
@@ -1775,7 +1784,6 @@ void SyncJournalDb::avoidRenamesOnNextSync(const QByteArray &path)
 
     // We also need to remove the ETags so the update phase refreshes the directory paths
     // on the next sync
-    locker.unlock();
     avoidReadFromDbOnNextSync(path);
 }
 
