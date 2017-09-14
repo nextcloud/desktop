@@ -27,6 +27,7 @@ endif()
 
 set(libsync_SRCS
     account.cpp
+    wordlist.cpp
     bandwidthmanager.cpp
     capabilities.cpp
     clientproxy.cpp
