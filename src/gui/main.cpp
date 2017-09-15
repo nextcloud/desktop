@@ -33,6 +33,7 @@
 
 #include <QTimer>
 #include <QMessageBox>
+#include <QDebug>
 
 using namespace OCC;
 
@@ -50,7 +51,8 @@ int main(int argc, char **argv)
 {
     Q_INIT_RESOURCE(client);
 
-     /* Initialise the library */
+    /* Initialise the library */
+    qDebug() << "LOADING OPENSSL STUFF";
     ERR_load_crypto_strings();
     OpenSSL_add_all_algorithms();
     OPENSSL_config(NULL);

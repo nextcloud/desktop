@@ -32,8 +32,9 @@ QString baseDirectory = QDir::homePath() + QStringLiteral("/.nextcloud-keys/");
 namespace {
     void handleErrors(void)
     {
-        ERR_print_errors_fp(stderr);
-        abort();
+        qCInfo(lcCse()) << "Error handling encryption or decryption";
+        ERR_print_errors_fp(stdout); // This line is not printing anything.
+        fflush(stdout);
     }
 
     int encrypt(unsigned char *plaintext,
@@ -431,6 +432,7 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
 
     //: FIRST TRY A SILLY PHRASE.
     //: Hardcoed IV, really bad.
+    unsigned char *fakepass = (unsigned char*) "qwertyuiasdfghjkzxcvbnm,qwertyui";
     unsigned char *iv = (unsigned char *)"0123456789012345";
     unsigned char encryptTag[16];
 
@@ -445,7 +447,7 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
         strlen(encryptTest),            //        int plaintext_len,
         nullptr,                        //        unsigned char *aad,
         0,                              //        int aad_len,
-        secretKey,                      //        unsigned char *key,
+        fakepass,                       //        unsigned char *key,
         iv,                             //        unsigned char *iv,
         cryptedText,                    //        unsigned char *ciphertext,
         tag                             //        unsigned char *tag
@@ -458,7 +460,7 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
         NULL,            //unsigned char *aad,
         0,               //int aad_len,
         tag,             //unsigned char *tag,
-        secretKey,       //unsigned char *key,
+        fakepass,       //unsigned char *key,
         iv,              //unsigned char *iv,
         decryptedText    //unsigned char *plaintext
     );
