@@ -173,6 +173,10 @@ void AbstractNetworkJob::slotFinished()
     if (_followRedirects && !redirectUrl.isEmpty()) {
         _redirectCount++;
 
+        // Redirects may be relative
+        if (redirectUrl.isRelative())
+            redirectUrl = requestedUrl.resolved(redirectUrl);
+
         // For POST requests where the target url has query arguments, Qt automatically
         // moves these arguments to the body if no explicit body is specified.
         // This can cause problems with redirected requests, because the redirect url
