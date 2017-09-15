@@ -1381,22 +1381,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 Objekte, bei denen Löschen erlaubt ist, werden gelöscht, wenn sie die Löschung eines Ordners verhindern würden. Das ist für Metadaten nützlich.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="115"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="117"/>
         <source>Could not open file</source>
         <translation>Datei konnte nicht geöffnet werden</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="116"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="118"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
         <translation>Konnte Änderungen nicht in &apos;%1&apos; schreiben.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="143"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="145"/>
         <source>Add Ignore Pattern</source>
         <translation>Ignoriermuster hinzufügen</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="144"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="146"/>
         <source>Add a new ignore pattern:</source>
         <translation>Neues Ignoriermuster hinzufügen:</translation>
     </message>

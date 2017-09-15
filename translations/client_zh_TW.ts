@@ -1372,22 +1372,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 當資料夾被移除時，會根據清單裡的允許刪除選項來避免那些檔案會被移除。而這對元資料是有用的。</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="115"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="117"/>
         <source>Could not open file</source>
         <translation>無法開啟檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="116"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="118"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
         <translation>%1 無法寫入變更。</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="143"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="145"/>
         <source>Add Ignore Pattern</source>
         <translation>增加忽略格式</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="144"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="146"/>
         <source>Add a new ignore pattern:</source>
         <translation>增加一個新的忽略格式:</translation>
     </message>

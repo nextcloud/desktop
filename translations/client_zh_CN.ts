@@ -1381,22 +1381,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 如果选中的项目正在阻止文件夹的删除，它们也会被删除。这对于元数据很有用。</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="115"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="117"/>
         <source>Could not open file</source>
         <translation>不能打开文件</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="116"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="118"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
         <translation>无法向 %1 中写入修改。</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="143"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="145"/>
         <source>Add Ignore Pattern</source>
         <translation>增加忽略模式</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="144"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="146"/>
         <source>Add a new ignore pattern:</source>
         <translation>增加新的忽略模式：</translation>
     </message>

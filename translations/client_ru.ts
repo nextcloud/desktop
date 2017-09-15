@@ -1378,22 +1378,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 Элементы, где это разрешается, будут удалены, в случае если они помешают удалению папки. Используется для метаданных.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="115"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="117"/>
         <source>Could not open file</source>
         <translation>Невозможно открыть файл</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="116"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="118"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
         <translation>Невозможно записать изменения в &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="143"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="145"/>
         <source>Add Ignore Pattern</source>
         <translation>Добавить шаблон игнорирования</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="144"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="146"/>
         <source>Add a new ignore pattern:</source>
         <translation>Добавить новый шаблон игнорирования:</translation>
     </message>

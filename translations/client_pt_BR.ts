@@ -1380,22 +1380,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 Itens onde a eliminação é permitida serão excluídos se eles evitarem que um diretório seja removido. Isso é útil para metadados.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="115"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="117"/>
         <source>Could not open file</source>
         <translation>Não foi possível abrir o arquivo</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="116"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="118"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
         <translation>Não é possível gravar as alterações em &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="143"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="145"/>
         <source>Add Ignore Pattern</source>
         <translation>Adicionar Ignorar Padrão</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="144"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="146"/>
         <source>Add a new ignore pattern:</source>
         <translation>Adicionar um novo padrão ignorar:</translation>
     </message>

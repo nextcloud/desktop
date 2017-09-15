@@ -1381,22 +1381,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 Τα στοιχεία όπου επιτρέπεται η διαγραφή θα διαγράφονται εάν εμποδίζουν την αφαίρεση ενός φακέλου αρχείων. Αυτό είναι χρήσιμο για μετα-δεδομένα.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="115"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="117"/>
         <source>Could not open file</source>
         <translation>Αδυναμία ανοίγματος αρχείου</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="116"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="118"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
         <translation>Αδυναμία εγγραφής αλλαγών στο &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="143"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="145"/>
         <source>Add Ignore Pattern</source>
         <translation>Προσθήκη Προτύπου Αγνόησης</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="144"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="146"/>
         <source>Add a new ignore pattern:</source>
         <translation>Προσθήκη νέου προτύπου αγνόησης:</translation>
     </message>
