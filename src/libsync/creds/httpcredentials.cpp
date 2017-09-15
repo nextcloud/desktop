@@ -356,6 +356,7 @@ bool HttpCredentials::refreshAccessToken()
     requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
 
     auto job = _account->sendRequest("POST", requestToken, req, requestBody);
+    job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
         auto jsonData = reply->readAll();
         QJsonParseError jsonParseError;
