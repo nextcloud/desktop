@@ -216,10 +216,12 @@ public:
     QByteArray _fileId;
     QByteArray _remotePerm;
 
+    // This is the value for the 'new' side, matching with _size and _modtime.
+    //
     // When is this set, and is it the local or the remote checksum?
     // - if mtime or size changed locally for *.eml files (local checksum)
     // - for potential renames of local files (local checksum)
-    // - for conflicts (remote checksum) (what about eval_rename/new reconcile?)
+    // - for conflicts (remote checksum)
     QByteArray _checksumHeader;
 
     // The size and modtime of the file getting overwritten (on the disk for downloads, on the server for uploads).
