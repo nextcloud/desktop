@@ -1372,22 +1372,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 Kohteet, joiden poisto on sallittu, poistetaan, jos ne estävät kansion poistamisen. Tämä on hyödyllistä metatietojen osalta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="115"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="117"/>
         <source>Could not open file</source>
         <translation>Tiedoston avaaminen ei onnistunut</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="116"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="118"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
         <translation>Muutoksien kirjoittaminen kohteeseen &apos;%1&apos; epäonnistui.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="143"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="145"/>
         <source>Add Ignore Pattern</source>
         <translation>Lisää ohituskaava</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="144"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="146"/>
         <source>Add a new ignore pattern:</source>
         <translation>Lisää uusi ohituskaava:</translation>
     </message>
