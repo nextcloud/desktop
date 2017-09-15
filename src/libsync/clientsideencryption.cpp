@@ -432,8 +432,37 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
     //: FIRST TRY A SILLY PHRASE.
     //: Hardcoed IV, really bad.
     unsigned char *iv = (unsigned char *)"0123456789012345";
-    const EVP_CIPHER *cipher = EVP_aes_256_gcm ();
+    unsigned char encryptTag[16];
 
+
+    const char *encryptTest = "a quick brown fox jumps over the lazy dog";
+    // TODO: Find a way to
+    unsigned char cryptedText[128];
+    unsigned char decryptedText[128];
+    unsigned char tag[16];
+    int cryptedText_len = encrypt(
+        (unsigned char*) encryptTest,   //unsigned char *plaintext,
+        strlen(encryptTest),            //        int plaintext_len,
+        nullptr,                        //        unsigned char *aad,
+        0,                              //        int aad_len,
+        secretKey,                      //        unsigned char *key,
+        iv,                             //        unsigned char *iv,
+        cryptedText,                    //        unsigned char *ciphertext,
+        tag                             //        unsigned char *tag
+    );
+
+    qCInfo(lcCse()) << "Encrypted Text" << QByteArray( (const char*) cryptedText, cryptedText_len);
+    int decryptedText_len = decrypt(
+        cryptedText,     //unsigned char *ciphertext,
+        cryptedText_len, //int ciphertext_len,
+        NULL,            //unsigned char *aad,
+        0,               //int aad_len,
+        tag,             //unsigned char *tag,
+        secretKey,       //unsigned char *key,
+        iv,              //unsigned char *iv,
+        decryptedText    //unsigned char *plaintext
+    );
+    qCInfo(lcCse()) << "Decrypted Text" << QByteArray( (const char*) decryptedText, decryptedText_len);
     // Now, Try to encrypt it.
 }
 
