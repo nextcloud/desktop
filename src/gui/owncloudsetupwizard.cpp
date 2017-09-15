@@ -180,6 +180,10 @@ void OwncloudSetupWizard::slotContinueDetermineAuth()
     // redirect subpaths.
     auto redirectCheckJob = account->sendRequest("GET", account->url());
 
+    // Use a significantly reduced timeout for this redirect check:
+    // the 5-minute default is inappropriate.
+    redirectCheckJob->setTimeout(qMin(2000ll, redirectCheckJob->timeoutMsec()));
+
     // Grab the chain of permanent redirects and adjust the account url
     // accordingly
     auto permanentRedirects = std::make_shared<int>(0);
