@@ -103,9 +103,22 @@ private slots:
         fakeFolder.localModifier().insert("a1.eml", 64, 'A');
         fakeFolder.localModifier().insert("a2.eml", 64, 'A');
         fakeFolder.localModifier().insert("a3.eml", 64, 'A');
+        fakeFolder.localModifier().insert("b3.txt", 64, 'A');
         // Upload and calculate the checksums
         // fakeFolder.syncOnce();
         fakeFolder.syncOnce();
+
+        auto getDbChecksum = [&](QString path) {
+            auto record = fakeFolder.syncJournal().getFileRecord(path);
+            return record._checksumHeader;
+        };
+
+        // printf 'A%.0s' {1..64} | sha1sum -
+        QByteArray referenceChecksum("SHA1:30b86e44e6001403827a62c58b08893e77cf121f");
+        QCOMPARE(getDbChecksum("a1.eml"), referenceChecksum);
+        QCOMPARE(getDbChecksum("a2.eml"), referenceChecksum);
+        QCOMPARE(getDbChecksum("a3.eml"), referenceChecksum);
+        QCOMPARE(getDbChecksum("b3.txt"), referenceChecksum);
 
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
         // Touch the file without changing the content, shouldn't upload
@@ -113,7 +126,13 @@ private slots:
         // Change the content/size
         fakeFolder.localModifier().setContents("a2.eml", 'B');
         fakeFolder.localModifier().appendByte("a3.eml");
+        fakeFolder.localModifier().appendByte("b3.txt");
         fakeFolder.syncOnce();
+
+        QCOMPARE(getDbChecksum("a1.eml"), referenceChecksum);
+        QCOMPARE(getDbChecksum("a2.eml"), QByteArray("SHA1:84951fc23a4dafd10020ac349da1f5530fa65949"));
+        QCOMPARE(getDbChecksum("a3.eml"), QByteArray("SHA1:826b7e7a7af8a529ae1c7443c23bf185c0ad440c"));
+        QCOMPARE(getDbChecksum("b3.eml"), getDbChecksum("a3.txt"));
 
         QVERIFY(!itemDidComplete(completeSpy, "a1.eml"));
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "a2.eml"));

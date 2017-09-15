@@ -391,6 +391,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         item->_instruction = instruction;
         item->_modtime = file->modtime;
         item->_size = file->size;
+        item->_checksumHeader = file->checksumHeader;
     } else {
         if (instruction != CSYNC_INSTRUCTION_NONE) {
             qCWarning(lcEngine) << "ERROR: Instruction" << item->_instruction << "vs" << instruction << "for" << fileUtf8;
@@ -427,15 +428,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
      */
     if (remote) {
         item->_serverHasIgnoredFiles = file->has_ignored_files;
-    }
-
-    // Sometimes the discovery computes checksums for local files
-    if (!remote && !file->checksumHeader.isEmpty()) {
-        item->_checksumHeader = file->checksumHeader;
-    }
-    // For conflicts, store the remote checksum there
-    if (remote && item->_instruction == CSYNC_INSTRUCTION_CONFLICT && !file->checksumHeader.isEmpty()) {
-        item->_checksumHeader = file->checksumHeader;
     }
 
     // record the seen files to be able to clean the journal later

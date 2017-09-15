@@ -828,6 +828,7 @@ public:
     }
 
     OCC::SyncEngine &syncEngine() const { return *_syncEngine; }
+    OCC::SyncJournalDb &syncJournal() const { return *_journalDb; }
 
     FileModifier &localModifier() { return _localModifier; }
     FileInfo &remoteModifier() { return _fakeQnam->currentRemoteState(); }
