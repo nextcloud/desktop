@@ -48,7 +48,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     const QString &sharePath,
     const QString &localPath,
     SharePermissions maxSharingPermissions,
-    const QByteArray &numericFileId,
+    const QString &privateLinkUrl,
     QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::ShareUserGroupWidget)
@@ -56,7 +56,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     , _sharePath(sharePath)
     , _localPath(localPath)
     , _maxSharingPermissions(maxSharingPermissions)
-    , _numericFileId(numericFileId)
+    , _privateLinkUrl(privateLinkUrl)
     , _disableCompleterActivated(false)
 {
     setAttribute(Qt::WA_DeleteOnClose);
@@ -323,19 +323,19 @@ void ShareUserGroupWidget::displayError(int code, const QString &message)
 
 void ShareUserGroupWidget::slotPrivateLinkOpenBrowser()
 {
-    Utility::openBrowser(_account->filePermalinkUrl(_numericFileId), this);
+    Utility::openBrowser(_privateLinkUrl, this);
 }
 
 void ShareUserGroupWidget::slotPrivateLinkCopy()
 {
-    QApplication::clipboard()->setText(_account->filePermalinkUrl(_numericFileId).toString());
+    QApplication::clipboard()->setText(_privateLinkUrl);
 }
 
 void ShareUserGroupWidget::slotPrivateLinkEmail()
 {
     Utility::openEmailComposer(
         tr("I shared something with you"),
-        _account->filePermalinkUrl(_numericFileId).toString(),
+        _privateLinkUrl,
         this);
 }
 

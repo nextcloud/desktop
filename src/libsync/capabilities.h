@@ -47,6 +47,9 @@ public:
     /// disable parallel upload in chunking
     bool chunkingParallelUploadDisabled() const;
 
+    /// Whether the "privatelink" DAV property is available
+    bool privateLinkPropertyAvailable() const;
+
     /// returns true if the capabilities report notifications
     bool notificationsAvailable() const;
 

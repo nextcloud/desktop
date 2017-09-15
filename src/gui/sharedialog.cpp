@@ -46,7 +46,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     , _sharePath(sharePath)
     , _localPath(localPath)
     , _maxSharingPermissions(maxSharingPermissions)
-    , _numericFileId(numericFileId)
+    , _privateLinkUrl(accountState->account()->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded))
     , _linkWidget(NULL)
     , _userGroupWidget(NULL)
     , _progressIndicator(NULL)
@@ -130,10 +130,13 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     // Server versions >= 9.1 support the "share-permissions" property
     // older versions will just return share-permissions: ""
     auto job = new PropfindJob(accountState->account(), _sharePath);
-    job->setProperties(QList<QByteArray>() << "http://open-collaboration-services.org/ns:share-permissions");
+    job->setProperties(
+        QList<QByteArray>()
+        << "http://open-collaboration-services.org/ns:share-permissions"
+        << "http://owncloud.org/ns:privatelink");
     job->setTimeout(10 * 1000);
-    connect(job, SIGNAL(result(QVariantMap)), SLOT(slotMaxSharingPermissionsReceived(QVariantMap)));
-    connect(job, SIGNAL(finishedWithError(QNetworkReply *)), SLOT(slotMaxSharingPermissionsError()));
+    connect(job, SIGNAL(result(QVariantMap)), SLOT(slotPropfindReceived(QVariantMap)));
+    connect(job, SIGNAL(finishedWithError(QNetworkReply *)), SLOT(slotPropfindError()));
     job->start();
 }
 
@@ -149,18 +152,23 @@ void ShareDialog::done(int r)
     QDialog::done(r);
 }
 
-void ShareDialog::slotMaxSharingPermissionsReceived(const QVariantMap &result)
+void ShareDialog::slotPropfindReceived(const QVariantMap &result)
 {
     const QVariant receivedPermissions = result["share-permissions"];
     if (!receivedPermissions.toString().isEmpty()) {
         _maxSharingPermissions = static_cast<SharePermissions>(receivedPermissions.toInt());
         qCInfo(lcSharing) << "Received sharing permissions for" << _sharePath << _maxSharingPermissions;
     }
+    auto privateLinkUrl = result["privatelink"].toString();
+    if (!privateLinkUrl.isEmpty()) {
+        qCInfo(lcSharing) << "Received private link url for" << _sharePath << privateLinkUrl;
+        _privateLinkUrl = privateLinkUrl;
+    }
 
     showSharingUi();
 }
 
-void ShareDialog::slotMaxSharingPermissionsError()
+void ShareDialog::slotPropfindError()
 {
     // On error show the share ui anyway. The user can still see shares,
     // delete them and so on, even though adding new shares or granting
@@ -194,7 +202,7 @@ void ShareDialog::showSharingUi()
         && _accountState->account()->serverVersionInt() >= Account::makeServerVersion(8, 2, 0);
 
     if (userGroupSharing) {
-        _userGroupWidget = new ShareUserGroupWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, _numericFileId, this);
+        _userGroupWidget = new ShareUserGroupWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, _privateLinkUrl, this);
         _ui->shareWidgets->addTab(_userGroupWidget, tr("Users and Groups"));
         _userGroupWidget->getShares();
     }
