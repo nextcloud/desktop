@@ -251,7 +251,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="653"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>server %1 je v režimu údržby.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="655"/>
@@ -381,7 +381,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="132"/>
         <source>Maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>režim údržby</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="134"/>
