@@ -46,6 +46,8 @@
 #include "csync_log.h"
 #include "csync_rename.h"
 
+#include "common/utility.h"
+
 // Needed for PRIu64 on MinGW in C++ mode.
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
@@ -371,6 +373,15 @@ out:
       && fs->type != CSYNC_FTW_TYPE_DIR) {
     fs->child_modified = true;
   }
+
+  // If conflict files are uploaded, they won't be marked as IGNORE / CSYNC_FILE_EXCLUDE_CONFLICT
+  // but we still want them marked!
+  if (OCC::Utility::shouldUploadConflictFiles()) {
+      if (OCC::Utility::isConflictFile(fs->path.constData())) {
+          fs->error_status = CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE;
+      }
+  }
+
   ctx->current_fs = fs.get();
 
   CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "file: %s, instruction: %s <<=", fs->path.constData(),

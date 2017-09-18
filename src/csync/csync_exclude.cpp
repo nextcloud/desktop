@@ -37,6 +37,8 @@
 #include "csync_exclude.h"
 #include "csync_misc.h"
 
+#include "common/utility.h"
+
 #ifdef _WIN32
 #include <io.h>
 #else
@@ -218,7 +220,6 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
     size_t i = 0;
     const char *bname = NULL;
     size_t blen = 0;
-    char *conflict = NULL;
     int rc = -1;
     CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
     CSYNC_EXCLUDE_TYPE type  = CSYNC_NOT_EXCLUDED;
@@ -308,25 +309,11 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
         goto out;
     }
 
-    /* Always ignore conflict files, not only via the exclude list */
-    rc = csync_fnmatch("*_conflict-*", bname, 0);
-    if (rc == 0) {
-        match = CSYNC_FILE_EXCLUDE_CONFLICT;
-        goto out;
-    }
-
-    if (getenv("CSYNC_CONFLICT_FILE_USERNAME")) {
-        rc = asprintf(&conflict, "*_conflict_%s-*", getenv("CSYNC_CONFLICT_FILE_USERNAME"));
-        if (rc < 0) {
-            goto out;
-        }
-        rc = csync_fnmatch(conflict, path, 0);
-        if (rc == 0) {
+    if (!OCC::Utility::shouldUploadConflictFiles()) {
+        if (OCC::Utility::isConflictFile(bname)) {
             match = CSYNC_FILE_EXCLUDE_CONFLICT;
-            SAFE_FREE(conflict);
             goto out;
         }
-        SAFE_FREE(conflict);
     }
 
     if( ! excludes ) {
