@@ -76,7 +76,6 @@ set(owncloudsync_HEADERS
     networkjobs.h
     progressdispatcher.h
     syncfileitem.h
-    syncjournaldb.h
     syncresult.h
 )
 
