@@ -46,6 +46,7 @@
 
 #include <math.h>
 #include <stdarg.h>
+#include <cstring>
 
 #if defined(Q_OS_WIN)
 #include "utility_win.cpp"
@@ -547,28 +548,28 @@ QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
 
 bool Utility::isConflictFile(const char *name)
 {
-    auto bname = strrchr(name, '/');
+    const char *bname = std::strrchr(name, '/');
     if (bname) {
         bname += 1;
     } else {
         bname = name;
     }
 
-    if (strstr(bname, "_conflict-"))
+    if (std::strstr(bname, "_conflict-"))
         return true;
 
     if (shouldUploadConflictFiles()) {
         // For uploads, we want to consider files with any kind of username tag
         // as conflict files. (pattern *_conflict_*-)
-        auto startOfMarker = strstr(bname, "_conflict_");
-        if (startOfMarker && strchr(startOfMarker, '-'))
+        const char *startOfMarker = std::strstr(bname, "_conflict_");
+        if (startOfMarker && std::strchr(startOfMarker, '-'))
             return true;
     } else {
         // Old behavior: optionally, files with the specific string in the env variable
         // appended are also considered conflict files.
         static auto conflictFileUsername = qgetenv("CSYNC_CONFLICT_FILE_USERNAME");
         static auto usernameConflictId = QByteArray("_conflict_" + conflictFileUsername + "-");
-        if (!conflictFileUsername.isEmpty() && strstr(bname, usernameConflictId.constData())) {
+        if (!conflictFileUsername.isEmpty() && std::strstr(bname, usernameConflictId.constData())) {
             return true;
         }
     }
