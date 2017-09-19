@@ -1007,7 +1007,7 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
     bool resharingAllowed = true; // lets assume the good
     if (fileRecord.isValid()) {
         // check the permission: Is resharing allowed?
-        if (!fileRecord._remotePerm.contains('R')) {
+        if (!fileRecord._remotePerm.isNull() && !fileRecord._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
             resharingAllowed = false;
         }
     }

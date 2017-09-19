@@ -87,10 +87,11 @@ int DiscoveryJob::isInSelectiveSyncBlackListCallback(void *data, const QByteArra
     return static_cast<DiscoveryJob *>(data)->isInSelectiveSyncBlackList(path);
 }
 
-bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString &path, const QByteArray &remotePerm)
+bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString &path, RemotePermissions remotePerm)
 {
-    if (_syncOptions._confirmExternalStorage && remotePerm.contains('M')) {
-        // 'M' in the permission means external storage.
+    if (_syncOptions._confirmExternalStorage
+        && remotePerm.hasPermission(RemotePermissions::IsMounted)) {
+        // external storage.
 
         /* Note: DiscoverySingleDirectoryJob::directoryListingIteratedSlot make sure that only the
          * root of a mounted storage has 'M', all sub entries have 'm' */
@@ -144,7 +145,7 @@ bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString &path, const QByteA
     }
 }
 
-int DiscoveryJob::checkSelectiveSyncNewFolderCallback(void *data, const QByteArray &path, const QByteArray &remotePerm)
+int DiscoveryJob::checkSelectiveSyncNewFolderCallback(void *data, const QByteArray &path, RemotePermissions remotePerm)
 {
     return static_cast<DiscoveryJob *>(data)->checkSelectiveSyncNewFolder(QString::fromUtf8(path), remotePerm);
 }
@@ -350,20 +351,19 @@ static std::unique_ptr<csync_file_stat_t> propertyMapToFileStat(const QMap<QStri
         } else if (property == "dDC") {
             file_stat->directDownloadCookies = value.toUtf8();
         } else if (property == "permissions") {
-            file_stat->remotePerm = value.toUtf8();
+            file_stat->remotePerm = RemotePermissions(value);
         } else if (property == "checksums") {
             file_stat->checksumHeader = findBestChecksum(value.toUtf8());
         } else if (property == "share-types" && !value.isEmpty()) {
-            // Since QMap is sorted, "share-types" is always "permissions".
-            if (file_stat->remotePerm.isEmpty()) {
+            // Since QMap is sorted, "share-types" is always after "permissions".
+            if (file_stat->remotePerm.isNull()) {
                 qWarning() << "Server returned a share type, but no permissions?";
             } else {
                 // S means shared with me.
                 // But for our purpose, we want to know if the file is shared. It does not matter
                 // if we are the owner or not.
-                // Piggy back on the persmission field 'S'
-                if (!file_stat->remotePerm.contains('S'))
-                    file_stat->remotePerm.append('S');
+                // Piggy back on the persmission field
+                file_stat->remotePerm.setPermission(RemotePermissions::IsShared);
             }
         }
     }
@@ -376,9 +376,9 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         // The first entry is for the folder itself, we should process it differently.
         _ignoredFirst = true;
         if (map.contains("permissions")) {
-            auto perm = map.value("permissions");
+            RemotePermissions perm(map.value("permissions"));
             emit firstDirectoryPermissions(perm);
-            _isExternalStorage = perm.contains(QLatin1Char('M'));
+            _isExternalStorage = perm.hasPermission(RemotePermissions::IsMounted);
         }
         if (map.contains("data-fingerprint")) {
             _dataFingerprint = map.value("data-fingerprint").toUtf8();
@@ -401,11 +401,12 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         if (file_stat->etag.isEmpty()) {
             qCCritical(lcDiscovery) << "etag of" << file_stat->path << "is" << file_stat->etag << "This must not happen.";
         }
-        if (_isExternalStorage) {
+        if (_isExternalStorage && file_stat->remotePerm.hasPermission(RemotePermissions::IsMounted)) {
             /* All the entries in a external storage have 'M' in their permission. However, for all
                purposes in the desktop client, we only need to know about the mount points.
                So replace the 'M' by a 'm' for every sub entries in an external storage */
-            file_stat->remotePerm.replace('M', 'm');
+            file_stat->remotePerm.unsetPermission(RemotePermissions::IsMounted);
+            file_stat->remotePerm.setPermission(RemotePermissions::IsMountedSub);
         }
 
         QStringRef fileRef(&file);
@@ -557,12 +558,12 @@ void DiscoveryMainThread::singleDirectoryJobFinishedWithErrorSlot(int csyncErrno
     _discoveryJob->_vioMutex.unlock();
 }
 
-void DiscoveryMainThread::singleDirectoryJobFirstDirectoryPermissionsSlot(const QString &p)
+void DiscoveryMainThread::singleDirectoryJobFirstDirectoryPermissionsSlot(RemotePermissions p)
 {
     // Should be thread safe since the sync thread is blocked
-    if (_discoveryJob->_csync_ctx->remote.root_perms.isEmpty()) {
-        qCDebug(lcDiscovery) << "Permissions for root dir:" << p;
-        _discoveryJob->_csync_ctx->remote.root_perms = p.toUtf8();
+    if (_discoveryJob->_csync_ctx->remote.root_perms.isNull()) {
+        qCDebug(lcDiscovery) << "Permissions for root dir:" << p.toString();
+        _discoveryJob->_csync_ctx->remote.root_perms = p;
     }
 }
 

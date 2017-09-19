@@ -183,10 +183,10 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       /* we have an update! */
       CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Database entry found, compare: %" PRId64 " <-> %" PRId64
                                           ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64
-                                          ", size: %" PRId64 " <-> %" PRId64 ", perms: %s <-> %s, ignore: %d",
+                                          ", size: %" PRId64 " <-> %" PRId64 ", perms: %x <-> %x, ignore: %d",
                 ((int64_t) fs->modtime), ((int64_t) tmp->modtime),
                 fs->etag.constData(), tmp->etag.constData(), (uint64_t) fs->inode, (uint64_t) tmp->inode,
-                (uint64_t) fs->size, (uint64_t) tmp->size, fs->remotePerm.constData(), tmp->remotePerm.constData(), tmp->has_ignored_files );
+                (uint64_t) fs->size, (uint64_t) tmp->size, *reinterpret_cast<short*>(&fs->remotePerm), *reinterpret_cast<short*>(&tmp->remotePerm), tmp->has_ignored_files );
       if (ctx->current == REMOTE_REPLICA && fs->etag != tmp->etag) {
           fs->instruction = CSYNC_INSTRUCTION_EVAL;
 

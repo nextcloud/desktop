@@ -235,7 +235,7 @@ private:
      * to recover
      */
     void checkForPermission(SyncFileItemVector &syncItems);
-    QByteArray getPermissions(const QString &file) const;
+    RemotePermissions getPermissions(const QString &file) const;
 
     /**
      * Instead of downloading files from the server, upload the files to the server
