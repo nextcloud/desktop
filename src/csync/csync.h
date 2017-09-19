@@ -41,6 +41,7 @@
 #include <config_csync.h>
 #include <memory>
 #include <QByteArray>
+#include "common/remotepermissions.h"
 
 #if defined(Q_CC_GNU) && !defined(Q_CC_INTEL) && !defined(Q_CC_CLANG) && (__GNUC__ * 100 + __GNUC_MINOR__ < 408)
 // openSuse 12.3 didn't like enum bitfields.
@@ -163,6 +164,8 @@ struct OCSYNC_EXPORT csync_file_stat_s {
   time_t modtime;
   int64_t size;
   uint64_t inode;
+
+  OCC::RemotePermissions remotePerm;
   enum csync_ftw_type_e type BITFIELD(4);
   bool child_modified BITFIELD(1);
   bool has_ignored_files BITFIELD(1); // Specify that a directory, or child directory contains ignored files.
@@ -174,7 +177,6 @@ struct OCSYNC_EXPORT csync_file_stat_s {
   QByteArray file_id;
   QByteArray directDownloadUrl;
   QByteArray directDownloadCookies;
-  QByteArray remotePerm;
   QByteArray original_path; // only set if locale conversion fails
 
   // In the local tree, this can hold a checksum and its type if it is

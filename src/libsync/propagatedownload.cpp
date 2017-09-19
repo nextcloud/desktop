@@ -823,13 +823,7 @@ void PropagateDownloadFile::downloadFinished()
     }
 
     // Apply the remote permissions
-    // Older server versions sometimes provide empty remote permissions
-    // see #4450 - don't adjust the write permissions there.
-    const int serverVersionGoodRemotePerm = Account::makeServerVersion(7, 0, 0);
-    if (propagator()->account()->serverVersionInt() >= serverVersionGoodRemotePerm) {
-        FileSystem::setFileReadOnlyWeak(_tmpFile.fileName(),
-            !_item->_remotePerm.contains('W'));
-    }
+    FileSystem::setFileReadOnlyWeak(_tmpFile.fileName(), !_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite));
 
     QString error;
     emit propagator()->touchedFile(fn);
@@ -882,7 +876,7 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 
     // handle the special recall file
-    if (!_item->_remotePerm.contains("S")
+    if (!_item->_remotePerm.hasPermission(RemotePermissions::IsShared)
         && (_item->_file == QLatin1String(".sys.admin#recall#")
                || _item->_file.endsWith("/.sys.admin#recall#"))) {
         handleRecallFile(fn, propagator()->_localDir, *propagator()->_journal);

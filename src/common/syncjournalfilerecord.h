@@ -23,6 +23,7 @@
 #include <QDateTime>
 
 #include "ocsynclib.h"
+#include "remotepermissions.h"
 
 namespace OCC {
 
@@ -57,7 +58,7 @@ public:
     QByteArray _etag;
     QByteArray _fileId;
     qint64 _fileSize;
-    QByteArray _remotePerm;
+    RemotePermissions _remotePerm;
     bool _serverHasIgnoredFiles;
     QByteArray _checksumHeader;
 };

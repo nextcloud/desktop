@@ -113,7 +113,7 @@ public:
 
     // This is not actually a network job, it is just a job
 signals:
-    void firstDirectoryPermissions(const QString &);
+    void firstDirectoryPermissions(RemotePermissions);
     void etagConcatenation(const QString &);
     void etag(const QString &);
     void finishedWithResult();
@@ -178,7 +178,7 @@ public slots:
     // From Job:
     void singleDirectoryJobResultSlot();
     void singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, const QString &msg);
-    void singleDirectoryJobFirstDirectoryPermissionsSlot(const QString &);
+    void singleDirectoryJobFirstDirectoryPermissionsSlot(RemotePermissions);
 
     void slotGetSizeFinishedWithError();
     void slotGetSizeResult(const QVariantMap &);
@@ -212,8 +212,8 @@ class DiscoveryJob : public QObject
      */
     bool isInSelectiveSyncBlackList(const QByteArray &path) const;
     static int isInSelectiveSyncBlackListCallback(void *, const QByteArray &);
-    bool checkSelectiveSyncNewFolder(const QString &path, const QByteArray &remotePerm);
-    static int checkSelectiveSyncNewFolderCallback(void *data, const QByteArray &path, const QByteArray &remotePerm);
+    bool checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp);
+    static int checkSelectiveSyncNewFolderCallback(void *data, const QByteArray &path, RemotePermissions rm);
 
     // Just for progress
     static void update_job_update_callback(bool local,

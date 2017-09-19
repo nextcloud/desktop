@@ -411,7 +411,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
     if (!file->directDownloadCookies.isEmpty()) {
         item->_directDownloadCookies = QString::fromUtf8(file->directDownloadCookies);
     }
-    if (!file->remotePerm.isEmpty()) {
+    if (!file->remotePerm.isNull()) {
         item->_remotePerm = file->remotePerm;
     }
 
@@ -601,8 +601,8 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
 
                 // If the 'W' remote permission changed, update the local filesystem
                 SyncJournalFileRecord prev = _journal->getFileRecord(item->_file);
-                if (prev.isValid() && prev._remotePerm.contains('W') != item->_remotePerm.contains('W')) {
-                    const bool isReadOnly = !item->_remotePerm.contains('W');
+                if (prev.isValid() && prev._remotePerm.hasPermission(RemotePermissions::CanWrite) != item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
+                    const bool isReadOnly = !item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite);
                     FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
                 }
 
@@ -946,7 +946,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         qCWarning(lcEngine) << "Error in remote treewalk.";
     }
 
-    qCInfo(lcEngine) << "Permissions of the root folder: " << _csync_ctx->remote.root_perms;
+    qCInfo(lcEngine) << "Permissions of the root folder: " << _csync_ctx->remote.root_perms.toString();
 
     // The map was used for merging trees, convert it to a list:
     SyncFileItemVector syncItems = _syncItemMap.values().toVector();
@@ -1251,11 +1251,11 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
         case CSYNC_INSTRUCTION_NEW: {
             int slashPos = (*it)->_file.lastIndexOf('/');
             QString parentDir = slashPos <= 0 ? "" : (*it)->_file.mid(0, slashPos);
-            const QByteArray perms = getPermissions(parentDir);
+            const auto perms = getPermissions(parentDir);
             if (perms.isNull()) {
                 // No permissions set
                 break;
-            } else if ((*it)->isDirectory() && !perms.contains("K")) {
+            } else if ((*it)->isDirectory() && !perms.hasPermission(RemotePermissions::CanAddSubDirectories)) {
                 qCWarning(lcEngine) << "checkForPermission: ERROR" << (*it)->_file;
                 (*it)->_instruction = CSYNC_INSTRUCTION_ERROR;
                 (*it)->_status = SyncFileItem::NormalError;
@@ -1277,7 +1277,7 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
                     (*it)->_errorString = tr("Not allowed because you don't have permission to add parent folder");
                 }
 
-            } else if (!(*it)->isDirectory() && !perms.contains("C")) {
+            } else if (!(*it)->isDirectory() && !perms.hasPermission(RemotePermissions::CanAddFile)) {
                 qCWarning(lcEngine) << "checkForPermission: ERROR" << (*it)->_file;
                 (*it)->_instruction = CSYNC_INSTRUCTION_ERROR;
                 (*it)->_status = SyncFileItem::NormalError;
@@ -1286,12 +1286,12 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
             break;
         }
         case CSYNC_INSTRUCTION_SYNC: {
-            const QByteArray perms = getPermissions((*it)->_file);
+            const auto perms = getPermissions((*it)->_file);
             if (perms.isNull()) {
                 // No permissions set
                 break;
             }
-            if (!perms.contains("W")) {
+            if (!perms.hasPermission(RemotePermissions::CanWrite)) {
                 qCWarning(lcEngine) << "checkForPermission: RESTORING" << (*it)->_file;
                 (*it)->_instruction = CSYNC_INSTRUCTION_CONFLICT;
                 (*it)->_direction = SyncFileItem::Down;
@@ -1312,12 +1312,12 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
             break;
         }
         case CSYNC_INSTRUCTION_REMOVE: {
-            const QByteArray perms = getPermissions((*it)->_file);
+            const auto perms = getPermissions((*it)->_file);
             if (perms.isNull()) {
                 // No permissions set
                 break;
             }
-            if (!perms.contains("D")) {
+            if (!perms.hasPermission(RemotePermissions::CanDelete)) {
                 qCWarning(lcEngine) << "checkForPermission: RESTORING" << (*it)->_file;
                 (*it)->_instruction = CSYNC_INSTRUCTION_NEW;
                 (*it)->_direction = SyncFileItem::Down;
@@ -1344,7 +1344,8 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
                         (*it)->_errorString = tr("Not allowed to remove, restoring");
                     }
                 }
-            } else if (perms.contains("S") && perms.contains("D")) {
+            } else if (perms.hasPermission(RemotePermissions::IsShared)
+                && perms.hasPermission(RemotePermissions::CanDelete)) {
                 // this is a top level shared dir which can be removed to unshare it,
                 // regardless if it is a read only share or not.
                 // To avoid that we try to restore files underneath this dir which have
@@ -1369,8 +1370,8 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
         case CSYNC_INSTRUCTION_RENAME: {
             int slashPos = (*it)->_renameTarget.lastIndexOf('/');
             const QString parentDir = slashPos <= 0 ? "" : (*it)->_renameTarget.mid(0, slashPos);
-            const QByteArray destPerms = getPermissions(parentDir);
-            const QByteArray filePerms = getPermissions((*it)->_file);
+            const auto destPerms = getPermissions(parentDir);
+            const auto filePerms = getPermissions((*it)->_file);
 
             //true when it is just a rename in the same directory. (not a move)
             bool isRename = (*it)->_file.startsWith(parentDir) && (*it)->_file.lastIndexOf('/') == slashPos;
@@ -1381,21 +1382,21 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
             if (isRename || destPerms.isNull()) {
                 // no need to check for the destination dir permission
                 destinationOK = true;
-            } else if ((*it)->isDirectory() && !destPerms.contains("K")) {
+            } else if ((*it)->isDirectory() && !destPerms.hasPermission(RemotePermissions::CanAddSubDirectories)) {
                 destinationOK = false;
-            } else if (!(*it)->isDirectory() && !destPerms.contains("C")) {
+            } else if (!(*it)->isDirectory() && !destPerms.hasPermission(RemotePermissions::CanAddFile)) {
                 destinationOK = false;
             }
 
             // check if we are allowed to move from the source
             bool sourceOK = true;
             if (!filePerms.isNull()
-                && ((isRename && !filePerms.contains("N"))
-                       || (!isRename && !filePerms.contains("V")))) {
+                && ((isRename && !filePerms.hasPermission(RemotePermissions::CanRename))
+                       || (!isRename && !filePerms.hasPermission(RemotePermissions::CanMove)))) {
                 // We are not allowed to move or rename this file
                 sourceOK = false;
 
-                if (filePerms.contains("D") && destinationOK) {
+                if (filePerms.hasPermission(RemotePermissions::CanDelete) && destinationOK) {
                     // but we are allowed to delete it
                     // TODO!  simulate delete & upload
                 }
@@ -1451,13 +1452,13 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
     }
 }
 
-QByteArray SyncEngine::getPermissions(const QString &file) const
+RemotePermissions SyncEngine::getPermissions(const QString &file) const
 {
     static bool isTest = qgetenv("OWNCLOUD_TEST_PERMISSIONS").toInt();
     if (isTest) {
         QRegExp rx("_PERM_([^_]*)_[^/]*$");
         if (rx.indexIn(file) != -1) {
-            return rx.cap(1).toLatin1();
+            return RemotePermissions(rx.cap(1));
         }
     }
 
@@ -1471,7 +1472,7 @@ QByteArray SyncEngine::getPermissions(const QString &file) const
     if (it != _csync_ctx->remote.files.end()) {
         return it->second->remotePerm;
     }
-    return QByteArray();
+    return RemotePermissions();
 }
 
 void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)

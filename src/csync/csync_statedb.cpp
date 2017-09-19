@@ -264,7 +264,10 @@ static int _csync_file_stat_from_metadata_table( std::unique_ptr<csync_file_stat
         st->type = static_cast<enum csync_ftw_type_e>(sqlite3_column_int(stmt, 3));
         st->etag = (char*)sqlite3_column_text(stmt, 4);
         st->file_id = (char*)sqlite3_column_text(stmt, 5);
-        st->remotePerm = (char*)sqlite3_column_text(stmt, 6);
+        const char *permStr = (char *)sqlite3_column_text(stmt, 6);
+        // If permStr is empty, construct a null RemotePermissions.  We make sure that non-null
+        // permissions are never empty in RemotePermissions.toString()
+        st->remotePerm = permStr && *permStr ? OCC::RemotePermissions(permStr) : OCC::RemotePermissions();
         st->size = sqlite3_column_int64(stmt, 7);
         st->has_ignored_files = sqlite3_column_int(stmt, 8);
         st->checksumHeader = (char *)sqlite3_column_text(stmt, 9);

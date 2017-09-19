@@ -86,7 +86,7 @@ struct OCSYNC_EXPORT csync_s {
 
       /* hooks for checking the white list (uses the update_callback_userdata) */
       int (*checkSelectiveSyncBlackListHook)(void*, const QByteArray &) = nullptr;
-      int (*checkSelectiveSyncNewFolderHook)(void*, const QByteArray &/* path */, const QByteArray &/* remotePerm */) = nullptr;
+      int (*checkSelectiveSyncNewFolderHook)(void *, const QByteArray & /* path */, OCC::RemotePermissions) = nullptr;
 
 
       csync_vio_opendir_hook remote_opendir_hook = nullptr;
@@ -126,7 +126,7 @@ struct OCSYNC_EXPORT csync_s {
   struct {
     FileMap files;
     bool read_from_db = false;
-    QByteArray root_perms; /* Permission of the root folder. (Since the root folder is not in the db tree, we need to keep a separate entry.) */
+    OCC::RemotePermissions root_perms; /* Permission of the root folder. (Since the root folder is not in the db tree, we need to keep a separate entry.) */
   } remote;
 
   /* replica we are currently walking */

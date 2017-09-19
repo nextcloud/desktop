@@ -54,7 +54,7 @@ private slots:
         record._type = 5;
         record._etag = "789789";
         record._fileId = "abcd";
-        record._remotePerm = "744";
+        record._remotePerm = RemotePermissions("RW");
         record._fileSize = 213089055;
         record._checksumHeader = "MD5:mychecksum";
         QVERIFY(_db.setFileRecord(record));
@@ -74,7 +74,7 @@ private slots:
         record._type = 7;
         record._etag = "789FFF";
         record._fileId = "efg";
-        record._remotePerm = "777";
+        record._remotePerm = RemotePermissions("NV");
         record._fileSize = 289055;
         _db.setFileRecordMetadata(record);
         storedRecord = _db.getFileRecord("foo");
@@ -91,7 +91,7 @@ private slots:
         {
             SyncJournalFileRecord record;
             record._path = "foo-checksum";
-            record._remotePerm = "744";
+            record._remotePerm = RemotePermissions("RW");
             record._checksumHeader = "MD5:mychecksum";
             record._modtime = QDateTime::currentDateTimeUtc();
             QVERIFY(_db.setFileRecord(record));
@@ -111,7 +111,7 @@ private slots:
         {
             SyncJournalFileRecord record;
             record._path = "foo-nochecksum";
-            record._remotePerm = "744";
+            record._remotePerm = RemotePermissions("RWN");
 	    record._modtime = QDateTime::currentDateTimeUtc();
 
             QVERIFY(_db.setFileRecord(record));

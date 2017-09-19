@@ -8,4 +8,5 @@ set(common_SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/syncjournaldb.cpp
     ${CMAKE_CURRENT_LIST_DIR}/syncjournalfilerecord.cpp
     ${CMAKE_CURRENT_LIST_DIR}/utility.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/remotepermissions.cpp
 )

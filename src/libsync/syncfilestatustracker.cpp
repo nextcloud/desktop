@@ -147,7 +147,7 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString &relativePath)
     // First look it up in the database to know if it's shared
     SyncJournalFileRecord rec = _syncEngine->journal()->getFileRecord(relativePath);
     if (rec.isValid()) {
-        return resolveSyncAndErrorStatus(relativePath, rec._remotePerm.contains("S") ? Shared : NotShared);
+        return resolveSyncAndErrorStatus(relativePath, rec._remotePerm.hasPermission(RemotePermissions::IsShared) ? Shared : NotShared);
     }
 
     // Must be a new file not yet in the database, check if it's syncing or has an error.
@@ -226,7 +226,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector &items)
             _syncProblems[item->_file] = SyncFileStatus::StatusWarning;
         }
 
-        SharedFlag sharedFlag = item->_remotePerm.contains("S") ? Shared : NotShared;
+        SharedFlag sharedFlag = item->_remotePerm.hasPermission(RemotePermissions::IsShared) ? Shared : NotShared;
         if (item->_instruction != CSYNC_INSTRUCTION_NONE
             && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA
             && item->_instruction != CSYNC_INSTRUCTION_IGNORE
@@ -272,7 +272,7 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItemPtr &item)
         _syncProblems.erase(item->_file);
     }
 
-    SharedFlag sharedFlag = item->_remotePerm.contains("S") ? Shared : NotShared;
+    SharedFlag sharedFlag = item->_remotePerm.hasPermission(RemotePermissions::IsShared) ? Shared : NotShared;
     if (item->_instruction != CSYNC_INSTRUCTION_NONE
         && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA
         && item->_instruction != CSYNC_INSTRUCTION_IGNORE

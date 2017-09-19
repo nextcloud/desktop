@@ -215,6 +215,7 @@ public:
     Status _status BITFIELD(4);
     bool _isRestoration BITFIELD(1); // The original operation was forbidden, and this is a restoration
     quint16 _httpErrorCode;
+    RemotePermissions _remotePerm;
     QString _errorString; // Contains a string only in case of error
     QByteArray _responseTimeStamp;
     quint32 _affectedItems; // the number of affected items by the operation on this item.
@@ -228,7 +229,6 @@ public:
     quint64 _size;
     quint64 _inode;
     QByteArray _fileId;
-    QByteArray _remotePerm;
 
     // This is the value for the 'new' side, matching with _size and _modtime.
     //
