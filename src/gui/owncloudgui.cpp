@@ -38,7 +38,6 @@
 #include <QDesktopServices>
 #include <QDir>
 #include <QMessageBox>
-#include <QSignalMapper>
 
 #if defined(Q_OS_X11)
 #include <QX11Info>
@@ -63,8 +62,6 @@ ownCloudGui::ownCloudGui(Application *parent)
     , _contextMenuVisibleOsx(false)
     , _recentActionsMenu(0)
     , _qdbusmenuWorkaround(false)
-    , _folderOpenActionMapper(new QSignalMapper(this))
-    , _recentItemsMapper(new QSignalMapper(this))
     , _app(parent)
 {
     _tray = new Systray();
@@ -80,13 +77,6 @@ ownCloudGui::ownCloudGui(Application *parent)
     setupContextMenu();
 
     _tray->show();
-
-    /* use a signal mapper to map the open requests to the alias names */
-    connect(_folderOpenActionMapper, SIGNAL(mapped(QString)),
-        this, SLOT(slotFolderOpenAction(QString)));
-
-    connect(_recentItemsMapper, SIGNAL(mapped(QString)),
-        this, SLOT(slotOpenPath(QString)));
 
     ProgressDispatcher *pd = ProgressDispatcher::instance();
     connect(pd, SIGNAL(progressInfo(QString, ProgressInfo)), this,
@@ -337,9 +327,8 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
         }
 
         QAction *action = new QAction(tr("Open folder '%1'").arg(folder->shortGuiLocalPath()), menu);
-        connect(action, SIGNAL(triggered()), _folderOpenActionMapper, SLOT(map()));
-        _folderOpenActionMapper->setMapping(action, folder->alias());
-        menu->addAction(action);
+        auto alias = folder->alias();
+        connect(action, &QAction::triggered, this, [this, alias] { this->slotFolderOpenAction(alias); });
     }
 
     menu->addSeparator();
@@ -805,8 +794,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
         if (f) {
             QString fullPath = f->path() + '/' + progress._lastCompletedItem._file;
             if (QFile(fullPath).exists()) {
-                _recentItemsMapper->setMapping(action, fullPath);
-                connect(action, SIGNAL(triggered()), _recentItemsMapper, SLOT(map()));
+                connect(action, &QAction::triggered, this, [this, fullPath] { this->slotOpenPath(fullPath); });
             } else {
                 action->setEnabled(false);
             }
