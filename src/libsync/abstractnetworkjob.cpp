@@ -26,6 +26,7 @@
 #include <QTimer>
 #include <QMutex>
 #include <QCoreApplication>
+#include <QAuthenticator>
 
 #include "networkjobs.h"
 #include "account.h"

@@ -32,6 +32,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QSslKey>
+#include <QAuthenticator>
 
 namespace OCC {
 
