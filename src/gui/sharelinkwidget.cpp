@@ -170,7 +170,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     if (sharingPossible) {
         _manager = new ShareManager(_account, this);
         connect(_manager, &ShareManager::sharesFetched, this, &ShareLinkWidget::slotSharesFetched);
-        connect(_manager, SIGNAL(linkShareCreated(QSharedPointer<LinkShare>)), SLOT(slotCreateShareFetched(const QSharedPointer<LinkShare>)));
+        connect(_manager, &ShareManager::linkShareCreated, this, &ShareLinkWidget::slotCreateShareFetched);
         connect(_manager, &ShareManager::linkShareRequiresPassword, this, &ShareLinkWidget::slotCreateShareRequiresPassword);
         connect(_manager, &ShareManager::serverError, this, &ShareLinkWidget::slotServerError);
     }
@@ -436,7 +436,7 @@ void ShareLinkWidget::slotDeleteShareFetched()
     getShares();
 }
 
-void ShareLinkWidget::slotCreateShareFetched(const QSharedPointer<LinkShare> share)
+void ShareLinkWidget::slotCreateShareFetched(const QSharedPointer<LinkShare> &share)
 {
     _pi_create->stopAnimation();
     _pi_password->stopAnimation();

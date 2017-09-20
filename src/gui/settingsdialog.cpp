@@ -93,7 +93,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     // People perceive this as a Window, so also make Ctrl+W work
     QAction *closeWindowAction = new QAction(this);
     closeWindowAction->setShortcut(QKeySequence("Ctrl+W"));
-    connect(closeWindowAction, SIGNAL(triggered()), SLOT(accept()));
+    connect(closeWindowAction, &QAction::triggered, this, &SettingsDialog::accept);
     addAction(closeWindowAction);
 
     setObjectName("Settings"); // required as group for saveGeometry call

@@ -701,7 +701,7 @@ void ownCloudGui::setupActions()
 
     if (_app->debugMode()) {
         _actionCrash = new QAction(tr("Crash now", "Only shows in debug mode to allow testing the crash handler"), this);
-        connect(_actionCrash, SIGNAL(triggered()), _app, SLOT(slotCrash()));
+        connect(_actionCrash, &QAction::triggered, _app, &Application::slotCrash);
     } else {
         _actionCrash = 0;
     }

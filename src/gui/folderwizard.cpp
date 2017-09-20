@@ -198,8 +198,8 @@ void FolderWizardRemotePath::slotCreateRemoteFolder(const QString &folder)
 
     MkColJob *job = new MkColJob(_account, fullPath, this);
     /* check the owncloud configuration file and query the ownCloud */
-    connect(job, SIGNAL(finished(QNetworkReply::NetworkError)),
-        SLOT(slotCreateRemoteFolderFinished(QNetworkReply::NetworkError)));
+    connect(job, static_cast<void (MkColJob::*)(QNetworkReply::NetworkError)>(&MkColJob::finished),
+        this, &FolderWizardRemotePath::slotCreateRemoteFolderFinished);
     connect(job, &AbstractNetworkJob::networkError, this, &FolderWizardRemotePath::slotHandleMkdirNetworkError);
     job->start();
 }

@@ -53,6 +53,7 @@ public slots:
     void slotUpdateFolderView(Folder *f);
     void slotUnregisterPath(const QString &alias);
     void slotRegisterPath(const QString &alias);
+    void broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus);
 
 signals:
     void shareCommandReceived(const QString &sharePath, const QString &localPath);
@@ -62,7 +63,6 @@ private slots:
     void onLostConnection();
     void slotSocketDestroyed(QObject *obj);
     void slotReadSocket();
-    void broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus);
 
     void copyPrivateLinkToClipboard(const QString &link) const;
     void emailPrivateLink(const QString &link) const;

@@ -225,6 +225,7 @@ public:
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
+    void slotHandleSslErrors(QNetworkReply *, QList<QSslError>);
 
 signals:
     /// Emitted whenever there's network activity
@@ -247,7 +248,6 @@ signals:
     void accountChangedAvatar();
 
 protected Q_SLOTS:
-    void slotHandleSslErrors(QNetworkReply *, QList<QSslError>);
     void slotCredentialsFetched();
     void slotCredentialsAsked();
 
