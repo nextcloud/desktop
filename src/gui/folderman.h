@@ -24,7 +24,6 @@
 #include "folderwatcher.h"
 #include "syncfileitem.h"
 
-class QSignalMapper;
 class TestFolderMan;
 
 namespace OCC {
