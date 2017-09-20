@@ -11,6 +11,17 @@
 
 using namespace OCC;
 
+
+static void changeAllFileId(FileInfo &info) {
+    info.fileId = generateFileId();
+    if (!info.isDir)
+        return;
+    info.etag = generateEtag();
+    for (auto it = info.children.begin(); it != info.children.end(); ++it) {
+        changeAllFileId(*it);
+    }
+}
+
 /*
  * This test ensure that the SyncEngine::aboutToRemoveAllFiles is correctly called and that when
  * we the user choose to remove all files SyncJournalDb::clearFileTable makes works as expected
@@ -111,6 +122,34 @@ private slots:
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(fakeFolder.currentLocalState().children.count(), 0);
+    }
+
+    void testNotDeleteMetaDataChange() {
+        /**
+         * This test make sure that we don't popup a file deleted message if all the metadata have
+         * been updated (for example when the server is upgraded or something)
+         **/
+
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        // We never remove all files.
+        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveAllFiles,
+            [&] { QVERIFY(false); });
+        QVERIFY(fakeFolder.syncOnce());
+
+        for (const auto &s : fakeFolder.currentRemoteState().children.keys())
+            fakeFolder.syncJournal().avoidRenamesOnNextSync(s); // clears all the fileid and inodes.
+        fakeFolder.localModifier().remove("A/a1");
+        auto expectedState = fakeFolder.currentLocalState();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), expectedState);
+        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+
+        fakeFolder.remoteModifier().remove("B/b1");
+        changeAllFileId(fakeFolder.remoteModifier());
+        expectedState = fakeFolder.currentRemoteState();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), expectedState);
+        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
     }
 };
 

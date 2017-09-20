@@ -555,7 +555,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
     switch (file->instruction) {
     case CSYNC_INSTRUCTION_NONE: {
         // Any files that are instruction NONE?
-        if (!isDirectory && (!other || other->instruction == CSYNC_INSTRUCTION_NONE)) {
+        if (!isDirectory && (!other || other->instruction == CSYNC_INSTRUCTION_NONE || other->instruction == CSYNC_INSTRUCTION_UPDATE_METADATA)) {
             _hasNoneFiles = true;
         }
         // Put none-instruction conflict files into the syncfileitem list
@@ -612,6 +612,10 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
                 // The local tree is walked first and doesn't have all the info from the server.
                 // Update only outdated data from the disk.
                 _journal->updateLocalMetadata(item->_file, item->_modtime, item->_size, item->_inode);
+            }
+
+            if (!other || other->instruction == CSYNC_INSTRUCTION_NONE || other->instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
+                _hasNoneFiles = true;
             }
 
             // Technically we're done with this item.
