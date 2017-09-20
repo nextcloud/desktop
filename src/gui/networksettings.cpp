@@ -57,8 +57,8 @@ NetworkSettings::NetworkSettings(QWidget *parent)
     loadBWLimitSettings();
 
     // proxy
-    connect(_ui->typeComboBox, SIGNAL(currentIndexChanged(int)), SLOT(saveProxySettings()));
-    connect(_ui->proxyButtonGroup, SIGNAL(buttonClicked(int)), SLOT(saveProxySettings()));
+    connect(_ui->typeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &NetworkSettings::saveProxySettings);
+    connect(_ui->proxyButtonGroup, static_cast<void (QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &NetworkSettings::saveProxySettings);
     connect(_ui->hostLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
     connect(_ui->userLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
     connect(_ui->passwordLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
@@ -71,8 +71,8 @@ NetworkSettings::NetworkSettings(QWidget *parent)
     connect(_ui->downloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->noDownloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->autoDownloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
-    connect(_ui->downloadSpinBox, SIGNAL(valueChanged(int)), SLOT(saveBWLimitSettings()));
-    connect(_ui->uploadSpinBox, SIGNAL(valueChanged(int)), SLOT(saveBWLimitSettings()));
+    connect(_ui->downloadSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &NetworkSettings::saveBWLimitSettings);
+    connect(_ui->uploadSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &NetworkSettings::saveBWLimitSettings);
 }
 
 NetworkSettings::~NetworkSettings()

@@ -460,7 +460,7 @@ void SelectiveSyncDialog::init(const AccountPtr &account)
     layout->addWidget(_selectiveSync);
     QDialogButtonBox *buttonBox = new QDialogButtonBox(Qt::Horizontal);
     _okButton = buttonBox->addButton(QDialogButtonBox::Ok);
-    connect(_okButton, SIGNAL(clicked()), this, SLOT(accept()));
+    connect(_okButton, &QPushButton::clicked, this, &SelectiveSyncDialog::accept);
     QPushButton *button;
     button = buttonBox->addButton(QDialogButtonBox::Cancel);
     connect(button, &QAbstractButton::clicked, this, &QDialog::reject);

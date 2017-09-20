@@ -208,8 +208,8 @@ Application::Application(int &argc, char **argv)
     QTimer::singleShot(0, this, &Application::slotCheckConnection);
 
     // Can't use onlineStateChanged because it is always true on modern systems because of many interfaces
-    connect(&_networkConfigurationManager, SIGNAL(configurationChanged(QNetworkConfiguration)),
-        this, SLOT(slotSystemOnlineConfigurationChanged(QNetworkConfiguration)));
+    connect(&_networkConfigurationManager, &QNetworkConfigurationManager::configurationChanged,
+        this, &Application::slotSystemOnlineConfigurationChanged);
 
     // Update checks
     UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this);

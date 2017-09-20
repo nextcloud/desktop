@@ -56,9 +56,9 @@ IssuesWidget::IssuesWidget(QWidget *parent)
 
     connect(_ui->showIgnores, &QAbstractButton::toggled, this, &IssuesWidget::slotRefreshIssues);
     connect(_ui->showWarnings, &QAbstractButton::toggled, this, &IssuesWidget::slotRefreshIssues);
-    connect(_ui->filterAccount, SIGNAL(currentIndexChanged(int)), SLOT(slotRefreshIssues()));
-    connect(_ui->filterAccount, SIGNAL(currentIndexChanged(int)), SLOT(slotUpdateFolderFilters()));
-    connect(_ui->filterFolder, SIGNAL(currentIndexChanged(int)), SLOT(slotRefreshIssues()));
+    connect(_ui->filterAccount, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &IssuesWidget::slotRefreshIssues);
+    connect(_ui->filterAccount, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &IssuesWidget::slotUpdateFolderFilters);
+    connect(_ui->filterFolder, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &IssuesWidget::slotRefreshIssues);
     for (auto account : AccountManager::instance()->accounts()) {
         slotAccountAdded(account.data());
     }

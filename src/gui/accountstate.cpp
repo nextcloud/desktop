@@ -201,8 +201,8 @@ void AccountState::checkConnectivity()
 
     ConnectionValidator *conValidator = new ConnectionValidator(account());
     _connectionValidator = conValidator;
-    connect(conValidator, SIGNAL(connectionResult(ConnectionValidator::Status, QStringList)),
-        SLOT(slotConnectionValidatorResult(ConnectionValidator::Status, QStringList)));
+    connect(conValidator, &ConnectionValidator::connectionResult,
+        this, &AccountState::slotConnectionValidatorResult);
     if (isConnected()) {
         // Use a small authed propfind as a minimal ping when we're
         // already connected.

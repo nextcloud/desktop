@@ -90,8 +90,7 @@ ActivityWidget::ActivityWidget(QWidget *parent)
 
     connect(_model, &QAbstractItemModel::rowsInserted, this, &ActivityWidget::rowsInserted);
 
-    connect(_ui->_activityList, SIGNAL(activated(QModelIndex)), this,
-        SLOT(slotOpenFile(QModelIndex)));
+    connect(_ui->_activityList, &QListView::activated, this, &ActivityWidget::slotOpenFile);
 
     connect(&_removeTimer, &QTimer::timeout, this, &ActivityWidget::slotCheckToCleanWidgets);
     _removeTimer.setInterval(1000);
@@ -113,8 +112,8 @@ void ActivityWidget::slotRefreshNotifications(AccountState *ptr)
     // are running
     if (_notificationRequestsRunning == 0) {
         ServerNotificationHandler *snh = new ServerNotificationHandler;
-        connect(snh, SIGNAL(newNotificationList(ActivityList)), this,
-            SLOT(slotBuildNotificationDisplay(ActivityList)));
+        connect(snh, &ServerNotificationHandler::newNotificationList,
+            this, &ActivityWidget::slotBuildNotificationDisplay);
 
         snh->slotFetchNotifications(ptr);
     } else {
@@ -388,8 +387,8 @@ void ActivityWidget::slotSendNotificationRequest(const QString &accountName, con
             job->setWidget(theSender);
             connect(job, &AbstractNetworkJob::networkError,
                 this, &ActivityWidget::slotNotifyNetworkError);
-            connect(job, SIGNAL(jobFinished(QString, int)),
-                this, SLOT(slotNotifyServerFinished(QString, int)));
+            connect(job, &NotificationConfirmJob::jobFinished,
+                this, &ActivityWidget::slotNotifyServerFinished);
             job->start();
 
             // count the number of running notification requests. If this member var
