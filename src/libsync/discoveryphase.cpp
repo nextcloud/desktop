@@ -622,9 +622,9 @@ void DiscoveryMainThread::slotGetSizeResult(const QVariantMap &map)
 void DiscoveryMainThread::abort()
 {
     if (_singleDirJob) {
-        _singleDirJob->disconnect(SIGNAL(finishedWithError(int, QString)), this);
-        _singleDirJob->disconnect(SIGNAL(firstDirectoryPermissions(QString)), this);
-        _singleDirJob->disconnect(SIGNAL(finishedWithResult()), this);
+        disconnect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::finishedWithError, this, nullptr);
+        disconnect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::firstDirectoryPermissions, this, nullptr);
+        disconnect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::finishedWithResult, this, nullptr);
         _singleDirJob->abort();
     }
     if (_currentDiscoveryDirectoryResult) {
