@@ -31,6 +31,7 @@
 #include "syncengine.h"
 #include "creds/credentialscommon.h"
 #include "creds/httpcredentials.h"
+#include <QAuthenticator>
 
 using namespace QKeychain;
 
