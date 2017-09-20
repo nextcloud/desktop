@@ -24,8 +24,8 @@ ToolTipUpdater::ToolTipUpdater(QTreeView *treeView)
     : QObject(treeView)
     , _treeView(treeView)
 {
-    connect(_treeView->model(), SIGNAL(dataChanged(QModelIndex, QModelIndex, QVector<int>)),
-        SLOT(dataChanged(QModelIndex, QModelIndex, QVector<int>)));
+    connect(_treeView->model(), &QAbstractItemModel::dataChanged,
+        this, &ToolTipUpdater::dataChanged);
     _treeView->viewport()->installEventFilter(this);
 }
 

@@ -131,8 +131,8 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
     sending_qnam = qnam_alive.data();
     if (sending_qnam) {
         _gaveCredentialsTo.insert(sending_qnam);
-        connect(sending_qnam, SIGNAL(destroyed(QObject *)),
-            SLOT(slotSenderDestroyed(QObject *)));
+        connect(sending_qnam, &QObject::destroyed,
+            this, &ProxyAuthHandler::slotSenderDestroyed);
     }
 }
 
@@ -194,8 +194,8 @@ bool ProxyAuthHandler::getCredsFromKeychain()
         _readPasswordJob->setInsecureFallback(false);
         _readPasswordJob->setKey(keychainPasswordKey());
         _readPasswordJob->setAutoDelete(false);
-        connect(_readPasswordJob.data(), SIGNAL(finished(QKeychain::Job *)),
-            SLOT(slotKeychainJobDone()));
+        connect(_readPasswordJob.data(), &QKeychain::Job::finished,
+            this, &ProxyAuthHandler::slotKeychainJobDone);
         _keychainJobRunning = true;
         _readPasswordJob->start();
     }
@@ -242,7 +242,7 @@ void ProxyAuthHandler::storeCredsInKeychain()
     job->setKey(keychainPasswordKey());
     job->setTextData(_password);
     job->setAutoDelete(false);
-    connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotKeychainJobDone()));
+    connect(job, &QKeychain::Job::finished, this, &ProxyAuthHandler::slotKeychainJobDone);
     _keychainJobRunning = true;
     job->start();
 

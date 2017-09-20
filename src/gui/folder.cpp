@@ -82,32 +82,32 @@ Folder::Folder(const FolderDefinition &definition,
     if (!setIgnoredFiles())
         qCWarning(lcFolder, "Could not read system exclude file");
 
-    connect(_accountState.data(), SIGNAL(isConnectedChanged()), this, SIGNAL(canSyncChanged()));
-    connect(_engine.data(), SIGNAL(rootEtag(QString)), this, SLOT(etagRetreivedFromSyncEngine(QString)));
+    connect(_accountState.data(), &AccountState::isConnectedChanged, this, &Folder::canSyncChanged);
+    connect(_engine.data(), &SyncEngine::rootEtag, this, &Folder::etagRetreivedFromSyncEngine);
 
-    connect(_engine.data(), SIGNAL(started()), SLOT(slotSyncStarted()), Qt::QueuedConnection);
-    connect(_engine.data(), SIGNAL(finished(bool)), SLOT(slotSyncFinished(bool)), Qt::QueuedConnection);
-    connect(_engine.data(), SIGNAL(csyncUnavailable()), SLOT(slotCsyncUnavailable()), Qt::QueuedConnection);
+    connect(_engine.data(), &SyncEngine::started, this, &Folder::slotSyncStarted, Qt::QueuedConnection);
+    connect(_engine.data(), &SyncEngine::finished, this, &Folder::slotSyncFinished, Qt::QueuedConnection);
+    connect(_engine.data(), &SyncEngine::csyncUnavailable, this, &Folder::slotCsyncUnavailable, Qt::QueuedConnection);
 
     //direct connection so the message box is blocking the sync.
-    connect(_engine.data(), SIGNAL(aboutToRemoveAllFiles(SyncFileItem::Direction, bool *)),
-        SLOT(slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *)));
-    connect(_engine.data(), SIGNAL(aboutToRestoreBackup(bool *)),
-        SLOT(slotAboutToRestoreBackup(bool *)));
-    connect(_engine.data(), SIGNAL(transmissionProgress(ProgressInfo)), this, SLOT(slotTransmissionProgress(ProgressInfo)));
-    connect(_engine.data(), SIGNAL(itemCompleted(const SyncFileItemPtr &)),
-        this, SLOT(slotItemCompleted(const SyncFileItemPtr &)));
-    connect(_engine.data(), SIGNAL(newBigFolder(QString, bool)),
-        this, SLOT(slotNewBigFolderDiscovered(QString, bool)));
-    connect(_engine.data(), SIGNAL(seenLockedFile(QString)), FolderMan::instance(), SLOT(slotSyncOnceFileUnlocks(QString)));
-    connect(_engine.data(), SIGNAL(aboutToPropagate(SyncFileItemVector &)),
-        SLOT(slotLogPropagationStart()));
+    connect(_engine.data(), &SyncEngine::aboutToRemoveAllFiles,
+        this, &Folder::slotAboutToRemoveAllFiles);
+    connect(_engine.data(), &SyncEngine::aboutToRestoreBackup,
+        this, &Folder::slotAboutToRestoreBackup);
+    connect(_engine.data(), &SyncEngine::transmissionProgress, this, &Folder::slotTransmissionProgress);
+    connect(_engine.data(), &SyncEngine::itemCompleted,
+        this, &Folder::slotItemCompleted);
+    connect(_engine.data(), &SyncEngine::newBigFolder,
+        this, &Folder::slotNewBigFolderDiscovered);
+    connect(_engine.data(), &SyncEngine::seenLockedFile, FolderMan::instance(), &FolderMan::slotSyncOnceFileUnlocks);
+    connect(_engine.data(), &SyncEngine::aboutToPropagate,
+        this, &Folder::slotLogPropagationStart);
     connect(_engine.data(), &SyncEngine::syncError, this, &Folder::slotSyncError);
 
     _scheduleSelfTimer.setSingleShot(true);
     _scheduleSelfTimer.setInterval(SyncEngine::minimumFileAgeForUpload);
-    connect(&_scheduleSelfTimer, SIGNAL(timeout()),
-        SLOT(slotScheduleThisFolder()));
+    connect(&_scheduleSelfTimer, &QTimer::timeout,
+        this, &Folder::slotScheduleThisFolder);
 }
 
 Folder::~Folder()
@@ -288,7 +288,7 @@ void Folder::slotRunEtagJob()
     _requestEtagJob = new RequestEtagJob(account, remotePath(), this);
     _requestEtagJob->setTimeout(60 * 1000);
     // check if the etag is different when retrieved
-    QObject::connect(_requestEtagJob, SIGNAL(etagRetreived(QString)), this, SLOT(etagRetreived(QString)));
+    QObject::connect(_requestEtagJob.data(), &RequestEtagJob::etagRetreived, this, &Folder::etagRetreived);
     FolderMan::instance()->slotScheduleETagJob(alias(), _requestEtagJob);
     // The _requestEtagJob is auto deleting itself on finish. Our guard pointer _requestEtagJob will then be null.
 }
@@ -789,7 +789,7 @@ void Folder::slotSyncFinished(bool success)
     // file system change notifications are ignored for that folder. And it takes
     // some time under certain conditions to make the file system notifications
     // all come in.
-    QTimer::singleShot(200, this, SLOT(slotEmitFinishedDelayed()));
+    QTimer::singleShot(200, this, &Folder::slotEmitFinishedDelayed);
 
     _lastSyncDuration = _timeSinceLastSyncStart.elapsed();
     _timeSinceLastSyncDone.start();

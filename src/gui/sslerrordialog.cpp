@@ -68,13 +68,13 @@ SslErrorDialog::SslErrorDialog(AccountPtr account, QWidget *parent)
     QPushButton *cancelButton =
         _ui->_dialogButtonBox->button(QDialogButtonBox::Cancel);
     okButton->setEnabled(false);
-    connect(_ui->_cbTrustConnect, SIGNAL(clicked(bool)),
-        okButton, SLOT(setEnabled(bool)));
+    connect(_ui->_cbTrustConnect, &QAbstractButton::clicked,
+        okButton, &QWidget::setEnabled);
 
     if (okButton) {
         okButton->setDefault(true);
-        connect(okButton, SIGNAL(clicked()), SLOT(accept()));
-        connect(cancelButton, SIGNAL(clicked()), SLOT(reject()));
+        connect(okButton, &QAbstractButton::clicked, this, &QDialog::accept);
+        connect(cancelButton, &QAbstractButton::clicked, this, &QDialog::reject);
     }
 }
 

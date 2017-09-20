@@ -52,15 +52,15 @@ AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, 
 {
     _timer.setSingleShot(true);
     _timer.setInterval(OwncloudPropagator::httpTimeout() * 1000); // default to 5 minutes.
-    connect(&_timer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
+    connect(&_timer, &QTimer::timeout, this, &AbstractNetworkJob::slotTimeout);
 
-    connect(this, SIGNAL(networkActivity()), SLOT(resetTimeout()));
+    connect(this, &AbstractNetworkJob::networkActivity, this, &AbstractNetworkJob::resetTimeout);
 
     // Network activity on the propagator jobs (GET/PUT) keeps all requests alive.
     // This is a workaround for OC instances which only support one
     // parallel up and download
     if (_account) {
-        connect(_account.data(), SIGNAL(propagatorNetworkActivity()), SLOT(resetTimeout()));
+        connect(_account.data(), &Account::propagatorNetworkActivity, this, &AbstractNetworkJob::resetTimeout);
     }
 }
 
@@ -103,13 +103,13 @@ void AbstractNetworkJob::setPath(const QString &path)
 
 void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
 {
-    connect(reply, SIGNAL(finished()), SLOT(slotFinished()));
-    connect(reply, SIGNAL(encrypted()), SIGNAL(networkActivity()));
-    connect(reply->manager(), SIGNAL(proxyAuthenticationRequired(QNetworkProxy, QAuthenticator *)), SIGNAL(networkActivity()));
-    connect(reply, SIGNAL(sslErrors(QList<QSslError>)), SIGNAL(networkActivity()));
-    connect(reply, SIGNAL(metaDataChanged()), SIGNAL(networkActivity()));
-    connect(reply, SIGNAL(downloadProgress(qint64, qint64)), SIGNAL(networkActivity()));
-    connect(reply, SIGNAL(uploadProgress(qint64, qint64)), SIGNAL(networkActivity()));
+    connect(reply, &QNetworkReply::finished, this, &AbstractNetworkJob::slotFinished);
+    connect(reply, &QNetworkReply::encrypted, this, &AbstractNetworkJob::networkActivity);
+    connect(reply->manager(), &QNetworkAccessManager::proxyAuthenticationRequired, this, &AbstractNetworkJob::networkActivity);
+    connect(reply, &QNetworkReply::sslErrors, this, &AbstractNetworkJob::networkActivity);
+    connect(reply, &QNetworkReply::metaDataChanged, this, &AbstractNetworkJob::networkActivity);
+    connect(reply, &QNetworkReply::downloadProgress, this, &AbstractNetworkJob::networkActivity);
+    connect(reply, &QNetworkReply::uploadProgress, this, &AbstractNetworkJob::networkActivity);
 }
 
 QNetworkReply *AbstractNetworkJob::addTimer(QNetworkReply *reply)

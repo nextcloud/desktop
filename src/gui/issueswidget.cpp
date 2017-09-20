@@ -44,30 +44,30 @@ IssuesWidget::IssuesWidget(QWidget *parent)
 {
     _ui->setupUi(this);
 
-    connect(ProgressDispatcher::instance(), SIGNAL(progressInfo(QString, ProgressInfo)),
-        this, SLOT(slotProgressInfo(QString, ProgressInfo)));
-    connect(ProgressDispatcher::instance(), SIGNAL(itemCompleted(QString, SyncFileItemPtr)),
-        this, SLOT(slotItemCompleted(QString, SyncFileItemPtr)));
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
+        this, &IssuesWidget::slotProgressInfo);
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::itemCompleted,
+        this, &IssuesWidget::slotItemCompleted);
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::syncError,
         this, &IssuesWidget::addError);
 
-    connect(_ui->_treeWidget, SIGNAL(itemActivated(QTreeWidgetItem *, int)), SLOT(slotOpenFile(QTreeWidgetItem *, int)));
-    connect(_ui->copyIssuesButton, SIGNAL(clicked()), SIGNAL(copyToClipboard()));
+    connect(_ui->_treeWidget, &QTreeWidget::itemActivated, this, &IssuesWidget::slotOpenFile);
+    connect(_ui->copyIssuesButton, &QAbstractButton::clicked, this, &IssuesWidget::copyToClipboard);
 
-    connect(_ui->showIgnores, SIGNAL(toggled(bool)), SLOT(slotRefreshIssues()));
-    connect(_ui->showWarnings, SIGNAL(toggled(bool)), SLOT(slotRefreshIssues()));
+    connect(_ui->showIgnores, &QAbstractButton::toggled, this, &IssuesWidget::slotRefreshIssues);
+    connect(_ui->showWarnings, &QAbstractButton::toggled, this, &IssuesWidget::slotRefreshIssues);
     connect(_ui->filterAccount, SIGNAL(currentIndexChanged(int)), SLOT(slotRefreshIssues()));
     connect(_ui->filterAccount, SIGNAL(currentIndexChanged(int)), SLOT(slotUpdateFolderFilters()));
     connect(_ui->filterFolder, SIGNAL(currentIndexChanged(int)), SLOT(slotRefreshIssues()));
     for (auto account : AccountManager::instance()->accounts()) {
         slotAccountAdded(account.data());
     }
-    connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState *)),
-        SLOT(slotAccountAdded(AccountState *)));
-    connect(AccountManager::instance(), SIGNAL(accountRemoved(AccountState *)),
-        SLOT(slotAccountRemoved(AccountState *)));
-    connect(FolderMan::instance(), SIGNAL(folderListChanged(Folder::Map)),
-        SLOT(slotUpdateFolderFilters()));
+    connect(AccountManager::instance(), &AccountManager::accountAdded,
+        this, &IssuesWidget::slotAccountAdded);
+    connect(AccountManager::instance(), &AccountManager::accountRemoved,
+        this, &IssuesWidget::slotAccountRemoved);
+    connect(FolderMan::instance(), &FolderMan::folderListChanged,
+        this, &IssuesWidget::slotUpdateFolderFilters);
 
 
     // Adjust copyToClipboard() when making changes here!

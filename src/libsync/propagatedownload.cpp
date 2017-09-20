@@ -137,10 +137,10 @@ void GETFileJob::start()
         qCWarning(lcGetJob) << " Network error: " << errorString();
     }
 
-    connect(reply(), SIGNAL(metaDataChanged()), this, SLOT(slotMetaDataChanged()));
-    connect(reply(), SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
-    connect(reply(), SIGNAL(downloadProgress(qint64, qint64)), this, SIGNAL(downloadProgress(qint64, qint64)));
-    connect(this, SIGNAL(networkActivity()), account().data(), SIGNAL(propagatorNetworkActivity()));
+    connect(reply(), &QNetworkReply::metaDataChanged, this, &GETFileJob::slotMetaDataChanged);
+    connect(reply(), &QIODevice::readyRead, this, &GETFileJob::slotReadyRead);
+    connect(reply(), &QNetworkReply::downloadProgress, this, &GETFileJob::downloadProgress);
+    connect(this, &AbstractNetworkJob::networkActivity, account().data(), &Account::propagatorNetworkActivity);
 
     AbstractNetworkJob::start();
 }
@@ -356,8 +356,8 @@ void PropagateDownloadFile::start()
         qCDebug(lcPropagateDownload) << _item->_file << "may not need download, computing checksum";
         auto computeChecksum = new ComputeChecksum(this);
         computeChecksum->setChecksumType(parseChecksumHeaderType(_item->_checksumHeader));
-        connect(computeChecksum, SIGNAL(done(QByteArray, QByteArray)),
-            SLOT(conflictChecksumComputed(QByteArray, QByteArray)));
+        connect(computeChecksum, &ComputeChecksum::done,
+            this, &PropagateDownloadFile::conflictChecksumComputed);
         computeChecksum->start(propagator()->getFilePath(_item->_file));
         return;
     }
@@ -478,8 +478,8 @@ void PropagateDownloadFile::startDownload()
             &_tmpFile, headers, expectedEtagForResume, _resumeStart, this);
     }
     _job->setBandwidthManager(&propagator()->_bandwidthManager);
-    connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotGetFinished()));
-    connect(_job, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(slotDownloadProgress(qint64, qint64)));
+    connect(_job.data(), &GETFileJob::finishedSignal, this, &PropagateDownloadFile::slotGetFinished);
+    connect(_job.data(), &GETFileJob::downloadProgress, this, &PropagateDownloadFile::slotDownloadProgress);
     propagator()->_activeJobList.append(this);
     _job->start();
 }
@@ -620,10 +620,10 @@ void PropagateDownloadFile::slotGetFinished()
     // will also emit the validated() signal to continue the flow in slot transmissionChecksumValidated()
     // as this is (still) also correct.
     ValidateChecksumHeader *validator = new ValidateChecksumHeader(this);
-    connect(validator, SIGNAL(validated(QByteArray, QByteArray)),
-        SLOT(transmissionChecksumValidated(QByteArray, QByteArray)));
-    connect(validator, SIGNAL(validationFailed(QString)),
-        SLOT(slotChecksumFail(QString)));
+    connect(validator, &ValidateChecksumHeader::validated,
+        this, &PropagateDownloadFile::transmissionChecksumValidated);
+    connect(validator, &ValidateChecksumHeader::validationFailed,
+        this, &PropagateDownloadFile::slotChecksumFail);
     auto checksumHeader = job->reply()->rawHeader(checkSumHeaderC);
     validator->start(_tmpFile.fileName(), checksumHeader);
 }
@@ -750,8 +750,8 @@ void PropagateDownloadFile::transmissionChecksumValidated(const QByteArray &chec
     auto computeChecksum = new ComputeChecksum(this);
     computeChecksum->setChecksumType(theContentChecksumType);
 
-    connect(computeChecksum, SIGNAL(done(QByteArray, QByteArray)),
-        SLOT(contentChecksumComputed(QByteArray, QByteArray)));
+    connect(computeChecksum, &ComputeChecksum::done,
+        this, &PropagateDownloadFile::contentChecksumComputed);
     computeChecksum->start(_tmpFile.fileName());
 }
 

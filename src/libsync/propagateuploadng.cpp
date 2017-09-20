@@ -90,12 +90,12 @@ void PropagateUploadFileNG::doStartUpload()
         _jobs.append(job);
         job->setProperties(QList<QByteArray>() << "resourcetype"
                                                << "getcontentlength");
-        connect(job, SIGNAL(finishedWithoutError()), this, SLOT(slotPropfindFinished()));
-        connect(job, SIGNAL(finishedWithError(QNetworkReply *)),
-            this, SLOT(slotPropfindFinishedWithError()));
-        connect(job, SIGNAL(destroyed(QObject *)), this, SLOT(slotJobDestroyed(QObject *)));
-        connect(job, SIGNAL(directoryListingIterated(QString, QMap<QString, QString>)),
-            this, SLOT(slotPropfindIterate(QString, QMap<QString, QString>)));
+        connect(job, &LsColJob::finishedWithoutError, this, &PropagateUploadFileNG::slotPropfindFinished);
+        connect(job, &LsColJob::finishedWithError,
+            this, &PropagateUploadFileNG::slotPropfindFinishedWithError);
+        connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
+        connect(job, &LsColJob::directoryListingIterated,
+            this, &PropagateUploadFileNG::slotPropfindIterate);
         job->start();
         return;
     } else if (progressInfo._valid) {
@@ -159,7 +159,7 @@ void PropagateUploadFileNG::slotPropfindFinished()
         // with corruptions if there are too many chunks, or if we abort and there are still stale chunks.
         for (auto it = _serverChunks.begin(); it != _serverChunks.end(); ++it) {
             auto job = new DeleteJob(propagator()->account(), Utility::concatUrlPath(chunkUrl(), it->originalName), this);
-            QObject::connect(job, SIGNAL(finishedSignal()), this, SLOT(slotDeleteJobFinished()));
+            QObject::connect(job, &DeleteJob::finishedSignal, this, &PropagateUploadFileNG::slotDeleteJobFinished);
             _jobs.append(job);
             job->start();
         }
@@ -238,7 +238,7 @@ void PropagateUploadFileNG::startNewUpload()
 
     connect(job, SIGNAL(finished(QNetworkReply::NetworkError)),
         this, SLOT(slotMkColFinished(QNetworkReply::NetworkError)));
-    connect(job, SIGNAL(destroyed(QObject *)), this, SLOT(slotJobDestroyed(QObject *)));
+    connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     job->start();
 }
 
@@ -292,8 +292,8 @@ void PropagateUploadFileNG::startNextChunk()
         auto job = new MoveJob(propagator()->account(), Utility::concatUrlPath(chunkUrl(), "/.file"),
             destination, headers, this);
         _jobs.append(job);
-        connect(job, SIGNAL(finishedSignal()), this, SLOT(slotMoveJobFinished()));
-        connect(job, SIGNAL(destroyed(QObject *)), this, SLOT(slotJobDestroyed(QObject *)));
+        connect(job, &MoveJob::finishedSignal, this, &PropagateUploadFileNG::slotMoveJobFinished);
+        connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
         propagator()->_activeJobList.append(this);
         job->start();
         return;
@@ -324,12 +324,12 @@ void PropagateUploadFileNG::startNextChunk()
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
     PUTFileJob *job = new PUTFileJob(propagator()->account(), url, device, headers, _currentChunk, this);
     _jobs.append(job);
-    connect(job, SIGNAL(finishedSignal()), this, SLOT(slotPutFinished()));
-    connect(job, SIGNAL(uploadProgress(qint64, qint64)),
-        this, SLOT(slotUploadProgress(qint64, qint64)));
+    connect(job, &PUTFileJob::finishedSignal, this, &PropagateUploadFileNG::slotPutFinished);
+    connect(job, &PUTFileJob::uploadProgress,
+        this, &PropagateUploadFileNG::slotUploadProgress);
     connect(job, SIGNAL(uploadProgress(qint64, qint64)),
         device, SLOT(slotJobUploadProgress(qint64, qint64)));
-    connect(job, SIGNAL(destroyed(QObject *)), this, SLOT(slotJobDestroyed(QObject *)));
+    connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     job->start();
     propagator()->_activeJobList.append(this);
     _currentChunk++;

@@ -95,7 +95,7 @@ QtSingleApplication::QtSingleApplication(const QString &appId, int &argc, char *
     *pids = 0;
     pidPeer = new QtLocalPeer(this, appId + QLatin1Char('-') +
                               QString::number(QCoreApplication::applicationPid()));
-    connect(pidPeer, SIGNAL(messageReceived(QString,QObject*)), SIGNAL(messageReceived(QString,QObject*)));
+    connect(pidPeer, &QtLocalPeer::messageReceived, this, &QtSingleApplication::messageReceived);
     pidPeer->isClient();
     lockfile.unlock();
 }
@@ -169,9 +169,9 @@ void QtSingleApplication::setActivationWindow(QWidget *aw, bool activateOnMessag
     if (!pidPeer)
         return;
     if (activateOnMessage)
-        connect(pidPeer, SIGNAL(messageReceived(QString,QObject*)), this, SLOT(activateWindow()));
+        connect(pidPeer, &QtLocalPeer::messageReceived, this, &QtSingleApplication::activateWindow);
     else
-        disconnect(pidPeer, SIGNAL(messageReceived(QString,QObject*)), this, SLOT(activateWindow()));
+        disconnect(pidPeer, &QtLocalPeer::messageReceived, this, &QtSingleApplication::activateWindow);
 }
 
 

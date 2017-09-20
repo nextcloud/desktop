@@ -151,8 +151,8 @@ QByteArray ComputeChecksum::checksumType() const
 void ComputeChecksum::start(const QString &filePath)
 {
     // Calculate the checksum in a different thread first.
-    connect(&_watcher, SIGNAL(finished()),
-        this, SLOT(slotCalculationDone()),
+    connect(&_watcher, &QFutureWatcherBase::finished,
+        this, &ComputeChecksum::slotCalculationDone,
         Qt::UniqueConnection);
     _watcher.setFuture(QtConcurrent::run(ComputeChecksum::computeNow, filePath, checksumType()));
 }
@@ -208,8 +208,8 @@ void ValidateChecksumHeader::start(const QString &filePath, const QByteArray &ch
 
     auto calculator = new ComputeChecksum(this);
     calculator->setChecksumType(_expectedChecksumType);
-    connect(calculator, SIGNAL(done(QByteArray, QByteArray)),
-        SLOT(slotChecksumCalculated(QByteArray, QByteArray)));
+    connect(calculator, &ComputeChecksum::done,
+        this, &ValidateChecksumHeader::slotChecksumCalculated);
     calculator->start(filePath);
 }
 

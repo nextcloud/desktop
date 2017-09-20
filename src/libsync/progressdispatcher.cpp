@@ -130,7 +130,7 @@ void ProgressDispatcher::setProgressInfo(const QString &folder, const ProgressIn
 
 ProgressInfo::ProgressInfo()
 {
-    connect(&_updateEstimatesTimer, SIGNAL(timeout()), SLOT(updateEstimates()));
+    connect(&_updateEstimatesTimer, &QTimer::timeout, this, &ProgressInfo::updateEstimates);
     reset();
 }
 

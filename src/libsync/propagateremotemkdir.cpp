@@ -111,8 +111,8 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
         auto propfindJob = new PropfindJob(_job->account(), _job->path(), this);
         propfindJob->setProperties(QList<QByteArray>() << "getetag"
                                                        << "http://owncloud.org/ns:id");
-        QObject::connect(propfindJob, SIGNAL(result(QVariantMap)), this, SLOT(propfindResult(QVariantMap)));
-        QObject::connect(propfindJob, SIGNAL(finishedWithError()), this, SLOT(propfindError()));
+        QObject::connect(propfindJob, &PropfindJob::result, this, &PropagateRemoteMkdir::propfindResult);
+        QObject::connect(propfindJob, &PropfindJob::finishedWithError, this, &PropagateRemoteMkdir::propfindError);
         propfindJob->start();
         _job = propfindJob;
         return;

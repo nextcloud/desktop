@@ -95,7 +95,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
 
     _clearTouchedFilesTimer.setSingleShot(true);
     _clearTouchedFilesTimer.setInterval(30 * 1000);
-    connect(&_clearTouchedFilesTimer, SIGNAL(timeout()), SLOT(slotClearTouchedFiles()));
+    connect(&_clearTouchedFilesTimer, &QTimer::timeout, this, &SyncEngine::slotClearTouchedFiles);
 
     _thread.setObjectName("SyncEngine_Thread");
 }
@@ -731,8 +731,8 @@ void SyncEngine::startSync()
             qCInfo(lcEngine) << "Finish Poll jobs before starting a sync";
             CleanupPollsJob *job = new CleanupPollsJob(pollInfos, _account,
                 _journal, _localPath, this);
-            connect(job, SIGNAL(finished()), this, SLOT(startSync()));
-            connect(job, SIGNAL(aborted(QString)), this, SLOT(slotCleanPollsJobAborted(QString)));
+            connect(job, &CleanupPollsJob::finished, this, &SyncEngine::startSync);
+            connect(job, &CleanupPollsJob::aborted, this, &SyncEngine::slotCleanPollsJobAborted);
             job->start();
             return;
         }
@@ -845,13 +845,13 @@ void SyncEngine::startSync()
 
     _discoveryMainThread = new DiscoveryMainThread(account());
     _discoveryMainThread->setParent(this);
-    connect(this, SIGNAL(finished(bool)), _discoveryMainThread, SLOT(deleteLater()));
+    connect(this, &SyncEngine::finished, _discoveryMainThread.data(), &QObject::deleteLater);
     qCInfo(lcEngine) << "Server" << account()->serverVersion()
                      << (account()->isHttp2Supported() ? "Using HTTP/2" : "");
     if (account()->rootEtagChangesNotOnlySubFolderEtags()) {
-        connect(_discoveryMainThread, SIGNAL(etag(QString)), this, SLOT(slotRootEtagReceived(QString)));
+        connect(_discoveryMainThread.data(), &DiscoveryMainThread::etag, this, &SyncEngine::slotRootEtagReceived);
     } else {
-        connect(_discoveryMainThread, SIGNAL(etagConcatenation(QString)), this, SLOT(slotRootEtagReceived(QString)));
+        connect(_discoveryMainThread.data(), &DiscoveryMainThread::etagConcatenation, this, &SyncEngine::slotRootEtagReceived);
     }
 
     DiscoveryJob *discoveryJob = new DiscoveryJob(_csync_ctx.data());
@@ -868,12 +868,12 @@ void SyncEngine::startSync()
 
     discoveryJob->_syncOptions = _syncOptions;
     discoveryJob->moveToThread(&_thread);
-    connect(discoveryJob, SIGNAL(finished(int)), this, SLOT(slotDiscoveryJobFinished(int)));
-    connect(discoveryJob, SIGNAL(folderDiscovered(bool, QString)),
-        this, SLOT(slotFolderDiscovered(bool, QString)));
+    connect(discoveryJob, &DiscoveryJob::finished, this, &SyncEngine::slotDiscoveryJobFinished);
+    connect(discoveryJob, &DiscoveryJob::folderDiscovered,
+        this, &SyncEngine::slotFolderDiscovered);
 
-    connect(discoveryJob, SIGNAL(newBigFolder(QString, bool)),
-        this, SIGNAL(newBigFolder(QString, bool)));
+    connect(discoveryJob, &DiscoveryJob::newBigFolder,
+        this, &SyncEngine::newBigFolder);
 
 
     // This is used for the DiscoveryJob to be able to request the main thread/
@@ -1038,15 +1038,15 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _propagator = QSharedPointer<OwncloudPropagator>(
         new OwncloudPropagator(_account, _localPath, _remotePath, _journal));
     _propagator->setSyncOptions(_syncOptions);
-    connect(_propagator.data(), SIGNAL(itemCompleted(const SyncFileItemPtr &)),
-        this, SLOT(slotItemCompleted(const SyncFileItemPtr &)));
-    connect(_propagator.data(), SIGNAL(progress(const SyncFileItem &, quint64)),
-        this, SLOT(slotProgress(const SyncFileItem &, quint64)));
-    connect(_propagator.data(), SIGNAL(finished(bool)), this, SLOT(slotFinished(bool)), Qt::QueuedConnection);
-    connect(_propagator.data(), SIGNAL(seenLockedFile(QString)), SIGNAL(seenLockedFile(QString)));
-    connect(_propagator.data(), SIGNAL(touchedFile(QString)), SLOT(slotAddTouchedFile(QString)));
-    connect(_propagator.data(), SIGNAL(insufficientLocalStorage()), SLOT(slotInsufficientLocalStorage()));
-    connect(_propagator.data(), SIGNAL(insufficientRemoteStorage()), SLOT(slotInsufficientRemoteStorage()));
+    connect(_propagator.data(), &OwncloudPropagator::itemCompleted,
+        this, &SyncEngine::slotItemCompleted);
+    connect(_propagator.data(), &OwncloudPropagator::progress,
+        this, &SyncEngine::slotProgress);
+    connect(_propagator.data(), &OwncloudPropagator::finished, this, &SyncEngine::slotFinished, Qt::QueuedConnection);
+    connect(_propagator.data(), &OwncloudPropagator::seenLockedFile, this, &SyncEngine::seenLockedFile);
+    connect(_propagator.data(), &OwncloudPropagator::touchedFile, this, &SyncEngine::slotAddTouchedFile);
+    connect(_propagator.data(), &OwncloudPropagator::insufficientLocalStorage, this, &SyncEngine::slotInsufficientLocalStorage);
+    connect(_propagator.data(), &OwncloudPropagator::insufficientRemoteStorage, this, &SyncEngine::slotInsufficientRemoteStorage);
 
     // apply the network limits to the propagator
     setNetworkLimits(_uploadLimit, _downloadLimit);

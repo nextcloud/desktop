@@ -24,9 +24,9 @@ OwncloudConnectionMethodDialog::OwncloudConnectionMethodDialog(QWidget *parent)
 {
     ui->setupUi(this);
 
-    connect(ui->btnNoTLS, SIGNAL(clicked(bool)), this, SLOT(returnNoTLS()));
-    connect(ui->btnClientSideTLS, SIGNAL(clicked(bool)), this, SLOT(returnClientSideTLS()));
-    connect(ui->btnBack, SIGNAL(clicked(bool)), this, SLOT(returnBack()));
+    connect(ui->btnNoTLS, &QAbstractButton::clicked, this, &OwncloudConnectionMethodDialog::returnNoTLS);
+    connect(ui->btnClientSideTLS, &QAbstractButton::clicked, this, &OwncloudConnectionMethodDialog::returnClientSideTLS);
+    connect(ui->btnBack, &QAbstractButton::clicked, this, &OwncloudConnectionMethodDialog::returnBack);
 }
 
 void OwncloudConnectionMethodDialog::setUrl(const QUrl &url)

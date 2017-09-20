@@ -124,8 +124,8 @@ void ActivityListModel::startFetchJob(AccountState *s)
         return;
     }
     JsonApiJob *job = new JsonApiJob(s->account(), QLatin1String("ocs/v1.php/cloud/activity"), this);
-    QObject::connect(job, SIGNAL(jsonReceived(QJsonDocument, int)),
-        this, SLOT(slotActivitiesReceived(QJsonDocument, int)));
+    QObject::connect(job, &JsonApiJob::jsonReceived,
+        this, &ActivityListModel::slotActivitiesReceived);
     job->setProperty("AccountStatePtr", QVariant::fromValue<QPointer<AccountState>>(s));
 
     QList<QPair<QString, QString>> params;

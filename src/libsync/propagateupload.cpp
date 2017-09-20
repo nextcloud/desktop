@@ -85,8 +85,8 @@ void PUTFileJob::start()
         qCWarning(lcPutJob) << " Network error: " << reply()->errorString();
     }
 
-    connect(reply(), SIGNAL(uploadProgress(qint64, qint64)), this, SIGNAL(uploadProgress(qint64, qint64)));
-    connect(this, SIGNAL(networkActivity()), account().data(), SIGNAL(propagatorNetworkActivity()));
+    connect(reply(), &QNetworkReply::uploadProgress, this, &PUTFileJob::uploadProgress);
+    connect(this, &AbstractNetworkJob::networkActivity, account().data(), &Account::propagatorNetworkActivity);
     _requestTimer.start();
     AbstractNetworkJob::start();
 }
@@ -98,7 +98,7 @@ void PollJob::start()
     QUrl finalUrl = QUrl::fromUserInput(accountUrl.scheme() + QLatin1String("://") + accountUrl.authority()
         + (path().startsWith('/') ? QLatin1String("") : QLatin1String("/")) + path());
     sendRequest("GET", finalUrl);
-    connect(reply(), SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(resetTimeout()));
+    connect(reply(), &QNetworkReply::downloadProgress, this, &AbstractNetworkJob::resetTimeout);
     AbstractNetworkJob::start();
 }
 
@@ -197,8 +197,8 @@ void PropagateUploadFileCommon::start()
         propagator()->_remoteFolder + _item->_file,
         this);
     _jobs.append(job);
-    connect(job, SIGNAL(finishedSignal()), SLOT(slotComputeContentChecksum()));
-    connect(job, SIGNAL(destroyed(QObject *)), SLOT(slotJobDestroyed(QObject *)));
+    connect(job, &DeleteJob::finishedSignal, this, &PropagateUploadFileCommon::slotComputeContentChecksum);
+    connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     job->start();
 }
 
@@ -232,10 +232,10 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
     auto computeChecksum = new ComputeChecksum(this);
     computeChecksum->setChecksumType(checksumType);
 
-    connect(computeChecksum, SIGNAL(done(QByteArray, QByteArray)),
-        SLOT(slotComputeTransmissionChecksum(QByteArray, QByteArray)));
-    connect(computeChecksum, SIGNAL(done(QByteArray, QByteArray)),
-        computeChecksum, SLOT(deleteLater()));
+    connect(computeChecksum, &ComputeChecksum::done,
+        this, &PropagateUploadFileCommon::slotComputeTransmissionChecksum);
+    connect(computeChecksum, &ComputeChecksum::done,
+        computeChecksum, &QObject::deleteLater);
     computeChecksum->start(filePath);
 }
 
@@ -264,10 +264,10 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray
         computeChecksum->setChecksumType(QByteArray());
     }
 
-    connect(computeChecksum, SIGNAL(done(QByteArray, QByteArray)),
-        SLOT(slotStartUpload(QByteArray, QByteArray)));
-    connect(computeChecksum, SIGNAL(done(QByteArray, QByteArray)),
-        computeChecksum, SLOT(deleteLater()));
+    connect(computeChecksum, &ComputeChecksum::done,
+        this, &PropagateUploadFileCommon::slotStartUpload);
+    connect(computeChecksum, &ComputeChecksum::done,
+        computeChecksum, &QObject::deleteLater);
     const QString filePath = propagator()->getFilePath(_item->_file);
     computeChecksum->start(filePath);
 }
@@ -465,7 +465,7 @@ void PropagateUploadFileCommon::startPollJob(const QString &path)
 {
     PollJob *job = new PollJob(propagator()->account(), path, _item,
         propagator()->_journal, propagator()->_localDir, this);
-    connect(job, SIGNAL(finishedSignal()), SLOT(slotPollFinished()));
+    connect(job, &PollJob::finishedSignal, this, &PropagateUploadFileCommon::slotPollFinished);
     SyncJournalDb::PollInfo info;
     info._file = _item->_file;
     info._url = path;

@@ -35,8 +35,8 @@ SslButton::SslButton(QWidget *parent)
     setAutoRaise(true);
 
     _menu = new QMenu(this);
-    QObject::connect(_menu, SIGNAL(aboutToShow()),
-        this, SLOT(slotUpdateMenu()));
+    QObject::connect(_menu, &QMenu::aboutToShow,
+        this, &SslButton::slotUpdateMenu);
 }
 
 QString SslButton::protoToString(QSsl::SslProtocol proto)

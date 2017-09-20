@@ -70,7 +70,7 @@ void PropagateRemoteDelete::start()
     _job = new DeleteJob(propagator()->account(),
         propagator()->_remoteFolder + _item->_file,
         this);
-    connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotDeleteJobFinished()));
+    connect(_job.data(), &DeleteJob::finishedSignal, this, &PropagateRemoteDelete::slotDeleteJobFinished);
     propagator()->_activeJobList.append(this);
     _job->start();
 }

@@ -66,8 +66,8 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     setupCustomization();
 
     slotUrlChanged(QLatin1String("")); // don't jitter UI
-    connect(_ui.leUrl, SIGNAL(textChanged(QString)), SLOT(slotUrlChanged(QString)));
-    connect(_ui.leUrl, SIGNAL(editingFinished()), SLOT(slotUrlEditFinished()));
+    connect(_ui.leUrl, &QLineEdit::textChanged, this, &OwncloudSetupPage::slotUrlChanged);
+    connect(_ui.leUrl, &QLineEdit::editingFinished, this, &OwncloudSetupPage::slotUrlEditFinished);
 
     addCertDial = new AddCertificateDialog(this);
 }
@@ -268,7 +268,7 @@ void OwncloudSetupPage::setErrorString(const QString &err, bool retryHTTPonly)
                 } break;
                 case OwncloudConnectionMethodDialog::Client_Side_TLS:
                     addCertDial->show();
-                    connect(addCertDial, SIGNAL(accepted()), this, SLOT(slotCertificateAccepted()));
+                    connect(addCertDial, &QDialog::accepted, this, &OwncloudSetupPage::slotCertificateAccepted);
                     break;
                 case OwncloudConnectionMethodDialog::Closed:
                 case OwncloudConnectionMethodDialog::Back:

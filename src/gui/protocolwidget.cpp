@@ -38,10 +38,10 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
 {
     _ui->setupUi(this);
 
-    connect(ProgressDispatcher::instance(), SIGNAL(itemCompleted(QString, SyncFileItemPtr)),
-        this, SLOT(slotItemCompleted(QString, SyncFileItemPtr)));
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::itemCompleted,
+        this, &ProtocolWidget::slotItemCompleted);
 
-    connect(_ui->_treeWidget, SIGNAL(itemActivated(QTreeWidgetItem *, int)), SLOT(slotOpenFile(QTreeWidgetItem *, int)));
+    connect(_ui->_treeWidget, &QTreeWidget::itemActivated, this, &ProtocolWidget::slotOpenFile);
 
     // Adjust copyToClipboard() when making changes here!
     QStringList header;
@@ -74,7 +74,7 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
     QPushButton *copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
     copyBtn->setToolTip(tr("Copy the activity list to the clipboard."));
     copyBtn->setEnabled(true);
-    connect(copyBtn, SIGNAL(clicked()), SIGNAL(copyToClipboard()));
+    connect(copyBtn, &QAbstractButton::clicked, this, &ProtocolWidget::copyToClipboard);
 }
 
 ProtocolWidget::~ProtocolWidget()
