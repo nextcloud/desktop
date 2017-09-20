@@ -44,19 +44,19 @@ OwncloudSetupWizard::OwncloudSetupWizard(QObject *parent)
     , _ocWizard(new OwncloudWizard)
     , _remoteFolder()
 {
-    connect(_ocWizard, SIGNAL(determineAuthType(const QString &)),
-        this, SLOT(slotDetermineAuthType(const QString &)));
-    connect(_ocWizard, SIGNAL(connectToOCUrl(const QString &)),
-        this, SLOT(slotConnectToOCUrl(const QString &)));
-    connect(_ocWizard, SIGNAL(createLocalAndRemoteFolders(QString, QString)),
-        this, SLOT(slotCreateLocalAndRemoteFolders(QString, QString)));
+    connect(_ocWizard, &OwncloudWizard::determineAuthType,
+        this, &OwncloudSetupWizard::slotDetermineAuthType);
+    connect(_ocWizard, &OwncloudWizard::connectToOCUrl,
+        this, &OwncloudSetupWizard::slotConnectToOCUrl);
+    connect(_ocWizard, &OwncloudWizard::createLocalAndRemoteFolders,
+        this, &OwncloudSetupWizard::slotCreateLocalAndRemoteFolders);
     /* basicSetupFinished might be called from a reply from the network.
        slotAssistantFinished might destroy the temporary QNetworkAccessManager.
        Therefore Qt::QueuedConnection is required */
-    connect(_ocWizard, SIGNAL(basicSetupFinished(int)),
-        this, SLOT(slotAssistantFinished(int)), Qt::QueuedConnection);
-    connect(_ocWizard, SIGNAL(finished(int)), SLOT(deleteLater()));
-    connect(_ocWizard, SIGNAL(skipFolderConfiguration()), SLOT(slotSkipFolderConfiguration()));
+    connect(_ocWizard, &OwncloudWizard::basicSetupFinished,
+        this, &OwncloudSetupWizard::slotAssistantFinished, Qt::QueuedConnection);
+    connect(_ocWizard, &QDialog::finished, this, &QObject::deleteLater);
+    connect(_ocWizard, &OwncloudWizard::skipFolderConfiguration, this, &OwncloudSetupWizard::slotSkipFolderConfiguration);
 }
 
 OwncloudSetupWizard::~OwncloudSetupWizard()
@@ -202,9 +202,9 @@ void OwncloudSetupWizard::slotContinueDetermineAuth()
         [this, account]() {
             CheckServerJob *job = new CheckServerJob(account, this);
             job->setIgnoreCredentialFailure(true);
-            connect(job, SIGNAL(instanceFound(QUrl, QJsonObject)), SLOT(slotOwnCloudFoundAuth(QUrl, QJsonObject)));
-            connect(job, SIGNAL(instanceNotFound(QNetworkReply *)), SLOT(slotNoOwnCloudFoundAuth(QNetworkReply *)));
-            connect(job, SIGNAL(timeout(const QUrl &)), SLOT(slotNoOwnCloudFoundAuthTimeout(const QUrl &)));
+            connect(job, &CheckServerJob::instanceFound, this, &OwncloudSetupWizard::slotOwnCloudFoundAuth);
+            connect(job, &CheckServerJob::instanceNotFound, this, &OwncloudSetupWizard::slotNoOwnCloudFoundAuth);
+            connect(job, &CheckServerJob::timeout, this, &OwncloudSetupWizard::slotNoOwnCloudFoundAuthTimeout);
             job->setTimeout((account->url().scheme() == "https") ? 30 * 1000 : 10 * 1000);
             job->start();
         });
@@ -310,8 +310,8 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     // so don't automatically follow redirects.
     job->setFollowRedirects(false);
     job->setProperties(QList<QByteArray>() << "getlastmodified");
-    connect(job, SIGNAL(result(QVariantMap)), _ocWizard, SLOT(successfulStep()));
-    connect(job, SIGNAL(finishedWithError()), this, SLOT(slotAuthError()));
+    connect(job, &PropfindJob::result, _ocWizard, &OwncloudWizard::successfulStep);
+    connect(job, &PropfindJob::finishedWithError, this, &OwncloudSetupWizard::slotAuthError);
     job->start();
 }
 
@@ -429,7 +429,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFo
     }
     if (nextStep) {
         EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), _ocWizard->account()->davPath() + remoteFolder, this);
-        connect(job, SIGNAL(exists(QNetworkReply *)), SLOT(slotRemoteFolderExists(QNetworkReply *)));
+        connect(job, &EntityExistsJob::exists, this, &OwncloudSetupWizard::slotRemoteFolderExists);
         job->start();
     } else {
         finalizeSetup(false);
@@ -602,8 +602,8 @@ void OwncloudSetupWizard::slotSkipFolderConfiguration()
 {
     applyAccountChanges();
 
-    disconnect(_ocWizard, SIGNAL(basicSetupFinished(int)),
-        this, SLOT(slotAssistantFinished(int)));
+    disconnect(_ocWizard, &OwncloudWizard::basicSetupFinished,
+        this, &OwncloudSetupWizard::slotAssistantFinished);
     _ocWizard->close();
     emit ownCloudWizardDone(QDialog::Accepted);
 }

@@ -56,34 +56,34 @@ BandwidthManager::BandwidthManager(OwncloudPropagator *p)
     _currentUploadLimit = _propagator->_uploadLimit.fetchAndAddAcquire(0);
     _currentDownloadLimit = _propagator->_downloadLimit.fetchAndAddAcquire(0);
 
-    QObject::connect(&_switchingTimer, SIGNAL(timeout()), this, SLOT(switchingTimerExpired()));
+    QObject::connect(&_switchingTimer, &QTimer::timeout, this, &BandwidthManager::switchingTimerExpired);
     _switchingTimer.setInterval(10 * 1000);
     _switchingTimer.start();
     QMetaObject::invokeMethod(this, "switchingTimerExpired", Qt::QueuedConnection);
 
     // absolute uploads/downloads
-    QObject::connect(&_absoluteLimitTimer, SIGNAL(timeout()), this, SLOT(absoluteLimitTimerExpired()));
+    QObject::connect(&_absoluteLimitTimer, &QTimer::timeout, this, &BandwidthManager::absoluteLimitTimerExpired);
     _absoluteLimitTimer.setInterval(1000);
     _absoluteLimitTimer.start();
 
     // Relative uploads
-    QObject::connect(&_relativeUploadMeasuringTimer, SIGNAL(timeout()),
-        this, SLOT(relativeUploadMeasuringTimerExpired()));
+    QObject::connect(&_relativeUploadMeasuringTimer, &QTimer::timeout,
+        this, &BandwidthManager::relativeUploadMeasuringTimerExpired);
     _relativeUploadMeasuringTimer.setInterval(relativeLimitMeasuringTimerIntervalMsec);
     _relativeUploadMeasuringTimer.start();
     _relativeUploadMeasuringTimer.setSingleShot(true); // will be restarted from the delay timer
-    QObject::connect(&_relativeUploadDelayTimer, SIGNAL(timeout()),
-        this, SLOT(relativeUploadDelayTimerExpired()));
+    QObject::connect(&_relativeUploadDelayTimer, &QTimer::timeout,
+        this, &BandwidthManager::relativeUploadDelayTimerExpired);
     _relativeUploadDelayTimer.setSingleShot(true); // will be restarted from the measuring timer
 
     // Relative downloads
-    QObject::connect(&_relativeDownloadMeasuringTimer, SIGNAL(timeout()),
-        this, SLOT(relativeDownloadMeasuringTimerExpired()));
+    QObject::connect(&_relativeDownloadMeasuringTimer, &QTimer::timeout,
+        this, &BandwidthManager::relativeDownloadMeasuringTimerExpired);
     _relativeDownloadMeasuringTimer.setInterval(relativeLimitMeasuringTimerIntervalMsec);
     _relativeDownloadMeasuringTimer.start();
     _relativeDownloadMeasuringTimer.setSingleShot(true); // will be restarted from the delay timer
-    QObject::connect(&_relativeDownloadDelayTimer, SIGNAL(timeout()),
-        this, SLOT(relativeDownloadDelayTimerExpired()));
+    QObject::connect(&_relativeDownloadDelayTimer, &QTimer::timeout,
+        this, &BandwidthManager::relativeDownloadDelayTimerExpired);
     _relativeDownloadDelayTimer.setSingleShot(true); // will be restarted from the measuring timer
 }
 

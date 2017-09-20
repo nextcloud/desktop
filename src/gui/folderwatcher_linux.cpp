@@ -34,7 +34,7 @@ FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString &path
     _fd = inotify_init();
     if (_fd != -1) {
         _socket.reset(new QSocketNotifier(_fd, QSocketNotifier::Read));
-        connect(_socket.data(), SIGNAL(activated(int)), SLOT(slotReceivedNotification(int)));
+        connect(_socket.data(), &QSocketNotifier::activated, this, &FolderWatcherPrivate::slotReceivedNotification);
     } else {
         qCWarning(lcFolderWatcher) << "notify_init() failed: " << strerror(errno);
     }

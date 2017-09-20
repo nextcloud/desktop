@@ -150,12 +150,12 @@ void Account::setCredentials(AbstractCredentials *cred)
     }
     connect(_am.data(), SIGNAL(sslErrors(QNetworkReply *, QList<QSslError>)),
         SLOT(slotHandleSslErrors(QNetworkReply *, QList<QSslError>)));
-    connect(_am.data(), SIGNAL(proxyAuthenticationRequired(QNetworkProxy, QAuthenticator *)),
-        SIGNAL(proxyAuthenticationRequired(QNetworkProxy, QAuthenticator *)));
-    connect(_credentials.data(), SIGNAL(fetched()),
-        SLOT(slotCredentialsFetched()));
-    connect(_credentials.data(), SIGNAL(asked()),
-        SLOT(slotCredentialsAsked()));
+    connect(_am.data(), &QNetworkAccessManager::proxyAuthenticationRequired,
+        this, &Account::proxyAuthenticationRequired);
+    connect(_credentials.data(), &AbstractCredentials::fetched,
+        this, &Account::slotCredentialsFetched);
+    connect(_credentials.data(), &AbstractCredentials::asked,
+        this, &Account::slotCredentialsAsked);
 }
 
 QUrl Account::davUrl() const
@@ -213,8 +213,8 @@ void Account::resetNetworkAccessManager()
     _am->setCookieJar(jar); // takes ownership of the old cookie jar
     connect(_am.data(), SIGNAL(sslErrors(QNetworkReply *, QList<QSslError>)),
         SLOT(slotHandleSslErrors(QNetworkReply *, QList<QSslError>)));
-    connect(_am.data(), SIGNAL(proxyAuthenticationRequired(QNetworkProxy, QAuthenticator *)),
-        SIGNAL(proxyAuthenticationRequired(QNetworkProxy, QAuthenticator *)));
+    connect(_am.data(), &QNetworkAccessManager::proxyAuthenticationRequired,
+        this, &Account::proxyAuthenticationRequired);
 }
 
 QNetworkAccessManager *Account::networkAccessManager()

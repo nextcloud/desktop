@@ -331,8 +331,8 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
         if (newJob) {
             newJob->setRestoreJobMsg(msg);
             _restoreJob.reset(newJob);
-            connect(_restoreJob.data(), SIGNAL(finished(SyncFileItem::Status)),
-                this, SLOT(slotRestoreJobFinished(SyncFileItem::Status)));
+            connect(_restoreJob.data(), &PropagatorJob::finished,
+                this, &PropagateItemJob::slotRestoreJobFinished);
             QMetaObject::invokeMethod(newJob, "start");
         }
         return true;
@@ -521,7 +521,7 @@ void OwncloudPropagator::start(const SyncFileItemVector &items)
         _rootJob->appendJob(it);
     }
 
-    connect(_rootJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SLOT(emitFinished(SyncFileItem::Status)));
+    connect(_rootJob.data(), &PropagatorJob::finished, this, &OwncloudPropagator::emitFinished);
 
     scheduleNextJob();
 }
@@ -654,7 +654,7 @@ QString OwncloudPropagator::getFilePath(const QString &tmp_file_name) const
 
 void OwncloudPropagator::scheduleNextJob()
 {
-    QTimer::singleShot(0, this, SLOT(scheduleNextJobImpl()));
+    QTimer::singleShot(0, this, &OwncloudPropagator::scheduleNextJobImpl);
 }
 
 void OwncloudPropagator::scheduleNextJobImpl()
@@ -854,9 +854,9 @@ PropagateDirectory::PropagateDirectory(OwncloudPropagator *propagator, const Syn
     , _subJobs(propagator)
 {
     if (_firstJob) {
-        connect(_firstJob.data(), SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotFirstJobFinished(SyncFileItem::Status)));
+        connect(_firstJob.data(), &PropagatorJob::finished, this, &PropagateDirectory::slotFirstJobFinished);
     }
-    connect(&_subJobs, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobsFinished(SyncFileItem::Status)));
+    connect(&_subJobs, &PropagatorJob::finished, this, &PropagateDirectory::slotSubJobsFinished);
 }
 
 PropagatorJob::JobParallelism PropagateDirectory::parallelism()
@@ -968,7 +968,7 @@ void CleanupPollsJob::start()
     if (record.isValid()) {
         SyncFileItemPtr item = SyncFileItem::fromSyncJournalFileRecord(record);
         PollJob *job = new PollJob(_account, info._url, item, _journal, _localPath, this);
-        connect(job, SIGNAL(finishedSignal()), SLOT(slotPollFinished()));
+        connect(job, &PollJob::finishedSignal, this, &CleanupPollsJob::slotPollFinished);
         job->start();
     }
 }

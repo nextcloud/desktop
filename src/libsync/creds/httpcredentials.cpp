@@ -147,8 +147,8 @@ QNetworkAccessManager *HttpCredentials::createQNAM() const
 {
     AccessManager *qnam = new HttpCredentialsAccessManager(this);
 
-    connect(qnam, SIGNAL(authenticationRequired(QNetworkReply *, QAuthenticator *)),
-        this, SLOT(slotAuthentication(QNetworkReply *, QAuthenticator *)));
+    connect(qnam, &QNetworkAccessManager::authenticationRequired,
+        this, &HttpCredentials::slotAuthentication);
 
     return qnam;
 }
@@ -198,7 +198,7 @@ void HttpCredentials::fetchFromKeychainHelper()
     addSettingsToJob(_account, job);
     job->setInsecureFallback(false);
     job->setKey(kck);
-    connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotReadClientCertPEMJobDone(QKeychain::Job *)));
+    connect(job, &Job::finished, this, &HttpCredentials::slotReadClientCertPEMJobDone);
     job->start();
 }
 
@@ -238,7 +238,7 @@ void HttpCredentials::slotReadClientCertPEMJobDone(QKeychain::Job *incoming)
     addSettingsToJob(_account, job);
     job->setInsecureFallback(false);
     job->setKey(kck);
-    connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotReadClientKeyPEMJobDone(QKeychain::Job *)));
+    connect(job, &Job::finished, this, &HttpCredentials::slotReadClientKeyPEMJobDone);
     job->start();
 }
 
@@ -273,7 +273,7 @@ void HttpCredentials::slotReadClientKeyPEMJobDone(QKeychain::Job *incoming)
     addSettingsToJob(_account, job);
     job->setInsecureFallback(false);
     job->setKey(kck);
-    connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotReadJobDone(QKeychain::Job *)));
+    connect(job, &Job::finished, this, &HttpCredentials::slotReadJobDone);
     job->start();
 }
 
@@ -419,7 +419,7 @@ void HttpCredentials::invalidateToken()
     // indirectly) from QNetworkAccessManagerPrivate::authenticationRequired, which itself
     // is a called from a BlockingQueuedConnection from the Qt HTTP thread. And clearing the
     // cache needs to synchronize again with the HTTP thread.
-    QTimer::singleShot(0, _account, SLOT(clearQNAMCache()));
+    QTimer::singleShot(0, _account, &Account::clearQNAMCache);
 }
 
 void HttpCredentials::forgetSensitiveData()
@@ -446,7 +446,7 @@ void HttpCredentials::persist()
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
     addSettingsToJob(_account, job);
     job->setInsecureFallback(false);
-    connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotWriteClientCertPEMJobDone(QKeychain::Job *)));
+    connect(job, &Job::finished, this, &HttpCredentials::slotWriteClientCertPEMJobDone);
     job->setKey(keychainKey(_account->url().toString(), _user + clientCertificatePEMC, _account->id()));
     job->setBinaryData(_clientSslCertificate.toPem());
     job->start();
@@ -459,7 +459,7 @@ void HttpCredentials::slotWriteClientCertPEMJobDone(Job *incomingJob)
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
     addSettingsToJob(_account, job);
     job->setInsecureFallback(false);
-    connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotWriteClientKeyPEMJobDone(QKeychain::Job *)));
+    connect(job, &Job::finished, this, &HttpCredentials::slotWriteClientKeyPEMJobDone);
     job->setKey(keychainKey(_account->url().toString(), _user + clientKeyPEMC, _account->id()));
     job->setBinaryData(_clientSslKey.toPem());
     job->start();
@@ -471,7 +471,7 @@ void HttpCredentials::slotWriteClientKeyPEMJobDone(Job *incomingJob)
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
     addSettingsToJob(_account, job);
     job->setInsecureFallback(false);
-    connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotWriteJobDone(QKeychain::Job *)));
+    connect(job, &Job::finished, this, &HttpCredentials::slotWriteJobDone);
     job->setKey(keychainKey(_account->url().toString(), _user, _account->id()));
     job->setTextData(isUsingOAuth() ? _refreshToken : _password);
     job->start();

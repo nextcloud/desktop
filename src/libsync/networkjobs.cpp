@@ -362,14 +362,14 @@ bool LsColJob::finished()
     int httpCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (httpCode == 207 && contentType.contains("application/xml; charset=utf-8")) {
         LsColXMLParser parser;
-        connect(&parser, SIGNAL(directoryListingSubfolders(const QStringList &)),
-            this, SIGNAL(directoryListingSubfolders(const QStringList &)));
-        connect(&parser, SIGNAL(directoryListingIterated(const QString &, const QMap<QString, QString> &)),
-            this, SIGNAL(directoryListingIterated(const QString &, const QMap<QString, QString> &)));
-        connect(&parser, SIGNAL(finishedWithError(QNetworkReply *)),
-            this, SIGNAL(finishedWithError(QNetworkReply *)));
-        connect(&parser, SIGNAL(finishedWithoutError()),
-            this, SIGNAL(finishedWithoutError()));
+        connect(&parser, &LsColXMLParser::directoryListingSubfolders,
+            this, &LsColJob::directoryListingSubfolders);
+        connect(&parser, &LsColXMLParser::directoryListingIterated,
+            this, &LsColJob::directoryListingIterated);
+        connect(&parser, &LsColXMLParser::finishedWithError,
+            this, &LsColJob::finishedWithError);
+        connect(&parser, &LsColXMLParser::finishedWithoutError,
+            this, &LsColJob::finishedWithoutError);
 
         QString expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/webdav/folder"
         if (!parser.parse(reply()->readAll(), &_sizes, expectedPath)) {
@@ -400,16 +400,16 @@ CheckServerJob::CheckServerJob(AccountPtr account, QObject *parent)
     , _permanentRedirects(0)
 {
     setIgnoreCredentialFailure(true);
-    connect(this, SIGNAL(redirected(QNetworkReply *, QUrl, int)),
-        SLOT(slotRedirected(QNetworkReply *, QUrl, int)));
+    connect(this, &AbstractNetworkJob::redirected,
+        this, &CheckServerJob::slotRedirected);
 }
 
 void CheckServerJob::start()
 {
     _serverUrl = account()->url();
     sendRequest("GET", Utility::concatUrlPath(_serverUrl, path()));
-    connect(reply(), SIGNAL(metaDataChanged()), this, SLOT(metaDataChangedSlot()));
-    connect(reply(), SIGNAL(encrypted()), this, SLOT(encryptedSlot()));
+    connect(reply(), &QNetworkReply::metaDataChanged, this, &CheckServerJob::metaDataChangedSlot);
+    connect(reply(), &QNetworkReply::encrypted, this, &CheckServerJob::encryptedSlot);
     AbstractNetworkJob::start();
 }
 

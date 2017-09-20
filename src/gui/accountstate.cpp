@@ -38,12 +38,12 @@ AccountState::AccountState(AccountPtr account)
 {
     qRegisterMetaType<AccountState *>("AccountState*");
 
-    connect(account.data(), SIGNAL(invalidCredentials()),
-        SLOT(slotInvalidCredentials()));
-    connect(account.data(), SIGNAL(credentialsFetched(AbstractCredentials *)),
-        SLOT(slotCredentialsFetched(AbstractCredentials *)));
-    connect(account.data(), SIGNAL(credentialsAsked(AbstractCredentials *)),
-        SLOT(slotCredentialsAsked(AbstractCredentials *)));
+    connect(account.data(), &Account::invalidCredentials,
+        this, &AccountState::slotInvalidCredentials);
+    connect(account.data(), &Account::credentialsFetched,
+        this, &AccountState::slotCredentialsFetched);
+    connect(account.data(), &Account::credentialsAsked,
+        this, &AccountState::slotCredentialsAsked);
     _timeSinceLastETagCheck.invalidate();
 }
 
@@ -242,7 +242,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
             qCInfo(lcAccountState) << "AccountState reconnection: delaying for"
                                    << _maintenanceToConnectedDelay << "ms";
             _timeSinceMaintenanceOver.start();
-            QTimer::singleShot(_maintenanceToConnectedDelay + 100, this, SLOT(checkConnectivity()));
+            QTimer::singleShot(_maintenanceToConnectedDelay + 100, this, &AccountState::checkConnectivity);
             return;
         } else if (_timeSinceMaintenanceOver.elapsed() < _maintenanceToConnectedDelay) {
             qCInfo(lcAccountState) << "AccountState reconnection: only"

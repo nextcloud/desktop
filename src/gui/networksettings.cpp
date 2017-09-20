@@ -45,13 +45,13 @@ NetworkSettings::NetworkSettings(QWidget *parent)
     _ui->userLineEdit->setEnabled(true);
     _ui->passwordLineEdit->setEnabled(true);
     _ui->authWidgets->setEnabled(_ui->authRequiredcheckBox->isChecked());
-    connect(_ui->authRequiredcheckBox, SIGNAL(toggled(bool)),
-        _ui->authWidgets, SLOT(setEnabled(bool)));
+    connect(_ui->authRequiredcheckBox, &QAbstractButton::toggled,
+        _ui->authWidgets, &QWidget::setEnabled);
 
-    connect(_ui->manualProxyRadioButton, SIGNAL(toggled(bool)),
-        _ui->manualSettings, SLOT(setEnabled(bool)));
-    connect(_ui->manualProxyRadioButton, SIGNAL(toggled(bool)),
-        _ui->typeComboBox, SLOT(setEnabled(bool)));
+    connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled,
+        _ui->manualSettings, &QWidget::setEnabled);
+    connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled,
+        _ui->typeComboBox, &QWidget::setEnabled);
 
     loadProxySettings();
     loadBWLimitSettings();
@@ -59,18 +59,18 @@ NetworkSettings::NetworkSettings(QWidget *parent)
     // proxy
     connect(_ui->typeComboBox, SIGNAL(currentIndexChanged(int)), SLOT(saveProxySettings()));
     connect(_ui->proxyButtonGroup, SIGNAL(buttonClicked(int)), SLOT(saveProxySettings()));
-    connect(_ui->hostLineEdit, SIGNAL(editingFinished()), SLOT(saveProxySettings()));
-    connect(_ui->userLineEdit, SIGNAL(editingFinished()), SLOT(saveProxySettings()));
-    connect(_ui->passwordLineEdit, SIGNAL(editingFinished()), SLOT(saveProxySettings()));
-    connect(_ui->portSpinBox, SIGNAL(editingFinished()), SLOT(saveProxySettings()));
-    connect(_ui->authRequiredcheckBox, SIGNAL(toggled(bool)), SLOT(saveProxySettings()));
+    connect(_ui->hostLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
+    connect(_ui->userLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
+    connect(_ui->passwordLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
+    connect(_ui->portSpinBox, &QAbstractSpinBox::editingFinished, this, &NetworkSettings::saveProxySettings);
+    connect(_ui->authRequiredcheckBox, &QAbstractButton::toggled, this, &NetworkSettings::saveProxySettings);
 
-    connect(_ui->uploadLimitRadioButton, SIGNAL(clicked()), SLOT(saveBWLimitSettings()));
-    connect(_ui->noUploadLimitRadioButton, SIGNAL(clicked()), SLOT(saveBWLimitSettings()));
-    connect(_ui->autoUploadLimitRadioButton, SIGNAL(clicked()), SLOT(saveBWLimitSettings()));
-    connect(_ui->downloadLimitRadioButton, SIGNAL(clicked()), SLOT(saveBWLimitSettings()));
-    connect(_ui->noDownloadLimitRadioButton, SIGNAL(clicked()), SLOT(saveBWLimitSettings()));
-    connect(_ui->autoDownloadLimitRadioButton, SIGNAL(clicked()), SLOT(saveBWLimitSettings()));
+    connect(_ui->uploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
+    connect(_ui->noUploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
+    connect(_ui->autoUploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
+    connect(_ui->downloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
+    connect(_ui->noDownloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
+    connect(_ui->autoDownloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->downloadSpinBox, SIGNAL(valueChanged(int)), SLOT(saveBWLimitSettings()));
     connect(_ui->uploadSpinBox, SIGNAL(valueChanged(int)), SLOT(saveBWLimitSettings()));
 }

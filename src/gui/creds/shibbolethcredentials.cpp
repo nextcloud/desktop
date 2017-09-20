@@ -79,7 +79,7 @@ void ShibbolethCredentials::setAccount(Account *account)
     // When constructed with a cookie (by the wizard), we usually don't know the
     // user name yet. Request it now from the server.
     if (_ready && _user.isEmpty()) {
-        QTimer::singleShot(1234, this, SLOT(slotFetchUser()));
+        QTimer::singleShot(1234, this, &ShibbolethCredentials::slotFetchUser);
     }
 }
 
@@ -96,8 +96,8 @@ QString ShibbolethCredentials::user() const
 QNetworkAccessManager *ShibbolethCredentials::createQNAM() const
 {
     QNetworkAccessManager *qnam(new AccessManager);
-    connect(qnam, SIGNAL(finished(QNetworkReply *)),
-        this, SLOT(slotReplyFinished(QNetworkReply *)));
+    connect(qnam, &QNetworkAccessManager::finished,
+        this, &ShibbolethCredentials::slotReplyFinished);
     return qnam;
 }
 
@@ -145,7 +145,7 @@ void ShibbolethCredentials::fetchFromKeychainHelper()
     job->setInsecureFallback(false);
     job->setKey(keychainKey(_url.toString(), user(),
         _keychainMigration ? QString() : _account->id()));
-    connect(job, SIGNAL(finished(QKeychain::Job *)), SLOT(slotReadJobDone(QKeychain::Job *)));
+    connect(job, &Job::finished, this, &ShibbolethCredentials::slotReadJobDone);
     job->start();
 }
 
@@ -210,7 +210,7 @@ void ShibbolethCredentials::slotFetchUser()
     // We must first do a request to webdav so the session is enabled.
     // (because for some reason we can't access the API without that..  a bug in the server maybe?)
     EntityExistsJob *job = new EntityExistsJob(_account->sharedFromThis(), _account->davPath(), this);
-    connect(job, SIGNAL(exists(QNetworkReply *)), this, SLOT(slotFetchUserHelper()));
+    connect(job, &EntityExistsJob::exists, this, &ShibbolethCredentials::slotFetchUserHelper);
     job->setIgnoreCredentialFailure(true);
     job->start();
 }
@@ -218,7 +218,7 @@ void ShibbolethCredentials::slotFetchUser()
 void ShibbolethCredentials::slotFetchUserHelper()
 {
     ShibbolethUserJob *job = new ShibbolethUserJob(_account->sharedFromThis(), this);
-    connect(job, SIGNAL(userFetched(QString)), this, SLOT(slotUserFetched(QString)));
+    connect(job, &ShibbolethUserJob::userFetched, this, &ShibbolethCredentials::slotUserFetched);
     job->start();
 }
 
@@ -308,9 +308,9 @@ void ShibbolethCredentials::showLoginWindow()
     jar->clearSessionCookies();
 
     _browser = new ShibbolethWebView(_account->sharedFromThis());
-    connect(_browser, SIGNAL(shibbolethCookieReceived(QNetworkCookie)),
-        this, SLOT(onShibbolethCookieReceived(QNetworkCookie)), Qt::QueuedConnection);
-    connect(_browser, SIGNAL(rejected()), this, SLOT(slotBrowserRejected()));
+    connect(_browser.data(), &ShibbolethWebView::shibbolethCookieReceived,
+        this, &ShibbolethCredentials::onShibbolethCookieReceived, Qt::QueuedConnection);
+    connect(_browser.data(), &ShibbolethWebView::rejected, this, &ShibbolethCredentials::slotBrowserRejected);
 
     ownCloudGui::raiseDialog(_browser);
 }

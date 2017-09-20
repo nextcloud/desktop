@@ -25,7 +25,7 @@ OcsShareJob::OcsShareJob(AccountPtr account)
     : OcsJob(account)
 {
     setPath("ocs/v1.php/apps/files_sharing/api/v1/shares");
-    connect(this, SIGNAL(jobFinished(QJsonDocument)), this, SLOT(jobDone(QJsonDocument)));
+    connect(this, &OcsJob::jobFinished, this, &OcsShareJob::jobDone);
 }
 
 void OcsShareJob::getShares(const QString &path)

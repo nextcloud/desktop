@@ -207,10 +207,10 @@ SocketApi::SocketApi(QObject *parent)
         qCInfo(lcSocketApi) << "server started, listening at " << socketPath;
     }
 
-    connect(&_localServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
+    connect(&_localServer, &QLocalServer::newConnection, this, &SocketApi::slotNewConnection);
 
     // folder watcher
-    connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(Folder *)), this, SLOT(slotUpdateFolderView(Folder *)));
+    connect(FolderMan::instance(), &FolderMan::folderSyncStateChange, this, &SocketApi::slotUpdateFolderView);
 }
 
 SocketApi::~SocketApi()
@@ -230,9 +230,9 @@ void SocketApi::slotNewConnection()
         return;
     }
     qCInfo(lcSocketApi) << "New connection" << socket;
-    connect(socket, SIGNAL(readyRead()), this, SLOT(slotReadSocket()));
+    connect(socket, &QIODevice::readyRead, this, &SocketApi::slotReadSocket);
     connect(socket, SIGNAL(disconnected()), this, SLOT(onLostConnection()));
-    connect(socket, SIGNAL(destroyed(QObject *)), this, SLOT(slotSocketDestroyed(QObject *)));
+    connect(socket, &QObject::destroyed, this, &SocketApi::slotSocketDestroyed);
     ASSERT(socket->readAll().isEmpty());
 
     _listeners.append(SocketListener(socket));

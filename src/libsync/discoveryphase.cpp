@@ -282,10 +282,10 @@ void DiscoverySingleDirectoryJob::start()
 
     lsColJob->setProperties(props);
 
-    QObject::connect(lsColJob, SIGNAL(directoryListingIterated(QString, QMap<QString, QString>)),
-        this, SLOT(directoryListingIteratedSlot(QString, QMap<QString, QString>)));
-    QObject::connect(lsColJob, SIGNAL(finishedWithError(QNetworkReply *)), this, SLOT(lsJobFinishedWithErrorSlot(QNetworkReply *)));
-    QObject::connect(lsColJob, SIGNAL(finishedWithoutError()), this, SLOT(lsJobFinishedWithoutErrorSlot()));
+    QObject::connect(lsColJob, &LsColJob::directoryListingIterated,
+        this, &DiscoverySingleDirectoryJob::directoryListingIteratedSlot);
+    QObject::connect(lsColJob, &LsColJob::finishedWithError, this, &DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot);
+    QObject::connect(lsColJob, &LsColJob::finishedWithoutError, this, &DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot);
     lsColJob->start();
 
     _lsColJob = lsColJob;
@@ -469,11 +469,11 @@ void DiscoveryMainThread::setupHooks(DiscoveryJob *discoveryJob, const QString &
     _discoveryJob = discoveryJob;
     _pathPrefix = pathPrefix;
 
-    connect(discoveryJob, SIGNAL(doOpendirSignal(QString, DiscoveryDirectoryResult *)),
-        this, SLOT(doOpendirSlot(QString, DiscoveryDirectoryResult *)),
+    connect(discoveryJob, &DiscoveryJob::doOpendirSignal,
+        this, &DiscoveryMainThread::doOpendirSlot,
         Qt::QueuedConnection);
-    connect(discoveryJob, SIGNAL(doGetSizeSignal(QString, qint64 *)),
-        this, SLOT(doGetSizeSlot(QString, qint64 *)),
+    connect(discoveryJob, &DiscoveryJob::doGetSizeSignal,
+        this, &DiscoveryMainThread::doGetSizeSlot,
         Qt::QueuedConnection);
 }
 
@@ -499,16 +499,16 @@ void DiscoveryMainThread::doOpendirSlot(const QString &subPath, DiscoveryDirecto
 
     // Schedule the DiscoverySingleDirectoryJob
     _singleDirJob = new DiscoverySingleDirectoryJob(_account, fullPath, this);
-    QObject::connect(_singleDirJob, SIGNAL(finishedWithResult()),
-        this, SLOT(singleDirectoryJobResultSlot()));
-    QObject::connect(_singleDirJob, SIGNAL(finishedWithError(int, QString)),
-        this, SLOT(singleDirectoryJobFinishedWithErrorSlot(int, QString)));
-    QObject::connect(_singleDirJob, SIGNAL(firstDirectoryPermissions(QString)),
-        this, SLOT(singleDirectoryJobFirstDirectoryPermissionsSlot(QString)));
-    QObject::connect(_singleDirJob, SIGNAL(etagConcatenation(QString)),
-        this, SIGNAL(etagConcatenation(QString)));
-    QObject::connect(_singleDirJob, SIGNAL(etag(QString)),
-        this, SIGNAL(etag(QString)));
+    QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::finishedWithResult,
+        this, &DiscoveryMainThread::singleDirectoryJobResultSlot);
+    QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::finishedWithError,
+        this, &DiscoveryMainThread::singleDirectoryJobFinishedWithErrorSlot);
+    QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::firstDirectoryPermissions,
+        this, &DiscoveryMainThread::singleDirectoryJobFirstDirectoryPermissionsSlot);
+    QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::etagConcatenation,
+        this, &DiscoveryMainThread::etagConcatenation);
+    QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::etag,
+        this, &DiscoveryMainThread::etag);
 
     if (!_firstFolderProcessed) {
         _singleDirJob->setIsRootPath();
@@ -584,10 +584,10 @@ void DiscoveryMainThread::doGetSizeSlot(const QString &path, qint64 *result)
     auto propfindJob = new PropfindJob(_account, fullPath, this);
     propfindJob->setProperties(QList<QByteArray>() << "resourcetype"
                                                    << "http://owncloud.org/ns:size");
-    QObject::connect(propfindJob, SIGNAL(finishedWithError()),
-        this, SLOT(slotGetSizeFinishedWithError()));
-    QObject::connect(propfindJob, SIGNAL(result(QVariantMap)),
-        this, SLOT(slotGetSizeResult(QVariantMap)));
+    QObject::connect(propfindJob, &PropfindJob::finishedWithError,
+        this, &DiscoveryMainThread::slotGetSizeFinishedWithError);
+    QObject::connect(propfindJob, &PropfindJob::result,
+        this, &DiscoveryMainThread::slotGetSizeResult);
     propfindJob->start();
 }
 

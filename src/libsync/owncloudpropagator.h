@@ -221,7 +221,7 @@ private slots:
     bool possiblyRunNextJob(PropagatorJob *next)
     {
         if (next->_state == NotYetStarted) {
-            connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)));
+            connect(next, &PropagatorJob::finished, this, &PropagatorCompositeJob::slotSubJobFinished);
         }
         return next->scheduleSelfOrChild();
     }

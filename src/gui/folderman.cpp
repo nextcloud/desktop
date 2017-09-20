@@ -60,24 +60,24 @@ FolderMan::FolderMan(QObject *parent)
     int polltime = cfg.remotePollInterval();
     qCInfo(lcFolderMan) << "setting remote poll timer interval to" << polltime << "msec";
     _etagPollTimer.setInterval(polltime);
-    QObject::connect(&_etagPollTimer, SIGNAL(timeout()), this, SLOT(slotEtagPollTimerTimeout()));
+    QObject::connect(&_etagPollTimer, &QTimer::timeout, this, &FolderMan::slotEtagPollTimerTimeout);
     _etagPollTimer.start();
 
     _startScheduledSyncTimer.setSingleShot(true);
-    connect(&_startScheduledSyncTimer, SIGNAL(timeout()),
-        SLOT(slotStartScheduledFolderSync()));
+    connect(&_startScheduledSyncTimer, &QTimer::timeout,
+        this, &FolderMan::slotStartScheduledFolderSync);
 
     _timeScheduler.setInterval(5000);
     _timeScheduler.setSingleShot(false);
-    connect(&_timeScheduler, SIGNAL(timeout()),
-        SLOT(slotScheduleFolderByTime()));
+    connect(&_timeScheduler, &QTimer::timeout,
+        this, &FolderMan::slotScheduleFolderByTime);
     _timeScheduler.start();
 
-    connect(AccountManager::instance(), SIGNAL(accountRemoved(AccountState *)),
-        SLOT(slotRemoveFoldersForAccount(AccountState *)));
+    connect(AccountManager::instance(), &AccountManager::accountRemoved,
+        this, &FolderMan::slotRemoveFoldersForAccount);
 
-    connect(_lockWatcher.data(), SIGNAL(fileUnlocked(QString)),
-        SLOT(slotWatchedFileUnlocked(QString)));
+    connect(_lockWatcher.data(), &LockWatcher::fileUnlocked,
+        this, &FolderMan::slotWatchedFileUnlocked);
 }
 
 FolderMan *FolderMan::instance()
@@ -109,18 +109,18 @@ void FolderMan::unloadFolder(Folder *f)
     }
     _folderMap.remove(f->alias());
 
-    disconnect(f, SIGNAL(syncStarted()),
-        this, SLOT(slotFolderSyncStarted()));
-    disconnect(f, SIGNAL(syncFinished(SyncResult)),
-        this, SLOT(slotFolderSyncFinished(SyncResult)));
-    disconnect(f, SIGNAL(syncStateChange()),
-        this, SLOT(slotForwardFolderSyncStateChange()));
-    disconnect(f, SIGNAL(syncPausedChanged(Folder *, bool)),
-        this, SLOT(slotFolderSyncPaused(Folder *, bool)));
+    disconnect(f, &Folder::syncStarted,
+        this, &FolderMan::slotFolderSyncStarted);
+    disconnect(f, &Folder::syncFinished,
+        this, &FolderMan::slotFolderSyncFinished);
+    disconnect(f, &Folder::syncStateChange,
+        this, &FolderMan::slotForwardFolderSyncStateChange);
+    disconnect(f, &Folder::syncPausedChanged,
+        this, &FolderMan::slotFolderSyncPaused);
     disconnect(&f->syncEngine().syncFileStatusTracker(), SIGNAL(fileStatusChanged(const QString &, SyncFileStatus)),
         _socketApi.data(), SLOT(broadcastStatusPushMessage(const QString &, SyncFileStatus)));
-    disconnect(f, SIGNAL(watchedFileChangedExternally(QString)),
-        &f->syncEngine().syncFileStatusTracker(), SLOT(slotPathTouched(QString)));
+    disconnect(f, &Folder::watchedFileChangedExternally,
+        &f->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::slotPathTouched);
 }
 
 int FolderMan::unloadAndDeleteAllFolders()
@@ -163,7 +163,7 @@ void FolderMan::registerFolderMonitor(Folder *folder)
         // Connect the pathChanged signal, which comes with the changed path,
         // to the signal mapper which maps to the folder alias. The changed path
         // is lost this way, but we do not need it for the current implementation.
-        connect(fw, SIGNAL(pathChanged(QString)), folder, SLOT(slotWatchedPathChanged(QString)));
+        connect(fw, &FolderWatcher::pathChanged, folder, &Folder::slotWatchedPathChanged);
 
         _folderWatchers.insert(folder->alias(), fw);
     }
@@ -584,7 +584,7 @@ void FolderMan::scheduleFolderNext(Folder *f)
 
 void FolderMan::slotScheduleETagJob(const QString & /*alias*/, RequestEtagJob *job)
 {
-    QObject::connect(job, SIGNAL(destroyed(QObject *)), this, SLOT(slotEtagJobDestroyed(QObject *)));
+    QObject::connect(job, &QObject::destroyed, this, &FolderMan::slotEtagJobDestroyed);
     QMetaObject::invokeMethod(this, "slotRunOneEtagJob", Qt::QueuedConnection);
     // maybe: add to queue
 }
@@ -954,15 +954,15 @@ Folder *FolderMan::addFolderInternal(FolderDefinition folderDefinition,
     }
 
     // See matching disconnects in unloadFolder().
-    connect(folder, SIGNAL(syncStarted()), SLOT(slotFolderSyncStarted()));
-    connect(folder, SIGNAL(syncFinished(SyncResult)), SLOT(slotFolderSyncFinished(SyncResult)));
-    connect(folder, SIGNAL(syncStateChange()), SLOT(slotForwardFolderSyncStateChange()));
-    connect(folder, SIGNAL(syncPausedChanged(Folder *, bool)), SLOT(slotFolderSyncPaused(Folder *, bool)));
-    connect(folder, SIGNAL(canSyncChanged()), SLOT(slotFolderCanSyncChanged()));
+    connect(folder, &Folder::syncStarted, this, &FolderMan::slotFolderSyncStarted);
+    connect(folder, &Folder::syncFinished, this, &FolderMan::slotFolderSyncFinished);
+    connect(folder, &Folder::syncStateChange, this, &FolderMan::slotForwardFolderSyncStateChange);
+    connect(folder, &Folder::syncPausedChanged, this, &FolderMan::slotFolderSyncPaused);
+    connect(folder, &Folder::canSyncChanged, this, &FolderMan::slotFolderCanSyncChanged);
     connect(&folder->syncEngine().syncFileStatusTracker(), SIGNAL(fileStatusChanged(const QString &, SyncFileStatus)),
         _socketApi.data(), SLOT(broadcastStatusPushMessage(const QString &, SyncFileStatus)));
-    connect(folder, SIGNAL(watchedFileChangedExternally(QString)),
-        &folder->syncEngine().syncFileStatusTracker(), SLOT(slotPathTouched(QString)));
+    connect(folder, &Folder::watchedFileChangedExternally,
+        &folder->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::slotPathTouched);
 
     registerFolderMonitor(folder);
     return folder;
@@ -1032,10 +1032,10 @@ void FolderMan::removeFolder(Folder *f)
     unloadFolder(f);
     if (currentlyRunning) {
         // We want to schedule the next folder once this is done
-        connect(f, SIGNAL(syncFinished(SyncResult)),
-            SLOT(slotFolderSyncFinished(SyncResult)));
+        connect(f, &Folder::syncFinished,
+            this, &FolderMan::slotFolderSyncFinished);
         // Let the folder delete itself when done.
-        connect(f, SIGNAL(syncFinished(SyncResult)), f, SLOT(deleteLater()));
+        connect(f, &Folder::syncFinished, f, &QObject::deleteLater);
     } else {
         delete f;
     }

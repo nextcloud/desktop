@@ -109,8 +109,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _toolBar->addAction(_activityAction);
     _activitySettings = new ActivitySettings;
     _ui->stack->addWidget(_activitySettings);
-    connect(_activitySettings, SIGNAL(guiLog(QString, QString)), _gui,
-        SLOT(slotShowOptionalTrayMessage(QString, QString)));
+    connect(_activitySettings, &ActivitySettings::guiLog, _gui,
+        &ownCloudGui::slotShowOptionalTrayMessage);
     _activitySettings->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
 
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
@@ -129,24 +129,24 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
 
-    connect(_actionGroup, SIGNAL(triggered(QAction *)), SLOT(slotSwitchPage(QAction *)));
+    connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
 
-    connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState *)),
-        this, SLOT(accountAdded(AccountState *)));
-    connect(AccountManager::instance(), SIGNAL(accountRemoved(AccountState *)),
-        this, SLOT(accountRemoved(AccountState *)));
+    connect(AccountManager::instance(), &AccountManager::accountAdded,
+        this, &SettingsDialog::accountAdded);
+    connect(AccountManager::instance(), &AccountManager::accountRemoved,
+        this, &SettingsDialog::accountRemoved);
     foreach (auto ai, AccountManager::instance()->accounts()) {
         accountAdded(ai.data());
     }
 
-    QTimer::singleShot(1, this, SLOT(showFirstPage()));
+    QTimer::singleShot(1, this, &SettingsDialog::showFirstPage);
 
     QPushButton *closeButton = _ui->buttonBox->button(QDialogButtonBox::Close);
     connect(closeButton, SIGNAL(clicked()), SLOT(accept()));
 
     QAction *showLogWindow = new QAction(this);
     showLogWindow->setShortcut(QKeySequence("F12"));
-    connect(showLogWindow, SIGNAL(triggered()), gui, SLOT(slotToggleLogBrowser()));
+    connect(showLogWindow, &QAction::triggered, gui, &ownCloudGui::slotToggleLogBrowser);
     addAction(showLogWindow);
 
     customizeStyle();
@@ -245,11 +245,11 @@ void SettingsDialog::accountAdded(AccountState *s)
     _actionGroupWidgets.insert(accountAction, accountSettings);
     _actionForAccount.insert(s->account().data(), accountAction);
 
-    connect(accountSettings, SIGNAL(folderChanged()), _gui, SLOT(slotFoldersChanged()));
-    connect(accountSettings, SIGNAL(openFolderAlias(const QString &)),
-        _gui, SLOT(slotFolderOpenAction(QString)));
-    connect(accountSettings, SIGNAL(showIssuesList(QString)), SLOT(showIssuesList(QString)));
-    connect(s->account().data(), SIGNAL(accountChangedAvatar()), SLOT(slotAccountAvatarChanged()));
+    connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotFoldersChanged);
+    connect(accountSettings, &AccountSettings::openFolderAlias,
+        _gui, &ownCloudGui::slotFolderOpenAction);
+    connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
+    connect(s->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
 
     slotRefreshActivity(s);
 }

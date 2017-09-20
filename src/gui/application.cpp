@@ -150,7 +150,7 @@ Application::Application(int &argc, char **argv)
 
     _folderManager.reset(new FolderMan);
 
-    connect(this, SIGNAL(messageReceived(QString, QObject *)), SLOT(slotParseMessage(QString, QObject *)));
+    connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
 
     if (!AccountManager::instance()->restore()) {
         // If there is an error reading the account settings, try again
@@ -176,7 +176,7 @@ Application::Application(int &argc, char **argv)
     setQuitOnLastWindowClosed(false);
 
     _theme->setSystrayUseMonoIcons(cfg.monoIcons());
-    connect(_theme, SIGNAL(systrayUseMonoIconsChanged(bool)), SLOT(slotUseMonoIconsChanged(bool)));
+    connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
 
     FolderMan::instance()->setupFolders();
     _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
@@ -189,23 +189,23 @@ Application::Application(int &argc, char **argv)
     // Enable word wrapping of QInputDialog (#4197)
     setStyleSheet("QInputDialog QLabel { qproperty-wordWrap:1; }");
 
-    connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState *)),
-        SLOT(slotAccountStateAdded(AccountState *)));
-    connect(AccountManager::instance(), SIGNAL(accountRemoved(AccountState *)),
-        SLOT(slotAccountStateRemoved(AccountState *)));
+    connect(AccountManager::instance(), &AccountManager::accountAdded,
+        this, &Application::slotAccountStateAdded);
+    connect(AccountManager::instance(), &AccountManager::accountRemoved,
+        this, &Application::slotAccountStateRemoved);
     foreach (auto ai, AccountManager::instance()->accounts()) {
         slotAccountStateAdded(ai.data());
     }
 
-    connect(FolderMan::instance()->socketApi(), SIGNAL(shareCommandReceived(QString, QString)),
-        _gui, SLOT(slotShowShareDialog(QString, QString)));
+    connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived,
+        _gui.data(), &ownCloudGui::slotShowShareDialog);
 
     // startup procedure.
-    connect(&_checkConnectionTimer, SIGNAL(timeout()), this, SLOT(slotCheckConnection()));
+    connect(&_checkConnectionTimer, &QTimer::timeout, this, &Application::slotCheckConnection);
     _checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec); // check for connection every 32 seconds.
     _checkConnectionTimer.start();
     // Also check immediately
-    QTimer::singleShot(0, this, SLOT(slotCheckConnection()));
+    QTimer::singleShot(0, this, &Application::slotCheckConnection);
 
     // Can't use onlineStateChanged because it is always true on modern systems because of many interfaces
     connect(&_networkConfigurationManager, SIGNAL(configurationChanged(QNetworkConfiguration)),
@@ -213,13 +213,13 @@ Application::Application(int &argc, char **argv)
 
     // Update checks
     UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this);
-    connect(updaterScheduler, SIGNAL(updaterAnnouncement(QString, QString)),
-        _gui, SLOT(slotShowTrayMessage(QString, QString)));
-    connect(updaterScheduler, SIGNAL(requestRestart()),
-        _folderManager.data(), SLOT(slotScheduleAppRestart()));
+    connect(updaterScheduler, &UpdaterScheduler::updaterAnnouncement,
+        _gui.data(), &ownCloudGui::slotShowTrayMessage);
+    connect(updaterScheduler, &UpdaterScheduler::requestRestart,
+        _folderManager.data(), &FolderMan::slotScheduleAppRestart);
 
     // Cleanup at Quit.
-    connect(this, SIGNAL(aboutToQuit()), SLOT(slotCleanup()));
+    connect(this, &QCoreApplication::aboutToQuit, this, &Application::slotCleanup);
 }
 
 Application::~Application()
@@ -237,16 +237,16 @@ Application::~Application()
 void Application::slotAccountStateRemoved(AccountState *accountState)
 {
     if (_gui) {
-        disconnect(accountState, SIGNAL(stateChanged(int)),
-            _gui, SLOT(slotAccountStateChanged()));
-        disconnect(accountState->account().data(), SIGNAL(serverVersionChanged(Account *, QString, QString)),
-            _gui, SLOT(slotTrayMessageIfServerUnsupported(Account *)));
+        disconnect(accountState, &AccountState::stateChanged,
+            _gui.data(), &ownCloudGui::slotAccountStateChanged);
+        disconnect(accountState->account().data(), &Account::serverVersionChanged,
+            _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
     }
     if (_folderManager) {
-        disconnect(accountState, SIGNAL(stateChanged(int)),
-            _folderManager.data(), SLOT(slotAccountStateChanged()));
-        disconnect(accountState->account().data(), SIGNAL(serverVersionChanged(Account *, QString, QString)),
-            _folderManager.data(), SLOT(slotServerVersionChanged(Account *)));
+        disconnect(accountState, &AccountState::stateChanged,
+            _folderManager.data(), &FolderMan::slotAccountStateChanged);
+        disconnect(accountState->account().data(), &Account::serverVersionChanged,
+            _folderManager.data(), &FolderMan::slotServerVersionChanged);
     }
 
     // if there is no more account, show the wizard.
@@ -259,14 +259,14 @@ void Application::slotAccountStateRemoved(AccountState *accountState)
 
 void Application::slotAccountStateAdded(AccountState *accountState)
 {
-    connect(accountState, SIGNAL(stateChanged(int)),
-        _gui, SLOT(slotAccountStateChanged()));
-    connect(accountState->account().data(), SIGNAL(serverVersionChanged(Account *, QString, QString)),
-        _gui, SLOT(slotTrayMessageIfServerUnsupported(Account *)));
-    connect(accountState, SIGNAL(stateChanged(int)),
-        _folderManager.data(), SLOT(slotAccountStateChanged()));
-    connect(accountState->account().data(), SIGNAL(serverVersionChanged(Account *, QString, QString)),
-        _folderManager.data(), SLOT(slotServerVersionChanged(Account *)));
+    connect(accountState, &AccountState::stateChanged,
+        _gui.data(), &ownCloudGui::slotAccountStateChanged);
+    connect(accountState->account().data(), &Account::serverVersionChanged,
+        _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
+    connect(accountState, &AccountState::stateChanged,
+        _folderManager.data(), &FolderMan::slotAccountStateChanged);
+    connect(accountState->account().data(), &Account::serverVersionChanged,
+        _folderManager.data(), &FolderMan::slotServerVersionChanged);
 
     _gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
 }

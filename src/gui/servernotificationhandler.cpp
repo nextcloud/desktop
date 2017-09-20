@@ -48,8 +48,8 @@ void ServerNotificationHandler::slotFetchNotifications(AccountState *ptr)
 
     // if the previous notification job has finished, start next.
     _notificationJob = new JsonApiJob(ptr->account(), QLatin1String("ocs/v2.php/apps/notifications/api/v1/notifications"), this);
-    QObject::connect(_notificationJob.data(), SIGNAL(jsonReceived(QJsonDocument, int)),
-        this, SLOT(slotNotificationsReceived(QJsonDocument, int)));
+    QObject::connect(_notificationJob.data(), &JsonApiJob::jsonReceived,
+        this, &ServerNotificationHandler::slotNotificationsReceived);
     _notificationJob->setProperty("AccountStatePtr", QVariant::fromValue<AccountState *>(ptr));
 
     _notificationJob->start();

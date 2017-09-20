@@ -76,7 +76,7 @@ LogBrowser::LogBrowser(QWidget *parent)
     // find button
     QPushButton *findBtn = new QPushButton;
     findBtn->setText(tr("&Find"));
-    connect(findBtn, SIGNAL(clicked()), this, SLOT(slotFind()));
+    connect(findBtn, &QAbstractButton::clicked, this, &LogBrowser::slotFind);
     toolLayout->addWidget(findBtn);
 
     // stretch
@@ -87,12 +87,12 @@ LogBrowser::LogBrowser(QWidget *parent)
 
     // Debug logging
     _logDebugCheckBox = new QCheckBox(tr("&Capture debug messages") + " ");
-    connect(_logDebugCheckBox, SIGNAL(stateChanged(int)), SLOT(slotDebugCheckStateChanged(int)));
+    connect(_logDebugCheckBox, &QCheckBox::stateChanged, this, &LogBrowser::slotDebugCheckStateChanged);
     toolLayout->addWidget(_logDebugCheckBox);
 
     QDialogButtonBox *btnbox = new QDialogButtonBox;
     QPushButton *closeBtn = btnbox->addButton(QDialogButtonBox::Close);
-    connect(closeBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect(closeBtn, &QAbstractButton::clicked, this, &QWidget::close);
 
     mainLayout->addWidget(btnbox);
 
@@ -101,14 +101,14 @@ LogBrowser::LogBrowser(QWidget *parent)
     _clearBtn->setText(tr("Clear"));
     _clearBtn->setToolTip(tr("Clear the log display."));
     btnbox->addButton(_clearBtn, QDialogButtonBox::ActionRole);
-    connect(_clearBtn, SIGNAL(clicked()), this, SLOT(slotClearLog()));
+    connect(_clearBtn, &QAbstractButton::clicked, this, &LogBrowser::slotClearLog);
 
     // save Button
     _saveBtn = new QPushButton;
     _saveBtn->setText(tr("S&ave"));
     _saveBtn->setToolTip(tr("Save the log file to a file on disk for debugging."));
     btnbox->addButton(_saveBtn, QDialogButtonBox::ActionRole);
-    connect(_saveBtn, SIGNAL(clicked()), this, SLOT(slotSave()));
+    connect(_saveBtn, &QAbstractButton::clicked, this, &LogBrowser::slotSave);
 
     setLayout(mainLayout);
 
@@ -116,11 +116,11 @@ LogBrowser::LogBrowser(QWidget *parent)
 
     Logger::instance()->setLogWindowActivated(true);
     // Direct connection for log coming from this thread, and queued for the one in a different thread
-    connect(Logger::instance(), SIGNAL(logWindowLog(QString)), this, SLOT(slotNewLog(QString)), Qt::AutoConnection);
+    connect(Logger::instance(), &Logger::logWindowLog, this, &LogBrowser::slotNewLog, Qt::AutoConnection);
 
     QAction *showLogWindow = new QAction(this);
     showLogWindow->setShortcut(QKeySequence("F12"));
-    connect(showLogWindow, SIGNAL(triggered()), SLOT(close()));
+    connect(showLogWindow, &QAction::triggered, this, &QWidget::close);
     addAction(showLogWindow);
 
     ConfigFile cfg;

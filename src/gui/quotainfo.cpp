@@ -36,9 +36,9 @@ QuotaInfo::QuotaInfo(AccountState *accountState, QObject *parent)
     , _lastQuotaUsedBytes(0)
     , _active(false)
 {
-    connect(accountState, SIGNAL(stateChanged(int)),
-        SLOT(slotAccountStateChanged()));
-    connect(&_jobRestartTimer, SIGNAL(timeout()), SLOT(slotCheckQuota()));
+    connect(accountState, &AccountState::stateChanged,
+        this, &QuotaInfo::slotAccountStateChanged);
+    connect(&_jobRestartTimer, &QTimer::timeout, this, &QuotaInfo::slotCheckQuota);
     _jobRestartTimer.setSingleShot(true);
 }
 
@@ -101,8 +101,8 @@ void QuotaInfo::slotCheckQuota()
     _job = new PropfindJob(account, quotaBaseFolder(), this);
     _job->setProperties(QList<QByteArray>() << "quota-available-bytes"
                                             << "quota-used-bytes");
-    connect(_job, SIGNAL(result(QVariantMap)), SLOT(slotUpdateLastQuota(QVariantMap)));
-    connect(_job, SIGNAL(networkError(QNetworkReply *)), SLOT(slotRequestFailed()));
+    connect(_job.data(), &PropfindJob::result, this, &QuotaInfo::slotUpdateLastQuota);
+    connect(_job.data(), &AbstractNetworkJob::networkError, this, &QuotaInfo::slotRequestFailed);
     _job->start();
 }
 

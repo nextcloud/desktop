@@ -54,11 +54,11 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     readIgnoreFile(cfgFile.excludeFile(ConfigFile::SystemScope), true);
     readIgnoreFile(cfgFile.excludeFile(ConfigFile::UserScope), false);
 
-    connect(this, SIGNAL(accepted()), SLOT(slotUpdateLocalIgnoreList()));
+    connect(this, &QDialog::accepted, this, &IgnoreListEditor::slotUpdateLocalIgnoreList);
     ui->removePushButton->setEnabled(false);
-    connect(ui->tableWidget, SIGNAL(itemSelectionChanged()), SLOT(slotItemSelectionChanged()));
-    connect(ui->removePushButton, SIGNAL(clicked()), SLOT(slotRemoveCurrentItem()));
-    connect(ui->addPushButton, SIGNAL(clicked()), SLOT(slotAddPattern()));
+    connect(ui->tableWidget, &QTableWidget::itemSelectionChanged, this, &IgnoreListEditor::slotItemSelectionChanged);
+    connect(ui->removePushButton, &QAbstractButton::clicked, this, &IgnoreListEditor::slotRemoveCurrentItem);
+    connect(ui->addPushButton, &QAbstractButton::clicked, this, &IgnoreListEditor::slotAddPattern);
 
     ui->tableWidget->resizeColumnsToContents();
     ui->tableWidget->horizontalHeader()->setResizeMode(patternCol, QHeaderView::Stretch);

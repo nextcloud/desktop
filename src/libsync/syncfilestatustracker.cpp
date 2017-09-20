@@ -111,13 +111,13 @@ static inline bool showWarningInSocketApi(const SyncFileItem &item)
 SyncFileStatusTracker::SyncFileStatusTracker(SyncEngine *syncEngine)
     : _syncEngine(syncEngine)
 {
-    connect(syncEngine, SIGNAL(aboutToPropagate(SyncFileItemVector &)),
-        SLOT(slotAboutToPropagate(SyncFileItemVector &)));
-    connect(syncEngine, SIGNAL(itemCompleted(const SyncFileItemPtr &)),
-        SLOT(slotItemCompleted(const SyncFileItemPtr &)));
-    connect(syncEngine, SIGNAL(finished(bool)), SLOT(slotSyncFinished()));
-    connect(syncEngine, SIGNAL(started()), SLOT(slotSyncEngineRunningChanged()));
-    connect(syncEngine, SIGNAL(finished(bool)), SLOT(slotSyncEngineRunningChanged()));
+    connect(syncEngine, &SyncEngine::aboutToPropagate,
+        this, &SyncFileStatusTracker::slotAboutToPropagate);
+    connect(syncEngine, &SyncEngine::itemCompleted,
+        this, &SyncFileStatusTracker::slotItemCompleted);
+    connect(syncEngine, &SyncEngine::finished, this, &SyncFileStatusTracker::slotSyncFinished);
+    connect(syncEngine, &SyncEngine::started, this, &SyncFileStatusTracker::slotSyncEngineRunningChanged);
+    connect(syncEngine, &SyncEngine::finished, this, &SyncFileStatusTracker::slotSyncEngineRunningChanged);
 }
 
 SyncFileStatus SyncFileStatusTracker::fileStatus(const QString &relativePath)

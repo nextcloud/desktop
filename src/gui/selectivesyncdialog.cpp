@@ -83,10 +83,10 @@ SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
 
     layout->addWidget(_folderTree);
 
-    connect(_folderTree, SIGNAL(itemExpanded(QTreeWidgetItem *)),
-        SLOT(slotItemExpanded(QTreeWidgetItem *)));
-    connect(_folderTree, SIGNAL(itemChanged(QTreeWidgetItem *, int)),
-        SLOT(slotItemChanged(QTreeWidgetItem *, int)));
+    connect(_folderTree, &QTreeWidget::itemExpanded,
+        this, &SelectiveSyncWidget::slotItemExpanded);
+    connect(_folderTree, &QTreeWidget::itemChanged,
+        this, &SelectiveSyncWidget::slotItemChanged);
     _folderTree->setSortingEnabled(true);
     _folderTree->sortByColumn(0, Qt::AscendingOrder);
     _folderTree->setColumnCount(2);
@@ -107,10 +107,10 @@ void SelectiveSyncWidget::refreshFolders()
     LsColJob *job = new LsColJob(_account, _folderPath, this);
     job->setProperties(QList<QByteArray>() << "resourcetype"
                                            << "http://owncloud.org/ns:size");
-    connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
-        this, SLOT(slotUpdateDirectories(QStringList)));
-    connect(job, SIGNAL(finishedWithError(QNetworkReply *)),
-        this, SLOT(slotLscolFinishedWithError(QNetworkReply *)));
+    connect(job, &LsColJob::directoryListingSubfolders,
+        this, &SelectiveSyncWidget::slotUpdateDirectories);
+    connect(job, &LsColJob::finishedWithError,
+        this, &SelectiveSyncWidget::slotLscolFinishedWithError);
     job->start();
     _folderTree->clear();
     _loading->show();
@@ -291,8 +291,8 @@ void SelectiveSyncWidget::slotItemExpanded(QTreeWidgetItem *item)
     LsColJob *job = new LsColJob(_account, prefix + dir, this);
     job->setProperties(QList<QByteArray>() << "resourcetype"
                                            << "http://owncloud.org/ns:size");
-    connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
-        SLOT(slotUpdateDirectories(QStringList)));
+    connect(job, &LsColJob::directoryListingSubfolders,
+        this, &SelectiveSyncWidget::slotUpdateDirectories);
     job->start();
 }
 
@@ -440,7 +440,7 @@ SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder *folder, QWi
         _okButton->setEnabled(false);
     }
     // Make sure we don't get crashes if the folder is destroyed while we are still open
-    connect(_folder, SIGNAL(destroyed(QObject *)), this, SLOT(deleteLater()));
+    connect(_folder, &QObject::destroyed, this, &QObject::deleteLater);
 }
 
 SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, const QString &folder,
@@ -463,7 +463,7 @@ void SelectiveSyncDialog::init(const AccountPtr &account)
     connect(_okButton, SIGNAL(clicked()), this, SLOT(accept()));
     QPushButton *button;
     button = buttonBox->addButton(QDialogButtonBox::Cancel);
-    connect(button, SIGNAL(clicked()), this, SLOT(reject()));
+    connect(button, &QAbstractButton::clicked, this, &QDialog::reject);
     layout->addWidget(buttonBox);
 }
 

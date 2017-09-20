@@ -319,8 +319,8 @@ AccountPtr AccountManager::createAccount()
 {
     AccountPtr acc = Account::create();
     acc->setSslErrorHandler(new SslDialogErrorHandler);
-    connect(acc.data(), SIGNAL(proxyAuthenticationRequired(QNetworkProxy, QAuthenticator *)),
-        ProxyAuthHandler::instance(), SLOT(handleProxyAuthenticationRequired(QNetworkProxy, QAuthenticator *)));
+    connect(acc.data(), &Account::proxyAuthenticationRequired,
+        ProxyAuthHandler::instance(), &ProxyAuthHandler::handleProxyAuthenticationRequired);
     return acc;
 }
 
@@ -359,8 +359,8 @@ QString AccountManager::generateFreeAccountId() const
 void AccountManager::addAccountState(AccountState *accountState)
 {
     QObject::connect(accountState->account().data(),
-        SIGNAL(wantsAccountSaved(Account *)),
-        SLOT(saveAccount(Account *)));
+        &Account::wantsAccountSaved,
+        this, &AccountManager::saveAccount);
 
     AccountStatePtr ptr(accountState);
     _accounts << ptr;

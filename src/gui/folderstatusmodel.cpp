@@ -67,10 +67,10 @@ void FolderStatusModel::setAccountState(const AccountState *accountState)
     _folders.clear();
     _accountState = accountState;
 
-    connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(Folder *)),
-        SLOT(slotFolderSyncStateChange(Folder *)), Qt::UniqueConnection);
-    connect(FolderMan::instance(), SIGNAL(scheduleQueueChanged()),
-        SLOT(slotFolderScheduleQueueChanged()), Qt::UniqueConnection);
+    connect(FolderMan::instance(), &FolderMan::folderSyncStateChange,
+        this, &FolderStatusModel::slotFolderSyncStateChange, Qt::UniqueConnection);
+    connect(FolderMan::instance(), &FolderMan::scheduleQueueChanged,
+        this, &FolderStatusModel::slotFolderScheduleQueueChanged, Qt::UniqueConnection);
 
     auto folders = FolderMan::instance()->map();
     foreach (auto f, folders) {
@@ -85,8 +85,8 @@ void FolderStatusModel::setAccountState(const AccountState *accountState)
         info._checked = Qt::PartiallyChecked;
         _folders << info;
 
-        connect(f, SIGNAL(progressInfo(ProgressInfo)), this, SLOT(slotSetProgress(ProgressInfo)), Qt::UniqueConnection);
-        connect(f, SIGNAL(newBigFolderDiscovered(QString)), this, SLOT(slotNewBigFolder()), Qt::UniqueConnection);
+        connect(f, &Folder::progressInfo, this, &FolderStatusModel::slotSetProgress, Qt::UniqueConnection);
+        connect(f, &Folder::newBigFolderDiscovered, this, &FolderStatusModel::slotNewBigFolder, Qt::UniqueConnection);
     }
 
     // Sort by header text
@@ -556,12 +556,12 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
                                            << "http://owncloud.org/ns:size"
                                            << "http://owncloud.org/ns:permissions");
     job->setTimeout(60 * 1000);
-    connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
-        SLOT(slotUpdateDirectories(QStringList)));
-    connect(job, SIGNAL(finishedWithError(QNetworkReply *)),
-        this, SLOT(slotLscolFinishedWithError(QNetworkReply *)));
-    connect(job, SIGNAL(directoryListingIterated(const QString &, const QMap<QString, QString> &)),
-        this, SLOT(slotGatherPermissions(const QString &, const QMap<QString, QString> &)));
+    connect(job, &LsColJob::directoryListingSubfolders,
+        this, &FolderStatusModel::slotUpdateDirectories);
+    connect(job, &LsColJob::finishedWithError,
+        this, &FolderStatusModel::slotLscolFinishedWithError);
+    connect(job, &LsColJob::directoryListingIterated,
+        this, &FolderStatusModel::slotGatherPermissions);
 
     job->start();
 
@@ -570,7 +570,7 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
 
     // Show 'fetching data...' hint after a while.
     _fetchingItems[persistentIndex].start();
-    QTimer::singleShot(1000, this, SLOT(slotShowFetchProgress()));
+    QTimer::singleShot(1000, this, &FolderStatusModel::slotShowFetchProgress);
 }
 
 void FolderStatusModel::slotGatherPermissions(const QString &href, const QMap<QString, QString> &map)

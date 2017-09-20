@@ -112,7 +112,7 @@ void PropagateRemoteMove::start()
     _job = new MoveJob(propagator()->account(),
         propagator()->_remoteFolder + _item->_file,
         destination, this);
-    connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotMoveJobFinished()));
+    connect(_job.data(), &MoveJob::finishedSignal, this, &PropagateRemoteMove::slotMoveJobFinished);
     propagator()->_activeJobList.append(this);
     _job->start();
 }

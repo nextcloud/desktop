@@ -58,10 +58,10 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     _ui->setupUi(this);
 
     QPushButton *closeButton = _ui->buttonBox->button(QDialogButtonBox::Close);
-    connect(closeButton, SIGNAL(clicked()), this, SLOT(close()));
+    connect(closeButton, &QAbstractButton::clicked, this, &QWidget::close);
 
     // We want to act on account state changes
-    connect(_accountState, SIGNAL(stateChanged(int)), SLOT(slotAccountStateChanged(int)));
+    connect(_accountState.data(), &AccountState::stateChanged, this, &ShareDialog::slotAccountStateChanged);
 
     // Because people press enter in the dialog and we don't want to close for that
     closeButton->setDefault(false);
@@ -118,7 +118,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
 
     if (QFileInfo(_localPath).isFile()) {
         ThumbnailJob *job = new ThumbnailJob(_sharePath, _accountState->account(), this);
-        connect(job, SIGNAL(jobFinished(int, QByteArray)), SLOT(slotThumbnailFetched(int, QByteArray)));
+        connect(job, &ThumbnailJob::jobFinished, this, &ShareDialog::slotThumbnailFetched);
         job->start();
     }
 
@@ -135,8 +135,8 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
         << "http://open-collaboration-services.org/ns:share-permissions"
         << "http://owncloud.org/ns:privatelink");
     job->setTimeout(10 * 1000);
-    connect(job, SIGNAL(result(QVariantMap)), SLOT(slotPropfindReceived(QVariantMap)));
-    connect(job, SIGNAL(finishedWithError(QNetworkReply *)), SLOT(slotPropfindError()));
+    connect(job, &PropfindJob::result, this, &ShareDialog::slotPropfindReceived);
+    connect(job, &PropfindJob::finishedWithError, this, &ShareDialog::slotPropfindError);
     job->start();
 }
 

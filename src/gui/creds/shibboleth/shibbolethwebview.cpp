@@ -63,10 +63,10 @@ ShibbolethWebView::ShibbolethWebView(AccountPtr account, QWidget *parent)
     setAttribute(Qt::WA_DeleteOnClose);
 
     QWebPage *page = new UserAgentWebPage(this);
-    connect(page, SIGNAL(loadStarted()),
-        this, SLOT(slotLoadStarted()));
-    connect(page, SIGNAL(loadFinished(bool)),
-        this, SLOT(slotLoadFinished(bool)));
+    connect(page, &QWebPage::loadStarted,
+        this, &ShibbolethWebView::slotLoadStarted);
+    connect(page, &QWebPage::loadFinished,
+        this, &ShibbolethWebView::slotLoadFinished);
 
     // Make sure to accept the same SSL certificate issues as the regular QNAM we use for syncing
     QObject::connect(page->networkAccessManager(), SIGNAL(sslErrors(QNetworkReply *, QList<QSslError>)),

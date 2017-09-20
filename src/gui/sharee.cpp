@@ -72,8 +72,8 @@ void ShareeModel::fetch(const QString &search, const ShareeSet &blacklist)
     _search = search;
     _shareeBlacklist = blacklist;
     OcsShareeJob *job = new OcsShareeJob(_account);
-    connect(job, SIGNAL(shareeJobFinished(QJsonDocument)), SLOT(shareesFetched(QJsonDocument)));
-    connect(job, SIGNAL(ocsError(int, QString)), SIGNAL(displayErrorMessage(int, QString)));
+    connect(job, &OcsShareeJob::shareeJobFinished, this, &ShareeModel::shareesFetched);
+    connect(job, &OcsJob::ocsError, this, &ShareeModel::displayErrorMessage);
     job->getSharees(_search, _type, 1, 50);
 }
 
