@@ -24,7 +24,8 @@
 
 #include <errno.h>
 #include <stdio.h>
-#include <assert.h>
+#include <QLoggingCategory>
+#include "common/asserts.h"
 
 #include "csync_private.h"
 #include "csync_util.h"
@@ -33,16 +34,12 @@
 #include "csync_statedb.h"
 #include "common/c_jhash.h"
 
-#define CSYNC_LOG_CATEGORY_NAME "csync.vio.main"
-
-#include "csync_log.h"
+Q_LOGGING_CATEGORY(lcVio, "sync.csync.vio", QtInfoMsg)
 
 csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name) {
   switch(ctx->current) {
     case REMOTE_REPLICA:
-      if(ctx->remote.read_from_db) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Read from db flag is true, should not!" );
-      }
+      ASSERT(!ctx->remote.read_from_db);
       return ctx->callbacks.remote_opendir_hook(name, ctx->callbacks.vio_userdata);
       break;
     case LOCAL_REPLICA:
@@ -52,8 +49,7 @@ csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name) {
       return csync_vio_local_opendir(name);
       break;
     default:
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->current);
-      break;
+      ASSERT(false);
   }
   return NULL;
 }
@@ -68,9 +64,7 @@ int csync_vio_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
 
   switch(ctx->current) {
   case REMOTE_REPLICA:
-      if( ctx->remote.read_from_db ) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Remote ReadFromDb is true, should not!");
-      }
+      ASSERT(!ctx->remote.read_from_db);
       ctx->callbacks.remote_closedir_hook(dhandle, ctx->callbacks.vio_userdata);
       rc = 0;
       break;
@@ -78,7 +72,7 @@ int csync_vio_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
       rc = csync_vio_local_closedir(dhandle);
       break;
   default:
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->current);
+      ASSERT(false);
       break;
   }
   return rc;
@@ -87,40 +81,26 @@ int csync_vio_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
 std::unique_ptr<csync_file_stat_t> csync_vio_readdir(CSYNC *ctx, csync_vio_handle_t *dhandle) {
   switch(ctx->current) {
     case REMOTE_REPLICA:
-      if( ctx->remote.read_from_db ) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Remote readfromdb is true, should not!");
-      }
+      ASSERT(!ctx->remote.read_from_db);
       return ctx->callbacks.remote_readdir_hook(dhandle, ctx->callbacks.vio_userdata);
       break;
     case LOCAL_REPLICA:
       return csync_vio_local_readdir(dhandle);
       break;
     default:
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ALERT, "Invalid replica (%d)", (int)ctx->current);
-      break;
+      ASSERT(false);
   }
 
   return NULL;
 }
 
-
 int csync_vio_stat(CSYNC *ctx, const char *uri, csync_file_stat_t *buf) {
   int rc = -1;
 
-  switch(ctx->current) {
-    case REMOTE_REPLICA:
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "ERROR: Cannot call remote stat, not implemented");
-      assert(ctx->current != REMOTE_REPLICA);
-      break;
-    case LOCAL_REPLICA:
-      rc = csync_vio_local_stat(uri, buf);
-      if (rc < 0) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "Local stat failed, errno %d for %s", errno, uri);
-      }
-      break;
-    default:
-      break;
-  }
+    ASSERT(ctx->current == LOCAL_REPLICA);
+    rc = csync_vio_local_stat(uri, buf);
+    if (rc < 0)
+        qCWarning(lcVio, "Local stat failed, errno %d for %s", errno, uri);
 
   return rc;
 }

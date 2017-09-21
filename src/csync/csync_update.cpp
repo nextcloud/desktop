@@ -42,15 +42,16 @@
 
 #include "vio/csync_vio.h"
 
-#define CSYNC_LOG_CATEGORY_NAME "csync.updater"
-#include "csync_log.h"
 #include "csync_rename.h"
 
 #include "common/utility.h"
+#include "common/asserts.h"
 
 // Needed for PRIu64 on MinGW in C++ mode.
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
+
+Q_LOGGING_CATEGORY(lcUpdate, "sync.csync.updater", QtInfoMsg)
 
 #ifdef NO_RENAME_EXTENSION
 /* Return true if the two path have the same extension. false otherwise. */
@@ -132,12 +133,12 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
        * This code should probably be in csync_exclude, but it does not have the fs parameter.
        * Keep it here for now */
       if (ctx->ignore_hidden_files && (fs->is_hidden)) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file excluded because it is a hidden file: %s", fs->path.constData());
+          qCDebug(lcUpdate, "file excluded because it is a hidden file: %s", fs->path.constData());
           excluded = CSYNC_FILE_EXCLUDE_HIDDEN;
       }
   } else {
       /* File is ignored because it's matched by a user- or system exclude pattern. */
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "%s excluded  (%d)", fs->path.constData(), excluded);
+      qCDebug(lcUpdate, "%s excluded  (%d)", fs->path.constData(), excluded);
       if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
           return 1;
       }
@@ -154,7 +155,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
 
   if (fs->type == CSYNC_FTW_TYPE_FILE ) {
     if (fs->modtime == 0) {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s - mtime is zero!", fs->path.constData());
+      qCDebug(lcUpdate, "file: %s - mtime is zero!", fs->path.constData());
     }
   }
 
@@ -181,7 +182,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
 
   if(tmp && tmp->path == fs->path ) { /* there is an entry in the database */
       /* we have an update! */
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Database entry found, compare: %" PRId64 " <-> %" PRId64
+      qCInfo(lcUpdate, "Database entry found, compare: %" PRId64 " <-> %" PRId64
                                           ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64
                                           ", size: %" PRId64 " <-> %" PRId64 ", perms: %x <-> %x, ignore: %d",
                 ((int64_t) fs->modtime), ((int64_t) tmp->modtime),
@@ -216,7 +217,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                   checksumIdentical = fs->checksumHeader == tmp->checksumHeader;
               }
               if (checksumIdentical) {
-                  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "NOTE: Checksums are identical, file did not actually change: %s", fs->path.constData());
+                  qCDebug(lcUpdate, "NOTE: Checksums are identical, file did not actually change: %s", fs->path.constData());
                   fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                   goto out;
               }
@@ -240,7 +241,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
            * The metadata comparison ensure that we fetch all the file id or permission when
            * upgrading owncloud
            */
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Reading from database: %s", fs->path.constData());
+          qCDebug(lcUpdate, "Reading from database: %s", fs->path.constData());
           ctx->remote.read_from_db = true;
       }
       /* If it was remembered in the db that the remote dir has ignored files, store
@@ -251,7 +252,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       }
       if (metadata_differ) {
           /* file id or permissions has changed. Which means we need to update them in the DB. */
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Need to update metadata for: %s", fs->path.constData());
+          qCDebug(lcUpdate, "Need to update metadata for: %s", fs->path.constData());
           fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
       } else {
           fs->instruction = CSYNC_INSTRUCTION_NONE;
@@ -259,7 +260,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
   } else {
       /* check if it's a file and has been renamed */
       if (ctx->current == LOCAL_REPLICA) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Checking for rename based on inode # %" PRId64 "", (uint64_t) fs->inode);
+          qCDebug(lcUpdate, "Checking for rename based on inode # %" PRId64 "", (uint64_t) fs->inode);
 
           tmp = csync_statedb_get_stat_by_inode(ctx, fs->inode);
 
@@ -287,13 +288,13 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                       _rel_to_abs(ctx, fs->path), tmp->checksumHeader,
                       ctx->callbacks.checksum_userdata);
               if (!fs->checksumHeader.isEmpty()) {
-                  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "checking checksum of potential rename %s %s <-> %s", fs->path.constData(), fs->checksumHeader.constData(), tmp->checksumHeader.constData());
+                  qCDebug(lcUpdate, "checking checksum of potential rename %s %s <-> %s", fs->path.constData(), fs->checksumHeader.constData(), tmp->checksumHeader.constData());
                   isRename = fs->checksumHeader == tmp->checksumHeader;
               }
           }
 
           if (isRename) {
-              CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "pot rename detected based on inode # %" PRId64 "", (uint64_t) fs->inode);
+              qCDebug(lcUpdate, "pot rename detected based on inode # %" PRId64 "", (uint64_t) fs->inode);
               /* inode found so the file has been renamed */
               fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
               if (fs->type == CSYNC_FTW_TYPE_DIR) {
@@ -312,11 +313,11 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
           }
           if(tmp ) {                           /* tmp existing at all */
               if (tmp->type != fs->type) {
-                  CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "file types different is not!");
+                  qCWarning(lcUpdate, "file types different is not!");
                   fs->instruction = CSYNC_INSTRUCTION_NEW;
                   goto out;
               }
-              CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "remote rename detected based on fileid %s --> %s", tmp->path.constData(), fs->path.constData());
+              qCDebug(lcUpdate, "remote rename detected based on fileid %s --> %s", tmp->path.constData(), fs->path.constData());
               fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
               if (fs->type == CSYNC_FTW_TYPE_DIR) {
                   csync_rename_record(ctx, tmp->path, fs->path);
@@ -384,7 +385,7 @@ out:
 
   ctx->current_fs = fs.get();
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "file: %s, instruction: %s <<=", fs->path.constData(),
+  qCInfo(lcUpdate, "file: %s, instruction: %s <<=", fs->path.constData(),
       csync_instruction_str(fs->instruction));
 
   QByteArray path = fs->path;
@@ -406,7 +407,7 @@ int csync_walker(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs) {
   int rc = -1;
 
   if (ctx->abort) {
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Aborted!");
+    qCDebug(lcUpdate, "Aborted!");
     ctx->status_code = CSYNC_STATUS_ABORTED;
     return -1;
   }
@@ -414,20 +415,20 @@ int csync_walker(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs) {
   switch (fs->type) {
     case CSYNC_FTW_TYPE_FILE:
       if (ctx->current == REMOTE_REPLICA) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s [file_id=%s size=%" PRIu64 "]", fs->path.constData(), fs->file_id.constData(), fs->size);
+          qCDebug(lcUpdate, "file: %s [file_id=%s size=%" PRIu64 "]", fs->path.constData(), fs->file_id.constData(), fs->size);
       } else {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "file: %s [inode=%" PRIu64 " size=%" PRIu64 "]", fs->path.constData(), fs->inode, fs->size);
+          qCDebug(lcUpdate, "file: %s [inode=%" PRIu64 " size=%" PRIu64 "]", fs->path.constData(), fs->inode, fs->size);
       }
       break;
   case CSYNC_FTW_TYPE_DIR: /* enter directory */
       if (ctx->current == REMOTE_REPLICA) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s [file_id=%s]", fs->path.constData(), fs->file_id.constData());
+          qCDebug(lcUpdate, "directory: %s [file_id=%s]", fs->path.constData(), fs->file_id.constData());
       } else {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "directory: %s [inode=%" PRIu64 "]", fs->path.constData(), fs->inode);
+          qCDebug(lcUpdate, "directory: %s [inode=%" PRIu64 "]", fs->path.constData(), fs->inode);
       }
       break;
   case CSYNC_FTW_TYPE_SLINK:
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "symlink: %s - not supported", fs->path.constData());
+    qCDebug(lcUpdate, "symlink: %s - not supported", fs->path.constData());
     break;
   default:
     return 0;
@@ -442,7 +443,7 @@ int csync_walker(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs) {
 static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
 {
     if( csync_statedb_get_below_path(ctx, uri) < 0 ) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "StateDB could not be read!");
+        qCWarning(lcUpdate, "StateDB could not be read!");
         return false;
     }
 
@@ -502,7 +503,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
   if ((dh = csync_vio_opendir(ctx, uri)) == NULL) {
       if (ctx->abort) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Aborted!");
+          qCDebug(lcUpdate, "Aborted!");
           ctx->status_code = CSYNC_STATUS_ABORTED;
           goto error;
       }
@@ -510,20 +511,18 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       /* permission denied */
       ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_OPENDIR_ERROR);
       if (errno == EACCES) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Permission denied.");
+          qCWarning(lcUpdate, "Permission denied.");
           if (mark_current_item_ignored(ctx, previous_fs, CSYNC_STATUS_PERMISSION_DENIED)) {
               return 0;
           }
       } else if(errno == ENOENT) {
           asp = asprintf( &ctx->error_string, "%s", uri);
-          if (asp < 0) {
-              CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "asprintf failed!");
-          }
+          ASSERT(asp);
       }
       // 403 Forbidden can be sent by the server if the file firewall is active.
       // A file or directory should be ignored and sync must continue. See #3490
       else if(errno == ERRNO_FORBIDDEN) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Directory access Forbidden (File Firewall?)");
+          qCWarning(lcUpdate, "Directory access Forbidden (File Firewall?)");
           if( mark_current_item_ignored(ctx, previous_fs, CSYNC_STATUS_FORBIDDEN) ) {
               return 0;
           }
@@ -534,13 +533,13 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       // is returned too. Thus we can't distinguish the two and will treat any
       // 503 as request to ignore the folder. See #3113 #2884.
       else if(errno == ERRNO_STORAGE_UNAVAILABLE || errno == ERRNO_SERVICE_UNAVAILABLE) {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Storage was not available!");
+          qCWarning(lcUpdate, "Storage was not available!");
           if( mark_current_item_ignored(ctx, previous_fs, CSYNC_STATUS_STORAGE_UNAVAILABLE ) ) {
               return 0;
           }
           /* if current_fs is not defined here, better throw an error */
       } else {
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_ERROR, "opendir failed for %s - errno %d", uri, errno);
+          qCWarning(lcUpdate, "opendir failed for %s - errno %d", uri, errno);
       }
       goto error;
   }
@@ -648,7 +647,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   }
 
   csync_vio_closedir(ctx, dh);
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, " <= Closing walk for %s with read_from_db %d", uri, read_from_db);
+  qCDebug(lcUpdate, " <= Closing walk for %s with read_from_db %d", uri, read_from_db);
 
   return rc;
 

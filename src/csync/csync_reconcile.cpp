@@ -27,9 +27,10 @@
 #include "csync_statedb.h"
 #include "csync_rename.h"
 #include "common/c_jhash.h"
+#include "common/asserts.h"
 
-#define CSYNC_LOG_CATEGORY_NAME "csync.reconciler"
-#include "csync_log.h"
+#include <QLoggingCategory>
+Q_LOGGING_CATEGORY(lcReconcile, "sync.csync.reconciler", QtInfoMsg)
 
 // Needed for PRIu64 on MinGW in C++ mode.
 #define __STDC_FORMAT_MACROS
@@ -156,14 +157,13 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
             if(ctx->current == LOCAL_REPLICA ) {
                 /* use the old name to find the "other" node */
                 tmp = csync_statedb_get_stat_by_inode(ctx, cur->inode);
-                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Finding opposite temp through inode %" PRIu64 ": %s",
+                qCDebug(lcReconcile, "Finding opposite temp through inode %" PRIu64 ": %s",
                           cur->inode, tmp ? "true":"false");
-            } else if( ctx->current == REMOTE_REPLICA ) {
-                tmp = csync_statedb_get_stat_by_file_id(ctx, cur->file_id);
-                CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Finding opposite temp through file ID %s: %s",
-                          cur->file_id.constData(), tmp ? "true":"false");
             } else {
-                CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "Unknown replica...");
+                ASSERT( ctx->current == REMOTE_REPLICA );
+                tmp = csync_statedb_get_stat_by_file_id(ctx, cur->file_id);
+                qCDebug(lcReconcile, "Finding opposite temp through file ID %s: %s",
+                          cur->file_id.constData(), tmp ? "true":"false");
             }
 
             if( tmp ) {
@@ -171,7 +171,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                     /* First, check that the file is NOT in our tree (another file with the same name was added) */
                     csync_s::FileMap *our_tree = ctx->current == REMOTE_REPLICA ? &ctx->remote.files : &ctx->local.files;
 	                if (our_tree->findFile(tmp->path)) {
-                        CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Origin found in our tree : %s", tmp->path.constData());
+                        qCDebug(lcReconcile, "Origin found in our tree : %s", tmp->path.constData());
                     } else {
                     /* Find the temporar file in the other tree.
                     * If the renamed file could not be found in the opposite tree, that is because it
@@ -179,7 +179,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                     * The journal is cleaned up later after propagation.
                     */
                     other = other_tree->findFile(tmp->path);
-                    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Temporary opposite (%s) %s",
+                    qCDebug(lcReconcile, "Temporary opposite (%s) %s",
                             tmp->path.constData() , other ? "found": "not found" );
                     }
                 }
@@ -206,7 +206,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                     other->inode = cur->inode;
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                 } else if (other->instruction == CSYNC_INSTRUCTION_NEW) {
-                    CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "OOOO=> NEW detected in other tree!");
+                    qCDebug(lcReconcile, "OOOO=> NEW detected in other tree!");
                     cur->instruction = CSYNC_INSTRUCTION_CONFLICT;
                 } else {
                     assert(other->type != CSYNC_FTW_TYPE_DIR);
@@ -242,13 +242,13 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
         case CSYNC_INSTRUCTION_NEW:
             // This operation is usually a no-op and will by default return false
             if (csync_file_locked_or_open(ctx->local.uri, cur->path)) {
-                CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "[Reconciler] IGNORING file %s/%s since it is locked / open", ctx->local.uri, cur->path.constData());
+                qCDebug(lcReconcile, "[Reconciler] IGNORING file %s/%s since it is locked / open", ctx->local.uri, cur->path.constData());
                 cur->instruction = CSYNC_INSTRUCTION_ERROR;
                 if (cur->error_status == CSYNC_STATUS_OK) // don't overwrite error
                     cur->error_status = CYSNC_STATUS_FILE_LOCKED_OR_OPEN;
                 break;
             } else {
-                //CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "[Reconciler] not ignoring file %s/%s", ctx->local.uri, cur->path);
+                //qCDebug(lcReconcile, "[Reconciler] not ignoring file %s/%s", ctx->local.uri, cur->path);
             }
             switch (other->instruction) {
             /* file on other replica is changed or new */
@@ -329,7 +329,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
     {
         if(cur->type == CSYNC_FTW_TYPE_DIR)
         {
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
+            qCDebug(lcReconcile,
                       "%-30s %s dir:  %s",
                       csync_instruction_str(cur->instruction),
                       repo,
@@ -337,7 +337,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
         }
         else
         {
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE,
+            qCDebug(lcReconcile,
                       "%-30s %s file: %s",
                       csync_instruction_str(cur->instruction),
                       repo,
@@ -348,7 +348,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
     {
         if(cur->type == CSYNC_FTW_TYPE_DIR)
         {
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO,
+            qCInfo(lcReconcile,
                       "%-30s %s dir:  %s",
                       csync_instruction_str(cur->instruction),
                       repo,
@@ -356,7 +356,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
         }
         else
         {
-            CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO,
+            qCInfo(lcReconcile,
                       "%-30s %s file: %s",
                       csync_instruction_str(cur->instruction),
                       repo,
