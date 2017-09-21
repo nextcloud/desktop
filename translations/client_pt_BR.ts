@@ -3309,7 +3309,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="487"/>
         <source>Unresolved conflict.</source>
-        <translation type="unfinished"/>
+        <translation>Conflito não solucionado.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="498"/>
