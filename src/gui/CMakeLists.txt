@@ -291,7 +291,7 @@ set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
 )
 # Only relevant for Linux? On OS X it by default properly checks in the bundle directory next to the exe
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
-	INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}" )
+	INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${QT_LIBRARIES} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
