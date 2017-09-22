@@ -344,7 +344,7 @@ bool HttpCredentials::refreshAccessToken()
     if (_refreshToken.isEmpty())
         return false;
 
-    QUrl requestToken(_account->url().toString() + QLatin1String("/index.php/apps/oauth2/api/v1/token"));
+    QUrl requestToken = Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/api/v1/token"));
     QNetworkRequest req;
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
 
