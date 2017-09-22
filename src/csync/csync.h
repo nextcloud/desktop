@@ -225,8 +225,6 @@ typedef std::unique_ptr<csync_file_stat_t> (*csync_vio_readdir_hook) (csync_vio_
                                                               void *userdata);
 typedef void (*csync_vio_closedir_hook) (csync_vio_handle_t *dhhandle,
                                                               void *userdata);
-typedef int (*csync_vio_stat_hook) (csync_vio_handle_t *dhhandle,
-                                                              void *userdata);
 
 /* Compute the checksum of the given \a checksumTypeId for \a path. */
 typedef QByteArray (*csync_checksum_hook)(
