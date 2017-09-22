@@ -505,5 +505,20 @@ QString Theme::oauthClientSecret() const
     return "UBntmLjC2yYCeHwsyj73Uwo9TAaecAetRwMw0xYcvNL9yRdLSUi0hUAHfvCHFeFh";
 }
 
+QString Theme::versionSwitchOutput() const
+{
+    QString helpText;
+    QTextStream stream(&helpText);
+    stream << appName().toLatin1().constData()
+           << QLatin1String(" version ")
+           << version().toLatin1().constData() << endl;
+#ifdef GIT_SHA1
+    stream << "Git revision " << GIT_SHA1 << endl;
+#endif
+    stream << "Using Qt " << qVersion() << ", built against Qt " << QT_VERSION_STR << endl;
+    stream << "Using '" << QSslSocket::sslLibraryVersionString() << "'" << endl;
+    return helpText;
+}
+
 
 } // end namespace client

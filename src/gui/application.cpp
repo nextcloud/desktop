@@ -487,18 +487,7 @@ void Application::showHelp()
 
 void Application::showVersion()
 {
-    QString helpText;
-    QTextStream stream(&helpText);
-    stream << _theme->appName().toLatin1().constData()
-           << QLatin1String(" version ")
-           << _theme->version().toLatin1().constData() << endl;
-#ifdef GIT_SHA1
-    stream << "Git revision " << GIT_SHA1 << endl;
-#endif
-    stream << "Using Qt " << qVersion() << ", built against Qt " << QT_VERSION_STR << endl;
-    stream << "Using '" << QSslSocket::sslLibraryVersionString() << "'" << endl;
-
-    displayHelpText(helpText);
+    displayHelpText(Theme::instance()->versionSwitchOutput());
 }
 
 void Application::showHint(std::string errorHint)
