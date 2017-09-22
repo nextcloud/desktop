@@ -148,7 +148,10 @@ QString HttpCredentialsGui::requestAppPasswordText(const Account *account)
         return QString();
     }
 
+    auto baseUrl = account->url().toString();
+    if (baseUrl.endsWith('/'))
+        baseUrl.chop(1);
     return tr("<a href=\"%1\">Click here</a> to request an app password from the web interface.")
-        .arg(account->url().toString() + path);
+        .arg(baseUrl + path);
 }
 } // namespace OCC
