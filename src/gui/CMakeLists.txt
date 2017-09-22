@@ -5,7 +5,7 @@ add_subdirectory(updater)
 
 #TODO Move resources files
 qt_add_resources(MIRALL_RC_SRC ../../client.qrc)
-if ( IS_DIRECTORY ${OEM_THEME_DIR} )
+if (EXISTS "${OEM_THEME_DIR}/theme.qrc")
     qt_add_resources(MIRALL_RC_SRC ${OEM_THEME_DIR}/theme.qrc)
     set(theme_dir ${OEM_THEME_DIR}/theme)
 else()
