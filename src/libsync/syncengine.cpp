@@ -762,9 +762,9 @@ void SyncEngine::startSync()
     const qint64 minFree = criticalFreeSpaceLimit();
     const qint64 freeBytes = Utility::freeDiskSpace(_localPath);
     if (freeBytes >= 0) {
-        qCInfo(lcEngine) << "There are" << freeBytes << "bytes available at" << _localPath
-                         << "and at least" << minFree << "are required";
         if (freeBytes < minFree) {
+            qCWarning(lcEngine()) << "Too little space available at" << _localPath << ". Have"
+                                  << freeBytes << "bytes and require at least" << minFree << "bytes";
             _anotherSyncNeeded = DelayedFollowUp;
             csyncError(tr("Only %1 are available, need at least %2 to start",
                 "Placeholders are postfixed with file sizes using Utility::octetsToString()")
@@ -773,6 +773,8 @@ void SyncEngine::startSync()
                                Utility::octetsToString(minFree)));
             finalize(false);
             return;
+        } else {
+            qCInfo(lcEngine) << "There are" << freeBytes << "bytes available at" << _localPath;
         }
     } else {
         qCWarning(lcEngine) << "Could not determine free space available at" << _localPath;
