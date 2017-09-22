@@ -565,16 +565,10 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       continue;
     }
 
-    fullpath = uri;
-    if (!fullpath.isEmpty())
-        fullpath += '/';
-    fullpath += filename;
-    /* Only for the local replica we have to stat(), for the remote one we have all data already */
-    if (ctx->current == LOCAL_REPLICA) {
-        if (csync_vio_stat(ctx, fullpath, dirent.get()) != 0) {
-            // Will get excluded by _csync_detect_update.
-            dirent->type = CSYNC_FTW_TYPE_SKIP;
-        }
+    if (uri[0] == '\0') {
+        fullpath = filename;
+    } else {
+        fullpath = QByteArray() % uri % '/' % filename;
     }
 
     /* if the filename starts with a . we consider it a hidden file

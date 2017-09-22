@@ -24,7 +24,6 @@
 
 #include <errno.h>
 #include <stdio.h>
-#include <QLoggingCategory>
 #include "common/asserts.h"
 
 #include "csync_private.h"
@@ -33,8 +32,6 @@
 #include "vio/csync_vio_local.h"
 #include "csync_statedb.h"
 #include "common/c_jhash.h"
-
-Q_LOGGING_CATEGORY(lcVio, "sync.csync.vio", QtInfoMsg)
 
 csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name) {
   switch(ctx->current) {
@@ -92,17 +89,6 @@ std::unique_ptr<csync_file_stat_t> csync_vio_readdir(CSYNC *ctx, csync_vio_handl
   }
 
   return NULL;
-}
-
-int csync_vio_stat(CSYNC *ctx, const char *uri, csync_file_stat_t *buf) {
-  int rc = -1;
-
-    ASSERT(ctx->current == LOCAL_REPLICA);
-    rc = csync_vio_local_stat(uri, buf);
-    if (rc < 0)
-        qCWarning(lcVio, "Local stat failed, errno %d for %s", errno, uri);
-
-  return rc;
 }
 
 char *csync_vio_get_status_string(CSYNC *ctx) {
