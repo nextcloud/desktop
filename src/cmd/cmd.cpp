@@ -196,8 +196,7 @@ void help()
 
 void showVersion()
 {
-    const char *binaryName = APPLICATION_EXECUTABLE "cmd";
-    std::cout << binaryName << " version " << qPrintable(Theme::instance()->version()) << std::endl;
+    std::cout << qPrintableUtf8(Theme::instance()->versionSwitchOutput());
     exit(0);
 }
 
