@@ -45,6 +45,8 @@ typedef struct dhandle_s {
   char *path;
 } dhandle_t;
 
+static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf);
+
 csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
   dhandle_t *handle = NULL;
   mbchar_t *dirname = NULL;
@@ -84,7 +86,6 @@ int csync_vio_local_closedir(csync_vio_handle_t *dhandle) {
   return rc;
 }
 
-
 std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
 
   dhandle_t *handle = NULL;
@@ -93,17 +94,17 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
   struct _tdirent *dirent = NULL;
   std::unique_ptr<csync_file_stat_t> file_stat;
 
-  dirent = _treaddir(handle->dh);
-  if (dirent == NULL) {
-      return {};
-  }
+  do {
+      dirent = _treaddir(handle->dh);
+      if (dirent == NULL)
+          return {};
+  } while (qstrcmp(dirent->d_name, ".") == 0 || qstrcmp(dirent->d_name, "..") == 0);
 
   file_stat.reset(new csync_file_stat_t);
   file_stat->path = c_utf8_from_locale(dirent->d_name);
+  QByteArray fullPath = QByteArray() % const_cast<const char *>(handle->path) % '/' % QByteArray() % const_cast<const char *>(dirent->d_name);
   if (file_stat->path.isNull()) {
-      file_stat->original_path = handle->path;
-      file_stat->original_path += '/';
-      file_stat->original_path += dirent->d_name;
+      file_stat->original_path = fullPath;
       CSYNC_LOG(CSYNC_LOG_PRIORITY_WARN, "Invalid characters in file/directory name, please rename: \"%s\" (%s)",
                 dirent->d_name, handle->path);
   }
@@ -129,23 +130,35 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
   }
 #endif
 
+  if (file_stat->path.isNull())
+      return file_stat;
+
+  if (_csync_vio_local_stat_mb(fullPath.constData(), file_stat.get()) < 0) {
+      // Will get excluded by _csync_detect_update.
+      file_stat->type = CSYNC_FTW_TYPE_SKIP;
+  }
   return file_stat;
 }
 
 
-int csync_vio_local_stat(const char *uri, csync_file_stat_t *buf) {
-  csync_stat_t sb;
-
-  mbchar_t *wuri = c_utf8_path_to_locale( uri );
-
-  if( _tstat(wuri, &sb) < 0) {
+int csync_vio_local_stat(const char *uri, csync_file_stat_t *buf)
+{
+    mbchar_t *wuri = c_utf8_path_to_locale(uri);
+    *buf = csync_file_stat_t();
+    int rc = _csync_vio_local_stat_mb(wuri, buf);
     c_free_locale_string(wuri);
-    return -1;
-  }
+    return rc;
+}
 
-  *buf = csync_file_stat_t();
+static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf)
+{
+    csync_stat_t sb;
 
-  switch(sb.st_mode & S_IFMT) {
+    if (_tstat(wuri, &sb) < 0) {
+        return -1;
+    }
+
+    switch (sb.st_mode & S_IFMT) {
     case S_IFDIR:
       buf->type = CSYNC_FTW_TYPE_DIR;
       break;
@@ -170,7 +183,5 @@ int csync_vio_local_stat(const char *uri, csync_file_stat_t *buf) {
   buf->inode = sb.st_ino;
   buf->modtime = sb.st_mtime;
   buf->size = sb.st_size;
-
-  c_free_locale_string(wuri);
   return 0;
 }

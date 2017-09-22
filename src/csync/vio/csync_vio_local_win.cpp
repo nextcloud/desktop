@@ -45,8 +45,10 @@ typedef struct dhandle_s {
   WIN32_FIND_DATA ffd;
   HANDLE hFind;
   int firstFind;
-  char *path;
+  mbchar_t *path; // Always ends with '\'
 } dhandle_t;
+
+static int _csync_vio_local_stat_mb(const mbchar_t *uri, csync_file_stat_t *buf);
 
 csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
   dhandle_t *handle = NULL;
@@ -73,6 +75,7 @@ csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
   }
 
   if (!dirname || handle->hFind == INVALID_HANDLE_VALUE) {
+      c_free_locale_string(dirname);
       int retcode = GetLastError();
       if( retcode == ERROR_FILE_NOT_FOUND ) {
           errno = ENOENT;
@@ -85,8 +88,8 @@ csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
 
   handle->firstFind = 1; // Set a flag that there first fileinfo is available.
 
-  handle->path = c_strdup(name);
-  c_free_locale_string(dirname);
+  dirname[std::wcslen(dirname) - 1] = L'\0'; // remove the *
+  handle->path = dirname;
 
   return (csync_vio_handle_t *) handle;
 }
@@ -109,7 +112,7 @@ int csync_vio_local_closedir(csync_vio_handle_t *dhandle) {
       errno = EBADF;
   }
 
-  SAFE_FREE(handle->path);
+  c_free_locale_string(handle->path);
   SAFE_FREE(handle);
 
   return rc;
@@ -158,20 +161,24 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
           return nullptr;
       }
   }
-  file_stat.reset(new csync_file_stat_t);
-  file_stat->path = c_utf8_from_locale(handle->ffd.cFileName);
+  auto path = c_utf8_from_locale(handle->ffd.cFileName);
+  if (path == "." || path == "..")
+      return csync_vio_local_readdir(dhandle);
 
-    if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
-        // Detect symlinks, and treat junctions as symlinks too.
-        if (handle->ffd.dwReserved0 == IO_REPARSE_TAG_SYMLINK
-                || handle->ffd.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT) {
-            file_stat->type = CSYNC_FTW_TYPE_SLINK;
-        } else {
-            // The SIS and DEDUP reparse points should be treated as
-            // regular files. We don't know about the other ones yet,
-            // but will also treat them normally for now.
-            file_stat->type = CSYNC_FTW_TYPE_FILE;
-        }
+  file_stat.reset(new csync_file_stat_t);
+  file_stat->path = path;
+
+  if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
+      // Detect symlinks, and treat junctions as symlinks too.
+      if (handle->ffd.dwReserved0 == IO_REPARSE_TAG_SYMLINK
+          || handle->ffd.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT) {
+          file_stat->type = CSYNC_FTW_TYPE_SLINK;
+      } else {
+          // The SIS and DEDUP reparse points should be treated as
+          // regular files. We don't know about the other ones yet,
+          // but will also treat them normally for now.
+          file_stat->type = CSYNC_FTW_TYPE_FILE;
+      }
     } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DEVICE
                 || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE
                 || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_TEMPORARY) {
@@ -189,12 +196,31 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
 
     file_stat->size = (handle->ffd.nFileSizeHigh * ((int64_t)(MAXDWORD)+1)) + handle->ffd.nFileSizeLow;
     file_stat->modtime = FileTimeToUnixTime(&handle->ffd.ftLastWriteTime, &rem);
+
+    std::wstring fullPath;
+    fullPath.reserve(std::wcslen(handle->path) + std::wcslen(handle->ffd.cFileName));
+    fullPath += handle->path; // path always ends with '\', by construction
+    fullPath += handle->ffd.cFileName;
+
+    if (_csync_vio_local_stat_mb(fullPath.data(), file_stat.get()) < 0) {
+        // Will get excluded by _csync_detect_update.
+        file_stat->type = CSYNC_FTW_TYPE_SKIP;
+    }
+
     return file_stat;
 }
 
 
+int csync_vio_local_stat(const char *uri, csync_file_stat_t *buf)
+{
+    mbchar_t *wuri = c_utf8_path_to_locale(uri);
+    int rc = _csync_vio_local_stat_mb(wuri, buf);
+    c_free_locale_string(wuri);
+    return rc;
+}
 
-int csync_vio_local_stat(const char *uri, csync_file_stat_t *buf) {
+static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf)
+{
     /* Almost nothing to do since csync_vio_local_readdir already filled up most of the information
        But we still need to fetch the file ID.
        Possible optimisation: only fetch the file id when we need it (for new files)
@@ -203,23 +229,20 @@ int csync_vio_local_stat(const char *uri, csync_file_stat_t *buf) {
     HANDLE h;
     BY_HANDLE_FILE_INFORMATION fileInfo;
     ULARGE_INTEGER FileIndex;
-    mbchar_t *wuri = c_utf8_path_to_locale( uri );
 
     h = CreateFileW( wuri, 0, FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
                      NULL, OPEN_EXISTING,
                      FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT,
                      NULL );
     if( h == INVALID_HANDLE_VALUE ) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_CRIT, "CreateFileW failed on %s", uri );
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_CRIT, "CreateFileW failed on %ls", wuri);
         errno = GetLastError();
-        c_free_locale_string(wuri);
         return -1;
     }
 
     if(!GetFileInformationByHandle( h, &fileInfo ) ) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_CRIT, "GetFileInformationByHandle failed on %s", uri );
+        CSYNC_LOG(CSYNC_LOG_PRIORITY_CRIT, "GetFileInformationByHandle failed on %ls", wuri);
         errno = GetLastError();
-        c_free_locale_string(wuri);
         CloseHandle(h);
         return -1;
     }
@@ -235,7 +258,6 @@ int csync_vio_local_stat(const char *uri, csync_file_stat_t *buf) {
     DWORD rem;
     buf->modtime = FileTimeToUnixTime(&fileInfo.ftLastWriteTime, &rem);
 
-    c_free_locale_string(wuri);
     CloseHandle(h);
     return 0;
 }
