@@ -59,7 +59,15 @@ QByteArray c_utf8_from_locale(const mbchar_t *wstr)
   }
   return dst;
 #else
-    QTextDecoder dec(QTextCodec::codecForLocale());
+    auto codec = QTextCodec::codecForLocale();
+#ifndef __APPLE__
+    if (codec->mibEnum() == 106) { // UTF-8
+        // Optimisation for UTF-8: no need to convert to QString.
+        // We still need to do it for mac because of normalization
+        return QByteArray(wstr);
+    }
+#endif
+    QTextDecoder dec(codec);
     QString s = dec.toUnicode(wstr, qstrlen(wstr));
     if (s.isEmpty() || dec.hasFailure()) {
         /* Conversion error: since we can't report error from this function, just return the original
