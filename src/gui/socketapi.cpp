@@ -207,7 +207,7 @@ SocketApi::SocketApi(QObject *parent)
         qCInfo(lcSocketApi) << "server started, listening at " << socketPath;
     }
 
-    connect(&_localServer, &QLocalServer::newConnection, this, &SocketApi::slotNewConnection);
+    connect(&_localServer, &SocketApiServer::newConnection, this, &SocketApi::slotNewConnection);
 
     // folder watcher
     connect(FolderMan::instance(), &FolderMan::folderSyncStateChange, this, &SocketApi::slotUpdateFolderView);
