@@ -517,7 +517,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
           }
       } else if(errno == ENOENT) {
           asp = asprintf( &ctx->error_string, "%s", uri);
-          ASSERT(asp);
+          ASSERT(asp >= 0);
       }
       // 403 Forbidden can be sent by the server if the file firewall is active.
       // A file or directory should be ignored and sync must continue. See #3490
