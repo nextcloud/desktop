@@ -32,7 +32,8 @@
 #ifndef _CSYNC_PRIVATE_H
 #define _CSYNC_PRIVATE_H
 
-#include <map>
+#include <unordered_map>
+#include <QHash>
 #include <stdint.h>
 #include <stdbool.h>
 #include <sqlite3.h>
@@ -70,7 +71,8 @@ enum csync_replica_e {
  * @brief csync public structure
  */
 struct OCSYNC_EXPORT csync_s {
-  class FileMap : public std::map<QByteArray, std::unique_ptr<csync_file_stat_t>> {
+  struct FileMapHash { uint operator()(const QByteArray &a) const { return qHash(a); } };
+  class FileMap : public std::unordered_map<QByteArray, std::unique_ptr<csync_file_stat_t>, FileMapHash> {
   public:
       csync_file_stat_t *findFile(const QByteArray &key) const {
           auto it = find(key);
