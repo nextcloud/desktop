@@ -68,14 +68,44 @@ enum csync_replica_e {
   REMOTE_REPLICA
 };
 
+
+/*
+ * This is a structurere similar to QStringRef
+ * The difference is that it keeps the QByteArray by value and not by pointer
+ * And it only implements a very small subset of the API that is required by csync, the API can be
+ * added as we need it.
+ */
+class ByteArrayRef
+{
+    QByteArray _arr;
+    int _begin = 0;
+    int _size = -1;
+
+public:
+    ByteArrayRef(const QByteArray &arr = {}, int begin = 0, int size = -1)
+        : _arr(arr)
+        , _begin(begin)
+        , _size(qMin(arr.size() - begin, size < 0 ? arr.size() : size))
+    {
+    }
+    ByteArrayRef left(int l) const { return ByteArrayRef(_arr, _begin, l); };
+    char at(int x) const { return _arr.at(_begin + x); }
+    int size() const { return _size; }
+    /* Pointer to the beginning of the data. WARNING: not null terminated */
+    const char *data() const { return _arr.constData() + _begin; }
+
+    friend bool operator==(const ByteArrayRef &a, const ByteArrayRef &b)
+    { return a.size() == b.size() && qstrncmp(a.data(), b.data(), a.size()) == 0; }
+};
+
 /**
  * @brief csync public structure
  */
 struct OCSYNC_EXPORT csync_s {
-  struct FileMapHash { uint operator()(const QByteArray &a) const { return qHash(a); } };
-  class FileMap : public std::unordered_map<QByteArray, std::unique_ptr<csync_file_stat_t>, FileMapHash> {
+  struct FileMapHash { uint operator()(const ByteArrayRef &a) const { return qHashBits(a.data(), a.size()); } };
+  class FileMap : public std::unordered_map<ByteArrayRef, std::unique_ptr<csync_file_stat_t>, FileMapHash> {
   public:
-      csync_file_stat_t *findFile(const QByteArray &key) const {
+      csync_file_stat_t *findFile(const ByteArrayRef &key) const {
           auto it = find(key);
           return it != end() ? it->second.get() : nullptr;
       }

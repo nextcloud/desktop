@@ -37,7 +37,8 @@ Q_LOGGING_CATEGORY(lcReconcile, "sync.csync.reconciler", QtInfoMsg)
 
 /* Check if a file is ignored because one parent is ignored.
  * return the node of the ignored directoy if it's the case, or NULL if it is not ignored */
-static csync_file_stat_t *_csync_check_ignored(csync_s::FileMap *tree, const QByteArray &path) {
+static csync_file_stat_t *_csync_check_ignored(csync_s::FileMap *tree, const ByteArrayRef &path)
+{
     /* compute the size of the parent directory */
     int parentlen = path.size() - 1;
     while (parentlen > 0 && path.at(parentlen) != '/') {
@@ -46,7 +47,7 @@ static csync_file_stat_t *_csync_check_ignored(csync_s::FileMap *tree, const QBy
     if (parentlen <= 0) {
         return nullptr;
     }
-    QByteArray parentPath = path.left(parentlen);
+    auto parentPath = path.left(parentlen);
     csync_file_stat_t *fs = tree->findFile(parentPath);
     if (fs) {
         if (fs->instruction == CSYNC_INSTRUCTION_IGNORE) {
