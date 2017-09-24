@@ -137,31 +137,12 @@ static void check_csync_vio_closedir_null(void **state)
     assert_int_equal(rc, -1);
 }
 
-static void check_csync_vio_readdir(void **state)
-{
-    CSYNC *csync = (CSYNC*)*state;
-    csync_vio_handle_t *dh;
-    std::unique_ptr<csync_file_stat_t> dirent;
-    int rc;
-
-    dh = csync_vio_opendir(csync, CSYNC_TEST_DIR);
-    assert_non_null(dh);
-
-    dirent = csync_vio_readdir(csync, dh);
-    assert_non_null(dirent.get());
-
-    rc = csync_vio_closedir(csync, dh);
-    assert_int_equal(rc, 0);
-}
-
-
 int torture_run_tests(void)
 {
     const struct CMUnitTest tests[] = {
         cmocka_unit_test_setup_teardown(check_csync_vio_opendir, setup_dir, teardown),
         cmocka_unit_test_setup_teardown(check_csync_vio_opendir_perm, setup, teardown),
         cmocka_unit_test(check_csync_vio_closedir_null),
-        cmocka_unit_test_setup_teardown(check_csync_vio_readdir, setup_dir, teardown),
     };
 
     return cmocka_run_group_tests(tests, NULL, NULL);
