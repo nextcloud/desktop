@@ -1302,7 +1302,7 @@ Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tut
         <translation>Digita password</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="151"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="154"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Fai clic qui&lt;/a&gt; per richiedere una password dell&apos;applicazione dall&apos;interfaccia web.</translation>
     </message>

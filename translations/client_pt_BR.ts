@@ -1305,7 +1305,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
         <translation>Entrar Senha</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="151"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="154"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Clique aqui&lt;/a&gt; para solicitar uma senha de aplicativo na interface da web.</translation>
     </message>

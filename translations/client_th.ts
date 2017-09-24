@@ -1308,7 +1308,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>ป้อนรหัสผ่าน</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="151"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="154"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;คลิกที่นี่&lt;/a&gt; เพื่อขอรหัสผ่านแอพฯ จากเว็บอินเตอร์เฟส</translation>
     </message>

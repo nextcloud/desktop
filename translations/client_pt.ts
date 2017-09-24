@@ -1306,7 +1306,7 @@ Continuando a sincronização fará com que todos os seus ficheiros sejam substi
         <translation>Insira a Palavra-passe</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="151"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="154"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Clique aqui&lt;/a&gt; para solicitar uma palavra-passe da aplicação a partir da interface da Web.</translation>
     </message>

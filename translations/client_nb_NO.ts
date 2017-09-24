@@ -1305,7 +1305,7 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
         <translation>Legg inn passord</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="151"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="154"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Klikk her&lt;/a&gt; for å be om et app-passord fra web-grensesnittet.</translation>
     </message>
