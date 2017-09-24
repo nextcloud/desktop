@@ -1299,7 +1299,7 @@ Om du fortsätter synkningen kommer alla dina filer återställas med en äldre 
         <translation>Ange lösenord</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="151"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="154"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Klicka här&lt;/a&gt; för att begära ett app-lösenord från webbgränssnittet.</translation>
     </message>

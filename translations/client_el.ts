@@ -1306,7 +1306,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Εισάγετε Κωδικό Πρόσβασης</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="151"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="154"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;πατήστε εδώ&lt;/a&gt;για να ζητήσετε έναν κωδικό πρόσβασης εφαρμογής από τη διεπαφή ιστού.</translation>
     </message>
