@@ -95,7 +95,7 @@ void BandwidthManager::registerUploadDevice(UploadDevice *p)
 {
     _absoluteUploadDeviceList.append(p);
     _relativeUploadDeviceList.append(p);
-    QObject::connect(p, SIGNAL(destroyed(QObject *)), this, SLOT(unregisterUploadDevice(QObject *)));
+    QObject::connect(p, &QObject::destroyed, this, &BandwidthManager::unregisterUploadDevice);
 
     if (usingAbsoluteUploadLimit()) {
         p->setBandwidthLimited(true);
@@ -111,14 +111,7 @@ void BandwidthManager::registerUploadDevice(UploadDevice *p)
 
 void BandwidthManager::unregisterUploadDevice(QObject *o)
 {
-    UploadDevice *p = qobject_cast<UploadDevice *>(o);
-    if (p) {
-        unregisterUploadDevice(p);
-    }
-}
-
-void BandwidthManager::unregisterUploadDevice(UploadDevice *p)
-{
+    auto p = reinterpret_cast<UploadDevice *>(o); // note, we might already be in the ~QObject
     _absoluteUploadDeviceList.removeAll(p);
     _relativeUploadDeviceList.removeAll(p);
     if (p == _relativeLimitCurrentMeasuredDevice) {
@@ -130,7 +123,7 @@ void BandwidthManager::unregisterUploadDevice(UploadDevice *p)
 void BandwidthManager::registerDownloadJob(GETFileJob *j)
 {
     _downloadJobList.append(j);
-    QObject::connect(j, SIGNAL(destroyed(QObject *)), this, SLOT(unregisterDownloadJob(QObject *)));
+    QObject::connect(j, &QObject::destroyed, this, &BandwidthManager::unregisterDownloadJob);
 
     if (usingAbsoluteDownloadLimit()) {
         j->setBandwidthLimited(true);
@@ -144,20 +137,13 @@ void BandwidthManager::registerDownloadJob(GETFileJob *j)
     }
 }
 
-void BandwidthManager::unregisterDownloadJob(GETFileJob *j)
+void BandwidthManager::unregisterDownloadJob(QObject *o)
 {
+    GETFileJob *j = reinterpret_cast<GETFileJob *>(o); // note, we might already be in the ~QObject
     _downloadJobList.removeAll(j);
     if (_relativeLimitCurrentMeasuredJob == j) {
         _relativeLimitCurrentMeasuredJob = 0;
         _relativeDownloadLimitProgressAtMeasuringRestart = 0;
-    }
-}
-
-void BandwidthManager::unregisterDownloadJob(QObject *o)
-{
-    GETFileJob *p = qobject_cast<GETFileJob *>(o);
-    if (p) {
-        unregisterDownloadJob(p);
     }
 }
 
