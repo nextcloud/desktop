@@ -127,7 +127,7 @@ void SyncRunFileLog::start(const QString &folderPath)
 
     _totalDuration.start();
     _lapDuration.start();
-    _out << "#=#=#=# Syncrun started " << dateTimeStr(QDateTime::currentDateTime()) << endl;
+    _out << "#=#=#=# Syncrun started " << dateTimeStr(QDateTime::currentDateTimeUtc()) << endl;
 }
 
 void SyncRunFileLog::logItem(const SyncFileItem &item)
@@ -172,14 +172,14 @@ void SyncRunFileLog::logItem(const SyncFileItem &item)
 
 void SyncRunFileLog::logLap(const QString &name)
 {
-    _out << "#=#=#=#=# " << name << " " << dateTimeStr(QDateTime::currentDateTime())
+    _out << "#=#=#=#=# " << name << " " << dateTimeStr(QDateTime::currentDateTimeUtc())
          << " (last step: " << _lapDuration.restart() << " msec"
          << ", total: " << _totalDuration.elapsed() << " msec)" << endl;
 }
 
 void SyncRunFileLog::finish()
 {
-    _out << "#=#=#=# Syncrun finished " << dateTimeStr(QDateTime::currentDateTime())
+    _out << "#=#=#=# Syncrun finished " << dateTimeStr(QDateTime::currentDateTimeUtc())
          << " (last step: " << _lapDuration.elapsed() << " msec"
          << ", total: " << _totalDuration.elapsed() << " msec)" << endl;
     _file->close();

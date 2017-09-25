@@ -124,7 +124,7 @@ QList<QNetworkCookie> CookieJar::removeExpired(const QList<QNetworkCookie> &cook
 {
     QList<QNetworkCookie> updatedList;
     foreach (const QNetworkCookie &cookie, cookies) {
-        if (cookie.expirationDate() > QDateTime::currentDateTime() && !cookie.isSessionCookie()) {
+        if (cookie.expirationDate() > QDateTime::currentDateTimeUtc() && !cookie.isSessionCookie()) {
             updatedList << cookie;
         }
     }

@@ -32,7 +32,7 @@ void HttpServer::readClient()
                 "Content-Type: text/html; charset=\"utf-8\"\r\n"
                 "\r\n"
                 "<h1>Nothing to see here</h1>\n"
-                << QDateTime::currentDateTime().toString() << "\n";
+                << QDateTime::currentDateTimeUtc().toString() << "\n";
             socket->close();
 
             QtServiceBase::instance()->logMessage("Wrote to client");

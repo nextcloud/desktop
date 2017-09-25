@@ -138,7 +138,7 @@ static SyncJournalErrorBlacklistRecord createBlacklistEntry(
     entry._errorString = item._errorString;
     entry._lastTryModtime = item._modtime;
     entry._lastTryEtag = item._etag;
-    entry._lastTryTime = Utility::qDateTimeToTime_t(QDateTime::currentDateTime());
+    entry._lastTryTime = Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc());
     entry._renameTarget = item._renameTarget;
     entry._retryCount = old._retryCount + 1;
 
@@ -309,7 +309,7 @@ bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QStr
 
                 // HACK to avoid continuation: See task #1448:  We do not know the _modtime from the
                 //  server, at this point, so just set the current one. (rather than the one locally)
-                downloadItem->_modtime = Utility::qDateTimeToTime_t(QDateTime::currentDateTime());
+                downloadItem->_modtime = Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc());
             } else {
                 // the file was removed or renamed, just recover the old one
                 downloadItem->_instruction = CSYNC_INSTRUCTION_SYNC;

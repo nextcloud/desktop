@@ -465,7 +465,7 @@ static const char STOPWATCH_END_TAG[] = "_STOPWATCH_END";
 
 void Utility::StopWatch::start()
 {
-    _startTime = QDateTime::currentDateTime();
+    _startTime = QDateTime::currentDateTimeUtc();
     _timer.start();
 }
 
