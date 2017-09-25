@@ -71,7 +71,7 @@ private:
     bool _bandwidthLimited; // if _bandwidthQuota will be used
     bool _choked; // if upload is paused (readData() will return 0)
     friend class BandwidthManager;
-protected slots:
+public slots:
     void slotJobUploadProgress(qint64 sent, qint64 t);
 };
 
