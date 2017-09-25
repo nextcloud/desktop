@@ -365,7 +365,7 @@ void PropagateUploadFileNG::slotPutFinished()
     // target duration for each chunk upload.
     double targetDuration = propagator()->syncOptions()._targetChunkUploadDuration;
     if (targetDuration > 0) {
-        double uploadTime = job->msSinceStart();
+        double uploadTime = job->msSinceStart() + 1; // add one to avoid div-by-zero
 
         auto predictedGoodSize = static_cast<quint64>(
             _currentChunkSize / uploadTime * targetDuration);
