@@ -327,8 +327,8 @@ void PropagateUploadFileNG::startNextChunk()
     connect(job, &PUTFileJob::finishedSignal, this, &PropagateUploadFileNG::slotPutFinished);
     connect(job, &PUTFileJob::uploadProgress,
         this, &PropagateUploadFileNG::slotUploadProgress);
-    connect(job, SIGNAL(uploadProgress(qint64, qint64)),
-        device, SLOT(slotJobUploadProgress(qint64, qint64)));
+    connect(job, &PUTFileJob::uploadProgress,
+        device, &UploadDevice::slotJobUploadProgress);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     job->start();
     propagator()->_activeJobList.append(this);
