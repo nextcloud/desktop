@@ -33,7 +33,7 @@
 #define SQLITE_DO(A)                                         \
     if (1) {                                                 \
         _errId = (A);                                        \
-        if (_errId != SQLITE_OK) {                           \
+        if (_errId != SQLITE_OK && _errId != SQLITE_DONE) {  \
             _error = QString::fromUtf8(sqlite3_errmsg(_db)); \
         }                                                    \
     }
