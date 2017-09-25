@@ -738,6 +738,10 @@ public:
 protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request,
                                          QIODevice *outgoingData = 0) {
+        if (_override) {
+            if (auto reply = _override(op, request))
+                return reply;
+        }
         const QString fileName = getFilePathFromUrl(request.url());
         Q_ASSERT(!fileName.isNull());
         if (_errorPaths.contains(fileName))
@@ -746,10 +750,6 @@ protected:
         bool isUpload = request.url().path().startsWith(sUploadUrl.path());
         FileInfo &info = isUpload ? _uploadFileInfo : _remoteRootFileInfo;
 
-        if (_override) {
-            if (auto reply = _override(op, request))
-                return reply;
-        }
 
         auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute);
         if (verb == "PROPFIND")
