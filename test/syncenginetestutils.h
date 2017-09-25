@@ -41,7 +41,7 @@ inline QString getFilePathFromUrl(const QUrl &url) {
 
 
 inline QString generateEtag() {
-    return QString::number(QDateTime::currentDateTime().toMSecsSinceEpoch(), 16);
+    return QString::number(QDateTime::currentDateTimeUtc().toMSecsSinceEpoch(), 16);
 }
 inline QByteArray generateFileId() {
     return QByteArray::number(qrand(), 16);
@@ -97,7 +97,7 @@ public:
         file.write(buf.data(), size % buf.size());
         file.close();
         // Set the mtime 30 seconds in the past, for some tests that need to make sure that the mtime differs.
-        OCC::FileSystem::setModTime(file.fileName(), OCC::Utility::qDateTimeToTime_t(QDateTime::currentDateTime().addSecs(-30)));
+        OCC::FileSystem::setModTime(file.fileName(), OCC::Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc().addSecs(-30)));
         QCOMPARE(file.size(), size);
     }
     void setContents(const QString &relativePath, char contentChar) override {

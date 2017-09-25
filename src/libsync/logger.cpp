@@ -152,7 +152,7 @@ void Logger::mirallLog(const QString &message)
 {
     Log log_;
     log_.source = Log::Occ;
-    log_.timeStamp = QDateTime::currentDateTime();
+    log_.timeStamp = QDateTime::currentDateTimeUtc();
     log_.message = message;
 
     Logger::instance()->log(log_);
@@ -236,7 +236,7 @@ void Logger::enterNextLogFile()
             QDir::Files);
         QRegExp rx("owncloud.log.(\\d+)");
         uint maxNumber = 0;
-        QDateTime now = QDateTime::currentDateTime();
+        QDateTime now = QDateTime::currentDateTimeUtc();
         foreach (const QString &s, files) {
             if (rx.exactMatch(s)) {
                 maxNumber = qMax(maxNumber, rx.cap(1).toUInt());

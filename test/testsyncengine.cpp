@@ -358,7 +358,7 @@ private slots:
         FileInfo &remoteInfo = dynamic_cast<FileInfo &>(fakeFolder.remoteModifier());
 
         // Base mtime with no ms content (filesystem is seconds only)
-        auto mtime = QDateTime::currentDateTime().addDays(-4);
+        auto mtime = QDateTime::currentDateTimeUtc().addDays(-4);
         mtime.setMSecsSinceEpoch(mtime.toMSecsSinceEpoch() / 1000 * 1000);
 
         // Conflict: Same content, mtime, but no server checksum
@@ -414,9 +414,9 @@ private slots:
      */
     void testSyncFileItemProperties()
     {
-        auto initialMtime = QDateTime::currentDateTime().addDays(-7);
-        auto changedMtime = QDateTime::currentDateTime().addDays(-4);
-        auto changedMtime2 = QDateTime::currentDateTime().addDays(-3);
+        auto initialMtime = QDateTime::currentDateTimeUtc().addDays(-7);
+        auto changedMtime = QDateTime::currentDateTimeUtc().addDays(-4);
+        auto changedMtime2 = QDateTime::currentDateTimeUtc().addDays(-3);
 
         // Base mtime with no ms content (filesystem is seconds only)
         initialMtime.setMSecsSinceEpoch(initialMtime.toMSecsSinceEpoch() / 1000 * 1000);

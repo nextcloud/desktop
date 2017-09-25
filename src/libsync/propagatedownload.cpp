@@ -673,7 +673,7 @@ namespace { // Anonymous namespace for the recall feature
             dotLocation = recallFileName.size();
         }
 
-        QString timeString = QDateTime::currentDateTime().toString("yyyyMMdd-hhmmss");
+        QString timeString = QDateTime::currentDateTimeUtc().toString("yyyyMMdd-hhmmss");
         recallFileName.insert(dotLocation, "_.sys.admin#recall#-" + timeString);
 
         return recallFileName;

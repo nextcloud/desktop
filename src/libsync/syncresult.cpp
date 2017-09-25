@@ -85,7 +85,7 @@ QString SyncResult::statusString() const
 void SyncResult::setStatus(Status stat)
 {
     _status = stat;
-    _syncTime = QDateTime::currentDateTime();
+    _syncTime = QDateTime::currentDateTimeUtc();
 }
 
 QDateTime SyncResult::syncTime() const
