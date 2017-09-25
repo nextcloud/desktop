@@ -34,10 +34,16 @@ void addBunchOfFiles(int depth, const QString &path, FileModifier &fi) {
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
-    FakeFolder fakeFolder{FileInfo{}};
+    FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
     addBunchOfFiles<10, 8, 4>(0, "", fakeFolder.localModifier());
 
     qDebug() << "NUMFILES" << numFiles;
     qDebug() << "NUMDIRS" << numDirs;
-    return fakeFolder.syncOnce() ? 0 : -1;
+    QElapsedTimer timer;
+    timer.start();
+    bool result1 = fakeFolder.syncOnce();
+    qDebug() << "FIRST SYNC: " << result1 << timer.restart();
+    bool result2 = fakeFolder.syncOnce();
+    qDebug() << "SECOND SYNC: " << result2 << timer.restart();
+    return (result1 && result2) ? 0 : -1;
 }
