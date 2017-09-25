@@ -34,6 +34,8 @@ OAuth::~OAuth()
 static void httpReplyAndClose(QTcpSocket *socket, const char *code, const char *html,
     const char *moreHeaders = nullptr)
 {
+    if (!socket)
+        return; // socket can have been deleted if the browser was closed
     socket->write("HTTP/1.1 ");
     socket->write(code);
     socket->write("\r\nContent-Type: text/html\r\nConnection: close\r\nContent-Length: ");
@@ -62,7 +64,7 @@ void OAuth::start()
         return;
 
     QObject::connect(&_server, &QTcpServer::newConnection, this, [this] {
-        while (QTcpSocket *socket = _server.nextPendingConnection()) {
+        while (QPointer<QTcpSocket> socket = _server.nextPendingConnection()) {
             QObject::connect(socket, &QTcpSocket::disconnected, socket, &QTcpSocket::deleteLater);
             QObject::connect(socket, &QIODevice::readyRead, this, [this, socket] {
                 QByteArray peek = socket->peek(qMin(socket->bytesAvailable(), 4000LL)); //The code should always be within the first 4K
