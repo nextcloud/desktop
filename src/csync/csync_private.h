@@ -81,29 +81,34 @@ class ByteArrayRef
     int _begin = 0;
     int _size = -1;
 
+    /* Pointer to the beginning of the data. WARNING: not null terminated */
+    const char *data() const { return _arr.constData() + _begin; }
+    friend struct ByteArrayRefHash;
+
 public:
-    ByteArrayRef(const QByteArray &arr = {}, int begin = 0, int size = -1)
-        : _arr(arr)
+    ByteArrayRef(QByteArray arr = {}, int begin = 0, int size = -1)
+        : _arr(std::move(arr))
         , _begin(begin)
-        , _size(qMin(arr.size() - begin, size < 0 ? arr.size() : size))
+        , _size(qMin(_arr.size() - begin, size < 0 ? _arr.size() - begin : size))
     {
     }
     ByteArrayRef left(int l) const { return ByteArrayRef(_arr, _begin, l); };
     char at(int x) const { return _arr.at(_begin + x); }
     int size() const { return _size; }
-    /* Pointer to the beginning of the data. WARNING: not null terminated */
-    const char *data() const { return _arr.constData() + _begin; }
+    int length() const { return _size; }
+    bool isEmpty() const { return _size == 0; }
 
     friend bool operator==(const ByteArrayRef &a, const ByteArrayRef &b)
     { return a.size() == b.size() && qstrncmp(a.data(), b.data(), a.size()) == 0; }
 };
+struct ByteArrayRefHash { uint operator()(const ByteArrayRef &a) const { return qHashBits(a.data(), a.size()); } };
 
 /**
  * @brief csync public structure
  */
 struct OCSYNC_EXPORT csync_s {
-  struct FileMapHash { uint operator()(const ByteArrayRef &a) const { return qHashBits(a.data(), a.size()); } };
-  class FileMap : public std::unordered_map<ByteArrayRef, std::unique_ptr<csync_file_stat_t>, FileMapHash> {
+
+  class FileMap : public std::unordered_map<ByteArrayRef, std::unique_ptr<csync_file_stat_t>, ByteArrayRefHash> {
   public:
       csync_file_stat_t *findFile(const ByteArrayRef &key) const {
           auto it = find(key);
@@ -137,8 +142,8 @@ struct OCSYNC_EXPORT csync_s {
   OCC::SyncJournalDb *statedb;
 
   struct {
-    std::map<QByteArray, QByteArray> folder_renamed_to; // map from->to
-    std::map<QByteArray, QByteArray> folder_renamed_from; // map to->from
+    std::unordered_map<ByteArrayRef, QByteArray, ByteArrayRefHash> folder_renamed_to; // map from->to
+    std::unordered_map<ByteArrayRef, QByteArray, ByteArrayRefHash> folder_renamed_from; // map to->from
   } renames;
 
   struct {

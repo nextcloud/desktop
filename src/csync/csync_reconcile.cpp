@@ -47,7 +47,7 @@ static csync_file_stat_t *_csync_check_ignored(csync_s::FileMap *tree, const Byt
     if (parentlen <= 0) {
         return nullptr;
     }
-    auto parentPath = path.left(parentlen);
+    ByteArrayRef parentPath = path.left(parentlen);
     csync_file_stat_t *fs = tree->findFile(parentPath);
     if (fs) {
         if (fs->instruction == CSYNC_INSTRUCTION_IGNORE) {

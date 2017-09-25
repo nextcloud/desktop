@@ -23,7 +23,7 @@
 
 #include <algorithm>
 
-static QByteArray _parentDir(const QByteArray &path) {
+static ByteArrayRef _parentDir(const ByteArrayRef &path) {
     int len = path.length();
     while(len > 0 && path.at(len-1)!='/') len--;
     while(len > 0 && path.at(len-1)=='/') len--;
@@ -38,8 +38,10 @@ void csync_rename_record(CSYNC* ctx, const QByteArray &from, const QByteArray &t
 
 QByteArray csync_rename_adjust_path(CSYNC* ctx, const QByteArray &path)
 {
-    for (QByteArray p = _parentDir(path); !p.isEmpty(); p = _parentDir(p)) {
-        std::map< QByteArray, QByteArray >::iterator it = ctx->renames.folder_renamed_to.find(p);
+    if (ctx->renames.folder_renamed_to.empty())
+        return path;
+    for (auto p = _parentDir(path); !p.isEmpty(); p = _parentDir(p)) {
+        auto it = ctx->renames.folder_renamed_to.find(p);
         if (it != ctx->renames.folder_renamed_to.end()) {
             QByteArray rep = it->second + path.mid(p.length());
             return rep;
@@ -50,8 +52,10 @@ QByteArray csync_rename_adjust_path(CSYNC* ctx, const QByteArray &path)
 
 QByteArray csync_rename_adjust_path_source(CSYNC* ctx, const QByteArray &path)
 {
-    for (QByteArray p = _parentDir(path); !p.isEmpty(); p = _parentDir(p)) {
-        std::map< QByteArray, QByteArray >::iterator it = ctx->renames.folder_renamed_from.find(p);
+    if (ctx->renames.folder_renamed_from.empty())
+        return path;
+    for (auto p = _parentDir(path); !p.isEmpty(); p = _parentDir(p)) {
+        auto it = ctx->renames.folder_renamed_from.find(p);
         if (it != ctx->renames.folder_renamed_from.end()) {
             QByteArray rep = it->second + path.mid(p.length());
             return rep;
