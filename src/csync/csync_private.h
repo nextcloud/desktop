@@ -48,6 +48,8 @@
 
 #include "csync_macros.h"
 
+#include <QRegularExpression>
+
 /**
  * How deep to scan directories.
  */
@@ -137,9 +139,20 @@ struct OCSYNC_EXPORT csync_s {
       void *checksum_userdata = nullptr;
 
   } callbacks;
-  c_strlist_t *excludes = nullptr;
-  
+
   OCC::SyncJournalDb *statedb;
+
+  c_strlist_t *excludes = nullptr; /* list of individual patterns collected from all exclude files */
+  struct TraversalExcludes {
+      ~TraversalExcludes() {
+          c_strlist_destroy(list_patterns_fnmatch);
+      }
+      void prepare(c_strlist_t *excludes);
+
+      QRegularExpression regexp_exclude;
+      c_strlist_t *list_patterns_fnmatch = nullptr;
+
+  } parsed_traversal_excludes;
 
   struct {
     std::unordered_map<ByteArrayRef, QByteArray, ByteArrayRefHash> folder_renamed_to; // map from->to
