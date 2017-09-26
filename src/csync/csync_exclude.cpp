@@ -39,6 +39,8 @@
 
 #include "common/utility.h"
 
+#include <QString>
+
 #ifdef _WIN32
 #include <io.h>
 #else
@@ -234,20 +236,28 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
     }
     blen = strlen(bname);
 
-    rc = csync_fnmatch("._sync_*.db*", bname, 0);
-    if (rc == 0) {
-        match = CSYNC_FILE_SILENTLY_EXCLUDED;
-        goto out;
-    }
-    rc = csync_fnmatch(".sync_*.db*", bname, 0);
-    if (rc == 0) {
-        match = CSYNC_FILE_SILENTLY_EXCLUDED;
-        goto out;
-    }
-    rc = csync_fnmatch(".csync_journal.db*", bname, 0);
-    if (rc == 0) {
-        match = CSYNC_FILE_SILENTLY_EXCLUDED;
-        goto out;
+    // 9 = strlen(".sync_.db")
+    if (blen >= 9 && bname[0] == '.') {
+        rc = csync_fnmatch("._sync_*.db*", bname, 0);
+        if (rc == 0) {
+            match = CSYNC_FILE_SILENTLY_EXCLUDED;
+            goto out;
+        }
+        rc = csync_fnmatch(".sync_*.db*", bname, 0);
+        if (rc == 0) {
+            match = CSYNC_FILE_SILENTLY_EXCLUDED;
+            goto out;
+        }
+        rc = csync_fnmatch(".csync_journal.db*", bname, 0);
+        if (rc == 0) {
+            match = CSYNC_FILE_SILENTLY_EXCLUDED;
+            goto out;
+        }
+        rc = csync_fnmatch(".owncloudsync.log*", bname, 0);
+        if (rc == 0) {
+            match = CSYNC_FILE_SILENTLY_EXCLUDED;
+            goto out;
+        }
     }
 
     // check the strlen and ignore the file if its name is longer than 254 chars.
@@ -298,12 +308,6 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
 
     /* We create a desktop.ini on Windows for the sidebar icon, make sure we don't sync them. */
     rc = csync_fnmatch("Desktop.ini", bname, 0);
-    if (rc == 0) {
-        match = CSYNC_FILE_SILENTLY_EXCLUDED;
-        goto out;
-    }
-
-    rc = csync_fnmatch(".owncloudsync.log*", bname, 0);
     if (rc == 0) {
         match = CSYNC_FILE_SILENTLY_EXCLUDED;
         goto out;
@@ -415,8 +419,90 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
     return match;
 }
 
-CSYNC_EXCLUDE_TYPE csync_excluded_traversal(c_strlist_t *excludes, const char *path, int filetype) {
-  return _csync_excluded_common(excludes, path, filetype, false);
+/* Only for bnames (not paths) */
+static QString convertToBnameRegexpSyntax(QString exclude)
+{
+    QString s = QRegularExpression::escape(exclude).replace("\\*", ".*").replace("\\?", ".");
+    return s;
+}
+
+void csync_exclude_traversal_prepare(CSYNC *ctx)
+{
+    ctx->parsed_traversal_excludes.prepare(ctx->excludes);
+}
+
+void csync_s::TraversalExcludes::prepare(c_strlist_t *excludes)
+{
+    c_strlist_destroy(list_patterns_fnmatch);
+    list_patterns_fnmatch = nullptr;
+
+    // Start out with regexes that would match nothing
+    QString exclude_only = "a^";
+    QString exclude_and_remove = "a^";
+
+    size_t exclude_count = excludes ? excludes->count : 0;
+    for (unsigned int i = 0; i < exclude_count; i++) {
+        char *exclude = excludes->vector[i];
+        QString *builderToUse = & exclude_only;
+        if (exclude[0] == '\n') continue; // empty line
+        if (exclude[0] == '\r') continue; // empty line
+
+        /* If an exclude entry contains some fnmatch-ish characters, we use the C-style codepath without QRegularEpression */
+        if (strchr(exclude, '/') || strchr(exclude, '[') || strchr(exclude, '{')) {
+            _csync_exclude_add(&list_patterns_fnmatch, exclude);
+            continue;
+        }
+
+        /* Those will attempt to use QRegularExpression */
+        if (exclude[0] == ']'){
+            exclude++;
+            builderToUse = &exclude_and_remove;
+        }
+        if (builderToUse->size() > 0) {
+            builderToUse->append("|");
+        }
+        builderToUse->append(convertToBnameRegexpSyntax(exclude));
+    }
+
+    QString pattern = "^(" + exclude_only + ")$|^(" + exclude_and_remove + ")$";
+    regexp_exclude.setPattern(pattern);
+    QRegularExpression::PatternOptions patternOptions = QRegularExpression::OptimizeOnFirstUsageOption;
+    if (OCC::Utility::fsCasePreserving())
+        patternOptions |= QRegularExpression::CaseInsensitiveOption;
+    regexp_exclude.setPatternOptions(patternOptions);
+    regexp_exclude.optimize();
+}
+
+CSYNC_EXCLUDE_TYPE csync_excluded_traversal(CSYNC *ctx, const char *path, int filetype) {
+    CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
+
+    /* Check only static patterns and only with the reduced list which is empty usually */
+    match = _csync_excluded_common(ctx->parsed_traversal_excludes.list_patterns_fnmatch, path, filetype, false);
+    if (match != CSYNC_NOT_EXCLUDED) {
+        return match;
+    }
+
+    if (ctx->excludes) {
+        /* Now check with our optimized regexps */
+        const char *bname = NULL;
+        /* split up the path */
+        bname = strrchr(path, '/');
+        if (bname) {
+            bname += 1; // don't include the /
+        } else {
+            bname = path;
+        }
+        QString p = QString::fromUtf8(bname);
+        auto m = ctx->parsed_traversal_excludes.regexp_exclude.match(p);
+        if (m.hasMatch()) {
+            if (!m.captured(1).isEmpty()) {
+                match = CSYNC_FILE_EXCLUDE_LIST;
+            } else if (!m.captured(2).isEmpty()) {
+                match = CSYNC_FILE_EXCLUDE_AND_REMOVE;
+            }
+        }
+    }
+    return match;
 }
 
 CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path, int filetype) {

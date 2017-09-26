@@ -52,6 +52,15 @@ int OCSYNC_EXPORT _csync_exclude_add(c_strlist_t **inList, const char *string);
 int OCSYNC_EXPORT csync_exclude_load(const char *fname, c_strlist_t **list);
 
 /**
+ * @brief When all list loads and list are done
+ *
+ * Used to initialize internal data structures that build upon the loaded excludes.
+ *
+ * @param ctx
+ */
+void OCSYNC_EXPORT csync_exclude_traversal_prepare(CSYNC *ctx);
+
+/**
  * @brief Check if the given path should be excluded in a traversal situation.
  *
  * It does only part of the work that csync_excluded does because it's assumed
@@ -66,10 +75,11 @@ int OCSYNC_EXPORT csync_exclude_load(const char *fname, c_strlist_t **list);
  *
  * @return  2 if excluded and needs cleanup, 1 if excluded, 0 if not.
  */
-CSYNC_EXCLUDE_TYPE csync_excluded_traversal(c_strlist_t *excludes, const char *path, int filetype);
+CSYNC_EXCLUDE_TYPE OCSYNC_EXPORT csync_excluded_traversal(CSYNC *ctx, const char *path, int filetype);
 
 /**
- * @brief csync_excluded_no_ctx
+ * @brief Checks all path components if the whole path should be excluded
+ *
  * @param excludes
  * @param path
  * @param filetype
