@@ -92,17 +92,17 @@ QString Theme::statusHeaderText(SyncResult::Status status) const
 
 QString Theme::appNameGUI() const
 {
-    return QLatin1String(APPLICATION_NAME);
+    return APPLICATION_NAME;
 }
 
 QString Theme::appName() const
 {
-    return QLatin1String(APPLICATION_SHORTNAME);
+    return APPLICATION_SHORTNAME;
 }
 
 QString Theme::version() const
 {
-    return QString::fromLocal8Bit(MIRALL_VERSION_STRING);
+    return MIRALL_VERSION_STRING;
 }
 
 #ifndef TOKEN_AUTH_ONLY
@@ -509,9 +509,9 @@ QString Theme::versionSwitchOutput() const
 {
     QString helpText;
     QTextStream stream(&helpText);
-    stream << appName().toLatin1().constData()
+    stream << appName()
            << QLatin1String(" version ")
-           << version().toLatin1().constData() << endl;
+           << version() << endl;
 #ifdef GIT_SHA1
     stream << "Git revision " << GIT_SHA1 << endl;
 #endif
