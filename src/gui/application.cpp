@@ -460,7 +460,7 @@ static void displayHelpText(QString t) // No console on Windows.
 
 static void displayHelpText(const QString &t)
 {
-    std::cout << qPrintable(t);
+    std::cout << qUtf8Printable(t);
 }
 #endif
 
@@ -469,9 +469,9 @@ void Application::showHelp()
     setHelp();
     QString helpText;
     QTextStream stream(&helpText);
-    stream << _theme->appName().toLatin1().constData()
+    stream << _theme->appName()
            << QLatin1String(" version ")
-           << _theme->version().toLatin1().constData() << endl;
+           << _theme->version() << endl;
 
     stream << QLatin1String("File synchronisation desktop utility.") << endl
            << endl

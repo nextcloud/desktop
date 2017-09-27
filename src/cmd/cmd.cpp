@@ -196,7 +196,7 @@ void help()
 
 void showVersion()
 {
-    std::cout << qPrintableUtf8(Theme::instance()->versionSwitchOutput());
+    std::cout << qUtf8Printable(Theme::instance()->versionSwitchOutput());
     exit(0);
 }
 
