@@ -345,6 +345,12 @@ bool SyncJournalDb::checkConnect()
                         "PRIMARY KEY(phash)"
                         ");");
 
+#ifndef SQLITE_IOERR_SHMMAP
+// Requires sqlite >= 3.7.7 but old CentOS6 has sqlite-3.6.20
+// Definition taken from https://sqlite.org/c3ref/c_abort_rollback.html
+#define SQLITE_IOERR_SHMMAP            (SQLITE_IOERR | (21<<8))
+#endif
+
     if (!createQuery.exec()) {
         // In certain situations the io error can be avoided by switching
         // to the DELETE journal mode, see #5723
