@@ -739,31 +739,31 @@
         <translation>ความเคลื่อนไหวของการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="638"/>
+        <location filename="../src/gui/folder.cpp" line="640"/>
         <source>Could not read system exclude file</source>
         <translation>ไม่สามารถอ่าน ยกเว้นไฟล์ระบบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="881"/>
+        <location filename="../src/gui/folder.cpp" line="883"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>โฟลเดอร์ใหม่มีขนาดใหญ่กว่า %1 เมกะไบต์ ได้ถูกเพิ่ม: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="884"/>
+        <location filename="../src/gui/folder.cpp" line="886"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>โฟลเดอร์ที่มีพื้นที่จัดเก็บข้อมูลภายนอกได้ถูกเพิ่ม
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="885"/>
+        <location filename="../src/gui/folder.cpp" line="887"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>กรุณาไปในส่วนของการตั้งค่าเพื่อเลือก ถ้าคุณต้องการจะดาวน์โหลด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="920"/>
+        <location filename="../src/gui/folder.cpp" line="922"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -774,7 +774,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 หากคุณตัดสินใจที่จะลบไฟล์ก็จะทำให้ไม่มีใครสามารถใช้งานโฟลเดอร์นี้ได้เพราะคุณเป็นเจ้าของ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="925"/>
+        <location filename="../src/gui/folder.cpp" line="927"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -784,22 +784,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
 ถ้าเรื่องนี้เป็นอุบัติเหตุและคุณตัดสินใจที่จะเก็บไฟล์ของคุณ ไฟล์ของคุณก็จะถูกประสานข้อมูลใหม่อีกครั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="929"/>
+        <location filename="../src/gui/folder.cpp" line="931"/>
         <source>Remove All Files?</source>
         <translation>ลบไฟล์ทั้งหมด?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="932"/>
+        <location filename="../src/gui/folder.cpp" line="934"/>
         <source>Remove all files</source>
         <translation>ลบไฟล์ทั้งหมด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="933"/>
+        <location filename="../src/gui/folder.cpp" line="935"/>
         <source>Keep files</source>
         <translation>เก็บไฟล์เอาไว้</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="950"/>
+        <location filename="../src/gui/folder.cpp" line="952"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
@@ -808,17 +808,17 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 ไฟล์ปัจจุบันของคุณทั้งหมดจะถูกเขียนทับด้วยไฟล์เก่า คุณต้องการเก็บไฟล์ไว้?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="955"/>
+        <location filename="../src/gui/folder.cpp" line="957"/>
         <source>Backup detected</source>
         <translation>ตรวจพบการสำรองข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="958"/>
+        <location filename="../src/gui/folder.cpp" line="960"/>
         <source>Normal Synchronisation</source>
         <translation>ประสานข้อมูลปกติ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="959"/>
+        <location filename="../src/gui/folder.cpp" line="961"/>
         <source>Keep Local Files as Conflict</source>
         <translation>เก็บไฟล์ต้นทางเป็นไฟล์ที่มีปัญหา</translation>
     </message>
@@ -1690,32 +1690,32 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 <context>
     <name>OCC::OAuth</name>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="110"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="112"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
         <translation>เกิดข้อผิดพลาดจากเซิร์ฟเวอร์: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="113"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="115"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>เกิดข้อผิดพลาดในการเข้าถึง &apos;โทเค็น&apos; ปลายทาง: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="116"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>ไม่สามารถแยกวิเคราะห์ JSON ที่ส่งมาจากเซิร์ฟเวอร์: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="119"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>The reply from the server did not contain all expected fields</source>
         <translation>การตอบกลับจากเซิร์ฟเวอร์ไม่ได้มีฟิลด์ที่ต้องการ</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="123"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="125"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
         <translation>&lt;h1&gt;เข้าสู่ระบบล้มเหลว&lt;/h1&gt;%1&lt;p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="129"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="131"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation>&lt;h1&gt;บัญผู้ใช้ไม่ถูกต้อง&lt;/h1&gt; &lt;p&gt;คุณลงชื่อเข้าใช้ด้วยบัญชีผู้ใช้ &lt;em&gt;%1&lt;/em&gt; คุณจะต้องลงชื่อเข้าใช้ด้วยบัญชี &lt;em&gt;%2&lt;/em&gt; &lt;br&gt;โปรดออกจากระบบ %3 ในแท็บอื่นแล้ว &lt;a href=&apos;%4&apos;&gt;คลิกที่นี่&lt;/a&gt; เพื่อเข้าสู่ระบบในฐานะผู้ใช้ &lt;/p&gt;</translation>
     </message>
@@ -3098,301 +3098,301 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SyncEngine</name>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="119"/>
+        <location filename="../src/libsync/syncengine.cpp" line="118"/>
         <source>Success.</source>
         <translation>เสร็จสิ้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="126"/>
+        <location filename="../src/libsync/syncengine.cpp" line="125"/>
         <source>CSync failed to load the journal file. The journal file is corrupted.</source>
         <translation>CSync ไม่สามารถโหลดไฟล์เจอร์นัล ไฟล์เจอร์นัลได้รับความเสียหาย</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="129"/>
+        <location filename="../src/libsync/syncengine.cpp" line="128"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;ปลั๊กอิน %1 สำหรับ csync ไม่สามารถโหลดได้.&lt;br/&gt;กรุณาตรวจสอบความถูกต้องในการติดตั้ง!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="132"/>
+        <location filename="../src/libsync/syncengine.cpp" line="131"/>
         <source>CSync fatal parameter error.</source>
         <translation>พบข้อผิดพลาดเกี่ยวกับ CSync fatal parameter</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="135"/>
+        <location filename="../src/libsync/syncengine.cpp" line="134"/>
         <source>CSync processing step update failed.</source>
         <translation>การอัพเดทขั้นตอนการประมวลผล CSync ล้มเหลว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="138"/>
+        <location filename="../src/libsync/syncengine.cpp" line="137"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>การอัพเดทขั้นตอนการประมวลผล CSync ล้มเหลว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="141"/>
+        <location filename="../src/libsync/syncengine.cpp" line="140"/>
         <source>CSync could not authenticate at the proxy.</source>
         <translation>CSync ไม่สามารถรับรองความถูกต้องที่พร็อกซี่</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="144"/>
+        <location filename="../src/libsync/syncengine.cpp" line="143"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>CSync ไม่สามารถค้นหาพร็อกซี่บนเซิร์ฟเวอร์ได้</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="147"/>
+        <location filename="../src/libsync/syncengine.cpp" line="146"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>CSync ล้มเหลวในการยืนยันสิทธิ์การเข้าใช้งานที่เซิร์ฟเวอร์ %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="150"/>
+        <location filename="../src/libsync/syncengine.cpp" line="149"/>
         <source>CSync failed to connect to the network.</source>
         <translation>CSync ล้มเหลวในการเชื่อมต่อกับเครือข่าย</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="153"/>
+        <location filename="../src/libsync/syncengine.cpp" line="152"/>
         <source>A network connection timeout happened.</source>
         <translation>หมดเวลาการเชื่อมต่อเครือข่าย</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="156"/>
+        <location filename="../src/libsync/syncengine.cpp" line="155"/>
         <source>A HTTP transmission error happened.</source>
         <translation>เกิดข้อผิดพลาดเกี่ยวกับ HTTP transmission</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="180"/>
+        <location filename="../src/libsync/syncengine.cpp" line="179"/>
         <source>The mounted folder is temporarily not available on the server</source>
         <translation>โฟลเดอร์ที่ติดตั้งชั่วคราว ไม่สามารถใช้งานบนเซิร์ฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="186"/>
+        <location filename="../src/libsync/syncengine.cpp" line="185"/>
         <source>An error occurred while opening a folder</source>
         <translation>เกิดข้อผิดพลาดบางอย่างขณะกำลังเปิดโฟลเดอร์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="189"/>
+        <location filename="../src/libsync/syncengine.cpp" line="188"/>
         <source>Error while reading folder.</source>
         <translation>เกิดข้อผิดพลาดขณะกำลังอ่านโฟลเดอร์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="265"/>
+        <location filename="../src/libsync/syncengine.cpp" line="264"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
         <translation>%1 (ข้ามไปเนื่องจากข้อผิดพลาดก่อนหน้านี้ กำลังลองอีกครั้งใน %2)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="475"/>
+        <location filename="../src/libsync/syncengine.cpp" line="474"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>ไฟล์/โฟลเดอร์ ที่ซ่อนอยู่จะถูกละเว้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="478"/>
+        <location filename="../src/libsync/syncengine.cpp" line="477"/>
         <source>Folder hierarchy is too deep</source>
         <translation>โฟลเดอร์มีโฟลเดอร์ย่อยเกินไป</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="491"/>
+        <location filename="../src/libsync/syncengine.cpp" line="490"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>เกิดปัญหาความขัดแย้ง: สำเนาที่อยู่ในเครื่องถูกเปลี่ยนชื่อและไม่ได้ถูกอัพโหลด เลยไม่ตรงกับข้อมูลที่เคยอัพโหลดไว้ในเซิฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="769"/>
+        <location filename="../src/libsync/syncengine.cpp" line="770"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>มีเพียง %1 ที่พร้อมใช้งาน คุณจำเป็นต้องมีไม่น้อยกว่า %2 เพื่อเริ่มใช้งาน</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="806"/>
+        <location filename="../src/libsync/syncengine.cpp" line="805"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>
 ไม่สามารถเปิดหรือสร้างฐานข้อมูลการประสานข้อมูลในเครื่อง ตรวจสอบว่าคุณมีสิทธิ์การเขียนในโฟลเดอร์ซิงค์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1279"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1274"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>ไม่ได้รับอนุญาต เพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์หลัก</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1286"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1281"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>ไม่ได้รับอนุญาต เพราะคุณไม่มีสิทธิ์ที่จะเพิ่มไฟล์ในโฟลเดอร์นั้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1589"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1584"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>พื้นที่จัดเก็บเหลือน้อย: การดาวน์โหลดจะช่วยลดพื้นที่ว่างด้านล่าง %1 ที่ถูกข้ามไป</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1596"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1591"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>มีพื้นที่ว่างไม่เพียงพอบนเซิร์ฟเวอร์สำหรับการอัพโหลดบางรายการ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="168"/>
+        <location filename="../src/libsync/syncengine.cpp" line="167"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>CSync: ไม่มีพื้นที่เหลือเพียงพอบนเซิร์ฟเวอร์ %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="171"/>
+        <location filename="../src/libsync/syncengine.cpp" line="170"/>
         <source>CSync unspecified error.</source>
         <translation>CSync ไม่สามารถระบุข้อผิดพลาดได้</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="174"/>
+        <location filename="../src/libsync/syncengine.cpp" line="173"/>
         <source>Aborted by the user</source>
         <translation>ยกเลิกโดยผู้ใช้</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="162"/>
+        <location filename="../src/libsync/syncengine.cpp" line="161"/>
         <source>CSync failed to access</source>
         <translation>ล้มเหลวในการเข้าถึง CSync</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="122"/>
+        <location filename="../src/libsync/syncengine.cpp" line="121"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
         <translation>CSync ผิดพลาด ไม่สามารถโหลดหรือสร้างไฟล์เจอร์นัล ให้แน่ใจว่าคุณได้อ่านและเขียนสิทธิ์ในการประสานโฟลเดอร์ต้นทาง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="159"/>
+        <location filename="../src/libsync/syncengine.cpp" line="158"/>
         <source>CSync failed due to unhandled permission denied.</source>
         <translation>CSync ล้มเหลวเนื่องจากการอนุญาตให้จัดการได้ถูกปฏิเสธ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="165"/>
+        <location filename="../src/libsync/syncengine.cpp" line="164"/>
         <source>CSync tried to create a folder that already exists.</source>
         <translation>CSync พยายามสร้างโฟลเดอร์ที่มีอยู่แล้ว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="177"/>
+        <location filename="../src/libsync/syncengine.cpp" line="176"/>
         <source>The service is temporarily unavailable</source>
         <translation>ไม่สามารถใช้บริการได้ชั่วคราว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="183"/>
+        <location filename="../src/libsync/syncengine.cpp" line="182"/>
         <source>Access is forbidden</source>
         <translation>ถูกปฏิเสธการเข้าถึง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="194"/>
+        <location filename="../src/libsync/syncengine.cpp" line="193"/>
         <source>An internal error number %1 occurred.</source>
         <translation>จำนวนข้อผิดพลาดภายในที่เกิดขึ้น %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="444"/>
+        <location filename="../src/libsync/syncengine.cpp" line="443"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>ลิงค์สัญลักษณ์จะไม่ได้รับการสนับสนุนในการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="447"/>
+        <location filename="../src/libsync/syncengine.cpp" line="446"/>
         <source>File is listed on the ignore list.</source>
         <translation>ไฟล์อยู่ในรายการที่ละเว้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="451"/>
+        <location filename="../src/libsync/syncengine.cpp" line="450"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>ชื่อไฟล์ที่ลงท้ายด้วยระยะเวลา ยังไม่ได้รับการสนับสนุนบนระบบไฟล์นี้</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="461"/>
+        <location filename="../src/libsync/syncengine.cpp" line="460"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>ชื่อไฟล์ที่มีตัวอักษร &apos;%1&apos; ยังไม่ได้รับการสนับสนุนบนระบบไฟล์นี้</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="464"/>
+        <location filename="../src/libsync/syncengine.cpp" line="463"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>ชื่อไฟล์นี้เป็นชื่อที่ถูกสงวนไว้</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="469"/>
+        <location filename="../src/libsync/syncengine.cpp" line="468"/>
         <source>Filename contains trailing spaces.</source>
         <translation>ชื่อไฟล์มีช่องว่างต่อท้าย</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="472"/>
+        <location filename="../src/libsync/syncengine.cpp" line="471"/>
         <source>Filename is too long.</source>
         <translation>ชื่อไฟล์ยาวเกินไป</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="487"/>
+        <location filename="../src/libsync/syncengine.cpp" line="486"/>
         <source>Unresolved conflict.</source>
         <translation>ข้อขัดแย้งที่ยังไม่ได้แก้ไข</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="498"/>
+        <location filename="../src/libsync/syncengine.cpp" line="497"/>
         <source>Stat failed.</source>
         <translation>สถิติความล้มเหลว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="525"/>
+        <location filename="../src/libsync/syncengine.cpp" line="524"/>
         <source>Filename encoding is not valid</source>
         <translation>การเข้ารหัสชื่อไฟล์ไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="699"/>
+        <location filename="../src/libsync/syncengine.cpp" line="700"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>ตัวอักษรไม่ถูกต้อง โปรดเปลี่ยนชื่อ &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="825"/>
+        <location filename="../src/libsync/syncengine.cpp" line="820"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>ไม่สามารถอ่านบัญชีดำจากฐานข้อมูลต้นทาง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="866"/>
+        <location filename="../src/libsync/syncengine.cpp" line="861"/>
         <source>Unable to read from the sync journal.</source>
         <translation>ไม่สามารถอ่านจากบันทึกการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="915"/>
+        <location filename="../src/libsync/syncengine.cpp" line="910"/>
         <source>Cannot open the sync journal</source>
         <translation>ไม่สามารถเปิดการผสานข้อมูลเจอร์นัล</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="969"/>
+        <location filename="../src/libsync/syncengine.cpp" line="964"/>
         <source>File name contains at least one invalid character</source>
         <translation>มีชื่อแฟ้มอย่างน้อยหนึ่งตัวอักษรที่ไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1205"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1245"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1200"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1240"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>ถูกละเว้นเพราะ &quot;ข้อมูลที่เลือกประสาน&quot; ติดบัญชีดำ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1264"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1259"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>ไม่อนุญาติเพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์ย่อยของโฟลเดอร์นั้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1311"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1306"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>ไม่อนุญาตให้อัพโหลดไฟล์นี้เพราะมันจะอ่านได้เพียงอย่างเดียวบนเซิร์ฟเวอร์ กำลังฟื้นฟู</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1327"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1346"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1322"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1341"/>
         <source>Not allowed to remove, restoring</source>
         <translation>ไม่อนุญาตให้ลบเพราะกำลังฟื้นฟู</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1360"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1355"/>
         <source>Local files and share folder removed.</source>
         <translation>ไฟล์ต้นทางและโฟลเดอร์ที่แชร์ถูกลบออก</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1414"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1409"/>
         <source>Move not allowed, item restored</source>
         <translation>ไม่ได้รับอนุญาตให้ย้าย เพราะกำลังกู้คืนรายการ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1425"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1420"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>ไม่อนุญาตให้ย้ายเพราะ %1 จะอ่านได้เพียงอย่างเดียว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1425"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1420"/>
         <source>the destination</source>
         <translation>ปลายทาง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1425"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1420"/>
         <source>the source</source>
         <translation>แหล่งที่มา</translation>
     </message>

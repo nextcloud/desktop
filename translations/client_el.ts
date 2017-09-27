@@ -739,31 +739,31 @@
         <translation>Δραστηριότητα Συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="638"/>
+        <location filename="../src/gui/folder.cpp" line="640"/>
         <source>Could not read system exclude file</source>
         <translation>Αδυναμία ανάγνωσης αρχείου αποκλεισμού συστήματος</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="881"/>
+        <location filename="../src/gui/folder.cpp" line="883"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Προστέθηκε ένας νέος φάκελος μεγαλύτερος από %1 MB: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="884"/>
+        <location filename="../src/gui/folder.cpp" line="886"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Προστέθηκε ένας φάκελος από εξωτερικό αποθηκευτικό χώρο.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="885"/>
+        <location filename="../src/gui/folder.cpp" line="887"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Μεταβείτε στις ρυθμίσεις για να το επιλέξετε εάν επιθυμείτε να το κατεβάσετε.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="920"/>
+        <location filename="../src/gui/folder.cpp" line="922"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -774,7 +774,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 Εφόσον επιλέξετε να διαγράψετε τα αρχεία, δε θα είναι διαθέσιμα σε εσάς, εκτός εάν είστε ο ιδιοκτήτης τους.  </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="925"/>
+        <location filename="../src/gui/folder.cpp" line="927"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -783,22 +783,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
 Αν αυτό ήταν ένα ατύχημα και αποφασίσατε να διατηρήσετε τα αρχεία σας, θα συγχρονιστούν εκ νέου από το διακομιστή.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="929"/>
+        <location filename="../src/gui/folder.cpp" line="931"/>
         <source>Remove All Files?</source>
         <translation>Αφαίρεση Όλων των Αρχείων;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="932"/>
+        <location filename="../src/gui/folder.cpp" line="934"/>
         <source>Remove all files</source>
         <translation>Αφαίρεση όλων των αρχείων</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="933"/>
+        <location filename="../src/gui/folder.cpp" line="935"/>
         <source>Keep files</source>
         <translation>Διατήρηση αρχείων</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="950"/>
+        <location filename="../src/gui/folder.cpp" line="952"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
@@ -807,17 +807,17 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 Η συνέχιση του συγχρονισμού κανονικά θα προκαλέσει την αντικατάσταση όλων των αρχείων σας από παλιότερο αρχείο σε προηγούμενη κατάσταση. Θέλετε να διατηρήσετε τα τοπικά σας πιο πρόσφατα αρχεία ως αρχεία σύγκρουσης;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="955"/>
+        <location filename="../src/gui/folder.cpp" line="957"/>
         <source>Backup detected</source>
         <translation>Ανιχνεύθηκε αντίγραφο ασφαλείας</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="958"/>
+        <location filename="../src/gui/folder.cpp" line="960"/>
         <source>Normal Synchronisation</source>
         <translation>Κανονικός συγχρονισμός</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="959"/>
+        <location filename="../src/gui/folder.cpp" line="961"/>
         <source>Keep Local Files as Conflict</source>
         <translation>Διατήρηση τοπικών αρχείων ως Διένεξη</translation>
     </message>
@@ -1688,32 +1688,32 @@ Items where deletion is allowed will be deleted if they prevent a directory from
 <context>
     <name>OCC::OAuth</name>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="110"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="112"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="113"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="115"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="116"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="119"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>The reply from the server did not contain all expected fields</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="123"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="125"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="129"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="131"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -3099,300 +3099,300 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SyncEngine</name>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="119"/>
+        <location filename="../src/libsync/syncengine.cpp" line="118"/>
         <source>Success.</source>
         <translation>Επιτυχία.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="126"/>
+        <location filename="../src/libsync/syncengine.cpp" line="125"/>
         <source>CSync failed to load the journal file. The journal file is corrupted.</source>
         <translation>Το CSync απέτυχε να φορτώσει ο αρχείο καταλόγου. Το αρχείο καταλόγου έχει καταστραφεί.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="129"/>
+        <location filename="../src/libsync/syncengine.cpp" line="128"/>
         <source>&lt;p&gt;The %1 plugin for csync could not be loaded.&lt;br/&gt;Please verify the installation!&lt;/p&gt;</source>
         <translation>&lt;p&gt;Το πρόσθετο του %1 για το csync δεν μπόρεσε να φορτωθεί.&lt;br/&gt;Παρακαλούμε επαληθεύσετε την εγκατάσταση!&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="132"/>
+        <location filename="../src/libsync/syncengine.cpp" line="131"/>
         <source>CSync fatal parameter error.</source>
         <translation>Μοιραίο σφάλμα παράμετρου CSync.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="135"/>
+        <location filename="../src/libsync/syncengine.cpp" line="134"/>
         <source>CSync processing step update failed.</source>
         <translation>Η ενημέρωση του βήματος επεξεργασίας του CSync απέτυχε.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="138"/>
+        <location filename="../src/libsync/syncengine.cpp" line="137"/>
         <source>CSync processing step reconcile failed.</source>
         <translation>CSync στάδιο επεξεργασίας συμφιλίωση απέτυχε. </translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="141"/>
+        <location filename="../src/libsync/syncengine.cpp" line="140"/>
         <source>CSync could not authenticate at the proxy.</source>
         <translation>Το CSync δεν μπόρεσε να πιστοποιηθεί στο διακομιστή μεσολάβησης.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="144"/>
+        <location filename="../src/libsync/syncengine.cpp" line="143"/>
         <source>CSync failed to lookup proxy or server.</source>
         <translation>Το CSync απέτυχε να διερευνήσει το διαμεσολαβητή ή το διακομιστή.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="147"/>
+        <location filename="../src/libsync/syncengine.cpp" line="146"/>
         <source>CSync failed to authenticate at the %1 server.</source>
         <translation>Το CSync απέτυχε να πιστοποιηθεί στο διακομιστή 1%. </translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="150"/>
+        <location filename="../src/libsync/syncengine.cpp" line="149"/>
         <source>CSync failed to connect to the network.</source>
         <translation>Το CSync απέτυχε να συνδεθεί με το δίκτυο.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="153"/>
+        <location filename="../src/libsync/syncengine.cpp" line="152"/>
         <source>A network connection timeout happened.</source>
         <translation>Διακοπή σύνδεσης δικτύου λόγω παρέλευσης χρονικού ορίου.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="156"/>
+        <location filename="../src/libsync/syncengine.cpp" line="155"/>
         <source>A HTTP transmission error happened.</source>
         <translation>Ένα σφάλμα μετάδοσης HTTP συνέβη.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="180"/>
+        <location filename="../src/libsync/syncengine.cpp" line="179"/>
         <source>The mounted folder is temporarily not available on the server</source>
         <translation>Ο προσαρτημένος φάκελος δεν είναι διαθέσιμος στον δικομιστή προσωρινά</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="186"/>
+        <location filename="../src/libsync/syncengine.cpp" line="185"/>
         <source>An error occurred while opening a folder</source>
         <translation>Παρουσιάστηκε σφάλμα κατά το άνοιγμα του φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="189"/>
+        <location filename="../src/libsync/syncengine.cpp" line="188"/>
         <source>Error while reading folder.</source>
         <translation>Σφάλμα κατά την ανάγνωση του φακέλου.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="265"/>
+        <location filename="../src/libsync/syncengine.cpp" line="264"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="475"/>
+        <location filename="../src/libsync/syncengine.cpp" line="474"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Το Αρχείο/ο Φάκελος αγνοήθηκε επειδή είναι κρυφό.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="478"/>
+        <location filename="../src/libsync/syncengine.cpp" line="477"/>
         <source>Folder hierarchy is too deep</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="491"/>
+        <location filename="../src/libsync/syncengine.cpp" line="490"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="769"/>
+        <location filename="../src/libsync/syncengine.cpp" line="770"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Μόνο %1 είναι διαθέσιμα, απαιτούνται τουλάχιστον %2 για την εκκίνηση</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="806"/>
+        <location filename="../src/libsync/syncengine.cpp" line="805"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1279"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1274"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Δεν επιτρέπεται επειδή δεν έχετε δικαιώματα να προσθέσετε γονικό κατάλογο</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1286"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1281"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Δεν επιτρέπεται επειδή δεν έχετε δικαιώματα να προσθέσετε αρχεία σε αυτόν τον φάκελο</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1589"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1584"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1596"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1591"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="168"/>
+        <location filename="../src/libsync/syncengine.cpp" line="167"/>
         <source>CSync: No space on %1 server available.</source>
         <translation>CSync: Δεν υπάρχει διαθέσιμος χώρος στο διακομιστή 1%.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="171"/>
+        <location filename="../src/libsync/syncengine.cpp" line="170"/>
         <source>CSync unspecified error.</source>
         <translation>Άγνωστο σφάλμα CSync.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="174"/>
+        <location filename="../src/libsync/syncengine.cpp" line="173"/>
         <source>Aborted by the user</source>
         <translation>Ματαιώθηκε από το χρήστη</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="162"/>
+        <location filename="../src/libsync/syncengine.cpp" line="161"/>
         <source>CSync failed to access</source>
         <translation>Το CSync απέτυχε να αποκτήσει πρόσβαση</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="122"/>
+        <location filename="../src/libsync/syncengine.cpp" line="121"/>
         <source>CSync failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
         <translation>Το CSync απέτυχε να φορτώσει ή να δημιουργήσει το αρχείο καταγραφής. Βεβαιωθείτε ότι έχετε άδεια ανάγνωσης και εγγραφής στον τοπικό κατάλογο συγχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="159"/>
+        <location filename="../src/libsync/syncengine.cpp" line="158"/>
         <source>CSync failed due to unhandled permission denied.</source>
         <translation>Το CSync απέτυχε λόγω κατάστασης &quot;permission denied&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="165"/>
+        <location filename="../src/libsync/syncengine.cpp" line="164"/>
         <source>CSync tried to create a folder that already exists.</source>
         <translation>Το CSync προσπάθησε να δημιουργήσει φάκελο που υπάρχει ήδη.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="177"/>
+        <location filename="../src/libsync/syncengine.cpp" line="176"/>
         <source>The service is temporarily unavailable</source>
         <translation>Η υπηρεσία δεν είναι διαθέσιμη προσωρινά</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="183"/>
+        <location filename="../src/libsync/syncengine.cpp" line="182"/>
         <source>Access is forbidden</source>
         <translation>Δεν επιτρέπεται η πρόσβαση</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="194"/>
+        <location filename="../src/libsync/syncengine.cpp" line="193"/>
         <source>An internal error number %1 occurred.</source>
         <translation>Προέκυψε ένα εσωτερικό σφάλμα με αριθμό %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="444"/>
+        <location filename="../src/libsync/syncengine.cpp" line="443"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Οι συμβολικού σύνδεσμοι δεν υποστηρίζονται για το συγχρονισμό.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="447"/>
+        <location filename="../src/libsync/syncengine.cpp" line="446"/>
         <source>File is listed on the ignore list.</source>
         <translation>Το αρχείο περιέχεται στη λίστα αρχείων προς αγνόηση.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="451"/>
+        <location filename="../src/libsync/syncengine.cpp" line="450"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>Τα ονόματα αρχείων που διαρκούν μια ορισμένη χρονική περίοδο δεν υποστηρίζονται σε αυτό το σύστημα αρχείων.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="461"/>
+        <location filename="../src/libsync/syncengine.cpp" line="460"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>Τα ονόματα αρχείων που περιέχουν τον χαρακτήρα &apos;% 1&apos; δεν υποστηρίζονται σε αυτό το σύστημα αρχείων.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="464"/>
+        <location filename="../src/libsync/syncengine.cpp" line="463"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>Το όνομα αρχείου είναι ένα κατοχυρωμένο όνομα σε αυτό το σύστημα αρχείων.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="469"/>
+        <location filename="../src/libsync/syncengine.cpp" line="468"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Το όνομα του αρχείου περιέχει συνεχόμενα κενά.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="472"/>
+        <location filename="../src/libsync/syncengine.cpp" line="471"/>
         <source>Filename is too long.</source>
         <translation>Το όνομα αρχείου είνια πολύ μεγάλο.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="487"/>
+        <location filename="../src/libsync/syncengine.cpp" line="486"/>
         <source>Unresolved conflict.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="498"/>
+        <location filename="../src/libsync/syncengine.cpp" line="497"/>
         <source>Stat failed.</source>
         <translation>Απέτυχε.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="525"/>
+        <location filename="../src/libsync/syncengine.cpp" line="524"/>
         <source>Filename encoding is not valid</source>
         <translation>Η κωδικοποίηση του ονόματος αρχείου δεν είναι έγκυρη</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="699"/>
+        <location filename="../src/libsync/syncengine.cpp" line="700"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>Μη έγκυροι χαρακτήρες, παρακαλώ μετονομάστε το &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="825"/>
+        <location filename="../src/libsync/syncengine.cpp" line="820"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>Αδυναμία ανάγνωσης της μαύρης λίστας από την τοπική βάση δεδομένων</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="866"/>
+        <location filename="../src/libsync/syncengine.cpp" line="861"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Αδυναμία ανάγνωσης από το ημερολόγιο συγχρονισμού.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="915"/>
+        <location filename="../src/libsync/syncengine.cpp" line="910"/>
         <source>Cannot open the sync journal</source>
         <translation>Αδυναμία ανοίγματος του αρχείου συγχρονισμού</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="969"/>
+        <location filename="../src/libsync/syncengine.cpp" line="964"/>
         <source>File name contains at least one invalid character</source>
         <translation>Το όνομα αρχείου περιέχει έναν τουλάχιστον μη έγκυρο χαρακτήρα</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1205"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1245"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1200"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1240"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Αγνοήθηκε εξαιτίας της μαύρης λίστας &quot;διάλεξε τι να συγχρονιστεί&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1264"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1259"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Δεν επιτρέπεται επειδή δεν έχετε δικαιώματα να προσθέσετε υποφακέλους σε αυτό τον φάκελο</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1311"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1306"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Δεν επιτρέπεται να μεταφορτώσετε αυτό το αρχείο επειδή είναι μόνο για ανάγνωση στο διακομιστή, αποκατάσταση σε εξέλιξη</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1327"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1346"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1322"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1341"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Δεν επιτρέπεται η αφαίρεση, αποκατάσταση σε εξέλιξη</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1360"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1355"/>
         <source>Local files and share folder removed.</source>
         <translation>Οι τοπικοί φάκελοι και ο φάκελος κοινής χρήσης αφαιρέθηκαν.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1414"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1409"/>
         <source>Move not allowed, item restored</source>
         <translation>Η μετακίνηση δεν επιτρέπεται, το αντικείμενο αποκαταστάθηκε</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1425"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1420"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Η μετακίνηση δεν επιτρέπεται επειδή το %1 είναι μόνο για ανάγνωση</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1425"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1420"/>
         <source>the destination</source>
         <translation>ο προορισμός</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1425"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1420"/>
         <source>the source</source>
         <translation>η προέλευση</translation>
     </message>
