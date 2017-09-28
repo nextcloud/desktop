@@ -445,7 +445,9 @@ public:
 
     void abort()
     {
-        _abortRequested.fetchAndStoreOrdered(true);
+        bool alreadyAborting = _abortRequested.fetchAndStoreOrdered(true);
+        if (alreadyAborting)
+            return;
         if (_rootJob) {
             // Connect to abortFinished  which signals that abort has been asynchronously finished
             connect(_rootJob.data(), &PropagateDirectory::abortFinished, this, &OwncloudPropagator::emitFinished);
