@@ -301,15 +301,15 @@ private:
      * In the non-resuming case it is 0.
      * If we are resuming, this is the first chunk we need to send
      */
-    int _startChunk;
+    int _startChunk = 0;
     /**
      * This is the next chunk that we need to send. Starting from 0 even if _startChunk != 0
      * (In other words,  _startChunk + _currentChunk is really the number of the chunk we need to send next)
      * (In other words, _currentChunk is the number of the chunk that we already sent or started sending)
      */
-    int _currentChunk;
-    int _chunkCount; /// Total number of chunks for this file
-    int _transferId; /// transfer id (part of the url)
+    int _currentChunk = 0;
+    int _chunkCount = 0; /// Total number of chunks for this file
+    int _transferId = 0; /// transfer id (part of the url)
 
     quint64 chunkSize() const {
         // Old chunking does not use dynamic chunking algorithm, and does not adjusts the chunk size respectively,
@@ -342,11 +342,11 @@ class PropagateUploadFileNG : public PropagateUploadFileCommon
 {
     Q_OBJECT
 private:
-    quint64 _sent; /// amount of data (bytes) that was already sent
-    uint _transferId; /// transfer id (part of the url)
-    int _currentChunk; /// Id of the next chunk that will be sent
-    quint64 _currentChunkSize; /// current chunk size
-    bool _removeJobError; /// If not null, there was an error removing the job
+    quint64 _sent = 0; /// amount of data (bytes) that was already sent
+    uint _transferId = 0; /// transfer id (part of the url)
+    int _currentChunk = 0; /// Id of the next chunk that will be sent
+    quint64 _currentChunkSize = 0; /// current chunk size
+    bool _removeJobError = false; /// If not null, there was an error removing the job
 
     // Map chunk number with its size  from the PROPFIND on resume.
     // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
@@ -366,7 +366,6 @@ private:
 public:
     PropagateUploadFileNG(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
         : PropagateUploadFileCommon(propagator, item)
-        , _currentChunkSize(0)
     {
     }
 

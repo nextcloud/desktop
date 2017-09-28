@@ -363,8 +363,10 @@ void PropagateUploadFileV1::abort(PropagatorJob::AbortType abortType)
             // dont abort final PUT which uploaded its data,
             // since this might result in conflicts
             if (PUTFileJob *putJob = qobject_cast<PUTFileJob *>(job)){
-                if (abortType == AbortType::Asynchronous && (((_currentChunk + _startChunk) % _chunkCount) == 0)
-                        && putJob->device()->atEnd()) {
+                if (abortType == AbortType::Asynchronous
+                    && _chunkCount > 0
+                    && (((_currentChunk + _startChunk) % _chunkCount) == 0)
+                    && putJob->device()->atEnd()) {
                     continue;
                 }
             }
