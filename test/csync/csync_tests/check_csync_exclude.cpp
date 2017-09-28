@@ -488,6 +488,22 @@ static void check_csync_is_windows_reserved_word(void **) {
     assert_false(csync_is_windows_reserved_word("conference"));
     assert_false(csync_is_windows_reserved_word("conf.erence"));
     assert_false(csync_is_windows_reserved_word("co"));
+
+    assert_true(csync_is_windows_reserved_word("COM2"));
+    assert_true(csync_is_windows_reserved_word("com2"));
+    assert_true(csync_is_windows_reserved_word("COM2."));
+    assert_true(csync_is_windows_reserved_word("com2."));
+    assert_true(csync_is_windows_reserved_word("COM2.ference"));
+    assert_false(csync_is_windows_reserved_word("COM2ference"));
+    assert_false(csync_is_windows_reserved_word("com2ference"));
+    assert_false(csync_is_windows_reserved_word("com2f.erence"));
+    assert_false(csync_is_windows_reserved_word("com"));
+
+    assert_true(csync_is_windows_reserved_word("CLOCK$"));
+    assert_true(csync_is_windows_reserved_word("$Recycle.Bin"));
+    assert_true(csync_is_windows_reserved_word("ClocK$"));
+    assert_true(csync_is_windows_reserved_word("$recycle.bin"));
+
     assert_true(csync_is_windows_reserved_word("A:"));
     assert_true(csync_is_windows_reserved_word("a:"));
     assert_true(csync_is_windows_reserved_word("z:"));
