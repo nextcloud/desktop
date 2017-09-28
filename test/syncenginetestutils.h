@@ -750,7 +750,6 @@ protected:
         bool isUpload = request.url().path().startsWith(sUploadUrl.path());
         FileInfo &info = isUpload ? _uploadFileInfo : _remoteRootFileInfo;
 
-
         auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute);
         if (verb == "PROPFIND")
             // Ignore outgoingData always returning somethign good enough, works for now.
