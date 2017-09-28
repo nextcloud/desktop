@@ -186,18 +186,18 @@ out:
 // See http://support.microsoft.com/kb/74496 and
 // https://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx
 // Additionally, we ignore '$Recycle.Bin', see https://github.com/owncloud/client/issues/2955
-static const char* win_reserved_words[] = {"CON", "PRN", "AUX", "NUL", "COM1", "COM2", "COM3", "COM4", "COM5",
-                                           "COM6", "COM7", "COM8", "COM9", "LPT1", "LPT2", "LPT3", "LPT4",
-                                           "LPT5", "LPT6", "LPT7", "LPT8", "LPT9", "CLOCK$", "$Recycle.Bin" };
+static const char *win_reserved_words_3[] = { "CON", "PRN", "AUX", "NUL" };
+static const char *win_reserved_words_4[] = {
+    "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+    "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
+};
+static const char *win_reserved_words_n[] = { "CLOCK$", "$Recycle.Bin" };
 
-bool csync_is_windows_reserved_word(const char* filename) {
+bool csync_is_windows_reserved_word(const char *filename)
+{
+    size_t len_filename = strlen(filename);
 
-  size_t win_reserve_words_len = sizeof(win_reserved_words) / sizeof(char*);
-  size_t j;
-
-  for (j = 0; j < win_reserve_words_len; j++) {
-    int len_reserved_word = strlen(win_reserved_words[j]);
-    int len_filename = strlen(filename);
+    // Drive letters
     if (len_filename == 2 && filename[1] == ':') {
         if (filename[0] >= 'a' && filename[0] <= 'z') {
             return true;
@@ -206,16 +206,31 @@ bool csync_is_windows_reserved_word(const char* filename) {
             return true;
         }
     }
-    if (c_strncasecmp(filename, win_reserved_words[j], len_reserved_word) == 0) {
-        if (len_filename == len_reserved_word) {
-            return true;
+
+    if (len_filename == 3 || (len_filename > 3 && filename[3] == '.')) {
+        for (const char *word : win_reserved_words_3) {
+            if (c_strncasecmp(filename, word, 3) == 0) {
+                return true;
+            }
         }
-        if ((len_filename > len_reserved_word) && (filename[len_reserved_word] == '.')) {
+    }
+
+    if (len_filename == 4 || (len_filename > 4 && filename[4] == '.')) {
+        for (const char *word : win_reserved_words_4) {
+            if (c_strncasecmp(filename, word, 4) == 0) {
+                return true;
+            }
+        }
+    }
+
+    for (const char *word : win_reserved_words_n) {
+        size_t len_word = strlen(word);
+        if (len_word == len_filename && c_strncasecmp(filename, word, len_word) == 0) {
             return true;
         }
     }
-  }
-  return false;
+
+    return false;
 }
 
 static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const char *path, int filetype, bool check_leading_dirs) {
