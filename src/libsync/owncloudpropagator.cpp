@@ -114,13 +114,13 @@ PropagateItemJob::~PropagateItemJob()
 
 static qint64 getMinBlacklistTime()
 {
-    return qMax(qgetenv("OWNCLOUD_BLACKLIST_TIME_MIN").toInt(),
+    return qMax(qEnvironmentVariableIntValue("OWNCLOUD_BLACKLIST_TIME_MIN"),
         25); // 25 seconds
 }
 
 static qint64 getMaxBlacklistTime()
 {
-    int v = qgetenv("OWNCLOUD_BLACKLIST_TIME_MAX").toInt();
+    int v = qEnvironmentVariableIntValue("OWNCLOUD_BLACKLIST_TIME_MAX");
     if (v > 0)
         return v;
     return 24 * 60 * 60; // 1 day

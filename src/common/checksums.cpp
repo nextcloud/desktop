@@ -120,7 +120,7 @@ QByteArray parseChecksumHeaderType(const QByteArray &header)
 
 bool uploadChecksumEnabled()
 {
-    static bool enabled = qgetenv("OWNCLOUD_DISABLE_CHECKSUM_UPLOAD").isEmpty();
+    static bool enabled = qEnvironmentVariableIsEmpty("OWNCLOUD_DISABLE_CHECKSUM_UPLOAD");
     return enabled;
 }
 

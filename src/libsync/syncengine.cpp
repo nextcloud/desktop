@@ -1031,7 +1031,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _progressInfo->startEstimateUpdates();
 
     // post update phase script: allow to tweak stuff by a custom script in debug mode.
-    if (!qgetenv("OWNCLOUD_POST_UPDATE_SCRIPT").isEmpty()) {
+    if (!qEnvironmentVariableIsEmpty("OWNCLOUD_POST_UPDATE_SCRIPT")) {
 #ifndef NDEBUG
         QString script = qgetenv("OWNCLOUD_POST_UPDATE_SCRIPT");
 
@@ -1464,7 +1464,7 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
 
 RemotePermissions SyncEngine::getPermissions(const QString &file) const
 {
-    static bool isTest = qgetenv("OWNCLOUD_TEST_PERMISSIONS").toInt();
+    static bool isTest = qEnvironmentVariableIntValue("OWNCLOUD_TEST_PERMISSIONS");
     if (isTest) {
         QRegExp rx("_PERM_([^_]*)_[^/]*$");
         if (rx.indexIn(file) != -1) {
