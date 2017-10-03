@@ -101,7 +101,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="58"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="79"/>
@@ -116,17 +116,17 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
         <source>Synchronize all</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizar todos</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="205"/>
         <source>Synchronize none</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizar ninguno</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="212"/>
         <source>Apply manual changes</source>
-        <translation type="unfinished"/>
+        <translation>Aplicar cambios manuales</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="260"/>
@@ -153,7 +153,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="195"/>
         <source>Add new</source>
-        <translation type="unfinished"/>
+        <translation>Agregar nuevo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="203"/>
@@ -168,22 +168,22 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="300"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>Elegir que sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="306"/>
         <source>Force sync now</source>
-        <translation type="unfinished"/>
+        <translation>Forzar sincronización ahora</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="308"/>
         <source>Restart sync</source>
-        <translation type="unfinished"/>
+        <translation>Reinicia sincronización </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="317"/>
         <source>Remove folder sync connection</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar conexión de sincronización de carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="388"/>
@@ -198,12 +198,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="439"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation type="unfinished"/>
+        <translation>Confirmar eliminación de conexión de sincronización de carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="446"/>
         <source>Remove Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar Conexión de Sincronización de Carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="528"/>
@@ -218,7 +218,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="618"/>
         <source>%1 in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 en uso</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="641"/>
@@ -228,7 +228,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="647"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>¡La versión del servidor% 1 es antigua y no está soportada! Proceda bajo su propio riesgo.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="649"/>
@@ -243,7 +243,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="653"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>Servidor %1 actualmente en modo mantenimiento.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="655"/>
@@ -253,12 +253,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="664"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Obteniendo autorización del navegador. &lt;a href=&apos;%1&apos;&gt;Click aquí&lt;/a&gt; para volver a abrir el navegador.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="668"/>
         <source>Connecting to %1...</source>
-        <translation type="unfinished"/>
+        <translation>Conectando a %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="671"/>
@@ -373,7 +373,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="132"/>
         <source>Maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>Modo mantenimiento</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="134"/>
@@ -388,7 +388,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="138"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Pidiendo Credenciales</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="140"/>
@@ -401,12 +401,12 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="145"/>
         <source>%1 on %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 en %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="147"/>
         <source>%1 on %2 (disconnected)</source>
-        <translation type="unfinished"/>
+        <translation>%1 en %2 (desconectado)</translation>
     </message>
 </context>
 <context>
@@ -415,7 +415,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="516"/>
         <location filename="../src/gui/activitywidget.cpp" line="564"/>
         <source>Server Activity</source>
-        <translation type="unfinished"/>
+        <translation>Actividad de Servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="523"/>
@@ -425,13 +425,13 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="572"/>
         <source>Not Synced</source>
-        <translation type="unfinished"/>
+        <translation>No Sincronizado </translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="575"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
-        <translation type="unfinished"/>
+        <translation>No Sincronizado (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="607"/>
@@ -471,7 +471,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="131"/>
         <source>Server Activities</source>
-        <translation type="unfinished"/>
+        <translation>Actividades de Servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="87"/>
@@ -486,7 +486,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="135"/>
         <source>Action Required: Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Acción Requerida: Notificaciones. </translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="140"/>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="168"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Salir de ownCloud</translation>
     </message>
 </context>
 <context>
@@ -598,7 +598,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="990"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Error escribiendo metadatos a la base de datos</translation>
     </message>
 </context>
 <context>
@@ -805,12 +805,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folder.cpp" line="960"/>
         <source>Normal Synchronisation</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizacón Normal.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="961"/>
         <source>Keep Local Files as Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Mantener Archivos Locales como Conflicto</translation>
     </message>
 </context>
 <context>
@@ -828,12 +828,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1054"/>
         <source> (backup)</source>
-        <translation type="unfinished"/>
+        <translation>(Copia de seguridad)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1059"/>
         <source> (backup %1)</source>
-        <translation type="unfinished"/>
+        <translation>(Copia de seguridad %1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1265"/>
@@ -843,7 +843,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1268"/>
         <source>Waiting to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Esperando para comenzar sincronización.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1271"/>
@@ -888,7 +888,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1305"/>
         <source>No valid folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>Carpeta válida no seleccionada! </translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1315"/>
@@ -997,13 +997,13 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
-        <translation type="unfinished"/>
+        <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="922"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="946"/>
@@ -1021,7 +1021,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="952"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation type="unfinished"/>
+        <translation>descargado %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="954"/>
@@ -1037,13 +1037,13 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="965"/>
         <source>u2191 %1/s</source>
-        <translation type="unfinished"/>
+        <translation>u2191 %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="972"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 %2 (%3 of %4)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="976"/>
@@ -1055,7 +1055,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="995"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>%5 izquierda, %1 de %2, archivo %3 de %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1003"/>
@@ -1135,7 +1135,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="222"/>
         <source>Authentication failed accessing %1</source>
-        <translation type="unfinished"/>
+        <translation>Autenticación fallida accediendo a %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="224"/>
@@ -1145,7 +1145,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="233"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Fallo al listar carpetas. Error: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="314"/>
@@ -2092,7 +2092,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="942"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Error escribiendo metadatos a la base de datos</translation>
     </message>
 </context>
 <context>
@@ -2140,7 +2140,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="871"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Error escribiendo metadatos a la base de datos</translation>
     </message>
 </context>
 <context>
@@ -2176,7 +2176,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="184"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Error escribiendo metadatos a la base de datos</translation>
     </message>
 </context>
 <context>
@@ -2208,7 +2208,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagatorjobs.cpp" line="250"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="255"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Error escribiendo metadatos a la base de datos</translation>
     </message>
 </context>
 <context>
@@ -2234,7 +2234,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="147"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Error escribiendo metadatos a la base de datos</translation>
     </message>
 </context>
 <context>
@@ -2263,7 +2263,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagateremotemove.cpp" line="186"/>
         <location filename="../src/libsync/propagateremotemove.cpp" line="192"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Error escribiendo metadatos a la base de datos</translation>
     </message>
 </context>
 <context>
@@ -2297,7 +2297,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="618"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Error escribiendo metadatos a la base de datos</translation>
     </message>
 </context>
 <context>
@@ -2805,7 +2805,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="83"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="357"/>
@@ -3702,7 +3702,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="351"/>
         <source>Choose what to sync</source>
-        <translation type="unfinished"/>
+        <translation>Elegir que sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="150"/>
