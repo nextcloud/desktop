@@ -2598,12 +2598,12 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="206"/>
         <source>Users and Groups</source>
-        <translation type="unfinished"/>
+        <translation>Käyttäjät ja ryhmät</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="213"/>
         <source>Public Links</source>
-        <translation type="unfinished"/>
+        <translation>Julkiset linkit</translation>
     </message>
 </context>
 <context>
@@ -2651,7 +2651,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="220"/>
         <source>Show file listing</source>
-        <translation type="unfinished"/>
+        <translation>Näytä tiedostolistaus</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="200"/>
