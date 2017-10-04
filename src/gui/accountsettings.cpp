@@ -401,6 +401,9 @@ void AccountSettings::slotFolderWizardAccepted()
      */
     definition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
 
+    // FIXME: Make this depend on a checkbox in settings.
+    definition.navigationPaneClsid = QUuid::createUuid();
+
     auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
 
     folderMan->setSyncEnabled(true);

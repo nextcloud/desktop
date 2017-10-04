@@ -1075,6 +1075,12 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
     settings.setValue(QLatin1String("targetPath"), folder.targetPath);
     settings.setValue(QLatin1String("paused"), folder.paused);
     settings.setValue(QLatin1String("ignoreHiddenFiles"), folder.ignoreHiddenFiles);
+
+    // Happens only on Windows when the explorer integration is enabled.
+    if (!folder.navigationPaneClsid.isNull())
+        settings.setValue(QLatin1String("navigationPaneClsid"), folder.navigationPaneClsid);
+    else
+        settings.remove(QLatin1String("navigationPaneClsid"));
     settings.endGroup();
 }
 
@@ -1088,6 +1094,7 @@ bool FolderDefinition::load(QSettings &settings, const QString &alias,
     folder->targetPath = settings.value(QLatin1String("targetPath")).toString();
     folder->paused = settings.value(QLatin1String("paused")).toBool();
     folder->ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), QVariant(true)).toBool();
+    folder->navigationPaneClsid = settings.value(QLatin1String("navigationPaneClsid")).toUuid();
     settings.endGroup();
 
     // Old settings can contain paths with native separators. In the rest of the

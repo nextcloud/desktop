@@ -27,6 +27,7 @@
 
 #include <QObject>
 #include <QStringList>
+#include <QUuid>
 #include <set>
 
 class QThread;
@@ -64,6 +65,8 @@ public:
     bool paused;
     /// whether the folder syncs hidden files
     bool ignoreHiddenFiles;
+    /// The CLSID where this folder appears in registry for the Explorer navigation pane entry.
+    QUuid navigationPaneClsid;
 
     /// Saves the folder definition, creating a new settings group.
     static void save(QSettings &settings, const FolderDefinition &folder);
@@ -134,6 +137,9 @@ public:
      * remote folder path
      */
     QString remotePath() const;
+
+    void setNavigationPaneClsid(const QUuid &clsid) { _definition.navigationPaneClsid = clsid; }
+    QUuid navigationPaneClsid() const { return _definition.navigationPaneClsid; }
 
     /**
      * remote folder path with server url

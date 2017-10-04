@@ -579,6 +579,8 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
             folderDefinition.localPath = localFolder;
             folderDefinition.targetPath = FolderDefinition::prepareTargetPath(_remoteFolder);
             folderDefinition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
+            // FIXME: Make this depend on a checkbox in settings.
+            folderDefinition.navigationPaneClsid = QUuid::createUuid();
 
             auto f = folderMan->addFolder(account, folderDefinition);
             if (f) {

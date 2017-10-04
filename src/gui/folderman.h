@@ -22,6 +22,7 @@
 
 #include "folder.h"
 #include "folderwatcher.h"
+#include "navigationpanehelper.h"
 #include "syncfileitem.h"
 
 class TestFolderMan;
@@ -115,6 +116,7 @@ public:
     static QString unescapeAlias(const QString &);
 
     SocketApi *socketApi();
+    NavigationPaneHelper &navigationPaneHelper() { return _navigationPaneHelper; }
 
     /**
      * Check if @a path is a valid path for a new folder considering the already sync'ed items.
@@ -315,6 +317,7 @@ private:
     QTimer _startScheduledSyncTimer;
 
     QScopedPointer<SocketApi> _socketApi;
+    NavigationPaneHelper _navigationPaneHelper;
 
     bool _appRestartRequired;
 
