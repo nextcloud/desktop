@@ -116,7 +116,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
         <source>Synchronize all</source>
-        <translation type="unfinished"/>
+        <translation>همگام‌سازی همه</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="205"/>
@@ -258,7 +258,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="668"/>
         <source>Connecting to %1...</source>
-        <translation type="unfinished"/>
+        <translation>اتصال به %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="671"/>
@@ -288,7 +288,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="831"/>
         <source>Confirm Account Removal</source>
-        <translation type="unfinished"/>
+        <translation>تائید حذف حساب‌کاربری</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="832"/>
@@ -298,7 +298,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="838"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>حذف ارتباط</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="270"/>
@@ -415,7 +415,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="516"/>
         <location filename="../src/gui/activitywidget.cpp" line="564"/>
         <source>Server Activity</source>
-        <translation type="unfinished"/>
+        <translation>فعالیت سرور</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="523"/>
@@ -471,7 +471,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="131"/>
         <source>Server Activities</source>
-        <translation type="unfinished"/>
+        <translation>فعالیت‌های سرور</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="87"/>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="168"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>خروج از ownCloud</translation>
     </message>
 </context>
 <context>
@@ -598,7 +598,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="990"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>خطا در نوشتن متادیتا در پایگاه داده</translation>
     </message>
 </context>
 <context>
@@ -843,7 +843,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1268"/>
         <source>Waiting to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>انتظار برای شروع همگام‌سازی</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1271"/>
@@ -936,7 +936,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="246"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>همگام‌سازی با پوشه محلی</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="293"/>
@@ -1003,7 +1003,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="922"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="946"/>
@@ -1359,7 +1359,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="118"/>
         <source>Cannot write changes to &apos;%1&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>نمی‌توان تغییرات را در &apos;%1&apos; نوشت.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="145"/>
@@ -1598,7 +1598,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/networksettings.ui" line="241"/>
         <location filename="../src/gui/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
-        <translation type="unfinished"/>
+        <translation>کیلوبایت</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="203"/>
@@ -1654,7 +1654,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="55"/>
         <source>Created at %1</source>
-        <translation type="unfinished"/>
+        <translation>ایجاد شده در %1</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="104"/>
@@ -1943,7 +1943,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="249"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>آدرس نامعتبر</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="414"/>
@@ -2076,7 +2076,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="48"/>
         <source>Open %1 in Browser</source>
-        <translation type="unfinished"/>
+        <translation>بازکردن %1 در مرورگر</translation>
     </message>
 </context>
 <context>
@@ -2092,7 +2092,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="942"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>خطا در نوشتن متادیتا در پایگاه داده</translation>
     </message>
 </context>
 <context>
@@ -2110,7 +2110,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="440"/>
         <source>Free space on disk is less than %1</source>
-        <translation type="unfinished"/>
+        <translation>فضای خالی دیسک کمتر از %1 است</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="554"/>
@@ -2120,7 +2120,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="607"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>فایل به طور کامل قابل دانلود نیست.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="614"/>
@@ -2140,7 +2140,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="871"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>خطا در نوشتن متادیتا در پایگاه داده</translation>
     </message>
 </context>
 <context>
@@ -2176,7 +2176,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="184"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>خطا در نوشتن متادیتا در پایگاه داده</translation>
     </message>
 </context>
 <context>
@@ -2208,7 +2208,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagatorjobs.cpp" line="250"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="255"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>خطا در نوشتن متادیتا در پایگاه داده</translation>
     </message>
 </context>
 <context>
@@ -2234,7 +2234,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="147"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>خطا در نوشتن متادیتا در پایگاه داده</translation>
     </message>
 </context>
 <context>
@@ -2263,7 +2263,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagateremotemove.cpp" line="186"/>
         <location filename="../src/libsync/propagateremotemove.cpp" line="192"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>خطا در نوشتن متادیتا در پایگاه داده</translation>
     </message>
 </context>
 <context>
@@ -2297,7 +2297,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="618"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>خطا در نوشتن متادیتا در پایگاه داده</translation>
     </message>
 </context>
 <context>
