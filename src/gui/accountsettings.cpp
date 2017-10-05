@@ -638,7 +638,11 @@ void AccountSettings::slotAccountStateChanged()
                                  Utility::escape(safeUrl.toString()));
         QString serverWithUser = server;
         if (AbstractCredentials *cred = account->credentials()) {
-            serverWithUser = tr("%1 as <i>%2</i>").arg(server, Utility::escape(cred->user()));
+            QString user = account->davDisplayName();
+            if (user.isEmpty()) {
+                user = cred->user();
+            }
+            serverWithUser = tr("%1 as <i>%2</i>").arg(server, Utility::escape(user));
         }
 
         if (state == AccountState::Connected) {

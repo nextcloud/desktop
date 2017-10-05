@@ -316,6 +316,10 @@ void ConnectionValidator::slotUserFetched(const QJsonDocument &json)
 
         job->start();
     }
+    QString displayName = json.object().value("ocs").toObject().value("data").toObject().value("display-name").toString();
+    if (!displayName.isEmpty()) {
+        _account->setDavDisplayName(displayName);
+    }
 }
 
 void ConnectionValidator::slotAvatarImage(const QImage &img)

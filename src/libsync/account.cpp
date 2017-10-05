@@ -105,13 +105,24 @@ void Account::setAvatar(const QImage &img)
 
 QString Account::displayName() const
 {
-    QString dn = QString("%1@%2").arg(_credentials->user(), _url.host());
+    QString dn = QString("%1@%2").arg(davUser(), _url.host());
     int port = url().port();
     if (port > 0 && port != 80 && port != 443) {
         dn.append(QLatin1Char(':'));
         dn.append(QString::number(port));
     }
     return dn;
+}
+
+QString Account::davDisplayName() const
+{
+    return _displayName;
+}
+
+void Account::setDavDisplayName(const QString &newDisplayName)
+{
+    _displayName = newDisplayName;
+    emit accountChangedDisplayName();
 }
 
 QString Account::id() const
