@@ -48,6 +48,7 @@ assert($txtpropbefore);
 assert($emlpropbefore);
 
 printInfo( "Touch local files");
+system( "sleep 1" );
 system( "touch $locDir/test.txt" );
 system( "touch $locDir/test.eml" );
 
