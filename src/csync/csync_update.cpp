@@ -265,8 +265,8 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
           fs->instruction = CSYNC_INSTRUCTION_NEW;
 
           bool isRename =
-              base.isValid() && base._inode == fs->inode && base._type == fs->type
-                  && (base._modtime == fs->modtime || fs->type == CSYNC_FTW_TYPE_DIR)
+              base.isValid() && base._type == fs->type
+                  && ((base._modtime == fs->modtime && base._fileSize == fs->size) || fs->type == CSYNC_FTW_TYPE_DIR)
 #ifdef NO_RENAME_EXTENSION
                   && _csync_sameextension(base._path, fs->path)
 #endif

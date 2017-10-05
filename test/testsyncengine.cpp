@@ -535,6 +535,84 @@ private slots:
         QCOMPARE(nPUT, 6);
         QCOMPARE(n507, 3);
     }
+
+    void testLocalMove()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+
+        int nPUT = 0;
+        int nDELETE = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &) {
+            if (op == QNetworkAccessManager::PutOperation)
+                ++nPUT;
+            if (op == QNetworkAccessManager::DeleteOperation)
+                ++nDELETE;
+            return nullptr;
+        });
+
+        // For directly editing the remote checksum
+        FileInfo &remoteInfo = fakeFolder.remoteModifier();
+
+        // Simple move causing a remote rename
+        fakeFolder.localModifier().rename("A/a1", "A/a1m");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
+        QCOMPARE(nPUT, 0);
+
+        // Move-and-change, causing a upload and delete
+        fakeFolder.localModifier().rename("A/a2", "A/a2m");
+        fakeFolder.localModifier().appendByte("A/a2m");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
+        QCOMPARE(nPUT, 1);
+        QCOMPARE(nDELETE, 1);
+
+        // Move-and-change, mtime+content only
+        fakeFolder.localModifier().rename("B/b1", "B/b1m");
+        fakeFolder.localModifier().setContents("B/b1m", 'C');
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
+        QCOMPARE(nPUT, 2);
+        QCOMPARE(nDELETE, 2);
+
+        // Move-and-change, size+content only
+        auto mtime = fakeFolder.remoteModifier().find("B/b2")->lastModified;
+        fakeFolder.localModifier().rename("B/b2", "B/b2m");
+        fakeFolder.localModifier().appendByte("B/b2m");
+        fakeFolder.localModifier().setModTime("B/b2m", mtime);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
+        QCOMPARE(nPUT, 3);
+        QCOMPARE(nDELETE, 3);
+
+        // Move-and-change, content only -- c1 has no checksum, so we fail to detect this!
+        mtime = fakeFolder.remoteModifier().find("C/c1")->lastModified;
+        fakeFolder.localModifier().rename("C/c1", "C/c1m");
+        fakeFolder.localModifier().setContents("C/c1m", 'C');
+        fakeFolder.localModifier().setModTime("C/c1m", mtime);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 3);
+        QCOMPARE(nDELETE, 3);
+        QVERIFY(!(fakeFolder.currentLocalState() == remoteInfo));
+
+        // cleanup, and upload a file that will have a checksum in the db
+        fakeFolder.localModifier().remove("C/c1m");
+        fakeFolder.localModifier().insert("C/c3");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
+        QCOMPARE(nPUT, 4);
+        QCOMPARE(nDELETE, 4);
+
+        // Move-and-change, content only, this time while having a checksum
+        mtime = fakeFolder.remoteModifier().find("C/c3")->lastModified;
+        fakeFolder.localModifier().rename("C/c3", "C/c3m");
+        fakeFolder.localModifier().setContents("C/c3m", 'C');
+        fakeFolder.localModifier().setModTime("C/c3m", mtime);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 5);
+        QCOMPARE(nDELETE, 5);
+        QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)
