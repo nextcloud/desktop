@@ -10,8 +10,9 @@ version 2.4.0 (2017-0X-XX)
 * Sharing: Show warning that links are public
 * Sharing: Many UI improvements
 * Sharing: Make "can edit" partially checked sometimes (#5642)
-* Wizards: Never propose an existing folder for syncing (#5597)
+* Wizard: Never propose an existing folder for syncing (#5597)
 * Wizard: Don't show last page anymore, go to settings directly (#5726)
+* Wizard: Handle url-shortener redirects #5954
 * Settings Dialog: Display the user server avatar
 * Gui: Allow to add multiple sync folder connection of the same folder
 * Selective Sync: Open sub folder context menu (#5596)
@@ -20,13 +21,17 @@ version 2.4.0 (2017-0X-XX)
 * Excludes: remove .htaccess form list of excluded files
 * Excludes: Hardcode desktop.ini
 * Excludes: Allow escaping "#" (#6012)
+* Excludes: Use faster matching via QRegularExpression
 * Sync Issues: More functional error view including filters and conflicts (#5516)
 * Discovery: Increase the MAX_DEPTH and show deep folders as ignored
+* Discovery: General speed improvements
 * Downloads: Remove empty temporary if disk space full (#5746)
 * Downloads: Re-trigger folder discovery on 404
+* Quota:  PropagateUpload: Model of remote quota, avoid some uploads #5537
 * When creating explorer favorite use more specific windows functions (#5690)
 * Create favorite also in folder wizard (#455)
-* Use the application icon for the sidebar favorite (#2446)
+* Windows: Use the application icon for the Windows 8 sidebar favorite (#2446)
+* macOS: Finder sidebar icon #296
 * AccountSettings: Triggering log in re-ask about previously rejected certificates #5819
 * Added owncloudcmd bandwidth limit parameter (#5707)
 * AccountSettings: Sync with clean discovery on Ctrl-F6 (#5666)
@@ -36,15 +41,13 @@ version 2.4.0 (2017-0X-XX)
 * Sync: Create conflicts by comparing the hash of files with identical mtime/size #5589
 * Sync: Blacklist: Don't let errors become warnings #5516
 * Sync: Check etag again after active sync (#4116)
-* macOS: Finder sidebar icon #296
-* Reduce memory usage
 * Fix at least one memory leak
 * Documentation improvements
 * Logging improvements (with Qt logging categories), new --logdebug parameter
 * Harmonize source code style with clang-format
+* Switch over to Qt 5 function pointer signal/slot syntax
 * Crash fixes
 * Test improvements
-* Windows Overlays: Potential hang fixes
 * Small UI layout fixes
 * Maintenance Mode: Detect maintenance mode (#4485)
 * Maintenance Mode: Add a 1 to 5 min reconnection delay #5872
@@ -53,6 +56,7 @@ version 2.4.0 (2017-0X-XX)
 * owncloudcmd: Don't start if connection or auth fails #5692
 * Overlays: Consider also the "shared by me" as shared (#4788)
 * Overlays: Fix different case paths not matching (#5257)
+* Windows Overlays: Potential hang fixes
 * Switch 3rdparty/json usage to Qt5's QJson (#5710)
 * OpenSSL: Don't require directly, only via Qt
 * Remove iconv dependency, use Qt for file system locale encoding/decoding (emoji filename support on macOS)
@@ -60,13 +64,12 @@ version 2.4.0 (2017-0X-XX)
 * csync: Switch build from C to C++
 * csync: Refactor a lot to use common data structures to save memory and memory copying
 * csync: Switch some data structures to Qt data structures
+* csync: Switch to using upper layer SyncJournalDB
 * Http credentials: Fix behavior for bad password #5989
 * Credentials: Use per-account keychain entries #5830
-* Compliation: Enable DEP & ASLR on Windows
 * SyncJournalDB: Fall back to DELETE journal mode if WAL mode does not seem to work (#5723)
 * Compilation: Remove Qt 4 code
-* Quota:  PropagateUpload: Model of remote quota, avoid some uploads #5537
-* Wizard: Handle url-shortener redirects #5954
+* Updater: Rudimentary support for beta channel
 
 version 2.3.3 (2017-08-29)
 * Chunking NG: Don't use old chunking on new DAV endpoint (#5855)
@@ -194,7 +197,6 @@ version 2.2.0 (release 2016-05-12)
  * Documentation Improvements, ie. about overlay icons
  * Translation fixes
  * Countless other bugfixes
- * Sqlite Update to recent version
  * Update of QtKeyChain to support Windows credential store
  * Packaging of dolphin overlay icon module for bleeding edge distros
 
@@ -265,7 +267,6 @@ version 2.1 (release 2015-12-03)
  * Fixed getting size for selective sync (#3986)
  * Re-added close button in the settings window (#3713)
  * Added abililty to handle storage limitations gracefully (#3736)
- * Updated 3rdparty dependencies: sqlite version 3.9.1
  * Organized patches to our base Qt version into admin/qt/patches
  * Plus: A lot of unmentioned improvements and fixes
 
