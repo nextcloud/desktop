@@ -463,7 +463,7 @@ void csync_s::TraversalExcludes::prepare(c_strlist_t *excludes)
         if (exclude[0] == '\r') continue; // empty line
 
         /* If an exclude entry contains some fnmatch-ish characters, we use the C-style codepath without QRegularEpression */
-        if (strchr(exclude, '/') || strchr(exclude, '[') || strchr(exclude, '{')) {
+        if (strchr(exclude, '/') || strchr(exclude, '[') || strchr(exclude, '{') || strchr(exclude, '\\')) {
             _csync_exclude_add(&list_patterns_fnmatch, exclude);
             continue;
         }
