@@ -516,20 +516,13 @@ QString FileSystem::fileSystemForPath(const QString & path)
 static QByteArray readToCrypto( const QString& filename, QCryptographicHash::Algorithm algo )
 {
     QFile file(filename);
-    const qint64 bufSize = qMin(BUFSIZE, file.size() + 1);
-    QByteArray buf(bufSize, Qt::Uninitialized);
     QByteArray arr;
     QCryptographicHash crypto( algo );
 
     if (file.open(QIODevice::ReadOnly)) {
-        qint64 size;
-        while (!file.atEnd()) {
-            size = file.read( buf.data(), bufSize );
-            if( size > 0 ) {
-                crypto.addData(buf.data(), size);
-            }
+        if (crypto.addData(&file)) {
+            arr = crypto.result().toHex();
         }
-        arr = crypto.result().toHex();
     }
     return arr;
 }
