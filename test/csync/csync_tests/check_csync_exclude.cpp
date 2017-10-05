@@ -237,6 +237,30 @@ static void check_csync_excluded(void **state)
     assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
     rc = csync_excluded_no_ctx(csync->excludes, "bond0071", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+
+#ifndef _WIN32
+    /* brackets */
+    _csync_exclude_add( &(csync->excludes), "a [bc] d" );
+    csync_exclude_traversal_prepare(csync);
+    rc = csync_excluded_no_ctx(csync->excludes, "a d d", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+    rc = csync_excluded_no_ctx(csync->excludes, "a  d", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+    rc = csync_excluded_no_ctx(csync->excludes, "a b d", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
+    rc = csync_excluded_no_ctx(csync->excludes, "a c d", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
+#endif
+
+    /* escapes */
+    _csync_exclude_add( &(csync->excludes), "\\a \\* \\?" );
+    csync_exclude_traversal_prepare(csync);
+    rc = csync_excluded_no_ctx(csync->excludes, "\\a \\* \\?", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+    rc = csync_excluded_no_ctx(csync->excludes, "a b c", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+    rc = csync_excluded_no_ctx(csync->excludes, "a * ?", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 }
 
 static void check_csync_excluded_traversal(void **state)
@@ -426,6 +450,29 @@ static void check_csync_excluded_traversal(void **state)
     rc = csync_excluded_traversal(csync, "bond0071", CSYNC_FTW_TYPE_FILE);
     assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
 
+#ifndef _WIN32
+    /* brackets */
+    _csync_exclude_add( &(csync->excludes), "a [bc] d" );
+    csync_exclude_traversal_prepare(csync);
+    rc = csync_excluded_traversal(csync, "a d d", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+    rc = csync_excluded_traversal(csync, "a  d", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+    rc = csync_excluded_traversal(csync, "a b d", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
+    rc = csync_excluded_traversal(csync, "a c d", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
+#endif
+
+    /* escapes */
+    _csync_exclude_add( &(csync->excludes), "\\a \\* \\?" );
+    csync_exclude_traversal_prepare(csync);
+    rc = csync_excluded_traversal(csync, "\\a \\* \\?", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+    rc = csync_excluded_traversal(csync, "a b c", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_NOT_EXCLUDED);
+    rc = csync_excluded_traversal(csync, "a * ?", CSYNC_FTW_TYPE_FILE);
+    assert_int_equal(rc, CSYNC_FILE_EXCLUDE_LIST);
 }
 
 static void check_csync_pathes(void **state)
