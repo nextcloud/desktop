@@ -55,6 +55,8 @@ static const float buttonSizeRatio = 1.618; // golden ratio
 
 namespace OCC {
 
+#include "settingsdialogcommon.cpp"
+
 static QIcon circleMask(const QImage &avatar)
 {
     int dim = avatar.width();
@@ -236,7 +238,7 @@ void SettingsDialog::accountAdded(AccountState *s)
 
     if (!brandingSingleAccount) {
         accountAction->setToolTip(s->account()->displayName());
-        accountAction->setIconText(shortDisplayNameForSettings(s->account().data(),  height * buttonSizeRatio));
+        accountAction->setIconText(SettingsDialogCommon::shortDisplayNameForSettings(s->account().data(),  height * buttonSizeRatio));
     }
     _toolBar->insertAction(_toolBar->actions().at(0), accountAction);
     auto accountSettings = new AccountSettings(s, this);
@@ -278,30 +280,9 @@ void SettingsDialog::slotAccountDisplayNameChanged()
             QString displayName = account->displayName();
             action->setText(displayName);
             auto height = _toolBar->sizeHint().height();
-            action->setIconText(shortDisplayNameForSettings(account, height * buttonSizeRatio));
+            action->setIconText(SettingsDialogCommon::shortDisplayNameForSettings(account, height * buttonSizeRatio));
         }
     }
-}
-
-QString SettingsDialog::shortDisplayNameForSettings(Account* account, int width) const
-{
-    QString user = account->davDisplayName();
-    if (user.isEmpty()) {
-        user = account->credentials()->user();
-    }
-    QString host = account->url().host();
-    int port = account->url().port();
-    if (port > 0 && port != 80 && port != 443) {
-        host.append(QLatin1Char(':'));
-        host.append(QString::number(port));
-    }
-    if (width > 0) {
-        QFont f;
-        QFontMetrics fm(f);
-        host = fm.elidedText(host, Qt::ElideMiddle, width);
-        user = fm.elidedText(user, Qt::ElideRight, width);
-    }
-    return user + QLatin1String("\n") + host;
 }
 
 void SettingsDialog::accountRemoved(AccountState *s)

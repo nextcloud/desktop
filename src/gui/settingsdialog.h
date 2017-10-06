@@ -78,11 +78,6 @@ private:
     QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
     QAction *createActionWithIcon(const QIcon &icon, const QString &text, const QString &iconPath = QString());
 
-    /** display name with two lines that is displayed in the settings
-     * If width is bigger than 0, the string will be ellided so it does not exceed that width
-     */
-    QString shortDisplayNameForSettings(Account* account, int width = 0) const;
-
     Ui::SettingsDialog *const _ui;
 
     QActionGroup *_actionGroup;
