@@ -645,7 +645,7 @@
 <context>
     <name>OCC::DiscoveryMainThread</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="633"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="634"/>
         <source>Aborted by the user</source>
         <translation type="unfinished"></translation>
     </message>
