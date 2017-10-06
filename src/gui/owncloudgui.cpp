@@ -207,13 +207,23 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 {
     bool allSignedOut = true;
     bool allPaused = true;
+    bool allDisconnected = true;
     QVector<AccountStatePtr> problemAccounts;
+    auto setStatusText = [&](const QString &text) {
+        // Don't overwrite the status if we're currently syncing
+        if (FolderMan::instance()->currentSyncFolder())
+            return;
+        _actionStatus->setText(text);
+    };
+
     foreach (auto a, AccountManager::instance()->accounts()) {
         if (!a->isSignedOut()) {
             allSignedOut = false;
         }
         if (!a->isConnected()) {
             problemAccounts.append(a);
+        } else {
+            allDisconnected = false;
         }
     }
     foreach (Folder *f, FolderMan::instance()->map()) {
@@ -224,6 +234,11 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
     if (!problemAccounts.empty()) {
         _tray->setIcon(Theme::instance()->folderOfflineIcon(true, contextMenuVisible()));
+        if (allDisconnected) {
+            setStatusText(tr("Disconnected"));
+        } else {
+            setStatusText(tr("Disconnected from some accounts"));
+        }
 #ifdef Q_OS_WIN
         // Windows has a 128-char tray tooltip length limit.
         QStringList accountNames;
@@ -250,10 +265,12 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     if (allSignedOut) {
         _tray->setIcon(Theme::instance()->folderOfflineIcon(true, contextMenuVisible()));
         _tray->setToolTip(tr("Please sign in"));
+        setStatusText(tr("Signed out"));
         return;
     } else if (allPaused) {
         _tray->setIcon(Theme::instance()->syncStateIcon(SyncResult::Paused, true, contextMenuVisible()));
         _tray->setToolTip(tr("Account synchronization is disabled"));
+        setStatusText(tr("Synchronization is paused"));
         return;
     }
 
@@ -261,34 +278,40 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     QString trayMessage;
     FolderMan *folderMan = FolderMan::instance();
     Folder::Map map = folderMan->map();
-    SyncResult overallResult = FolderMan::accountStatus(map.values());
+    SyncResult::Status overallResult = FolderMan::accountStatus(map.values()).status();
 
     // create the tray blob message, check if we have an defined state
-    if (overallResult.status() != SyncResult::Undefined) {
-        if (map.count() > 0) {
+    if (overallResult != SyncResult::Undefined && map.count() > 0) {
 #ifdef Q_OS_WIN
-            // Windows has a 128-char tray tooltip length limit.
-            trayMessage = folderMan->statusToString(overallResult.status(), false);
+        // Windows has a 128-char tray tooltip length limit.
+        trayMessage = folderMan->statusToString(overallResult, false);
 #else
-            QStringList allStatusStrings;
-            foreach (Folder *folder, map.values()) {
-                QString folderMessage = folderMan->statusToString(folder->syncResult().status(), folder->syncPaused());
-                allStatusStrings += tr("Folder %1: %2").arg(folder->shortGuiLocalPath(), folderMessage);
-            }
-            trayMessage = allStatusStrings.join(QLatin1String("\n"));
-#endif
-        } else {
-            trayMessage = tr("No sync folders configured.");
+        QStringList allStatusStrings;
+        foreach (Folder *folder, map.values()) {
+            QString folderMessage = folderMan->statusToString(folder->syncResult().status(), folder->syncPaused());
+            allStatusStrings += tr("Folder %1: %2").arg(folder->shortGuiLocalPath(), folderMessage);
         }
+        trayMessage = allStatusStrings.join(QLatin1String("\n"));
+#endif
 
-        QIcon statusIcon = Theme::instance()->syncStateIcon(overallResult.status(), true, contextMenuVisible());
+        QIcon statusIcon = Theme::instance()->syncStateIcon(overallResult, true, contextMenuVisible());
         _tray->setIcon(statusIcon);
         _tray->setToolTip(trayMessage);
+
+        if (overallResult == SyncResult::Success || overallResult == SyncResult::Problem) {
+            setStatusText(tr("Up to date"));
+        } else if (overallResult == SyncResult::Paused) {
+            setStatusText(tr("Synchronization is paused"));
+        } else {
+            setStatusText(tr("Error during synchronization"));
+        }
     } else {
-        // undefined because there are no folders.
-        QIcon icon = Theme::instance()->syncStateIcon(SyncResult::Problem, true, contextMenuVisible());
+        if (overallResult == SyncResult::Undefined)
+            overallResult = SyncResult::Problem;
+        QIcon icon = Theme::instance()->syncStateIcon(overallResult, true, contextMenuVisible());
         _tray->setIcon(icon);
         _tray->setToolTip(tr("There are no sync folders configured."));
+        setStatusText(tr("No sync folders configured"));
     }
 }
 
@@ -550,11 +573,13 @@ void ownCloudGui::updateContextMenu()
 
     _contextMenu->addSeparator();
 
+    _contextMenu->addAction(_actionStatus);
     if (isConfigured && atLeastOneConnected) {
-        _contextMenu->addAction(_actionStatus);
         _contextMenu->addMenu(_recentActionsMenu);
-        _contextMenu->addSeparator();
     }
+
+    _contextMenu->addSeparator();
+
     if (accountList.isEmpty()) {
         _contextMenu->addAction(_actionNewAccountWizard);
     }
@@ -742,7 +767,7 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
                                        .arg(progress._currentDiscoveredFolder));
         }
     } else if (progress.status() == ProgressInfo::Done) {
-        QTimer::singleShot(2000, this, &ownCloudGui::slotDisplayIdle);
+        QTimer::singleShot(2000, this, &ownCloudGui::slotComputeOverallSyncStatus);
     }
     if (progress.status() != ProgressInfo::Propagation) {
         return;
@@ -810,11 +835,6 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
             slotRebuildRecentMenus();
         }
     }
-}
-
-void ownCloudGui::slotDisplayIdle()
-{
-    _actionStatus->setText(tr("Up to date"));
 }
 
 void ownCloudGui::slotLogin()
