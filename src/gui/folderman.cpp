@@ -104,9 +104,6 @@ void FolderMan::unloadFolder(Folder *f)
 
     _socketApi->slotUnregisterPath(f->alias());
 
-    if (_folderWatchers.contains(f->alias())) {
-        _folderWatchers.remove(f->alias());
-    }
     _folderMap.remove(f->alias());
 
     disconnect(f, &Folder::syncStarted,
@@ -147,52 +144,16 @@ int FolderMan::unloadAndDeleteAllFolders()
     return cnt;
 }
 
-// add a monitor to the local file system. If there is a change in the
-// file system, the method slotFolderMonitorFired is triggered through
-// the SignalMapper
-void FolderMan::registerFolderMonitor(Folder *folder)
+void FolderMan::registerFolderWithSocketApi(Folder *folder)
 {
     if (!folder)
         return;
     if (!QDir(folder->path()).exists())
         return;
 
-    if (!_folderWatchers.contains(folder->alias())) {
-        FolderWatcher *fw = new FolderWatcher(folder->path(), folder);
-
-        // Connect the pathChanged signal, which comes with the changed path,
-        // to the signal mapper which maps to the folder alias. The changed path
-        // is lost this way, but we do not need it for the current implementation.
-        connect(fw, &FolderWatcher::pathChanged, folder, &Folder::slotWatchedPathChanged);
-
-        _folderWatchers.insert(folder->alias(), fw);
-    }
-
     // register the folder with the socket API
     if (folder->canSync())
         _socketApi->slotRegisterPath(folder->alias());
-}
-
-void FolderMan::addMonitorPath(const QString &alias, const QString &path)
-{
-    if (!alias.isEmpty() && _folderWatchers.contains(alias)) {
-        FolderWatcher *fw = _folderWatchers[alias];
-
-        if (fw) {
-            fw->addPath(path);
-        }
-    }
-}
-
-void FolderMan::removeMonitorPath(const QString &alias, const QString &path)
-{
-    if (!alias.isEmpty() && _folderWatchers.contains(alias)) {
-        FolderWatcher *fw = _folderWatchers[alias];
-
-        if (fw) {
-            fw->removePath(path);
-        }
-    }
 }
 
 int FolderMan::setupFolders()
@@ -750,7 +711,8 @@ void FolderMan::slotStartScheduledFolderSync()
     if (folder) {
         // Safe to call several times, and necessary to try again if
         // the folder path didn't exist previously.
-        registerFolderMonitor(folder);
+        folder->registerFolderWatcher();
+        registerFolderWithSocketApi(folder);
 
         _currentSyncFolder = folder;
         folder->startSync(QStringList());
@@ -964,7 +926,8 @@ Folder *FolderMan::addFolderInternal(FolderDefinition folderDefinition,
     connect(folder, &Folder::watchedFileChangedExternally,
         &folder->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::slotPathTouched);
 
-    registerFolderMonitor(folder);
+    folder->registerFolderWatcher();
+    registerFolderWithSocketApi(folder);
     return folder;
 }
 

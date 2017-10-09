@@ -36,6 +36,7 @@ namespace OCC {
 class SyncEngine;
 class AccountState;
 class SyncRunFileLog;
+class FolderWatcher;
 
 /**
  * @brief The FolderDefinition class
@@ -227,6 +228,13 @@ public:
       */
     void setSaveBackwardsCompatible(bool save);
 
+    /**
+     * Sets up this folder's folderWatcher if possible.
+     *
+     * May be called several times.
+     */
+    void registerFolderWatcher();
+
 signals:
     void syncStateChange();
     void syncStarted();
@@ -365,6 +373,13 @@ private:
      * path.
      */
     bool _saveBackwardsCompatible;
+
+    /**
+     * Watches this folder's local directory for changes.
+     *
+     * Created by registerFolderWatcher(), triggers slotWatchedPathChanged()
+     */
+    QScopedPointer<FolderWatcher> _folderWatcher;
 };
 }
 

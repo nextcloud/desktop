@@ -843,10 +843,12 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
 {
     // add new directories or remove gone away dirs to the watcher
     if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_NEW) {
-        FolderMan::instance()->addMonitorPath(alias(), path() + item->_file);
+        if (_folderWatcher)
+            _folderWatcher->addPath(path() + item->_file);
     }
     if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
-        FolderMan::instance()->removeMonitorPath(alias(), path() + item->_file);
+        if (_folderWatcher)
+            _folderWatcher->removePath(path() + item->_file);
     }
 
     _syncResult.processCompletedItem(item);
@@ -911,6 +913,18 @@ void Folder::scheduleThisFolderSoon()
 void Folder::setSaveBackwardsCompatible(bool save)
 {
     _saveBackwardsCompatible = save;
+}
+
+void Folder::registerFolderWatcher()
+{
+    if (_folderWatcher)
+        return;
+    if (!QDir(path()).exists())
+        return;
+
+    _folderWatcher.reset(new FolderWatcher(path(), this));
+    connect(_folderWatcher.data(), &FolderWatcher::pathChanged,
+        this, &Folder::slotWatchedPathChanged);
 }
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, bool *cancel)
