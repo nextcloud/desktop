@@ -54,7 +54,6 @@ protected:
 signals:
     void changed(const QString &path);
     void lostChanges();
-    void ready();
 
 private:
     QString _path;

@@ -122,7 +122,6 @@ private:
     Folder *_folder;
     bool _isReliable = true;
 
-
     void appendSubPaths(QDir dir, QStringList& subPaths);
 
     /** Path of the expected test notification */
