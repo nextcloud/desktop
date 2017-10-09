@@ -53,6 +53,7 @@ protected:
 
 signals:
     void changed(const QString &path);
+    void lostChanges();
 
 private:
     QString _path;
