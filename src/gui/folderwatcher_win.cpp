@@ -204,6 +204,7 @@ FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString &path
         _parent, SLOT(changeDetected(const QString &)));
     connect(_thread, SIGNAL(lostChanges()),
         _parent, SIGNAL(lostChanges()));
+
     _thread->start();
 }
 
