@@ -71,18 +71,18 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     _ui->layout_editing->addWidget(_pi_editing, 0, 2);
     _ui->horizontalLayout_expire->insertWidget(_ui->horizontalLayout_expire->count() - 1, _pi_date);
 
-    connect(_ui->nameLineEdit, SIGNAL(returnPressed()), SLOT(slotShareNameEntered()));
-    connect(_ui->createShareButton, SIGNAL(clicked(bool)), SLOT(slotShareNameEntered()));
-    connect(_ui->linkShares, SIGNAL(itemSelectionChanged()), SLOT(slotShareSelectionChanged()));
-    connect(_ui->linkShares, SIGNAL(itemChanged(QTableWidgetItem *)), SLOT(slotNameEdited(QTableWidgetItem *)));
-    connect(_ui->checkBox_password, SIGNAL(clicked()), this, SLOT(slotCheckBoxPasswordClicked()));
-    connect(_ui->lineEdit_password, SIGNAL(returnPressed()), this, SLOT(slotPasswordReturnPressed()));
-    connect(_ui->lineEdit_password, SIGNAL(textChanged(QString)), this, SLOT(slotPasswordChanged(QString)));
-    connect(_ui->pushButton_setPassword, SIGNAL(clicked(bool)), SLOT(slotPasswordReturnPressed()));
-    connect(_ui->checkBox_expire, SIGNAL(clicked()), this, SLOT(slotCheckBoxExpireClicked()));
-    connect(_ui->calendar, SIGNAL(dateChanged(QDate)), SLOT(slotExpireDateChanged(QDate)));
-    connect(_ui->checkBox_editing, SIGNAL(clicked()), this, SLOT(slotPermissionsCheckboxClicked()));
-    connect(_ui->checkBox_fileListing, SIGNAL(clicked(bool)), this, SLOT(slotPermissionsCheckboxClicked()));
+    connect(_ui->nameLineEdit, &QLineEdit::returnPressed, this, &ShareLinkWidget::slotShareNameEntered);
+    connect(_ui->createShareButton, &QAbstractButton::clicked, this, &ShareLinkWidget::slotShareNameEntered);
+    connect(_ui->linkShares, &QTableWidget::itemSelectionChanged, this, &ShareLinkWidget::slotShareSelectionChanged);
+    connect(_ui->linkShares, &QTableWidget::itemChanged, this, &ShareLinkWidget::slotNameEdited);
+    connect(_ui->checkBox_password, &QAbstractButton::clicked, this, &ShareLinkWidget::slotCheckBoxPasswordClicked);
+    connect(_ui->lineEdit_password, &QLineEdit::returnPressed, this, &ShareLinkWidget::slotPasswordReturnPressed);
+    connect(_ui->lineEdit_password, &QLineEdit::textChanged, this, &ShareLinkWidget::slotPasswordChanged);
+    connect(_ui->pushButton_setPassword, &QAbstractButton::clicked, this, &ShareLinkWidget::slotPasswordReturnPressed);
+    connect(_ui->checkBox_expire, &QAbstractButton::clicked, this, &ShareLinkWidget::slotCheckBoxExpireClicked);
+    connect(_ui->calendar, &QDateTimeEdit::dateChanged, this, &ShareLinkWidget::slotExpireDateChanged);
+    connect(_ui->checkBox_editing, &QAbstractButton::clicked, this, &ShareLinkWidget::slotPermissionsCheckboxClicked);
+    connect(_ui->checkBox_fileListing, &QAbstractButton::clicked, this, &ShareLinkWidget::slotPermissionsCheckboxClicked);
 
     _ui->errorLabel->hide();
 
@@ -156,8 +156,8 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     // Prepare sharing menu
 
     _shareLinkMenu = new QMenu(this);
-    connect(_shareLinkMenu, SIGNAL(triggered(QAction *)),
-        SLOT(slotShareLinkActionTriggered(QAction *)));
+    connect(_shareLinkMenu, &QMenu::triggered,
+        this, &ShareLinkWidget::slotShareLinkActionTriggered);
     _openLinkAction = _shareLinkMenu->addAction(tr("Open link in browser"));
     _copyLinkAction = _shareLinkMenu->addAction(tr("Copy link to clipboard"));
     _copyDirectLinkAction = _shareLinkMenu->addAction(tr("Copy link to clipboard (direct download)"));
@@ -169,10 +169,10 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
      */
     if (sharingPossible) {
         _manager = new ShareManager(_account, this);
-        connect(_manager, SIGNAL(sharesFetched(QList<QSharedPointer<Share>>)), SLOT(slotSharesFetched(QList<QSharedPointer<Share>>)));
-        connect(_manager, SIGNAL(linkShareCreated(QSharedPointer<LinkShare>)), SLOT(slotCreateShareFetched(const QSharedPointer<LinkShare>)));
-        connect(_manager, SIGNAL(linkShareRequiresPassword(QString)), SLOT(slotCreateShareRequiresPassword(QString)));
-        connect(_manager, SIGNAL(serverError(int, QString)), SLOT(slotServerError(int, QString)));
+        connect(_manager, &ShareManager::sharesFetched, this, &ShareLinkWidget::slotSharesFetched);
+        connect(_manager, &ShareManager::linkShareCreated, this, &ShareLinkWidget::slotCreateShareFetched);
+        connect(_manager, &ShareManager::linkShareRequiresPassword, this, &ShareLinkWidget::slotCreateShareRequiresPassword);
+        connect(_manager, &ShareManager::serverError, this, &ShareLinkWidget::slotServerError);
     }
 }
 
@@ -218,13 +218,13 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         auto linkShare = qSharedPointerDynamicCast<LinkShare>(share);
 
         // Connect all shares signals to gui slots
-        connect(share.data(), SIGNAL(serverError(int, QString)), SLOT(slotServerError(int, QString)));
-        connect(share.data(), SIGNAL(shareDeleted()), SLOT(slotDeleteShareFetched()));
+        connect(share.data(), &Share::serverError, this, &ShareLinkWidget::slotServerError);
+        connect(share.data(), &Share::shareDeleted, this, &ShareLinkWidget::slotDeleteShareFetched);
         connect(share.data(), SIGNAL(expireDateSet()), SLOT(slotExpireSet()));
         connect(share.data(), SIGNAL(publicUploadSet()), SLOT(slotPermissionsSet()));
         connect(share.data(), SIGNAL(passwordSet()), SLOT(slotPasswordSet()));
         connect(share.data(), SIGNAL(passwordSetError(int, QString)), SLOT(slotPasswordSetError(int, QString)));
-        connect(share.data(), SIGNAL(permissionsSet()), SLOT(slotPermissionsSet()));
+        connect(share.data(), &Share::permissionsSet, this, &ShareLinkWidget::slotPermissionsSet);
 
         // Build the table row
         auto row = table->rowCount();
@@ -247,13 +247,13 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         auto shareButton = new QToolButton;
         shareButton->setText("...");
         shareButton->setProperty(propertyShareC, QVariant::fromValue(linkShare));
-        connect(shareButton, SIGNAL(clicked(bool)), SLOT(slotShareLinkButtonClicked()));
+        connect(shareButton, &QAbstractButton::clicked, this, &ShareLinkWidget::slotShareLinkButtonClicked);
         table->setCellWidget(row, 1, shareButton);
 
         auto deleteButton = new QToolButton;
         deleteButton->setIcon(deleteIcon);
         deleteButton->setProperty(propertyShareC, QVariant::fromValue(linkShare));
-        connect(deleteButton, SIGNAL(clicked(bool)), SLOT(slotDeleteShareClicked()));
+        connect(deleteButton, &QAbstractButton::clicked, this, &ShareLinkWidget::slotDeleteShareClicked);
         table->setCellWidget(row, 2, deleteButton);
 
         // Reestablish the previous selection
@@ -436,7 +436,7 @@ void ShareLinkWidget::slotDeleteShareFetched()
     getShares();
 }
 
-void ShareLinkWidget::slotCreateShareFetched(const QSharedPointer<LinkShare> share)
+void ShareLinkWidget::slotCreateShareFetched(const QSharedPointer<LinkShare> &share)
 {
     _pi_create->stopAnimation();
     _pi_password->stopAnimation();

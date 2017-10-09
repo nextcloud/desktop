@@ -18,7 +18,6 @@
 #include "theme.h"
 #include "configfile.h"
 #include "application.h"
-#include "utility.h"
 #include "configfile.h"
 #include "folderman.h"
 
@@ -46,34 +45,34 @@ NetworkSettings::NetworkSettings(QWidget *parent)
     _ui->userLineEdit->setEnabled(true);
     _ui->passwordLineEdit->setEnabled(true);
     _ui->authWidgets->setEnabled(_ui->authRequiredcheckBox->isChecked());
-    connect(_ui->authRequiredcheckBox, SIGNAL(toggled(bool)),
-        _ui->authWidgets, SLOT(setEnabled(bool)));
+    connect(_ui->authRequiredcheckBox, &QAbstractButton::toggled,
+        _ui->authWidgets, &QWidget::setEnabled);
 
-    connect(_ui->manualProxyRadioButton, SIGNAL(toggled(bool)),
-        _ui->manualSettings, SLOT(setEnabled(bool)));
-    connect(_ui->manualProxyRadioButton, SIGNAL(toggled(bool)),
-        _ui->typeComboBox, SLOT(setEnabled(bool)));
+    connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled,
+        _ui->manualSettings, &QWidget::setEnabled);
+    connect(_ui->manualProxyRadioButton, &QAbstractButton::toggled,
+        _ui->typeComboBox, &QWidget::setEnabled);
 
     loadProxySettings();
     loadBWLimitSettings();
 
     // proxy
-    connect(_ui->typeComboBox, SIGNAL(currentIndexChanged(int)), SLOT(saveProxySettings()));
-    connect(_ui->proxyButtonGroup, SIGNAL(buttonClicked(int)), SLOT(saveProxySettings()));
-    connect(_ui->hostLineEdit, SIGNAL(editingFinished()), SLOT(saveProxySettings()));
-    connect(_ui->userLineEdit, SIGNAL(editingFinished()), SLOT(saveProxySettings()));
-    connect(_ui->passwordLineEdit, SIGNAL(editingFinished()), SLOT(saveProxySettings()));
-    connect(_ui->portSpinBox, SIGNAL(editingFinished()), SLOT(saveProxySettings()));
-    connect(_ui->authRequiredcheckBox, SIGNAL(toggled(bool)), SLOT(saveProxySettings()));
+    connect(_ui->typeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &NetworkSettings::saveProxySettings);
+    connect(_ui->proxyButtonGroup, static_cast<void (QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this, &NetworkSettings::saveProxySettings);
+    connect(_ui->hostLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
+    connect(_ui->userLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
+    connect(_ui->passwordLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
+    connect(_ui->portSpinBox, &QAbstractSpinBox::editingFinished, this, &NetworkSettings::saveProxySettings);
+    connect(_ui->authRequiredcheckBox, &QAbstractButton::toggled, this, &NetworkSettings::saveProxySettings);
 
-    connect(_ui->uploadLimitRadioButton, SIGNAL(clicked()), SLOT(saveBWLimitSettings()));
-    connect(_ui->noUploadLimitRadioButton, SIGNAL(clicked()), SLOT(saveBWLimitSettings()));
-    connect(_ui->autoUploadLimitRadioButton, SIGNAL(clicked()), SLOT(saveBWLimitSettings()));
-    connect(_ui->downloadLimitRadioButton, SIGNAL(clicked()), SLOT(saveBWLimitSettings()));
-    connect(_ui->noDownloadLimitRadioButton, SIGNAL(clicked()), SLOT(saveBWLimitSettings()));
-    connect(_ui->autoDownloadLimitRadioButton, SIGNAL(clicked()), SLOT(saveBWLimitSettings()));
-    connect(_ui->downloadSpinBox, SIGNAL(valueChanged(int)), SLOT(saveBWLimitSettings()));
-    connect(_ui->uploadSpinBox, SIGNAL(valueChanged(int)), SLOT(saveBWLimitSettings()));
+    connect(_ui->uploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
+    connect(_ui->noUploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
+    connect(_ui->autoUploadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
+    connect(_ui->downloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
+    connect(_ui->noDownloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
+    connect(_ui->autoDownloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
+    connect(_ui->downloadSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &NetworkSettings::saveBWLimitSettings);
+    connect(_ui->uploadSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &NetworkSettings::saveBWLimitSettings);
 }
 
 NetworkSettings::~NetworkSettings()
@@ -126,27 +125,6 @@ void NetworkSettings::loadBWLimitSettings()
 {
     ConfigFile cfgFile;
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 3, 3)
-    // QNAM bandwidth limiting only works with versions of Qt greater or equal to 5.3.3
-    // (It needs Qt commits 097b641 and b99fa32)
-
-    const char *v = qVersion(); // "x.y.z";
-    if (QLatin1String(v) < QLatin1String("5.3.3")) {
-        QString tooltip = tr("Qt >= 5.4 is required in order to use the bandwidth limit");
-        _ui->downloadBox->setEnabled(false);
-        _ui->uploadBox->setEnabled(false);
-        _ui->downloadBox->setToolTip(tooltip);
-        _ui->uploadBox->setToolTip(tooltip);
-        _ui->noDownloadLimitRadioButton->setChecked(true);
-        _ui->noUploadLimitRadioButton->setChecked(true);
-        if (cfgFile.useUploadLimit() != 0 || cfgFile.useDownloadLimit() != 0) {
-            // Update from old mirall that was using neon propagator jobs.
-            saveBWLimitSettings();
-        }
-        return;
-    }
-
-#endif
     int useDownloadLimit = cfgFile.useDownloadLimit();
     if (useDownloadLimit >= 1) {
         _ui->downloadLimitRadioButton->setChecked(true);

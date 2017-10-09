@@ -15,9 +15,9 @@
 
 #include "syncfilestatustracker.h"
 #include "syncengine.h"
-#include "syncjournaldb.h"
-#include "syncjournalfilerecord.h"
-#include "asserts.h"
+#include "common/syncjournaldb.h"
+#include "common/syncjournalfilerecord.h"
+#include "common/asserts.h"
 
 #include <QLoggingCategory>
 
@@ -25,20 +25,49 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcStatusTracker, "sync.statustracker", QtInfoMsg)
 
-static SyncFileStatus::SyncFileStatusTag lookupProblem(const QString &pathToMatch, const std::map<QString, SyncFileStatus::SyncFileStatusTag> &problemMap)
+static int pathCompare( const QString& lhs, const QString& rhs )
+{
+    // Should match Utility::fsCasePreserving, we want don't want to pay for the runtime check on every comparison.
+    return lhs.compare(rhs,
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
+        Qt::CaseInsensitive
+#else
+        Qt::CaseSensitive
+#endif
+        );
+}
+
+static bool pathStartsWith( const QString& lhs, const QString& rhs )
+{
+    return lhs.startsWith(rhs,
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
+        Qt::CaseInsensitive
+#else
+        Qt::CaseSensitive
+#endif
+        );
+}
+
+bool SyncFileStatusTracker::PathComparator::operator()( const QString& lhs, const QString& rhs ) const
+{
+    // This will make sure that the std::map is ordered and queried case-insensitively on macOS and Windows.
+    return pathCompare(lhs, rhs) < 0;
+}
+
+SyncFileStatus::SyncFileStatusTag SyncFileStatusTracker::lookupProblem(const QString &pathToMatch, const SyncFileStatusTracker::ProblemsMap &problemMap)
 {
     auto lower = problemMap.lower_bound(pathToMatch);
     for (auto it = lower; it != problemMap.cend(); ++it) {
         const QString &problemPath = it->first;
         SyncFileStatus::SyncFileStatusTag severity = it->second;
 
-        if (problemPath == pathToMatch) {
+        if (pathCompare(problemPath, pathToMatch) == 0) {
             return severity;
         } else if (severity == SyncFileStatus::StatusError
-            && problemPath.startsWith(pathToMatch)
+            && pathStartsWith(problemPath, pathToMatch)
             && (pathToMatch.isEmpty() || problemPath.at(pathToMatch.size()) == '/')) {
             return SyncFileStatus::StatusWarning;
-        } else if (!problemPath.startsWith(pathToMatch)) {
+        } else if (!pathStartsWith(problemPath, pathToMatch)) {
             // Starting at lower_bound we get the first path that is not smaller,
             // since: "a/" < "a/aa" < "a/aa/aaa" < "a/ab/aba"
             // If problemMap keys are ["a/aa/aaa", "a/ab/aba"] and pathToMatch == "a/aa",
@@ -65,6 +94,7 @@ static inline bool showErrorInSocketApi(const SyncFileItem &item)
     return item._instruction == CSYNC_INSTRUCTION_ERROR
         || status == SyncFileItem::NormalError
         || status == SyncFileItem::FatalError
+        || status == SyncFileItem::DetailError
         || status == SyncFileItem::BlacklistedError
         || item._hasBlacklistEntry;
 }
@@ -81,13 +111,13 @@ static inline bool showWarningInSocketApi(const SyncFileItem &item)
 SyncFileStatusTracker::SyncFileStatusTracker(SyncEngine *syncEngine)
     : _syncEngine(syncEngine)
 {
-    connect(syncEngine, SIGNAL(aboutToPropagate(SyncFileItemVector &)),
-        SLOT(slotAboutToPropagate(SyncFileItemVector &)));
-    connect(syncEngine, SIGNAL(itemCompleted(const SyncFileItemPtr &)),
-        SLOT(slotItemCompleted(const SyncFileItemPtr &)));
-    connect(syncEngine, SIGNAL(finished(bool)), SLOT(slotSyncFinished()));
-    connect(syncEngine, SIGNAL(started()), SLOT(slotSyncEngineRunningChanged()));
-    connect(syncEngine, SIGNAL(finished(bool)), SLOT(slotSyncEngineRunningChanged()));
+    connect(syncEngine, &SyncEngine::aboutToPropagate,
+        this, &SyncFileStatusTracker::slotAboutToPropagate);
+    connect(syncEngine, &SyncEngine::itemCompleted,
+        this, &SyncFileStatusTracker::slotItemCompleted);
+    connect(syncEngine, &SyncEngine::finished, this, &SyncFileStatusTracker::slotSyncFinished);
+    connect(syncEngine, &SyncEngine::started, this, &SyncFileStatusTracker::slotSyncEngineRunningChanged);
+    connect(syncEngine, &SyncEngine::finished, this, &SyncFileStatusTracker::slotSyncEngineRunningChanged);
 }
 
 SyncFileStatus SyncFileStatusTracker::fileStatus(const QString &relativePath)
@@ -115,9 +145,9 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString &relativePath)
         return SyncFileStatus::StatusSync;
 
     // First look it up in the database to know if it's shared
-    SyncJournalFileRecord rec = _syncEngine->journal()->getFileRecord(relativePath);
-    if (rec.isValid()) {
-        return resolveSyncAndErrorStatus(relativePath, rec._remotePerm.contains("S") ? Shared : NotShared);
+    SyncJournalFileRecord rec;
+    if (_syncEngine->journal()->getFileRecord(relativePath, &rec) && rec.isValid()) {
+        return resolveSyncAndErrorStatus(relativePath, rec._remotePerm.hasPermission(RemotePermissions::IsShared) ? Shared : NotShared);
     }
 
     // Must be a new file not yet in the database, check if it's syncing or has an error.
@@ -182,7 +212,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector &items)
 {
     ASSERT(_syncCount.isEmpty());
 
-    std::map<QString, SyncFileStatus::SyncFileStatusTag> oldProblems;
+    ProblemsMap oldProblems;
     std::swap(_syncProblems, oldProblems);
 
     foreach (const SyncFileItemPtr &item, items) {
@@ -196,7 +226,7 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector &items)
             _syncProblems[item->_file] = SyncFileStatus::StatusWarning;
         }
 
-        SharedFlag sharedFlag = item->_remotePerm.contains("S") ? Shared : NotShared;
+        SharedFlag sharedFlag = item->_remotePerm.hasPermission(RemotePermissions::IsShared) ? Shared : NotShared;
         if (item->_instruction != CSYNC_INSTRUCTION_NONE
             && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA
             && item->_instruction != CSYNC_INSTRUCTION_IGNORE
@@ -242,7 +272,7 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItemPtr &item)
         _syncProblems.erase(item->_file);
     }
 
-    SharedFlag sharedFlag = item->_remotePerm.contains("S") ? Shared : NotShared;
+    SharedFlag sharedFlag = item->_remotePerm.hasPermission(RemotePermissions::IsShared) ? Shared : NotShared;
     if (item->_instruction != CSYNC_INSTRUCTION_NONE
         && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA
         && item->_instruction != CSYNC_INSTRUCTION_IGNORE

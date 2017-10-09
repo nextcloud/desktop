@@ -27,7 +27,7 @@ ShibbolethUserJob::ShibbolethUserJob(AccountPtr account, QObject *parent)
     : JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/user"), parent)
 {
     setIgnoreCredentialFailure(true);
-    connect(this, SIGNAL(jsonReceived(QJsonDocument, int)), this, SLOT(slotJsonReceived(QJsonDocument, int)));
+    connect(this, &JsonApiJob::jsonReceived, this, &ShibbolethUserJob::slotJsonReceived);
 }
 
 void ShibbolethUserJob::slotJsonReceived(const QJsonDocument &json, int statusCode)

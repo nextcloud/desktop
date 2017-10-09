@@ -12,16 +12,15 @@
  * for more details.
  */
 
+#include "config.h"
 #include "excludedfiles.h"
-#include "utility.h"
+#include "common/utility.h"
 
 #include <QFileInfo>
 
-extern "C" {
 #include "std/c_string.h"
 #include "csync.h"
 #include "csync_exclude.h"
-}
 
 using namespace OCC;
 
@@ -64,6 +63,7 @@ bool ExcludedFiles::reloadExcludes()
         if (csync_exclude_load(file.toUtf8(), _excludesPtr) < 0)
             success = false;
     }
+    // The csync_exclude_traversal_prepare is called implicitely at sync start.
     return success;
 }
 

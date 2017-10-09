@@ -38,12 +38,12 @@ AccountState::AccountState(AccountPtr account)
 {
     qRegisterMetaType<AccountState *>("AccountState*");
 
-    connect(account.data(), SIGNAL(invalidCredentials()),
-        SLOT(slotInvalidCredentials()));
-    connect(account.data(), SIGNAL(credentialsFetched(AbstractCredentials *)),
-        SLOT(slotCredentialsFetched(AbstractCredentials *)));
-    connect(account.data(), SIGNAL(credentialsAsked(AbstractCredentials *)),
-        SLOT(slotCredentialsAsked(AbstractCredentials *)));
+    connect(account.data(), &Account::invalidCredentials,
+        this, &AccountState::slotInvalidCredentials);
+    connect(account.data(), &Account::credentialsFetched,
+        this, &AccountState::slotCredentialsFetched);
+    connect(account.data(), &Account::credentialsAsked,
+        this, &AccountState::slotCredentialsAsked);
     _timeSinceLastETagCheck.invalidate();
 }
 
@@ -201,8 +201,8 @@ void AccountState::checkConnectivity()
 
     ConnectionValidator *conValidator = new ConnectionValidator(account());
     _connectionValidator = conValidator;
-    connect(conValidator, SIGNAL(connectionResult(ConnectionValidator::Status, QStringList)),
-        SLOT(slotConnectionValidatorResult(ConnectionValidator::Status, QStringList)));
+    connect(conValidator, &ConnectionValidator::connectionResult,
+        this, &AccountState::slotConnectionValidatorResult);
     if (isConnected()) {
         // Use a small authed propfind as a minimal ping when we're
         // already connected.
@@ -242,7 +242,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
             qCInfo(lcAccountState) << "AccountState reconnection: delaying for"
                                    << _maintenanceToConnectedDelay << "ms";
             _timeSinceMaintenanceOver.start();
-            QTimer::singleShot(_maintenanceToConnectedDelay + 100, this, SLOT(checkConnectivity()));
+            QTimer::singleShot(_maintenanceToConnectedDelay + 100, this, &AccountState::checkConnectivity);
             return;
         } else if (_timeSinceMaintenanceOver.elapsed() < _maintenanceToConnectedDelay) {
             qCInfo(lcAccountState) << "AccountState reconnection: only"
@@ -356,7 +356,7 @@ void AccountState::slotCredentialsAsked(AbstractCredentials *credentials)
 
 std::unique_ptr<QSettings> AccountState::settings()
 {
-    auto s = Utility::settingsWithGroup(QLatin1String("Accounts"));
+    auto s = ConfigFile::settingsWithGroup(QLatin1String("Accounts"));
     s->beginGroup(_account->id());
     return s;
 }

@@ -20,7 +20,7 @@ OcsShareeJob::OcsShareeJob(AccountPtr account)
     : OcsJob(account)
 {
     setPath("ocs/v1.php/apps/files_sharing/api/v1/sharees");
-    connect(this, SIGNAL(jobFinished(QJsonDocument)), SLOT(jobDone(QJsonDocument)));
+    connect(this, &OcsJob::jobFinished, this, &OcsShareeJob::jobDone);
 }
 
 void OcsShareeJob::getSharees(const QString &search,

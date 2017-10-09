@@ -22,16 +22,19 @@ else()
     set(APPLICATION_REV_DOMAIN_INSTALLER ${APPLICATION_REV_DOMAIN})
 endif()
 
-if (NOT DEFINED APPLICATION_SHORTNAME)
-     set ( APPLICATION_SHORTNAME ${APPLICATION_NAME} )
-endif()
-
 # For usage in XML files we preprocess
 string(REPLACE "&" "&amp;" APPLICATION_NAME_XML_ESCAPED "${APPLICATION_NAME}")
 string(REPLACE "<" "&lt;" APPLICATION_NAME_XML_ESCAPED "${APPLICATION_NAME_XML_ESCAPED}")
 string(REPLACE ">" "&gt;" APPLICATION_NAME_XML_ESCAPED "${APPLICATION_NAME_XML_ESCAPED}")
 
-set(PACKAGE "${APPLICATION_SHORTNAME}-client")
+if (NOT DEFINED LINUX_PACKAGE_SHORTNAME)
+    set(LINUX_PACKAGE_SHORTNAME "${APPLICATION_SHORTNAME}")
+endif()
+
+if (NOT DEFINED PACKAGE)
+    set(PACKAGE "${LINUX_PACKAGE_SHORTNAME}-client")
+endif()
+
 set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
 
 if(NOT CRASHREPORTER_EXECUTABLE)
@@ -41,7 +44,13 @@ endif()
 include(Warnings)
 
 include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
+# For config.h
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
+# Allows includes based on src/ like #include "common/utility.h" or #include "csync/csync.h"
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_BINARY_DIR}/src
+)
 
 # disable the crashreporter if libcrashreporter-qt is not available or we're building for ARM
 if( CMAKE_SYSTEM_PROCESSOR MATCHES "arm" OR NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/src/3rdparty/libcrashreporter-qt/CMakeLists.txt")
@@ -120,7 +129,22 @@ if(NO_MSG_HANDLER)
    add_definitions(-DNO_MSG_HANDLER=1)
 endif()
 
-# this option creates only libocsync and libowncloudsync
+# this option builds the shell integration
+option(BUILD_SHELL_INTEGRATION "BUILD_SHELL_INTEGRATION" ON)
+
+# this option builds/installs the generic shell integration icons
+option(BUILD_SHELL_INTEGRATION_ICONS "BUILD_SHELL_INTEGRATION_ICONS" ON)
+
+# this options builds the dolphin integration plugin
+option(BUILD_SHELL_INTEGRATION_DOLPHIN "BUILD_SHELL_INTEGRATION_DOLPHIN" ON)
+
+# this options builds the nautilus (like) integration plugins
+option(BUILD_SHELL_INTEGRATION_NAUTILUS "BUILD_SHELL_INTEGRATION_NAUTILUS" ON)
+
+# this option builds the client
+option(BUILD_CLIENT "BUILD_CLIENT" ON)
+
+# this option creates only libocsync and libowncloudsync (NOTE: BUILD_CLIENT needs to be on)
 option(BUILD_LIBRARIES_ONLY "BUILD_LIBRARIES_ONLY" OFF)
 
 # When this option is enabled, 5xx errors are not added to the blacklist
@@ -153,34 +177,34 @@ if(APPLE)
   set( SOCKETAPI_TEAM_IDENTIFIER_PREFIX "" CACHE STRING "SocketApi prefix (including a following dot) that must match the codesign key's TeamIdentifier/Organizational Unit" )
 endif()
 
-if(APPLE)
-  find_package(Sparkle)
-endif(APPLE)
+if(BUILD_CLIENT)
+    if(APPLE)
+        find_package(Sparkle)
+    endif(APPLE)
 
-if(UNIX)
-  find_package(INotify REQUIRED)
-else()
-  find_package(INotify)
-endif()
-find_package(Sphinx)
-find_package(PdfLatex)
-
-find_package(SQLite3 3.8.0 REQUIRED)
-# On some OS, we want to use our own, not the system sqlite
-if (USE_OUR_OWN_SQLITE3)
-    include_directories(BEFORE ${SQLITE3_INCLUDE_DIR})
-    if (WIN32)
-        add_definitions(-DSQLITE_API=__declspec\(dllimport\))
+    if(UNIX)
+        find_package(INotify REQUIRED)
+    else()
+        find_package(INotify)
     endif()
-endif()
+    find_package(Sphinx)
+    find_package(PdfLatex)
 
-find_package(ZLIB)
+    find_package(SQLite3 3.8.0 REQUIRED)
+    # On some OS, we want to use our own, not the system sqlite
+    if (USE_OUR_OWN_SQLITE3)
+        include_directories(BEFORE ${SQLITE3_INCLUDE_DIR})
+        if (WIN32)
+            add_definitions(-DSQLITE_API=__declspec\(dllimport\))
+        endif()
+    endif()
+
+   find_package(ZLIB)
+endif()
 
 if (NOT DEFINED APPLICATION_ICON_NAME)
     set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
 endif()
-
-configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
 include(OwnCloudCPack.cmake)
 
@@ -213,14 +237,23 @@ endif()
 file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/client_*.ts)
 set(TRANSLATIONS ${TRANS_FILES})
 
-add_subdirectory(csync)
-add_subdirectory(src)
-if(NOT BUILD_LIBRARIES_ONLY)
-add_subdirectory(shell_integration)
-add_subdirectory(doc)
-add_subdirectory(doc/dev)
-add_subdirectory(admin)
-endif(NOT BUILD_LIBRARIES_ONLY)
+# Make sure we set this before recursing into child folders.
+set(WITH_TESTING ${UNIT_TESTING})
+
+if(BUILD_CLIENT)
+    add_subdirectory(src)
+    if(NOT BUILD_LIBRARIES_ONLY)
+        add_subdirectory(doc)
+        add_subdirectory(doc/dev)
+        if(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/admin)
+            add_subdirectory(admin)
+        endif(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/admin)
+    endif(NOT BUILD_LIBRARIES_ONLY)
+endif()
+
+if(BUILD_SHELL_INTEGRATION)
+    add_subdirectory(shell_integration)
+endif()
 
 if(UNIT_TESTING)
     include(CTest)
@@ -228,10 +261,13 @@ if(UNIT_TESTING)
     add_subdirectory(test)
 endif(UNIT_TESTING)
 
+configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+configure_file(version.h.in ${CMAKE_CURRENT_BINARY_DIR}/version.h)
+
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
     install(FILES sync-exclude.lst DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/)
     configure_file(sync-exclude.lst bin/${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/sync-exclude.lst COPYONLY)
-else()
+elseif(BUILD_CLIENT)
     install( FILES sync-exclude.lst DESTINATION ${SYSCONFDIR}/${APPLICATION_SHORTNAME} )
     configure_file(sync-exclude.lst bin/sync-exclude.lst COPYONLY)
 endif()

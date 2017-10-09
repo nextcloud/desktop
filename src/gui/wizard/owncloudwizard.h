@@ -21,6 +21,7 @@
 #include <QSslKey>
 #include <QSslCertificate>
 
+#include "networkjobs.h"
 #include "wizard/owncloudwizardcommon.h"
 #include "accountfwd.h"
 
@@ -75,7 +76,7 @@ public:
     QSslCertificate _clientSslCertificate;
 
 public slots:
-    void setAuthType(WizardCommon::AuthType type);
+    void setAuthType(DetermineAuthTypeJob::AuthType type);
     void setRemoteFolder(const QString &);
     void appendToConfigurationLog(const QString &msg, LogType type = LogParagraph);
     void slotCurrentPageChanged(int);

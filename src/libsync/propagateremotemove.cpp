@@ -16,9 +16,9 @@
 #include "propagatorjobs.h"
 #include "owncloudpropagator_p.h"
 #include "account.h"
-#include "syncjournalfilerecord.h"
+#include "common/syncjournalfilerecord.h"
 #include "filesystem.h"
-#include "asserts.h"
+#include "common/asserts.h"
 #include <QFile>
 #include <QStringList>
 #include <QDir>
@@ -112,7 +112,7 @@ void PropagateRemoteMove::start()
     _job = new MoveJob(propagator()->account(),
         propagator()->_remoteFolder + _item->_file,
         destination, this);
-    connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotMoveJobFinished()));
+    connect(_job.data(), &MoveJob::finishedSignal, this, &PropagateRemoteMove::slotMoveJobFinished);
     propagator()->_activeJobList.append(this);
     _job->start();
 }
@@ -162,16 +162,16 @@ void PropagateRemoteMove::slotMoveJobFinished()
 
 void PropagateRemoteMove::finalize()
 {
-    SyncJournalFileRecord oldRecord =
-        propagator()->_journal->getFileRecord(_item->_originalFile);
+    SyncJournalFileRecord oldRecord;
+    propagator()->_journal->getFileRecord(_item->_originalFile, &oldRecord);
     // if reading from db failed still continue hoping that deleteFileRecord
     // reopens the db successfully.
     // The db is only queried to transfer the content checksum from the old
     // to the new record. It is not a problem to skip it here.
     propagator()->_journal->deleteFileRecord(_item->_originalFile);
 
-    SyncJournalFileRecord record(*_item, propagator()->getFilePath(_item->_renameTarget));
-    record._path = _item->_renameTarget;
+    SyncJournalFileRecord record = _item->toSyncJournalFileRecordWithInode(propagator()->getFilePath(_item->_renameTarget));
+    record._path = _item->_renameTarget.toUtf8();
     if (oldRecord.isValid()) {
         record._checksumHeader = oldRecord._checksumHeader;
         if (record._fileSize != oldRecord._fileSize) {
@@ -187,7 +187,7 @@ void PropagateRemoteMove::finalize()
         return;
     }
 
-    if (_item->_isDirectory) {
+    if (_item->isDirectory()) {
         if (!adjustSelectiveSync(propagator()->_journal, _item->_file, _item->_renameTarget)) {
             done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
             return;

@@ -17,15 +17,15 @@
 #include "owncloudpropagator_p.h"
 #include "networkjobs.h"
 #include "account.h"
-#include "syncjournaldb.h"
-#include "syncjournalfilerecord.h"
-#include "utility.h"
+#include "common/syncjournaldb.h"
+#include "common/syncjournalfilerecord.h"
+#include "common/utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
-#include "checksums.h"
+#include "common/checksums.h"
 #include "syncengine.h"
 #include "propagateremotedelete.h"
-#include "asserts.h"
+#include "common/asserts.h"
 
 #include <QNetworkAccessManager>
 #include <QFileInfo>
@@ -43,7 +43,7 @@ void PropagateUploadFileV1::doStartUpload()
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
 
-    if (progressInfo._valid && Utility::qDateTimeToTime_t(progressInfo._modtime) == _item->_modtime) {
+    if (progressInfo._valid && progressInfo._modtime == _item->_modtime) {
         _startChunk = progressInfo._chunk;
         _transferId = progressInfo._transferid;
         qCInfo(lcPropagateUpload) << _item->_file << ": Resuming from chunk " << _startChunk;
@@ -126,10 +126,10 @@ void PropagateUploadFileV1::startNextChunk()
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
     PUTFileJob *job = new PUTFileJob(propagator()->account(), propagator()->_remoteFolder + path, device, headers, _currentChunk, this);
     _jobs.append(job);
-    connect(job, SIGNAL(finishedSignal()), this, SLOT(slotPutFinished()));
-    connect(job, SIGNAL(uploadProgress(qint64, qint64)), this, SLOT(slotUploadProgress(qint64, qint64)));
-    connect(job, SIGNAL(uploadProgress(qint64, qint64)), device, SLOT(slotJobUploadProgress(qint64, qint64)));
-    connect(job, SIGNAL(destroyed(QObject *)), this, SLOT(slotJobDestroyed(QObject *)));
+    connect(job, &PUTFileJob::finishedSignal, this, &PropagateUploadFileV1::slotPutFinished);
+    connect(job, &PUTFileJob::uploadProgress, this, &PropagateUploadFileV1::slotUploadProgress);
+    connect(job, &PUTFileJob::uploadProgress, device, &UploadDevice::slotJobUploadProgress);
+    connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     job->start();
     propagator()->_activeJobList.append(this);
     _currentChunk++;
@@ -184,16 +184,6 @@ void PropagateUploadFileV1::slotPutFinished()
     }
 
     QNetworkReply::NetworkError err = job->reply()->error();
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
-    if (err == QNetworkReply::OperationCanceledError && job->reply()->property("owncloud-should-soft-cancel").isValid()) { // Abort the job and try again later.
-        // This works around a bug in QNAM wich might reuse a non-empty buffer for the next request.
-        qCWarning(lcPropagateUpload) << "Forcing job abort on HTTP connection reset with Qt < 5.4.2.";
-        propagator()->_anotherSyncNeeded = true;
-        abortWithError(SyncFileItem::SoftError, tr("Forcing job abort on HTTP connection reset with Qt < 5.4.2."));
-        return;
-    }
-#endif
 
     if (err != QNetworkReply::NoError) {
         _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -282,7 +272,7 @@ void PropagateUploadFileV1::slotPutFinished()
         }
         pi._chunk = (currentChunk + _startChunk + 1) % _chunkCount; // next chunk to start with
         pi._transferid = _transferId;
-        pi._modtime = Utility::qDateTimeFromTime_t(_item->_modtime);
+        pi._modtime = _item->_modtime;
         pi._errorCount = 0; // successful chunk upload resets
         propagator()->_journal->setUploadInfo(_item->_file, pi);
         propagator()->_journal->commit("Upload info");

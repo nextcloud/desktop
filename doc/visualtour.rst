@@ -80,11 +80,6 @@ Adding a Folder Sync Connection
 Adding a new sync is initiated by clicking ``Add Folder Sync Connection`` in
 the ``Account`` settings.
 
-..note:: To add a folder, you must not already sync a folder that contains this
-        folder. By default, the wizard sets up the root folder of the ownCloud
-        server to sync all of your ownCloud account. In consequence, you will
-        first need to remove this folder prior to specifying new syncs.
-
 .. image:: images/folderwizard_local.png
    :scale: 50 %
 

@@ -16,8 +16,8 @@
 
 #include "configfile.h"
 #include "theme.h"
-#include "utility.h"
-#include "asserts.h"
+#include "common/utility.h"
+#include "common/asserts.h"
 
 #include "creds/abstractcredentials.h"
 
@@ -703,4 +703,19 @@ void ConfigFile::setCertificatePasswd(const QString &cPasswd)
     settings.setValue(QLatin1String(certPasswd), cPasswd);
     settings.sync();
 }
+
+Q_GLOBAL_STATIC(QString, g_configFileName)
+
+std::unique_ptr<QSettings> ConfigFile::settingsWithGroup(const QString &group, QObject *parent)
+{
+    if (g_configFileName()->isEmpty()) {
+        // cache file name
+        ConfigFile cfg;
+        *g_configFileName() = cfg.configFile();
+    }
+    std::unique_ptr<QSettings> settings(new QSettings(*g_configFileName(), QSettings::IniFormat, parent));
+    settings->beginGroup(group);
+    return settings;
+}
+
 }

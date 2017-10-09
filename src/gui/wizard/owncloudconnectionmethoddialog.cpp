@@ -14,7 +14,6 @@
  */
 
 #include "wizard/owncloudconnectionmethoddialog.h"
-#include "utility.h"
 #include <QUrl>
 
 namespace OCC {
@@ -25,25 +24,14 @@ OwncloudConnectionMethodDialog::OwncloudConnectionMethodDialog(QWidget *parent)
 {
     ui->setupUi(this);
 
-    connect(ui->btnNoTLS, SIGNAL(clicked(bool)), this, SLOT(returnNoTLS()));
-    connect(ui->btnClientSideTLS, SIGNAL(clicked(bool)), this, SLOT(returnClientSideTLS()));
-    connect(ui->btnBack, SIGNAL(clicked(bool)), this, SLOT(returnBack()));
-
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
-    // We support only from Qt 5.4.x because of https://doc.qt.io/qt-5/qsslcertificate.html#importPkcs12
-    ui->btnClientSideTLS->hide();
-#endif
+    connect(ui->btnNoTLS, &QAbstractButton::clicked, this, &OwncloudConnectionMethodDialog::returnNoTLS);
+    connect(ui->btnClientSideTLS, &QAbstractButton::clicked, this, &OwncloudConnectionMethodDialog::returnClientSideTLS);
+    connect(ui->btnBack, &QAbstractButton::clicked, this, &OwncloudConnectionMethodDialog::returnBack);
 }
 
 void OwncloudConnectionMethodDialog::setUrl(const QUrl &url)
 {
-    ui->label->setText(tr("<html><head/><body><p>Failed to connect to the secure server address <em>%1</em>. How do you wish to proceed?</p></body></html>")
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-                           .arg(OCC::Utility::escape(url.toString())));
-#else
-                           .arg(url.toDisplayString().toHtmlEscaped()));
-#endif
+    ui->label->setText(tr("<html><head/><body><p>Failed to connect to the secure server address <em>%1</em>. How do you wish to proceed?</p></body></html>").arg(url.toDisplayString().toHtmlEscaped()));
 }
 
 

@@ -22,8 +22,9 @@
 #include "creds/httpcredentialsgui.h"
 #include "theme.h"
 #include "account.h"
+#include "networkjobs.h"
 #include <QMessageBox>
-#include "asserts.h"
+#include "common/asserts.h"
 
 using namespace QKeychain;
 
@@ -31,15 +32,19 @@ namespace OCC {
 
 void HttpCredentialsGui::askFromUser()
 {
-    _password = QString(); // So our QNAM does not add any auth
+    // Unfortunately there's a bug that doesn't allow us to send the "is this
+    // OAuth2 or Basic auth?" GET request directly. Scheduling it for the event
+    // loop works though. See #5989.
+    QMetaObject::invokeMethod(this, "askFromUserAsync", Qt::QueuedConnection);
+}
 
-    // First, we will send a call to the webdav endpoint to check what kind of auth we need.
-    auto reply = _account->sendRequest("GET", _account->davUrl());
-    QTimer::singleShot(30 * 1000, reply, &QNetworkReply::abort);
-    QObject::connect(reply, &QNetworkReply::finished, this, [this, reply] {
-        reply->deleteLater();
-        if (reply->rawHeader("WWW-Authenticate").contains("Bearer ")) {
-            // OAuth
+void HttpCredentialsGui::askFromUserAsync()
+{
+    // First, we will check what kind of auth we need.
+    auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
+    job->setTimeout(30 * 1000);
+    QObject::connect(job, &DetermineAuthTypeJob::authType, this, [this](DetermineAuthTypeJob::AuthType type) {
+        if (type == DetermineAuthTypeJob::OAuth) {
             _asyncAuth.reset(new OAuth(_account, this));
             _asyncAuth->_expectedUser = _user;
             connect(_asyncAuth.data(), &OAuth::result,
@@ -48,15 +53,16 @@ void HttpCredentialsGui::askFromUser()
                 this, &HttpCredentialsGui::authorisationLinkChanged);
             _asyncAuth->start();
             emit authorisationLinkChanged();
-        } else if (reply->error() == QNetworkReply::AuthenticationRequiredError) {
+        } else if (type == DetermineAuthTypeJob::Basic) {
             // Show the dialog
             // We will re-enter the event loop, so better wait the next iteration
             QMetaObject::invokeMethod(this, "showDialog", Qt::QueuedConnection);
         } else {
-            // Network error?
+            // Network error? Unsupported auth type?
             emit asked();
         }
     });
+    job->start();
 }
 
 void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
@@ -142,7 +148,10 @@ QString HttpCredentialsGui::requestAppPasswordText(const Account *account)
         return QString();
     }
 
+    auto baseUrl = account->url().toString();
+    if (baseUrl.endsWith('/'))
+        baseUrl.chop(1);
     return tr("<a href=\"%1\">Click here</a> to request an app password from the web interface.")
-        .arg(account->url().toString() + path);
+        .arg(baseUrl + path);
 }
 } // namespace OCC

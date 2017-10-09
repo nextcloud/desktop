@@ -84,6 +84,10 @@ private:
     void storeShibCookie(const QNetworkCookie &cookie);
     void removeShibCookie();
     void addToCookieJar(const QNetworkCookie &cookie);
+
+    /// Reads data from keychain, progressing to slotReadJobDone
+    void fetchFromKeychainHelper();
+
     QUrl _url;
     QByteArray prepareCookieData() const;
 
@@ -92,6 +96,7 @@ private:
     QPointer<ShibbolethWebView> _browser;
     QNetworkCookie _shibCookie;
     QString _user;
+    bool _keychainMigration;
 };
 
 } // namespace OCC

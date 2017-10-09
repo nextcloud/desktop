@@ -1,55 +1,77 @@
 ChangeLog
 =========
 
-version 2.4.0 (2017-0X-XX)
-* OAuth2 authentication support
+version 2.4.0 (2017-1X-XX)
+* OAuth2 authentication support by opening external browser
+* Sync Issues: More functional error view including filters and conflicts (#5516)
 * Sharing: Add support for multiple public link shares (#5655)
-* Sharing: Add option to copy/email direct links (#5627, #5023)
+* Sharing: Add option to copy/email private links (#5627, #5023)
 * Sharing: Add option "show file listing" (#5837)
 * Sharing: Show warning that links are public
 * Sharing: Many UI improvements
-* Sharing: Make "can edit" partially checked sometimes #5642
-* Wizards: Never propose an existing folder for syncing (#5597)
+* Sharing: Make "can edit" partially checked sometimes (#5642)
+* Wizard: Never propose an existing folder for syncing (#5597)
 * Wizard: Don't show last page anymore, go to settings directly (#5726)
-* Settings Dialog: Display the user server avatar
+* Wizard: Handle url-shortener redirects #5954
+* Gui: Display the user server avatar
+* Server URL: Update configuration in case of permanent redirection (#5972)
+* Gui: Allow to add multiple sync folder connection of the same folder
 * Selective Sync: Open sub folder context menu (#5596)
 * Selective Sync: Skip excluded folders when reading db
 * Selective Sync: Remove local files of unselected folder despite other modified files (#5783)
-* Exclude list: remove .htaccess form list of excluded files
-* Sync Issues: More functional error view including filters and conflicts #5516
+* Excludes: remove .htaccess form list of excluded files
+* Excludes: Hardcode desktop.ini
+* Excludes: Allow escaping "#" (#6012)
+* Excludes: Use faster matching via QRegularExpression
 * Discovery: Increase the MAX_DEPTH and show deep folders as ignored
+* Discovery: General speed improvements
 * Downloads: Remove empty temporary if disk space full (#5746)
 * Downloads: Re-trigger folder discovery on 404
+* Quota:  PropagateUpload: Model of remote quota, avoid some uploads (#5537)
 * When creating explorer favorite use more specific windows functions (#5690)
-* AccountSettings: Triggering log in re-ask about previously rejected certificates #5819
+* Create favorite also in folder wizard (#455)
+* Windows: Use the application icon for the Windows 8 sidebar favorite (#2446)
+* macOS: Finder sidebar icon (#296)
+* Overlay Icons: Consider also the "shared by me" as shared (#4788)
+* Overlay Icons: Fix different case paths not matching (#5257)
+* Windows Overlay Icons: Potential hang fixes
+* Linux Overlay Icons: fix branded nemo and caja shell integration (#5966)
+* Http credentials: Fix behavior for bad password (#5989)
+* Credentials: Use per-account keychain entries (#5830)
+* AccountSettings: Triggering log in re-ask about previously rejected certificates (#5819)
 * Added owncloudcmd bandwidth limit parameter (#5707)
 * AccountSettings: Sync with clean discovery on Ctrl-F6 (#5666)
 * Sync: Dynamic sizing of chunks in chunked uploads for improved big file upload performance
-* Sync: Introduce overall errors that are not tied to a file #5746
-* Sync: Better messaging for 507 Insufficient Storage #5537
-* Sync: Create conflicts by comparing the hash of files with identical mtime/size #5589
-* Sync: Blacklist: Don't let errors become warnings #5516
-* macOS: Finder sidebar icon #296
-* Reduce memory usage
+* Sync: Introduce overall errors that are not tied to a file (#5746)
+* Sync: Better messaging for 507 Insufficient Storage (#5537)
+* Sync: Create conflicts by comparing the hash of files with identical mtime/size (#5589)
+* Sync: Blacklist: Don't let errors become warnings (#5516)
+* Sync: Check etag again after active sync (#4116)
+* SyncJournalDB: Fall back to DELETE journal mode if WAL mode does not seem to work (#5723)
 * Fix at least one memory leak
 * Documentation improvements
 * Logging improvements (with Qt logging categories), new --logdebug parameter
-* Harmonize source code style with clang-format
 * Crash fixes
 * Test improvements
-* Windows Overlays: Potential hang fixes
 * Small UI layout fixes
 * Maintenance Mode: Detect maintenance mode (#4485)
-* Maintenance Mode: Add a 1 to 5 min reconnection delay #5872
-* HTTP: Send a unique X-Request-ID with each request #5853
+* Maintenance Mode: Add a 1 to 5 min reconnection delay (#5872)
+* HTTP: Send a unique X-Request-ID with each request (#5853)
 * HTTP: Support HTTP2 when built and running with Qt 5.9.x (Official packages still on Qt 5.6.x)
-* owncloudcmd: Don't start if connection or auth fails #5692
-* Overlays: Consider also the "shared by me" as shared (#4788)
+* owncloudcmd: Don't start if connection or auth fails (#5692)
+* csync: Switch build from C to C++
+* csync: Refactor a lot to use common data structures to save memory and memory copying
+* csync: Switch some data structures to Qt data structures
+* csync: Switch to using upper layer SyncJournalDB
 * Switch 3rdparty/json usage to Qt5's QJson (#5710)
 * OpenSSL: Don't require directly, only via Qt
 * Remove iconv dependency, use Qt for file system locale encoding/decoding (emoji filename support on macOS)
+* Compilation: Remove Qt 4 code
+* Harmonize source code style with clang-format
+* Switch over to Qt 5 function pointer signal/slot syntax
+* Updater: Rudimentary support for beta channel
 
-version 2.3.3 (2017-07-XX)
+version 2.3.3 (2017-08-29)
 * Chunking NG: Don't use old chunking on new DAV endpoint (#5855)
 * Selective Sync: Skip excluded folders when reading DB, don't let them show errors (#5772)
 * Settings: Make window bigger so Qt version is always visible (#5760)
@@ -175,7 +197,6 @@ version 2.2.0 (release 2016-05-12)
  * Documentation Improvements, ie. about overlay icons
  * Translation fixes
  * Countless other bugfixes
- * Sqlite Update to recent version
  * Update of QtKeyChain to support Windows credential store
  * Packaging of dolphin overlay icon module for bleeding edge distros
 
@@ -246,7 +267,6 @@ version 2.1 (release 2015-12-03)
  * Fixed getting size for selective sync (#3986)
  * Re-added close button in the settings window (#3713)
  * Added abililty to handle storage limitations gracefully (#3736)
- * Updated 3rdparty dependencies: sqlite version 3.9.1
  * Organized patches to our base Qt version into admin/qt/patches
  * Plus: A lot of unmentioned improvements and fixes
 

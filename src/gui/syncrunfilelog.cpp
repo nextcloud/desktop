@@ -15,7 +15,7 @@
 #include <QRegExp>
 
 #include "syncrunfilelog.h"
-#include "utility.h"
+#include "common/utility.h"
 #include "filesystem.h"
 #include <qfileinfo.h>
 
@@ -127,7 +127,7 @@ void SyncRunFileLog::start(const QString &folderPath)
 
     _totalDuration.start();
     _lapDuration.start();
-    _out << "#=#=#=# Syncrun started " << dateTimeStr(QDateTime::currentDateTime()) << endl;
+    _out << "#=#=#=# Syncrun started " << dateTimeStr(QDateTime::currentDateTimeUtc()) << endl;
 }
 
 void SyncRunFileLog::logItem(const SyncFileItem &item)
@@ -161,25 +161,25 @@ void SyncRunFileLog::logItem(const SyncFileItem &item)
     _out << item._status << L;
     _out << item._errorString << L;
     _out << QString::number(item._httpErrorCode) << L;
-    _out << QString::number(item.log._other_size) << L;
-    _out << QString::number(item.log._other_modtime) << L;
-    _out << item.log._other_etag << L;
-    _out << item.log._other_fileId << L;
-    _out << instructionToStr(item.log._other_instruction) << L;
+    _out << QString::number(item._previousSize) << L;
+    _out << QString::number(item._previousModtime) << L;
+    _out /* << other etag (removed) */ << L;
+    _out /* << other fileId (removed) */ << L;
+    _out /* << other instruction (removed) */ << L;
 
     _out << endl;
 }
 
 void SyncRunFileLog::logLap(const QString &name)
 {
-    _out << "#=#=#=#=# " << name << " " << dateTimeStr(QDateTime::currentDateTime())
+    _out << "#=#=#=#=# " << name << " " << dateTimeStr(QDateTime::currentDateTimeUtc())
          << " (last step: " << _lapDuration.restart() << " msec"
          << ", total: " << _totalDuration.elapsed() << " msec)" << endl;
 }
 
 void SyncRunFileLog::finish()
 {
-    _out << "#=#=#=# Syncrun finished " << dateTimeStr(QDateTime::currentDateTime())
+    _out << "#=#=#=# Syncrun finished " << dateTimeStr(QDateTime::currentDateTimeUtc())
          << " (last step: " << _lapDuration.elapsed() << " msec"
          << ", total: " << _totalDuration.elapsed() << " msec)" << endl;
     _file->close();

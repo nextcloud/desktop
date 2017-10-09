@@ -16,7 +16,9 @@
 #define CONFIGFILE_H
 
 #include "owncloudlib.h"
+#include <memory>
 #include <QSharedPointer>
+#include <QSettings>
 #include <QString>
 #include <QVariant>
 
@@ -136,6 +138,10 @@ public:
     void setCertificatePath(const QString &cPath);
     QString certificatePasswd() const;
     void setCertificatePasswd(const QString &cPasswd);
+
+    /**  Returns a new settings pre-set in a specific group.  The Settings will be created
+         with the given parent. If no parent is specified, the caller must destroy the settings */
+    static std::unique_ptr<QSettings> settingsWithGroup(const QString &group, QObject *parent = 0);
 
 protected:
     QVariant getPolicySetting(const QString &policy, const QVariant &defaultValue = QVariant()) const;

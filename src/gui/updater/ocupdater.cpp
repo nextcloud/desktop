@@ -14,7 +14,7 @@
 
 #include "theme.h"
 #include "configfile.h"
-#include "utility.h"
+#include "common/utility.h"
 #include "accessmanager.h"
 
 #include "updater/ocupdater.h"
@@ -23,9 +23,7 @@
 #include <QtCore>
 #include <QtNetwork>
 #include <QtGui>
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QtWidgets>
-#endif
 
 #include <stdio.h>
 
@@ -41,18 +39,18 @@ static const char autoUpdateAttemptedC[] = "Updater/autoUpdateAttempted";
 UpdaterScheduler::UpdaterScheduler(QObject *parent)
     : QObject(parent)
 {
-    connect(&_updateCheckTimer, SIGNAL(timeout()),
-        this, SLOT(slotTimerFired()));
+    connect(&_updateCheckTimer, &QTimer::timeout,
+        this, &UpdaterScheduler::slotTimerFired);
 
     // Note: the sparkle-updater is not an OCUpdater
     if (OCUpdater *updater = qobject_cast<OCUpdater *>(Updater::instance())) {
-        connect(updater, SIGNAL(newUpdateAvailable(QString, QString)),
-            this, SIGNAL(updaterAnnouncement(QString, QString)));
-        connect(updater, SIGNAL(requestRestart()), SIGNAL(requestRestart()));
+        connect(updater, &OCUpdater::newUpdateAvailable,
+            this, &UpdaterScheduler::updaterAnnouncement);
+        connect(updater, &OCUpdater::requestRestart, this, &UpdaterScheduler::requestRestart);
     }
 
     // at startup, do a check in any case.
-    QTimer::singleShot(3000, this, SLOT(slotTimerFired()));
+    QTimer::singleShot(3000, this, &UpdaterScheduler::slotTimerFired);
 
     ConfigFile cfg;
     auto checkInterval = cfg.updateCheckInterval();
@@ -196,9 +194,9 @@ void OCUpdater::slotStartInstaller()
 void OCUpdater::checkForUpdate()
 {
     QNetworkReply *reply = _accessManager->get(QNetworkRequest(_updateUrl));
-    connect(_timeoutWatchdog, SIGNAL(timeout()), this, SLOT(slotTimedOut()));
+    connect(_timeoutWatchdog, &QTimer::timeout, this, &OCUpdater::slotTimedOut);
     _timeoutWatchdog->start(30 * 1000);
-    connect(reply, SIGNAL(finished()), this, SLOT(slotVersionInfoArrived()));
+    connect(reply, &QNetworkReply::finished, this, &OCUpdater::slotVersionInfoArrived);
 
     setDownloadState(CheckingServer);
 }
@@ -305,8 +303,8 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
                 setDownloadState(DownloadComplete);
             } else {
                 QNetworkReply *reply = qnam()->get(QNetworkRequest(QUrl(url)));
-                connect(reply, SIGNAL(readyRead()), SLOT(slotWriteFile()));
-                connect(reply, SIGNAL(finished()), SLOT(slotDownloadFinished()));
+                connect(reply, &QIODevice::readyRead, this, &NSISUpdater::slotWriteFile);
+                connect(reply, &QNetworkReply::finished, this, &NSISUpdater::slotDownloadFinished);
                 setDownloadState(Downloading);
                 _file.reset(new QTemporaryFile);
                 _file->setAutoRemove(true);
@@ -355,11 +353,11 @@ void NSISUpdater::showDialog(const UpdateInfo &info)
     QPushButton *reject = bb->addButton(tr("Skip this time"), QDialogButtonBox::AcceptRole);
     QPushButton *getupdate = bb->addButton(tr("Get update"), QDialogButtonBox::AcceptRole);
 
-    connect(skip, SIGNAL(clicked()), msgBox, SLOT(reject()));
-    connect(reject, SIGNAL(clicked()), msgBox, SLOT(reject()));
-    connect(getupdate, SIGNAL(clicked()), msgBox, SLOT(accept()));
+    connect(skip, &QAbstractButton::clicked, msgBox, &QDialog::reject);
+    connect(reject, &QAbstractButton::clicked, msgBox, &QDialog::reject);
+    connect(getupdate, &QAbstractButton::clicked, msgBox, &QDialog::accept);
 
-    connect(skip, SIGNAL(clicked()), SLOT(slotSetSeenVersion()));
+    connect(skip, &QAbstractButton::clicked, this, &NSISUpdater::slotSetSeenVersion);
     connect(getupdate, SIGNAL(clicked()), SLOT(slotOpenUpdateUrl()));
 
     layout->addWidget(bb);

@@ -12,13 +12,17 @@ include_directories(${CMAKE_SOURCE_DIR}/src/libsync
                    )
 
 # csync is required.
-include_directories(${CMAKE_SOURCE_DIR}/csync/src
-                    ${CMAKE_BINARY_DIR}/csync
-                    ${CMAKE_BINARY_DIR}/csync/src
+include_directories(${CMAKE_SOURCE_DIR}/src/csync
+                    ${CMAKE_BINARY_DIR}/src/csync
                    )
 
 # Need tokenizer for netrc parser
 include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer)
+
+if(UNIX AND NOT APPLE)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pie -fPIE")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pie -fPIE")
+endif()
 
 if(NOT BUILD_LIBRARIES_ONLY)
    add_executable(${cmd_NAME}  ${cmd_SRC})
@@ -26,7 +30,7 @@ if(NOT BUILD_LIBRARIES_ONLY)
 	set_target_properties(${cmd_NAME} PROPERTIES
 	        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
         set_target_properties(${cmd_NAME} PROPERTIES
-		INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}" )
+		INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
 	target_link_libraries(${cmd_NAME} ${synclib_NAME})
 endif()

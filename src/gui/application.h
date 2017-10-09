@@ -71,6 +71,7 @@ public:
 public slots:
     // TODO: this should not be public
     void slotownCloudWizardDone(int);
+    void slotCrash();
 
 protected:
     void parseOptions(const QStringList &);
@@ -90,7 +91,6 @@ protected slots:
     void slotCleanup();
     void slotAccountStateAdded(AccountState *accountState);
     void slotAccountStateRemoved(AccountState *accountState);
-    void slotCrash();
     void slotSystemOnlineConfigurationChanged(QNetworkConfiguration);
 
 private:

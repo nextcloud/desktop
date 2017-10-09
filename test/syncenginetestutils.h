@@ -8,9 +8,10 @@
 
 #include "account.h"
 #include "creds/abstractcredentials.h"
+#include "logger.h"
 #include "filesystem.h"
 #include "syncengine.h"
-#include "syncjournaldb.h"
+#include "common/syncjournaldb.h"
 
 #include <QDir>
 #include <QNetworkReply>
@@ -40,7 +41,7 @@ inline QString getFilePathFromUrl(const QUrl &url) {
 
 
 inline QString generateEtag() {
-    return QString::number(QDateTime::currentDateTime().toMSecsSinceEpoch(), 16);
+    return QString::number(QDateTime::currentDateTimeUtc().toMSecsSinceEpoch(), 16);
 }
 inline QByteArray generateFileId() {
     return QByteArray::number(qrand(), 16);
@@ -96,7 +97,7 @@ public:
         file.write(buf.data(), size % buf.size());
         file.close();
         // Set the mtime 30 seconds in the past, for some tests that need to make sure that the mtime differs.
-        OCC::FileSystem::setModTime(file.fileName(), OCC::Utility::qDateTimeToTime_t(QDateTime::currentDateTime().addSecs(-30)));
+        OCC::FileSystem::setModTime(file.fileName(), OCC::Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc().addSecs(-30)));
         QCOMPARE(file.size(), size);
     }
     void setContents(const QString &relativePath, char contentChar) override {
@@ -737,6 +738,10 @@ public:
 protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request,
                                          QIODevice *outgoingData = 0) {
+        if (_override) {
+            if (auto reply = _override(op, request))
+                return reply;
+        }
         const QString fileName = getFilePathFromUrl(request.url());
         Q_ASSERT(!fileName.isNull());
         if (_errorPaths.contains(fileName))
@@ -744,11 +749,6 @@ protected:
 
         bool isUpload = request.url().path().startsWith(sUploadUrl.path());
         FileInfo &info = isUpload ? _uploadFileInfo : _remoteRootFileInfo;
-
-        if (_override) {
-            if (auto reply = _override(op, request))
-                return reply;
-        }
 
         auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute);
         if (verb == "PROPFIND")
@@ -806,9 +806,10 @@ public:
     {
         // Needs to be done once
         OCC::SyncEngine::minimumFileAgeForUpload = 0;
-        csync_set_log_level(11);
+        OCC::Logger::instance()->setLogFile("-");
 
         QDir rootDir{_tempDir.path()};
+        qDebug() << "FakeFolder operating on" << rootDir;
         toDisk(rootDir, fileTemplate);
 
         _fakeQnam = new FakeQNAM(fileTemplate);
@@ -826,6 +827,7 @@ public:
     }
 
     OCC::SyncEngine &syncEngine() const { return *_syncEngine; }
+    OCC::SyncJournalDb &syncJournal() const { return *_journalDb; }
 
     FileModifier &localModifier() { return _localModifier; }
     FileInfo &remoteModifier() { return _fakeQnam->currentRemoteState(); }

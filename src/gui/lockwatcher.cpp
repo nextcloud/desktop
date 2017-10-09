@@ -27,8 +27,8 @@ static const int check_frequency = 20 * 1000; // ms
 LockWatcher::LockWatcher(QObject *parent)
     : QObject(parent)
 {
-    connect(&_timer, SIGNAL(timeout()),
-        SLOT(checkFiles()));
+    connect(&_timer, &QTimer::timeout,
+        this, &LockWatcher::checkFiles);
     _timer.start(check_frequency);
 }
 

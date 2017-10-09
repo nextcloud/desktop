@@ -34,11 +34,11 @@
 #include "excludedfiles.h"
 #include "syncfileitem.h"
 #include "progressdispatcher.h"
-#include "utility.h"
+#include "common/utility.h"
 #include "syncfilestatustracker.h"
 #include "accountfwd.h"
 #include "discoveryphase.h"
-#include "checksums.h"
+#include "common/checksums.h"
 
 class QProcess;
 
@@ -170,9 +170,9 @@ private:
 
     QString journalDbFilePath() const;
 
-    static int treewalkLocal(TREE_WALK_FILE *, void *);
-    static int treewalkRemote(TREE_WALK_FILE *, void *);
-    int treewalkFile(TREE_WALK_FILE *, bool);
+    static int treewalkLocal(csync_file_stat_t *file, csync_file_stat_t *other, void *);
+    static int treewalkRemote(csync_file_stat_t *file, csync_file_stat_t *other, void *);
+    int treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, bool);
     bool checkErrorBlacklisting(SyncFileItem &item);
 
     // Cleans up unnecessary downloadinfo entries in the journal as well
@@ -194,7 +194,7 @@ private:
     QMap<QString, SyncFileItemPtr> _syncItemMap;
 
     AccountPtr _account;
-    CSYNC *_csync_ctx;
+    QScopedPointer<CSYNC> _csync_ctx;
     bool _needsUpdate;
     bool _syncRunning;
     QString _localPath;
@@ -235,7 +235,7 @@ private:
      * to recover
      */
     void checkForPermission(SyncFileItemVector &syncItems);
-    QByteArray getPermissions(const QString &file) const;
+    RemotePermissions getPermissions(const QString &file) const;
 
     /**
      * Instead of downloading files from the server, upload the files to the server
@@ -258,9 +258,6 @@ private:
     int _uploadLimit;
     int _downloadLimit;
     SyncOptions _syncOptions;
-
-    // hash containing the permissions on the remote directory
-    QHash<QString, QByteArray> _remotePerms;
 
     /// Hook for computing checksums from csync_update
     CSyncChecksumHook _checksum_hook;

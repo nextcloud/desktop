@@ -26,6 +26,7 @@
 #include <QTimer>
 #include <QMutex>
 #include <QCoreApplication>
+#include <QAuthenticator>
 
 #include "networkjobs.h"
 #include "account.h"
@@ -51,15 +52,15 @@ AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, 
 {
     _timer.setSingleShot(true);
     _timer.setInterval(OwncloudPropagator::httpTimeout() * 1000); // default to 5 minutes.
-    connect(&_timer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
+    connect(&_timer, &QTimer::timeout, this, &AbstractNetworkJob::slotTimeout);
 
-    connect(this, SIGNAL(networkActivity()), SLOT(resetTimeout()));
+    connect(this, &AbstractNetworkJob::networkActivity, this, &AbstractNetworkJob::resetTimeout);
 
     // Network activity on the propagator jobs (GET/PUT) keeps all requests alive.
     // This is a workaround for OC instances which only support one
     // parallel up and download
     if (_account) {
-        connect(_account.data(), SIGNAL(propagatorNetworkActivity()), SLOT(resetTimeout()));
+        connect(_account.data(), &Account::propagatorNetworkActivity, this, &AbstractNetworkJob::resetTimeout);
     }
 }
 
@@ -102,15 +103,13 @@ void AbstractNetworkJob::setPath(const QString &path)
 
 void AbstractNetworkJob::setupConnections(QNetworkReply *reply)
 {
-    connect(reply, SIGNAL(finished()), SLOT(slotFinished()));
-#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
-    connect(reply, SIGNAL(encrypted()), SIGNAL(networkActivity()));
-#endif
-    connect(reply->manager(), SIGNAL(proxyAuthenticationRequired(QNetworkProxy, QAuthenticator *)), SIGNAL(networkActivity()));
-    connect(reply, SIGNAL(sslErrors(QList<QSslError>)), SIGNAL(networkActivity()));
-    connect(reply, SIGNAL(metaDataChanged()), SIGNAL(networkActivity()));
-    connect(reply, SIGNAL(downloadProgress(qint64, qint64)), SIGNAL(networkActivity()));
-    connect(reply, SIGNAL(uploadProgress(qint64, qint64)), SIGNAL(networkActivity()));
+    connect(reply, &QNetworkReply::finished, this, &AbstractNetworkJob::slotFinished);
+    connect(reply, &QNetworkReply::encrypted, this, &AbstractNetworkJob::networkActivity);
+    connect(reply->manager(), &QNetworkAccessManager::proxyAuthenticationRequired, this, &AbstractNetworkJob::networkActivity);
+    connect(reply, &QNetworkReply::sslErrors, this, &AbstractNetworkJob::networkActivity);
+    connect(reply, &QNetworkReply::metaDataChanged, this, &AbstractNetworkJob::networkActivity);
+    connect(reply, &QNetworkReply::downloadProgress, this, &AbstractNetworkJob::networkActivity);
+    connect(reply, &QNetworkReply::uploadProgress, this, &AbstractNetworkJob::networkActivity);
 }
 
 QNetworkReply *AbstractNetworkJob::addTimer(QNetworkReply *reply)
@@ -122,15 +121,20 @@ QNetworkReply *AbstractNetworkJob::addTimer(QNetworkReply *reply)
 QNetworkReply *AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUrl &url,
     QNetworkRequest req, QIODevice *requestBody)
 {
-    auto reply = _account->sendRequest(verb, url, req, requestBody);
+    auto reply = _account->sendRawRequest(verb, url, req, requestBody);
     _requestBody = requestBody;
     if (_requestBody) {
         _requestBody->setParent(reply);
     }
+    adoptRequest(reply);
+    return reply;
+}
+
+void AbstractNetworkJob::adoptRequest(QNetworkReply *reply)
+{
     addTimer(reply);
     setReply(reply);
     setupConnections(reply);
-    return reply;
 }
 
 QUrl AbstractNetworkJob::makeAccountUrl(const QString &relativePath) const
@@ -170,6 +174,21 @@ void AbstractNetworkJob::slotFinished()
     if (_followRedirects && !redirectUrl.isEmpty()) {
         _redirectCount++;
 
+        // Redirects may be relative
+        if (redirectUrl.isRelative())
+            redirectUrl = requestedUrl.resolved(redirectUrl);
+
+        // For POST requests where the target url has query arguments, Qt automatically
+        // moves these arguments to the body if no explicit body is specified.
+        // This can cause problems with redirected requests, because the redirect url
+        // will no longer contain these query arguments.
+        if (reply()->operation() == QNetworkAccessManager::PostOperation
+            && requestedUrl.hasQuery()
+            && !redirectUrl.hasQuery()
+            && !_requestBody) {
+            qCWarning(lcNetworkJob) << "Redirecting a POST request with an implicit body loses that body";
+        }
+
         // ### some of the qWarnings here should be exported via displayErrors() so they
         // ### can be presented to the user if the job executor has a GUI
         QByteArray verb = requestVerb(*reply());
@@ -182,6 +201,8 @@ void AbstractNetworkJob::slotFinished()
         } else if (verb.isEmpty()) {
             qCWarning(lcNetworkJob) << this << "cannot redirect request: could not detect original verb";
         } else {
+            emit redirected(_reply, redirectUrl, _redirectCount - 1);
+
             // Create the redirected request and send it
             qCInfo(lcNetworkJob) << "Redirecting" << verb << requestedUrl << redirectUrl;
             resetTimeout();
@@ -362,13 +383,7 @@ QString networkReplyErrorString(const QNetworkReply &reply)
         return base;
     }
 
-    return AbstractNetworkJob::tr("Server replied \"%1 %2\" to \"%3 %4\"").arg(QString::number(httpStatus), httpReason, requestVerb(reply),
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-        reply.request().url().toString()
-#else
-        reply.request().url().toDisplayString()
-#endif
-            );
+    return AbstractNetworkJob::tr("Server replied \"%1 %2\" to \"%3 %4\"").arg(QString::number(httpStatus), httpReason, requestVerb(reply), reply.request().url().toDisplayString());
 }
 
 } // namespace OCC

@@ -49,10 +49,10 @@ void OwncloudShibbolethCredsPage::setupBrowser()
     qnam->setCookieJar(jar);
 
     _browser = new ShibbolethWebView(account);
-    connect(_browser, SIGNAL(shibbolethCookieReceived(const QNetworkCookie &)),
-        this, SLOT(slotShibbolethCookieReceived(const QNetworkCookie &)), Qt::QueuedConnection);
-    connect(_browser, SIGNAL(rejected()),
-        this, SLOT(slotBrowserRejected()));
+    connect(_browser.data(), &ShibbolethWebView::shibbolethCookieReceived,
+        this, &OwncloudShibbolethCredsPage::slotShibbolethCookieReceived, Qt::QueuedConnection);
+    connect(_browser.data(), &ShibbolethWebView::rejected,
+        this, &OwncloudShibbolethCredsPage::slotBrowserRejected);
 
     _browser->move(ocWizard->x(), ocWizard->y());
     _browser->show();

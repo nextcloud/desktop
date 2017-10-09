@@ -23,15 +23,11 @@
 
 #include <csync.h>
 
-#if defined(Q_CC_GNU) && !defined(Q_CC_INTEL) && !defined(Q_CC_CLANG) && (__GNUC__ * 100 + __GNUC_MINOR__ < 408)
-// openSuse 12.3 didn't like enum bitfields.
-#define BITFIELD(size)
-#else
-#define BITFIELD(size) :size
-#endif
-
-
 namespace OCC {
+
+class SyncFileItem;
+class SyncJournalFileRecord;
+typedef QSharedPointer<SyncFileItem> SyncFileItemPtr;
 
 /**
  * @brief The SyncFileItem class
@@ -72,20 +68,41 @@ public:
         FileIgnored, ///< The file is in the ignored list (or blacklisted with no retries left)
         Restoration, ///< The file was restored because what should have been done was not allowed
 
-        /** For files whose errors were blacklisted.
+        /** For errors that should only appear in the error view.
          *
-         * If _instruction == IGNORE, the file wasn't even reattempted.
+         * Some errors also produce a summary message. Usually displaying that message is
+         * sufficient, but the individual errors should still appear in the issues tab.
          *
-         * These errors should usually be shown as NormalErrors, but not be as loud
-         * as them.
+         * These errors do cause the sync to fail.
+         *
+         * A NormalError that isn't as prominent.
+         */
+        DetailError,
+
+        /** For files whose errors were blacklisted
+         *
+         * If an file is blacklisted due to an error it isn't even reattempted. These
+         * errors should appear in the issues tab, but not on the account settings and
+         * should not cause the sync run to fail.
+         *
+         * A DetailError that doesn't cause sync failure.
          */
         BlacklistedError
     };
 
+    SyncJournalFileRecord toSyncJournalFileRecordWithInode(const QString &localFileName);
+
+    /** Creates a basic SyncFileItem from a DB record
+     *
+     * This is intended in particular for read-update-write cycles that need
+     * to go through a a SyncFileItem, like PollJob.
+     */
+    static SyncFileItemPtr fromSyncJournalFileRecord(const SyncJournalFileRecord &rec);
+
+
     SyncFileItem()
         : _type(UnknownType)
         , _direction(None)
-        , _isDirectory(false)
         , _serverHasIgnoredFiles(false)
         , _hasBlacklistEntry(false)
         , _errorMayBeBlacklisted(false)
@@ -97,6 +114,8 @@ public:
         , _modtime(0)
         , _size(0)
         , _inode(0)
+        , _previousSize(0)
+        , _previousModtime(0)
     {
     }
 
@@ -152,6 +171,11 @@ public:
         return _file.isEmpty();
     }
 
+    bool isDirectory() const
+    {
+        return _type == SyncFileItem::Directory;
+    }
+
     /**
      * True if the item had any kind of error.
      *
@@ -173,7 +197,6 @@ public:
     QString _renameTarget;
     Type _type BITFIELD(3);
     Direction _direction BITFIELD(3);
-    bool _isDirectory BITFIELD(1);
     bool _serverHasIgnoredFiles BITFIELD(1);
 
     /// Whether there's an entry in the blacklist table.
@@ -192,6 +215,7 @@ public:
     Status _status BITFIELD(4);
     bool _isRestoration BITFIELD(1); // The original operation was forbidden, and this is a restoration
     quint16 _httpErrorCode;
+    RemotePermissions _remotePerm;
     QString _errorString; // Contains a string only in case of error
     QByteArray _responseTimeStamp;
     quint32 _affectedItems; // the number of affected items by the operation on this item.
@@ -205,28 +229,23 @@ public:
     quint64 _size;
     quint64 _inode;
     QByteArray _fileId;
-    QByteArray _remotePerm;
 
+    // This is the value for the 'new' side, matching with _size and _modtime.
+    //
     // When is this set, and is it the local or the remote checksum?
     // - if mtime or size changed locally for *.eml files (local checksum)
     // - for potential renames of local files (local checksum)
-    // - for conflicts (remote checksum) (what about eval_rename/new reconcile?)
+    // - for conflicts (remote checksum)
     QByteArray _checksumHeader;
+
+    // The size and modtime of the file getting overwritten (on the disk for downloads, on the server for uploads).
+    quint64 _previousSize;
+    time_t _previousModtime;
 
     QString _directDownloadUrl;
     QString _directDownloadCookies;
-
-    struct
-    {
-        quint64 _other_size;
-        time_t _other_modtime;
-        QByteArray _other_etag;
-        QByteArray _other_fileId;
-        enum csync_instructions_e _other_instruction BITFIELD(16);
-    } log;
 };
 
-typedef QSharedPointer<SyncFileItem> SyncFileItemPtr;
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)
 {
     return *item1 < *item2;

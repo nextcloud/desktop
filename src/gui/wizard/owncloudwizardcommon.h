@@ -28,12 +28,6 @@ namespace WizardCommon {
     QString subTitleTemplate();
     void initErrorLabel(QLabel *errorLabel);
 
-    enum AuthType {
-        HttpCreds,
-        Shibboleth,
-        OAuth
-    };
-
     enum SyncMode {
         SelectiveMode,
         BoxMode

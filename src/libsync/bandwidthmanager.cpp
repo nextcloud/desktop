@@ -16,7 +16,7 @@
 #include "propagatedownload.h"
 #include "propagateupload.h"
 #include "propagatorjobs.h"
-#include "utility.h"
+#include "common/utility.h"
 
 #ifdef Q_OS_WIN
 #include <windef.h>
@@ -56,34 +56,34 @@ BandwidthManager::BandwidthManager(OwncloudPropagator *p)
     _currentUploadLimit = _propagator->_uploadLimit.fetchAndAddAcquire(0);
     _currentDownloadLimit = _propagator->_downloadLimit.fetchAndAddAcquire(0);
 
-    QObject::connect(&_switchingTimer, SIGNAL(timeout()), this, SLOT(switchingTimerExpired()));
+    QObject::connect(&_switchingTimer, &QTimer::timeout, this, &BandwidthManager::switchingTimerExpired);
     _switchingTimer.setInterval(10 * 1000);
     _switchingTimer.start();
     QMetaObject::invokeMethod(this, "switchingTimerExpired", Qt::QueuedConnection);
 
     // absolute uploads/downloads
-    QObject::connect(&_absoluteLimitTimer, SIGNAL(timeout()), this, SLOT(absoluteLimitTimerExpired()));
+    QObject::connect(&_absoluteLimitTimer, &QTimer::timeout, this, &BandwidthManager::absoluteLimitTimerExpired);
     _absoluteLimitTimer.setInterval(1000);
     _absoluteLimitTimer.start();
 
     // Relative uploads
-    QObject::connect(&_relativeUploadMeasuringTimer, SIGNAL(timeout()),
-        this, SLOT(relativeUploadMeasuringTimerExpired()));
+    QObject::connect(&_relativeUploadMeasuringTimer, &QTimer::timeout,
+        this, &BandwidthManager::relativeUploadMeasuringTimerExpired);
     _relativeUploadMeasuringTimer.setInterval(relativeLimitMeasuringTimerIntervalMsec);
     _relativeUploadMeasuringTimer.start();
     _relativeUploadMeasuringTimer.setSingleShot(true); // will be restarted from the delay timer
-    QObject::connect(&_relativeUploadDelayTimer, SIGNAL(timeout()),
-        this, SLOT(relativeUploadDelayTimerExpired()));
+    QObject::connect(&_relativeUploadDelayTimer, &QTimer::timeout,
+        this, &BandwidthManager::relativeUploadDelayTimerExpired);
     _relativeUploadDelayTimer.setSingleShot(true); // will be restarted from the measuring timer
 
     // Relative downloads
-    QObject::connect(&_relativeDownloadMeasuringTimer, SIGNAL(timeout()),
-        this, SLOT(relativeDownloadMeasuringTimerExpired()));
+    QObject::connect(&_relativeDownloadMeasuringTimer, &QTimer::timeout,
+        this, &BandwidthManager::relativeDownloadMeasuringTimerExpired);
     _relativeDownloadMeasuringTimer.setInterval(relativeLimitMeasuringTimerIntervalMsec);
     _relativeDownloadMeasuringTimer.start();
     _relativeDownloadMeasuringTimer.setSingleShot(true); // will be restarted from the delay timer
-    QObject::connect(&_relativeDownloadDelayTimer, SIGNAL(timeout()),
-        this, SLOT(relativeDownloadDelayTimerExpired()));
+    QObject::connect(&_relativeDownloadDelayTimer, &QTimer::timeout,
+        this, &BandwidthManager::relativeDownloadDelayTimerExpired);
     _relativeDownloadDelayTimer.setSingleShot(true); // will be restarted from the measuring timer
 }
 
@@ -95,7 +95,7 @@ void BandwidthManager::registerUploadDevice(UploadDevice *p)
 {
     _absoluteUploadDeviceList.append(p);
     _relativeUploadDeviceList.append(p);
-    QObject::connect(p, SIGNAL(destroyed(QObject *)), this, SLOT(unregisterUploadDevice(QObject *)));
+    QObject::connect(p, &QObject::destroyed, this, &BandwidthManager::unregisterUploadDevice);
 
     if (usingAbsoluteUploadLimit()) {
         p->setBandwidthLimited(true);
@@ -111,14 +111,7 @@ void BandwidthManager::registerUploadDevice(UploadDevice *p)
 
 void BandwidthManager::unregisterUploadDevice(QObject *o)
 {
-    UploadDevice *p = qobject_cast<UploadDevice *>(o);
-    if (p) {
-        unregisterUploadDevice(p);
-    }
-}
-
-void BandwidthManager::unregisterUploadDevice(UploadDevice *p)
-{
+    auto p = reinterpret_cast<UploadDevice *>(o); // note, we might already be in the ~QObject
     _absoluteUploadDeviceList.removeAll(p);
     _relativeUploadDeviceList.removeAll(p);
     if (p == _relativeLimitCurrentMeasuredDevice) {
@@ -130,7 +123,7 @@ void BandwidthManager::unregisterUploadDevice(UploadDevice *p)
 void BandwidthManager::registerDownloadJob(GETFileJob *j)
 {
     _downloadJobList.append(j);
-    QObject::connect(j, SIGNAL(destroyed(QObject *)), this, SLOT(unregisterDownloadJob(QObject *)));
+    QObject::connect(j, &QObject::destroyed, this, &BandwidthManager::unregisterDownloadJob);
 
     if (usingAbsoluteDownloadLimit()) {
         j->setBandwidthLimited(true);
@@ -144,20 +137,13 @@ void BandwidthManager::registerDownloadJob(GETFileJob *j)
     }
 }
 
-void BandwidthManager::unregisterDownloadJob(GETFileJob *j)
+void BandwidthManager::unregisterDownloadJob(QObject *o)
 {
+    GETFileJob *j = reinterpret_cast<GETFileJob *>(o); // note, we might already be in the ~QObject
     _downloadJobList.removeAll(j);
     if (_relativeLimitCurrentMeasuredJob == j) {
         _relativeLimitCurrentMeasuredJob = 0;
         _relativeDownloadLimitProgressAtMeasuringRestart = 0;
-    }
-}
-
-void BandwidthManager::unregisterDownloadJob(QObject *o)
-{
-    GETFileJob *p = qobject_cast<GETFileJob *>(o);
-    if (p) {
-        unregisterDownloadJob(p);
     }
 }
 

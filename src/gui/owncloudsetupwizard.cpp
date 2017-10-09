@@ -24,7 +24,6 @@
 #include "owncloudsetupwizard.h"
 #include "configfile.h"
 #include "folderman.h"
-#include "utility.h"
 #include "accessmanager.h"
 #include "account.h"
 #include "networkjobs.h"
@@ -45,19 +44,19 @@ OwncloudSetupWizard::OwncloudSetupWizard(QObject *parent)
     , _ocWizard(new OwncloudWizard)
     , _remoteFolder()
 {
-    connect(_ocWizard, SIGNAL(determineAuthType(const QString &)),
-        this, SLOT(slotDetermineAuthType(const QString &)));
-    connect(_ocWizard, SIGNAL(connectToOCUrl(const QString &)),
-        this, SLOT(slotConnectToOCUrl(const QString &)));
-    connect(_ocWizard, SIGNAL(createLocalAndRemoteFolders(QString, QString)),
-        this, SLOT(slotCreateLocalAndRemoteFolders(QString, QString)));
+    connect(_ocWizard, &OwncloudWizard::determineAuthType,
+        this, &OwncloudSetupWizard::slotDetermineAuthType);
+    connect(_ocWizard, &OwncloudWizard::connectToOCUrl,
+        this, &OwncloudSetupWizard::slotConnectToOCUrl);
+    connect(_ocWizard, &OwncloudWizard::createLocalAndRemoteFolders,
+        this, &OwncloudSetupWizard::slotCreateLocalAndRemoteFolders);
     /* basicSetupFinished might be called from a reply from the network.
        slotAssistantFinished might destroy the temporary QNetworkAccessManager.
        Therefore Qt::QueuedConnection is required */
-    connect(_ocWizard, SIGNAL(basicSetupFinished(int)),
-        this, SLOT(slotAssistantFinished(int)), Qt::QueuedConnection);
-    connect(_ocWizard, SIGNAL(finished(int)), SLOT(deleteLater()));
-    connect(_ocWizard, SIGNAL(skipFolderConfiguration()), SLOT(slotSkipFolderConfiguration()));
+    connect(_ocWizard, &OwncloudWizard::basicSetupFinished,
+        this, &OwncloudSetupWizard::slotAssistantFinished, Qt::QueuedConnection);
+    connect(_ocWizard, &QDialog::finished, this, &QObject::deleteLater);
+    connect(_ocWizard, &OwncloudWizard::skipFolderConfiguration, this, &OwncloudSetupWizard::slotSkipFolderConfiguration);
 }
 
 OwncloudSetupWizard::~OwncloudSetupWizard()
@@ -174,13 +173,41 @@ void OwncloudSetupWizard::slotContinueDetermineAuth()
 
     // Set fake credentials before we check what credential it actually is.
     account->setCredentials(CredentialsFactory::create("dummy"));
-    CheckServerJob *job = new CheckServerJob(_ocWizard->account(), this);
-    job->setIgnoreCredentialFailure(true);
-    connect(job, SIGNAL(instanceFound(QUrl, QJsonObject)), SLOT(slotOwnCloudFoundAuth(QUrl, QJsonObject)));
-    connect(job, SIGNAL(instanceNotFound(QNetworkReply *)), SLOT(slotNoOwnCloudFoundAuth(QNetworkReply *)));
-    connect(job, SIGNAL(timeout(const QUrl &)), SLOT(slotNoOwnCloudFoundAuthTimeout(const QUrl &)));
-    job->setTimeout((account->url().scheme() == "https") ? 30 * 1000 : 10 * 1000);
-    job->start();
+
+    // Before we check the auth type, resolve any permanent redirect
+    // chain there might be. We cannot do this only on url/status.php
+    // in CheckServerJob, because things like url shorteners don't
+    // redirect subpaths.
+    auto redirectCheckJob = account->sendRequest("GET", account->url());
+
+    // Use a significantly reduced timeout for this redirect check:
+    // the 5-minute default is inappropriate.
+    redirectCheckJob->setTimeout(qMin(2000ll, redirectCheckJob->timeoutMsec()));
+
+    // Grab the chain of permanent redirects and adjust the account url
+    // accordingly
+    auto permanentRedirects = std::make_shared<int>(0);
+    connect(redirectCheckJob, &AbstractNetworkJob::redirected, this,
+        [permanentRedirects, account](QNetworkReply *reply, const QUrl &targetUrl, int count) {
+            int httpCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+            if (count == *permanentRedirects && (httpCode == 301 || httpCode == 308)) {
+                qCInfo(lcWizard) << account->url() << " was redirected to" << targetUrl;
+                account->setUrl(targetUrl);
+                *permanentRedirects += 1;
+            }
+        });
+
+    // When done, start checking status.php.
+    connect(redirectCheckJob, &SimpleNetworkJob::finishedSignal, this,
+        [this, account]() {
+            CheckServerJob *job = new CheckServerJob(account, this);
+            job->setIgnoreCredentialFailure(true);
+            connect(job, &CheckServerJob::instanceFound, this, &OwncloudSetupWizard::slotOwnCloudFoundAuth);
+            connect(job, &CheckServerJob::instanceNotFound, this, &OwncloudSetupWizard::slotNoOwnCloudFoundAuth);
+            connect(job, &CheckServerJob::timeout, this, &OwncloudSetupWizard::slotNoOwnCloudFoundAuthTimeout);
+            job->setTimeout((account->url().scheme() == "https") ? 30 * 1000 : 10 * 1000);
+            job->start();
+        });
 }
 
 void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl &url, const QJsonObject &info)
@@ -197,19 +224,16 @@ void OwncloudSetupWizard::slotOwnCloudFoundAuth(const QUrl &url, const QJsonObje
     // https://github.com/owncloud/core/pull/27473/files
     _ocWizard->account()->setServerVersion(serverVersion);
 
-    QString p = url.path();
-    if (p.endsWith("/status.php")) {
+    if (url != _ocWizard->account()->url()) {
         // We might be redirected, update the account
-        QUrl redirectedUrl = url;
-        redirectedUrl.setPath(url.path().left(url.path().length() - 11));
-        _ocWizard->account()->setUrl(redirectedUrl);
-        qCInfo(lcWizard) << " was redirected to" << redirectedUrl.toString();
+        _ocWizard->account()->setUrl(url);
+        qCInfo(lcWizard) << " was redirected to" << url.toString();
     }
 
     DetermineAuthTypeJob *job = new DetermineAuthTypeJob(_ocWizard->account(), this);
     job->setIgnoreCredentialFailure(true);
-    connect(job, SIGNAL(authType(WizardCommon::AuthType)),
-        _ocWizard, SLOT(setAuthType(WizardCommon::AuthType)));
+    connect(job, &DetermineAuthTypeJob::authType,
+        _ocWizard, &OwncloudWizard::setAuthType);
     job->start();
 }
 
@@ -286,8 +310,8 @@ void OwncloudSetupWizard::testOwnCloudConnect()
     // so don't automatically follow redirects.
     job->setFollowRedirects(false);
     job->setProperties(QList<QByteArray>() << "getlastmodified");
-    connect(job, SIGNAL(result(QVariantMap)), _ocWizard, SLOT(successfulStep()));
-    connect(job, SIGNAL(finishedWithError()), this, SLOT(slotAuthError()));
+    connect(job, &PropfindJob::result, _ocWizard, &OwncloudWizard::successfulStep);
+    connect(job, &PropfindJob::finishedWithError, this, &OwncloudSetupWizard::slotAuthError);
     job->start();
 }
 
@@ -405,7 +429,7 @@ void OwncloudSetupWizard::slotCreateLocalAndRemoteFolders(const QString &localFo
     }
     if (nextStep) {
         EntityExistsJob *job = new EntityExistsJob(_ocWizard->account(), _ocWizard->account()->davPath() + remoteFolder, this);
-        connect(job, SIGNAL(exists(QNetworkReply *)), SLOT(slotRemoteFolderExists(QNetworkReply *)));
+        connect(job, &EntityExistsJob::exists, this, &OwncloudSetupWizard::slotRemoteFolderExists);
         job->start();
     } else {
         finalizeSetup(false);
@@ -578,8 +602,8 @@ void OwncloudSetupWizard::slotSkipFolderConfiguration()
 {
     applyAccountChanges();
 
-    disconnect(_ocWizard, SIGNAL(basicSetupFinished(int)),
-        this, SLOT(slotAssistantFinished(int)));
+    disconnect(_ocWizard, &OwncloudWizard::basicSetupFinished,
+        this, &OwncloudSetupWizard::slotAssistantFinished);
     _ocWizard->close();
     emit ownCloudWizardDone(QDialog::Accepted);
 }
@@ -599,60 +623,6 @@ AccountState *OwncloudSetupWizard::applyAccountChanges()
     auto newState = manager->addAccount(newAccount);
     manager->save();
     return newState;
-}
-
-
-DetermineAuthTypeJob::DetermineAuthTypeJob(AccountPtr account, QObject *parent)
-    : AbstractNetworkJob(account, QString(), parent)
-    , _redirects(0)
-{
-    // This job implements special redirect handling to detect redirections
-    // to pages that are indicative of Shibboleth-using servers. Hence we
-    // disable the standard job redirection handling here.
-    _followRedirects = false;
-}
-
-void DetermineAuthTypeJob::start()
-{
-    sendRequest("GET", account()->davUrl());
-    AbstractNetworkJob::start();
-}
-
-bool DetermineAuthTypeJob::finished()
-{
-    QUrl redirection = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-    qCDebug(lcWizard) << redirection.toString();
-    if (_redirects >= maxRedirects()) {
-        redirection.clear();
-    }
-    if ((reply()->error() == QNetworkReply::AuthenticationRequiredError) || redirection.isEmpty()) {
-        if (reply()->rawHeader("WWW-Authenticate").contains("Bearer ")) {
-            emit authType(WizardCommon::OAuth);
-        } else {
-            emit authType(WizardCommon::HttpCreds);
-        }
-    } else if (redirection.toString().endsWith(account()->davPath())) {
-        // do a new run
-        _redirects++;
-        resetTimeout();
-        sendRequest("GET", redirection);
-        return false; // don't discard
-    } else {
-#ifndef NO_SHIBBOLETH
-        QRegExp shibbolethyWords("SAML|wayf");
-
-        shibbolethyWords.setCaseSensitivity(Qt::CaseInsensitive);
-        if (redirection.toString().contains(shibbolethyWords)) {
-            emit authType(WizardCommon::Shibboleth);
-        } else
-#endif
-        {
-            // TODO: Send an error.
-            // eh?
-            emit authType(WizardCommon::HttpCreds);
-        }
-    }
-    return true;
 }
 
 } // namespace OCC

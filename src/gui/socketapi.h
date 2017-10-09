@@ -18,7 +18,7 @@
 
 #include "syncfileitem.h"
 #include "syncfilestatus.h"
-#include "ownsql.h"
+// #include "ownsql.h"
 
 #if defined(Q_OS_MAC)
 #include "socketapisocket_mac.h"
@@ -53,6 +53,7 @@ public slots:
     void slotUpdateFolderView(Folder *f);
     void slotUnregisterPath(const QString &alias);
     void slotRegisterPath(const QString &alias);
+    void broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus);
 
 signals:
     void shareCommandReceived(const QString &sharePath, const QString &localPath);
@@ -62,7 +63,9 @@ private slots:
     void onLostConnection();
     void slotSocketDestroyed(QObject *obj);
     void slotReadSocket();
-    void broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus);
+
+    void copyPrivateLinkToClipboard(const QString &link) const;
+    void emailPrivateLink(const QString &link) const;
 
 private:
     void broadcastMessage(const QString &msg, bool doWait = false);
@@ -84,7 +87,6 @@ private:
     Q_INVOKABLE void command_GET_STRINGS(const QString &argument, SocketListener *listener);
 
     QString buildRegisterPathMessage(const QString &path);
-    QUrl getPrivateLinkUrl(const QString &localFile) const;
 
     QSet<QString> _registeredAliases;
     QList<SocketListener> _listeners;

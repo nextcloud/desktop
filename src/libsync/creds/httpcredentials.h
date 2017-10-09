@@ -19,6 +19,7 @@
 #include <QMap>
 #include <QSslCertificate>
 #include <QSslKey>
+#include <QNetworkRequest>
 #include "creds/abstractcredentials.h"
 
 class QNetworkReply;
@@ -75,6 +76,9 @@ class OWNCLOUDSYNC_EXPORT HttpCredentials : public AbstractCredentials
     friend class HttpCredentialsAccessManager;
 
 public:
+    /// Don't add credentials if this is set on a QNetworkRequest
+    static constexpr QNetworkRequest::Attribute DontAddCredentialsAttribute = QNetworkRequest::User;
+
     explicit HttpCredentials();
     HttpCredentials(const QString &user, const QString &password, const QSslCertificate &certificate = QSslCertificate(), const QSslKey &key = QSslKey());
 
@@ -115,6 +119,18 @@ private Q_SLOTS:
     void slotWriteJobDone(QKeychain::Job *);
 
 protected:
+    /** Reads data from keychain locations
+     *
+     * Goes through
+     *   slotReadClientCertPEMJobDone to
+     *   slotReadClientCertPEMJobDone to
+     *   slotReadJobDone
+     */
+    void fetchFromKeychainHelper();
+
+    /// Wipes legacy keychain locations
+    void deleteOldKeychainEntries();
+
     QString _user;
     QString _password; // user's password, or access_token for OAuth
     QString _refreshToken; // OAuth _refreshToken, set if OAuth is used.
@@ -124,6 +140,7 @@ protected:
     bool _ready;
     QSslKey _clientSslKey;
     QSslCertificate _clientSslCertificate;
+    bool _keychainMigration;
 };
 
 

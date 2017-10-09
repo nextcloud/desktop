@@ -13,15 +13,12 @@
  */
 
 #include <QtGui>
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QtWidgets>
-#endif
 
 #include "protocolwidget.h"
 #include "configfile.h"
 #include "syncresult.h"
 #include "logger.h"
-#include "utility.h"
 #include "theme.h"
 #include "folderman.h"
 #include "syncfileitem.h"
@@ -41,10 +38,10 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
 {
     _ui->setupUi(this);
 
-    connect(ProgressDispatcher::instance(), SIGNAL(itemCompleted(QString, SyncFileItemPtr)),
-        this, SLOT(slotItemCompleted(QString, SyncFileItemPtr)));
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::itemCompleted,
+        this, &ProtocolWidget::slotItemCompleted);
 
-    connect(_ui->_treeWidget, SIGNAL(itemActivated(QTreeWidgetItem *, int)), SLOT(slotOpenFile(QTreeWidgetItem *, int)));
+    connect(_ui->_treeWidget, &QTreeWidget::itemActivated, this, &ProtocolWidget::slotOpenFile);
 
     // Adjust copyToClipboard() when making changes here!
     QStringList header;
@@ -77,7 +74,7 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
     QPushButton *copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
     copyBtn->setToolTip(tr("Copy the activity list to the clipboard."));
     copyBtn->setEnabled(true);
-    connect(copyBtn, SIGNAL(clicked()), SIGNAL(copyToClipboard()));
+    connect(copyBtn, &QAbstractButton::clicked, this, &ProtocolWidget::copyToClipboard);
 }
 
 ProtocolWidget::~ProtocolWidget()
@@ -150,6 +147,7 @@ QTreeWidgetItem *ProtocolWidget::createCompletedTreewidgetItem(const QString &fo
     QIcon icon;
     if (item._status == SyncFileItem::NormalError
         || item._status == SyncFileItem::FatalError
+        || item._status == SyncFileItem::DetailError
         || item._status == SyncFileItem::BlacklistedError) {
         icon = Theme::instance()->syncStateIcon(SyncResult::Error);
     } else if (Progress::isWarningKind(item._status)) {

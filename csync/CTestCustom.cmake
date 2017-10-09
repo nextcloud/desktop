@@ -1,4 +1,0 @@
-set(CTEST_CUSTOM_MEMCHECK_IGNORE
-  ${CTEST_CUSTOM_MEMCHECK_IGNORE}
-  check_std_c_jhash
-)

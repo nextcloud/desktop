@@ -16,6 +16,7 @@
 #include <QPointer>
 #include <QTcpServer>
 #include <QUrl>
+#include "accountfwd.h"
 
 namespace OCC {
 

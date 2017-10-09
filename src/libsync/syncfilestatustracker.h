@@ -16,7 +16,7 @@
 #ifndef SYNCFILESTATUSTRACKER_H
 #define SYNCFILESTATUSTRACKER_H
 
-#include "ownsql.h"
+// #include "ownsql.h"
 #include "syncfileitem.h"
 #include "syncfilestatus.h"
 #include <map>
@@ -51,6 +51,12 @@ private slots:
     void slotSyncEngineRunningChanged();
 
 private:
+    struct PathComparator {
+        bool operator()( const QString& lhs, const QString& rhs ) const;
+    };
+    typedef std::map<QString, SyncFileStatus::SyncFileStatusTag, PathComparator> ProblemsMap;
+    SyncFileStatus::SyncFileStatusTag lookupProblem(const QString &pathToMatch, const ProblemsMap &problemMap);
+
     enum SharedFlag { UnknownShared,
         NotShared,
         Shared };
@@ -65,7 +71,7 @@ private:
 
     SyncEngine *_syncEngine;
 
-    std::map<QString, SyncFileStatus::SyncFileStatusTag> _syncProblems;
+    ProblemsMap _syncProblems;
     QSet<QString> _dirtyPaths;
     // Counts the number direct children currently being synced (has unfinished propagation jobs).
     // We'll show a file/directory as SYNC as long as its sync count is > 0.

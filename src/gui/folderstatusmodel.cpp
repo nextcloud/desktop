@@ -15,8 +15,7 @@
 #include "folderstatusmodel.h"
 #include "folderman.h"
 #include "accountstate.h"
-#include "utility.h"
-#include "asserts.h"
+#include "common/asserts.h"
 #include <theme.h>
 #include <account.h>
 #include "folderstatusdelegate.h"
@@ -68,10 +67,10 @@ void FolderStatusModel::setAccountState(const AccountState *accountState)
     _folders.clear();
     _accountState = accountState;
 
-    connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(Folder *)),
-        SLOT(slotFolderSyncStateChange(Folder *)), Qt::UniqueConnection);
-    connect(FolderMan::instance(), SIGNAL(scheduleQueueChanged()),
-        SLOT(slotFolderScheduleQueueChanged()), Qt::UniqueConnection);
+    connect(FolderMan::instance(), &FolderMan::folderSyncStateChange,
+        this, &FolderStatusModel::slotFolderSyncStateChange, Qt::UniqueConnection);
+    connect(FolderMan::instance(), &FolderMan::scheduleQueueChanged,
+        this, &FolderStatusModel::slotFolderScheduleQueueChanged, Qt::UniqueConnection);
 
     auto folders = FolderMan::instance()->map();
     foreach (auto f, folders) {
@@ -86,8 +85,8 @@ void FolderStatusModel::setAccountState(const AccountState *accountState)
         info._checked = Qt::PartiallyChecked;
         _folders << info;
 
-        connect(f, SIGNAL(progressInfo(ProgressInfo)), this, SLOT(slotSetProgress(ProgressInfo)), Qt::UniqueConnection);
-        connect(f, SIGNAL(newBigFolderDiscovered(QString)), this, SLOT(slotNewBigFolder()), Qt::UniqueConnection);
+        connect(f, &Folder::progressInfo, this, &FolderStatusModel::slotSetProgress, Qt::UniqueConnection);
+        connect(f, &Folder::newBigFolderDiscovered, this, &FolderStatusModel::slotNewBigFolder, Qt::UniqueConnection);
     }
 
     // Sort by header text
@@ -111,26 +110,14 @@ Qt::ItemFlags FolderStatusModel::flags(const QModelIndex &index) const
     switch (classify(index)) {
     case AddButton: {
         Qt::ItemFlags ret;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
         ret = Qt::ItemNeverHasChildren;
-#endif
         if (!_accountState->isConnected()) {
             return ret;
-        } else if (_folders.count() == 1) {
-            auto remotePath = _folders.at(0)._folder->remotePath();
-            // special case when syncing the entire owncloud: disable the add folder button (#3438)
-            if (remotePath.isEmpty() || remotePath == QLatin1String("/")) {
-                return ret;
-            }
         }
         return Qt::ItemIsEnabled | ret;
     }
     case FetchLabel:
-        return Qt::ItemIsEnabled
-#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0)
-            | Qt::ItemNeverHasChildren
-#endif
-            ;
+        return Qt::ItemIsEnabled | Qt::ItemNeverHasChildren;
     case RootFolder:
         return Qt::ItemIsEnabled;
     case SubFolder:
@@ -154,15 +141,6 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         } else if (role == Qt::ToolTipRole) {
             if (!_accountState->isConnected()) {
                 return tr("You need to be connected to add a folder");
-            }
-            if (_folders.count() == 1) {
-                auto remotePath = _folders.at(0)._folder->remotePath();
-                if (remotePath.isEmpty() || remotePath == QLatin1String("/")) {
-                    // Syncing the entire owncloud: disable the add folder button (#3438)
-                    return tr("Adding folder is disabled because you are already syncing all your files. "
-                              "If you want to sync multiple folders, please remove the currently "
-                              "configured root folder.");
-                }
             }
             return tr("Click this button to add a folder to synchronize.");
         }
@@ -578,12 +556,12 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
                                            << "http://owncloud.org/ns:size"
                                            << "http://owncloud.org/ns:permissions");
     job->setTimeout(60 * 1000);
-    connect(job, SIGNAL(directoryListingSubfolders(QStringList)),
-        SLOT(slotUpdateDirectories(QStringList)));
-    connect(job, SIGNAL(finishedWithError(QNetworkReply *)),
-        this, SLOT(slotLscolFinishedWithError(QNetworkReply *)));
-    connect(job, SIGNAL(directoryListingIterated(const QString &, const QMap<QString, QString> &)),
-        this, SLOT(slotGatherPermissions(const QString &, const QMap<QString, QString> &)));
+    connect(job, &LsColJob::directoryListingSubfolders,
+        this, &FolderStatusModel::slotUpdateDirectories);
+    connect(job, &LsColJob::finishedWithError,
+        this, &FolderStatusModel::slotLscolFinishedWithError);
+    connect(job, &LsColJob::directoryListingIterated,
+        this, &FolderStatusModel::slotGatherPermissions);
 
     job->start();
 
@@ -592,7 +570,7 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
 
     // Show 'fetching data...' hint after a while.
     _fetchingItems[persistentIndex].start();
-    QTimer::singleShot(1000, this, SLOT(slotShowFetchProgress()));
+    QTimer::singleShot(1000, this, &FolderStatusModel::slotShowFetchProgress);
 }
 
 void FolderStatusModel::slotGatherPermissions(const QString &href, const QMap<QString, QString> &map)

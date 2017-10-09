@@ -16,19 +16,15 @@
 #include "propagatorjobs.h"
 #include "owncloudpropagator_p.h"
 #include "propagateremotemove.h"
-#include "utility.h"
-#include "syncjournaldb.h"
-#include "syncjournalfilerecord.h"
+#include "common/utility.h"
+#include "common/syncjournaldb.h"
+#include "common/syncjournalfilerecord.h"
 #include "filesystem.h"
 #include <qfile.h>
 #include <qdir.h>
 #include <qdiriterator.h>
 #include <qtemporaryfile.h>
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-#include <qabstractfileengine.h>
-#else
 #include <qsavefile.h>
-#endif
 #include <QDateTime>
 #include <qstack.h>
 #include <QCoreApplication>
@@ -125,7 +121,7 @@ void PropagateLocalRemove::start()
         return;
     }
 
-    if (_item->_isDirectory) {
+    if (_item->isDirectory()) {
         if (QDir(filename).exists() && !removeRecursively(QString())) {
             done(SyncFileItem::NormalError, _error);
             return;
@@ -139,7 +135,7 @@ void PropagateLocalRemove::start()
         }
     }
     propagator()->reportProgress(*_item, 0);
-    propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->_isDirectory);
+    propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory());
     propagator()->_journal->commit("Local remove");
     done(SyncFileItem::Success);
 }
@@ -182,7 +178,7 @@ void PropagateLocalMkdir::start()
     // Adding an entry with a dummy etag to the database still makes sense here
     // so the database is aware that this folder exists even if the sync is aborted
     // before the correct etag is stored.
-    SyncJournalFileRecord record(*_item, newDirStr);
+    SyncJournalFileRecord record = _item->toSyncJournalFileRecordWithInode(newDirStr);
     record._etag = "_invalid_";
     if (!propagator()->_journal->setFileRecord(record)) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
@@ -235,21 +231,21 @@ void PropagateLocalRename::start()
         }
     }
 
-    SyncJournalFileRecord oldRecord =
-        propagator()->_journal->getFileRecord(_item->_originalFile);
+    SyncJournalFileRecord oldRecord;
+    propagator()->_journal->getFileRecord(_item->_originalFile, &oldRecord);
     propagator()->_journal->deleteFileRecord(_item->_originalFile);
 
     // store the rename file name in the item.
     const auto oldFile = _item->_file;
     _item->_file = _item->_renameTarget;
 
-    SyncJournalFileRecord record(*_item, targetFile);
-    record._path = _item->_renameTarget;
+    SyncJournalFileRecord record = _item->toSyncJournalFileRecordWithInode(targetFile);
+    record._path = _item->_renameTarget.toUtf8();
     if (oldRecord.isValid()) {
         record._checksumHeader = oldRecord._checksumHeader;
     }
 
-    if (!_item->_isDirectory) { // Directories are saved at the end
+    if (!_item->isDirectory()) { // Directories are saved at the end
         if (!propagator()->_journal->setFileRecord(record)) {
             done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
             return;

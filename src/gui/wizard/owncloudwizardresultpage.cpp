@@ -41,7 +41,7 @@ OwncloudWizardResultPage::OwncloudWizardResultPage()
     _ui.pbOpenLocal->setIcon(QIcon(QLatin1String(":/client/resources/folder-sync.png")));
     _ui.pbOpenLocal->setIconSize(QSize(48, 48));
     _ui.pbOpenLocal->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    connect(_ui.pbOpenLocal, SIGNAL(clicked()), SLOT(slotOpenLocal()));
+    connect(_ui.pbOpenLocal, &QAbstractButton::clicked, this, &OwncloudWizardResultPage::slotOpenLocal);
 
     Theme *theme = Theme::instance();
     QIcon appIcon = theme->applicationIcon();
@@ -49,7 +49,7 @@ OwncloudWizardResultPage::OwncloudWizardResultPage()
     _ui.pbOpenServer->setIcon(appIcon.pixmap(48));
     _ui.pbOpenServer->setIconSize(QSize(48, 48));
     _ui.pbOpenServer->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    connect(_ui.pbOpenServer, SIGNAL(clicked()), SLOT(slotOpenServer()));
+    connect(_ui.pbOpenServer, &QAbstractButton::clicked, this, &OwncloudWizardResultPage::slotOpenServer);
     setupCustomization();
 }
 

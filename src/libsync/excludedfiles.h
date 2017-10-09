@@ -20,11 +20,9 @@
 #include <QSet>
 #include <QString>
 
-extern "C" {
 #include "std/c_string.h"
 #include "csync.h"
 #include "csync_exclude.h" // for CSYNC_EXCLUDE_TYPE
-}
 
 namespace OCC {
 

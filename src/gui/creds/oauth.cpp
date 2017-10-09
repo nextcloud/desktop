@@ -15,11 +15,13 @@
 #include <QDesktopServices>
 #include <QNetworkReply>
 #include <QTimer>
+#include <QBuffer>
 #include "account.h"
 #include "creds/oauth.h"
 #include <QJsonObject>
 #include <QJsonDocument>
 #include "theme.h"
+#include "networkjobs.h"
 
 namespace OCC {
 
@@ -32,6 +34,8 @@ OAuth::~OAuth()
 static void httpReplyAndClose(QTcpSocket *socket, const char *code, const char *html,
     const char *moreHeaders = nullptr)
 {
+    if (!socket)
+        return; // socket can have been deleted if the browser was closed
     socket->write("HTTP/1.1 ");
     socket->write(code);
     socket->write("\r\nContent-Type: text/html\r\nConnection: close\r\nContent-Length: ");
@@ -60,9 +64,9 @@ void OAuth::start()
         return;
 
     QObject::connect(&_server, &QTcpServer::newConnection, this, [this] {
-        while (QTcpSocket *socket = _server.nextPendingConnection()) {
-            QObject::connect(socket, &QTcpSocket::disconnected, socket, &QTcpSocket::deleteLater);
-            QObject::connect(socket, &QIODevice::readyRead, this, [this, socket] {
+        while (QPointer<QTcpSocket> socket = _server.nextPendingConnection()) {
+            QObject::connect(socket.data(), &QTcpSocket::disconnected, socket.data(), &QTcpSocket::deleteLater);
+            QObject::connect(socket.data(), &QIODevice::readyRead, this, [this, socket] {
                 QByteArray peek = socket->peek(qMin(socket->bytesAvailable(), 4000LL)); //The code should always be within the first 4K
                 if (peek.indexOf('\n') < 0)
                     return; // wait until we find a \n
@@ -74,17 +78,23 @@ void OAuth::start()
 
                 QString code = rx.cap(1); // The 'code' is the first capture of the regexp
 
-                QUrl requestToken(_account->url().toString()
-                    + QLatin1String("/index.php/apps/oauth2/api/v1/token?grant_type=authorization_code&code=")
-                    + code
-                    + QLatin1String("&redirect_uri=http://localhost:") + QString::number(_server.serverPort()));
-                requestToken.setUserName(Theme::instance()->oauthClientId());
-                requestToken.setPassword(Theme::instance()->oauthClientSecret());
+                QUrl requestToken = Utility::concatUrlPath(_account->url().toString(), QLatin1String("/index.php/apps/oauth2/api/v1/token"));
                 QNetworkRequest req;
                 req.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-                auto reply = _account->sendRequest("POST", requestToken, req);
-                QTimer::singleShot(30 * 1000, reply, &QNetworkReply::abort);
-                QObject::connect(reply, &QNetworkReply::finished, this, [this, reply, socket] {
+
+                QString basicAuth = QString("%1:%2").arg(
+                    Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret());
+                req.setRawHeader("Authorization", "Basic " + basicAuth.toUtf8().toBase64());
+
+                auto requestBody = new QBuffer;
+                QUrlQuery arguments(QString(
+                    "grant_type=authorization_code&code=%1&redirect_uri=http://localhost:%2")
+                                        .arg(code, QString::number(_server.serverPort())));
+                requestBody->setData(arguments.query(QUrl::FullyEncoded).toLatin1());
+
+                auto job = _account->sendRequest("POST", requestToken, req, requestBody);
+                job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
+                QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, socket](QNetworkReply *reply) {
                     auto jsonData = reply->readAll();
                     QJsonParseError jsonParseError;
                     QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
@@ -146,10 +156,10 @@ void OAuth::start()
 QUrl OAuth::authorisationLink() const
 {
     Q_ASSERT(_server.isListening());
-    QUrl url = QUrl(_account->url().toString()
-        + QLatin1String("/index.php/apps/oauth2/authorize?response_type=code&client_id=")
-        + Theme::instance()->oauthClientId()
-        + QLatin1String("&redirect_uri=http://localhost:") + QString::number(_server.serverPort()));
+    QUrl url = Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/authorize"),
+        { { QLatin1String("response_type"), QLatin1String("code") },
+            { QLatin1String("client_id"), Theme::instance()->oauthClientId() },
+            { QLatin1String("redirect_uri"), QLatin1String("http://localhost:") + QString::number(_server.serverPort()) } });
     if (!_expectedUser.isNull())
         url.addQueryItem("user", _expectedUser);
     return url;

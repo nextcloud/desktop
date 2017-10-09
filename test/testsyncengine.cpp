@@ -103,9 +103,23 @@ private slots:
         fakeFolder.localModifier().insert("a1.eml", 64, 'A');
         fakeFolder.localModifier().insert("a2.eml", 64, 'A');
         fakeFolder.localModifier().insert("a3.eml", 64, 'A');
+        fakeFolder.localModifier().insert("b3.txt", 64, 'A');
         // Upload and calculate the checksums
         // fakeFolder.syncOnce();
         fakeFolder.syncOnce();
+
+        auto getDbChecksum = [&](QString path) {
+            SyncJournalFileRecord record;
+            fakeFolder.syncJournal().getFileRecord(path, &record);
+            return record._checksumHeader;
+        };
+
+        // printf 'A%.0s' {1..64} | sha1sum -
+        QByteArray referenceChecksum("SHA1:30b86e44e6001403827a62c58b08893e77cf121f");
+        QCOMPARE(getDbChecksum("a1.eml"), referenceChecksum);
+        QCOMPARE(getDbChecksum("a2.eml"), referenceChecksum);
+        QCOMPARE(getDbChecksum("a3.eml"), referenceChecksum);
+        QCOMPARE(getDbChecksum("b3.txt"), referenceChecksum);
 
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
         // Touch the file without changing the content, shouldn't upload
@@ -113,7 +127,13 @@ private slots:
         // Change the content/size
         fakeFolder.localModifier().setContents("a2.eml", 'B');
         fakeFolder.localModifier().appendByte("a3.eml");
+        fakeFolder.localModifier().appendByte("b3.txt");
         fakeFolder.syncOnce();
+
+        QCOMPARE(getDbChecksum("a1.eml"), referenceChecksum);
+        QCOMPARE(getDbChecksum("a2.eml"), QByteArray("SHA1:84951fc23a4dafd10020ac349da1f5530fa65949"));
+        QCOMPARE(getDbChecksum("a3.eml"), QByteArray("SHA1:826b7e7a7af8a529ae1c7443c23bf185c0ad440c"));
+        QCOMPARE(getDbChecksum("b3.eml"), getDbChecksum("a3.txt"));
 
         QVERIFY(!itemDidComplete(completeSpy, "a1.eml"));
         QVERIFY(itemDidCompleteSuccessfully(completeSpy, "a2.eml"));
@@ -163,7 +183,7 @@ private slots:
         // Remove subFolderA with selectiveSync:
         fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
                                                                 {"parentFolder/subFolderA/"});
-        fakeFolder.syncEngine().journal()->avoidReadFromDbOnNextSync("parentFolder/subFolderA/");
+        fakeFolder.syncEngine().journal()->avoidReadFromDbOnNextSync(QByteArrayLiteral("parentFolder/subFolderA/"));
 
         fakeFolder.syncOnce();
 
@@ -218,7 +238,7 @@ private slots:
         // folders are uploaded anyway is some circumstances.
         FakeFolder fakeFolder{FileInfo{ QString(), {
             FileInfo { QStringLiteral("parentFolder"), {
-                FileInfo{ QStringLiteral("subFolder"), {
+                FileInfo{ QStringLiteral("subFolderA"), {
                     { QStringLiteral("fileA.txt"), 400 },
                     { QStringLiteral("fileB.txt"), 400, 'o' },
                     FileInfo { QStringLiteral("subsubFolder"), {
@@ -232,23 +252,24 @@ private slots:
                             { QStringLiteral("fileF.txt"), 400, 'o' }
                         }}
                     }}
-                }}
+                }},
+                FileInfo{ QStringLiteral("subFolderB"), {} }
             }}
         }}};
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         auto expectedServerState = fakeFolder.currentRemoteState();
 
-        // Remove subFolder with selectiveSync:
+        // Remove subFolderA with selectiveSync:
         fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
-                                                                {"parentFolder/subFolder/"});
-        fakeFolder.syncEngine().journal()->avoidReadFromDbOnNextSync("parentFolder/subFolder/");
+                                                                {"parentFolder/subFolderA/"});
+        fakeFolder.syncEngine().journal()->avoidReadFromDbOnNextSync(QByteArrayLiteral("parentFolder/subFolderA/"));
 
         // But touch local file before the next sync, such that the local folder
         // can't be removed
-        fakeFolder.localModifier().setContents("parentFolder/subFolder/fileB.txt", 'n');
-        fakeFolder.localModifier().setContents("parentFolder/subFolder/subsubFolder/fileD.txt", 'n');
-        fakeFolder.localModifier().setContents("parentFolder/subFolder/anotherFolder/subsubFolder/fileF.txt", 'n');
+        fakeFolder.localModifier().setContents("parentFolder/subFolderA/fileB.txt", 'n');
+        fakeFolder.localModifier().setContents("parentFolder/subFolderA/subsubFolder/fileD.txt", 'n');
+        fakeFolder.localModifier().setContents("parentFolder/subFolderA/anotherFolder/subsubFolder/fileF.txt", 'n');
 
         // Several follow-up syncs don't change the state at all,
         // in particular the remote state doesn't change and fileB.txt
@@ -262,14 +283,15 @@ private slots:
                 QCOMPARE(fakeFolder.currentRemoteState(), expectedServerState);
                 // The local state should still have subFolderA
                 auto local = fakeFolder.currentLocalState();
-                QVERIFY(local.find("parentFolder/subFolder"));
-                QVERIFY(!local.find("parentFolder/subFolder/fileA.txt"));
-                QVERIFY(local.find("parentFolder/subFolder/fileB.txt"));
-                QVERIFY(!local.find("parentFolder/subFolder/subsubFolder/fileC.txt"));
-                QVERIFY(local.find("parentFolder/subFolder/subsubFolder/fileD.txt"));
-                QVERIFY(!local.find("parentFolder/subFolder/anotherFolder/subsubFolder/fileE.txt"));
-                QVERIFY(local.find("parentFolder/subFolder/anotherFolder/subsubFolder/fileF.txt"));
-                QVERIFY(!local.find("parentFolder/subFolder/anotherFolder/emptyFolder"));
+                QVERIFY(local.find("parentFolder/subFolderA"));
+                QVERIFY(!local.find("parentFolder/subFolderA/fileA.txt"));
+                QVERIFY(local.find("parentFolder/subFolderA/fileB.txt"));
+                QVERIFY(!local.find("parentFolder/subFolderA/subsubFolder/fileC.txt"));
+                QVERIFY(local.find("parentFolder/subFolderA/subsubFolder/fileD.txt"));
+                QVERIFY(!local.find("parentFolder/subFolderA/anotherFolder/subsubFolder/fileE.txt"));
+                QVERIFY(local.find("parentFolder/subFolderA/anotherFolder/subsubFolder/fileF.txt"));
+                QVERIFY(!local.find("parentFolder/subFolderA/anotherFolder/emptyFolder"));
+                QVERIFY(local.find("parentFolder/subFolderB"));
             }
         }
     }
@@ -309,7 +331,7 @@ private slots:
         QSet<QString> seen;
         for(const QList<QVariant> &args : completeSpy) {
             auto item = args[0].value<SyncFileItemPtr>();
-            qDebug() << item->_file << item->_isDirectory << item->_status;
+            qDebug() << item->_file << item->isDirectory() << item->_status;
             QVERIFY(!seen.contains(item->_file)); // signal only sent once per item
             seen.insert(item->_file);
             if (item->_file == "Y/Z/d2") {
@@ -336,7 +358,7 @@ private slots:
         FileInfo &remoteInfo = dynamic_cast<FileInfo &>(fakeFolder.remoteModifier());
 
         // Base mtime with no ms content (filesystem is seconds only)
-        auto mtime = QDateTime::currentDateTime().addDays(-4);
+        auto mtime = QDateTime::currentDateTimeUtc().addDays(-4);
         mtime.setMSecsSinceEpoch(mtime.toMSecsSinceEpoch() / 1000 * 1000);
 
         // Conflict: Same content, mtime, but no server checksum
@@ -392,9 +414,9 @@ private slots:
      */
     void testSyncFileItemProperties()
     {
-        auto initialMtime = QDateTime::currentDateTime().addDays(-7);
-        auto changedMtime = QDateTime::currentDateTime().addDays(-4);
-        auto changedMtime2 = QDateTime::currentDateTime().addDays(-3);
+        auto initialMtime = QDateTime::currentDateTimeUtc().addDays(-7);
+        auto changedMtime = QDateTime::currentDateTimeUtc().addDays(-4);
+        auto changedMtime2 = QDateTime::currentDateTimeUtc().addDays(-3);
 
         // Base mtime with no ms content (filesystem is seconds only)
         initialMtime.setMSecsSinceEpoch(initialMtime.toMSecsSinceEpoch() / 1000 * 1000);
@@ -441,8 +463,8 @@ private slots:
             QCOMPARE(a1->_size, quint64(5));
 
             QCOMPARE(Utility::qDateTimeFromTime_t(a1->_modtime), changedMtime);
-            QCOMPARE(a1->log._other_size, quint64(4));
-            QCOMPARE(Utility::qDateTimeFromTime_t(a1->log._other_modtime), initialMtime);
+            QCOMPARE(a1->_previousSize, quint64(4));
+            QCOMPARE(Utility::qDateTimeFromTime_t(a1->_previousModtime), initialMtime);
 
             // b2: should have remote size and modtime
             QVERIFY(b1);
@@ -450,8 +472,8 @@ private slots:
             QCOMPARE(b1->_direction, SyncFileItem::Down);
             QCOMPARE(b1->_size, quint64(17));
             QCOMPARE(Utility::qDateTimeFromTime_t(b1->_modtime), changedMtime);
-            QCOMPARE(b1->log._other_size, quint64(16));
-            QCOMPARE(Utility::qDateTimeFromTime_t(b1->log._other_modtime), initialMtime);
+            QCOMPARE(b1->_previousSize, quint64(16));
+            QCOMPARE(Utility::qDateTimeFromTime_t(b1->_previousModtime), initialMtime);
 
             // c1: conflicts are downloads, so remote size and modtime
             QVERIFY(c1);
@@ -459,11 +481,137 @@ private slots:
             QCOMPARE(c1->_direction, SyncFileItem::None);
             QCOMPARE(c1->_size, quint64(25));
             QCOMPARE(Utility::qDateTimeFromTime_t(c1->_modtime), changedMtime2);
-            QCOMPARE(c1->log._other_size, quint64(26));
-            QCOMPARE(Utility::qDateTimeFromTime_t(c1->log._other_modtime), changedMtime);
+            QCOMPARE(c1->_previousSize, quint64(26));
+            QCOMPARE(Utility::qDateTimeFromTime_t(c1->_previousModtime), changedMtime);
         });
 
         QVERIFY(fakeFolder.syncOnce());
+    }
+
+    /**
+     * Checks whether subsequent large uploads are skipped after a 507 error
+     */
+    void testInsufficientRemoteStorage()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+
+        // Disable parallel uploads
+        SyncOptions syncOptions;
+        syncOptions._parallelNetworkJobs = false;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+
+        // Produce an error based on upload size
+        int remoteQuota = 1000;
+        int n507 = 0, nPUT = 0;
+        auto parent = new QObject;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation) {
+                nPUT++;
+                if (request.rawHeader("OC-Total-Length").toInt() > remoteQuota) {
+                    n507++;
+                    return new FakeErrorReply(op, request, parent, 507);
+                }
+            }
+            return nullptr;
+        });
+
+        fakeFolder.localModifier().insert("A/big", 800);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 1);
+        QCOMPARE(n507, 0);
+
+        nPUT = 0;
+        fakeFolder.localModifier().insert("A/big1", 500); // ok
+        fakeFolder.localModifier().insert("A/big2", 1200); // 507 (quota guess now 1199)
+        fakeFolder.localModifier().insert("A/big3", 1200); // skipped
+        fakeFolder.localModifier().insert("A/big4", 1500); // skipped
+        fakeFolder.localModifier().insert("A/big5", 1100); // 507 (quota guess now 1099)
+        fakeFolder.localModifier().insert("A/big6", 900); // ok (quota guess now 199)
+        fakeFolder.localModifier().insert("A/big7", 200); // skipped
+        fakeFolder.localModifier().insert("A/big8", 199); // ok (quota guess now 0)
+
+        fakeFolder.localModifier().insert("B/big8", 1150); // 507
+        QVERIFY(!fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 6);
+        QCOMPARE(n507, 3);
+    }
+
+    void testLocalMove()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+
+        int nPUT = 0;
+        int nDELETE = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &) {
+            if (op == QNetworkAccessManager::PutOperation)
+                ++nPUT;
+            if (op == QNetworkAccessManager::DeleteOperation)
+                ++nDELETE;
+            return nullptr;
+        });
+
+        // For directly editing the remote checksum
+        FileInfo &remoteInfo = fakeFolder.remoteModifier();
+
+        // Simple move causing a remote rename
+        fakeFolder.localModifier().rename("A/a1", "A/a1m");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
+        QCOMPARE(nPUT, 0);
+
+        // Move-and-change, causing a upload and delete
+        fakeFolder.localModifier().rename("A/a2", "A/a2m");
+        fakeFolder.localModifier().appendByte("A/a2m");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
+        QCOMPARE(nPUT, 1);
+        QCOMPARE(nDELETE, 1);
+
+        // Move-and-change, mtime+content only
+        fakeFolder.localModifier().rename("B/b1", "B/b1m");
+        fakeFolder.localModifier().setContents("B/b1m", 'C');
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
+        QCOMPARE(nPUT, 2);
+        QCOMPARE(nDELETE, 2);
+
+        // Move-and-change, size+content only
+        auto mtime = fakeFolder.remoteModifier().find("B/b2")->lastModified;
+        fakeFolder.localModifier().rename("B/b2", "B/b2m");
+        fakeFolder.localModifier().appendByte("B/b2m");
+        fakeFolder.localModifier().setModTime("B/b2m", mtime);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
+        QCOMPARE(nPUT, 3);
+        QCOMPARE(nDELETE, 3);
+
+        // Move-and-change, content only -- c1 has no checksum, so we fail to detect this!
+        mtime = fakeFolder.remoteModifier().find("C/c1")->lastModified;
+        fakeFolder.localModifier().rename("C/c1", "C/c1m");
+        fakeFolder.localModifier().setContents("C/c1m", 'C');
+        fakeFolder.localModifier().setModTime("C/c1m", mtime);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 3);
+        QCOMPARE(nDELETE, 3);
+        QVERIFY(!(fakeFolder.currentLocalState() == remoteInfo));
+
+        // cleanup, and upload a file that will have a checksum in the db
+        fakeFolder.localModifier().remove("C/c1m");
+        fakeFolder.localModifier().insert("C/c3");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
+        QCOMPARE(nPUT, 4);
+        QCOMPARE(nDELETE, 4);
+
+        // Move-and-change, content only, this time while having a checksum
+        mtime = fakeFolder.remoteModifier().find("C/c3")->lastModified;
+        fakeFolder.localModifier().rename("C/c3", "C/c3m");
+        fakeFolder.localModifier().setContents("C/c3m", 'C');
+        fakeFolder.localModifier().setModTime("C/c3m", mtime);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nPUT, 5);
+        QCOMPARE(nDELETE, 5);
+        QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
     }
 };
 

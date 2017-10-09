@@ -241,6 +241,11 @@ public:
     static bool installed(const QJsonObject &info);
 
 signals:
+    /** Emitted when a status.php was successfully read.
+     *
+     * \a url see _serverStatusUrl (does not include "/status.php")
+     * \a info The status.php reply information
+     */
     void instanceFound(const QUrl &url, const QJsonObject &info);
 
     /** Emitted on invalid status.php reply.
@@ -248,6 +253,11 @@ signals:
      * \a reply is never null
      */
     void instanceNotFound(QNetworkReply *reply);
+
+    /** A timeout occurred.
+     *
+     * \a url The specific url where the timeout happened.
+     */
     void timeout(const QUrl &url);
 
 private:
@@ -256,9 +266,20 @@ private:
 private slots:
     virtual void metaDataChangedSlot();
     virtual void encryptedSlot();
+    void slotRedirected(QNetworkReply *reply, const QUrl &targetUrl, int redirectCount);
 
 private:
     bool _subdirFallback;
+
+    /** The permanent-redirect adjusted account url.
+     *
+     * Note that temporary redirects or a permanent redirect behind a temporary
+     * one do not affect this url.
+     */
+    QUrl _serverUrl;
+
+    /** Keep track of how many permanent redirect were applied. */
+    int _permanentRedirects;
 };
 
 
@@ -328,6 +349,54 @@ signals:
 
 private:
     QList<QPair<QString, QString>> _additionalParams;
+};
+
+/**
+ * @brief Checks with auth type to use for a server
+ * @ingroup libsync
+ */
+class OWNCLOUDSYNC_EXPORT DetermineAuthTypeJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    enum AuthType {
+        Unknown,
+        Basic,
+        OAuth,
+        Shibboleth
+    };
+
+    explicit DetermineAuthTypeJob(AccountPtr account, QObject *parent = 0);
+    void start() Q_DECL_OVERRIDE;
+signals:
+    void authType(AuthType);
+private slots:
+    bool finished() Q_DECL_OVERRIDE;
+private:
+    void send(const QUrl &url);
+    int _redirects;
+};
+
+/**
+ * @brief A basic job around a network request without extra funtionality
+ * @ingroup libsync
+ *
+ * Primarily adds timeout and redirection handling.
+ */
+class OWNCLOUDSYNC_EXPORT SimpleNetworkJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    explicit SimpleNetworkJob(AccountPtr account, QObject *parent = 0);
+
+    QNetworkReply *startRequest(const QByteArray &verb, const QUrl &url,
+        QNetworkRequest req = QNetworkRequest(),
+        QIODevice *requestBody = 0);
+
+signals:
+    void finishedSignal(QNetworkReply *reply);
+private slots:
+    bool finished() Q_DECL_OVERRIDE;
 };
 
 } // namespace OCC

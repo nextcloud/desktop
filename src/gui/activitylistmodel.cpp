@@ -29,10 +29,6 @@
 #include "activitydata.h"
 #include "activitylistmodel.h"
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-Q_DECLARE_METATYPE(QPointer<OCC::AccountState>)
-#endif
-
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcActivity, "gui.activity", QtInfoMsg)
@@ -128,8 +124,8 @@ void ActivityListModel::startFetchJob(AccountState *s)
         return;
     }
     JsonApiJob *job = new JsonApiJob(s->account(), QLatin1String("ocs/v1.php/cloud/activity"), this);
-    QObject::connect(job, SIGNAL(jsonReceived(QJsonDocument, int)),
-        this, SLOT(slotActivitiesReceived(QJsonDocument, int)));
+    QObject::connect(job, &JsonApiJob::jsonReceived,
+        this, &ActivityListModel::slotActivitiesReceived);
     job->setProperty("AccountStatePtr", QVariant::fromValue<QPointer<AccountState>>(s));
 
     QList<QPair<QString, QString>> params;

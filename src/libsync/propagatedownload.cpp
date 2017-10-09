@@ -17,13 +17,13 @@
 #include "propagatedownload.h"
 #include "networkjobs.h"
 #include "account.h"
-#include "syncjournaldb.h"
-#include "syncjournalfilerecord.h"
-#include "utility.h"
+#include "common/syncjournaldb.h"
+#include "common/syncjournalfilerecord.h"
+#include "common/utility.h"
 #include "filesystem.h"
 #include "propagatorjobs.h"
-#include "checksums.h"
-#include "asserts.h"
+#include "common/checksums.h"
+#include "common/asserts.h"
 
 #include <QLoggingCategory>
 #include <QNetworkAccessManager>
@@ -137,10 +137,10 @@ void GETFileJob::start()
         qCWarning(lcGetJob) << " Network error: " << errorString();
     }
 
-    connect(reply(), SIGNAL(metaDataChanged()), this, SLOT(slotMetaDataChanged()));
-    connect(reply(), SIGNAL(readyRead()), this, SLOT(slotReadyRead()));
-    connect(reply(), SIGNAL(downloadProgress(qint64, qint64)), this, SIGNAL(downloadProgress(qint64, qint64)));
-    connect(this, SIGNAL(networkActivity()), account().data(), SIGNAL(propagatorNetworkActivity()));
+    connect(reply(), &QNetworkReply::metaDataChanged, this, &GETFileJob::slotMetaDataChanged);
+    connect(reply(), &QIODevice::readyRead, this, &GETFileJob::slotReadyRead);
+    connect(reply(), &QNetworkReply::downloadProgress, this, &GETFileJob::downloadProgress);
+    connect(this, &AbstractNetworkJob::networkActivity, account().data(), &Account::propagatorNetworkActivity);
 
     AbstractNetworkJob::start();
 }
@@ -350,14 +350,14 @@ void PropagateDownloadFile::start()
     // compare the remote checksum to the local one.
     // Maybe it's not a real conflict and no download is necessary!
     if (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT
-        && _item->_size == _item->log._other_size
-        && _item->_modtime == _item->log._other_modtime
+        && _item->_size == _item->_previousSize
+        && _item->_modtime == _item->_previousModtime
         && !_item->_checksumHeader.isEmpty()) {
         qCDebug(lcPropagateDownload) << _item->_file << "may not need download, computing checksum";
         auto computeChecksum = new ComputeChecksum(this);
         computeChecksum->setChecksumType(parseChecksumHeaderType(_item->_checksumHeader));
-        connect(computeChecksum, SIGNAL(done(QByteArray, QByteArray)),
-            SLOT(conflictChecksumComputed(QByteArray, QByteArray)));
+        connect(computeChecksum, &ComputeChecksum::done,
+            this, &PropagateDownloadFile::conflictChecksumComputed);
         computeChecksum->start(propagator()->getFilePath(_item->_file));
         return;
     }
@@ -429,10 +429,10 @@ void PropagateDownloadFile::startDownload()
     const auto diskSpaceResult = propagator()->diskSpaceCheck();
     if (diskSpaceResult != OwncloudPropagator::DiskSpaceOk) {
         if (diskSpaceResult == OwncloudPropagator::DiskSpaceFailure) {
-            // Using BlacklistedError here will make the error not pop up in the account
+            // Using DetailError here will make the error not pop up in the account
             // tab: instead we'll generate a general "disk space low" message and show
             // these detail errors only in the error view.
-            done(SyncFileItem::BlacklistedError,
+            done(SyncFileItem::DetailError,
                 tr("The download would reduce free local disk space below the limit"));
             emit propagator()->insufficientLocalStorage();
         } else if (diskSpaceResult == OwncloudPropagator::DiskSpaceCritical) {
@@ -478,8 +478,8 @@ void PropagateDownloadFile::startDownload()
             &_tmpFile, headers, expectedEtagForResume, _resumeStart, this);
     }
     _job->setBandwidthManager(&propagator()->_bandwidthManager);
-    connect(_job, SIGNAL(finishedSignal()), this, SLOT(slotGetFinished()));
-    connect(_job, SIGNAL(downloadProgress(qint64, qint64)), this, SLOT(slotDownloadProgress(qint64, qint64)));
+    connect(_job.data(), &GETFileJob::finishedSignal, this, &PropagateDownloadFile::slotGetFinished);
+    connect(_job.data(), &GETFileJob::downloadProgress, this, &PropagateDownloadFile::slotDownloadProgress);
     propagator()->_activeJobList.append(this);
     _job->start();
 }
@@ -620,10 +620,10 @@ void PropagateDownloadFile::slotGetFinished()
     // will also emit the validated() signal to continue the flow in slot transmissionChecksumValidated()
     // as this is (still) also correct.
     ValidateChecksumHeader *validator = new ValidateChecksumHeader(this);
-    connect(validator, SIGNAL(validated(QByteArray, QByteArray)),
-        SLOT(transmissionChecksumValidated(QByteArray, QByteArray)));
-    connect(validator, SIGNAL(validationFailed(QString)),
-        SLOT(slotChecksumFail(QString)));
+    connect(validator, &ValidateChecksumHeader::validated,
+        this, &PropagateDownloadFile::transmissionChecksumValidated);
+    connect(validator, &ValidateChecksumHeader::validationFailed,
+        this, &PropagateDownloadFile::slotChecksumFail);
     auto checksumHeader = job->reply()->rawHeader(checkSumHeaderC);
     validator->start(_tmpFile.fileName(), checksumHeader);
 }
@@ -673,7 +673,7 @@ namespace { // Anonymous namespace for the recall feature
             dotLocation = recallFileName.size();
         }
 
-        QString timeString = QDateTime::currentDateTime().toString("yyyyMMdd-hhmmss");
+        QString timeString = QDateTime::currentDateTimeUtc().toString("yyyyMMdd-hhmmss");
         recallFileName.insert(dotLocation, "_.sys.admin#recall#-" + timeString);
 
         return recallFileName;
@@ -706,8 +706,8 @@ namespace { // Anonymous namespace for the recall feature
             // Path of the recalled file in the local folder
             QString localRecalledFile = recalledFile.mid(folderPath.size());
 
-            SyncJournalFileRecord record = journal.getFileRecord(localRecalledFile);
-            if (!record.isValid()) {
+            SyncJournalFileRecord record;
+            if (!journal.getFileRecord(localRecalledFile, &record) || !record.isValid()) {
                 qCWarning(lcPropagateDownload) << "No db entry for recall of" << localRecalledFile;
                 continue;
             }
@@ -750,8 +750,8 @@ void PropagateDownloadFile::transmissionChecksumValidated(const QByteArray &chec
     auto computeChecksum = new ComputeChecksum(this);
     computeChecksum->setChecksumType(theContentChecksumType);
 
-    connect(computeChecksum, SIGNAL(done(QByteArray, QByteArray)),
-        SLOT(contentChecksumComputed(QByteArray, QByteArray)));
+    connect(computeChecksum, &ComputeChecksum::done,
+        this, &PropagateDownloadFile::contentChecksumComputed);
     computeChecksum->start(_tmpFile.fileName());
 }
 
@@ -813,8 +813,8 @@ void PropagateDownloadFile::downloadFinished()
         // phase by comparing size and mtime to the previous values. This
         // is necessary to avoid overwriting user changes that happened between
         // the discovery phase and now.
-        const qint64 expectedSize = _item->log._other_size;
-        const time_t expectedMtime = _item->log._other_modtime;
+        const qint64 expectedSize = _item->_previousSize;
+        const time_t expectedMtime = _item->_previousModtime;
         if (!FileSystem::verifyFileUnchanged(fn, expectedSize, expectedMtime)) {
             propagator()->_anotherSyncNeeded = true;
             done(SyncFileItem::SoftError, tr("File has changed since discovery"));
@@ -823,13 +823,7 @@ void PropagateDownloadFile::downloadFinished()
     }
 
     // Apply the remote permissions
-    // Older server versions sometimes provide empty remote permissions
-    // see #4450 - don't adjust the write permissions there.
-    const int serverVersionGoodRemotePerm = Account::makeServerVersion(7, 0, 0);
-    if (propagator()->account()->serverVersionInt() >= serverVersionGoodRemotePerm) {
-        FileSystem::setFileReadOnlyWeak(_tmpFile.fileName(),
-            !_item->_remotePerm.contains('W'));
-    }
+    FileSystem::setFileReadOnlyWeak(_tmpFile.fileName(), !_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite));
 
     QString error;
     emit propagator()->touchedFile(fn);
@@ -873,7 +867,7 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
 {
     QString fn = propagator()->getFilePath(_item->_file);
 
-    if (!propagator()->_journal->setFileRecord(SyncJournalFileRecord(*_item, fn))) {
+    if (!propagator()->_journal->setFileRecord(_item->toSyncJournalFileRecordWithInode(fn))) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }
@@ -882,7 +876,7 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 
     // handle the special recall file
-    if (!_item->_remotePerm.contains("S")
+    if (!_item->_remotePerm.hasPermission(RemotePermissions::IsShared)
         && (_item->_file == QLatin1String(".sys.admin#recall#")
                || _item->_file.endsWith("/.sys.admin#recall#"))) {
         handleRecallFile(fn, propagator()->_localDir, *propagator()->_journal);

@@ -30,7 +30,6 @@
 #include "socketapi.h"
 #include "sslerrordialog.h"
 #include "theme.h"
-#include "utility.h"
 #include "clientproxy.h"
 #include "sharedialog.h"
 #include "accountmanager.h"
@@ -123,9 +122,7 @@ Application::Application(int &argc, char **argv)
     setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN));
     setApplicationName(_theme->appNameGUI());
     setWindowIcon(_theme->applicationIcon());
-#if QT_VERSION > QT_VERSION_CHECK(5, 0, 0)
     setAttribute(Qt::AA_UseHighDpiPixmaps, true);
-#endif
 
     parseOptions(arguments());
     //no need to waste time;
@@ -134,15 +131,6 @@ Application::Application(int &argc, char **argv)
 
     if (isRunning())
         return;
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 1, 0) && QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
-    // Workaround for QTBUG-44576: Make sure a stale QSettings lock file
-    // is deleted. (Introduced in Qt 5.4.0 and fixed in Qt 5.4.2)
-    {
-        QString lockFilePath = ConfigFile().configFile() + QLatin1String(".lock");
-        QLockFile(lockFilePath).removeStaleLockFile();
-    }
-#endif
 
 #if defined(WITH_CRASHREPORTER)
     if (ConfigFile().crashReporter())
@@ -162,7 +150,7 @@ Application::Application(int &argc, char **argv)
 
     _folderManager.reset(new FolderMan);
 
-    connect(this, SIGNAL(messageReceived(QString, QObject *)), SLOT(slotParseMessage(QString, QObject *)));
+    connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
 
     if (!AccountManager::instance()->restore()) {
         // If there is an error reading the account settings, try again
@@ -188,7 +176,7 @@ Application::Application(int &argc, char **argv)
     setQuitOnLastWindowClosed(false);
 
     _theme->setSystrayUseMonoIcons(cfg.monoIcons());
-    connect(_theme, SIGNAL(systrayUseMonoIconsChanged(bool)), SLOT(slotUseMonoIconsChanged(bool)));
+    connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
 
     FolderMan::instance()->setupFolders();
     _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
@@ -201,37 +189,37 @@ Application::Application(int &argc, char **argv)
     // Enable word wrapping of QInputDialog (#4197)
     setStyleSheet("QInputDialog QLabel { qproperty-wordWrap:1; }");
 
-    connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState *)),
-        SLOT(slotAccountStateAdded(AccountState *)));
-    connect(AccountManager::instance(), SIGNAL(accountRemoved(AccountState *)),
-        SLOT(slotAccountStateRemoved(AccountState *)));
+    connect(AccountManager::instance(), &AccountManager::accountAdded,
+        this, &Application::slotAccountStateAdded);
+    connect(AccountManager::instance(), &AccountManager::accountRemoved,
+        this, &Application::slotAccountStateRemoved);
     foreach (auto ai, AccountManager::instance()->accounts()) {
         slotAccountStateAdded(ai.data());
     }
 
-    connect(FolderMan::instance()->socketApi(), SIGNAL(shareCommandReceived(QString, QString)),
-        _gui, SLOT(slotShowShareDialog(QString, QString)));
+    connect(FolderMan::instance()->socketApi(), &SocketApi::shareCommandReceived,
+        _gui.data(), &ownCloudGui::slotShowShareDialog);
 
     // startup procedure.
-    connect(&_checkConnectionTimer, SIGNAL(timeout()), this, SLOT(slotCheckConnection()));
+    connect(&_checkConnectionTimer, &QTimer::timeout, this, &Application::slotCheckConnection);
     _checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec); // check for connection every 32 seconds.
     _checkConnectionTimer.start();
     // Also check immediately
-    QTimer::singleShot(0, this, SLOT(slotCheckConnection()));
+    QTimer::singleShot(0, this, &Application::slotCheckConnection);
 
     // Can't use onlineStateChanged because it is always true on modern systems because of many interfaces
-    connect(&_networkConfigurationManager, SIGNAL(configurationChanged(QNetworkConfiguration)),
-        this, SLOT(slotSystemOnlineConfigurationChanged(QNetworkConfiguration)));
+    connect(&_networkConfigurationManager, &QNetworkConfigurationManager::configurationChanged,
+        this, &Application::slotSystemOnlineConfigurationChanged);
 
     // Update checks
     UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this);
-    connect(updaterScheduler, SIGNAL(updaterAnnouncement(QString, QString)),
-        _gui, SLOT(slotShowTrayMessage(QString, QString)));
-    connect(updaterScheduler, SIGNAL(requestRestart()),
-        _folderManager.data(), SLOT(slotScheduleAppRestart()));
+    connect(updaterScheduler, &UpdaterScheduler::updaterAnnouncement,
+        _gui.data(), &ownCloudGui::slotShowTrayMessage);
+    connect(updaterScheduler, &UpdaterScheduler::requestRestart,
+        _folderManager.data(), &FolderMan::slotScheduleAppRestart);
 
     // Cleanup at Quit.
-    connect(this, SIGNAL(aboutToQuit()), SLOT(slotCleanup()));
+    connect(this, &QCoreApplication::aboutToQuit, this, &Application::slotCleanup);
 }
 
 Application::~Application()
@@ -249,16 +237,16 @@ Application::~Application()
 void Application::slotAccountStateRemoved(AccountState *accountState)
 {
     if (_gui) {
-        disconnect(accountState, SIGNAL(stateChanged(int)),
-            _gui, SLOT(slotAccountStateChanged()));
-        disconnect(accountState->account().data(), SIGNAL(serverVersionChanged(Account *, QString, QString)),
-            _gui, SLOT(slotTrayMessageIfServerUnsupported(Account *)));
+        disconnect(accountState, &AccountState::stateChanged,
+            _gui.data(), &ownCloudGui::slotAccountStateChanged);
+        disconnect(accountState->account().data(), &Account::serverVersionChanged,
+            _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
     }
     if (_folderManager) {
-        disconnect(accountState, SIGNAL(stateChanged(int)),
-            _folderManager.data(), SLOT(slotAccountStateChanged()));
-        disconnect(accountState->account().data(), SIGNAL(serverVersionChanged(Account *, QString, QString)),
-            _folderManager.data(), SLOT(slotServerVersionChanged(Account *)));
+        disconnect(accountState, &AccountState::stateChanged,
+            _folderManager.data(), &FolderMan::slotAccountStateChanged);
+        disconnect(accountState->account().data(), &Account::serverVersionChanged,
+            _folderManager.data(), &FolderMan::slotServerVersionChanged);
     }
 
     // if there is no more account, show the wizard.
@@ -271,14 +259,14 @@ void Application::slotAccountStateRemoved(AccountState *accountState)
 
 void Application::slotAccountStateAdded(AccountState *accountState)
 {
-    connect(accountState, SIGNAL(stateChanged(int)),
-        _gui, SLOT(slotAccountStateChanged()));
-    connect(accountState->account().data(), SIGNAL(serverVersionChanged(Account *, QString, QString)),
-        _gui, SLOT(slotTrayMessageIfServerUnsupported(Account *)));
-    connect(accountState, SIGNAL(stateChanged(int)),
-        _folderManager.data(), SLOT(slotAccountStateChanged()));
-    connect(accountState->account().data(), SIGNAL(serverVersionChanged(Account *, QString, QString)),
-        _folderManager.data(), SLOT(slotServerVersionChanged(Account *)));
+    connect(accountState, &AccountState::stateChanged,
+        _gui.data(), &ownCloudGui::slotAccountStateChanged);
+    connect(accountState->account().data(), &Account::serverVersionChanged,
+        _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
+    connect(accountState, &AccountState::stateChanged,
+        _folderManager.data(), &FolderMan::slotAccountStateChanged);
+    connect(accountState->account().data(), &Account::serverVersionChanged,
+        _folderManager.data(), &FolderMan::slotServerVersionChanged);
 
     _gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
 }
@@ -472,7 +460,7 @@ static void displayHelpText(QString t) // No console on Windows.
 
 static void displayHelpText(const QString &t)
 {
-    std::cout << qPrintable(t);
+    std::cout << qUtf8Printable(t);
 }
 #endif
 
@@ -481,9 +469,9 @@ void Application::showHelp()
     setHelp();
     QString helpText;
     QTextStream stream(&helpText);
-    stream << _theme->appName().toLatin1().constData()
+    stream << _theme->appName()
            << QLatin1String(" version ")
-           << _theme->version().toLatin1().constData() << endl;
+           << _theme->version() << endl;
 
     stream << QLatin1String("File synchronisation desktop utility.") << endl
            << endl
@@ -499,20 +487,7 @@ void Application::showHelp()
 
 void Application::showVersion()
 {
-    QString helpText;
-    QTextStream stream(&helpText);
-    stream << _theme->appName().toLatin1().constData()
-           << QLatin1String(" version ")
-           << _theme->version().toLatin1().constData() << endl;
-#ifdef GIT_SHA1
-    stream << "Git revision " << GIT_SHA1 << endl;
-#endif
-    stream << "Using Qt " << qVersion() << ", built against Qt " << QT_VERSION_STR << endl;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
-    stream << "Using '" << QSslSocket::sslLibraryVersionString() << "'" << endl;
-#endif
-
-    displayHelpText(helpText);
+    displayHelpText(Theme::instance()->versionSwitchOutput());
 }
 
 void Application::showHint(std::string errorHint)
@@ -605,10 +580,6 @@ void Application::setupTranslations()
         if (property("ui_lang").isNull())
             setProperty("ui_lang", "C");
     }
-// Work around Qt 5 < 5.5.0 regression, see https://bugreports.qt.io/browse/QTBUG-43447
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0) && QT_VERSION < QT_VERSION_CHECK(5, 5, 0)
-    setLayoutDirection(QApplication::tr("QT_LAYOUT_DIRECTION") == QLatin1String("RTL") ? Qt::RightToLeft : Qt::LeftToRight);
-#endif
 }
 
 bool Application::giveHelp()

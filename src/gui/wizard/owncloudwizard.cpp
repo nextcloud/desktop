@@ -62,22 +62,22 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
     setPage(WizardCommon::Page_Result, _resultPage);
 
-    connect(this, SIGNAL(finished(int)), SIGNAL(basicSetupFinished(int)));
+    connect(this, &QDialog::finished, this, &OwncloudWizard::basicSetupFinished);
 
     // note: start Id is set by the calling class depending on if the
     // welcome text is to be shown or not.
     setWizardStyle(QWizard::ModernStyle);
 
-    connect(this, SIGNAL(currentIdChanged(int)), SLOT(slotCurrentPageChanged(int)));
-    connect(_setupPage, SIGNAL(determineAuthType(QString)), SIGNAL(determineAuthType(QString)));
-    connect(_httpCredsPage, SIGNAL(connectToOCUrl(QString)), SIGNAL(connectToOCUrl(QString)));
-    connect(_browserCredsPage, SIGNAL(connectToOCUrl(QString)), SIGNAL(connectToOCUrl(QString)));
+    connect(this, &QWizard::currentIdChanged, this, &OwncloudWizard::slotCurrentPageChanged);
+    connect(_setupPage, &OwncloudSetupPage::determineAuthType, this, &OwncloudWizard::determineAuthType);
+    connect(_httpCredsPage, &OwncloudHttpCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
+    connect(_browserCredsPage, &OwncloudOAuthCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
 #ifndef NO_SHIBBOLETH
-    connect(_shibbolethCredsPage, SIGNAL(connectToOCUrl(QString)), SIGNAL(connectToOCUrl(QString)));
+    connect(_shibbolethCredsPage, &OwncloudShibbolethCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
 #endif
-    connect(_advancedSetupPage, SIGNAL(createLocalAndRemoteFolders(QString, QString)),
-        SIGNAL(createLocalAndRemoteFolders(QString, QString)));
-    connect(this, SIGNAL(customButtonClicked(int)), this, SIGNAL(skipFolderConfiguration()));
+    connect(_advancedSetupPage, &OwncloudAdvancedSetupPage::createLocalAndRemoteFolders,
+        this, &OwncloudWizard::createLocalAndRemoteFolders);
+    connect(this, &QWizard::customButtonClicked, this, &OwncloudWizard::skipFolderConfiguration);
 
 
     Theme *theme = Theme::instance();
@@ -167,17 +167,17 @@ void OwncloudWizard::successfulStep()
     next();
 }
 
-void OwncloudWizard::setAuthType(WizardCommon::AuthType type)
+void OwncloudWizard::setAuthType(DetermineAuthTypeJob::AuthType type)
 {
     _setupPage->setAuthType(type);
 #ifndef NO_SHIBBOLETH
-    if (type == WizardCommon::Shibboleth) {
+    if (type == DetermineAuthTypeJob::Shibboleth) {
         _credentialsPage = _shibbolethCredsPage;
     } else
 #endif
-        if (type == WizardCommon::OAuth) {
+        if (type == DetermineAuthTypeJob::OAuth) {
         _credentialsPage = _browserCredsPage;
-    } else {
+    } else { // try Basic auth even for "Unknown"
         _credentialsPage = _httpCredsPage;
     }
     next();
@@ -193,7 +193,7 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
     }
 
     if (id == WizardCommon::Page_Result) {
-        disconnect(this, SIGNAL(finished(int)), this, SIGNAL(basicSetupFinished(int)));
+        disconnect(this, &QDialog::finished, this, &OwncloudWizard::basicSetupFinished);
         emit basicSetupFinished(QDialog::Accepted);
         appendToConfigurationLog(QString::null);
         // Immediately close on show, we currently don't want this page anymore

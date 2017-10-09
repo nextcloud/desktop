@@ -25,8 +25,9 @@
 #include <QIODevice>
 #include <QMutex>
 
+#include "csync_util.h"
 #include "syncfileitem.h"
-#include "syncjournaldb.h"
+#include "common/syncjournaldb.h"
 #include "bandwidthmanager.h"
 #include "accountfwd.h"
 #include "discoveryphase.h"
@@ -34,8 +35,6 @@
 namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcPropagator)
-
-extern "C" const char *csync_instruction_str(enum csync_instructions_e instr);
 
 /** Free disk space threshold below which syncs will abort and not even start.
  */
@@ -222,7 +221,7 @@ private slots:
     bool possiblyRunNextJob(PropagatorJob *next)
     {
         if (next->_state == NotYetStarted) {
-            connect(next, SIGNAL(finished(SyncFileItem::Status)), this, SLOT(slotSubJobFinished(SyncFileItem::Status)));
+            connect(next, &PropagatorJob::finished, this, &PropagatorCompositeJob::slotSubJobFinished);
         }
         return next->scheduleSelfOrChild();
     }
@@ -351,6 +350,19 @@ public:
     /** We detected that another sync is required after this one */
     bool _anotherSyncNeeded;
 
+    /** Per-folder quota guesses.
+     *
+     * This starts out empty. When an upload in a folder fails due to insufficent
+     * remote quota, the quota guess is updated to be attempted_size-1 at maximum.
+     *
+     * Note that it will usually just an upper limit for the actual quota - but
+     * since the quota on the server might change at any time it can sometimes be
+     * wrong in the other direction as well.
+     *
+     * This allows skipping of uploads that have a very high likelihood of failure.
+     */
+    QHash<QString, quint64> _folderQuota;
+
     /* the maximum number of jobs using bandwidth (uploads or downloads, in parallel) */
     int maximumActiveTransferJob();
 
@@ -451,17 +463,6 @@ private:
     AccountPtr _account;
     QScopedPointer<PropagateDirectory> _rootJob;
     SyncOptions _syncOptions;
-
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    // access to signals which are protected in Qt4
-    friend class PropagateDownloadFile;
-    friend class PropagateItemJob;
-    friend class PropagateLocalMkdir;
-    friend class PropagateLocalRename;
-    friend class PropagateRemoteMove;
-    friend class PropagateUploadFileV1;
-    friend class PropagateUploadFileNG;
-#endif
 };
 
 

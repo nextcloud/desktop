@@ -116,9 +116,9 @@ void ConnectionValidator::slotCheckServerAndAuth()
     CheckServerJob *checkJob = new CheckServerJob(_account, this);
     checkJob->setTimeout(timeoutToUseMsec);
     checkJob->setIgnoreCredentialFailure(true);
-    connect(checkJob, SIGNAL(instanceFound(QUrl, QJsonObject)), SLOT(slotStatusFound(QUrl, QJsonObject)));
-    connect(checkJob, SIGNAL(instanceNotFound(QNetworkReply *)), SLOT(slotNoStatusFound(QNetworkReply *)));
-    connect(checkJob, SIGNAL(timeout(QUrl)), SLOT(slotJobTimeout(QUrl)));
+    connect(checkJob, &CheckServerJob::instanceFound, this, &ConnectionValidator::slotStatusFound);
+    connect(checkJob, &CheckServerJob::instanceNotFound, this, &ConnectionValidator::slotNoStatusFound);
+    connect(checkJob, &CheckServerJob::timeout, this, &ConnectionValidator::slotJobTimeout);
     checkJob->start();
 }
 
@@ -135,6 +135,13 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
                                   << CheckServerJob::versionString(info)
                                   << "(" << serverVersion << ")";
 
+    // Update server url in case of redirection
+    if (_account->url() != url) {
+        qCInfo(lcConnectionValidator()) << "status.php was redirected to" << url.toString();
+        _account->setUrl(url);
+        _account->wantsAccountSaved(_account.data());
+    }
+
     if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {
         return;
     }
@@ -147,7 +154,7 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
     }
 
     // now check the authentication
-    QTimer::singleShot( 0, this, SLOT( checkAuthentication() ));
+    QTimer::singleShot(0, this, &ConnectionValidator::checkAuthentication);
 }
 
 // status.php could not be loaded (network or server issue!).
@@ -194,8 +201,8 @@ void ConnectionValidator::checkAuthentication()
     PropfindJob *job = new PropfindJob(_account, "/", this);
     job->setTimeout(timeoutToUseMsec);
     job->setProperties(QList<QByteArray>() << "getlastmodified");
-    connect(job, SIGNAL(result(QVariantMap)), SLOT(slotAuthSuccess()));
-    connect(job, SIGNAL(finishedWithError(QNetworkReply *)), SLOT(slotAuthFailed(QNetworkReply *)));
+    connect(job, &PropfindJob::result, this, &ConnectionValidator::slotAuthSuccess);
+    connect(job, &PropfindJob::finishedWithError, this, &ConnectionValidator::slotAuthFailed);
     job->start();
 }
 
@@ -242,7 +249,7 @@ void ConnectionValidator::checkServerCapabilities()
 {
     JsonApiJob *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/capabilities"), this);
     job->setTimeout(timeoutToUseMsec);
-    QObject::connect(job, SIGNAL(jsonReceived(QJsonDocument, int)), this, SLOT(slotCapabilitiesRecieved(QJsonDocument)));
+    QObject::connect(job, &JsonApiJob::jsonReceived, this, &ConnectionValidator::slotCapabilitiesRecieved);
     job->start();
 }
 
@@ -265,7 +272,7 @@ void ConnectionValidator::fetchUser()
 {
     JsonApiJob *job = new JsonApiJob(_account, QLatin1String("ocs/v1.php/cloud/user"), this);
     job->setTimeout(timeoutToUseMsec);
-    QObject::connect(job, SIGNAL(jsonReceived(QJsonDocument, int)), this, SLOT(slotUserFetched(QJsonDocument)));
+    QObject::connect(job, &JsonApiJob::jsonReceived, this, &ConnectionValidator::slotUserFetched);
     job->start();
 }
 
@@ -305,7 +312,7 @@ void ConnectionValidator::slotUserFetched(const QJsonDocument &json)
 
         AvatarJob *job = new AvatarJob(_account, this);
         job->setTimeout(20 * 1000);
-        QObject::connect(job, SIGNAL(avatarPixmap(QImage)), this, SLOT(slotAvatarImage(QImage)));
+        QObject::connect(job, &AvatarJob::avatarPixmap, this, &ConnectionValidator::slotAvatarImage);
 
         job->start();
     }

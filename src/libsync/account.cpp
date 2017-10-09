@@ -20,7 +20,7 @@
 #include "creds/abstractcredentials.h"
 #include "capabilities.h"
 #include "theme.h"
-#include "asserts.h"
+#include "common/asserts.h"
 
 #include <QSettings>
 #include <QLoggingCategory>
@@ -32,6 +32,7 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QSslKey>
+#include <QAuthenticator>
 
 namespace OCC {
 
@@ -149,12 +150,12 @@ void Account::setCredentials(AbstractCredentials *cred)
     }
     connect(_am.data(), SIGNAL(sslErrors(QNetworkReply *, QList<QSslError>)),
         SLOT(slotHandleSslErrors(QNetworkReply *, QList<QSslError>)));
-    connect(_am.data(), SIGNAL(proxyAuthenticationRequired(QNetworkProxy, QAuthenticator *)),
-        SIGNAL(proxyAuthenticationRequired(QNetworkProxy, QAuthenticator *)));
-    connect(_credentials.data(), SIGNAL(fetched()),
-        SLOT(slotCredentialsFetched()));
-    connect(_credentials.data(), SIGNAL(asked()),
-        SLOT(slotCredentialsAsked()));
+    connect(_am.data(), &QNetworkAccessManager::proxyAuthenticationRequired,
+        this, &Account::proxyAuthenticationRequired);
+    connect(_credentials.data(), &AbstractCredentials::fetched,
+        this, &Account::slotCredentialsFetched);
+    connect(_credentials.data(), &AbstractCredentials::asked,
+        this, &Account::slotCredentialsAsked);
 }
 
 QUrl Account::davUrl() const
@@ -162,7 +163,7 @@ QUrl Account::davUrl() const
     return Utility::concatUrlPath(url(), davPath());
 }
 
-QUrl Account::filePermalinkUrl(const QByteArray &numericFileId) const
+QUrl Account::deprecatedPrivateLinkUrl(const QByteArray &numericFileId) const
 {
     return Utility::concatUrlPath(url(),
         QLatin1String("/index.php/f/") + QUrl::toPercentEncoding(QString::fromLatin1(numericFileId)));
@@ -212,8 +213,8 @@ void Account::resetNetworkAccessManager()
     _am->setCookieJar(jar); // takes ownership of the old cookie jar
     connect(_am.data(), SIGNAL(sslErrors(QNetworkReply *, QList<QSslError>)),
         SLOT(slotHandleSslErrors(QNetworkReply *, QList<QSslError>)));
-    connect(_am.data(), SIGNAL(proxyAuthenticationRequired(QNetworkProxy, QAuthenticator *)),
-        SIGNAL(proxyAuthenticationRequired(QNetworkProxy, QAuthenticator *)));
+    connect(_am.data(), &QNetworkAccessManager::proxyAuthenticationRequired,
+        this, &Account::proxyAuthenticationRequired);
 }
 
 QNetworkAccessManager *Account::networkAccessManager()
@@ -226,7 +227,7 @@ QSharedPointer<QNetworkAccessManager> Account::sharedNetworkAccessManager()
     return _am;
 }
 
-QNetworkReply *Account::sendRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
+QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
 {
     req.setUrl(url);
     req.setSslConfiguration(this->getOrCreateSslConfig());
@@ -242,6 +243,13 @@ QNetworkReply *Account::sendRequest(const QByteArray &verb, const QUrl &url, QNe
         return _am->deleteResource(req);
     }
     return _am->sendCustomRequest(req, verb, data);
+}
+
+SimpleNetworkJob *Account::sendRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
+{
+    auto job = new SimpleNetworkJob(sharedFromThis(), this);
+    job->startRequest(verb, url, req, data);
+    return job;
 }
 
 void Account::setSslConfiguration(const QSslConfiguration &config)
@@ -261,12 +269,10 @@ QSslConfiguration Account::getOrCreateSslConfig()
     //  "An internal error number 1060 happened. SSL handshake failed, client certificate was requested: SSL error: sslv3 alert handshake failure"
     QSslConfiguration sslConfig = QSslConfiguration::defaultConfiguration();
 
-#if QT_VERSION > QT_VERSION_CHECK(5, 2, 0)
     // Try hard to re-use session for different requests
     sslConfig.setSslOption(QSsl::SslOptionDisableSessionTickets, false);
     sslConfig.setSslOption(QSsl::SslOptionDisableSessionSharing, false);
     sslConfig.setSslOption(QSsl::SslOptionDisableSessionPersistence, false);
-#endif
 
     return sslConfig;
 }

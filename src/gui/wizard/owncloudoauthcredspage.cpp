@@ -76,7 +76,7 @@ void OwncloudOAuthCredsPage::asyncAuthResult(OAuth::Result r, const QString &use
         /* OAuth not supported (can't open browser), fallback to HTTP credentials */
         OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
         ocWizard->back();
-        ocWizard->setAuthType(WizardCommon::HttpCreds);
+        ocWizard->setAuthType(DetermineAuthTypeJob::Basic);
         break;
     }
     case OAuth::Error:

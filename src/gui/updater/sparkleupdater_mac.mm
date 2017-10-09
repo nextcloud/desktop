@@ -18,9 +18,8 @@
 #include <Sparkle/SUUpdater.h>
 #include <AppKit/NSApplication.h>
 
+#include "common/utility.h"
 #include "updater/sparkleupdater.h"
-
-#include "utility.h"
 
 // Does not work yet
 @interface DelegateObject : NSObject <SUUpdaterDelegate>

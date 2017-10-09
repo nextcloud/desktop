@@ -74,7 +74,7 @@ private slots:
     void slotShareLinkActionTriggered(QAction *action);
 
     void slotDeleteShareFetched();
-    void slotCreateShareFetched(const QSharedPointer<LinkShare> share);
+    void slotCreateShareFetched(const QSharedPointer<LinkShare> &share);
     void slotCreateShareRequiresPassword(const QString &message);
     void slotPasswordSet();
     void slotExpireSet();

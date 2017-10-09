@@ -5,7 +5,7 @@ add_subdirectory(updater)
 
 #TODO Move resources files
 qt_add_resources(MIRALL_RC_SRC ../../client.qrc)
-if ( IS_DIRECTORY ${OEM_THEME_DIR} )
+if (EXISTS "${OEM_THEME_DIR}/theme.qrc")
     qt_add_resources(MIRALL_RC_SRC ${OEM_THEME_DIR}/theme.qrc)
     set(theme_dir ${OEM_THEME_DIR}/theme)
 else()
@@ -181,11 +181,9 @@ set(3rdparty_INC
 include_directories(${3rdparty_INC})
 
 # csync is required.
-include_directories(${CMAKE_SOURCE_DIR}/csync/src
-                    ${CMAKE_BINARY_DIR}/csync
-                    ${CMAKE_BINARY_DIR}/csync/src
+include_directories(${CMAKE_SOURCE_DIR}/src/csync
+                    ${CMAKE_BINARY_DIR}/src/csync
                    )
-
 include_directories(../libsync ${CMAKE_CURRENT_BINARY_DIR}/../libsync)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}
                     ${CMAKE_CURRENT_BINARY_DIR}
@@ -243,6 +241,11 @@ if (NOT NO_SHIBBOLETH)
     list(APPEND ADDITIONAL_APP_MODULES WebKitWidgets)
 endif()
 
+if(UNIX AND NOT APPLE)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pie -fPIE")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pie -fPIE")
+endif()
+
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
 
     if(NOT WIN32)
@@ -293,7 +296,7 @@ set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
 )
 # Only relevant for Linux? On OS X it by default properly checks in the bundle directory next to the exe
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
-	INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}" )
+	INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${QT_LIBRARIES} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )

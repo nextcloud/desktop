@@ -13,9 +13,9 @@
  */
 
 #include "theme.h"
-#include "version.h"
 #include "config.h"
-#include "utility.h"
+#include "common/utility.h"
+#include "version.h"
 
 #include <QtCore>
 #ifndef TOKEN_AUTH_ONLY
@@ -92,17 +92,17 @@ QString Theme::statusHeaderText(SyncResult::Status status) const
 
 QString Theme::appNameGUI() const
 {
-    return QLatin1String(APPLICATION_NAME);
+    return APPLICATION_NAME;
 }
 
 QString Theme::appName() const
 {
-    return QLatin1String(APPLICATION_SHORTNAME);
+    return APPLICATION_SHORTNAME;
 }
 
 QString Theme::version() const
 {
-    return QString::fromLocal8Bit(MIRALL_VERSION_STRING);
+    return MIRALL_VERSION_STRING;
 }
 
 #ifndef TOKEN_AUTH_ONLY
@@ -173,7 +173,6 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
 
 QString Theme::hidpiFileName(const QString &fileName, QPaintDevice *dev)
 {
-#if QT_VERSION > QT_VERSION_CHECK(5, 0, 0)
     qreal devicePixelRatio = dev ? dev->devicePixelRatio() : qApp->primaryScreen()->devicePixelRatio();
     if (devicePixelRatio <= 1.0) {
         return fileName;
@@ -189,7 +188,6 @@ QString Theme::hidpiFileName(const QString &fileName, QPaintDevice *dev)
             return at2xfileName;
         }
     }
-#endif
     return fileName;
 }
 
@@ -505,6 +503,21 @@ QString Theme::oauthClientId() const
 QString Theme::oauthClientSecret() const
 {
     return "UBntmLjC2yYCeHwsyj73Uwo9TAaecAetRwMw0xYcvNL9yRdLSUi0hUAHfvCHFeFh";
+}
+
+QString Theme::versionSwitchOutput() const
+{
+    QString helpText;
+    QTextStream stream(&helpText);
+    stream << appName()
+           << QLatin1String(" version ")
+           << version() << endl;
+#ifdef GIT_SHA1
+    stream << "Git revision " << GIT_SHA1 << endl;
+#endif
+    stream << "Using Qt " << qVersion() << ", built against Qt " << QT_VERSION_STR << endl;
+    stream << "Using '" << QSslSocket::sslLibraryVersionString() << "'" << endl;
+    return helpText;
 }
 
 

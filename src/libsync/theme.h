@@ -327,6 +327,14 @@ public:
     virtual QString oauthClientId() const;
     virtual QString oauthClientSecret() const;
 
+    /**
+     * @brief What should be output for the --version command line switch.
+     *
+     * By default, it's a combination of appName(), version(), the GIT SHA1 and some
+     * important dependency versions.
+     */
+    virtual QString versionSwitchOutput() const;
+
 
 protected:
 #ifndef TOKEN_AUTH_ONLY

@@ -12,14 +12,11 @@
  * for more details.
  */
 #include "configfile.h"
-#include "utility.h"
 #include "sslerrordialog.h"
 
 #include <QtGui>
 #include <QtNetwork>
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QtWidgets>
-#endif
 
 
 #include "ui_sslerrordialog.h"
@@ -28,12 +25,10 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcSslErrorDialog, "gui.sslerrordialog", QtInfoMsg)
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 namespace Utility {
     //  Used for QSSLCertificate::subjectInfo which returns a QStringList in Qt5, but a QString in Qt4
     QString escape(const QStringList &l) { return escape(l.join(';')); }
 }
-#endif
 
 bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, const QSslConfiguration &conf, QList<QSslCertificate> *certs, AccountPtr account)
 {
@@ -73,13 +68,13 @@ SslErrorDialog::SslErrorDialog(AccountPtr account, QWidget *parent)
     QPushButton *cancelButton =
         _ui->_dialogButtonBox->button(QDialogButtonBox::Cancel);
     okButton->setEnabled(false);
-    connect(_ui->_cbTrustConnect, SIGNAL(clicked(bool)),
-        okButton, SLOT(setEnabled(bool)));
+    connect(_ui->_cbTrustConnect, &QAbstractButton::clicked,
+        okButton, &QWidget::setEnabled);
 
     if (okButton) {
         okButton->setDefault(true);
-        connect(okButton, SIGNAL(clicked()), SLOT(accept()));
-        connect(cancelButton, SIGNAL(clicked()), SLOT(reject()));
+        connect(okButton, &QAbstractButton::clicked, this, &QDialog::accept);
+        connect(cancelButton, &QAbstractButton::clicked, this, &QDialog::reject);
     }
 }
 

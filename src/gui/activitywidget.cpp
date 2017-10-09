@@ -13,15 +13,12 @@
  */
 
 #include <QtGui>
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QtWidgets>
-#endif
 
 #include "activitylistmodel.h"
 #include "activitywidget.h"
 #include "syncresult.h"
 #include "logger.h"
-#include "utility.h"
 #include "theme.h"
 #include "folderman.h"
 #include "syncfileitem.h"
@@ -84,19 +81,18 @@ ActivityWidget::ActivityWidget(QWidget *parent)
 
     showLabels();
 
-    connect(_model, SIGNAL(activityJobStatusCode(AccountState *, int)),
-        this, SLOT(slotAccountActivityStatus(AccountState *, int)));
+    connect(_model, &ActivityListModel::activityJobStatusCode,
+        this, &ActivityWidget::slotAccountActivityStatus);
 
     _copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
     _copyBtn->setToolTip(tr("Copy the activity list to the clipboard."));
-    connect(_copyBtn, SIGNAL(clicked()), SIGNAL(copyToClipboard()));
+    connect(_copyBtn, &QAbstractButton::clicked, this, &ActivityWidget::copyToClipboard);
 
-    connect(_model, SIGNAL(rowsInserted(QModelIndex, int, int)), SIGNAL(rowsInserted()));
+    connect(_model, &QAbstractItemModel::rowsInserted, this, &ActivityWidget::rowsInserted);
 
-    connect(_ui->_activityList, SIGNAL(activated(QModelIndex)), this,
-        SLOT(slotOpenFile(QModelIndex)));
+    connect(_ui->_activityList, &QListView::activated, this, &ActivityWidget::slotOpenFile);
 
-    connect(&_removeTimer, SIGNAL(timeout()), this, SLOT(slotCheckToCleanWidgets()));
+    connect(&_removeTimer, &QTimer::timeout, this, &ActivityWidget::slotCheckToCleanWidgets);
     _removeTimer.setInterval(1000);
 }
 
@@ -116,8 +112,8 @@ void ActivityWidget::slotRefreshNotifications(AccountState *ptr)
     // are running
     if (_notificationRequestsRunning == 0) {
         ServerNotificationHandler *snh = new ServerNotificationHandler;
-        connect(snh, SIGNAL(newNotificationList(ActivityList)), this,
-            SLOT(slotBuildNotificationDisplay(ActivityList)));
+        connect(snh, &ServerNotificationHandler::newNotificationList,
+            this, &ActivityWidget::slotBuildNotificationDisplay);
 
         snh->slotFetchNotifications(ptr);
     } else {
@@ -263,16 +259,14 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
             widget = _widgetForNotifId[activity.ident()];
         } else {
             widget = new NotificationWidget(this);
-            connect(widget, SIGNAL(sendNotificationRequest(QString, QString, QByteArray)),
-                this, SLOT(slotSendNotificationRequest(QString, QString, QByteArray)));
-            connect(widget, SIGNAL(requestCleanupAndBlacklist(Activity)),
-                this, SLOT(slotRequestCleanupAndBlacklist(Activity)));
+            connect(widget, &NotificationWidget::sendNotificationRequest,
+                this, &ActivityWidget::slotSendNotificationRequest);
+            connect(widget, &NotificationWidget::requestCleanupAndBlacklist,
+                this, &ActivityWidget::slotRequestCleanupAndBlacklist);
 
             _notificationsLayout->addWidget(widget);
 // _ui->_notifyScroll->setMinimumHeight( widget->height());
-#if QT_VERSION >= QT_VERSION_CHECK(5, 2, 0)
             _ui->_notifyScroll->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
-#endif
             _widgetForNotifId[activity.ident()] = widget;
             newNotificationShown = true;
         }
@@ -391,10 +385,10 @@ void ActivityWidget::slotSendNotificationRequest(const QString &accountName, con
             QUrl l(link);
             job->setLinkAndVerb(l, verb);
             job->setWidget(theSender);
-            connect(job, SIGNAL(networkError(QNetworkReply *)),
-                this, SLOT(slotNotifyNetworkError(QNetworkReply *)));
-            connect(job, SIGNAL(jobFinished(QString, int)),
-                this, SLOT(slotNotifyServerFinished(QString, int)));
+            connect(job, &AbstractNetworkJob::networkError,
+                this, &ActivityWidget::slotNotifyNetworkError);
+            connect(job, &NotificationConfirmJob::jobFinished,
+                this, &ActivityWidget::slotNotifyServerFinished);
             job->start();
 
             // count the number of running notification requests. If this member var
@@ -520,32 +514,32 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     hbox->addWidget(_tab);
     _activityWidget = new ActivityWidget(this);
     _activityTabId = _tab->addTab(_activityWidget, Theme::instance()->applicationIcon(), tr("Server Activity"));
-    connect(_activityWidget, SIGNAL(copyToClipboard()), this, SLOT(slotCopyToClipboard()));
-    connect(_activityWidget, SIGNAL(hideActivityTab(bool)), this, SLOT(setActivityTabHidden(bool)));
-    connect(_activityWidget, SIGNAL(guiLog(QString, QString)), this, SIGNAL(guiLog(QString, QString)));
-    connect(_activityWidget, SIGNAL(newNotification()), SLOT(slotShowActivityTab()));
+    connect(_activityWidget, &ActivityWidget::copyToClipboard, this, &ActivitySettings::slotCopyToClipboard);
+    connect(_activityWidget, &ActivityWidget::hideActivityTab, this, &ActivitySettings::setActivityTabHidden);
+    connect(_activityWidget, &ActivityWidget::guiLog, this, &ActivitySettings::guiLog);
+    connect(_activityWidget, &ActivityWidget::newNotification, this, &ActivitySettings::slotShowActivityTab);
 
     _protocolWidget = new ProtocolWidget(this);
     _protocolTabId = _tab->addTab(_protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
-    connect(_protocolWidget, SIGNAL(copyToClipboard()), this, SLOT(slotCopyToClipboard()));
+    connect(_protocolWidget, &ProtocolWidget::copyToClipboard, this, &ActivitySettings::slotCopyToClipboard);
 
     _issuesWidget = new IssuesWidget(this);
     _syncIssueTabId = _tab->addTab(_issuesWidget, Theme::instance()->syncStateIcon(SyncResult::Problem), QString());
     slotShowIssueItemCount(0); // to display the label.
-    connect(_issuesWidget, SIGNAL(issueCountUpdated(int)),
-        this, SLOT(slotShowIssueItemCount(int)));
-    connect(_issuesWidget, SIGNAL(copyToClipboard()),
-        this, SLOT(slotCopyToClipboard()));
+    connect(_issuesWidget, &IssuesWidget::issueCountUpdated,
+        this, &ActivitySettings::slotShowIssueItemCount);
+    connect(_issuesWidget, &IssuesWidget::copyToClipboard,
+        this, &ActivitySettings::slotCopyToClipboard);
 
     // Add a progress indicator to spin if the acitivity list is updated.
     _progressIndicator = new QProgressIndicator(this);
     _tab->setCornerWidget(_progressIndicator);
 
-    connect(&_notificationCheckTimer, SIGNAL(timeout()),
-        this, SLOT(slotRegularNotificationCheck()));
+    connect(&_notificationCheckTimer, &QTimer::timeout,
+        this, &ActivitySettings::slotRegularNotificationCheck);
 
     // connect a model signal to stop the animation.
-    connect(_activityWidget, SIGNAL(rowsInserted()), _progressIndicator, SLOT(stopAnimation()));
+    connect(_activityWidget, &ActivityWidget::rowsInserted, _progressIndicator, &QProgressIndicator::stopAnimation);
 
     // We want the protocol be the default
     _tab->setCurrentIndex(1);

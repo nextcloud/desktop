@@ -50,14 +50,6 @@ public:
     bool isSequential() const Q_DECL_OVERRIDE;
     bool seek(qint64 pos) Q_DECL_OVERRIDE;
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 4, 2)
-    bool reset() Q_DECL_OVERRIDE
-    {
-        emit wasReset();
-        return QIODevice::reset();
-    }
-#endif
-
     void setBandwidthLimited(bool);
     bool isBandwidthLimited() { return _bandwidthLimited; }
     void setChoked(bool);
@@ -65,9 +57,6 @@ public:
     void giveBandwidthQuota(qint64 bwq);
 
 signals:
-#if QT_VERSION < 0x050402
-    void wasReset();
-#endif
 
 private:
     // The file data
@@ -82,7 +71,7 @@ private:
     bool _bandwidthLimited; // if _bandwidthQuota will be used
     bool _choked; // if upload is paused (readData() will return 0)
     friend class BandwidthManager;
-protected slots:
+public slots:
     void slotJobUploadProgress(qint64 sent, qint64 t);
 };
 

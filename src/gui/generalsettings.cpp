@@ -18,7 +18,6 @@
 #include "theme.h"
 #include "configfile.h"
 #include "application.h"
-#include "utility.h"
 #include "configfile.h"
 #include "owncloudsetupwizard.h"
 #include "accountmanager.h"
@@ -43,11 +42,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 {
     _ui->setupUi(this);
 
-    connect(_ui->desktopNotificationsCheckBox, SIGNAL(toggled(bool)),
-        SLOT(slotToggleOptionalDesktopNotifications(bool)));
+    connect(_ui->desktopNotificationsCheckBox, &QAbstractButton::toggled,
+        this, &GeneralSettings::slotToggleOptionalDesktopNotifications);
 
     _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
-    connect(_ui->autostartCheckBox, SIGNAL(toggled(bool)), SLOT(slotToggleLaunchOnStartup(bool)));
+    connect(_ui->autostartCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleLaunchOnStartup);
 
     // setup about section
     QString about = Theme::instance()->about();
@@ -64,11 +63,11 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     slotUpdateInfo();
 
     // misc
-    connect(_ui->monoIconsCheckBox, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
-    connect(_ui->crashreporterCheckBox, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
-    connect(_ui->newFolderLimitCheckBox, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
-    connect(_ui->newFolderLimitSpinBox, SIGNAL(valueChanged(int)), SLOT(saveMiscSettings()));
-    connect(_ui->newExternalStorage, SIGNAL(toggled(bool)), SLOT(saveMiscSettings()));
+    connect(_ui->monoIconsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
+    connect(_ui->crashreporterCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
+    connect(_ui->newFolderLimitCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
+    connect(_ui->newFolderLimitSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &GeneralSettings::saveMiscSettings);
+    connect(_ui->newExternalStorage, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
 
 #ifndef WITH_CRASHREPORTER
     _ui->crashreporterCheckBox->setVisible(false);
@@ -85,10 +84,10 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     // is no point in offering an option
     _ui->monoIconsCheckBox->setVisible(Theme::instance()->monoIconsAvailable());
 
-    connect(_ui->ignoredFilesButton, SIGNAL(clicked()), SLOT(slotIgnoreFilesEditor()));
+    connect(_ui->ignoredFilesButton, &QAbstractButton::clicked, this, &GeneralSettings::slotIgnoreFilesEditor);
 
     // accountAdded means the wizard was finished and the wizard might change some options.
-    connect(AccountManager::instance(), SIGNAL(accountAdded(AccountState *)), this, SLOT(loadMiscSettings()));
+    connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
 }
 
 GeneralSettings::~GeneralSettings()
@@ -104,12 +103,7 @@ QSize GeneralSettings::sizeHint() const
 
 void GeneralSettings::loadMiscSettings()
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
-    QScopedValueRollback<bool> scope(_currentlyLoading);
-    _currentlyLoading = true;
-#else
     QScopedValueRollback<bool> scope(_currentlyLoading, true);
-#endif
     ConfigFile cfgFile;
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->desktopNotificationsCheckBox->setChecked(cfgFile.optionalDesktopNotifications());
@@ -130,9 +124,9 @@ void GeneralSettings::slotUpdateInfo()
     }
 
     if (updater) {
-        connect(updater, SIGNAL(downloadStateChanged()), SLOT(slotUpdateInfo()), Qt::UniqueConnection);
-        connect(_ui->restartButton, SIGNAL(clicked()), updater, SLOT(slotStartInstaller()), Qt::UniqueConnection);
-        connect(_ui->restartButton, SIGNAL(clicked()), qApp, SLOT(quit()), Qt::UniqueConnection);
+        connect(updater, &OCUpdater::downloadStateChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
+        connect(_ui->restartButton, &QAbstractButton::clicked, updater, &OCUpdater::slotStartInstaller, Qt::UniqueConnection);
+        connect(_ui->restartButton, &QAbstractButton::clicked, qApp, &QApplication::quit, Qt::UniqueConnection);
         _ui->updateStateLabel->setText(updater->statusString());
         _ui->restartButton->setVisible(updater->downloadState() == OCUpdater::DownloadComplete);
     } else {

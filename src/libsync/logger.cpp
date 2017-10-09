@@ -26,27 +26,6 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcCsync, "sync.csync", QtInfoMsg)
 
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-// logging handler.
-static void mirallLogCatcher(QtMsgType type, const char *msg)
-{
-    Q_UNUSED(type)
-    // qDebug() exports to local8Bit, which is not always UTF-8
-    Logger::instance()->mirallLog(QString::fromLocal8Bit(msg));
-}
-static void qInstallMessageHandler(QtMsgHandler h)
-{
-    qInstallMsgHandler(h);
-}
-#elif QT_VERSION < QT_VERSION_CHECK(5, 4, 0)
-static void mirallLogCatcher(QtMsgType, const QMessageLogContext &ctx, const QString &message)
-{
-    QByteArray file = ctx.file;
-    file = file.mid(file.lastIndexOf('/') + 1);
-    Logger::instance()->mirallLog(QString::fromLocal8Bit(file) + QLatin1Char(':') + QString::number(ctx.line)
-        + QLatin1Char(' ') + message);
-}
-#else
 static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
 {
     auto logger = Logger::instance();
@@ -54,7 +33,6 @@ static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, cons
         logger->doLog(qFormatLogMessage(type, ctx, message));
     }
 }
-#endif
 
 static void csyncLogCatcher(int verbosity,
     const char *function,
@@ -91,9 +69,7 @@ Logger::Logger(QObject *parent)
     , _logExpire(0)
     , _logDebug(false)
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
     qSetMessagePattern("%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
-#endif
 #ifndef NO_MSG_HANDLER
     qInstallMessageHandler(mirallLogCatcher);
 #else
@@ -154,12 +130,8 @@ void Logger::log(Log log)
  */
 bool Logger::isNoop() const
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    return false;
-#else
     QMutexLocker lock(const_cast<QMutex *>(&_mutex));
     return !_logstream && !_logWindowActivated;
-#endif
 }
 
 
@@ -180,7 +152,7 @@ void Logger::mirallLog(const QString &message)
 {
     Log log_;
     log_.source = Log::Occ;
-    log_.timeStamp = QDateTime::currentDateTime();
+    log_.timeStamp = QDateTime::currentDateTimeUtc();
     log_.message = message;
 
     Logger::instance()->log(log_);
@@ -264,7 +236,7 @@ void Logger::enterNextLogFile()
             QDir::Files);
         QRegExp rx("owncloud.log.(\\d+)");
         uint maxNumber = 0;
-        QDateTime now = QDateTime::currentDateTime();
+        QDateTime now = QDateTime::currentDateTimeUtc();
         foreach (const QString &s, files) {
             if (rx.exactMatch(s)) {
                 maxNumber = qMax(maxNumber, rx.cap(1).toUInt());

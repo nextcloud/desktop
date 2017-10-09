@@ -20,9 +20,8 @@
 #include "configfile.h"
 #include "folderman.h"
 #include "folder.h"
-#include "utility.h"
 #include "theme.h"
-#include "syncjournalfilerecord.h"
+#include "common/syncjournalfilerecord.h"
 #include "syncengine.h"
 #include "syncfileitem.h"
 #include "filesystem.h"
@@ -31,7 +30,7 @@
 #include "accountstate.h"
 #include "account.h"
 #include "capabilities.h"
-#include "asserts.h"
+#include "common/asserts.h"
 #include "guiutility.h"
 
 #include <array>
@@ -51,10 +50,7 @@
 
 #include <sqlite3.h>
 
-
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QStandardPaths>
-#endif
 
 
 // This is the version that is returned when the client asks for the VERSION.
@@ -189,16 +185,7 @@ SocketApi::SocketApi(QObject *parent)
         socketPath = SOCKETAPI_TEAM_IDENTIFIER_PREFIX APPLICATION_REV_DOMAIN ".socketApi";
     } else if (Utility::isLinux() || Utility::isBSD()) {
         QString runtimeDir;
-#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
         runtimeDir = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
-#else
-        runtimeDir = QFile::decodeName(qgetenv("XDG_RUNTIME_DIR"));
-        if (runtimeDir.isEmpty()) {
-            runtimeDir = QDir::tempPath() + QLatin1String("/runtime-")
-                + QString::fromLocal8Bit(qgetenv("USER"));
-            QDir().mkdir(runtimeDir);
-        }
-#endif
         socketPath = runtimeDir + "/" + Theme::instance()->appName() + "/socket";
     } else {
         qCWarning(lcSocketApi) << "An unexpected system detected, this probably won't work.";
@@ -220,10 +207,10 @@ SocketApi::SocketApi(QObject *parent)
         qCInfo(lcSocketApi) << "server started, listening at " << socketPath;
     }
 
-    connect(&_localServer, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
+    connect(&_localServer, &SocketApiServer::newConnection, this, &SocketApi::slotNewConnection);
 
     // folder watcher
-    connect(FolderMan::instance(), SIGNAL(folderSyncStateChange(Folder *)), this, SLOT(slotUpdateFolderView(Folder *)));
+    connect(FolderMan::instance(), &FolderMan::folderSyncStateChange, this, &SocketApi::slotUpdateFolderView);
 }
 
 SocketApi::~SocketApi()
@@ -243,9 +230,9 @@ void SocketApi::slotNewConnection()
         return;
     }
     qCInfo(lcSocketApi) << "New connection" << socket;
-    connect(socket, SIGNAL(readyRead()), this, SLOT(slotReadSocket()));
+    connect(socket, &QIODevice::readyRead, this, &SocketApi::slotReadSocket);
     connect(socket, SIGNAL(disconnected()), this, SLOT(onLostConnection()));
-    connect(socket, SIGNAL(destroyed(QObject *)), this, SLOT(slotSocketDestroyed(QObject *)));
+    connect(socket, &QObject::destroyed, this, &SocketApi::slotSocketDestroyed);
     ASSERT(socket->readAll().isEmpty());
 
     _listeners.append(SocketListener(socket));
@@ -504,23 +491,70 @@ void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketListener *listen
     listener->sendMessage(QLatin1String("SHARE_MENU_TITLE:") + tr("Share with %1", "parameter is ownCloud").arg(Theme::instance()->appNameGUI()));
 }
 
+// Fetches the private link url asynchronously and then calls the target slot
+void fetchPrivateLinkUrl(const QString &localFile, SocketApi *target, void (SocketApi::*targetFun)(const QString &url) const)
+{
+    Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
+    if (!shareFolder) {
+        qCWarning(lcSocketApi) << "Unknown path" << localFile;
+        return;
+    }
+
+    const QString localFileClean = QDir::cleanPath(localFile);
+    const QString file = localFileClean.mid(shareFolder->cleanPath().length() + 1);
+
+    // Generate private link ourselves: used as a fallback
+    SyncJournalFileRecord rec;
+    if (!shareFolder->journalDb()->getFileRecord(file, &rec) || !rec.isValid())
+        return;
+    const QString oldUrl =
+        shareFolder->accountState()->account()->deprecatedPrivateLinkUrl(rec.numericFileId()).toString(QUrl::FullyEncoded);
+
+    // If the server doesn't have the property, use the old url directly.
+    if (!shareFolder->accountState()->account()->capabilities().privateLinkPropertyAvailable()) {
+        (target->*targetFun)(oldUrl);
+        return;
+    }
+
+    // Retrieve the new link by PROPFIND
+    PropfindJob *job = new PropfindJob(shareFolder->accountState()->account(), file, target);
+    job->setProperties(QList<QByteArray>() << "http://owncloud.org/ns:privatelink");
+    job->setTimeout(10 * 1000);
+    QObject::connect(job, &PropfindJob::result, target, [=](const QVariantMap &result) {
+        auto privateLinkUrl = result["privatelink"].toString();
+        if (!privateLinkUrl.isEmpty()) {
+            (target->*targetFun)(privateLinkUrl);
+        } else {
+            (target->*targetFun)(oldUrl);
+        }
+    });
+    QObject::connect(job, &PropfindJob::finishedWithError, target, [=](QNetworkReply *) {
+        (target->*targetFun)(oldUrl);
+    });
+    job->start();
+}
+
 void SocketApi::command_COPY_PRIVATE_LINK(const QString &localFile, SocketListener *)
 {
-    auto url = getPrivateLinkUrl(localFile);
-    if (!url.isEmpty()) {
-        QApplication::clipboard()->setText(url.toString());
-    }
+    fetchPrivateLinkUrl(localFile, this, &SocketApi::copyPrivateLinkToClipboard);
 }
 
 void SocketApi::command_EMAIL_PRIVATE_LINK(const QString &localFile, SocketListener *)
 {
-    auto url = getPrivateLinkUrl(localFile);
-    if (!url.isEmpty()) {
-        Utility::openEmailComposer(
-            tr("I shared something with you"),
-            url.toString(QUrl::FullyEncoded),
-            0);
-    }
+    fetchPrivateLinkUrl(localFile, this, &SocketApi::emailPrivateLink);
+}
+
+void SocketApi::copyPrivateLinkToClipboard(const QString &link) const
+{
+    QApplication::clipboard()->setText(link);
+}
+
+void SocketApi::emailPrivateLink(const QString &link) const
+{
+    Utility::openEmailComposer(
+        tr("I shared something with you"),
+        link,
+        0);
 }
 
 void SocketApi::command_GET_STRINGS(const QString &, SocketListener *listener)
@@ -544,24 +578,6 @@ QString SocketApi::buildRegisterPathMessage(const QString &path)
     QString message = QLatin1String("REGISTER_PATH:");
     message.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
     return message;
-}
-
-QUrl SocketApi::getPrivateLinkUrl(const QString &localFile) const
-{
-    Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
-    if (!shareFolder) {
-        qCWarning(lcSocketApi) << "Unknown path" << localFile;
-        return QUrl();
-    }
-
-    const QString localFileClean = QDir::cleanPath(localFile);
-    const QString file = localFileClean.mid(shareFolder->cleanPath().length() + 1);
-
-    SyncJournalFileRecord rec = shareFolder->journalDb()->getFileRecord(file);
-    if (rec.isValid()) {
-        return shareFolder->accountState()->account()->filePermalinkUrl(rec.numericFileId());
-    }
-    return QUrl();
 }
 
 } // namespace OCC

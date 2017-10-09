@@ -1,13 +1,10 @@
 project(libsync)
 set(CMAKE_AUTOMOC TRUE)
 
-configure_file( version.h.in "${CMAKE_CURRENT_BINARY_DIR}/version.h" )
-
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 # csync is required.
-include_directories(${CMAKE_SOURCE_DIR}/csync/src
-                    ${CMAKE_BINARY_DIR}/csync
-                    ${CMAKE_BINARY_DIR}/csync/src
+include_directories(${CMAKE_SOURCE_DIR}/src/csync
+                    ${CMAKE_BINARY_DIR}/src/csync
                    )
 
 if ( APPLE )
@@ -54,15 +51,11 @@ set(libsync_SRCS
     propagateremotemove.cpp
     propagateremotemkdir.cpp
     syncengine.cpp
+    syncfileitem.cpp
     syncfilestatus.cpp
     syncfilestatustracker.cpp
-    syncjournaldb.cpp
-    syncjournalfilerecord.cpp
     syncresult.cpp
     theme.cpp
-    utility.cpp
-    ownsql.cpp
-    checksums.cpp
     excludedfiles.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
@@ -83,7 +76,6 @@ set(owncloudsync_HEADERS
     networkjobs.h
     progressdispatcher.h
     syncfileitem.h
-    syncjournaldb.h
     syncresult.h
 )
 
@@ -119,11 +111,6 @@ if(INOTIFY_FOUND)
     link_directories(${INOTIFY_LIBRARY_DIR})
 endif()
 
-if(ZLIB_FOUND)
-    list(APPEND libsync_LINK_TARGETS ${ZLIB_LIBRARIES})
-    include_directories(${ZLIB_INCLUDE_DIRS})
-endif(ZLIB_FOUND)
-
 add_library(${synclib_NAME} SHARED ${libsync_SRCS} ${syncMoc})
 GENERATE_EXPORT_HEADER( ${synclib_NAME}
 	BASE_NAME ${synclib_NAME}
@@ -133,9 +120,9 @@ GENERATE_EXPORT_HEADER( ${synclib_NAME}
 )
 
 if(TOKEN_AUTH_ONLY)
-    qt5_use_modules(${synclib_NAME} Network Concurrent)
+    qt5_use_modules(${synclib_NAME} Network)
 else()
-    qt5_use_modules(${synclib_NAME} Widgets Network Concurrent)
+    qt5_use_modules(${synclib_NAME} Widgets Network)
 endif()
 
 set_target_properties( ${synclib_NAME}  PROPERTIES
@@ -144,7 +131,7 @@ set_target_properties( ${synclib_NAME}  PROPERTIES
 	RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
 )
 set_target_properties( ${synclib_NAME} PROPERTIES
-	INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}" )
+	INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
 target_link_libraries(${synclib_NAME} ${libsync_LINK_TARGETS} )
 

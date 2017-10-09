@@ -49,8 +49,8 @@ public:
 
 private slots:
     void done(int r);
-    void slotMaxSharingPermissionsReceived(const QVariantMap &result);
-    void slotMaxSharingPermissionsError();
+    void slotPropfindReceived(const QVariantMap &result);
+    void slotPropfindError();
     void slotThumbnailFetched(const int &statusCode, const QByteArray &reply);
     void slotAccountStateChanged(int state);
 
@@ -63,6 +63,7 @@ private:
     QString _localPath;
     SharePermissions _maxSharingPermissions;
     QByteArray _numericFileId;
+    QString _privateLinkUrl;
 
     ShareLinkWidget *_linkWidget;
     ShareUserGroupWidget *_userGroupWidget;

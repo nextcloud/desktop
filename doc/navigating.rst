@@ -87,8 +87,7 @@ have the following features:
   **Log Out**, and **Remove**.
 * Used and available space on the server.
 * Current synchronization status.
-* **Add Folder Sync Connection** button, which is active only when you have 
-  removed synchronization on an account (see **Remove Sync** below).
+* **Add Folder Sync Connection** button.
 
 The little button with three dots (the overflow menu) that sits to the right of 
 the sync status bar offers four additional options:

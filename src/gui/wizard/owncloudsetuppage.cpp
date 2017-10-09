@@ -40,7 +40,7 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     , _ocUser()
     , _authTypeKnown(false)
     , _checking(false)
-    , _authType(WizardCommon::HttpCreds)
+    , _authType(DetermineAuthTypeJob::Basic)
     , _progressIndi(new QProgressIndicator(this))
 {
     _ui.setupUi(this);
@@ -66,8 +66,8 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     setupCustomization();
 
     slotUrlChanged(QLatin1String("")); // don't jitter UI
-    connect(_ui.leUrl, SIGNAL(textChanged(QString)), SLOT(slotUrlChanged(QString)));
-    connect(_ui.leUrl, SIGNAL(editingFinished()), SLOT(slotUrlEditFinished()));
+    connect(_ui.leUrl, &QLineEdit::textChanged, this, &OwncloudSetupPage::slotUrlChanged);
+    connect(_ui.leUrl, &QLineEdit::editingFinished, this, &OwncloudSetupPage::slotUrlEditFinished);
 
     addCertDial = new AddCertificateDialog(this);
 }
@@ -201,9 +201,9 @@ bool OwncloudSetupPage::urlHasChanged()
 
 int OwncloudSetupPage::nextId() const
 {
-    if (_authType == WizardCommon::HttpCreds) {
+    if (_authType == DetermineAuthTypeJob::Basic) {
         return WizardCommon::Page_HttpCreds;
-    } else if (_authType == WizardCommon::OAuth) {
+    } else if (_authType == DetermineAuthTypeJob::OAuth) {
         return WizardCommon::Page_OAuthCreds;
     } else {
         return WizardCommon::Page_ShibbolethCreds;
@@ -235,7 +235,7 @@ bool OwncloudSetupPage::validatePage()
     }
 }
 
-void OwncloudSetupPage::setAuthType(WizardCommon::AuthType type)
+void OwncloudSetupPage::setAuthType(DetermineAuthTypeJob::AuthType type)
 {
     _authTypeKnown = true;
     _authType = type;
@@ -267,10 +267,8 @@ void OwncloudSetupPage::setErrorString(const QString &err, bool retryHTTPonly)
                     wizard()->next();
                 } break;
                 case OwncloudConnectionMethodDialog::Client_Side_TLS:
-#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
                     addCertDial->show();
-                    connect(addCertDial, SIGNAL(accepted()), this, SLOT(slotCertificateAccepted()));
-#endif
+                    connect(addCertDial, &QDialog::accepted, this, &OwncloudSetupPage::slotCertificateAccepted);
                     break;
                 case OwncloudConnectionMethodDialog::Closed:
                 case OwncloudConnectionMethodDialog::Back:
@@ -305,17 +303,12 @@ void OwncloudSetupPage::stopSpinner()
 
 QString subjectInfoHelper(const QSslCertificate &cert, const QByteArray &qa)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
-    return cert.subjectInfo(qa);
-#else
     return cert.subjectInfo(qa).join(QLatin1Char('/'));
-#endif
 }
 
 //called during the validation of the client certificate.
 void OwncloudSetupPage::slotCertificateAccepted()
 {
-#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
     QList<QSslCertificate> clientCaCertificates;
     QFile certFile(addCertDial->getCertificatePath());
     certFile.open(QFile::ReadOnly);
@@ -344,7 +337,6 @@ void OwncloudSetupPage::slotCertificateAccepted()
         addCertDial->showErrorMessage("Could not load certificate");
         addCertDial->show();
     }
-#endif
 }
 
 OwncloudSetupPage::~OwncloudSetupPage()

@@ -11,7 +11,7 @@
 
 using namespace OCC;
 
-#define EXCLUDE_LIST_FILE SOURCEDIR"/../sync-exclude.lst"
+#define EXCLUDE_LIST_FILE SOURCEDIR"/../../sync-exclude.lst"
 
 class TestExcludedFiles: public QObject
 {
