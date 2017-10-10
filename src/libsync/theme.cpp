@@ -23,7 +23,7 @@
 #endif
 #include <QSslSocket>
 
-#include "owncloudtheme.h"
+#include "nextcloudtheme.h"
 
 #ifdef THEME_INCLUDE
 #define Mirall OCC // namespace hack to make old themes work
@@ -296,7 +296,7 @@ QString Theme::gitSHA1() const
     const QString githubPrefix(QLatin1String(
         "https://github.com/owncloud/client/commit/"));
     const QString gitSha1(QLatin1String(GIT_SHA1));
-    devString = QCoreApplication::translate("ownCloudTheme::about()",
+    devString = QCoreApplication::translate("nextcloudTheme::about()",
         "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
         " on %3, %4 using Qt %5, %6</small></p>")
                     .arg(githubPrefix + gitSha1)
