@@ -13,7 +13,7 @@ set(OEM_THEME_DIR "" CACHE STRING "Define directory containing a custom theme")
 if ( EXISTS ${OEM_THEME_DIR}/OEM.cmake )
      include ( ${OEM_THEME_DIR}/OEM.cmake )
 else ()
-     include ( ${CMAKE_SOURCE_DIR}/OWNCLOUD.cmake )
+     include ( ${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake )
 endif()
 # need this logic to not mess with re/uninstallations via macosx.pkgproj
 if(${APPLICATION_REV_DOMAIN} STREQUAL "com.owncloud.desktopclient")

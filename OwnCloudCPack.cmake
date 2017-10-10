@@ -5,7 +5,7 @@ set( CPACK_PACKAGE_CONTACT  "Dominik Schmidt <domme@tomahawk-player.org>" )
 if ( DEFINED OEM_THEME_DIR AND EXISTS ${OEM_THEME_DIR}/OEM.cmake )
      include ( "${OEM_THEME_DIR}/OEM.cmake" )
 else ()
-     include ( "${CMAKE_SOURCE_DIR}/OWNCLOUD.cmake" )
+     include ( "${CMAKE_SOURCE_DIR}/NEXTCLOUD.cmake" )
 endif()
 
 include( VERSION.cmake )
