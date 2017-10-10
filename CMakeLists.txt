@@ -206,7 +206,7 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
     set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
 endif()
 
-include(OwnCloudCPack.cmake)
+include(NextcloudCPack.cmake)
 
 add_definitions(-DUNICODE)
 add_definitions(-D_UNICODE)
