@@ -613,6 +613,60 @@ private slots:
         QCOMPARE(nDELETE, 5);
         QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
     }
+
+    // Checks whether downloads with bad checksums are accepted
+    void testChecksumValidation()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        QObject parent;
+
+        QByteArray checksumValue;
+        QByteArray contentMd5Value;
+
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::GetOperation) {
+                auto reply = new FakeGetReply(fakeFolder.remoteModifier(), op, request, &parent);
+                if (!checksumValue.isNull())
+                    reply->setRawHeader("OC-Checksum", checksumValue);
+                if (!contentMd5Value.isNull())
+                    reply->setRawHeader("Content-MD5", contentMd5Value);
+                return reply;
+            }
+            return nullptr;
+        });
+
+        // Basic case
+        fakeFolder.remoteModifier().create("A/a3", 16, 'A');
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Bad OC-Checksum
+        checksumValue = "SHA1:bad";
+        fakeFolder.remoteModifier().create("A/a4", 16, 'A');
+        QVERIFY(!fakeFolder.syncOnce());
+
+        // Good OC-Checksum
+        checksumValue = "SHA1:19b1928d58a2030d08023f3d7054516dbc186f20"; // printf 'A%.0s' {1..16} | sha1sum -
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        checksumValue = QByteArray();
+
+        // Bad Content-MD5
+        contentMd5Value = "bad";
+        fakeFolder.remoteModifier().create("A/a5", 16, 'A');
+        QVERIFY(!fakeFolder.syncOnce());
+
+        // Good Content-MD5
+        contentMd5Value = "d8a73157ce10cd94a91c2079fc9a92c8"; // printf 'A%.0s' {1..16} | md5sum -
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // OC-Checksum has preference
+        checksumValue = "garbage";
+        // contentMd5Value is still good
+        fakeFolder.remoteModifier().create("A/a6", 16, 'A');
+        QVERIFY(!fakeFolder.syncOnce());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)

@@ -597,6 +597,9 @@ public:
         size -= len;
         return len;
     }
+
+    // useful to be public for testing
+    using QNetworkReply::setRawHeader;
 };
 
 
