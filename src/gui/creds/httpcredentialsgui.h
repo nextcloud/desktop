@@ -60,12 +60,12 @@ public:
 private slots:
     void asyncAuthResult(OAuth::Result, const QString &user, const QString &accessToken, const QString &refreshToken);
     void showDialog();
+    void askFromUserAsync();
 
 signals:
     void authorisationLinkChanged();
 
 private:
-    Q_INVOKABLE void askFromUserAsync();
 
     QScopedPointer<OAuth, QScopedPointerObjectDeleteLater<OAuth>> _asyncAuth;
 };

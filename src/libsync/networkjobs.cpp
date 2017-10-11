@@ -881,8 +881,14 @@ bool DetermineAuthTypeJob::finished()
 void DetermineAuthTypeJob::send(const QUrl &url)
 {
     QNetworkRequest req;
+
     // Prevent HttpCredentialsAccessManager from setting an Authorization header.
     req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
+    // Don't reuse previous auth credentials
+    req.setAttribute(QNetworkRequest::AuthenticationReuseAttribute, QNetworkRequest::Manual);
+    // Don't send cookies, we can't determine the auth type if we're logged in
+    req.setAttribute(QNetworkRequest::CookieLoadControlAttribute, QNetworkRequest::Manual);
+
     sendRequest("GET", url, req);
 }
 
