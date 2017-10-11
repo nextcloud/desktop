@@ -3557,7 +3557,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="238"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Niet verbonden</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="240"/>
@@ -3577,7 +3577,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="268"/>
         <source>Signed out</source>
-        <translation type="unfinished"/>
+        <translation>Afgemeld</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="272"/>

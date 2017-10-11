@@ -3552,7 +3552,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="238"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Getrennt</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="240"/>
@@ -3572,7 +3572,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="268"/>
         <source>Signed out</source>
-        <translation type="unfinished"/>
+        <translation>Abgemeldet</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="272"/>

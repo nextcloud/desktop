@@ -3541,7 +3541,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="238"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Lahti ühendatud</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="240"/>
@@ -3561,7 +3561,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="268"/>
         <source>Signed out</source>
-        <translation type="unfinished"/>
+        <translation>Välja logitud</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="272"/>
