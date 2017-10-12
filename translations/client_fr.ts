@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;Sélectionner...</translation>
+        <translation>&amp;Choisir</translation>
     </message>
 </context>
 <context>
@@ -55,7 +55,7 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="20"/>
         <source>Form</source>
-        <translation>Form</translation>
+        <translation>Formulaire</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="56"/>
@@ -83,12 +83,12 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="243"/>
         <source>Unknown error: network reply was deleted</source>
-        <translation type="unfinished"/>
+        <translation>Erreur inconnue : La réponse du réseau a été supprimé</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="386"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Le serveur a répondu &quot;%1 %2&quot;  à &quot;%3 %4&quot;</translation>
     </message>
 </context>
 <context>
@@ -258,7 +258,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="672"/>
         <source>Connecting to %1...</source>
-        <translation type="unfinished"/>
+        <translation>Connexion à %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="675"/>
@@ -373,7 +373,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="132"/>
         <source>Maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>mode maintenance</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="134"/>
@@ -388,7 +388,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="138"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>informations d&apos;identification demandées</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="140"/>
@@ -991,7 +991,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="209"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation type="unfinished"/>
+        <translation>Il y a des conflits non résolus. Cliquez pour plus de détails.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
@@ -1451,7 +1451,7 @@ L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la supp
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="78"/>
         <source>Issue</source>
-        <translation type="unfinished"/>
+        <translation>Incident</translation>
     </message>
 </context>
 <context>
@@ -1691,12 +1691,12 @@ L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la supp
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="112"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Erreur retournée par le serveur: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Il y a eu une erreur durant l&apos;accès au jeton de destination: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
@@ -1706,17 +1706,17 @@ L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la supp
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>La réponse provenant du serveur ne contienne pas tous les champs attendus</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="125"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Erreur de connexion&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="131"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Mauvais utilisateur&lt;/h1&gt;&lt;p&gt;Vous êtes connecté avec l&apos;utilisateur &lt;em&gt;%1&lt;/em&gt;, mais vous devez vous connecter avec l&apos;utilisateur&lt;em&gt;%2&lt;/em&gt;. Veuillez vous déconnecter de  %3 l&apos;autre onglet, puis &lt;a href=&apos;%4&apos;&gt; cliquez ici&lt;/a&gt; et connectez-vous en tant que l&apos;utilisateur &lt;/p&gt;%2</translation>
     </message>
 </context>
 <context>
@@ -1884,7 +1884,7 @@ L&apos;assistant peut demander des privilèges additionnels durant le processus.
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="44"/>
         <source>Login in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Connectez vous sur votre navigateur</translation>
     </message>
 </context>
 <context>
@@ -2119,7 +2119,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="436"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation type="unfinished"/>
+        <translation>Le téléchargement réduira l&apos;espace disque libre en dessous de la limite</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="440"/>
@@ -2889,7 +2889,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="563"/>
         <source>Share...</source>
-        <translation type="unfinished"/>
+        <translation>partager</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="565"/>
@@ -3689,7 +3689,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="46"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Version %2. Pour plus d&apos;informations, rendez-vous &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Pour les incidents connus et de l&apos;aide, cliquez ici: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, Jan-Christoph Borchardt, et les autres.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Edité sous la licence GNU General Public (GPL) Version 2.0&lt;br/&gt;ownCloud et le logo ownCloud sont enregistrés sous la marque d&apos;ownClouD GmbH aux Etats-Unis, autres pays ou les deux.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3805,7 +3805,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occured while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Une erreur s&apos;est produite durant la connexion. Veuillez réessayer plus tard.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
