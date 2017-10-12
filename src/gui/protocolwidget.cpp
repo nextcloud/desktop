@@ -32,6 +32,19 @@
 
 namespace OCC {
 
+bool SortedTreeWidgetItem::operator<(const QTreeWidgetItem &other) const
+{
+    int column = treeWidget()->sortColumn();
+    if (column != 0) {
+        return QTreeWidgetItem::operator<(other);
+    }
+
+    // Items with empty "File" column are larger than others,
+    // otherwise sort by time (this uses lexicographic ordering)
+    return std::forward_as_tuple(text(1).isEmpty(), data(0, Qt::UserRole).toDateTime())
+        < std::forward_as_tuple(other.text(1).isEmpty(), other.data(0, Qt::UserRole).toDateTime());
+}
+
 ProtocolWidget::ProtocolWidget(QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::ProtocolWidget)
@@ -86,6 +99,16 @@ void ProtocolWidget::showEvent(QShowEvent *ev)
 {
     ConfigFile cfg;
     cfg.restoreGeometryHeader(_ui->_treeWidget->header());
+
+    // Sorting by section was newly enabled. But if we restore the header
+    // from a state where sorting was disabled, both of these flags will be
+    // false and sorting will be impossible!
+    _ui->_treeWidget->header()->setSectionsClickable(true);
+    _ui->_treeWidget->header()->setSortIndicatorShown(true);
+
+    // Switch back to "by time" ordering
+    _ui->_treeWidget->sortByColumn(0, Qt::DescendingOrder);
+
     QWidget::showEvent(ev);
 }
 
@@ -158,14 +181,15 @@ QTreeWidgetItem *ProtocolWidget::createCompletedTreewidgetItem(const QString &fo
         columns << Utility::octetsToString(item._size);
     }
 
-    QTreeWidgetItem *twitem = new QTreeWidgetItem(columns);
+    QTreeWidgetItem *twitem = new SortedTreeWidgetItem(columns);
     twitem->setData(0, Qt::SizeHintRole, QSize(0, ActivityItemDelegate::rowHeight()));
+    twitem->setData(0, Qt::UserRole, timestamp);
     twitem->setIcon(0, icon);
     twitem->setToolTip(0, longTimeStr);
     twitem->setToolTip(1, item._file);
-    twitem->setToolTip(3, message);
-    twitem->setData(0, Qt::UserRole, item._status);
     twitem->setData(2, Qt::UserRole, folder);
+    twitem->setToolTip(3, message);
+    twitem->setData(3, Qt::UserRole, item._status);
     return twitem;
 }
 
