@@ -83,12 +83,12 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="243"/>
         <source>Unknown error: network reply was deleted</source>
-        <translation type="unfinished"/>
+        <translation>Ismeretlen hiba: hálózati válasz törölve</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="386"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Szerver válasza &quot;%1 %2&quot; &quot;%3 %4&quot;-re</translation>
     </message>
 </context>
 <context>
@@ -116,17 +116,17 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
         <source>Synchronize all</source>
-        <translation type="unfinished"/>
+        <translation>Mindent szinkronizál</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="205"/>
         <source>Synchronize none</source>
-        <translation type="unfinished"/>
+        <translation>Semmit sem szinkronizál</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="212"/>
         <source>Apply manual changes</source>
-        <translation type="unfinished"/>
+        <translation>Kézi módosítások alkalmazása</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="260"/>
@@ -173,12 +173,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="306"/>
         <source>Force sync now</source>
-        <translation type="unfinished"/>
+        <translation>Kényszerített szinkronizálás</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="308"/>
         <source>Restart sync</source>
-        <translation type="unfinished"/>
+        <translation>Szinkronizálás újraindítása</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="317"/>
@@ -243,7 +243,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="657"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 szerver jelenleg karbantartási módban van.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="659"/>
@@ -253,12 +253,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="668"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Engedély kérése a böngészőtől. &lt;a href=&apos;%1&apos;&gt;Kattintson ide&lt;/a&gt; a böngésző újranyitásához.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="672"/>
         <source>Connecting to %1...</source>
-        <translation type="unfinished"/>
+        <translation>Csatlakozás ehhez: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="675"/>
