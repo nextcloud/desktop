@@ -960,11 +960,20 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     }
 
     // Check for invalid character in old server version
-    if (_account->serverVersionInt() < Account::makeServerVersion(8, 1, 0)) {
-        // Server version older than 8.1 don't support these character in filename.
-        static const QRegExp invalidCharRx("[\\\\:?*\"<>|]");
+    QString invalidFilenamePattern = _account->capabilities().invalidFilenameRegex();
+    if (invalidFilenamePattern.isNull()
+        && _account->serverVersionInt() < Account::makeServerVersion(8, 1, 0)) {
+        // Server versions older than 8.1 don't support some characters in filenames.
+        // If the capability is not set, default to a pattern that avoids uploading
+        // files with names that contain these.
+        // It's important to respect the capability also for older servers -- the
+        // version check doesn't make sense for custom servers.
+        invalidFilenamePattern = "[\\\\:?*\"<>|]";
+    }
+    if (!invalidFilenamePattern.isEmpty()) {
+        const QRegExp invalidFilenameRx(invalidFilenamePattern);
         for (auto it = syncItems.begin(); it != syncItems.end(); ++it) {
-            if ((*it)->_direction == SyncFileItem::Up && (*it)->destination().contains(invalidCharRx)) {
+            if ((*it)->_direction == SyncFileItem::Up && (*it)->destination().contains(invalidFilenameRx)) {
                 (*it)->_errorString = tr("File name contains at least one invalid character");
                 (*it)->_instruction = CSYNC_INSTRUCTION_IGNORE;
             }

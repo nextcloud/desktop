@@ -667,6 +667,36 @@ private slots:
         fakeFolder.remoteModifier().create("A/a6", 16, 'A');
         QVERIFY(!fakeFolder.syncOnce());
     }
+
+    // Tests the behavior of invalid filename detection
+    void testInvalidFilenameRegex()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+
+        // For current servers, no characters are forbidden
+        fakeFolder.syncEngine().account()->setServerVersion("10.0.0");
+        fakeFolder.localModifier().insert("A/\\:?*\"<>|.txt");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // For legacy servers, some characters were forbidden by the client
+        fakeFolder.syncEngine().account()->setServerVersion("8.0.0");
+        fakeFolder.localModifier().insert("B/\\:?*\"<>|.txt");
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.currentRemoteState().find("B/\\:?*\"<>|.txt"));
+
+        // We can override that by setting the capability
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ { "invalidFilenameRegex", "" } } } });
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Check that new servers also accept the capability
+        fakeFolder.syncEngine().account()->setServerVersion("10.0.0");
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ { "invalidFilenameRegex", "my[fgh]ile" } } } });
+        fakeFolder.localModifier().insert("C/myfile.txt");
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.currentRemoteState().find("C/myfile.txt"));
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)

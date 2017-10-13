@@ -145,4 +145,9 @@ QList<int> Capabilities::httpErrorCodesThatResetFailingChunkedUploads() const
     }
     return list;
 }
+
+QString Capabilities::invalidFilenameRegex() const
+{
+    return _capabilities["dav"].toMap()["invalidFilenameRegex"].toString();
+}
 }
