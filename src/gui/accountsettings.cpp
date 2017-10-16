@@ -282,7 +282,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
             connect(ac, &QAction::triggered, [this, &fileId](bool triggered) {
                 Q_UNUSED(triggered);
                 auto job = new OCC::JsonApiJob(accountsState()->account(),
-                    "ocs/v2.php/apps/client_side_encryption/api/v1/encrypted/" + QString(fileId));
+                    "ocs/v2.php/apps/end_to_end_encryption/api/v1/encrypted/" + QString(fileId));
 
                 connect(job, &OCC::JsonApiJob::jsonReceived, [this](const QJsonDocument& json, int httpResponse) {
                     Q_UNUSED(json);
@@ -295,7 +295,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
             connect(ac, &QAction::triggered, [this, &fileId](bool triggered) {
                 Q_UNUSED(triggered);
                 auto job = new OCC::DeleteApiJob(accountsState()->account(),
-                    "ocs/v2.php/apps/client_side_encryption/api/v1/encrypted/" + QString(fileId));
+                    "ocs/v2.php/apps/end_to_end_encryption/api/v1/encrypted/" + QString(fileId));
                 connect(job, &OCC::DeleteApiJob::result, [this](int httpResponse) {
                     qCInfo(lcAccountSettings) << "Decrypt Http Response" << httpResponse;
                 });

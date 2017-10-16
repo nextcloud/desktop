@@ -26,7 +26,7 @@ namespace OCC
 
 Q_LOGGING_CATEGORY(lcCse, "sync.clientsideencryption", QtInfoMsg)
 
-QString baseUrl = QStringLiteral("ocs/v2.php/apps/client_side_encryption/api/v1/");
+QString baseUrl = QStringLiteral("ocs/v2.php/apps/end_to_end_encryption/api/v1/");
 QString baseDirectory = QDir::homePath() + QStringLiteral("/.nextcloud-keys/");
 
 namespace {

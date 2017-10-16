@@ -87,8 +87,8 @@ bool Capabilities::shareResharing() const
 
 bool Capabilities::clientSideEncryptionAvaliable() const
 {
-    return _capabilities.keys().indexOf("client-side-encryption") != -1
-        ? _capabilities["client-side-encryption"].toMap()["enabled"].toBool() : false;
+    return _capabilities.keys().indexOf("end-to-end-encryption") != -1
+        ? _capabilities["end-to-end-encryption"].toMap()["enabled"].toBool() : false;
 }
 
 bool Capabilities::notificationsAvailable() const
