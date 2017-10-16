@@ -32,7 +32,6 @@ QString baseDirectory = QDir::homePath() + QStringLiteral("/.nextcloud-keys/");
 namespace {
     void handleErrors(void)
     {
-        qCInfo(lcCse()) << "Error handling encryption or decryption";
         ERR_print_errors_fp(stdout); // This line is not printing anything.
         fflush(stdout);
     }
@@ -52,21 +51,25 @@ namespace {
 
         /* Create and initialise the context */
         if(!(ctx = EVP_CIPHER_CTX_new())) {
+			qCInfo(lcCse()) << "Error creating the Cipher.";
             handleErrors();
         }
 
         /* Initialise the encryption operation. */
         if(1 != EVP_EncryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL)) {
+			qCInfo(lcCse()) << "Error initializing the context with aes_256";
             handleErrors();
         }
 
         /* Set IV length if default 12 bytes (96 bits) is not appropriate */
         if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, 16, NULL)) {
+			qCInfo(lcCse()) << "Error setting the iv length to 16 bits. ";
             handleErrors();
         }
 
         /* Initialise key and IV */
         if(1 != EVP_EncryptInit_ex(ctx, NULL, NULL, key, iv)) {
+			qCInfo(lcCse()) << "Error initializing encryption";
             handleErrors();
         }
 
@@ -74,6 +77,7 @@ namespace {
         * required
         */
         if(1 != EVP_EncryptUpdate(ctx, NULL, &len, aad, aad_len)) {
+			qCInfo(lcCse()) << "Error calling the Encrypt Update";
             handleErrors();
         }
 
@@ -81,6 +85,7 @@ namespace {
         * EVP_EncryptUpdate can be called multiple times if necessary
         */
         if(1 != EVP_EncryptUpdate(ctx, ciphertext, &len, plaintext, plaintext_len)) {
+			qCInfo(lcCse()) << "Error encrypting the cipher ext"; // Current error is here.
             handleErrors();
         }
         ciphertext_len = len;
@@ -89,12 +94,14 @@ namespace {
         * this stage, but this does not occur in GCM mode
         */
         if(1 != EVP_EncryptFinal_ex(ctx, ciphertext + len, &len)) {
+			qCInfo(lcCse()) << "Error finalizing the encryption";
             handleErrors();
         }
         ciphertext_len += len;
 
         /* Get the tag */
         if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, tag)) {
+			qCInfo(lcCse()) << "Error Retrieving the tag";
             handleErrors();
         }
 
@@ -120,21 +127,25 @@ namespace {
 
         /* Create and initialise the context */
         if(!(ctx = EVP_CIPHER_CTX_new())) {
+			qCInfo(lcCse()) << "Error Initializing the decrypt context";
             handleErrors();
         }
 
         /* Initialise the decryption operation. */
         if(!EVP_DecryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL)) {
+			qCInfo(lcCse()) << "Error initializing the decryption context";
             handleErrors();
         }
 
         /* Set IV length. Not necessary if this is 12 bytes (96 bits) */
         if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, 16, NULL)) {
+			qCInfo(lcCse()) << "Error seting th iv length for the decrypt context";
             handleErrors();
         }
 
         /* Initialise key and IV */
         if(!EVP_DecryptInit_ex(ctx, NULL, NULL, key, iv)) {
+			qCInfo(lcCse()) << "Error setting the key and iv for decryption";
             handleErrors();
         }
 
@@ -142,6 +153,7 @@ namespace {
         * required
         */
         if(!EVP_DecryptUpdate(ctx, NULL, &len, aad, aad_len)) {
+			qCInfo(lcCse()) << "Error updating the decrypt context with aad information";
             handleErrors();
         }
 
@@ -149,12 +161,14 @@ namespace {
         * EVP_DecryptUpdate can be called multiple times if necessary
         */
         if(!EVP_DecryptUpdate(ctx, plaintext, &len, ciphertext, ciphertext_len)) {
+			qCInfo(lcCse()) << "Error decrypting the text";
             handleErrors();
         }
         plaintext_len = len;
 
         /* Set expected tag value. Works in OpenSSL 1.0.1d and later */
         if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, 16, tag)) {
+			qCInfo(lcCse()) << "Error setting the tag on the decrupt context";
             handleErrors();
         }
 
@@ -174,6 +188,7 @@ namespace {
         }
         else
         {
+			qCInfo(lcCse()) << "Error finalizing the decrypt";
             /* Verify failed */
             return -1;
         }
@@ -465,7 +480,7 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
         decryptedText    //unsigned char *plaintext
     );
     qCInfo(lcCse()) << "Decrypted Text" << QByteArray( (const char*) decryptedText, decryptedText_len);
-    // Now, Try to encrypt it.
+
 }
 
 void ClientSideEncryption::getPrivateKeyFromServer()
