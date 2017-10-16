@@ -49,6 +49,7 @@ Q_LOGGING_CATEGORY(lcProppatchJob, "sync.networkjob.proppatch", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcJsonApiJob, "sync.networkjob.jsonapi", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "sync.networkjob.determineauthtype", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcSignPublicKeyApiJob, "sync.networkjob.sendcsr", QtInfoMsg);
+Q_LOGGING_CATEGORY(lcStorePrivateKeyApiJob, "sync.networkjob.storeprivatekey", QtInfoMsg);
 
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
@@ -971,7 +972,44 @@ void SignPublicKeyApiJob::start()
 
 bool SignPublicKeyApiJob::finished()
 {
-    qCInfo(lcSignPublicKeyApiJob()) << "Sending CSR ended with"  << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    qCInfo(lcStorePrivateKeyApiJob()) << "Sending CSR ended with"  << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+
+    QJsonParseError error;
+    auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
+    emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+}
+
+
+StorePrivateKeyApiJob::StorePrivateKeyApiJob(const AccountPtr& account, const QString& path, QObject* parent)
+: AbstractNetworkJob(account, path, parent)
+{
+}
+
+void StorePrivateKeyApiJob::setPrivateKey(const QByteArray& privKey)
+{
+    QByteArray data = "privateKey=";
+    data += QUrl::toPercentEncoding(privKey);
+    _privKey.setData(data);
+}
+
+void StorePrivateKeyApiJob::start()
+{
+    QNetworkRequest req;
+    req.setRawHeader("OCS-APIREQUEST", "true");
+    QUrl url = Utility::concatUrlPath(account()->url(), path());
+    QList<QPair<QString, QString>> params = {
+        qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json"))
+    };
+    url.setQueryItems(params);
+
+    qCInfo(lcStorePrivateKeyApiJob) << "Sending the private key" << _privKey.data();
+    sendRequest("POST", url, req, &_privKey);
+    AbstractNetworkJob::start();
+}
+
+bool StorePrivateKeyApiJob::finished()
+{
+    qCInfo(lcStorePrivateKeyApiJob()) << "Sending private key ended with"  << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
 
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);

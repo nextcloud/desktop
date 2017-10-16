@@ -470,8 +470,52 @@ signals:
 
 private:
     QBuffer _csr;
-
 };
+
+
+/*
+ * @brief Job to upload the PrivateKey that return JSON
+ *
+ * To be used like this:
+ * \code
+ * _job = new StorePrivateKeyApiJob(account, QLatin1String("ocs/v1.php/foo/bar"), this);
+ * _job->setPrivateKey( privKey );
+ * connect(_job...);
+ * _job->start();
+ * \encode
+ *
+ * @ingroup libsync
+ */
+class OWNCLOUDSYNC_EXPORT StorePrivateKeyApiJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    explicit StorePrivateKeyApiJob(const AccountPtr &account, const QString &path, QObject *parent = 0);
+
+    /**
+     * @brief setCsr - the CSR with the public key.
+     * This function needs to be called before start() obviously.
+     */
+    void setPrivateKey(const QByteArray& privateKey);
+
+public slots:
+    void start() override;
+
+protected:
+    bool finished() override;
+signals:
+
+    /**
+     * @brief jsonReceived - signal to report the json answer from ocs
+     * @param json - the parsed json document
+     * @param statusCode - the OCS status code: 100 (!) for success
+     */
+    void jsonReceived(const QJsonDocument &json, int statusCode);
+
+private:
+    QBuffer _privKey;
+};
+
 
 } // namespace OCC
 

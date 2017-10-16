@@ -467,7 +467,7 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
         cryptedText,                    //        unsigned char *ciphertext,
         tag                             //        unsigned char *tag
     );
-
+/*
     qCInfo(lcCse()) << "Encrypted Text" << QByteArray( (const char*) cryptedText, cryptedText_len);
     int decryptedText_len = decrypt(
         cryptedText,     //unsigned char *ciphertext,
@@ -480,12 +480,20 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
         decryptedText    //unsigned char *plaintext
     );
     qCInfo(lcCse()) << "Decrypted Text" << QByteArray( (const char*) decryptedText, decryptedText_len);
-
+*/
+// Pretend that the private key is actually encrypted and send it to the server.
+	auto job = new StorePrivateKeyApiJob(_account, baseUrl + "private-key", this);
+	job->setPrivateKey(QByteArray((const char*) cryptedText, 128));
+	connect(job, &StorePrivateKeyApiJob::jsonReceived, [this](const QJsonDocument& doc, int retCode) {
+		qCInfo(lcCse()) << doc;
+		qCInfo(lcCse()) << "Store Private Key returned with" << retCode;
+	});
+	job->start();
 }
 
 void ClientSideEncryption::getPrivateKeyFromServer()
 {
-
+	qCInfo(lcCse()) << "Trying to store the private key on the server.";
 }
 
 void ClientSideEncryption::getPublicKeyFromServer()
