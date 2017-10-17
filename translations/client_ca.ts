@@ -3447,96 +3447,91 @@ No és aconsellada usar-la.</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="252"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="267"/>
         <source>Please sign in</source>
         <translation>Acrediteu-vos</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="276"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="292"/>
         <source>Folder %1: %2</source>
         <translation>Carpeta %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="281"/>
-        <source>No sync folders configured.</source>
-        <translation>No hi ha fitxers de sincronització configurats</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="291"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="313"/>
         <source>There are no sync folders configured.</source>
         <translation>No hi han carpetes sincronitzades configurades.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="299"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="322"/>
         <source>Open in browser</source>
         <translation>Obre al navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="348"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="603"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="697"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="371"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="628"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="722"/>
         <source>Log in...</source>
         <translation>Inicia la sessió</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="352"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="595"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="699"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="375"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="620"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="724"/>
         <source>Log out</source>
         <translation>Surt</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="421"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="444"/>
         <source>Recent Changes</source>
         <translation>Canvis recents</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="741"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="766"/>
         <source>Checking for changes in &apos;%1&apos;</source>
         <translation>S&apos;està comprovant els canvis a &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="326"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="349"/>
         <source>Managed Folders:</source>
         <translation>Fitxers gestionats:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="329"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="352"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Obre carpeta &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="301"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="324"/>
         <source>Open %1 in browser</source>
         <translation>Obre %1 en el navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="682"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="707"/>
         <source>Unknown status</source>
         <translation>Estat desconegut</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="684"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="709"/>
         <source>Settings...</source>
         <translation>Arranjament...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="686"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="711"/>
         <source>Details...</source>
         <translation>Detalls...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="692"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="717"/>
         <source>Help</source>
         <translation>Ajuda</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="694"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="719"/>
         <source>Quit %1</source>
         <translation>Surt %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="233"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="248"/>
         <source>Disconnected from %1</source>
         <translation>S&apos;ha desconnectat de %1</translation>
     </message>
@@ -3551,103 +3546,134 @@ No és aconsellada usar-la.</translation>
         <translation>El servidor del compte %1 utilitza la versió antiga %2 antiga i no és compatible. Usar aquest client amb versions no compatibles del servidor no s&apos;ha provat i pot ser potencialment perillós. Procediu sota la vostra responsabilitat.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="236"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="238"/>
+        <source>Disconnected</source>
+        <translation>Desconnectat</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="240"/>
+        <source>Disconnected from some accounts</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="251"/>
         <source>Disconnected from accounts:</source>
         <translation>Desconnectat dels comptes:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="238"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="253"/>
         <source>Account %1: %2</source>
         <translation>Compte %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="256"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="268"/>
+        <source>Signed out</source>
+        <translation>S&apos;ha desconnectat</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="272"/>
         <source>Account synchronization is disabled</source>
         <translation>La sincronització del compte està deshabilitada</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="337"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="273"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="304"/>
+        <source>Synchronization is paused</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="306"/>
+        <source>Error during synchronization</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
+        <source>No sync folders configured</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="360"/>
         <source>Unpause all folders</source>
         <translation>Reprén totes les carpetes</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="342"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="365"/>
         <source>Pause all folders</source>
         <translation>Pausa totes les carpetes</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="574"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="599"/>
         <source>Unpause all synchronization</source>
         <translation>Reprèn totes les sincronitzacions</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="576"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="601"/>
         <source>Unpause synchronization</source>
         <translation>Reprèn la sincronització</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="584"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="609"/>
         <source>Pause all synchronization</source>
         <translation>Pausa totes les sincronitzacions</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="586"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="611"/>
         <source>Pause synchronization</source>
         <translation>Pausa la sincronització</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="593"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="618"/>
         <source>Log out of all accounts</source>
         <translation>Surt de tots els comptes</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="601"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="626"/>
         <source>Log in to all accounts...</source>
         <translation>Connecta a tots els comptes...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="685"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="710"/>
         <source>New account...</source>
         <translation>Compte nou...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="703"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="728"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="719"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="744"/>
         <source>No items synced recently</source>
         <translation>No hi ha elements sincronitzats recentment</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="756"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Sincronitzant %1 de %2  (%3 pendents)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="761"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="786"/>
         <source>Syncing %1 of %2</source>
         <translation>S&apos;està sincronitzant %1 de %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="770"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="795"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sincronitzant %1 (%2 pendents)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="773"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="798"/>
         <source>Syncing %1</source>
         <translation>S&apos;està sincronitzant %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="791"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="816"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="817"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="302"/>
         <source>Up to date</source>
         <translation>Actualitzat</translation>
     </message>

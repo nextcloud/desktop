@@ -1705,12 +1705,12 @@ Objekte, bei denen Löschen erlaubt ist, werden gelöscht, wenn sie die Löschun
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>Die Antwort des Servers hat nicht alle erwarteten Felder beinhaltet</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="125"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Anmeldefehler &lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="131"/>
@@ -1882,7 +1882,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="44"/>
         <source>Login in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Melden Sie sich in Ihrem Browser an</translation>
     </message>
 </context>
 <context>
@@ -2117,7 +2117,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="436"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation type="unfinished"/>
+        <translation>Das Herunterladen würde den lokalen freien Speicherplatz unter das Limit reduzieren</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="440"/>
@@ -2304,7 +2304,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
         <location filename="../src/libsync/propagateupload.cpp" line="186"/>
         <location filename="../src/libsync/propagateupload.cpp" line="549"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>Das Hochladen von %1 überschreitet das Speicherkontingent des Ordners </translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="618"/>
@@ -2635,12 +2635,12 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="35"/>
         <source>Enter a name to create a new public link...</source>
-        <translation type="unfinished"/>
+        <translation>Einen Namen zum Erstellen eines neuen öffentlichen Link eingeben...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="42"/>
         <source>&amp;Create new</source>
-        <translation type="unfinished"/>
+        <translation>Neuen Erstellen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="105"/>
@@ -2655,7 +2655,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="178"/>
         <source>Link properties:</source>
-        <translation type="unfinished"/>
+        <translation>Link-Eigenschaften:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="220"/>
@@ -2691,17 +2691,17 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="61"/>
         <source>%1 link</source>
-        <translation type="unfinished"/>
+        <translation>%1 - Link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="91"/>
         <source>Link shares have been disabled</source>
-        <translation type="unfinished"/>
+        <translation>Das Teilen von Links wurde deaktiviert</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="105"/>
         <source>Create public link share</source>
-        <translation type="unfinished"/>
+        <translation>Öffentlichen Link zum Teilen erstellen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="161"/>
@@ -2764,7 +2764,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="186"/>
         <source>The item is not shared with any users or groups</source>
-        <translation type="unfinished"/>
+        <translation>Das Element wird mit keinem Benutzer oder Gruppe geteilt</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="235"/>
@@ -3175,7 +3175,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="264"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1(Übersprungen aufgrund des früheren Fehler,s erneuter Versuch in %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="474"/>
@@ -3185,7 +3185,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="477"/>
         <source>Folder hierarchy is too deep</source>
-        <translation type="unfinished"/>
+        <translation>Ordnerhierarchie ist zu tief</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="490"/>
@@ -3221,7 +3221,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1595"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Auf dem Server ist für einige Dateien zum Hochladen nicht genug Platz.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="167"/>
@@ -3451,96 +3451,91 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="252"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="267"/>
         <source>Please sign in</source>
         <translation>Bitte melden Sie sich an</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="276"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="292"/>
         <source>Folder %1: %2</source>
         <translation>Ordner %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="281"/>
-        <source>No sync folders configured.</source>
-        <translation>Keine Sync-Ordner konfiguriert.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="291"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="313"/>
         <source>There are no sync folders configured.</source>
         <translation>Es wurden keine Synchonisationsordner konfiguriert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="299"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="322"/>
         <source>Open in browser</source>
         <translation>Im Browser öffnen</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="348"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="603"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="697"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="371"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="628"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="722"/>
         <source>Log in...</source>
         <translation>Einloggen...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="352"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="595"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="699"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="375"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="620"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="724"/>
         <source>Log out</source>
         <translation>Abmelden</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="421"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="444"/>
         <source>Recent Changes</source>
         <translation>Letzte Änderungen</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="741"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="766"/>
         <source>Checking for changes in &apos;%1&apos;</source>
         <translation>Nach Änderungen suchen in &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="326"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="349"/>
         <source>Managed Folders:</source>
         <translation>Verwaltete Ordner:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="329"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="352"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Ordner »%1« öffnen</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="301"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="324"/>
         <source>Open %1 in browser</source>
         <translation>%1 im Browser öffnen</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="682"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="707"/>
         <source>Unknown status</source>
         <translation>Unbekannter Status</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="684"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="709"/>
         <source>Settings...</source>
         <translation>Einstellungen …</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="686"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="711"/>
         <source>Details...</source>
         <translation>Details …</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="692"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="717"/>
         <source>Help</source>
         <translation>Hilfe</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="694"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="719"/>
         <source>Quit %1</source>
         <translation>%1 beenden</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="233"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="248"/>
         <source>Disconnected from %1</source>
         <translation>Von %1 trennen</translation>
     </message>
@@ -3555,103 +3550,134 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
         <translation>Der Server mit Konto %1 läuft mit einer alten und nicht unterstützten Version %2. Die Verwendung dieses Clienten mit der nicht unterstützten Serverversion ist ungetestet und möglicherweiße gefährich. Fortfahren auf eigenes Risiko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="236"/>
-        <source>Disconnected from accounts:</source>
-        <translation>Getrennt von Konten:</translation>
+        <location filename="../src/gui/owncloudgui.cpp" line="238"/>
+        <source>Disconnected</source>
+        <translation>Getrennt</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="238"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="240"/>
+        <source>Disconnected from some accounts</source>
+        <translation>Verbindungen zu einigen Konnten getrennt</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="251"/>
+        <source>Disconnected from accounts:</source>
+        <translation>Verbindungen zu Konnten getrennt:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="253"/>
         <source>Account %1: %2</source>
         <translation>Konto %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="256"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="268"/>
+        <source>Signed out</source>
+        <translation>Abgemeldet</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="272"/>
         <source>Account synchronization is disabled</source>
         <translation>Account Synchronisation ist deaktiviert</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="337"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="273"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="304"/>
+        <source>Synchronization is paused</source>
+        <translation>Synchronisation pausiert</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="306"/>
+        <source>Error during synchronization</source>
+        <translation>Fehler bei der Synchronisation</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
+        <source>No sync folders configured</source>
+        <translation>Keine Ordner zur Synchronisation konfiguriert</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="360"/>
         <source>Unpause all folders</source>
         <translation>Setze alle Ordner fort</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="342"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="365"/>
         <source>Pause all folders</source>
         <translation>Stoppe alle Ordner</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="574"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="599"/>
         <source>Unpause all synchronization</source>
         <translation>Setze gesamte Synchronisation fort</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="576"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="601"/>
         <source>Unpause synchronization</source>
         <translation>Setze Synchronisation fort</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="584"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="609"/>
         <source>Pause all synchronization</source>
         <translation>Stoppe gesamte Synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="586"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="611"/>
         <source>Pause synchronization</source>
         <translation>Stoppe Synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="593"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="618"/>
         <source>Log out of all accounts</source>
         <translation>Bei allen Konten abmelden</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="601"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="626"/>
         <source>Log in to all accounts...</source>
         <translation>Bei allen Konten anmelden...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="685"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="710"/>
         <source>New account...</source>
         <translation>Neues Konto...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="703"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="728"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
         <translation>Jetzt abstürzen lassen</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="719"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="744"/>
         <source>No items synced recently</source>
         <translation>Keine kürzlich synchronisierten Elemente</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="756"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Synchronisiere %1 von %2  (%3 übrig)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="761"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="786"/>
         <source>Syncing %1 of %2</source>
         <translation>Synchronisiere %1 von %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="770"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="795"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Synchronisiere %1 (%2 übrig)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="773"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="798"/>
         <source>Syncing %1</source>
         <translation>Synchronisiere %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="791"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="816"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="817"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="302"/>
         <source>Up to date</source>
         <translation>Aktuell</translation>
     </message>
@@ -3772,7 +3798,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Bitte wechseln Sie zum Fortfahren in deinen Browser.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
@@ -3782,7 +3808,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Browser erneut öffnen</translation>
     </message>
 </context>
 <context>
@@ -4114,7 +4140,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Die URL %1 konnte aufgrund eines Fehlers beim Start des Browsers nicht aufgerufen werden. Ist vielleicht kein Standardbrowser konfiguriert?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="55"/>
