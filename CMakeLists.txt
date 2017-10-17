@@ -199,7 +199,7 @@ if(BUILD_CLIENT)
         endif()
     endif()
 
-   find_package(ZLIB)
+   find_package(ZLIB REQUIRED)
 endif()
 
 if (NOT DEFINED APPLICATION_ICON_NAME)
