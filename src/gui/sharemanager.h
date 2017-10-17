@@ -293,13 +293,10 @@ private slots:
     void slotLinkShareCreated(const QJsonDocument &reply);
     void slotShareCreated(const QJsonDocument &reply);
     void slotOcsError(int statusCode, const QString &message);
-    void slotCreateShare(const QJsonDocument &reply);
-
 private:
     QSharedPointer<LinkShare> parseLinkShare(const QJsonObject &data);
     QSharedPointer<Share> parseShare(const QJsonObject &data);
 
-    QMap<QObject *, QVariant> _jobContinuation;
     AccountPtr _account;
 };
 }

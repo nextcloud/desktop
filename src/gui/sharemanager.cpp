@@ -21,17 +21,6 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-namespace {
-struct CreateShare
-{
-    QString path;
-    OCC::Share::ShareType shareType;
-    QString shareWith;
-    OCC::Share::Permissions permissions;
-};
-} // anonymous namespace
-Q_DECLARE_METATYPE(CreateShare)
-
 namespace OCC {
 
 Share::Share(AccountPtr account,
@@ -267,51 +256,34 @@ void ShareManager::createShare(const QString &path,
     const Share::Permissions permissions)
 {
     auto job = new OcsShareJob(_account);
-
-    // Store values that we need for creating this share later.
-    CreateShare continuation;
-    continuation.path = path;
-    continuation.shareType = shareType;
-    continuation.shareWith = shareWith;
-    continuation.permissions = permissions;
-    _jobContinuation[job] = QVariant::fromValue(continuation);
-
-    connect(job, &OcsShareJob::shareJobFinished, this, &ShareManager::slotCreateShare);
     connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
+    connect(job, &OcsShareJob::shareJobFinished, this,
+        [=](const QJsonDocument &reply) {
+            // Find existing share permissions (if this was shared with us)
+            Share::Permissions existingPermissions = SharePermissionDefault;
+            foreach (const QJsonValue &element, reply.object()["ocs"].toObject()["data"].toArray()) {
+                auto map = element.toObject();
+                if (map["file_target"] == path)
+                    existingPermissions = Share::Permissions(map["permissions"].toInt());
+            }
+
+            // Limit the permissions we request for a share to the ones the item
+            // was shared with initially.
+            auto perm = permissions;
+            if (permissions == SharePermissionDefault) {
+                perm = existingPermissions;
+            } else if (existingPermissions != SharePermissionDefault) {
+                perm &= existingPermissions;
+            }
+
+            OcsShareJob *job = new OcsShareJob(_account);
+            connect(job, &OcsShareJob::shareJobFinished, this, &ShareManager::slotShareCreated);
+            connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
+            job->createShare(path, shareType, shareWith, permissions);
+        });
     job->getSharedWithMe();
 }
 
-void ShareManager::slotCreateShare(const QJsonDocument &reply)
-{
-    if (!_jobContinuation.contains(sender()))
-        return;
-
-    CreateShare cont = _jobContinuation[sender()].value<CreateShare>();
-    if (cont.path.isEmpty())
-        return;
-    _jobContinuation.remove(sender());
-
-    // Find existing share permissions (if this was shared with us)
-    Share::Permissions existingPermissions = SharePermissionDefault;
-    foreach (const QJsonValue &element, reply.object()["ocs"].toObject()["data"].toArray()) {
-        auto map = element.toObject();
-        if (map["file_target"] == cont.path)
-            existingPermissions = Share::Permissions(map["permissions"].toInt());
-    }
-
-    // Limit the permissions we request for a share to the ones the item
-    // was shared with initially.
-    if (cont.permissions == SharePermissionDefault) {
-        cont.permissions = existingPermissions;
-    } else if (existingPermissions != SharePermissionDefault) {
-        cont.permissions &= existingPermissions;
-    }
-
-    OcsShareJob *job = new OcsShareJob(_account);
-    connect(job, &OcsShareJob::shareJobFinished, this, &ShareManager::slotShareCreated);
-    connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
-    job->createShare(cont.path, cont.shareType, cont.shareWith, cont.permissions);
-}
 
 void ShareManager::slotShareCreated(const QJsonDocument &reply)
 {
