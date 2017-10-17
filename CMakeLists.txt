@@ -176,7 +176,7 @@ if (USE_OUR_OWN_SQLITE3)
     endif()
 endif()
 
-find_package(ZLIB)
+find_package(ZLIB REQUIRED)
 
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 
