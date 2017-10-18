@@ -532,7 +532,7 @@ class OWNCLOUDSYNC_EXPORT SetEncryptionFlagApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit SetEncryptionFlagApiJob(const AccountPtr &account, int fileId, QObject *parent = 0);
+    explicit SetEncryptionFlagApiJob(const AccountPtr &account, const QString& fileId, QObject *parent = 0);
 
 public slots:
     void start() override;
@@ -549,7 +549,7 @@ signals:
      */
     void jsonReceived(const QJsonDocument &json, int statusCode);
 private:
-    int _fileId;
+    QString _fileId;
 };
 
 } // namespace OCC

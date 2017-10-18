@@ -51,7 +51,7 @@ Q_LOGGING_CATEGORY(lcJsonApiJob, "sync.networkjob.jsonapi", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "sync.networkjob.determineauthtype", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcSignPublicKeyApiJob, "sync.networkjob.sendcsr", QtInfoMsg);
 Q_LOGGING_CATEGORY(lcStorePrivateKeyApiJob, "sync.networkjob.storeprivatekey", QtInfoMsg);
-Q_LOGGING_CATEGORY(lcCse, "sync.networkjob.clientsideencrypt", QtInfoMsg);
+Q_LOGGING_CATEGORY(lcCseJob, "sync.networkjob.clientsideencrypt", QtInfoMsg);
 
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
@@ -1020,8 +1020,8 @@ bool StorePrivateKeyApiJob::finished()
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
 }
 
-SetEncryptionFlagApiJob::SetEncryptionFlagApiJob(const AccountPtr& account, int fileId, QObject* parent)
-: AbstractNetworkJob(account, baseUrl() + "/encrypt/", parent), _fileId(fileId)
+SetEncryptionFlagApiJob::SetEncryptionFlagApiJob(const AccountPtr& account, const QString& fileId, QObject* parent)
+: AbstractNetworkJob(account, baseUrl() + QStringLiteral("encrypted/") + fileId, parent), _fileId(fileId)
 {
 }
 
@@ -1035,7 +1035,7 @@ void SetEncryptionFlagApiJob::start()
     };
     url.setQueryItems(params);
 
-    qCInfo(lcCse()) << "marking the file with id" << _fileId << "as encrypted";
+    qCInfo(lcCseJob()) << "marking the file with id" << _fileId << "as encrypted";
     sendRequest("PUT", url, req);
     AbstractNetworkJob::start();
 }
@@ -1044,7 +1044,7 @@ bool SetEncryptionFlagApiJob::finished()
 {
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (retCode != 200)
-        qCInfo(lcCse()) << "Setting the encrypted flag failed with" << path() << errorString() << retCode;
+        qCInfo(lcCseJob()) << "Setting the encrypted flag failed with" << path() << errorString() << retCode;
 
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);

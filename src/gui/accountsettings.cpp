@@ -281,10 +281,9 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
             ac = menu->addAction(tr("Encrypt"));
             connect(ac, &QAction::triggered, [this, &fileId](bool triggered) {
                 Q_UNUSED(triggered);
-                auto job = new OCC::JsonApiJob(accountsState()->account(),
-                    "ocs/v2.php/apps/end_to_end_encryption/api/v1/encrypted/" + QString(fileId));
+                auto job = new OCC::SetEncryptionFlagApiJob(accountsState()->account(),  QString(fileId));
 
-                connect(job, &OCC::JsonApiJob::jsonReceived, [this](const QJsonDocument& json, int httpResponse) {
+                connect(job, &OCC::SetEncryptionFlagApiJob::jsonReceived, [this](const QJsonDocument& json, int httpResponse) {
                     Q_UNUSED(json);
                     qCInfo(lcAccountSettings) << "Encrypt Http Response" << httpResponse;
                 });
