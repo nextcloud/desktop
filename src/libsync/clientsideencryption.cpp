@@ -527,10 +527,4 @@ void ClientSideEncryption::getPublicKeyFromServer()
     });
     job->start();
 }
-
-void ClientSideEncryption::signPublicKey()
-{
-
-}
-
 }

@@ -26,7 +26,6 @@ public:
     QString generateCSR(EVP_PKEY *keyPair);
     void getPrivateKeyFromServer();
     void getPublicKeyFromServer();
-    void signPublicKey();
     void encryptPrivateKey(EVP_PKEY *keyPair);
     QString privateKeyPath() const;
     QString publicKeyPath() const;
