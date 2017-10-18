@@ -1009,7 +1009,9 @@ void StorePrivateKeyApiJob::start()
 
 bool StorePrivateKeyApiJob::finished()
 {
-    qCInfo(lcStorePrivateKeyApiJob()) << "Sending private key ended with"  << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (retCode != 200)
+        qCInfo(lcStorePrivateKeyApiJob()) << "Sending private key ended with"  << path() << errorString() << retCode;
 
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
