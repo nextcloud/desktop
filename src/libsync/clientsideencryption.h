@@ -11,7 +11,8 @@
 #include "accountfwd.h"
 
 namespace OCC {
-
+QString baseUrl();
+QString baseDirectory();
 
 class ClientSideEncryption : public QObject {
     Q_OBJECT

@@ -26,8 +26,13 @@ namespace OCC
 
 Q_LOGGING_CATEGORY(lcCse, "sync.clientsideencryption", QtInfoMsg)
 
-QString baseUrl = QStringLiteral("ocs/v2.php/apps/end_to_end_encryption/api/v1/");
-QString baseDirectory = QDir::homePath() + QStringLiteral("/.nextcloud-keys/");
+QString baseUrl(){
+    return QStringLiteral("ocs/v2.php/apps/end_to_end_encryption/api/v1/");
+}
+
+QString baseDirectory() {
+    return QDir::homePath() + QStringLiteral("/.nextcloud-keys/");
+}
 
 namespace {
     void handleErrors(void)
@@ -222,12 +227,12 @@ void ClientSideEncryption::initialize()
 
 QString ClientSideEncryption::publicKeyPath() const
 {
-    return baseDirectory + _account->displayName() + ".pub";
+    return baseDirectory() + _account->displayName() + ".pub";
 }
 
 QString ClientSideEncryption::privateKeyPath() const
 {
-    return baseDirectory + _account->displayName() + ".rsa";
+    return baseDirectory() + _account->displayName() + ".rsa";
 }
 
 bool ClientSideEncryption::hasPrivateKey() const
@@ -271,7 +276,7 @@ void ClientSideEncryption::generateKeyPair()
     qCInfo(lcCse()) << "Storing keys locally";
 
     QDir dir;
-    if (!dir.mkpath(baseDirectory)) {
+    if (!dir.mkpath(baseDirectory())) {
         qCInfo(lcCse()) << "Could not create the folder for the keys.";
         return;
     }
@@ -365,7 +370,7 @@ QString ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
     qCInfo(lcCse()) << "Returning the certificate";
     qCInfo(lcCse()) << output;
 
-    job = new SignPublicKeyApiJob(_account, baseUrl + "public-key", this);
+    job = new SignPublicKeyApiJob(_account, baseUrl() + "public-key", this);
     job->setCsr(output);
 
     connect(job, &SignPublicKeyApiJob::jsonReceived, [this, keyPair](const QJsonDocument& json, int retCode) {
@@ -482,7 +487,7 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
     qCInfo(lcCse()) << "Decrypted Text" << QByteArray( (const char*) decryptedText, decryptedText_len);
 */
 // Pretend that the private key is actually encrypted and send it to the server.
-	auto job = new StorePrivateKeyApiJob(_account, baseUrl + "private-key", this);
+	auto job = new StorePrivateKeyApiJob(_account, baseUrl() + "private-key", this);
 	job->setPrivateKey(QByteArray((const char*) cryptedText, 128));
 	connect(job, &StorePrivateKeyApiJob::jsonReceived, [this](const QJsonDocument& doc, int retCode) {
 		switch(retCode) {
@@ -505,7 +510,7 @@ void ClientSideEncryption::getPrivateKeyFromServer()
 void ClientSideEncryption::getPublicKeyFromServer()
 {
     qCInfo(lcCse()) << "Retrieving public key from server";
-    auto job = new JsonApiJob(_account, baseUrl + "public-key", this);
+    auto job = new JsonApiJob(_account, baseUrl() + "public-key", this);
     connect(job, &JsonApiJob::jsonReceived, [this](const QJsonDocument& doc, int retCode) {
         switch(retCode) {
             case 404: // no public key
