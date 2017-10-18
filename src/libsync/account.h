@@ -83,6 +83,9 @@ public:
     QString davUser() const;
     void setDavUser(const QString &newDavUser);
 
+    QString davDisplayName() const;
+    void setDavDisplayName(const QString &newDisplayName);
+
     QImage avatar() const;
     void setAvatar(const QImage &img);
 
@@ -209,7 +212,7 @@ public:
 
     /** True when the server supports HTTP2  */
     bool isHttp2Supported() { return _http2Supported; }
-    void setHttp2Supported(bool value) { _http2Supported = value; };
+    void setHttp2Supported(bool value) { _http2Supported = value; }
 
     void clearCookieJar();
     void lendCookieJarTo(QNetworkAccessManager *guest);
@@ -246,6 +249,7 @@ signals:
     void serverVersionChanged(Account *account, const QString &newVersion, const QString &oldVersion);
 
     void accountChangedAvatar();
+    void accountChangedDisplayName();
 
 protected Q_SLOTS:
     void slotCredentialsFetched();
@@ -258,6 +262,7 @@ private:
     QWeakPointer<Account> _sharedThis;
     QString _id;
     QString _davUser;
+    QString _displayName;
     QImage _avatarImg;
     QMap<QString, QVariant> _settingsMap;
     QUrl _url;

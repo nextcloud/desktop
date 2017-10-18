@@ -60,6 +60,7 @@ public slots:
     void slotSwitchPage(QAction *action);
     void slotRefreshActivity(AccountState *accountState);
     void slotAccountAvatarChanged();
+    void slotAccountDisplayNameChanged();
 
 protected:
     void reject() Q_DECL_OVERRIDE;

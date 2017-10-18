@@ -38,6 +38,9 @@
 
 namespace OCC {
 
+#include "settingsdialogcommon.cpp"
+
+
 // Duplicate in settingsdialog.cpp
 static QIcon circleMask(const QImage &avatar)
 {
@@ -146,7 +149,7 @@ void SettingsDialogMac::accountAdded(AccountState *s)
     QIcon accountIcon = MacStandardIcon::icon(MacStandardIcon::UserAccounts);
     auto accountSettings = new AccountSettings(s, this);
 
-    QString displayName = Theme::instance()->multiAccount() ? s->shortDisplayNameForSettings() : tr("Account");
+    QString displayName = Theme::instance()->multiAccount() ? SettingsDialogCommon::shortDisplayNameForSettings(s->account().data(), 0) : tr("Account");
 
     insertPreferencesPanel(0, accountIcon, displayName, accountSettings);
 
