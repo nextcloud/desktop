@@ -485,8 +485,14 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
 	auto job = new StorePrivateKeyApiJob(_account, baseUrl + "private-key", this);
 	job->setPrivateKey(QByteArray((const char*) cryptedText, 128));
 	connect(job, &StorePrivateKeyApiJob::jsonReceived, [this](const QJsonDocument& doc, int retCode) {
-		qCInfo(lcCse()) << doc;
-		qCInfo(lcCse()) << "Store Private Key returned with" << retCode;
+		switch(retCode) {
+			case 200:
+				qCInfo(lcCse()) << "Store private key working as expected.";
+				emit initializationFinished();
+				break;
+			default:
+				qCInfo(lcCse()) << "Store private key failed, return code:" << retCode;
+		}
 	});
 	job->start();
 }
