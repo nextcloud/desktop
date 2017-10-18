@@ -129,6 +129,7 @@ set(updater_SRCS
 IF( APPLE )
     list(APPEND client_SRCS cocoainitializer_mac.mm)
     list(APPEND client_SRCS settingsdialogmac.cpp)
+    list(REMOVE_ITEM client_SRCS settingsdialog.cpp)
     list(APPEND client_SRCS socketapisocket_mac.mm)
     list(APPEND client_SRCS systray.mm)
 
@@ -242,8 +243,9 @@ if (NOT NO_SHIBBOLETH)
 endif()
 
 if(UNIX AND NOT APPLE)
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -pie -fPIE")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pie -fPIE")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIE")
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie")
 endif()
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)

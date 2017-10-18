@@ -55,6 +55,8 @@ static const float buttonSizeRatio = 1.618; // golden ratio
 
 namespace OCC {
 
+#include "settingsdialogcommon.cpp"
+
 static QIcon circleMask(const QImage &avatar)
 {
     int dim = avatar.width();
@@ -236,7 +238,7 @@ void SettingsDialog::accountAdded(AccountState *s)
 
     if (!brandingSingleAccount) {
         accountAction->setToolTip(s->account()->displayName());
-        accountAction->setIconText(s->shortDisplayNameForSettings(height * buttonSizeRatio));
+        accountAction->setIconText(SettingsDialogCommon::shortDisplayNameForSettings(s->account().data(),  height * buttonSizeRatio));
     }
     _toolBar->insertAction(_toolBar->actions().at(0), accountAction);
     auto accountSettings = new AccountSettings(s, this);
@@ -250,6 +252,7 @@ void SettingsDialog::accountAdded(AccountState *s)
         _gui, &ownCloudGui::slotFolderOpenAction);
     connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
     connect(s->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
+    connect(s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
 
     slotRefreshActivity(s);
 }
@@ -264,6 +267,20 @@ void SettingsDialog::slotAccountAvatarChanged()
             if (!pix.isNull()) {
                 action->setIcon(circleMask(pix));
             }
+        }
+    }
+}
+
+void SettingsDialog::slotAccountDisplayNameChanged()
+{
+    Account *account = static_cast<Account *>(sender());
+    if (account && _actionForAccount.contains(account)) {
+        QAction *action = _actionForAccount[account];
+        if (action) {
+            QString displayName = account->displayName();
+            action->setText(displayName);
+            auto height = _toolBar->sizeHint().height();
+            action->setIconText(SettingsDialogCommon::shortDisplayNameForSettings(account, height * buttonSizeRatio));
         }
     }
 }

@@ -113,11 +113,6 @@ public:
     /** Returns a new settings object for this account, already in the right groups. */
     std::unique_ptr<QSettings> settings();
 
-    /** display name with two lines that is displayed in the settings
-     * If width is bigger than 0, the string will be ellided so it does not exceed that width
-     */
-    QString shortDisplayNameForSettings(int width = 0) const;
-
     /** Mark the timestamp when the last successful ETag check happened for
      *  this account.
      *  The checkConnectivity() method uses the timestamp to save a call to

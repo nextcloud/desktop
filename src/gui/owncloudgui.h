@@ -98,7 +98,6 @@ public slots:
     void slotRemoveDestroyedShareDialogs();
 
 private slots:
-    void slotDisplayIdle();
     void slotLogin();
     void slotLogout();
     void slotUnpauseAllFolders();
