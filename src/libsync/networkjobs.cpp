@@ -33,6 +33,7 @@
 #include "networkjobs.h"
 #include "account.h"
 #include "owncloudpropagator.h"
+#include "clientsideencryption.h"
 
 #include "creds/abstractcredentials.h"
 #include "creds/httpcredentials.h"
@@ -50,6 +51,7 @@ Q_LOGGING_CATEGORY(lcJsonApiJob, "sync.networkjob.jsonapi", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "sync.networkjob.determineauthtype", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcSignPublicKeyApiJob, "sync.networkjob.sendcsr", QtInfoMsg);
 Q_LOGGING_CATEGORY(lcStorePrivateKeyApiJob, "sync.networkjob.storeprivatekey", QtInfoMsg);
+Q_LOGGING_CATEGORY(lcCse, "sync.networkjob.clientsideencrypt", QtInfoMsg);
 
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
@@ -1012,6 +1014,37 @@ bool StorePrivateKeyApiJob::finished()
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (retCode != 200)
         qCInfo(lcStorePrivateKeyApiJob()) << "Sending private key ended with"  << path() << errorString() << retCode;
+
+    QJsonParseError error;
+    auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
+    emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+}
+
+SetEncryptionFlagApiJob::SetEncryptionFlagApiJob(const AccountPtr& account, int fileId, QObject* parent)
+: AbstractNetworkJob(account, baseUrl() + "/encrypt/", parent), _fileId(fileId)
+{
+}
+
+void SetEncryptionFlagApiJob::start()
+{
+    QNetworkRequest req;
+    req.setRawHeader("OCS-APIREQUEST", "true");
+    QUrl url = Utility::concatUrlPath(account()->url(), path());
+    QList<QPair<QString, QString>> params = {
+        qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json"))
+    };
+    url.setQueryItems(params);
+
+    qCInfo(lcCse()) << "marking the file with id" << _fileId << "as encrypted";
+    sendRequest("PUT", url, req);
+    AbstractNetworkJob::start();
+}
+
+bool SetEncryptionFlagApiJob::finished()
+{
+    int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (retCode != 200)
+        qCInfo(lcCse()) << "Setting the encrypted flag failed with" << path() << errorString() << retCode;
 
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);

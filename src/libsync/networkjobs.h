@@ -516,6 +516,41 @@ private:
     QBuffer _privKey;
 };
 
+/*
+ * @brief Job to mark a folder as encrypted JSON
+ *
+ * To be used like this:
+ * \code
+ * _job = new SetEncryptionFlagApiJob(account, 2, this);
+  * connect(_job...);
+ * _job->start();
+ * \encode
+ *
+ * @ingroup libsync
+ */
+class OWNCLOUDSYNC_EXPORT SetEncryptionFlagApiJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    explicit SetEncryptionFlagApiJob(const AccountPtr &account, int fileId, QObject *parent = 0);
+
+public slots:
+    void start() override;
+
+protected:
+    bool finished() override;
+
+signals:
+
+    /**
+     * @brief jsonReceived - signal to report the json answer from ocs
+     * @param json - the parsed json document
+     * @param statusCode - the OCS status code: 200 for success
+     */
+    void jsonReceived(const QJsonDocument &json, int statusCode);
+private:
+    int _fileId;
+};
 
 } // namespace OCC
 
