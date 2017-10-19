@@ -2544,6 +2544,7 @@ No és aconsellada usar-la.</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="152"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="211"/>
         <source>Account</source>
         <translation>Compte</translation>
     </message>
