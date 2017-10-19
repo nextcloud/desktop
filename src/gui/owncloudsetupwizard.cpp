@@ -18,6 +18,7 @@
 #include <QProcess>
 #include <QMessageBox>
 #include <QDesktopServices>
+#include <QApplication>
 
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudwizard.h"
@@ -82,6 +83,17 @@ bool OwncloudSetupWizard::bringWizardToFrontIfVisible()
 {
     if (wiz.isNull()) {
         return false;
+    }
+
+    if (wiz->_ocWizard->currentId() == WizardCommon::Page_ShibbolethCreds) {
+        // Try to find if there is a browser open and raise that instead (Issue #6105)
+        const auto allWindow = qApp->topLevelWidgets();
+        auto it = std::find_if(allWindow.cbegin(), allWindow.cend(), [](QWidget *w)
+            { return QLatin1String(w->metaObject()->className()) == QLatin1String("OCC::ShibbolethWebView"); });
+        if (it != allWindow.cend()) {
+            ownCloudGui::raiseDialog(*it);
+            return true;
+        }
     }
 
     ownCloudGui::raiseDialog(wiz->_ocWizard);
