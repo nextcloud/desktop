@@ -123,6 +123,9 @@ public:
     bool optionalDesktopNotifications() const;
     void setOptionalDesktopNotifications(bool show);
 
+    bool showInExplorerNavigationPane() const;
+    void setShowInExplorerNavigationPane(bool show);
+
     int timeout() const;
     quint64 chunkSize() const;
     quint64 maxChunkSize() const;

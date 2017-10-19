@@ -52,6 +52,7 @@ static const char monoIconsC[] = "monoIcons";
 static const char promptDeleteC[] = "promptDeleteAllFiles";
 static const char crashReporterC[] = "crashReporter";
 static const char optionalDesktopNoficationsC[] = "optionalDesktopNotifications";
+static const char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
 static const char updateCheckIntervalC[] = "updateCheckInterval";
 static const char geometryC[] = "geometry";
@@ -122,6 +123,26 @@ bool ConfigFile::optionalDesktopNotifications() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(optionalDesktopNoficationsC), true).toBool();
+}
+
+bool ConfigFile::showInExplorerNavigationPane() const
+{
+    const bool defaultValue =
+#ifdef Q_OS_WIN
+        QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS10
+#else
+        false
+#endif
+        ;
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(showInExplorerNavigationPaneC), defaultValue).toBool();
+}
+
+void ConfigFile::setShowInExplorerNavigationPane(bool show)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(showInExplorerNavigationPaneC), show);
+    settings.sync();
 }
 
 int ConfigFile::timeout() const

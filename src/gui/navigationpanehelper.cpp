@@ -14,6 +14,7 @@
 
 #include "navigationpanehelper.h"
 #include "accountmanager.h"
+#include "configfile.h"
 #include "folderman.h"
 
 #include <QDir>
@@ -26,8 +27,25 @@ Q_LOGGING_CATEGORY(lcNavPane, "gui.folder.navigationpane", QtInfoMsg)
 NavigationPaneHelper::NavigationPaneHelper(FolderMan *folderMan)
     : _folderMan(folderMan)
 {
+    ConfigFile cfg;
+    _showInExplorerNavigationPane = cfg.showInExplorerNavigationPane();
+
     _updateCloudStorageRegistryTimer.setSingleShot(true);
     connect(&_updateCloudStorageRegistryTimer, &QTimer::timeout, this, &NavigationPaneHelper::updateCloudStorageRegistry);
+}
+
+void NavigationPaneHelper::setShowInExplorerNavigationPane(bool show)
+{
+    if (_showInExplorerNavigationPane == show)
+        return;
+
+    _showInExplorerNavigationPane = show;
+    // Re-generate a new CLSID when enabling, possibly throwing away the old one.
+    // updateCloudStorageRegistry will take care of removing any unknown CLSID our application owns from the registry.
+    foreach (Folder *folder, _folderMan->map())
+        folder->setNavigationPaneClsid(show ? QUuid::createUuid() : QUuid());
+
+    scheduleUpdateCloudStorageRegistry();
 }
 
 void NavigationPaneHelper::scheduleUpdateCloudStorageRegistry()
