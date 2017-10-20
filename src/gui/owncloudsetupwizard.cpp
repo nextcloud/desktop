@@ -70,6 +70,7 @@ static QPointer<OwncloudSetupWizard> wiz = 0;
 void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *parent)
 {
     if (!wiz.isNull()) {
+        bringWizardToFrontIfVisible();
         return;
     }
 
