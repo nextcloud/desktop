@@ -1906,144 +1906,144 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="217"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="230"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Sikeresen csatlakozott az %1-hoz: %2 verziószám %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="251"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="264"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="285"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="298"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="296"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="309"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>Próbál kapcsolódni az %1-hoz: %2...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="347"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="360"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="369"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="382"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="360"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="373"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="249"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="262"/>
         <source>Invalid URL</source>
         <translation>Érvénytelen URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="414"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="427"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>A helyi %1 mappa már létezik, állítsa be a szinkronizálódását.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="417"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="430"/>
         <source>Creating local sync folder %1...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="421"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="434"/>
         <source>ok</source>
         <translation>ok</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="423"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="436"/>
         <source>failed.</source>
         <translation>  sikertelen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="425"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="438"/>
         <source>Could not create local folder %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="451"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="464"/>
         <source>No remote folder specified!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="457"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="470"/>
         <source>Error: %1</source>
         <translation>Hiba: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="470"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="483"/>
         <source>creating folder on ownCloud: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="486"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="499"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>%1 távoli nappa sikeresen létrehozva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="488"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="501"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>A %1 távoli mappa már létezik. Csatlakoztassa a szinkronizációhoz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="490"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="492"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="503"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="505"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>A könyvtár létrehozásakor keletkezett HTTP hibakód %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="494"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="507"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="498"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="511"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;A távoli mappa létrehozása sikertelen, valószínűleg mivel hibásak a megdott hitelesítési adatok.&lt;/font&gt;&lt;br/&gt;Lépjen vissza és ellenőrizze a belépési adatokat.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="503"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="504"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="516"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="517"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>A távoli %1 mappa létrehozása nem sikerült. Hibaüzenet: &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="521"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="534"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>A szinkronizációs kapcsolat a %1 és a %2 távoli mappa között létrejött.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="526"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="539"/>
         <source>Successfully connected to %1!</source>
         <translation>Sikeresen csatlakozva: %1!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="533"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="546"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>A kapcsolat a %1 kiszolgálóhoz sikertelen. Ellenőrizze újra.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="547"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="560"/>
         <source>Folder rename failed</source>
         <translation>A mappa átnevezése nem sikerült</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="548"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="561"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="593"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="606"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Helyi %1 szinkronizációs mappa sikeresen létrehozva!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>

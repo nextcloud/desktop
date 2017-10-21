@@ -1919,144 +1919,144 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="217"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="230"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Επιτυχής σύνδεση στο %1: %2 έκδοση %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="251"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="264"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>Αποτυχία σύνδεσης με το %1 στο %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="285"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="298"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Λήξη χρονικού ορίου κατά τη σύνδεση σε %1 σε %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="296"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="309"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>Προσπάθεια σύνδεσης στο %1 για %2...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="347"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="360"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
         <translation>Η πιστοποιημένη αίτηση στον διακομιστή ανακατευθύνθηκε σε &apos;%1&apos;. Το URL είναι εσφαλμένο, ο διακομιστής δεν έχει διαμορφωθεί σωστά.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="369"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="382"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation>Υπήρξε μια άκυρη απόκριση σε μια πιστοποιημένη αίτηση </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="360"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="373"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Απαγόρευση πρόσβασης από τον διακομιστή. Για να επιβεβαιώσετε ότι έχετε δικαιώματα πρόσβασης, &lt;a href=&quot;%1&quot;&gt;πατήστε εδώ&lt;/a&gt; για να προσπελάσετε την υπηρεσία με το πρόγραμμα πλοήγησής σας.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="249"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="262"/>
         <source>Invalid URL</source>
         <translation>Μη έγκυρη URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="414"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="427"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Ο τοπικός φάκελος συγχρονισμού %1 υπάρχει ήδη, ρύθμιση για συγχρονισμό.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="417"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="430"/>
         <source>Creating local sync folder %1...</source>
         <translation>Δημιουργία τοπικού φακέλου συγχρονισμού %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="421"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="434"/>
         <source>ok</source>
         <translation>οκ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="423"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="436"/>
         <source>failed.</source>
         <translation>απέτυχε.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="425"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="438"/>
         <source>Could not create local folder %1</source>
         <translation>Αδυναμία δημιουργίας τοπικού φακέλου %1 </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="451"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="464"/>
         <source>No remote folder specified!</source>
         <translation>Δεν προσδιορίστηκε κανένας απομακρυσμένος φάκελος!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="457"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="470"/>
         <source>Error: %1</source>
         <translation>Σφάλμα: %1 </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="470"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="483"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>δημιουργία φακέλου στο ownCloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="486"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="499"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Ο απομακρυσμένος φάκελος %1 δημιουργήθηκε με επιτυχία.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="488"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="501"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Ο απομακρυσμένος φάκελος %1 υπάρχει ήδη. Θα συνδεθεί για συγχρονισμό. </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="490"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="492"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="503"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="505"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Η δημιουργία φακέλου είχε ως αποτέλεσμα τον κωδικό σφάλματος HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="494"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="507"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Η δημιουργία απομακρυσμένου φακέλλου απέτυχε επειδή τα διαπιστευτήρια είναι λάθος!&lt;br/&gt;Παρακαλώ επιστρέψετε και ελέγξετε τα διαπιστευτήριά σας.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="498"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="511"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Η δημιουργία απομακρυσμένου φακέλου απέτυχε, πιθανώς επειδή τα διαπιστευτήρια που δόθηκαν είναι λάθος.&lt;/font&gt;&lt;br/&gt;Παρακαλώ επιστρέψτε πίσω και ελέγξτε τα διαπιστευτήρια σας.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="503"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="504"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="516"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="517"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Η δημιουργία απομακρυσμένου φακέλου %1 απέτυχε με σφάλμα &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="521"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="534"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Μια σύνδεση συγχρονισμού από τον απομακρυσμένο κατάλογο %1 σε %2 έχει ρυθμιστεί. </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="526"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="539"/>
         <source>Successfully connected to %1!</source>
         <translation>Επιτυχής σύνδεση με %1!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="533"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="546"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Αδυναμία σύνδεσης στον %1. Παρακαλώ ελέξτε ξανά.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="547"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="560"/>
         <source>Folder rename failed</source>
         <translation>Αποτυχία μετονομασίας φακέλου</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="548"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="561"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Αδυναμία αφαίρεσης και δημιουργίας αντιγράφου ασφαλείας του φακέλου διότι ο φάκελος ή ένα αρχείο του είναι ανοικτό από άλλο πρόγραμμα. Παρακαλώ κλείστε τον φάκελο ή το αρχείο και πατήστε επανάληψη ή ακυρώστε την ρύθμιση.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="593"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="606"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Επιτυχής δημιουργία τοπικού φακέλου %1 για συγχρονισμό!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
