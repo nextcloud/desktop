@@ -2600,12 +2600,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="206"/>
         <source>Users and Groups</source>
-        <translation type="unfinished"/>
+        <translation>使用者及群組</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="213"/>
         <source>Public Links</source>
-        <translation type="unfinished"/>
+        <translation>公共連結</translation>
     </message>
 </context>
 <context>
