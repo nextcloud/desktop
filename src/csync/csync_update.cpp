@@ -297,41 +297,60 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
 
       } else {
           /* Remote Replica Rename check */
-          OCC::SyncJournalFileRecord base;
-          if(!ctx->statedb->getFileRecordByFileId(fs->file_id, &base)) {
+          fs->instruction = CSYNC_INSTRUCTION_NEW;
+
+          bool done = false;
+          auto renameCandidateProcessing = [&](const OCC::SyncJournalFileRecord &base) {
+              if (done)
+                  return;
+              if (!base.isValid())
+                  return;
+
+              // Some things prohibit rename detection entirely.
+              // Since we don't do the same checks again in reconcile, we can't
+              // just skip the candidate, but have to give up completely.
+              if (base._type != fs->type) {
+                  qCWarning(lcUpdate, "file types different, not a rename");
+                  done = true;
+                  return;
+              }
+              if (fs->type != CSYNC_FTW_TYPE_DIR && base._etag != fs->etag) {
+                  /* File with different etag, don't do a rename, but download the file again */
+                  qCWarning(lcUpdate, "file etag different, not a rename");
+                  done = true;
+                  return;
+              }
+
+              // Record directory renames
+              if (fs->type == CSYNC_FTW_TYPE_DIR) {
+                  // If the same folder was already renamed by a different entry,
+                  // skip to the next candidate
+                  if (ctx->renames.folder_renamed_to.count(base._path) > 0) {
+                      qCWarning(lcUpdate, "folder already has a rename entry, skipping");
+                      return;
+                  }
+                  csync_rename_record(ctx, base._path, fs->path);
+              }
+
+              qCDebug(lcUpdate, "remote rename detected based on fileid %s --> %s", base._path.constData(), fs->path.constData());
+              fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
+              done = true;
+          };
+
+          if (!ctx->statedb->getFileRecordsByFileId(fs->file_id, renameCandidateProcessing)) {
               ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
               return -1;
           }
-          if (base.isValid()) {                           /* tmp existing at all */
-              if (base._type != fs->type) {
-                  qCWarning(lcUpdate, "file types different is not!");
-                  fs->instruction = CSYNC_INSTRUCTION_NEW;
-                  goto out;
-              }
-              qCDebug(lcUpdate, "remote rename detected based on fileid %s --> %s", base._path.constData(), fs->path.constData());
-              fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
-              if (fs->type == CSYNC_FTW_TYPE_DIR) {
-                  csync_rename_record(ctx, base._path, fs->path);
-              } else {
-                  if( base._etag != fs->etag ) {
-                      /* CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ETags are different!"); */
-                      /* File with different etag, don't do a rename, but download the file again */
-                      fs->instruction = CSYNC_INSTRUCTION_NEW;
-                  }
-              }
-              goto out;
 
-          } else {
-              /* file not found in statedb */
-              fs->instruction = CSYNC_INSTRUCTION_NEW;
-
-              if (fs->type == CSYNC_FTW_TYPE_DIR && ctx->current == REMOTE_REPLICA && ctx->callbacks.checkSelectiveSyncNewFolderHook) {
-                  if (ctx->callbacks.checkSelectiveSyncNewFolderHook(ctx->callbacks.update_callback_userdata, fs->path, fs->remotePerm)) {
-                      return 1;
-                  }
+          if (fs->instruction == CSYNC_INSTRUCTION_NEW
+              && fs->type == CSYNC_FTW_TYPE_DIR
+              && ctx->current == REMOTE_REPLICA
+              && ctx->callbacks.checkSelectiveSyncNewFolderHook) {
+              if (ctx->callbacks.checkSelectiveSyncNewFolderHook(ctx->callbacks.update_callback_userdata, fs->path, fs->remotePerm)) {
+                  return 1;
               }
-              goto out;
           }
+          goto out;
       }
   }
 

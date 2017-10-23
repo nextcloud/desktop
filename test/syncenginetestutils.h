@@ -161,12 +161,15 @@ public:
     FileInfo(const QString &name, qint64 size) : name{name}, isDir{false}, size{size} { }
     FileInfo(const QString &name, qint64 size, char contentChar) : name{name}, isDir{false}, size{size}, contentChar{contentChar} { }
     FileInfo(const QString &name, const std::initializer_list<FileInfo> &children) : name{name} {
-        QString p = path();
-        for (const auto &source : children) {
-            auto &dest = this->children[source.name] = source;
-            dest.parentPath = p;
-            dest.fixupParentPathRecursively();
-        }
+        for (const auto &source : children)
+            addChild(source);
+    }
+
+    void addChild(const FileInfo &info)
+    {
+        auto &dest = this->children[info.name] = info;
+        dest.parentPath = path();
+        dest.fixupParentPathRecursively();
     }
 
     void remove(const QString &relativePath) override {
@@ -952,6 +955,11 @@ private:
             } else {
                 QFile f{diskChild.filePath()};
                 f.open(QFile::ReadOnly);
+                auto content = f.read(1);
+                if (content.size() == 0) {
+                    qWarning() << "Empty file at:" << diskChild.filePath();
+                    continue;
+                }
                 char contentChar = f.read(1).at(0);
                 templateFi.children.insert(diskChild.fileName(), FileInfo{diskChild.fileName(), diskChild.size(), contentChar});
             }
