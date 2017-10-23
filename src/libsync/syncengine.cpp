@@ -571,7 +571,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         dir = SyncFileItem::None;
         // For directories, metadata-only updates will be done after all their files are propagated.
         if (!isDirectory) {
-            emit syncItemDiscovered(*item);
 
             // Update the database now already:  New remote fileid or Etag or RemotePerm
             // Or for files that were detected as "resolved conflict".
@@ -683,8 +682,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
     }
 
     _syncItemMap.insert(key, item);
-
-    emit syncItemDiscovered(*item);
     return re;
 }
 

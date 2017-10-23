@@ -105,8 +105,6 @@ signals:
     // During update, before reconcile
     void rootEtag(QString);
 
-    // before actual syncing (after update+reconcile) for each item
-    void syncItemDiscovered(const SyncFileItem &);
     // after the above signals. with the items that actually need propagating
     void aboutToPropagate(SyncFileItemVector &);
 
