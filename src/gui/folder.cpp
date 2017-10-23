@@ -841,6 +841,11 @@ void Folder::slotTransmissionProgress(const ProgressInfo &pi)
 // a item is completed: count the errors and forward to the ProgressDispatcher
 void Folder::slotItemCompleted(const SyncFileItemPtr &item)
 {
+    if (item->_instruction == CSYNC_INSTRUCTION_NONE || item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
+        // We only care about the updates that deserve to be shown in the UI
+        return;
+    }
+
     // add new directories or remove gone away dirs to the watcher
     if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_NEW) {
         FolderMan::instance()->addMonitorPath(alias(), path() + item->_file);

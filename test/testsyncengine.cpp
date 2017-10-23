@@ -16,7 +16,7 @@ bool itemDidComplete(const QSignalSpy &spy, const QString &path)
     for(const QList<QVariant> &args : spy) {
         auto item = args[0].value<SyncFileItemPtr>();
         if (item->destination() == path)
-            return true;
+            return item->_instruction != CSYNC_INSTRUCTION_NONE && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA;
     }
     return false;
 }

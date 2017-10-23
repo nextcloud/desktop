@@ -607,6 +607,9 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
                 }
 
                 _journal->setFileRecordMetadata(item->toSyncJournalFileRecordWithInode(filePath));
+
+                // This might have changed the shared flag, so we must notify SyncFileStatusTracker for example
+                emit itemCompleted(item);
             } else {
                 // The local tree is walked first and doesn't have all the info from the server.
                 // Update only outdated data from the disk.
