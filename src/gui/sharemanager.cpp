@@ -15,6 +15,8 @@
 #include "sharemanager.h"
 #include "ocssharejob.h"
 #include "account.h"
+#include "folderman.h"
+#include "accountstate.h"
 
 #include <QUrl>
 #include <QJsonDocument>
@@ -22,6 +24,31 @@
 #include <QJsonArray>
 
 namespace OCC {
+
+/**
+ * When a share is modified, we need to tell the folders so they can adjust overlay icons
+ */
+static void updateFolder(const AccountPtr &account, const QString &path)
+{
+    foreach (Folder *f, FolderMan::instance()->map()) {
+        if (f->accountState()->account() != account)
+            continue;
+        auto folderPath = f->remotePath();
+        if (path.startsWith(folderPath) && (path == folderPath || folderPath.endsWith('/') || path[folderPath.size()] == '/')) {
+            // Workaround the fact that the server does not invalidate the etags of parent directories
+            // when something is shared.
+            auto relative = path.midRef(folderPath.size());
+            if (relative.startsWith('/'))
+                relative = relative.mid(1);
+            f->journalDb()->avoidReadFromDbOnNextSync(relative.toString());
+
+            // Schedule a sync so it can update the remote permission flag and let the socket API
+            // know about the shared icon.
+            f->scheduleThisFolderSoon();
+        }
+    }
+}
+
 
 Share::Share(AccountPtr account,
     const QString &id,
@@ -41,6 +68,11 @@ Share::Share(AccountPtr account,
 AccountPtr Share::account() const
 {
     return _account;
+}
+
+QString Share::path() const
+{
+    return _path;
 }
 
 QString Share::getId() const
@@ -88,6 +120,8 @@ void Share::deleteShare()
 void Share::slotDeleted()
 {
     emit shareDeleted();
+
+    updateFolder(_account, _path);
 }
 
 void Share::slotOcsError(int statusCode, const QString &message)
@@ -247,6 +281,8 @@ void ShareManager::slotLinkShareCreated(const QJsonDocument &reply)
     QSharedPointer<LinkShare> share(parseLinkShare(data));
 
     emit linkShareCreated(share);
+
+    updateFolder(_account, share->path());
 }
 
 
@@ -292,6 +328,8 @@ void ShareManager::slotShareCreated(const QJsonDocument &reply)
     QSharedPointer<Share> share(parseShare(data));
 
     emit shareCreated(share);
+
+    updateFolder(_account, share->path());
 }
 
 void ShareManager::fetchShares(const QString &path)

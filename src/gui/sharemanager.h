@@ -64,6 +64,8 @@ public:
      */
     AccountPtr account() const;
 
+    QString path() const;
+
     /*
      * Get the id
      */
