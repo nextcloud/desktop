@@ -40,7 +40,6 @@ private:
     bool isInitialized = false;
 };
 
-
 /*
  * @brief Job to sigh the CSR that return JSON
  *
@@ -163,6 +162,31 @@ private:
     QString _fileId;
 };
 
-} // namespace OCC
+/* Generates the Metadata for the folder */
+struct EncryptedFile {
+    QByteArray encryptionKey;
+    QByteArray mimetype;
+    QByteArray initializationVector;
+    QByteArray authenticationTag;
+    QString encryptedFilename;
+    QString originalFilename;
+    int fileVersion;
+    int metadataKey;
+};
 
+class FolderMetadata {
+    FolderMetadata(const QByteArray& metadata = QByteArray());
+    QByteArray encryptedMetadata();
+
+    void addEncryptedFile(const EncryptedFile& f);
+    QVector<EncryptedFile> files() const;
+
+private:
+    QVector<EncryptedFile> _files;
+    QVector<int> _metadataKeys;
+
+    QJsonDocument _jsonMetadata;
+};
+
+} // namespace OCC
 #endif

@@ -3,9 +3,11 @@ set(CMAKE_AUTOMOC TRUE)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 # csync is required.
-include_directories(${CMAKE_SOURCE_DIR}/src/csync
-                    ${CMAKE_BINARY_DIR}/src/csync
-                   )
+include_directories(
+    ${CMAKE_SOURCE_DIR}/src/csync
+    ${CMAKE_BINARY_DIR}/src/csync
+    ${CMAKE_SOURCE_DIR}/src/3rdparty
+)
 
 if ( APPLE )
     list(APPEND OS_SPECIFIC_LINK_LIBRARIES
