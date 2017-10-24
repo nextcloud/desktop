@@ -63,7 +63,7 @@ namespace {
         }
 
         /* Initialise the encryption operation. */
-        if(1 != EVP_EncryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL)) {
+        if(1 != EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
 			qCInfo(lcCse()) << "Error initializing the context with aes_256";
             handleErrors();
         }
@@ -136,7 +136,7 @@ namespace {
         }
 
         /* Initialise the decryption operation. */
-        if(!EVP_DecryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL)) {
+        if(!EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
 			qCInfo(lcCse()) << "Error initializing the decryption context";
             handleErrors();
         }
