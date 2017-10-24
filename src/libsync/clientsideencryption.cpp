@@ -47,8 +47,6 @@ namespace {
 
     int encrypt(unsigned char *plaintext,
                 int plaintext_len,
-                unsigned char *aad,
-                int aad_len,
                 unsigned char *key,
                 unsigned char *iv,
                 unsigned char *ciphertext,
@@ -70,23 +68,18 @@ namespace {
             handleErrors();
         }
 
-        /* Set IV length if default 12 bytes (96 bits) is not appropriate */
+        // We don't do padding
+        EVP_CIPHER_CTX_set_padding(ctx, 0);
+
+        /* Set IV length to 16 bytes */
         if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, 16, NULL)) {
-			qCInfo(lcCse()) << "Error setting the iv length to 16 bits. ";
+            qCInfo(lcCse()) << "Error setting the iv length to 16 bytes. ";
             handleErrors();
         }
 
         /* Initialise key and IV */
         if(1 != EVP_EncryptInit_ex(ctx, NULL, NULL, key, iv)) {
 			qCInfo(lcCse()) << "Error initializing encryption";
-            handleErrors();
-        }
-
-        /* Provide any AAD data. This can be called zero or more times as
-        * required
-        */
-        if(1 != EVP_EncryptUpdate(ctx, NULL, &len, aad, aad_len)) {
-			qCInfo(lcCse()) << "Error calling the Encrypt Update";
             handleErrors();
         }
 
@@ -113,6 +106,10 @@ namespace {
 			qCInfo(lcCse()) << "Error Retrieving the tag";
             handleErrors();
         }
+
+        /* Add tag to cypher text to be compatible with the Android implementation */
+        memcpy(ciphertext + ciphertext_len, tag, 16);
+        ciphertext_len += 16;
 
         /* Clean up */
         EVP_CIPHER_CTX_free(ctx);
@@ -469,8 +466,6 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
     int cryptedText_len = encrypt(
         (unsigned char*) encryptTest,   //unsigned char *plaintext,
         strlen(encryptTest),            //        int plaintext_len,
-        nullptr,                        //        unsigned char *aad,
-        0,                              //        int aad_len,
         fakepass,                       //        unsigned char *key,
         iv,                             //        unsigned char *iv,
         cryptedText,                    //        unsigned char *ciphertext,
