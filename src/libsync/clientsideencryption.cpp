@@ -444,6 +444,11 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
     qCInfo(lcCse()) << "Return of the PKCS5" << ret;
     qCInfo(lcCse()) << "Result String" << secretKey;
 
+
+    /**
+      * NOTES: the key + iv have to be base64 encoded in the metadata.
+      */
+
     //: FIRST TRY A SILLY PHRASE.
     //: Hardcoed IV, really bad.
     unsigned char *fakepass = (unsigned char*) "qwertyuiasdfghjkzxcvbnm,qwertyui";
