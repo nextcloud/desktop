@@ -119,8 +119,6 @@ namespace {
 
     int decrypt(unsigned char *ciphertext,
                 int ciphertext_len,
-                unsigned char *aad,
-                int aad_len,
                 unsigned char *tag,
                 unsigned char *key,
                 unsigned char *iv,
@@ -143,7 +141,7 @@ namespace {
             handleErrors();
         }
 
-        /* Set IV length. Not necessary if this is 12 bytes (96 bits) */
+        /* Set IV length to 16 bytes */
         if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, 16, NULL)) {
 			qCInfo(lcCse()) << "Error seting th iv length for the decrypt context";
             handleErrors();
@@ -155,18 +153,13 @@ namespace {
             handleErrors();
         }
 
-        /* Provide any AAD data. This can be called zero or more times as
-        * required
-        */
-        if(!EVP_DecryptUpdate(ctx, NULL, &len, aad, aad_len)) {
-			qCInfo(lcCse()) << "Error updating the decrypt context with aad information";
-            handleErrors();
-        }
-
-        /* Provide the message to be decrypted, and obtain the plaintext output.
+       /* Provide the message to be decrypted, and obtain the plaintext output.
         * EVP_DecryptUpdate can be called multiple times if necessary
+        *
+        * Do not try to decrypt the last 16 bytes. The tag is appended by Android.
+        * So we ignore the last 16 bytes.
         */
-        if(!EVP_DecryptUpdate(ctx, plaintext, &len, ciphertext, ciphertext_len)) {
+        if(!EVP_DecryptUpdate(ctx, plaintext, &len, ciphertext, ciphertext_len - 16)) {
 			qCInfo(lcCse()) << "Error decrypting the text";
             handleErrors();
         }
