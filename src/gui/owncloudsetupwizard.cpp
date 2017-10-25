@@ -279,7 +279,7 @@ void OwncloudSetupWizard::slotNoServerFound(QNetworkReply *reply)
     } else {
         msg = tr("Failed to connect to %1 at %2:<br/>%3")
                   .arg(Utility::escape(Theme::instance()->appNameGUI()),
-                      Utility::escape(reply->url().toString()),
+                      Utility::escape(_ocWizard->account()->url().toString()),
                       Utility::escape(job->errorString()));
     }
     bool isDowngradeAdvised = checkDowngradeAdvised(reply);
