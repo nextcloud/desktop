@@ -1001,7 +1001,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="884"/>
         <source>Reconciling changes</source>
-        <translation type="unfinished"/>
+        <translation>Rapprochement des modifications</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
@@ -1410,7 +1410,7 @@ L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la supp
         <location filename="../src/gui/issueswidget.ui" line="42"/>
         <location filename="../src/gui/issueswidget.ui" line="61"/>
         <source>&lt;no filter&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;no filter&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="50"/>
@@ -1474,7 +1474,7 @@ L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la supp
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
         <source>&amp;Capture debug messages</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Capturer les messages de déboguage</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
@@ -1701,7 +1701,7 @@ L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la supp
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;analyser le fichier JSON récupéré sur le serveur : &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
@@ -2306,7 +2306,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <location filename="../src/libsync/propagateupload.cpp" line="186"/>
         <location filename="../src/libsync/propagateupload.cpp" line="549"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>Le téléversement de %1 amène un dépassement de quota pour le dossier</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="622"/>
@@ -2638,12 +2638,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="35"/>
         <source>Enter a name to create a new public link...</source>
-        <translation type="unfinished"/>
+        <translation>Entrer un nom pour créer un nouveau lien public...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="42"/>
         <source>&amp;Create new</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Créer un nouveau</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="105"/>
@@ -2658,7 +2658,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="178"/>
         <source>Link properties:</source>
-        <translation type="unfinished"/>
+        <translation>Propriétés du lien :</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="220"/>
@@ -2694,32 +2694,32 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="61"/>
         <source>%1 link</source>
-        <translation type="unfinished"/>
+        <translation>lien %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="91"/>
         <source>Link shares have been disabled</source>
-        <translation type="unfinished"/>
+        <translation>Les partages par lien ont été désactivés</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="105"/>
         <source>Create public link share</source>
-        <translation type="unfinished"/>
+        <translation>Créer une lien de partage public</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="161"/>
         <source>Open link in browser</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir le lien dans le navigateur</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copier le lien vers le presse-papier</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
         <source>Copy link to clipboard (direct download)</source>
-        <translation type="unfinished"/>
+        <translation>Copier le lien vers le presse-papier (téléchargement direct)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
@@ -2729,7 +2729,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Send link by email (direct download)</source>
-        <translation type="unfinished"/>
+        <translation>Envoyer le lien par courriel (téléchargement direct)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="237"/>
@@ -2762,22 +2762,22 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="108"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can direct people to this shared file or folder &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;by giving them a private link&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vous pouvez diriger quelqu&apos;un vers ce fichier ou dossier partagé &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;en lui adressant un lien privé&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="186"/>
         <source>The item is not shared with any users or groups</source>
-        <translation type="unfinished"/>
+        <translation>Cet élément n&apos;est partagé avec aucun utilisateur ou groupe</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="235"/>
         <source>Open link in browser</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir le lien dans le navigateur</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="237"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copier le lien vers le presse-papier</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="239"/>
@@ -2792,7 +2792,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>J&apos;ai partagé quelque chose avec vous</translation>
     </message>
 </context>
 <context>
@@ -2885,7 +2885,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="555"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>J&apos;ai partagé quelque chose avec vous</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="563"/>
@@ -2895,12 +2895,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="565"/>
         <source>Copy private link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copier le lien privé vers le presse-papier</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="566"/>
         <source>Send private link by email...</source>
-        <translation type="unfinished"/>
+        <translation>Envoyer le lien privé par courriel...</translation>
     </message>
 </context>
 <context>
@@ -3178,7 +3178,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="264"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (ignoré à cause d&apos;une précédente erreur, nouvel essai dans %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="474"/>
@@ -3188,12 +3188,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="477"/>
         <source>Folder hierarchy is too deep</source>
-        <translation type="unfinished"/>
+        <translation>La hiérarchie du dossier est trop profonde</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="490"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Conflit : La version du serveur a été téléchargée, la version locale renommée et non téléversée.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="774"/>
@@ -3204,7 +3204,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="809"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;accéder ou de créer une base de données locale de synchronisation. Assurez vous de disposer des droits d&apos;écriture dans le dossier de synchronisation.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1287"/>
@@ -3219,12 +3219,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1597"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;espace disque est faible : les téléchargements qui amèneraient à réduire l&apos;espace libre en dessous de %1 ont été ignorés.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1604"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Il n&apos;y a pas suffisamment d’espace disponible sur le serveur pour certains téléversements.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="167"/>
@@ -3314,7 +3314,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="486"/>
         <source>Unresolved conflict.</source>
-        <translation type="unfinished"/>
+        <translation>conflit non résolu.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="497"/>
@@ -3560,7 +3560,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="240"/>
         <source>Disconnected from some accounts</source>
-        <translation type="unfinished"/>
+        <translation>Déconnecté de certains comptes</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="251"/>
@@ -3586,17 +3586,17 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="273"/>
         <location filename="../src/gui/owncloudgui.cpp" line="304"/>
         <source>Synchronization is paused</source>
-        <translation type="unfinished"/>
+        <translation>La synchronisation est en pause</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="306"/>
         <source>Error during synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Erreur durant la synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>No sync folders configured</source>
-        <translation type="unfinished"/>
+        <translation>Aucun dossier de synchronisation configuré</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
@@ -3801,7 +3801,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Merci de basculer vers votre navigateur pour poursuivre.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
@@ -3811,7 +3811,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Redémarrez votre navigateur</translation>
     </message>
 </context>
 <context>
@@ -4138,12 +4138,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="33"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de démarrer le navigateur</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Une erreur est survenue au lancement du navigateur pour visiter l&apos;adresse %1. Il est possible qu&apos;aucun navigateur par défaut ne soit configuré.</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="55"/>

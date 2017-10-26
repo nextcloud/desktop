@@ -1420,7 +1420,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="73"/>
         <source>Show warnings</source>
-        <translation type="unfinished"/>
+        <translation>Εμφάνιση προειδοποιήσεων</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
