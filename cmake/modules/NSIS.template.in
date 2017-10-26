@@ -616,7 +616,7 @@ Section Uninstall
       StrCmp $1 "" done
 
       ReadRegStr $R0 HKCU "Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\$1" "ApplicationName"
-      StrCmp $R0 ${APPLICATION_NAME} deleteClsid
+      StrCmp $R0 "${APPLICATION_NAME}" deleteClsid
       ; Increment the index when not deleting the enumerated key.
       IntOp $0 $0 + 1
       goto loop
