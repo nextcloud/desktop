@@ -173,6 +173,7 @@ private slots:
     void slotItemCompleted(const SyncFileItemPtr &item);
     void slotFinished(bool success);
     void slotProgress(const SyncFileItem &item, quint64 curent);
+    void updateFileTotal(const SyncFileItem &item, quint64 newSize);
     void slotDiscoveryJobFinished(int updateResult);
     void slotCleanPollsJobAborted(const QString &error);
 
