@@ -85,24 +85,32 @@ bool SqlDatabase::openHelper(const QString &filename, int sqliteFlags)
     return true;
 }
 
-bool SqlDatabase::checkDb()
+SqlDatabase::CheckDbResult SqlDatabase::checkDb()
 {
     // quick_check can fail with a disk IO error when diskspace is low
     SqlQuery quick_check(*this);
-    quick_check.prepare("PRAGMA quick_check;", /*allow_failure=*/true);
+
+    if (quick_check.prepare("PRAGMA quick_check;", /*allow_failure=*/true) != SQLITE_OK) {
+        qCWarning(lcSql) << "Error preparing quick_check on database";
+        _errId = quick_check.errorId();
+        _error = quick_check.error();
+        return CheckDbResult::CantPrepare;
+    }
     if (!quick_check.exec()) {
         qCWarning(lcSql) << "Error running quick_check on database";
-        return false;
+        _errId = quick_check.errorId();
+        _error = quick_check.error();
+        return CheckDbResult::CantExec;
     }
 
     quick_check.next();
     QString result = quick_check.stringValue(0);
     if (result != "ok") {
         qCWarning(lcSql) << "quick_check returned failure:" << result;
-        return false;
+        return CheckDbResult::NotOk;
     }
 
-    return true;
+    return CheckDbResult::Ok;
 }
 
 bool SqlDatabase::openOrCreateReadWrite(const QString &filename)
@@ -115,11 +123,20 @@ bool SqlDatabase::openOrCreateReadWrite(const QString &filename)
         return false;
     }
 
-    if (!checkDb()) {
-        // When disk space is low, checking the db may fail even though it's fine.
-        qint64 freeSpace = Utility::freeDiskSpace(QFileInfo(filename).dir().absolutePath());
-        if (freeSpace != -1 && freeSpace < 1000000) {
-            qCWarning(lcSql) << "Consistency check failed, disk space is low, aborting" << freeSpace;
+    auto checkResult = checkDb();
+    if (checkResult != CheckDbResult::Ok) {
+        if (checkResult == CheckDbResult::CantPrepare && _errId == SQLITE_CANTOPEN) {
+            qCWarning(lcSql) << "Can't open db to prepare consistency check, aborting";
+
+            // When disk space is low, checking the db may fail even though it's fine.
+            qint64 freeSpace = Utility::freeDiskSpace(QFileInfo(filename).dir().absolutePath());
+            if (freeSpace != -1 && freeSpace < 1000000) {
+                qCWarning(lcSql) << "Disk space is low:" << freeSpace;
+            }
+
+            // Even when there's enough disk space, it might very well be that the
+            // file is on a read-only filesystem and can't be opened because of that.
+
             close();
             return false;
         }
@@ -144,7 +161,7 @@ bool SqlDatabase::openReadOnly(const QString &filename)
         return false;
     }
 
-    if (!checkDb()) {
+    if (checkDb() != CheckDbResult::Ok) {
         qCWarning(lcSql) << "Consistency check failed in readonly mode, giving up" << filename;
         close();
         return false;
