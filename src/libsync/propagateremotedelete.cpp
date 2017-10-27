@@ -75,10 +75,14 @@ void PropagateRemoteDelete::start()
     _job->start();
 }
 
-void PropagateRemoteDelete::abort()
+void PropagateRemoteDelete::abort(PropagatorJob::AbortType abortType)
 {
     if (_job && _job->reply())
         _job->reply()->abort();
+
+    if (abortType == AbortType::Asynchronous) {
+        emit abortFinished();
+    }
 }
 
 void PropagateRemoteDelete::slotDeleteJobFinished()

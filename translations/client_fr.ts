@@ -596,7 +596,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="990"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1001"/>
         <source>Error writing metadata to the database</source>
         <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
@@ -744,14 +744,14 @@
         <translation>Impossible de lire le fichier d&apos;exclusion du système</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="883"/>
+        <location filename="../src/gui/folder.cpp" line="888"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Un nouveau dossier de taille supérieure à %1 Mo a été ajouté : %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="886"/>
+        <location filename="../src/gui/folder.cpp" line="891"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Un nouveau dossier localisé sur un stockage externe a été ajouté.
@@ -759,12 +759,12 @@
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="887"/>
+        <location filename="../src/gui/folder.cpp" line="892"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Merci d&apos;aller dans les Paramètres pour indiquer si vous souhaitez le télécharger.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="922"/>
+        <location filename="../src/gui/folder.cpp" line="927"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -775,7 +775,7 @@ Si vous décidez de conserver ces fichiers, ils seront synchronisés à nouveau 
 Si vous décidez de supprimer ces fichiers, ils vous seront inaccessibles, sauf si vous en êtes le propriétaire.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="927"/>
+        <location filename="../src/gui/folder.cpp" line="932"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -784,22 +784,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
 S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserver vos fichiers, ils seront synchronisés à nouveau depuis le serveur.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="931"/>
+        <location filename="../src/gui/folder.cpp" line="936"/>
         <source>Remove All Files?</source>
         <translation>Supprimer tous les fichiers ?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="934"/>
+        <location filename="../src/gui/folder.cpp" line="939"/>
         <source>Remove all files</source>
         <translation>Supprimer tous les fichiers</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="935"/>
+        <location filename="../src/gui/folder.cpp" line="940"/>
         <source>Keep files</source>
         <translation>Conserver les fichiers</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="952"/>
+        <location filename="../src/gui/folder.cpp" line="957"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
@@ -808,17 +808,17 @@ Cela peut être dû à une copie de sauvegarde restaurée sur le serveur.
 Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fichiers soient remplacés par des fichiers plus vieux d&apos;un état précédent. Voulez-vous conserver les versions les plus récentes de vos fichiers en tant que fichiers conflictuels ?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="957"/>
+        <location filename="../src/gui/folder.cpp" line="962"/>
         <source>Backup detected</source>
         <translation>Sauvegarde détectée</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="960"/>
+        <location filename="../src/gui/folder.cpp" line="965"/>
         <source>Normal Synchronisation</source>
         <translation>Synchronisation normale</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="961"/>
+        <location filename="../src/gui/folder.cpp" line="966"/>
         <source>Keep Local Files as Conflict</source>
         <translation>Conserver les fichiers locaux comme Conflits</translation>
     </message>
@@ -1001,7 +1001,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="884"/>
         <source>Reconciling changes</source>
-        <translation type="unfinished"/>
+        <translation>Rapprochement des modifications</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
@@ -1292,22 +1292,22 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="98"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Merci de saisir le mot de passe de %1 :&lt;br&gt;&lt;br&gt;Utilisateur : %2&lt;br&gt;Compte : %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="111"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="112"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
         <translation>Erreur lors de l&apos;accès au trousseau : &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="117"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="118"/>
         <source>Enter Password</source>
         <translation>Saisissez le mot de passe</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="154"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="155"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Cliquez ici&lt;/a&gt; pour demander un mot de passe d&apos;application depuis l&apos;interface web.</translation>
     </message>
@@ -1410,7 +1410,7 @@ L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la supp
         <location filename="../src/gui/issueswidget.ui" line="42"/>
         <location filename="../src/gui/issueswidget.ui" line="61"/>
         <source>&lt;no filter&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;no filter&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="50"/>
@@ -1429,12 +1429,12 @@ L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la supp
         <translation>Voir les fichiers ignorés</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="145"/>
+        <location filename="../src/gui/issueswidget.ui" line="148"/>
         <source>Copy the issues list to the clipboard.</source>
         <translation>Copier la liste des anomalies dans le presse-papier.</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="148"/>
+        <location filename="../src/gui/issueswidget.ui" line="151"/>
         <source>Copy</source>
         <translation>Copier</translation>
     </message>
@@ -1474,7 +1474,7 @@ L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la supp
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
         <source>&amp;Capture debug messages</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Capturer les messages de déboguage</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
@@ -1701,7 +1701,7 @@ L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la supp
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;analyser le fichier JSON récupéré sur le serveur : &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
@@ -1920,144 +1920,144 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="217"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="250"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Connecté avec succès à %1 : %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="251"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="280"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>Échec de la connexion à %1 sur %2 :&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="285"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="314"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Délai d&apos;attente dépassé lors de la connexion à %1 sur %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="296"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="334"/>
         <source>Trying to connect to %1 at %2...</source>
         <translation>Tentative de connexion à %1 sur %2 ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="347"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="385"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
         <translation>La requête d&apos;authentification vers le serveur a été redirigée vers &apos;%1&apos;. L&apos;URL est erronée, le serveur est mal configuré.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="369"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
         <source>There was an invalid response to an authenticated webdav request</source>
         <translation>Une réponse non valide a été reçue suite à une requête WebDav authentifiée.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="360"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Accès impossibe. Afin de vérifier l&apos;accès au serveur, &lt;a href=&quot;%1&quot;&gt;cliquez ici&lt;/a&gt; et connectez-vous au service avec votre navigateur web.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="249"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="278"/>
         <source>Invalid URL</source>
         <translation>URL invalide</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="414"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Le dossier de synchronisation local %1 existe déjà, configuration de la synchronisation.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="417"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="455"/>
         <source>Creating local sync folder %1...</source>
         <translation>Création du dossier local de synchronisation %1... </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="421"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="459"/>
         <source>ok</source>
         <translation>ok</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="423"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="461"/>
         <source>failed.</source>
         <translation>échoué.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="425"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="463"/>
         <source>Could not create local folder %1</source>
         <translation>Impossible de créer le dossier local %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="451"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="489"/>
         <source>No remote folder specified!</source>
         <translation>Aucun dossier distant spécifié !</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="457"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="495"/>
         <source>Error: %1</source>
         <translation>Erreur : %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="470"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="508"/>
         <source>creating folder on ownCloud: %1</source>
         <translation>création d&apos;un dossier sur ownCloud : %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="486"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="524"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Le dossier distant %1 a été créé avec succès.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="488"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="526"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Le dossier distant %1 existe déjà. Connexion.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="490"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="492"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="528"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="530"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>La création du dossier a généré le code d&apos;erreur HTTP %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="494"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="532"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>La création du dossier distant a échoué car les identifiants de connexion sont erronés !&lt;br/&gt;Veuillez revenir en arrière et vérifier ces derniers.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="498"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="536"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;La création du dossier distant a échoué, probablement parce que les informations d&apos;identification fournies sont fausses.&lt;/font&gt;&lt;br/&gt;Veuillez revenir en arrière et les vérifier.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="503"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="504"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="541"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="542"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>La création du dossier distant &quot;%1&quot; a échouée avec l&apos;erreur &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="521"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="559"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Une synchronisation entre le dossier local %1 et le dossier distant %2 a été configurée.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="526"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="564"/>
         <source>Successfully connected to %1!</source>
         <translation>Connecté avec succès à %1 !</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="533"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="571"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>La connexion à %1 n&apos;a pu être établie. Veuillez réessayer.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="547"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="585"/>
         <source>Folder rename failed</source>
         <translation>Echec du renommage du dossier</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="548"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="586"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Impossible de supprimer et de sauvegarder le dossier parce que ce dossier ou un de ses fichiers est ouvert dans un autre programme. Veuillez fermer le dossier ou le fichier et ré-essayer, ou annuler l&apos;installation.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="593"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="631"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Dossier de synchronisation local %1 créé avec succès !&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -2104,7 +2104,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="942"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="953"/>
         <source>Error writing metadata to the database</source>
         <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
@@ -2142,17 +2142,17 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Le fichier téléchargé est vide bien que le serveur indique que sa taille devrait être de %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="772"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="775"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Le fichier %1 n&apos;a pas pu être sauvegardé en raison d&apos;un conflit sur le nom du fichier local !</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="820"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="823"/>
         <source>File has changed since discovery</source>
         <translation>Le fichier a changé depuis sa découverte</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="871"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="874"/>
         <source>Error writing metadata to the database</source>
         <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
@@ -2228,12 +2228,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::PropagateRemoteDelete</name>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="96"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="100"/>
         <source>The file has been removed from a read only share. It was restored.</source>
         <translation>Le fichier a été supprimé d&apos;un partage en lecture seule. Il a été restauré.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotedelete.cpp" line="117"/>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="121"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation>Le code HTTP retourné par le serveur n&apos;est pas valide. La valeur attendue est 204 mais la valeur reçue est &quot;%1 %2&quot;.</translation>
     </message>
@@ -2241,12 +2241,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::PropagateRemoteMkdir</name>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="95"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="99"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>Le code HTTP retourné par le serveur n&apos;est pas valide. La valeur attendue est 201 mais la valeur reçue est &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="147"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="151"/>
         <source>Error writing metadata to the database</source>
         <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
@@ -2264,18 +2264,18 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Le nom de ce dossier ne doit pas être changé. Veuillez le renommer en Shared.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="137"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="141"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
         <translation>Le fichier a été renommé mais appartient à un partage en lecture seule. Le fichier original a été restauré.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="154"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="158"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>Le code HTTP retourné par le serveur n&apos;est pas valide. La valeur attendue est 201 mais la valeur reçue est &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="186"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="192"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="190"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="196"/>
         <source>Error writing metadata to the database</source>
         <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
@@ -2306,10 +2306,10 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <location filename="../src/libsync/propagateupload.cpp" line="186"/>
         <location filename="../src/libsync/propagateupload.cpp" line="549"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>Le téléversement de %1 amène un dépassement de quota pour le dossier</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="618"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="622"/>
         <source>Error writing metadata to the database</source>
         <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
@@ -2383,42 +2383,42 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>TextLabel</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="48"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="61"/>
         <source>Time</source>
         <translation>Heure</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="49"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="62"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="50"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="63"/>
         <source>Folder</source>
         <translation>Dossier</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="51"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="64"/>
         <source>Action</source>
         <translation>Action</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="52"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="65"/>
         <source>Size</source>
         <translation>Taille</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="72"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="85"/>
         <source>Local sync protocol</source>
         <translation>Historique des opérations de synchronisation locale</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="74"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="87"/>
         <source>Copy</source>
         <translation>Copier</translation>
     </message>
     <message>
-        <location filename="../src/gui/protocolwidget.cpp" line="75"/>
+        <location filename="../src/gui/protocolwidget.cpp" line="88"/>
         <source>Copy the activity list to the clipboard.</source>
         <translation>Copier la liste d&apos;activités dans le presse-papier</translation>
     </message>
@@ -2550,6 +2550,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="152"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="211"/>
         <source>Account</source>
         <translation>Compte</translation>
     </message>
@@ -2637,12 +2638,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="35"/>
         <source>Enter a name to create a new public link...</source>
-        <translation type="unfinished"/>
+        <translation>Entrer un nom pour créer un nouveau lien public...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="42"/>
         <source>&amp;Create new</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Créer un nouveau</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="105"/>
@@ -2657,7 +2658,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="178"/>
         <source>Link properties:</source>
-        <translation type="unfinished"/>
+        <translation>Propriétés du lien :</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="220"/>
@@ -2693,32 +2694,32 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="61"/>
         <source>%1 link</source>
-        <translation type="unfinished"/>
+        <translation>lien %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="91"/>
         <source>Link shares have been disabled</source>
-        <translation type="unfinished"/>
+        <translation>Les partages par lien ont été désactivés</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="105"/>
         <source>Create public link share</source>
-        <translation type="unfinished"/>
+        <translation>Créer une lien de partage public</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="161"/>
         <source>Open link in browser</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir le lien dans le navigateur</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copier le lien vers le presse-papier</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
         <source>Copy link to clipboard (direct download)</source>
-        <translation type="unfinished"/>
+        <translation>Copier le lien vers le presse-papier (téléchargement direct)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
@@ -2728,7 +2729,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Send link by email (direct download)</source>
-        <translation type="unfinished"/>
+        <translation>Envoyer le lien par courriel (téléchargement direct)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="237"/>
@@ -2761,22 +2762,22 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="108"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can direct people to this shared file or folder &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;by giving them a private link&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vous pouvez diriger quelqu&apos;un vers ce fichier ou dossier partagé &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;en lui adressant un lien privé&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="186"/>
         <source>The item is not shared with any users or groups</source>
-        <translation type="unfinished"/>
+        <translation>Cet élément n&apos;est partagé avec aucun utilisateur ou groupe</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="235"/>
         <source>Open link in browser</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir le lien dans le navigateur</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="237"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copier le lien vers le presse-papier</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="239"/>
@@ -2791,7 +2792,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>J&apos;ai partagé quelque chose avec vous</translation>
     </message>
 </context>
 <context>
@@ -2884,7 +2885,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="555"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>J&apos;ai partagé quelque chose avec vous</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="563"/>
@@ -2894,12 +2895,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="565"/>
         <source>Copy private link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copier le lien privé vers le presse-papier</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="566"/>
         <source>Send private link by email...</source>
-        <translation type="unfinished"/>
+        <translation>Envoyer le lien privé par courriel...</translation>
     </message>
 </context>
 <context>
@@ -3177,7 +3178,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="264"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (ignoré à cause d&apos;une précédente erreur, nouvel essai dans %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="474"/>
@@ -3187,12 +3188,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="477"/>
         <source>Folder hierarchy is too deep</source>
-        <translation type="unfinished"/>
+        <translation>La hiérarchie du dossier est trop profonde</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="490"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Conflit : La version du serveur a été téléchargée, la version locale renommée et non téléversée.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="774"/>
@@ -3203,27 +3204,27 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="809"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d&apos;accéder ou de créer une base de données locale de synchronisation. Assurez vous de disposer des droits d&apos;écriture dans le dossier de synchronisation.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1278"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1287"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>Non autorisé car vous n&apos;avez pas la permission d&apos;ajouter un dossier parent</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1285"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1294"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Non autorisé car vous n&apos;avez pas la permission d&apos;ajouter des fichiers dans ce dossier</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1588"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1597"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;espace disque est faible : les téléchargements qui amèneraient à réduire l&apos;espace libre en dessous de %1 ont été ignorés.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1595"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1604"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Il n&apos;y a pas suffisamment d’espace disponible sur le serveur pour certains téléversements.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="167"/>
@@ -3313,7 +3314,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="486"/>
         <source>Unresolved conflict.</source>
-        <translation type="unfinished"/>
+        <translation>conflit non résolu.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="497"/>
@@ -3346,54 +3347,54 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Impossible d&apos;ouvrir le journal de synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="968"/>
+        <location filename="../src/libsync/syncengine.cpp" line="977"/>
         <source>File name contains at least one invalid character</source>
         <translation>Le nom de fichier contient au moins un caractère non valable</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1204"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1244"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1213"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1253"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignoré en raison de la liste noire &quot;Sélectionner le contenu à synchroniser&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1263"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1272"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Non autorisé car vous n&apos;avez pas la permission d&apos;ajouter des sous-dossiers dans ce dossier</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1310"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1319"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non autorisé à envoyer ce fichier car il est en lecture seule sur le serveur. Restauration</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1326"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1345"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1335"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1354"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Non autorisé à supprimer. Restauration</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1359"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1368"/>
         <source>Local files and share folder removed.</source>
         <translation>Fichiers locaux et dossier partagé supprimés.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1413"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1422"/>
         <source>Move not allowed, item restored</source>
         <translation>Déplacement non autorisé, élément restauré</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1424"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1433"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Déplacement non autorisé car %1 est en mode lecture seule</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1424"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1433"/>
         <source>the destination</source>
         <translation>la destination</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1424"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1433"/>
         <source>the source</source>
         <translation>la source</translation>
     </message>
@@ -3435,17 +3436,17 @@ Il est déconseillé de l&apos;utiliser.</translation>
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="205"/>
+        <location filename="../src/common/checksums.cpp" line="218"/>
         <source>The checksum header is malformed.</source>
         <translation>L&apos;entête de somme de contrôle est mal formée.</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="220"/>
+        <location filename="../src/common/checksums.cpp" line="233"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>L&apos;en-tête de la somme de contrôle contenait un type de somme de contrôle inconnu &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="224"/>
+        <location filename="../src/common/checksums.cpp" line="237"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
         <translation>Le fichier téléchargé ne correspond pas à la somme de contrôle, il va être téléchargé à nouveau.</translation>
     </message>
@@ -3559,7 +3560,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="240"/>
         <source>Disconnected from some accounts</source>
-        <translation type="unfinished"/>
+        <translation>Déconnecté de certains comptes</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="251"/>
@@ -3585,17 +3586,17 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="273"/>
         <location filename="../src/gui/owncloudgui.cpp" line="304"/>
         <source>Synchronization is paused</source>
-        <translation type="unfinished"/>
+        <translation>La synchronisation est en pause</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="306"/>
         <source>Error during synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Erreur durant la synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>No sync folders configured</source>
-        <translation type="unfinished"/>
+        <translation>Aucun dossier de synchronisation configuré</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
@@ -3800,7 +3801,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Merci de basculer vers votre navigateur pour poursuivre.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
@@ -3810,7 +3811,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Redémarrez votre navigateur</translation>
     </message>
 </context>
 <context>
@@ -4137,12 +4138,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="33"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de démarrer le navigateur</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Une erreur est survenue au lancement du navigateur pour visiter l&apos;adresse %1. Il est possible qu&apos;aucun navigateur par défaut ne soit configuré.</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="55"/>

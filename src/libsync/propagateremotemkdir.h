@@ -35,7 +35,7 @@ public:
     {
     }
     void start() Q_DECL_OVERRIDE;
-    void abort() Q_DECL_OVERRIDE;
+    void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE;
 
     // Creating a directory should be fast.
     bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return true; }

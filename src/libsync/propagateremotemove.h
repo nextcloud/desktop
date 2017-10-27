@@ -56,7 +56,7 @@ public:
     {
     }
     void start() Q_DECL_OVERRIDE;
-    void abort() Q_DECL_OVERRIDE;
+    void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE;
     JobParallelism parallelism() Q_DECL_OVERRIDE { return _item->isDirectory() ? WaitForFinished : FullParallelism; }
 
     /**

@@ -35,6 +35,21 @@ namespace Ui {
 class Application;
 
 /**
+ * A QTreeWidgetItem with special sorting.
+ *
+ * It allows items for global entries to be moved to the top if the
+ * sorting section is the "Time" column.
+ */
+class SortedTreeWidgetItem : public QTreeWidgetItem
+{
+public:
+    using QTreeWidgetItem::QTreeWidgetItem;
+
+private:
+    bool operator<(const QTreeWidgetItem &other) const override;
+};
+
+/**
  * @brief The ProtocolWidget class
  * @ingroup gui
  */

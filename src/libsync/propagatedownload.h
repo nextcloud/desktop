@@ -185,7 +185,7 @@ private slots:
     /// Called when it's time to update the db metadata
     void updateMetadata(bool isConflict);
 
-    void abort() Q_DECL_OVERRIDE;
+    void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE;
     void slotDownloadProgress(qint64, qint64);
     void slotChecksumFail(const QString &errMsg);
 

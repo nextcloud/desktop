@@ -1110,14 +1110,9 @@ bool SyncJournalDb::getFileRecordByInode(quint64 inode, SyncJournalFileRecord *r
     return true;
 }
 
-bool SyncJournalDb::getFileRecordByFileId(const QByteArray &fileId, SyncJournalFileRecord *rec)
+bool SyncJournalDb::getFileRecordsByFileId(const QByteArray &fileId, const std::function<void(const SyncJournalFileRecord &)> &rowCallback)
 {
     QMutexLocker locker(&_mutex);
-
-    // Reset the output var in case the caller is reusing it.
-    Q_ASSERT(rec);
-    rec->_path.clear();
-    Q_ASSERT(!rec->isValid());
 
     if (fileId.isEmpty() || _metadataTableIsEmpty)
         return true; // no error, yet nothing found (rec->isValid() == false)
@@ -1132,8 +1127,10 @@ bool SyncJournalDb::getFileRecordByFileId(const QByteArray &fileId, SyncJournalF
         return false;
     }
 
-    if (_getFileRecordQueryByFileId->next()) {
-        fillFileRecordFromGetQuery(*rec, *_getFileRecordQueryByFileId);
+    while (_getFileRecordQueryByFileId->next()) {
+        SyncJournalFileRecord rec;
+        fillFileRecordFromGetQuery(rec, *_getFileRecordQueryByFileId);
+        rowCallback(rec);
     }
 
     return true;

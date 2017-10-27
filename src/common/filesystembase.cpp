@@ -358,26 +358,19 @@ QString FileSystem::fileSystemForPath(const QString &path)
 
 #define BUFSIZE qint64(500 * 1024) // 500 KiB
 
-static QByteArray readToCrypto(const QString &filename, QCryptographicHash::Algorithm algo)
-{
-    QFile file(filename);
-    const qint64 bufSize = qMin(BUFSIZE, file.size() + 1);
-    QByteArray buf(bufSize, Qt::Uninitialized);
-    QByteArray arr;
-    QCryptographicHash crypto(algo);
+static QByteArray readToCrypto( const QString& filename, QCryptographicHash::Algorithm algo )
+ {
+     QFile file(filename);
+     QByteArray arr;
+     QCryptographicHash crypto( algo );
 
-    if (file.open(QIODevice::ReadOnly)) {
-        qint64 size;
-        while (!file.atEnd()) {
-            size = file.read(buf.data(), bufSize);
-            if (size > 0) {
-                crypto.addData(buf.data(), size);
-            }
-        }
-        arr = crypto.result().toHex();
-    }
-    return arr;
-}
+     if (file.open(QIODevice::ReadOnly)) {
+         if (crypto.addData(&file)) {
+             arr = crypto.result().toHex();
+         }
+     }
+     return arr;
+ }
 
 QByteArray FileSystem::calcMd5(const QString &filename)
 {

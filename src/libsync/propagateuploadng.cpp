@@ -365,7 +365,7 @@ void PropagateUploadFileNG::slotPutFinished()
     // target duration for each chunk upload.
     double targetDuration = propagator()->syncOptions()._targetChunkUploadDuration;
     if (targetDuration > 0) {
-        double uploadTime = job->msSinceStart();
+        double uploadTime = job->msSinceStart() + 1; // add one to avoid div-by-zero
 
         auto predictedGoodSize = static_cast<quint64>(
             _currentChunkSize / uploadTime * targetDuration);
@@ -491,4 +491,26 @@ void PropagateUploadFileNG::slotUploadProgress(qint64 sent, qint64 total)
     }
     propagator()->reportProgress(*_item, _sent + sent - total);
 }
+
+void PropagateUploadFileNG::abort(PropagatorJob::AbortType abortType)
+{
+    // Prepare abort
+    prepareAbort(abortType);
+
+    // Abort all jobs (if there are any left), except final PUT
+    foreach (AbstractNetworkJob *job, _jobs) {
+        if (job->reply()) {
+            if (abortType == AbortType::Asynchronous && qobject_cast<MoveJob *>(job)){
+                // If it is async abort, dont abort
+                // MoveJob since it might result in conflict,
+                // only PUT and MKDIR jobs can be safely aborted.
+                continue;
+            }
+
+            // Abort the job
+            job->reply()->abort();
+        }
+    }
+}
+
 }

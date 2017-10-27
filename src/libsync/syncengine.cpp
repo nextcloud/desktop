@@ -571,7 +571,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         dir = SyncFileItem::None;
         // For directories, metadata-only updates will be done after all their files are propagated.
         if (!isDirectory) {
-            emit syncItemDiscovered(*item);
 
             // Update the database now already:  New remote fileid or Etag or RemotePerm
             // Or for files that were detected as "resolved conflict".
@@ -608,6 +607,9 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
                 }
 
                 _journal->setFileRecordMetadata(item->toSyncJournalFileRecordWithInode(filePath));
+
+                // This might have changed the shared flag, so we must notify SyncFileStatusTracker for example
+                emit itemCompleted(item);
             } else {
                 // The local tree is walked first and doesn't have all the info from the server.
                 // Update only outdated data from the disk.
@@ -683,8 +685,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
     }
 
     _syncItemMap.insert(key, item);
-
-    emit syncItemDiscovered(*item);
     return re;
 }
 
@@ -961,11 +961,20 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     }
 
     // Check for invalid character in old server version
-    if (_account->serverVersionInt() < Account::makeServerVersion(8, 1, 0)) {
-        // Server version older than 8.1 don't support these character in filename.
-        static const QRegExp invalidCharRx("[\\\\:?*\"<>|]");
+    QString invalidFilenamePattern = _account->capabilities().invalidFilenameRegex();
+    if (invalidFilenamePattern.isNull()
+        && _account->serverVersionInt() < Account::makeServerVersion(8, 1, 0)) {
+        // Server versions older than 8.1 don't support some characters in filenames.
+        // If the capability is not set, default to a pattern that avoids uploading
+        // files with names that contain these.
+        // It's important to respect the capability also for older servers -- the
+        // version check doesn't make sense for custom servers.
+        invalidFilenamePattern = "[\\\\:?*\"<>|]";
+    }
+    if (!invalidFilenamePattern.isEmpty()) {
+        const QRegExp invalidFilenameRx(invalidFilenamePattern);
         for (auto it = syncItems.begin(); it != syncItems.end(); ++it) {
-            if ((*it)->_direction == SyncFileItem::Up && (*it)->destination().contains(invalidCharRx)) {
+            if ((*it)->_direction == SyncFileItem::Up && (*it)->destination().contains(invalidFilenameRx)) {
                 (*it)->_errorString = tr("File name contains at least one invalid character");
                 (*it)->_instruction = CSYNC_INSTRUCTION_IGNORE;
             }
@@ -1023,7 +1032,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _progressInfo->startEstimateUpdates();
 
     // post update phase script: allow to tweak stuff by a custom script in debug mode.
-    if (!qgetenv("OWNCLOUD_POST_UPDATE_SCRIPT").isEmpty()) {
+    if (!qEnvironmentVariableIsEmpty("OWNCLOUD_POST_UPDATE_SCRIPT")) {
 #ifndef NDEBUG
         QString script = qgetenv("OWNCLOUD_POST_UPDATE_SCRIPT");
 
@@ -1456,7 +1465,7 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
 
 RemotePermissions SyncEngine::getPermissions(const QString &file) const
 {
-    static bool isTest = qgetenv("OWNCLOUD_TEST_PERMISSIONS").toInt();
+    static bool isTest = qEnvironmentVariableIntValue("OWNCLOUD_TEST_PERMISSIONS");
     if (isTest) {
         QRegExp rx("_PERM_([^_]*)_[^/]*$");
         if (rx.indexIn(file) != -1) {

@@ -625,6 +625,9 @@ void PropagateDownloadFile::slotGetFinished()
     connect(validator, &ValidateChecksumHeader::validationFailed,
         this, &PropagateDownloadFile::slotChecksumFail);
     auto checksumHeader = job->reply()->rawHeader(checkSumHeaderC);
+    auto contentMd5Header = job->reply()->rawHeader(contentMd5HeaderC);
+    if (checksumHeader.isEmpty() && !contentMd5Header.isEmpty())
+        checksumHeader = "MD5:" + contentMd5Header;
     validator->start(_tmpFile.fileName(), checksumHeader);
 }
 
@@ -897,9 +900,13 @@ void PropagateDownloadFile::slotDownloadProgress(qint64 received, qint64)
 }
 
 
-void PropagateDownloadFile::abort()
+void PropagateDownloadFile::abort(PropagatorJob::AbortType abortType)
 {
     if (_job && _job->reply())
         _job->reply()->abort();
+
+    if (abortType == AbortType::Asynchronous) {
+        emit abortFinished();
+    }
 }
 }
