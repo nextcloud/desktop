@@ -7,9 +7,12 @@
 
 #include <openssl/rsa.h>
 #include <openssl/evp.h>
+#include <string>
 
 #include "accountfwd.h"
 #include "networkjobs.h"
+
+#include <nlohmann/json.hpp>
 
 namespace OCC {
 
@@ -174,6 +177,8 @@ struct EncryptedFile {
     int metadataKey;
 };
 
+
+
 class FolderMetadata {
     FolderMetadata(const QByteArray& metadata = QByteArray());
     QByteArray encryptedMetadata();
@@ -182,10 +187,16 @@ class FolderMetadata {
     QVector<EncryptedFile> files() const;
 
 private:
+    /* Use std::string and std::vector internally on this class
+     * to ease the port to Nlohmann Json API
+     */
+    void setupEmptyMetadata();
+    std::string encryptMetadataKeys(const nlohmann::json& metadataKeys) const;
+    std::string genMetadataPass() const;
+    std::string encryptJsonObject(const nlohmann::json& obj, const std::string& pass) const;
+
     QVector<EncryptedFile> _files;
     QVector<int> _metadataKeys;
-
-    QJsonDocument _jsonMetadata;
 };
 
 } // namespace OCC

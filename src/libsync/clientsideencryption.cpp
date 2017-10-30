@@ -9,7 +9,6 @@
 #include <openssl/err.h>
 
 #include <map>
-#include <string>
 
 #include <cstdio>
 
@@ -19,7 +18,6 @@
 #include <QDir>
 #include <QJsonObject>
 
-#include <nlohmann/json.hpp>
 #include "wordlist.h"
 
 namespace OCC
@@ -668,19 +666,55 @@ bool SetEncryptionFlagApiJob::finished()
                 }
         }
 }
-
 */
+
+//TODO: Create an actuall encryption here.
+auto metadataKeyEnc(const QByteArray& data) -> QByteArray
+{
+    return data;
+}
+
+auto metadataKeyDec(const QByteArray& data) -> QByteArray
+{
+    return data;
+}
+
 FolderMetadata::FolderMetadata(const QByteArray& metadata)
 {
-    // This is a new folder
-    /*
     if (metadata.isEmpty()) {
-
+        setupEmptyMetadata();
     }
-    QJsonParseError err;
-    _doc = QJsonDocument::fromJson(metadata, err);
-    */
+}
 
+// RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.
+std::string FolderMetadata::encryptMetadataKeys(const nlohmann::json& metadataKeys) const {
+    // pretend to encrypt for now.
+    return metadataKeys.dump();
+}
+
+std::string FolderMetadata::genMetadataPass() const {
+    return "4randomdiceroll";
+}
+
+// AES/GCM/NoPadding (128 bit key size)
+std::string FolderMetadata::encryptJsonObject(const nlohmann::json& obj,const std::string& pass) const {
+    return obj.dump();
+}
+
+void FolderMetadata::setupEmptyMetadata() {
+    using namespace nlohmann;
+    std::string newMetadataPass = genMetadataPass();
+    json metadataKeyObj = {"0", newMetadataPass};
+    json recepient = {"recipient", {}};
+    json m = {
+        {"metadata", {
+            {"metadataKeys", encryptMetadataKeys(metadataKeyObj)},
+            {"sharing", encryptJsonObject(recepient, newMetadataPass)},
+            {"version",1}
+        }},
+        {"files", {
+        }}
+    };
 }
 
 }

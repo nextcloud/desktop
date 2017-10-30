@@ -26,6 +26,10 @@ elseif(UNIX AND NOT APPLE)
   set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,relro -Wl,-z,now")
 endif()
 
+include_directories(
+    ${CMAKE_SOURCE_DIR}/src/3rdparty
+)
+
 add_subdirectory(csync)
 add_subdirectory(libsync)
 if (NOT BUILD_LIBRARIES_ONLY)
