@@ -740,7 +740,15 @@ std::string FolderMetadata::encryptMetadataKeys(const nlohmann::json& metadataKe
 }
 
 std::string FolderMetadata::genMetadataPass() const {
-    return "4randomdiceroll";
+    const char* charmap = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const size_t charmapLength = strlen(charmap);
+    const int bytes = 16;
+    std::string result;
+    result.reserve(bytes);
+    generate_n(back_inserter(result), bytes, [&](){
+      return charmap[rand() % charmapLength];
+    });
+    return result;
 }
 
 // AES/GCM/NoPadding (128 bit key size)
