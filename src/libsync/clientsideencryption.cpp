@@ -218,24 +218,24 @@ void ClientSideEncryption::initialize()
     getPublicKeyFromServer();
 }
 
-QString ClientSideEncryption::publicKeyPath() const
+QString publicKeyPath(AccountPtr account)
 {
-    return baseDirectory() + _account->displayName() + ".pub";
+    return baseDirectory() + account->displayName() + ".pub";
 }
 
-QString ClientSideEncryption::privateKeyPath() const
+QString privateKeyPath(AccountPtr account)
 {
-    return baseDirectory() + _account->displayName() + ".rsa";
+    return baseDirectory() + account->displayName() + ".rsa";
 }
 
 bool ClientSideEncryption::hasPrivateKey() const
 {
-    return QFileInfo(privateKeyPath()).exists();
+    return QFileInfo(privateKeyPath(_account)).exists();
 }
 
 bool ClientSideEncryption::hasPublicKey() const
 {
-    return QFileInfo(publicKeyPath()).exists();
+    return QFileInfo(publicKeyPath(_account)).exists();
 }
 
 void ClientSideEncryption::generateKeyPair()
@@ -274,8 +274,8 @@ void ClientSideEncryption::generateKeyPair()
         return;
     }
 
-    auto privKeyPath = privateKeyPath().toLocal8Bit();
-    auto pubKeyPath = publicKeyPath().toLocal8Bit();
+    auto privKeyPath = privateKeyPath(_account).toLocal8Bit();
+    auto pubKeyPath = publicKeyPath(_account).toLocal8Bit();
     FILE *privKeyFile = fopen(privKeyPath.constData(), "w");
     FILE *pubKeyFile = fopen(pubKeyPath.constData(), "w");
 
@@ -370,7 +370,7 @@ QString ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
         if (retCode == 200) {
             auto caps = json.object().value("ocs").toObject().value("data").toObject().value("public-key").toString();
             qCInfo(lcCse()) << "Public Key Returned" << caps;
-            QFile file(publicKeyPath() + ".sign");
+            QFile file(publicKeyPath(_account) + ".sign");
             if (file.open(QIODevice::WriteOnly)) {
                 QTextStream s(&file);
                 s << caps;
@@ -680,7 +680,7 @@ auto metadataKeyDec(const QByteArray& data) -> QByteArray
     return data;
 }
 
-FolderMetadata::FolderMetadata(const QByteArray& metadata)
+FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata) : _account(account)
 {
     if (metadata.isEmpty()) {
         setupEmptyMetadata();
@@ -700,6 +700,17 @@ std::string FolderMetadata::encryptMetadataKeys(const nlohmann::json& metadataKe
     const int rsaOeapPadding = 1;
     EVP_PKEY *key = nullptr;
     ENGINE *eng = nullptr;
+
+    auto path = publicKeyPath(_account);
+    const char *pathC = qPrintable(path);
+
+    FILE* pkeyFile = fopen(pathC, "r");
+    if (!pkeyFile) {
+        qCInfo(lcCse()) << "Could not open the public key";
+        exit(1);
+    }
+
+    key = PEM_read_PUBKEY(pkeyFile, NULL, NULL, NULL);
 
     auto ctx = EVP_PKEY_CTX_new(key, eng);
     if (!ctx) {

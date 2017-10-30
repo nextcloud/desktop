@@ -18,6 +18,8 @@ namespace OCC {
 
 QString baseUrl();
 QString baseDirectory();
+QString privateKeyPath(AccountPtr account);
+QString publicKeyPath(AccountPtr account);
 
 class ClientSideEncryption : public QObject {
     Q_OBJECT
@@ -32,8 +34,6 @@ public:
     void getPrivateKeyFromServer();
     void getPublicKeyFromServer();
     void encryptPrivateKey(EVP_PKEY *keyPair);
-    QString privateKeyPath() const;
-    QString publicKeyPath() const;
 
 signals:
     void initializationFinished();
@@ -181,7 +181,7 @@ struct EncryptedFile {
 
 class FolderMetadata {
 public:
-    FolderMetadata(const QByteArray& metadata = QByteArray());
+    FolderMetadata(AccountPtr account, const QByteArray& metadata = QByteArray());
     QByteArray encryptedMetadata();
 
     void addEncryptedFile(const EncryptedFile& f);
@@ -198,6 +198,7 @@ private:
 
     QVector<EncryptedFile> _files;
     QVector<int> _metadataKeys;
+    AccountPtr _account;
 };
 
 } // namespace OCC

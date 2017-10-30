@@ -289,7 +289,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
                     // prepare and send the metadata to the folder
                     if (httpResponse == 200) {
-                        FolderMetadata emptyMetadata;
+                        FolderMetadata emptyMetadata(accountsState()->account());
                     }
                 });
                 job->start();
