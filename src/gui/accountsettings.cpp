@@ -286,6 +286,11 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
                 connect(job, &OCC::SetEncryptionFlagApiJob::jsonReceived, [this](const QJsonDocument& json, int httpResponse) {
                     Q_UNUSED(json);
                     qCInfo(lcAccountSettings) << "Encrypt Http Response" << httpResponse;
+
+                    // prepare and send the metadata to the folder
+                    if (httpResponse == 200) {
+                        FolderMetadata emptyMetadata;
+                    }
                 });
                 job->start();
             });
