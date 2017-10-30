@@ -558,12 +558,16 @@ void PropagateUploadFileCommon::slotJobDestroyed(QObject *job)
     _jobs.erase(std::remove(_jobs.begin(), _jobs.end(), job), _jobs.end());
 }
 
-void PropagateUploadFileCommon::abort()
+void PropagateUploadFileCommon::abort(PropagatorJob::AbortType abortType)
 {
     foreach (auto *job, _jobs) {
         if (job->reply()) {
             job->reply()->abort();
         }
+    }
+
+    if (abortType == AbortType::Asynchronous) {
+        emit abortFinished();
     }
 }
 
@@ -571,7 +575,7 @@ void PropagateUploadFileCommon::abort()
 void PropagateUploadFileCommon::abortWithError(SyncFileItem::Status status, const QString &error)
 {
     _finished = true;
-    abort();
+    abort(AbortType::Synchronous);
     done(status, error);
 }
 
@@ -625,4 +629,33 @@ void PropagateUploadFileCommon::finalize()
 
     done(SyncFileItem::Success);
 }
+
+void PropagateUploadFileCommon::prepareAbort(PropagatorJob::AbortType abortType) {
+    if (!_jobs.empty()) {
+        // Count number of jobs to be aborted asynchronously
+        _abortCount = _jobs.size();
+
+        foreach (AbstractNetworkJob *job, _jobs) {
+            // Check if async abort is requested
+            if (job->reply() && abortType == AbortType::Asynchronous) {
+                // Connect to finished signal of job reply
+                // to asynchonously finish the abort
+                connect(job->reply(), &QNetworkReply::finished, this, &PropagateUploadFileCommon::slotReplyAbortFinished);
+            }
+        }
+    } else if (abortType == AbortType::Asynchronous) {
+        // Empty job list, emit abortFinished immedietaly
+        emit abortFinished();
+    }
+}
+
+void PropagateUploadFileCommon::slotReplyAbortFinished()
+{
+    _abortCount--;
+
+    if (_abortCount == 0) {
+        emit abortFinished();
+    }
+}
+
 }

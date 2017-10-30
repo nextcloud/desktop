@@ -101,6 +101,7 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
             DWORD errorCode = GetLastError();
             if (errorCode == ERROR_NOTIFY_ENUM_DIR) {
                 qCDebug(lcFolderWatcher) << "The buffer for changes overflowed! Triggering a generic change and resizing";
+                emit lostChanges();
                 emit changed(_path);
                 *increaseBufferSize = true;
             } else {
@@ -199,6 +200,8 @@ FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString &path
     _thread = new WatcherThread(path);
     connect(_thread, SIGNAL(changed(const QString &)),
         _parent, SLOT(changeDetected(const QString &)));
+    connect(_thread, SIGNAL(lostChanges()),
+        _parent, SIGNAL(lostChanges()));
     _thread->start();
 }
 

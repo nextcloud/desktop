@@ -38,6 +38,7 @@
 #include <stdbool.h>
 #include <sqlite3.h>
 #include <map>
+#include <set>
 
 #include "common/syncjournaldb.h"
 #include "config_csync.h"
@@ -68,6 +69,11 @@
 enum csync_replica_e {
   LOCAL_REPLICA,
   REMOTE_REPLICA
+};
+
+enum class LocalDiscoveryStyle {
+    FilesystemOnly, //< read all local data from the filesystem
+    DatabaseAndFilesystem, //< read from the db, except for listed paths
 };
 
 
@@ -189,6 +195,16 @@ struct OCSYNC_EXPORT csync_s {
    * Specify if it is allowed to read the remote tree from the DB (default to enabled)
    */
   bool read_remote_from_db = false;
+
+  LocalDiscoveryStyle local_discovery_style = LocalDiscoveryStyle::FilesystemOnly;
+
+  /**
+   * List of folder-relative directory paths that should be scanned on the
+   * filesystem if the local_discovery_style suggests it.
+   *
+   * Their parents will be scanned too. The paths don't start with a /.
+   */
+  std::set<QByteArray> locally_touched_dirs;
 
   bool ignore_hidden_files = true;
 

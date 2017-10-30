@@ -201,7 +201,7 @@ if(BUILD_CLIENT)
 
     endif()
 
-   find_package(ZLIB)
+   find_package(ZLIB REQUIRED)
 endif()
 
 if (NOT DEFINED APPLICATION_ICON_NAME)
@@ -215,6 +215,9 @@ add_definitions(-D_UNICODE)
 if( WIN32 )
 add_definitions( -D__USE_MINGW_ANSI_STDIO=1 )
 add_definitions( -DNOMINMAX )
+# Get APIs from from Vista onwards.
+add_definitions( -D_WIN32_WINNT=0x0600)
+add_definitions( -DWINVER=0x0600)
 endif( WIN32 )
 
 include(QtVersionAbstraction)

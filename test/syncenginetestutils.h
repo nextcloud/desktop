@@ -161,12 +161,15 @@ public:
     FileInfo(const QString &name, qint64 size) : name{name}, isDir{false}, size{size} { }
     FileInfo(const QString &name, qint64 size, char contentChar) : name{name}, isDir{false}, size{size}, contentChar{contentChar} { }
     FileInfo(const QString &name, const std::initializer_list<FileInfo> &children) : name{name} {
-        QString p = path();
-        for (const auto &source : children) {
-            auto &dest = this->children[source.name] = source;
-            dest.parentPath = p;
-            dest.fixupParentPathRecursively();
-        }
+        for (const auto &source : children)
+            addChild(source);
+    }
+
+    void addChild(const FileInfo &info)
+    {
+        auto &dest = this->children[info.name] = info;
+        dest.parentPath = path();
+        dest.fixupParentPathRecursively();
     }
 
     void remove(const QString &relativePath) override {
@@ -433,6 +436,8 @@ public:
             abort();
             return;
         }
+        fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
+        remoteRootFileInfo.find(fileName, /*invalidate_etags=*/true);
         QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
     }
 
@@ -597,6 +602,9 @@ public:
         size -= len;
         return len;
     }
+
+    // useful to be public for testing
+    using QNetworkReply::setRawHeader;
 };
 
 
@@ -606,8 +614,10 @@ class FakeChunkMoveReply : public QNetworkReply
     FileInfo *fileInfo;
 public:
     FakeChunkMoveReply(FileInfo &uploadsFileInfo, FileInfo &remoteRootFileInfo,
-                       QNetworkAccessManager::Operation op, const QNetworkRequest &request,
-                       QObject *parent) : QNetworkReply{parent} {
+        QNetworkAccessManager::Operation op, const QNetworkRequest &request,
+        quint64 delayMs, QObject *parent)
+        : QNetworkReply{ parent }
+    {
         setRequest(request);
         setUrl(request.url());
         setOperation(op);
@@ -662,7 +672,10 @@ public:
             abort();
             return;
         }
-        QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
+        fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
+        remoteRootFileInfo.find(fileName, /*invalidate_etags=*/true);
+
+        QTimer::singleShot(delayMs, this, &FakeChunkMoveReply::respond);
     }
 
     Q_INVOKABLE void respond() {
@@ -711,6 +724,24 @@ public:
     qint64 readData(char *, qint64) override { return 0; }
 
     int _httpErrorCode;
+};
+
+// A reply that never responds
+class FakeHangingReply : public QNetworkReply
+{
+    Q_OBJECT
+public:
+    FakeHangingReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
+        : QNetworkReply(parent)
+    {
+        setRequest(request);
+        setUrl(request.url());
+        setOperation(op);
+        open(QIODevice::ReadOnly);
+    }
+
+    void abort() override {}
+    qint64 readData(char *, qint64) override { return 0; }
 };
 
 class FakeQNAM : public QNetworkAccessManager
@@ -765,7 +796,7 @@ protected:
         else if (verb == QLatin1String("MOVE") && !isUpload)
             return new FakeMoveReply{info, op, request, this};
         else if (verb == QLatin1String("MOVE") && isUpload)
-            return new FakeChunkMoveReply{info, _remoteRootFileInfo, op, request, this};
+            return new FakeChunkMoveReply{ info, _remoteRootFileInfo, op, request, 0, this };
         else {
             qDebug() << verb << outgoingData;
             Q_UNREACHABLE();
@@ -924,6 +955,11 @@ private:
             } else {
                 QFile f{diskChild.filePath()};
                 f.open(QFile::ReadOnly);
+                auto content = f.read(1);
+                if (content.size() == 0) {
+                    qWarning() << "Empty file at:" << diskChild.filePath();
+                    continue;
+                }
                 char contentChar = f.read(1).at(0);
                 templateFi.children.insert(diskChild.fileName(), FileInfo{diskChild.fileName(), diskChild.size(), contentChar});
             }

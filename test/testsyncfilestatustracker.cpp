@@ -436,6 +436,8 @@ private slots:
         fakeFolder.remoteModifier().appendByte("S/s1");
         fakeFolder.remoteModifier().insert("B/b3");
         fakeFolder.remoteModifier().find("B/b3")->extraDavProperties = "<oc:share-types><oc:share-type>0</oc:share-type></oc:share-types>";
+        fakeFolder.remoteModifier().find("A/a1")->isShared = true; // becomes shared
+        fakeFolder.remoteModifier().find("A", true); // change the etags of the parent
 
         StatusPushSpy statusSpy(fakeFolder.syncEngine());
 
@@ -458,6 +460,7 @@ private slots:
         QCOMPARE(statusSpy.statusOf("S/s1"), sharedUpToDateStatus);
         QCOMPARE(statusSpy.statusOf("B/b1").shared(), false);
         QCOMPARE(statusSpy.statusOf("B/b3"), sharedUpToDateStatus);
+        QCOMPARE(statusSpy.statusOf("A/a1"), sharedUpToDateStatus);
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }

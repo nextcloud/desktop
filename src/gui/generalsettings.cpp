@@ -44,6 +44,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
     connect(_ui->desktopNotificationsCheckBox, &QAbstractButton::toggled,
         this, &GeneralSettings::slotToggleOptionalDesktopNotifications);
+    connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
     _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
     connect(_ui->autostartCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleLaunchOnStartup);
@@ -72,6 +73,13 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 #ifndef WITH_CRASHREPORTER
     _ui->crashreporterCheckBox->setVisible(false);
 #endif
+
+    // Hide on non-Windows, or WindowsVersion < 10.
+    // The condition should match the default value of ConfigFile::showInExplorerNavigationPane.
+#ifdef Q_OS_WIN
+    if (QSysInfo::windowsVersion() < QSysInfo::WV_WINDOWS10)
+#endif
+        _ui->showInExplorerNavigationPaneCheckBox->setVisible(false);
 
     /* Set the left contents margin of the layout to zero to make the checkboxes
      * align properly vertically , fixes bug #3758
@@ -107,6 +115,7 @@ void GeneralSettings::loadMiscSettings()
     ConfigFile cfgFile;
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->desktopNotificationsCheckBox->setChecked(cfgFile.optionalDesktopNotifications());
+    _ui->showInExplorerNavigationPaneCheckBox->setChecked(cfgFile.showInExplorerNavigationPane());
     _ui->crashreporterCheckBox->setChecked(cfgFile.crashReporter());
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
     _ui->newFolderLimitCheckBox->setChecked(newFolderLimit.first);
@@ -160,6 +169,14 @@ void GeneralSettings::slotToggleOptionalDesktopNotifications(bool enable)
 {
     ConfigFile cfgFile;
     cfgFile.setOptionalDesktopNotifications(enable);
+}
+
+void GeneralSettings::slotShowInExplorerNavigationPane(bool checked)
+{
+    ConfigFile cfgFile;
+    cfgFile.setShowInExplorerNavigationPane(checked);
+    // Now update the registry with the change.
+    FolderMan::instance()->navigationPaneHelper().setShowInExplorerNavigationPane(checked);
 }
 
 void GeneralSettings::slotIgnoreFilesEditor()

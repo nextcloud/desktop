@@ -114,13 +114,13 @@ PropagateItemJob::~PropagateItemJob()
 
 static qint64 getMinBlacklistTime()
 {
-    return qMax(qgetenv("OWNCLOUD_BLACKLIST_TIME_MIN").toInt(),
+    return qMax(qEnvironmentVariableIntValue("OWNCLOUD_BLACKLIST_TIME_MIN"),
         25); // 25 seconds
 }
 
 static qint64 getMaxBlacklistTime()
 {
-    int v = qgetenv("OWNCLOUD_BLACKLIST_TIME_MAX").toInt();
+    int v = qEnvironmentVariableIntValue("OWNCLOUD_BLACKLIST_TIME_MAX");
     if (v > 0)
         return v;
     return 24 * 60 * 60; // 1 day
@@ -742,6 +742,16 @@ PropagatorJob::JobParallelism PropagatorCompositeJob::parallelism()
     return FullParallelism;
 }
 
+void PropagatorCompositeJob::slotSubJobAbortFinished()
+{
+    // Count that job has been finished
+    _abortsCount--;
+
+    // Emit abort if last job has been aborted
+    if (_abortsCount == 0) {
+        emit abortFinished();
+    }
+}
 
 bool PropagatorCompositeJob::scheduleSelfOrChild()
 {
@@ -900,7 +910,8 @@ void PropagateDirectory::slotFirstJobFinished(SyncFileItem::Status status)
 
     if (status != SyncFileItem::Success && status != SyncFileItem::Restoration) {
         if (_state != Finished) {
-            abort();
+            // Synchronously abort
+            abort(AbortType::Synchronous);
             _state = Finished;
             emit finished(status);
         }

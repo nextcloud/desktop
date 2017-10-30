@@ -27,6 +27,8 @@
 
 #include <QObject>
 #include <QStringList>
+#include <QUuid>
+#include <set>
 
 class QThread;
 class QSettings;
@@ -36,6 +38,7 @@ namespace OCC {
 class SyncEngine;
 class AccountState;
 class SyncRunFileLog;
+class FolderWatcher;
 
 /**
  * @brief The FolderDefinition class
@@ -64,6 +67,8 @@ public:
     bool ignoreHiddenFiles;
     /// the folder has client side encryption
     bool isClientSideEncrypted;
+    /// The CLSID where this folder appears in registry for the Explorer navigation pane entry.
+    QUuid navigationPaneClsid;
 
     /// Saves the folder definition, creating a new settings group.
     static void save(QSettings &settings, const FolderDefinition &folder);
@@ -134,6 +139,9 @@ public:
      * remote folder path
      */
     QString remotePath() const;
+
+    void setNavigationPaneClsid(const QUuid &clsid) { _definition.navigationPaneClsid = clsid; }
+    QUuid navigationPaneClsid() const { return _definition.navigationPaneClsid; }
 
     /**
      * remote folder path with server url
@@ -229,6 +237,13 @@ public:
       */
     void setSaveBackwardsCompatible(bool save);
 
+    /**
+     * Sets up this folder's folderWatcher if possible.
+     *
+     * May be called several times.
+     */
+    void registerFolderWatcher();
+
 signals:
     void syncStateChange();
     void syncStarted();
@@ -306,6 +321,9 @@ private slots:
      */
     void slotScheduleThisFolder();
 
+    /** Ensures that the next sync performs a full local discovery. */
+    void slotNextSyncFullLocalDiscovery();
+
 private:
     bool setIgnoredFiles();
 
@@ -340,6 +358,7 @@ private:
     QString _lastEtag;
     QElapsedTimer _timeSinceLastSyncDone;
     QElapsedTimer _timeSinceLastSyncStart;
+    QElapsedTimer _timeSinceLastFullLocalDiscovery;
     qint64 _lastSyncDuration;
 
     /// The number of syncs that failed in a row.
@@ -367,6 +386,29 @@ private:
      * path.
      */
     bool _saveBackwardsCompatible;
+
+    /**
+     * Watches this folder's local directory for changes.
+     *
+     * Created by registerFolderWatcher(), triggers slotWatchedPathChanged()
+     */
+    QScopedPointer<FolderWatcher> _folderWatcher;
+
+    /**
+     * The paths that should be checked by the next local discovery.
+     *
+     * Mostly a collection of files the filewatchers have reported as touched.
+     * Also includes files that have had errors in the last sync run.
+     */
+    std::set<QByteArray> _localDiscoveryPaths;
+
+    /**
+     * The paths that the current sync run used for local discovery.
+     *
+     * For failing syncs, this list will be merged into _localDiscoveryPaths
+     * again when the sync is done to make sure everything is retried.
+     */
+    std::set<QByteArray> _previousLocalDiscoveryPaths;
 };
 }
 

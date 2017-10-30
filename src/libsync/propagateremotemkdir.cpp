@@ -60,10 +60,14 @@ void PropagateRemoteMkdir::slotStartMkcolJob()
     _job->start();
 }
 
-void PropagateRemoteMkdir::abort()
+void PropagateRemoteMkdir::abort(PropagatorJob::AbortType abortType)
 {
     if (_job && _job->reply())
         _job->reply()->abort();
+
+    if (abortType == AbortType::Asynchronous) {
+        emit abortFinished();
+    }
 }
 
 void PropagateRemoteMkdir::setDeleteExisting(bool enabled)

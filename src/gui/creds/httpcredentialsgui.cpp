@@ -32,10 +32,11 @@ namespace OCC {
 
 void HttpCredentialsGui::askFromUser()
 {
-    // Unfortunately there's a bug that doesn't allow us to send the "is this
-    // OAuth2 or Basic auth?" GET request directly. Scheduling it for the event
-    // loop works though. See #5989.
-    QMetaObject::invokeMethod(this, "askFromUserAsync", Qt::QueuedConnection);
+    // This function can be called from AccountState::slotInvalidCredentials,
+    // which (indirectly, through HttpCredentials::invalidateToken) schedules
+    // a cache wipe of the qnam. We can only execute a network job again once
+    // the cache has been cleared, otherwise we'd interfere with the job.
+    QTimer::singleShot(100, this, &HttpCredentialsGui::askFromUserAsync);
 }
 
 void HttpCredentialsGui::askFromUserAsync()

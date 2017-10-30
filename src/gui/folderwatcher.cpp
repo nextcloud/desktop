@@ -68,6 +68,11 @@ bool FolderWatcher::pathIsIgnored(const QString &path)
     return false;
 }
 
+bool FolderWatcher::isReliable() const
+{
+    return _isReliable;
+}
+
 void FolderWatcher::changeDetected(const QString &path)
 {
     QStringList paths(path);

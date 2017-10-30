@@ -104,14 +104,17 @@ static bool _csync_is_collision_safe_hash(const char *checksum_header)
  * source and the destination, have been changed, the newer file wins.
  */
 static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
+    csync_s::FileMap *our_tree = nullptr;
     csync_s::FileMap *other_tree = nullptr;
 
     /* we need the opposite tree! */
     switch (ctx->current) {
     case LOCAL_REPLICA:
+        our_tree = &ctx->local.files;
         other_tree = &ctx->remote.files;
         break;
     case REMOTE_REPLICA:
+        our_tree = &ctx->remote.files;
         other_tree = &ctx->local.files;
         break;
     default:
@@ -152,40 +155,51 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
             cur->instruction = CSYNC_INSTRUCTION_REMOVE;
             break;
         case CSYNC_INSTRUCTION_EVAL_RENAME: {
-            OCC::SyncJournalFileRecord base;
-            if(ctx->current == LOCAL_REPLICA ) {
-                /* use the old name to find the "other" node */
-                ctx->statedb->getFileRecordByInode(cur->inode, &base);
-                qCDebug(lcReconcile, "Finding opposite temp through inode %" PRIu64 ": %s",
-                          cur->inode, base.isValid() ? "true":"false");
-            } else {
-                ASSERT( ctx->current == REMOTE_REPLICA );
-                ctx->statedb->getFileRecordByFileId(cur->file_id, &base);
-                qCDebug(lcReconcile, "Finding opposite temp through file ID %s: %s",
-                          cur->file_id.constData(), base.isValid() ? "true":"false");
-            }
+            // By default, the EVAL_RENAME decays into a NEW
+            cur->instruction = CSYNC_INSTRUCTION_NEW;
 
-            if( base.isValid() ) {
+            bool processedRename = false;
+            auto renameCandidateProcessing = [&](const OCC::SyncJournalFileRecord &base) {
+                if (processedRename)
+                    return;
+                if (!base.isValid())
+                    return;
+
                 /* First, check that the file is NOT in our tree (another file with the same name was added) */
-                csync_s::FileMap *our_tree = ctx->current == REMOTE_REPLICA ? &ctx->remote.files : &ctx->local.files;
-	                if (our_tree->findFile(base._path)) {
-                        qCDebug(lcReconcile, "Origin found in our tree : %s", base._path.constData());
+                if (our_tree->findFile(base._path)) {
+                    qCDebug(lcReconcile, "Origin found in our tree : %s", base._path.constData());
                 } else {
-                    /* Find the temporar file in the other tree.
+                    /* Find the potential rename source file in the other tree.
                     * If the renamed file could not be found in the opposite tree, that is because it
                     * is not longer existing there, maybe because it was renamed or deleted.
                     * The journal is cleaned up later after propagation.
                     */
                     other = other_tree->findFile(base._path);
-                    qCDebug(lcReconcile, "Temporary opposite (%s) %s",
-                            base._path.constData() , other ? "found": "not found" );
+                    qCDebug(lcReconcile, "Rename origin in other tree (%s) %s",
+                        base._path.constData(), other ? "found" : "not found");
                 }
 
                 if(!other) {
-                    cur->instruction = CSYNC_INSTRUCTION_NEW;
-                } else if (other->instruction == CSYNC_INSTRUCTION_NONE
-                           || other->instruction == CSYNC_INSTRUCTION_UPDATE_METADATA
-                           || cur->type == CSYNC_FTW_TYPE_DIR) {
+                    // Stick with the NEW
+                    return;
+                } else if (other->instruction == CSYNC_INSTRUCTION_RENAME) {
+                    // Some other EVAL_RENAME already claimed other.
+                    // We do nothing: maybe a different candidate for
+                    // other is found as well?
+                    qCDebug(lcReconcile, "Other has already been renamed to %s",
+                        other->rename_path.constData());
+                } else if (cur->type == CSYNC_FTW_TYPE_DIR
+                    // The local replica is reconciled first, so the remote tree would
+                    // have either NONE or UPDATE_METADATA if the remote file is safe to
+                    // move.
+                    // In the remote replica, REMOVE is also valid (local has already
+                    // been reconciled). NONE can still happen if the whole parent dir
+                    // was set to REMOVE by the local reconcile.
+                    || other->instruction == CSYNC_INSTRUCTION_NONE
+                    || other->instruction == CSYNC_INSTRUCTION_UPDATE_METADATA
+                    || other->instruction == CSYNC_INSTRUCTION_REMOVE) {
+                    qCDebug(lcReconcile, "Switching %s to RENAME to %s",
+                        other->path.constData(), cur->path.constData());
                     other->instruction = CSYNC_INSTRUCTION_RENAME;
                     other->rename_path = cur->path;
                     if( !cur->file_id.isEmpty() ) {
@@ -193,24 +207,44 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                     }
                     other->inode = cur->inode;
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
-                } else if (other->instruction == CSYNC_INSTRUCTION_REMOVE) {
-                    other->instruction = CSYNC_INSTRUCTION_RENAME;
-                    other->rename_path = cur->path;
+                    // We have consumed 'other': exit this loop to not consume another one.
+                    processedRename = true;
+                } else if (our_tree->findFile(csync_rename_adjust_path(ctx, other->path)) == cur) {
+                    // If we're here, that means that the other side's reconcile will be able
+                    // to work against cur: The filename itself didn't change, only a parent
+                    // directory was renamed! In that case it's safe to ignore the rename
+                    // since the parent directory rename will already deal with it.
 
-                    if( !cur->file_id.isEmpty() ) {
-                        other->file_id = cur->file_id;
-                    }
-                    other->inode = cur->inode;
+                    // Local: The remote reconcile will be able to deal with this.
+                    // Remote: The local replica has already dealt with this.
+                    //         See the EVAL_RENAME case when other was found directly.
+                    qCDebug(lcReconcile, "File in a renamed directory, other side's instruction: %d",
+                        other->instruction);
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
-                } else if (other->instruction == CSYNC_INSTRUCTION_NEW) {
-                    qCDebug(lcReconcile, "OOOO=> NEW detected in other tree!");
-                    cur->instruction = CSYNC_INSTRUCTION_CONFLICT;
                 } else {
-                    assert(other->type != CSYNC_FTW_TYPE_DIR);
-                    cur->instruction = CSYNC_INSTRUCTION_NONE;
-                    other->instruction = CSYNC_INSTRUCTION_SYNC;
+                    // This can, for instance, happen when there was a local change in other
+                    // and the instruction in the local tree is NEW while cur has EVAL_RENAME
+                    // due to a remote move of the same file. In these scenarios we just
+                    // want the instruction to stay NEW.
+                    qCDebug(lcReconcile, "Other already has instruction %d",
+                        other->instruction);
                 }
+            };
+
+            if (ctx->current == LOCAL_REPLICA) {
+                /* use the old name to find the "other" node */
+                OCC::SyncJournalFileRecord base;
+                qCDebug(lcReconcile, "Finding rename origin through inode %" PRIu64 "",
+                    cur->inode);
+                ctx->statedb->getFileRecordByInode(cur->inode, &base);
+                renameCandidateProcessing(base);
+            } else {
+                ASSERT(ctx->current == REMOTE_REPLICA);
+                qCDebug(lcReconcile, "Finding rename origin through file ID %s",
+                    cur->file_id.constData());
+                ctx->statedb->getFileRecordsByFileId(cur->file_id, renameCandidateProcessing);
             }
+
             break;
         }
         default:
@@ -310,10 +344,19 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                 break;
             case CSYNC_INSTRUCTION_IGNORE:
                 cur->instruction = CSYNC_INSTRUCTION_IGNORE;
-            break;
+                break;
             default:
                 break;
             }
+            // Ensure we're not leaving discovery-only instructions
+            // in place. This can happen, for instance, when other's
+            // instruction is EVAL_RENAME because the parent dir was renamed.
+            // NEW is safer than EVAL because it will end up with
+            // propagation unless it's changed by something, and EVAL and
+            // NEW are treated equivalently during reconcile.
+            if (cur->instruction == CSYNC_INSTRUCTION_EVAL)
+                cur->instruction = CSYNC_INSTRUCTION_NEW;
+            break;
         default:
             break;
         }
