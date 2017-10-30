@@ -180,6 +180,7 @@ struct EncryptedFile {
 
 
 class FolderMetadata {
+public:
     FolderMetadata(const QByteArray& metadata = QByteArray());
     QByteArray encryptedMetadata();
 

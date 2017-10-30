@@ -7,6 +7,7 @@
 #include <openssl/evp.h>
 #include <openssl/pem.h>
 #include <openssl/err.h>
+#include <openssl/engine.h>
 
 #include <map>
 
@@ -688,8 +689,54 @@ FolderMetadata::FolderMetadata(const QByteArray& metadata)
 
 // RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.
 std::string FolderMetadata::encryptMetadataKeys(const nlohmann::json& metadataKeys) const {
-    // pretend to encrypt for now.
-    return metadataKeys.dump();
+    std::string metadata = metadataKeys.dump();
+    const char *metadataPtr = metadata.c_str();
+
+    unsigned char *out;
+    unsigned char *in;
+    size_t outLen;
+    size_t inLen;
+    int err = -1;
+    const int rsaOeapPadding = 1;
+    EVP_PKEY *key = nullptr;
+    ENGINE *eng = nullptr;
+
+    auto ctx = EVP_PKEY_CTX_new(key, eng);
+    if (!ctx) {
+        qCInfo(lcCse()) << "Could not initialize the pkey context.";
+        exit(1);
+    }
+
+    err = EVP_PKEY_encrypt_init(ctx);
+    if (err <= 0) {
+        qCInfo(lcCse()) << "Error initilaizing the encryption.";
+        exit(1);
+    }
+
+    err = EVP_PKEY_CTX_set_rsa_padding(ctx, rsaOeapPadding);
+    if (err <= 0) {
+        qCInfo(lcCse()) << "Error setting the encryption padding.";
+        exit(1);
+    }
+
+    err = EVP_PKEY_encrypt(ctx, NULL, &outLen, in, inLen);
+    if (err <= 0) {
+        qCInfo(lcCse()) << "Error retrieving the size of the encrypted data";
+        exit(1);
+    }
+
+    out = (uchar*) OPENSSL_malloc(outLen);
+    if (!out) {
+        qCInfo(lcCse()) << "Error requesting memory for the encrypted contents";
+        exit(1);
+    }
+
+    err = EVP_PKEY_encrypt(ctx, out, &outLen, in, inLen);
+    if (err <= 0) {
+        qCInfo(lcCse()) << "Could not encrypt key.";
+        exit(1);
+    }
+    qCInfo(lcCse()) << "Data encrypted successfully";
 }
 
 std::string FolderMetadata::genMetadataPass() const {
@@ -715,6 +762,8 @@ void FolderMetadata::setupEmptyMetadata() {
         {"files", {
         }}
     };
+
+    qCInfo(lcCse()) << QString::fromStdString(m.dump());
 }
 
 }
