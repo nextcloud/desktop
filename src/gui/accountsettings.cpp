@@ -275,7 +275,7 @@ void AccountSettings::slotMarkSubfolderDecrypted(const QByteArray& fileId)
 {
     auto job = new OCC::DeleteApiJob(accountsState()->account(),
         "ocs/v2.php/apps/end_to_end_encryption/api/v1/encrypted/" + QString(fileId));
-    connect(job, &OCC::DeleteApiJob::result, [this](int httpResponse) {
+    connect(job, &OCC::DeleteApiJob::result, [](int httpResponse) {
         qCInfo(lcAccountSettings) << "Decrypt Http Response" << httpResponse;
     });
     job->start();
