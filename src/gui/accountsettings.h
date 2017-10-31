@@ -85,6 +85,8 @@ protected slots:
     void slotOpenAccountWizard();
     void slotAccountAdded(AccountState *);
     void refreshSelectiveSyncStatus();
+    void slotMarkSubfolderEncrpted(const QByteArray& fileId);
+    void slotMarkSubfolderDecrypted(const QByteArray& fileId);
     void slotSubfolderContextMenuRequested(const QModelIndex& idx, const QPoint& point);
     void slotCustomContextMenuRequested(const QPoint &);
     void slotFolderListClicked(const QModelIndex &indx);

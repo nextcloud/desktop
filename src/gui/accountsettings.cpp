@@ -255,6 +255,32 @@ void AccountSettings::doExpand()
     ui->_folderList->expandToDepth(0);
 }
 
+void AccountSettings::slotMarkSubfolderEncrpted(const QByteArray& fileId)
+{
+    auto job = new OCC::SetEncryptionFlagApiJob(accountsState()->account(),  QString(fileId));
+    connect(job, &OCC::SetEncryptionFlagApiJob::jsonReceived,
+            [this](const QJsonDocument& json, int httpResponse) {
+        Q_UNUSED(json);
+        qCInfo(lcAccountSettings) << "Encrypt Http Response" << httpResponse;
+
+        // prepare and send the metadata to the folder
+        if (httpResponse == 200) {
+            FolderMetadata emptyMetadata(accountsState()->account());
+        }
+    });
+    job->start();
+}
+
+void AccountSettings::slotMarkSubfolderDecrypted(const QByteArray& fileId)
+{
+    auto job = new OCC::DeleteApiJob(accountsState()->account(),
+        "ocs/v2.php/apps/end_to_end_encryption/api/v1/encrypted/" + QString(fileId));
+    connect(job, &OCC::DeleteApiJob::result, [this](int httpResponse) {
+        qCInfo(lcAccountSettings) << "Decrypt Http Response" << httpResponse;
+    });
+    job->start();
+}
+
 void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index, const QPoint& pos)
 {
     QMenu menu;
@@ -269,31 +295,13 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
 
     if (accountsState()->account()->capabilities().clientSideEncryptionAvaliable()) {
         ac = menu.addAction(tr("Encrypt"));
-        connect(ac, &QAction::triggered, [this, &fileId](bool triggered) {
-            Q_UNUSED(triggered);
-            auto job = new OCC::SetEncryptionFlagApiJob(accountsState()->account(),  QString(fileId));
-
-            connect(job, &OCC::SetEncryptionFlagApiJob::jsonReceived, [this](const QJsonDocument& json, int httpResponse) {
-                Q_UNUSED(json);
-                qCInfo(lcAccountSettings) << "Encrypt Http Response" << httpResponse;
-
-                // prepare and send the metadata to the folder
-                if (httpResponse == 200) {
-                    FolderMetadata emptyMetadata(accountsState()->account());
-                }
-            });
-            job->start();
+        connect(ac, &QAction::triggered, [this, &fileId] {
+            slotMarkSubfolderEncrpted(fileId);
         });
 
         ac = menu.addAction(tr("Decrypt"));
-        connect(ac, &QAction::triggered, [this, &fileId](bool triggered) {
-            Q_UNUSED(triggered);
-            auto job = new OCC::DeleteApiJob(accountsState()->account(),
-                "ocs/v2.php/apps/end_to_end_encryption/api/v1/encrypted/" + QString(fileId));
-            connect(job, &OCC::DeleteApiJob::result, [this](int httpResponse) {
-                qCInfo(lcAccountSettings) << "Decrypt Http Response" << httpResponse;
-            });
-            job->start();
+        connect(ac, &QAction::triggered, [this, &fileId] {
+            slotMarkSubfolderDecrypted(fileId);
         });
 
     }
