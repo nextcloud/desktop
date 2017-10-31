@@ -683,7 +683,10 @@ auto metadataKeyDec(const QByteArray& data) -> QByteArray
 FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata) : _account(account)
 {
     if (metadata.isEmpty()) {
+        qCInfo(lcCse()) << "Setupping Empty Metadata";
         setupEmptyMetadata();
+    } else {
+        qCInfo(lcCse()) << "Metadata already exists, deal with it later.";
     }
 }
 
@@ -747,7 +750,14 @@ std::string FolderMetadata::encryptMetadataKeys(const nlohmann::json& metadataKe
         qCInfo(lcCse()) << "Could not encrypt key.";
         exit(1);
     }
-    qCInfo(lcCse()) << "Data encrypted successfully";
+
+    // Transform the encrypted data into base64.
+    const auto raw = QByteArray((const char*) out, outLen);
+    const auto b64 = raw.toBase64();
+    const auto ret = std::string(b64.constData(), b64.length());
+
+    qCInfo(lcCse()) << raw.toBase64();
+    return ret;
 }
 
 std::string FolderMetadata::genMetadataPass() const {
@@ -782,7 +792,10 @@ void FolderMetadata::setupEmptyMetadata() {
         }}
     };
 
-    qCInfo(lcCse()) << QString::fromStdString(m.dump());
+    std::string result = m.dump();
+    QString output = QString::fromStdString(result);
+
+    qCInfo(lcCse()) << "Current Output" << output;
 }
 
 }
