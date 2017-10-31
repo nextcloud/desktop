@@ -193,6 +193,8 @@ private:
      */
     void setupEmptyMetadata();
     std::string encryptMetadataKeys(const nlohmann::json& metadataKeys) const;
+    std::string decryptMetadataKeys(const std::string& encryptedMetadataKeys) const;
+
     std::string genMetadataPass() const;
     std::string encryptJsonObject(const nlohmann::json& obj, const std::string& pass) const;
 

@@ -772,6 +772,63 @@ std::string FolderMetadata::genMetadataPass() const {
     return result;
 }
 
+std::string FolderMetadata::decryptMetadataKeys(const std::string& encryptedMetadata) const
+{
+    qCInfo(lcCse()) << "Starting to decrypt the metadata key";
+    unsigned char *out;
+    unsigned char *in;
+    size_t outlen;
+    size_t inlen;
+    int err = -1;
+
+    auto path = privateKeyPath(_account);
+    auto pathC = qPrintable(path);
+    auto pkeyFile = fopen(pathC, "r");
+    auto key = PEM_read_PrivateKey(pkeyFile, NULL, NULL, NULL);
+
+    /* NB: assumes key in, inlen are already set up
+    * and that key is an RSA private key
+    */
+    auto ctx = EVP_PKEY_CTX_new(key, nullptr);
+    if (!ctx) {
+        qCInfo(lcCse()) << "Could not create the PKEY context.";
+        exit(1);
+    }
+
+    err = EVP_PKEY_decrypt_init(ctx);
+    if (err <= 0) {
+        qCInfo(lcCse()) << "Could not init the decryption of the metadata";
+        exit(1);
+    }
+
+    err = EVP_PKEY_CTX_set_rsa_padding(ctx, 1); //TODO: Make this a class variable.
+    if (err <= 0) {
+        qCInfo(lcCse()) << "Could not set the RSA padding";
+        exit(1);
+    }
+
+    err = EVP_PKEY_decrypt(ctx, NULL, &outlen, in, inlen);
+    if (err <= 0) {
+        qCInfo(lcCse()) << "Could not determine the buffer length";
+        exit(1);
+    }
+
+    out = (unsigned char *) OPENSSL_malloc(outlen);
+    if (!out) {
+        qCInfo(lcCse()) << "Could not alloc space for the decrypted metadata";
+        exit(1);
+    }
+
+    err = EVP_PKEY_decrypt(ctx, out, &outlen, in, inlen);
+    if (err <= 0) {
+        qCInfo(lcCse()) << "Could not decrypt the metadata";
+        exit(1);
+    }
+
+    qCInfo(lcCse()) << "Metadata decrypted successfully";
+    return "";
+}
+
 // AES/GCM/NoPadding (128 bit key size)
 std::string FolderMetadata::encryptJsonObject(const nlohmann::json& obj,const std::string& pass) const {
     return obj.dump();
