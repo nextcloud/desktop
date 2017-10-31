@@ -854,7 +854,40 @@ std::string FolderMetadata::decryptMetadataKeys(const std::string& encryptedMeta
 
 // AES/GCM/NoPadding (128 bit key size)
 std::string FolderMetadata::encryptJsonObject(const nlohmann::json& obj,const std::string& pass) const {
-    return obj.dump();
+    EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
+    if (!ctx) {
+        qCInfo(lcCse()) << "Coult not create encryption context, aborting.";
+        exit(1);
+    }
+    unsigned char *iv = (unsigned char *)"0123456789012345";
+    auto key = (const unsigned char*) pass.c_str();
+    int err = EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, key, iv);
+    if (err != 1) {
+        qCInfo(lcCse()) << "Error initializing the encryption, aborting.";
+        exit(1);
+    }
+
+    std::string metadata = obj.dump();
+    int metadataLen = metadata.size();
+    int outLen = 0;
+    unsigned char *metadataPtr = (unsigned char *) metadata.c_str();
+
+    qCInfo(lcCse()) << "Metadata to be encrypted" << metadata;
+    qCInfo(lcCse()) << "Metadata length: " << metadataLen;
+
+    err = EVP_EncryptUpdate(ctx, NULL, &outLen, metadataPtr, metadataLen);
+    if (err != 1) {
+        qCInfo(lcCse()) << "Error getting the size of the output text, aborting.";
+        exit(1);
+    }
+    auto out = (unsigned char *) OPENSSL_malloc(outLen);
+
+    err = EVP_EncryptUpdate(ctx, out, &outLen, metadataPtr, metadataLen);
+    if (err != 1) {
+        qCInfo(lcCse()) << "Error encrypting the metadata, aborting.";
+        exit(1);
+    }
+    qCInfo(lcCse()) << "Successfully encrypted the  internal json blob.";
 }
 
 void FolderMetadata::setupEmptyMetadata() {
@@ -867,15 +900,9 @@ void FolderMetadata::setupEmptyMetadata() {
 
     auto b64String = encryptMetadataKeys(metadataKeyObj);
 
-    qCInfo(lcCse()) << "=========================================";
-    qCInfo(lcCse()) << "Original:" << metadataKeyObj.dump();
-    qCInfo(lcCse()) << "Encrypted:" << b64String;
-    qCInfo(lcCse()) << "Decrypted" << decryptMetadataKeys(b64String);
-    qCInfo(lcCse()) << "==========================================";
-
     json m = {
         {"metadata", {
-            {"metadataKeys", encryptMetadataKeys(metadataKeyObj)},
+            {"metadataKeys", b64String},
             {"sharing", encryptJsonObject(recepient, newMetadataPass)},
             {"version",1}
         }},
