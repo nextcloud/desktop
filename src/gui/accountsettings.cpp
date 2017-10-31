@@ -255,6 +255,51 @@ void AccountSettings::doExpand()
     ui->_folderList->expandToDepth(0);
 }
 
+void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index, const QPoint& pos)
+{
+    QMenu menu;
+    auto ac = menu.addAction(tr("Open folder"));
+    connect(ac, &QAction::triggered, this, &AccountSettings::slotOpenCurrentLocalSubFolder);
+
+    auto fileName = _model->data(index, FolderStatusDelegate::FolderPathRole).toString();
+    if (!QFile::exists(fileName)) {
+        ac->setEnabled(false);
+    }
+    auto fileId = _model->data(index, FolderStatusModel::FileIdRole).toByteArray();
+
+    if (accountsState()->account()->capabilities().clientSideEncryptionAvaliable()) {
+        ac = menu.addAction(tr("Encrypt"));
+        connect(ac, &QAction::triggered, [this, &fileId](bool triggered) {
+            Q_UNUSED(triggered);
+            auto job = new OCC::SetEncryptionFlagApiJob(accountsState()->account(),  QString(fileId));
+
+            connect(job, &OCC::SetEncryptionFlagApiJob::jsonReceived, [this](const QJsonDocument& json, int httpResponse) {
+                Q_UNUSED(json);
+                qCInfo(lcAccountSettings) << "Encrypt Http Response" << httpResponse;
+
+                // prepare and send the metadata to the folder
+                if (httpResponse == 200) {
+                    FolderMetadata emptyMetadata(accountsState()->account());
+                }
+            });
+            job->start();
+        });
+
+        ac = menu.addAction(tr("Decrypt"));
+        connect(ac, &QAction::triggered, [this, &fileId](bool triggered) {
+            Q_UNUSED(triggered);
+            auto job = new OCC::DeleteApiJob(accountsState()->account(),
+                "ocs/v2.php/apps/end_to_end_encryption/api/v1/encrypted/" + QString(fileId));
+            connect(job, &OCC::DeleteApiJob::result, [this](int httpResponse) {
+                qCInfo(lcAccountSettings) << "Decrypt Http Response" << httpResponse;
+            });
+            job->start();
+        });
+
+    }
+    menu.exec(QCursor::pos());
+}
+
 void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 {
     QTreeView *tv = ui->_folderList;
@@ -264,51 +309,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     }
 
     if (_model->classify(index) == FolderStatusModel::SubFolder) {
-        QTreeView *tv = ui->_folderList;
-        QMenu *menu = new QMenu(tv);
-        menu->setAttribute(Qt::WA_DeleteOnClose);
-
-        QAction *ac = menu->addAction(tr("Open folder"));
-        connect(ac, &QAction::triggered, this, &AccountSettings::slotOpenCurrentLocalSubFolder);
-
-        QString fileName = _model->data(index, FolderStatusDelegate::FolderPathRole).toString();
-        if (!QFile::exists(fileName)) {
-            ac->setEnabled(false);
-        }
-        auto fileId = _model->data(index, FolderStatusModel::FileIdRole).toByteArray();
-
-        if (accountsState()->account()->capabilities().clientSideEncryptionAvaliable()) {
-            ac = menu->addAction(tr("Encrypt"));
-            connect(ac, &QAction::triggered, [this, &fileId](bool triggered) {
-                Q_UNUSED(triggered);
-                auto job = new OCC::SetEncryptionFlagApiJob(accountsState()->account(),  QString(fileId));
-
-                connect(job, &OCC::SetEncryptionFlagApiJob::jsonReceived, [this](const QJsonDocument& json, int httpResponse) {
-                    Q_UNUSED(json);
-                    qCInfo(lcAccountSettings) << "Encrypt Http Response" << httpResponse;
-
-                    // prepare and send the metadata to the folder
-                    if (httpResponse == 200) {
-                        FolderMetadata emptyMetadata(accountsState()->account());
-                    }
-                });
-                job->start();
-            });
-
-            ac = menu->addAction(tr("Decrypt"));
-            connect(ac, &QAction::triggered, [this, &fileId](bool triggered) {
-                Q_UNUSED(triggered);
-                auto job = new OCC::DeleteApiJob(accountsState()->account(),
-                    "ocs/v2.php/apps/end_to_end_encryption/api/v1/encrypted/" + QString(fileId));
-                connect(job, &OCC::DeleteApiJob::result, [this](int httpResponse) {
-                    qCInfo(lcAccountSettings) << "Decrypt Http Response" << httpResponse;
-                });
-                job->start();
-            });
-
-        }
-        menu->exec(QCursor::pos());
-
+        slotSubfolderContextMenuRequested(index, pos);
         return;
     }
 
