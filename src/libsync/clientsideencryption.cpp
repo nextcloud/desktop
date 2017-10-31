@@ -21,6 +21,12 @@
 
 #include "wordlist.h"
 
+QDebug operator<<(QDebug out, const std::string& str)
+{
+    out << QString::fromStdString(str);
+    return out;
+}
+
 namespace OCC
 {
 
@@ -693,15 +699,15 @@ FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata) :
 // RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.
 std::string FolderMetadata::encryptMetadataKeys(const nlohmann::json& metadataKeys) const {
     std::string metadata = metadataKeys.dump();
-    const char *metadataPtr = metadata.c_str();
+    unsigned char *metadataPtr = (unsigned char *) metadata.c_str();
+    size_t metadataPtrLen = metadata.size();
 
-    unsigned char *out;
-    unsigned char *in;
-    size_t outLen;
-    size_t inLen;
     int err = -1;
     const int rsaOeapPadding = 1;
     EVP_PKEY *key = nullptr;
+
+    /*TODO: Verify if we need to setup a RSA engine.
+     * by default it's RSA OEAP */
     ENGINE *eng = nullptr;
 
     auto path = publicKeyPath(_account);
@@ -733,21 +739,24 @@ std::string FolderMetadata::encryptMetadataKeys(const nlohmann::json& metadataKe
         exit(1);
     }
 
-    err = EVP_PKEY_encrypt(ctx, NULL, &outLen, in, inLen);
+    size_t outLen = 0;
+    err = EVP_PKEY_encrypt(ctx, NULL, &outLen, metadataPtr, metadataPtrLen);
     if (err <= 0) {
         qCInfo(lcCse()) << "Error retrieving the size of the encrypted data";
         exit(1);
+    } else {
+        qCInfo(lcCse()) << "Encrption Length:" << outLen;
     }
 
-    out = (uchar*) OPENSSL_malloc(outLen);
+    unsigned char *out = (uchar*) OPENSSL_malloc(outLen);
     if (!out) {
         qCInfo(lcCse()) << "Error requesting memory for the encrypted contents";
         exit(1);
     }
 
-    err = EVP_PKEY_encrypt(ctx, out, &outLen, in, inLen);
+    err = EVP_PKEY_encrypt(ctx, out, &outLen, metadataPtr, metadataPtrLen);
     if (err <= 0) {
-        qCInfo(lcCse()) << "Could not encrypt key.";
+        qCInfo(lcCse()) << "Could not encrypt key." << err;
         exit(1);
     }
 
@@ -775,20 +784,26 @@ std::string FolderMetadata::genMetadataPass() const {
 std::string FolderMetadata::decryptMetadataKeys(const std::string& encryptedMetadata) const
 {
     qCInfo(lcCse()) << "Starting to decrypt the metadata key";
-    unsigned char *out;
-    size_t outlen;
+    unsigned char *out = nullptr;
+    size_t outlen = 0;
     int err = -1;
 
     auto path = privateKeyPath(_account);
     auto pathC = qPrintable(path);
     auto pkeyFile = fopen(pathC, "r");
     auto key = PEM_read_PrivateKey(pkeyFile, NULL, NULL, NULL);
+    if (!key) {
+        qCInfo(lcCse()) << "Error reading private key";
+    }
 
     // Data is base64 encoded.
+    qCInfo(lcCse()) << "encryptedMetadata" << encryptedMetadata;
     auto raw = QByteArray(encryptedMetadata.c_str(), encryptedMetadata.length());
     auto b64d = QByteArray::fromBase64(raw);
     auto in = (unsigned char *) b64d.constData();
     size_t inlen = b64d.length();
+
+    qCInfo(lcCse()) << "Encrypted metadata length: " << inlen;
 
     /* NB: assumes key in, inlen are already set up
     * and that key is an RSA private key
@@ -815,6 +830,8 @@ std::string FolderMetadata::decryptMetadataKeys(const std::string& encryptedMeta
     if (err <= 0) {
         qCInfo(lcCse()) << "Could not determine the buffer length";
         exit(1);
+    } else {
+        qCInfo(lcCse()) << "Size of output is: " << outlen;
     }
 
     out = (unsigned char *) OPENSSL_malloc(outlen);
@@ -830,7 +847,9 @@ std::string FolderMetadata::decryptMetadataKeys(const std::string& encryptedMeta
     }
 
     qCInfo(lcCse()) << "Metadata decrypted successfully";
-    return "";
+    const auto ret = std::string((char*) out, outlen);
+
+    return ret;
 }
 
 // AES/GCM/NoPadding (128 bit key size)
@@ -841,8 +860,19 @@ std::string FolderMetadata::encryptJsonObject(const nlohmann::json& obj,const st
 void FolderMetadata::setupEmptyMetadata() {
     using namespace nlohmann;
     std::string newMetadataPass = genMetadataPass();
+    qCInfo(lcCse()) << "Key Generated for the Metadata" << newMetadataPass;
+
     json metadataKeyObj = {"0", newMetadataPass};
     json recepient = {"recipient", {}};
+
+    auto b64String = encryptMetadataKeys(metadataKeyObj);
+
+    qCInfo(lcCse()) << "=========================================";
+    qCInfo(lcCse()) << "Original:" << metadataKeyObj.dump();
+    qCInfo(lcCse()) << "Encrypted:" << b64String;
+    qCInfo(lcCse()) << "Decrypted" << decryptMetadataKeys(b64String);
+    qCInfo(lcCse()) << "==========================================";
+
     json m = {
         {"metadata", {
             {"metadataKeys", encryptMetadataKeys(metadataKeyObj)},
