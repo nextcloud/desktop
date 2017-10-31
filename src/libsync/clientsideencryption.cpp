@@ -776,15 +776,19 @@ std::string FolderMetadata::decryptMetadataKeys(const std::string& encryptedMeta
 {
     qCInfo(lcCse()) << "Starting to decrypt the metadata key";
     unsigned char *out;
-    unsigned char *in;
     size_t outlen;
-    size_t inlen;
     int err = -1;
 
     auto path = privateKeyPath(_account);
     auto pathC = qPrintable(path);
     auto pkeyFile = fopen(pathC, "r");
     auto key = PEM_read_PrivateKey(pkeyFile, NULL, NULL, NULL);
+
+    // Data is base64 encoded.
+    auto raw = QByteArray(encryptedMetadata.c_str(), encryptedMetadata.length());
+    auto b64d = QByteArray::fromBase64(raw);
+    auto in = (unsigned char *) b64d.constData();
+    size_t inlen = b64d.length();
 
     /* NB: assumes key in, inlen are already set up
     * and that key is an RSA private key
