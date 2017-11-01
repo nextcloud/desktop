@@ -474,6 +474,7 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
         cryptedText,                    //        unsigned char *ciphertext,
         tag                             //        unsigned char *tag
     );
+
 /*
     qCInfo(lcCse()) << "Encrypted Text" << QByteArray( (const char*) cryptedText, cryptedText_len);
     int decryptedText_len = decrypt(
@@ -488,6 +489,7 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
     );
     qCInfo(lcCse()) << "Decrypted Text" << QByteArray( (const char*) decryptedText, decryptedText_len);
 */
+
 // Pretend that the private key is actually encrypted and send it to the server.
 	auto job = new StorePrivateKeyApiJob(_account, baseUrl() + "private-key", this);
 	job->setPrivateKey(QByteArray((const char*) cryptedText, 128));
@@ -859,6 +861,8 @@ std::string FolderMetadata::encryptJsonObject(const nlohmann::json& obj,const st
         qCInfo(lcCse()) << "Coult not create encryption context, aborting.";
         exit(1);
     }
+    EVP_CIPHER_CTX_set_padding(ctx, 0);
+
     unsigned char *iv = (unsigned char *)"0123456789012345";
     auto key = (const unsigned char*) pass.c_str();
     int err = EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, key, iv);
@@ -926,6 +930,8 @@ std::string FolderMetadata::decryptJsonObject(const std::string& encryptedMetada
         qCInfo(lcCse()) << "Coult not create decryptioncontext, aborting.";
         exit(1);
     }
+    EVP_CIPHER_CTX_set_padding(ctx, 0);
+
     unsigned char *iv = (unsigned char *)"0123456789012345";
     auto key = (const unsigned char*) pass.c_str();
     int err = EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, key, iv);
@@ -948,12 +954,13 @@ std::string FolderMetadata::decryptJsonObject(const std::string& encryptedMetada
         exit(1);
     }
     qCInfo(lcCse()) << "currently decrypted" << std::string( (char*) out, outlen);
+    qCInfo(lcCse()) << "Current decrypt  length" << outlen;
 
-    err = EVP_DecryptFinal(ctx, out + outlen, &outlen);
-    if (err != 1) {
-        qCInfo(lcCse()) << "Error finalyzing the decryption, aborting.";
-        exit(1);
-    }
+//     err = EVP_DecryptFinal_ex(ctx, out + outlen, &outlen);
+//     if (err != 1) {
+//         qCInfo(lcCse()) << "Error finalyzing the decryption, aborting.";
+//         exit(1);
+//     }
     qCInfo(lcCse()) << "Decryption finalized.";
     const auto ret = std::string((char*) out, outlen);
     return ret;
