@@ -910,6 +910,50 @@ std::string FolderMetadata::encryptJsonObject(const nlohmann::json& obj,const st
 
 std::string FolderMetadata::decryptJsonObject(const std::string& encryptedMetadata, const std::string& pass) const
 {
+    // Jesus, should I encrypt here in 128kb chunks?
+    // perhaps.
+
+    // Data is base64 encoded.
+    // TODO: Transform this bit into a function to remove duplicated code.
+    qCInfo(lcCse()) << "encryptedMetadata" << encryptedMetadata;
+    auto raw = QByteArray(encryptedMetadata.c_str(), encryptedMetadata.length());
+    auto b64d = QByteArray::fromBase64(raw);
+    auto in = (unsigned char *) b64d.constData();
+    size_t inlen = b64d.length();
+
+    EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
+    if (!ctx) {
+        qCInfo(lcCse()) << "Coult not create decryptioncontext, aborting.";
+        exit(1);
+    }
+    unsigned char *iv = (unsigned char *)"0123456789012345";
+    auto key = (const unsigned char*) pass.c_str();
+    int err = EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, key, iv);
+    if (err != 1) {
+        qCInfo(lcCse()) << "Error initializing the decryption, aborting.";
+        exit(1);
+    }
+
+    int outlen = 0;
+    err = EVP_DecryptUpdate(ctx, NULL, &outlen, in, inlen);
+    if (err != 1) {
+        qCInfo(lcCse()) << "Error retrieving the length of the decryption text, aborting.";
+        exit(1);
+    }
+
+    auto out = (unsigned char *) OPENSSL_malloc(outlen);
+    err = EVP_DecryptUpdate(ctx, out, &outlen, in, inlen);
+    if (err != 1) {
+        qCInfo(lcCse()) << "Error decrypting the json blob, aborting.";
+        exit(1);
+    }
+
+    err = EVP_DecryptFinal(ctx, out + outlen, &outlen);
+    if (err != 1) {
+        qCInfo(lcCse()) << "Error finalyzing the decryption, aborting.";
+        exit(1);
+    }
+    qCInfo(lcCse()) << "Decryption finalized.";
 }
 
 void FolderMetadata::setupEmptyMetadata() {
