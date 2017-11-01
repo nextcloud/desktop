@@ -1700,7 +1700,7 @@ Os itens onde é permitido a eliminação serão eliminados se estes impedirem a
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível processar a resposta JSON retornada pelo servidor: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
@@ -1710,7 +1710,7 @@ Os itens onde é permitido a eliminação serão eliminados se estes impedirem a
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="125"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Erro no login&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="131"/>
@@ -1883,7 +1883,7 @@ poderá pedir por privilégios adicionais durante o processo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="44"/>
         <source>Login in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Faça login através do browser</translation>
     </message>
 </context>
 <context>
@@ -4137,7 +4137,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="33"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível abrir o browser</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
