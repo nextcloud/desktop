@@ -228,5 +228,34 @@ private:
     QString _fileId;
 };
 
+class OWNCLOUDSYNC_EXPORT UnlockEncryptFolderApiJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    explicit UnlockEncryptFolderApiJob (
+        const AccountPtr &account,
+        const QString& fileId,
+        const QString& token,
+        QObject *parent = 0);
+
+public slots:
+    void start() override;
+
+protected:
+    bool finished() override;
+
+signals:
+
+    /**
+     * @brief jsonReceived - signal to report the json answer from ocs
+     * @param json - the parsed json document
+     * @param statusCode - the OCS status code: 200 for success
+     */
+    void jsonReceived(const QJsonDocument &json, int statusCode);
+private:
+    QString _fileId;
+    QString _token;
+};
+
 } // namespace OCC
 #endif

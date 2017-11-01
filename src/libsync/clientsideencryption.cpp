@@ -1032,6 +1032,43 @@ bool LockEncryptFolderApiJob::finished()
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+    //TODO: Parse the token and submit.
+}
+
+
+UnlockEncryptFolderApiJob::UnlockEncryptFolderApiJob(const AccountPtr& account,
+                                                 const QString& fileId,
+                                                 const QString& token,
+                                                 QObject* parent)
+: AbstractNetworkJob(account, baseUrl() + QStringLiteral("lock/") + fileId, parent), _fileId(fileId), _token(token)
+{
+}
+
+void UnlockEncryptFolderApiJob::start()
+{
+    QNetworkRequest req;
+    req.setRawHeader("OCS-APIREQUEST", "true");
+    QUrl url = Utility::concatUrlPath(account()->url(), path());
+    QList<QPair<QString, QString>> params = {
+        qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")),
+        qMakePair(QString::fromLatin1("token"), _token)
+    };
+    url.setQueryItems(params);
+
+    qCInfo(lcCseJob()) << "unlocking the folder with id" << _fileId << "as encrypted";
+    sendRequest("DELETE", url, req);
+    AbstractNetworkJob::start();
+}
+
+bool UnlockEncryptFolderApiJob::finished()
+{
+    int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (retCode != 200)
+        qCInfo(lcCseJob()) << "error unlocking file" << path() << errorString() << retCode;
+
+    QJsonParseError error;
+    auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
+    emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
 }
 
 }
