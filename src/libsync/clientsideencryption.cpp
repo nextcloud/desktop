@@ -870,6 +870,7 @@ std::string FolderMetadata::encryptJsonObject(const nlohmann::json& obj,const st
     std::string metadata = obj.dump();
     int metadataLen = metadata.size();
     int outLen = 0;
+
     unsigned char *metadataPtr = (unsigned char *) metadata.c_str();
 
     qCInfo(lcCse()) << "Metadata to be encrypted" << metadata;
@@ -888,9 +889,18 @@ std::string FolderMetadata::encryptJsonObject(const nlohmann::json& obj,const st
         exit(1);
     }
     qCInfo(lcCse()) << "Successfully encrypted the  internal json blob.";
+    int totalOutputLen = outLen;
+
+    qCInfo(lcCse()) << "Current output length: " << totalOutputLen;
+    err = EVP_EncryptFinal_ex(ctx, out + outLen, &outLen);
+    if (err != 1) {
+        qCInfo(lcCse()) << "Error finalyzing the encryption.";
+    }
+    totalOutputLen += outLen;
+    qCInfo(lcCse()) << "Final output length: " << totalOutputLen;
 
     // Transform the encrypted data into base64.
-    const auto raw = QByteArray((const char*) out, outLen);
+    const auto raw = QByteArray((const char*) out, totalOutputLen);
     const auto b64 = raw.toBase64();
     const auto ret = std::string(b64.constData(), b64.length());
 
