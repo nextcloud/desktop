@@ -956,6 +956,7 @@ std::string FolderMetadata::decryptJsonObject(const std::string& encryptedMetada
     qCInfo(lcCse()) << "currently decrypted" << std::string( (char*) out, outlen);
     qCInfo(lcCse()) << "Current decrypt  length" << outlen;
 
+// TODO: figure out why this is not working.
 //     err = EVP_DecryptFinal_ex(ctx, out + outlen, &outlen);
 //     if (err != 1) {
 //         qCInfo(lcCse()) << "Error finalyzing the decryption, aborting.";
