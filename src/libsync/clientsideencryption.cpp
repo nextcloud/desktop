@@ -947,6 +947,7 @@ std::string FolderMetadata::decryptJsonObject(const std::string& encryptedMetada
         qCInfo(lcCse()) << "Error decrypting the json blob, aborting.";
         exit(1);
     }
+    qCInfo(lcCse()) << "currently decrypted" << std::string( (char*) out, outlen);
 
     err = EVP_DecryptFinal(ctx, out + outlen, &outlen);
     if (err != 1) {
@@ -954,6 +955,8 @@ std::string FolderMetadata::decryptJsonObject(const std::string& encryptedMetada
         exit(1);
     }
     qCInfo(lcCse()) << "Decryption finalized.";
+    const auto ret = std::string((char*) out, outlen);
+    return ret;
 }
 
 void FolderMetadata::setupEmptyMetadata() {
@@ -966,10 +969,19 @@ void FolderMetadata::setupEmptyMetadata() {
 
     auto b64String = encryptMetadataKeys(metadataKeyObj);
 
+    auto sharingEncrypted = encryptJsonObject(recepient, newMetadataPass);
+    auto sharingDecrypted = decryptJsonObject(sharingEncrypted, newMetadataPass);
+
+    qCInfo(lcCse()) << "=====================";
+    qCInfo(lcCse()) << "Original Json blob:" << recepient.dump();
+    qCInfo(lcCse()) << "encrypted json blob:" << sharingEncrypted;
+    qCInfo(lcCse()) << "decrypted json blob:" << sharingDecrypted;
+    qCInfo(lcCse()) << "====================";
+
     json m = {
         {"metadata", {
             {"metadataKeys", b64String},
-            {"sharing", encryptJsonObject(recepient, newMetadataPass)},
+            {"sharing", sharingEncrypted},
             {"version",1}
         }},
         {"files", {
