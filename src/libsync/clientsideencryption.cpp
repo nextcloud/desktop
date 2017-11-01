@@ -1071,4 +1071,42 @@ bool UnlockEncryptFolderApiJob::finished()
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
 }
 
+StoreMetaDataApiJob::StoreMetaDataApiJob(const AccountPtr& account,
+                                                 const QString& fileId,
+                                                 const QByteArray& b64Metadata,
+                                                 QObject* parent)
+: AbstractNetworkJob(account, baseUrl() + QStringLiteral("meta-data/") + fileId, parent), _fileId(fileId), _b64Metadata(b64Metadata)
+{
+}
+
+void StoreMetaDataApiJob::start()
+{
+    QNetworkRequest req;
+    req.setRawHeader("OCS-APIREQUEST", "true");
+    QUrl url = Utility::concatUrlPath(account()->url(), path());
+    QList<QPair<QString, QString>> params = {
+        qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")),
+    };
+    url.setQueryItems(params);
+
+    QByteArray data = QByteArray("metaData=") + _b64Metadata;
+    QBuffer buffer;
+    buffer.setData(data);
+
+    qCInfo(lcCseJob()) << "sending the metadata for the fileId" << _fileId << "as encrypted";
+    sendRequest("POST", url, req, &buffer);
+    AbstractNetworkJob::start();
+}
+
+bool StoreMetaDataApiJob::finished()
+{
+    int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (retCode != 200)
+        qCInfo(lcCseJob()) << "error sending the metadata" << path() << errorString() << retCode;
+
+    QJsonParseError error;
+    auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
+    emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+}
+
 }

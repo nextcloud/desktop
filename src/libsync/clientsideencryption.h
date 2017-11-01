@@ -257,5 +257,30 @@ private:
     QString _token;
 };
 
+class OWNCLOUDSYNC_EXPORT StoreMetaDataApiJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    explicit StoreMetaDataApiJob (
+        const AccountPtr &account,
+        const QString& fileId,
+        const QByteArray& b64Metadata,
+        QObject *parent = 0);
+
+public slots:
+    void start() override;
+
+protected:
+    bool finished() override;
+
+signals:
+    void jsonReceived(const QJsonDocument &json, int statusCode);
+
+private:
+    QString _fileId;
+    QByteArray _b64Metadata;
+};
+
+
 } // namespace OCC
 #endif
