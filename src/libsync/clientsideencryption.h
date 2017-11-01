@@ -281,6 +281,27 @@ private:
     QByteArray _b64Metadata;
 };
 
+class OWNCLOUDSYNC_EXPORT GetMetadataApiJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    explicit GetMetadataApiJob (
+        const AccountPtr &account,
+        const QString& fileId,
+        QObject *parent = 0);
+
+public slots:
+    void start() override;
+
+protected:
+    bool finished() override;
+
+signals:
+    void jsonReceived(const QJsonDocument &json, int statusCode);
+
+private:
+    QString _fileId;
+};
 
 } // namespace OCC
 #endif

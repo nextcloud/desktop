@@ -1109,4 +1109,36 @@ bool StoreMetaDataApiJob::finished()
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
 }
 
+GetMetadataApiJob::GetMetadataApiJob(const AccountPtr& account,
+                                                 const QString& fileId,
+                                                 QObject* parent)
+: AbstractNetworkJob(account, baseUrl() + QStringLiteral("meta-data/") + fileId, parent), _fileId(fileId)
+{
+}
+
+void GetMetadataApiJob::start()
+{
+    QNetworkRequest req;
+    req.setRawHeader("OCS-APIREQUEST", "true");
+    QUrl url = Utility::concatUrlPath(account()->url(), path());
+    QList<QPair<QString, QString>> params = {
+        qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")),
+    };
+    url.setQueryItems(params);
+
+    qCInfo(lcCseJob()) << "Requesting the metadata for the fileId" << _fileId << "as encrypted";
+    sendRequest("GET", url, req);
+    AbstractNetworkJob::start();
+}
+
+bool GetMetadataApiJob::finished()
+{
+    int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (retCode != 200)
+        qCInfo(lcCseJob()) << "error requesting the metadata the metadata" << path() << errorString() << retCode;
+
+    QJsonParseError error;
+    auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
+    emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+}
 }
