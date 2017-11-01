@@ -172,8 +172,6 @@ void AbstractNetworkJob::slotFinished()
     QUrl requestedUrl = reply()->request().url();
     QUrl redirectUrl = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
     if (_followRedirects && !redirectUrl.isEmpty()) {
-        _redirectCount++;
-
         // Redirects may be relative
         if (redirectUrl.isRelative())
             redirectUrl = requestedUrl.resolved(redirectUrl);
@@ -194,27 +192,32 @@ void AbstractNetworkJob::slotFinished()
         QByteArray verb = requestVerb(*reply());
         if (requestedUrl.scheme() == QLatin1String("https") && redirectUrl.scheme() == QLatin1String("http")) {
             qCWarning(lcNetworkJob) << this << "HTTPS->HTTP downgrade detected!";
-        } else if (requestedUrl == redirectUrl || _redirectCount >= maxRedirects()) {
+        } else if (requestedUrl == redirectUrl || _redirectCount + 1 >= maxRedirects()) {
             qCWarning(lcNetworkJob) << this << "Redirect loop detected!";
         } else if (_requestBody && _requestBody->isSequential()) {
             qCWarning(lcNetworkJob) << this << "cannot redirect request with sequential body";
         } else if (verb.isEmpty()) {
             qCWarning(lcNetworkJob) << this << "cannot redirect request: could not detect original verb";
         } else {
-            emit redirected(_reply, redirectUrl, _redirectCount - 1);
+            emit redirected(_reply, redirectUrl, _redirectCount);
 
-            // Create the redirected request and send it
-            qCInfo(lcNetworkJob) << "Redirecting" << verb << requestedUrl << redirectUrl;
-            resetTimeout();
-            if (_requestBody) {
-                _requestBody->seek(0);
+            // The signal emission may have changed this value
+            if (_followRedirects) {
+                _redirectCount++;
+
+                // Create the redirected request and send it
+                qCInfo(lcNetworkJob) << "Redirecting" << verb << requestedUrl << redirectUrl;
+                resetTimeout();
+                if (_requestBody) {
+                    _requestBody->seek(0);
+                }
+                sendRequest(
+                    verb,
+                    redirectUrl,
+                    reply()->request(),
+                    _requestBody);
+                return;
             }
-            sendRequest(
-                verb,
-                redirectUrl,
-                reply()->request(),
-                _requestBody);
-            return;
         }
     }
 

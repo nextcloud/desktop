@@ -319,7 +319,6 @@ void OwncloudSetupWizard::slotNoServerFoundTimeout(const QUrl &url)
 void OwncloudSetupWizard::slotDetermineAuthType()
 {
     DetermineAuthTypeJob *job = new DetermineAuthTypeJob(_ocWizard->account(), this);
-    job->setIgnoreCredentialFailure(true);
     connect(job, &DetermineAuthTypeJob::authType,
         _ocWizard, &OwncloudWizard::setAuthType);
     job->start();

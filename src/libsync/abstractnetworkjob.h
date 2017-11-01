@@ -66,6 +66,7 @@ public:
      * requests where custom handling is necessary.
      */
     void setFollowRedirects(bool follow);
+    bool followRedirects() const { return _followRedirects; }
 
     QByteArray responseTimestamp();
 
