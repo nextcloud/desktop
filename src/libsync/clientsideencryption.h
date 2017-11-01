@@ -183,9 +183,9 @@ class FolderMetadata {
 public:
     FolderMetadata(AccountPtr account, const QByteArray& metadata = QByteArray());
     QByteArray encryptedMetadata();
-
     void addEncryptedFile(const EncryptedFile& f);
     QVector<EncryptedFile> files() const;
+
 
 private:
     /* Use std::string and std::vector internally on this class
@@ -202,6 +202,30 @@ private:
     QVector<EncryptedFile> _files;
     QVector<int> _metadataKeys;
     AccountPtr _account;
+};
+
+class OWNCLOUDSYNC_EXPORT LockEncryptFolderApiJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    explicit LockEncryptFolderApiJob(const AccountPtr &account, const QString& fileId, QObject *parent = 0);
+
+public slots:
+    void start() override;
+
+protected:
+    bool finished() override;
+
+signals:
+
+    /**
+     * @brief jsonReceived - signal to report the json answer from ocs
+     * @param json - the parsed json document
+     * @param statusCode - the OCS status code: 200 for success
+     */
+    void jsonReceived(const QJsonDocument &json, int statusCode);
+private:
+    QString _fileId;
 };
 
 } // namespace OCC

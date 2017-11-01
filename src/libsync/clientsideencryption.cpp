@@ -1002,4 +1002,36 @@ void FolderMetadata::setupEmptyMetadata() {
     qCInfo(lcCse()) << "Current Output" << output;
 }
 
+
+LockEncryptFolderApiJob::LockEncryptFolderApiJob(const AccountPtr& account, const QString& fileId, QObject* parent)
+: AbstractNetworkJob(account, baseUrl() + QStringLiteral("lock/") + fileId, parent), _fileId(fileId)
+{
+}
+
+void LockEncryptFolderApiJob::start()
+{
+    QNetworkRequest req;
+    req.setRawHeader("OCS-APIREQUEST", "true");
+    QUrl url = Utility::concatUrlPath(account()->url(), path());
+    QList<QPair<QString, QString>> params = {
+        qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json"))
+    };
+    url.setQueryItems(params);
+
+    qCInfo(lcCseJob()) << "locking the folder with id" << _fileId << "as encrypted";
+    sendRequest("POST", url, req);
+    AbstractNetworkJob::start();
+}
+
+bool LockEncryptFolderApiJob::finished()
+{
+    int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (retCode != 200)
+        qCInfo(lcCseJob()) << "error locking file" << path() << errorString() << retCode;
+
+    QJsonParseError error;
+    auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
+    emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+}
+
 }

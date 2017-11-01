@@ -265,6 +265,11 @@ void AccountSettings::slotMarkSubfolderEncrpted(const QByteArray& fileId)
 
         // prepare and send the metadata to the folder
         if (httpResponse == 200) {
+            /* TODO: Last preparations for today:
+             * Lock the folder
+             * Send the metadata
+             * Unlock the folder.
+             */
             FolderMetadata emptyMetadata(accountsState()->account());
         }
     });
