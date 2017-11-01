@@ -888,6 +888,18 @@ std::string FolderMetadata::encryptJsonObject(const nlohmann::json& obj,const st
         exit(1);
     }
     qCInfo(lcCse()) << "Successfully encrypted the  internal json blob.";
+
+    // Transform the encrypted data into base64.
+    const auto raw = QByteArray((const char*) out, outLen);
+    const auto b64 = raw.toBase64();
+    const auto ret = std::string(b64.constData(), b64.length());
+
+    qCInfo(lcCse()) << raw.toBase64();
+    return ret;
+}
+
+std::string FolderMetadata::decryptJsonObject(const std::string& encryptedMetadata, const std::string& pass) const
+{
 }
 
 void FolderMetadata::setupEmptyMetadata() {

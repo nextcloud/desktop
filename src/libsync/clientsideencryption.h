@@ -197,6 +197,7 @@ private:
 
     std::string genMetadataPass() const;
     std::string encryptJsonObject(const nlohmann::json& obj, const std::string& pass) const;
+    std::string decryptJsonObject(const std::string& encryptedJsonBlob, const std::string& pass) const;
 
     QVector<EncryptedFile> _files;
     QVector<int> _metadataKeys;
