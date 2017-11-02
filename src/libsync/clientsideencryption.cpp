@@ -885,7 +885,8 @@ std::string FolderMetadata::encryptJsonObject(const nlohmann::json& obj,const st
         qCInfo(lcCse()) << "Error getting the size of the output text, aborting.";
         exit(1);
     }
-    auto out = (unsigned char *) OPENSSL_malloc(outLen);
+    //+16 since we append the tag
+    auto out = (unsigned char *) OPENSSL_malloc(outLen + 16);
 
     err = EVP_EncryptUpdate(ctx, out, &outLen, metadataPtr, metadataLen);
     if (err != 1) {
@@ -902,6 +903,17 @@ std::string FolderMetadata::encryptJsonObject(const nlohmann::json& obj,const st
     }
     totalOutputLen += outLen;
     qCInfo(lcCse()) << "Final output length: " << totalOutputLen;
+
+    /* Get the tag */
+    unsigned char tag[16];
+    if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, tag)) {
+        qCInfo(lcCse()) << "Error Retrieving the tag";
+        handleErrors();
+    }
+
+    /* Add tag to cypher text to be compatible with the Android implementation */
+    memcpy(out + totalOutputLen, tag, 16);
+    totalOutputLen += 16;
 
     // Transform the encrypted data into base64.
     const auto raw = QByteArray((const char*) out, totalOutputLen);
@@ -923,7 +935,9 @@ std::string FolderMetadata::decryptJsonObject(const std::string& encryptedMetada
     auto raw = QByteArray(encryptedMetadata.c_str(), encryptedMetadata.length());
     auto b64d = QByteArray::fromBase64(raw);
     auto in = (unsigned char *) b64d.constData();
-    size_t inlen = b64d.length();
+    // The tag is appended but it is not part of the cipher text
+    size_t inlen = b64d.length() - 16;
+    auto tag = in + inlen;
 
     EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
     if (!ctx) {
@@ -956,12 +970,18 @@ std::string FolderMetadata::decryptJsonObject(const std::string& encryptedMetada
     qCInfo(lcCse()) << "currently decrypted" << std::string( (char*) out, outlen);
     qCInfo(lcCse()) << "Current decrypt  length" << outlen;
 
-// TODO: figure out why this is not working.
-//     err = EVP_DecryptFinal_ex(ctx, out + outlen, &outlen);
-//     if (err != 1) {
-//         qCInfo(lcCse()) << "Error finalyzing the decryption, aborting.";
-//         exit(1);
-//     }
+    /* Set expected tag value. Works in OpenSSL 1.0.1d and later */
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, 16, tag)) {
+        qCInfo(lcCse()) << "Error decrypting the json blob, aborting.";
+        exit(1);
+    }
+
+    err = EVP_DecryptFinal_ex(ctx, out + outlen, &outlen);
+    if (err != 1) {
+        qCInfo(lcCse()) << "Error finalyzing the decryption, aborting.";
+        exit(1);
+    }
+
     qCInfo(lcCse()) << "Decryption finalized.";
     const auto ret = std::string((char*) out, outlen);
     return ret;
