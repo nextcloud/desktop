@@ -1051,11 +1051,12 @@ bool LockEncryptFolderApiJob::finished()
 
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
-
-    qCInfo(lcCse()) << "got json:" << json;
+    auto obj = json.object().toVariantMap();
+    auto token = obj["ocs"].toMap()["data"].toMap()["token"].toByteArray();
+    qCInfo(lcCse()) << "got json:" << token;
 
     //TODO: Parse the token and submit.
-    emit success(_fileId, "TOKEN");
+    emit success(_fileId, token);
 }
 
 
