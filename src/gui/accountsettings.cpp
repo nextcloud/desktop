@@ -299,9 +299,6 @@ void AccountSettings::slotUnlockFolderSuccess(const QByteArray& fileId)
 }
 void AccountSettings::slotMarkSubfolderEncrpted(const QByteArray& fileId)
 {
-    //TODO: No good, we are three levels down in signal/slot hell.
-    // as soon as this works, rework this function to be way less
-    // deep.
     auto job = new OCC::SetEncryptionFlagApiJob(accountsState()->account(),  fileId);
     connect(job, &OCC::SetEncryptionFlagApiJob::success, this, &AccountSettings::slotEncryptionFlagSuccess);
     connect(job, &OCC::SetEncryptionFlagApiJob::error, this, &AccountSettings::slotEncryptionFlagError);
