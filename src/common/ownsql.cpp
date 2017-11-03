@@ -125,20 +125,23 @@ bool SqlDatabase::openOrCreateReadWrite(const QString &filename)
 
     auto checkResult = checkDb();
     if (checkResult != CheckDbResult::Ok) {
-        if (checkResult == CheckDbResult::CantPrepare && _errId == SQLITE_CANTOPEN) {
-            qCWarning(lcSql) << "Can't open db to prepare consistency check, aborting";
-
-            // When disk space is low, checking the db may fail even though it's fine.
+        if (checkResult == CheckDbResult::CantPrepare) {
+            // When disk space is low, preparing may fail even though the db is fine.
+            // Typically CANTOPEN or IOERR.
             qint64 freeSpace = Utility::freeDiskSpace(QFileInfo(filename).dir().absolutePath());
             if (freeSpace != -1 && freeSpace < 1000000) {
-                qCWarning(lcSql) << "Disk space is low:" << freeSpace;
+                qCWarning(lcSql) << "Can't prepare consistency check and disk space is low:" << freeSpace;
+                close();
+                return false;
             }
 
             // Even when there's enough disk space, it might very well be that the
             // file is on a read-only filesystem and can't be opened because of that.
-
-            close();
-            return false;
+            if (_errId == SQLITE_CANTOPEN) {
+                qCWarning(lcSql) << "Can't open db to prepare consistency check, aborting";
+                close();
+                return false;
+            }
         }
 
         qCCritical(lcSql) << "Consistency check failed, removing broken db" << filename;
