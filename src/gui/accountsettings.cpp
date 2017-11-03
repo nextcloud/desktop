@@ -272,9 +272,8 @@ void AccountSettings::slotEncryptionFlagError(const QByteArray& fileId, int http
 
 void AccountSettings::slotLockFolderSuccess(const QByteArray& fileId, const QByteArray &token)
 {
-    qCInfo(lcAccountSettings()) << "Locked Successfully";
-    FolderMetadata emptyMetadata(accountsState()->account());
-
+//    FolderMetadata emptyMetadata(accountsState()->account());
+    qCInfo(lcAccountSettings()) << "Folder Locked Successfully" << fileId << token;
     auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), fileId, token);
     connect(unlockJob, &UnlockEncryptFolderApiJob::success,
             this, &AccountSettings::slotUnlockFolderSuccess);

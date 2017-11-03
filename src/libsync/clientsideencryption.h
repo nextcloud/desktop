@@ -243,6 +243,7 @@ signals:
 private:
     QByteArray _fileId;
     QByteArray _token;
+    QBuffer *_tokenBuf;
 };
 
 class OWNCLOUDSYNC_EXPORT StoreMetaDataApiJob : public AbstractNetworkJob

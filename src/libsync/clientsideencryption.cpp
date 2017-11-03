@@ -1026,7 +1026,7 @@ UnlockEncryptFolderApiJob::UnlockEncryptFolderApiJob(const AccountPtr& account,
                                                  const QByteArray& fileId,
                                                  const QByteArray& token,
                                                  QObject* parent)
-: AbstractNetworkJob(account, baseUrl() + QStringLiteral("lock/") + fileId, parent), _fileId(fileId), _token(token)
+: AbstractNetworkJob(account, baseUrl() + QStringLiteral("unlock/") + fileId, parent), _fileId(fileId), _token(token)
 {
 }
 
@@ -1035,17 +1035,20 @@ void UnlockEncryptFolderApiJob::start()
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
     QUrl url = Utility::concatUrlPath(account()->url(), path());
-    QList<QPair<QString, QString>> params = {
-        qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")),
-    };
-    url.setQueryItems(params);
 
-    // TODO: This should be a data parameter.
-    // qMakePair(QString::fromLatin1("token"), _token)
+    QByteArray bufferData("token=" + _token);
+    _tokenBuf = new QBuffer();
+    _tokenBuf->setData(bufferData);
 
-    qCInfo(lcCseJob()) << "unlocking the folder with id" << _fileId << "as encrypted";
-    sendRequest("DELETE", url, req);
+    qCInfo(lcCseJob()) << "================";
+    qCInfo(lcCseJob()) << "unlocking the folder with id" << _fileId << "with token" << _token;
+    qCInfo(lcCseJob()) << url;
+    qCInfo(lcCseJob()) << bufferData;
+    qCInfo(lcCseJob()) << "===================";
+    sendRequest("POST", url, req, _tokenBuf);
+
     AbstractNetworkJob::start();
+    qCInfo(lcCseJob()) << "Starting the request to unlock.";
 }
 
 bool UnlockEncryptFolderApiJob::finished()
@@ -1053,6 +1056,7 @@ bool UnlockEncryptFolderApiJob::finished()
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (retCode != 200) {
         qCInfo(lcCseJob()) << "error unlocking file" << path() << errorString() << retCode;
+        qCInfo(lcCseJob()) << "Full Error Log" << reply()->readAll();
         emit error(_fileId, retCode);
         return true;
     }
