@@ -257,9 +257,12 @@ void AccountSettings::doExpand()
 
 void AccountSettings::slotMarkSubfolderEncrpted(const QByteArray& fileId)
 {
+    //TODO: No good, we are three levels down in signal/slot hell.
+    // as soon as this works, rework this function to be way less
+    // deep.
     auto job = new OCC::SetEncryptionFlagApiJob(accountsState()->account(),  QString(fileId));
     connect(job, &OCC::SetEncryptionFlagApiJob::jsonReceived,
-            [this](const QJsonDocument& json, int httpResponse) {
+            [this, &fileId](const QJsonDocument& json, int httpResponse) {
         Q_UNUSED(json);
         qCInfo(lcAccountSettings) << "Encrypt Http Response" << httpResponse;
 
@@ -270,7 +273,32 @@ void AccountSettings::slotMarkSubfolderEncrpted(const QByteArray& fileId)
              * Send the metadata
              * Unlock the folder.
              */
-            FolderMetadata emptyMetadata(accountsState()->account());
+            auto lockJob = new LockEncryptFolderApiJob(accountsState()->account(), fileId);
+            //TODO: create the signals locked and error.
+            connect(lockJob, &LockEncryptFolderApiJob::jsonReceived,
+                    [this, &fileId] (const QJsonDocument& json, int httpResponse) {
+                qCInfo(lcAccountSettings()) << "Client side encryption lock response";
+                qCInfo(lcAccountSettings()) << json;
+
+                if (httpResponse == 200) {
+                    qCInfo(lcAccountSettings()) << "Locked Successfully";
+                    FolderMetadata emptyMetadata(accountsState()->account());
+
+                    // Send the metadata.
+                    // Currently only try to unlock the folder.
+                    auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), fileId, QString("token here"));
+                    connect(unlockJob, &UnlockEncryptFolderApiJob::jsonReceived,
+                            [this, &fileId] (const QJsonDocument& json, int httpResponse) {
+                        qCInfo(lcAccountSettings()) << "Unlock Folder response";
+                        qCInfo(lcAccountSettings()) << json;
+                        qCInfo(lcAccountSettings()) << httpResponse;
+                    });
+                    unlockJob->start();
+                } else {
+                    qCInfo(lcAccountSettings()) << "Problem locking.";
+                }
+            });
+            lockJob->start();
         }
     });
     job->start();
