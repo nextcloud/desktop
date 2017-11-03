@@ -1020,7 +1020,7 @@ void FolderMetadata::setupEmptyMetadata() {
 }
 
 
-LockEncryptFolderApiJob::LockEncryptFolderApiJob(const AccountPtr& account, const QString& fileId, QObject* parent)
+LockEncryptFolderApiJob::LockEncryptFolderApiJob(const AccountPtr& account, const QByteArray& fileId, QObject* parent)
 : AbstractNetworkJob(account, baseUrl() + QStringLiteral("lock/") + fileId, parent), _fileId(fileId)
 {
 }
@@ -1043,19 +1043,25 @@ void LockEncryptFolderApiJob::start()
 bool LockEncryptFolderApiJob::finished()
 {
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (retCode != 200)
+    if (retCode != 200) {
         qCInfo(lcCseJob()) << "error locking file" << path() << errorString() << retCode;
+        emit error(_fileId, retCode);
+        return true;
+    }
 
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
-    emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+
+    qCInfo(lcCse()) << "got json:" << json;
+
     //TODO: Parse the token and submit.
+    emit success(_fileId, "TOKEN");
 }
 
 
 UnlockEncryptFolderApiJob::UnlockEncryptFolderApiJob(const AccountPtr& account,
-                                                 const QString& fileId,
-                                                 const QString& token,
+                                                 const QByteArray& fileId,
+                                                 const QByteArray& token,
                                                  QObject* parent)
 : AbstractNetworkJob(account, baseUrl() + QStringLiteral("lock/") + fileId, parent), _fileId(fileId), _token(token)
 {
@@ -1068,9 +1074,11 @@ void UnlockEncryptFolderApiJob::start()
     QUrl url = Utility::concatUrlPath(account()->url(), path());
     QList<QPair<QString, QString>> params = {
         qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")),
-        qMakePair(QString::fromLatin1("token"), _token)
     };
     url.setQueryItems(params);
+
+    // TODO: This should be a data parameter.
+    // qMakePair(QString::fromLatin1("token"), _token)
 
     qCInfo(lcCseJob()) << "unlocking the folder with id" << _fileId << "as encrypted";
     sendRequest("DELETE", url, req);
@@ -1080,16 +1088,17 @@ void UnlockEncryptFolderApiJob::start()
 bool UnlockEncryptFolderApiJob::finished()
 {
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (retCode != 200)
+    if (retCode != 200) {
         qCInfo(lcCseJob()) << "error unlocking file" << path() << errorString() << retCode;
-
-    QJsonParseError error;
-    auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
-    emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+        emit error(_fileId, retCode);
+        return true;
+    }
+    emit success(_fileId);
+    return true;
 }
 
 StoreMetaDataApiJob::StoreMetaDataApiJob(const AccountPtr& account,
-                                                 const QString& fileId,
+                                                 const QByteArray& fileId,
                                                  const QByteArray& b64Metadata,
                                                  QObject* parent)
 : AbstractNetworkJob(account, baseUrl() + QStringLiteral("meta-data/") + fileId, parent), _fileId(fileId), _b64Metadata(b64Metadata)
@@ -1127,8 +1136,8 @@ bool StoreMetaDataApiJob::finished()
 }
 
 GetMetadataApiJob::GetMetadataApiJob(const AccountPtr& account,
-                                                 const QString& fileId,
-                                                 QObject* parent)
+                                    const QByteArray& fileId,
+                                    QObject* parent)
 : AbstractNetworkJob(account, baseUrl() + QStringLiteral("meta-data/") + fileId, parent), _fileId(fileId)
 {
 }

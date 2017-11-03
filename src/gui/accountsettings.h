@@ -95,7 +95,9 @@ protected slots:
     void slotEncryptionFlagSuccess(const QByteArray &folderId);
     void slotEncryptionFlagError(const QByteArray &folderId, int httpReturnCode);
     void slotLockFolderSuccess(const QByteArray& folderId, const QByteArray& token);
-    void slotLockFolderError(const QByteArray &folderId);
+    void slotLockFolderError(const QByteArray &folderId, int httpReturnCode);
+    void slotUnlockFolderSuccess(const QByteArray& folderId);
+    void slotUnlockFolderError(const QByteArray& folderId, int httpReturnCode);
 
 private:
     void showConnectionLabel(const QString &message,

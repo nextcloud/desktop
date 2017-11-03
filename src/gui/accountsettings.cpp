@@ -257,36 +257,11 @@ void AccountSettings::doExpand()
 
 void AccountSettings::slotEncryptionFlagSuccess(const QByteArray& fileId)
 {
-    /* TODO: Last preparations for today:
-        * Lock the folder
-        * Send the metadata
-        * Unlock the folder.
-        */
     auto lockJob = new LockEncryptFolderApiJob(accountsState()->account(), fileId);
-    //TODO: create the signals locked and error.
-    connect(lockJob, &LockEncryptFolderApiJob::jsonReceived,
-            [this, &fileId] (const QJsonDocument& json, int httpResponse) {
-        qCInfo(lcAccountSettings()) << "Client side encryption lock response";
-        qCInfo(lcAccountSettings()) << json;
-
-        if (httpResponse == 200) {
-            qCInfo(lcAccountSettings()) << "Locked Successfully";
-            FolderMetadata emptyMetadata(accountsState()->account());
-
-            // Send the metadata.
-            // Currently only try to unlock the folder.
-            auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), fileId, QString("token here"));
-            connect(unlockJob, &UnlockEncryptFolderApiJob::jsonReceived,
-                    [this, &fileId] (const QJsonDocument& json, int httpResponse) {
-                qCInfo(lcAccountSettings()) << "Unlock Folder response";
-                qCInfo(lcAccountSettings()) << json;
-                qCInfo(lcAccountSettings()) << httpResponse;
-            });
-            unlockJob->start();
-        } else {
-            qCInfo(lcAccountSettings()) << "Problem locking.";
-        }
-    });
+    connect(lockJob, &LockEncryptFolderApiJob::success,
+            this, &AccountSettings::slotLockFolderSuccess);
+    connect(lockJob, &LockEncryptFolderApiJob::error,
+            this, &AccountSettings::slotLockFolderError);
     lockJob->start();
 }
 
@@ -297,14 +272,31 @@ void AccountSettings::slotEncryptionFlagError(const QByteArray& fileId, int http
 
 void AccountSettings::slotLockFolderSuccess(const QByteArray& fileId, const QByteArray &token)
 {
+    qCInfo(lcAccountSettings()) << "Locked Successfully";
+    FolderMetadata emptyMetadata(accountsState()->account());
 
+    auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), fileId, token);
+    connect(unlockJob, &UnlockEncryptFolderApiJob::success,
+            this, &AccountSettings::slotUnlockFolderSuccess);
+    connect(unlockJob, &UnlockEncryptFolderApiJob::error,
+            this, &AccountSettings::slotUnlockFolderError);
+
+    unlockJob->start();
 }
 
-void AccountSettings::slotLockFolderError(const QByteArray& fileId)
+void AccountSettings::slotLockFolderError(const QByteArray& fileId, int httpErrorCode)
 {
-
+    qCInfo(lcAccountSettings()) << "Locking error" << httpErrorCode;
 }
 
+void AccountSettings::slotUnlockFolderError(const QByteArray& fileId, int httpErrorCode)
+{
+    qCInfo(lcAccountSettings()) << "Unlocking error!";
+}
+void AccountSettings::slotUnlockFolderSuccess(const QByteArray& fileId)
+{
+    qCInfo(lcAccountSettings()) << "Unlocking success!";
+}
 void AccountSettings::slotMarkSubfolderEncrpted(const QByteArray& fileId)
 {
     //TODO: No good, we are three levels down in signal/slot hell.

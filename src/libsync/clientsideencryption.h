@@ -204,7 +204,7 @@ class OWNCLOUDSYNC_EXPORT LockEncryptFolderApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit LockEncryptFolderApiJob(const AccountPtr &account, const QString& fileId, QObject *parent = 0);
+    explicit LockEncryptFolderApiJob(const AccountPtr &account, const QByteArray& fileId, QObject *parent = 0);
 
 public slots:
     void start() override;
@@ -213,15 +213,11 @@ protected:
     bool finished() override;
 
 signals:
+    void success(const QByteArray& fileId, const QByteArray& token);
+    void error(const QByteArray& fileId, int httpdErrorCode);
 
-    /**
-     * @brief jsonReceived - signal to report the json answer from ocs
-     * @param json - the parsed json document
-     * @param statusCode - the OCS status code: 200 for success
-     */
-    void jsonReceived(const QJsonDocument &json, int statusCode);
 private:
-    QString _fileId;
+    QByteArray _fileId;
 };
 
 class OWNCLOUDSYNC_EXPORT UnlockEncryptFolderApiJob : public AbstractNetworkJob
@@ -230,8 +226,8 @@ class OWNCLOUDSYNC_EXPORT UnlockEncryptFolderApiJob : public AbstractNetworkJob
 public:
     explicit UnlockEncryptFolderApiJob (
         const AccountPtr &account,
-        const QString& fileId,
-        const QString& token,
+        const QByteArray& fileId,
+        const QByteArray& token,
         QObject *parent = 0);
 
 public slots:
@@ -241,16 +237,12 @@ protected:
     bool finished() override;
 
 signals:
+    void success(const QByteArray& fileId);
+    void error(const QByteArray& fileId, int httpReturnCode);
 
-    /**
-     * @brief jsonReceived - signal to report the json answer from ocs
-     * @param json - the parsed json document
-     * @param statusCode - the OCS status code: 200 for success
-     */
-    void jsonReceived(const QJsonDocument &json, int statusCode);
 private:
-    QString _fileId;
-    QString _token;
+    QByteArray _fileId;
+    QByteArray _token;
 };
 
 class OWNCLOUDSYNC_EXPORT StoreMetaDataApiJob : public AbstractNetworkJob
@@ -259,7 +251,7 @@ class OWNCLOUDSYNC_EXPORT StoreMetaDataApiJob : public AbstractNetworkJob
 public:
     explicit StoreMetaDataApiJob (
         const AccountPtr &account,
-        const QString& fileId,
+        const QByteArray& fileId,
         const QByteArray& b64Metadata,
         QObject *parent = 0);
 
@@ -273,7 +265,7 @@ signals:
     void jsonReceived(const QJsonDocument &json, int statusCode);
 
 private:
-    QString _fileId;
+    QByteArray _fileId;
     QByteArray _b64Metadata;
 };
 
@@ -283,7 +275,7 @@ class OWNCLOUDSYNC_EXPORT GetMetadataApiJob : public AbstractNetworkJob
 public:
     explicit GetMetadataApiJob (
         const AccountPtr &account,
-        const QString& fileId,
+        const QByteArray& fileId,
         QObject *parent = 0);
 
 public slots:
@@ -296,7 +288,7 @@ signals:
     void jsonReceived(const QJsonDocument &json, int statusCode);
 
 private:
-    QString _fileId;
+    QByteArray _fileId;
 };
 
 } // namespace OCC
