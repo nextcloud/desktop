@@ -636,44 +636,6 @@ bool SetEncryptionFlagApiJob::finished()
     }
 }
 
-/* Test metdata:
-{
-        // Metadata about the share
-        "metadata": {
-                // Encryption algorithm: RSA/ECB/OAEPWithSHA-256AndMGF1Padding, encrypted via private/public key (asymmetric)
-                "metadataKeys": {
-                        "0": "OLDESTMETADATAKEY",
-                        "2": "…",
-                        "3": "NEWESTMETADATAKEY"
-                },
-                // Encryption algorithm: AES/GCM/NoPadding (128 bit key size)  with metadata key from above (symmetric)
-                "sharing": {
-                        // Name of recipients as well as public keys of the recipients
-                        "recipient": {
-                                "recipient1@example.com": "PUBLIC KEY",
-                                "recipient2@example.com": "PUBLIC KEY"
-                        },
-                },
-                "version": 1
-        },
-        // A JSON blob referencing all files
-        "files": {
-                "ia7OEEEyXMoRa1QWQk8r": {
-                        // Encryption algorithm: AES/GCM/NoPadding (128 bit key size)  with metadata key from above (symmetric)
-                        "encrypted": {
-                                "key": "jtboLmgGR1OQf2uneqCVHpklQLlIwWL5TXAQ0keK",
-                                "filename": "/foo/test.txt",
-                                "mimetype": "plain/text",
-                                "version": 1
-                        },
-                        "initializationVector": "+mHu52HyZq+pAAIN",
-                        "authenticationTag": "GCM authentication tag",
-                        "metadataKey": 1
-                }
-        }
-}
-*/
-
 //TODO: Create an actuall encryption here.
 auto metadataKeyEnc(const QByteArray& data) -> QByteArray
 {
