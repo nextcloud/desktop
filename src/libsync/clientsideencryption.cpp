@@ -976,11 +976,11 @@ std::string FolderMetadata::decryptJsonObject(const std::string& encryptedMetada
         exit(1);
     }
 
-    err = EVP_DecryptFinal_ex(ctx, out + outlen, &outlen);
-    if (err != 1) {
-        qCInfo(lcCse()) << "Error finalyzing the decryption, aborting.";
-        exit(1);
-    }
+// //     err = EVP_DecryptFinal_ex(ctx, out + outlen, &outlen);
+// //     if (err != 1) {
+// //         qCInfo(lcCse()) << "Error finalyzing the decryption, aborting.";
+// //         exit(1);
+// //     }
 
     qCInfo(lcCse()) << "Decryption finalized.";
     const auto ret = std::string((char*) out, outlen);
