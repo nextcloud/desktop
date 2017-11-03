@@ -145,7 +145,7 @@ class OWNCLOUDSYNC_EXPORT SetEncryptionFlagApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit SetEncryptionFlagApiJob(const AccountPtr &account, const QString& fileId, QObject *parent = 0);
+    explicit SetEncryptionFlagApiJob(const AccountPtr &account, const QByteArray& fileId, QObject *parent = 0);
 
 public slots:
     void start() override;
@@ -154,15 +154,11 @@ protected:
     bool finished() override;
 
 signals:
+    void success(const QByteArray fileId);
+    void error(const QByteArray fileId, int httpReturnCode);
 
-    /**
-     * @brief jsonReceived - signal to report the json answer from ocs
-     * @param json - the parsed json document
-     * @param statusCode - the OCS status code: 200 for success
-     */
-    void jsonReceived(const QJsonDocument &json, int statusCode);
 private:
-    QString _fileId;
+    QByteArray _fileId;
 };
 
 /* Generates the Metadata for the folder */

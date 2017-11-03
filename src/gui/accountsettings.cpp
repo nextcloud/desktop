@@ -255,52 +255,64 @@ void AccountSettings::doExpand()
     ui->_folderList->expandToDepth(0);
 }
 
+void AccountSettings::slotEncryptionFlagSuccess(const QByteArray& fileId)
+{
+    /* TODO: Last preparations for today:
+        * Lock the folder
+        * Send the metadata
+        * Unlock the folder.
+        */
+    auto lockJob = new LockEncryptFolderApiJob(accountsState()->account(), fileId);
+    //TODO: create the signals locked and error.
+    connect(lockJob, &LockEncryptFolderApiJob::jsonReceived,
+            [this, &fileId] (const QJsonDocument& json, int httpResponse) {
+        qCInfo(lcAccountSettings()) << "Client side encryption lock response";
+        qCInfo(lcAccountSettings()) << json;
+
+        if (httpResponse == 200) {
+            qCInfo(lcAccountSettings()) << "Locked Successfully";
+            FolderMetadata emptyMetadata(accountsState()->account());
+
+            // Send the metadata.
+            // Currently only try to unlock the folder.
+            auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), fileId, QString("token here"));
+            connect(unlockJob, &UnlockEncryptFolderApiJob::jsonReceived,
+                    [this, &fileId] (const QJsonDocument& json, int httpResponse) {
+                qCInfo(lcAccountSettings()) << "Unlock Folder response";
+                qCInfo(lcAccountSettings()) << json;
+                qCInfo(lcAccountSettings()) << httpResponse;
+            });
+            unlockJob->start();
+        } else {
+            qCInfo(lcAccountSettings()) << "Problem locking.";
+        }
+    });
+    lockJob->start();
+}
+
+void AccountSettings::slotEncryptionFlagError(const QByteArray& fileId, int httpErrorCode)
+{
+    qDebug() << "Error on the encryption flag";
+}
+
+void AccountSettings::slotLockFolderSuccess(const QByteArray& fileId, const QByteArray &token)
+{
+
+}
+
+void AccountSettings::slotLockFolderError(const QByteArray& fileId)
+{
+
+}
+
 void AccountSettings::slotMarkSubfolderEncrpted(const QByteArray& fileId)
 {
     //TODO: No good, we are three levels down in signal/slot hell.
     // as soon as this works, rework this function to be way less
     // deep.
-    auto job = new OCC::SetEncryptionFlagApiJob(accountsState()->account(),  QString(fileId));
-    connect(job, &OCC::SetEncryptionFlagApiJob::jsonReceived,
-            [this, &fileId](const QJsonDocument& json, int httpResponse) {
-        Q_UNUSED(json);
-        qCInfo(lcAccountSettings) << "Encrypt Http Response" << httpResponse;
-
-        // prepare and send the metadata to the folder
-        if (httpResponse == 200) {
-            /* TODO: Last preparations for today:
-             * Lock the folder
-             * Send the metadata
-             * Unlock the folder.
-             */
-            auto lockJob = new LockEncryptFolderApiJob(accountsState()->account(), fileId);
-            //TODO: create the signals locked and error.
-            connect(lockJob, &LockEncryptFolderApiJob::jsonReceived,
-                    [this, &fileId] (const QJsonDocument& json, int httpResponse) {
-                qCInfo(lcAccountSettings()) << "Client side encryption lock response";
-                qCInfo(lcAccountSettings()) << json;
-
-                if (httpResponse == 200) {
-                    qCInfo(lcAccountSettings()) << "Locked Successfully";
-                    FolderMetadata emptyMetadata(accountsState()->account());
-
-                    // Send the metadata.
-                    // Currently only try to unlock the folder.
-                    auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), fileId, QString("token here"));
-                    connect(unlockJob, &UnlockEncryptFolderApiJob::jsonReceived,
-                            [this, &fileId] (const QJsonDocument& json, int httpResponse) {
-                        qCInfo(lcAccountSettings()) << "Unlock Folder response";
-                        qCInfo(lcAccountSettings()) << json;
-                        qCInfo(lcAccountSettings()) << httpResponse;
-                    });
-                    unlockJob->start();
-                } else {
-                    qCInfo(lcAccountSettings()) << "Problem locking.";
-                }
-            });
-            lockJob->start();
-        }
-    });
+    auto job = new OCC::SetEncryptionFlagApiJob(accountsState()->account(),  fileId);
+    connect(job, &OCC::SetEncryptionFlagApiJob::success, this, &AccountSettings::slotEncryptionFlagSuccess);
+    connect(job, &OCC::SetEncryptionFlagApiJob::error, this, &AccountSettings::slotEncryptionFlagError);
     job->start();
 }
 

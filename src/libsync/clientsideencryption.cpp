@@ -608,7 +608,7 @@ bool StorePrivateKeyApiJob::finished()
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
 }
 
-SetEncryptionFlagApiJob::SetEncryptionFlagApiJob(const AccountPtr& account, const QString& fileId, QObject* parent)
+SetEncryptionFlagApiJob::SetEncryptionFlagApiJob(const AccountPtr& account, const QByteArray& fileId, QObject* parent)
 : AbstractNetworkJob(account, baseUrl() + QStringLiteral("encrypted/") + fileId, parent), _fileId(fileId)
 {
 }
@@ -618,10 +618,6 @@ void SetEncryptionFlagApiJob::start()
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
     QUrl url = Utility::concatUrlPath(account()->url(), path());
-    QList<QPair<QString, QString>> params = {
-        qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json"))
-    };
-    url.setQueryItems(params);
 
     qCInfo(lcCseJob()) << "marking the file with id" << _fileId << "as encrypted";
     sendRequest("PUT", url, req);
@@ -631,12 +627,13 @@ void SetEncryptionFlagApiJob::start()
 bool SetEncryptionFlagApiJob::finished()
 {
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (retCode != 200)
+    qCInfo(lcCse()) << "Encryption Flag Return" << reply()->readAll();
+    if (retCode == 200) {
+        emit success(_fileId);
+    } else {
         qCInfo(lcCseJob()) << "Setting the encrypted flag failed with" << path() << errorString() << retCode;
-
-    QJsonParseError error;
-    auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
-    emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+        emit error(_fileId, retCode);
+    }
 }
 
 /* Test metdata:

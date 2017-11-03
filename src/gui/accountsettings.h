@@ -92,6 +92,10 @@ protected slots:
     void slotFolderListClicked(const QModelIndex &indx);
     void doExpand();
     void slotLinkActivated(const QString &link);
+    void slotEncryptionFlagSuccess(const QByteArray &folderId);
+    void slotEncryptionFlagError(const QByteArray &folderId, int httpReturnCode);
+    void slotLockFolderSuccess(const QByteArray& folderId, const QByteArray& token);
+    void slotLockFolderError(const QByteArray &folderId);
 
 private:
     void showConnectionLabel(const QString &message,
