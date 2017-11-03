@@ -84,7 +84,7 @@ namespace {
 
         /* Initialise key and IV */
         if(1 != EVP_EncryptInit_ex(ctx, NULL, NULL, key, iv)) {
-			qCInfo(lcCse()) << "Error initializing encryption";
+            qCInfo(lcCse()) << "Error setting key and iv encryption";
             handleErrors();
         }
 
@@ -820,13 +820,26 @@ std::string FolderMetadata::encryptJsonObject(const nlohmann::json& obj,const st
         qCInfo(lcCse()) << "Coult not create encryption context, aborting.";
         exit(1);
     }
+
+    if(!EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
+        qCInfo(lcCse()) << "Error initializing encryption aborting.";
+        exit(1);
+    }
+
     EVP_CIPHER_CTX_set_padding(ctx, 0);
 
+
+
     unsigned char *iv = (unsigned char *)"0123456789012345";
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, 16, NULL)) {
+        qCInfo(lcCse()) << "Could not set IV length, aborting.";
+        exit(1);
+    }
+
     auto key = (const unsigned char*) pass.c_str();
-    int err = EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, key, iv);
+    int err = EVP_EncryptInit_ex(ctx, NULL, NULL, key, iv);
     if (err != 1) {
-        qCInfo(lcCse()) << "Error initializing the encryption, aborting.";
+        qCInfo(lcCse()) << "Error setting key and IV, aborting.";
         exit(1);
     }
 
@@ -839,13 +852,11 @@ std::string FolderMetadata::encryptJsonObject(const nlohmann::json& obj,const st
     qCInfo(lcCse()) << "Metadata to be encrypted" << metadata;
     qCInfo(lcCse()) << "Metadata length: " << metadataLen;
 
-    err = EVP_EncryptUpdate(ctx, NULL, &outLen, metadataPtr, metadataLen);
-    if (err != 1) {
-        qCInfo(lcCse()) << "Error getting the size of the output text, aborting.";
-        exit(1);
-    }
-    //+16 since we append the tag
-    auto out = (unsigned char *) OPENSSL_malloc(outLen + 16);
+    /*
+     * max len is metadtaLen + blocksize (16 bytes) -1
+     * Add 16 bytes for the tag
+     */
+    auto out = (unsigned char *) OPENSSL_malloc(metadataLen + 16 + 16 - 1);
 
     err = EVP_EncryptUpdate(ctx, out, &outLen, metadataPtr, metadataLen);
     if (err != 1) {
@@ -873,6 +884,8 @@ std::string FolderMetadata::encryptJsonObject(const nlohmann::json& obj,const st
     /* Add tag to cypher text to be compatible with the Android implementation */
     memcpy(out + totalOutputLen, tag, 16);
     totalOutputLen += 16;
+
+    qCInfo(lcCse()) << "Final output length (with tag): " << totalOutputLen;
 
     // Transform the encrypted data into base64.
     const auto raw = QByteArray((const char*) out, totalOutputLen);
@@ -903,24 +916,34 @@ std::string FolderMetadata::decryptJsonObject(const std::string& encryptedMetada
         qCInfo(lcCse()) << "Coult not create decryptioncontext, aborting.";
         exit(1);
     }
+
+    /* Initialise the decryption operation. */
+    if(!EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
+        qCInfo(lcCse()) << "Error initialializing the decryption, aborting.";
+        exit(1);
+    }
+
     EVP_CIPHER_CTX_set_padding(ctx, 0);
 
     unsigned char *iv = (unsigned char *)"0123456789012345";
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, 16, NULL)) {
+        qCInfo(lcCse()) << "Could not set IV length, aborting.";
+        exit(1);
+    }
+
     auto key = (const unsigned char*) pass.c_str();
-    int err = EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, key, iv);
+    int err = EVP_DecryptInit_ex(ctx, NULL, NULL, key, iv);
     if (err != 1) {
-        qCInfo(lcCse()) << "Error initializing the decryption, aborting.";
+        qCInfo(lcCse()) << "Error setting the key and iv, aborting.";
         exit(1);
     }
 
     int outlen = 0;
-    err = EVP_DecryptUpdate(ctx, NULL, &outlen, in, inlen);
-    if (err != 1) {
-        qCInfo(lcCse()) << "Error retrieving the length of the decryption text, aborting.";
-        exit(1);
-    }
 
-    auto out = (unsigned char *) OPENSSL_malloc(outlen);
+    /*
+     * Max outlen is inlen + blocksize (16 bytes)
+     */
+    auto out = (unsigned char *) OPENSSL_malloc(inlen + 16);
     err = EVP_DecryptUpdate(ctx, out, &outlen, in, inlen);
     if (err != 1) {
         qCInfo(lcCse()) << "Error decrypting the json blob, aborting.";
@@ -931,15 +954,18 @@ std::string FolderMetadata::decryptJsonObject(const std::string& encryptedMetada
 
     /* Set expected tag value. Works in OpenSSL 1.0.1d and later */
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, 16, tag)) {
-        qCInfo(lcCse()) << "Error decrypting the json blob, aborting.";
+        qCInfo(lcCse()) << "Error setting the tag, aborting.";
         exit(1);
     }
 
-// //     err = EVP_DecryptFinal_ex(ctx, out + outlen, &outlen);
-// //     if (err != 1) {
-// //         qCInfo(lcCse()) << "Error finalyzing the decryption, aborting.";
-// //         exit(1);
-// //     }
+    qCInfo(lcCse()) << "Tag: " << tag;
+
+    int f_len = outlen;
+    err = EVP_DecryptFinal_ex(ctx, out + outlen, &f_len);
+    if (err != 1) {
+        qCInfo(lcCse()) << "Error finalyzing the decryption, aborting.";
+        exit(1);
+    }
 
     qCInfo(lcCse()) << "Decryption finalized.";
     const auto ret = std::string((char*) out, outlen);
@@ -955,7 +981,6 @@ void FolderMetadata::setupEmptyMetadata() {
     json recepient = {"recipient", {}};
 
     auto b64String = encryptMetadataKeys(metadataKeyObj);
-
     auto sharingEncrypted = encryptJsonObject(recepient, newMetadataPass);
     auto sharingDecrypted = decryptJsonObject(sharingEncrypted, newMetadataPass);
 
