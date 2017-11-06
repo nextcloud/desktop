@@ -31,20 +31,20 @@ Specifically, you have to:
 1. Remove the existing connection which syncs to the wrong directory
 2. Add a new connection which syncs to the desired directory
 
-.. image:: images/setup/ownCloud-remove_existing_connection.png
+.. figure:: images/setup/ownCloud-remove_existing_connection.png
    :alt: Remove an existing connection
 
 To do so, in the client UI, which you can see above, click the "**Account**" drop-down menu and then click "Remove". 
 This will display a "**Confirm Account Removal**" dialog window.
 
-.. image:: images/setup/ownCloud-remove_existing_connection_confirmation_dialog.png
+.. figure:: images/setup/ownCloud-remove_existing_connection_confirmation_dialog.png
    :alt: Remove existing connection confirmation dialog
 
 If you're sure, click "**Remove connection**".
 
 Then, click the Account drop-down menu again, and this time click "**Add new**".
 
-.. image:: images/setup/ownCloud-replacement_connection_wizard.png
+.. figure:: images/setup/ownCloud-replacement_connection_wizard.png
    :alt: Replacement connection wizard
 
 This opens the ownCloud Connection Wizard, which you can see above, *but* with an extra option.
