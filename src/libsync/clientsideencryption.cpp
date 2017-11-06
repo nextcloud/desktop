@@ -311,12 +311,15 @@ void ClientSideEncryption::generateKeyPair()
 QString ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
 {
     // OpenSSL expects const char.
+    auto cnArray = _account->davUser().toLocal8Bit();
+    qCInfo(lcCse()) << "Getting the following array for the account Id" << cnArray;
+
     auto certParams = std::map<const char *, const char*>{
       {"C", "DE"},
       {"ST", "Baden-Wuerttemberg"},
       {"L", "Stuttgart"},
       {"O","Nextcloud"},
-      {"CN", "www.nextcloud.com"}
+      {"CN", cnArray.constData()}
     };
 
     int             ret = 0;
