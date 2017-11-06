@@ -1054,7 +1054,7 @@ UnlockEncryptFolderApiJob::UnlockEncryptFolderApiJob(const AccountPtr& account,
                                                  const QByteArray& fileId,
                                                  const QByteArray& token,
                                                  QObject* parent)
-: AbstractNetworkJob(account, baseUrl() + QStringLiteral("unlock/") + fileId, parent), _fileId(fileId), _token(token)
+: AbstractNetworkJob(account, baseUrl() + QStringLiteral("lock/") + fileId, parent), _fileId(fileId), _token(token)
 {
 }
 
@@ -1062,18 +1062,16 @@ void UnlockEncryptFolderApiJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
-    QUrl url = Utility::concatUrlPath(account()->url(), path());
+    req.setRawHeader("token", _token);
 
-    QByteArray bufferData("token=" + _token);
-    _tokenBuf = new QBuffer();
-    _tokenBuf->setData(bufferData);
+    QUrl url = Utility::concatUrlPath(account()->url(), path());
 
     qCInfo(lcCseJob()) << "================";
     qCInfo(lcCseJob()) << "unlocking the folder with id" << _fileId << "with token" << _token;
     qCInfo(lcCseJob()) << url;
-    qCInfo(lcCseJob()) << bufferData;
+    qCInfo(lcCseJob()) << _token;
     qCInfo(lcCseJob()) << "===================";
-    sendRequest("POST", url, req, _tokenBuf);
+    sendRequest("DELETE", url, req);
 
     AbstractNetworkJob::start();
     qCInfo(lcCseJob()) << "Starting the request to unlock.";
