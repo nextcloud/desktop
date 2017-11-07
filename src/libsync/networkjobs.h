@@ -18,6 +18,8 @@
 
 #include "abstractnetworkjob.h"
 
+#include <functional>
+
 class QUrl;
 class QJsonObject;
 
@@ -401,6 +403,23 @@ signals:
 private slots:
     bool finished() Q_DECL_OVERRIDE;
 };
+
+/**
+ * @brief Runs a PROPFIND to figure out the private link url
+ *
+ * The numericFileId is used only to build the deprecatedPrivateLinkUrl
+ * locally as a fallback. If it's empty and the PROPFIND fails, targetFun
+ * will be called with an empty string.
+ *
+ * The job and signal connections are parented to the target QObject.
+ *
+ * Note: targetFun is guaranteed to be called only through the event
+ * loop and never directly.
+ */
+void OWNCLOUDSYNC_EXPORT fetchPrivateLinkUrl(
+    AccountPtr account, const QString &remotePath,
+    const QByteArray &numericFileId, QObject *target,
+    std::function<void(const QString &url)> targetFun);
 
 } // namespace OCC
 
