@@ -48,8 +48,6 @@ elif [ "$TRAVIS_BUILD_STEP" == "script" ]; then
 
     origsourceopt=""
 
-    ls -alR
-
     if ! wget http://ppa.launchpad.net/nextcloud-devs/${repo}/ubuntu/pool/main/n/nextcloud-client/nextcloud-client_${basever}.orig.tar.bz2; then
         mv ${gitdir} nextcloud-client_${basever}
         tar cjf nextcloud-client_${basever}.orig.tar.bz2 --exclude .git nextcloud-client_${basever}
@@ -70,10 +68,10 @@ elif [ "$TRAVIS_BUILD_STEP" == "script" ]; then
 
         tools/linux/debian/scripts/git2changelog.py /tmp/tmpchangelog ${distribution}
         cp /tmp/tmpchangelog debian/changelog
-        if test -f tools/linux/debian/nextcloud-client/debian.${distribution}/changelog; then
-            cat tools/linux/debian/nextcloud-client/debian.${distribution}/changelog >> debian/changelog
+        if test -f tools/linux/debian/debian.${distribution}/changelog; then
+            cat tools/linux/debian/debian.${distribution}/changelog >> debian/changelog
         else
-            cat tools/linux/debian/nextcloud-client/debian/changelog >> debian/changelog
+            cat tools/linux/debian/debian/changelog >> debian/changelog
         fi
 
         EDITOR=true dpkg-source --commit . local-changes
