@@ -41,6 +41,9 @@ elif [ "$TRAVIS_BUILD_STEP" == "script" ]; then
     fi
 
     origsourceopt=""
+
+    ls -alR
+
     if ! wget http://ppa.launchpad.net/nextcloud-devs/${repo}/ubuntu/pool/main/n/nextcloud-client/nextcloud-client_${basever}.orig.tar.bz2; then
         mv client_theming nextcloud-client_${basever}
         tar cjf nextcloud-client_${basever}.orig.tar.bz2 --exclude .git nextcloud-client_${basever}
