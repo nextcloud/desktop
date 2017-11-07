@@ -1,0 +1,2 @@
+nextcloud-client-dolphin: package-name-doesnt-match-sonames
+nextcloud-client-dolphin: shlib-without-versioned-soname

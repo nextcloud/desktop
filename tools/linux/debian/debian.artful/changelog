@@ -1,0 +1,23 @@
+nextcloud-client (2.3.3-1.0~artful1) artful; urgency=medium
+
+  * Debian build support for the forked client.
+
+ -- István Váradi <ivaradi@varadiistvan.hu>  Mon, 6 Nov 2017 20:20:04 +0100
+
+nextcloud-client (2.3.1-1.0~artful1) artful; urgency=medium
+
+  * New upstream version
+
+ -- István Váradi <ivaradi@varadiistvan.hu>  Thu, 23 Mar 2017 19:07:36 +0100
+
+nextcloud-client (2.3.0-1.0~artful1) artful; urgency=medium
+
+  * New upstream version
+
+ -- István Váradi <ivaradi@varadiistvan.hu>  Tue, 21 Mar 2017 19:34:13 +0100
+
+nextcloud-client (2.2.4-1.4~artful1) artful; urgency=medium
+
+  * The locale-specific icon names are correct too
+
+ -- István Váradi <ivaradi@varadiistvan.hu>  Tue, 7 Feb 2017 19:55:40 +0100
