@@ -40,20 +40,26 @@ elif [ "$TRAVIS_BUILD_STEP" == "script" ]; then
         repo=client-alpha
     fi
 
+    if test -d nextcloud-client; then
+        gitdir="nextcloud-client"
+    else
+        gitdir="client"
+    fi
+
     origsourceopt=""
 
     ls -alR
 
     if ! wget http://ppa.launchpad.net/nextcloud-devs/${repo}/ubuntu/pool/main/n/nextcloud-client/nextcloud-client_${basever}.orig.tar.bz2; then
-        mv client_theming nextcloud-client_${basever}
+        mv ${gitdir} nextcloud-client_${basever}
         tar cjf nextcloud-client_${basever}.orig.tar.bz2 --exclude .git nextcloud-client_${basever}
-        mv nextcloud-client_${basever} client_theming
+        mv nextcloud-client_${basever} ${gitdir}
         origsourceopt="-sa"
     fi
 
     for distribution in xenial zesty artful stable; do
         rm -rf nextcloud-client_${basever}
-        cp -a client_theming nextcloud-client_${basever}
+        cp -a ${gitdir} nextcloud-client_${basever}
 
         cd nextcloud-client_${basever}
 
