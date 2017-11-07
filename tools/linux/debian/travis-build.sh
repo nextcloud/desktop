@@ -21,9 +21,21 @@ if [ "$TRAVIS_BUILD_STEP" == "install" ]; then
         echo "DEBUILD_DPKG_BUILDPACKAGE_OPTS='-k7D14AA7B'" >> ~/.devscripts
 
         openssl aes-256-cbc -K $encrypted_585e03da75ed_key -iv $encrypted_585e03da75ed_iv -in tools/linux/debian/oscrc.enc -out ~/.oscrc -d
+
+        touch ~/.has_ppa_keys
     elif test "$encrypted_8da7a4416c7a_key" -a "$encrypted_8da7a4416c7a_iv"; then
         openssl aes-256-cbc -K $encrypted_8da7a4416c7a_key -iv $encrypted_8da7a4416c7a_iv -in tools/linux/debian/oscrc.enc -out ~/.oscrc -d
         PPA=ppa:ivaradi/nextcloud-client-exp
+    elif test "$encrypted_5dafbd038603_key" -a "$encrypted_5dafbd038603_iv"; then
+        openssl aes-256-cbc -K $encrypted_5dafbd038603_key -iv $encrypted_5dafbd038603_iv -in tools/linux/debian/signing-key.txt.enc -d | gpg --import
+        echo "DEBUILD_DPKG_BUILDPACKAGE_OPTS='-k7D14AA7B'" >> ~/.devscripts
+
+
+        openssl aes-256-cbc -K $encrypted_5dafbd038603_key -iv $encrypted_5dafbd038603_iv -in tools/linux/debian/oscrc.enc -out ~/.oscrc -d
+
+        PPA=ppa:ivaradi/nextcloud-client-exp
+
+        touch ~/.has_ppa_keys
     fi
 
 elif [ "$TRAVIS_BUILD_STEP" == "script" ]; then
@@ -76,7 +88,7 @@ elif [ "$TRAVIS_BUILD_STEP" == "script" ]; then
 
         EDITOR=true dpkg-source --commit . local-changes
 
-        if test "$encrypted_585e03da75ed_key" -a "$encrypted_585e03da75ed_iv"; then
+        if test -f ~/.has_ppa_keys; then
             debuild -S ${origsourceopt}
         else
             debuild -S ${origsourceopt} -us -uc
@@ -98,7 +110,7 @@ elif [ "$TRAVIS_BUILD_STEP" == "ppa_deploy" ]; then
     fi
     OBS_SUBDIR="${OBS_PROJECT}/${OBS_PACKAGE}"
 
-    if test "$encrypted_585e03da75ed_key" -a "$encrypted_585e03da75ed_iv"; then
+    if test -f ~/.has_ppa_keys; then
         for changes in nextcloud-client_*~+([a-z])1_source.changes; do
             dput $PPA $changes > /dev/null
         done
