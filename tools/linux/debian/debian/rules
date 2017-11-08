@@ -1,0 +1,12 @@
+#!/usr/bin/make -f
+# See debhelper(7) (uncomment to enable)
+# output every command that modifies files on the build system.
+#export DH_VERBOSE = 1
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/cmake.mk
+
+DEB_SHLIBDEPS_INCLUDE=$(CURDIR)/$(DEB_BUILDDIR)/csync/src
+
+DEB_SRCDIR=.
+DEB_CMAKE_EXTRA_FLAGS = -DCMAKE_SKIP_RPATH=OFF -DCMAKE_SKIP_BUILD_RPATH=ON -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
