@@ -33,8 +33,6 @@ if [ "$TRAVIS_BUILD_STEP" == "install" ]; then
 
         openssl aes-256-cbc -K $encrypted_5dafbd038603_key -iv $encrypted_5dafbd038603_iv -in tools/linux/debian/oscrc.enc -out ~/.oscrc -d
 
-        PPA=ppa:ivaradi/nextcloud-client-exp
-
         touch ~/.has_ppa_keys
     fi
 
@@ -101,6 +99,10 @@ elif [ "$TRAVIS_BUILD_STEP" == "ppa_deploy" ]; then
     cd ..
 
     kind=`cat kind`
+
+    if test "$encrypted_5dafbd038603_key" -a "$encrypted_5dafbd038603_iv"; then
+        PPA=ppa:ivaradi/nextcloud-client-exp
+    fi
 
     echo "kind: $kind"
 
