@@ -635,7 +635,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
      * local stat function.
      */
     if( filename[0] == '.' ) {
-        if (filename == ".sys.admin#recall#") { /* recall file shall not be ignored (#4420) */
+        if (filename != ".sys.admin#recall#") { /* recall file shall not be ignored (#4420) */
             dirent->is_hidden = true;
         }
     }

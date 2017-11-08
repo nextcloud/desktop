@@ -527,6 +527,32 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentRemoteState().find("C/myfile.txt"));
     }
+
+    void testDiscoveryHiddenFile()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // We can't depend on currentLocalState for hidden files since
+        // it should rightfully skip things like download temporaries
+        auto localFileExists = [&](QString name) {
+            return QFileInfo(fakeFolder.localPath() + name).exists();
+        };
+
+        fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
+        fakeFolder.remoteModifier().insert("A/.hidden");
+        fakeFolder.localModifier().insert("B/.hidden");
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!localFileExists("A/.hidden"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("B/.hidden"));
+
+        fakeFolder.syncEngine().setIgnoreHiddenFiles(false);
+        fakeFolder.syncJournal().forceRemoteDiscoveryNextSync();
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(localFileExists("A/.hidden"));
+        QVERIFY(fakeFolder.currentRemoteState().find("B/.hidden"));
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)
