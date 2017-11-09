@@ -360,8 +360,7 @@ class OWNCLOUDSYNC_EXPORT DetermineAuthTypeJob : public QObject
     Q_OBJECT
 public:
     enum AuthType {
-        Unknown,
-        Basic,
+        Basic, // also the catch-all fallback for backwards compatibility reasons
         OAuth,
         Shibboleth
     };
@@ -375,8 +374,8 @@ private:
     void checkBothDone();
 
     AccountPtr _account;
-    AuthType _resultGet = Unknown;
-    AuthType _resultPropfind = Unknown;
+    AuthType _resultGet = Basic;
+    AuthType _resultPropfind = Basic;
     bool _getDone = false;
     bool _propfindDone = false;
 };

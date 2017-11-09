@@ -863,8 +863,8 @@ void DetermineAuthTypeJob::start()
         auto authChallenge = reply->rawHeader("WWW-Authenticate").toLower();
         if (authChallenge.contains("bearer ")) {
             _resultPropfind = OAuth;
-        } else if (!authChallenge.isEmpty()) {
-            _resultPropfind = Basic;
+        } else if (authChallenge.isEmpty()) {
+            qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
         }
         _propfindDone = true;
         checkBothDone();

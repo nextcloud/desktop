@@ -46,15 +46,6 @@ void HttpCredentialsGui::askFromUserAsync()
     // First, we will check what kind of auth we need.
     auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
     QObject::connect(job, &DetermineAuthTypeJob::authType, this, [this](DetermineAuthTypeJob::AuthType type) {
-        if (type == DetermineAuthTypeJob::Unknown) {
-            // network error, timeout, unsupported auth type?
-            // This fallback exists for backwards compatibility reasons:
-            // in versions before 2.4 we tried basic auth when the auth type
-            // couldn't be determined.
-            qCWarning(lcHttpCredentialsGui) << "Could not determine auth type, falling back to Basic";
-            type = DetermineAuthTypeJob::Basic;
-        }
-
         if (type == DetermineAuthTypeJob::OAuth) {
             _asyncAuth.reset(new OAuth(_account, this));
             _asyncAuth->_expectedUser = _user;
@@ -69,7 +60,7 @@ void HttpCredentialsGui::askFromUserAsync()
             // We will re-enter the event loop, so better wait the next iteration
             QMetaObject::invokeMethod(this, "showDialog", Qt::QueuedConnection);
         } else {
-            // Unsupported auth type? Shibboleth?
+            // Shibboleth?
             qCWarning(lcHttpCredentialsGui) << "Bad http auth type:" << type;
             emit asked();
         }
