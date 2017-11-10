@@ -133,6 +133,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     job->setProperties(
         QList<QByteArray>()
         << "http://open-collaboration-services.org/ns:share-permissions"
+        << "http://owncloud.org/ns:fileid" // numeric file id for fallback private link generation
         << "http://owncloud.org/ns:privatelink");
     job->setTimeout(10 * 1000);
     connect(job, &PropfindJob::result, this, &ShareDialog::slotPropfindReceived);
@@ -160,9 +161,13 @@ void ShareDialog::slotPropfindReceived(const QVariantMap &result)
         qCInfo(lcSharing) << "Received sharing permissions for" << _sharePath << _maxSharingPermissions;
     }
     auto privateLinkUrl = result["privatelink"].toString();
+    auto numericFileId = result["fileid"].toByteArray();
     if (!privateLinkUrl.isEmpty()) {
         qCInfo(lcSharing) << "Received private link url for" << _sharePath << privateLinkUrl;
         _privateLinkUrl = privateLinkUrl;
+    } else if (!numericFileId.isEmpty()) {
+        qCInfo(lcSharing) << "Received numeric file id for" << _sharePath << numericFileId;
+        _privateLinkUrl = _accountState->account()->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded);
     }
 
     showSharingUi();
