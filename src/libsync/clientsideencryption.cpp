@@ -570,6 +570,7 @@ bool SignPublicKeyApiJob::finished()
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+    return true;
 }
 
 
@@ -609,6 +610,7 @@ bool StorePrivateKeyApiJob::finished()
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+    return true;
 }
 
 SetEncryptionFlagApiJob::SetEncryptionFlagApiJob(const AccountPtr& account, const QByteArray& fileId, QObject* parent)
@@ -637,6 +639,7 @@ bool SetEncryptionFlagApiJob::finished()
         qCInfo(lcCseJob()) << "Setting the encrypted flag failed with" << path() << errorString() << retCode;
         emit error(_fileId, retCode);
     }
+    return true;
 }
 
 //TODO: Create an actuall encryption here.
@@ -1047,6 +1050,7 @@ bool LockEncryptFolderApiJob::finished()
 
     //TODO: Parse the token and submit.
     emit success(_fileId, token);
+    return true;
 }
 
 
@@ -1065,12 +1069,6 @@ void UnlockEncryptFolderApiJob::start()
     req.setRawHeader("token", _token);
 
     QUrl url = Utility::concatUrlPath(account()->url(), path());
-
-    qCInfo(lcCseJob()) << "================";
-    qCInfo(lcCseJob()) << "unlocking the folder with id" << _fileId << "with token" << _token;
-    qCInfo(lcCseJob()) << url;
-    qCInfo(lcCseJob()) << _token;
-    qCInfo(lcCseJob()) << "===================";
     sendRequest("DELETE", url, req);
 
     AbstractNetworkJob::start();
@@ -1126,6 +1124,7 @@ bool StoreMetaDataApiJob::finished()
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+    return true;
 }
 
 GetMetadataApiJob::GetMetadataApiJob(const AccountPtr& account,
@@ -1159,5 +1158,6 @@ bool GetMetadataApiJob::finished()
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+    return true;
 }
 }
