@@ -334,7 +334,7 @@ void OwncloudSetupPage::slotCertificateAccepted()
         addCertDial->reinit(); // FIXME: Why not just have this only created on use?
         validatePage();
     } else {
-        addCertDial->showErrorMessage("Could not load certificate");
+        addCertDial->showErrorMessage(tr("Could not load certificate. Maybe wrong password?"));
         addCertDial->show();
     }
 }
