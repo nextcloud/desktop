@@ -31,9 +31,9 @@ namespace OCC
 {
 
 Q_LOGGING_CATEGORY(lcCse, "sync.clientsideencryption", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcSignPublicKeyApiJob, "sync.networkjob.sendcsr", QtInfoMsg);
-Q_LOGGING_CATEGORY(lcStorePrivateKeyApiJob, "sync.networkjob.storeprivatekey", QtInfoMsg);
-Q_LOGGING_CATEGORY(lcCseJob, "sync.networkjob.clientsideencrypt", QtInfoMsg);
+Q_LOGGING_CATEGORY(lcSignPublicKeyApiJob, "sync.networkjob.sendcsr", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcStorePrivateKeyApiJob, "sync.networkjob.storeprivatekey", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCseJob, "sync.networkjob.clientsideencrypt", QtInfoMsg)
 
 QString baseUrl(){
     return QStringLiteral("ocs/v2.php/apps/end_to_end_encryption/api/v1/");
@@ -461,15 +461,12 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
     //: Hardcoed IV, really bad.
     unsigned char *fakepass = (unsigned char*) "qwertyuiasdfghjkzxcvbnm,qwertyui";
     unsigned char *iv = (unsigned char *)"0123456789012345";
-    unsigned char encryptTag[16];
-
 
     const char *encryptTest = "a quick brown fox jumps over the lazy dog";
     // TODO: Find a way to
     unsigned char cryptedText[128];
-    unsigned char decryptedText[128];
-    unsigned char tag[16];
-    int cryptedText_len = encrypt(
+		unsigned char tag[16];
+		int cryptedText_len = encrypt(
         (unsigned char*) encryptTest,   //unsigned char *plaintext,
         strlen(encryptTest),            //        int plaintext_len,
         fakepass,                       //        unsigned char *key,
@@ -477,7 +474,7 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
         cryptedText,                    //        unsigned char *ciphertext,
         tag                             //        unsigned char *tag
     );
-
+		Q_UNUSED(cryptedText_len); //TODO: Fix this.
 /*
     qCInfo(lcCse()) << "Encrypted Text" << QByteArray( (const char*) cryptedText, cryptedText_len);
     int decryptedText_len = decrypt(
@@ -497,6 +494,7 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
 	auto job = new StorePrivateKeyApiJob(_account, baseUrl() + "private-key", this);
 	job->setPrivateKey(QByteArray((const char*) cryptedText, 128));
 	connect(job, &StorePrivateKeyApiJob::jsonReceived, [this](const QJsonDocument& doc, int retCode) {
+		Q_UNUSED(doc);
 		switch(retCode) {
 			case 200:
 				qCInfo(lcCse()) << "Store private key working as expected.";
@@ -519,7 +517,8 @@ void ClientSideEncryption::getPublicKeyFromServer()
     qCInfo(lcCse()) << "Retrieving public key from server";
     auto job = new JsonApiJob(_account, baseUrl() + "public-key", this);
     connect(job, &JsonApiJob::jsonReceived, [this](const QJsonDocument& doc, int retCode) {
-        switch(retCode) {
+			Q_UNUSED(doc);
+			switch(retCode) {
             case 404: // no public key
                 qCInfo(lcCse()) << "No public key on the server";
                 generateKeyPair();
@@ -1153,7 +1152,7 @@ bool GetMetadataApiJob::finished()
 {
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (retCode != 200)
-        qCInfo(lcCseJob()) << "error requesting the metadata the metadata" << path() << errorString() << retCode;
+        qCInfo(lcCseJob()) << "error requesting the metadata" << path() << errorString() << retCode;
 
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
