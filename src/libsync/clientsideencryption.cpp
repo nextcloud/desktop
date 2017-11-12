@@ -308,7 +308,7 @@ void ClientSideEncryption::generateKeyPair()
     qCInfo(lcCse()) << "Keys generated correctly, sending to server.";
 }
 
-QString ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
+void ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
 {
     // OpenSSL expects const char.
     auto cnArray = _account->davUser().toLocal8Bit();
@@ -395,7 +395,6 @@ QString ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
 free_all:
     X509_REQ_free(x509_req);
     BIO_free_all(out);
-    return "";
 }
 
 void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)

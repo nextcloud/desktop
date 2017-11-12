@@ -30,7 +30,7 @@ public:
     bool hasPrivateKey() const;
     bool hasPublicKey() const;
     void generateKeyPair();
-    QString generateCSR(EVP_PKEY *keyPair);
+    void generateCSR(EVP_PKEY *keyPair);
     void getPrivateKeyFromServer();
     void getPublicKeyFromServer();
     void encryptPrivateKey(EVP_PKEY *keyPair);
