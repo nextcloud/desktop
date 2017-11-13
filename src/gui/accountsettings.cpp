@@ -272,18 +272,21 @@ void AccountSettings::slotEncryptionFlagError(const QByteArray& fileId, int http
 
 void AccountSettings::slotLockFolderSuccess(const QByteArray& fileId, const QByteArray &token)
 {
-    FolderMetadata emptyMetadata(accountsState()->account());
+		accountsState()->account()->e2e().setTokenForFolder(fileId, token);
 
+		FolderMetadata emptyMetadata(accountsState()->account());
 		auto storeMetadataJob = new StoreMetaDataApiJob(accountsState()->account(), fileId, emptyMetadata.encryptedMetadata());
 		connect(storeMetadataJob, &StoreMetaDataApiJob::success,
 						this, &AccountSettings::slotUploadMetadataSuccess);
 		connect(storeMetadataJob, &StoreMetaDataApiJob::error,
 						this, &AccountSettings::slotUpdateMetadataError);
+
+		storeMetadataJob->start();
 }
 
 void AccountSettings::slotUploadMetadataSuccess(const QByteArray& folderId)
 {
-	const QByteArray token; // fakeToken, just to compile.
+	const auto token = accountsState()->account()->e2e().tokenForFolder(folderId);
 	auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), folderId, token);
 	connect(unlockJob, &UnlockEncryptFolderApiJob::success,
 					this, &AccountSettings::slotUnlockFolderSuccess);
@@ -294,7 +297,7 @@ void AccountSettings::slotUploadMetadataSuccess(const QByteArray& folderId)
 
 void AccountSettings::slotUpdateMetadataError(const QByteArray& folderId, int httpReturnCode)
 {
-	const QByteArray token; // fakeToken, just to compile.
+	const auto token = accountsState()->account()->e2e().tokenForFolder(folderId);
 	auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), folderId, token);
 	connect(unlockJob, &UnlockEncryptFolderApiJob::success,
 					this, &AccountSettings::slotUnlockFolderSuccess);
