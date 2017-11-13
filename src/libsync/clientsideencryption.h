@@ -34,6 +34,8 @@ public:
     void getPrivateKeyFromServer();
     void getPublicKeyFromServer();
     void encryptPrivateKey(EVP_PKEY *keyPair);
+		void setTokenForFolder(const QByteArray& folder, const QByteArray& token);
+		QByteArray tokenForFolder(const QByteArray& folder) const;
 
 signals:
     void initializationFinished();
@@ -41,6 +43,7 @@ signals:
 private:
     OCC::AccountPtr _account;
     bool isInitialized = false;
+		QMap<QByteArray, QByteArray> _folder2token;
 };
 
 /*

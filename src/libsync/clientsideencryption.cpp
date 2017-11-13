@@ -397,6 +397,17 @@ free_all:
     BIO_free_all(out);
 }
 
+void ClientSideEncryption::setTokenForFolder(const QByteArray& folderId, const QByteArray& token)
+{
+	_folder2token[folderId] = token;
+}
+
+QByteArray ClientSideEncryption::tokenForFolder(const QByteArray& folderId) const
+{
+	Q_ASSERT(_folder2token.contains(folderId));
+	return _folder2token[folderId];
+}
+
 void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
 {
     // Write the Private File to a BIO
