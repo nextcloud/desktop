@@ -144,7 +144,6 @@ private:
     QStringList _errors;
     AccountPtr _account;
     bool _isCheckingServerAndAuth;
-    ClientSideEncryption cse;
 };
 }
 
