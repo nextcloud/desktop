@@ -1111,11 +1111,11 @@ void StoreMetaDataApiJob::start()
     url.setQueryItems(params);
 
     QByteArray data = QByteArray("metaData=") + _b64Metadata;
-    QBuffer buffer;
-    buffer.setData(data);
+    auto buffer = new QBuffer(this);
+    buffer->setData(data);
 
     qCInfo(lcCseJob()) << "sending the metadata for the fileId" << _fileId << "as encrypted";
-    sendRequest("POST", url, req, &buffer);
+    sendRequest("POST", url, req, buffer);
     AbstractNetworkJob::start();
 }
 
