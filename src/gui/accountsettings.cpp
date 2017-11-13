@@ -272,15 +272,31 @@ void AccountSettings::slotEncryptionFlagError(const QByteArray& fileId, int http
 
 void AccountSettings::slotLockFolderSuccess(const QByteArray& fileId, const QByteArray &token)
 {
-//    FolderMetadata emptyMetadata(accountsState()->account());
-    qCInfo(lcAccountSettings()) << "Folder Locked Successfully" << fileId << token;
-    auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), fileId, token);
+    FolderMetadata emptyMetadata(accountsState()->account());
+
+		auto storeMetadataJob = new StoreMetaDataApiJob(accountsState()->account(), fileId, emptyMetadata.encryptedMetadata());
+		connect(storeMetadataJob, &StoreMetaDataApiJob::success,
+						this, &AccountSettings::slotUploadMetadataSuccess);
+		connect(storeMetadataJob, &StoreMetaDataApiJob::error,
+						this, &AccountSettings::slotUpdateMetadataError);
+
+		auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), fileId, token);
     connect(unlockJob, &UnlockEncryptFolderApiJob::success,
             this, &AccountSettings::slotUnlockFolderSuccess);
     connect(unlockJob, &UnlockEncryptFolderApiJob::error,
             this, &AccountSettings::slotUnlockFolderError);
 
     unlockJob->start();
+}
+
+void AccountSettings::slotUploadMetadataSuccess(const QByteArray& folderId)
+{
+
+}
+
+void AccountSettings::slotUpdateMetadataError(const QByteArray& folderId, int httpReturnCode)
+{
+
 }
 
 void AccountSettings::slotLockFolderError(const QByteArray& fileId, int httpErrorCode)

@@ -651,7 +651,7 @@ auto metadataKeyDec(const QByteArray& data) -> QByteArray
     return data;
 }
 
-FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata) : _account(account)
+FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata) : _account(account), _metadata(metadata)
 {
     if (metadata.isEmpty()) {
         qCInfo(lcCse()) << "Setupping Empty Metadata";
@@ -986,13 +986,6 @@ void FolderMetadata::setupEmptyMetadata() {
 
     auto b64String = encryptMetadataKeys(metadataKeyObj);
     auto sharingEncrypted = encryptJsonObject(recepient, newMetadataPass);
-    auto sharingDecrypted = decryptJsonObject(sharingEncrypted, newMetadataPass);
-
-    qCInfo(lcCse()) << "=====================";
-    qCInfo(lcCse()) << "Original Json blob:" << recepient.dump();
-    qCInfo(lcCse()) << "encrypted json blob:" << sharingEncrypted;
-    qCInfo(lcCse()) << "decrypted json blob:" << sharingDecrypted;
-    qCInfo(lcCse()) << "====================";
 
     json m = {
         {"metadata", {
@@ -1006,10 +999,12 @@ void FolderMetadata::setupEmptyMetadata() {
 
     std::string result = m.dump();
     QString output = QString::fromStdString(result);
-
-    qCInfo(lcCse()) << "Current Output" << output;
+		_metadata = output.toLocal8Bit();
 }
 
+QByteArray FolderMetadata::encryptedMetadata() {
+	return _metadata;
+}
 
 LockEncryptFolderApiJob::LockEncryptFolderApiJob(const AccountPtr& account, const QByteArray& fileId, QObject* parent)
 : AbstractNetworkJob(account, baseUrl() + QStringLiteral("lock/") + fileId, parent), _fileId(fileId)
@@ -1116,12 +1111,13 @@ void StoreMetaDataApiJob::start()
 bool StoreMetaDataApiJob::finished()
 {
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (retCode != 200)
-        qCInfo(lcCseJob()) << "error sending the metadata" << path() << errorString() << retCode;
+		if (retCode != 200) {
+			qCInfo(lcCseJob()) << "error sending the metadata" << path() << errorString() << retCode;
+			emit error(_fileId, retCode);
+		}
 
-    QJsonParseError error;
-    auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
-    emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+		qCInfo(lcCseJob()) << "Metadata submited to the server successfully";
+		emit success(_fileId);
     return true;
 }
 

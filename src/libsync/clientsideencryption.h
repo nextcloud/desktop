@@ -198,6 +198,7 @@ private:
     QVector<EncryptedFile> _files;
     QVector<int> _metadataKeys;
     AccountPtr _account;
+		QByteArray _metadata;
 };
 
 class OWNCLOUDSYNC_EXPORT LockEncryptFolderApiJob : public AbstractNetworkJob
@@ -263,7 +264,8 @@ protected:
     bool finished() override;
 
 signals:
-    void jsonReceived(const QJsonDocument &json, int statusCode);
+    void success(const QByteArray& fileId);
+    void error(const QByteArray& fileId, int httpReturnCode);
 
 private:
     QByteArray _fileId;

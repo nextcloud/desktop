@@ -98,6 +98,8 @@ protected slots:
     void slotLockFolderError(const QByteArray &folderId, int httpReturnCode);
     void slotUnlockFolderSuccess(const QByteArray& folderId);
     void slotUnlockFolderError(const QByteArray& folderId, int httpReturnCode);
+		void slotUploadMetadataSuccess(const QByteArray& folderId);
+		void slotUpdateMetadataError(const QByteArray& folderId, int httpReturnCode);
 
 private:
     void showConnectionLabel(const QString &message,
