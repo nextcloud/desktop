@@ -279,24 +279,28 @@ void AccountSettings::slotLockFolderSuccess(const QByteArray& fileId, const QByt
 						this, &AccountSettings::slotUploadMetadataSuccess);
 		connect(storeMetadataJob, &StoreMetaDataApiJob::error,
 						this, &AccountSettings::slotUpdateMetadataError);
-
-		auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), fileId, token);
-    connect(unlockJob, &UnlockEncryptFolderApiJob::success,
-            this, &AccountSettings::slotUnlockFolderSuccess);
-    connect(unlockJob, &UnlockEncryptFolderApiJob::error,
-            this, &AccountSettings::slotUnlockFolderError);
-
-    unlockJob->start();
 }
 
 void AccountSettings::slotUploadMetadataSuccess(const QByteArray& folderId)
 {
-
+	const QByteArray token; // fakeToken, just to compile.
+	auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), folderId, token);
+	connect(unlockJob, &UnlockEncryptFolderApiJob::success,
+					this, &AccountSettings::slotUnlockFolderSuccess);
+	connect(unlockJob, &UnlockEncryptFolderApiJob::error,
+					this, &AccountSettings::slotUnlockFolderError);
+	unlockJob->start();
 }
 
 void AccountSettings::slotUpdateMetadataError(const QByteArray& folderId, int httpReturnCode)
 {
-
+	const QByteArray token; // fakeToken, just to compile.
+	auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), folderId, token);
+	connect(unlockJob, &UnlockEncryptFolderApiJob::success,
+					this, &AccountSettings::slotUnlockFolderSuccess);
+	connect(unlockJob, &UnlockEncryptFolderApiJob::error,
+					this, &AccountSettings::slotUnlockFolderError);
+	unlockJob->start();
 }
 
 void AccountSettings::slotLockFolderError(const QByteArray& fileId, int httpErrorCode)
