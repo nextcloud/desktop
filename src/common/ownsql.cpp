@@ -184,8 +184,8 @@ void SqlDatabase::close()
 {
     if (_db) {
         SQLITE_DO(sqlite3_close(_db));
-        // Fatal because reopening an unclosed db might be problematic.
-        ENFORCE(_errId == SQLITE_OK, "Error when closing DB");
+        if (_errId != SQLITE_OK)
+            qCWarning(lcSql) << "Closing database failed" << _error;
         _db = 0;
     }
 }
