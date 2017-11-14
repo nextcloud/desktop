@@ -294,7 +294,8 @@ void OwncloudSetupWizard::slotNoServerFound(QNetworkReply *reply)
         QString serverError = reply->peek(1024 * 20);
         qCDebug(lcWizard) << serverError;
         QMessageBox messageBox(_ocWizard);
-        messageBox.setText(serverError);
+        messageBox.setText(tr("The server reported the following error:"));
+        messageBox.setInformativeText(serverError);
         messageBox.addButton(QMessageBox::Ok);
         messageBox.setTextFormat(Qt::RichText);
         messageBox.exec();
