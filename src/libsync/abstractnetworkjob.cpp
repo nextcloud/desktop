@@ -135,6 +135,7 @@ void AbstractNetworkJob::adoptRequest(QNetworkReply *reply)
     addTimer(reply);
     setReply(reply);
     setupConnections(reply);
+    newReplyHook(reply);
 }
 
 QUrl AbstractNetworkJob::makeAccountUrl(const QString &relativePath) const

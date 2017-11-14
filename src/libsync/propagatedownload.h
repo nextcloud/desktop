@@ -43,6 +43,9 @@ class GETFileJob : public AbstractNetworkJob
     bool _hasEmittedFinishedSignal;
     time_t _lastModified;
 
+    /// Will be set to true once we've seen a 2xx response header
+    bool _saveBodyToFile = false;
+
 public:
     // DOES NOT take ownership of the device.
     explicit GETFileJob(AccountPtr account, const QString &path, QFile *device,
@@ -75,6 +78,8 @@ public:
             return true; // discard
         }
     }
+
+    void newReplyHook(QNetworkReply *reply) override;
 
     void setBandwidthManager(BandwidthManager *bwm);
     void setChoked(bool c);

@@ -127,7 +127,6 @@ void GETFileJob::start()
         sendRequest("GET", _directDownloadUrl, req);
     }
 
-    reply()->setReadBufferSize(16 * 1024); // keep low so we can easier limit the bandwidth
     qCDebug(lcGetJob) << _bandwidthManager << _bandwidthChoked << _bandwidthLimited;
     if (_bandwidthManager) {
         _bandwidthManager->registerDownloadJob(this);
@@ -137,12 +136,18 @@ void GETFileJob::start()
         qCWarning(lcGetJob) << " Network error: " << errorString();
     }
 
-    connect(reply(), &QNetworkReply::metaDataChanged, this, &GETFileJob::slotMetaDataChanged);
-    connect(reply(), &QIODevice::readyRead, this, &GETFileJob::slotReadyRead);
-    connect(reply(), &QNetworkReply::downloadProgress, this, &GETFileJob::downloadProgress);
     connect(this, &AbstractNetworkJob::networkActivity, account().data(), &Account::propagatorNetworkActivity);
 
     AbstractNetworkJob::start();
+}
+
+void GETFileJob::newReplyHook(QNetworkReply *reply)
+{
+    reply->setReadBufferSize(16 * 1024); // keep low so we can easier limit the bandwidth
+
+    connect(reply, &QNetworkReply::metaDataChanged, this, &GETFileJob::slotMetaDataChanged);
+    connect(reply, &QIODevice::readyRead, this, &GETFileJob::slotReadyRead);
+    connect(reply, &QNetworkReply::downloadProgress, this, &GETFileJob::downloadProgress);
 }
 
 void GETFileJob::slotMetaDataChanged()
@@ -152,6 +157,10 @@ void GETFileJob::slotMetaDataChanged()
     reply()->setReadBufferSize(16 * 1024);
 
     int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    // Ignore redirects
+    if (httpStatus == 301 || httpStatus == 302 || httpStatus == 303 || httpStatus == 307 || httpStatus == 308)
+        return;
 
     // If the status code isn't 2xx, don't write the reply body to the file.
     // For any error: handle it when the job is finished, not here.
@@ -216,6 +225,8 @@ void GETFileJob::slotMetaDataChanged()
     if (!lastModified.isNull()) {
         _lastModified = Utility::qDateTimeToTime_t(lastModified.toDateTime());
     }
+
+    _saveBodyToFile = true;
 }
 
 void GETFileJob::setBandwidthManager(BandwidthManager *bwm)
@@ -281,7 +292,7 @@ void GETFileJob::slotReadyRead()
             return;
         }
 
-        if (_device->isOpen()) {
+        if (_device->isOpen() && _saveBodyToFile) {
             qint64 w = _device->write(buffer.constData(), r);
             if (w != r) {
                 _errorString = _device->errorString();
