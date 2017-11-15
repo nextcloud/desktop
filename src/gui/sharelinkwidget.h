@@ -70,8 +70,8 @@ private slots:
     void slotPasswordChanged(const QString &newText);
     void slotNameEdited(QTableWidgetItem *item);
 
-    void slotShareLinkButtonClicked();
-    void slotShareLinkActionTriggered(QAction *action);
+    void slotContextMenuButtonClicked();
+    void slotLinkContextMenuActionTriggered(QAction *action);
 
     void slotDeleteShareFetched();
     void slotCreateShareFetched(const QSharedPointer<LinkShare> &share);
@@ -92,6 +92,12 @@ private:
     void copyShareLink(const QUrl &url);
     void emailShareLink(const QUrl &url);
     void openShareLink(const QUrl &url);
+
+    /** Confirm with the user and then delete the share */
+    void confirmAndDeleteShare(const QSharedPointer<LinkShare> &share);
+
+    /** Retrieve a share's name, accounting for _namesSupported */
+    QString shareName(const LinkShare &share) const;
 
     /**
      * Retrieve the selected share, returning 0 if none.
@@ -120,12 +126,13 @@ private:
     // the next time getShares() finishes. This stores its id.
     QString _newShareOverrideSelectionId;
 
-    QMenu *_shareLinkMenu;
-    QAction *_openLinkAction;
-    QAction *_copyLinkAction;
-    QAction *_copyDirectLinkAction;
-    QAction *_emailLinkAction;
-    QAction *_emailDirectLinkAction;
+    QMenu *_linkContextMenu = nullptr;
+    QAction *_deleteLinkAction = nullptr;
+    QAction *_openLinkAction = nullptr;
+    QAction *_copyLinkAction = nullptr;
+    QAction *_copyDirectLinkAction = nullptr;
+    QAction *_emailLinkAction = nullptr;
+    QAction *_emailDirectLinkAction = nullptr;
 };
 }
 
