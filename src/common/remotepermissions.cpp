@@ -21,7 +21,7 @@
 
 namespace OCC {
 
-static const char letters[] = " WDNVCKRSMm";
+static const char letters[] = " WDNVCKRSMmz";
 
 
 template <typename Char>

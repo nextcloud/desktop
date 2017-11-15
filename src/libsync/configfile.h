@@ -117,6 +117,12 @@ public:
     void setNewBigFolderSizeLimit(bool isChecked, quint64 mbytes);
     bool confirmExternalStorage() const;
     void setConfirmExternalStorage(bool);
+    /** delta sync */
+    bool deltaSyncEnabled() const;
+    void setDeltaSyncEnabled(bool enabled);
+    quint64 deltaSyncMinFileSize() const; // bytes
+    void setDeltaSyncMinFileSize(quint64 bytes);
+
 
     static bool setConfDir(const QString &value);
 

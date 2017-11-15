@@ -285,6 +285,7 @@ private:
 
     int _uploadLimit;
     int _downloadLimit;
+
     SyncOptions _syncOptions;
 
     /// Hook for computing checksums from csync_update

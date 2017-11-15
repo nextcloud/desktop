@@ -55,6 +55,12 @@ struct SyncOptions
 
     /** Whether parallel network jobs are allowed. */
     bool _parallelNetworkJobs = true;
+
+    /** Whether delta-synchronization is enabled */
+    bool _deltaSyncEnabled = false;
+
+    /** What the minimum file size (in Bytes) is for delta-synchronization */
+    quint64 _deltaSyncMinFileSize = 0;
 };
 
 

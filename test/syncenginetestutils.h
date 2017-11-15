@@ -12,6 +12,7 @@
 #include "filesystem.h"
 #include "syncengine.h"
 #include "common/syncjournaldb.h"
+#include <cstring>
 
 #include <QDir>
 #include <QNetworkReply>
@@ -68,7 +69,8 @@ public:
     virtual void remove(const QString &relativePath) = 0;
     virtual void insert(const QString &relativePath, qint64 size = 64, char contentChar = 'W') = 0;
     virtual void setContents(const QString &relativePath, char contentChar) = 0;
-    virtual void appendByte(const QString &relativePath) = 0;
+    virtual void appendByte(const QString &relativePath, char contentChar = 0) = 0;
+    virtual void modifyByte(const QString &relativePath, quint64 offset, char contentChar) = 0;
     virtual void mkdir(const QString &relativePath) = 0;
     virtual void rename(const QString &relativePath, const QString &relativeDestinationDirectory) = 0;
     virtual void setModTime(const QString &relativePath, const QDateTime &modTime) = 0;
@@ -107,14 +109,29 @@ public:
         file.open(QFile::WriteOnly);
         file.write(QByteArray{}.fill(contentChar, size));
     }
-    void appendByte(const QString &relativePath) override {
+    void appendByte(const QString &relativePath, char contentChar) override
+    {
         QFile file{_rootDir.filePath(relativePath)};
         QVERIFY(file.exists());
         file.open(QFile::ReadWrite);
-        QByteArray contents = file.read(1);
+        QByteArray contents;
+        if (contentChar)
+            contents += contentChar;
+        else
+            contents = file.read(1);
         file.seek(file.size());
         file.write(contents);
     }
+    void modifyByte(const QString &relativePath, quint64 offset, char contentChar) override
+    {
+        QFile file{ _rootDir.filePath(relativePath) };
+        QVERIFY(file.exists());
+        file.open(QFile::ReadWrite);
+        file.seek(offset);
+        file.write(&contentChar, 1);
+        file.close();
+    }
+
     void mkdir(const QString &relativePath) override {
         _rootDir.mkpath(relativePath);
     }
@@ -190,10 +207,21 @@ public:
         file->contentChar = contentChar;
     }
 
-    void appendByte(const QString &relativePath) override {
+    void appendByte(const QString &relativePath, char contentChar = 0) override
+    {
+        Q_UNUSED(contentChar);
         FileInfo *file = findInvalidatingEtags(relativePath);
         Q_ASSERT(file);
         file->size += 1;
+    }
+
+    void modifyByte(const QString &relativePath, quint64 offset, char contentChar) override
+    {
+        Q_UNUSED(offset);
+        Q_UNUSED(contentChar);
+        FileInfo *file = findInvalidatingEtags(relativePath);
+        Q_ASSERT(file);
+        Q_ASSERT(!"unimplemented");
     }
 
     void mkdir(const QString &relativePath) override {
@@ -365,6 +393,7 @@ public:
             xml.writeTextElement(ocUri, QStringLiteral("permissions"), fileInfo.isShared ? QStringLiteral("SRDNVCKW") : QStringLiteral("RDNVCKW"));
             xml.writeTextElement(ocUri, QStringLiteral("id"), fileInfo.fileId);
             xml.writeTextElement(ocUri, QStringLiteral("checksums"), fileInfo.checksums);
+            xml.writeTextElement(ocUri, QStringLiteral("zsync"), QStringLiteral("true"));
             buffer.write(fileInfo.extraDavProperties);
             xml.writeEndElement(); // prop
             xml.writeTextElement(davUri, QStringLiteral("status"), "HTTP/1.1 200 OK");
@@ -593,6 +622,7 @@ public:
     }
 
     void abort() override {
+        setError(OperationCanceledError, "Operation Canceled");
         aborted = true;
     }
     qint64 bytesAvailable() const override {
@@ -612,6 +642,87 @@ public:
     using QNetworkReply::setRawHeader;
 };
 
+class FakeGetWithDataReply : public QNetworkReply
+{
+    Q_OBJECT
+public:
+    const FileInfo *fileInfo;
+    const char *payload;
+    quint64 size;
+    quint64 offset = 0;
+    bool aborted = false;
+
+    FakeGetWithDataReply(FileInfo &remoteRootFileInfo, const QByteArray &data, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
+        : QNetworkReply{ parent }
+    {
+        setRequest(request);
+        setUrl(request.url());
+        setOperation(op);
+        open(QIODevice::ReadOnly);
+
+        Q_ASSERT(!data.isEmpty());
+        payload = data.data();
+        size = data.length();
+        QString fileName = getFilePathFromUrl(request.url());
+        Q_ASSERT(!fileName.isEmpty());
+        fileInfo = remoteRootFileInfo.find(fileName);
+        QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
+
+        if (request.hasRawHeader("Range")) {
+            QByteArray range = request.rawHeader("Range");
+            quint64 start, end;
+            const char *r = range.constData();
+            int res = sscanf(r, "bytes=%llu-%llu", &start, &end);
+            if (res == 2) {
+                payload += start;
+                size -= start;
+            }
+        }
+    }
+
+    Q_INVOKABLE void respond()
+    {
+        if (aborted) {
+            setError(OperationCanceledError, "Operation Canceled");
+            emit metaDataChanged();
+            emit finished();
+            return;
+        }
+        setHeader(QNetworkRequest::ContentLengthHeader, size);
+        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
+        setRawHeader("OC-ETag", fileInfo->etag.toLatin1());
+        setRawHeader("ETag", fileInfo->etag.toLatin1());
+        setRawHeader("OC-FileId", fileInfo->fileId);
+        emit metaDataChanged();
+        if (bytesAvailable())
+            emit readyRead();
+        emit finished();
+    }
+
+    void abort() override
+    {
+        setError(OperationCanceledError, "Operation Canceled");
+        aborted = true;
+    }
+    qint64 bytesAvailable() const override
+    {
+        if (aborted)
+            return 0;
+        return size + QIODevice::bytesAvailable();
+    }
+
+    qint64 readData(char *data, qint64 maxlen) override
+    {
+        qint64 len = std::min(size, quint64(maxlen));
+        std::memcpy(data, payload + offset, len);
+        size -= len;
+        offset += len;
+        return len;
+    }
+
+    // useful to be public for testing
+    using QNetworkReply::setRawHeader;
+};
 
 class FakeChunkMoveReply : public QNetworkReply
 {
@@ -630,27 +741,36 @@ public:
 
         QString source = getFilePathFromUrl(request.url());
         Q_ASSERT(!source.isEmpty());
-        Q_ASSERT(source.endsWith("/.file"));
-        source = source.left(source.length() - qstrlen("/.file"));
+        Q_ASSERT(source.endsWith("/.file") || source.endsWith("/.file.zsync"));
+        if (source.endsWith("/.file"))
+            source = source.left(source.length() - qstrlen("/.file"));
+        if (source.endsWith("/.file.zsync"))
+            source = source.left(source.length() - qstrlen("/.file.zsync"));
         auto sourceFolder = uploadsFileInfo.find(source);
         Q_ASSERT(sourceFolder);
         Q_ASSERT(sourceFolder->isDir);
         int count = 0;
         int size = 0;
+        qlonglong prev = 0;
         char payload = '\0';
 
-        do {
-            QString chunkName = QString::number(count).rightJustified(8, '0');
-            if (!sourceFolder->children.contains(chunkName))
-                break;
+
+        // Ignore .zsync metadata
+        if (sourceFolder->children.contains(".zsync"))
+            sourceFolder->children.remove(".zsync");
+
+        for (auto chunkName : sourceFolder->children.keys()) {
             auto &x = sourceFolder->children[chunkName];
+            if (chunkName.toLongLong() != prev)
+                break;
             Q_ASSERT(!x.isDir);
             Q_ASSERT(x.size > 0); // There should not be empty chunks
             size += x.size;
             Q_ASSERT(!payload || payload == x.contentChar);
             payload = x.contentChar;
             ++count;
-        } while(true);
+            prev = chunkName.toLongLong() + x.size;
+        }
 
         Q_ASSERT(count > 1); // There should be at least two chunks, otherwise why would we use chunking?
         QCOMPARE(sourceFolder->children.count(), count); // There should not be holes or extra files
@@ -709,6 +829,97 @@ public:
     qint64 readData(char *, qint64) override { return 0; }
 };
 
+class FakeChunkZsyncMoveReply : public QNetworkReply
+{
+    Q_OBJECT
+    FileInfo *fileInfo;
+
+public:
+    FakeChunkZsyncMoveReply(FileInfo &uploadsFileInfo, FileInfo &remoteRootFileInfo,
+        QNetworkAccessManager::Operation op, const QNetworkRequest &request,
+        quint64 delayMs, QVector<quint64> &mods, QObject *parent)
+        : QNetworkReply{ parent }
+    {
+        setRequest(request);
+        setUrl(request.url());
+        setOperation(op);
+        open(QIODevice::ReadOnly);
+
+        Q_ASSERT(!mods.isEmpty());
+
+        QString source = getFilePathFromUrl(request.url());
+        Q_ASSERT(!source.isEmpty());
+        Q_ASSERT(source.endsWith("/.file.zsync"));
+        source = source.left(source.length() - qstrlen("/.file.zsync"));
+        auto sourceFolder = uploadsFileInfo.find(source);
+        Q_ASSERT(sourceFolder);
+        Q_ASSERT(sourceFolder->isDir);
+        int count = 0;
+
+        // Ignore .zsync metadata
+        if (sourceFolder->children.contains(".zsync"))
+            sourceFolder->children.remove(".zsync");
+
+        for (auto chunkName : sourceFolder->children.keys()) {
+            auto &x = sourceFolder->children[chunkName];
+            Q_ASSERT(!x.isDir);
+            Q_ASSERT(x.size > 0); // There should not be empty chunks
+            quint64 start = quint64(chunkName.toLongLong());
+            auto it = mods.begin();
+            while (it != mods.end()) {
+                if (*it >= start && *it < start + x.size) {
+                    ++count;
+                    mods.erase(it);
+                } else
+                    ++it;
+            }
+        }
+
+        Q_ASSERT(count > 0); // There should be at least one chunk
+        Q_ASSERT(mods.isEmpty()); // All files should match a modification
+
+        QString fileName = getFilePathFromUrl(QUrl::fromEncoded(request.rawHeader("Destination")));
+        Q_ASSERT(!fileName.isEmpty());
+
+        Q_ASSERT((fileInfo = remoteRootFileInfo.find(fileName)));
+
+        QVERIFY(request.hasRawHeader("If")); // The client should put this header
+        if (request.rawHeader("If") != QByteArray("<" + request.rawHeader("Destination") + "> ([\"" + fileInfo->etag.toLatin1() + "\"])")) {
+            QMetaObject::invokeMethod(this, "respondPreconditionFailed", Qt::QueuedConnection);
+            return;
+        }
+
+        if (!fileInfo) {
+            abort();
+            return;
+        }
+        fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
+        remoteRootFileInfo.find(fileName, /*invalidate_etags=*/true);
+
+        QTimer::singleShot(delayMs, this, &FakeChunkZsyncMoveReply::respond);
+    }
+
+    Q_INVOKABLE void respond()
+    {
+        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 201);
+        setRawHeader("OC-ETag", fileInfo->etag.toLatin1());
+        setRawHeader("ETag", fileInfo->etag.toLatin1());
+        setRawHeader("OC-FileId", fileInfo->fileId);
+        emit metaDataChanged();
+        emit finished();
+    }
+
+    Q_INVOKABLE void respondPreconditionFailed()
+    {
+        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 412);
+        setError(InternalServerError, "Precondition Failed");
+        emit metaDataChanged();
+        emit finished();
+    }
+
+    void abort() override {}
+    qint64 readData(char *, qint64) override { return 0; }
+};
 
 class FakeErrorReply : public QNetworkReply
 {

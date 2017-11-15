@@ -80,6 +80,9 @@ static const char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
 static const char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
 static const char confirmExternalStorageC[] = "confirmExternalStorage";
 
+static const char deltaSyncEnabledC[] = "DeltaSync/enabled";
+static const char deltaSyncMinimumFileSizeC[] = "DeltaSync/minFileSize";
+
 static const char maxLogLinesC[] = "Logging/maxLogLines";
 
 const char certPath[] = "http_certificatePath";
@@ -674,6 +677,28 @@ bool ConfigFile::confirmExternalStorage() const
 void ConfigFile::setConfirmExternalStorage(bool isChecked)
 {
     setValue(confirmExternalStorageC, isChecked);
+}
+
+bool ConfigFile::deltaSyncEnabled() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(deltaSyncEnabledC), false).toBool(); // default to false
+}
+
+void ConfigFile::setDeltaSyncEnabled(bool enabled)
+{
+    setValue(deltaSyncEnabledC, enabled);
+}
+
+quint64 ConfigFile::deltaSyncMinFileSize() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(deltaSyncMinimumFileSizeC), 10 * 1024 * 1024).toLongLong(); // default to 10 MiB
+}
+
+void ConfigFile::setDeltaSyncMinFileSize(quint64 bytes)
+{
+    setValue(deltaSyncMinimumFileSizeC, bytes);
 }
 
 bool ConfigFile::promptDeleteFiles() const

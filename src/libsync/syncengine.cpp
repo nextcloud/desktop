@@ -26,6 +26,7 @@
 #include "propagateremotedelete.h"
 #include "propagatedownload.h"
 #include "common/asserts.h"
+#include "configfile.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
