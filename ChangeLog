@@ -1,7 +1,8 @@
 ChangeLog
 =========
 
-version 2.4.0 (2017-1X-XX)
+version 2.4.0 (2017-11-XX)
+* If you're using 2.4.0 alpha1, please upgrade as the alpha1 had an issue with hidden files!
 * OAuth2 authentication support by opening external browser (#5668)
 * Sharing: Add support for multiple public link shares (#5655)
 * Sharing: Add option to copy/email private links (#5023, #5627)
@@ -9,15 +10,23 @@ version 2.4.0 (2017-1X-XX)
 * Sharing: Show warning that links are public (#5747)
 * Sharing: Sharing dialog redesign: multiple share links support (#5695)
 * Sharing: Make "can edit" partially checked sometimes (#5642)
+* Sharing: Trigger a sync for folder affected by a change of sharing (#6098)
 * Wizard: Never propose an existing folder for syncing (#5597)
 * Wizard: Don't show last page anymore, go to settings directly (#5726)
 * Wizard: Handle url-shortener redirects (#5954)
+* Wizard: Resolve url/ redirects only if url/status.php not found (#5954)
+* Wizard: Add explanation text when server error is shown (#6157)
+* Wizard: Update the window size on high dpi screen (#6156)
+* Wizard: Don't report confusing error message (#6116)
 * Gui: Display the user server avatar (#5482)
+* Gui: Use display name of user, not internal name
 * Server URL: Update configuration in case of permanent redirection (#5972)
 * Gui: Allow to add multiple sync folder connection of the same folder (#6032)
+* Tray Menu: More detailed status messages
+* Tray Menu: Shibboleth: raise the browser when clicking on the tray (#6105)
 * Activity: Link errors from the account tab, allow filtering by account/folder (#5861)
 * Activity: Present conflicts more prominently (#5894)
-* Activity: Allow sorting the columns in Sync Protocol tab (#6093)
+* Activity: Allow sorting the columns in issues and protocol tabs (#6093, #6086)
 * Selective Sync: Open sub folder context menu (#5596)
 * Selective Sync: Skip excluded folders when reading db (#5772)
 * Selective Sync: Remove local files of unselected folder despite other modified files (#5783)
@@ -28,21 +37,25 @@ version 2.4.0 (2017-1X-XX)
 * Discovery: Increase the MAX_DEPTH and show deep folders as ignored (#1067)
 * Discovery: General speed improvements
 * Downloads: Remove empty temporary if disk space full (#5746)
+* Downloads: Read Content-MD5 header for object store setups
+* Checksums: Add global disable environment variable (#5017)
 * Quota: PropagateUpload: Model of remote quota, avoid some uploads (#5537)
-* When creating explorer favorite use more specific windows functions (#5690)
 * Create favorite also in folder wizard (#455)
-* Windows: Use the application icon for the Windows 8 sidebar favorite (#2446)
+* Windows: Use the application icon for the Windows 8 sidebar favorite (#2446, #5690)
 * macOS: Finder sidebar icon (#296)
 * Overlay Icons: Consider also the "shared by me" as shared (#4788)
 * Overlay Icons: Update right after sharing (#6115)
 * Overlay Icons: Fix different case paths not matching (#5257)
+* Overlay Icons: Detect changes in the shared flag (#6098)
 * Windows Overlay Icons: Potential hang fixes
 * Linux Overlay Icons: fix branded nemo and caja shell integration (#5966)
-* Http credentials: Fix behavior for bad password (#5989)
-* Credentials: Use per-account keychain entries (#5830)
-* Credentials: Namespace  (#6126)
+* Credentials: Fix behavior for bad password (#5989)
+* Credentials: Don't create empty client cert keychain entries (#5752)
+* Credentials: Namespace windows cred keys (#6125)
+* Credentials: Use per-account keychain entries (#5830, #6126)
 * AccountSettings: Triggering log in re-ask about previously rejected certificates (#5819)
-* Added owncloudcmd bandwidth limit parameter (#5707)
+* owncloudcmd: Added bandwidth limit parameter (#5707)
+* owncloudcmd: Fix timestamps, Fix --logdebug
 * AccountSettings: Sync with clean discovery on Ctrl-F6 (#5666)
 * Sync: Dynamic sizing of chunks in chunked uploads for improved big file upload performance (#5852)
 * Sync: Introduce overall errors that are not tied to a file (#5746)
@@ -51,7 +64,13 @@ version 2.4.0 (2017-1X-XX)
 * Sync: Upload conflict files if OWNCLOUD_UPLOAD_CONFLICT_FILES environment variable is set (#6038)
 * Sync: Blacklist: Don't let errors become warnings (#5516)
 * Sync: Check etag again after active sync (#4116)
+* Sync: Rename handling fixes: duplicate file ids (#6096)
+* Sync: Rename handling fixes: File size must be equal
+* Sync: Rename handling: Fix duplicate files on abort/resume sync (#5949)
+* Sync: Add capability for invalid filename regexes (#6092)
 * SyncJournalDB: Fall back to DELETE journal mode if WAL mode does not seem to work (#5723)
+* SyncJournalDB: Don't crash if the db file is readonly (#6050)
+* SyncJournalDB: DB close error is not fatal
 * Fix at least one memory leak
 * Documentation improvements
 * Logging improvements (With Qt logging categories) (#5671)
@@ -74,7 +93,11 @@ version 2.4.0 (2017-1X-XX)
 * Compilation: Remove Qt 4 code (#6025, #5702, #5505)
 * Harmonize source code style with clang-format (#5732)
 * Switch over to Qt 5 function pointer signal/slot syntax (#6041)
-* Updater: Rudimentary support for beta channel (#6048) 
+* Updater: Rudimentary support for beta channel (#6048)
+
+version 2.3.4 (2017-11-02)
+* Checksums: Use addData function to avoid endless loop CPU load issues with Office files
+* Packaging: Require ZLIB
 
 version 2.3.3 (2017-08-29)
 * Chunking NG: Don't use old chunking on new DAV endpoint (#5855)
