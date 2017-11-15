@@ -253,6 +253,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         auto deleteButton = new QToolButton;
         deleteButton->setIcon(deleteIcon);
         deleteButton->setProperty(propertyShareC, QVariant::fromValue(linkShare));
+        deleteButton->setToolTip(tr("Delete link share"));
         connect(deleteButton, &QAbstractButton::clicked, this, &ShareLinkWidget::slotDeleteShareClicked);
         table->setCellWidget(row, 2, deleteButton);
 
