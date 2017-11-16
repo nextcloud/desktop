@@ -251,8 +251,53 @@ private slots:
         }
     }
 
+    void testFakeConflict_data()
+    {
+        QTest::addColumn<bool>("sameMtime");
+        QTest::addColumn<QByteArray>("checksums");
+
+        QTest::addColumn<int>("expectedGET");
+
+        QTest::newRow("Same mtime, but no server checksum -> ignored in reconcile")
+            << true << QByteArray()
+            << 0;
+
+        QTest::newRow("Same mtime, weak server checksum differ -> downloaded")
+            << true << QByteArray("Adler32:bad")
+            << 1;
+
+        QTest::newRow("Same mtime, matching weak checksum -> skipped")
+            << true << QByteArray("Adler32:2a2010d")
+            << 0;
+
+        QTest::newRow("Same mtime, strong server checksum differ -> downloaded")
+            << true << QByteArray("SHA1:bad")
+            << 1;
+
+        QTest::newRow("Same mtime, matching strong checksum -> skipped")
+            << true << QByteArray("SHA1:56900fb1d337cf7237ff766276b9c1e8ce507427")
+            << 0;
+
+
+        QTest::newRow("mtime changed, but no server checksum -> download")
+            << false << QByteArray()
+            << 1;
+
+        QTest::newRow("mtime changed, weak checksum match -> download anyway")
+            << false << QByteArray("Adler32:2a2010d")
+            << 1;
+
+        QTest::newRow("mtime changed, strong checksum match -> skip")
+            << false << QByteArray("SHA1:56900fb1d337cf7237ff766276b9c1e8ce507427")
+            << 0;
+    }
+
     void testFakeConflict()
     {
+        QFETCH(bool, sameMtime);
+        QFETCH(QByteArray, checksums);
+        QFETCH(int, expectedGET);
+
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
 
         int nGET = 0;
@@ -269,67 +314,25 @@ private slots:
         auto mtime = QDateTime::currentDateTimeUtc().addDays(-4);
         mtime.setMSecsSinceEpoch(mtime.toMSecsSinceEpoch() / 1000 * 1000);
 
-        // Conflict: Same content, mtime, but no server checksum
-        //           -> ignored in reconcile
         fakeFolder.localModifier().setContents("A/a1", 'C');
         fakeFolder.localModifier().setModTime("A/a1", mtime);
         fakeFolder.remoteModifier().setContents("A/a1", 'C');
+        if (!sameMtime)
+            mtime = mtime.addDays(1);
         fakeFolder.remoteModifier().setModTime("A/a1", mtime);
+        remoteInfo.find("A/a1")->checksums = checksums;
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(nGET, 0);
+        QCOMPARE(nGET, expectedGET);
 
-        // Conflict: Same content, mtime, but weak server checksum
-        //           -> ignored in reconcile
-        mtime = mtime.addDays(1);
-        fakeFolder.localModifier().setContents("A/a1", 'D');
-        fakeFolder.localModifier().setModTime("A/a1", mtime);
-        fakeFolder.remoteModifier().setContents("A/a1", 'D');
-        fakeFolder.remoteModifier().setModTime("A/a1", mtime);
-        remoteInfo.find("A/a1")->checksums = "Adler32:bad";
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(nGET, 0);
-
-        // Conflict: Same content, mtime, but server checksum differs
-        //           -> downloaded
-        mtime = mtime.addDays(1);
-        fakeFolder.localModifier().setContents("A/a1", 'W');
-        fakeFolder.localModifier().setModTime("A/a1", mtime);
-        fakeFolder.remoteModifier().setContents("A/a1", 'W');
-        fakeFolder.remoteModifier().setModTime("A/a1", mtime);
-        remoteInfo.find("A/a1")->checksums = "SHA1:bad";
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(nGET, 1);
-
-        // Conflict: Same content, mtime, matching checksums
-        //           -> PropagateDownload, but it skips the download
-        mtime = mtime.addDays(1);
-        fakeFolder.localModifier().setContents("A/a1", 'C');
-        fakeFolder.localModifier().setModTime("A/a1", mtime);
-        fakeFolder.remoteModifier().setContents("A/a1", 'C');
-        fakeFolder.remoteModifier().setModTime("A/a1", mtime);
-        remoteInfo.find("A/a1")->checksums = "SHA1:56900fb1d337cf7237ff766276b9c1e8ce507427";
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(nGET, 1);
-
-        // Conflict: Same content, different mtime, matching checksums
-        //           -> PropagateDownload, but it skips the download
-        mtime = mtime.addDays(1);
-        fakeFolder.localModifier().setContents("A/a1", 'C');
-        fakeFolder.localModifier().setModTime("A/a1", mtime);
-        fakeFolder.remoteModifier().setContents("A/a1", 'C');
-        fakeFolder.remoteModifier().setModTime("A/a1", mtime.addDays(1));
-        remoteInfo.find("A/a1")->checksums = "SHA1:56900fb1d337cf7237ff766276b9c1e8ce507427";
-        QVERIFY(fakeFolder.syncOnce());
         // check that mtime in journal and filesystem agree
         QString a1path = fakeFolder.localPath() + "A/a1";
         SyncJournalFileRecord a1record;
         fakeFolder.syncJournal().getFileRecord(QByteArray("A/a1"), &a1record);
         QCOMPARE(a1record._modtime, (qint64)FileSystem::getModTime(a1path));
-        QCOMPARE(nGET, 1);
 
         // Extra sync reads from db, no difference
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(nGET, 1);
+        QCOMPARE(nGET, expectedGET);
     }
 
     /**
