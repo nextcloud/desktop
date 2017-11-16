@@ -108,7 +108,7 @@ On Release Day (for final release):
 15 minutes after after release:
 * [ ] Test all advertised download links to have the expected version
 * [ ] Check for build errors in OBS
-* [ ] disable publishing in OBS
+* [ ] disable publishing in OBS to prevent that accidential rebuilds hit the end users.
 
 A few days after the release (for final release)
 * [ ] Review changes in the release branch, merge back into master.
