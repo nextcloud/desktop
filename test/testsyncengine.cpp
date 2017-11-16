@@ -311,6 +311,22 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(nGET, 1);
 
+        // Conflict: Same content, different mtime, matching checksums
+        //           -> PropagateDownload, but it skips the download
+        mtime = mtime.addDays(1);
+        fakeFolder.localModifier().setContents("A/a1", 'C');
+        fakeFolder.localModifier().setModTime("A/a1", mtime);
+        fakeFolder.remoteModifier().setContents("A/a1", 'C');
+        fakeFolder.remoteModifier().setModTime("A/a1", mtime.addDays(1));
+        remoteInfo.find("A/a1")->checksums = "SHA1:56900fb1d337cf7237ff766276b9c1e8ce507427";
+        QVERIFY(fakeFolder.syncOnce());
+        // check that mtime in journal and filesystem agree
+        QString a1path = fakeFolder.localPath() + "A/a1";
+        SyncJournalFileRecord a1record;
+        fakeFolder.syncJournal().getFileRecord(QByteArray("A/a1"), &a1record);
+        QCOMPARE(a1record._modtime, (qint64)FileSystem::getModTime(a1path));
+        QCOMPARE(nGET, 1);
+
         // Extra sync reads from db, no difference
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(nGET, 1);

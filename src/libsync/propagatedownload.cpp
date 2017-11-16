@@ -357,13 +357,16 @@ void PropagateDownloadFile::start()
         }
     }
 
-    // If we have a conflict where size and mtime are identical,
+    // If we have a conflict where size of the file is unchanged,
     // compare the remote checksum to the local one.
     // Maybe it's not a real conflict and no download is necessary!
+    // If the hashes are collision safe and identical, we assume the content is too.
+    // For weak checksums, we only do that if the mtimes are also identical.
     if (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT
         && _item->_size == _item->_previousSize
-        && _item->_modtime == _item->_previousModtime
-        && !_item->_checksumHeader.isEmpty()) {
+        && !_item->_checksumHeader.isEmpty()
+        && (csync_is_collision_safe_hash(_item->_checksumHeader)
+            || _item->_modtime == _item->_previousModtime)) {
         qCDebug(lcPropagateDownload) << _item->_file << "may not need download, computing checksum";
         auto computeChecksum = new ComputeChecksum(this);
         computeChecksum->setChecksumType(parseChecksumHeaderType(_item->_checksumHeader));
@@ -379,8 +382,17 @@ void PropagateDownloadFile::start()
 void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
 {
     if (makeChecksumHeader(checksumType, checksum) == _item->_checksumHeader) {
+        // No download necessary, just update fs and journal metadata
         qCDebug(lcPropagateDownload) << _item->_file << "remote and local checksum match";
-        // No download necessary, just update metadata
+
+        // Apply the server mtime locally if necessary, ensuring the journal
+        // and local mtimes end up identical
+        auto fn = propagator()->getFilePath(_item->_file);
+        if (_item->_modtime != _item->_previousModtime) {
+            FileSystem::setModTime(fn, _item->_modtime);
+            emit propagator()->touchedFile(fn);
+        }
+        _item->_modtime = FileSystem::getModTime(fn);
         updateMetadata(/*isConflict=*/false);
         return;
     }
