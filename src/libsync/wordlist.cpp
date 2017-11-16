@@ -1,9 +1,24 @@
 #include "wordlist.h"
+#include <openssl/rand.h>
 
 namespace OCC {
 namespace WordList {
 
 #include <initializer_list>
+
+int getRandomNumber(int max) {
+    unsigned char d[8];
+    RAND_bytes(d, 8);
+
+    unsigned int num = 0;
+
+    for (int i = 0; i < 8; i++) {
+        num = num << 8;
+        num += d[i];
+    }
+
+    return num % max;
+}
 
 QStringList getRandomWords(int nr)
 {
@@ -2060,7 +2075,7 @@ QStringList getRandomWords(int nr)
 
     QStringList randomWords;
     while(randomWords.size() != nr) {
-        QString currWord = wordList.at(rand() % wordList.size());
+        QString currWord = wordList.at(getRandomNumber(wordList.size()));
         if (!randomWords.contains(currWord)) {
             randomWords.append(currWord);
         }
