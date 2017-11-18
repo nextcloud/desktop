@@ -2703,7 +2703,7 @@ Recomendámoslle que non o use.</translation>
         <location filename="../src/gui/sharelinkwidget.cpp" line="161"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="525"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
@@ -2743,7 +2743,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="526"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="542"/>

@@ -2714,7 +2714,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sharelinkwidget.cpp" line="161"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="525"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Διαγραφή</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
@@ -2754,7 +2754,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="526"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Ακύρωση</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="542"/>

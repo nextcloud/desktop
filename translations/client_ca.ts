@@ -2709,7 +2709,7 @@ No és aconsellada usar-la.</translation>
         <location filename="../src/gui/sharelinkwidget.cpp" line="161"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="525"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Esborra</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
@@ -2749,7 +2749,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="526"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancel·lar</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="542"/>

@@ -1962,7 +1962,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>The server reported the following error:</source>
-        <translation type="unfinished"/>
+        <translation>Le serveur a renvoyé l&apos;erreur suivante:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2715,7 +2715,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <location filename="../src/gui/sharelinkwidget.cpp" line="161"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="525"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
@@ -2745,17 +2745,18 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="518"/>
         <source>Confirm Link Share Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Confirmer la suppression du partage par lien</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="519"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Voulez-vous vraiment supprimer le partage par lien public&lt;i&gt;%1&lt;/i&gt;?
+&lt;p&gt;Note: Cette action ne peut être annulée.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="526"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Anuler</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="542"/>
@@ -2765,7 +2766,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="252"/>
         <source>Delete link share</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer le partage par lien</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="457"/>

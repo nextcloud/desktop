@@ -2714,7 +2714,7 @@ Uporaba ni priporočljiva.</translation>
         <location filename="../src/gui/sharelinkwidget.cpp" line="161"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="525"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Izbriši</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
@@ -2754,7 +2754,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="526"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Prekliči</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="542"/>

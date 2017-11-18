@@ -1958,7 +1958,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>The server reported the following error:</source>
-        <translation type="unfinished"/>
+        <translation>Сервер выдал следующую ошибку:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2711,7 +2711,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sharelinkwidget.cpp" line="161"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="525"/>
         <source>Delete</source>
-        <translation type="unfinished"/>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
@@ -2741,17 +2741,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="518"/>
         <source>Confirm Link Share Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Подтвердите удаление доступа по ссылке</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="519"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Вы действтиельно хотите удалить доступ по общей ссылке &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Внимание: это действие будет невозможно отменить.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="526"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="542"/>
@@ -2761,7 +2761,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="252"/>
         <source>Delete link share</source>
-        <translation type="unfinished"/>
+        <translation>Удалить доступ по ссылке</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="457"/>
