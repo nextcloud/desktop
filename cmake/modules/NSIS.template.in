@@ -603,6 +603,35 @@ Section Uninstall
       Abort $UNINSTALL_ABORT
    owncloud_installed:
 
+   ; Delete Navigation Pane entries added for Windows 10.
+   ; On 64bit Windows, the client will be writing to the 64bit registry.
+   ${If} ${RunningX64}
+      SetRegView 64
+   ${EndIf}
+   StrCpy $0 0
+   loop:
+      ; Look at every registered explorer namespace for HKCU and check if it was added by our application
+      ; (we write to a custom "ApplicationName" value there).
+      EnumRegKey $1 HKCU "Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace" $0
+      StrCmp $1 "" done
+
+      ReadRegStr $R0 HKCU "Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\$1" "ApplicationName"
+      StrCmp $R0 "${APPLICATION_NAME}" deleteClsid
+      ; Increment the index when not deleting the enumerated key.
+      IntOp $0 $0 + 1
+      goto loop
+
+      deleteClsid:
+         DetailPrint "Removing Navigation Pane CLSID $1"
+         ; Should match FolderMan::updateCloudStorageRegistry
+         DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Explorer\Desktop\NameSpace\$1"
+         DeleteRegKey HKCU "Software\Classes\CLSID\$1"
+         DeleteRegValue HKCU "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel" $1
+         goto loop
+   done:
+   ; Go back to the 32bit registry.
+   SetRegView lastused
+
    ;Delete registry keys.
    DeleteRegValue HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "VersionBuild"
    DeleteRegValue HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}" "VersionMajor"

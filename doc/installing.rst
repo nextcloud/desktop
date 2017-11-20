@@ -3,7 +3,7 @@ Installing the Desktop Synchronization Client
 =============================================
 
 You can download the  latest version of the ownCloud Desktop Synchronization 
-Client from the `ownCloud download page <https://owncloud.org/install/>`_. 
+Client from the `ownCloud download page`_. 
 There are clients for Linux, Mac OS X, and Microsoft Windows.
 
 Installation on Mac OS X and Windows is the same as for any software 
@@ -23,6 +23,20 @@ KWallet, so that the sync client can login automatically.
 
 You will also find links to source code archives and older versions on the 
 download page.
+
+System Requirements
+----------------------------------
+
+- Windows 7+
+- Mac OS X 10.7+ (**64-bit only**)
+- CentOS 6 & 7 (64-bit only)
+- Debian 7.0 & 8.0 & 9.0
+- Fedora 24 & 25 & 26
+- Ubuntu 16.04 & 16.10 & 17.04
+- openSUSE Leap 42.1 & 42.2 & 42.3
+
+.. note::
+   For Linux distributions, we support, if technically feasible, the latest 2 versions per platform and the previous `LTS`_.
 
 Installation Wizard
 -------------------
@@ -58,3 +72,7 @@ synchronizing your files.
     Web GUI, and one to open your local ownCloud folder
 
 Click the Finish button, and you're all done. 
+
+.. Links
+   
+.. _ownCloud download page: https://owncloud.com/download/#desktop-clients

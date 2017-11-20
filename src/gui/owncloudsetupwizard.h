@@ -49,12 +49,16 @@ signals:
     void ownCloudWizardDone(int);
 
 private slots:
-    void slotDetermineAuthType(const QString &);
+    void slotCheckServer(const QString &);
     void slotSystemProxyLookupDone(const QNetworkProxy &proxy);
-    void slotContinueDetermineAuth();
-    void slotOwnCloudFoundAuth(const QUrl &, const QJsonObject &);
-    void slotNoOwnCloudFoundAuth(QNetworkReply *reply);
-    void slotNoOwnCloudFoundAuthTimeout(const QUrl &url);
+
+    void slotFindServer();
+    void slotFindServerBehindRedirect();
+    void slotFoundServer(const QUrl &, const QJsonObject &);
+    void slotNoServerFound(QNetworkReply *reply);
+    void slotNoServerFoundTimeout(const QUrl &url);
+
+    void slotDetermineAuthType();
 
     void slotConnectToOCUrl(const QString &);
     void slotAuthError();

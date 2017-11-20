@@ -58,7 +58,7 @@ public:
     bool getFileRecord(const QString &filename, SyncJournalFileRecord *rec) { return getFileRecord(filename.toUtf8(), rec); }
     bool getFileRecord(const QByteArray &filename, SyncJournalFileRecord *rec);
     bool getFileRecordByInode(quint64 inode, SyncJournalFileRecord *rec);
-    bool getFileRecordByFileId(const QByteArray &fileId, SyncJournalFileRecord *rec);
+    bool getFileRecordsByFileId(const QByteArray &fileId, const std::function<void(const SyncJournalFileRecord &)> &rowCallback);
     bool getFilesBelowPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
     bool setFileRecord(const SyncJournalFileRecord &record);
 
@@ -244,6 +244,7 @@ private:
     QScopedPointer<SqlQuery> _getFileRecordQueryByInode;
     QScopedPointer<SqlQuery> _getFileRecordQueryByFileId;
     QScopedPointer<SqlQuery> _getFilesBelowPathQuery;
+    QScopedPointer<SqlQuery> _getAllFilesQuery;
     QScopedPointer<SqlQuery> _setFileRecordQuery;
     QScopedPointer<SqlQuery> _setFileRecordChecksumQuery;
     QScopedPointer<SqlQuery> _setFileRecordLocalMetadataQuery;

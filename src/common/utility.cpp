@@ -579,7 +579,7 @@ bool Utility::isConflictFile(const char *name)
 
 bool Utility::shouldUploadConflictFiles()
 {
-    static bool uploadConflictFiles = qgetenv("OWNCLOUD_UPLOAD_CONFLICT_FILES").toInt() != 0;
+    static bool uploadConflictFiles = qEnvironmentVariableIntValue("OWNCLOUD_UPLOAD_CONFLICT_FILES") != 0;
     return uploadConflictFiles;
 }
 

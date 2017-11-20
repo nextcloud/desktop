@@ -43,6 +43,9 @@ class GETFileJob : public AbstractNetworkJob
     bool _hasEmittedFinishedSignal;
     time_t _lastModified;
 
+    /// Will be set to true once we've seen a 2xx response header
+    bool _saveBodyToFile = false;
+
 public:
     // DOES NOT take ownership of the device.
     explicit GETFileJob(AccountPtr account, const QString &path, QFile *device,
@@ -75,6 +78,8 @@ public:
             return true; // discard
         }
     }
+
+    void newReplyHook(QNetworkReply *reply) override;
 
     void setBandwidthManager(BandwidthManager *bwm);
     void setChoked(bool c);
@@ -185,7 +190,7 @@ private slots:
     /// Called when it's time to update the db metadata
     void updateMetadata(bool isConflict);
 
-    void abort() Q_DECL_OVERRIDE;
+    void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE;
     void slotDownloadProgress(qint64, qint64);
     void slotChecksumFail(const QString &errMsg);
 

@@ -36,6 +36,7 @@
 #include <QNetworkProxy>
 
 #define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
+#define DEFAULT_FULL_LOCAL_DISCOVERY_INTERVAL (60 * 60 * 1000) // 1 hour
 #define DEFAULT_MAX_LOG_LINES 20000
 
 namespace OCC {
@@ -45,11 +46,13 @@ Q_LOGGING_CATEGORY(lcConfigFile, "sync.configfile", QtInfoMsg)
 //static const char caCertsKeyC[] = "CaCertificates"; only used from account.cpp
 static const char remotePollIntervalC[] = "remotePollInterval";
 static const char forceSyncIntervalC[] = "forceSyncInterval";
+static const char fullLocalDiscoveryIntervalC[] = "fullLocalDiscoveryInterval";
 static const char notificationRefreshIntervalC[] = "notificationRefreshInterval";
 static const char monoIconsC[] = "monoIcons";
 static const char promptDeleteC[] = "promptDeleteAllFiles";
 static const char crashReporterC[] = "crashReporter";
 static const char optionalDesktopNoficationsC[] = "optionalDesktopNotifications";
+static const char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
 static const char updateCheckIntervalC[] = "updateCheckInterval";
 static const char geometryC[] = "geometry";
@@ -120,6 +123,26 @@ bool ConfigFile::optionalDesktopNotifications() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(optionalDesktopNoficationsC), true).toBool();
+}
+
+bool ConfigFile::showInExplorerNavigationPane() const
+{
+    const bool defaultValue =
+#ifdef Q_OS_WIN
+        QSysInfo::windowsVersion() >= QSysInfo::WV_WINDOWS10
+#else
+        false
+#endif
+        ;
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(showInExplorerNavigationPaneC), defaultValue).toBool();
+}
+
+void ConfigFile::setShowInExplorerNavigationPane(bool show)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(showInExplorerNavigationPaneC), show);
+    settings.sync();
 }
 
 int ConfigFile::timeout() const
@@ -404,6 +427,13 @@ quint64 ConfigFile::forceSyncInterval(const QString &connection) const
         interval = pollInterval;
     }
     return interval;
+}
+
+qint64 ConfigFile::fullLocalDiscoveryInterval() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.beginGroup(defaultConnection());
+    return settings.value(QLatin1String(fullLocalDiscoveryIntervalC), DEFAULT_FULL_LOCAL_DISCOVERY_INTERVAL).toLongLong();
 }
 
 quint64 ConfigFile::notificationRefreshInterval(const QString &connection) const

@@ -22,6 +22,7 @@
 
 #include "folder.h"
 #include "folderwatcher.h"
+#include "navigationpanehelper.h"
 #include "syncfileitem.h"
 
 class TestFolderMan;
@@ -109,15 +110,13 @@ public:
 
     static SyncResult accountStatus(const QList<Folder *> &folders);
 
-    void removeMonitorPath(const QString &alias, const QString &path);
-    void addMonitorPath(const QString &alias, const QString &path);
-
     // Escaping of the alias which is used in QSettings AND the file
     // system, thus need to be escaped.
     static QString escapeAlias(const QString &);
     static QString unescapeAlias(const QString &);
 
     SocketApi *socketApi();
+    NavigationPaneHelper &navigationPaneHelper() { return _navigationPaneHelper; }
 
     /**
      * Check if @a path is a valid path for a new folder considering the already sync'ed items.
@@ -284,7 +283,9 @@ private:
     // finds all folder configuration files
     // and create the folders
     QString getBackupName(QString fullPathName) const;
-    void registerFolderMonitor(Folder *folder);
+
+    // makes the folder known to the socket api
+    void registerFolderWithSocketApi(Folder *folder);
 
     // restarts the application (Linux only)
     void restartApplication();
@@ -297,9 +298,6 @@ private:
     Folder *_currentSyncFolder;
     QPointer<Folder> _lastSyncFolder;
     bool _syncEnabled;
-
-    /// Watching for file changes in folders
-    QMap<QString, FolderWatcher *> _folderWatchers;
 
     /// Starts regular etag query jobs
     QTimer _etagPollTimer;
@@ -319,6 +317,7 @@ private:
     QTimer _startScheduledSyncTimer;
 
     QScopedPointer<SocketApi> _socketApi;
+    NavigationPaneHelper _navigationPaneHelper;
 
     bool _appRestartRequired;
 

@@ -155,14 +155,15 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
 
     // Prepare sharing menu
 
-    _shareLinkMenu = new QMenu(this);
-    connect(_shareLinkMenu, &QMenu::triggered,
-        this, &ShareLinkWidget::slotShareLinkActionTriggered);
-    _openLinkAction = _shareLinkMenu->addAction(tr("Open link in browser"));
-    _copyLinkAction = _shareLinkMenu->addAction(tr("Copy link to clipboard"));
-    _copyDirectLinkAction = _shareLinkMenu->addAction(tr("Copy link to clipboard (direct download)"));
-    _emailLinkAction = _shareLinkMenu->addAction(tr("Send link by email"));
-    _emailDirectLinkAction = _shareLinkMenu->addAction(tr("Send link by email (direct download)"));
+    _linkContextMenu = new QMenu(this);
+    connect(_linkContextMenu, &QMenu::triggered,
+        this, &ShareLinkWidget::slotLinkContextMenuActionTriggered);
+    _deleteLinkAction = _linkContextMenu->addAction(tr("Delete"));
+    _openLinkAction = _linkContextMenu->addAction(tr("Open link in browser"));
+    _copyLinkAction = _linkContextMenu->addAction(tr("Copy link to clipboard"));
+    _copyDirectLinkAction = _linkContextMenu->addAction(tr("Copy link to clipboard (direct download)"));
+    _emailLinkAction = _linkContextMenu->addAction(tr("Send link by email"));
+    _emailDirectLinkAction = _linkContextMenu->addAction(tr("Send link by email (direct download)"));
 
     /*
      * Create the share manager and connect it properly
@@ -231,28 +232,24 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         table->insertRow(row);
 
         auto nameItem = new QTableWidgetItem;
-        QString name = linkShare->getName();
-        if (name.isEmpty()) {
-            if (!_namesSupported) {
-                name = tr("Public link");
-                nameItem->setFlags(nameItem->flags() & ~Qt::ItemIsEditable);
-            } else {
-                name = linkShare->getToken();
-            }
+        auto name = shareName(*linkShare);
+        if (!_namesSupported) {
+            nameItem->setFlags(nameItem->flags() & ~Qt::ItemIsEditable);
         }
         nameItem->setText(name);
         nameItem->setData(Qt::UserRole, QVariant::fromValue(linkShare));
         table->setItem(row, 0, nameItem);
 
-        auto shareButton = new QToolButton;
-        shareButton->setText("...");
-        shareButton->setProperty(propertyShareC, QVariant::fromValue(linkShare));
-        connect(shareButton, &QAbstractButton::clicked, this, &ShareLinkWidget::slotShareLinkButtonClicked);
-        table->setCellWidget(row, 1, shareButton);
+        auto dotdotdotButton = new QToolButton;
+        dotdotdotButton->setText("...");
+        dotdotdotButton->setProperty(propertyShareC, QVariant::fromValue(linkShare));
+        connect(dotdotdotButton, &QAbstractButton::clicked, this, &ShareLinkWidget::slotContextMenuButtonClicked);
+        table->setCellWidget(row, 1, dotdotdotButton);
 
         auto deleteButton = new QToolButton;
         deleteButton->setIcon(deleteIcon);
         deleteButton->setProperty(propertyShareC, QVariant::fromValue(linkShare));
+        deleteButton->setToolTip(tr("Delete link share"));
         connect(deleteButton, &QAbstractButton::clicked, this, &ShareLinkWidget::slotDeleteShareClicked);
         table->setCellWidget(row, 2, deleteButton);
 
@@ -514,22 +511,56 @@ void ShareLinkWidget::openShareLink(const QUrl &url)
     Utility::openBrowser(url, this);
 }
 
-void ShareLinkWidget::slotShareLinkButtonClicked()
+void ShareLinkWidget::confirmAndDeleteShare(const QSharedPointer<LinkShare> &share)
+{
+    auto messageBox = new QMessageBox(
+        QMessageBox::Question,
+        tr("Confirm Link Share Deletion"),
+        tr("<p>Do you really want to delete the public link share <i>%1</i>?</p>"
+           "<p>Note: This action cannot be undone.</p>")
+            .arg(shareName(*share)),
+        QMessageBox::NoButton,
+        this);
+    QPushButton *yesButton =
+        messageBox->addButton(tr("Delete"), QMessageBox::YesRole);
+    messageBox->addButton(tr("Cancel"), QMessageBox::NoRole);
+
+    connect(messageBox, &QMessageBox::finished, this,
+        [messageBox, yesButton, share]() {
+        if (messageBox->clickedButton() == yesButton)
+            share->deleteShare();
+    });
+    messageBox->open();
+}
+
+QString ShareLinkWidget::shareName(const LinkShare &share) const
+{
+    QString name = share.getName();
+    if (!name.isEmpty())
+        return name;
+    if (!_namesSupported)
+        return tr("Public link");
+    return share.getToken();
+}
+
+void ShareLinkWidget::slotContextMenuButtonClicked()
 {
     auto share = sender()->property(propertyShareC).value<QSharedPointer<LinkShare>>();
     bool downloadEnabled = share->getShowFileListing();
     _copyDirectLinkAction->setVisible(downloadEnabled);
     _emailDirectLinkAction->setVisible(downloadEnabled);
 
-    _shareLinkMenu->setProperty(propertyShareC, QVariant::fromValue(share));
-    _shareLinkMenu->exec(QCursor::pos());
+    _linkContextMenu->setProperty(propertyShareC, QVariant::fromValue(share));
+    _linkContextMenu->exec(QCursor::pos());
 }
 
-void ShareLinkWidget::slotShareLinkActionTriggered(QAction *action)
+void ShareLinkWidget::slotLinkContextMenuActionTriggered(QAction *action)
 {
     auto share = sender()->property(propertyShareC).value<QSharedPointer<LinkShare>>();
 
-    if (action == _copyLinkAction) {
+    if (action == _deleteLinkAction) {
+        confirmAndDeleteShare(share);
+    } else if (action == _copyLinkAction) {
         QApplication::clipboard()->setText(share->getLink().toString());
     } else if (action == _copyDirectLinkAction) {
         QApplication::clipboard()->setText(share->getDirectDownloadLink().toString());
@@ -545,7 +576,7 @@ void ShareLinkWidget::slotShareLinkActionTriggered(QAction *action)
 void ShareLinkWidget::slotDeleteShareClicked()
 {
     auto share = sender()->property(propertyShareC).value<QSharedPointer<LinkShare>>();
-    share->deleteShare();
+    confirmAndDeleteShare(share);
 }
 
 void ShareLinkWidget::slotPermissionsCheckboxClicked()

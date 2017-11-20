@@ -219,6 +219,17 @@
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_10">
+        <item>
+         <widget class="QCheckBox" name="showInExplorerNavigationPaneCheckBox">
+          <property name="text">
+           <string>Show sync folders in &amp;Explorer's Navigation Pane</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_9">
         <item>
          <widget class="QCheckBox" name="crashreporterCheckBox">

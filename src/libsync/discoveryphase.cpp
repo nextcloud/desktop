@@ -17,6 +17,7 @@
 #include "account.h"
 #include "theme.h"
 #include "common/asserts.h"
+#include "common/checksums.h"
 
 #include <csync_private.h>
 #include <csync_rename.h>
@@ -298,28 +299,6 @@ void DiscoverySingleDirectoryJob::abort()
     if (_lsColJob && _lsColJob->reply()) {
         _lsColJob->reply()->abort();
     }
-}
-
-/**
- * Returns the highest-quality checksum in a 'checksums'
- * property retrieved from the server.
- *
- * Example: "ADLER32:1231 SHA1:ab124124 MD5:2131affa21"
- *       -> "SHA1:ab124124"
- */
-static QByteArray findBestChecksum(const QByteArray &checksums)
-{
-    int i = 0;
-    // The order of the searches here defines the preference ordering.
-    if (-1 != (i = checksums.indexOf("SHA1:"))
-        || -1 != (i = checksums.indexOf("MD5:"))
-        || -1 != (i = checksums.indexOf("Adler32:"))) {
-        // Now i is the start of the best checksum
-        // Grab it until the next space or end of string.
-        auto checksum = checksums.mid(i);
-        return checksum.mid(0, checksum.indexOf(" "));
-    }
-    return QByteArray();
 }
 
 static std::unique_ptr<csync_file_stat_t> propertyMapToFileStat(const QMap<QString, QString> &map)

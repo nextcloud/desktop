@@ -16,7 +16,7 @@ bool itemDidComplete(const QSignalSpy &spy, const QString &path)
     for(const QList<QVariant> &args : spy) {
         auto item = args[0].value<SyncFileItemPtr>();
         if (item->destination() == path)
-            return true;
+            return item->_instruction != CSYNC_INSTRUCTION_NONE && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA;
     }
     return false;
 }
@@ -141,98 +141,6 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
-    void testRemoteChangeInMovedFolder() {
-        // issue #5192
-        FakeFolder fakeFolder{FileInfo{ QString(), {
-            FileInfo { QStringLiteral("folder"), {
-                FileInfo{ QStringLiteral("folderA"), { { QStringLiteral("file.txt"), 400 } } },
-                QStringLiteral("folderB")
-            }
-        }}}};
-
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-
-        // Edit a file in a moved directory.
-        fakeFolder.remoteModifier().setContents("folder/folderA/file.txt", 'a');
-        fakeFolder.remoteModifier().rename("folder/folderA", "folder/folderB/folderA");
-        fakeFolder.syncOnce();
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        auto oldState = fakeFolder.currentLocalState();
-        QVERIFY(oldState.find("folder/folderB/folderA/file.txt"));
-        QVERIFY(!oldState.find("folder/folderA/file.txt"));
-
-        // This sync should not remove the file
-        fakeFolder.syncOnce();
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.currentLocalState(), oldState);
-
-    }
-
-    void testSelectiveSyncModevFolder() {
-        // issue #5224
-        FakeFolder fakeFolder{FileInfo{ QString(), {
-            FileInfo { QStringLiteral("parentFolder"), {
-                FileInfo{ QStringLiteral("subFolderA"), { { QStringLiteral("fileA.txt"), 400 } } },
-                FileInfo{ QStringLiteral("subFolderB"), { { QStringLiteral("fileB.txt"), 400 } } }
-            }
-        }}}};
-
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        auto expectedServerState = fakeFolder.currentRemoteState();
-
-        // Remove subFolderA with selectiveSync:
-        fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
-                                                                {"parentFolder/subFolderA/"});
-        fakeFolder.syncEngine().journal()->avoidReadFromDbOnNextSync(QByteArrayLiteral("parentFolder/subFolderA/"));
-
-        fakeFolder.syncOnce();
-
-        {
-            // Nothing changed on the server
-            QCOMPARE(fakeFolder.currentRemoteState(), expectedServerState);
-            // The local state should not have subFolderA
-            auto remoteState = fakeFolder.currentRemoteState();
-            remoteState.remove("parentFolder/subFolderA");
-            QCOMPARE(fakeFolder.currentLocalState(), remoteState);
-        }
-
-        // Rename parentFolder on the server
-        fakeFolder.remoteModifier().rename("parentFolder", "parentFolderRenamed");
-        expectedServerState = fakeFolder.currentRemoteState();
-        fakeFolder.syncOnce();
-
-        {
-            QCOMPARE(fakeFolder.currentRemoteState(), expectedServerState);
-            auto remoteState = fakeFolder.currentRemoteState();
-            // The subFolderA should still be there on the server.
-            QVERIFY(remoteState.find("parentFolderRenamed/subFolderA/fileA.txt"));
-            // But not on the client because of the selective sync
-            remoteState.remove("parentFolderRenamed/subFolderA");
-            QCOMPARE(fakeFolder.currentLocalState(), remoteState);
-        }
-
-        // Rename it again, locally this time.
-        fakeFolder.localModifier().rename("parentFolderRenamed", "parentThirdName");
-        fakeFolder.syncOnce();
-
-        {
-            auto remoteState = fakeFolder.currentRemoteState();
-            // The subFolderA should still be there on the server.
-            QVERIFY(remoteState.find("parentThirdName/subFolderA/fileA.txt"));
-            // But not on the client because of the selective sync
-            remoteState.remove("parentThirdName/subFolderA");
-            QCOMPARE(fakeFolder.currentLocalState(), remoteState);
-
-            expectedServerState = fakeFolder.currentRemoteState();
-            QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
-            fakeFolder.syncOnce(); // This sync should do nothing
-            QCOMPARE(completeSpy.count(), 0);
-
-            QCOMPARE(fakeFolder.currentRemoteState(), expectedServerState);
-            QCOMPARE(fakeFolder.currentLocalState(), remoteState);
-        }
-    }
-
     void testSelectiveSyncBug() {
         // issue owncloud/enterprise#1965: files from selective-sync ignored
         // folders are uploaded anyway is some circumstances.
@@ -343,8 +251,53 @@ private slots:
         }
     }
 
+    void testFakeConflict_data()
+    {
+        QTest::addColumn<bool>("sameMtime");
+        QTest::addColumn<QByteArray>("checksums");
+
+        QTest::addColumn<int>("expectedGET");
+
+        QTest::newRow("Same mtime, but no server checksum -> ignored in reconcile")
+            << true << QByteArray()
+            << 0;
+
+        QTest::newRow("Same mtime, weak server checksum differ -> downloaded")
+            << true << QByteArray("Adler32:bad")
+            << 1;
+
+        QTest::newRow("Same mtime, matching weak checksum -> skipped")
+            << true << QByteArray("Adler32:2a2010d")
+            << 0;
+
+        QTest::newRow("Same mtime, strong server checksum differ -> downloaded")
+            << true << QByteArray("SHA1:bad")
+            << 1;
+
+        QTest::newRow("Same mtime, matching strong checksum -> skipped")
+            << true << QByteArray("SHA1:56900fb1d337cf7237ff766276b9c1e8ce507427")
+            << 0;
+
+
+        QTest::newRow("mtime changed, but no server checksum -> download")
+            << false << QByteArray()
+            << 1;
+
+        QTest::newRow("mtime changed, weak checksum match -> download anyway")
+            << false << QByteArray("Adler32:2a2010d")
+            << 1;
+
+        QTest::newRow("mtime changed, strong checksum match -> skip")
+            << false << QByteArray("SHA1:56900fb1d337cf7237ff766276b9c1e8ce507427")
+            << 0;
+    }
+
     void testFakeConflict()
     {
+        QFETCH(bool, sameMtime);
+        QFETCH(QByteArray, checksums);
+        QFETCH(int, expectedGET);
+
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
 
         int nGET = 0;
@@ -361,51 +314,25 @@ private slots:
         auto mtime = QDateTime::currentDateTimeUtc().addDays(-4);
         mtime.setMSecsSinceEpoch(mtime.toMSecsSinceEpoch() / 1000 * 1000);
 
-        // Conflict: Same content, mtime, but no server checksum
-        //           -> ignored in reconcile
         fakeFolder.localModifier().setContents("A/a1", 'C');
         fakeFolder.localModifier().setModTime("A/a1", mtime);
         fakeFolder.remoteModifier().setContents("A/a1", 'C');
+        if (!sameMtime)
+            mtime = mtime.addDays(1);
         fakeFolder.remoteModifier().setModTime("A/a1", mtime);
+        remoteInfo.find("A/a1")->checksums = checksums;
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(nGET, 0);
+        QCOMPARE(nGET, expectedGET);
 
-        // Conflict: Same content, mtime, but weak server checksum
-        //           -> ignored in reconcile
-        mtime = mtime.addDays(1);
-        fakeFolder.localModifier().setContents("A/a1", 'D');
-        fakeFolder.localModifier().setModTime("A/a1", mtime);
-        fakeFolder.remoteModifier().setContents("A/a1", 'D');
-        fakeFolder.remoteModifier().setModTime("A/a1", mtime);
-        remoteInfo.find("A/a1")->checksums = "Adler32:bad";
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(nGET, 0);
-
-        // Conflict: Same content, mtime, but server checksum differs
-        //           -> downloaded
-        mtime = mtime.addDays(1);
-        fakeFolder.localModifier().setContents("A/a1", 'W');
-        fakeFolder.localModifier().setModTime("A/a1", mtime);
-        fakeFolder.remoteModifier().setContents("A/a1", 'W');
-        fakeFolder.remoteModifier().setModTime("A/a1", mtime);
-        remoteInfo.find("A/a1")->checksums = "SHA1:bad";
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(nGET, 1);
-
-        // Conflict: Same content, mtime, matching checksums
-        //           -> PropagateDownload, but it skips the download
-        mtime = mtime.addDays(1);
-        fakeFolder.localModifier().setContents("A/a1", 'C');
-        fakeFolder.localModifier().setModTime("A/a1", mtime);
-        fakeFolder.remoteModifier().setContents("A/a1", 'C');
-        fakeFolder.remoteModifier().setModTime("A/a1", mtime);
-        remoteInfo.find("A/a1")->checksums = "SHA1:56900fb1d337cf7237ff766276b9c1e8ce507427";
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(nGET, 1);
+        // check that mtime in journal and filesystem agree
+        QString a1path = fakeFolder.localPath() + "A/a1";
+        SyncJournalFileRecord a1record;
+        fakeFolder.syncJournal().getFileRecord(QByteArray("A/a1"), &a1record);
+        QCOMPARE(a1record._modtime, (qint64)FileSystem::getModTime(a1path));
 
         // Extra sync reads from db, no difference
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(nGET, 1);
+        QCOMPARE(nGET, expectedGET);
     }
 
     /**
@@ -536,82 +463,162 @@ private slots:
         QCOMPARE(n507, 3);
     }
 
-    void testLocalMove()
+    // Checks whether downloads with bad checksums are accepted
+    void testChecksumValidation()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        QObject parent;
 
-        int nPUT = 0;
-        int nDELETE = 0;
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &) {
-            if (op == QNetworkAccessManager::PutOperation)
-                ++nPUT;
-            if (op == QNetworkAccessManager::DeleteOperation)
-                ++nDELETE;
+        QByteArray checksumValue;
+        QByteArray contentMd5Value;
+
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::GetOperation) {
+                auto reply = new FakeGetReply(fakeFolder.remoteModifier(), op, request, &parent);
+                if (!checksumValue.isNull())
+                    reply->setRawHeader("OC-Checksum", checksumValue);
+                if (!contentMd5Value.isNull())
+                    reply->setRawHeader("Content-MD5", contentMd5Value);
+                return reply;
+            }
             return nullptr;
         });
 
-        // For directly editing the remote checksum
-        FileInfo &remoteInfo = fakeFolder.remoteModifier();
-
-        // Simple move causing a remote rename
-        fakeFolder.localModifier().rename("A/a1", "A/a1m");
+        // Basic case
+        fakeFolder.remoteModifier().create("A/a3", 16, 'A');
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
-        QCOMPARE(nPUT, 0);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        // Move-and-change, causing a upload and delete
-        fakeFolder.localModifier().rename("A/a2", "A/a2m");
-        fakeFolder.localModifier().appendByte("A/a2m");
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
-        QCOMPARE(nPUT, 1);
-        QCOMPARE(nDELETE, 1);
+        // Bad OC-Checksum
+        checksumValue = "SHA1:bad";
+        fakeFolder.remoteModifier().create("A/a4", 16, 'A');
+        QVERIFY(!fakeFolder.syncOnce());
 
-        // Move-and-change, mtime+content only
-        fakeFolder.localModifier().rename("B/b1", "B/b1m");
-        fakeFolder.localModifier().setContents("B/b1m", 'C');
+        // Good OC-Checksum
+        checksumValue = "SHA1:19b1928d58a2030d08023f3d7054516dbc186f20"; // printf 'A%.0s' {1..16} | sha1sum -
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
-        QCOMPARE(nPUT, 2);
-        QCOMPARE(nDELETE, 2);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        checksumValue = QByteArray();
 
-        // Move-and-change, size+content only
-        auto mtime = fakeFolder.remoteModifier().find("B/b2")->lastModified;
-        fakeFolder.localModifier().rename("B/b2", "B/b2m");
-        fakeFolder.localModifier().appendByte("B/b2m");
-        fakeFolder.localModifier().setModTime("B/b2m", mtime);
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
-        QCOMPARE(nPUT, 3);
-        QCOMPARE(nDELETE, 3);
+        // Bad Content-MD5
+        contentMd5Value = "bad";
+        fakeFolder.remoteModifier().create("A/a5", 16, 'A');
+        QVERIFY(!fakeFolder.syncOnce());
 
-        // Move-and-change, content only -- c1 has no checksum, so we fail to detect this!
-        mtime = fakeFolder.remoteModifier().find("C/c1")->lastModified;
-        fakeFolder.localModifier().rename("C/c1", "C/c1m");
-        fakeFolder.localModifier().setContents("C/c1m", 'C');
-        fakeFolder.localModifier().setModTime("C/c1m", mtime);
+        // Good Content-MD5
+        contentMd5Value = "d8a73157ce10cd94a91c2079fc9a92c8"; // printf 'A%.0s' {1..16} | md5sum -
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(nPUT, 3);
-        QCOMPARE(nDELETE, 3);
-        QVERIFY(!(fakeFolder.currentLocalState() == remoteInfo));
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        // cleanup, and upload a file that will have a checksum in the db
-        fakeFolder.localModifier().remove("C/c1m");
-        fakeFolder.localModifier().insert("C/c3");
+        // Invalid OC-Checksum is ignored
+        checksumValue = "garbage";
+        // contentMd5Value is still good
+        fakeFolder.remoteModifier().create("A/a6", 16, 'A');
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
-        QCOMPARE(nPUT, 4);
-        QCOMPARE(nDELETE, 4);
+        contentMd5Value = "bad";
+        fakeFolder.remoteModifier().create("A/a7", 16, 'A');
+        QVERIFY(!fakeFolder.syncOnce());
+        contentMd5Value.clear();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        // Move-and-change, content only, this time while having a checksum
-        mtime = fakeFolder.remoteModifier().find("C/c3")->lastModified;
-        fakeFolder.localModifier().rename("C/c3", "C/c3m");
-        fakeFolder.localModifier().setContents("C/c3m", 'C');
-        fakeFolder.localModifier().setModTime("C/c3m", mtime);
+        // OC-Checksum contains Unsupported checksums
+        checksumValue = "Unsupported:XXXX SHA1:invalid Invalid:XxX";
+        fakeFolder.remoteModifier().create("A/a8", 16, 'A');
+        QVERIFY(!fakeFolder.syncOnce()); // Since the supported SHA1 checksum is invalid, no download
+        checksumValue =  "Unsupported:XXXX SHA1:19b1928d58a2030d08023f3d7054516dbc186f20 Invalid:XxX";
+        QVERIFY(fakeFolder.syncOnce()); // The supported SHA1 checksum is valid now, so the file are downloaded
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    // Tests the behavior of invalid filename detection
+    void testInvalidFilenameRegex()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+
+        // For current servers, no characters are forbidden
+        fakeFolder.syncEngine().account()->setServerVersion("10.0.0");
+        fakeFolder.localModifier().insert("A/\\:?*\"<>|.txt");
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(nPUT, 5);
-        QCOMPARE(nDELETE, 5);
-        QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // For legacy servers, some characters were forbidden by the client
+        fakeFolder.syncEngine().account()->setServerVersion("8.0.0");
+        fakeFolder.localModifier().insert("B/\\:?*\"<>|.txt");
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.currentRemoteState().find("B/\\:?*\"<>|.txt"));
+
+        // We can override that by setting the capability
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ { "invalidFilenameRegex", "" } } } });
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Check that new servers also accept the capability
+        fakeFolder.syncEngine().account()->setServerVersion("10.0.0");
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ { "invalidFilenameRegex", "my[fgh]ile" } } } });
+        fakeFolder.localModifier().insert("C/myfile.txt");
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.currentRemoteState().find("C/myfile.txt"));
+    }
+
+    // Check correct behavior when local discovery is partially drawn from the db
+    void testLocalDiscoveryStyle()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+
+        // More subdirectories are useful for testing
+        fakeFolder.localModifier().mkdir("A/X");
+        fakeFolder.localModifier().mkdir("A/Y");
+        fakeFolder.localModifier().insert("A/X/x1");
+        fakeFolder.localModifier().insert("A/Y/y1");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Test begins
+        fakeFolder.localModifier().insert("A/a3");
+        fakeFolder.localModifier().insert("A/X/x2");
+        fakeFolder.localModifier().insert("A/Y/y2");
+        fakeFolder.localModifier().insert("B/b3");
+        fakeFolder.remoteModifier().insert("C/c3");
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, { "A/X" });
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentRemoteState().find("A/a3"));
+        QVERIFY(fakeFolder.currentRemoteState().find("A/X/x2"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("A/Y/y2"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("B/b3"));
+        QVERIFY(fakeFolder.currentLocalState().find("C/c3"));
+        QCOMPARE(fakeFolder.syncEngine().lastLocalDiscoveryStyle(), LocalDiscoveryStyle::DatabaseAndFilesystem);
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.syncEngine().lastLocalDiscoveryStyle(), LocalDiscoveryStyle::FilesystemOnly);
+    }
+
+    void testDiscoveryHiddenFile()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // We can't depend on currentLocalState for hidden files since
+        // it should rightfully skip things like download temporaries
+        auto localFileExists = [&](QString name) {
+            return QFileInfo(fakeFolder.localPath() + name).exists();
+        };
+
+        fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
+        fakeFolder.remoteModifier().insert("A/.hidden");
+        fakeFolder.localModifier().insert("B/.hidden");
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!localFileExists("A/.hidden"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("B/.hidden"));
+
+        fakeFolder.syncEngine().setIgnoreHiddenFiles(false);
+        fakeFolder.syncJournal().forceRemoteDiscoveryNextSync();
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(localFileExists("A/.hidden"));
+        QVERIFY(fakeFolder.currentRemoteState().find("B/.hidden"));
     }
 };
 

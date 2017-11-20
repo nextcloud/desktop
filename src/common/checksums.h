@@ -36,6 +36,16 @@ static const char checkSumAdlerC[] = "Adler32";
 
 class SyncJournalDb;
 
+/**
+ * Returns the highest-quality checksum in a 'checksums'
+ * property retrieved from the server.
+ *
+ * Example: "ADLER32:1231 SHA1:ab124124 MD5:2131affa21"
+ *       -> "SHA1:ab124124"
+ */
+OCSYNC_EXPORT QByteArray findBestChecksum(const QByteArray &checksums);
+
+
 /// Creates a checksum header from type and value.
 OCSYNC_EXPORT QByteArray makeChecksumHeader(const QByteArray &checksumType, const QByteArray &checksum);
 

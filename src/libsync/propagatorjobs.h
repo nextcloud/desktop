@@ -25,6 +25,7 @@ namespace OCC {
  * It's here for being shared between Upload- and Download Job
  */
 static const char checkSumHeaderC[] = "OC-Checksum";
+static const char contentMd5HeaderC[] = "Content-MD5";
 
 /**
  * @brief Declaration of the other propagation jobs

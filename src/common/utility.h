@@ -28,7 +28,12 @@
 #include <QLoggingCategory>
 #include <QMap>
 #include <QUrl>
+#include <functional>
 #include <memory>
+
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
 
 class QSettings;
 
@@ -187,6 +192,14 @@ namespace Utility {
      * Experimental! Real feature planned for 2.5.
      */
     OCSYNC_EXPORT bool shouldUploadConflictFiles();
+
+#ifdef Q_OS_WIN
+    OCSYNC_EXPORT QVariant registryGetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName);
+    OCSYNC_EXPORT bool registrySetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName, DWORD type, const QVariant &value);
+    OCSYNC_EXPORT bool registryDeleteKeyTree(HKEY hRootKey, const QString &subKey);
+    OCSYNC_EXPORT bool registryDeleteKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName);
+    OCSYNC_EXPORT bool registryWalkSubKeys(HKEY hRootKey, const QString &subKey, const std::function<void(HKEY, const QString &)> &callback);
+#endif
 }
 /** @} */ // \addtogroup
 

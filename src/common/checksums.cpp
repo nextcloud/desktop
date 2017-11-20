@@ -90,6 +90,21 @@ QByteArray makeChecksumHeader(const QByteArray &checksumType, const QByteArray &
     return header;
 }
 
+QByteArray findBestChecksum(const QByteArray &checksums)
+{
+    int i = 0;
+    // The order of the searches here defines the preference ordering.
+    if (-1 != (i = checksums.indexOf("SHA1:"))
+        || -1 != (i = checksums.indexOf("MD5:"))
+        || -1 != (i = checksums.indexOf("Adler32:"))) {
+        // Now i is the start of the best checksum
+        // Grab it until the next space or end of string.
+        auto checksum = checksums.mid(i);
+        return checksum.mid(0, checksum.indexOf(" "));
+    }
+    return QByteArray();
+}
+
 bool parseChecksumHeader(const QByteArray &header, QByteArray *type, QByteArray *checksum)
 {
     if (header.isEmpty()) {
@@ -120,7 +135,7 @@ QByteArray parseChecksumHeaderType(const QByteArray &header)
 
 bool uploadChecksumEnabled()
 {
-    static bool enabled = qgetenv("OWNCLOUD_DISABLE_CHECKSUM_UPLOAD").isEmpty();
+    static bool enabled = qEnvironmentVariableIsEmpty("OWNCLOUD_DISABLE_CHECKSUM_UPLOAD");
     return enabled;
 }
 
@@ -131,6 +146,12 @@ QByteArray contentChecksumType()
         type = "SHA1";
     }
     return type;
+}
+
+static bool checksumComputationEnabled()
+{
+    static bool enabled = qgetenv("OWNCLOUD_DISABLE_CHECKSUM_COMPUTATIONS").isEmpty();
+    return enabled;
 }
 
 ComputeChecksum::ComputeChecksum(QObject *parent)
@@ -150,6 +171,8 @@ QByteArray ComputeChecksum::checksumType() const
 
 void ComputeChecksum::start(const QString &filePath)
 {
+    qCInfo(lcChecksums) << "Computing" << checksumType() << "checksum of" << filePath << "in a thread";
+
     // Calculate the checksum in a different thread first.
     connect(&_watcher, &QFutureWatcherBase::finished,
         this, &ComputeChecksum::slotCalculationDone,
@@ -159,6 +182,11 @@ void ComputeChecksum::start(const QString &filePath)
 
 QByteArray ComputeChecksum::computeNow(const QString &filePath, const QByteArray &checksumType)
 {
+    if (!checksumComputationEnabled()) {
+        qCWarning(lcChecksums) << "Checksum computation disabled by environment variable";
+        return QByteArray();
+    }
+
     if (checksumType == checkSumMD5C) {
         return FileSystem::calcMd5(filePath);
     } else if (checksumType == checkSumSHA1C) {
@@ -237,6 +265,7 @@ QByteArray CSyncChecksumHook::hook(const QByteArray &path, const QByteArray &oth
     if (type.isEmpty())
         return NULL;
 
+    qCInfo(lcChecksums) << "Computing" << type << "checksum of" << path << "in the csync hook";
     QByteArray checksum = ComputeChecksum::computeNow(QString::fromUtf8(path), type);
     if (checksum.isNull()) {
         qCWarning(lcChecksums) << "Failed to compute checksum" << type << "for" << path;
