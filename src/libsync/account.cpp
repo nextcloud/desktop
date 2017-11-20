@@ -185,7 +185,7 @@ QUrl Account::davUrl() const
 
 QUrl Account::deprecatedPrivateLinkUrl(const QByteArray &numericFileId) const
 {
-    return Utility::concatUrlPath(url(),
+    return Utility::concatUrlPath(_userVisibleUrl,
         QLatin1String("/index.php/f/") + QUrl::toPercentEncoding(QString::fromLatin1(numericFileId)));
 }
 
@@ -320,6 +320,12 @@ void Account::setSslErrorHandler(AbstractSslErrorHandler *handler)
 void Account::setUrl(const QUrl &url)
 {
     _url = url;
+    _userVisibleUrl = url;
+}
+
+void Account::setUserVisibleHost(const QString &host)
+{
+    _userVisibleUrl.setHost(host);
 }
 
 QVariant Account::credentialSetting(const QString &key) const

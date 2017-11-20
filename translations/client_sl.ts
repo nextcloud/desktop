@@ -76,17 +76,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="241"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="245"/>
         <source>Connection timed out</source>
         <translation>Povezava je časovno potekla</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="243"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="247"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>Neznana napaka: odziv strežnika je bil izbrisan</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="386"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="390"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation type="unfinished"/>
     </message>
@@ -604,32 +604,32 @@
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="75"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="76"/>
         <source>No ownCloud account configured</source>
         <translation>Ni nastavljenega računa v oblaku ownCloud</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="287"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="311"/>
         <source>The configured server for this client is too old</source>
         <translation>Nastavljen strežnik tega odjemalca je prestar.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="288"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="312"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Posodobite strežnik in ponovno zaženite odjemalca.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="172"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="173"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Napaka overitve: uporabniško ime ali geslo je napačno.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="184"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="185"/>
         <source>timeout</source>
         <translation>časovni zamik</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="221"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="222"/>
         <source>The provided credentials are not correct</source>
         <translation>Podana poverila niso pravilna.</translation>
     </message>
@@ -1188,22 +1188,22 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="174"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="183"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Ni prejete oznake s strežnika. Preveriti je treba podatke posredovalnega strežnika ali prehoda.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="181"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="190"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Prejeta je različna oznaka za nadaljevanje opravila. Ponovni poskus bo izveden kasneje.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="208"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="217"/>
         <source>Server returned wrong content-range</source>
         <translation>Odziv strežnika kaže na neveljaven obseg vsebine</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="319"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="330"/>
         <source>Connection Timeout</source>
         <translation>Povezava je časovno potekla</translation>
     </message>
@@ -1291,22 +1291,22 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="98"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="100"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Vnesite geslo %1:&lt;br&gt;&lt;br&gt;Uporabnik: %2&lt;br&gt;Račun: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="112"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
         <translation>Branje iz ključa je spodletelo z napako: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="118"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
         <source>Enter Password</source>
         <translation>Vnos gesla</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="155"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="157"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Kliknite tu&lt;/a&gt; za dodelitev gesla za program prek spletnega vmesnika.</translation>
     </message>
@@ -1929,7 +1929,7 @@ Uporaba ni priporočljiva.</translation>
         <translation>Povezava z %1 pri %2 je spodletela:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="314"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="315"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Prekinitev med poskusom povezave na %1 pri %2.</translation>
     </message>
@@ -1957,6 +1957,11 @@ Uporaba ni priporočljiva.</translation>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="278"/>
         <source>Invalid URL</source>
         <translation>Neveljaven naslov URL</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
+        <source>The server reported the following error:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2111,47 +2116,47 @@ Uporaba ni priporočljiva.</translation>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="386"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="409"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Datoteke %1 ni mogoče prejeti zaradi neskladja z imenom krajevne datoteke!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="436"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="459"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="440"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
         <source>Free space on disk is less than %1</source>
         <translation>Na disku je prostora manj kot %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="554"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="577"/>
         <source>File was deleted from server</source>
         <translation>Datoteka je izbrisana s strežnika</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="607"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="630"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Datoteke ni mogoče prejeti v celoti.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="614"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="637"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>Prejeta datoteka je prazna, čeprav je na strežniku velikosti %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="775"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="798"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Datoteke %1 ni mogoče shraniti zaradi neskladja z imenom obstoječe datoteke!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="823"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="846"/>
         <source>File has changed since discovery</source>
         <translation>Datoteka je bila spremenjena po usklajevanju seznama datotek</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="874"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="897"/>
         <source>Error writing metadata to the database</source>
         <translation>Napaka zapisovanja metapodatkov v podatkovno zbirko</translation>
     </message>
@@ -2602,17 +2607,17 @@ Uporaba ni priporočljiva.</translation>
         <translation>Pridobivanje največjega mogočega števila dovoljenj za souporabo prek strežnika ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="192"/>
+        <location filename="../src/gui/sharedialog.cpp" line="197"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Datoteke ni mogoče dodeliti v souporabo, ker ni navedenih ustreznih dovoljenj.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="206"/>
+        <location filename="../src/gui/sharedialog.cpp" line="211"/>
         <source>Users and Groups</source>
         <translation>Uporabniki in skupine</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="213"/>
+        <location filename="../src/gui/sharedialog.cpp" line="218"/>
         <source>Public Links</source>
         <translation>Javne povezave</translation>
     </message>
@@ -2676,12 +2681,12 @@ Uporaba ni priporočljiva.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="115"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="299"/>
         <source>P&amp;assword protect</source>
         <translation>&amp;Zaščiti z geslom</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="415"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
         <source>Password Protected</source>
         <translation>Zaščiteno z geslom</translation>
     </message>
@@ -2707,41 +2712,67 @@ Uporaba ni priporočljiva.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="161"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="525"/>
+        <source>Delete</source>
+        <translation>Izbriši</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
         <source>Open link in browser</source>
         <translation>Odpri povezavo v brskalniku</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
         <source>Copy link to clipboard</source>
         <translation>Kopiraj povezavo v odložišče</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Copy link to clipboard (direct download)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Send link by email</source>
         <translation>Pošlji povezavo po elektronski pošti</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
         <source>Send link by email (direct download)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="237"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="518"/>
+        <source>Confirm Link Share Deletion</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="519"/>
+        <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="526"/>
+        <source>Cancel</source>
+        <translation>Prekliči</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="542"/>
         <source>Public link</source>
         <translation>Javna povezava</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="460"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="252"/>
+        <source>Delete link share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="457"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>Javna omogočanje &amp;souporabe zahteva geslo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="478"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="475"/>
         <source>Please Set Password</source>
         <translation>Določite geslo</translation>
     </message>
@@ -2882,22 +2913,22 @@ Uporaba ni priporočljiva.</translation>
         <translation>Omogoči souporabo z %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="555"/>
+        <location filename="../src/gui/socketapi.cpp" line="557"/>
         <source>I shared something with you</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="563"/>
+        <location filename="../src/gui/socketapi.cpp" line="565"/>
         <source>Share...</source>
         <translation>Omogoči souporabo ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="565"/>
+        <location filename="../src/gui/socketapi.cpp" line="567"/>
         <source>Copy private link to clipboard</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="566"/>
+        <location filename="../src/gui/socketapi.cpp" line="568"/>
         <source>Send private link by email...</source>
         <translation type="unfinished"/>
     </message>

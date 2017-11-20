@@ -100,6 +100,9 @@ public:
     void setUrl(const QUrl &url);
     QUrl url() const { return _url; }
 
+    /// Adjusts _userVisibleUrl once the host to use is discovered.
+    void setUserVisibleHost(const QString &host);
+
     /**
      * @brief The possibly themed dav path for the account. It has
      *        a trailing slash.
@@ -269,6 +272,15 @@ private:
     QImage _avatarImg;
     QMap<QString, QVariant> _settingsMap;
     QUrl _url;
+
+    /** If url to use for any user-visible urls.
+     *
+     * If the server configures overwritehost this can be different from
+     * the connection url in _url. We retrieve the visible host through
+     * the ocs/v1.php/config endpoint in ConnectionValidator.
+     */
+    QUrl _userVisibleUrl;
+
     QList<QSslCertificate> _approvedCerts;
     QSslConfiguration _sslConfiguration;
     Capabilities _capabilities;

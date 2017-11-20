@@ -15,7 +15,7 @@ Configuration File
 .. include:: conffile.rst
 
 Environment Variables
-------------------
+---------------------
 .. index:: env vars
 .. include:: envvars.rst
 

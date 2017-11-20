@@ -23,7 +23,7 @@
 #endif
 #include <QSslSocket>
 
-#include "owncloudtheme.h"
+#include "nextcloudtheme.h"
 
 #ifdef THEME_INCLUDE
 #define Mirall OCC // namespace hack to make old themes work
@@ -296,7 +296,7 @@ QString Theme::gitSHA1() const
     const QString githubPrefix(QLatin1String(
         "https://github.com/owncloud/client/commit/"));
     const QString gitSha1(QLatin1String(GIT_SHA1));
-    devString = QCoreApplication::translate("ownCloudTheme::about()",
+    devString = QCoreApplication::translate("nextcloudTheme::about()",
         "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
         " on %3, %4 using Qt %5, %6</small></p>")
                     .arg(githubPrefix + gitSha1)
@@ -428,7 +428,15 @@ QPixmap Theme::wizardHeaderBanner() const
     if (!c.isValid())
         return QPixmap();
 
-    QPixmap pix(QSize(750, 78));
+    QSize size(750, 78);
+    if (auto screen = qApp->primaryScreen()) {
+        // Adjust the the size if there is a different DPI. (Issue #6156)
+        // Indeed, this size need to be big enough to for the banner height, and the wizard's width
+        auto ratio = screen->logicalDotsPerInch() / 96.;
+        if (ratio > 1.)
+            size *= ratio;
+    }
+    QPixmap pix(size);
     pix.fill(wizardHeaderBackgroundColor());
     return pix;
 }

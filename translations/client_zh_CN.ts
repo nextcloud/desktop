@@ -76,17 +76,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="241"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="245"/>
         <source>Connection timed out</source>
         <translation>连接超时</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="243"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="247"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>未知错误：网络相应被删除</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="386"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="390"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation type="unfinished"/>
     </message>
@@ -604,32 +604,32 @@
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="75"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="76"/>
         <source>No ownCloud account configured</source>
         <translation>没有已经配置的 ownCloud 帐号</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="287"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="311"/>
         <source>The configured server for this client is too old</source>
         <translation>此客户端连接到的服务器版本过旧</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="288"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="312"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>请更新到最新的服务器版本然后重启客户端。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="172"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="173"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>认证失败：用户名或密码错误</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="184"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="185"/>
         <source>timeout</source>
         <translation>超时</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="221"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="222"/>
         <source>The provided credentials are not correct</source>
         <translation>提供的证书不正确</translation>
     </message>
@@ -1188,22 +1188,22 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="174"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="183"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>未能收到来自服务器的 E-Tag，请检查代理/网关</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="181"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="190"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>我们收到了不同的恢复 E-Tag，将在下次尝试。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="208"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="217"/>
         <source>Server returned wrong content-range</source>
         <translation>服务器返回了错误的内容长度</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="319"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="330"/>
         <source>Connection Timeout</source>
         <translation>连接超时</translation>
     </message>
@@ -1291,22 +1291,22 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="98"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="100"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>请输入 %1 密码：&lt;br&gt;&lt;br&gt;用户：%2&lt;br&gt;账户：%3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="112"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
         <translation>获取密钥链失败，错误: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="118"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
         <source>Enter Password</source>
         <translation>输入密码</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="155"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="157"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;点击这里&lt;/a&gt;从 web 界面请求一个 app 密码。</translation>
     </message>
@@ -1928,7 +1928,7 @@ It is not advisable to use it.</source>
         <translation>连接到 %1 （%2）失败：&lt;br /&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="314"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="315"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>连接到 %1 （%2） 时超时。</translation>
     </message>
@@ -1956,6 +1956,11 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="278"/>
         <source>Invalid URL</source>
         <translation>无效URL</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
+        <source>The server reported the following error:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2110,47 +2115,47 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="386"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="409"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>由于本地文件名冲突，文件 %1 无法下载。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="436"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="459"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="440"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
         <source>Free space on disk is less than %1</source>
         <translation>空闲磁盘空间少于 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="554"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="577"/>
         <source>File was deleted from server</source>
         <translation>已从服务器删除文件</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="607"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="630"/>
         <source>The file could not be downloaded completely.</source>
         <translation>文件无法完整下载。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="614"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="637"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>虽然服务器宣称已完成 %1，但实际下载文件为空。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="775"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="798"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>由于本地文件名冲突，文件 %1 无法保存。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="823"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="846"/>
         <source>File has changed since discovery</source>
         <translation>自从发现文件以来，它已经被改变了</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="874"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="897"/>
         <source>Error writing metadata to the database</source>
         <translation>向数据库写入元数据错误</translation>
     </message>
@@ -2601,17 +2606,17 @@ It is not advisable to use it.</source>
         <translation>从服务器获取最大可能的共享权限...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="192"/>
+        <location filename="../src/gui/sharedialog.cpp" line="197"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>未分配共享权限，无法共享文件。</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="206"/>
+        <location filename="../src/gui/sharedialog.cpp" line="211"/>
         <source>Users and Groups</source>
         <translation>用户和组</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="213"/>
+        <location filename="../src/gui/sharedialog.cpp" line="218"/>
         <source>Public Links</source>
         <translation>公共链接</translation>
     </message>
@@ -2675,12 +2680,12 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="115"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="299"/>
         <source>P&amp;assword protect</source>
         <translation>密码保护(&amp;a)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="415"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
         <source>Password Protected</source>
         <translation>密码保护</translation>
     </message>
@@ -2706,41 +2711,67 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="161"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="525"/>
+        <source>Delete</source>
+        <translation>删除</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
         <source>Open link in browser</source>
         <translation>在浏览器中打来链接</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
         <source>Copy link to clipboard</source>
         <translation>复制链接到剪贴板</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Copy link to clipboard (direct download)</source>
         <translation>复制链接到剪贴板 (直接下载)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Send link by email</source>
         <translation>通过邮件发送链接</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
         <source>Send link by email (direct download)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="237"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="518"/>
+        <source>Confirm Link Share Deletion</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="519"/>
+        <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="526"/>
+        <source>Cancel</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="542"/>
         <source>Public link</source>
         <translation>公开链接</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="460"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="252"/>
+        <source>Delete link share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="457"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>公开分享需要密码</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="478"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="475"/>
         <source>Please Set Password</source>
         <translation>请设置密码</translation>
     </message>
@@ -2881,22 +2912,22 @@ It is not advisable to use it.</source>
         <translation>使用 %1 共享</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="555"/>
+        <location filename="../src/gui/socketapi.cpp" line="557"/>
         <source>I shared something with you</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="563"/>
+        <location filename="../src/gui/socketapi.cpp" line="565"/>
         <source>Share...</source>
         <translation>分享到...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="565"/>
+        <location filename="../src/gui/socketapi.cpp" line="567"/>
         <source>Copy private link to clipboard</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="566"/>
+        <location filename="../src/gui/socketapi.cpp" line="568"/>
         <source>Send private link by email...</source>
         <translation type="unfinished"/>
     </message>

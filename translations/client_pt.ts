@@ -76,17 +76,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="241"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="245"/>
         <source>Connection timed out</source>
         <translation>A ligação expirou</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="243"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="247"/>
         <source>Unknown error: network reply was deleted</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="386"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="390"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>O Servidor respondeu &quot;%1 %2&quot; até &quot;%3 %4&quot;</translation>
     </message>
@@ -604,32 +604,32 @@
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="75"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="76"/>
         <source>No ownCloud account configured</source>
         <translation>Não foi configurada nenhuma conta ownCloud</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="287"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="311"/>
         <source>The configured server for this client is too old</source>
         <translation>O servidor configurado para este cliente é muito antigo</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="288"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="312"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Por favor, atualize para a ultima versão do servidor e reinicie o cliente.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="172"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="173"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Erro de autenticação: o nome de utilizador ou a palavra-passe estão errados.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="184"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="185"/>
         <source>timeout</source>
         <translation>tempo expirado</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="221"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="222"/>
         <source>The provided credentials are not correct</source>
         <translation>As credenciais fornecidas não estão corretas</translation>
     </message>
@@ -1188,22 +1188,22 @@ Continuando a sincronização fará com que todos os seus ficheiros sejam substi
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="174"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="183"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Nenhum E-Tag recebida do servidor, verifique Proxy / Acesso</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="181"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="190"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Nós recebemos uma E-Tag diferente para retomar. Tentar da próxima vez.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="208"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="217"/>
         <source>Server returned wrong content-range</source>
         <translation>O servidor devolveu o alcance-conteúdo errado</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="319"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="330"/>
         <source>Connection Timeout</source>
         <translation>O tempo de ligação expirou</translation>
     </message>
@@ -1291,22 +1291,22 @@ Continuando a sincronização fará com que todos os seus ficheiros sejam substi
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="98"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="100"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Por favor, insira a palavra-passe %1:&lt;br&gt;&lt;br&gt;Utilizador: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="112"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
         <translation>A leitura da cadeia de dados falhou com um erro: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="118"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
         <source>Enter Password</source>
         <translation>Insira a Palavra-passe</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="155"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="157"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Clique aqui&lt;/a&gt; para solicitar uma palavra-passe da aplicação a partir da interface da Web.</translation>
     </message>
@@ -1398,7 +1398,7 @@ Os itens onde é permitido a eliminação serão eliminados se estes impedirem a
     <message>
         <location filename="../src/gui/issueswidget.ui" line="20"/>
         <source>List of issues</source>
-        <translation type="unfinished"/>
+        <translation>Lista de situações</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="34"/>
@@ -1409,7 +1409,7 @@ Os itens onde é permitido a eliminação serão eliminados se estes impedirem a
         <location filename="../src/gui/issueswidget.ui" line="42"/>
         <location filename="../src/gui/issueswidget.ui" line="61"/>
         <source>&lt;no filter&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;no filter&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="50"/>
@@ -1425,12 +1425,12 @@ Os itens onde é permitido a eliminação serão eliminados se estes impedirem a
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
         <source>Show ignored files</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar ficheiros ignorados</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="148"/>
         <source>Copy the issues list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Copiar a lista de situações para a área de transferência</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="151"/>
@@ -1700,7 +1700,7 @@ Os itens onde é permitido a eliminação serão eliminados se estes impedirem a
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível processar a resposta JSON retornada pelo servidor: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
@@ -1710,7 +1710,7 @@ Os itens onde é permitido a eliminação serão eliminados se estes impedirem a
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="125"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Erro no login&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="131"/>
@@ -1883,7 +1883,7 @@ poderá pedir por privilégios adicionais durante o processo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="44"/>
         <source>Login in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Faça login através do browser</translation>
     </message>
 </context>
 <context>
@@ -1929,7 +1929,7 @@ Não é aconselhada a sua utilização.</translation>
         <translation>Não foi possível ligar a %1 em %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="314"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="315"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Tempo expirou enquanto tentava ligar a %1 em %2.</translation>
     </message>
@@ -1957,6 +1957,11 @@ Não é aconselhada a sua utilização.</translation>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="278"/>
         <source>Invalid URL</source>
         <translation>URL inválido</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
+        <source>The server reported the following error:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2111,47 +2116,47 @@ Não é aconselhada a sua utilização.</translation>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="386"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="409"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Não foi possível transferir o ficheiro %1 devido a um conflito com o nome de ficheiro local!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="436"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="459"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="440"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
         <source>Free space on disk is less than %1</source>
         <translation>O Espaço livre no disco é inferior a %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="554"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="577"/>
         <source>File was deleted from server</source>
         <translation>O ficheiro foi eliminado do servidor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="607"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="630"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Não foi possível transferir o ficheiro na totalidade.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="614"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="637"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>O ficheiro transferido está vazio, apesar do servidor indicar que este deveria ter %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="775"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="798"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Ficheiro %1 não pode ser guardado devido à existência de um ficheiro local com o mesmo nome.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="823"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="846"/>
         <source>File has changed since discovery</source>
         <translation>O ficheiro alterou-se desde a sua descoberta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="874"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="897"/>
         <source>Error writing metadata to the database</source>
         <translation>Erro ao gravar os metadados para a base de dados</translation>
     </message>
@@ -2602,17 +2607,17 @@ Não é aconselhada a sua utilização.</translation>
         <translation>A obter do servidor as permissões máximas de partilha...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="192"/>
+        <location filename="../src/gui/sharedialog.cpp" line="197"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>O ficheiro não pode ser partilhado porque foi partilhado sem permissão de partilha.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="206"/>
+        <location filename="../src/gui/sharedialog.cpp" line="211"/>
         <source>Users and Groups</source>
         <translation>Utilizadores e Grupos</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="213"/>
+        <location filename="../src/gui/sharedialog.cpp" line="218"/>
         <source>Public Links</source>
         <translation>Ligações públicas</translation>
     </message>
@@ -2676,12 +2681,12 @@ Não é aconselhada a sua utilização.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="115"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="299"/>
         <source>P&amp;assword protect</source>
         <translation>Protegida por senha</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="415"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
         <source>Password Protected</source>
         <translation>Protegido com Senha</translation>
     </message>
@@ -2707,41 +2712,67 @@ Não é aconselhada a sua utilização.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="161"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="525"/>
+        <source>Delete</source>
+        <translation>Eliminar</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
         <source>Open link in browser</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
         <source>Copy link to clipboard</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Copy link to clipboard (direct download)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Send link by email</source>
         <translation>Enviar hiperligação por e-mail</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
         <source>Send link by email (direct download)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="237"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="518"/>
+        <source>Confirm Link Share Deletion</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="519"/>
+        <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="526"/>
+        <source>Cancel</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="542"/>
         <source>Public link</source>
         <translation>Hiperligação Pública</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="460"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="252"/>
+        <source>Delete link share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="457"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>A pa&amp;rtilha pública requer uma palavra-passe:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="478"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="475"/>
         <source>Please Set Password</source>
         <translation>Por favor, Definir Senha</translation>
     </message>
@@ -2882,22 +2913,22 @@ Não é aconselhada a sua utilização.</translation>
         <translation>Partilhar com %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="555"/>
+        <location filename="../src/gui/socketapi.cpp" line="557"/>
         <source>I shared something with you</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="563"/>
+        <location filename="../src/gui/socketapi.cpp" line="565"/>
         <source>Share...</source>
         <translation>Partilhar...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="565"/>
+        <location filename="../src/gui/socketapi.cpp" line="567"/>
         <source>Copy private link to clipboard</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="566"/>
+        <location filename="../src/gui/socketapi.cpp" line="568"/>
         <source>Send private link by email...</source>
         <translation type="unfinished"/>
     </message>
@@ -3313,7 +3344,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="486"/>
         <source>Unresolved conflict.</source>
-        <translation type="unfinished"/>
+        <translation>Conflito por resolver.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="497"/>
@@ -3590,7 +3621,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="306"/>
         <source>Error during synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Erro durante a sincronização</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="314"/>
@@ -4137,7 +4168,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="33"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível abrir o browser</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>

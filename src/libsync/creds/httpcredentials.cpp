@@ -442,32 +442,38 @@ void HttpCredentials::persist()
     _account->setCredentialSetting(QLatin1String(isOAuthC), isUsingOAuth());
     _account->wantsAccountSaved(_account);
 
-    // write cert
-    WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
-    addSettingsToJob(_account, job);
-    job->setInsecureFallback(false);
-    connect(job, &Job::finished, this, &HttpCredentials::slotWriteClientCertPEMJobDone);
-    job->setKey(keychainKey(_account->url().toString(), _user + clientCertificatePEMC, _account->id()));
-    job->setBinaryData(_clientSslCertificate.toPem());
-    job->start();
+    // write cert if there is one
+    if (!_clientSslCertificate.isNull()) {
+        WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+        addSettingsToJob(_account, job);
+        job->setInsecureFallback(false);
+        connect(job, &Job::finished, this, &HttpCredentials::slotWriteClientCertPEMJobDone);
+        job->setKey(keychainKey(_account->url().toString(), _user + clientCertificatePEMC, _account->id()));
+        job->setBinaryData(_clientSslCertificate.toPem());
+        job->start();
+    } else {
+        slotWriteClientCertPEMJobDone();
+    }
 }
 
-void HttpCredentials::slotWriteClientCertPEMJobDone(Job *incomingJob)
+void HttpCredentials::slotWriteClientCertPEMJobDone()
 {
-    Q_UNUSED(incomingJob);
-    // write ssl key
-    WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
-    addSettingsToJob(_account, job);
-    job->setInsecureFallback(false);
-    connect(job, &Job::finished, this, &HttpCredentials::slotWriteClientKeyPEMJobDone);
-    job->setKey(keychainKey(_account->url().toString(), _user + clientKeyPEMC, _account->id()));
-    job->setBinaryData(_clientSslKey.toPem());
-    job->start();
+    // write ssl key if there is one
+    if (!_clientSslKey.isNull()) {
+        WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+        addSettingsToJob(_account, job);
+        job->setInsecureFallback(false);
+        connect(job, &Job::finished, this, &HttpCredentials::slotWriteClientKeyPEMJobDone);
+        job->setKey(keychainKey(_account->url().toString(), _user + clientKeyPEMC, _account->id()));
+        job->setBinaryData(_clientSslKey.toPem());
+        job->start();
+    } else {
+        slotWriteClientKeyPEMJobDone();
+    }
 }
 
-void HttpCredentials::slotWriteClientKeyPEMJobDone(Job *incomingJob)
+void HttpCredentials::slotWriteClientKeyPEMJobDone()
 {
-    Q_UNUSED(incomingJob);
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
     addSettingsToJob(_account, job);
     job->setInsecureFallback(false);

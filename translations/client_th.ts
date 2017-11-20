@@ -76,17 +76,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="241"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="245"/>
         <source>Connection timed out</source>
         <translation>หมดเวลาการเชื่อมต่อ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="243"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="247"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>ข้อผิดพลาดที่ไม่รู้จัก: การตอบกลับของเครือข่ายถูกลบแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="386"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="390"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>เซิร์ฟเวอร์ตอบกลับ &quot;%1 %2&quot; ถึง &quot;%3 %4&quot;</translation>
     </message>
@@ -604,32 +604,32 @@
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="75"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="76"/>
         <source>No ownCloud account configured</source>
         <translation>ไม่มีการกำหนดค่าบัญชี ownCloud </translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="287"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="311"/>
         <source>The configured server for this client is too old</source>
         <translation>การกำหนดค่าเซิร์ฟเวอร์สำหรับไคลเอ็นต์นี้เก่าเกินไป</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="288"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="312"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>กรุณาอัพเดทเซิร์ฟเวอร์ใหม่ใหม่ที่สุดและรีสตาร์ทไคลเอนต์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="172"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="173"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>ข้อผิดพลาดในการตรวจสอบ: ทั้งชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="184"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="185"/>
         <source>timeout</source>
         <translation>หมดเวลา</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="221"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="222"/>
         <source>The provided credentials are not correct</source>
         <translation>ระบุข้อมูลประจำตัวไม่ถูกต้อง</translation>
     </message>
@@ -1190,22 +1190,22 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="174"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="183"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>ไม่มี E-Tag ที่ได้รับจากเซิร์ฟเวอร์ กรุณาตรวจสอบ พร็อกซี่หรือเกตเวย์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="181"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="190"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>เราได้รับ E-Tag ที่แตกต่างกันสำหรับการทำงาน กรุณาลองอีกครั้งในเวลาถัดไป</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="208"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="217"/>
         <source>Server returned wrong content-range</source>
         <translation>เซิร์ฟเวอร์ส่งคืนช่วงของเนื้อหาที่ผิด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="319"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="330"/>
         <source>Connection Timeout</source>
         <translation>หมดเวลาการเชื่อมต่อ</translation>
     </message>
@@ -1293,22 +1293,22 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="98"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="100"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>กรุณากรอกรหัสผ่าน %1:&lt;br&gt;&lt;br&gt;ผู้ใช้: %2&lt;br&gt;บัญชี: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="112"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
         <translation>อ่านจาก Keychain ล้มเหลวด้วยข้อผิดพลาด: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="118"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
         <source>Enter Password</source>
         <translation>ป้อนรหัสผ่าน</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="155"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="157"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;คลิกที่นี่&lt;/a&gt; เพื่อขอรหัสผ่านแอพฯ จากเว็บอินเตอร์เฟส</translation>
     </message>
@@ -1930,7 +1930,7 @@ It is not advisable to use it.</source>
         <translation>ล้มเหลวในการเชื่อมต่อไปยัง %1 ที่ %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="314"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="315"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>หมดเวลาขณะที่พยายามเชื่อมต่อไปยัง %1 ที่ %2</translation>
     </message>
@@ -1958,6 +1958,11 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="278"/>
         <source>Invalid URL</source>
         <translation>URL ไม่ถูกต้อง</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
+        <source>The server reported the following error:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2112,47 +2117,47 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="386"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="409"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>ไฟล์ %1 ไม่สามารถดาวน์โหลดได้เพราะชื่อไฟล์ต้นทางเหมือนกัน!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="436"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="459"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>การดาวน์โหลดจะช่วยลดพืนที่จัดเก็บภายในเครื่องที่ต่ำกว่าขีดจำกัด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="440"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
         <source>Free space on disk is less than %1</source>
         <translation>พื้นที่ว่างในดิสก์น้อยกว่า %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="554"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="577"/>
         <source>File was deleted from server</source>
         <translation>ไฟล์ถูกลบออกจากเซิร์ฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="607"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="630"/>
         <source>The file could not be downloaded completely.</source>
         <translation>ดาวน์โหลดไฟล์ไม่สำเร็จ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="614"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="637"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>ไฟล์ที่ดาวน์โหลดว่างเปล่าแม้ว่าเซิร์ฟเวอร์ประกาศว่าควรจะเป็น %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="775"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="798"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>ไฟล์ %1 ไม่สามารถบันทึกได้เพราะชื่อไฟล์ต้นทางเหมือนกัน!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="823"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="846"/>
         <source>File has changed since discovery</source>
         <translation>ไฟล์มีการเปลี่ยนแปลงตั้งแต่ถูกพบ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="874"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="897"/>
         <source>Error writing metadata to the database</source>
         <translation>ข้อผิดพลาดในการเขียนข้อมูลเมตาไปยังฐานข้อมูล</translation>
     </message>
@@ -2603,17 +2608,17 @@ It is not advisable to use it.</source>
         <translation>คุณใช้สิทธิ์การเรียกข้อมูลจากเซิฟเวอร์สูงสุดแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="192"/>
+        <location filename="../src/gui/sharedialog.cpp" line="197"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>ไม่สามารถแชร์ไฟล์เพราะไม่ได้รับอนุญาต</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="206"/>
+        <location filename="../src/gui/sharedialog.cpp" line="211"/>
         <source>Users and Groups</source>
         <translation>ผู้ใช้และกลุ่ม</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="213"/>
+        <location filename="../src/gui/sharedialog.cpp" line="218"/>
         <source>Public Links</source>
         <translation>ลิงค์สาธารณะ</translation>
     </message>
@@ -2677,12 +2682,12 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="115"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="299"/>
         <source>P&amp;assword protect</source>
         <translation>ป้องกันด้วยรหัสผ่าน</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="415"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
         <source>Password Protected</source>
         <translation>รหัสผ่านถูกป้องกันแล้ว</translation>
     </message>
@@ -2708,41 +2713,67 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="161"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="525"/>
+        <source>Delete</source>
+        <translation>ลบ</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
         <source>Open link in browser</source>
         <translation>เปิดลิงค์ในเบราว์เซอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
         <source>Copy link to clipboard</source>
         <translation>คัดลอกลิงค์ไปยังคลิปบอร์ด</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Copy link to clipboard (direct download)</source>
         <translation>คัดลอกลิงค์ทางอีเมล (ดาวน์โหลดโดยตรง)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Send link by email</source>
         <translation>ส่งลิงค์ทางอีเมล</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
         <source>Send link by email (direct download)</source>
         <translation>ส่งลิงค์ทางอีเมล (ดาวน์โหลดโดยตรง)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="237"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="518"/>
+        <source>Confirm Link Share Deletion</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="519"/>
+        <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="526"/>
+        <source>Cancel</source>
+        <translation>ยกเลิก</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="542"/>
         <source>Public link</source>
         <translation>ลิงค์สาธารณะ</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="460"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="252"/>
+        <source>Delete link share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="457"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>การแชร์สาธารณะจำเป็นต้องมีรหัสผ่าน</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="478"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="475"/>
         <source>Please Set Password</source>
         <translation>กรุณาตั้งรหัสผ่าน</translation>
     </message>
@@ -2883,22 +2914,22 @@ It is not advisable to use it.</source>
         <translation>แชร์กับ %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="555"/>
+        <location filename="../src/gui/socketapi.cpp" line="557"/>
         <source>I shared something with you</source>
         <translation>ฉันแชร์บางอย่างกับคุณ</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="563"/>
+        <location filename="../src/gui/socketapi.cpp" line="565"/>
         <source>Share...</source>
         <translation>แชร์...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="565"/>
+        <location filename="../src/gui/socketapi.cpp" line="567"/>
         <source>Copy private link to clipboard</source>
         <translation>คัดลอกลิงค์ส่วนตัวไปยังคลิปบอร์ด</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="566"/>
+        <location filename="../src/gui/socketapi.cpp" line="568"/>
         <source>Send private link by email...</source>
         <translation>ส่งลิงค์ส่วนตัวทางอีเมล...</translation>
     </message>

@@ -76,17 +76,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="241"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="245"/>
         <source>Connection timed out</source>
         <translation>Время ожидания соединения превышено</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="243"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="247"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>Неизвестная ошибка: сетевой ответ был удален</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="386"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="390"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>Сервер ответил от &quot;%1 %2&quot; до &quot;%3 %4&quot;</translation>
     </message>
@@ -604,32 +604,32 @@
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="75"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="76"/>
         <source>No ownCloud account configured</source>
         <translation>Учётная запись OwnCloud не настроена</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="287"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="311"/>
         <source>The configured server for this client is too old</source>
         <translation>Настроенный сервер слишком стар для этого клиента</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="288"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="312"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Обновите сервер до последней версии и перезапустите клиент.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="172"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="173"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Ошибка авторизации: Имя пользователя или пароль не верны.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="184"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="185"/>
         <source>timeout</source>
         <translation>тайм-аут</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="221"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="222"/>
         <source>The provided credentials are not correct</source>
         <translation>Введённые учётные данные не верны</translation>
     </message>
@@ -1186,22 +1186,22 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="174"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="183"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>E-Tag от сервера не получен, проверьте настройки прокси/шлюза.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="181"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="190"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Мы получили другой E-Tag для возобновления. Повторите попытку позже.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="208"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="217"/>
         <source>Server returned wrong content-range</source>
         <translation>Сервер вернул неверный диапазон содержимого</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="319"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="330"/>
         <source>Connection Timeout</source>
         <translation>Время ожидания подключения истекло</translation>
     </message>
@@ -1289,22 +1289,22 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="98"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="100"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Пожалуйста введите пароль для %1:&lt;br&gt;&lt;br&gt;Пользователь: %2&lt;br&gt;Учётная запись: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="112"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
         <translation>Чтение из брелока завершилось с ошибкой: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="118"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
         <source>Enter Password</source>
         <translation>Введите пароль</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="155"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="157"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Кликните здесь&lt;/a&gt; чтобы запросить пароль приложения через веб-интерфейс.</translation>
     </message>
@@ -1926,7 +1926,7 @@ It is not advisable to use it.</source>
         <translation>Не удалось подключиться к %1 в %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="314"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="315"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Превышено время ожидания соединения к %1 на %2.</translation>
     </message>
@@ -1954,6 +1954,11 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="278"/>
         <source>Invalid URL</source>
         <translation>Неверная ссылка</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
+        <source>The server reported the following error:</source>
+        <translation>Сервер выдал следующую ошибку:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2108,47 +2113,47 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="386"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="409"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>Файл %1 не может быть загружен из-за локального конфликта имен!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="436"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="459"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>Скачивание сократит доступное пространство на локальном диске ниже допустимого предела</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="440"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
         <source>Free space on disk is less than %1</source>
         <translation>Свободное место на диске меньше, чем %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="554"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="577"/>
         <source>File was deleted from server</source>
         <translation>Файл был удален с сервера</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="607"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="630"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Невозможно полностью загрузить файл.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="614"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="637"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>Скачанный файл пуст, хотя сервер заявил, что он должен быть %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="775"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="798"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Файл %1 не может быть сохранён из-за локального конфликта имен!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="823"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="846"/>
         <source>File has changed since discovery</source>
         <translation>После обнаружения файл был изменен</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="874"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="897"/>
         <source>Error writing metadata to the database</source>
         <translation>Ошибка записи метаданных в базу данных</translation>
     </message>
@@ -2599,17 +2604,17 @@ It is not advisable to use it.</source>
         <translation>Запрос максимально возможных прав для предоставления доступа с сервера…</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="192"/>
+        <location filename="../src/gui/sharedialog.cpp" line="197"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>Невозможно предоставить общий доступ к файлу: нет разрешения на предоставление общего доступа.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="206"/>
+        <location filename="../src/gui/sharedialog.cpp" line="211"/>
         <source>Users and Groups</source>
         <translation>Пользователи и группы</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="213"/>
+        <location filename="../src/gui/sharedialog.cpp" line="218"/>
         <source>Public Links</source>
         <translation>Общедоступные ссылки</translation>
     </message>
@@ -2673,12 +2678,12 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="115"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="299"/>
         <source>P&amp;assword protect</source>
         <translation>Защитить паролем</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="415"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
         <source>Password Protected</source>
         <translation>Защищено Паролем</translation>
     </message>
@@ -2704,41 +2709,67 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="161"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="525"/>
+        <source>Delete</source>
+        <translation>Удалить</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
         <source>Open link in browser</source>
         <translation>Открыть ссылку в браузере</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
         <source>Copy link to clipboard</source>
         <translation>Копировать ссылку в буфер обмена</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Copy link to clipboard (direct download)</source>
         <translation>Скопировать ссылку в буфер обмена (прямое скачивание)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Send link by email</source>
         <translation>Отправить ссылку по email</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
         <source>Send link by email (direct download)</source>
         <translation>Отправить ссылку по почте (прямое скачивание)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="237"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="518"/>
+        <source>Confirm Link Share Deletion</source>
+        <translation>Подтвердите удаление доступа по ссылке</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="519"/>
+        <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Вы действтиельно хотите удалить доступ по общей ссылке &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Внимание: это действие будет невозможно отменить.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="526"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="542"/>
         <source>Public link</source>
         <translation>Общедоступная ссылка</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="460"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="252"/>
+        <source>Delete link share</source>
+        <translation>Удалить доступ по ссылке</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="457"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>Публичные ссылки требуют пароля</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="478"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="475"/>
         <source>Please Set Password</source>
         <translation>Пожалуйста, установите пароль</translation>
     </message>
@@ -2879,22 +2910,22 @@ It is not advisable to use it.</source>
         <translation>Поделиться с %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="555"/>
+        <location filename="../src/gui/socketapi.cpp" line="557"/>
         <source>I shared something with you</source>
         <translation>Я поделился с тобой</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="563"/>
+        <location filename="../src/gui/socketapi.cpp" line="565"/>
         <source>Share...</source>
         <translation>Поделиться...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="565"/>
+        <location filename="../src/gui/socketapi.cpp" line="567"/>
         <source>Copy private link to clipboard</source>
         <translation>Копировать приватную ссылку в буфер обмена...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="566"/>
+        <location filename="../src/gui/socketapi.cpp" line="568"/>
         <source>Send private link by email...</source>
         <translation>Отправить приватную ссылку по email...</translation>
     </message>

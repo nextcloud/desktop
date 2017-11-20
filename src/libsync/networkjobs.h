@@ -385,26 +385,29 @@ private:
  * @brief Checks with auth type to use for a server
  * @ingroup libsync
  */
-class OWNCLOUDSYNC_EXPORT DetermineAuthTypeJob : public AbstractNetworkJob
+class OWNCLOUDSYNC_EXPORT DetermineAuthTypeJob : public QObject
 {
     Q_OBJECT
 public:
     enum AuthType {
-        Unknown,
-        Basic,
+        Basic, // also the catch-all fallback for backwards compatibility reasons
         OAuth,
         Shibboleth
     };
 
     explicit DetermineAuthTypeJob(AccountPtr account, QObject *parent = 0);
-    void start() Q_DECL_OVERRIDE;
+    void start();
 signals:
     void authType(AuthType);
-private slots:
-    bool finished() Q_DECL_OVERRIDE;
+
 private:
-    void send(const QUrl &url);
-    int _redirects;
+    void checkBothDone();
+
+    AccountPtr _account;
+    AuthType _resultGet = Basic;
+    AuthType _resultPropfind = Basic;
+    bool _getDone = false;
+    bool _propfindDone = false;
 };
 
 /**
