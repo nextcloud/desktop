@@ -48,8 +48,15 @@ public:
     sqlite3 *sqliteDb();
 
 private:
+    enum class CheckDbResult {
+        Ok,
+        CantPrepare,
+        CantExec,
+        NotOk,
+    };
+
     bool openHelper(const QString &filename, int sqliteFlags);
-    bool checkDb();
+    CheckDbResult checkDb();
 
     sqlite3 *_db;
     QString _error; // last error string

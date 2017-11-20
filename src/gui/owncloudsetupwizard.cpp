@@ -279,7 +279,7 @@ void OwncloudSetupWizard::slotNoServerFound(QNetworkReply *reply)
     } else {
         msg = tr("Failed to connect to %1 at %2:<br/>%3")
                   .arg(Utility::escape(Theme::instance()->appNameGUI()),
-                      Utility::escape(reply->url().toString()),
+                      Utility::escape(_ocWizard->account()->url().toString()),
                       Utility::escape(job->errorString()));
     }
     bool isDowngradeAdvised = checkDowngradeAdvised(reply);
@@ -294,7 +294,8 @@ void OwncloudSetupWizard::slotNoServerFound(QNetworkReply *reply)
         QString serverError = reply->peek(1024 * 20);
         qCDebug(lcWizard) << serverError;
         QMessageBox messageBox(_ocWizard);
-        messageBox.setText(serverError);
+        messageBox.setText(tr("The server reported the following error:"));
+        messageBox.setInformativeText(serverError);
         messageBox.addButton(QMessageBox::Ok);
         messageBox.setTextFormat(Qt::RichText);
         messageBox.exec();
@@ -319,7 +320,6 @@ void OwncloudSetupWizard::slotNoServerFoundTimeout(const QUrl &url)
 void OwncloudSetupWizard::slotDetermineAuthType()
 {
     DetermineAuthTypeJob *job = new DetermineAuthTypeJob(_ocWizard->account(), this);
-    job->setIgnoreCredentialFailure(true);
     connect(job, &DetermineAuthTypeJob::authType,
         _ocWizard, &OwncloudWizard::setAuthType);
     job->start();

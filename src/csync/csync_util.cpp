@@ -211,3 +211,10 @@ time_t oc_httpdate_parse( const char *date ) {
     result = timegm(&gmt);
     return result;
 }
+
+
+bool csync_is_collision_safe_hash(const QByteArray &checksum_header)
+{
+    return checksum_header.startsWith("SHA1:")
+        || checksum_header.startsWith("MD5:");
+}

@@ -90,6 +90,21 @@ QByteArray makeChecksumHeader(const QByteArray &checksumType, const QByteArray &
     return header;
 }
 
+QByteArray findBestChecksum(const QByteArray &checksums)
+{
+    int i = 0;
+    // The order of the searches here defines the preference ordering.
+    if (-1 != (i = checksums.indexOf("SHA1:"))
+        || -1 != (i = checksums.indexOf("MD5:"))
+        || -1 != (i = checksums.indexOf("Adler32:"))) {
+        // Now i is the start of the best checksum
+        // Grab it until the next space or end of string.
+        auto checksum = checksums.mid(i);
+        return checksum.mid(0, checksum.indexOf(" "));
+    }
+    return QByteArray();
+}
+
 bool parseChecksumHeader(const QByteArray &header, QByteArray *type, QByteArray *checksum)
 {
     if (header.isEmpty()) {

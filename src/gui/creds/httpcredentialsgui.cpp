@@ -30,6 +30,8 @@ using namespace QKeychain;
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcHttpCredentialsGui, "sync.credentials.http.gui", QtInfoMsg)
+
 void HttpCredentialsGui::askFromUser()
 {
     // This function can be called from AccountState::slotInvalidCredentials,
@@ -43,7 +45,6 @@ void HttpCredentialsGui::askFromUserAsync()
 {
     // First, we will check what kind of auth we need.
     auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
-    job->setTimeout(30 * 1000);
     QObject::connect(job, &DetermineAuthTypeJob::authType, this, [this](DetermineAuthTypeJob::AuthType type) {
         if (type == DetermineAuthTypeJob::OAuth) {
             _asyncAuth.reset(new OAuth(_account, this));
@@ -59,7 +60,8 @@ void HttpCredentialsGui::askFromUserAsync()
             // We will re-enter the event loop, so better wait the next iteration
             QMetaObject::invokeMethod(this, "showDialog", Qt::QueuedConnection);
         } else {
-            // Network error? Unsupported auth type?
+            // Shibboleth?
+            qCWarning(lcHttpCredentialsGui) << "Bad http auth type:" << type;
             emit asked();
         }
     });

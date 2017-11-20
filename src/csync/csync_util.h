@@ -31,4 +31,14 @@ const char OCSYNC_EXPORT *csync_instruction_str(enum csync_instructions_e instr)
 void OCSYNC_EXPORT csync_memstat_check(void);
 
 bool OCSYNC_EXPORT csync_file_locked_or_open( const char *dir, const char *fname);
+
+/* Returns true if we're reasonably certain that hash equality
+ * for the header means content equality.
+ *
+ * Cryptographic safety is not required - this is mainly
+ * intended to rule out checksums like Adler32 that are not intended for
+ * hashing and have high likelihood of collision with particular inputs.
+ */
+bool OCSYNC_EXPORT csync_is_collision_safe_hash(const QByteArray &checksum_header);
+
 #endif /* _CSYNC_UTIL_H */

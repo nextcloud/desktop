@@ -819,69 +819,16 @@ bool JsonApiJob::finished()
 }
 
 DetermineAuthTypeJob::DetermineAuthTypeJob(AccountPtr account, QObject *parent)
-    : AbstractNetworkJob(account, QString(), parent)
-    , _redirects(0)
+    : QObject(parent)
+    , _account(account)
 {
-    // This job implements special redirect handling to detect redirections
-    // to pages that are indicative of Shibboleth-using servers. Hence we
-    // disable the standard job redirection handling here.
-    _followRedirects = false;
 }
 
 void DetermineAuthTypeJob::start()
 {
-    send(account()->davUrl());
-    AbstractNetworkJob::start();
-}
+    qCInfo(lcDetermineAuthTypeJob) << "Determining auth type for" << _account->davUrl();
 
-bool DetermineAuthTypeJob::finished()
-{
-    QUrl redirection = reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-    if (_redirects >= maxRedirects()) {
-        redirection.clear();
-    }
-
-    auto authChallenge = reply()->rawHeader("WWW-Authenticate").toLower();
-    if (redirection.isEmpty()) {
-        if (authChallenge.contains("bearer ")) {
-            emit authType(OAuth);
-        } else if (!authChallenge.isEmpty()) {
-            emit authType(Basic);
-        } else {
-            // This is also where we end up in case of network error.
-            emit authType(Unknown);
-        }
-    } else if (redirection.toString().endsWith(account()->davPath())) {
-        // do a new run
-        _redirects++;
-        resetTimeout();
-        send(redirection);
-        qCDebug(lcDetermineAuthTypeJob()) << "Redirected to:" << redirection.toString();
-        return false; // don't discard
-    } else {
-#ifndef NO_SHIBBOLETH
-        QRegExp shibbolethyWords("SAML|wayf");
-        shibbolethyWords.setCaseSensitivity(Qt::CaseInsensitive);
-        if (redirection.toString().contains(shibbolethyWords)) {
-            emit authType(Shibboleth);
-        } else
-#endif
-        {
-            // We got redirected to an address that doesn't look like shib
-            // and also doesn't have the davPath. Give up.
-            qCWarning(lcDetermineAuthTypeJob()) << account()->davUrl()
-                                                << "was redirected to the incompatible address"
-                                                << redirection.toString();
-            emit authType(Unknown);
-        }
-    }
-    return true;
-}
-
-void DetermineAuthTypeJob::send(const QUrl &url)
-{
     QNetworkRequest req;
-
     // Prevent HttpCredentialsAccessManager from setting an Authorization header.
     req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
     // Don't reuse previous auth credentials
@@ -889,7 +836,52 @@ void DetermineAuthTypeJob::send(const QUrl &url)
     // Don't send cookies, we can't determine the auth type if we're logged in
     req.setAttribute(QNetworkRequest::CookieLoadControlAttribute, QNetworkRequest::Manual);
 
-    sendRequest("GET", url, req);
+    // Start two parallel requests, one determines whether it's a shib server
+    // and the other checks the HTTP auth method.
+    auto get = _account->sendRequest("GET", _account->davUrl(), req);
+    auto propfind = _account->sendRequest("PROPFIND", _account->davUrl(), req);
+    get->setTimeout(30 * 1000);
+    propfind->setTimeout(30 * 1000);
+    get->setIgnoreCredentialFailure(true);
+    propfind->setIgnoreCredentialFailure(true);
+
+    connect(get, &AbstractNetworkJob::redirected, this, [this, get](QNetworkReply *, const QUrl &target, int) {
+#ifndef NO_SHIBBOLETH
+        QRegExp shibbolethyWords("SAML|wayf");
+        shibbolethyWords.setCaseSensitivity(Qt::CaseInsensitive);
+        if (target.toString().contains(shibbolethyWords)) {
+            _resultGet = Shibboleth;
+            get->setFollowRedirects(false);
+        }
+#endif
+    });
+    connect(get, &SimpleNetworkJob::finishedSignal, this, [this]() {
+        _getDone = true;
+        checkBothDone();
+    });
+    connect(propfind, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
+        auto authChallenge = reply->rawHeader("WWW-Authenticate").toLower();
+        if (authChallenge.contains("bearer ")) {
+            _resultPropfind = OAuth;
+        } else if (authChallenge.isEmpty()) {
+            qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
+        }
+        _propfindDone = true;
+        checkBothDone();
+    });
+}
+
+void DetermineAuthTypeJob::checkBothDone()
+{
+    if (!_getDone || !_propfindDone)
+        return;
+    auto result = _resultPropfind;
+    // OAuth > Shib > Basic
+    if (_resultGet == Shibboleth && result != OAuth)
+        result = Shibboleth;
+    qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << _account->davUrl() << "is" << result;
+    emit authType(result);
+    deleteLater();
 }
 
 SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, QObject *parent)

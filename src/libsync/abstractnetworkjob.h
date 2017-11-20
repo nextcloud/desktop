@@ -66,6 +66,7 @@ public:
      * requests where custom handling is necessary.
      */
     void setFollowRedirects(bool follow);
+    bool followRedirects() const { return _followRedirects; }
 
     QByteArray responseTimestamp();
 
@@ -107,8 +108,6 @@ signals:
     void redirected(QNetworkReply *reply, const QUrl &targetUrl, int redirectCount);
 
 protected:
-    void setupConnections(QNetworkReply *reply);
-
     /** Initiate a network request, returning a QNetworkReply.
      *
      * Calls setReply() and setupConnections() on it.
@@ -132,6 +131,16 @@ protected:
      * at it and thus not resend it in case of redirects.
      */
     void adoptRequest(QNetworkReply *reply);
+
+    void setupConnections(QNetworkReply *reply);
+
+    /** Can be used by derived classes to set up the network reply.
+     *
+     * Particularly useful when the request is redirected and reply()
+     * changes. For things like setting up additional signal connections
+     * on the new reply.
+     */
+    virtual void newReplyHook(QNetworkReply *) {}
 
     /// Creates a url for the account from a relative path
     QUrl makeAccountUrl(const QString &relativePath) const;
