@@ -263,7 +263,6 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     }
 
     if (_model->classify(index) == FolderStatusModel::SubFolder) {
-        QTreeView *tv = ui->_folderList;
         QMenu *menu = new QMenu(tv);
         menu->setAttribute(Qt::WA_DeleteOnClose);
 
@@ -275,8 +274,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
             ac->setEnabled(false);
         }
 
-        menu->exec(QCursor::pos());
-
+        menu->popup(tv->mapToGlobal(pos));
         return;
     }
 
@@ -291,6 +289,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     auto folderMan = FolderMan::instance();
 
     QMenu *menu = new QMenu(tv);
+
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
     QAction *ac = menu->addAction(tr("Open folder"));
@@ -316,7 +315,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
     ac = menu->addAction(tr("Remove folder sync connection"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotRemoveCurrentFolder);
-    menu->exec(tv->mapToGlobal(pos));
+    menu->popup(tv->mapToGlobal(pos));
 }
 
 void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
