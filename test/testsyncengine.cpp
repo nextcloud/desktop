@@ -510,11 +510,25 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        // OC-Checksum has preference
+        // Invalid OC-Checksum is ignored
         checksumValue = "garbage";
         // contentMd5Value is still good
         fakeFolder.remoteModifier().create("A/a6", 16, 'A');
+        QVERIFY(fakeFolder.syncOnce());
+        contentMd5Value = "bad";
+        fakeFolder.remoteModifier().create("A/a7", 16, 'A');
         QVERIFY(!fakeFolder.syncOnce());
+        contentMd5Value.clear();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // OC-Checksum contains Unsupported checksums
+        checksumValue = "Unsupported:XXXX SHA1:invalid Invalid:XxX";
+        fakeFolder.remoteModifier().create("A/a8", 16, 'A');
+        QVERIFY(!fakeFolder.syncOnce()); // Since the supported SHA1 checksum is invalid, no download
+        checksumValue =  "Unsupported:XXXX SHA1:19b1928d58a2030d08023f3d7054516dbc186f20 Invalid:XxX";
+        QVERIFY(fakeFolder.syncOnce()); // The supported SHA1 checksum is valid now, so the file are downloaded
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
     // Tests the behavior of invalid filename detection
