@@ -173,12 +173,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="306"/>
         <source>Force sync now</source>
-        <translation type="unfinished"/>
+        <translation>強制同步</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="308"/>
         <source>Restart sync</source>
-        <translation type="unfinished"/>
+        <translation>重新啟動同步</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="317"/>
@@ -243,7 +243,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="657"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>伺服器 %1 現正處於維護模式</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="659"/>
@@ -258,7 +258,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="672"/>
         <source>Connecting to %1...</source>
-        <translation type="unfinished"/>
+        <translation>正在連接到 ％1 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="675"/>
@@ -273,17 +273,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="786"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>有部份的資料夾因為容量太大沒有辦法同步:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="788"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation type="unfinished"/>
+        <translation>有部分資料夾因為是外部存儲沒有辦法同步: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="789"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation type="unfinished"/>
+        <translation>有部分資料夾因為容量太大或是外部存儲沒有辦法同步: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="835"/>
@@ -373,7 +373,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="132"/>
         <source>Maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>維護模式</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="134"/>
@@ -446,7 +446,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="614"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>未同步的清單已經被複製到剪貼簿。</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="619"/>
@@ -557,7 +557,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="164"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>存取配置文件時錯誤</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="165"/>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="168"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>退出 ownCloud</translation>
     </message>
 </context>
 <context>
