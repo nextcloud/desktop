@@ -37,13 +37,25 @@ public:
 		void setTokenForFolder(const QByteArray& folder, const QByteArray& token);
 		QByteArray tokenForFolder(const QByteArray& folder) const;
 
+		//TODO: Perhaps mode this to FolderStatusModel
+		// (as it makes sense, but it increase the chance
+		// of conflicts).
+		void fetchFolderEncryptedStatus();
+
+private slots:
+		void folderEncryptedStatusFetched(const QVariantMap &values);
+		void folderEncryptedStatusError(QNetworkReply *reply = 0);
+
 signals:
     void initializationFinished();
 
 private:
     OCC::AccountPtr _account;
     bool isInitialized = false;
+
+		//TODO: Save this on disk.
 		QMap<QByteArray, QByteArray> _folder2token;
+		QMap<QByteArray, bool> _folder2encryptedStatus;
 };
 
 /*
@@ -295,6 +307,26 @@ signals:
 
 private:
     QByteArray _fileId;
+};
+
+/* I cant use the propfind network job because it defaults to the
+ * wrong dav url.
+ */
+class OWNCLOUDSYNC_EXPORT GetFolderEncryptStatus : public AbstractNetworkJob
+{
+	Q_OBJECT
+public:
+	explicit GetFolderEncryptStatus (const AccountPtr &account, QObject *parent = 0);
+
+public slots:
+	void start() override;
+
+protected:
+	bool finished() override;
+
+signals:
+	void encryptStatusReceived(const QMap<QByteArray, bool> folderMetadata2EncryptionStatus);
+	void encryptStatusError(int statusCode);
 };
 
 } // namespace OCC

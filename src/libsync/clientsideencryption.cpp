@@ -18,6 +18,9 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QJsonObject>
+#include <QXmlStreamReader>
+#include <QXmlStreamNamespaceDeclaration>
+#include <QStack>
 
 #include "wordlist.h"
 
@@ -544,6 +547,23 @@ void ClientSideEncryption::getPublicKeyFromServer()
     job->start();
 }
 
+void ClientSideEncryption::fetchFolderEncryptedStatus() {
+	auto getEncryptedStatus = new GetFolderEncryptStatus(_account);
+	getEncryptedStatus ->start();
+}
+
+void ClientSideEncryption::folderEncryptedStatusFetched(const QVariantMap& result)
+{
+	qDebug() << "Retrieved correctly the encrypted status of the folders." << result;
+}
+
+void ClientSideEncryption::folderEncryptedStatusError(QNetworkReply *reply)
+{
+	qDebug() << "Failed to retrieve the status of the folders.";
+	if (reply) {
+		qDebug() << reply->errorString();
+	}
+}
 
 SignPublicKeyApiJob::SignPublicKeyApiJob(const AccountPtr& account, const QString& path, QObject* parent)
 : AbstractNetworkJob(account, path, parent)
@@ -1165,4 +1185,85 @@ bool GetMetadataApiJob::finished()
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
     return true;
 }
+
+GetFolderEncryptStatus::GetFolderEncryptStatus(const AccountPtr& account, QObject *parent)
+	: OCC::AbstractNetworkJob(account, QStringLiteral("remote.php/webdav"), parent)
+{
+}
+
+void GetFolderEncryptStatus::start()
+{
+	QNetworkRequest req;
+	req.setPriority(QNetworkRequest::HighPriority);
+	req.setRawHeader("OCS-APIREQUEST", "true");
+	req.setRawHeader("Content-Type", "application/xml");
+
+	QByteArray xml = "<d:propfind xmlns:d=\"DAV:\"> <d:prop xmlns:nc=\"http://nextcloud.org/ns\"> <nc:is-encrypted/> </d:prop> </d:propfind>";
+	QBuffer *buf = new QBuffer(this);
+	buf->setData(xml);
+	buf->open(QIODevice::ReadOnly);
+	sendRequest("PROPFIND", Utility::concatUrlPath(account()->url(), path()), req, buf);
+
+	AbstractNetworkJob::start();
+}
+
+bool GetFolderEncryptStatus::finished()
+{
+    qCInfo(lcCse()) << "GetFolderEncryptStatus of" << reply()->request().url() << "finished with status"
+                          << reply()->error()
+                          << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
+
+    int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+		if (http_result_code == 207) {
+        // Parse DAV response
+        QXmlStreamReader reader(reply());
+        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
+
+				/* Example Xml
+				<?xml version="1.0"?>
+					<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:oc="http://owncloud.org/ns" xmlns:nc="http://nextcloud.org/ns">
+						<d:response>
+							<d:href>/remote.php/webdav/</d:href>
+							<d:propstat>
+								<d:prop>
+									<nc:is-encrypted>0</nc:is-encrypted>
+								</d:prop>
+								<d:status>HTTP/1.1 200 OK</d:status>
+							</d:propstat>
+						</d:response>
+					</d:multistatus>
+				*/
+
+				QString currFile;
+				int currEncryptedStatus = -1;
+				QMap<QString, bool> folderStatus;
+        while (!reader.atEnd()) {
+            auto type = reader.readNext();
+            if (type == QXmlStreamReader::StartElement) {
+								if (reader.name() == QLatin1String("href")) {
+									currFile = reader.readElementText(QXmlStreamReader::SkipChildElements);
+								}
+                if (reader.name() == QLatin1String("is-encrypted")) {
+									currEncryptedStatus = (bool) reader.readElementText(QXmlStreamReader::SkipChildElements).toInt();
+								}
+            }
+
+            if (!currFile.isEmpty() && currEncryptedStatus != -1) {
+							folderStatus.insert(currFile, currEncryptedStatus);
+							currFile.clear();
+							currEncryptedStatus = -1;
+						}
+        }
+
+        emit encryptStatusReceived(folderStatus);
+    } else {
+        qCWarning(lcCse()) << "*not* successful, http result code is" << http_result_code
+                                 << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString() : QLatin1String(""));
+        emit encryptStatusError(http_result_code);
+				// emit finishedWithError(reply());
+    }
+    return true;
+}
+
 }

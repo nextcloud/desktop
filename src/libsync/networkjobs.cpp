@@ -567,6 +567,7 @@ void PropfindJob::start()
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
     sendRequest("PROPFIND", makeDavUrl(path()), req, buf);
+
     AbstractNetworkJob::start();
 }
 
