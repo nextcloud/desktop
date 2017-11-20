@@ -78,6 +78,12 @@ void FolderWatcherPrivate::inotifyRegisterPath(const QString &path)
             IN_CLOSE_WRITE | IN_ATTRIB | IN_MOVE | IN_CREATE | IN_DELETE | IN_DELETE_SELF | IN_MOVE_SELF | IN_UNMOUNT | IN_ONLYDIR);
         if (wd > -1) {
             _watches.insert(wd, path);
+        } else {
+            // If we're running out of memory or inotify watches, become
+            // unreliable.
+            if (errno == ENOMEM || errno == ENOSPC) {
+                _parent->_isReliable = false;
+            }
         }
     }
 }

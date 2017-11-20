@@ -297,41 +297,60 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
 
       } else {
           /* Remote Replica Rename check */
-          OCC::SyncJournalFileRecord base;
-          if(!ctx->statedb->getFileRecordByFileId(fs->file_id, &base)) {
+          fs->instruction = CSYNC_INSTRUCTION_NEW;
+
+          bool done = false;
+          auto renameCandidateProcessing = [&](const OCC::SyncJournalFileRecord &base) {
+              if (done)
+                  return;
+              if (!base.isValid())
+                  return;
+
+              // Some things prohibit rename detection entirely.
+              // Since we don't do the same checks again in reconcile, we can't
+              // just skip the candidate, but have to give up completely.
+              if (base._type != fs->type) {
+                  qCWarning(lcUpdate, "file types different, not a rename");
+                  done = true;
+                  return;
+              }
+              if (fs->type != CSYNC_FTW_TYPE_DIR && base._etag != fs->etag) {
+                  /* File with different etag, don't do a rename, but download the file again */
+                  qCWarning(lcUpdate, "file etag different, not a rename");
+                  done = true;
+                  return;
+              }
+
+              // Record directory renames
+              if (fs->type == CSYNC_FTW_TYPE_DIR) {
+                  // If the same folder was already renamed by a different entry,
+                  // skip to the next candidate
+                  if (ctx->renames.folder_renamed_to.count(base._path) > 0) {
+                      qCWarning(lcUpdate, "folder already has a rename entry, skipping");
+                      return;
+                  }
+                  csync_rename_record(ctx, base._path, fs->path);
+              }
+
+              qCDebug(lcUpdate, "remote rename detected based on fileid %s --> %s", base._path.constData(), fs->path.constData());
+              fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
+              done = true;
+          };
+
+          if (!ctx->statedb->getFileRecordsByFileId(fs->file_id, renameCandidateProcessing)) {
               ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
               return -1;
           }
-          if (base.isValid()) {                           /* tmp existing at all */
-              if (base._type != fs->type) {
-                  qCWarning(lcUpdate, "file types different is not!");
-                  fs->instruction = CSYNC_INSTRUCTION_NEW;
-                  goto out;
-              }
-              qCDebug(lcUpdate, "remote rename detected based on fileid %s --> %s", base._path.constData(), fs->path.constData());
-              fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
-              if (fs->type == CSYNC_FTW_TYPE_DIR) {
-                  csync_rename_record(ctx, base._path, fs->path);
-              } else {
-                  if( base._etag != fs->etag ) {
-                      /* CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "ETags are different!"); */
-                      /* File with different etag, don't do a rename, but download the file again */
-                      fs->instruction = CSYNC_INSTRUCTION_NEW;
-                  }
-              }
-              goto out;
 
-          } else {
-              /* file not found in statedb */
-              fs->instruction = CSYNC_INSTRUCTION_NEW;
-
-              if (fs->type == CSYNC_FTW_TYPE_DIR && ctx->current == REMOTE_REPLICA && ctx->callbacks.checkSelectiveSyncNewFolderHook) {
-                  if (ctx->callbacks.checkSelectiveSyncNewFolderHook(ctx->callbacks.update_callback_userdata, fs->path, fs->remotePerm)) {
-                      return 1;
-                  }
+          if (fs->instruction == CSYNC_INSTRUCTION_NEW
+              && fs->type == CSYNC_FTW_TYPE_DIR
+              && ctx->current == REMOTE_REPLICA
+              && ctx->callbacks.checkSelectiveSyncNewFolderHook) {
+              if (ctx->callbacks.checkSelectiveSyncNewFolderHook(ctx->callbacks.update_callback_userdata, fs->path, fs->remotePerm)) {
+                  return 1;
               }
-              goto out;
           }
+          goto out;
       }
   }
 
@@ -435,28 +454,31 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
 {
     int64_t count = 0;
     QByteArray skipbase;
-    auto rowCallback = [ctx, &count, &skipbase](const OCC::SyncJournalFileRecord &rec) {
-        /* When selective sync is used, the database may have subtrees with a parent
-         * whose etag (md5) is _invalid_. These are ignored and shall not appear in the
-         * remote tree.
-         * Sometimes folders that are not ignored by selective sync get marked as
-         * _invalid_, but that is not a problem as the next discovery will retrieve
-         * their correct etags again and we don't run into this case.
-         */
-        if( rec._etag == "_invalid_") {
-            qCDebug(lcUpdate, "%s selective sync excluded", rec._path.constData());
-            skipbase = rec._path;
-            skipbase += '/';
-            return;
-        }
+    auto &files = ctx->current == LOCAL_REPLICA ? ctx->local.files : ctx->remote.files;
+    auto rowCallback = [ctx, &count, &skipbase, &files](const OCC::SyncJournalFileRecord &rec) {
+        if (ctx->current == REMOTE_REPLICA) {
+            /* When selective sync is used, the database may have subtrees with a parent
+             * whose etag is _invalid_. These are ignored and shall not appear in the
+             * remote tree.
+             * Sometimes folders that are not ignored by selective sync get marked as
+             * _invalid_, but that is not a problem as the next discovery will retrieve
+             * their correct etags again and we don't run into this case.
+             */
+            if (rec._etag == "_invalid_") {
+                qCDebug(lcUpdate, "%s selective sync excluded", rec._path.constData());
+                skipbase = rec._path;
+                skipbase += '/';
+                return;
+            }
 
-        /* Skip over all entries with the same base path. Note that this depends
-         * strongly on the ordering of the retrieved items. */
-        if( !skipbase.isEmpty() && rec._path.startsWith(skipbase) ) {
-            qCDebug(lcUpdate, "%s selective sync excluded because the parent is", rec._path.constData());
-            return;
-        } else {
-            skipbase.clear();
+            /* Skip over all entries with the same base path. Note that this depends
+             * strongly on the ordering of the retrieved items. */
+            if (!skipbase.isEmpty() && rec._path.startsWith(skipbase)) {
+                qCDebug(lcUpdate, "%s selective sync excluded because the parent is", rec._path.constData());
+                return;
+            } else {
+                skipbase.clear();
+            }
         }
 
         std::unique_ptr<csync_file_stat_t> st = csync_file_stat_t::fromSyncJournalFileRecord(rec);
@@ -477,7 +499,7 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
         }
 
         /* store into result list. */
-        ctx->remote.files[rec._path] = std::move(st);
+        files[rec._path] = std::move(st);
         ++count;
     };
 
@@ -522,6 +544,26 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   int rc = 0;
 
   bool do_read_from_db = (ctx->current == REMOTE_REPLICA && ctx->remote.read_from_db);
+  const char *db_uri = uri;
+
+  if (ctx->current == LOCAL_REPLICA
+      && ctx->local_discovery_style == LocalDiscoveryStyle::DatabaseAndFilesystem) {
+      const char *local_uri = uri + strlen(ctx->local.uri);
+      if (*local_uri == '/')
+          ++local_uri;
+      db_uri = local_uri;
+      do_read_from_db = true;
+
+      // Minor bug: local_uri doesn't have a trailing /. Example: Assume it's "d/foo"
+      // and we want to check whether we should read from the db. Assume "d/foo a" is
+      // in locally_touched_dirs. Then this check will say no, don't read from the db!
+      // (because "d/foo" < "d/foo a" < "d/foo/bar")
+      // C++14: Could skip the conversion to QByteArray here.
+      auto it = ctx->locally_touched_dirs.lower_bound(QByteArray(local_uri));
+      if (it != ctx->locally_touched_dirs.end() && it->startsWith(local_uri)) {
+          do_read_from_db = false;
+      }
+  }
 
   if (!depth) {
     mark_current_item_ignored(ctx, previous_fs, CSYNC_STATUS_INDIVIDUAL_TOO_DEEP);
@@ -533,7 +575,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   // if the etag of this dir is still the same, its content is restored from the
   // database.
   if( do_read_from_db ) {
-      if( ! fill_tree_from_db(ctx, uri) ) {
+      if( ! fill_tree_from_db(ctx, db_uri) ) {
         errno = ENOENT;
         ctx->status_code = CSYNC_STATUS_OPENDIR_ERROR;
         goto error;
@@ -616,7 +658,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
      * local stat function.
      */
     if( filename[0] == '.' ) {
-        if (filename == ".sys.admin#recall#") { /* recall file shall not be ignored (#4420) */
+        if (filename != ".sys.admin#recall#") { /* recall file shall not be ignored (#4420) */
             dirent->is_hidden = true;
         }
     }

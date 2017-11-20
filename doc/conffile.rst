@@ -27,6 +27,8 @@ Some interesting values that can be set on the configuration file are:
 +---------------------------------+---------------+--------------------------------------------------------------------------------------------------------+
 | ``forceSyncInterval``           | ``7200000``   | The duration of no activity after which a synchronization run shall be triggered automatically.        |
 +---------------------------------+---------------+--------------------------------------------------------------------------------------------------------+
+| ``fullLocalDiscoveryInterval``  | ``3600000``   | The interval after which the next synchronization will perform a full local discovery.                 |
++---------------------------------+---------------+--------------------------------------------------------------------------------------------------------+
 | ``notificationRefreshInterval`` | ``300000``    | Specifies the default interval of checking for new server notifications in milliseconds.               |
 +---------------------------------+---------------+--------------------------------------------------------------------------------------------------------+
 

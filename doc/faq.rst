@@ -1,7 +1,7 @@
 FAQ
 ===
 
-Some files are continuously uploaded to the server, even when they are not modified.
+Some Files Are Continuously Uploaded to the Server, Even When They Are Not Modified.
 ------------------------------------------------------------------------------------
 
 It is possible that another program is changing the modification date of the file.
@@ -11,15 +11,17 @@ continually changes all files, unless you remove
 from the windows registry.
 See http://petersteier.wordpress.com/2011/10/22/windows-indexer-changes-modification-dates-of-eml-files/ for more information.
 
-Syncing breaks when attempting to sync deeper than 50 sub-directories, but the sync client does not report an error (RC=0)
---------------------------------------------------------------------------------------------------------------------------
+Syncing Stops When Attempting To Sync Deeper Than 100 Sub-directories.
+----------------------------------------------------------------------
 
-The sync client has been intentionally limited to sync no deeper than
-fifty sub-directories, to help prevent memory problems. 
-Unfortunately, it, *currently*, does not report an error when this occurs. 
-However, a UI notification is planned for a future release of ownCloud.
+The sync client has been intentionally limited to sync no deeper than 100
+sub-directories. The hard limit exists to guard against bugs with cycles
+like symbolic link loops.
+When a deeply nested directory is excluded from synchronization it will be
+listed with other ignored files and directories in the "Not synced" tab of
+the "Activity" pane.
 
-I want to move my local sync folder
+I Want To Move My Local Sync Folder
 -----------------------------------
 
 The ownCloud desktop client does not provide a way to change the local sync directory. 
@@ -29,20 +31,20 @@ Specifically, you have to:
 1. Remove the existing connection which syncs to the wrong directory
 2. Add a new connection which syncs to the desired directory
 
-.. image:: images/setup/ownCloud-remove_existing_connection.png
+.. figure:: images/setup/ownCloud-remove_existing_connection.png
    :alt: Remove an existing connection
 
 To do so, in the client UI, which you can see above, click the "**Account**" drop-down menu and then click "Remove". 
 This will display a "**Confirm Account Removal**" dialog window.
 
-.. image:: images/setup/ownCloud-remove_existing_connection_confirmation_dialog.png
+.. figure:: images/setup/ownCloud-remove_existing_connection_confirmation_dialog.png
    :alt: Remove existing connection confirmation dialog
 
 If you're sure, click "**Remove connection**".
 
 Then, click the Account drop-down menu again, and this time click "**Add new**".
 
-.. image:: images/setup/ownCloud-replacement_connection_wizard.png
+.. figure:: images/setup/ownCloud-replacement_connection_wizard.png
    :alt: Replacement connection wizard
 
 This opens the ownCloud Connection Wizard, which you can see above, *but* with an extra option.

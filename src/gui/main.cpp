@@ -88,7 +88,7 @@ int main(int argc, char **argv)
 
 // check a environment variable for core dumps
 #ifdef Q_OS_UNIX
-    if (!qgetenv("OWNCLOUD_CORE_DUMP").isEmpty()) {
+    if (!qEnvironmentVariableIsEmpty("OWNCLOUD_CORE_DUMP")) {
         struct rlimit core_limit;
         core_limit.rlim_cur = RLIM_INFINITY;
         core_limit.rlim_max = RLIM_INFINITY;

@@ -43,7 +43,7 @@ public:
     UserAgentWebPage(QObject *parent)
         : QWebPage(parent)
     {
-        if (!qgetenv("OWNCLOUD_SHIBBOLETH_DEBUG").isEmpty()) {
+        if (!qEnvironmentVariableIsEmpty("OWNCLOUD_SHIBBOLETH_DEBUG")) {
             settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
         }
     }
@@ -83,7 +83,7 @@ ShibbolethWebView::ShibbolethWebView(AccountPtr account, QWidget *parent)
     setWindowTitle(tr("%1 - Authenticate").arg(Theme::instance()->appNameGUI()));
 
     // Debug view to display the cipher suite
-    if (!qgetenv("OWNCLOUD_SHIBBOLETH_DEBUG").isEmpty()) {
+    if (!qEnvironmentVariableIsEmpty("OWNCLOUD_SHIBBOLETH_DEBUG")) {
         // open an additional window to display some cipher debug info
         QWebPage *debugPage = new UserAgentWebPage(this);
         debugPage->mainFrame()->load(QUrl("https://cc.dcsec.uni-hannover.de/"));

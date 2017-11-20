@@ -201,13 +201,15 @@ bool OwncloudSetupPage::urlHasChanged()
 
 int OwncloudSetupPage::nextId() const
 {
-    if (_authType == DetermineAuthTypeJob::Basic) {
+    switch (_authType) {
+    case DetermineAuthTypeJob::Basic:
         return WizardCommon::Page_HttpCreds;
-    } else if (_authType == DetermineAuthTypeJob::OAuth) {
+    case DetermineAuthTypeJob::OAuth:
         return WizardCommon::Page_OAuthCreds;
-    } else {
+    case DetermineAuthTypeJob::Shibboleth:
         return WizardCommon::Page_ShibbolethCreds;
     }
+    return WizardCommon::Page_HttpCreds;
 }
 
 QString OwncloudSetupPage::url() const
@@ -334,7 +336,7 @@ void OwncloudSetupPage::slotCertificateAccepted()
         addCertDial->reinit(); // FIXME: Why not just have this only created on use?
         validatePage();
     } else {
-        addCertDial->showErrorMessage("Could not load certificate");
+        addCertDial->showErrorMessage(tr("Could not load certificate. Maybe wrong password?"));
         addCertDial->show();
     }
 }

@@ -547,11 +547,26 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("prepare _getFileRecordQueryByFileId", *_getFileRecordQueryByFileId);
     }
 
+    // This query is used to skip discovery and fill the tree from the
+    // database instead
     _getFilesBelowPathQuery.reset(new SqlQuery(_db));
     if (_getFilesBelowPathQuery->prepare(
             GET_FILE_RECORD_QUERY
-            " WHERE path > (?1||'/') AND path < (?1||'0') ORDER BY path||'/' ASC")) {
+            " WHERE path > (?1||'/') AND path < (?1||'0')"
+            // We want to ensure that the contents of a directory are sorted
+            // directly behind the directory itself. Without this ORDER BY
+            // an ordering like foo, foo-2, foo/file would be returned.
+            // With the trailing /, we get foo-2, foo, foo/file. This property
+            // is used in fill_tree_from_db().
+            " ORDER BY path||'/' ASC")) {
         return sqlFail("prepare _getFilesBelowPathQuery", *_getFilesBelowPathQuery);
+    }
+
+    _getAllFilesQuery.reset(new SqlQuery(_db));
+    if (_getAllFilesQuery->prepare(
+            GET_FILE_RECORD_QUERY
+            " ORDER BY path||'/' ASC")) {
+        return sqlFail("prepare _getAllFilesQuery", *_getAllFilesQuery);
     }
 
     _setFileRecordQuery.reset(new SqlQuery(_db));
@@ -704,6 +719,7 @@ void SyncJournalDb::close()
     _getFileRecordQueryByInode.reset(0);
     _getFileRecordQueryByFileId.reset(0);
     _getFilesBelowPathQuery.reset(0);
+    _getAllFilesQuery.reset(0);
     _setFileRecordQuery.reset(0);
     _setFileRecordChecksumQuery.reset(0);
     _setFileRecordLocalMetadataQuery.reset(0);
@@ -1094,14 +1110,9 @@ bool SyncJournalDb::getFileRecordByInode(quint64 inode, SyncJournalFileRecord *r
     return true;
 }
 
-bool SyncJournalDb::getFileRecordByFileId(const QByteArray &fileId, SyncJournalFileRecord *rec)
+bool SyncJournalDb::getFileRecordsByFileId(const QByteArray &fileId, const std::function<void(const SyncJournalFileRecord &)> &rowCallback)
 {
     QMutexLocker locker(&_mutex);
-
-    // Reset the output var in case the caller is reusing it.
-    Q_ASSERT(rec);
-    rec->_path.clear();
-    Q_ASSERT(!rec->isValid());
 
     if (fileId.isEmpty() || _metadataTableIsEmpty)
         return true; // no error, yet nothing found (rec->isValid() == false)
@@ -1116,8 +1127,10 @@ bool SyncJournalDb::getFileRecordByFileId(const QByteArray &fileId, SyncJournalF
         return false;
     }
 
-    if (_getFileRecordQueryByFileId->next()) {
-        fillFileRecordFromGetQuery(*rec, *_getFileRecordQueryByFileId);
+    while (_getFileRecordQueryByFileId->next()) {
+        SyncJournalFileRecord rec;
+        fillFileRecordFromGetQuery(rec, *_getFileRecordQueryByFileId);
+        rowCallback(rec);
     }
 
     return true;
@@ -1133,16 +1146,23 @@ bool SyncJournalDb::getFilesBelowPath(const QByteArray &path, const std::functio
     if (!checkConnect())
         return false;
 
-    _getFilesBelowPathQuery->reset_and_clear_bindings();
-    _getFilesBelowPathQuery->bindValue(1, path);
+    // Since the path column doesn't store the starting /, the getFilesBelowPathQuery
+    // can't be used for the root path "". It would scan for (path > '/' and path < '0')
+    // and find nothing. So, unfortunately, we have to use a different query for
+    // retrieving the whole tree.
+    auto &query = path.isEmpty() ? _getAllFilesQuery : _getFilesBelowPathQuery;
 
-    if (!_getFilesBelowPathQuery->exec()) {
+    query->reset_and_clear_bindings();
+    if (query == _getFilesBelowPathQuery)
+        query->bindValue(1, path);
+
+    if (!query->exec()) {
         return false;
     }
 
-    while (_getFilesBelowPathQuery->next()) {
+    while (query->next()) {
         SyncJournalFileRecord rec;
-        fillFileRecordFromGetQuery(rec, *_getFilesBelowPathQuery);
+        fillFileRecordFromGetQuery(rec, *query);
         rowCallback(rec);
     }
 

@@ -39,6 +39,7 @@
 
 #include "theme.h"
 #include "netrcparser.h"
+#include "libsync/logger.h"
 
 #include "config.h"
 
@@ -189,7 +190,7 @@ void help()
     std::cout << "  --downlimit [n]        Limit the download speed of files to n KB/s" << std::endl;
     std::cout << "  -h                     Sync hidden files,do not ignore them" << std::endl;
     std::cout << "  --version, -v          Display version and exit" << std::endl;
-    std::cout << "  --debug                More verbose logging" << std::endl;
+    std::cout << "  --logdebug             More verbose logging" << std::endl;
     std::cout << "" << std::endl;
     exit(0);
 }
@@ -267,6 +268,9 @@ void parseOptions(const QStringList &app_args, CmdOptions *options)
             options->uplimit = it.next().toInt() * 1000;
         } else if (option == "--downlimit" && !it.peekNext().startsWith("-")) {
             options->downlimit = it.next().toInt() * 1000;
+        } else if (option == "--logdebug") {
+            Logger::instance()->setLogFile("-");
+            Logger::instance()->setLogDebug(true);
         } else {
             help();
         }
@@ -330,6 +334,8 @@ int main(int argc, char **argv)
     csync_set_log_level(options.silent ? 1 : 11);
     if (options.silent) {
         qInstallMsgHandler(nullMessageHandler);
+    } else {
+        qSetMessagePattern("%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
     }
 
     AccountPtr account = Account::create();

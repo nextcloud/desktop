@@ -43,6 +43,7 @@ private slots:
     void saveMiscSettings();
     void slotToggleLaunchOnStartup(bool);
     void slotToggleOptionalDesktopNotifications(bool);
+    void slotShowInExplorerNavigationPane(bool);
     void slotUpdateInfo();
     void slotIgnoreFilesEditor();
     void loadMiscSettings();

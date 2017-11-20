@@ -30,19 +30,21 @@ using namespace QKeychain;
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcHttpCredentialsGui, "sync.credentials.http.gui", QtInfoMsg)
+
 void HttpCredentialsGui::askFromUser()
 {
-    // Unfortunately there's a bug that doesn't allow us to send the "is this
-    // OAuth2 or Basic auth?" GET request directly. Scheduling it for the event
-    // loop works though. See #5989.
-    QMetaObject::invokeMethod(this, "askFromUserAsync", Qt::QueuedConnection);
+    // This function can be called from AccountState::slotInvalidCredentials,
+    // which (indirectly, through HttpCredentials::invalidateToken) schedules
+    // a cache wipe of the qnam. We can only execute a network job again once
+    // the cache has been cleared, otherwise we'd interfere with the job.
+    QTimer::singleShot(100, this, &HttpCredentialsGui::askFromUserAsync);
 }
 
 void HttpCredentialsGui::askFromUserAsync()
 {
     // First, we will check what kind of auth we need.
     auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
-    job->setTimeout(30 * 1000);
     QObject::connect(job, &DetermineAuthTypeJob::authType, this, [this](DetermineAuthTypeJob::AuthType type) {
         if (type == DetermineAuthTypeJob::OAuth) {
             _asyncAuth.reset(new OAuth(_account, this));
@@ -58,7 +60,8 @@ void HttpCredentialsGui::askFromUserAsync()
             // We will re-enter the event loop, so better wait the next iteration
             QMetaObject::invokeMethod(this, "showDialog", Qt::QueuedConnection);
         } else {
-            // Network error? Unsupported auth type?
+            // Shibboleth?
+            qCWarning(lcHttpCredentialsGui) << "Bad http auth type:" << type;
             emit asked();
         }
     });

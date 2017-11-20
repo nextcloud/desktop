@@ -72,13 +72,29 @@ public:
     /* Check if the path is ignored. */
     bool pathIsIgnored(const QString &path);
 
+    /**
+     * Returns false if the folder watcher can't be trusted to capture all
+     * notifications.
+     *
+     * For example, this can happen on linux if the inotify user limit from
+     * /proc/sys/fs/inotify/max_user_watches is exceeded.
+     */
+    bool isReliable() const;
+
 signals:
     /** Emitted when one of the watched directories or one
      *  of the contained files is changed. */
     void pathChanged(const QString &path);
 
-    /** Emitted if an error occurs */
-    void error(const QString &error);
+    /**
+     * Emitted if some notifications were lost.
+     *
+     * Would happen, for example, if the number of pending notifications
+     * exceeded the allocated buffer size on Windows. Note that the folder
+     * watcher could still be able to capture all future notifications -
+     * i.e. isReliable() is orthogonal to losing changes occasionally.
+     */
+    void lostChanges();
 
 protected slots:
     // called from the implementations to indicate a change in path
@@ -93,6 +109,7 @@ private:
     QTime _timer;
     QSet<QString> _lastPaths;
     Folder *_folder;
+    bool _isReliable = true;
 
     friend class FolderWatcherPrivate;
 };

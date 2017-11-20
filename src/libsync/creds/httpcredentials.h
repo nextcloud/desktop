@@ -114,8 +114,8 @@ private Q_SLOTS:
     void slotReadClientKeyPEMJobDone(QKeychain::Job *);
     void slotReadJobDone(QKeychain::Job *);
 
-    void slotWriteClientCertPEMJobDone(QKeychain::Job *);
-    void slotWriteClientKeyPEMJobDone(QKeychain::Job *);
+    void slotWriteClientCertPEMJobDone();
+    void slotWriteClientKeyPEMJobDone();
     void slotWriteJobDone(QKeychain::Job *);
 
 protected:

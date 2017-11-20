@@ -57,6 +57,7 @@ set(client_SRCS
     ignorelisteditor.cpp
     lockwatcher.cpp
     logbrowser.cpp
+    navigationpanehelper.cpp
     networksettings.cpp
     ocsjob.cpp
     ocssharejob.cpp

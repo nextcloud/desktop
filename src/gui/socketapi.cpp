@@ -503,27 +503,29 @@ void fetchPrivateLinkUrl(const QString &localFile, SocketApi *target, void (Sock
     const QString localFileClean = QDir::cleanPath(localFile);
     const QString file = localFileClean.mid(shareFolder->cleanPath().length() + 1);
 
+    AccountPtr account = shareFolder->accountState()->account();
+
     // Generate private link ourselves: used as a fallback
     SyncJournalFileRecord rec;
     if (!shareFolder->journalDb()->getFileRecord(file, &rec) || !rec.isValid())
         return;
     const QString oldUrl =
-        shareFolder->accountState()->account()->deprecatedPrivateLinkUrl(rec.numericFileId()).toString(QUrl::FullyEncoded);
+        account->deprecatedPrivateLinkUrl(rec.numericFileId()).toString(QUrl::FullyEncoded);
 
-    // If the server doesn't have the property, use the old url directly.
-    if (!shareFolder->accountState()->account()->capabilities().privateLinkPropertyAvailable()) {
-        (target->*targetFun)(oldUrl);
-        return;
-    }
-
-    // Retrieve the new link by PROPFIND
-    PropfindJob *job = new PropfindJob(shareFolder->accountState()->account(), file, target);
-    job->setProperties(QList<QByteArray>() << "http://owncloud.org/ns:privatelink");
+    // Retrieve the new link or numeric file id by PROPFIND
+    PropfindJob *job = new PropfindJob(account, file, target);
+    job->setProperties(
+        QList<QByteArray>()
+        << "http://owncloud.org/ns:fileid" // numeric file id for fallback private link generation
+        << "http://owncloud.org/ns:privatelink");
     job->setTimeout(10 * 1000);
     QObject::connect(job, &PropfindJob::result, target, [=](const QVariantMap &result) {
         auto privateLinkUrl = result["privatelink"].toString();
+        auto numericFileId = result["fileid"].toByteArray();
         if (!privateLinkUrl.isEmpty()) {
             (target->*targetFun)(privateLinkUrl);
+        } else if (!numericFileId.isEmpty()) {
+            (target->*targetFun)(account->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded));
         } else {
             (target->*targetFun)(oldUrl);
         }

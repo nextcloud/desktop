@@ -117,10 +117,14 @@ void PropagateRemoteMove::start()
     _job->start();
 }
 
-void PropagateRemoteMove::abort()
+void PropagateRemoteMove::abort(PropagatorJob::AbortType abortType)
 {
     if (_job && _job->reply())
         _job->reply()->abort();
+
+    if (abortType == AbortType::Asynchronous) {
+        emit abortFinished();
+    }
 }
 
 void PropagateRemoteMove::slotMoveJobFinished()

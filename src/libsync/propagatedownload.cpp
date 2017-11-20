@@ -127,7 +127,6 @@ void GETFileJob::start()
         sendRequest("GET", _directDownloadUrl, req);
     }
 
-    reply()->setReadBufferSize(16 * 1024); // keep low so we can easier limit the bandwidth
     qCDebug(lcGetJob) << _bandwidthManager << _bandwidthChoked << _bandwidthLimited;
     if (_bandwidthManager) {
         _bandwidthManager->registerDownloadJob(this);
@@ -137,12 +136,18 @@ void GETFileJob::start()
         qCWarning(lcGetJob) << " Network error: " << errorString();
     }
 
-    connect(reply(), &QNetworkReply::metaDataChanged, this, &GETFileJob::slotMetaDataChanged);
-    connect(reply(), &QIODevice::readyRead, this, &GETFileJob::slotReadyRead);
-    connect(reply(), &QNetworkReply::downloadProgress, this, &GETFileJob::downloadProgress);
     connect(this, &AbstractNetworkJob::networkActivity, account().data(), &Account::propagatorNetworkActivity);
 
     AbstractNetworkJob::start();
+}
+
+void GETFileJob::newReplyHook(QNetworkReply *reply)
+{
+    reply->setReadBufferSize(16 * 1024); // keep low so we can easier limit the bandwidth
+
+    connect(reply, &QNetworkReply::metaDataChanged, this, &GETFileJob::slotMetaDataChanged);
+    connect(reply, &QIODevice::readyRead, this, &GETFileJob::slotReadyRead);
+    connect(reply, &QNetworkReply::downloadProgress, this, &GETFileJob::downloadProgress);
 }
 
 void GETFileJob::slotMetaDataChanged()
@@ -152,6 +157,10 @@ void GETFileJob::slotMetaDataChanged()
     reply()->setReadBufferSize(16 * 1024);
 
     int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    // Ignore redirects
+    if (httpStatus == 301 || httpStatus == 302 || httpStatus == 303 || httpStatus == 307 || httpStatus == 308)
+        return;
 
     // If the status code isn't 2xx, don't write the reply body to the file.
     // For any error: handle it when the job is finished, not here.
@@ -216,6 +225,8 @@ void GETFileJob::slotMetaDataChanged()
     if (!lastModified.isNull()) {
         _lastModified = Utility::qDateTimeToTime_t(lastModified.toDateTime());
     }
+
+    _saveBodyToFile = true;
 }
 
 void GETFileJob::setBandwidthManager(BandwidthManager *bwm)
@@ -281,7 +292,7 @@ void GETFileJob::slotReadyRead()
             return;
         }
 
-        if (_device->isOpen()) {
+        if (_device->isOpen() && _saveBodyToFile) {
             qint64 w = _device->write(buffer.constData(), r);
             if (w != r) {
                 _errorString = _device->errorString();
@@ -346,13 +357,16 @@ void PropagateDownloadFile::start()
         }
     }
 
-    // If we have a conflict where size and mtime are identical,
+    // If we have a conflict where size of the file is unchanged,
     // compare the remote checksum to the local one.
     // Maybe it's not a real conflict and no download is necessary!
+    // If the hashes are collision safe and identical, we assume the content is too.
+    // For weak checksums, we only do that if the mtimes are also identical.
     if (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT
         && _item->_size == _item->_previousSize
-        && _item->_modtime == _item->_previousModtime
-        && !_item->_checksumHeader.isEmpty()) {
+        && !_item->_checksumHeader.isEmpty()
+        && (csync_is_collision_safe_hash(_item->_checksumHeader)
+            || _item->_modtime == _item->_previousModtime)) {
         qCDebug(lcPropagateDownload) << _item->_file << "may not need download, computing checksum";
         auto computeChecksum = new ComputeChecksum(this);
         computeChecksum->setChecksumType(parseChecksumHeaderType(_item->_checksumHeader));
@@ -368,8 +382,17 @@ void PropagateDownloadFile::start()
 void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
 {
     if (makeChecksumHeader(checksumType, checksum) == _item->_checksumHeader) {
+        // No download necessary, just update fs and journal metadata
         qCDebug(lcPropagateDownload) << _item->_file << "remote and local checksum match";
-        // No download necessary, just update metadata
+
+        // Apply the server mtime locally if necessary, ensuring the journal
+        // and local mtimes end up identical
+        auto fn = propagator()->getFilePath(_item->_file);
+        if (_item->_modtime != _item->_previousModtime) {
+            FileSystem::setModTime(fn, _item->_modtime);
+            emit propagator()->touchedFile(fn);
+        }
+        _item->_modtime = FileSystem::getModTime(fn);
         updateMetadata(/*isConflict=*/false);
         return;
     }
@@ -624,7 +647,10 @@ void PropagateDownloadFile::slotGetFinished()
         this, &PropagateDownloadFile::transmissionChecksumValidated);
     connect(validator, &ValidateChecksumHeader::validationFailed,
         this, &PropagateDownloadFile::slotChecksumFail);
-    auto checksumHeader = job->reply()->rawHeader(checkSumHeaderC);
+    auto checksumHeader = findBestChecksum(job->reply()->rawHeader(checkSumHeaderC));
+    auto contentMd5Header = job->reply()->rawHeader(contentMd5HeaderC);
+    if (checksumHeader.isEmpty() && !contentMd5Header.isEmpty())
+        checksumHeader = "MD5:" + contentMd5Header;
     validator->start(_tmpFile.fileName(), checksumHeader);
 }
 
@@ -897,9 +923,13 @@ void PropagateDownloadFile::slotDownloadProgress(qint64 received, qint64)
 }
 
 
-void PropagateDownloadFile::abort()
+void PropagateDownloadFile::abort(PropagatorJob::AbortType abortType)
 {
     if (_job && _job->reply())
         _job->reply()->abort();
+
+    if (abortType == AbortType::Asynchronous) {
+        emit abortFinished();
+    }
 }
 }

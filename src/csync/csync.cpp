@@ -314,6 +314,9 @@ int csync_s::reinitialize() {
   local.files.clear();
   remote.files.clear();
 
+  local_discovery_style = LocalDiscoveryStyle::FilesystemOnly;
+  locally_touched_dirs.clear();
+
   status = CSYNC_STATUS_INIT;
   SAFE_FREE(error_string);
 

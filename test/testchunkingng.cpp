@@ -85,6 +85,136 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.first().name, chunkingId);
     }
 
+    // Check what happens when we abort during the final MOVE and the
+    // the final MOVE takes longer than the abort-delay
+    void testLateAbortHard()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ { "chunking", "1.0" } } }, { "checksums", QVariantMap{ { "supportedTypes", QStringList() << "SHA1" } } } });
+        const int size = 150 * 1000 * 1000;
+
+        // Make the MOVE never reply, but trigger a client-abort and apply the change remotely
+        auto parent = new QObject;
+        QByteArray moveChecksumHeader;
+        int nGET = 0;
+        int responseDelay = 10000; // bigger than abort-wait timeout
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request) -> QNetworkReply * {
+            if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
+                QTimer::singleShot(50, parent, [&]() { fakeFolder.syncEngine().abort(); });
+                moveChecksumHeader = request.rawHeader("OC-Checksum");
+                return new FakeChunkMoveReply(fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, responseDelay, parent);
+            } else if (op == QNetworkAccessManager::GetOperation) {
+                nGET++;
+            }
+            return nullptr;
+        });
+
+
+        // Test 1: NEW file aborted
+        fakeFolder.localModifier().insert("A/a0", size);
+        QVERIFY(!fakeFolder.syncOnce()); // error: abort!
+
+        // Now the next sync gets a NEW/NEW conflict and since there's no checksum
+        // it just becomes a UPDATE_METADATA
+        auto checkEtagUpdated = [&](SyncFileItemVector &items) {
+            QCOMPARE(items.size(), 1);
+            QCOMPARE(items[0]->_file, QLatin1String("A"));
+            SyncJournalFileRecord record;
+            QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("A/a0"), &record));
+            QCOMPARE(record._etag, fakeFolder.remoteModifier().find("A/a0")->etag.toUtf8());
+        };
+        auto connection = connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, checkEtagUpdated);
+        QVERIFY(fakeFolder.syncOnce());
+        disconnect(connection);
+        QCOMPARE(nGET, 0);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+
+        // Test 2: modified file upload aborted
+        fakeFolder.localModifier().appendByte("A/a0");
+        QVERIFY(!fakeFolder.syncOnce()); // error: abort!
+
+        // An EVAL/EVAL conflict is also UPDATE_METADATA when there's no checksums
+        connection = connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, checkEtagUpdated);
+        QVERIFY(fakeFolder.syncOnce());
+        disconnect(connection);
+        QCOMPARE(nGET, 0);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+
+        // Test 3: modified file upload aborted, with good checksums
+        fakeFolder.localModifier().appendByte("A/a0");
+        QVERIFY(!fakeFolder.syncOnce()); // error: abort!
+
+        // Set the remote checksum -- the test setup doesn't do it automatically
+        QVERIFY(!moveChecksumHeader.isEmpty());
+        fakeFolder.remoteModifier().find("A/a0")->checksums = moveChecksumHeader;
+
+        // This time it's a real conflict, we have a remote checksum!
+        connection = connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, [&](SyncFileItemVector &items) {
+            SyncFileItemPtr a0;
+            for (auto &item : items) {
+                if (item->_file == "A/a0")
+                    a0 = item;
+            }
+
+            QVERIFY(a0);
+            QCOMPARE(a0->_instruction, CSYNC_INSTRUCTION_CONFLICT);
+        });
+        QVERIFY(fakeFolder.syncOnce());
+        disconnect(connection);
+        QCOMPARE(nGET, 0); // no new download, just a metadata update!
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+
+        // Test 4: New file, that gets deleted locally before the next sync
+        fakeFolder.localModifier().insert("A/a3", size);
+        QVERIFY(!fakeFolder.syncOnce()); // error: abort!
+        fakeFolder.localModifier().remove("A/a3");
+
+        // bug: in this case we must expect a re-download of A/A3
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 1);
+        QVERIFY(fakeFolder.currentLocalState().find("A/a3"));
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    // Check what happens when we abort during the final MOVE and the
+    // the final MOVE is short enough for the abort-delay to help
+    void testLateAbortRecoverable()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ { "chunking", "1.0" } } }, { "checksums", QVariantMap{ { "supportedTypes", QStringList() << "SHA1" } } } });
+        const int size = 150 * 1000 * 1000;
+
+        // Make the MOVE never reply, but trigger a client-abort and apply the change remotely
+        auto parent = new QObject;
+        QByteArray moveChecksumHeader;
+        int nGET = 0;
+        int responseDelay = 2000; // smaller than abort-wait timeout
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request) -> QNetworkReply * {
+            if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
+                QTimer::singleShot(50, parent, [&]() { fakeFolder.syncEngine().abort(); });
+                moveChecksumHeader = request.rawHeader("OC-Checksum");
+                return new FakeChunkMoveReply(fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, responseDelay, parent);
+            } else if (op == QNetworkAccessManager::GetOperation) {
+                nGET++;
+            }
+            return nullptr;
+        });
+
+
+        // Test 1: NEW file aborted
+        fakeFolder.localModifier().insert("A/a0", size);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Test 2: modified file upload aborted
+        fakeFolder.localModifier().appendByte("A/a0");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
     // We modify the file locally after it has been partially uploaded
     void testRemoveStale1() {
 
