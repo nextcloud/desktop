@@ -12,22 +12,22 @@
  * for more details.
  */
 
-#ifndef OWNCLOUD_THEME_H
-#define OWNCLOUD_THEME_H
+#ifndef NEXTCLOUD_THEME_H
+#define NEXTCLOUD_THEME_H
 
 #include "theme.h"
 
 namespace OCC {
 
 /**
- * @brief The ownCloudTheme class
+ * @brief The NextcloudTheme class
  * @ingroup libsync
  */
-class ownCloudTheme : public Theme
+class NextcloudTheme : public Theme
 {
     Q_OBJECT
 public:
-    ownCloudTheme();
+    NextcloudTheme();
 
     QString configFileName() const Q_DECL_OVERRIDE;
     QString about() const Q_DECL_OVERRIDE;
@@ -36,8 +36,6 @@ public:
     QIcon trayFolderIcon(const QString &) const Q_DECL_OVERRIDE;
     QIcon applicationIcon() const Q_DECL_OVERRIDE;
 #endif
-    QString appName() const Q_DECL_OVERRIDE;
-    QString appNameGUI() const Q_DECL_OVERRIDE;
 
     QString helpUrl() const Q_DECL_OVERRIDE;
 #ifndef TOKEN_AUTH_ONLY
@@ -51,4 +49,4 @@ public:
 private:
 };
 }
-#endif // OWNCLOUD_MIRALL_THEME_H
+#endif // NEXTCLOUD_THEME_H
