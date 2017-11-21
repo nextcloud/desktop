@@ -1,7 +1,9 @@
+clone:
+  git:
+    image: plugins/git
+    depth: 1
+
 pipeline:
-    clone:
-        image: plugins/git
-        depth: 1
     qt-5.7:
         image: nextcloudci/client-5.7:latest
         commands:
@@ -78,10 +80,19 @@ pipeline:
             matrix:
                 TESTS: qt-5.9
 
+    AppImage-5.9:
+        image: nextcloudci/client-appimage-ci:client-appimage-ci-4
+        commands:
+            - /bin/bash -c "./admin/linux/build-appimage.sh"
+        when:
+            matrix:
+                BUILD: AppImage
+
 matrix:
     include:
         - TESTS: qt-5.7
         - TESTS: qt-5.8
         - TESTS: qt-5.9
+        - BUILD: AppImage
 
 branches: [ master, 2.* ]
