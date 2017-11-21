@@ -428,7 +428,7 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
 
 void ShareUserLine::loadAvatar()
 {
-    const int avatarSize = 48;
+    const int avatarSize = 36;
 
     // Set size of the placeholder
     _ui->avatar->setMinimumHeight(avatarSize);
@@ -439,27 +439,21 @@ void ShareUserLine::loadAvatar()
 
     /* Create the fallback avatar.
      *
-     * It's created the same way as on the webinterface to make
-     * the colors match.
-     *
      * This will be shown until the avatar image data arrives.
      */
-    QString seed = _share->getShareWith()->shareWith();
-    if (_share->getShareWith()->type() != Sharee::User) {
-        seed += QString(" %1").arg(_share->getShareWith()->type());
-    }
+    const QByteArray hash = QCryptographicHash::hash(_ui->sharedWith->text().toUtf8(), QCryptographicHash::Md5);
+    double hue = static_cast<quint8>(hash[0]) / 255.;
 
-    const QByteArray hash = QCryptographicHash::hash(seed.toUtf8(), QCryptographicHash::Md5);
-    int hue = (static_cast<double>(hash.mid(0, 3).toHex().toInt(0, 16)) / 0xffffff) * 255;
-
-    const QColor bg = QColor::fromHsl(hue, 230, 166);
-    const QString style = QString("* {\
-        color: #fff;\
-        background-color: %1;\
-        border-radius: 24px;\
-        font-size: 26px\
-    }").arg(bg.name());
-
+    // See core/js/placeholder.js for details on colors and styling
+    const QColor bg = QColor::fromHslF(hue, 0.7, 0.68);
+    const QString style = QString(R"(* {
+        color: #fff;
+        background-color: %1;
+        border-radius: %2px;
+        text-align: center;
+        line-height: %2px;
+        font-size: %2px;
+    })").arg(bg.name(), QString::number(avatarSize / 2));
     _ui->avatar->setStyleSheet(style);
 
     // The avatar label is the first character of the user name.
