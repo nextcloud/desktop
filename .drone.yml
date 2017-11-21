@@ -83,3 +83,5 @@ matrix:
         - TESTS: qt-5.7
         - TESTS: qt-5.8
         - TESTS: qt-5.9
+
+branches: [ master, 2.* ]
