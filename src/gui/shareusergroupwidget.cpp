@@ -185,27 +185,27 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     QSize minimumSize = newViewPort->sizeHint();
     int x = 0;
 
-    if (shares.isEmpty()) {
+    foreach (const auto &share, shares) {
+        // We don't handle link shares
+        if (share->getShareType() == Share::TypeLink) {
+            continue;
+        }
+
+        ShareUserLine *s = new ShareUserLine(share, _maxSharingPermissions, _isFile, _ui->scrollArea);
+        connect(s, &ShareUserLine::resizeRequested, this, &ShareUserGroupWidget::slotAdjustScrollWidgetSize);
+        connect(s, &ShareUserLine::visualDeletionDone, this, &ShareUserGroupWidget::getShares);
+        layout->addWidget(s);
+
+        x++;
+        if (x <= 3) {
+            minimumSize = newViewPort->sizeHint();
+        } else {
+            minimumSize.rwidth() = qMax(newViewPort->sizeHint().width(), minimumSize.width());
+        }
+    }
+    if (layout->isEmpty()) {
         layout->addWidget(new QLabel(tr("The item is not shared with any users or groups")));
     } else {
-        foreach (const auto &share, shares) {
-            // We don't handle link shares
-            if (share->getShareType() == Share::TypeLink) {
-                continue;
-            }
-
-            ShareUserLine *s = new ShareUserLine(share, _maxSharingPermissions, _isFile, _ui->scrollArea);
-            connect(s, &ShareUserLine::resizeRequested, this, &ShareUserGroupWidget::slotAdjustScrollWidgetSize);
-            connect(s, &ShareUserLine::visualDeletionDone, this, &ShareUserGroupWidget::getShares);
-            layout->addWidget(s);
-
-            x++;
-            if (x <= 3) {
-                minimumSize = newViewPort->sizeHint();
-            } else {
-                minimumSize.rwidth() = qMax(newViewPort->sizeHint().width(), minimumSize.width());
-            }
-        }
         layout->addStretch(1);
     }
 
