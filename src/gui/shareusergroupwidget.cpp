@@ -26,7 +26,6 @@
 #include "thumbnailjob.h"
 #include "sharee.h"
 #include "sharemanager.h"
-#include "avatarjob.h"
 
 #include "QProgressIndicator.h"
 #include <QBuffer>
@@ -470,53 +469,23 @@ void ShareUserLine::loadAvatar()
 
     // We can only fetch avatars for local users currently
     if (_share->getShareWith()->type() == Sharee::User) {
-        AvatarJob2 *job = new AvatarJob2(_share->getShareWith()->shareWith(), 48, _share->account(), this);
-        connect(job, SIGNAL(avatarReady(QByteArray, QString)), SLOT(slotAvatarLoaded(QByteArray, QString)));
+        AvatarJob *job = new AvatarJob(_share->account(), _share->getShareWith()->shareWith(), 48, this);
+        connect(job, &AvatarJob::avatarPixmap, this, &ShareUserLine::slotAvatarLoaded);
         job->start();
     }
 }
 
-void ShareUserLine::slotAvatarLoaded(const QByteArray &data, const QString &mimeType)
+void ShareUserLine::slotAvatarLoaded(QImage avatar)
 {
-    QPixmap p;
-    bool valid = false;
-    if (mimeType == "image/png") {
-        valid = p.loadFromData(data, "PNG");
-    } else if (mimeType == "image/jpeg") {
-        valid = p.loadFromData(data, "JPG");
-    } else {
-        // Guess the filetype
-        valid = p.loadFromData(data);
-    }
+    if (avatar.isNull())
+        return;
 
-    // If the image was loaded succesfully set it!
-    if (valid) {
+    avatar = AvatarJob::makeCircularAvatar(avatar);
 
-        /*
-         * We want round avatars so create a new pixmap to draw
-         * the round avatar on and set a transparent background
-         */
-        QPixmap avatar(p.width(), p.height());
-        avatar.fill(QColor(0,0,0,0));
+    _ui->avatar->setPixmap(QPixmap::fromImage(avatar));
 
-        // Initialise our painer
-        QPainter painter(&avatar);
-        painter.setRenderHint(QPainter::Antialiasing);
-
-        // Set to draw only a cricle
-        QPainterPath path;
-        path.addEllipse(0,0,p.width(),p.height());
-        painter.setClipPath(path);
-
-        // Draw the round avatar
-        painter.drawPixmap(0,0,p.width(),p.width(),p);
-
-        // Set the avatar
-        _ui->avatar->setPixmap(avatar);
-        
-        // Remove the stylesheet
-        _ui->avatar->setStyleSheet("");
-    }
+    // Remove the stylesheet for the fallback avatar
+    _ui->avatar->setStyleSheet("");
 }
 
 void ShareUserLine::on_deleteShareButton_clicked()

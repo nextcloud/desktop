@@ -334,7 +334,7 @@ void ConnectionValidator::slotUserFetched(const QJsonDocument &json)
     if (!user.isEmpty()) {
         _account->setDavUser(user);
 
-        AvatarJob *job = new AvatarJob(_account, this);
+        AvatarJob *job = new AvatarJob(_account, _account->davUser(), 128, this);
         job->setTimeout(20 * 1000);
         QObject::connect(job, &AvatarJob::avatarPixmap, this, &ConnectionValidator::slotAvatarImage);
 

@@ -30,6 +30,7 @@
 #include <QPixmap>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QPainter>
 
 #include "networkjobs.h"
 #include "account.h"
@@ -626,10 +627,10 @@ bool PropfindJob::finished()
 
 /*********************************************************************************************/
 
-AvatarJob::AvatarJob(AccountPtr account, QObject *parent)
+AvatarJob::AvatarJob(AccountPtr account, const QString &userId, int size, QObject *parent)
     : AbstractNetworkJob(account, QString(), parent)
 {
-    _avatarUrl = Utility::concatUrlPath(account->url(), QString("remote.php/dav/avatars/%1/128.png").arg(account->davUser()));
+    _avatarUrl = Utility::concatUrlPath(account->url(), QString("remote.php/dav/avatars/%1/%2.png").arg(userId, QString::number(size)));
 }
 
 void AvatarJob::start()
@@ -637,6 +638,26 @@ void AvatarJob::start()
     QNetworkRequest req;
     sendRequest("GET", _avatarUrl, req);
     AbstractNetworkJob::start();
+}
+
+QImage AvatarJob::makeCircularAvatar(const QImage &baseAvatar)
+{
+    int dim = baseAvatar.width();
+
+    QImage avatar(dim, dim, baseAvatar.format());
+    avatar.fill(Qt::transparent);
+
+    QPainter painter(&avatar);
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    QPainterPath path;
+    path.addEllipse(0, 0, dim, dim);
+    painter.setClipPath(path);
+
+    painter.drawImage(0, 0, baseAvatar);
+    painter.end();
+
+    return avatar;
 }
 
 bool AvatarJob::finished()
