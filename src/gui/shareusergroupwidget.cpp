@@ -425,33 +425,29 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
 
 void ShareUserLine::loadAvatar()
 {
-    /* Set the default place holder
-     * This is calculated the same way as on the webinterface
-     * So that the colors match
-     *
-     * This is done first so that we can directly show something
-     */
+    const int avatarSize = 48;
 
     // Set size of the placeholder
-    _ui->avatar->setMinimumHeight(48);
-    _ui->avatar->setMinimumWidth(48);
-    _ui->avatar->setMaximumHeight(48);
-    _ui->avatar->setMaximumWidth(48);
+    _ui->avatar->setMinimumHeight(avatarSize);
+    _ui->avatar->setMinimumWidth(avatarSize);
+    _ui->avatar->setMaximumHeight(avatarSize);
+    _ui->avatar->setMaximumWidth(avatarSize);
     _ui->avatar->setAlignment(Qt::AlignCenter);
 
-    /* Calculate the hue
-     * We could use more digits but we have the MSB now which
-     * is already plenty
+    /* Create the fallback avatar.
+     *
+     * It's created the same way as on the webinterface to make
+     * the colors match.
+     *
+     * This will be shown until the avatar image data arrives.
      */
-    const QString text = _share->getShareWith()->displayName();
-
     QString seed = _share->getShareWith()->shareWith();
     if (_share->getShareWith()->type() != Sharee::User) {
         seed += QString(" %1").arg(_share->getShareWith()->type());
     }
 
     const QByteArray hash = QCryptographicHash::hash(seed.toUtf8(), QCryptographicHash::Md5);
-    int hue = ((double)hash.mid(0, 3).toHex().toInt(0, 16) / (double)0xffffff) * 255;
+    int hue = (static_cast<double>(hash.mid(0, 3).toHex().toInt(0, 16)) / 0xffffff) * 255;
 
     const QColor bg = QColor::fromHsl(hue, 230, 166);
     const QString style = QString("* {\
@@ -461,15 +457,18 @@ void ShareUserLine::loadAvatar()
         font-size: 26px\
     }").arg(bg.name());
 
-    // Set the style
     _ui->avatar->setStyleSheet(style);
 
-    // Set the placeholder text
+    // The avatar label is the first character of the user name.
+    const QString text = _share->getShareWith()->displayName();
     _ui->avatar->setText(text.at(0).toUpper());
 
-    // We can only fetch avatars for local users currently
+    /* Start the network job to fetch the avatar data.
+     *
+     * Currently only regular users can have avatars.
+     */
     if (_share->getShareWith()->type() == Sharee::User) {
-        AvatarJob *job = new AvatarJob(_share->account(), _share->getShareWith()->shareWith(), 48, this);
+        AvatarJob *job = new AvatarJob(_share->account(), _share->getShareWith()->shareWith(), avatarSize, this);
         connect(job, &AvatarJob::avatarPixmap, this, &ShareUserLine::slotAvatarLoaded);
         job->start();
     }
@@ -481,7 +480,6 @@ void ShareUserLine::slotAvatarLoaded(QImage avatar)
         return;
 
     avatar = AvatarJob::makeCircularAvatar(avatar);
-
     _ui->avatar->setPixmap(QPixmap::fromImage(avatar));
 
     // Remove the stylesheet for the fallback avatar
