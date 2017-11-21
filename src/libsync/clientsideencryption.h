@@ -325,7 +325,7 @@ protected:
 	bool finished() override;
 
 signals:
-	void encryptStatusReceived(const QMap<QByteArray, bool> folderMetadata2EncryptionStatus);
+	void encryptStatusReceived(const QMap<QString, bool> folderMetadata2EncryptionStatus);
 	void encryptStatusError(int statusCode);
 };
 
