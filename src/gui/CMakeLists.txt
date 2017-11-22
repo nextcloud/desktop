@@ -287,7 +287,7 @@ else()
 endif()
 
 add_library(updater STATIC ${updater_SRCS})
-target_link_libraries(updater ${synclib_NAME} Qt5::Widgets Qt5::Network Qt5::Xml)
+target_link_libraries(updater ${synclib_NAME} Qt5::Widgets Qt5::Network Qt5::Xml Qt5::WebEngineWidgets)
 target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
