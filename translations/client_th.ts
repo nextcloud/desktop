@@ -1962,7 +1962,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>The server reported the following error:</source>
-        <translation type="unfinished"/>
+        <translation>เซิร์ฟเวอร์รายงานข้อผิดพลาดต่อไปนี้:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2745,12 +2745,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="518"/>
         <source>Confirm Link Share Deletion</source>
-        <translation type="unfinished"/>
+        <translation>ยืนยันการลบลิงค์ที่แชร์</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="519"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;คุณต้องการลบลิงค์ที่แชร์แบบสาธารณะ&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;หมายเหตุ: ไม่สามารถยกเลิกการดำเนินการนี้ได้&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="526"/>
@@ -2765,7 +2765,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="252"/>
         <source>Delete link share</source>
-        <translation type="unfinished"/>
+        <translation>ลบลิงค์ที่แชร์</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="457"/>

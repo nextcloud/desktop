@@ -1956,7 +1956,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>The server reported the following error:</source>
-        <translation type="unfinished"/>
+        <translation>Servern svarade med följande fel:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -3616,12 +3616,12 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="306"/>
         <source>Error during synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Fel vid synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>No sync folders configured</source>
-        <translation type="unfinished"/>
+        <translation>Inga mappar valda för synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
