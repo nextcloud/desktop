@@ -41,6 +41,7 @@ set(client_UI_SRCS
     wizard/owncloudoauthcredspage.ui
     wizard/owncloudsetupnocredspage.ui
     wizard/owncloudwizardresultpage.ui
+    wizard/webviewpage.ui
 )
 
 set(client_SRCS
@@ -111,6 +112,7 @@ set(client_SRCS
     wizard/owncloudwizardcommon.cpp
     wizard/owncloudwizard.cpp
     wizard/owncloudwizardresultpage.cpp
+    wizard/webviewpage.cpp
 )
 
 IF(NOT NO_SHIBBOLETH)

@@ -39,6 +39,7 @@ class OwncloudAdvancedSetupPage;
 class OwncloudWizardResultPage;
 class AbstractCredentials;
 class AbstractCredentialsWizardPage;
+class WebViewPage;
 
 /**
  * @brief The OwncloudWizard class
@@ -103,6 +104,7 @@ private:
     OwncloudAdvancedSetupPage *_advancedSetupPage;
     OwncloudWizardResultPage *_resultPage;
     AbstractCredentialsWizardPage *_credentialsPage;
+    WebViewPage *_webViewPage;
 
     QStringList _setupLog;
 
