@@ -1,6 +1,7 @@
 #include "webviewpage.h"
 
 #include <QWebEngineUrlRequestJob>
+#include <QProgressBar>
 
 #include "creds/httpcredentialsgui.h"
 
@@ -50,7 +51,8 @@ WebViewPage::WebViewPage(QWidget *parent)
     _ui.verticalLayout->addWidget(_webview);
     _webview->show();
 
-    connect(_webview, SIGNAL(loadProgress(int)), _ui.progressBar, SLOT(setValue(int)));
+    connect(_webview, &QWebEngineView::loadProgress, _ui.progressBar, &QProgressBar::setValue);
+    connect(_schemeHandler, &WebViewPageUrlSchemeHandler::urlCatched, this, &WebViewPage::urlCatched);
 }
 
 void WebViewPage::initializePage() {
@@ -69,11 +71,21 @@ bool WebViewPage::isComplete() const {
 }
 
 AbstractCredentials* WebViewPage::getCredentials() const {
-    return new HttpCredentialsGui();
+    return new HttpCredentialsGui(_user, _pass, _ocWizard->_clientSslCertificate, _ocWizard->_clientSslKey);
 }
 
 void WebViewPage::setConnected() {
+    qCInfo(lcWizardWebiewPage()) << "YAY! we are connected!";
+}
 
+void WebViewPage::urlCatched(QString user, QString pass, QString host) {
+    qCInfo(lcWizardWebiewPage()) << "Got user: " << user << ", password: " << pass << ", server: " << host;
+
+    _user = user;
+    _pass = pass;
+
+    qCInfo(lcWizardWebiewPage()) << "URL: " << field("OCUrl").toString();
+    emit connectToOCUrl(field("OCUrl").toString().simplified());
 }
 
 WebViewPageUrlRequestInterceptor::WebViewPageUrlRequestInterceptor(QObject *parent)

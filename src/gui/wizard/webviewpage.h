@@ -35,6 +35,9 @@ public:
 Q_SIGNALS:
     void connectToOCUrl(const QString&);
 
+private slots:
+    void urlCatched(QString user, QString pass, QString host);
+
 private:
     Ui_WebViewPage _ui;
     OwncloudWizard *_ocWizard;
@@ -45,6 +48,9 @@ private:
 
     WebViewPageUrlRequestInterceptor *_interceptor;
     WebViewPageUrlSchemeHandler *_schemeHandler;
+
+    QString _user;
+    QString _pass;
 };
 
 }
