@@ -229,7 +229,7 @@ public:
     /// Called by network jobs on credential errors, emits invalidCredentials()
     void handleInvalidCredentials();
 
-		ClientSideEncryption& e2e();
+		ClientSideEncryption* e2e();
 
 public slots:
     /// Used when forgetting credentials

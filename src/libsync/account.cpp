@@ -53,13 +53,14 @@ AccountPtr Account::create()
 
 		//TODO: This probably needs to have a better
 		// coupling, but it should work for now.
-		acc->e2e().setAccount(acc);
+		acc->e2e()->setAccount(acc);
     return acc;
 }
 
-ClientSideEncryption& Account::e2e()
+ClientSideEncryption* Account::e2e()
 {
-	return _e2e;
+	// Qt expects everything in the connect to be a pointer, so return a pointer.
+	return &_e2e;
 }
 
 Account::~Account()
