@@ -102,7 +102,7 @@ QString TokenCredentials::password() const
     return _password;
 }
 
-QNetworkAccessManager *TokenCredentials::getQNAM() const
+QNetworkAccessManager *TokenCredentials::createQNAM() const
 {
     AccessManager *qnam = new TokenCredentialsAccessManager(this);
 

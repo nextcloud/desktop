@@ -133,7 +133,7 @@ private:
     QList<QByteArray> _properties;
 };
 
-
+#ifndef TOKEN_AUTH_ONLY
 /**
  * @brief The AvatarJob class
  *
@@ -155,7 +155,7 @@ signals:
      * @brief avatarPixmap - returns either a valid pixmap or not.
      */
 
-    void avatarPixmap(QImage);
+    void avatarPixmap(const QImage &);
 
 private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
@@ -163,6 +163,7 @@ private slots:
 private:
     QUrl _avatarUrl;
 };
+#endif
 
 /**
  * @brief Send a Proppatch request

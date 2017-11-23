@@ -27,7 +27,6 @@
 #include <QTimer>
 #include <QMutex>
 #include <QCoreApplication>
-#include <QPixmap>
 #include <QJsonDocument>
 #include <QJsonObject>
 
@@ -626,6 +625,7 @@ bool PropfindJob::finished()
 
 /*********************************************************************************************/
 
+#ifndef TOKEN_AUTH_ONLY
 AvatarJob::AvatarJob(AccountPtr account, QObject *parent)
     : AbstractNetworkJob(account, QString(), parent)
 {
@@ -656,6 +656,7 @@ bool AvatarJob::finished()
     emit(avatarPixmap(avImage));
     return true;
 }
+#endif
 
 /*********************************************************************************************/
 

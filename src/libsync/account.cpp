@@ -93,6 +93,7 @@ void Account::setDavUser(const QString &newDavUser)
     _davUser = newDavUser;
 }
 
+#ifndef TOKEN_AUTH_ONLY
 QImage Account::avatar() const
 {
     return _avatarImg;
@@ -102,6 +103,7 @@ void Account::setAvatar(const QImage &img)
     _avatarImg = img;
     emit accountChangedAvatar();
 }
+#endif
 
 QString Account::displayName() const
 {

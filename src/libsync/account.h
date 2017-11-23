@@ -26,7 +26,10 @@
 #include <QSslCipher>
 #include <QSslError>
 #include <QSharedPointer>
+
+#ifndef TOKEN_AUTH_ONLY
 #include <QPixmap>
+#endif
 
 #include "common/utility.h"
 #include <memory>
@@ -86,8 +89,10 @@ public:
     QString davDisplayName() const;
     void setDavDisplayName(const QString &newDisplayName);
 
+#ifndef TOKEN_AUTH_ONLY
     QImage avatar() const;
     void setAvatar(const QImage &img);
+#endif
 
     /// The name of the account as shown in the toolbar
     QString displayName() const;
@@ -266,7 +271,9 @@ private:
     QString _id;
     QString _davUser;
     QString _displayName;
+#ifndef TOKEN_AUTH_ONLY
     QImage _avatarImg;
+#endif
     QMap<QString, QVariant> _settingsMap;
     QUrl _url;
 
