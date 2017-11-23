@@ -548,21 +548,25 @@ void ClientSideEncryption::getPublicKeyFromServer()
 }
 
 void ClientSideEncryption::fetchFolderEncryptedStatus() {
+	_refreshingEncryptionStatus = true;
 	auto getEncryptedStatus = new GetFolderEncryptStatus(_account);
-	getEncryptedStatus ->start();
+	connect(getEncryptedStatus, &GetFolderEncryptStatus::encryptStatusReceived,
+					this, &ClientSideEncryption::folderEncryptedStatusFetched);
+	connect(getEncryptedStatus, &GetFolderEncryptStatus::encryptStatusError,
+					this, &ClientSideEncryption::folderEncryptedStatusError);
+	getEncryptedStatus->start();
 }
 
-void ClientSideEncryption::folderEncryptedStatusFetched(const QVariantMap& result)
+void ClientSideEncryption::folderEncryptedStatusFetched(const QMap<QString, bool>& result)
 {
+	_refreshingEncryptionStatus = false;
 	qDebug() << "Retrieved correctly the encrypted status of the folders." << result;
 }
 
-void ClientSideEncryption::folderEncryptedStatusError(QNetworkReply *reply)
+void ClientSideEncryption::folderEncryptedStatusError(int error)
 {
-	qDebug() << "Failed to retrieve the status of the folders.";
-	if (reply) {
-		qDebug() << reply->errorString();
-	}
+	_refreshingEncryptionStatus = false;
+	qDebug() << "Failed to retrieve the status of the folders." << error;
 }
 
 SignPublicKeyApiJob::SignPublicKeyApiJob(const AccountPtr& account, const QString& path, QObject* parent)

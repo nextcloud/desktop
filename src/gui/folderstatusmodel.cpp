@@ -46,6 +46,7 @@ FolderStatusModel::FolderStatusModel(QObject *parent)
     , _accountState(0)
     , _dirty(false)
 {
+
 }
 
 FolderStatusModel::~FolderStatusModel()
@@ -553,6 +554,13 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
         }
         path += info->_path;
     }
+
+		//TODO: This is the correct place, but this doesn't seems to be the right
+		// Way to call fetchFolderEncryptedStatus.
+		if (_accountState->account()->capabilities().clientSideEncryptionAvaliable()) {
+			_accountState->account()->e2e()->fetchFolderEncryptedStatus();
+		}
+
     LsColJob *job = new LsColJob(_accountState->account(), path, this);
     job->setProperties(QList<QByteArray>() << "resourcetype"
                                            << "http://owncloud.org/ns:size"

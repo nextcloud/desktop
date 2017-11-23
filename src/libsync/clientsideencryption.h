@@ -43,8 +43,8 @@ public:
 		void fetchFolderEncryptedStatus();
 
 private slots:
-		void folderEncryptedStatusFetched(const QVariantMap &values);
-		void folderEncryptedStatusError(QNetworkReply *reply = 0);
+		void folderEncryptedStatusFetched(const QMap<QString, bool> &values);
+		void folderEncryptedStatusError(int error);
 
 signals:
     void initializationFinished();
@@ -52,7 +52,7 @@ signals:
 private:
     OCC::AccountPtr _account;
     bool isInitialized = false;
-
+		bool _refreshingEncryptionStatus = false;
 		//TODO: Save this on disk.
 		QMap<QByteArray, QByteArray> _folder2token;
 		QMap<QByteArray, bool> _folder2encryptedStatus;

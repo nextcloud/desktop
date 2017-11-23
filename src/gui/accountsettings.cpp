@@ -359,12 +359,6 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
         connect(ac, &QAction::triggered, [this, &fileId] {
             slotMarkSubfolderDecrypted(fileId);
         });
-
-				ac = menu.addAction(tr("Fetch Enc"));
-				connect(ac, &QAction::triggered, [this]{
-					 accountsState()->account()->e2e().fetchFolderEncryptedStatus();
-				});
-
     }
     menu.exec(QCursor::pos());
 }
