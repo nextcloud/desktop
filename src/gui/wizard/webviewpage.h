@@ -6,6 +6,7 @@
 #include <QWebEngineProfile>
 #include <QWebEnginePage>
 #include <QWebEngineUrlRequestInterceptor>
+#include <QWebEngineUrlSchemeHandler>
 
 #include "wizard/abstractcredswizardpage.h"
 #include "wizard/owncloudwizardcommon.h"
@@ -15,13 +16,8 @@
 
 namespace OCC {
 
-class WebViewPageUrlRequestInterceptor : public QWebEngineUrlRequestInterceptor
-{
-    Q_OBJECT
-public:
-    WebViewPageUrlRequestInterceptor(QObject *parent = 0);
-    void interceptRequest(QWebEngineUrlRequestInfo &info);
-};
+class WebViewPageUrlRequestInterceptor;
+class WebViewPageUrlSchemeHandler;
 
 class WebViewPage : public AbstractCredentialsWizardPage
 {
@@ -46,7 +42,9 @@ private:
     QWebEngineView *_webview;
     QWebEngineProfile *_profile;
     QWebEnginePage *_page;
+
     WebViewPageUrlRequestInterceptor *_interceptor;
+    WebViewPageUrlSchemeHandler *_schemeHandler;
 };
 
 }
