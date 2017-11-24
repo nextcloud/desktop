@@ -204,19 +204,37 @@ namespace {
 
 class EncryptionHelper {
 public:
-    static QVector<unsigned char> generatePassword(QString wordlist, QVector<unsigned char> &salt);
+    static QByteArray generateRandom(int size);
+    static QByteArray generatePassword(QString wordlist, QByteArray &salt);
+    static QByteArray encryptPrivateKey(
+            const QByteArray key,
+            const QByteArray privateKey
+    );
 };
 
-QVector<unsigned char> EncryptionHelper::generatePassword(QString wordlist, QVector<unsigned char> &salt) {
+QByteArray EncryptionHelper::generateRandom(int size) {
+    unsigned char *tmp = (unsigned char *)malloc(sizeof(unsigned char) * size);
+
+    int ret = RAND_bytes(tmp, size);
+    if (ret != 1) {
+        qCInfo(lcCse()) << "Random byte generation failed!";
+        // Error out?
+    }
+
+    QByteArray result((const char *)tmp, size);
+    free(tmp);
+
+    return result;
+}
+
+QByteArray EncryptionHelper::generatePassword(QString wordlist, QByteArray &salt) {
     qCInfo(lcCse()) << "Start encryption key generation!";
 
     // TODO generate salt
     const unsigned char *_salt = (unsigned char *)"$4$YmBjm3hk$Qb74D5IUYwghUmzsMqeNFx5z0/8$";
     const int saltLen = 40;
 
-    for (int i = 0; i < saltLen; i++) {
-        salt.append(_salt[i]);
-    }
+    salt.append((const char *)_salt, saltLen);
 
     const int iterationCount = 1024;
     const int keyStrength = 256;
@@ -227,7 +245,7 @@ QVector<unsigned char> EncryptionHelper::generatePassword(QString wordlist, QVec
     int ret = PKCS5_PBKDF2_HMAC_SHA1(
         wordlist.toLocal8Bit().constData(),     // const char *password,
         wordlist.size(),                        // int password length,
-        salt.constData(),                       // const unsigned char *salt,
+        (const unsigned char *)salt.constData(),                       // const unsigned char *salt,
         salt.size(),                            // int saltlen,
         iterationCount,                         // int iterations,
         keyLength,                              // int keylen,
@@ -241,10 +259,82 @@ QVector<unsigned char> EncryptionHelper::generatePassword(QString wordlist, QVec
 
     qCInfo(lcCse()) << "Encryption key generated!";
 
-    QVector<unsigned char> result;
-    for (int i = 0; i < keyLength; i++) {
-        result.append(secretKey[i]);
+    QByteArray result((const char *)secretKey, keyLength);
+    return result;
+}
+
+QByteArray EncryptionHelper::encryptPrivateKey(
+        const QByteArray key,
+        const QByteArray privateKey
+        ) {
+
+    QByteArray iv = generateRandom(12);
+
+    EVP_CIPHER_CTX *ctx;
+    /* Create and initialise the context */
+    if(!(ctx = EVP_CIPHER_CTX_new())) {
+        qCInfo(lcCse()) << "Error creating cipher";
+        handleErrors();
     }
+
+    /* Initialise the decryption operation. */
+    if(!EVP_EncryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL)) {
+        qCInfo(lcCse()) << "Error initializing context with aes_256";
+        handleErrors();
+    }
+
+    // No padding
+    EVP_CIPHER_CTX_set_padding(ctx, 0);
+
+    /* Set IV length. */
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), NULL)) {
+        qCInfo(lcCse()) << "Error setting iv length";
+        handleErrors();
+    }
+
+    /* Initialise key and IV */
+    if(!EVP_EncryptInit_ex(ctx, NULL, NULL, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
+        qCInfo(lcCse()) << "Error initialising key and iv";
+        handleErrors();
+    }
+
+    // We write the base64 encoded private key
+    QByteArray privateKeyB64 = privateKey.toBase64();
+
+    // Make sure we have enough room in the cipher text
+    unsigned char *ctext = (unsigned char *)malloc(sizeof(unsigned char) * (privateKeyB64.size() + 32));
+
+    // Do the actual encryption
+    int len = 0;
+    if(!EVP_EncryptUpdate(ctx, ctext, &len, (unsigned char *)privateKeyB64.constData(), privateKeyB64.size())) {
+        qCInfo(lcCse()) << "Error encrypting";
+        handleErrors();
+    }
+
+    int clen = len;
+
+    /* Finalise the encryption. Normally ciphertext bytes may be written at
+     * this stage, but this does not occur in GCM mode
+     */
+    if(1 != EVP_EncryptFinal_ex(ctx, ctext + len, &len)) {
+        qCInfo(lcCse()) << "Error finalizing encryption";
+        handleErrors();
+    }
+    clen += len;
+
+    /* Get the tag */
+    unsigned char *tag = (unsigned char *)calloc(sizeof(unsigned char), 16);
+    if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, tag)) {
+        qCInfo(lcCse()) << "Error getting the tag";
+        handleErrors();
+    }
+
+    QByteArray cipherTXT((char *)ctext, clen);
+    cipherTXT.append((char *)tag, 16);
+
+    QByteArray result = cipherTXT.toBase64();
+    result += "fA==";
+    result += iv.toBase64();
 
     return result;
 }
@@ -485,49 +575,13 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
     qCInfo(lcCse()) << "Private Key Extracted";
     qCInfo(lcCse()) << output;
 
-    QVector<unsigned char> salt;
+    QByteArray salt;
     auto secretKey = EncryptionHelper::generatePassword(passPhrase, salt);
+    auto cryptedText = EncryptionHelper::encryptPrivateKey(secretKey, output.toLocal8Bit());
 
-    /**
-      * NOTES: the key + iv have to be base64 encoded in the metadata.
-      */
-
-    //: FIRST TRY A SILLY PHRASE.
-    //: Hardcoed IV, really bad.
-    unsigned char *fakepass = (unsigned char*) "qwertyuiasdfghjkzxcvbnm,qwertyui";
-    unsigned char *iv = (unsigned char *)"0123456789012345";
-
-    const char *encryptTest = "a quick brown fox jumps over the lazy dog";
-    // TODO: Find a way to
-    unsigned char cryptedText[128];
-		unsigned char tag[16];
-		int cryptedText_len = encrypt(
-        (unsigned char*) encryptTest,   //unsigned char *plaintext,
-        strlen(encryptTest),            //        int plaintext_len,
-        fakepass,                       //        unsigned char *key,
-        iv,                             //        unsigned char *iv,
-        cryptedText,                    //        unsigned char *ciphertext,
-        tag                             //        unsigned char *tag
-    );
-		Q_UNUSED(cryptedText_len); //TODO: Fix this.
-/*
-    qCInfo(lcCse()) << "Encrypted Text" << QByteArray( (const char*) cryptedText, cryptedText_len);
-    int decryptedText_len = decrypt(
-        cryptedText,     //unsigned char *ciphertext,
-        cryptedText_len, //int ciphertext_len,
-        NULL,            //unsigned char *aad,
-        0,               //int aad_len,
-        tag,             //unsigned char *tag,
-        fakepass,       //unsigned char *key,
-        iv,              //unsigned char *iv,
-        decryptedText    //unsigned char *plaintext
-    );
-    qCInfo(lcCse()) << "Decrypted Text" << QByteArray( (const char*) decryptedText, decryptedText_len);
-*/
-
-// Pretend that the private key is actually encrypted and send it to the server.
+    // Send private key to the server
 	auto job = new StorePrivateKeyApiJob(_account, baseUrl() + "private-key", this);
-	job->setPrivateKey(QByteArray((const char*) cryptedText, 128));
+    job->setPrivateKey(QByteArray(cryptedText));
 	connect(job, &StorePrivateKeyApiJob::jsonReceived, [this](const QJsonDocument& doc, int retCode) {
 		Q_UNUSED(doc);
 		switch(retCode) {
