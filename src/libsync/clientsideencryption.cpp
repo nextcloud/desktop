@@ -202,6 +202,53 @@ namespace {
     }
 }
 
+class EncryptionHelper {
+public:
+    static QVector<unsigned char> generatePassword(QString wordlist, QVector<unsigned char> &salt);
+};
+
+QVector<unsigned char> EncryptionHelper::generatePassword(QString wordlist, QVector<unsigned char> &salt) {
+    qCInfo(lcCse()) << "Start encryption key generation!";
+
+    // TODO generate salt
+    const unsigned char *_salt = (unsigned char *)"$4$YmBjm3hk$Qb74D5IUYwghUmzsMqeNFx5z0/8$";
+    const int saltLen = 40;
+
+    for (int i = 0; i < saltLen; i++) {
+        salt.append(_salt[i]);
+    }
+
+    const int iterationCount = 1024;
+    const int keyStrength = 256;
+    const int keyLength = keyStrength/8;
+
+    unsigned char secretKey[keyLength];
+
+    int ret = PKCS5_PBKDF2_HMAC_SHA1(
+        wordlist.toLocal8Bit().constData(),     // const char *password,
+        wordlist.size(),                        // int password length,
+        salt.constData(),                       // const unsigned char *salt,
+        salt.size(),                            // int saltlen,
+        iterationCount,                         // int iterations,
+        keyLength,                              // int keylen,
+        secretKey                               // unsigned char *out
+    );
+
+    if (ret != 1) {
+        qCInfo(lcCse()) << "Failed to generate encryption key";
+        // Error out?
+    }
+
+    qCInfo(lcCse()) << "Encryption key generated!";
+
+    QVector<unsigned char> result;
+    for (int i = 0; i < keyLength; i++) {
+        result.append(secretKey[i]);
+    }
+
+    return result;
+}
+
 ClientSideEncryption::ClientSideEncryption()
 {
 }
@@ -416,19 +463,10 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
     // Write the Private File to a BIO
     // Retrieve the BIO contents, and encrypt it.
     // Send the encrypted key to the server.
-    // I have no idea what I'm doing.
-
-    using ucharp = unsigned char *;
-    const char *salt = "$4$YmBjm3hk$Qb74D5IUYwghUmzsMqeNFx5z0/8$";
-    const int saltLen = 40;
-    const int iterationCount = 1024;
-    const int keyStrength = 256;
     BIO* bio = BIO_new(BIO_s_mem());
 
     QString passPhrase = WordList::getUnifiedString(WordList::getRandomWords(12));
-    const char* passPhrasePtr = qPrintable(passPhrase);
-    qCInfo(lcCse()) << "Passphrase Generated:";
-    qCInfo(lcCse()) << passPhrase;
+    qCInfo(lcCse()) << "Passphrase Generated:" << passPhrase;
 
     // Extract the Private key from the key pair.
     PEM_write_bio_PrivateKey(bio, keyPair, NULL, NULL, 0, 0, NULL);
@@ -447,24 +485,8 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
     qCInfo(lcCse()) << "Private Key Extracted";
     qCInfo(lcCse()) << output;
 
-    /* Jesus. the OpenSSL docs do not help at all.
-     * This PKCS5_PBKDF2_HMAC_SHA1 call will generate
-     * a new password from the password that was submited.
-     */
-    unsigned char secretKey[keyStrength];
-
-    ret = PKCS5_PBKDF2_HMAC_SHA1(
-        passPhrasePtr,     // const char *password,
-        passPhrase.size(), // int password length,
-        (ucharp) salt,     // const unsigned char *salt,
-        saltLen,      // int saltlen,
-        iterationCount,    // int iterations,
-        keyStrength,       // int keylen,
-        secretKey          // unsigned char *out
-    );
-    qCInfo(lcCse()) << "Return of the PKCS5" << ret;
-    qCInfo(lcCse()) << "Result String" << secretKey;
-
+    QVector<unsigned char> salt;
+    auto secretKey = EncryptionHelper::generatePassword(passPhrase, salt);
 
     /**
       * NOTES: the key + iv have to be base64 encoded in the metadata.
