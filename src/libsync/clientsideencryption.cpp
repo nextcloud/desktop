@@ -62,6 +62,9 @@ public:
             const QByteArray key,
             const QByteArray privateKey
     );
+    static QByteArray encryptStringSymmetric(const QByteArray key, const QByteArray data);
+    static QByteArray decryptStringSymmetric(const QByteArray key, const QByteArray data);
+    static QByteArray encryptStringAsymmetric(EVP_PKEY *key, const QByteArray data);
 };
 
 QByteArray EncryptionHelper::generateRandom(int size) {
@@ -189,6 +192,136 @@ QByteArray EncryptionHelper::encryptPrivateKey(
     result += iv.toBase64();
 
     return result;
+}
+
+QByteArray EncryptionHelper::decryptStringSymmetric(const QByteArray key, const QByteArray data) {
+
+}
+
+QByteArray EncryptionHelper::encryptStringSymmetric(const QByteArray key, const QByteArray data) {
+    QByteArray iv = generateRandom(16);
+
+    EVP_CIPHER_CTX *ctx;
+    /* Create and initialise the context */
+    if(!(ctx = EVP_CIPHER_CTX_new())) {
+        qCInfo(lcCse()) << "Error creating cipher";
+        handleErrors();
+    }
+
+    /* Initialise the decryption operation. */
+    if(!EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
+        qCInfo(lcCse()) << "Error initializing context with aes_256";
+        handleErrors();
+    }
+
+    // No padding
+    EVP_CIPHER_CTX_set_padding(ctx, 0);
+
+    /* Set IV length. */
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), NULL)) {
+        qCInfo(lcCse()) << "Error setting iv length";
+        handleErrors();
+    }
+
+    /* Initialise key and IV */
+    if(!EVP_EncryptInit_ex(ctx, NULL, NULL, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
+        qCInfo(lcCse()) << "Error initialising key and iv";
+        handleErrors();
+    }
+
+    // We write the data base64 encoded
+    QByteArray dataB64 = data.toBase64();
+
+    // Make sure we have enough room in the cipher text
+    unsigned char *ctext = (unsigned char *)malloc(sizeof(unsigned char) * (dataB64.size() + 16));
+
+    // Do the actual encryption
+    int len = 0;
+    if(!EVP_EncryptUpdate(ctx, ctext, &len, (unsigned char *)dataB64.constData(), dataB64.size())) {
+        qCInfo(lcCse()) << "Error encrypting";
+        handleErrors();
+    }
+
+    int clen = len;
+
+    /* Finalise the encryption. Normally ciphertext bytes may be written at
+     * this stage, but this does not occur in GCM mode
+     */
+    if(1 != EVP_EncryptFinal_ex(ctx, ctext + len, &len)) {
+        qCInfo(lcCse()) << "Error finalizing encryption";
+        handleErrors();
+    }
+    clen += len;
+
+    /* Get the tag */
+    unsigned char *tag = (unsigned char *)calloc(sizeof(unsigned char), 16);
+    if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, tag)) {
+        qCInfo(lcCse()) << "Error getting the tag";
+        handleErrors();
+    }
+
+    QByteArray cipherTXT((char *)ctext, clen);
+    cipherTXT.append((char *)tag, 16);
+
+    QByteArray result = cipherTXT.toBase64();
+    result += "fA==";
+    result += iv.toBase64();
+
+    return result;
+}
+
+QByteArray EncryptionHelper::encryptStringAsymmetric(EVP_PKEY *key, const QByteArray data) {
+    int err = -1;
+
+    auto ctx = EVP_PKEY_CTX_new(key, ENGINE_get_default_RSA());
+    if (!ctx) {
+        qCInfo(lcCse()) << "Could not initialize the pkey context.";
+        exit(1);
+    }
+
+    if (EVP_PKEY_encrypt_init(ctx) != 1) {
+        qCInfo(lcCse()) << "Error initilaizing the encryption.";
+        exit(1);
+    }
+
+    if (EVP_PKEY_CTX_set_rsa_padding(ctx, RSA_PKCS1_OAEP_PADDING) <= 0) {
+        qCInfo(lcCse()) << "Error setting the encryption padding.";
+        exit(1);
+    }
+
+    if (EVP_PKEY_CTX_set_rsa_oaep_md(ctx, EVP_sha256()) <= 0) {
+        qCInfo(lcCse()) << "Error setting OAEP SHA 256";
+        exit(1);
+    }
+
+    if (EVP_PKEY_CTX_set_rsa_mgf1_md(ctx, EVP_sha256()) <= 0) {
+        qCInfo(lcCse()) << "Error setting MGF1 padding";
+        exit(1);
+    }
+
+    size_t outLen = 0;
+    if (EVP_PKEY_encrypt(ctx, NULL, &outLen, (unsigned char *)data.constData(), data.size()) != 1) {
+        qCInfo(lcCse()) << "Error retrieving the size of the encrypted data";
+        exit(1);
+    } else {
+        qCInfo(lcCse()) << "Encrption Length:" << outLen;
+    }
+
+    unsigned char *out = (uchar*) OPENSSL_malloc(outLen);
+    if (!out) {
+        qCInfo(lcCse()) << "Error requesting memory for the encrypted contents";
+        exit(1);
+    }
+
+    if (EVP_PKEY_encrypt(ctx, out, &outLen, (unsigned char *)data.constData(), data.size()) != 1) {
+        qCInfo(lcCse()) << "Could not encrypt key." << err;
+        exit(1);
+    }
+
+    // Transform the encrypted data into base64.
+    QByteArray raw((const char*) out, outLen);
+    qCInfo(lcCse()) << raw.toBase64();
+    return raw.toBase64();
 }
 
 ClientSideEncryption::ClientSideEncryption()
@@ -625,19 +758,7 @@ FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata) :
 }
 
 // RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.
-std::string FolderMetadata::encryptMetadataKeys(const nlohmann::json& metadataKeys) const {
-    std::string metadata = metadataKeys.dump();
-    unsigned char *metadataPtr = (unsigned char *) metadata.c_str();
-    size_t metadataPtrLen = metadata.size();
-
-    int err = -1;
-    const int rsaOeapPadding = 1;
-    EVP_PKEY *key = nullptr;
-
-    /*TODO: Verify if we need to setup a RSA engine.
-     * by default it's RSA OEAP */
-    ENGINE *eng = nullptr;
-
+QByteArray FolderMetadata::encryptMetadataKeys(const nlohmann::json& metadataKeys) const {
     auto path = publicKeyPath(_account);
     const char *pathC = qPrintable(path);
 
@@ -647,66 +768,14 @@ std::string FolderMetadata::encryptMetadataKeys(const nlohmann::json& metadataKe
         exit(1);
     }
 
-    key = PEM_read_PUBKEY(pkeyFile, NULL, NULL, NULL);
+    EVP_PKEY *key = PEM_read_PUBKEY(pkeyFile, NULL, NULL, NULL);
 
-    auto ctx = EVP_PKEY_CTX_new(key, eng);
-    if (!ctx) {
-        qCInfo(lcCse()) << "Could not initialize the pkey context.";
-        exit(1);
-    }
+    auto data = QByteArray::fromStdString(metadataKeys.dump());
+    auto ret = EncryptionHelper::encryptStringAsymmetric(key, data);
 
-    err = EVP_PKEY_encrypt_init(ctx);
-    if (err <= 0) {
-        qCInfo(lcCse()) << "Error initilaizing the encryption.";
-        exit(1);
-    }
+    EVP_PKEY_free(key);
 
-    err = EVP_PKEY_CTX_set_rsa_padding(ctx, rsaOeapPadding);
-    if (err <= 0) {
-        qCInfo(lcCse()) << "Error setting the encryption padding.";
-        exit(1);
-    }
-
-    size_t outLen = 0;
-    err = EVP_PKEY_encrypt(ctx, NULL, &outLen, metadataPtr, metadataPtrLen);
-    if (err <= 0) {
-        qCInfo(lcCse()) << "Error retrieving the size of the encrypted data";
-        exit(1);
-    } else {
-        qCInfo(lcCse()) << "Encrption Length:" << outLen;
-    }
-
-    unsigned char *out = (uchar*) OPENSSL_malloc(outLen);
-    if (!out) {
-        qCInfo(lcCse()) << "Error requesting memory for the encrypted contents";
-        exit(1);
-    }
-
-    err = EVP_PKEY_encrypt(ctx, out, &outLen, metadataPtr, metadataPtrLen);
-    if (err <= 0) {
-        qCInfo(lcCse()) << "Could not encrypt key." << err;
-        exit(1);
-    }
-
-    // Transform the encrypted data into base64.
-    const auto raw = QByteArray((const char*) out, outLen);
-    const auto b64 = raw.toBase64();
-    const auto ret = std::string(b64.constData(), b64.length());
-
-    qCInfo(lcCse()) << raw.toBase64();
     return ret;
-}
-
-std::string FolderMetadata::genMetadataPass() const {
-    const char* charmap = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const size_t charmapLength = strlen(charmap);
-    const int bytes = 16;
-    std::string result;
-    result.reserve(bytes);
-    generate_n(back_inserter(result), bytes, [&](){
-      return charmap[rand() % charmapLength];
-    });
-    return result;
 }
 
 std::string FolderMetadata::decryptMetadataKeys(const std::string& encryptedMetadata) const
@@ -781,86 +850,9 @@ std::string FolderMetadata::decryptMetadataKeys(const std::string& encryptedMeta
 }
 
 // AES/GCM/NoPadding (128 bit key size)
-std::string FolderMetadata::encryptJsonObject(const nlohmann::json& obj,const std::string& pass) const {
-    EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
-    if (!ctx) {
-        qCInfo(lcCse()) << "Coult not create encryption context, aborting.";
-        exit(1);
-    }
-
-    if(!EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
-        qCInfo(lcCse()) << "Error initializing encryption aborting.";
-        exit(1);
-    }
-
-    EVP_CIPHER_CTX_set_padding(ctx, 0);
-
-
-
-    unsigned char *iv = (unsigned char *)"0123456789012345";
-    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, 16, NULL)) {
-        qCInfo(lcCse()) << "Could not set IV length, aborting.";
-        exit(1);
-    }
-
-    auto key = (const unsigned char*) pass.c_str();
-    int err = EVP_EncryptInit_ex(ctx, NULL, NULL, key, iv);
-    if (err != 1) {
-        qCInfo(lcCse()) << "Error setting key and IV, aborting.";
-        exit(1);
-    }
-
-    std::string metadata = obj.dump();
-    int metadataLen = metadata.size();
-    int outLen = 0;
-
-    unsigned char *metadataPtr = (unsigned char *) metadata.c_str();
-
-    qCInfo(lcCse()) << "Metadata to be encrypted" << metadata;
-    qCInfo(lcCse()) << "Metadata length: " << metadataLen;
-
-    /*
-     * max len is metadtaLen + blocksize (16 bytes) -1
-     * Add 16 bytes for the tag
-     */
-    auto out = (unsigned char *) OPENSSL_malloc(metadataLen + 16 + 16 - 1);
-
-    err = EVP_EncryptUpdate(ctx, out, &outLen, metadataPtr, metadataLen);
-    if (err != 1) {
-        qCInfo(lcCse()) << "Error encrypting the metadata, aborting.";
-        exit(1);
-    }
-    qCInfo(lcCse()) << "Successfully encrypted the  internal json blob.";
-    int totalOutputLen = outLen;
-
-    qCInfo(lcCse()) << "Current output length: " << totalOutputLen;
-    err = EVP_EncryptFinal_ex(ctx, out + outLen, &outLen);
-    if (err != 1) {
-        qCInfo(lcCse()) << "Error finalyzing the encryption.";
-    }
-    totalOutputLen += outLen;
-    qCInfo(lcCse()) << "Final output length: " << totalOutputLen;
-
-    /* Get the tag */
-    unsigned char tag[16];
-    if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, tag)) {
-        qCInfo(lcCse()) << "Error Retrieving the tag";
-        handleErrors();
-    }
-
-    /* Add tag to cypher text to be compatible with the Android implementation */
-    memcpy(out + totalOutputLen, tag, 16);
-    totalOutputLen += 16;
-
-    qCInfo(lcCse()) << "Final output length (with tag): " << totalOutputLen;
-
-    // Transform the encrypted data into base64.
-    const auto raw = QByteArray((const char*) out, totalOutputLen);
-    const auto b64 = raw.toBase64();
-    const auto ret = std::string(b64.constData(), b64.length());
-
-    qCInfo(lcCse()) << raw.toBase64();
-    return ret;
+QByteArray FolderMetadata::encryptJsonObject(const nlohmann::json& obj, const QByteArray pass) const {
+    auto data = QByteArray::fromStdString(obj.dump());
+    return EncryptionHelper::encryptStringSymmetric(pass, data);
 }
 
 std::string FolderMetadata::decryptJsonObject(const std::string& encryptedMetadata, const std::string& pass) const
@@ -941,10 +933,10 @@ std::string FolderMetadata::decryptJsonObject(const std::string& encryptedMetada
 
 void FolderMetadata::setupEmptyMetadata() {
     using namespace nlohmann;
-    std::string newMetadataPass = genMetadataPass();
+    QByteArray newMetadataPass = EncryptionHelper::generateRandom(16);
     qCInfo(lcCse()) << "Key Generated for the Metadata" << newMetadataPass;
 
-    json metadataKeyObj = {"0", newMetadataPass};
+    json metadataKeyObj = {"0", newMetadataPass.toStdString()};
     json recepient = {"recipient", {}};
 
     auto b64String = encryptMetadataKeys(metadataKeyObj);
@@ -952,17 +944,15 @@ void FolderMetadata::setupEmptyMetadata() {
 
     json m = {
         {"metadata", {
-            {"metadataKeys", b64String},
-            {"sharing", sharingEncrypted},
+            {"metadataKeys", b64String.toStdString()},
+            {"sharing", sharingEncrypted.toStdString()},
             {"version",1}
         }},
-        {"files", {
+            {"files", {
         }}
     };
 
-    std::string result = m.dump();
-    QString output = QString::fromStdString(result);
-		_metadata = output.toLocal8Bit();
+    _metadata = QByteArray::fromStdString(m.dump());
 }
 
 QByteArray FolderMetadata::encryptedMetadata() {

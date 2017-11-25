@@ -203,11 +203,11 @@ private:
      * to ease the port to Nlohmann Json API
      */
     void setupEmptyMetadata();
-    std::string encryptMetadataKeys(const nlohmann::json& metadataKeys) const;
+    QByteArray encryptMetadataKeys(const nlohmann::json& metadataKeys) const;
     std::string decryptMetadataKeys(const std::string& encryptedMetadataKeys) const;
 
     std::string genMetadataPass() const;
-    std::string encryptJsonObject(const nlohmann::json& obj, const std::string& pass) const;
+    QByteArray encryptJsonObject(const nlohmann::json& obj, const QByteArray pass) const;
     std::string decryptJsonObject(const std::string& encryptedJsonBlob, const std::string& pass) const;
 
     QVector<EncryptedFile> _files;
