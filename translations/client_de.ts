@@ -3343,7 +3343,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="480"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>Der Dateiname kann auf Ihrem Dateisystem nicht entschlüsselt werden.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="489"/>

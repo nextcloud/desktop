@@ -3341,7 +3341,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="480"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>O nome do arquivo não pode ser codificado em seu sistema de arquivos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="489"/>
