@@ -604,32 +604,32 @@
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="76"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="75"/>
         <source>No ownCloud account configured</source>
         <translation>Nie skonfigurowano konta ownCloud</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="311"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="310"/>
         <source>The configured server for this client is too old</source>
         <translation>Konfigurowany serwer dla tego klienta jest za stary</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="312"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="311"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Proszę zaaktualizować serwer do najnowszej wersji i zrestartować klienta.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="173"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="172"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Błąd autentykacji: nazwa użytkownika lub hasło są nieprawidłowe.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="185"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="184"/>
         <source>timeout</source>
         <translation>wygaśnięcie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="222"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="221"/>
         <source>The provided credentials are not correct</source>
         <translation>Podane dane logowania są nieprawidłowe</translation>
     </message>
@@ -936,12 +936,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Dodaj folder połączenia synchronizacji</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="246"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="249"/>
         <source>Synchronizing with local folder</source>
         <translation>Synchronizacja z folderem lokalnym.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="293"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="296"/>
         <source>File</source>
         <translation>Plik</translation>
     </message>

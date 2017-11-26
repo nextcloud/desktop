@@ -604,32 +604,32 @@
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="76"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="75"/>
         <source>No ownCloud account configured</source>
         <translation>ไม่มีการกำหนดค่าบัญชี ownCloud </translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="311"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="310"/>
         <source>The configured server for this client is too old</source>
         <translation>การกำหนดค่าเซิร์ฟเวอร์สำหรับไคลเอ็นต์นี้เก่าเกินไป</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="312"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="311"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>กรุณาอัพเดทเซิร์ฟเวอร์ใหม่ใหม่ที่สุดและรีสตาร์ทไคลเอนต์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="173"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="172"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>ข้อผิดพลาดในการตรวจสอบ: ทั้งชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="185"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="184"/>
         <source>timeout</source>
         <translation>หมดเวลา</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="222"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="221"/>
         <source>The provided credentials are not correct</source>
         <translation>ระบุข้อมูลประจำตัวไม่ถูกต้อง</translation>
     </message>
@@ -945,12 +945,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>เพิ่มโฟลเดอร์ที่ต้องการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="246"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="249"/>
         <source>Synchronizing with local folder</source>
         <translation>กำลังประสานข้อมูลกับโฟลเดอร์ต้นทาง</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="293"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="296"/>
         <source>File</source>
         <translation>ไฟล์</translation>
     </message>

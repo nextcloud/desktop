@@ -604,32 +604,32 @@
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="76"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="75"/>
         <source>No ownCloud account configured</source>
         <translation>没有已经配置的 ownCloud 帐号</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="311"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="310"/>
         <source>The configured server for this client is too old</source>
         <translation>此客户端连接到的服务器版本过旧</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="312"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="311"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>请更新到最新的服务器版本然后重启客户端。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="173"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="172"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>认证失败：用户名或密码错误</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="185"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="184"/>
         <source>timeout</source>
         <translation>超时</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="222"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="221"/>
         <source>The provided credentials are not correct</source>
         <translation>提供的证书不正确</translation>
     </message>
@@ -943,12 +943,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>添加同步文件夹</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="246"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="249"/>
         <source>Synchronizing with local folder</source>
         <translation>与本地文件夹同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="293"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="296"/>
         <source>File</source>
         <translation>文件</translation>
     </message>

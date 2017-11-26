@@ -604,32 +604,32 @@
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="76"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="75"/>
         <source>No ownCloud account configured</source>
         <translation>No se ha configurado ninguna cuenta de ownCloud</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="311"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="310"/>
         <source>The configured server for this client is too old</source>
         <translation>La configuración del servidor para este cliente está obsoleta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="312"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="311"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Por favor, actualice a la última versión del servidor y reinicie el cliente</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="173"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="172"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Error de autenticación: El usuario o la contraseña son incorrectos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="185"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="184"/>
         <source>timeout</source>
         <translation>tiempo de espera</translation>
     </message>
     <message>
-        <location filename="../src/libsync/connectionvalidator.cpp" line="222"/>
+        <location filename="../src/libsync/connectionvalidator.cpp" line="221"/>
         <source>The provided credentials are not correct</source>
         <translation>Las credenciales proporcionadas no son correctas</translation>
     </message>
@@ -943,12 +943,12 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
         <translation>Añadir Conexión para el Directorio de Sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="246"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="249"/>
         <source>Synchronizing with local folder</source>
         <translation>Sincronizando con carpeta local</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="293"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="296"/>
         <source>File</source>
         <translation>Archivo</translation>
     </message>
