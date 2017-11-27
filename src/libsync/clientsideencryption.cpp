@@ -1205,7 +1205,7 @@ bool GetFolderEncryptStatus::finished()
             }
 
             if (!currFile.isEmpty() && currEncryptedStatus != -1) {
-							folderStatus.insert(currFile, currEncryptedStatus);
+							folderStatus.insert(currFile.remove("/remote.php/webdav/"), currEncryptedStatus);
 							currFile.clear();
 							currEncryptedStatus = -1;
 						}
