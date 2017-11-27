@@ -166,6 +166,10 @@ void PropagateUploadFileCommon::setDeleteExisting(bool enabled)
 
 void PropagateUploadFileCommon::start()
 {
+    qDebug() << "Starting to upload a file.";
+    qDebug() << _item->_file;
+    qDebug() << _item->_fileId;
+
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0)) {
         return;
     }
