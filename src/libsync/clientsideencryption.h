@@ -34,17 +34,17 @@ public:
     void getPrivateKeyFromServer();
     void getPublicKeyFromServer();
     void encryptPrivateKey(EVP_PKEY *keyPair);
-		void setTokenForFolder(const QByteArray& folder, const QByteArray& token);
-		QByteArray tokenForFolder(const QByteArray& folder) const;
+    void setTokenForFolder(const QByteArray& folder, const QByteArray& token);
+    QByteArray tokenForFolder(const QByteArray& folder) const;
 
-		//TODO: Perhaps mode this to FolderStatusModel
-		// (as it makes sense, but it increase the chance
-		// of conflicts).
-		void fetchFolderEncryptedStatus();
+    //TODO: Perhaps mode this to FolderStatusModel
+    // (as it makes sense, but it increase the chance
+    // of conflicts).
+    void fetchFolderEncryptedStatus();
 
 private slots:
-		void folderEncryptedStatusFetched(const QMap<QString, bool> &values);
-		void folderEncryptedStatusError(int error);
+    void folderEncryptedStatusFetched(const QMap<QString, bool> &values);
+    void folderEncryptedStatusError(int error);
 
 signals:
     void initializationFinished();
@@ -52,10 +52,10 @@ signals:
 private:
     OCC::AccountPtr _account;
     bool isInitialized = false;
-		bool _refreshingEncryptionStatus = false;
-		//TODO: Save this on disk.
-		QMap<QByteArray, QByteArray> _folder2token;
-		QMap<QByteArray, bool> _folder2encryptedStatus;
+    bool _refreshingEncryptionStatus = false;
+    //TODO: Save this on disk.
+    QMap<QByteArray, QByteArray> _folder2token;
+    QMap<QByteArray, bool> _folder2encryptedStatus;
 };
 
 /*
@@ -213,7 +213,7 @@ private:
     QVector<EncryptedFile> _files;
     QVector<int> _metadataKeys;
     AccountPtr _account;
-		QByteArray _metadata;
+    QByteArray _metadata;
 };
 
 class OWNCLOUDSYNC_EXPORT LockEncryptFolderApiJob : public AbstractNetworkJob
