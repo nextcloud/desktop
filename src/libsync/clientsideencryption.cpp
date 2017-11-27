@@ -2,6 +2,8 @@
 #include "account.h"
 #include "capabilities.h"
 #include "networkjobs.h"
+#include "theme.h"
+#include "creds/abstractcredentials.h"
 
 #include <openssl/rsa.h>
 #include <openssl/evp.h>
@@ -22,6 +24,8 @@
 #include <QXmlStreamNamespaceDeclaration>
 #include <QStack>
 
+#include <keychain.h>
+
 #include "wordlist.h"
 
 QDebug operator<<(QDebug out, const std::string& str)
@@ -29,6 +33,8 @@ QDebug operator<<(QDebug out, const std::string& str)
     out << QString::fromStdString(str);
     return out;
 }
+
+using namespace QKeychain;
 
 namespace OCC
 {
@@ -56,8 +62,8 @@ namespace {
 
 class EncryptionHelper {
 public:
-	using Password = QByteArray;
-	using Salt = QByteArray;
+    using Password = QByteArray;
+    using Salt = QByteArray;
 
     static QByteArray generateRandom(int size);
     static QPair<Password, Salt> generatePassword(const QString &wordlist);
@@ -68,6 +74,7 @@ public:
     static QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data);
     static QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data);
     static QByteArray encryptStringAsymmetric(EVP_PKEY *key, const QByteArray& data);
+    static QByteArray BIO2ByteArray(BIO *b);
 };
 
 QByteArray EncryptionHelper::generateRandom(int size) {
@@ -327,6 +334,17 @@ QByteArray EncryptionHelper::encryptStringAsymmetric(EVP_PKEY *key, const QByteA
     return raw.toBase64();
 }
 
+QByteArray EncryptionHelper::BIO2ByteArray(BIO *b) {
+    int pending = BIO_ctrl_pending(b);
+    char *tmp = (char *)calloc(pending+1, sizeof(char));
+    BIO_read(b, tmp, pending);
+
+    QByteArray res(tmp, pending);
+    free(tmp);
+
+    return res;
+}
+
 ClientSideEncryption::ClientSideEncryption()
 {
 }
@@ -344,13 +362,76 @@ void ClientSideEncryption::initialize()
         emit initializationFinished();
     }
 
-    if (hasPrivateKey() && hasPublicKey()) {
-        qCInfo(lcCse()) << "Public and private keys already downloaded";
-        emit initializationFinished();
+    fetchFromKeyChain();
+}
+
+void ClientSideEncryption::fetchFromKeyChain() {
+    const QString kck = AbstractCredentials::keychainKey(
+                _account->url().toString(),
+                _account->credentials()->user() + "_e2e-pub",
+                _account->id()
+    );
+
+    ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+    job->setInsecureFallback(false);
+    job->setKey(kck);
+    connect(job, &ReadPasswordJob::finished, this, &ClientSideEncryption::publicKeyFetched);
+    job->start();
+}
+
+void ClientSideEncryption::publicKeyFetched(Job *incoming) {
+    ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incoming);
+
+    // Error or no valid public key error out
+    if (readJob->error() != NoError || readJob->binaryData().length() == 0) {
+        getPublicKeyFromServer();
+        return;
     }
 
-    getPublicKeyFromServer();
+    _certificate = QSslCertificate(readJob->binaryData(), QSsl::Pem);
+
+    if (_certificate.isNull()) {
+        getPublicKeyFromServer();
+        return;
+    }
+
+    qCInfo(lcCse()) << "Public key fetched from keychain";
+
+    const QString kck = AbstractCredentials::keychainKey(
+                _account->url().toString(),
+                _account->credentials()->user() + "_e2e-private",
+                _account->id()
+    );
+
+    ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+    job->setInsecureFallback(false);
+    job->setKey(kck);
+    connect(job, &ReadPasswordJob::finished, this, &ClientSideEncryption::privateKeyFetched);
+    job->start();
 }
+
+void ClientSideEncryption::privateKeyFetched(Job *incoming) {
+    ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incoming);
+
+    // Error or no valid public key error out
+    if (readJob->error() != NoError || readJob->binaryData().length() == 0) {
+        _certificate = QSslCertificate();
+        getPublicKeyFromServer();
+        return;
+    }
+
+    _privateKey = QSslKey(readJob->binaryData(), QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
+
+    if (_privateKey.isNull()) {
+        getPrivateKeyFromServer();
+        return;
+    }
+
+    qCInfo(lcCse()) << "Private key fetched from keychain";
+
+    emit initializationFinished();
+}
+
 
 QString publicKeyPath(AccountPtr account)
 {
@@ -402,33 +483,13 @@ void ClientSideEncryption::generateKeyPair()
     qCInfo(lcCse()) << "Key correctly generated";
     qCInfo(lcCse()) << "Storing keys locally";
 
-    QDir dir;
-    if (!dir.mkpath(baseDirectory())) {
-        qCInfo(lcCse()) << "Could not create the folder for the keys.";
+    BIO *privKey = BIO_new(BIO_s_mem());
+    if (PEM_write_bio_PrivateKey(privKey, localKeyPair, NULL, NULL, 0, NULL, NULL) <= 0) {
+        qCInfo(lcCse()) << "Could not read private key from bio.";
         return;
     }
-
-    auto privKeyPath = privateKeyPath(_account).toLocal8Bit();
-    auto pubKeyPath = publicKeyPath(_account).toLocal8Bit();
-    FILE *privKeyFile = fopen(privKeyPath.constData(), "w");
-    FILE *pubKeyFile = fopen(pubKeyPath.constData(), "w");
-
-    qCInfo(lcCse()) << "Private key filename" << privKeyPath;
-    qCInfo(lcCse()) << "Public key filename" << pubKeyPath;
-
-    //TODO: Verify if the key needs to be stored with a Cipher and Pass.
-    if (!PEM_write_PrivateKey(privKeyFile, localKeyPair, NULL, NULL, 0, 0, NULL)) {
-        qCInfo(lcCse()) << "Could not write the private key to a file.";
-        return;
-    }
-
-    if (!PEM_write_PUBKEY(pubKeyFile, localKeyPair)) {
-        qCInfo(lcCse()) << "Could not write the public key to a file.";
-        return;
-    }
-
-    fclose(privKeyFile);
-    fclose(pubKeyFile);
+    QByteArray key = EncryptionHelper::BIO2ByteArray(privKey);
+    _privateKey = QSslKey(key, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
 
     generateCSR(localKeyPair);
 
@@ -454,9 +515,6 @@ void ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
     int             nVersion = 1;
 
     X509_REQ *x509_req = nullptr;
-    auto out = BIO_new(BIO_s_mem());
-    QByteArray output;
-    char data[80];
     SignPublicKeyApiJob *job = nullptr;
 
     // 2. set version of x509 req
@@ -471,31 +529,30 @@ void ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
         ret = X509_NAME_add_entry_by_txt(x509_name, v.first,  MBSTRING_ASC, (ucharp) v.second, -1, -1, 0);
         if (ret != 1) {
             qCInfo(lcCse()) << "Error Generating the Certificate while adding" << v.first << v.second;
-            goto free_all;
+            X509_REQ_free(x509_req);
+            return;
         }
     }
 
     ret = X509_REQ_set_pubkey(x509_req, keyPair);
     if (ret != 1){
         qCInfo(lcCse()) << "Error setting the public key on the csr";
-        goto free_all;
+        X509_REQ_free(x509_req);
+        return;
     }
 
     ret = X509_REQ_sign(x509_req, keyPair, EVP_sha1());    // return x509_req->signature->length
     if (ret <= 0){
         qCInfo(lcCse()) << "Error setting the public key on the csr";
-        goto free_all;
+        X509_REQ_free(x509_req);
+        return;
     }
 
+    BIO *out = BIO_new(BIO_s_mem());
     ret = PEM_write_bio_X509_REQ(out, x509_req);
-    do {
-        ret = BIO_gets(out, data, 80);
-        output += data;
-        if (output.endsWith("-----END CERTIFICATE REQUEST-----")) {
-            output = output.trimmed();
-            break;
-        }
-    } while (ret > 0 );
+    QByteArray output = EncryptionHelper::BIO2ByteArray(out);
+    BIO_free(out);
+    EVP_PKEY_free(keyPair);
 
     qCInfo(lcCse()) << "Returning the certificate";
     qCInfo(lcCse()) << output;
@@ -503,26 +560,16 @@ void ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
     job = new SignPublicKeyApiJob(_account, baseUrl() + "public-key", this);
     job->setCsr(output);
 
-    connect(job, &SignPublicKeyApiJob::jsonReceived, [this, keyPair](const QJsonDocument& json, int retCode) {
+    connect(job, &SignPublicKeyApiJob::jsonReceived, [this](const QJsonDocument& json, int retCode) {
         if (retCode == 200) {
-            auto caps = json.object().value("ocs").toObject().value("data").toObject().value("public-key").toString();
-            qCInfo(lcCse()) << "Public Key Returned" << caps;
-            QFile file(publicKeyPath(_account) + ".sign");
-            if (file.open(QIODevice::WriteOnly)) {
-                QTextStream s(&file);
-                s << caps;
-            }
-            file.close();
-            qCInfo(lcCse()) << "public key saved, Encrypting Private Key.";
-            encryptPrivateKey(keyPair);
+            QString cert = json.object().value("ocs").toObject().value("data").toObject().value("public-key").toString();
+            _certificate = QSslCertificate(cert.toLocal8Bit(), QSsl::Pem);
+            qCInfo(lcCse()) << "Certificate saved, Encrypting Private Key.";
+            encryptPrivateKey();
         }
         qCInfo(lcCse()) << retCode;
     });
     job->start();
-
-free_all:
-    X509_REQ_free(x509_req);
-    BIO_free_all(out);
 }
 
 void ClientSideEncryption::setTokenForFolder(const QByteArray& folderId, const QByteArray& token)
@@ -536,45 +583,27 @@ QByteArray ClientSideEncryption::tokenForFolder(const QByteArray& folderId) cons
 	return _folder2token[folderId];
 }
 
-void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
+void ClientSideEncryption::encryptPrivateKey()
 {
-    // Write the Private File to a BIO
-    // Retrieve the BIO contents, and encrypt it.
-    // Send the encrypted key to the server.
-    BIO* bio = BIO_new(BIO_s_mem());
+    QStringList list = WordList::getRandomWords(12);
+    _mnemonic = list.join(' ');
 
-    QString passPhrase = WordList::getUnifiedString(WordList::getRandomWords(12));
+    QString passPhrase = list.join(QString());
     qCInfo(lcCse()) << "Passphrase Generated:" << passPhrase;
 
-    // Extract the Private key from the key pair.
-    PEM_write_bio_PrivateKey(bio, keyPair, NULL, NULL, 0, 0, NULL);
-    char data[80];
-    QString output;
-    int ret = 0;
-    do {
-        ret = BIO_gets(bio, data, 80);
-        output += data;
-        if (output.endsWith("-----END PRIVATE KEY-----")) {
-            output = output.trimmed();
-            break;
-        }
-    } while (ret > 0 );
-
-    qCInfo(lcCse()) << "Private Key Extracted";
-    qCInfo(lcCse()) << output;
-
-		/*TODO: C++17: auto [secretKey, salt]. */
+    /*TODO: C++17: auto [secretKey, salt]. */
     auto secretKey = EncryptionHelper::generatePassword(passPhrase);
-    auto cryptedText = EncryptionHelper::encryptPrivateKey(secretKey.first, output.toLocal8Bit());
+    auto cryptedText = EncryptionHelper::encryptPrivateKey(secretKey.first, _privateKey.toPem());
 
     // Send private key to the server
 	auto job = new StorePrivateKeyApiJob(_account, baseUrl() + "private-key", this);
-    job->setPrivateKey(QByteArray(cryptedText));
+    job->setPrivateKey(cryptedText);
 	connect(job, &StorePrivateKeyApiJob::jsonReceived, [this](const QJsonDocument& doc, int retCode) {
 		Q_UNUSED(doc);
 		switch(retCode) {
 			case 200:
-				qCInfo(lcCse()) << "Store private key working as expected.";
+                qCInfo(lcCse()) << "Private key stored encrypted on server.";
+                //TODO Save keys + mnemonic to keychain!
 				emit initializationFinished();
 				break;
 			default:

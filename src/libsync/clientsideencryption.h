@@ -4,6 +4,8 @@
 #include <QString>
 #include <QObject>
 #include <QJsonDocument>
+#include <QSslCertificate>
+#include <QSslKey>
 
 #include <openssl/rsa.h>
 #include <openssl/evp.h>
@@ -13,6 +15,12 @@
 #include "networkjobs.h"
 
 #include <nlohmann/json.hpp>
+
+namespace QKeychain {
+class Job;
+class WritePasswordJob;
+class ReadPasswordJob;
+}
 
 namespace OCC {
 
@@ -33,7 +41,7 @@ public:
     void generateCSR(EVP_PKEY *keyPair);
     void getPrivateKeyFromServer();
     void getPublicKeyFromServer();
-    void encryptPrivateKey(EVP_PKEY *keyPair);
+    void encryptPrivateKey();
     void setTokenForFolder(const QByteArray& folder, const QByteArray& token);
     QByteArray tokenForFolder(const QByteArray& folder) const;
 
@@ -46,16 +54,28 @@ private slots:
     void folderEncryptedStatusFetched(const QMap<QString, bool> &values);
     void folderEncryptedStatusError(int error);
 
+    void publicKeyFetched(QKeychain::Job *incoming);
+    void privateKeyFetched(QKeychain::Job *incoming);
+
 signals:
     void initializationFinished();
 
 private:
-    OCC::AccountPtr _account;
+    void fetchFromKeyChain();
+
+    void writePrivateKey(QByteArray data);
+    void writeCertificate(QByteArray data);
+
+    AccountPtr _account;
     bool isInitialized = false;
     bool _refreshingEncryptionStatus = false;
     //TODO: Save this on disk.
     QMap<QByteArray, QByteArray> _folder2token;
     QMap<QByteArray, bool> _folder2encryptedStatus;
+
+    QSslKey _privateKey;
+    QSslCertificate _certificate;
+    QString _mnemonic;
 };
 
 /*
