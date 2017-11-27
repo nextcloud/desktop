@@ -56,15 +56,18 @@ namespace {
 
 class EncryptionHelper {
 public:
+	using Password = QByteArray;
+	using Salt = QByteArray;
+
     static QByteArray generateRandom(int size);
-    static QByteArray generatePassword(QString wordlist, QByteArray &salt);
+    static QPair<Password, Salt> generatePassword(const QString &wordlist);
     static QByteArray encryptPrivateKey(
-            const QByteArray key,
-            const QByteArray privateKey
+            const QByteArray& key,
+            const QByteArray& privateKey
     );
-    static QByteArray encryptStringSymmetric(const QByteArray key, const QByteArray data);
-    static QByteArray decryptStringSymmetric(const QByteArray key, const QByteArray data);
-    static QByteArray encryptStringAsymmetric(EVP_PKEY *key, const QByteArray data);
+    static QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data);
+    static QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data);
+    static QByteArray encryptStringAsymmetric(EVP_PKEY *key, const QByteArray& data);
 };
 
 QByteArray EncryptionHelper::generateRandom(int size) {
@@ -82,14 +85,14 @@ QByteArray EncryptionHelper::generateRandom(int size) {
     return result;
 }
 
-QByteArray EncryptionHelper::generatePassword(QString wordlist, QByteArray &salt) {
+QPair<EncryptionHelper::Password, EncryptionHelper::Salt> EncryptionHelper::generatePassword(const QString& wordlist) {
     qCInfo(lcCse()) << "Start encryption key generation!";
 
     // TODO generate salt
     const unsigned char *_salt = (unsigned char *)"$4$YmBjm3hk$Qb74D5IUYwghUmzsMqeNFx5z0/8$";
     const int saltLen = 40;
 
-    salt.append((const char *)_salt, saltLen);
+		QByteArray salt((const char *)_salt, saltLen);
 
     const int iterationCount = 1024;
     const int keyStrength = 256;
@@ -114,13 +117,13 @@ QByteArray EncryptionHelper::generatePassword(QString wordlist, QByteArray &salt
 
     qCInfo(lcCse()) << "Encryption key generated!";
 
-    QByteArray result((const char *)secretKey, keyLength);
-    return result;
+    QByteArray password((const char *)secretKey, keyLength);
+    return {password, salt};
 }
 
 QByteArray EncryptionHelper::encryptPrivateKey(
-        const QByteArray key,
-        const QByteArray privateKey
+        const QByteArray& key,
+        const QByteArray& privateKey
         ) {
 
     QByteArray iv = generateRandom(12);
@@ -194,11 +197,11 @@ QByteArray EncryptionHelper::encryptPrivateKey(
     return result;
 }
 
-QByteArray EncryptionHelper::decryptStringSymmetric(const QByteArray key, const QByteArray data) {
+QByteArray EncryptionHelper::decryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
 
 }
 
-QByteArray EncryptionHelper::encryptStringSymmetric(const QByteArray key, const QByteArray data) {
+QByteArray EncryptionHelper::encryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
     QByteArray iv = generateRandom(16);
 
     EVP_CIPHER_CTX *ctx;
@@ -270,7 +273,7 @@ QByteArray EncryptionHelper::encryptStringSymmetric(const QByteArray key, const 
     return result;
 }
 
-QByteArray EncryptionHelper::encryptStringAsymmetric(EVP_PKEY *key, const QByteArray data) {
+QByteArray EncryptionHelper::encryptStringAsymmetric(EVP_PKEY *key, const QByteArray& data) {
     int err = -1;
 
     auto ctx = EVP_PKEY_CTX_new(key, ENGINE_get_default_RSA());
@@ -560,9 +563,9 @@ void ClientSideEncryption::encryptPrivateKey(EVP_PKEY *keyPair)
     qCInfo(lcCse()) << "Private Key Extracted";
     qCInfo(lcCse()) << output;
 
-    QByteArray salt;
-    auto secretKey = EncryptionHelper::generatePassword(passPhrase, salt);
-    auto cryptedText = EncryptionHelper::encryptPrivateKey(secretKey, output.toLocal8Bit());
+		/*TODO: C++17: auto [secretKey, salt]. */
+    auto secretKey = EncryptionHelper::generatePassword(passPhrase);
+    auto cryptedText = EncryptionHelper::encryptPrivateKey(secretKey.first, output.toLocal8Bit());
 
     // Send private key to the server
 	auto job = new StorePrivateKeyApiJob(_account, baseUrl() + "private-key", this);
