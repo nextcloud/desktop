@@ -49,7 +49,9 @@ public:
     // (as it makes sense, but it increase the chance
     // of conflicts).
     void fetchFolderEncryptedStatus();
-    void printWebdavFolders();
+
+    // to be used together with FolderStatusModel::FolderInfo::_path.
+    bool isFolderEncrypted(const QString& path);
 
 private slots:
     void folderEncryptedStatusFetched(const QMap<QString, bool> &values);

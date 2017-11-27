@@ -1221,10 +1221,11 @@ bool GetFolderEncryptStatus::finished()
     return true;
 }
 
-void ClientSideEncryption::printWebdavFolders()
-{
-  for(const auto folder : _folder2encryptedStatus.keys()) {
-    qDebug() << folder << _folder2encryptedStatus[folder];
-  }
+bool ClientSideEncryption::isFolderEncrypted(const QString& path) {
+  auto it = _folder2encryptedStatus.find(path);
+  if (it == _folder2encryptedStatus.end())
+    return false;
+  return (*it);
 }
+
 }
