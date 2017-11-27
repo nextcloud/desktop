@@ -49,6 +49,7 @@ public:
     // (as it makes sense, but it increase the chance
     // of conflicts).
     void fetchFolderEncryptedStatus();
+    void printWebdavFolders();
 
 private slots:
     void folderEncryptedStatusFetched(const QMap<QString, bool> &values);
@@ -71,7 +72,7 @@ private:
     bool _refreshingEncryptionStatus = false;
     //TODO: Save this on disk.
     QMap<QByteArray, QByteArray> _folder2token;
-    QMap<QByteArray, bool> _folder2encryptedStatus;
+    QMap<QString, bool> _folder2encryptedStatus;
 
     QSslKey _privateKey;
     QSslCertificate _certificate;

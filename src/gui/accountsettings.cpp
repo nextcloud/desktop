@@ -347,17 +347,29 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
     if (!QFile::exists(fileName)) {
         ac->setEnabled(false);
     }
-    auto fileId = _model->data(index, FolderStatusModel::FileIdRole).toByteArray();
+    auto info   = _model->infoForIndex(index);
+    // jesus, nothing here returns me the webdav url
+    qDebug() << "path" << info->_folder->path();
+    qDebug() << "remote" << info->_folder->remotePath();
+    qDebug() << "clean" << info->_folder->cleanPath();
+    qDebug() << "url" << info->_folder->remoteUrl();
+    qDebug() << "info path" << info->_path;
+    qDebug() << "name" << info->_name;
+    qDebug() << _model->data(index, OCC::FolderStatusDelegate::FolderPathRole).toString();
+    qDebug() << _model->data(index, OCC::FolderStatusDelegate::FolderSecondPathRole).toString();
 
-    if (accountsState()->account()->capabilities().clientSideEncryptionAvaliable()) {
+    auto acc = _accountState->account();
+    acc->e2e()->printWebdavFolders();
+    if (acc->capabilities().clientSideEncryptionAvaliable()) {
+
         ac = menu.addAction(tr("Encrypt"));
-        connect(ac, &QAction::triggered, [this, &fileId] {
-            slotMarkSubfolderEncrpted(fileId);
+        connect(ac, &QAction::triggered, [this, &info] {
+            slotMarkSubfolderEncrpted(info->_fileId);
         });
 
         ac = menu.addAction(tr("Decrypt"));
-        connect(ac, &QAction::triggered, [this, &fileId] {
-            slotMarkSubfolderDecrypted(fileId);
+        connect(ac, &QAction::triggered, [this, &info] {
+            slotMarkSubfolderDecrypted(info->_fileId);
         });
     }
     menu.exec(QCursor::pos());

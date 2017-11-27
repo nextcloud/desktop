@@ -653,6 +653,7 @@ void ClientSideEncryption::fetchFolderEncryptedStatus() {
 void ClientSideEncryption::folderEncryptedStatusFetched(const QMap<QString, bool>& result)
 {
 	_refreshingEncryptionStatus = false;
+	_folder2encryptedStatus = result;
 	qDebug() << "Retrieved correctly the encrypted status of the folders." << result;
 }
 
@@ -1220,4 +1221,10 @@ bool GetFolderEncryptStatus::finished()
     return true;
 }
 
+void ClientSideEncryption::printWebdavFolders()
+{
+  for(const auto folder : _folder2encryptedStatus.keys()) {
+    qDebug() << folder << _folder2encryptedStatus[folder];
+  }
+}
 }
