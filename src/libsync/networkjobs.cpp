@@ -30,6 +30,8 @@
 #include <QPixmap>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QPainter>
+
 #include "networkjobs.h"
 #include "account.h"
 #include "owncloudpropagator.h"
@@ -629,10 +631,10 @@ bool PropfindJob::finished()
 
 /*********************************************************************************************/
 
-AvatarJob::AvatarJob(AccountPtr account, QObject *parent)
+AvatarJob::AvatarJob(AccountPtr account, const QString &userId, int size, QObject *parent)
     : AbstractNetworkJob(account, QString(), parent)
 {
-    _avatarUrl = Utility::concatUrlPath(account->url(), QString("remote.php/dav/avatars/%1/128.png").arg(account->davUser()));
+    _avatarUrl = Utility::concatUrlPath(account->url(), QString("remote.php/dav/avatars/%1/%2.png").arg(userId, QString::number(size)));
 }
 
 void AvatarJob::start()
@@ -640,6 +642,26 @@ void AvatarJob::start()
     QNetworkRequest req;
     sendRequest("GET", _avatarUrl, req);
     AbstractNetworkJob::start();
+}
+
+QImage AvatarJob::makeCircularAvatar(const QImage &baseAvatar)
+{
+    int dim = baseAvatar.width();
+
+    QImage avatar(dim, dim, baseAvatar.format());
+    avatar.fill(Qt::transparent);
+
+    QPainter painter(&avatar);
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    QPainterPath path;
+    path.addEllipse(0, 0, dim, dim);
+    painter.setClipPath(path);
+
+    painter.drawImage(0, 0, baseAvatar);
+    painter.end();
+
+    return avatar;
 }
 
 bool AvatarJob::finished()
@@ -908,6 +930,7 @@ bool SimpleNetworkJob::finished()
     return true;
 }
 
+
 DeleteApiJob::DeleteApiJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
 {
@@ -940,6 +963,38 @@ bool DeleteApiJob::finished()
     const auto replyData = QString::fromUtf8(reply()->readAll());
     qCInfo(lcJsonApiJob()) << "TMX Delete Job" << replyData;
 		return true;
+}
+
+void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
+    const QByteArray &numericFileId, QObject *target,
+    std::function<void(const QString &url)> targetFun)
+{
+    QString oldUrl;
+    if (!numericFileId.isEmpty())
+        oldUrl = account->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded);
+
+    // Retrieve the new link by PROPFIND
+    PropfindJob *job = new PropfindJob(account, remotePath, target);
+    job->setProperties(
+        QList<QByteArray>()
+        << "http://owncloud.org/ns:fileid" // numeric file id for fallback private link generation
+        << "http://owncloud.org/ns:privatelink");
+    job->setTimeout(10 * 1000);
+    QObject::connect(job, &PropfindJob::result, target, [=](const QVariantMap &result) {
+        auto privateLinkUrl = result["privatelink"].toString();
+        auto numericFileId = result["fileid"].toByteArray();
+        if (!privateLinkUrl.isEmpty()) {
+            targetFun(privateLinkUrl);
+        } else if (!numericFileId.isEmpty()) {
+            targetFun(account->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded));
+        } else {
+            targetFun(oldUrl);
+        }
+    });
+    QObject::connect(job, &PropfindJob::finishedWithError, target, [=](QNetworkReply *) {
+        targetFun(oldUrl);
+    });
+    job->start();
 }
 
 } // namespace OCC
