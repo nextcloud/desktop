@@ -137,12 +137,12 @@ void PropagateUploadFileNG::slotPropfindFinished()
         ++_currentChunk;
     }
 
-    if (_sent > _item->_size) {
+    if (_sent > _fileToUpload._size) {
         // Normally this can't happen because the size is xor'ed with the transfer id, and it is
         // therefore impossible that there is more data on the server than on the file.
         qCCritical(lcPropagateUpload) << "Inconsistency while resuming " << _item->_file
                                       << ": the size on the server (" << _sent << ") is bigger than the size of the file ("
-                                      << _item->_size << ")";
+                                      << _fileToUpload._size << ")";
         startNewUpload();
         return;
     }
@@ -220,7 +220,7 @@ void PropagateUploadFileNG::slotDeleteJobFinished()
 void PropagateUploadFileNG::startNewUpload()
 {
     ASSERT(propagator()->_activeJobList.count(this) == 1);
-    _transferId = qrand() ^ _item->_modtime ^ (_item->_size << 16) ^ qHash(_item->_file);
+    _transferId = qrand() ^ _item->_modtime ^ (_fileToUpload._size << 16) ^ qHash(_fileToUpload._file);
     _sent = 0;
     _currentChunk = 0;
 
@@ -230,10 +230,14 @@ void PropagateUploadFileNG::startNewUpload()
     pi._valid = true;
     pi._transferid = _transferId;
     pi._modtime = _item->_modtime;
+
+    // Journal should store the actual file
     propagator()->_journal->setUploadInfo(_item->_file, pi);
     propagator()->_journal->commit("Upload info");
     QMap<QByteArray, QByteArray> headers;
-    headers["OC-Total-Length"] = QByteArray::number(_item->_size);
+
+    // But we should send the temporary (or something) one.
+    headers["OC-Total-Length"] = QByteArray::number(_fileToUpload._size);
     auto job = new MkColJob(propagator()->account(), chunkUrl(), headers, this);
 
     connect(job, SIGNAL(finished(QNetworkReply::NetworkError)),
@@ -264,7 +268,7 @@ void PropagateUploadFileNG::startNextChunk()
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    quint64 fileSize = _item->_size;
+    quint64 fileSize = _fileToUpload._size;
     ENFORCE(fileSize >= _sent, "Sent data exceeds file size");
 
     // prevent situation that chunk size is bigger then required one to send
@@ -274,8 +278,9 @@ void PropagateUploadFileNG::startNextChunk()
         Q_ASSERT(_jobs.isEmpty()); // There should be no running job anymore
         _finished = true;
         // Finish with a MOVE
+        // If we changed the file name, we must store the changed filename in the remote folder, not the original one.
         QString destination = QDir::cleanPath(propagator()->account()->url().path() + QLatin1Char('/')
-            + propagator()->account()->davPath() + propagator()->_remoteFolder + _item->_file);
+            + propagator()->account()->davPath() + propagator()->_remoteFolder + _fileToUpload._file);
         auto headers = PropagateUploadFileCommon::headers();
 
         // "If-Match applies to the source, but we are interested in comparing the etag of the destination
@@ -300,7 +305,7 @@ void PropagateUploadFileNG::startNextChunk()
     }
 
     auto device = new UploadDevice(&propagator()->_bandwidthManager);
-    const QString fileName = propagator()->getFilePath(_item->_file);
+    const QString fileName = _fileToUpload._path;
 
     if (!device->prepareAndOpen(fileName, _sent, _currentChunkSize)) {
         qCWarning(lcPropagateUpload) << "Could not prepare upload device: " << device->errorString();
@@ -357,7 +362,7 @@ void PropagateUploadFileNG::slotPutFinished()
         return;
     }
 
-    ENFORCE(_sent <= _item->_size, "can't send more than size");
+    ENFORCE(_sent <= _fileToUpload._size, "can't send more than size");
 
     // Adjust the chunk size for the time taken.
     //
@@ -390,11 +395,18 @@ void PropagateUploadFileNG::slotPutFinished()
                                   << propagator()->_chunkSize << "bytes";
     }
 
-    bool finished = _sent == _item->_size;
+    bool finished = _sent == _fileToUpload._size;
 
     // Check if the file still exists
+    /* Check if the file still exists,
+     * but we could be operating in a temporary file, so check both if
+     * the file to upload is different than the file on disk
+     */
+    const QString fileToUploadPath = _fileToUpload._path;
     const QString fullFilePath(propagator()->getFilePath(_item->_file));
-    if (!FileSystem::fileExists(fullFilePath)) {
+    bool fileExists = fileToUploadPath == fullFilePath ? FileSystem::fileExists(fullFilePath)
+      : (FileSystem::fileExists(fileToUploadPath) && FileSystem::fileExists(fullFilePath));
+    if (!fileExists) {
         if (!finished) {
             abortWithError(SyncFileItem::SoftError, tr("The local file was removed during sync."));
             return;
@@ -403,7 +415,7 @@ void PropagateUploadFileNG::slotPutFinished()
         }
     }
 
-    // Check whether the file changed since discovery.
+    // Check whether the file changed since discovery - this acts on the original file.
     if (!FileSystem::verifyFileUnchanged(fullFilePath, _item->_size, _item->_modtime)) {
         propagator()->_anotherSyncNeeded = true;
         if (!finished) {
