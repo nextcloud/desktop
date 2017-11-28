@@ -163,27 +163,36 @@ void PropagateUploadFileCommon::setDeleteExisting(bool enabled)
     _deleteExisting = enabled;
 }
 
-
 void PropagateUploadFileCommon::start()
 {
+    /* Currently the File to upload has the same information as the SyncFileItem,
+     * but the idea is to make a separation between the local file and the file that's
+     * being uploaded, in our current case they are the same, but perhaps we can apply
+     * some filters in the future like 'resize' for pictures and so on.
+     *
+     * this by no means is a finished job, but a first step.
+     */
+    _fileToUpload._file = _item->_file;
+    _fileToUpload._size = _item->_size;
+
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0)) {
         return;
     }
 
     // Check if the specific file can be accessed
-    if (propagator()->hasCaseClashAccessibilityProblem(_item->_file)) {
+    if (propagator()->hasCaseClashAccessibilityProblem(_fileToUpload._file)) {
         done(SyncFileItem::NormalError, tr("File %1 cannot be uploaded because another file with the same name, differing only in case, exists").arg(QDir::toNativeSeparators(_item->_file)));
         return;
     }
 
     // Check if we believe that the upload will fail due to remote quota limits
     const quint64 quotaGuess = propagator()->_folderQuota.value(
-        QFileInfo(_item->_file).path(), std::numeric_limits<quint64>::max());
-    if (_item->_size > quotaGuess) {
+        QFileInfo(_fileToUpload._file).path(), std::numeric_limits<quint64>::max());
+    if (_fileToUpload._size > quotaGuess) {
         // Necessary for blacklisting logic
         _item->_httpErrorCode = 507;
         emit propagator()->insufficientRemoteStorage();
-        done(SyncFileItem::DetailError, tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_item->_size)));
+        done(SyncFileItem::DetailError, tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_fileToUpload._size)));
         return;
     }
 
@@ -194,7 +203,7 @@ void PropagateUploadFileCommon::start()
     }
 
     auto job = new DeleteJob(propagator()->account(),
-        propagator()->_remoteFolder + _item->_file,
+        propagator()->_remoteFolder + _fileToUpload._file,
         this);
     _jobs.append(job);
     connect(job, &DeleteJob::finishedSignal, this, &PropagateUploadFileCommon::slotComputeContentChecksum);
@@ -208,10 +217,12 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
         return;
     }
 
-    const QString filePath = propagator()->getFilePath(_item->_file);
+    const QString filePath = propagator()->getFilePath(_fileToUpload._file);
 
     // remember the modtime before checksumming to be able to detect a file
-    // change during the checksum calculation
+    // change during the checksum calculation - This goes inside of the _item->_file
+    // and not the _fileToUpload because we are checking the original file, not there
+    // probably temporary one.
     _item->_modtime = FileSystem::getModTime(filePath);
 
 #ifdef WITH_TESTING
@@ -221,6 +232,9 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
     QByteArray checksumType = contentChecksumType();
 
     // Maybe the discovery already computed the checksum?
+    // Should I compute the checksum of the original (_item->_file)
+    // or the maybe-modified? (_fileToUpload._file) ?
+
     QByteArray existingChecksumType, existingChecksum;
     parseChecksumHeader(_item->_checksumHeader, &existingChecksumType, &existingChecksum);
     if (existingChecksumType == checksumType) {
@@ -285,7 +299,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
         _item->_checksumHeader = _transmissionChecksumHeader;
     }
 
-    const QString fullFilePath = propagator()->getFilePath(_item->_file);
+    const QString fullFilePath = propagator()->getFilePath(_fileToUpload._file);
 
     if (!FileSystem::fileExists(fullFilePath)) {
         done(SyncFileItem::SoftError, tr("File Removed"));
@@ -307,7 +321,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
     }
 
     quint64 fileSize = FileSystem::getSize(fullFilePath);
-    _item->_size = fileSize;
+    _fileToUpload._size = fileSize;
 
     // But skip the file if the mtime is too close to 'now'!
     // That usually indicates a file that is still being changed
@@ -536,17 +550,20 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
     // Insufficient remote storage.
     if (_item->_httpErrorCode == 507) {
         // Update the quota expectation
+        /* store the quota for the real local file using the information
+         * on the file to upload, that could have been modified by
+         * filters or something. */
         const auto path = QFileInfo(_item->_file).path();
         auto quotaIt = propagator()->_folderQuota.find(path);
         if (quotaIt != propagator()->_folderQuota.end()) {
-            quotaIt.value() = qMin(quotaIt.value(), _item->_size - 1);
+            quotaIt.value() = qMin(quotaIt.value(), _fileToUpload._size - 1);
         } else {
-            propagator()->_folderQuota[path] = _item->_size - 1;
+            propagator()->_folderQuota[path] = _fileToUpload._size - 1;
         }
 
         // Set up the error
         status = SyncFileItem::DetailError;
-        errorString = tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_item->_size));
+        errorString = tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_fileToUpload._size));
         emit propagator()->insufficientRemoteStorage();
     }
 
@@ -615,9 +632,9 @@ void PropagateUploadFileCommon::finalize()
     // Update the quota, if known
     auto quotaIt = propagator()->_folderQuota.find(QFileInfo(_item->_file).path());
     if (quotaIt != propagator()->_folderQuota.end())
-        quotaIt.value() -= _item->_size;
+        quotaIt.value() -= _fileToUpload._size;
 
-    // Update the database entry
+    // Update the database entry - use the local file, not the temporary one.
     if (!propagator()->_journal->setFileRecord(_item->toSyncJournalFileRecordWithInode(propagator()->getFilePath(_item->_file)))) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
