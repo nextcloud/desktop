@@ -310,10 +310,12 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QList<QByteArray> &exclud
 #endif
 
     /* We create a desktop.ini on Windows for the sidebar icon, make sure we don't sync them. */
-    rc = csync_fnmatch("Desktop.ini", bname, 0);
-    if (rc == 0) {
-        match = CSYNC_FILE_SILENTLY_EXCLUDED;
-        goto out;
+    if (blen == 11) {
+        rc = csync_fnmatch("Desktop.ini", bname, 0);
+        if (rc == 0) {
+            match = CSYNC_FILE_SILENTLY_EXCLUDED;
+            goto out;
+        }
     }
 
     if (!OCC::Utility::shouldUploadConflictFiles()) {

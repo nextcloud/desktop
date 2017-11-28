@@ -258,6 +258,8 @@ static void check_csync_excluded_traversal(void **)
     assert_int_equal(check_file_traversal(".sync_5bdd60bdfcfa.db-shm"), CSYNC_FILE_SILENTLY_EXCLUDED);
     assert_int_equal(check_file_traversal("subdir/.sync_5bdd60bdfcfa.db"), CSYNC_FILE_SILENTLY_EXCLUDED);
 
+    /* Other builtin excludes */
+    assert_int_equal(check_file_traversal("foo/Desktop.ini"), CSYNC_FILE_SILENTLY_EXCLUDED);
 
     /* pattern ]*.directory - ignore and remove */
     assert_int_equal(check_file_traversal("my.~directory"), CSYNC_FILE_EXCLUDE_AND_REMOVE);
