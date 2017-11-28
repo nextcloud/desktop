@@ -3,7 +3,7 @@
 #include <QWebEngineUrlRequestJob>
 #include <QProgressBar>
 
-#include "creds/httpcredentialsgui.h"
+#include "creds/webflowcredentials.h"
 
 namespace OCC {
 
@@ -71,7 +71,7 @@ bool WebViewPage::isComplete() const {
 }
 
 AbstractCredentials* WebViewPage::getCredentials() const {
-    return new HttpCredentialsGui(_user, _pass, _ocWizard->_clientSslCertificate, _ocWizard->_clientSslKey);
+    return new WebFlowCredentials(_user, _pass, _ocWizard->_clientSslCertificate, _ocWizard->_clientSslKey);
 }
 
 void WebViewPage::setConnected() {
