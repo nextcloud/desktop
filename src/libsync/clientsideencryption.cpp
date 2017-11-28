@@ -23,6 +23,8 @@
 #include <QXmlStreamReader>
 #include <QXmlStreamNamespaceDeclaration>
 #include <QStack>
+#include <QInputDialog>
+#include <QLineEdit>
 
 #include <keychain.h>
 
@@ -71,9 +73,22 @@ public:
             const QByteArray& key,
             const QByteArray& privateKey
     );
-    static QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data);
-    static QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data);
-    static QByteArray encryptStringAsymmetric(EVP_PKEY *key, const QByteArray& data);
+    static QByteArray decryptPrivateKey(
+            const QByteArray& key,
+            const QByteArray& data
+    );
+    static QByteArray encryptStringSymmetric(
+            const QByteArray& key,
+            const QByteArray& data
+    );
+    static QByteArray decryptStringSymmetric(
+            const QByteArray& key,
+            const QByteArray& data
+    );
+    static QByteArray encryptStringAsymmetric(
+            EVP_PKEY *key,
+            const QByteArray& data
+    );
     static QByteArray BIO2ByteArray(BIO *b);
 };
 
@@ -99,7 +114,7 @@ QPair<EncryptionHelper::Password, EncryptionHelper::Salt> EncryptionHelper::gene
     const unsigned char *_salt = (unsigned char *)"$4$YmBjm3hk$Qb74D5IUYwghUmzsMqeNFx5z0/8$";
     const int saltLen = 40;
 
-		QByteArray salt((const char *)_salt, saltLen);
+    QByteArray salt((const char *)_salt, saltLen);
 
     const int iterationCount = 1024;
     const int keyStrength = 256;
@@ -204,8 +219,182 @@ QByteArray EncryptionHelper::encryptPrivateKey(
     return result;
 }
 
-QByteArray EncryptionHelper::decryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
+QByteArray EncryptionHelper::decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
+    qCInfo(lcCse()) << "decryptStringSymmetric key: " << key;
+    qCInfo(lcCse()) << "decryptStringSymmetric data: " << data;
 
+    int sep = data.indexOf("fA==");
+    qCInfo(lcCse()) << "sep at" << sep;
+
+    QByteArray cipherTXT64 = data.left(sep);
+    QByteArray ivB64 = data.right(data.size() - sep - 4);
+
+    qCInfo(lcCse()) << "decryptStringSymmetric cipherTXT: " << cipherTXT64;
+    qCInfo(lcCse()) << "decryptStringSymmetric IV: " << ivB64;
+
+    QByteArray cipherTXT = QByteArray::fromBase64(cipherTXT64);
+    QByteArray iv = QByteArray::fromBase64(ivB64);
+
+    QByteArray tag = cipherTXT.right(16);
+    cipherTXT.chop(16);
+
+    // Init
+    EVP_CIPHER_CTX *ctx;
+
+    /* Create and initialise the context */
+    if(!(ctx = EVP_CIPHER_CTX_new())) {
+        qCInfo(lcCse()) << "Error creating cipher";
+        return QByteArray();
+    }
+
+    /* Initialise the decryption operation. */
+    if(!EVP_DecryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL)) {
+        qCInfo(lcCse()) << "Error initialising context with aes 256";
+        EVP_CIPHER_CTX_free(ctx);
+        return QByteArray();
+    }
+
+    /* Set IV length. Not necessary if this is 12 bytes (96 bits) */
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), NULL)) {
+        qCInfo(lcCse()) << "Error setting IV size";
+        EVP_CIPHER_CTX_free(ctx);
+        return QByteArray();
+    }
+
+    /* Initialise key and IV */
+    if(!EVP_DecryptInit_ex(ctx, NULL, NULL, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
+        qCInfo(lcCse()) << "Error initialising key and iv";
+        EVP_CIPHER_CTX_free(ctx);
+        return QByteArray();
+    }
+
+    unsigned char *ptext = (unsigned char *)calloc(cipherTXT.size() + 16, sizeof(unsigned char));
+    int plen;
+
+    /* Provide the message to be decrypted, and obtain the plaintext output.
+     * EVP_DecryptUpdate can be called multiple times if necessary
+     */
+    if(!EVP_DecryptUpdate(ctx, ptext, &plen, (unsigned char *)cipherTXT.constData(), cipherTXT.size())) {
+        qCInfo(lcCse()) << "Could not decrypt";
+        EVP_CIPHER_CTX_free(ctx);
+        free(ptext);
+        return QByteArray();
+    }
+
+    /* Set expected tag value. Works in OpenSSL 1.0.1d and later */
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, tag.size(), (unsigned char *)tag.constData())) {
+        qCInfo(lcCse()) << "Could not set tag";
+        EVP_CIPHER_CTX_free(ctx);
+        free(ptext);
+        return QByteArray();
+    }
+
+    /* Finalise the decryption. A positive return value indicates success,
+     * anything else is a failure - the plaintext is not trustworthy.
+     */
+    int len = plen;
+    if (EVP_DecryptFinal_ex(ctx, ptext + plen, &len) == 0) {
+        qCInfo(lcCse()) << "Tag did not match!";
+        EVP_CIPHER_CTX_free(ctx);
+        free(ptext);
+        return QByteArray();
+    }
+
+    QByteArray result((char *)ptext, plen);
+
+    free(ptext);
+    EVP_CIPHER_CTX_free(ctx);
+
+    return QByteArray::fromBase64(result);
+}
+
+QByteArray EncryptionHelper::decryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
+    qCInfo(lcCse()) << "decryptStringSymmetric key: " << key;
+    qCInfo(lcCse()) << "decryptStringSymmetric data: " << data;
+
+    int sep = data.indexOf("fA==");
+    qCInfo(lcCse()) << "sep at" << sep;
+
+    QByteArray cipherTXT64 = data.left(sep);
+    QByteArray ivB64 = data.right(data.size() - sep - 4);
+
+    qCInfo(lcCse()) << "decryptStringSymmetric cipherTXT: " << cipherTXT64;
+    qCInfo(lcCse()) << "decryptStringSymmetric IV: " << ivB64;
+
+    QByteArray cipherTXT = QByteArray::fromBase64(cipherTXT64);
+    QByteArray iv = QByteArray::fromBase64(ivB64);
+
+    QByteArray tag = cipherTXT.right(16);
+    cipherTXT.chop(16);
+
+    // Init
+    EVP_CIPHER_CTX *ctx;
+
+    /* Create and initialise the context */
+    if(!(ctx = EVP_CIPHER_CTX_new())) {
+        qCInfo(lcCse()) << "Error creating cipher";
+        return QByteArray();
+    }
+
+    /* Initialise the decryption operation. */
+    if(!EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
+        qCInfo(lcCse()) << "Error initialising context with aes 128";
+        EVP_CIPHER_CTX_free(ctx);
+        return QByteArray();
+    }
+
+    /* Set IV length. Not necessary if this is 12 bytes (96 bits) */
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), NULL)) {
+        qCInfo(lcCse()) << "Error setting IV size";
+        EVP_CIPHER_CTX_free(ctx);
+        return QByteArray();
+    }
+
+    /* Initialise key and IV */
+    if(!EVP_DecryptInit_ex(ctx, NULL, NULL, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
+        qCInfo(lcCse()) << "Error initialising key and iv";
+        EVP_CIPHER_CTX_free(ctx);
+        return QByteArray();
+    }
+
+    unsigned char *ptext = (unsigned char *)calloc(cipherTXT.size() + 16, sizeof(unsigned char));
+    int plen;
+
+    /* Provide the message to be decrypted, and obtain the plaintext output.
+     * EVP_DecryptUpdate can be called multiple times if necessary
+     */
+    if(!EVP_DecryptUpdate(ctx, ptext, &plen, (unsigned char *)cipherTXT.constData(), cipherTXT.size())) {
+        qCInfo(lcCse()) << "Could not decrypt";
+        EVP_CIPHER_CTX_free(ctx);
+        free(ptext);
+        return QByteArray();
+    }
+
+    /* Set expected tag value. Works in OpenSSL 1.0.1d and later */
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, tag.size(), (unsigned char *)tag.constData())) {
+        qCInfo(lcCse()) << "Could not set tag";
+        EVP_CIPHER_CTX_free(ctx);
+        free(ptext);
+        return QByteArray();
+    }
+
+    /* Finalise the decryption. A positive return value indicates success,
+     * anything else is a failure - the plaintext is not trustworthy.
+     */
+    int len = plen;
+    if (EVP_DecryptFinal_ex(ctx, ptext + plen, &len) == 0) {
+        qCInfo(lcCse()) << "Tag did not match!";
+        EVP_CIPHER_CTX_free(ctx);
+        free(ptext);
+        return QByteArray();
+    }
+
+    QByteArray result((char *)ptext, plen);
+
+    free(ptext);
+    EVP_CIPHER_CTX_free(ctx);
+
+    return QByteArray();
 }
 
 QByteArray EncryptionHelper::encryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
@@ -220,7 +409,7 @@ QByteArray EncryptionHelper::encryptStringSymmetric(const QByteArray& key, const
 
     /* Initialise the decryption operation. */
     if(!EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
-        qCInfo(lcCse()) << "Error initializing context with aes_256";
+        qCInfo(lcCse()) << "Error initializing context with aes_128";
         handleErrors();
     }
 
@@ -368,7 +557,7 @@ void ClientSideEncryption::initialize()
 void ClientSideEncryption::fetchFromKeyChain() {
     const QString kck = AbstractCredentials::keychainKey(
                 _account->url().toString(),
-                _account->credentials()->user() + "_e2e-pub",
+                _account->credentials()->user() + "_e2e-certificate",
                 _account->id()
     );
 
@@ -395,6 +584,8 @@ void ClientSideEncryption::publicKeyFetched(Job *incoming) {
         return;
     }
 
+    _publicKey = _certificate.publicKey();
+
     qCInfo(lcCse()) << "Public key fetched from keychain";
 
     const QString kck = AbstractCredentials::keychainKey(
@@ -416,6 +607,7 @@ void ClientSideEncryption::privateKeyFetched(Job *incoming) {
     // Error or no valid public key error out
     if (readJob->error() != NoError || readJob->binaryData().length() == 0) {
         _certificate = QSslCertificate();
+        _publicKey = QSslKey();
         getPublicKeyFromServer();
         return;
     }
@@ -429,7 +621,90 @@ void ClientSideEncryption::privateKeyFetched(Job *incoming) {
 
     qCInfo(lcCse()) << "Private key fetched from keychain";
 
+    const QString kck = AbstractCredentials::keychainKey(
+                _account->url().toString(),
+                _account->credentials()->user() + "_e2e-mnemonic",
+                _account->id()
+    );
+
+    ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+    job->setInsecureFallback(false);
+    job->setKey(kck);
+    connect(job, &ReadPasswordJob::finished, this, &ClientSideEncryption::mnemonicKeyFetched);
+    job->start();
+}
+
+void ClientSideEncryption::mnemonicKeyFetched(QKeychain::Job *incoming) {
+    ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incoming);
+
+    // Error or no valid public key error out
+    if (readJob->error() != NoError || readJob->textData().length() == 0) {
+        _certificate = QSslCertificate();
+        _publicKey = QSslKey();
+        _privateKey = QSslKey();
+        getPublicKeyFromServer();
+        return;
+    }
+
+    _mnemonic = readJob->textData();
+
+    qCInfo(lcCse()) << "Mnemonic key fetched from keychain";
+
     emit initializationFinished();
+}
+
+void ClientSideEncryption::writePrivateKey() {
+    const QString kck = AbstractCredentials::keychainKey(
+                _account->url().toString(),
+                _account->credentials()->user() + "_e2e-private",
+                _account->id()
+    );
+
+    WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+    job->setInsecureFallback(false);
+    job->setKey(kck);
+    job->setBinaryData(_privateKey.toPem());
+    connect(job, &WritePasswordJob::finished, [this](Job *incoming) {
+        Q_UNUSED(incoming);
+        qCInfo(lcCse()) << "Private key stored in keychain";
+    });
+    job->start();
+}
+
+void ClientSideEncryption::writeCertificate() {
+    const QString kck = AbstractCredentials::keychainKey(
+                _account->url().toString(),
+                _account->credentials()->user() + "_e2e-certificate",
+                _account->id()
+    );
+
+    WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+    job->setInsecureFallback(false);
+    job->setKey(kck);
+    job->setBinaryData(_certificate.toPem());
+    connect(job, &WritePasswordJob::finished, [this](Job *incoming) {
+        Q_UNUSED(incoming);
+        qCInfo(lcCse()) << "Certificate stored in keychain";
+    });
+    job->start();
+}
+
+void ClientSideEncryption::writeMnemonic() {
+    const QString kck = AbstractCredentials::keychainKey(
+                _account->url().toString(),
+                _account->credentials()->user() + "_e2e-mnemonic",
+                _account->id()
+    );
+
+    WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+    job->setInsecureFallback(false);
+    job->setKey(kck);
+    job->setTextData(_mnemonic);
+    connect(job, &WritePasswordJob::finished, [this](Job *incoming) {
+        Q_UNUSED(incoming);
+        qCInfo(lcCse()) << "Mnemonic stored in keychain";
+    });
+    job->start();
 }
 
 
@@ -491,10 +766,8 @@ void ClientSideEncryption::generateKeyPair()
     QByteArray key = EncryptionHelper::BIO2ByteArray(privKey);
     _privateKey = QSslKey(key, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
 
-    generateCSR(localKeyPair);
-
-    //TODO: Send to server.
     qCInfo(lcCse()) << "Keys generated correctly, sending to server.";
+    generateCSR(localKeyPair);
 }
 
 void ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
@@ -587,6 +860,7 @@ void ClientSideEncryption::encryptPrivateKey()
 {
     QStringList list = WordList::getRandomWords(12);
     _mnemonic = list.join(' ');
+    qCInfo(lcCse()) << "mnemonic Generated:" << _mnemonic;
 
     QString passPhrase = list.join(QString());
     qCInfo(lcCse()) << "Passphrase Generated:" << passPhrase;
@@ -603,7 +877,9 @@ void ClientSideEncryption::encryptPrivateKey()
 		switch(retCode) {
 			case 200:
                 qCInfo(lcCse()) << "Private key stored encrypted on server.";
-                //TODO Save keys + mnemonic to keychain!
+                writePrivateKey();
+                writeCertificate();
+                writeMnemonic();
 				emit initializationFinished();
 				break;
 			default:
@@ -613,9 +889,75 @@ void ClientSideEncryption::encryptPrivateKey()
 	job->start();
 }
 
+void ClientSideEncryption::decryptPrivateKey(const QByteArray &key) {
+    QString msg = tr("Please enter your end to end encryption passphrase:<br>"
+                     "<br>"
+                     "User: %2<br>"
+                     "Account: %3<br>")
+                      .arg(Utility::escape(_account->credentials()->user()),
+                           Utility::escape(_account->displayName()));
+
+    QInputDialog dialog;
+    dialog.setWindowTitle(tr("Enter E2E passphrase"));
+    dialog.setLabelText(msg);
+    dialog.setTextEchoMode(QLineEdit::Normal);
+
+    QString prev;
+
+    while(true) {
+        if (!prev.isEmpty()) {
+            dialog.setTextValue(prev);
+        }
+        bool ok = dialog.exec();
+        if (ok) {
+            qCInfo(lcCse()) << "Got mnemonic:" << dialog.textValue();
+            prev = dialog.textValue();
+
+            _mnemonic = prev;
+            QString mnemonic = prev.split(" ").join(QString());
+            qCInfo(lcCse()) << "mnemonic:" << mnemonic;
+            auto pass = EncryptionHelper::generatePassword(mnemonic);
+            qCInfo(lcCse()) << "Generated key:" << pass.first;
+
+            QByteArray privateKey = EncryptionHelper::decryptPrivateKey(pass.first, key);
+            _privateKey = QSslKey(privateKey, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
+
+            qCInfo(lcCse()) << "Private key: " << _privateKey.toPem();
+
+            if (!_privateKey.isNull()) {
+                writePrivateKey();
+                writeCertificate();
+                writeMnemonic();
+                break;
+            }
+        } else {
+            _mnemonic = QString();
+            _privateKey = QSslKey();
+            qCInfo(lcCse()) << "Cancelled";
+            break;
+        }
+    }
+
+    emit initializationFinished();
+}
+
 void ClientSideEncryption::getPrivateKeyFromServer()
 {
-	qCInfo(lcCse()) << "Trying to store the private key on the server.";
+    qCInfo(lcCse()) << "Retrieving private key from server";
+    auto job = new JsonApiJob(_account, baseUrl() + "private-key", this);
+    connect(job, &JsonApiJob::jsonReceived, [this](const QJsonDocument& doc, int retCode) {
+            if (retCode == 200) {
+                QString key = doc.object()["ocs"].toObject()["data"].toObject()["private-key"].toString();
+                qCInfo(lcCse()) << key;
+                qCInfo(lcCse()) << "Found private key, lets decrypt it!";
+                decryptPrivateKey(key.toLocal8Bit());
+            } else if (retCode == 404) {
+                qCInfo(lcCse()) << "No private key on the server: setup is incomplete.";
+            } else {
+                qCInfo(lcCse()) << "Error while requesting public key: " << retCode;
+            }
+    });
+    job->start();
 }
 
 void ClientSideEncryption::getPublicKeyFromServer()
@@ -623,19 +965,19 @@ void ClientSideEncryption::getPublicKeyFromServer()
     qCInfo(lcCse()) << "Retrieving public key from server";
     auto job = new JsonApiJob(_account, baseUrl() + "public-key", this);
     connect(job, &JsonApiJob::jsonReceived, [this](const QJsonDocument& doc, int retCode) {
-			Q_UNUSED(doc);
-			switch(retCode) {
-            case 404: // no public key
+            if (retCode == 200) {
+                QString publicKey = doc.object()["ocs"].toObject()["data"].toObject()["public-keys"].toObject()[_account->davUser()].toString();
+                _certificate = QSslCertificate(publicKey.toLocal8Bit(), QSsl::Pem);
+                _publicKey = _certificate.publicKey();
+                qCInfo(lcCse()) << publicKey;
+                qCInfo(lcCse()) << "Found Public key, requesting Private Key.";
+                getPrivateKeyFromServer();
+            } else if (retCode == 404) {
                 qCInfo(lcCse()) << "No public key on the server";
                 generateKeyPair();
-                break;
-            case 400: // internal error
-                qCInfo(lcCse()) << "Internal server error while requesting the public key, encryption aborted.";
-                break;
-            case 200: // ok
-                qCInfo(lcCse()) << "Found Public key, requesting Private Key.";
-                break;
-        }
+            } else {
+                qCInfo(lcCse()) << "Error while requesting public key: " << retCode;
+            }
     });
     job->start();
 }

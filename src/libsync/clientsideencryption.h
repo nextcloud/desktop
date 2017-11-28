@@ -39,8 +39,6 @@ public:
     bool hasPublicKey() const;
     void generateKeyPair();
     void generateCSR(EVP_PKEY *keyPair);
-    void getPrivateKeyFromServer();
-    void getPublicKeyFromServer();
     void encryptPrivateKey();
     void setTokenForFolder(const QByteArray& folder, const QByteArray& token);
     QByteArray tokenForFolder(const QByteArray& folder) const;
@@ -59,15 +57,21 @@ private slots:
 
     void publicKeyFetched(QKeychain::Job *incoming);
     void privateKeyFetched(QKeychain::Job *incoming);
+    void mnemonicKeyFetched(QKeychain::Job *incoming);
 
 signals:
     void initializationFinished();
 
 private:
+    void getPrivateKeyFromServer();
+    void getPublicKeyFromServer();
+    void decryptPrivateKey(const QByteArray &key);
+
     void fetchFromKeyChain();
 
-    void writePrivateKey(QByteArray data);
-    void writeCertificate(QByteArray data);
+    void writePrivateKey();
+    void writeCertificate();
+    void writeMnemonic();
 
     AccountPtr _account;
     bool isInitialized = false;
@@ -77,6 +81,7 @@ private:
     QMap<QString, bool> _folder2encryptedStatus;
 
     QSslKey _privateKey;
+    QSslKey _publicKey;
     QSslCertificate _certificate;
     QString _mnemonic;
 };
