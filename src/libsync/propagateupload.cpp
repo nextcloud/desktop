@@ -174,6 +174,7 @@ void PropagateUploadFileCommon::start()
      */
     _fileToUpload._file = _item->_file;
     _fileToUpload._size = _item->_size;
+    _fileToUpload._path = propagator()->getFilePath(_fileToUpload._file);
 
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0)) {
         return;

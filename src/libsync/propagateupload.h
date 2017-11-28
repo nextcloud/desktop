@@ -222,6 +222,7 @@ protected:
     struct UploadFileInfo {
       QString _file; /// I'm still unsure if I should use a SyncFilePtr here.
       quint64 _size;
+      QString _path; /// the full path on disk.
     };
     UploadFileInfo _fileToUpload;
 
