@@ -8,10 +8,15 @@
 #include <QPointer>
 #include <QTimer>
 #include <keychain.h>
+#include <QDialog>
+#include <QVBoxLayout>
+#include <QLabel>
 
 #include "accessmanager.h"
 #include "account.h"
 #include "theme.h"
+#include "wizard/webview.h"
+#include "webflowcredentialsdialog.h"
 
 using namespace QKeychain;
 
@@ -78,8 +83,53 @@ void WebFlowCredentials::fetchFromKeychain() {
 }
 
 void WebFlowCredentials::askFromUser() {
+    _askDialog = new WebFlowCredentialsDialog();
+
+    QUrl url = _account->url();
+    QString path = url.path() + "/index.php/login/flow";
+    url.setPath(path);
+    _askDialog->setUrl(url);
+
+    QString msg = tr("You have been logged out of %1 as user %2. Please login again")
+            .arg(_account->displayName(), _user);
+    _askDialog->setInfo(msg);
+
+    _askDialog->show();
+
+    connect(_askDialog, &WebFlowCredentialsDialog::urlCatched, this, &WebFlowCredentials::slotAskFromUserCredentialsProvided);
+
     qCWarning(lcWebFlowCredentials()) << "User needs to reauth!";
 }
+
+void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user, const QString &pass, const QString &host) {
+    if (_user != user) {
+        qCInfo(lcWebFlowCredentials()) << "Authed with the wrong user!";
+
+        QString msg = tr("Please login with the user: %1")
+                .arg(_user);
+        _askDialog->setError(msg);
+
+        QUrl url = _account->url();
+        QString path = url.path() + "/index.php/login/flow";
+        url.setPath(path);
+        _askDialog->setUrl(url);
+
+        return;
+    }
+
+    qCInfo(lcWebFlowCredentials()) << "New password is:" << pass;
+
+    _password = pass;
+    _ready = true;
+    _credentialsValid = true;
+    persist();
+    emit asked();
+
+    _askDialog->close();
+    delete _askDialog;
+    _askDialog = NULL;
+}
+
 
 bool WebFlowCredentials::stillValid(QNetworkReply *reply) {
     qCWarning(lcWebFlowCredentials()) << "Still valid?";

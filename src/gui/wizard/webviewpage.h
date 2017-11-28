@@ -1,23 +1,13 @@
 #ifndef WEBVIEWPAGE_H
 #define WEBVIEWPAGE_H
 
-#include <QWizard>
-#include <QWebEngineView>
-#include <QWebEngineProfile>
-#include <QWebEnginePage>
-#include <QWebEngineUrlRequestInterceptor>
-#include <QWebEngineUrlSchemeHandler>
-
 #include "wizard/abstractcredswizardpage.h"
-#include "wizard/owncloudwizardcommon.h"
-#include "wizard/owncloudwizard.h"
-
-#include "ui_webviewpage.h"
 
 namespace OCC {
 
-class WebViewPageUrlRequestInterceptor;
-class WebViewPageUrlSchemeHandler;
+class AbstractCredentials;
+class OwncloudWizard;
+class WebView;
 
 class WebViewPage : public AbstractCredentialsWizardPage
 {
@@ -32,22 +22,15 @@ public:
     AbstractCredentials* getCredentials() const;
     void setConnected();
 
-Q_SIGNALS:
+signals:
     void connectToOCUrl(const QString&);
 
 private slots:
     void urlCatched(QString user, QString pass, QString host);
 
 private:
-    Ui_WebViewPage _ui;
     OwncloudWizard *_ocWizard;
-
-    QWebEngineView *_webview;
-    QWebEngineProfile *_profile;
-    QWebEnginePage *_page;
-
-    WebViewPageUrlRequestInterceptor *_interceptor;
-    WebViewPageUrlSchemeHandler *_schemeHandler;
+    WebView *_webView;
 
     QString _user;
     QString _pass;

@@ -6,6 +6,8 @@
 
 #include "creds/abstractcredentials.h"
 
+class QDialog;
+class QLabel;
 class QNetworkReply;
 class QAuthenticator;
 
@@ -14,6 +16,8 @@ namespace QKeychain {
 }
 
 namespace OCC {
+
+class WebFlowCredentialsDialog;
 
 class WebFlowCredentials : public AbstractCredentials
 {
@@ -45,6 +49,7 @@ private slots:
     void slotFinished(QNetworkReply *reply);
 
     void slotReadPasswordJobDone(QKeychain::Job *incomingJob);
+    void slotAskFromUserCredentialsProvided(const QString &user, const QString &pass, const QString &host);
 
 private:
     /** Reads data from keychain locations
@@ -65,6 +70,8 @@ private:
 
     bool _ready;
     bool _credentialsValid;
+
+    WebFlowCredentialsDialog *_askDialog;
 };
 
 }
