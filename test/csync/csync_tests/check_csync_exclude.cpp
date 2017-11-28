@@ -113,12 +113,12 @@ static void check_csync_exclude_add(void **)
 
     excludedFiles->prepare();
     assert_true(excludedFiles->_nonRegexExcludes.contains("/tmp/check_csync1/*"));
-    assert_false(excludedFiles->_regex.pattern().contains("csync1"));
+    assert_false(excludedFiles->_bnameRegexFileDir.pattern().contains("csync1"));
 
     excludedFiles->addManualExclude("foo");
     excludedFiles->prepare();
     assert_true(excludedFiles->_nonRegexExcludes.size() == 1);
-    assert_true(excludedFiles->_regex.pattern().contains("foo"));
+    assert_true(excludedFiles->_bnameRegexFileDir.pattern().contains("foo"));
 }
 
 static void check_csync_excluded(void **)
@@ -356,6 +356,32 @@ static void check_csync_excluded_traversal(void **)
     assert_int_equal(check_file_traversal("a * ?"), CSYNC_FILE_EXCLUDE_LIST);
 }
 
+static void check_csync_dir_only(void **)
+{
+    excludedFiles->addManualExclude("filedir");
+    excludedFiles->addManualExclude("dir/");
+    excludedFiles->prepare();
+
+    assert_int_equal(check_file_traversal("other"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_traversal("filedir"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_traversal("dir"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_traversal("s/other"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_traversal("s/filedir"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_traversal("s/dir"), CSYNC_NOT_EXCLUDED);
+
+    assert_int_equal(check_dir_traversal("other"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_dir_traversal("filedir"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_dir_traversal("dir"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_dir_traversal("s/other"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_dir_traversal("s/filedir"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_dir_traversal("s/dir"), CSYNC_FILE_EXCLUDE_LIST);
+
+    assert_int_equal(check_dir_full("filedir/foo"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_full("filedir/foo"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_dir_full("dir/foo"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_full("dir/foo"), CSYNC_FILE_EXCLUDE_LIST);
+}
+
 static void check_csync_pathes(void **)
 {
     excludedFiles->addManualExclude("/exclude");
@@ -495,6 +521,7 @@ int torture_run_tests(void)
         cmocka_unit_test_setup_teardown(check_csync_exclude_add, setup, teardown),
         cmocka_unit_test_setup_teardown(check_csync_excluded, setup_init, teardown),
         cmocka_unit_test_setup_teardown(check_csync_excluded_traversal, setup_init, teardown),
+        cmocka_unit_test_setup_teardown(check_csync_dir_only, setup_init, teardown),
         cmocka_unit_test_setup_teardown(check_csync_pathes, setup_init, teardown),
         cmocka_unit_test_setup_teardown(check_csync_is_windows_reserved_word, setup_init, teardown),
         cmocka_unit_test_setup_teardown(check_csync_excluded_performance, setup_init, teardown),

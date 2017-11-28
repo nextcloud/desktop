@@ -165,7 +165,8 @@ private:
     QList<QByteArray> _nonRegexExcludes;
 
     /// see prepare()
-    QRegularExpression _regex;
+    QRegularExpression _bnameRegexFileDir;
+    QRegularExpression _bnameRegexDir;
 };
 
 #endif /* _CSYNC_EXCLUDE_H */
