@@ -31,6 +31,10 @@
 
 ExcludedFiles *excludedFiles = nullptr;
 
+class ExcludedFilesTest
+{
+public:
+
 static int setup(void **state) {
     CSYNC *csync;
 
@@ -84,22 +88,22 @@ static int teardown(void **state) {
     return 0;
 }
 
-int check_file_full(const char *path)
+static int check_file_full(const char *path)
 {
     return excludedFiles->fullPatternMatch(path, CSYNC_FTW_TYPE_FILE);
 }
 
-int check_dir_full(const char *path)
+static int check_dir_full(const char *path)
 {
     return excludedFiles->fullPatternMatch(path, CSYNC_FTW_TYPE_DIR);
 }
 
-int check_file_traversal(const char *path)
+static int check_file_traversal(const char *path)
 {
     return excludedFiles->traversalPatternMatch(path, CSYNC_FTW_TYPE_FILE);
 }
 
-int check_dir_traversal(const char *path)
+static int check_dir_traversal(const char *path)
 {
     return excludedFiles->traversalPatternMatch(path, CSYNC_FTW_TYPE_DIR);
 }
@@ -107,18 +111,19 @@ int check_dir_traversal(const char *path)
 static void check_csync_exclude_add(void **)
 {
     excludedFiles->addManualExclude("/tmp/check_csync1/*");
+    excludedFiles->prepare();
     assert_int_equal(check_file_full("/tmp/check_csync1/foo"), CSYNC_FILE_EXCLUDE_LIST);
     assert_int_equal(check_file_full("/tmp/check_csync2/foo"), CSYNC_NOT_EXCLUDED);
     assert_true(excludedFiles->_allExcludes.contains("/tmp/check_csync1/*"));
 
-    excludedFiles->prepare();
-    assert_true(excludedFiles->_nonRegexExcludes.contains("/tmp/check_csync1/*"));
-    assert_false(excludedFiles->_bnameRegexFileDir.pattern().contains("csync1"));
+    assert_true(excludedFiles->_nonRegexExcludes.isEmpty());
+    assert_true(excludedFiles->_fullRegexFile.pattern().contains("csync1"));
+    assert_false(excludedFiles->_bnameActivationRegexFile.pattern().contains("csync1"));
 
     excludedFiles->addManualExclude("foo");
     excludedFiles->prepare();
-    assert_true(excludedFiles->_nonRegexExcludes.size() == 1);
-    assert_true(excludedFiles->_bnameRegexFileDir.pattern().contains("foo"));
+    assert_true(excludedFiles->_nonRegexExcludes.isEmpty());
+    assert_true(excludedFiles->_bnameActivationRegexFile.pattern().contains("foo"));
 }
 
 static void check_csync_excluded(void **)
@@ -515,17 +520,21 @@ static void check_csync_exclude_expand_escapes(void **state)
     SAFE_FREE(str);
 }
 
+}; // class ExcludedFilesTest
+
 int torture_run_tests(void)
 {
+    typedef ExcludedFilesTest T;
+
     const struct CMUnitTest tests[] = {
-        cmocka_unit_test_setup_teardown(check_csync_exclude_add, setup, teardown),
-        cmocka_unit_test_setup_teardown(check_csync_excluded, setup_init, teardown),
-        cmocka_unit_test_setup_teardown(check_csync_excluded_traversal, setup_init, teardown),
-        cmocka_unit_test_setup_teardown(check_csync_dir_only, setup_init, teardown),
-        cmocka_unit_test_setup_teardown(check_csync_pathes, setup_init, teardown),
-        cmocka_unit_test_setup_teardown(check_csync_is_windows_reserved_word, setup_init, teardown),
-        cmocka_unit_test_setup_teardown(check_csync_excluded_performance, setup_init, teardown),
-        cmocka_unit_test(check_csync_exclude_expand_escapes),
+        cmocka_unit_test_setup_teardown(T::check_csync_exclude_add, T::setup, T::teardown),
+        cmocka_unit_test_setup_teardown(T::check_csync_excluded, T::setup_init, T::teardown),
+        cmocka_unit_test_setup_teardown(T::check_csync_excluded_traversal, T::setup_init, T::teardown),
+        cmocka_unit_test_setup_teardown(T::check_csync_dir_only, T::setup, T::teardown),
+        cmocka_unit_test_setup_teardown(T::check_csync_pathes, T::setup_init, T::teardown),
+        cmocka_unit_test_setup_teardown(T::check_csync_is_windows_reserved_word, T::setup_init, T::teardown),
+        cmocka_unit_test_setup_teardown(T::check_csync_excluded_performance, T::setup_init, T::teardown),
+        cmocka_unit_test(T::check_csync_exclude_expand_escapes),
     };
 
     return cmocka_run_group_tests(tests, NULL, NULL);

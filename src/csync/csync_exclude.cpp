@@ -463,18 +463,13 @@ void ExcludedFiles::clearManualExcludes()
 bool ExcludedFiles::reloadExcludeFiles()
 {
     _allExcludes.clear();
-    _bnameRegexFileDir = QRegularExpression();
-
     bool success = true;
     foreach (const QString &file, _excludeFiles) {
         if (csync_exclude_load(file.toUtf8(), &_allExcludes) < 0)
             success = false;
     }
-
     _allExcludes.append(_manualExcludes);
-
     prepare();
-
     return success;
 }
 
@@ -519,37 +514,46 @@ bool ExcludedFiles::isExcluded(
 
 CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, int filetype) const
 {
-    CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
-
     /* Check only static patterns and only with the reduced list which is empty usually */
-    match = _csync_excluded_common(_nonRegexExcludes, path, filetype, false);
-    if (match != CSYNC_NOT_EXCLUDED) {
+    auto match = _csync_excluded_common(_nonRegexExcludes, path, filetype, false);
+    if (match != CSYNC_NOT_EXCLUDED)
         return match;
-    }
+    if (_allExcludes.isEmpty())
+        return CSYNC_NOT_EXCLUDED;
 
-    if (!_allExcludes.isEmpty()) {
-        /* Now check with our optimized regexps */
-        const char *bname = NULL;
-        /* split up the path */
-        bname = strrchr(path, '/');
-        if (bname) {
-            bname += 1; // don't include the /
-        } else {
-            bname = path;
-        }
-        QString p = QString::fromUtf8(bname);
-        QRegularExpressionMatch m;
-        if (filetype == CSYNC_FTW_TYPE_DIR) {
-            m = _bnameRegexDir.match(p);
-        } else {
-            m = _bnameRegexFileDir.match(p);
-        }
-        if (m.hasMatch()) {
-            if (!m.captured(1).isEmpty()) {
-                match = CSYNC_FILE_EXCLUDE_LIST;
-            } else if (!m.captured(2).isEmpty()) {
-                match = CSYNC_FILE_EXCLUDE_AND_REMOVE;
-            }
+    // Check the bname part of the path to see whether the full
+    // regex should be run.
+
+    auto bname = strrchr(path, '/');
+    if (bname) {
+        bname += 1; // don't include the /
+    } else {
+        bname = path;
+    }
+    QString bnameStr = QString::fromUtf8(bname);
+
+    QRegularExpressionMatch m;
+    if (filetype == CSYNC_FTW_TYPE_DIR) {
+        m = _bnameActivationRegexDir.match(bnameStr);
+    } else {
+        m = _bnameActivationRegexFile.match(bnameStr);
+    }
+    if (!m.hasMatch())
+        return match;
+
+    // Now run the full match
+
+    QString pathStr = QString::fromUtf8(path);
+    if (filetype == CSYNC_FTW_TYPE_DIR) {
+        m = _fullRegexDir.match(pathStr);
+    } else {
+        m = _fullRegexFile.match(pathStr);
+    }
+    if (m.hasMatch()) {
+        if (!m.captured(1).isEmpty()) {
+            match = CSYNC_FILE_EXCLUDE_LIST;
+        } else if (!m.captured(2).isEmpty()) {
+            match = CSYNC_FILE_EXCLUDE_AND_REMOVE;
         }
     }
     return match;
@@ -557,8 +561,28 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, int fi
 
 CSYNC_EXCLUDE_TYPE ExcludedFiles::fullPatternMatch(const char *path, int filetype) const
 {
-    // bname check must also apply to all path components
-    return _csync_excluded_common(_allExcludes, path, filetype, true);
+    /* Check only static patterns and only with the reduced list which is empty usually */
+    auto match = _csync_excluded_common(_nonRegexExcludes, path, filetype, true);
+    if (match != CSYNC_NOT_EXCLUDED)
+        return match;
+    if (_allExcludes.isEmpty())
+        return CSYNC_NOT_EXCLUDED;
+
+    QString p = QString::fromUtf8(path);
+    QRegularExpressionMatch m;
+    if (filetype == CSYNC_FTW_TYPE_DIR) {
+        m = _fullRegexDir.match(p);
+    } else {
+        m = _fullRegexFile.match(p);
+    }
+    if (m.hasMatch()) {
+        if (!m.captured(1).isEmpty()) {
+            return CSYNC_FILE_EXCLUDE_LIST;
+        } else if (!m.captured(2).isEmpty()) {
+            return CSYNC_FILE_EXCLUDE_AND_REMOVE;
+        }
+    }
+    return CSYNC_NOT_EXCLUDED;
 }
 
 auto ExcludedFiles::csyncTraversalMatchFun() const
@@ -567,10 +591,9 @@ auto ExcludedFiles::csyncTraversalMatchFun() const
     return [this](const char *path, int filetype) { return this->traversalPatternMatch(path, filetype); };
 }
 
-/* Only for bnames (not paths) */
-static QString convertToBnameRegexpSyntax(QString exclude)
+static QString convertToRegexpSyntax(QString exclude)
 {
-    QString s = QRegularExpression::escape(exclude).replace("\\*", ".*").replace("\\?", ".");
+    QString s = QRegularExpression::escape(exclude).replace("\\*", "[^/]*").replace("\\?", "[^/]");
     return s;
 }
 
@@ -578,15 +601,45 @@ void ExcludedFiles::prepare()
 {
     _nonRegexExcludes.clear();
 
-    // Start out with regexes that would match nothing
-    QString patternFileDirKeep = "a^";
-    QString patternFileDirRemove = "a^";
-    QString patternDirKeep = "a^";
-    QString patternDirRemove = "a^";
-    auto regexAppend = [](QString &pattern, QString v) {
+    // Build regular expressions for the different cases.
+    //
+    // To compose the _bnameActivationRegex and _fullRegex patterns we
+    // collect several subgroups of patterns here.
+    //
+    // * The "full" group will contain all patterns that contain a non-trailing
+    //   slash. They only make sense in the fullRegex.
+    // * The "bname" group contains all patterns without a non-trailing slash.
+    //   These need separate handling in the _fullRegex (slash-containing
+    //   patterns must be anchored to the front, these don't need it)
+    // * The "bnameTrigger" group contains the bname part of all patterns in the
+    //   "full" group. These and the "bname" group become _bnameActivationRegex.
+    //
+    // To complicate matters, the exclude patterns have two binary attributes
+    // meaning we'll end up with 4 variants:
+    // * "]" patterns mean "EXCLUDE_AND_REMOVE", they get collected in the
+    //   pattern strings ending in "Remove". The others go to "Keep".
+    // * trailing-slash patterns match directories only. They get collected
+    //   in the pattern strings saying "Dir", the others go into "FileDir"
+    //   because they match files and directories.
+
+    QString fullFileDirKeep;
+    QString fullFileDirRemove;
+    QString fullDirKeep;
+    QString fullDirRemove;
+
+    QString bnameFileDirKeep;
+    QString bnameFileDirRemove;
+    QString bnameDirKeep;
+    QString bnameDirRemove;
+
+    QString bnameTriggerFileDir;
+    QString bnameTriggerDir;
+
+    auto regexAppend = [](QString &fileDirPattern, QString &dirPattern, const QString &appendMe, bool dirOnly) {
+        QString &pattern = dirOnly ? dirPattern : fileDirPattern;
         if (!pattern.isEmpty())
             pattern.append("|");
-        pattern.append(v);
+        pattern.append(appendMe);
     };
 
     for (auto exclude : _allExcludes) {
@@ -603,35 +656,99 @@ void ExcludedFiles::prepare()
         if (removeExcluded)
             exclude = exclude.mid(1);
 
-        /* If an exclude entry contains some fnmatch-ish characters, we use the C-style codepath without QRegularEpression */
-        if (strchr(exclude, '/') || strchr(exclude, '[') || strchr(exclude, '{') || strchr(exclude, '\\')) {
+        bool fullPath = exclude.contains('/');
+
+        /* If an exclude entry contains some fnmatch-ish characters that
+         * we can't yet translate to regular expressions, we use the C-style
+         * fnmatch based codepath instead */
+        if (strchr(exclude, '[') || strchr(exclude, '{') || strchr(exclude, '\\')) {
             _nonRegexExcludes.append(exclude);
             continue;
         }
 
         /* Use QRegularExpression, append to the right pattern */
-        auto &patternFileDir = removeExcluded ? patternFileDirRemove : patternFileDirKeep;
-        auto &patternDir = removeExcluded ? patternDirRemove : patternDirKeep;
+        auto &bnameFileDir = removeExcluded ? bnameFileDirRemove : bnameFileDirKeep;
+        auto &bnameDir = removeExcluded ? bnameDirRemove : bnameDirKeep;
+        auto &fullFileDir = removeExcluded ? fullFileDirRemove : fullFileDirKeep;
+        auto &fullDir = removeExcluded ? fullDirRemove : fullDirKeep;
 
-        auto regexExclude = convertToBnameRegexpSyntax(QString::fromUtf8(exclude));
-        // patterns always match against directories
-        regexAppend(patternDir, regexExclude);
-        // but some don't match against files
-        if (!matchDirOnly)
-            regexAppend(patternFileDir, regexExclude);
+        auto regexExclude = convertToRegexpSyntax(QString::fromUtf8(exclude));
+        if (!fullPath) {
+            regexAppend(bnameFileDir, bnameDir, regexExclude, matchDirOnly);
+        } else {
+            regexAppend(fullFileDir, fullDir, regexExclude, matchDirOnly);
+
+            // for activation, trigger on the 'bname' part of the full pattern
+            auto bnameExclude = exclude.mid(exclude.lastIndexOf('/') + 1);
+            auto regexBname = convertToRegexpSyntax(bnameExclude);
+            regexAppend(bnameTriggerFileDir, bnameTriggerDir, regexBname, matchDirOnly);
+        }
     }
 
-    _bnameRegexFileDir.setPattern(
-        "^(" + patternFileDirKeep + ")$|^(" + patternFileDirRemove + ")$");
-    _bnameRegexDir.setPattern(
-        "^(" + patternDirKeep + ")$|^(" + patternDirRemove + ")$");
+    // The empty pattern would match everything - change it to match-nothing
+    auto emptyMatchNothing = [](QString &pattern) {
+        if (pattern.isEmpty())
+            pattern = "a^";
+    };
+    emptyMatchNothing(fullFileDirKeep);
+    emptyMatchNothing(fullFileDirRemove);
+    emptyMatchNothing(fullDirKeep);
+    emptyMatchNothing(fullDirRemove);
 
-    QRegularExpression::PatternOptions patternOptions = QRegularExpression::OptimizeOnFirstUsageOption;
+    emptyMatchNothing(bnameFileDirKeep);
+    emptyMatchNothing(bnameFileDirRemove);
+    emptyMatchNothing(bnameDirKeep);
+    emptyMatchNothing(bnameDirRemove);
+
+    emptyMatchNothing(bnameTriggerFileDir);
+    emptyMatchNothing(bnameTriggerDir);
+
+    // The bname activation regexe is applied to the bname only, so must be
+    // anchored in the beginning and in the end. It has the explicit triggers
+    // plus the bname-only patterns. Here we don't care about the remove/keep
+    // distinction.
+    _bnameActivationRegexFile.setPattern(
+        "^(?:" + bnameFileDirKeep + "|" + bnameFileDirRemove + "|" + bnameTriggerFileDir + ")$");
+    _bnameActivationRegexDir.setPattern(
+        "^(?:" + bnameFileDirKeep + "|" + bnameFileDirRemove
+        + "|" + bnameDirKeep + "|" + bnameFileDirRemove
+        + "|" + bnameTriggerFileDir + "|" + bnameTriggerDir + ")$");
+
+    // The full regex has two captures, it's basic form is "(...)|(...)". The first
+    // capture has the keep/exclude-only patterns, the second the remove/exclude-and-remove
+    // patterns.
+    _fullRegexFile.setPattern(
+        QLatin1String("(")
+        // Full patterns are anchored to the beginning
+        + "^(?:" + fullFileDirKeep + ")(?:$|/)" + "|"
+        // Simple bname patterns can be any path component
+        + "(?:^|/)(?:" + bnameFileDirKeep + ")(?:$|/)" + "|"
+        // When checking a file for exclusion we must check all parent paths
+        // against the dir-only patterns as well.
+        + "(?:^|/)(?:" + bnameDirKeep + ")/"
+        + ")|("
+        + "^(?:" + fullFileDirRemove + ")(?:$|/)" + "|"
+        + "(?:^|/)(?:" + bnameFileDirRemove + ")(?:$|/)" + "|"
+        + "(?:^|/)(?:" + bnameDirRemove + ")/"
+        + ")");
+    _fullRegexDir.setPattern(
+        QLatin1String("(")
+        + "^(?:" + fullFileDirKeep + "|" + fullDirKeep + ")(?:$|/)" + "|"
+        + "(?:^|/)(?:" + bnameFileDirKeep + "|" + bnameDirKeep + ")(?:$|/)"
+        + ")|("
+        + "^(?:" + fullFileDirRemove + "|" + fullDirRemove + ")(?:$|/)" + "|"
+        + "(?:^|/)(?:" + bnameFileDirRemove + "|" + bnameDirRemove + ")(?:$|/)"
+        + ")");
+
+    QRegularExpression::PatternOptions patternOptions = QRegularExpression::NoPatternOption;
     if (OCC::Utility::fsCasePreserving())
         patternOptions |= QRegularExpression::CaseInsensitiveOption;
-    _bnameRegexFileDir.setPatternOptions(patternOptions);
-    _bnameRegexFileDir.optimize();
-    _bnameRegexDir.setPatternOptions(patternOptions);
-    _bnameRegexDir.optimize();
+    _bnameActivationRegexFile.setPatternOptions(patternOptions);
+    _bnameActivationRegexFile.optimize();
+    _bnameActivationRegexDir.setPatternOptions(patternOptions);
+    _bnameActivationRegexDir.optimize();
+    _fullRegexFile.setPatternOptions(patternOptions);
+    _fullRegexFile.optimize();
+    _fullRegexDir.setPatternOptions(patternOptions);
+    _fullRegexDir.optimize();
 }
-

@@ -45,6 +45,8 @@ enum csync_exclude_type_e {
 };
 typedef enum csync_exclude_type_e CSYNC_EXCLUDE_TYPE;
 
+class ExcludedFilesTest;
+
 /**
  * Manages file/directory exclusion.
  *
@@ -114,11 +116,7 @@ public slots:
      */
     bool reloadExcludeFiles();
 
-#ifdef CSYNC_TEST
-public:
-#else
 private:
-#endif
     /**
      * @brief Match the exclude pattern against the full path.
      *
@@ -147,8 +145,34 @@ private:
     CSYNC_EXCLUDE_TYPE traversalPatternMatch(const char *path, int filetype) const;
 
     /**
-     * Generate an optimized _regex for many of the patterns. The remaining
-     * patterns are put into _nonRegexExcludes.
+     * Generate an optimized regular expression for many of the patterns.
+     *
+     * The remaining patterns are put into _nonRegexExcludes.
+     *
+     * The optimization works in two steps: First, all supported patterns are put
+     * into _fullRegexFile/_fullRegexDir. These regexes can be applied to the full
+     * path to determine whether it is excluded or not.
+     *
+     * The second is a performance optimization. The particularly common use
+     * case for excludes during a sync run is "traversal": Instead of checking
+     * the full path every time, we check each parent path with the traversal
+     * function incrementally.
+     *
+     * Example: When the sync run eventually arrives at "a/b/c it can assume
+     * that the traversal matching has already been run on "a", "a/b"
+     * and just needs to run the traversal matcher on "a/b/c".
+     *
+     * The full matcher is equivalent to or-combining the traversal match results
+     * of all parent paths:
+     *   full("a/b/c/d") == traversal("a") || traversal("a/b") || traversal("a/b/c")
+     *
+     * The traversal matcher can be extremely fast because it has a fast early-out
+     * case: It checks the bname part of the path against _bnameActivationRegex
+     * and only runs the full regex if the bname activation was triggered.
+     *
+     * Note: The traversal matcher will return not-excluded on some paths that the
+     * full matcher would exclude. Example: "b" is excluded. traversal("b/c")
+     * returns not-excluded because "c" isn't a bname activation pattern.
      */
     void prepare();
 
@@ -165,8 +189,12 @@ private:
     QList<QByteArray> _nonRegexExcludes;
 
     /// see prepare()
-    QRegularExpression _bnameRegexFileDir;
-    QRegularExpression _bnameRegexDir;
+    QRegularExpression _bnameActivationRegexFile;
+    QRegularExpression _bnameActivationRegexDir;
+    QRegularExpression _fullRegexFile;
+    QRegularExpression _fullRegexDir;
+
+    friend class ExcludedFilesTest;
 };
 
 #endif /* _CSYNC_EXCLUDE_H */
