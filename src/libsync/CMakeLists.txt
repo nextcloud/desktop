@@ -56,7 +56,6 @@ set(libsync_SRCS
     syncfilestatustracker.cpp
     syncresult.cpp
     theme.cpp
-    excludedfiles.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialscommon.cpp

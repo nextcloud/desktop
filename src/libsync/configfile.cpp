@@ -21,6 +21,8 @@
 
 #include "creds/abstractcredentials.h"
 
+#include "csync_exclude.h"
+
 #ifndef TOKEN_AUTH_ONLY
 #include <QWidget>
 #include <QHeaderView>
@@ -748,4 +750,17 @@ std::unique_ptr<QSettings> ConfigFile::settingsWithGroup(const QString &group, Q
     return settings;
 }
 
+void ConfigFile::setupDefaultExcludeFilePaths(ExcludedFiles &excludedFiles)
+{
+    ConfigFile cfg;
+    QString systemList = cfg.excludeFile(ConfigFile::SystemScope);
+    qCInfo(lcConfigFile) << "Adding system ignore list to csync:" << systemList;
+    excludedFiles.addExcludeFilePath(systemList);
+
+    QString userList = cfg.excludeFile(ConfigFile::UserScope);
+    if (QFile::exists(userList)) {
+        qCInfo(lcConfigFile) << "Adding user defined ignore list to csync:" << userList;
+        excludedFiles.addExcludeFilePath(userList);
+    }
+}
 }

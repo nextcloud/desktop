@@ -109,7 +109,7 @@ static bool _csync_mtime_equal(time_t a, time_t b)
  */
 static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs) {
   OCC::SyncJournalFileRecord base;
-  CSYNC_EXCLUDE_TYPE excluded;
+  CSYNC_EXCLUDE_TYPE excluded = CSYNC_NOT_EXCLUDED;
 
   if (fs == NULL) {
     errno = EINVAL;
@@ -120,8 +120,9 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
   if (fs->type == CSYNC_FTW_TYPE_SKIP) {
       excluded =CSYNC_FILE_EXCLUDE_STAT_FAILED;
   } else {
-    /* Check if file is excluded */
-    excluded = csync_excluded_traversal(ctx, fs->path, fs->type);
+      /* Check if file is excluded */
+      if (ctx->exclude_traversal_fn)
+          excluded = ctx->exclude_traversal_fn(fs->path, fs->type);
   }
 
   if( excluded == CSYNC_NOT_EXCLUDED ) {
@@ -498,7 +499,9 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
         /* Check for exclusion from the tree.
          * Note that this is only a safety net in case the ignore list changes
          * without a full remote discovery being triggered. */
-        CSYNC_EXCLUDE_TYPE excluded = csync_excluded_traversal(ctx, st->path, st->type);
+        CSYNC_EXCLUDE_TYPE excluded = CSYNC_NOT_EXCLUDED;
+        if (ctx->exclude_traversal_fn)
+            excluded = ctx->exclude_traversal_fn(st->path, st->type);
         if (excluded != CSYNC_NOT_EXCLUDED) {
             qDebug(lcUpdate, "%s excluded (%d)", st->path.constData(), excluded);
 

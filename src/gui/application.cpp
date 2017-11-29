@@ -35,7 +35,6 @@
 #include "accountmanager.h"
 #include "creds/abstractcredentials.h"
 #include "updater/ocupdater.h"
-#include "excludedfiles.h"
 #include "owncloudsetupwizard.h"
 #include "version.h"
 
@@ -140,14 +139,6 @@ Application::Application(int &argc, char **argv)
     setupLogging();
     setupTranslations();
 
-    // Setup global excludes
-    qCInfo(lcApplication) << "Loading global exclude list";
-    ConfigFile cfg;
-    ExcludedFiles &excludes = ExcludedFiles::instance();
-    excludes.addExcludeFilePath(cfg.excludeFile(ConfigFile::SystemScope));
-    excludes.addExcludeFilePath(cfg.excludeFile(ConfigFile::UserScope));
-    excludes.reloadExcludes();
-
     _folderManager.reset(new FolderMan);
 
     connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
@@ -175,6 +166,7 @@ Application::Application(int &argc, char **argv)
 
     setQuitOnLastWindowClosed(false);
 
+    ConfigFile cfg;
     _theme->setSystrayUseMonoIcons(cfg.monoIcons());
     connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
 

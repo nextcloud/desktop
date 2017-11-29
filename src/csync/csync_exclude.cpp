@@ -40,6 +40,7 @@
 #include "common/utility.h"
 
 #include <QString>
+#include <QFileInfo>
 
 #ifdef _WIN32
 #include <io.h>
@@ -53,21 +54,6 @@
 #ifndef WITH_TESTING
 static
 #endif
-int _csync_exclude_add(c_strlist_t **inList, const char *string) {
-    size_t i = 0;
-
-    // We never want duplicates, so check whether the string is already
-    // in the list first.
-    if (*inList) {
-        for (i = 0; i < (*inList)->count; ++i) {
-            char *pattern = (*inList)->vector[i];
-            if (c_streq(pattern, string)) {
-                return 1;
-            }
-        }
-    }
-    return c_strlist_add_grow(inList, string);
-}
 
 /** Expands C-like escape sequences.
  *
@@ -109,7 +95,8 @@ static const char *csync_exclude_expand_escapes(const char * input)
     return out;
 }
 
-int csync_exclude_load(const char *fname, c_strlist_t **list) {
+/** Loads patterns from a file and adds them to excludes */
+int csync_exclude_load(const char *fname, QList<QByteArray> *excludes) {
   int fd = -1;
   int i = 0;
   int rc = -1;
@@ -162,14 +149,9 @@ int csync_exclude_load(const char *fname, c_strlist_t **list) {
         buf[i] = '\0';
         if (*entry != '#') {
           const char *unescaped = csync_exclude_expand_escapes(entry);
-          rc = _csync_exclude_add(list, unescaped);
-          if( rc == 0 ) {
-              CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Adding entry: %s", unescaped);
-          }
+          excludes->append(unescaped);
+          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Adding entry: %s", unescaped);
           SAFE_FREE(unescaped);
-          if (rc < 0) {
-              goto out;
-          }
         }
       }
       entry = buf + i + 1;
@@ -193,6 +175,11 @@ static const char *win_reserved_words_4[] = {
 };
 static const char *win_reserved_words_n[] = { "CLOCK$", "$Recycle.Bin" };
 
+/**
+ * @brief Checks if filename is considered reserved by Windows
+ * @param file_name filename
+ * @return true if file is reserved, false otherwise
+ */
 bool csync_is_windows_reserved_word(const char *filename)
 {
     size_t len_filename = strlen(filename);
@@ -233,7 +220,8 @@ bool csync_is_windows_reserved_word(const char *filename)
     return false;
 }
 
-static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const char *path, int filetype, bool check_leading_dirs) {
+static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QList<QByteArray> &excludes, const char *path, int filetype, bool check_leading_dirs)
+{
     size_t i = 0;
     const char *bname = NULL;
     size_t blen = 0;
@@ -335,7 +323,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
         }
     }
 
-    if( ! excludes ) {
+    if (excludes.isEmpty()) {
         goto out;
     }
 
@@ -367,9 +355,16 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
     }
 
     /* Loop over all exclude patterns and evaluate the given path */
-    for (i = 0; match == CSYNC_NOT_EXCLUDED && i < excludes->count; i++) {
+    for (const auto &exclude : excludes) {
+        if (match != CSYNC_NOT_EXCLUDED)
+            break;
+
         bool match_dirs_only = false;
-        char *pattern = excludes->vector[i];
+
+        // If the pattern ends with a slash, *it will be temporarily modified
+        // inside this function* and then reverted. This is left over from
+        // old code and will be removed.
+        char *pattern = const_cast<char *>(exclude.data());
 
         type = CSYNC_FILE_EXCLUDE_LIST;
         if (!pattern[0]) { /* empty pattern */
@@ -434,70 +429,103 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(c_strlist_t *excludes, const ch
     return match;
 }
 
-/* Only for bnames (not paths) */
-static QString convertToBnameRegexpSyntax(QString exclude)
+
+using namespace OCC;
+
+ExcludedFiles::ExcludedFiles()
 {
-    QString s = QRegularExpression::escape(exclude).replace("\\*", ".*").replace("\\?", ".");
-    return s;
 }
 
-void csync_exclude_traversal_prepare(CSYNC *ctx)
+ExcludedFiles::~ExcludedFiles()
 {
-    ctx->parsed_traversal_excludes.prepare(ctx->excludes);
 }
 
-void csync_s::TraversalExcludes::prepare(c_strlist_t *excludes)
+void ExcludedFiles::addExcludeFilePath(const QString &path)
 {
-    c_strlist_destroy(list_patterns_fnmatch);
-    list_patterns_fnmatch = nullptr;
+    _excludeFiles.insert(path);
+}
 
-    // Start out with regexes that would match nothing
-    QString exclude_only = "a^";
-    QString exclude_and_remove = "a^";
+void ExcludedFiles::addManualExclude(const QByteArray &expr)
+{
+    _manualExcludes.append(expr);
+    _allExcludes.append(expr);
+    _nonRegexExcludes.append(expr);
+}
 
-    size_t exclude_count = excludes ? excludes->count : 0;
-    for (unsigned int i = 0; i < exclude_count; i++) {
-        char *exclude = excludes->vector[i];
-        QString *builderToUse = & exclude_only;
-        if (exclude[0] == '\n') continue; // empty line
-        if (exclude[0] == '\r') continue; // empty line
+void ExcludedFiles::clearManualExcludes()
+{
+    _manualExcludes.clear();
+    reloadExcludeFiles();
+}
 
-        /* If an exclude entry contains some fnmatch-ish characters, we use the C-style codepath without QRegularEpression */
-        if (strchr(exclude, '/') || strchr(exclude, '[') || strchr(exclude, '{') || strchr(exclude, '\\')) {
-            _csync_exclude_add(&list_patterns_fnmatch, exclude);
-            continue;
-        }
+bool ExcludedFiles::reloadExcludeFiles()
+{
+    _allExcludes.clear();
+    _regex = QRegularExpression();
 
-        /* Those will attempt to use QRegularExpression */
-        if (exclude[0] == ']'){
-            exclude++;
-            builderToUse = &exclude_and_remove;
-        }
-        if (builderToUse->size() > 0) {
-            builderToUse->append("|");
-        }
-        builderToUse->append(convertToBnameRegexpSyntax(exclude));
+    bool success = true;
+    foreach (const QString &file, _excludeFiles) {
+        if (csync_exclude_load(file.toUtf8(), &_allExcludes) < 0)
+            success = false;
     }
 
-    QString pattern = "^(" + exclude_only + ")$|^(" + exclude_and_remove + ")$";
-    regexp_exclude.setPattern(pattern);
-    QRegularExpression::PatternOptions patternOptions = QRegularExpression::OptimizeOnFirstUsageOption;
-    if (OCC::Utility::fsCasePreserving())
-        patternOptions |= QRegularExpression::CaseInsensitiveOption;
-    regexp_exclude.setPatternOptions(patternOptions);
-    regexp_exclude.optimize();
+    _allExcludes.append(_manualExcludes);
+
+    prepare();
+
+    return success;
 }
 
-CSYNC_EXCLUDE_TYPE csync_excluded_traversal(CSYNC *ctx, const char *path, int filetype) {
+bool ExcludedFiles::isExcluded(
+    const QString &filePath,
+    const QString &basePath,
+    bool excludeHidden) const
+{
+    if (!filePath.startsWith(basePath, Utility::fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive)) {
+        // Mark paths we're not responsible for as excluded...
+        return true;
+    }
+
+    if (excludeHidden) {
+        QString path = filePath;
+        // Check all path subcomponents, but to *not* check the base path:
+        // We do want to be able to sync with a hidden folder as the target.
+        while (path.size() > basePath.size()) {
+            QFileInfo fi(path);
+            if (fi.isHidden() || fi.fileName().startsWith(QLatin1Char('.'))) {
+                return true;
+            }
+
+            // Get the parent path
+            path = fi.absolutePath();
+        }
+    }
+
+    QFileInfo fi(filePath);
+    csync_ftw_type_e type = CSYNC_FTW_TYPE_FILE;
+    if (fi.isDir()) {
+        type = CSYNC_FTW_TYPE_DIR;
+    }
+
+    QString relativePath = filePath.mid(basePath.size());
+    if (relativePath.endsWith(QLatin1Char('/'))) {
+        relativePath.chop(1);
+    }
+
+    return fullPatternMatch(relativePath.toUtf8(), type) != CSYNC_NOT_EXCLUDED;
+}
+
+CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, int filetype) const
+{
     CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
 
     /* Check only static patterns and only with the reduced list which is empty usually */
-    match = _csync_excluded_common(ctx->parsed_traversal_excludes.list_patterns_fnmatch, path, filetype, false);
+    match = _csync_excluded_common(_nonRegexExcludes, path, filetype, false);
     if (match != CSYNC_NOT_EXCLUDED) {
         return match;
     }
 
-    if (ctx->excludes) {
+    if (!_allExcludes.isEmpty()) {
         /* Now check with our optimized regexps */
         const char *bname = NULL;
         /* split up the path */
@@ -508,7 +536,7 @@ CSYNC_EXCLUDE_TYPE csync_excluded_traversal(CSYNC *ctx, const char *path, int fi
             bname = path;
         }
         QString p = QString::fromUtf8(bname);
-        auto m = ctx->parsed_traversal_excludes.regexp_exclude.match(p);
+        auto m = _regex.match(p);
         if (m.hasMatch()) {
             if (!m.captured(1).isEmpty()) {
                 match = CSYNC_FILE_EXCLUDE_LIST;
@@ -520,7 +548,62 @@ CSYNC_EXCLUDE_TYPE csync_excluded_traversal(CSYNC *ctx, const char *path, int fi
     return match;
 }
 
-CSYNC_EXCLUDE_TYPE csync_excluded_no_ctx(c_strlist_t *excludes, const char *path, int filetype) {
-  return _csync_excluded_common(excludes, path, filetype, true);
+CSYNC_EXCLUDE_TYPE ExcludedFiles::fullPatternMatch(const char *path, int filetype) const
+{
+    return _csync_excluded_common(_allExcludes, path, filetype, true);
+}
+
+auto ExcludedFiles::csyncTraversalMatchFun() const
+    -> std::function<CSYNC_EXCLUDE_TYPE(const char *path, int filetype)>
+{
+    return [this](const char *path, int filetype) { return this->traversalPatternMatch(path, filetype); };
+}
+
+/* Only for bnames (not paths) */
+static QString convertToBnameRegexpSyntax(QString exclude)
+{
+    QString s = QRegularExpression::escape(exclude).replace("\\*", ".*").replace("\\?", ".");
+    return s;
+}
+
+void ExcludedFiles::prepare()
+{
+    _nonRegexExcludes.clear();
+
+    // Start out with regexes that would match nothing
+    QString exclude_only = "a^";
+    QString exclude_and_remove = "a^";
+
+    for (auto exclude : _allExcludes) {
+        QString *builderToUse = &exclude_only;
+        if (exclude[0] == '\n')
+            continue; // empty line
+        if (exclude[0] == '\r')
+            continue; // empty line
+
+        /* If an exclude entry contains some fnmatch-ish characters, we use the C-style codepath without QRegularEpression */
+        if (strchr(exclude, '/') || strchr(exclude, '[') || strchr(exclude, '{') || strchr(exclude, '\\')) {
+            _nonRegexExcludes.append(exclude);
+            continue;
+        }
+
+        /* Those will attempt to use QRegularExpression */
+        if (exclude[0] == ']') {
+            exclude = exclude.mid(1);
+            builderToUse = &exclude_and_remove;
+        }
+        if (builderToUse->size() > 0) {
+            builderToUse->append("|");
+        }
+        builderToUse->append(convertToBnameRegexpSyntax(QString::fromUtf8(exclude)));
+    }
+
+    QString pattern = "^(" + exclude_only + ")$|^(" + exclude_and_remove + ")$";
+    _regex.setPattern(pattern);
+    QRegularExpression::PatternOptions patternOptions = QRegularExpression::OptimizeOnFirstUsageOption;
+    if (OCC::Utility::fsCasePreserving())
+        patternOptions |= QRegularExpression::CaseInsensitiveOption;
+    _regex.setPatternOptions(patternOptions);
+    _regex.optimize();
 }
 

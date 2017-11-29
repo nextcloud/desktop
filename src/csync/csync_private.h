@@ -39,6 +39,7 @@
 #include <sqlite3.h>
 #include <map>
 #include <set>
+#include <functional>
 
 #include "common/syncjournaldb.h"
 #include "config_csync.h"
@@ -46,10 +47,8 @@
 #include "std/c_private.h"
 #include "csync.h"
 #include "csync_misc.h"
-
+#include "csync_exclude.h"
 #include "csync_macros.h"
-
-#include <QRegularExpression>
 
 /**
  * How deep to scan directories.
@@ -148,17 +147,13 @@ struct OCSYNC_EXPORT csync_s {
 
   OCC::SyncJournalDb *statedb;
 
-  c_strlist_t *excludes = nullptr; /* list of individual patterns collected from all exclude files */
-  struct TraversalExcludes {
-      ~TraversalExcludes() {
-          c_strlist_destroy(list_patterns_fnmatch);
-      }
-      void prepare(c_strlist_t *excludes);
-
-      QRegularExpression regexp_exclude;
-      c_strlist_t *list_patterns_fnmatch = nullptr;
-
-  } parsed_traversal_excludes;
+  /**
+   * Function used to determine whether an item is excluded
+   * during the update phase.
+   *
+   * See ExcludedFiles in csync_exclude.
+   */
+  std::function<CSYNC_EXCLUDE_TYPE(const char *path, int filetype)> exclude_traversal_fn;
 
   struct {
     std::unordered_map<ByteArrayRef, QByteArray, ByteArrayRefHash> folder_renamed_to; // map from->to

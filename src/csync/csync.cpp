@@ -77,7 +77,7 @@ int csync_update(CSYNC *ctx) {
 
   csync_memstat_check();
 
-  if (!ctx->excludes) {
+  if (!ctx->exclude_traversal_fn) {
       CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "No exclude file loaded or defined!");
   }
 

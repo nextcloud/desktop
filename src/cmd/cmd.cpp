@@ -534,7 +534,7 @@ restart_sync:
         engine.excludedFiles().addExcludeFilePath(systemExcludeFile);
     }
 
-    if (!engine.excludedFiles().reloadExcludes()) {
+    if (!engine.excludedFiles().reloadExcludeFiles()) {
         qFatal("Cannot load system exclude list or list supplied via --exclude");
         return EXIT_FAILURE;
     }

@@ -89,7 +89,9 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
 
     _csync_ctx.reset(new CSYNC(localPath.toUtf8().data(), journal));
 
-    _excludedFiles.reset(new ExcludedFiles(&_csync_ctx->excludes));
+    _excludedFiles.reset(new ExcludedFiles);
+    _csync_ctx->exclude_traversal_fn = _excludedFiles->csyncTraversalMatchFun();
+
     _syncFileStatusTracker.reset(new SyncFileStatusTracker(this));
 
     _clearTouchedFilesTimer.setSingleShot(true);
