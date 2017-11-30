@@ -661,7 +661,7 @@ void ExcludedFiles::prepare()
         /* If an exclude entry contains some fnmatch-ish characters that
          * we can't yet translate to regular expressions, we use the C-style
          * fnmatch based codepath instead */
-        if (strchr(exclude, '[') || strchr(exclude, '{') || strchr(exclude, '\\')) {
+        if (strchr(exclude, '[') || strchr(exclude, '\\')) {
             _nonRegexExcludes.append(exclude);
             continue;
         }
