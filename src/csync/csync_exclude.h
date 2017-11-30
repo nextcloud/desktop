@@ -145,9 +145,7 @@ private:
     CSYNC_EXCLUDE_TYPE traversalPatternMatch(const char *path, int filetype) const;
 
     /**
-     * Generate an optimized regular expression for many of the patterns.
-     *
-     * The remaining patterns are put into _nonRegexExcludes.
+     * Generate optimized regular expressions for the exclude patterns.
      *
      * The optimization works in two steps: First, all supported patterns are put
      * into _fullRegexFile/_fullRegexDir. These regexes can be applied to the full
@@ -184,9 +182,6 @@ private:
 
     /// List of all active exclude patterns
     QList<QByteArray> _allExcludes;
-
-    /// see prepare()
-    QList<QByteArray> _nonRegexExcludes;
 
     /// see prepare()
     QRegularExpression _bnameActivationRegexFile;

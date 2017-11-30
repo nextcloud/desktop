@@ -111,18 +111,14 @@ static int check_dir_traversal(const char *path)
 static void check_csync_exclude_add(void **)
 {
     excludedFiles->addManualExclude("/tmp/check_csync1/*");
-    excludedFiles->prepare();
     assert_int_equal(check_file_full("/tmp/check_csync1/foo"), CSYNC_FILE_EXCLUDE_LIST);
     assert_int_equal(check_file_full("/tmp/check_csync2/foo"), CSYNC_NOT_EXCLUDED);
     assert_true(excludedFiles->_allExcludes.contains("/tmp/check_csync1/*"));
 
-    assert_true(excludedFiles->_nonRegexExcludes.isEmpty());
     assert_true(excludedFiles->_fullRegexFile.pattern().contains("csync1"));
     assert_false(excludedFiles->_bnameActivationRegexFile.pattern().contains("csync1"));
 
     excludedFiles->addManualExclude("foo");
-    excludedFiles->prepare();
-    assert_true(excludedFiles->_nonRegexExcludes.isEmpty());
     assert_true(excludedFiles->_bnameActivationRegexFile.pattern().contains("foo"));
 }
 
@@ -207,7 +203,6 @@ static void check_csync_excluded(void **)
     assert_int_equal(check_file_full("bond007"), CSYNC_FILE_EXCLUDE_LIST);
     assert_int_equal(check_file_full("bond0071"), CSYNC_NOT_EXCLUDED);
 
-#ifndef _WIN32
     /* brackets */
     excludedFiles->addManualExclude("a [bc] d");
     excludedFiles->reloadExcludeFiles();
@@ -215,14 +210,21 @@ static void check_csync_excluded(void **)
     assert_int_equal(check_file_full("a  d"), CSYNC_NOT_EXCLUDED);
     assert_int_equal(check_file_full("a b d"), CSYNC_FILE_EXCLUDE_LIST);
     assert_int_equal(check_file_full("a c d"), CSYNC_FILE_EXCLUDE_LIST);
-#endif
 
     /* escapes */
-    excludedFiles->addManualExclude("\\a \\* \\?");
+    excludedFiles->addManualExclude("a \\*");
+    excludedFiles->addManualExclude("b \\?");
+    excludedFiles->addManualExclude("c \\[d]");
     excludedFiles->reloadExcludeFiles();
-    assert_int_equal(check_file_full("\\a \\* \\?"), CSYNC_NOT_EXCLUDED);
-    assert_int_equal(check_file_full("a b c"), CSYNC_NOT_EXCLUDED);
-    assert_int_equal(check_file_full("a * ?"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_full("a \\*"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_full("a bc"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_full("a *"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_full("b \\?"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_full("b f"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_full("b ?"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_full("c \\[d]"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_full("c d"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_full("c [d]"), CSYNC_FILE_EXCLUDE_LIST);
 }
 
 static void check_csync_excluded_traversal(void **)
@@ -343,7 +345,6 @@ static void check_csync_excluded_traversal(void **)
     assert_int_equal(check_file_traversal("bond007"), CSYNC_FILE_EXCLUDE_LIST);
     assert_int_equal(check_file_traversal("bond0071"), CSYNC_NOT_EXCLUDED);
 
-#ifndef _WIN32
     /* brackets */
     excludedFiles->addManualExclude("a [bc] d");
     excludedFiles->reloadExcludeFiles();
@@ -351,21 +352,27 @@ static void check_csync_excluded_traversal(void **)
     assert_int_equal(check_file_traversal("a  d"), CSYNC_NOT_EXCLUDED);
     assert_int_equal(check_file_traversal("a b d"), CSYNC_FILE_EXCLUDE_LIST);
     assert_int_equal(check_file_traversal("a c d"), CSYNC_FILE_EXCLUDE_LIST);
-#endif
 
     /* escapes */
-    excludedFiles->addManualExclude("\\a \\* \\?");
+    excludedFiles->addManualExclude("a \\*");
+    excludedFiles->addManualExclude("b \\?");
+    excludedFiles->addManualExclude("c \\[d]");
     excludedFiles->reloadExcludeFiles();
-    assert_int_equal(check_file_traversal("\\a \\* \\?"), CSYNC_NOT_EXCLUDED);
-    assert_int_equal(check_file_traversal("a b c"), CSYNC_NOT_EXCLUDED);
-    assert_int_equal(check_file_traversal("a * ?"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_traversal("a \\*"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_traversal("a bc"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_traversal("a *"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_traversal("b \\?"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_traversal("b f"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_traversal("b ?"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_traversal("c \\[d]"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_traversal("c d"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_traversal("c [d]"), CSYNC_FILE_EXCLUDE_LIST);
 }
 
 static void check_csync_dir_only(void **)
 {
     excludedFiles->addManualExclude("filedir");
     excludedFiles->addManualExclude("dir/");
-    excludedFiles->prepare();
 
     assert_int_equal(check_file_traversal("other"), CSYNC_NOT_EXCLUDED);
     assert_int_equal(check_file_traversal("filedir"), CSYNC_FILE_EXCLUDE_LIST);
@@ -508,7 +515,7 @@ static void check_csync_exclude_expand_escapes(void **state)
     const char *str = csync_exclude_expand_escapes(
             "keep \\' \\\" \\? \\\\ \\a \\b \\f \\n \\r \\t \\v \\z \\#");
     assert_true(0 == strcmp(
-            str, "keep ' \" ? \\ \a \b \f \n \r \t \v \\z #"));
+            str, "keep ' \" ? \\\\ \a \b \f \n \r \t \v \\z #"));
     SAFE_FREE(str);
 
     str = csync_exclude_expand_escapes("");
