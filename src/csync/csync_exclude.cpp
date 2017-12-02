@@ -218,7 +218,7 @@ bool csync_is_windows_reserved_word(const char *filename)
     return false;
 }
 
-static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const char *path)
+static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const char *path, bool excludeConflictFiles)
 {
     const char *bname = NULL;
     size_t blen = 0;
@@ -313,11 +313,9 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const char *path)
         }
     }
 
-    if (!OCC::Utility::shouldUploadConflictFiles()) {
-        if (OCC::Utility::isConflictFile(bname)) {
-            match = CSYNC_FILE_EXCLUDE_CONFLICT;
-            goto out;
-        }
+    if (excludeConflictFiles && OCC::Utility::isConflictFile(bname)) {
+        match = CSYNC_FILE_EXCLUDE_CONFLICT;
+        goto out;
     }
 
   out:
@@ -339,6 +337,11 @@ ExcludedFiles::~ExcludedFiles()
 void ExcludedFiles::addExcludeFilePath(const QString &path)
 {
     _excludeFiles.insert(path);
+}
+
+void ExcludedFiles::setExcludeConflictFiles(bool onoff)
+{
+    _excludeConflictFiles = onoff;
 }
 
 void ExcludedFiles::addManualExclude(const QByteArray &expr)
@@ -408,7 +411,7 @@ bool ExcludedFiles::isExcluded(
 
 CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, ItemType filetype) const
 {
-    auto match = _csync_excluded_common(path);
+    auto match = _csync_excluded_common(path, _excludeConflictFiles);
     if (match != CSYNC_NOT_EXCLUDED)
         return match;
     if (_allExcludes.isEmpty())
@@ -454,7 +457,7 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, ItemTy
 
 CSYNC_EXCLUDE_TYPE ExcludedFiles::fullPatternMatch(const char *path, ItemType filetype) const
 {
-    auto match = _csync_excluded_common(path);
+    auto match = _csync_excluded_common(path, _excludeConflictFiles);
     if (match != CSYNC_NOT_EXCLUDED)
         return match;
     if (_allExcludes.isEmpty())

@@ -525,7 +525,7 @@ void PropagateDownloadFile::slotGetFinished()
 {
     propagator()->_activeJobList.removeOne(this);
 
-    GETFileJob *job = qobject_cast<GETFileJob *>(sender());
+    GETFileJob *job = _job;
     ASSERT(job);
 
     QNetworkReply::NetworkError err = job->reply()->error();
@@ -639,6 +639,26 @@ void PropagateDownloadFile::slotGetFinished()
         return;
     }
 
+    // Did the file come with conflict headers? If so, store them now!
+    // If we download conflict files but the server doesn't send conflict
+    // headers, the record will be established by SyncEngine::conflictRecordMaintenance.
+    // (we can't reliably determine the file id of the base file here,
+    // it might still be downloaded in a parallel job and not exist in
+    // the database yet!)
+    if (job->reply()->rawHeader("OC-Conflict") == "1") {
+        _conflictRecord.path = _item->_file.toUtf8();
+        _conflictRecord.baseFileId = job->reply()->rawHeader("OC-ConflictBaseFileId");
+        _conflictRecord.baseEtag = _job->reply()->rawHeader("OC-ConflictBaseEtag");
+
+        auto mtimeHeader = _job->reply()->rawHeader("OC-ConflictBaseMtime");
+        if (!mtimeHeader.isEmpty())
+            _conflictRecord.baseModtime = mtimeHeader.toLongLong();
+
+        // We don't set it yet. That will only be done when the download finished
+        // successfully, much further down. Here we just grab the headers because the
+        // job will be deleted later.
+    }
+
     // Do checksum validation for the download. If there is no checksum header, the validator
     // will also emit the validated() signal to continue the flow in slot transmissionChecksumValidated()
     // as this is (still) also correct.
@@ -677,7 +697,7 @@ void PropagateDownloadFile::deleteExistingFolder()
         // on error, just try to move it away...
     }
 
-    QString conflictDir = FileSystem::makeConflictFileName(
+    QString conflictDir = Utility::makeConflictFileName(
         existingDir, Utility::qDateTimeFromTime_t(FileSystem::getModTime(existingDir)));
 
     emit propagator()->touchedFile(existingDir);
@@ -805,9 +825,11 @@ void PropagateDownloadFile::downloadFinished()
         && !FileSystem::fileEquals(fn, _tmpFile.fileName());
     if (isConflict) {
         QString renameError;
-        QString conflictFileName = FileSystem::makeConflictFileName(
-            fn, Utility::qDateTimeFromTime_t(FileSystem::getModTime(fn)));
-        if (!FileSystem::rename(fn, conflictFileName, &renameError)) {
+        auto conflictModTime = FileSystem::getModTime(fn);
+        QString conflictFileName = Utility::makeConflictFileName(
+            _item->_file, Utility::qDateTimeFromTime_t(conflictModTime));
+        QString conflictFilePath = propagator()->getFilePath(conflictFileName);
+        if (!FileSystem::rename(fn, conflictFilePath, &renameError)) {
             // If the rename fails, don't replace it.
 
             // If the file is locked, we want to retry this sync when it
@@ -820,6 +842,35 @@ void PropagateDownloadFile::downloadFinished()
             return;
         }
         qCInfo(lcPropagateDownload) << "Created conflict file" << fn << "->" << conflictFileName;
+
+        // Create a new conflict record. To get the base etag, we need to read it from the db.
+        ConflictRecord conflictRecord;
+        conflictRecord.path = conflictFileName.toUtf8();
+        conflictRecord.baseModtime = _item->_previousModtime;
+
+        SyncJournalFileRecord baseRecord;
+        if (propagator()->_journal->getFileRecord(_item->_originalFile, &baseRecord) && baseRecord.isValid()) {
+            conflictRecord.baseEtag = baseRecord._etag;
+            conflictRecord.baseFileId = baseRecord._fileId;
+        } else {
+            // We might very well end up with no fileid/etag for new/new conflicts
+        }
+
+        propagator()->_journal->setConflictRecord(conflictRecord);
+
+        // Create a new upload job if the new conflict file should be uploaded
+        if (propagator()->account()->capabilities().uploadConflictFiles()) {
+            SyncFileItemPtr conflictItem = SyncFileItemPtr(new SyncFileItem);
+            conflictItem->_file = conflictFileName;
+            conflictItem->_type = SyncFileItem::File;
+            conflictItem->_direction = SyncFileItem::Up;
+            conflictItem->_instruction = CSYNC_INSTRUCTION_NEW;
+            conflictItem->_modtime = conflictModTime;
+            conflictItem->_size = _item->_previousSize;
+            ASSERT(_compositeParent);
+            emit propagator()->newItem(conflictItem);
+            _compositeParent->appendTask(conflictItem);
+        }
     }
 
     FileSystem::setModTime(_tmpFile.fileName(), _item->_modtime);
@@ -885,6 +936,11 @@ void PropagateDownloadFile::downloadFinished()
     // Maybe we downloaded a newer version of the file than we thought we would...
     // Get up to date information for the journal.
     _item->_size = FileSystem::getSize(fn);
+
+    // Maybe what we downloaded was a conflict file? If so, set a conflict record.
+    // (the data was prepared in slotGetFinished above)
+    if (_conflictRecord.isValid())
+        propagator()->_journal->setConflictRecord(_conflictRecord);
 
     updateMetadata(isConflict);
 }

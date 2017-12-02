@@ -183,6 +183,28 @@ private slots:
         QCOMPARE(record.numericFileId(), QByteArray("123456789"));
     }
 
+    void testConflictRecord()
+    {
+        ConflictRecord record;
+        record.path = "abc";
+        record.baseFileId = "def";
+        record.baseModtime = 1234;
+        record.baseEtag = "ghi";
+
+        QVERIFY(!_db.conflictRecord(record.path).isValid());
+
+        _db.setConflictRecord(record);
+        auto newRecord = _db.conflictRecord(record.path);
+        QVERIFY(newRecord.isValid());
+        QCOMPARE(newRecord.path, record.path);
+        QCOMPARE(newRecord.baseFileId, record.baseFileId);
+        QCOMPARE(newRecord.baseModtime, record.baseModtime);
+        QCOMPARE(newRecord.baseEtag, record.baseEtag);
+
+        _db.deleteConflictRecord(record.path);
+        QVERIFY(!_db.conflictRecord(record.path).isValid());
+    }
+
 private:
     SyncJournalDb _db;
 };

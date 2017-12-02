@@ -132,11 +132,6 @@ namespace FileSystem {
 #endif
 
     /**
-     * Returns a file name based on \a fn that's suitable for a conflict.
-     */
-    QString OCSYNC_EXPORT makeConflictFileName(const QString &fn, const QDateTime &dt);
-
-    /**
      * Returns true when a file is locked. (Windows only)
      */
     bool OCSYNC_EXPORT isFileLocked(const QString &fileName);

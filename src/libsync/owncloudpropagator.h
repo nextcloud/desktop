@@ -49,6 +49,7 @@ qint64 freeSpaceLimit();
 
 class SyncJournalDb;
 class OwncloudPropagator;
+class PropagatorCompositeJob;
 
 /**
  * @brief the base class of propagator jobs
@@ -102,6 +103,12 @@ public:
      */
     virtual qint64 committedDiskSpace() const { return 0; }
 
+    /** Set the composite parent job
+     *
+     * Used only from PropagatorCompositeJob itself, when a job is added.
+     */
+    void setCompositeParent(PropagatorCompositeJob *job) { _compositeParent = job; }
+
 public slots:
     /*
      * Asynchronous abort requires emit of abortFinished() signal,
@@ -128,6 +135,13 @@ signals:
     void abortFinished(SyncFileItem::Status status = SyncFileItem::NormalError);
 protected:
     OwncloudPropagator *propagator() const;
+
+    /** If this job gets added to a composite job, this will point to the parent.
+     *
+     * That can be useful for jobs that want to spawn follow-up jobs without
+     * becoming composite jobs themselves.
+     */
+    PropagatorCompositeJob *_compositeParent = nullptr;
 };
 
 /*
@@ -214,10 +228,7 @@ public:
         qDeleteAll(_runningJobs);
     }
 
-    void appendJob(PropagatorJob *job)
-    {
-        _jobsToDo.append(job);
-    }
+    void appendJob(PropagatorJob *job);
     void appendTask(const SyncFileItemPtr &item)
     {
         _tasksToDo.append(item);
@@ -439,7 +450,10 @@ public:
 
     QString getFilePath(const QString &tmp_file_name) const;
 
+    /** Creates the job for an item.
+     */
     PropagateItemJob *createJob(const SyncFileItemPtr &item);
+
     void scheduleNextJob();
     void reportProgress(const SyncFileItem &, quint64 bytes);
 
@@ -497,6 +511,7 @@ private slots:
     void scheduleNextJobImpl();
 
 signals:
+    void newItem(const SyncFileItemPtr &);
     void itemCompleted(const SyncFileItemPtr &);
     void progress(const SyncFileItem &, quint64 bytes);
     void finished(bool success);

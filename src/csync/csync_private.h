@@ -203,6 +203,8 @@ struct OCSYNC_EXPORT csync_s {
 
   bool ignore_hidden_files = true;
 
+  bool upload_conflict_files = false;
+
   csync_s(const char *localUri, OCC::SyncJournalDb *statedb);
   ~csync_s();
   int reinitialize();
