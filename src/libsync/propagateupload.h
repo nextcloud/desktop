@@ -212,6 +212,20 @@ protected:
     bool _deleteExisting BITFIELD(1);
     quint64 _abortCount; /// Keep track of number of aborted items
 
+    /* This is a minified version of the SyncFileItem,
+     * that holds only the specifics about the file that's
+     * being uploaded.
+     *
+     * This is needed if we wanna apply changes on the file
+     * that's being uploaded while keeping the original on disk.
+     */
+    struct UploadFileInfo {
+      QString _file; /// I'm still unsure if I should use a SyncFilePtr here.
+      QString _path; /// the full path on disk.
+      quint64 _size;
+    };
+    UploadFileInfo _fileToUpload;
+
 // measure the performance of checksum calc and upload
 #ifdef WITH_TESTING
     Utility::StopWatch _stopWatch;

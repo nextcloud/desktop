@@ -437,6 +437,7 @@ public:
      */
     bool hasCaseClashAccessibilityProblem(const QString &relfile);
 
+    /* returns the local file path for the given tmp_file_name */
     QString getFilePath(const QString &tmp_file_name) const;
 
     PropagateItemJob *createJob(const SyncFileItemPtr &item);
