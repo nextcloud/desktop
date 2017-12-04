@@ -26,6 +26,7 @@
 #include "syncengine.h"
 #include "propagateremotedelete.h"
 #include "common/asserts.h"
+#include "networkjobs.h"
 
 #include <QNetworkAccessManager>
 #include <QFileInfo>
@@ -177,29 +178,60 @@ void PropagateUploadFileCommon::start()
      * this by no means is a finished job, but a first step.
      */
     if (propagator()->account()->capabilities().clientSideEncryptionAvaliable()) {
-      qDebug() << "Uploading to Remote Folder: " << propagator()->_remoteFolder;
-      qDebug() << "Uploading from Local Dir" << propagator()->_localDir;
-      qDebug() << "Local File" << _item->_file;
-      qDebug() << QDir::cleanPath(propagator()->account()->url().path() + QLatin1Char('/')
-            + propagator()->account()->davPath() + propagator()->_remoteFolder + _item->_file);
-
-      //TODO: Those shall die.
+      /* If the file is in a encrypted-enabled nextcloud instance, we need to
+      * do the long road: Fetch the folder status of the encrypted bit,
+      * if it's encrypted, find the ID of the folder.
+      * lock the folder using it's id.
+      * download the metadata
+      * update the metadata
+      * upload the file
+      * upload the metadata
+      * unlock the folder.
+      *
+      * If the folder is unencrypted we just follow the old way.
+      */
+      auto getEncryptedStatus = new GetFolderEncryptStatus(propagator()->account());
+      connect(getEncryptedStatus, &GetFolderEncryptStatus::encryptStatusReceived,
+              this, &PropagateUploadFileCommon::slotFolderEncryptedStatusFetched);
+      connect(getEncryptedStatus, &GetFolderEncryptStatus::encryptStatusError,
+              this, &PropagateUploadFileCommon::slotFolderEncryptedStatusError);
+      getEncryptedStatus->start();
+   } else {
       _fileToUpload._file = _item->_file;
       _fileToUpload._size = _item->_size;
       _fileToUpload._path = propagator()->getFilePath(_fileToUpload._file);
-    } else {
-      _fileToUpload._file = _item->_file;
-      _fileToUpload._size = _item->_size;
-      _fileToUpload._path = propagator()->getFilePath(_fileToUpload._file);
-      startUploadRawFile();
+      startUploadFile();
     }
 }
-void PropageteUploadFileCommon::startUploadEncryptedFile()
+
+void PropagateUploadFileCommon::slotFolderEncryptedStatusFetched(const QMap<QString, bool>& result)
+{
+  qDebug() << "####################################";
+  qDebug() << "Encrypted Status Result by folder:";
+  for(const auto& path : result.keys()) {
+    qDebug() << result[path] << path;
+  }
+  qDebug() << "Uploading to Remote Folder: " << propagator()->_remoteFolder;
+  qDebug() << "Uploading from Local Dir" << propagator()->_localDir;
+  qDebug() << "Local File" << _item->_file;
+  qDebug() << QDir::cleanPath(propagator()->account()->url().path() + QLatin1Char('/')
+    + propagator()->account()->davPath() + propagator()->_remoteFolder + _item->_file);
+  qDebug() << "###################################";
+  qDebug() << "Retrieved correctly the encrypted status of the folders." << result;
+}
+
+void PropagateUploadFileCommon::slotFolderEncryptedStatusError(int error)
+{
+	qDebug() << "Failed to retrieve the status of the folders." << error;
+}
+
+
+void PropagateUploadFileCommon::startUploadEncryptedFile()
 {
 
 }
 
-void PropagateUploadFileCommon::startUploadRawFile() {
+void PropagateUploadFileCommon::startUploadFile() {
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0)) {
         return;
     }

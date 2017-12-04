@@ -43,9 +43,6 @@ public:
     void setTokenForFolder(const QByteArray& folder, const QByteArray& token);
     QByteArray tokenForFolder(const QByteArray& folder) const;
 
-    //TODO: Perhaps mode this to FolderStatusModel
-    // (as it makes sense, but it increase the chance
-    // of conflicts).
     void fetchFolderEncryptedStatus();
 
     // to be used together with FolderStatusModel::FolderInfo::_path.

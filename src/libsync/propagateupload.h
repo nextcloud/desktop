@@ -253,7 +253,7 @@ public:
     /* start should setup the file, path and size that will be send to the server */
     void start() Q_DECL_OVERRIDE;
     void startUploadEncryptedFile();
-    void startUploadRawFile();
+    void startUploadFile();
     bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return _item->_size < propagator()->smallFileSize(); }
 
 private slots:
@@ -277,6 +277,10 @@ public slots:
 private slots:
     void slotReplyAbortFinished();
     void slotPollFinished();
+
+    // Encryption Stuff
+    void slotFolderEncryptedStatusFetched(const QMap<QString, bool>& result);
+    void slotFolderEncryptedStatusError(int error);
 
 protected:
     /**
