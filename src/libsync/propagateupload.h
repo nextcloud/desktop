@@ -250,8 +250,10 @@ public:
      */
     void setDeleteExisting(bool enabled);
 
+    /* start should setup the file, path and size that will be send to the server */
     void start() Q_DECL_OVERRIDE;
-
+    void startUploadEncryptedFile();
+    void startUploadRawFile();
     bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return _item->_size < propagator()->smallFileSize(); }
 
 private slots:

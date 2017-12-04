@@ -176,10 +176,30 @@ void PropagateUploadFileCommon::start()
      *
      * this by no means is a finished job, but a first step.
      */
-    _fileToUpload._file = _item->_file;
-    _fileToUpload._size = _item->_size;
-    _fileToUpload._path = propagator()->getFilePath(_fileToUpload._file);
+    if (propagator()->account()->capabilities().clientSideEncryptionAvaliable()) {
+      qDebug() << "Uploading to Remote Folder: " << propagator()->_remoteFolder;
+      qDebug() << "Uploading from Local Dir" << propagator()->_localDir;
+      qDebug() << "Local File" << _item->_file;
+      qDebug() << QDir::cleanPath(propagator()->account()->url().path() + QLatin1Char('/')
+            + propagator()->account()->davPath() + propagator()->_remoteFolder + _item->_file);
 
+      //TODO: Those shall die.
+      _fileToUpload._file = _item->_file;
+      _fileToUpload._size = _item->_size;
+      _fileToUpload._path = propagator()->getFilePath(_fileToUpload._file);
+    } else {
+      _fileToUpload._file = _item->_file;
+      _fileToUpload._size = _item->_size;
+      _fileToUpload._path = propagator()->getFilePath(_fileToUpload._file);
+      startUploadRawFile();
+    }
+}
+void PropageteUploadFileCommon::startUploadEncryptedFile()
+{
+
+}
+
+void PropagateUploadFileCommon::startUploadRawFile() {
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0)) {
         return;
     }
