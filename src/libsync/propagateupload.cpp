@@ -33,6 +33,8 @@
 #include <QDir>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QFileInfo>
+
 #include <cmath>
 #include <cstring>
 
@@ -216,8 +218,22 @@ void PropagateUploadFileCommon::slotFolderEncryptedStatusFetched(const QMap<QStr
   qDebug() << "Local File" << _item->_file;
   qDebug() << QDir::cleanPath(propagator()->account()->url().path() + QLatin1Char('/')
     + propagator()->account()->davPath() + propagator()->_remoteFolder + _item->_file);
+  QFileInfo fileInfo(_item->_file);
+  QString currFilePath = fileInfo.path();
+  if (!currFilePath.endsWith(QDir::separator()))
+    currFilePath += QDir::separator();
+
   qDebug() << "###################################";
   qDebug() << "Retrieved correctly the encrypted status of the folders." << result;
+  if (result[currFilePath] == true) {
+    qDebug() << "Uploading to an encrypted folder. do the thing.";
+  } else {
+    _fileToUpload._file = _item->_file;
+    _fileToUpload._size = _item->_size;
+    _fileToUpload._path = propagator()->getFilePath(_fileToUpload._file);
+    startUploadFile();
+    qDebug() << "Uploading to a folder that's not encrypted. call the default uploader.";
+  }
 }
 
 void PropagateUploadFileCommon::slotFolderEncryptedStatusError(int error)
