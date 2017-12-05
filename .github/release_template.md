@@ -25,75 +25,69 @@ Some weeks before the release:
  * use `git log --format=oneline v<lastrelease>...master` if your memory fails you
 * [ ] check if enterprise issues are fixed
 
-One week before the release:
+For first Alpha/Beta of a Major or Minor release:
+* [ ] branch off master to new version branch (e.g. master -> 2.1, when releasing 2.1)
+* [ ] Adjust `VERSION.cmake` in master and count up (e.g. 2.2)
+* [ ] Adjust translation jobs for [client](https://ci.owncloud.org/view/translation-sync/job/translation-sync-client/) and [NSIS](https://ci.owncloud.org/view/translation-sync/job/translation-sync-client-nsis/) to point to the release branch (e.g. 2.1).
+* [ ] Make sure there is a job for the docs of the new master branch and the current release branch on rotor e.g. http://doc.owncloud.org/desktop/1.X/ exists
+
+For all alphas, betas and RCs (Copy this section for each alpha/beta/rc):
+* [ ] Add last updates to Changelog in the client source repository.
+* [ ] Branch off a release branch called VERSION-rcX or VERSION-betaX  (without v, v is for tags)
+* [ ] Edit ```VERSION.cmake``` to set the suffix to beta1, beta2 etc. Commit the result to the release branch only
+* [ ] Create build for using owncloud-client-trigger (uncheck the "nightly build" checkbox, use the proper dropdown for version suffix) for theme 'ownCloud'
+* [ ] Create build for using owncloud-client-trigger (uncheck the "nightly build" checkbox, use the proper dropdown for version suffix) for theme 'testpilotcloud'
+* [ ] Only now download the last created source .tar.xz and sign it with gpg. Copy the signature into a new .asc file. (timing issue because currently 'testpilotcloud' re-creates the source .tar.xz)
+* (no need to copy builds as they are already in testing directory or repository) (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
+* [ ] Mac: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
+* [ ] Win: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
+* [ ] Linux: Smoke test of one distro package (Install, make sure it does not explode, and check if all version indicators are correct)
+* [ ] Create a signed tag using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
+* [ ] Create a pull request to the owncloud.org repository to update the install page (strings.php, page-desktop.php) and the changelog on owncloud.org. From now on download packages from the staging webserver.
+* [ ] Inform community mailinglists devel@owncloud.org and testpilots@owncloud.org
+* [ ] Inform packagers @dragotin (openSUSE) @hefee (Debian)
+* [ ] Announce on https://central.owncloud.org
+* [ ] Check crash reporter
+
+One week before the final release:
 * [ ] Communicate the release schedule on mailinglist release-coordination@owncloud.com. Give a high level overview of the upcoming new features, changes etc.
 * [ ] Ensure marketing is aware (marketing@owncloud.com) and prepared for the release (social, .com website, cust. communications)
 * [ ] Inform GCX knows the next version is about 1 week out (gcx@owncloud.com)
 
-For all Betas and RCs:
-* [ ] Branch off a release branch called VERSION-rcX or VERSION-betaX  (without v, v is for tags)
-* [ ] Edit ```VERSION.cmake``` to set the suffix to beta1, beta2 etc. Commit the result to the release branch only
-* [ ] Create build for Windows using rotor job owncloud-client-win32 (uncheck the "nightly build" checkbox, check the "sign package" checkboxes) both themes 'ownCloud' and 'testpilotcould'
-* [ ] Create build for Mac using rotor, job owncloud-client-osx (uncheck the "nightly build" checkbox, check the "sign package" checkboxes) both themes 'ownCloud' and 'testpilotcould'
-* [ ] Create the beta tarball using Jenkins job ownCloud-client-source
-* [ ] Create Linux builds using rotor job owncloud-client-linux building (this magically interacts with the ownCloud-client-source job)
-  * [ ] theme 'ownCloud' -> isv:ownCloud:community:testing
-  * [ ] theme 'testpilotcould' -> isv:ownCloud:testpilot:testing
-* [ ] Copy builds from ```daily``` to ```testing``` on download.owncloud.com, double check the download links.
-* [ ] Create a pull request to the owncloud.org repository to update the install page (strings.php, page-desktop.php) and the changelog on owncloud.org. From now on download packages from the staging webserver.
-* [ ] Inform community mailinglists devel@owncloud.org and testpilots@owncloud.org
-* [ ] Announce on https://central.owncloud.org
-* [ ] Create a signed tag using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
-* [ ] Check crash reporter
-
-For first Beta of a Major or Minor release:
-* [ ] branch off master to new version branch (e.g. master -> 2.1, when releasing 2.1)
-* [ ] Adjust `VERSION.cmake` in master and count up (e.g. 2.2)
-* [ ] Adjust translation jobs for [client](https://ci.owncloud.org/view/translation-sync/job/translation-sync-client/) and [NSIS](https://ci.owncloud.org/view/translation-sync/job/translation-sync-client-nsis/) to point to the release branch (e.g. 2.1).
-* [ ] Make sure there is a job for the docs of the new master branch and the current release branch on rotor.
-
-Day before Release:
+Day before final Release:
 * [ ] Check the translations coming from transifex: All synchronized?
 * [ ] Run the tx.pl scripts on the final code tag
 * [ ] Run ```make test```
-* [ ] Run smashbox on the final code tag
+* [ ] Run smashbox
 * [ ] Inform product management and marketing that we are 1 day out
 
 On Release Day (for final release):
-* [ ] Branch off a release branch called like the version (without v, v is for tags)
-* [ ] Double check ```VERSION.cmake```: Check the version number settings and suffix (beta etc.) to be removed. Commit change to release branch only!
-* [ ] Make sure to increase the version number of the branched of release, e.g. if you release 2.3.2 then you should change VERSION.cmake in 2.3 to 2.3.3 since that branch now will be 2.3.3
 * [ ] Add last updates to Changelog in the client source repository.
-* [ ] Create tar ball (automated by `ownCloud-client-source` jenkins job) and **immediately** sign it (asc file). (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
-* [ ] Create build for Windows using rotor job owncloud-client-win32 (uncheck the "nightly build" checkbox, check the "sign package" checkboxes) both themes 'ownCloud' and 'testpilotcould'
-* [ ] Create build for Mac using rotor, job owncloud-client-osx (uncheck the "nightly build" checkbox, check the "sign package" checkboxes) both themes 'ownCloud' and 'testpilotcould'
-* [ ] Stop publishing on OBS (if still enabled).
+* [ ] Branch off a release branch called VERSION-rcX or VERSION-betaX  (without v, v is for tags)
+* [ ] Edit ```VERSION.cmake``` to set the suffix to beta1, beta2 etc. Commit the result to the release branch only
+* [ ] Make sure to increase the version number of the branched of release, e.g. if you release 2.3.2 then you should change VERSION.cmake in 2.3 to 2.3.3 since that branch now will be 2.3.3
+* [ ] Create build for using owncloud-client-trigger (uncheck the "nightly build" checkbox, use the proper dropdown for version suffix) for theme 'ownCloud'
+* [ ] Create build for using owncloud-client-trigger (uncheck the "nightly build" checkbox, use the proper dropdown for version suffix) for theme 'testpilotcloud'
+* [ ] Only now download the last created source .tar.xz and sign it with gpg. Copy the signature into a new .asc file. (timing issue because currently 'testpilotcloud' re-creates the source .tar.xz) (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
 * [ ] Branch isv:ownCloud:desktop to isv:ownCloud:desktop:client-X.Y.Z before overwriting https://github.com/owncloud/administration/blob/master/jenkins/obs_integration/obs-backup-prj.sh
-* [ ] Create Linux builds using rotor job owncloud-client-linux (this magically interacts with the ownCloud-client-source job)
   * Check if patches still apply in the linux packages
   * Update [OBS repository](https://build.opensuse.org/project/show?project=isv%3AownCloud%3Adesktop) `isv:ownCloud:desktop`
-  * [ ] theme 'ownCloud' -> isv:ownCloud:desktop
-  * [ ] theme 'testpilotcloud' -> isv:ownCloud:testpilot
-* [ ] Linux: Update the testing repository to the latest stable version.
-* [ ] Inform GCX that a new tarball is available.
-* [ ] Copy builds and source tar ball from ```daily``` to ```stable``` on download.owncloud.com, double check the download links.
-* [ ] Check if the following packages are on download.owncloud.com/desktop/stable:
-  * Windows binary package
-  * Mac binary package
-  * source tarballs
-* [ ] Create a pull request to the owncloud.org repository to update the install page (strings.php, page-desktop.php) and the changelog on owncloud.org. From now on download packages from the staging webserver.
 * [ ] Re-download Mac builds and check signature. Interactive in installer window
 * [ ] Re-download Win build check signature. From Mac or Linux: ```osslsigncode verify ownCloud-version-setup.exe```
 * [ ] Mac: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
 * [ ] Win: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
-* [ ] Linux: Smoke test 
-* [ ] Linux: Re-enable OBS publishing
+* [ ] Linux: Smoke test of one distro package (Install, make sure it does not explode, and check if all version indicators are correct)
+* [ ] Linux: Run @SamuAlfageme 's magic Linux-test-all-packages-script
+* [ ] Linux: Re-enable OBS publishing (or copy from testing to real release?)
   * Let obs build and publish exactly once. then
   * [ ] disable publishing and rebuild for the owncloud-client package and all its dependencies.
   * [ ] double-check that there are no _aggregatepac from other projects, if so disable rebuilding there too.
-* [ ] Update ASCII Changelog on http://download.owncloud.com/download/changelog-client
+* [ ] Create a signed tag using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
+* [ ] Copy builds from ```testing``` to ```stable``` on download.owncloud.com, double check the download links. (make sure the .asc is there too)
+* [ ] Create a pull request to the owncloud.org repository to update the install page (strings.php, page-desktop.php). From now on download packages from the staging webserver.
 * [ ] Announce on https://central.owncloud.org
 * [ ] Announce on announcements@owncloud.org
+* [ ] Inform packagers @dragotin (openSUSE) @hefee (Debian)
 * [ ] Create git signed tag in client repository using ```git tag -u E94E7B37 tagname```
 * [ ] Send out Social (tweet, blog, other)
 * [ ] Send out customer communication (if any)
@@ -104,6 +98,7 @@ On Release Day (for final release):
 * [ ] Also update the testpilotcloud builds for that release version and make sure they show up on the download page
 * [ ] Tell GCX to increment the minimum supported version for enterprise customers
 * [ ] Check if minimum.supported.desktop.version (https://github.com/owncloud/core/blob/master/config/config.sample.php#L1152) needs to be updated in server
+* [ ] Linux OBS: Update the testing repository to the latest stable version.
 
 15 minutes after after release:
 * [ ] Test all advertised download links to have the expected version
@@ -111,9 +106,10 @@ On Release Day (for final release):
 * [ ] disable publishing in OBS to prevent that accidential rebuilds hit the end users.
 
 A few days after the release (for final release)
-* [ ] Review changes in the release branch, merge back into master.
-* [ ] Update the updater script ```clientupdater.php``` (check the crash reporter if auto update is a good idea or we need a new release)
+* [ ] Review changes in the release branch, merge back into master
+* [ ] check the crash reporter if auto update is a good idea or we need a new release
+* [ ] Update the updater script ```clientupdater.php```
 * [ ] Execute announced deprecations. Disable builds for deprecated platforms. Update accordingly: https://doc.owncloud.org/server/latest/admin_manual/installation/system_requirements.html#desktop
-* [ ] Increment version number in nightly builds. Special case: after the last release in a branch, jump forward to the 'next release branch'... That may mean, this is nightly is the same as edge then. 
+* [ ] Increment version number in nightly builds. Special case: after the last release in a branch, jump forward to the 'next release branch'... That may mean, this is nightly is the same as edge then.
 
 ```
