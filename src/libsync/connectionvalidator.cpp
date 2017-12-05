@@ -17,7 +17,6 @@
 #include <QLoggingCategory>
 #include <QNetworkReply>
 #include <QNetworkProxyFactory>
-#include <QPixmap>
 #include <QXmlStreamReader>
 
 #include "connectionvalidator.h"
@@ -333,24 +332,28 @@ void ConnectionValidator::slotUserFetched(const QJsonDocument &json)
     QString user = json.object().value("ocs").toObject().value("data").toObject().value("id").toString();
     if (!user.isEmpty()) {
         _account->setDavUser(user);
-
-        AvatarJob *job = new AvatarJob(_account, _account->davUser(), 128, this);
-        job->setTimeout(20 * 1000);
-        QObject::connect(job, &AvatarJob::avatarPixmap, this, &ConnectionValidator::slotAvatarImage);
-
-        job->start();
     }
     QString displayName = json.object().value("ocs").toObject().value("data").toObject().value("display-name").toString();
     if (!displayName.isEmpty()) {
         _account->setDavDisplayName(displayName);
     }
+#ifndef TOKEN_AUTH_ONLY
+    AvatarJob *job = new AvatarJob(_account, _account->davUser(), 128, this);
+    job->setTimeout(20 * 1000);
+    QObject::connect(job, &AvatarJob::avatarPixmap, this, &ConnectionValidator::slotAvatarImage);
+    job->start();
+#else
+    reportResult(Connected);
+#endif
 }
 
+#ifndef TOKEN_AUTH_ONLY
 void ConnectionValidator::slotAvatarImage(const QImage &img)
 {
     _account->setAvatar(img);
     reportResult(Connected);
 }
+#endif
 
 void ConnectionValidator::reportResult(Status status)
 {

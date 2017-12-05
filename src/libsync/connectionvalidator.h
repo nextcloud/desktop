@@ -123,7 +123,9 @@ protected slots:
 
     void slotCapabilitiesRecieved(const QJsonDocument &);
     void slotUserFetched(const QJsonDocument &);
+#ifndef TOKEN_AUTH_ONLY
     void slotAvatarImage(const QImage &img);
+#endif
 
 private:
     void reportResult(Status status);

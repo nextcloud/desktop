@@ -46,6 +46,8 @@
 #include "common/utility.h"
 #include "common/asserts.h"
 
+#include <QtCore/QTextCodec>
+
 // Needed for PRIu64 on MinGW in C++ mode.
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
@@ -145,6 +147,14 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
   if (ctx->current == REMOTE_REPLICA && ctx->callbacks.checkSelectiveSyncBlackListHook) {
       if (ctx->callbacks.checkSelectiveSyncBlackListHook(ctx->callbacks.update_callback_userdata, fs->path)) {
           return 1;
+      }
+  }
+
+  if (ctx->current == REMOTE_REPLICA && QTextCodec::codecForLocale()->mibEnum() != 106) {
+      /* If the locale codec is not UTF-8, we must check that the filename from the server can
+       * be encoded in the local file system. */
+      if (!QTextCodec::codecForLocale()->canEncode(QString::fromUtf8(fs->path))) {
+          excluded = CSYNC_FILE_EXCLUDE_CANNOT_ENCODE;
       }
   }
 
@@ -375,6 +385,8 @@ out:
               fs->error_status = CSYNC_STATUS_INDIVIDUAL_STAT_FAILED;
           } else if (excluded == CSYNC_FILE_EXCLUDE_CONFLICT) {
               fs->error_status = CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE;
+          } else if (excluded == CSYNC_FILE_EXCLUDE_CANNOT_ENCODE) {
+              fs->error_status = CSYNC_STATUS_INDIVIDUAL_CANNOT_ENCODE;
           }
       }
   }

@@ -59,7 +59,7 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
     auto classif = static_cast<const FolderStatusModel *>(index.model())->classify(index);
     if (classif == FolderStatusModel::AddButton) {
         const int margins = aliasFm.height(); // same as 2*aliasMargin of paint
-        QFontMetrics fm(option.font);
+        QFontMetrics fm(qApp->font("QPushButton"));
         QStyleOptionButton opt;
         static_cast<QStyleOption &>(opt) = option;
         opt.text = addFolderText();
@@ -138,7 +138,10 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         opt.rect.setWidth(qMin(opt.rect.width(), hint.width()));
         opt.rect.adjust(0, aliasMargin, 0, -aliasMargin);
         opt.rect = QStyle::visualRect(option.direction, option.rect, opt.rect);
+        painter->save();
+        painter->setFont(qApp->font("QPushButton"));
         QApplication::style()->drawControl(QStyle::CE_PushButton, &opt, painter, option.widget);
+        painter->restore();
         return;
     }
 

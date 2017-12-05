@@ -476,6 +476,9 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
     case CSYNC_STATUS_INDIVIDUAL_TOO_DEEP:
         item->_errorString = tr("Folder hierarchy is too deep");
         break;
+    case CSYNC_STATUS_INDIVIDUAL_CANNOT_ENCODE:
+        item->_errorString = tr("The filename cannot be encoded on your file system.");
+        break;
     case CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE:
         item->_status = SyncFileItem::Conflict;
         if (Utility::shouldUploadConflictFiles()) {
