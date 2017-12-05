@@ -139,6 +139,11 @@ Application::Application(int &argc, char **argv)
     setupLogging();
     setupTranslations();
 
+    // The timeout is initialized with an environment variable, if not, override with the value from the config
+    ConfigFile cfg;
+    if (!AbstractNetworkJob::httpTimeout)
+        AbstractNetworkJob::httpTimeout = cfg.timeout();
+
     _folderManager.reset(new FolderMan);
 
     connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
@@ -166,7 +171,6 @@ Application::Application(int &argc, char **argv)
 
     setQuitOnLastWindowClosed(false);
 
-    ConfigFile cfg;
     _theme->setSystrayUseMonoIcons(cfg.monoIcons());
     connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
 

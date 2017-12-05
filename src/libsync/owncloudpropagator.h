@@ -464,9 +464,6 @@ public:
         }
     }
 
-    // timeout in seconds
-    static int httpTimeout();
-
     AccountPtr account() const;
 
     enum DiskSpaceResult {
