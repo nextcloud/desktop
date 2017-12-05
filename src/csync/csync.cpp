@@ -314,6 +314,9 @@ int csync_s::reinitialize() {
   local.files.clear();
   remote.files.clear();
 
+  renames.folder_renamed_from.clear();
+  renames.folder_renamed_to.clear();
+
   status = CSYNC_STATUS_INIT;
   SAFE_FREE(error_string);
 
