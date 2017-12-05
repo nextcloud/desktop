@@ -30,7 +30,7 @@
 #include "common/syncjournaldb.h"
 #include "bandwidthmanager.h"
 #include "accountfwd.h"
-#include "discoveryphase.h"
+#include "syncoptions.h"
 
 namespace OCC {
 
