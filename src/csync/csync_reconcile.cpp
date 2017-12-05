@@ -113,7 +113,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
 
     if (!other) {
         /* Check the renamed path as well. */
-        other = other_tree->findFile(csync_rename_adjust_path(ctx, cur->path));
+        other = other_tree->findFile(csync_rename_adjust_parent_path(ctx, cur->path));
     }
     if (!other) {
         /* Check if it is ignored */
@@ -147,24 +147,25 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
             cur->instruction = CSYNC_INSTRUCTION_NEW;
 
             bool processedRename = false;
-            auto renameCandidateProcessing = [&](const OCC::SyncJournalFileRecord &base) {
+            auto renameCandidateProcessing = [&](const QByteArray &basePath) {
                 if (processedRename)
                     return;
-                if (!base.isValid())
+                if (basePath.isEmpty())
                     return;
 
                 /* First, check that the file is NOT in our tree (another file with the same name was added) */
-                if (our_tree->findFile(base._path)) {
-                    qCDebug(lcReconcile, "Origin found in our tree : %s", base._path.constData());
+                if (our_tree->findFile(basePath)) {
+                    other = nullptr;
+                    qCDebug(lcReconcile, "Origin found in our tree : %s", basePath.constData());
                 } else {
                     /* Find the potential rename source file in the other tree.
                     * If the renamed file could not be found in the opposite tree, that is because it
                     * is not longer existing there, maybe because it was renamed or deleted.
                     * The journal is cleaned up later after propagation.
                     */
-                    other = other_tree->findFile(base._path);
+                    other = other_tree->findFile(basePath);
                     qCDebug(lcReconcile, "Rename origin in other tree (%s) %s",
-                        base._path.constData(), other ? "found" : "not found");
+                        basePath.constData(), other ? "found" : "not found");
                 }
 
                 if(!other) {
@@ -197,7 +198,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                     // We have consumed 'other': exit this loop to not consume another one.
                     processedRename = true;
-                } else if (our_tree->findFile(csync_rename_adjust_path(ctx, other->path)) == cur) {
+                } else if (our_tree->findFile(csync_rename_adjust_parent_path(ctx, other->path)) == cur) {
                     // If we're here, that means that the other side's reconcile will be able
                     // to work against cur: The filename itself didn't change, only a parent
                     // directory was renamed! In that case it's safe to ignore the rename
@@ -225,12 +226,34 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                 qCDebug(lcReconcile, "Finding rename origin through inode %" PRIu64 "",
                     cur->inode);
                 ctx->statedb->getFileRecordByInode(cur->inode, &base);
-                renameCandidateProcessing(base);
+                renameCandidateProcessing(base._path);
             } else {
                 ASSERT(ctx->current == REMOTE_REPLICA);
-                qCDebug(lcReconcile, "Finding rename origin through file ID %s",
-                    cur->file_id.constData());
-                ctx->statedb->getFileRecordsByFileId(cur->file_id, renameCandidateProcessing);
+
+                // The update phase has already mapped out all dir->dir renames, check the
+                // path that is consistent with that first. Otherwise update mappings and
+                // reconcile mappings might disagree, leading to odd situations down the
+                // line.
+                auto basePath = csync_rename_adjust_full_path_source(ctx, cur->path);
+                if (basePath != cur->path) {
+                    qCDebug(lcReconcile, "Trying rename origin by csync_rename mapping %s",
+                        basePath.constData());
+                    // We go through getFileRecordsByFileId to ensure the basePath
+                    // computed in this way also has the expected fileid.
+                    ctx->statedb->getFileRecordsByFileId(cur->file_id,
+                        [&](const OCC::SyncJournalFileRecord &base) {
+                            if (base._path == basePath)
+                                renameCandidateProcessing(basePath);
+                        });
+                }
+
+                // Also feed all the other files with the same fileid if necessary
+                if (!processedRename) {
+                    qCDebug(lcReconcile, "Finding rename origin through file ID %s",
+                        cur->file_id.constData());
+                    ctx->statedb->getFileRecordsByFileId(cur->file_id,
+                        [&](const OCC::SyncJournalFileRecord &base) { renameCandidateProcessing(base._path); });
+                }
             }
 
             break;

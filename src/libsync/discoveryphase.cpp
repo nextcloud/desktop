@@ -75,7 +75,7 @@ bool DiscoveryJob::isInSelectiveSyncBlackList(const QByteArray &path) const
 
     // Also try to adjust the path if there was renames
     if (csync_rename_count(_csync_ctx)) {
-        QByteArray adjusted = csync_rename_adjust_path_source(_csync_ctx, path);
+        QByteArray adjusted = csync_rename_adjust_parent_path_source(_csync_ctx, path);
         if (adjusted != path) {
             return findPathInList(_selectiveSyncBlackList, QString::fromUtf8(adjusted));
         }
