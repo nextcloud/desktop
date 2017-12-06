@@ -43,7 +43,6 @@ public:
         SystemScope };
 
     QString configPath() const;
-    QString configPathWithAppName() const;
     QString configFile() const;
     QString excludeFile(Scope scope) const;
     static QString excludeFileFromSystem(); // doesn't access config dir

@@ -26,7 +26,6 @@
 #ifndef TOKEN_AUTH_ONLY
 #include <QWidget>
 #include <QHeaderView>
-#include <QDesktopServices>
 #endif
 
 #include <QCoreApplication>
@@ -36,6 +35,7 @@
 #include <QLoggingCategory>
 #include <QSettings>
 #include <QNetworkProxy>
+#include <QStandardPaths>
 
 #define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
 #define DEFAULT_FULL_LOCAL_DISCOVERY_INTERVAL (60 * 60 * 1000) // 1 hour
@@ -252,24 +252,16 @@ QVariant ConfigFile::getPolicySetting(const QString &setting, const QVariant &de
 
 QString ConfigFile::configPath() const
 {
-#ifndef TOKEN_AUTH_ONLY
     if (_confDir.isEmpty()) {
-        //  Qt 5's QStandardPaths::writableLocation gives us wrong results (without /data/),
-        //  so we'll have to use the deprecated version for now
-        _confDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+        // On Unix, use the AppConfigLocation for the settings, that's configurable with the XDG_CONFIG_HOME env variable.
+        // On Windows, use AppDataLocation, that's where the roaming data is and where we should store the config file
+        _confDir = QStandardPaths::writableLocation(Utility::isWindows() ? QStandardPaths::AppDataLocation : QStandardPaths::AppConfigLocation);
     }
-#endif
     QString dir = _confDir;
 
     if (!dir.endsWith(QLatin1Char('/')))
         dir.append(QLatin1Char('/'));
     return dir;
-}
-
-QString ConfigFile::configPathWithAppName() const
-{
-    //HACK
-    return QFileInfo(configFile()).dir().absolutePath().append("/");
 }
 
 static const QLatin1String exclFile("sync-exclude.lst");

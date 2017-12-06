@@ -119,9 +119,28 @@ Application::Application(int &argc, char **argv)
     // TODO: Can't set this without breaking current config paths
     //    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
     setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN));
-    setApplicationName(_theme->appNameGUI());
+    setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
     setAttribute(Qt::AA_UseHighDpiPixmaps, true);
+
+    auto confDir = ConfigFile().configPath();
+    if (!QFileInfo(confDir).exists()) {
+        // Migrate from version <= 2.4
+        setApplicationName(_theme->appNameGUI());
+        QString oldDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+        setApplicationName(_theme->appName());
+        if (QFileInfo(oldDir).isDir()) {
+            qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
+            if (!QFile::rename(oldDir, confDir)) {
+                qCWarning(lcApplication) << "Failed to move the old config file to its new location (" << oldDir << "to" << confDir << ")";
+            } else {
+#ifndef Q_OS_WIN
+                // Create a symbolic link so a downgrade of the client would still find the config.
+                QFile::link(confDir, oldDir);
+#endif
+            }
+        }
+    }
 
     parseOptions(arguments());
     //no need to waste time;
