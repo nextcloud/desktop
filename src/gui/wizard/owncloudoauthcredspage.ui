@@ -43,7 +43,7 @@
    <item>
     <widget class="QLabel" name="errorLabel">
      <property name="text">
-      <string>An error occured while connecting. Please try again.</string>
+      <string>An error occurred while connecting. Please try again.</string>
      </property>
      <property name="textFormat">
       <enum>Qt::PlainText</enum>

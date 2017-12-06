@@ -89,7 +89,7 @@ int c_streq(const char *a, const char *b);
  *
  * @param size  Size to allocate.
  *
- * @return  Pointer to the newly allocated stringlist. NULL if an error occured.
+ * @return  Pointer to the newly allocated stringlist. NULL if an error occurred.
  */
 c_strlist_t *c_strlist_new(size_t size);
 
@@ -99,7 +99,7 @@ c_strlist_t *c_strlist_new(size_t size);
  * @param strlist  Stringlist to expand
  * @param size     New size of the strlinglist to expand
  *
- * @return  Pointer to the expanded stringlist. NULL if an error occured.
+ * @return  Pointer to the expanded stringlist. NULL if an error occurred.
  */
 c_strlist_t *c_strlist_expand(c_strlist_t *strlist, size_t size);
 
@@ -111,7 +111,7 @@ c_strlist_t *c_strlist_expand(c_strlist_t *strlist, size_t size);
  * @param strlist  Stringlist to add the string.
  * @param string   String to add.
  *
- * @return  0 on success, less than 0 and errno set if an error occured.
+ * @return  0 on success, less than 0 and errno set if an error occurred.
  *          ENOBUFS if the list is full.
  */
 int c_strlist_add(c_strlist_t *strlist, const char *string);
@@ -125,7 +125,7 @@ int c_strlist_add(c_strlist_t *strlist, const char *string);
  * @param strlist  Stringlist to add the string.
  * @param string   String to add.
  *
- * @return  0 on success, less than 0 and errno set if an error occured.
+ * @return  0 on success, less than 0 and errno set if an error occurred.
  */
 int c_strlist_add_grow(c_strlist_t **strlist, const char *string);
 
