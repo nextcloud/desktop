@@ -51,6 +51,7 @@
 #include <QTranslator>
 #include <QMenu>
 #include <QMessageBox>
+#include <QDesktopServices>
 
 class QSocket;
 
