@@ -276,13 +276,24 @@ void PropagateUploadFileCommon::slotTryLock(const QByteArray& fileId)
 void PropagateUploadFileCommon::slotFolderLockedSuccessfully(const QByteArray& fileId, const QByteArray& token)
 {
   qDebug() << "Folder" << fileId << "Locked Successfully for Upload";
+  // Should I use a mutex here?
+  _currentLockingInProgress = true;
 }
 
 void PropagateUploadFileCommon::slotFolderLockedError(const QByteArray& fileId, int httpErrorCode)
 {
-  // Add a counter or Something, this will enter in a loop.
-  QTimer::singleShot(1000, this, [this, fileId]{
-    if (_folderLockFirstTry.elapsed() > /* one minute */ 60000) {
+  /* try to call the lock from 5 to 5 seconds
+    and fail if it's more than 5 minutes. */
+  QTimer::singleShot(5000, this, [this, fileId]{
+    if (!_currentLockingInProgress) {
+      qDebug() << "Error locking the folder while no other update is locking it up.";
+      qDebug() << "Perhaps another client locked it.";
+      qDebug() << "Abort";
+      return;
+    }
+
+    // Perhaps I should remove the elapsed timer if the lock is from this client?
+    if (_folderLockFirstTry.elapsed() > /* five minutes */ 1000 * 60 * 5 ) {
       qDebug() << "One minute passed, ignoring more attemps to lock the folder.";
       return;
     }

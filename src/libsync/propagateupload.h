@@ -290,6 +290,7 @@ private slots:
 // Private Encryption Stuff
 private:
     QElapsedTimer _folderLockFirstTry;
+    bool _currentLockingInProgress;
 
 protected:
     /**
