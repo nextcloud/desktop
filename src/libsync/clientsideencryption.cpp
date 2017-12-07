@@ -1540,7 +1540,10 @@ bool GetFolderEncryptStatusJob::finished()
             auto type = reader.readNext();
             if (type == QXmlStreamReader::StartElement) {
 								if (reader.name() == QLatin1String("href")) {
-									currFile = reader.readElementText(QXmlStreamReader::SkipChildElements);
+									// If the current file is not a folder, ignore it.
+                  currFile = reader.readElementText(QXmlStreamReader::SkipChildElements);
+                  if (!currFile.endsWith('/'))
+                    continue;
 								}
                 if (reader.name() == QLatin1String("is-encrypted")) {
 									currEncryptedStatus = (bool) reader.readElementText(QXmlStreamReader::SkipChildElements).toInt();
