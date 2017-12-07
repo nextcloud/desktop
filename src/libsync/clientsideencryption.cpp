@@ -1541,17 +1541,18 @@ bool GetFolderEncryptStatusJob::finished()
             if (type == QXmlStreamReader::StartElement) {
                 if (reader.name() == QLatin1String("href")) {
                   // If the current file is not a folder, ignore it.
-                  currFile = reader.readElementText(QXmlStreamReader::SkipChildElements);
+                  currFile = reader.readElementText(QXmlStreamReader::SkipChildElements).remove("/remote.php/webdav/");
                   if (!currFile.endsWith('/'))
-                    continue;
+                      currFile.clear();
+                    currEncryptedStatus = -1;
                 }
-                if (reader.name() == QLatin1String("is-encrypted")) {
+                if (not currFile.isEmpty() && reader.name() == QLatin1String("is-encrypted")) {
                   currEncryptedStatus = (bool) reader.readElementText(QXmlStreamReader::SkipChildElements).toInt();
                 }
             }
 
             if (!currFile.isEmpty() && currEncryptedStatus != -1) {
-              folderStatus.insert(currFile.remove("/remote.php/webdav/"), currEncryptedStatus);
+              folderStatus.insert(currFile, currEncryptedStatus);
               currFile.clear();
               currEncryptedStatus = -1;
             }
