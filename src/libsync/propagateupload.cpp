@@ -27,6 +27,7 @@
 #include "propagateremotedelete.h"
 #include "common/asserts.h"
 #include "networkjobs.h"
+#include "clientsideencryption.h"
 
 #include <QNetworkAccessManager>
 #include <QFileInfo>
@@ -249,7 +250,23 @@ void PropagateUploadFileCommon::slotFolderEncryptedStatusFetched(const QMap<QStr
 
 void PropagateUploadFileCommon::slotFolderEncryptedIdReceived(const QStringList &list)
 {
-  qDebug() << "Successfully retrieved the id of the encrypted folder" << list;
+  // Got the ID, Try to Lock the Folder!.
+  auto job = qobject_cast<LsColJob *>(sender());
+  const auto& folderInfo = job->_folderInfos.value(list.first());
+  auto *lockJob = new LockEncryptFolderApiJob(propagator()->account(), list.first().toLocal8Bit(), this);
+  connect(lockJob, &LockEncryptFolderApiJob::success, this, &PropagateUploadFileCommon::slotFolderLockedSuccessfully);
+  connect(lockJob, &LockEncryptFolderApiJob::error, this, &PropagateUploadFileCommon::slotFolderLockedError);
+  lockJob->start();
+}
+
+void PropagateUploadFileCommon::slotFolderLockedSuccessfully(const QByteArray& fileId, const QByteArray& token)
+{
+  qDebug() << "Folder" << fileId << "Locked Successfully for Upload";
+}
+
+void PropagateUploadFileCommon::slotFolderLockedError(const QByteArray& fileId, int httpErrorCode)
+{
+    qDebug() << "Folder" << fileId << "Coundn't be locked.";
 }
 
 void PropagateUploadFileCommon::slotFolderEncryptedIdError(QNetworkReply *r)

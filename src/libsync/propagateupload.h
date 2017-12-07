@@ -283,6 +283,9 @@ private slots:
     void slotFolderEncryptedStatusError(int error);
     void slotFolderEncryptedIdReceived(const QStringList &list);
     void slotFolderEncryptedIdError(QNetworkReply *r);
+    void slotFolderLockedSuccessfully(const QByteArray& fileId, const QByteArray& token);
+    void slotFolderLockedError(const QByteArray& fileId, int httpErrorCode);
+
 
 protected:
     /**
