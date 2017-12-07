@@ -341,7 +341,7 @@ class OWNCLOUDSYNC_EXPORT GetFolderEncryptStatus : public AbstractNetworkJob
 {
 	Q_OBJECT
 public:
-	explicit GetFolderEncryptStatus (const AccountPtr &account, QObject *parent = 0);
+	explicit GetFolderEncryptStatus (const AccountPtr &account, const QString& folder, QObject *parent = 0);
 
 public slots:
 	void start() override;
@@ -352,6 +352,8 @@ protected:
 signals:
 	void encryptStatusReceived(const QMap<QString, bool> folderMetadata2EncryptionStatus);
 	void encryptStatusError(int statusCode);
+private:
+  QString _folder;
 };
 
 } // namespace OCC

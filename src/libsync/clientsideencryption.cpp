@@ -984,7 +984,7 @@ void ClientSideEncryption::getPublicKeyFromServer()
 
 void ClientSideEncryption::fetchFolderEncryptedStatus() {
 	_refreshingEncryptionStatus = true;
-	auto getEncryptedStatus = new GetFolderEncryptStatus(_account);
+	auto getEncryptedStatus = new GetFolderEncryptStatus(_account, QString());
 	connect(getEncryptedStatus, &GetFolderEncryptStatus::encryptStatusReceived,
 					this, &ClientSideEncryption::folderEncryptedStatusFetched);
 	connect(getEncryptedStatus, &GetFolderEncryptStatus::encryptStatusError,
@@ -1483,8 +1483,8 @@ bool GetMetadataApiJob::finished()
     return true;
 }
 
-GetFolderEncryptStatus::GetFolderEncryptStatus(const AccountPtr& account, QObject *parent)
-	: OCC::AbstractNetworkJob(account, QStringLiteral("remote.php/webdav"), parent)
+GetFolderEncryptStatus::GetFolderEncryptStatus(const AccountPtr& account, const QString& folder, QObject *parent)
+	: OCC::AbstractNetworkJob(account, QStringLiteral("remote.php/webdav"), parent), _folder(folder)
 {
 }
 
@@ -1499,7 +1499,8 @@ void GetFolderEncryptStatus::start()
 	QBuffer *buf = new QBuffer(this);
 	buf->setData(xml);
 	buf->open(QIODevice::ReadOnly);
-	sendRequest("PROPFIND", Utility::concatUrlPath(account()->url(), path()), req, buf);
+  QString tmpPath = path() + (!_folder.isEmpty() ? "/" + _folder : QString());
+	sendRequest("PROPFIND", Utility::concatUrlPath(account()->url(), tmpPath), req, buf);
 
 	AbstractNetworkJob::start();
 }

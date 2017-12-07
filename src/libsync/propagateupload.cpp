@@ -192,7 +192,11 @@ void PropagateUploadFileCommon::start()
       *
       * If the folder is unencrypted we just follow the old way.
       */
-      auto getEncryptedStatus = new GetFolderEncryptStatus(propagator()->account());
+      QFileInfo info(_item->_file);
+
+      auto getEncryptedStatus = new GetFolderEncryptStatus(propagator()->account(),
+                                                           info.path());
+
       connect(getEncryptedStatus, &GetFolderEncryptStatus::encryptStatusReceived,
               this, &PropagateUploadFileCommon::slotFolderEncryptedStatusFetched);
       connect(getEncryptedStatus, &GetFolderEncryptStatus::encryptStatusError,
