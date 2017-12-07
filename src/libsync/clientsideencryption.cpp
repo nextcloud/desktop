@@ -1513,48 +1513,48 @@ bool GetFolderEncryptStatusJob::finished()
 
     int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
-		if (http_result_code == 207) {
+    if (http_result_code == 207) {
         // Parse DAV response
         QXmlStreamReader reader(reply());
         reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
 
-				/* Example Xml
-				<?xml version="1.0"?>
-					<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:oc="http://owncloud.org/ns" xmlns:nc="http://nextcloud.org/ns">
-						<d:response>
-							<d:href>/remote.php/webdav/</d:href>
-							<d:propstat>
-								<d:prop>
-									<nc:is-encrypted>0</nc:is-encrypted>
-								</d:prop>
-								<d:status>HTTP/1.1 200 OK</d:status>
-							</d:propstat>
-						</d:response>
-					</d:multistatus>
-				*/
+        /* Example Xml
+        <?xml version="1.0"?>
+          <d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:oc="http://owncloud.org/ns" xmlns:nc="http://nextcloud.org/ns">
+            <d:response>
+              <d:href>/remote.php/webdav/</d:href>
+              <d:propstat>
+                <d:prop>
+                  <nc:is-encrypted>0</nc:is-encrypted>
+                </d:prop>
+                <d:status>HTTP/1.1 200 OK</d:status>
+              </d:propstat>
+            </d:response>
+          </d:multistatus>
+        */
 
-				QString currFile;
-				int currEncryptedStatus = -1;
-				QMap<QString, bool> folderStatus;
+        QString currFile;
+        int currEncryptedStatus = -1;
+        QMap<QString, bool> folderStatus;
         while (!reader.atEnd()) {
             auto type = reader.readNext();
             if (type == QXmlStreamReader::StartElement) {
-								if (reader.name() == QLatin1String("href")) {
-									// If the current file is not a folder, ignore it.
+                if (reader.name() == QLatin1String("href")) {
+                  // If the current file is not a folder, ignore it.
                   currFile = reader.readElementText(QXmlStreamReader::SkipChildElements);
                   if (!currFile.endsWith('/'))
                     continue;
-								}
+                }
                 if (reader.name() == QLatin1String("is-encrypted")) {
-									currEncryptedStatus = (bool) reader.readElementText(QXmlStreamReader::SkipChildElements).toInt();
-								}
+                  currEncryptedStatus = (bool) reader.readElementText(QXmlStreamReader::SkipChildElements).toInt();
+                }
             }
 
             if (!currFile.isEmpty() && currEncryptedStatus != -1) {
-							folderStatus.insert(currFile.remove("/remote.php/webdav/"), currEncryptedStatus);
-							currFile.clear();
-							currEncryptedStatus = -1;
-						}
+              folderStatus.insert(currFile.remove("/remote.php/webdav/"), currEncryptedStatus);
+              currFile.clear();
+              currEncryptedStatus = -1;
+            }
         }
 
         emit encryptStatusReceived(folderStatus);
@@ -1562,7 +1562,7 @@ bool GetFolderEncryptStatusJob::finished()
         qCWarning(lcCse()) << "*not* successful, http result code is" << http_result_code
                                  << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString() : QLatin1String(""));
         emit encryptStatusError(http_result_code);
-				// emit finishedWithError(reply());
+        // emit finishedWithError(reply());
     }
     return true;
 }
