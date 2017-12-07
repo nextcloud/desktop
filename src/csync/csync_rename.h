@@ -22,10 +22,19 @@
 
 #include "csync.h"
 
-/* Return the final destination path of a given patch in case of renames */
-QByteArray OCSYNC_EXPORT csync_rename_adjust_path(CSYNC *ctx, const QByteArray &path);
+/* Return the final destination path of a given patch in case of renames
+ *
+ * Does only map the parent directories. If the directory "A" is renamed to
+ * "B" then this function will not map "A" to "B". Only "A/foo" -> "B/foo".
+*/
+QByteArray OCSYNC_EXPORT csync_rename_adjust_parent_path(CSYNC *ctx, const QByteArray &path);
+
 /* Return the source of a given path in case of renames */
-QByteArray OCSYNC_EXPORT csync_rename_adjust_path_source(CSYNC *ctx, const QByteArray &path);
+QByteArray OCSYNC_EXPORT csync_rename_adjust_parent_path_source(CSYNC *ctx, const QByteArray &path);
+
+/* like the parent_path variant, but applying to the full path */
+QByteArray OCSYNC_EXPORT csync_rename_adjust_full_path_source(CSYNC *ctx, const QByteArray &path);
+
 void OCSYNC_EXPORT csync_rename_record(CSYNC *ctx, const QByteArray &from, const QByteArray &to);
 /*  Return the amount of renamed item recorded */
 bool OCSYNC_EXPORT csync_rename_count(CSYNC *ctx);

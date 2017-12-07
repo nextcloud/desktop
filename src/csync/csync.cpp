@@ -211,14 +211,14 @@ static int _csync_treewalk_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
 
     if (other_file_it == other_tree->cend()) {
         /* Check the renamed path as well. */
-        QByteArray renamed_path = csync_rename_adjust_path(ctx, cur->path);
+        QByteArray renamed_path = csync_rename_adjust_parent_path(ctx, cur->path);
         if (renamed_path != cur->path)
             other_file_it = other_tree->find(renamed_path);
     }
 
     if (other_file_it == other_tree->cend()) {
         /* Check the source path as well. */
-        QByteArray renamed_path = csync_rename_adjust_path_source(ctx, cur->path);
+        QByteArray renamed_path = csync_rename_adjust_parent_path_source(ctx, cur->path);
         if (renamed_path != cur->path)
             other_file_it = other_tree->find(renamed_path);
     }
@@ -313,6 +313,9 @@ int csync_s::reinitialize() {
 
   local.files.clear();
   remote.files.clear();
+
+  renames.folder_renamed_from.clear();
+  renames.folder_renamed_to.clear();
 
   local_discovery_style = LocalDiscoveryStyle::FilesystemOnly;
   locally_touched_dirs.clear();
