@@ -248,12 +248,26 @@ void PropagateUploadFileCommon::slotFolderEncryptedStatusFetched(const QMap<QStr
   }
 }
 
+/* We try to lock a folder, if it's locked we try again in one second.
+ * if it's still locked we try again in one second. looping untill one minute.
+ *                                                                      -> fail.
+ * the 'loop':                                                         /
+ *    slotFolderEncryptedIdReceived -> slotTryLock -> lockError -> stillTime? -> slotTryLock
+ *                                        \
+ *                                         -> success.
+ */
+
 void PropagateUploadFileCommon::slotFolderEncryptedIdReceived(const QStringList &list)
 {
-  // Got the ID, Try to Lock the Folder!.
   auto job = qobject_cast<LsColJob *>(sender());
   const auto& folderInfo = job->_folderInfos.value(list.first());
-  auto *lockJob = new LockEncryptFolderApiJob(propagator()->account(), list.first().toLocal8Bit(), this);
+  _folderLockFirstTry.start();
+  slotTryLock(folderInfo.fileId);
+}
+
+void PropagateUploadFileCommon::slotTryLock(const QByteArray& fileId)
+{
+  auto *lockJob = new LockEncryptFolderApiJob(propagator()->account(), fileId, this);
   connect(lockJob, &LockEncryptFolderApiJob::success, this, &PropagateUploadFileCommon::slotFolderLockedSuccessfully);
   connect(lockJob, &LockEncryptFolderApiJob::error, this, &PropagateUploadFileCommon::slotFolderLockedError);
   lockJob->start();
@@ -266,7 +280,16 @@ void PropagateUploadFileCommon::slotFolderLockedSuccessfully(const QByteArray& f
 
 void PropagateUploadFileCommon::slotFolderLockedError(const QByteArray& fileId, int httpErrorCode)
 {
-    qDebug() << "Folder" << fileId << "Coundn't be locked.";
+  // Add a counter or Something, this will enter in a loop.
+  QTimer::singleShot(1000, this, [this, fileId]{
+    if (_folderLockFirstTry.elapsed() > /* one minute */ 60000) {
+      qDebug() << "One minute passed, ignoring more attemps to lock the folder.";
+      return;
+    }
+    slotTryLock(fileId);
+  });
+
+  qDebug() << "Folder" << fileId << "Coundn't be locked.";
 }
 
 void PropagateUploadFileCommon::slotFolderEncryptedIdError(QNetworkReply *r)

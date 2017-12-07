@@ -285,7 +285,11 @@ private slots:
     void slotFolderEncryptedIdError(QNetworkReply *r);
     void slotFolderLockedSuccessfully(const QByteArray& fileId, const QByteArray& token);
     void slotFolderLockedError(const QByteArray& fileId, int httpErrorCode);
+    void slotTryLock(const QByteArray& fileId);
 
+// Private Encryption Stuff
+private:
+    QElapsedTimer _folderLockFirstTry;
 
 protected:
     /**
