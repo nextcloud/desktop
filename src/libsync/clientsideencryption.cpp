@@ -984,10 +984,10 @@ void ClientSideEncryption::getPublicKeyFromServer()
 
 void ClientSideEncryption::fetchFolderEncryptedStatus() {
 	_refreshingEncryptionStatus = true;
-	auto getEncryptedStatus = new GetFolderEncryptStatus(_account, QString());
-	connect(getEncryptedStatus, &GetFolderEncryptStatus::encryptStatusReceived,
+	auto getEncryptedStatus = new GetFolderEncryptStatusJob(_account, QString());
+	connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusReceived,
 					this, &ClientSideEncryption::folderEncryptedStatusFetched);
-	connect(getEncryptedStatus, &GetFolderEncryptStatus::encryptStatusError,
+	connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusError,
 					this, &ClientSideEncryption::folderEncryptedStatusError);
 	getEncryptedStatus->start();
 }
@@ -1483,12 +1483,12 @@ bool GetMetadataApiJob::finished()
     return true;
 }
 
-GetFolderEncryptStatus::GetFolderEncryptStatus(const AccountPtr& account, const QString& folder, QObject *parent)
+GetFolderEncryptStatusJob::GetFolderEncryptStatusJob(const AccountPtr& account, const QString& folder, QObject *parent)
 	: OCC::AbstractNetworkJob(account, QStringLiteral("remote.php/webdav"), parent), _folder(folder)
 {
 }
 
-void GetFolderEncryptStatus::start()
+void GetFolderEncryptStatusJob::start()
 {
 	QNetworkRequest req;
 	req.setPriority(QNetworkRequest::HighPriority);
@@ -1505,7 +1505,7 @@ void GetFolderEncryptStatus::start()
 	AbstractNetworkJob::start();
 }
 
-bool GetFolderEncryptStatus::finished()
+bool GetFolderEncryptStatusJob::finished()
 {
     qCInfo(lcCse()) << "GetFolderEncryptStatus of" << reply()->request().url() << "finished with status"
                           << reply()->error()

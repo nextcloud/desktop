@@ -337,11 +337,11 @@ private:
 /* I cant use the propfind network job because it defaults to the
  * wrong dav url.
  */
-class OWNCLOUDSYNC_EXPORT GetFolderEncryptStatus : public AbstractNetworkJob
+class OWNCLOUDSYNC_EXPORT GetFolderEncryptStatusJob : public AbstractNetworkJob
 {
 	Q_OBJECT
 public:
-	explicit GetFolderEncryptStatus (const AccountPtr &account, const QString& folder, QObject *parent = 0);
+	explicit GetFolderEncryptStatusJob (const AccountPtr &account, const QString& folder, QObject *parent = 0);
 
 public slots:
 	void start() override;

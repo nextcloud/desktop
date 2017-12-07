@@ -194,12 +194,12 @@ void PropagateUploadFileCommon::start()
       */
       QFileInfo info(_item->_file);
 
-      auto getEncryptedStatus = new GetFolderEncryptStatus(propagator()->account(),
+      auto getEncryptedStatus = new GetFolderEncryptStatusJob(propagator()->account(),
                                                            info.path());
 
-      connect(getEncryptedStatus, &GetFolderEncryptStatus::encryptStatusReceived,
+      connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusReceived,
               this, &PropagateUploadFileCommon::slotFolderEncryptedStatusFetched);
-      connect(getEncryptedStatus, &GetFolderEncryptStatus::encryptStatusError,
+      connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusError,
               this, &PropagateUploadFileCommon::slotFolderEncryptedStatusError);
       getEncryptedStatus->start();
    } else {
