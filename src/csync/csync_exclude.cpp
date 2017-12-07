@@ -421,7 +421,7 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, int fi
     // Check the bname part of the path to see whether the full
     // regex should be run.
 
-    auto bname = strrchr(path, '/');
+    const char *bname = strrchr(path, '/');
     if (bname) {
         bname += 1; // don't include the /
     } else {
