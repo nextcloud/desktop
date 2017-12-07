@@ -229,8 +229,15 @@ void PropagateUploadFileCommon::slotFolderEncryptedStatusFetched(const QMap<QStr
 
   qDebug() << "###################################";
   qDebug() << "Retrieved correctly the encrypted status of the folders." << result;
+
+  /* We are inside an encrypted folder, we need to find it's Id. */
   if (result[currFilePath] == true) {
-    qDebug() << "Uploading to an encrypted folder. do the thing.";
+      QFileInfo info(_item->_file);
+      LsColJob *job = new LsColJob(propagator()->account(), info.path(), this);
+      job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
+      connect(job, &LsColJob::directoryListingSubfolders, this, &PropagateUploadFileCommon::slotFolderEncryptedIdReceived);
+      connect(job, &LsColJob::finishedWithError, this, &PropagateUploadFileCommon::slotFolderEncryptedIdError);
+      job->start();
   } else {
     _fileToUpload._file = _item->_file;
     _fileToUpload._size = _item->_size;
@@ -238,6 +245,16 @@ void PropagateUploadFileCommon::slotFolderEncryptedStatusFetched(const QMap<QStr
     startUploadFile();
     qDebug() << "Uploading to a folder that's not encrypted. call the default uploader.";
   }
+}
+
+void PropagateUploadFileCommon::slotFolderEncryptedIdReceived(const QStringList &list)
+{
+  qDebug() << "Successfully retrieved the id of the encrypted folder" << list;
+}
+
+void PropagateUploadFileCommon::slotFolderEncryptedIdError(QNetworkReply *r)
+{
+  qDebug() << "Error retrieving the Id of the encrypted folder.";
 }
 
 void PropagateUploadFileCommon::slotFolderEncryptedStatusError(int error)

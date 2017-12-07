@@ -281,6 +281,8 @@ private slots:
     // Encryption Stuff
     void slotFolderEncryptedStatusFetched(const QMap<QString, bool>& result);
     void slotFolderEncryptedStatusError(int error);
+    void slotFolderEncryptedIdReceived(const QStringList &list);
+    void slotFolderEncryptedIdError(QNetworkReply *r);
 
 protected:
     /**
