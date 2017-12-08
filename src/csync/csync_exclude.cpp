@@ -51,10 +51,6 @@
 #define CSYNC_LOG_CATEGORY_NAME "csync.exclude"
 #include "csync_log.h"
 
-#ifndef WITH_TESTING
-static
-#endif
-
 /** Expands C-like escape sequences.
  *
  * The returned string is heap-allocated and owned by the caller.
