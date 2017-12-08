@@ -51,15 +51,16 @@ void OcsJob::appendPath(const QString &id)
     setPath(path() + QLatin1Char('/') + id);
 }
 
-static QList<QPair<QByteArray, QByteArray>>
-percentEncodeQueryItems(
+static QUrlQuery percentEncodeQueryItems(
     const QList<QPair<QString, QString>> &items)
 {
-    QList<QPair<QByteArray, QByteArray>> result;
+    QUrlQuery result;
+    // Note: QUrlQuery::setQueryItems() does not fully percent encode
+    // the query items, see #5042
     foreach (const auto &item, items) {
-        result.append(qMakePair(
+        result.addQueryItem(
             QUrl::toPercentEncoding(item.first),
-            QUrl::toPercentEncoding(item.second)));
+            QUrl::toPercentEncoding(item.second));
     }
     return result;
 }
@@ -70,13 +71,11 @@ void OcsJob::start()
     req.setRawHeader("Ocs-APIREQUEST", "true");
     req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    QUrl url = Utility::concatUrlPath(account()->url(), path());
     QBuffer *buffer = new QBuffer;
 
+    QUrlQuery queryItems;
     if (_verb == "GET") {
-        // Note: QUrl::setQueryItems() does not fully percent encode
-        // the query items, see #5042
-        url.setEncodedQueryItems(percentEncodeQueryItems(_params));
+        queryItems = percentEncodeQueryItems(_params);
     } else if (_verb == "POST" || _verb == "PUT") {
         // Url encode the _postParams and put them in a buffer.
         QByteArray postData;
@@ -90,12 +89,8 @@ void OcsJob::start()
         }
         buffer->setData(postData);
     }
-
-    //We want json data
-    auto queryItems = url.encodedQueryItems();
-    queryItems.append(qMakePair(QByteArray("format"), QByteArray("json")));
-    url.setEncodedQueryItems(queryItems);
-
+    queryItems.addQueryItem(QLatin1String("format"), QLatin1String("json"));
+    QUrl url = Utility::concatUrlPath(account()->url(), path(), queryItems);
     sendRequest(_verb, url, req, buffer);
     AbstractNetworkJob::start();
 }
