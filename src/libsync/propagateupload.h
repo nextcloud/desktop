@@ -291,6 +291,8 @@ private slots:
 private:
     QElapsedTimer _folderLockFirstTry;
     bool _currentLockingInProgress;
+    QByteArray _folderToken;
+    QByteArray _folderId;
 
 protected:
     /**

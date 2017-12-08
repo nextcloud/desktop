@@ -278,6 +278,8 @@ void PropagateUploadFileCommon::slotFolderLockedSuccessfully(const QByteArray& f
   qDebug() << "Folder" << fileId << "Locked Successfully for Upload";
   // Should I use a mutex here?
   _currentLockingInProgress = true;
+  _folderToken = token;
+  _folderId = fileId;
 }
 
 void PropagateUploadFileCommon::slotFolderLockedError(const QByteArray& fileId, int httpErrorCode)
