@@ -30,10 +30,12 @@
 #include <QPixmap>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QPainter>
 
 #include "networkjobs.h"
 #include "account.h"
 #include "owncloudpropagator.h"
+#include "clientsideencryption.h"
 
 #include "creds/abstractcredentials.h"
 #include "creds/httpcredentials.h"
@@ -185,7 +187,7 @@ LsColXMLParser::LsColXMLParser()
 {
 }
 
-bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, qint64> *sizes, const QString &expectedPath)
+bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, ExtraFolderInfo> *fileInfo, const QString &expectedPath)
 {
     // Parse DAV response
     QXmlStreamReader reader(xml);
@@ -241,9 +243,11 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, qint64> *sizes,
             } else if (name == QLatin1String("size")) {
                 bool ok = false;
                 auto s = propertyContent.toLongLong(&ok);
-                if (ok && sizes) {
-                    sizes->insert(currentHref, s);
+                if (ok && fileInfo) {
+                    (*fileInfo)[currentHref].size = s;
                 }
+            } else if (name == QLatin1String("fileid")) {
+                (*fileInfo)[currentHref].fileId = propertyContent.toUtf8();
             }
             currentTmpProperties.insert(reader.name().toString(), propertyContent);
         }
@@ -372,7 +376,7 @@ bool LsColJob::finished()
             this, &LsColJob::finishedWithoutError);
 
         QString expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/webdav/folder"
-        if (!parser.parse(reply()->readAll(), &_sizes, expectedPath)) {
+        if (!parser.parse(reply()->readAll(), &_folderInfos, expectedPath)) {
             // XML parse error
             emit finishedWithError(reply());
         }
@@ -565,6 +569,7 @@ void PropfindJob::start()
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
     sendRequest("PROPFIND", makeDavUrl(path()), req, buf);
+
     AbstractNetworkJob::start();
 }
 
@@ -626,10 +631,10 @@ bool PropfindJob::finished()
 
 /*********************************************************************************************/
 
-AvatarJob::AvatarJob(AccountPtr account, QObject *parent)
+AvatarJob::AvatarJob(AccountPtr account, const QString &userId, int size, QObject *parent)
     : AbstractNetworkJob(account, QString(), parent)
 {
-    _avatarUrl = Utility::concatUrlPath(account->url(), QString("remote.php/dav/avatars/%1/128.png").arg(account->davUser()));
+    _avatarUrl = Utility::concatUrlPath(account->url(), QString("remote.php/dav/avatars/%1/%2.png").arg(userId, QString::number(size)));
 }
 
 void AvatarJob::start()
@@ -637,6 +642,26 @@ void AvatarJob::start()
     QNetworkRequest req;
     sendRequest("GET", _avatarUrl, req);
     AbstractNetworkJob::start();
+}
+
+QImage AvatarJob::makeCircularAvatar(const QImage &baseAvatar)
+{
+    int dim = baseAvatar.width();
+
+    QImage avatar(dim, dim, baseAvatar.format());
+    avatar.fill(Qt::transparent);
+
+    QPainter painter(&avatar);
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    QPainterPath path;
+    path.addEllipse(0, 0, dim, dim);
+    painter.setClipPath(path);
+
+    painter.drawImage(0, 0, baseAvatar);
+    painter.end();
+
+    return avatar;
 }
 
 bool AvatarJob::finished()
@@ -785,6 +810,7 @@ bool JsonApiJob::finished()
 
     if (reply()->error() != QNetworkReply::NoError) {
         qCWarning(lcJsonApiJob) << "Network error: " << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        statusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         emit jsonReceived(QJsonDocument(), statusCode);
         return true;
     }
@@ -817,6 +843,7 @@ bool JsonApiJob::finished()
     emit jsonReceived(json, statusCode);
     return true;
 }
+
 
 DetermineAuthTypeJob::DetermineAuthTypeJob(AccountPtr account, QObject *parent)
     : QObject(parent)
@@ -903,4 +930,72 @@ bool SimpleNetworkJob::finished()
     return true;
 }
 
+
+DeleteApiJob::DeleteApiJob(AccountPtr account, const QString &path, QObject *parent)
+    : AbstractNetworkJob(account, path, parent)
+{
+
+}
+
+void DeleteApiJob::start()
+{
+    QNetworkRequest req;
+    req.setRawHeader("OCS-APIREQUEST", "true");
+    QUrl url = Utility::concatUrlPath(account()->url(), path());
+    sendRequest("DELETE", url, req);
+    AbstractNetworkJob::start();
+}
+
+bool DeleteApiJob::finished()
+{
+    qCInfo(lcJsonApiJob) << "JsonApiJob of" << reply()->request().url() << "FINISHED WITH STATUS"
+                         << reply()->error()
+                         << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
+
+    int statusCode = 0;
+
+    if (reply()->error() != QNetworkReply::NoError) {
+        qCWarning(lcJsonApiJob) << "Network error: " << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        emit result(statusCode);
+        return true;
+    }
+
+    const auto replyData = QString::fromUtf8(reply()->readAll());
+    qCInfo(lcJsonApiJob()) << "TMX Delete Job" << replyData;
+		return true;
+}
+
+void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
+    const QByteArray &numericFileId, QObject *target,
+    std::function<void(const QString &url)> targetFun)
+{
+    QString oldUrl;
+    if (!numericFileId.isEmpty())
+        oldUrl = account->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded);
+
+    // Retrieve the new link by PROPFIND
+    PropfindJob *job = new PropfindJob(account, remotePath, target);
+    job->setProperties(
+        QList<QByteArray>()
+        << "http://owncloud.org/ns:fileid" // numeric file id for fallback private link generation
+        << "http://owncloud.org/ns:privatelink");
+    job->setTimeout(10 * 1000);
+    QObject::connect(job, &PropfindJob::result, target, [=](const QVariantMap &result) {
+        auto privateLinkUrl = result["privatelink"].toString();
+        auto numericFileId = result["fileid"].toByteArray();
+        if (!privateLinkUrl.isEmpty()) {
+            targetFun(privateLinkUrl);
+        } else if (!numericFileId.isEmpty()) {
+            targetFun(account->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded));
+        } else {
+            targetFun(oldUrl);
+        }
+    });
+    QObject::connect(job, &PropfindJob::finishedWithError, target, [=](QNetworkReply *) {
+        targetFun(oldUrl);
+    });
+    job->start();
+}
+
 } // namespace OCC
+

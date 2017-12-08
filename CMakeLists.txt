@@ -1,9 +1,6 @@
 
-cmake_minimum_required(VERSION 2.6)
-cmake_policy(VERSION 2.8.0)
-if(POLICY CMP0020)
-  cmake_policy(SET CMP0020 NEW)
-endif()
+cmake_minimum_required(VERSION 3.2)
+cmake_policy(VERSION 3.2.0)
 
 project(client)
 
@@ -189,7 +186,7 @@ if(BUILD_CLIENT)
     endif()
     find_package(Sphinx)
     find_package(PdfLatex)
-
+    find_package(OpenSSL REQUIRED VERSION 1.0)
     find_package(SQLite3 3.8.0 REQUIRED)
     # On some OS, we want to use our own, not the system sqlite
     if (USE_OUR_OWN_SQLITE3)
@@ -197,6 +194,8 @@ if(BUILD_CLIENT)
         if (WIN32)
             add_definitions(-DSQLITE_API=__declspec\(dllimport\))
         endif()
+
+
     endif()
 
    find_package(ZLIB REQUIRED)

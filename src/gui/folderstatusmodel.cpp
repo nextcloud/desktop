@@ -46,6 +46,7 @@ FolderStatusModel::FolderStatusModel(QObject *parent)
     , _accountState(0)
     , _dirty(false)
 {
+
 }
 
 FolderStatusModel::~FolderStatusModel()
@@ -163,6 +164,8 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
                 return QColor(Qt::red);
             }
             break;
+        case FileIdRole:
+            return x._fileId;
         case FolderStatusDelegate::FolderPathRole: {
             auto f = x._folder;
             if (!f)
@@ -551,10 +554,19 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
         }
         path += info->_path;
     }
+
+		//TODO: This is the correct place, but this doesn't seems to be the right
+		// Way to call fetchFolderEncryptedStatus.
+		if (_accountState->account()->capabilities().clientSideEncryptionAvaliable()) {
+			_accountState->account()->e2e()->fetchFolderEncryptedStatus();
+		}
+
     LsColJob *job = new LsColJob(_accountState->account(), path, this);
     job->setProperties(QList<QByteArray>() << "resourcetype"
                                            << "http://owncloud.org/ns:size"
-                                           << "http://owncloud.org/ns:permissions");
+                                           << "http://owncloud.org/ns:permissions"
+                                           << "http://owncloud.org/ns:fileid");
+
     job->setTimeout(60 * 1000);
     connect(job, &LsColJob::directoryListingSubfolders,
         this, &FolderStatusModel::slotUpdateDirectories);
@@ -655,11 +667,13 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         newInfo._folder = parentInfo->_folder;
         newInfo._pathIdx = parentInfo->_pathIdx;
         newInfo._pathIdx << newSubs.size();
-        newInfo._size = job->_sizes.value(path);
         newInfo._isExternal = permissionMap.value(removeTrailingSlash(path)).toString().contains("M");
         newInfo._path = relativePath;
         newInfo._name = removeTrailingSlash(relativePath).split('/').last();
 
+        const auto& folderInfo = job->_folderInfos.value(path);
+        newInfo._size = folderInfo.size;
+        newInfo._fileId = folderInfo.fileId;
         if (relativePath.isEmpty())
             continue;
 

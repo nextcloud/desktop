@@ -212,6 +212,20 @@ protected:
     bool _deleteExisting BITFIELD(1);
     quint64 _abortCount; /// Keep track of number of aborted items
 
+    /* This is a minified version of the SyncFileItem,
+     * that holds only the specifics about the file that's
+     * being uploaded.
+     *
+     * This is needed if we wanna apply changes on the file
+     * that's being uploaded while keeping the original on disk.
+     */
+    struct UploadFileInfo {
+      QString _file; /// I'm still unsure if I should use a SyncFilePtr here.
+      QString _path; /// the full path on disk.
+      quint64 _size;
+    };
+    UploadFileInfo _fileToUpload;
+
 // measure the performance of checksum calc and upload
 #ifdef WITH_TESTING
     Utility::StopWatch _stopWatch;
@@ -236,8 +250,10 @@ public:
      */
     void setDeleteExisting(bool enabled);
 
+    /* start should setup the file, path and size that will be send to the server */
     void start() Q_DECL_OVERRIDE;
-
+    void startUploadEncryptedFile();
+    void startUploadFile();
     bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return _item->_size < propagator()->smallFileSize(); }
 
 private slots:
@@ -261,6 +277,23 @@ public slots:
 private slots:
     void slotReplyAbortFinished();
     void slotPollFinished();
+
+    // Encryption Stuff
+    void slotFolderEncryptedStatusFetched(const QMap<QString, bool>& result);
+    void slotFolderEncryptedStatusError(int error);
+    void slotFolderEncryptedIdReceived(const QStringList &list);
+    void slotFolderEncryptedIdError(QNetworkReply *r);
+    void slotFolderLockedSuccessfully(const QByteArray& fileId, const QByteArray& token);
+    void slotFolderLockedError(const QByteArray& fileId, int httpErrorCode);
+    void slotTryLock(const QByteArray& fileId);
+    void slotFolderEncriptedMetadataReceived(const QJsonDocument &json, int statusCode);
+
+// Private Encryption Stuff
+private:
+    QElapsedTimer _folderLockFirstTry;
+    bool _currentLockingInProgress;
+    QByteArray _folderToken;
+    QByteArray _folderId;
 
 protected:
     /**

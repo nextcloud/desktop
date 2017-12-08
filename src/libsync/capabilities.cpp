@@ -17,8 +17,12 @@
 #include "configfile.h"
 
 #include <QVariantMap>
+#include <QLoggingCategory>
+#include <QDebug>
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcServerCapabilities, "sync.server.capabilities", QtInfoMsg)
 
 
 Capabilities::Capabilities(const QVariantMap &capabilities)
@@ -79,6 +83,12 @@ bool Capabilities::sharePublicLinkMultiple() const
 bool Capabilities::shareResharing() const
 {
     return _capabilities["files_sharing"].toMap()["resharing"].toBool();
+}
+
+bool Capabilities::clientSideEncryptionAvaliable() const
+{
+    return _capabilities.keys().indexOf("end-to-end-encryption") != -1
+        ? _capabilities["end-to-end-encryption"].toMap()["enabled"].toBool() : false;
 }
 
 bool Capabilities::notificationsAvailable() const

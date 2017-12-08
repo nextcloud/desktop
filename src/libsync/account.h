@@ -31,6 +31,7 @@
 #include "common/utility.h"
 #include <memory>
 #include "capabilities.h"
+#include "clientsideencryption.h"
 
 class QSettings;
 class QNetworkReply;
@@ -228,6 +229,8 @@ public:
     /// Called by network jobs on credential errors, emits invalidCredentials()
     void handleInvalidCredentials();
 
+		ClientSideEncryption* e2e();
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -294,6 +297,8 @@ private:
     static QString _configFileName;
 
     QString _davPath; // defaults to value from theme, might be overwritten in brandings
+    ClientSideEncryption _e2e;
+
     friend class AccountManager;
 };
 }

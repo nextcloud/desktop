@@ -14,6 +14,7 @@
 
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QJsonArray>
 #include <QLoggingCategory>
 #include <QNetworkReply>
 #include <QNetworkProxyFactory>
@@ -334,7 +335,7 @@ void ConnectionValidator::slotUserFetched(const QJsonDocument &json)
     if (!user.isEmpty()) {
         _account->setDavUser(user);
 
-        AvatarJob *job = new AvatarJob(_account, this);
+        AvatarJob *job = new AvatarJob(_account, _account->davUser(), 128, this);
         job->setTimeout(20 * 1000);
         QObject::connect(job, &AvatarJob::avatarPixmap, this, &ConnectionValidator::slotAvatarImage);
 
@@ -349,6 +350,11 @@ void ConnectionValidator::slotUserFetched(const QJsonDocument &json)
 void ConnectionValidator::slotAvatarImage(const QImage &img)
 {
     _account->setAvatar(img);
+    connect(_account->e2e(), &ClientSideEncryption::initializationFinished, this, &ConnectionValidator::reportConnected);
+    _account->e2e()->initialize();
+}
+
+void ConnectionValidator::reportConnected() {
     reportResult(Connected);
 }
 

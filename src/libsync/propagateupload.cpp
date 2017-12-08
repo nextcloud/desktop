@@ -26,12 +26,16 @@
 #include "syncengine.h"
 #include "propagateremotedelete.h"
 #include "common/asserts.h"
+#include "networkjobs.h"
+#include "clientsideencryption.h"
 
 #include <QNetworkAccessManager>
 #include <QFileInfo>
 #include <QDir>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QFileInfo>
+
 #include <cmath>
 #include <cstring>
 
@@ -163,27 +167,189 @@ void PropagateUploadFileCommon::setDeleteExisting(bool enabled)
     _deleteExisting = enabled;
 }
 
-
 void PropagateUploadFileCommon::start()
 {
+    qDebug() << "Starting to upload a file.";
+    qDebug() << _item->_file;
+    qDebug() << _item->_fileId;
+
+    /* Currently the File to upload has the same information as the SyncFileItem,
+     * but the idea is to make a separation between the local file and the file that's
+     * being uploaded, in our current case they are the same, but perhaps we can apply
+     * some filters in the future like 'resize' for pictures and so on.
+     *
+     * this by no means is a finished job, but a first step.
+     */
+    if (propagator()->account()->capabilities().clientSideEncryptionAvaliable()) {
+      /* If the file is in a encrypted-enabled nextcloud instance, we need to
+      * do the long road: Fetch the folder status of the encrypted bit,
+      * if it's encrypted, find the ID of the folder.
+      * lock the folder using it's id.
+      * download the metadata
+      * update the metadata
+      * upload the file
+      * upload the metadata
+      * unlock the folder.
+      *
+      * If the folder is unencrypted we just follow the old way.
+      */
+      QFileInfo info(_item->_file);
+
+      auto getEncryptedStatus = new GetFolderEncryptStatusJob(propagator()->account(),
+                                                           info.path());
+
+      connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusReceived,
+              this, &PropagateUploadFileCommon::slotFolderEncryptedStatusFetched);
+      connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusError,
+              this, &PropagateUploadFileCommon::slotFolderEncryptedStatusError);
+      getEncryptedStatus->start();
+   } else {
+      _fileToUpload._file = _item->_file;
+      _fileToUpload._size = _item->_size;
+      _fileToUpload._path = propagator()->getFilePath(_fileToUpload._file);
+      startUploadFile();
+    }
+}
+
+void PropagateUploadFileCommon::slotFolderEncryptedStatusFetched(const QMap<QString, bool>& result)
+{
+  qDebug() << "####################################";
+  qDebug() << "Encrypted Status Result by folder:";
+  for(const auto& path : result.keys()) {
+    qDebug() << result[path] << path;
+  }
+  qDebug() << "Uploading to Remote Folder: " << propagator()->_remoteFolder;
+  qDebug() << "Uploading from Local Dir" << propagator()->_localDir;
+  qDebug() << "Local File" << _item->_file;
+  qDebug() << QDir::cleanPath(propagator()->account()->url().path() + QLatin1Char('/')
+    + propagator()->account()->davPath() + propagator()->_remoteFolder + _item->_file);
+  QFileInfo fileInfo(_item->_file);
+  QString currFilePath = fileInfo.path();
+  if (!currFilePath.endsWith(QDir::separator()))
+    currFilePath += QDir::separator();
+
+  qDebug() << "###################################";
+  qDebug() << "Retrieved correctly the encrypted status of the folders." << result;
+
+  /* We are inside an encrypted folder, we need to find it's Id. */
+  if (result[currFilePath] == true) {
+      QFileInfo info(_item->_file);
+      LsColJob *job = new LsColJob(propagator()->account(), info.path(), this);
+      job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
+      connect(job, &LsColJob::directoryListingSubfolders, this, &PropagateUploadFileCommon::slotFolderEncryptedIdReceived);
+      connect(job, &LsColJob::finishedWithError, this, &PropagateUploadFileCommon::slotFolderEncryptedIdError);
+      job->start();
+  } else {
+    _fileToUpload._file = _item->_file;
+    _fileToUpload._size = _item->_size;
+    _fileToUpload._path = propagator()->getFilePath(_fileToUpload._file);
+    startUploadFile();
+    qDebug() << "Uploading to a folder that's not encrypted. call the default uploader.";
+  }
+}
+
+/* We try to lock a folder, if it's locked we try again in one second.
+ * if it's still locked we try again in one second. looping untill one minute.
+ *                                                                      -> fail.
+ * the 'loop':                                                         /
+ *    slotFolderEncryptedIdReceived -> slotTryLock -> lockError -> stillTime? -> slotTryLock
+ *                                        \
+ *                                         -> success.
+ */
+
+void PropagateUploadFileCommon::slotFolderEncryptedIdReceived(const QStringList &list)
+{
+  auto job = qobject_cast<LsColJob *>(sender());
+  const auto& folderInfo = job->_folderInfos.value(list.first());
+  _folderLockFirstTry.start();
+  slotTryLock(folderInfo.fileId);
+}
+
+void PropagateUploadFileCommon::slotTryLock(const QByteArray& fileId)
+{
+  auto *lockJob = new LockEncryptFolderApiJob(propagator()->account(), fileId, this);
+  connect(lockJob, &LockEncryptFolderApiJob::success, this, &PropagateUploadFileCommon::slotFolderLockedSuccessfully);
+  connect(lockJob, &LockEncryptFolderApiJob::error, this, &PropagateUploadFileCommon::slotFolderLockedError);
+  lockJob->start();
+}
+
+void PropagateUploadFileCommon::slotFolderLockedSuccessfully(const QByteArray& fileId, const QByteArray& token)
+{
+  qDebug() << "Folder" << fileId << "Locked Successfully for Upload";
+  // Should I use a mutex here?
+  _currentLockingInProgress = true;
+  _folderToken = token;
+  _folderId = fileId;
+
+  auto job = new GetMetadataApiJob(propagator()->account(), _folderId);
+  connect(job, &GetMetadataApiJob::jsonReceived,
+          this, &PropagateUploadFileCommon::slotFolderEncriptedMetadataReceived);
+  job->start();
+}
+
+void PropagateUploadFileCommon::slotFolderEncriptedMetadataReceived(const QJsonDocument &json, int statusCode)
+{
+  qDebug() << "Metadata Received" << json.toVariant();
+}
+
+void PropagateUploadFileCommon::slotFolderLockedError(const QByteArray& fileId, int httpErrorCode)
+{
+  /* try to call the lock from 5 to 5 seconds
+    and fail if it's more than 5 minutes. */
+  QTimer::singleShot(5000, this, [this, fileId]{
+    if (!_currentLockingInProgress) {
+      qDebug() << "Error locking the folder while no other update is locking it up.";
+      qDebug() << "Perhaps another client locked it.";
+      qDebug() << "Abort";
+      return;
+    }
+
+    // Perhaps I should remove the elapsed timer if the lock is from this client?
+    if (_folderLockFirstTry.elapsed() > /* five minutes */ 1000 * 60 * 5 ) {
+      qDebug() << "One minute passed, ignoring more attemps to lock the folder.";
+      return;
+    }
+    slotTryLock(fileId);
+  });
+
+  qDebug() << "Folder" << fileId << "Coundn't be locked.";
+}
+
+void PropagateUploadFileCommon::slotFolderEncryptedIdError(QNetworkReply *r)
+{
+  qDebug() << "Error retrieving the Id of the encrypted folder.";
+}
+
+void PropagateUploadFileCommon::slotFolderEncryptedStatusError(int error)
+{
+	qDebug() << "Failed to retrieve the status of the folders." << error;
+}
+
+
+void PropagateUploadFileCommon::startUploadEncryptedFile()
+{
+
+}
+
+void PropagateUploadFileCommon::startUploadFile() {
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0)) {
         return;
     }
 
     // Check if the specific file can be accessed
-    if (propagator()->hasCaseClashAccessibilityProblem(_item->_file)) {
+    if (propagator()->hasCaseClashAccessibilityProblem(_fileToUpload._file)) {
         done(SyncFileItem::NormalError, tr("File %1 cannot be uploaded because another file with the same name, differing only in case, exists").arg(QDir::toNativeSeparators(_item->_file)));
         return;
     }
 
     // Check if we believe that the upload will fail due to remote quota limits
     const quint64 quotaGuess = propagator()->_folderQuota.value(
-        QFileInfo(_item->_file).path(), std::numeric_limits<quint64>::max());
-    if (_item->_size > quotaGuess) {
+        QFileInfo(_fileToUpload._file).path(), std::numeric_limits<quint64>::max());
+    if (_fileToUpload._size > quotaGuess) {
         // Necessary for blacklisting logic
         _item->_httpErrorCode = 507;
         emit propagator()->insufficientRemoteStorage();
-        done(SyncFileItem::DetailError, tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_item->_size)));
+        done(SyncFileItem::DetailError, tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_fileToUpload._size)));
         return;
     }
 
@@ -194,7 +360,7 @@ void PropagateUploadFileCommon::start()
     }
 
     auto job = new DeleteJob(propagator()->account(),
-        propagator()->_remoteFolder + _item->_file,
+        propagator()->_remoteFolder + _fileToUpload._file,
         this);
     _jobs.append(job);
     connect(job, &DeleteJob::finishedSignal, this, &PropagateUploadFileCommon::slotComputeContentChecksum);
@@ -208,10 +374,12 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
         return;
     }
 
-    const QString filePath = propagator()->getFilePath(_item->_file);
+    const QString filePath = propagator()->getFilePath(_fileToUpload._file);
 
     // remember the modtime before checksumming to be able to detect a file
-    // change during the checksum calculation
+    // change during the checksum calculation - This goes inside of the _item->_file
+    // and not the _fileToUpload because we are checking the original file, not there
+    // probably temporary one.
     _item->_modtime = FileSystem::getModTime(filePath);
 
 #ifdef WITH_TESTING
@@ -221,6 +389,9 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
     QByteArray checksumType = contentChecksumType();
 
     // Maybe the discovery already computed the checksum?
+    // Should I compute the checksum of the original (_item->_file)
+    // or the maybe-modified? (_fileToUpload._file) ?
+
     QByteArray existingChecksumType, existingChecksum;
     parseChecksumHeader(_item->_checksumHeader, &existingChecksumType, &existingChecksum);
     if (existingChecksumType == checksumType) {
@@ -285,7 +456,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
         _item->_checksumHeader = _transmissionChecksumHeader;
     }
 
-    const QString fullFilePath = propagator()->getFilePath(_item->_file);
+    const QString fullFilePath = propagator()->getFilePath(_fileToUpload._file);
 
     if (!FileSystem::fileExists(fullFilePath)) {
         done(SyncFileItem::SoftError, tr("File Removed"));
@@ -307,7 +478,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
     }
 
     quint64 fileSize = FileSystem::getSize(fullFilePath);
-    _item->_size = fileSize;
+    _fileToUpload._size = fileSize;
 
     // But skip the file if the mtime is too close to 'now'!
     // That usually indicates a file that is still being changed
@@ -536,17 +707,20 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
     // Insufficient remote storage.
     if (_item->_httpErrorCode == 507) {
         // Update the quota expectation
+        /* store the quota for the real local file using the information
+         * on the file to upload, that could have been modified by
+         * filters or something. */
         const auto path = QFileInfo(_item->_file).path();
         auto quotaIt = propagator()->_folderQuota.find(path);
         if (quotaIt != propagator()->_folderQuota.end()) {
-            quotaIt.value() = qMin(quotaIt.value(), _item->_size - 1);
+            quotaIt.value() = qMin(quotaIt.value(), _fileToUpload._size - 1);
         } else {
-            propagator()->_folderQuota[path] = _item->_size - 1;
+            propagator()->_folderQuota[path] = _fileToUpload._size - 1;
         }
 
         // Set up the error
         status = SyncFileItem::DetailError;
-        errorString = tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_item->_size));
+        errorString = tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_fileToUpload._size));
         emit propagator()->insufficientRemoteStorage();
     }
 
@@ -615,9 +789,9 @@ void PropagateUploadFileCommon::finalize()
     // Update the quota, if known
     auto quotaIt = propagator()->_folderQuota.find(QFileInfo(_item->_file).path());
     if (quotaIt != propagator()->_folderQuota.end())
-        quotaIt.value() -= _item->_size;
+        quotaIt.value() -= _fileToUpload._size;
 
-    // Update the database entry
+    // Update the database entry - use the local file, not the temporary one.
     if (!propagator()->_journal->setFileRecord(_item->toSyncJournalFileRecordWithInode(propagator()->getFilePath(_item->_file)))) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;

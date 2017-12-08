@@ -3,9 +3,11 @@ set(CMAKE_AUTOMOC TRUE)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 # csync is required.
-include_directories(${CMAKE_SOURCE_DIR}/src/csync
-                    ${CMAKE_BINARY_DIR}/src/csync
-                   )
+include_directories(
+    ${CMAKE_SOURCE_DIR}/src/csync
+    ${CMAKE_BINARY_DIR}/src/csync
+    ${CMAKE_SOURCE_DIR}/src/3rdparty
+)
 
 if ( APPLE )
     list(APPEND OS_SPECIFIC_LINK_LIBRARIES
@@ -27,6 +29,7 @@ endif()
 
 set(libsync_SRCS
     account.cpp
+    wordlist.cpp
     bandwidthmanager.cpp
     capabilities.cpp
     clientproxy.cpp
@@ -57,6 +60,7 @@ set(libsync_SRCS
     syncresult.cpp
     theme.cpp
     excludedfiles.cpp
+    clientsideencryption.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialscommon.cpp
@@ -98,6 +102,8 @@ ENDIF(NOT APPLE)
 list(APPEND libsync_LINK_TARGETS
     ${QT_LIBRARIES}
     ocsync
+    OpenSSL::Crypto
+    OpenSSL::SSL
     ${OS_SPECIFIC_LINK_LIBRARIES}
 )
 
