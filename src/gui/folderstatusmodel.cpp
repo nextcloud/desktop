@@ -90,7 +90,7 @@ void FolderStatusModel::setAccountState(const AccountState *accountState)
     }
 
     // Sort by header text
-    qSort(_folders.begin(), _folders.end(), sortByFolderHeader);
+    std::sort(_folders.begin(), _folders.end(), sortByFolderHeader);
 
     // Set the root _pathIdx after the sorting
     for (int i = 0; i < _folders.size(); ++i) {

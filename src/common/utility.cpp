@@ -518,7 +518,7 @@ void Utility::sortFilenames(QStringList &fileNames)
     QCollator collator;
     collator.setNumericMode(true);
     collator.setCaseSensitivity(Qt::CaseInsensitive);
-    qSort(fileNames.begin(), fileNames.end(), collator);
+    std::sort(fileNames.begin(), fileNames.end(), collator);
 }
 
 QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
