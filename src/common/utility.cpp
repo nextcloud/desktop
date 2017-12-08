@@ -296,9 +296,7 @@ namespace {
 
         QString description(quint64 value) const
         {
-            return QCoreApplication::translate(
-                "Utility", name, 0, QCoreApplication::UnicodeUTF8,
-                value);
+            return QCoreApplication::translate("Utility", name, 0, value);
         }
     };
 // QTBUG-3945 and issue #4855: QT_TRANSLATE_NOOP does not work with plural form because lupdate
