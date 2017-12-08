@@ -280,6 +280,16 @@ void PropagateUploadFileCommon::slotFolderLockedSuccessfully(const QByteArray& f
   _currentLockingInProgress = true;
   _folderToken = token;
   _folderId = fileId;
+
+  auto job = new GetMetadataApiJob(propagator()->account(), _folderId);
+  connect(job, &GetMetadataApiJob::jsonReceived,
+          this, &PropagateUploadFileCommon::slotFolderEncriptedMetadataReceived);
+  job->start();
+}
+
+void PropagateUploadFileCommon::slotFolderEncriptedMetadataReceived(const QJsonDocument &json, int statusCode)
+{
+  qDebug() << "Metadata Received" << json.toVariant();
 }
 
 void PropagateUploadFileCommon::slotFolderLockedError(const QByteArray& fileId, int httpErrorCode)

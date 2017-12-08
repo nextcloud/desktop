@@ -286,6 +286,7 @@ private slots:
     void slotFolderLockedSuccessfully(const QByteArray& fileId, const QByteArray& token);
     void slotFolderLockedError(const QByteArray& fileId, int httpErrorCode);
     void slotTryLock(const QByteArray& fileId);
+    void slotFolderEncriptedMetadataReceived(const QJsonDocument &json, int statusCode);
 
 // Private Encryption Stuff
 private:
