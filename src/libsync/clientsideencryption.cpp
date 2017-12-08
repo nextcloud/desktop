@@ -1134,16 +1134,12 @@ FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata) :
 
 // RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.
 QByteArray FolderMetadata::encryptMetadataKeys(const nlohmann::json& metadataKeys) const {
-    auto path = publicKeyPath(_account);
-    const char *pathC = qPrintable(path);
 
-    FILE* pkeyFile = fopen(pathC, "r");
-    if (!pkeyFile) {
-        qCInfo(lcCse()) << "Could not open the public key";
-        exit(1);
-    }
+    BIO *publicKeyBio = BIO_new(BIO_s_mem());
+    QByteArray publicKeyPem = _account->e2e()->_publicKey.toPem();
+    BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
 
-    EVP_PKEY *key = PEM_read_PUBKEY(pkeyFile, NULL, NULL, NULL);
+    EVP_PKEY *key = PEM_read_bio_PUBKEY(publicKeyBio, NULL, NULL, NULL);
 
     auto data = QByteArray::fromStdString(metadataKeys.dump());
     auto ret = EncryptionHelper::encryptStringAsymmetric(key, data);

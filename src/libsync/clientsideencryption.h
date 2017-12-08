@@ -42,7 +42,6 @@ public:
     void encryptPrivateKey();
     void setTokenForFolder(const QByteArray& folder, const QByteArray& token);
     QByteArray tokenForFolder(const QByteArray& folder) const;
-
     void fetchFolderEncryptedStatus();
 
     // to be used together with FolderStatusModel::FolderInfo::_path.
@@ -77,6 +76,7 @@ private:
     QMap<QByteArray, QByteArray> _folder2token;
     QMap<QString, bool> _folder2encryptedStatus;
 
+public:
     QSslKey _privateKey;
     QSslKey _publicKey;
     QSslCertificate _certificate;
