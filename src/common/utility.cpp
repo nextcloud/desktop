@@ -524,7 +524,7 @@ void Utility::sortFilenames(QStringList &fileNames)
 }
 
 QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
-    const QList<QPair<QString, QString>> &queryItems)
+    const QUrlQuery &queryItems)
 {
     QString path = url.path();
     if (!concatPath.isEmpty()) {
@@ -540,9 +540,7 @@ QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
 
     QUrl tmpUrl = url;
     tmpUrl.setPath(path);
-    if (queryItems.size() > 0) {
-        tmpUrl.setQueryItems(queryItems);
-    }
+    tmpUrl.setQuery(queryItems);
     return tmpUrl;
 }
 

@@ -28,6 +28,7 @@
 #include <QLoggingCategory>
 #include <QMap>
 #include <QUrl>
+#include <QUrlQuery>
 #include <functional>
 #include <memory>
 
@@ -175,7 +176,7 @@ namespace Utility {
     /** Appends concatPath and queryItems to the url */
     OCSYNC_EXPORT QUrl concatUrlPath(
         const QUrl &url, const QString &concatPath,
-        const QList<QPair<QString, QString>> &queryItems = (QList<QPair<QString, QString>>()));
+        const QUrlQuery &queryItems = {});
 
     /**  Returns a new settings pre-set in a specific group.  The Settings will be created
          with the given parent. If no parent is specified, the caller must destroy the settings */
