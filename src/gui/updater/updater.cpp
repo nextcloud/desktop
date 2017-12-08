@@ -90,7 +90,7 @@ QString Updater::getSystemInfo()
 
     return QString::fromLocal8Bit(output.toBase64());
 #else
-    return QString::null;
+    return QString();
 #endif
 }
 

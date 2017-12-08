@@ -326,7 +326,7 @@ QString extractErrorMessage(const QByteArray &errorResponse)
     QXmlStreamReader reader(errorResponse);
     reader.readNextStartElement();
     if (reader.name() != "error") {
-        return QString::null;
+        return QString();
     }
 
     QString exception;

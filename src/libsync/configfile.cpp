@@ -84,7 +84,7 @@ static const char maxLogLinesC[] = "Logging/maxLogLines";
 
 const char certPath[] = "http_certificatePath";
 const char certPasswd[] = "http_certificatePasswd";
-QString ConfigFile::_confDir = QString::null;
+QString ConfigFile::_confDir = QString();
 bool ConfigFile::_askedUser = false;
 
 ConfigFile::ConfigFile()
@@ -609,12 +609,12 @@ QString ConfigFile::proxyPassword() const
 
 int ConfigFile::useUploadLimit() const
 {
-    return getValue(useUploadLimitC, QString::null, 0).toInt();
+    return getValue(useUploadLimitC, QString(), 0).toInt();
 }
 
 int ConfigFile::useDownloadLimit() const
 {
-    return getValue(useDownloadLimitC, QString::null, 0).toInt();
+    return getValue(useDownloadLimitC, QString(), 0).toInt();
 }
 
 void ConfigFile::setUseUploadLimit(int val)
@@ -629,12 +629,12 @@ void ConfigFile::setUseDownloadLimit(int val)
 
 int ConfigFile::uploadLimit() const
 {
-    return getValue(uploadLimitC, QString::null, 10).toInt();
+    return getValue(uploadLimitC, QString(), 10).toInt();
 }
 
 int ConfigFile::downloadLimit() const
 {
-    return getValue(downloadLimitC, QString::null, 80).toInt();
+    return getValue(downloadLimitC, QString(), 80).toInt();
 }
 
 void ConfigFile::setUploadLimit(int kbytes)

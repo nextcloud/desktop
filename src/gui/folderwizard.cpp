@@ -107,7 +107,7 @@ bool FolderWizardLocalPath::isComplete() const
     _ui.warnLabel->setWordWrap(true);
     if (isOk) {
         _ui.warnLabel->hide();
-        _ui.warnLabel->setText(QString::null);
+        _ui.warnLabel->setText(QString());
     } else {
         _ui.warnLabel->show();
         QString warnings = formatWarnings(warnStrings);

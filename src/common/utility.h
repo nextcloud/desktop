@@ -71,7 +71,7 @@ namespace Utility {
      * @param unit an optional unit that is appended if present.
      * @return the formatted string.
      */
-    OCSYNC_EXPORT QString compactFormatDouble(double value, int prec, const QString &unit = QString::null);
+    OCSYNC_EXPORT QString compactFormatDouble(double value, int prec, const QString &unit = QString());
 
     // porting methods
     OCSYNC_EXPORT QString escape(const QString &);
