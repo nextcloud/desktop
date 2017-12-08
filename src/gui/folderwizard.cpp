@@ -118,7 +118,7 @@ bool FolderWizardLocalPath::isComplete() const
 
 void FolderWizardLocalPath::slotChooseLocalFolder()
 {
-    QString sf = QDesktopServices::storageLocation(QDesktopServices::HomeLocation);
+    QString sf = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
     QDir d(sf);
 
     // open the first entry of the home dir. Otherwise the dir picker comes
