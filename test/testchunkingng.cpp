@@ -79,7 +79,7 @@ private slots:
         // Add a fake file to make sure it gets deleted
         fakeFolder.uploadState().children.first().insert("10000", size);
 
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request) -> QNetworkReply * {
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (op == QNetworkAccessManager::PutOperation) {
                 // Test that we properly resuming and are not sending past data again.
                 Q_ASSERT(request.rawHeader("OC-Chunk-Offset").toULongLong() >= uploadedSize);
@@ -109,11 +109,11 @@ private slots:
         QByteArray moveChecksumHeader;
         int nGET = 0;
         int responseDelay = 10000; // bigger than abort-wait timeout
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request) -> QNetworkReply * {
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
                 QTimer::singleShot(50, parent, [&]() { fakeFolder.syncEngine().abort(); });
                 moveChecksumHeader = request.rawHeader("OC-Checksum");
-                return new FakeChunkMoveReply(fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, responseDelay, parent);
+                return new DelayedReply<FakeChunkMoveReply>(responseDelay, fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, parent);
             } else if (op == QNetworkAccessManager::GetOperation) {
                 nGET++;
             }
@@ -203,11 +203,11 @@ private slots:
         QByteArray moveChecksumHeader;
         int nGET = 0;
         int responseDelay = 2000; // smaller than abort-wait timeout
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request) -> QNetworkReply * {
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
                 QTimer::singleShot(50, parent, [&]() { fakeFolder.syncEngine().abort(); });
                 moveChecksumHeader = request.rawHeader("OC-Checksum");
-                return new FakeChunkMoveReply(fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, responseDelay, parent);
+                return new DelayedReply<FakeChunkMoveReply>(responseDelay, fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, parent);
             } else if (op == QNetworkAccessManager::GetOperation) {
                 nGET++;
             }
