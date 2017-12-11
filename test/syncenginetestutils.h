@@ -452,7 +452,11 @@ public:
         emit finished();
     }
 
-    void abort() override { }
+    void abort() override
+    {
+        setError(OperationCanceledError, "abort");
+        emit finished();
+    }
     qint64 readData(char *, qint64) override { return 0; }
 };
 
@@ -696,7 +700,12 @@ public:
         emit finished();
     }
 
-    void abort() override { }
+    void abort() override
+    {
+        setError(OperationCanceledError, "abort");
+        emit finished();
+    }
+
     qint64 readData(char *, qint64) override { return 0; }
 };
 

@@ -112,6 +112,7 @@ public:
         qint64 _modtime;
         int _errorCount;
         bool _valid;
+        QByteArray _contentChecksum;
     };
 
     struct PollInfo

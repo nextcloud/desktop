@@ -230,6 +230,7 @@ void PropagateUploadFileNG::startNewUpload()
     pi._valid = true;
     pi._transferid = _transferId;
     pi._modtime = _item->_modtime;
+    pi._contentChecksum = _item->_checksumHeader;
     propagator()->_journal->setUploadInfo(_item->_file, pi);
     propagator()->_journal->commit("Upload info");
     QMap<QByteArray, QByteArray> headers;

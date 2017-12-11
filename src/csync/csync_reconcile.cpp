@@ -27,6 +27,7 @@
 #include "csync_rename.h"
 #include "common/c_jhash.h"
 #include "common/asserts.h"
+#include "common/syncjournalfilerecord.h"
 
 #include <QLoggingCategory>
 Q_LOGGING_CATEGORY(lcReconcile, "sync.csync.reconciler", QtInfoMsg)
@@ -316,6 +317,35 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                         (ctx->current == REMOTE_REPLICA ? cur->checksumHeader : other->checksumHeader);
                     if (!remoteChecksumHeader.isEmpty()) {
                         is_conflict = true;
+
+                        // Do we have an UploadInfo for this?
+                        // Maybe the Upload was completed, but the connection was broken just before
+                        // we recieved the etag (Issue #5106)
+                        auto up = ctx->statedb->getUploadInfo(cur->path);
+                        if (up._valid && up._contentChecksum == remoteChecksumHeader) {
+                            // Solve the conflict into an upload, or nothing
+                            auto remoteNode = ctx->current == REMOTE_REPLICA ? cur : other;
+                            auto localNode = ctx->current == REMOTE_REPLICA ? other : cur;
+                            remoteNode->instruction = CSYNC_INSTRUCTION_NONE;
+                            localNode->instruction = up._modtime == localNode->modtime ? CSYNC_INSTRUCTION_UPDATE_METADATA : CSYNC_INSTRUCTION_SYNC;
+
+                            // Update the etag and other server metadata in the journal already
+                            // (We can't use a typical CSYNC_INSTRUCTION_UPDATE_METADATA because
+                            // we must not store the size/modtime from the file system)
+                            OCC::SyncJournalFileRecord rec;
+                            if (ctx->statedb->getFileRecord(remoteNode->path, &rec)) {
+                                rec._path = remoteNode->path;
+                                rec._etag = remoteNode->etag;
+                                rec._fileId = remoteNode->file_id;
+                                rec._modtime = remoteNode->modtime;
+                                rec._type = remoteNode->type;
+                                rec._fileSize = remoteNode->size;
+                                rec._remotePerm = remoteNode->remotePerm;
+                                rec._checksumHeader = remoteNode->checksumHeader;
+                                ctx->statedb->setFileRecordMetadata(rec);
+                            }
+                            break;
+                        }
                     }
 
                     // SO: If there is no checksum, we can have !is_conflict here

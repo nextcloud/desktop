@@ -389,6 +389,7 @@ bool SyncJournalDb::checkConnect()
                         "errorcount INTEGER,"
                         "size INTEGER(8),"
                         "modtime INTEGER(8),"
+                        "contentChecksum TEXT,"
                         "PRIMARY KEY(path)"
                         ");");
 
@@ -611,15 +612,15 @@ bool SyncJournalDb::checkConnect()
     }
 
     _getUploadInfoQuery.reset(new SqlQuery(_db));
-    if (_getUploadInfoQuery->prepare("SELECT chunk, transferid, errorcount, size, modtime FROM "
+    if (_getUploadInfoQuery->prepare("SELECT chunk, transferid, errorcount, size, modtime, contentChecksum FROM "
                                      "uploadinfo WHERE path=?1")) {
         return sqlFail("prepare _getUploadInfoQuery", *_getUploadInfoQuery);
     }
 
     _setUploadInfoQuery.reset(new SqlQuery(_db));
     if (_setUploadInfoQuery->prepare("INSERT OR REPLACE INTO uploadinfo "
-                                     "(path, chunk, transferid, errorcount, size, modtime) "
-                                     "VALUES ( ?1 , ?2, ?3 , ?4 ,  ?5, ?6 )")) {
+                                     "(path, chunk, transferid, errorcount, size, modtime, contentChecksum) "
+                                     "VALUES ( ?1 , ?2, ?3 , ?4 ,  ?5, ?6 , ?7 )")) {
         return sqlFail("prepare _setUploadInfoQuery", *_setUploadInfoQuery);
     }
 
@@ -847,6 +848,16 @@ bool SyncJournalDb::updateMetadataTableStructure()
             re = false;
         }
         commitInternal("update database structure: add contentChecksumTypeId col");
+    }
+
+    if (!tableColumns("uploadinfo").contains("contentChecksum")) {
+        SqlQuery query(_db);
+        query.prepare("ALTER TABLE uploadinfo ADD COLUMN contentChecksum TEXT;");
+        if (!query.exec()) {
+            sqlFail("updateMetadataTableStructure: add contentChecksum column", query);
+            re = false;
+        }
+        commitInternal("update database structure: add contentChecksum col for uploadinfo");
     }
 
 
@@ -1472,6 +1483,7 @@ SyncJournalDb::UploadInfo SyncJournalDb::getUploadInfo(const QString &file)
             res._errorCount = _getUploadInfoQuery->intValue(2);
             res._size = _getUploadInfoQuery->int64Value(3);
             res._modtime = _getUploadInfoQuery->int64Value(4);
+            res._contentChecksum = _getUploadInfoQuery->baValue(5);
             res._valid = ok;
         }
     }
@@ -1494,6 +1506,7 @@ void SyncJournalDb::setUploadInfo(const QString &file, const SyncJournalDb::Uplo
         _setUploadInfoQuery->bindValue(4, i._errorCount);
         _setUploadInfoQuery->bindValue(5, i._size);
         _setUploadInfoQuery->bindValue(6, i._modtime);
+        _setUploadInfoQuery->bindValue(7, i._contentChecksum);
 
         if (!_setUploadInfoQuery->exec()) {
             return;
@@ -2001,7 +2014,8 @@ bool operator==(const SyncJournalDb::UploadInfo &lhs,
         && lhs._modtime == rhs._modtime
         && lhs._valid == rhs._valid
         && lhs._size == rhs._size
-        && lhs._transferid == rhs._transferid;
+        && lhs._transferid == rhs._transferid
+        && lhs._contentChecksum == rhs._contentChecksum;
 }
 
 } // namespace OCC
