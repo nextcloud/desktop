@@ -15,7 +15,6 @@
 #include "account.h"
 #include "cookiejar.h"
 #include "networkjobs.h"
-#include "configfile.h"
 #include "accessmanager.h"
 #include "creds/abstractcredentials.h"
 #include "capabilities.h"
@@ -33,6 +32,7 @@
 #include <QDir>
 #include <QSslKey>
 #include <QAuthenticator>
+#include <QStandardPaths>
 
 namespace OCC {
 
@@ -206,8 +206,7 @@ void Account::lendCookieJarTo(QNetworkAccessManager *guest)
 
 QString Account::cookieJarPath()
 {
-    ConfigFile cfg;
-    return cfg.configPath() + "/cookies" + id() + ".db";
+    return QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/cookies" + id() + ".db";
 }
 
 void Account::resetNetworkAccessManager()
