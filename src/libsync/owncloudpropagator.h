@@ -30,7 +30,7 @@
 #include "common/syncjournaldb.h"
 #include "bandwidthmanager.h"
 #include "accountfwd.h"
-#include "discoveryphase.h"
+#include "syncoptions.h"
 
 namespace OCC {
 
@@ -464,9 +464,6 @@ public:
             emitFinished(SyncFileItem::NormalError);
         }
     }
-
-    // timeout in seconds
-    static int httpTimeout();
 
     AccountPtr account() const;
 

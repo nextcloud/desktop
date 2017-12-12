@@ -14,7 +14,6 @@
 #include "selectivesyncdialog.h"
 #include "folder.h"
 #include "account.h"
-#include "excludedfiles.h"
 #include "networkjobs.h"
 #include "theme.h"
 #include "folderman.h"
@@ -95,6 +94,9 @@ SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
     _folderTree->header()->setStretchLastSection(true);
     _folderTree->headerItem()->setText(0, tr("Name"));
     _folderTree->headerItem()->setText(1, tr("Size"));
+
+    ConfigFile::setupDefaultExcludeFilePaths(_excludedFiles);
+    _excludedFiles.reloadExcludeFiles();
 }
 
 QSize SelectiveSyncWidget::sizeHint() const
@@ -204,7 +206,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     QMutableListIterator<QString> it(list);
     while (it.hasNext()) {
         it.next();
-        if (ExcludedFiles::instance().isExcluded(it.value(), pathToRemove, FolderMan::instance()->ignoreHiddenFiles()))
+        if (_excludedFiles.isExcluded(it.value(), pathToRemove, FolderMan::instance()->ignoreHiddenFiles()))
             it.remove();
     }
 

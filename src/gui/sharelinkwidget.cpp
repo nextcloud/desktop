@@ -158,12 +158,12 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     _linkContextMenu = new QMenu(this);
     connect(_linkContextMenu, &QMenu::triggered,
         this, &ShareLinkWidget::slotLinkContextMenuActionTriggered);
-    _deleteLinkAction = _linkContextMenu->addAction(tr("Delete"));
     _openLinkAction = _linkContextMenu->addAction(tr("Open link in browser"));
     _copyLinkAction = _linkContextMenu->addAction(tr("Copy link to clipboard"));
     _copyDirectLinkAction = _linkContextMenu->addAction(tr("Copy link to clipboard (direct download)"));
     _emailLinkAction = _linkContextMenu->addAction(tr("Send link by email"));
     _emailDirectLinkAction = _linkContextMenu->addAction(tr("Send link by email (direct download)"));
+    _deleteLinkAction = _linkContextMenu->addAction(tr("Delete"));
 
     /*
      * Create the share manager and connect it properly

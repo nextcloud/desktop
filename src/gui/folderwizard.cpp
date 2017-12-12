@@ -35,6 +35,7 @@
 #include <QWizardPage>
 #include <QTreeWidget>
 #include <QVBoxLayout>
+#include <QEvent>
 
 #include <stdlib.h>
 
@@ -536,9 +537,11 @@ FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(Page_Source, _folderWizardSourcePage);
+    _folderWizardSourcePage->installEventFilter(this);
     if (!Theme::instance()->singleSyncFolder()) {
         _folderWizardTargetPage = new FolderWizardRemotePath(account);
         setPage(Page_Target, _folderWizardTargetPage);
+        _folderWizardTargetPage->installEventFilter(this);
     }
     setPage(Page_SelectiveSync, _folderWizardSelectiveSyncPage);
 
@@ -551,5 +554,25 @@ FolderWizard::~FolderWizard()
 {
 }
 
+bool FolderWizard::eventFilter(QObject *watched, QEvent *event)
+{
+    if (event->type() == QEvent::LayoutRequest) {
+        // Workaround QTBUG-3396:  forces QWizardPrivate::updateLayout()
+        QTimer::singleShot(0, this, [this] { setTitleFormat(titleFormat()); });
+    }
+    return QWizard::eventFilter(watched, event);
+}
+
+void FolderWizard::resizeEvent(QResizeEvent *event)
+{
+    QWizard::resizeEvent(event);
+
+    // workaround for QTBUG-22819: when the error label word wrap, the minimum height is not adjusted
+    int hfw = currentPage()->heightForWidth(currentPage()->width());
+    if (currentPage()->height() < hfw) {
+        currentPage()->setMinimumSize(currentPage()->minimumSizeHint().width(), hfw);
+        setTitleFormat(titleFormat()); // And another workaround for QTBUG-3396
+    }
+}
 
 } // end namespace

@@ -35,7 +35,6 @@
 #include "accountmanager.h"
 #include "creds/abstractcredentials.h"
 #include "updater/ocupdater.h"
-#include "excludedfiles.h"
 #include "owncloudsetupwizard.h"
 #include "version.h"
 
@@ -52,6 +51,7 @@
 #include <QTranslator>
 #include <QMenu>
 #include <QMessageBox>
+#include <QDesktopServices>
 
 class QSocket;
 
@@ -120,9 +120,28 @@ Application::Application(int &argc, char **argv)
     // TODO: Can't set this without breaking current config paths
     //    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
     setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN));
-    setApplicationName(_theme->appNameGUI());
+    setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
     setAttribute(Qt::AA_UseHighDpiPixmaps, true);
+
+    auto confDir = ConfigFile().configPath();
+    if (!QFileInfo(confDir).exists()) {
+        // Migrate from version <= 2.4
+        setApplicationName(_theme->appNameGUI());
+        QString oldDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+        setApplicationName(_theme->appName());
+        if (QFileInfo(oldDir).isDir()) {
+            qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
+            if (!QFile::rename(oldDir, confDir)) {
+                qCWarning(lcApplication) << "Failed to move the old config file to its new location (" << oldDir << "to" << confDir << ")";
+            } else {
+#ifndef Q_OS_WIN
+                // Create a symbolic link so a downgrade of the client would still find the config.
+                QFile::link(confDir, oldDir);
+#endif
+            }
+        }
+    }
 
     parseOptions(arguments());
     //no need to waste time;
@@ -140,13 +159,10 @@ Application::Application(int &argc, char **argv)
     setupLogging();
     setupTranslations();
 
-    // Setup global excludes
-    qCInfo(lcApplication) << "Loading global exclude list";
+    // The timeout is initialized with an environment variable, if not, override with the value from the config
     ConfigFile cfg;
-    ExcludedFiles &excludes = ExcludedFiles::instance();
-    excludes.addExcludeFilePath(cfg.excludeFile(ConfigFile::SystemScope));
-    excludes.addExcludeFilePath(cfg.excludeFile(ConfigFile::UserScope));
-    excludes.reloadExcludes();
+    if (!AbstractNetworkJob::httpTimeout)
+        AbstractNetworkJob::httpTimeout = cfg.timeout();
 
     _folderManager.reset(new FolderMan);
 

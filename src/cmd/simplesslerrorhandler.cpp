@@ -11,7 +11,6 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-#include "configfile.h"
 #include "common/utility.h"
 #include "account.h"
 #include "simplesslerrorhandler.h"

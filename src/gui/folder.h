@@ -325,7 +325,7 @@ private slots:
     void slotNextSyncFullLocalDiscovery();
 
 private:
-    bool setIgnoredFiles();
+    bool reloadExcludes();
 
     void showSyncResultPopup();
 

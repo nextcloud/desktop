@@ -59,7 +59,6 @@ set(libsync_SRCS
     syncfilestatustracker.cpp
     syncresult.cpp
     theme.cpp
-    excludedfiles.cpp
     clientsideencryption.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp

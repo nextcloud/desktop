@@ -17,6 +17,8 @@
 #include <QTreeWidget>
 #include "accountfwd.h"
 
+#include "csync_exclude.h"
+
 class QTreeWidgetItem;
 class QTreeWidget;
 class QNetworkReply;
@@ -72,6 +74,10 @@ private:
     QLabel *_loading;
 
     QTreeWidget *_folderTree;
+
+    // During account setup we want to filter out excluded folders from the
+    // view without having a Folder.SyncEngine.ExcludedFiles instance.
+    ExcludedFiles _excludedFiles;
 };
 
 /**

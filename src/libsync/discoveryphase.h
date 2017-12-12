@@ -24,6 +24,7 @@
 #include <QWaitCondition>
 #include <QLinkedList>
 #include <deque>
+#include "syncoptions.h"
 
 namespace OCC {
 
@@ -34,52 +35,6 @@ class Account;
  * Its goal is to look at the files in one of the remote and check compared to the db
  * if the files are new, or changed.
  */
-
-struct SyncOptions
-{
-    SyncOptions()
-        : _newBigFolderSizeLimit(-1)
-        , _confirmExternalStorage(false)
-        , _initialChunkSize(10 * 1000 * 1000) // 10 MB
-        , _minChunkSize(1 * 1000 * 1000) // 1 MB
-        , _maxChunkSize(100 * 1000 * 1000) // 100 MB
-        , _targetChunkUploadDuration(60 * 1000) // 1 minute
-        , _parallelNetworkJobs(true)
-    {
-    }
-
-    /** Maximum size (in Bytes) a folder can have without asking for confirmation.
-     * -1 means infinite */
-    qint64 _newBigFolderSizeLimit;
-
-    /** If a confirmation should be asked for external storages */
-    bool _confirmExternalStorage;
-
-    /** The initial un-adjusted chunk size in bytes for chunked uploads, both
-     * for old and new chunking algorithm, which classifies the item to be chunked
-     *
-     * In chunkingNG, when dynamic chunk size adjustments are done, this is the
-     * starting value and is then gradually adjusted within the
-     * minChunkSize / maxChunkSize bounds.
-     */
-    quint64 _initialChunkSize;
-
-    /** The minimum chunk size in bytes for chunked uploads */
-    quint64 _minChunkSize;
-
-    /** The maximum chunk size in bytes for chunked uploads */
-    quint64 _maxChunkSize;
-
-    /** The target duration of chunk uploads for dynamic chunk sizing.
-     *
-     * Set to 0 it will disable dynamic chunk sizing.
-     */
-    quint64 _targetChunkUploadDuration;
-
-    /** Whether parallel network jobs are allowed. */
-    bool _parallelNetworkJobs;
-};
-
 
 struct DiscoveryDirectoryResult
 {

@@ -88,6 +88,10 @@ public:
      */
     QString errorStringParsingBody(QByteArray *body = 0);
 
+    /** static variable the HTTP timeout (in seconds). If set to 0, the default will be used
+     */
+    static int httpTimeout;
+
 public slots:
     void setTimeout(qint64 msec);
     void resetTimeout();

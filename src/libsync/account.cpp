@@ -16,6 +16,7 @@
 #include "cookiejar.h"
 #include "networkjobs.h"
 #include "configfile.h"
+#include "accessmanager.h"
 #include "creds/abstractcredentials.h"
 #include "capabilities.h"
 #include "theme.h"
@@ -33,6 +34,7 @@
 #include <QDir>
 #include <QSslKey>
 #include <QAuthenticator>
+#include <QStandardPaths>
 
 namespace OCC {
 
@@ -103,6 +105,7 @@ void Account::setDavUser(const QString &newDavUser)
     _davUser = newDavUser;
 }
 
+#ifndef TOKEN_AUTH_ONLY
 QImage Account::avatar() const
 {
     return _avatarImg;
@@ -112,6 +115,7 @@ void Account::setAvatar(const QImage &img)
     _avatarImg = img;
     emit accountChangedAvatar();
 }
+#endif
 
 QString Account::displayName() const
 {
@@ -214,8 +218,7 @@ void Account::lendCookieJarTo(QNetworkAccessManager *guest)
 
 QString Account::cookieJarPath()
 {
-    ConfigFile cfg;
-    return cfg.configPath() + "/cookies" + id() + ".db";
+    return QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/cookies" + id() + ".db";
 }
 
 void Account::resetNetworkAccessManager()

@@ -16,7 +16,7 @@ node('CLIENT') {
         sh '''rm -rf build
 		mkdir build
 		cd build
-		cmake -DCMAKE_BUILD_TYPE="Debug" -DUNIT_TESTING=1 -DWITH_TESTING=1 -DBUILD_WITH_QT4=OFF ..
+		cmake -DCMAKE_BUILD_TYPE="Debug" -DUNIT_TESTING=1 -DWITH_TESTING=1 -DCMAKE_PREFIX_PATH=/var/lib/jenkins/qt/5.6.2 ..
 		make -j4
 		ctest -V --output-on-failure'''
 
@@ -24,7 +24,7 @@ node('CLIENT') {
         sh '''rm -rf build
 		mkdir build
 		cd build
-		cmake -DCMAKE_BUILD_TYPE="Debug" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DUNIT_TESTING=1 -DWITH_TESTING=1 -DBUILD_WITH_QT4=OFF ..
+		cmake -DCMAKE_BUILD_TYPE="Debug" -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DUNIT_TESTING=1 -DWITH_TESTING=1 -DCMAKE_PREFIX_PATH=/var/lib/jenkins/qt/5.6.2 ..
 		make -j4
 		ctest -V --output-on-failure'''
 
