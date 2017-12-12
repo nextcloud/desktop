@@ -33,6 +33,7 @@
 #include "creds/httpcredentialsgui.h"
 #include "tooltipupdater.h"
 #include "filesystem.h"
+#include "clientsideencryptionjobs.h"
 
 #include <math.h>
 

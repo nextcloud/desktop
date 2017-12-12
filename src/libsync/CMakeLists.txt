@@ -60,6 +60,7 @@ set(libsync_SRCS
     syncresult.cpp
     theme.cpp
     clientsideencryption.cpp
+    clientsideencryptionjobs.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialscommon.cpp
