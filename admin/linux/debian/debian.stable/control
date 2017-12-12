@@ -1,0 +1,80 @@
+Source: nextcloud-client
+Section: contrib/devel
+Priority: optional
+Maintainer: István Váradi <ivaradi@varadiistvan.hu>
+Build-Depends: cmake,
+               debhelper,
+               cdbs,
+               dh-python,
+               extra-cmake-modules (>= 5.16),
+               kdelibs5-dev,
+               kio-dev,
+               libcmocka-dev,
+               libhttp-dav-perl,
+               libinotify-dev [kfreebsd-any],
+               libqt5webkit5-dev,
+               libsqlite3-dev,
+               libssl-dev (>> 1.0.0),
+               zlib1g-dev,
+               optipng,
+               pkg-kde-tools,
+               python-sphinx | python3-sphinx,
+               python3-all,
+               qt5keychain-dev,
+               qtdeclarative5-dev,
+               qttools5-dev,
+               qttools5-dev-tools,
+               xvfb
+Standards-Version: 3.9.8
+Homepage: https://github.com/nextcloud/client_theming
+#Vcs-Git: git://anonscm.debian.org/collab-maint/nextcloud-client.git
+#Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/nextcloud-client.git
+
+Package: nextcloud-client
+Architecture: any
+Depends: libnextcloudsync0 (=${binary:Version}), ${shlibs:Depends}, ${misc:Depends}, nextcloud-client-l10n
+Description: Nextcloud desktop sync client
+ Use the desktop client to keep your files synchronized
+ between your Nextcloud server and your desktop. Select
+ one or more directories on your local machine and always
+ have access to your latest files wherever you are.
+
+Package: libnextcloudsync0
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Nextcloud sync library
+ Used by the Nextcloud desktop client as the synchronization engine.
+
+Package: libnextcloudsync-dev
+Architecture: any
+Section: contrib/libdevel
+Depends: libnextcloudsync0 (=${binary:Version}), ${misc:Depends}
+Description: Nextcloud sync library development files
+ The headers and development library for the Nextcloud sync library.
+
+Package: nextcloud-client-l10n
+Architecture: all
+Depends: ${misc:Depends}
+Description: Nextcloud client internatialization files
+ The translation files.
+
+Package: nextcloud-client-nautilus
+Architecture: all
+Depends: nextcloud-client (>=${binary:Version}), libnextcloudsync0, python-nautilus, nautilus, ${misc:Depends}
+Description: Nautilus plugin for Nextcloud
+ This package contains a Nautilus plugin to display
+ synchronization status icons for Nextcloud files.
+
+Package: nextcloud-client-nemo
+Architecture: all
+Depends: nextcloud-client (>=${binary:Version}), libnextcloudsync0, python-nemo, nemo, ${misc:Depends}
+Description: Nemo plugin for Nextcloud
+ This package contains a Nemo plugin to display
+ synchronization status icons for Nextcloud files.
+
+Package: nextcloud-client-caja
+Architecture: all
+Depends: nextcloud-client (>=${binary:Version}), libnextcloudsync0, python-caja, caja, ${misc:Depends}
+Description: Caja plugin for Nextcloud
+ This package contains a Caja plugin to display
+ synchronization status icons for Nextcloud files.
