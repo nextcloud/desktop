@@ -27,7 +27,7 @@ if [ "$TRAVIS_BUILD_STEP" == "install" ]; then
         openssl aes-256-cbc -K $encrypted_8da7a4416c7a_key -iv $encrypted_8da7a4416c7a_iv -in admin/linux/debian/oscrc.enc -out ~/.oscrc -d
         PPA=ppa:ivaradi/nextcloud-client-exp
     elif test "$encrypted_c5306c5c5331_key" -a "$encrypted_c5306c5c5331_key"; then
-        openssl aes-256-cbc -K $encrypted_c5306c5c5331_key -iv $encrypted_c5306c5c5331_key -in admin/linux/debian/oscrc.enc -out ~/.oscrc -d
+        openssl aes-256-cbc -K $encrypted_c5306c5c5331_key -iv $encrypted_c5306c5c5331_iv -in admin/linux/debian/oscrc.enc -out ~/.oscrc -d
         PPA=ppa:ivaradi/nextcloud-client-exp
     elif test "$encrypted_5dafbd038603_key" -a "$encrypted_5dafbd038603_iv"; then
         openssl aes-256-cbc -K $encrypted_5dafbd038603_key -iv $encrypted_5dafbd038603_iv -in admin/linux/debian/signing-key.txt.enc -d | gpg --import
