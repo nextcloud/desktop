@@ -43,7 +43,7 @@ QString ownCloudTheme::configFileName() const
 QString ownCloudTheme::about() const
 {
     QString devString;
-    devString = trUtf8("<p>Version %2. For more information visit <a href=\"%3\">https://%4</a></p>"
+    devString = tr("<p>Version %2. For more information visit <a href=\"%3\">https://%4</a></p>"
                        "<p>For known issues and help, please visit: <a href=\"https://central.owncloud.org/c/desktop-client\">https://central.owncloud.org</a></p>"
                        "<p><small>By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, "
                        " Jan-Christoph Borchardt, and others.</small></p>"

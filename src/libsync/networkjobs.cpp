@@ -780,7 +780,7 @@ JsonApiJob::JsonApiJob(const AccountPtr &account, const QString &path, QObject *
 {
 }
 
-void JsonApiJob::addQueryParams(QList<QPair<QString, QString>> params)
+void JsonApiJob::addQueryParams(const QUrlQuery &params)
 {
     _additionalParams = params;
 }
@@ -789,10 +789,9 @@ void JsonApiJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
-    QUrl url = Utility::concatUrlPath(account()->url(), path());
-    QList<QPair<QString, QString>> params = _additionalParams;
-    params << qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json"));
-    url.setQueryItems(params);
+    auto query = _additionalParams;
+    query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
+    QUrl url = Utility::concatUrlPath(account()->url(), path(), query);
     sendRequest("GET", url, req);
     AbstractNetworkJob::start();
 }

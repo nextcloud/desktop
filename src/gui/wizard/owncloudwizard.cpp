@@ -195,7 +195,7 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
     if (id == WizardCommon::Page_Result) {
         disconnect(this, &QDialog::finished, this, &OwncloudWizard::basicSetupFinished);
         emit basicSetupFinished(QDialog::Accepted);
-        appendToConfigurationLog(QString::null);
+        appendToConfigurationLog(QString());
         // Immediately close on show, we currently don't want this page anymore
         done(Accepted);
     }

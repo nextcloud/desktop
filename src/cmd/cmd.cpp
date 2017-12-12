@@ -53,7 +53,7 @@
 using namespace OCC;
 
 
-static void nullMessageHandler(QtMsgType, const char *)
+static void nullMessageHandler(QtMsgType, const QMessageLogContext &, const QString &)
 {
 }
 
@@ -333,7 +333,7 @@ int main(int argc, char **argv)
 
     csync_set_log_level(options.silent ? 1 : 11);
     if (options.silent) {
-        qInstallMsgHandler(nullMessageHandler);
+        qInstallMessageHandler(nullMessageHandler);
     } else {
         qSetMessagePattern("%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
     }

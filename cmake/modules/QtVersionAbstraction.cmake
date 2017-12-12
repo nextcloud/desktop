@@ -98,7 +98,7 @@ set(QT_RCC_EXECUTABLE "${Qt5Core_RCC_EXECUTABLE}")
 
 #Enable deprecated symbols
 add_definitions("-DQT_DISABLE_DEPRECATED_BEFORE=0")
-
+add_definitions("-DQT_DEPRECATED_WARNINGS")
 add_definitions("-DQT_USE_QSTRINGBUILDER") #optimize string concatenation
 add_definitions("-DQT_MESSAGELOGCONTEXT") #enable function name and line number in debug output
 

@@ -219,7 +219,7 @@ QString Theme::defaultServerFolder() const
 
 QString Theme::overrideServerUrl() const
 {
-    return QString::null;
+    return QString();
 }
 
 QString Theme::forceConfigAuthType() const
@@ -303,7 +303,7 @@ QString Theme::gitSHA1() const
                     .arg(gitSha1.left(6))
                     .arg(__DATE__)
                     .arg(__TIME__)
-                    .arg(QString::fromAscii(qVersion()))
+                    .arg(qVersion())
                     .arg(QSslSocket::sslLibraryVersionString());
 #endif
     return devString;

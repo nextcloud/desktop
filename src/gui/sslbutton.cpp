@@ -39,21 +39,6 @@ SslButton::SslButton(QWidget *parent)
         this, &SslButton::slotUpdateMenu);
 }
 
-QString SslButton::protoToString(QSsl::SslProtocol proto)
-{
-    switch (proto) {
-        break;
-    case QSsl::SslV2:
-        return QLatin1String("SSL v2");
-    case QSsl::SslV3:
-        return QLatin1String("SSL v3");
-    case QSsl::TlsV1:
-        return QLatin1String("TLS");
-    default:
-        return QString();
-    }
-}
-
 static QString addCertDetailsField(const QString &key, const QString &value)
 {
     if (value.isEmpty())
@@ -92,7 +77,7 @@ QMenu *SslButton::buildCertMenu(QMenu *parent, const QSslCertificate &cert,
     QString serial = QString::fromUtf8(cert.serialNumber());
     QString effectiveDate = cert.effectiveDate().date().toString();
     QString expiryDate = cert.expiryDate().date().toString();
-    QString sna = QStringList(cert.alternateSubjectNames().values()).join(" ");
+    QString sna = QStringList(cert.subjectAlternativeNames().values()).join(" ");
 
     QString details;
     QTextStream stream(&details);
@@ -144,7 +129,7 @@ QMenu *SslButton::buildCertMenu(QMenu *parent, const QSslCertificate &cert,
 
     QString certId = cn.isEmpty() ? ou : cn;
 
-    if (QSslSocket::systemCaCertificates().contains(cert)) {
+    if (QSslConfiguration::systemCaCertificates().contains(cert)) {
         txt += certId;
     } else {
         if (isSelfSigned(cert)) {
@@ -224,16 +209,18 @@ void SslButton::slotUpdateMenu()
 
         _menu->addAction(tr("Certificate information:"))->setEnabled(false);
 
+        const auto systemCerts = QSslConfiguration::systemCaCertificates();
+
         QList<QSslCertificate> tmpChain;
         foreach (QSslCertificate cert, chain) {
             tmpChain << cert;
-            if (QSslSocket::systemCaCertificates().contains(cert))
+            if (systemCerts.contains(cert))
                 break;
         }
         chain = tmpChain;
 
         // find trust anchor (informational only, verification is done by QSslSocket!)
-        foreach (QSslCertificate rootCA, QSslSocket::systemCaCertificates()) {
+        for (const QSslCertificate &rootCA : systemCerts) {
             if (rootCA.issuerInfo(QSslCertificate::CommonName) == chain.last().issuerInfo(QSslCertificate::CommonName)
                 && rootCA.issuerInfo(QSslCertificate::Organization) == chain.last().issuerInfo(QSslCertificate::Organization)) {
                 chain.append(rootCA);

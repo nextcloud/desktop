@@ -379,9 +379,9 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
         // From ownCloud server version 8 on, a different share link scheme is used.
         url = QUrl(Utility::concatUrlPath(_account->url(), QLatin1String("index.php/s/") + data.value("token").toString())).toString();
     } else {
-        QList<QPair<QString, QString>> queryArgs;
-        queryArgs.append(qMakePair(QString("service"), QString("files")));
-        queryArgs.append(qMakePair(QString("t"), data.value("token").toString()));
+        QUrlQuery queryArgs;
+        queryArgs.addQueryItem(QLatin1String("service"), QLatin1String("files"));
+        queryArgs.addQueryItem(QLatin1String("t"), data.value("token").toString());
         url = QUrl(Utility::concatUrlPath(_account->url(), QLatin1String("public.php"), queryArgs).toString());
     }
 

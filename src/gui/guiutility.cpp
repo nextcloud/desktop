@@ -19,6 +19,7 @@
 #include <QDesktopServices>
 #include <QLoggingCategory>
 #include <QMessageBox>
+#include <QUrlQuery>
 
 using namespace OCC;
 
@@ -45,8 +46,10 @@ bool Utility::openBrowser(const QUrl &url, QWidget *errorWidgetParent)
 bool Utility::openEmailComposer(const QString &subject, const QString &body, QWidget *errorWidgetParent)
 {
     QUrl url(QLatin1String("mailto:"));
-    url.setQueryItems({ { QLatin1String("subject"), subject },
+    QUrlQuery query;
+    query.setQueryItems({ { QLatin1String("subject"), subject },
         { QLatin1String("body"), body } });
+    url.setQuery(query);
 
     if (!QDesktopServices::openUrl(url)) {
         if (errorWidgetParent) {

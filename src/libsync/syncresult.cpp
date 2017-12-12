@@ -106,7 +106,7 @@ void SyncResult::appendErrorString(const QString &err)
 QString SyncResult::errorString() const
 {
     if (_errors.isEmpty())
-        return QString::null;
+        return QString();
     return _errors.first();
 }
 

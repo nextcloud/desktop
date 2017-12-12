@@ -308,7 +308,7 @@ void SettingsDialog::customizeStyle()
     QString altBase(palette().alternateBase().color().name());
     QString dark(palette().dark().color().name());
     QString background(palette().base().color().name());
-    _toolBar->setStyleSheet(QString::fromAscii(TOOLBAR_CSS).arg(background, dark, highlightColor, altBase));
+    _toolBar->setStyleSheet(QString::fromLatin1(TOOLBAR_CSS).arg(background, dark, highlightColor, altBase));
 
     Q_FOREACH (QAction *a, _actionGroup->actions()) {
         QIcon icon = createColorAwareIcon(a->property("iconPath").toString());

@@ -36,7 +36,6 @@ class SslButton : public QToolButton
     Q_OBJECT
 public:
     explicit SslButton(QWidget *parent = 0);
-    QString protoToString(QSsl::SslProtocol proto);
     void updateAccountState(AccountState *accountState);
 
 public slots:
