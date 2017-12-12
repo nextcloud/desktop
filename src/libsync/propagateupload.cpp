@@ -290,6 +290,20 @@ void PropagateUploadFileCommon::slotFolderLockedSuccessfully(const QByteArray& f
 void PropagateUploadFileCommon::slotFolderEncriptedMetadataReceived(const QJsonDocument &json, int statusCode)
 {
   qDebug() << "Metadata Received" << json.toVariant();
+  auto *unlockJob = new UnlockEncryptFolderApiJob(propagator()->account(), _folderId, _folderToken, this);
+  connect(unlockJob, &UnlockEncryptFolderApiJob::success, this, &PropagateUploadFileCommon::slotUnlockEncryptedFolderSuccess);
+  connect(unlockJob, &UnlockEncryptFolderApiJob::error, this, &PropagateUploadFileCommon::slotUnlockEncryptedFolderError);
+  unlockJob->start();
+}
+
+void PropagateUploadFileCommon::slotUnlockEncryptedFolderSuccess(const QByteArray& fileId)
+{
+    qDebug() << "Unlock Job worked for folder " << fileId;
+}
+
+void PropagateUploadFileCommon::slotUnlockEncryptedFolderError(const QByteArray& fileId, int httpStatusCode)
+{
+  qDebug() << "There was an error unlocking " << fileId << httpStatusCode;
 }
 
 void PropagateUploadFileCommon::slotFolderLockedError(const QByteArray& fileId, int httpErrorCode)
