@@ -84,7 +84,7 @@ public:
             const QByteArray& data
     );
     static QByteArray encryptStringAsymmetric(
-            EVP_PKEY *key,
+            EVP_PKEY *publicKey,
             const QByteArray& data
     );
     static QByteArray BIO2ByteArray(BIO *b);
@@ -467,10 +467,10 @@ QByteArray EncryptionHelper::encryptStringSymmetric(const QByteArray& key, const
     return result;
 }
 
-QByteArray EncryptionHelper::encryptStringAsymmetric(EVP_PKEY *key, const QByteArray& data) {
+QByteArray EncryptionHelper::encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray& data) {
     int err = -1;
 
-    auto ctx = EVP_PKEY_CTX_new(key, ENGINE_get_default_RSA());
+    auto ctx = EVP_PKEY_CTX_new(publicKey, ENGINE_get_default_RSA());
     if (!ctx) {
         qCInfo(lcCse()) << "Could not initialize the pkey context.";
         exit(1);
@@ -1027,10 +1027,6 @@ FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata) :
     }
 }
 
-/*
-  "{\n    \"meta-data\": \"{\\\"files\\\":null,\\\"metadata\\\":{\\\"metadataKeys\\\":\\\"VTgqEKn8QBNCu5XtqeTg vmqG56j9uQ96wZUHamqilS32AMGKMO3Spu6F /jP3F5aNq66r InABxwaDq8YsuuqXPngQ0GCM3RQf /1/T427c/pFTye2bpD8v5Hi VwEjuEPNeTLoZ/YJg/0PDeeF7J5YdSiMb2UMiEJXH zAFnS2FqCCZBZdj8afnyomvxO6etvveRzIxs/JjR4SQS69AR/vJG4P/oyPDt y7Md EicMzKaV6evO2wcJzy8XM6T5rHibhw5veavSDfHrw8nrsSwU 4u7r6y rR4tajGSm6vg6pKXCBubd6ZCOvXDTSueJbWZkWP81bYxs9TPvWydTA==\\\",\\\"sharing\\\":\\\"BDLzU0ZDA1ajP4HmRfQS0/etaPBzn6t5/LFZePWXXHn/nm4nV6mGww==fA==K0oYOZuVLYr4FxDAmh7mRA==\\\",\\\"version\\\":1}}\"\n}\n"
-*/
-
 void FolderMetadata::setupExistingMetadata()
 {
   /* This is the json response from the server, it contains two extra objects that we are *not* interested.
@@ -1070,12 +1066,12 @@ QByteArray FolderMetadata::encryptMetadataKeys(const nlohmann::json& metadataKey
     QByteArray publicKeyPem = _account->e2e()->_publicKey.toPem();
     BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
 
-    EVP_PKEY *key = PEM_read_bio_PUBKEY(publicKeyBio, NULL, NULL, NULL);
+    EVP_PKEY *publicKey = PEM_read_bio_PUBKEY(publicKeyBio, NULL, NULL, NULL);
 
     auto data = QByteArray::fromStdString(metadataKeys.dump());
-    auto ret = EncryptionHelper::encryptStringAsymmetric(key, data);
+    auto ret = EncryptionHelper::encryptStringAsymmetric(publicKey, data);
 
-    EVP_PKEY_free(key);
+    EVP_PKEY_free(publicKey);
 
     return ret;
 }
