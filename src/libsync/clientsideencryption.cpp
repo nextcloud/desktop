@@ -477,6 +477,8 @@ QByteArray EncryptionHelper::encryptStringSymmetric(const QByteArray& key, const
 QByteArray EncryptionHelper::decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data) {
     int err = -1;
 
+    const QByteArray rawData = QByteArray::fromBase64(data);
+
     auto ctx = EVP_PKEY_CTX_new(privateKey, ENGINE_get_default_RSA());
     if (!ctx) {
         qCInfo(lcCse()) << "Could not create the PKEY context.";
@@ -505,7 +507,7 @@ QByteArray EncryptionHelper::decryptStringAsymmetric(EVP_PKEY *privateKey, const
     }
 
     size_t outlen = 0;
-    err = EVP_PKEY_decrypt(ctx, NULL, &outlen,  (unsigned char *)data.constData(), data.size());
+    err = EVP_PKEY_decrypt(ctx, NULL, &outlen,  (unsigned char *)rawData.constData(), rawData.size());
     if (err <= 0) {
         qCInfo(lcCse()) << "Could not determine the buffer length";
         exit(1);
@@ -519,7 +521,7 @@ QByteArray EncryptionHelper::decryptStringAsymmetric(EVP_PKEY *privateKey, const
         exit(1);
     }
 
-    if (EVP_PKEY_decrypt(ctx, out, &outlen, (unsigned char *)data.constData(), data.size()) <= 0) {
+    if (EVP_PKEY_decrypt(ctx, out, &outlen, (unsigned char *)rawData.constData(), rawData.size()) <= 0) {
         qCInfo(lcCse()) << "Could not decrypt the data.";
         exit(1);
     } else {
