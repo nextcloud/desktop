@@ -1128,8 +1128,38 @@ FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata) :
         qCInfo(lcCse()) << "Setupping Empty Metadata";
         setupEmptyMetadata();
     } else {
-        qCInfo(lcCse()) << "Metadata already exists, deal with it later.";
+        qCInfo(lcCse()) << "Setting up existing metadata";
+        setupExistingMetadata();
     }
+}
+
+/*
+  "{\n    \"meta-data\": \"{\\\"files\\\":null,\\\"metadata\\\":{\\\"metadataKeys\\\":\\\"VTgqEKn8QBNCu5XtqeTg vmqG56j9uQ96wZUHamqilS32AMGKMO3Spu6F /jP3F5aNq66r InABxwaDq8YsuuqXPngQ0GCM3RQf /1/T427c/pFTye2bpD8v5Hi VwEjuEPNeTLoZ/YJg/0PDeeF7J5YdSiMb2UMiEJXH zAFnS2FqCCZBZdj8afnyomvxO6etvveRzIxs/JjR4SQS69AR/vJG4P/oyPDt y7Md EicMzKaV6evO2wcJzy8XM6T5rHibhw5veavSDfHrw8nrsSwU 4u7r6y rR4tajGSm6vg6pKXCBubd6ZCOvXDTSueJbWZkWP81bYxs9TPvWydTA==\\\",\\\"sharing\\\":\\\"BDLzU0ZDA1ajP4HmRfQS0/etaPBzn6t5/LFZePWXXHn/nm4nV6mGww==fA==K0oYOZuVLYr4FxDAmh7mRA==\\\",\\\"version\\\":1}}\"\n}\n"
+*/
+
+void FolderMetadata::setupExistingMetadata()
+{
+  /* This is the json response from the server, it contains two extra objects that we are *not* interested.
+  * ocs and data.
+  */
+  std::string byteArray(_metadata.constData(), _metadata.length());
+
+  nlohmann::json j = nlohmann::json::parse(byteArray);
+
+  // The metadata is being retrieved as a string stored in a json.
+  // This *seems* to be broken - the strung us nit base64 encoded,
+  // I'm currently unsure if this is error on my side or in the server implementation.
+  auto metaData = nlohmann::json::parse(j["ocs"]["data"]["meta-data"].get<std::string>());
+
+  qDebug() << "######################################333";
+  qDebug() << " EXisting Metadata";
+  qDebug() << _metadata;
+  qDebug() << metaData.dump(4);
+  for (nlohmann::json::iterator it = metaData.begin(); it != metaData.end(); ++it) {
+    std::cout << it.key() << " : " << it.value() << std::endl;
+  }
+  qDebug() << "##########################################";
+
 }
 
 // RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.

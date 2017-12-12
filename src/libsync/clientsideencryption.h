@@ -228,6 +228,8 @@ private:
      * to ease the port to Nlohmann Json API
      */
     void setupEmptyMetadata();
+    void setupExistingMetadata();
+
     QByteArray encryptMetadataKeys(const nlohmann::json& metadataKeys) const;
     std::string decryptMetadataKeys(const std::string& encryptedMetadataKeys) const;
 
