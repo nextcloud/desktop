@@ -520,14 +520,13 @@ QByteArray EncryptionHelper::decryptStringAsymmetric(EVP_PKEY *privateKey, const
     }
 
     if (EVP_PKEY_decrypt(ctx, out, &outlen, (unsigned char *)data.constData(), data.size()) <= 0) {
-        qCInfo(lcCse()) << "Could not decrypt the metadata";
+        qCInfo(lcCse()) << "Could not decrypt the data.";
         exit(1);
+    } else {
+        qCInfo(lcCse()) << "data decrypted successfully";
     }
 
-    qCInfo(lcCse()) << "Metadata decrypted successfully";
     const auto ret = std::string((char*) out, outlen);
-
-    // Transform the encrypted data into base64.
     QByteArray raw((const char*) out, outlen);
     qCInfo(lcCse()) << raw;
     return raw;
