@@ -243,7 +243,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>Serwer %1 jest obecnie w trybie konserwacji.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="658"/>
@@ -373,7 +373,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="132"/>
         <source>Maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>Tryb konserwacji</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="134"/>
@@ -768,7 +768,10 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Wszystkie pliki z folderu &apos;%1&apos; zostały usunięte z serwera.
+W momencie synchronizacji zostaną usunięte z lokalnego katalogu, co spowoduje ich niedostępność, chyba, że posiadasz prawo do przywracania.
+Jeśli zdecydujesz się zatrzymać pliki i posiadasz odpowiednie uprawnienia, zostaną one ponownie przesłane na serwer.
+Jeśli zdecydujesz je usunąć, nie będą więcej dostępne. </translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="932"/>
