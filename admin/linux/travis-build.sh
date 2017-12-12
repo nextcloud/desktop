@@ -12,7 +12,7 @@ if [ -z "$TRAVIS_BUILD_STEP" ]; then
 fi
 
 if [ "$BUILD_TYPE" == "debian" ]; then
-    tools/linux/debian/travis-build.sh "$@"
+    admin/linux/debian/travis-build.sh "$@"
 else
     echo 'No $BUILD_TYPE defined'
     exit 1
