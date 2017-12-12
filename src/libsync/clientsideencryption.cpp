@@ -1194,8 +1194,8 @@ std::string FolderMetadata::decryptMetadataKeys(const std::string& encryptedMeta
     int err = -1;
 
     BIO *privateKeyBio = BIO_new(BIO_s_mem());
-    QByteArray publicKeyPem = _account->e2e()->_privateKey.toPem();
-    BIO_write(privateKeyBio, publicKeyPem.constData(), publicKeyPem.size());
+    QByteArray privateKeyPem = _account->e2e()->_privateKey.toPem();
+    BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
     EVP_PKEY *key = PEM_read_bio_PrivateKey(privateKeyBio, NULL, NULL, NULL);
 
     if (!key) {
