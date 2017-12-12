@@ -1143,22 +1143,29 @@ void FolderMetadata::setupExistingMetadata()
   * ocs and data.
   */
   std::string byteArray(_metadata.constData(), _metadata.length());
-
   nlohmann::json j = nlohmann::json::parse(byteArray);
 
   // The metadata is being retrieved as a string stored in a json.
   // This *seems* to be broken - the strung us nit base64 encoded,
   // I'm currently unsure if this is error on my side or in the server implementation.
-  auto metaData = nlohmann::json::parse(j["ocs"]["data"]["meta-data"].get<std::string>());
+  // And because inside of the meta-data there's an object called metadata, without '-'
+  // make it really different.
+  auto meta_Data = nlohmann::json::parse(j["ocs"]["data"]["meta-data"].get<std::string>());
 
   qDebug() << "######################################333";
   qDebug() << " EXisting Metadata";
   qDebug() << _metadata;
-  qDebug() << metaData.dump(4);
-  for (nlohmann::json::iterator it = metaData.begin(); it != metaData.end(); ++it) {
+  qDebug() << meta_Data.dump(4);
+  for (nlohmann::json::iterator it = meta_Data.begin(); it != meta_Data.end(); ++it) {
     std::cout << it.key() << " : " << it.value() << std::endl;
   }
   qDebug() << "##########################################";
+
+  // This is the encrypted metadata string.
+  std::string encrypted_metadata_keys = meta_Data["metadata"]["metadataKeys"];
+  std::string decrypted_metadata_keys = decryptMetadataKeys(encrypted_metadata_keys);
+  qDebug() << encrypted_metadata_keys;
+  qDebug() << decrypted_metadata_keys;
 
 }
 
@@ -1186,10 +1193,11 @@ std::string FolderMetadata::decryptMetadataKeys(const std::string& encryptedMeta
     size_t outlen = 0;
     int err = -1;
 
-    auto path = privateKeyPath(_account);
-    auto pathC = qPrintable(path);
-    auto pkeyFile = fopen(pathC, "r");
-    auto key = PEM_read_PrivateKey(pkeyFile, NULL, NULL, NULL);
+    BIO *privateKeyBio = BIO_new(BIO_s_mem());
+    QByteArray publicKeyPem = _account->e2e()->_privateKey.toPem();
+    BIO_write(privateKeyBio, publicKeyPem.constData(), publicKeyPem.size());
+    EVP_PKEY *key = PEM_read_bio_PrivateKey(privateKeyBio, NULL, NULL, NULL);
+
     if (!key) {
         qCInfo(lcCse()) << "Error reading private key";
     }
@@ -1341,6 +1349,9 @@ void FolderMetadata::setupEmptyMetadata() {
     json recepient = {"recipient", {}};
 
     auto b64String = encryptMetadataKeys(metadataKeyObj);
+    qCInfo(lcCse()) << "ENCRYPTED METADATA KEY" << b64String;
+    auto db64String = decryptMetadataKeys(std::string(b64String.constData(), b64String.size()));
+    qCInfo(lcCse()) << "DECRYPTED METADATA KEY" << b64String;
     auto sharingEncrypted = encryptJsonObject(recepient, newMetadataPass);
 
     json m = {
