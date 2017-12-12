@@ -58,8 +58,8 @@ elif [ "$TRAVIS_BUILD_STEP" == "script" ]; then
     fi
 
 
-    if test -d nextcloud-client; then
-        gitdir="nextcloud-client"
+    if test -d nextcloud.client; then
+        gitdir="nextcloud.client"
     else
         gitdir="client"
     fi
