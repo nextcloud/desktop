@@ -43,6 +43,7 @@ namespace OCC
 {
 
 Q_LOGGING_CATEGORY(lcCse, "sync.clientsideencryption", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCseDecryption, "e2e", QtInfoMsg)
 
 QString baseUrl(){
     return QStringLiteral("ocs/v2.php/apps/end_to_end_encryption/api/v1/");
@@ -479,53 +480,63 @@ QByteArray EncryptionHelper::decryptStringAsymmetric(EVP_PKEY *privateKey, const
 
     const QByteArray rawData = QByteArray::fromBase64(data);
 
+    qCInfo(lcCseDecryption()) << "Start to work the decryption.";
     auto ctx = EVP_PKEY_CTX_new(privateKey, ENGINE_get_default_RSA());
     if (!ctx) {
-        qCInfo(lcCse()) << "Could not create the PKEY context.";
+        qCInfo(lcCseDecryption()) << "Could not create the PKEY context.";
+        handleErrors();
         exit(1);
     }
 
     err = EVP_PKEY_decrypt_init(ctx);
     if (err <= 0) {
-        qCInfo(lcCse()) << "Could not init the decryption of the metadata";
+        qCInfo(lcCseDecryption()) << "Could not init the decryption of the metadata";
+        handleErrors();
         exit(1);
     }
 
     if (EVP_PKEY_CTX_set_rsa_padding(ctx, RSA_PKCS1_OAEP_PADDING) <= 0) {
-        qCInfo(lcCse()) << "Error setting the encryption padding.";
+        qCInfo(lcCseDecryption()) << "Error setting the encryption padding.";
+        handleErrors();
         exit(1);
     }
 
     if (EVP_PKEY_CTX_set_rsa_oaep_md(ctx, EVP_sha256()) <= 0) {
-        qCInfo(lcCse()) << "Error setting OAEP SHA 256";
+        qCInfo(lcCseDecryption()) << "Error setting OAEP SHA 256";
+        handleErrors();
         exit(1);
     }
 
     if (EVP_PKEY_CTX_set_rsa_mgf1_md(ctx, EVP_sha256()) <= 0) {
-        qCInfo(lcCse()) << "Error setting MGF1 padding";
+        qCInfo(lcCseDecryption()) << "Error setting MGF1 padding";
+        handleErrors();
         exit(1);
     }
 
     size_t outlen = 0;
     err = EVP_PKEY_decrypt(ctx, NULL, &outlen,  (unsigned char *)rawData.constData(), rawData.size());
     if (err <= 0) {
-        qCInfo(lcCse()) << "Could not determine the buffer length";
+        qCInfo(lcCseDecryption()) << "Could not determine the buffer length";
+        handleErrors();
         exit(1);
     } else {
-        qCInfo(lcCse()) << "Size of output is: " << outlen;
+        qCInfo(lcCseDecryption()) << "Size of output is: " << outlen;
+        qCInfo(lcCseDecryption()) << "Size of data is: " << data.size();
     }
 
     unsigned char *out = (unsigned char *) OPENSSL_malloc(outlen);
     if (!out) {
-        qCInfo(lcCse()) << "Could not alloc space for the decrypted metadata";
+        qCInfo(lcCseDecryption()) << "Could not alloc space for the decrypted metadata";
+        handleErrors();
         exit(1);
     }
 
     if (EVP_PKEY_decrypt(ctx, out, &outlen, (unsigned char *)rawData.constData(), rawData.size()) <= 0) {
-        qCInfo(lcCse()) << "Could not decrypt the data.";
+        qCInfo(lcCseDecryption()) << "Could not decrypt the data.";
+        ERR_print_errors_fp(stdout); // This line is not printing anything.
         exit(1);
     } else {
-        qCInfo(lcCse()) << "data decrypted successfully";
+        qCInfo(lcCseDecryption()) << "data decrypted successfully";
     }
 
     const auto ret = std::string((char*) out, outlen);
