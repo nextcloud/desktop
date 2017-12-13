@@ -236,6 +236,9 @@ public:
 
     ClientSideEncryption* e2e();
 
+    bool usePlaceholders() const { return _usePlaceholders; }
+    void setUsePlaceholders(bool use) { _usePlaceholders = use; }
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -307,6 +310,8 @@ private:
     ClientSideEncryption _e2e;
 
     friend class AccountManager;
+
+    bool _usePlaceholders = false;
 };
 }
 

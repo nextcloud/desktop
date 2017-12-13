@@ -150,6 +150,12 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                 cur->instruction = CSYNC_INSTRUCTION_NEW;
                 break;
             }
+            if (cur->type == ItemTypePlaceholder && ctx->current == REMOTE_REPLICA) {
+                /* Do not remove on the server if the local placeholder is gone:
+                 * instead reestablish the local placeholder */
+                cur->instruction = CSYNC_INSTRUCTION_NEW;
+                break;
+            }
             cur->instruction = CSYNC_INSTRUCTION_REMOVE;
             break;
         case CSYNC_INSTRUCTION_EVAL_RENAME: {
@@ -377,7 +383,10 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                     cur->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                     other->instruction = CSYNC_INSTRUCTION_NONE;
                 } else {
-                    cur->instruction = CSYNC_INSTRUCTION_SYNC;
+                    if (cur->instruction != CSYNC_INSTRUCTION_NEW
+                        && cur->instruction != CSYNC_INSTRUCTION_SYNC) {
+                        cur->instruction = CSYNC_INSTRUCTION_SYNC;
+                    }
                     other->instruction = CSYNC_INSTRUCTION_NONE;
                 }
                 break;
