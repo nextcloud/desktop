@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>376</width>
-    <height>493</height>
+    <width>394</width>
+    <height>534</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -48,7 +48,7 @@
    <item>
     <widget class="QTableWidget" name="linkShares">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -191,35 +191,109 @@
          <property name="rightMargin">
           <number>0</number>
          </property>
-         <property name="bottomMargin">
+         <property name="verticalSpacing">
           <number>0</number>
          </property>
-         <item row="0" column="0">
-          <widget class="QCheckBox" name="checkBox_editing">
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
-            <string>Allow editing</string>
+            <string>Users can view and download contents.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <spacer name="horizontalSpacer">
+         <item row="2" column="0">
+          <spacer name="verticalSpacer">
            <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>40</width>
-             <height>20</height>
+             <width>20</width>
+             <height>6</height>
             </size>
            </property>
           </spacer>
          </item>
-         <item row="1" column="0">
-          <widget class="QCheckBox" name="checkBox_fileListing">
+         <item row="6" column="0">
+          <widget class="QRadioButton" name="radio_uploadOnly">
            <property name="text">
-            <string>Show file listing</string>
+            <string>Upload only (File Drop)</string>
            </property>
           </widget>
+         </item>
+         <item row="7" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Receive files from others without revealing the contents of the folder.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QRadioButton" name="radio_readOnly">
+           <property name="text">
+            <string>Read only</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QRadioButton" name="radio_readWrite">
+           <property name="text">
+            <string>Read &amp;&amp; Write</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Users can view, download, edit and upload contents.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>6</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </widget>
@@ -287,7 +361,6 @@
   <tabstop>nameLineEdit</tabstop>
   <tabstop>createShareButton</tabstop>
   <tabstop>linkShares</tabstop>
-  <tabstop>checkBox_editing</tabstop>
   <tabstop>checkBox_password</tabstop>
   <tabstop>lineEdit_password</tabstop>
   <tabstop>pushButton_setPassword</tabstop>
