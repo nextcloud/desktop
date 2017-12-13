@@ -29,7 +29,7 @@ QString baseDirectory();
 QString privateKeyPath(AccountPtr account);
 QString publicKeyPath(AccountPtr account);
 
-class ClientSideEncryption : public QObject {
+class OWNCLOUDSYNC_EXPORT ClientSideEncryption : public QObject {
     Q_OBJECT
 public:
     ClientSideEncryption();
@@ -215,7 +215,7 @@ struct EncryptedFile {
 
 
 
-class FolderMetadata {
+class OWNCLOUDSYNC_EXPORT FolderMetadata {
 public:
     FolderMetadata(AccountPtr account, const QByteArray& metadata = QByteArray());
     QByteArray encryptedMetadata();
