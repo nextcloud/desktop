@@ -429,14 +429,13 @@ void ActivityWidget::slotNotifyServerFinished(const QString &reply, int replyCod
     }
 
     endNotificationRequest(job->widget(), replyCode);
-    // FIXME: remove the  widget after a couple of seconds
     qCInfo(lcActivity) << "Server Notification reply code" << replyCode << reply;
 
     // if the notification was successful start a timer that triggers
     // removal of the done widgets in a few seconds
     // Add 200 millisecs to the predefined value to make sure that the timer in
     // widget's method readyToClose() has elapsed.
-    if (replyCode == OCS_SUCCESS_STATUS_CODE) {
+    if (replyCode == OCS_SUCCESS_STATUS_CODE || replyCode == OCS_SUCCESS_STATUS_CODE_V2) {
         scheduleWidgetToRemove(job->widget());
     }
 }
