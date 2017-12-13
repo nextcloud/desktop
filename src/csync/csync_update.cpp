@@ -190,15 +190,29 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       /* we have an update! */
       qCInfo(lcUpdate, "Database entry found, compare: %" PRId64 " <-> %" PRId64
                                           ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64
-                                          ", size: %" PRId64 " <-> %" PRId64 ", perms: %x <-> %x, ignore: %d",
+                                          ", size: %" PRId64 " <-> %" PRId64 ", perms: %x <-> %x"
+                                          ", type: %d <-> %d, ignore: %d",
                 ((int64_t) fs->modtime), ((int64_t) base._modtime),
                 fs->etag.constData(), base._etag.constData(), (uint64_t) fs->inode, (uint64_t) base._inode,
-                (uint64_t) fs->size, (uint64_t) base._fileSize, *reinterpret_cast<short*>(&fs->remotePerm), *reinterpret_cast<short*>(&base._remotePerm), base._serverHasIgnoredFiles );
+                (uint64_t) fs->size, (uint64_t) base._fileSize,
+                *reinterpret_cast<short*>(&fs->remotePerm), *reinterpret_cast<short*>(&base._remotePerm),
+                fs->type, base._type,
+                base._serverHasIgnoredFiles );
+      if (ctx->current == REMOTE_REPLICA && base._type == ItemTypePlaceholderDownload) {
+          fs->instruction = CSYNC_INSTRUCTION_NEW;
+          fs->type = ItemTypePlaceholderDownload;
+          goto out;
+      }
+
       if (ctx->current == REMOTE_REPLICA && fs->etag != base._etag) {
           fs->instruction = CSYNC_INSTRUCTION_EVAL;
 
-          // Preserve the EVAL flag later on if the type has changed.
-          if (base._type != fs->type) {
+          if (base._type == ItemTypePlaceholder && fs->type == ItemTypeFile) {
+              // If the local thing is a placeholder, we just update the metadata
+              fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+              fs->type = ItemTypePlaceholder; // retain the PLACEHOLDER type in the db
+          } else if (base._type != fs->type) {
+              // Preserve the EVAL flag later on if the type has changed.
               fs->child_modified = true;
           }
 
@@ -319,10 +333,19 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
               if (!base.isValid())
                   return;
 
+              if (base._type == ItemTypePlaceholderDownload) {
+                  // Remote rename of a placeholder file we have locally scheduled
+                  // for download. We just consider this NEW but mark it for download.
+                  fs->type = ItemTypePlaceholderDownload;
+                  done = true;
+                  return;
+              }
+
               // Some things prohibit rename detection entirely.
               // Since we don't do the same checks again in reconcile, we can't
               // just skip the candidate, but have to give up completely.
-              if (base._type != fs->type) {
+              if (base._type != fs->type
+                  && base._type != ItemTypePlaceholder) {
                   qCWarning(lcUpdate, "file types different, not a rename");
                   done = true;
                   return;
@@ -363,6 +386,14 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                   return 1;
               }
           }
+
+          // Potentially turn new remote files into placeholders
+          if (ctx->new_files_are_placeholders
+              && fs->instruction == CSYNC_INSTRUCTION_NEW
+              && fs->type == ItemTypeFile) {
+              fs->type = ItemTypePlaceholder;
+          }
+
           goto out;
       }
   }
@@ -465,7 +496,7 @@ int csync_walker(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs) {
   return rc;
 }
 
-static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
+static bool fill_tree_from_db(CSYNC *ctx, const char *uri, bool singleFile = false)
 {
     int64_t count = 0;
     QByteArray skipbase;
@@ -520,9 +551,19 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
         ++count;
     };
 
-    if (!ctx->statedb->getFilesBelowPath(uri, rowCallback)) {
-        ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
-        return false;
+    if (singleFile) {
+        OCC::SyncJournalFileRecord record;
+        if (ctx->statedb->getFileRecord(QByteArray(uri), &record) && record.isValid()) {
+            rowCallback(record);
+        } else {
+            ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
+            return false;
+        }
+    } else {
+        if (!ctx->statedb->getFilesBelowPath(uri, rowCallback)) {
+            ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
+            return false;
+        }
     }
     qInfo(lcUpdate, "%" PRId64 " entries read below path %s from db.", count, uri);
 
@@ -657,6 +698,22 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         fullpath = filename;
     } else {
         fullpath = QByteArray() % uri % '/' % filename;
+    }
+
+    // When encountering placeholder files, read the relevant
+    // entry from the db instead.
+    if (ctx->current == LOCAL_REPLICA
+            && dirent->type == ItemTypeFile
+            && filename.endsWith(".owncloud")) {
+        QByteArray db_uri = fullpath.mid(strlen(ctx->local.uri) + 1);
+        db_uri = db_uri.left(db_uri.size() - 9);
+        if( ! fill_tree_from_db(ctx, db_uri.constData(), true) ) {
+          errno = ENOENT;
+          ctx->status_code = CSYNC_STATUS_OPENDIR_ERROR;
+          goto error;
+        }
+
+        continue;
     }
 
     /* if the filename starts with a . we consider it a hidden file
