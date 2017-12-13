@@ -478,8 +478,6 @@ QByteArray EncryptionHelper::encryptStringSymmetric(const QByteArray& key, const
 QByteArray EncryptionHelper::decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data) {
     int err = -1;
 
-    const QByteArray rawData = QByteArray::fromBase64(data);
-
     qCInfo(lcCseDecryption()) << "Start to work the decryption.";
     auto ctx = EVP_PKEY_CTX_new(privateKey, ENGINE_get_default_RSA());
     if (!ctx) {
@@ -514,7 +512,7 @@ QByteArray EncryptionHelper::decryptStringAsymmetric(EVP_PKEY *privateKey, const
     }
 
     size_t outlen = 0;
-    err = EVP_PKEY_decrypt(ctx, NULL, &outlen,  (unsigned char *)rawData.constData(), rawData.size());
+    err = EVP_PKEY_decrypt(ctx, NULL, &outlen,  (unsigned char *)data.constData(), data.size());
     if (err <= 0) {
         qCInfo(lcCseDecryption()) << "Could not determine the buffer length";
         handleErrors();
@@ -531,7 +529,7 @@ QByteArray EncryptionHelper::decryptStringAsymmetric(EVP_PKEY *privateKey, const
         exit(1);
     }
 
-    if (EVP_PKEY_decrypt(ctx, out, &outlen, (unsigned char *)rawData.constData(), rawData.size()) <= 0) {
+    if (EVP_PKEY_decrypt(ctx, out, &outlen, (unsigned char *)data.constData(), data.size()) <= 0) {
         qCInfo(lcCseDecryption()) << "Could not decrypt the data.";
         ERR_print_errors_fp(stdout); // This line is not printing anything.
         exit(1);
@@ -1129,9 +1127,12 @@ void FolderMetadata::setupExistingMetadata()
   }
   qDebug() << "##########################################";
 
-  // This is the encrypted metadata string.
+  // base 64 encrypted metadata. three transformations for it seems quite wrong.
   std::string encrypted_metadata_keys = meta_Data["metadata"]["metadataKeys"];
-  std::string decrypted_metadata_keys = decryptMetadataKeys(encrypted_metadata_keys);
+  QByteArray data = QByteArray::fromStdString(encrypted_metadata_keys);
+  QByteArray rawData = QByteArray::fromBase64(data);
+
+  std::string decrypted_metadata_keys = decryptMetadataKeys(rawData);
   qDebug() << encrypted_metadata_keys;
   qDebug() << decrypted_metadata_keys;
 
@@ -1154,15 +1155,15 @@ QByteArray FolderMetadata::encryptMetadataKeys(const nlohmann::json& metadataKey
 }
 
 //TODO: Change this from std::string to QByteArray.
-std::string FolderMetadata::decryptMetadataKeys(const std::string& encryptedMetadata) const
+std::string FolderMetadata::decryptMetadataKeys(const QByteArray& encryptedMetadatab64) const
 {
     BIO *privateKeyBio = BIO_new(BIO_s_mem());
     QByteArray privateKeyPem = _account->e2e()->_privateKey.toPem();
     BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
     EVP_PKEY *key = PEM_read_bio_PrivateKey(privateKeyBio, NULL, NULL, NULL);
 
-    auto data = QByteArray::fromStdString(encryptedMetadata);
-    auto decryptedData = EncryptionHelper::decryptStringAsymmetric(key, data);
+    auto rawData = QByteArray::fromBase64(encryptedMetadatab64);
+    auto decryptedData = EncryptionHelper::decryptStringAsymmetric(key, rawData);
     std::string ret(decryptedData.constData(), decryptedData.length());
     return ret;
 }
@@ -1259,7 +1260,7 @@ void FolderMetadata::setupEmptyMetadata() {
 
     auto b64String = encryptMetadataKeys(metadataKeyObj);
     qCInfo(lcCse()) << "ENCRYPTED METADATA KEY" << b64String;
-    auto db64String = decryptMetadataKeys(std::string(b64String.constData(), b64String.size()));
+    auto db64String = decryptMetadataKeys(b64String);
     qCInfo(lcCse()) << "DECRYPTED METADATA KEY" << b64String;
     auto sharingEncrypted = encryptJsonObject(recepient, newMetadataPass);
 

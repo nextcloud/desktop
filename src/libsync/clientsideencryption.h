@@ -111,7 +111,7 @@ private:
     void setupExistingMetadata();
 
     QByteArray encryptMetadataKeys(const nlohmann::json& metadataKeys) const;
-    std::string decryptMetadataKeys(const std::string& encryptedMetadataKeys) const;
+    std::string decryptMetadataKeys(const QByteArray& encryptedMetadataKeysb64) const;
 
     std::string genMetadataPass() const;
     QByteArray encryptJsonObject(const nlohmann::json& obj, const QByteArray pass) const;
