@@ -21,6 +21,8 @@
 #ifndef _C_TIME_H
 #define _C_TIME_H
 
+#include "ocsynclib.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -58,7 +60,7 @@ struct timespec c_tspecdiff(struct timespec time1, struct timespec time0);
  */
 double c_secdiff(struct timespec clock1, struct timespec clock0);
 
-int c_utimes(const char *uri, const struct timeval *times);
+OCSYNC_EXPORT int c_utimes(const char *uri, const struct timeval *times);
 
 #ifdef __cplusplus
 }

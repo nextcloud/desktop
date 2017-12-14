@@ -23,26 +23,22 @@ find_package(SQLite3 3.8.0 REQUIRED)
 include(ConfigureChecks.cmake)
 include(../common/common.cmake)
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-
 if (MEM_NULL_TESTS)
   add_definitions(-DCSYNC_MEM_NULL_TESTS)
 endif (MEM_NULL_TESTS)
-
-add_subdirectory(std)
 
 # Statically include sqlite
 
 set(CSYNC_PUBLIC_INCLUDE_DIRS
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}
+  ${CMAKE_CURRENT_SOURCE_DIR}/std
   ${CMAKE_SOURCE_DIR}
   CACHE INTERNAL "csync public include directories"
 )
 
 set(CSYNC_PRIVATE_INCLUDE_DIRS
   ${SQLITE3_INCLUDE_DIRS}
-  ${CSTDLIB_PUBLIC_INCLUDE_DIRS}
   ${CMAKE_BINARY_DIR}
 )
 
@@ -52,7 +48,6 @@ set(CSYNC_LIBRARY
 )
 
 set(CSYNC_LINK_LIBRARIES
-  ${CSTDLIB_LIBRARY}
   ${CSYNC_REQUIRED_LIBRARIES}
   ${SQLITE3_LIBRARIES}
 )
@@ -77,6 +72,13 @@ set(csync_SRCS
   csync_rename.cpp
 
   vio/csync_vio.cpp
+
+  std/c_alloc.c
+  std/c_path.c
+  std/c_string.c
+  std/c_time.c
+  std/c_utf8.cpp
+
 )
 
 if (WIN32)
@@ -89,16 +91,13 @@ else()
     )
 endif()
 
+if(NOT HAVE_ASPRINTF AND NOT HAVE___MINGW_ASPRINTF)
+    list(APPEND csync_SRCS std/asprintf.c)
+endif()
+
 
 configure_file(csync_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h)
 
-set(csync_HDRS
-  ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h
-  csync.h
-  vio/csync_vio.h
-  vio/csync_vio_method.h
-  vio/csync_vio_module.h
-)
 
 # Statically include sqlite
 if (USE_OUR_OWN_SQLITE3)
@@ -112,13 +111,15 @@ if (USE_OUR_OWN_SQLITE3)
     endif()
 endif()
 
-include_directories(
-  ${CSYNC_PUBLIC_INCLUDE_DIRS}
-  ${CSYNC_PRIVATE_INCLUDE_DIRS}
-)
 
 add_library(${CSYNC_LIBRARY} SHARED ${common_SOURCES} ${csync_SRCS})
 #add_library(${CSYNC_LIBRARY}_static STATIC ${csync_SRCS})
+
+target_include_directories(
+  ${CSYNC_LIBRARY}
+  PUBLIC ${CSYNC_PUBLIC_INCLUDE_DIRS}
+  PRIVATE ${CSYNC_PRIVATE_INCLUDE_DIRS}
+)
 
 generate_export_header( ${CSYNC_LIBRARY}
   EXPORT_MACRO_NAME OCSYNC_EXPORT
@@ -129,8 +130,7 @@ target_link_libraries(${CSYNC_LIBRARY} ${CSYNC_LINK_LIBRARIES})
 #target_link_libraries(${CSYNC_LIBRARY}_static ${CSYNC_LINK_LIBRARIES})
 
 if(ZLIB_FOUND)
-  target_link_libraries(${CSYNC_LIBRARY} ${ZLIB_LIBRARIES})
-  include_directories(${ZLIB_INCLUDE_DIRS})
+  target_link_libraries(${CSYNC_LIBRARY} ZLIB::ZLIB)
 endif(ZLIB_FOUND)
 
 find_package(Qt5Core REQUIRED)
