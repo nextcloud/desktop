@@ -344,6 +344,7 @@ void SqlQuery::bindValue(int pos, const QVariant &value)
         break;
     case QVariant::UInt:
     case QVariant::LongLong:
+    case QVariant::ULongLong:
         res = sqlite3_bind_int64(_stmt, pos, value.toLongLong());
         break;
     case QVariant::DateTime: {

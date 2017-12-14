@@ -32,7 +32,6 @@
 #include "folderwatcher_linux.h"
 #endif
 
-#include "excludedfiles.h"
 #include "folder.h"
 
 namespace OCC {

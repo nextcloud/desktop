@@ -22,7 +22,6 @@
 #include "propagateremotemove.h"
 #include "propagateremotemkdir.h"
 #include "propagatorjobs.h"
-#include "configfile.h"
 #include "common/utility.h"
 #include "account.h"
 #include "common/asserts.h"
@@ -552,19 +551,6 @@ bool OwncloudPropagator::isInSharedDirectory(const QString &file)
         }
     }
     return re;
-}
-
-int OwncloudPropagator::httpTimeout()
-{
-    static int timeout = 0;
-    if (!timeout) {
-        timeout = qgetenv("OWNCLOUD_TIMEOUT").toUInt();
-        if (timeout == 0) {
-            ConfigFile cfg;
-            timeout = cfg.timeout();
-        }
-    }
-    return timeout;
 }
 
 bool OwncloudPropagator::localFileNameClash(const QString &relFile)

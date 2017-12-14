@@ -75,7 +75,7 @@ bool DiscoveryJob::isInSelectiveSyncBlackList(const QByteArray &path) const
 
     // Also try to adjust the path if there was renames
     if (csync_rename_count(_csync_ctx)) {
-        QByteArray adjusted = csync_rename_adjust_path_source(_csync_ctx, path);
+        QByteArray adjusted = csync_rename_adjust_parent_path_source(_csync_ctx, path);
         if (adjusted != path) {
             return findPathInList(_selectiveSyncBlackList, QString::fromUtf8(adjusted));
         }
@@ -697,8 +697,6 @@ void DiscoveryJob::start()
     _csync_ctx->callbacks.remote_readdir_hook = remote_vio_readdir_hook;
     _csync_ctx->callbacks.remote_closedir_hook = remote_vio_closedir_hook;
     _csync_ctx->callbacks.vio_userdata = this;
-
-    csync_exclude_traversal_prepare(_csync_ctx); // Converts the flat exclude list to optimized regexps
 
     csync_set_log_callback(_log_callback);
     csync_set_log_level(_log_level);

@@ -31,7 +31,7 @@ endif()
 
 if(NOT BUILD_LIBRARIES_ONLY)
    add_executable(${cmd_NAME}  ${cmd_SRC})
-	qt5_use_modules(${cmd_NAME} Network Sql)
+	qt5_use_modules(${cmd_NAME} Network )
 	set_target_properties(${cmd_NAME} PROPERTIES
 	        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
         set_target_properties(${cmd_NAME} PROPERTIES

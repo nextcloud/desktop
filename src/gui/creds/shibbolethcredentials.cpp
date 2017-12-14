@@ -23,6 +23,7 @@
 #include "creds/shibbolethcredentials.h"
 #include "shibboleth/shibbolethuserjob.h"
 #include "creds/credentialscommon.h"
+#include "creds/httpcredentialsgui.h"
 
 #include "accessmanager.h"
 #include "account.h"
@@ -151,7 +152,31 @@ void ShibbolethCredentials::fetchFromKeychainHelper()
 
 void ShibbolethCredentials::askFromUser()
 {
-    showLoginWindow();
+    // First, we do a DetermineAuthTypeJob to make sure that the server is still using shibboleth and did not upgrade to oauth
+    DetermineAuthTypeJob *job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
+    connect(job, &DetermineAuthTypeJob::authType, [this, job](DetermineAuthTypeJob::AuthType type) {
+        if (type == DetermineAuthTypeJob::Shibboleth) {
+            // Normal case, still shibboleth
+            showLoginWindow();
+        } else if (type == DetermineAuthTypeJob::OAuth) {
+            // Hack: upgrade to oauth
+            auto newCred = new HttpCredentialsGui;
+            job->setParent(0);
+            job->deleteLater();
+            auto account = this->_account;
+            auto user = this->_user;
+            account->setCredentials(newCred); // delete this
+            account->setCredentialSetting(QLatin1String("user"), user);
+            newCred->fetchUser();
+            newCred->askFromUser();
+        } else {
+            // Basic auth or unkown. Since it may be unkown it might be a temporary failure, don't replace the credentials here
+            // Still show the login window in that case not to break the flow.
+            showLoginWindow();
+        }
+
+    });
+    job->start();
 }
 
 bool ShibbolethCredentials::stillValid(QNetworkReply *reply)

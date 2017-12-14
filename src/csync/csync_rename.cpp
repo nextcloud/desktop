@@ -36,7 +36,7 @@ void csync_rename_record(CSYNC* ctx, const QByteArray &from, const QByteArray &t
     ctx->renames.folder_renamed_from[to] = from;
 }
 
-QByteArray csync_rename_adjust_path(CSYNC* ctx, const QByteArray &path)
+QByteArray csync_rename_adjust_parent_path(CSYNC *ctx, const QByteArray &path)
 {
     if (ctx->renames.folder_renamed_to.empty())
         return path;
@@ -50,11 +50,25 @@ QByteArray csync_rename_adjust_path(CSYNC* ctx, const QByteArray &path)
     return path;
 }
 
-QByteArray csync_rename_adjust_path_source(CSYNC* ctx, const QByteArray &path)
+QByteArray csync_rename_adjust_parent_path_source(CSYNC *ctx, const QByteArray &path)
 {
     if (ctx->renames.folder_renamed_from.empty())
         return path;
-    for (auto p = _parentDir(path); !p.isEmpty(); p = _parentDir(p)) {
+    for (ByteArrayRef p = _parentDir(path); !p.isEmpty(); p = _parentDir(p)) {
+        auto it = ctx->renames.folder_renamed_from.find(p);
+        if (it != ctx->renames.folder_renamed_from.end()) {
+            QByteArray rep = it->second + path.mid(p.length());
+            return rep;
+        }
+    }
+    return path;
+}
+
+QByteArray csync_rename_adjust_full_path_source(CSYNC *ctx, const QByteArray &path)
+{
+    if (ctx->renames.folder_renamed_from.empty())
+        return path;
+    for (ByteArrayRef p = path; !p.isEmpty(); p = _parentDir(p)) {
         auto it = ctx->renames.folder_renamed_from.find(p);
         if (it != ctx->renames.folder_renamed_from.end()) {
             QByteArray rep = it->second + path.mid(p.length());

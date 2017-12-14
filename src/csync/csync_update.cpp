@@ -46,6 +46,8 @@
 #include "common/utility.h"
 #include "common/asserts.h"
 
+#include <QtCore/QTextCodec>
+
 // Needed for PRIu64 on MinGW in C++ mode.
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
@@ -107,7 +109,7 @@ static bool _csync_mtime_equal(time_t a, time_t b)
  */
 static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs) {
   OCC::SyncJournalFileRecord base;
-  CSYNC_EXCLUDE_TYPE excluded;
+  CSYNC_EXCLUDE_TYPE excluded = CSYNC_NOT_EXCLUDED;
 
   if (fs == NULL) {
     errno = EINVAL;
@@ -118,8 +120,9 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
   if (fs->type == CSYNC_FTW_TYPE_SKIP) {
       excluded =CSYNC_FILE_EXCLUDE_STAT_FAILED;
   } else {
-    /* Check if file is excluded */
-    excluded = csync_excluded_traversal(ctx, fs->path, fs->type);
+      /* Check if file is excluded */
+      if (ctx->exclude_traversal_fn)
+          excluded = ctx->exclude_traversal_fn(fs->path, fs->type);
   }
 
   if( excluded == CSYNC_NOT_EXCLUDED ) {
@@ -145,6 +148,14 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
   if (ctx->current == REMOTE_REPLICA && ctx->callbacks.checkSelectiveSyncBlackListHook) {
       if (ctx->callbacks.checkSelectiveSyncBlackListHook(ctx->callbacks.update_callback_userdata, fs->path)) {
           return 1;
+      }
+  }
+
+  if (ctx->current == REMOTE_REPLICA && QTextCodec::codecForLocale()->mibEnum() != 106) {
+      /* If the locale codec is not UTF-8, we must check that the filename from the server can
+       * be encoded in the local file system. */
+      if (!QTextCodec::codecForLocale()->canEncode(QString::fromUtf8(fs->path))) {
+          excluded = CSYNC_FILE_EXCLUDE_CANNOT_ENCODE;
       }
   }
 
@@ -375,6 +386,8 @@ out:
               fs->error_status = CSYNC_STATUS_INDIVIDUAL_STAT_FAILED;
           } else if (excluded == CSYNC_FILE_EXCLUDE_CONFLICT) {
               fs->error_status = CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE;
+          } else if (excluded == CSYNC_FILE_EXCLUDE_CANNOT_ENCODE) {
+              fs->error_status = CSYNC_STATUS_INDIVIDUAL_CANNOT_ENCODE;
           }
       }
   }
@@ -486,7 +499,9 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
         /* Check for exclusion from the tree.
          * Note that this is only a safety net in case the ignore list changes
          * without a full remote discovery being triggered. */
-        CSYNC_EXCLUDE_TYPE excluded = csync_excluded_traversal(ctx, st->path, st->type);
+        CSYNC_EXCLUDE_TYPE excluded = CSYNC_NOT_EXCLUDED;
+        if (ctx->exclude_traversal_fn)
+            excluded = ctx->exclude_traversal_fn(st->path, st->type);
         if (excluded != CSYNC_NOT_EXCLUDED) {
             qDebug(lcUpdate, "%s excluded (%d)", st->path.constData(), excluded);
 

@@ -22,7 +22,7 @@
 #define OVERLAY_GUID_WARNING        L"{0960F096-F328-48A3-B746-276B1E3C3722}"
 #define OVERLAY_GUID_WARNING_SHARED L"{0960F097-F328-48A3-B746-276B1E3C3722}"
 
-#define OVERLAY_GENERIC_NAME        L"OC Overlay Handler"
+#define OVERLAY_GENERIC_NAME        L"ownCloud overlay handler"
 
 // two spaces to put us ahead of the competition :/
 #define OVERLAY_NAME_ERROR          L"  OCError"

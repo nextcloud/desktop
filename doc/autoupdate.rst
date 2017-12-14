@@ -119,7 +119,7 @@ Preventing Automatic Updates in Linux Environments
 
 Because the Linux client does not provide automatic updating functionality, there is no
 need to remove the automatic-update check.  However, if you want to disable it edit your desktop
-client configuration file, ``$HOME/.local/share/data/ownCloud/owncloud.cfg``. 
+client configuration file, ``$HOME/.config/ownCloud/owncloud.cfg``.
 Add this line to the [General] section::
 
     skipUpdateCheck=true

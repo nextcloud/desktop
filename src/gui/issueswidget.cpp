@@ -32,6 +32,7 @@
 #include "common/syncjournalfilerecord.h"
 #include "elidedlabel.h"
 
+
 #include "ui_issueswidget.h"
 
 #include <climits>
@@ -53,6 +54,9 @@ IssuesWidget::IssuesWidget(QWidget *parent)
 
     connect(_ui->_treeWidget, &QTreeWidget::itemActivated, this, &IssuesWidget::slotOpenFile);
     connect(_ui->copyIssuesButton, &QAbstractButton::clicked, this, &IssuesWidget::copyToClipboard);
+
+    _ui->_treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(_ui->_treeWidget, &QTreeWidget::customContextMenuRequested, this, &IssuesWidget::slotItemContextMenu);
 
     connect(_ui->showIgnores, &QAbstractButton::toggled, this, &IssuesWidget::slotRefreshIssues);
     connect(_ui->showWarnings, &QAbstractButton::toggled, this, &IssuesWidget::slotRefreshIssues);
@@ -85,7 +89,7 @@ IssuesWidget::IssuesWidget(QWidget *parent)
     _ui->_treeWidget->setHeaderLabels(header);
     int timestampColumnWidth =
         ActivityItemDelegate::rowHeight() // icon
-        + _ui->_treeWidget->fontMetrics().width(ProtocolWidget::timeString(QDateTime::currentDateTime()))
+        + _ui->_treeWidget->fontMetrics().width(ProtocolItem::timeString(QDateTime::currentDateTime()))
         + timestampColumnExtra;
     _ui->_treeWidget->setColumnWidth(0, timestampColumnWidth);
     _ui->_treeWidget->setColumnWidth(1, 180);
@@ -198,7 +202,7 @@ void IssuesWidget::slotItemCompleted(const QString &folder, const SyncFileItemPt
 {
     if (!item->hasErrorStatus())
         return;
-    QTreeWidgetItem *line = ProtocolWidget::createCompletedTreewidgetItem(folder, *item);
+    QTreeWidgetItem *line = ProtocolItem::create(folder, *item);
     if (!line)
         return;
     addItem(line);
@@ -231,6 +235,15 @@ void IssuesWidget::slotAccountRemoved(AccountState *account)
             _ui->filterAccount->removeItem(i);
     }
     updateAccountChoiceVisibility();
+}
+
+void IssuesWidget::slotItemContextMenu(const QPoint &pos)
+{
+    auto item = _ui->_treeWidget->itemAt(pos);
+    if (!item)
+        return;
+    auto globalPos = _ui->_treeWidget->viewport()->mapToGlobal(pos);
+    ProtocolItem::openContextMenu(globalPos, item, this);
 }
 
 void IssuesWidget::updateAccountChoiceVisibility()
@@ -373,8 +386,8 @@ void IssuesWidget::addError(const QString &folderAlias, const QString &message,
 
     QStringList columns;
     QDateTime timestamp = QDateTime::currentDateTime();
-    const QString timeStr = ProtocolWidget::timeString(timestamp);
-    const QString longTimeStr = ProtocolWidget::timeString(timestamp, QLocale::LongFormat);
+    const QString timeStr = ProtocolItem::timeString(timestamp);
+    const QString longTimeStr = ProtocolItem::timeString(timestamp, QLocale::LongFormat);
 
     columns << timeStr;
     columns << ""; // no "File" entry
@@ -383,7 +396,7 @@ void IssuesWidget::addError(const QString &folderAlias, const QString &message,
 
     QIcon icon = Theme::instance()->syncStateIcon(SyncResult::Error);
 
-    QTreeWidgetItem *twitem = new SortedTreeWidgetItem(columns);
+    QTreeWidgetItem *twitem = new ProtocolItem(columns);
     twitem->setData(0, Qt::SizeHintRole, QSize(0, ActivityItemDelegate::rowHeight()));
     twitem->setData(0, Qt::UserRole, timestamp);
     twitem->setIcon(0, icon);

@@ -323,7 +323,7 @@ private slots:
     void slotNextSyncFullLocalDiscovery();
 
 private:
-    bool setIgnoredFiles();
+    bool reloadExcludes();
 
     void showSyncResultPopup();
 
@@ -342,7 +342,7 @@ private:
     };
 
     void createGuiLog(const QString &filename, LogStatus status, int count,
-        const QString &renameTarget = QString::null);
+        const QString &renameTarget = QString());
 
     AccountStatePtr _accountState;
     FolderDefinition _definition;

@@ -65,7 +65,7 @@ static inline QString removeTrailingSlash(QString path)
     return path;
 }
 
-static QString buildMessage(const QString &verb, const QString &path, const QString &status = QString::null)
+static QString buildMessage(const QString &verb, const QString &path, const QString &status = QString())
 {
     QString msg(verb);
 
@@ -270,7 +270,7 @@ void SocketApi::slotReadSocket()
         QString line = QString::fromUtf8(socket->readLine()).normalized(QString::NormalizationForm_C);
         line.chop(1); // remove the '\n'
         qCInfo(lcSocketApi) << "Received SocketAPI message <--" << line << "from" << socket;
-        QByteArray command = line.split(":").value(0).toAscii();
+        QByteArray command = line.split(":").value(0).toLatin1();
         QByteArray functionWithArguments = "command_" + command + "(QString,SocketListener*)";
         int indexOfMethod = staticMetaObject.indexOfMethod(functionWithArguments);
 
@@ -307,7 +307,7 @@ void SocketApi::slotUnregisterPath(const QString &alias)
 
     Folder *f = FolderMan::instance()->folder(alias);
     if (f)
-        broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), removeTrailingSlash(f->path()), QString::null), true);
+        broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), removeTrailingSlash(f->path()), QString()), true);
 
     _registeredAliases.remove(alias);
 }
@@ -492,7 +492,7 @@ void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketListener *listen
 }
 
 // Fetches the private link url asynchronously and then calls the target slot
-void fetchPrivateLinkUrl(const QString &localFile, SocketApi *target, void (SocketApi::*targetFun)(const QString &url) const)
+static void fetchPrivateLinkUrlHelper(const QString &localFile, SocketApi *target, void (SocketApi::*targetFun)(const QString &url) const)
 {
     Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
     if (!shareFolder) {
@@ -505,45 +505,23 @@ void fetchPrivateLinkUrl(const QString &localFile, SocketApi *target, void (Sock
 
     AccountPtr account = shareFolder->accountState()->account();
 
-    // Generate private link ourselves: used as a fallback
     SyncJournalFileRecord rec;
     if (!shareFolder->journalDb()->getFileRecord(file, &rec) || !rec.isValid())
         return;
-    const QString oldUrl =
-        account->deprecatedPrivateLinkUrl(rec.numericFileId()).toString(QUrl::FullyEncoded);
 
-    // Retrieve the new link or numeric file id by PROPFIND
-    PropfindJob *job = new PropfindJob(account, file, target);
-    job->setProperties(
-        QList<QByteArray>()
-        << "http://owncloud.org/ns:fileid" // numeric file id for fallback private link generation
-        << "http://owncloud.org/ns:privatelink");
-    job->setTimeout(10 * 1000);
-    QObject::connect(job, &PropfindJob::result, target, [=](const QVariantMap &result) {
-        auto privateLinkUrl = result["privatelink"].toString();
-        auto numericFileId = result["fileid"].toByteArray();
-        if (!privateLinkUrl.isEmpty()) {
-            (target->*targetFun)(privateLinkUrl);
-        } else if (!numericFileId.isEmpty()) {
-            (target->*targetFun)(account->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded));
-        } else {
-            (target->*targetFun)(oldUrl);
-        }
+    fetchPrivateLinkUrl(account, file, rec.numericFileId(), target, [=](const QString &url) {
+        (target->*targetFun)(url);
     });
-    QObject::connect(job, &PropfindJob::finishedWithError, target, [=](QNetworkReply *) {
-        (target->*targetFun)(oldUrl);
-    });
-    job->start();
 }
 
 void SocketApi::command_COPY_PRIVATE_LINK(const QString &localFile, SocketListener *)
 {
-    fetchPrivateLinkUrl(localFile, this, &SocketApi::copyPrivateLinkToClipboard);
+    fetchPrivateLinkUrlHelper(localFile, this, &SocketApi::copyPrivateLinkToClipboard);
 }
 
 void SocketApi::command_EMAIL_PRIVATE_LINK(const QString &localFile, SocketListener *)
 {
-    fetchPrivateLinkUrl(localFile, this, &SocketApi::emailPrivateLink);
+    fetchPrivateLinkUrlHelper(localFile, this, &SocketApi::emailPrivateLink);
 }
 
 void SocketApi::copyPrivateLinkToClipboard(const QString &link) const

@@ -17,7 +17,6 @@
 #include "ignorelisteditor.h"
 #include "folderman.h"
 #include "ui_ignorelisteditor.h"
-#include "excludedfiles.h"
 
 #include <QFile>
 #include <QDir>
@@ -61,7 +60,7 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     connect(ui->addPushButton, &QAbstractButton::clicked, this, &IgnoreListEditor::slotAddPattern);
 
     ui->tableWidget->resizeColumnsToContents();
-    ui->tableWidget->horizontalHeader()->setResizeMode(patternCol, QHeaderView::Stretch);
+    ui->tableWidget->horizontalHeader()->setSectionResizeMode(patternCol, QHeaderView::Stretch);
     ui->tableWidget->verticalHeader()->setVisible(false);
 
     ui->syncHiddenFilesCheckBox->setChecked(!FolderMan::instance()->ignoreHiddenFiles());
@@ -135,8 +134,6 @@ void IgnoreListEditor::slotUpdateLocalIgnoreList()
         folder->journalDb()->forceRemoteDiscoveryNextSync();
         folderMan->scheduleFolder(folder);
     }
-
-    ExcludedFiles::instance().reloadExcludes();
 }
 
 void IgnoreListEditor::slotAddPattern()

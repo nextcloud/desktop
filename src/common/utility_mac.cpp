@@ -58,7 +58,7 @@ bool hasLaunchOnStartup_private(const QString &)
             LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(itemsArray, i);
             CFURLRef itemUrlRef = NULL;
 
-            if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, NULL) == noErr) {
+            if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, NULL) == noErr && itemUrlRef) {
                 CFStringRef itemUrlString = CFURLGetString(itemUrlRef);
                 if (CFStringCompare(itemUrlString, appUrlRefString, 0) == kCFCompareEqualTo) {
                     returnValue = true;
@@ -100,7 +100,7 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
             LSSharedFileListItemRef item = (LSSharedFileListItemRef)CFArrayGetValueAtIndex(itemsArray, i);
             CFURLRef itemUrlRef = NULL;
 
-            if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, NULL) == noErr) {
+            if (LSSharedFileListItemResolve(item, 0, &itemUrlRef, NULL) == noErr && itemUrlRef) {
                 CFStringRef itemUrlString = CFURLGetString(itemUrlRef);
                 if (CFStringCompare(itemUrlString, appUrlRefString, 0) == kCFCompareEqualTo) {
                     LSSharedFileListItemRemove(loginItems, item); // remove it!

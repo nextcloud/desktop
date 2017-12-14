@@ -14,8 +14,6 @@
 
 #include "capabilities.h"
 
-#include "configfile.h"
-
 #include <QVariantMap>
 
 namespace OCC {

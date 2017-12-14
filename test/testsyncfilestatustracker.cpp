@@ -212,8 +212,8 @@ private slots:
 
     void warningStatusForExcludedFile() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.syncEngine().excludedFiles().addExcludeExpr("A/a1");
-        fakeFolder.syncEngine().excludedFiles().addExcludeExpr("B");
+        fakeFolder.syncEngine().excludedFiles().addManualExclude("A/a1");
+        fakeFolder.syncEngine().excludedFiles().addManualExclude("B");
         fakeFolder.localModifier().appendByte("A/a1");
         fakeFolder.localModifier().appendByte("B/b1");
         StatusPushSpy statusSpy(fakeFolder.syncEngine());
@@ -239,7 +239,7 @@ private slots:
         statusSpy.clear();
 
         // Clears the exclude expr above
-        fakeFolder.syncEngine().excludedFiles().reloadExcludes();
+        fakeFolder.syncEngine().excludedFiles().clearManualExcludes();
         fakeFolder.scheduleSync();
         fakeFolder.execUntilBeforePropagation();
         QCOMPARE(statusSpy.statusOf(""), SyncFileStatus(SyncFileStatus::StatusSync));
@@ -262,7 +262,7 @@ private slots:
 
     void warningStatusForExcludedFile_CasePreserving() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.syncEngine().excludedFiles().addExcludeExpr("B");
+        fakeFolder.syncEngine().excludedFiles().addManualExclude("B");
         fakeFolder.serverErrorPaths().append("A/a1");
         fakeFolder.localModifier().appendByte("A/a1");
 

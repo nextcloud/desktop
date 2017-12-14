@@ -68,6 +68,7 @@ private slots:
     void slotUpdateFolderFilters();
     void slotAccountAdded(AccountState *account);
     void slotAccountRemoved(AccountState *account);
+    void slotItemContextMenu(const QPoint &pos);
 
 private:
     void updateAccountChoiceVisibility();

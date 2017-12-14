@@ -41,6 +41,9 @@
 #include <QAction>
 #include <QDesktopServices>
 #include <QMessageBox>
+#include <QCryptographicHash>
+#include <QColor>
+#include <QPainter>
 
 namespace OCC {
 
@@ -178,31 +181,34 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
 
     auto newViewPort = new QWidget(scrollArea);
     auto layout = new QVBoxLayout(newViewPort);
+    layout->setMargin(0);
+    layout->setSpacing(0);
 
     QSize minimumSize = newViewPort->sizeHint();
     int x = 0;
 
-    if (shares.isEmpty()) {
+    foreach (const auto &share, shares) {
+        // We don't handle link shares
+        if (share->getShareType() == Share::TypeLink) {
+            continue;
+        }
+
+        ShareUserLine *s = new ShareUserLine(share, _maxSharingPermissions, _isFile, _ui->scrollArea);
+        connect(s, &ShareUserLine::resizeRequested, this, &ShareUserGroupWidget::slotAdjustScrollWidgetSize);
+        connect(s, &ShareUserLine::visualDeletionDone, this, &ShareUserGroupWidget::getShares);
+        s->setBackgroundRole(layout->count() % 2 == 0 ? QPalette::Base : QPalette::AlternateBase);
+        layout->addWidget(s);
+
+        x++;
+        if (x <= 3) {
+            minimumSize = newViewPort->sizeHint();
+        } else {
+            minimumSize.rwidth() = qMax(newViewPort->sizeHint().width(), minimumSize.width());
+        }
+    }
+    if (layout->isEmpty()) {
         layout->addWidget(new QLabel(tr("The item is not shared with any users or groups")));
     } else {
-        foreach (const auto &share, shares) {
-            // We don't handle link shares
-            if (share->getShareType() == Share::TypeLink) {
-                continue;
-            }
-
-            ShareUserLine *s = new ShareUserLine(share, _maxSharingPermissions, _isFile, _ui->scrollArea);
-            connect(s, &ShareUserLine::resizeRequested, this, &ShareUserGroupWidget::slotAdjustScrollWidgetSize);
-            connect(s, &ShareUserLine::visualDeletionDone, this, &ShareUserGroupWidget::getShares);
-            layout->addWidget(s);
-
-            x++;
-            if (x <= 3) {
-                minimumSize = newViewPort->sizeHint();
-            } else {
-                minimumSize.rwidth() = qMax(newViewPort->sizeHint().width(), minimumSize.width());
-            }
-        }
         layout->addStretch(1);
     }
 
@@ -416,6 +422,65 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
     if (!share->account()->capabilities().shareResharing()) {
         _ui->permissionShare->hide();
     }
+
+    loadAvatar();
+}
+
+void ShareUserLine::loadAvatar()
+{
+    const int avatarSize = 36;
+
+    // Set size of the placeholder
+    _ui->avatar->setMinimumHeight(avatarSize);
+    _ui->avatar->setMinimumWidth(avatarSize);
+    _ui->avatar->setMaximumHeight(avatarSize);
+    _ui->avatar->setMaximumWidth(avatarSize);
+    _ui->avatar->setAlignment(Qt::AlignCenter);
+
+    /* Create the fallback avatar.
+     *
+     * This will be shown until the avatar image data arrives.
+     */
+    const QByteArray hash = QCryptographicHash::hash(_ui->sharedWith->text().toUtf8(), QCryptographicHash::Md5);
+    double hue = static_cast<quint8>(hash[0]) / 255.;
+
+    // See core/js/placeholder.js for details on colors and styling
+    const QColor bg = QColor::fromHslF(hue, 0.7, 0.68);
+    const QString style = QString(R"(* {
+        color: #fff;
+        background-color: %1;
+        border-radius: %2px;
+        text-align: center;
+        line-height: %2px;
+        font-size: %2px;
+    })").arg(bg.name(), QString::number(avatarSize / 2));
+    _ui->avatar->setStyleSheet(style);
+
+    // The avatar label is the first character of the user name.
+    const QString text = _share->getShareWith()->displayName();
+    _ui->avatar->setText(text.at(0).toUpper());
+
+    /* Start the network job to fetch the avatar data.
+     *
+     * Currently only regular users can have avatars.
+     */
+    if (_share->getShareWith()->type() == Sharee::User) {
+        AvatarJob *job = new AvatarJob(_share->account(), _share->getShareWith()->shareWith(), avatarSize, this);
+        connect(job, &AvatarJob::avatarPixmap, this, &ShareUserLine::slotAvatarLoaded);
+        job->start();
+    }
+}
+
+void ShareUserLine::slotAvatarLoaded(QImage avatar)
+{
+    if (avatar.isNull())
+        return;
+
+    avatar = AvatarJob::makeCircularAvatar(avatar);
+    _ui->avatar->setPixmap(QPixmap::fromImage(avatar));
+
+    // Remove the stylesheet for the fallback avatar
+    _ui->avatar->setStyleSheet("");
 }
 
 void ShareUserLine::on_deleteShareButton_clicked()

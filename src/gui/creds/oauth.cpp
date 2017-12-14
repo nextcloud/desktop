@@ -156,12 +156,13 @@ void OAuth::start()
 QUrl OAuth::authorisationLink() const
 {
     Q_ASSERT(_server.isListening());
-    QUrl url = Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/authorize"),
-        { { QLatin1String("response_type"), QLatin1String("code") },
-            { QLatin1String("client_id"), Theme::instance()->oauthClientId() },
-            { QLatin1String("redirect_uri"), QLatin1String("http://localhost:") + QString::number(_server.serverPort()) } });
+    QUrlQuery query;
+    query.setQueryItems({ { QLatin1String("response_type"), QLatin1String("code") },
+        { QLatin1String("client_id"), Theme::instance()->oauthClientId() },
+        { QLatin1String("redirect_uri"), QLatin1String("http://localhost:") + QString::number(_server.serverPort()) } });
     if (!_expectedUser.isNull())
-        url.addQueryItem("user", _expectedUser);
+        query.addQueryItem("user", _expectedUser);
+    QUrl url = Utility::concatUrlPath(_account->url(), QLatin1String("/index.php/apps/oauth2/authorize"), query);
     return url;
 }
 
