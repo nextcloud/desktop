@@ -14,10 +14,6 @@ include(DefineOptions.cmake)
 
 include(DefineInstallationPaths)
 
-# add macros
-include(MacroAddPlugin)
-include(MacroCopyFile)
-
 find_package(SQLite3 3.8.0 REQUIRED)
 
 include(ConfigureChecks.cmake)

@@ -25,16 +25,6 @@ if (NOT LINUX)
     set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} )
 endif (NOT LINUX)
 
-check_library_exists(rt clock_gettime "" HAVE_CLOCK_GETTIME)
-if (HAVE_LIBRT OR HAVE_CLOCK_GETTIME)
-    set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} rt)
-endif (HAVE_LIBRT OR HAVE_CLOCK_GETTIME)
-
-check_library_exists(dl dlopen "" HAVE_LIBDL)
-if (HAVE_LIBDL)
-    set(CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES} dl)
-endif (HAVE_LIBDL)
-
 check_function_exists(asprintf HAVE_ASPRINTF)
 
 check_function_exists(fnmatch HAVE_FNMATCH)
