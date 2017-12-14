@@ -6,6 +6,7 @@
 #include <QJsonDocument>
 #include <QSslCertificate>
 #include <QSslKey>
+#include <QFile>
 
 #include <openssl/rsa.h>
 #include <openssl/evp.h>
@@ -123,6 +124,43 @@ private:
     QByteArray _metadata;
 };
 
+class FileEncryptionJob : public QObject
+{
+    Q_OBJECT
+public:
+    FileEncryptionJob(QByteArray &key, QByteArray &iv, QFile *input, QFile *output, QObject *parent = 0);
+
+public slots:
+    void start();
+
+signals:
+    void finished(QFile *output);
+
+private:
+    QByteArray _key;
+    QByteArray _iv;
+    QPointer<QFile> _input;
+    QPointer<QFile> _output;
+};
+
+class FileDecryptionJob : public QObject
+{
+    Q_OBJECT
+public:
+    FileDecryptionJob(QByteArray &key, QByteArray &iv, QFile *input, QFile *output, QObject *parent = 0);
+
+public slots:
+    void start();
+
+signals:
+    void finished(QFile *output);
+
+private:
+    QByteArray _key;
+    QByteArray _iv;
+    QPointer<QFile> _input;
+    QPointer<QFile> _output;
+};
 
 
 } // namespace OCC
