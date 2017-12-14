@@ -1,0 +1,31 @@
+- .pbuilderrc:
+
+  COMPONENTS="main restricted universe multiverse"
+
+  OTHERMIRROR="deb [trusted=yes] file:///${HOME}/pbuilder/deps ./"
+  HOOKDIR="${HOME}/pbuilder/hook.d"
+  BINDMOUNTS="${HOME}/pbuilder/deps"
+
+  EXTRAPACKAGES="apt-utils"
+
+- pbuilder/hook.d/D70setupdeps: hook to create a Packages file for the
+  packages in pbuilder/deps
+
+- pbuilder-dist trusty create --override-config --othermirror "deb [trusted=yes] file:///${HOME}/pbuilder/deps ./"
+
+  The OTHERMIRROR setting in .pbuilderrc is overridden by pbuilder-dist!
+
+- scripts:
+
+  config.sh: basic configuration variables
+
+  create_debdir.sh <tag> <version> <distribution>:
+     create the Debian-conformant source directory and .orig.tar.bz2
+     in the build area
+  build.sh <tag> <version> <distribution> <debuild options...>:
+     call create_debdir.sh and then debuild
+  pbuilder.sh <distribution>:
+     build the existing source package with pbuilder-dist.
+  pbuild.sh <distribution>:
+     build the source packages with build.sh and then call
+     pbuilder.sh

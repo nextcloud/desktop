@@ -763,6 +763,7 @@ void FolderMan::slotRemoveFoldersForAccount(AccountState *accountState)
     foreach (const auto &f, foldersToRemove) {
         removeFolder(f);
     }
+    emit folderListChanged(_folderMap);
 }
 
 void FolderMan::slotForwardFolderSyncStateChange()
@@ -1018,7 +1019,7 @@ QString FolderMan::getBackupName(QString fullPathName) const
         fullPathName.chop(1);
 
     if (fullPathName.isEmpty())
-        return QString::null;
+        return QString();
 
     QString newName = fullPathName + tr(" (backup)");
     QFileInfo fi(newName);

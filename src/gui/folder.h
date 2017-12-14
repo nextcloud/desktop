@@ -344,7 +344,7 @@ private:
     };
 
     void createGuiLog(const QString &filename, LogStatus status, int count,
-        const QString &renameTarget = QString::null);
+        const QString &renameTarget = QString());
 
     AccountStatePtr _accountState;
     FolderDefinition _definition;

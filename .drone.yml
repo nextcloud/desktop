@@ -1,9 +1,11 @@
+clone:
+  git:
+    image: plugins/git
+    depth: 1
+
 pipeline:
-    clone:
-        image: plugins/git
-        depth: 1
     qt-5.7:
-        image: nextcloudci/client-5.7:latest
+        image: nextcloudci/client-5.7:client-5.7-2
         commands:
             # Install QtKeyChain
             - /bin/bash -c "
@@ -28,7 +30,7 @@ pipeline:
             matrix:
                 TESTS: qt-5.7
     qt-5.8:
-        image: nextcloudci/client-5.8:latest
+        image: nextcloudci/client-5.8:client-5.8-2
         commands:
             # Install QtKeyChain
             - /bin/bash -c "
@@ -53,7 +55,7 @@ pipeline:
             matrix:
                 TESTS: qt-5.8
     qt-5.9:
-        image: nextcloudci/client-5.9:latest
+        image: nextcloudci/client-5.9:client-5.9-3
         commands:
             # Install QtKeyChain
             - /bin/bash -c "
@@ -78,8 +80,19 @@ pipeline:
             matrix:
                 TESTS: qt-5.9
 
+    AppImage-5.9:
+        image: nextcloudci/client-appimage-ci:client-appimage-ci-6
+        commands:
+            - /bin/bash -c "./admin/linux/build-appimage.sh"
+        when:
+            matrix:
+                BUILD: AppImage
+
 matrix:
     include:
         - TESTS: qt-5.7
         - TESTS: qt-5.8
         - TESTS: qt-5.9
+        - BUILD: AppImage
+
+branches: [ master, 2.* ]

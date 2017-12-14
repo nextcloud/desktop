@@ -53,7 +53,7 @@
 using namespace OCC;
 
 
-static void nullMessageHandler(QtMsgType, const char *)
+static void nullMessageHandler(QtMsgType, const QMessageLogContext &, const QString &)
 {
 }
 
@@ -188,7 +188,7 @@ void help()
     std::cout << "  --max-sync-retries [n] Retries maximum n times (default to 3)" << std::endl;
     std::cout << "  --uplimit [n]          Limit the upload speed of files to n KB/s" << std::endl;
     std::cout << "  --downlimit [n]        Limit the download speed of files to n KB/s" << std::endl;
-    std::cout << "  -h                     Sync hidden files,do not ignore them" << std::endl;
+    std::cout << "  -h                     Sync hidden files, do not ignore them" << std::endl;
     std::cout << "  --version, -v          Display version and exit" << std::endl;
     std::cout << "  --logdebug             More verbose logging" << std::endl;
     std::cout << "" << std::endl;
@@ -333,7 +333,7 @@ int main(int argc, char **argv)
 
     csync_set_log_level(options.silent ? 1 : 11);
     if (options.silent) {
-        qInstallMsgHandler(nullMessageHandler);
+        qInstallMessageHandler(nullMessageHandler);
     } else {
         qSetMessagePattern("%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
     }

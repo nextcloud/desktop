@@ -128,9 +128,9 @@ void ActivityListModel::startFetchJob(AccountState *s)
         this, &ActivityListModel::slotActivitiesReceived);
     job->setProperty("AccountStatePtr", QVariant::fromValue<QPointer<AccountState>>(s));
 
-    QList<QPair<QString, QString>> params;
-    params.append(qMakePair(QString::fromLatin1("page"), QString::fromLatin1("0")));
-    params.append(qMakePair(QString::fromLatin1("pagesize"), QString::fromLatin1("100")));
+    QUrlQuery params;
+    params.addQueryItem(QLatin1String("page"), QLatin1String("0"));
+    params.addQueryItem(QLatin1String("pagesize"), QLatin1String("100"));
     job->addQueryParams(params);
 
     _currentlyFetching.insert(s);

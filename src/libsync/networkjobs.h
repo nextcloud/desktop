@@ -19,6 +19,7 @@
 #include "abstractnetworkjob.h"
 
 #include <QBuffer>
+#include <QUrlQuery>
 #include <functional>
 
 class QUrl;
@@ -369,7 +370,7 @@ public:
      *
      * This function needs to be called before start() obviously.
      */
-    void addQueryParams(QList<QPair<QString, QString>> params);
+    void addQueryParams(const QUrlQuery &params);
 
 public slots:
     void start() Q_DECL_OVERRIDE;
@@ -386,7 +387,7 @@ signals:
     void jsonReceived(const QJsonDocument &json, int statusCode);
 
 private:
-    QList<QPair<QString, QString>> _additionalParams;
+    QUrlQuery _additionalParams;
 };
 
 /**

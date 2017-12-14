@@ -55,7 +55,7 @@ Other command line switches supported by ``owncloudcmd`` include the following:
       Retries maximum n times (defaults to 3)
 
 ``-h``
-      Sync hidden files,do not ignore them
+      Sync hidden files, do not ignore them
 
 Credential Handling
 ~~~~~~~~~~~~~~~~~~~

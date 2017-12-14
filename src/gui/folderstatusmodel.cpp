@@ -91,7 +91,7 @@ void FolderStatusModel::setAccountState(const AccountState *accountState)
     }
 
     // Sort by header text
-    qSort(_folders.begin(), _folders.end(), sortByFolderHeader);
+    std::sort(_folders.begin(), _folders.end(), sortByFolderHeader);
 
     // Set the root _pathIdx after the sorting
     for (int i = 0; i < _folders.size(); ++i) {
@@ -977,8 +977,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
                 //: Example text: "download 24Kb/s"   (%1 is replaced by 24Kb (translated))
                 fileProgressString.append(tr("download %1/s").arg(Utility::octetsToString(estimatedDownBw)));
 #else
-                fileProgressString.append(trUtf8("\u2193"
-                                                 " %1/s")
+                fileProgressString.append(tr("\u2193 %1/s")
                                               .arg(Utility::octetsToString(estimatedDownBw)));
 #endif
             }
@@ -988,8 +987,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
                 //: Example text: "upload 24Kb/s"   (%1 is replaced by 24Kb (translated))
                 fileProgressString.append(tr("upload %1/s").arg(Utility::octetsToString(estimatedUpBw)));
 #else
-                fileProgressString.append(trUtf8("\u2191"
-                                                 " %1/s")
+                fileProgressString.append(tr("\u2191 %1/s")
                                               .arg(Utility::octetsToString(estimatedUpBw)));
 #endif
             }

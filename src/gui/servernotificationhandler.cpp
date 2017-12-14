@@ -24,6 +24,8 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcServerNotification, "gui.servernotification", QtInfoMsg)
 
+const QString notificationsPath = QLatin1String("ocs/v2.php/apps/notifications/api/v1/notifications");
+
 ServerNotificationHandler::ServerNotificationHandler(QObject *parent)
     : QObject(parent)
 {
@@ -47,7 +49,7 @@ void ServerNotificationHandler::slotFetchNotifications(AccountState *ptr)
     }
 
     // if the previous notification job has finished, start next.
-    _notificationJob = new JsonApiJob(ptr->account(), QLatin1String("ocs/v2.php/apps/notifications/api/v1/notifications"), this);
+    _notificationJob = new JsonApiJob(ptr->account(), notificationsPath, this);
     QObject::connect(_notificationJob.data(), &JsonApiJob::jsonReceived,
         this, &ServerNotificationHandler::slotNotificationsReceived);
     _notificationJob->setProperty("AccountStatePtr", QVariant::fromValue<AccountState *>(ptr));
@@ -94,6 +96,16 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
 
             a._links.append(al);
         }
+
+        // Add another action to dismiss notification on server
+        // https://github.com/owncloud/notifications/blob/master/docs/ocs-endpoint-v1.md#deleting-a-notification-for-a-user
+        ActivityLink al;
+        al._label = tr("Dismiss");
+        al._link  = Utility::concatUrlPath(ai->account()->url(), notificationsPath + "/" + json.value("notification_id").toString()).toString();
+        al._verb  = "DELETE";
+        al._isPrimary = false;
+        a._links.append(al);
+
         list.append(a);
     }
     emit newNotificationList(list);

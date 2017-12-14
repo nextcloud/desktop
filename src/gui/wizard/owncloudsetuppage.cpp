@@ -221,7 +221,7 @@ QString OwncloudSetupPage::url() const
 bool OwncloudSetupPage::validatePage()
 {
     if (!_authTypeKnown) {
-        setErrorString(QString::null, false);
+        setErrorString(QString(), false);
         _checking = true;
         startSpinner();
         emit completeChanged();

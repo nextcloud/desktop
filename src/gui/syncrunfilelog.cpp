@@ -136,7 +136,7 @@ void SyncRunFileLog::logItem(const SyncFileItem &item)
     if (item._direction == SyncFileItem::None) {
         return;
     }
-    QString ts = QString::fromAscii(item._responseTimeStamp);
+    QString ts = QString::fromLatin1(item._responseTimeStamp);
     if (ts.length() > 6) {
         QRegExp rx("(\\d\\d:\\d\\d:\\d\\d)");
         if (ts.contains(rx)) {

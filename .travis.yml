@@ -1,37 +1,38 @@
+os: linux
+dist: trusty
 sudo: required
-
-language: cpp
+language: generic
 
 services:
-  - docker
+- docker
 
-branches:
-  only:
-  - coverity_scan 
+env:
+  matrix:
+  - BUILD_TYPE=debian
 
 before_install:
-- sudo sh -c "echo 'deb http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Ubuntu_14.04/ /' >> /etc/apt/sources.list.d/owncloud-client.list"
-- sudo sh -c "echo 'deb-src http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Ubuntu_14.04/ /' >> /etc/apt/sources.list.d/owncloud-client.list"
-- wget http://download.opensuse.org/repositories/isv:ownCloud:desktop/Ubuntu_14.04/Release.key
-- sudo apt-key add - < Release.key
-- sudo apt-get update
-- sudo apt-get -y build-dep owncloud-client
-- checkout=$(git show-ref --head --hash head)
-- cd ../
-- wget https://scan.coverity.com/download/linux-64 --post-data "token=$token&project=owncloud%2Fmirall" -O coverity_tool.tgz
-- mkdir coverity
-- tar -xvf coverity_tool.tgz -C coverity --strip-components=1
-- export PATH=$PATH:$PWD/coverity/bin/
-- cd $TRAVIS_BUILD_DIR
+  - admin/linux/travis-build.sh before_install
 
 install:
-- cd ../
-- mkdir client-build
-- cd client-build
-- cmake -DCMAKE_BUILD_TYPE="Debug" $TRAVIS_BUILD_DIR
-- cov-build --dir cov-int make
-- tar czvf client.tgz cov-int 
-- curl --form token=$token --form email=lukas@statuscode.ch --form file=@$PWD/client.tgz --form version="$checkout" --form description="$checkout" https://scan.coverity.com/builds?project=owncloud%2Fmirall
+  - admin/linux/travis-build.sh install
 
-# Hack to stop processing
-script: true
+before_script:
+  - admin/linux/travis-build.sh before_script
+
+script:
+  - admin/linux/travis-build.sh script
+
+after_success:
+  - admin/linux/travis-build.sh after_success
+
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: admin/linux/travis-build.sh ppa_deploy
+    on:
+      condition: ($BUILD_TYPE = debian)
+
+branches:
+  except:
+    - # Do not build tags that we create when we upload to GitHub Releases
+    - /^(?i:continuous)$/

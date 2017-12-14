@@ -60,7 +60,7 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     connect(ui->addPushButton, &QAbstractButton::clicked, this, &IgnoreListEditor::slotAddPattern);
 
     ui->tableWidget->resizeColumnsToContents();
-    ui->tableWidget->horizontalHeader()->setResizeMode(patternCol, QHeaderView::Stretch);
+    ui->tableWidget->horizontalHeader()->setSectionResizeMode(patternCol, QHeaderView::Stretch);
     ui->tableWidget->verticalHeader()->setVisible(false);
 
     ui->syncHiddenFilesCheckBox->setChecked(!FolderMan::instance()->ignoreHiddenFiles());

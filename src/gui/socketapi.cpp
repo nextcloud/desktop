@@ -65,7 +65,7 @@ static inline QString removeTrailingSlash(QString path)
     return path;
 }
 
-static QString buildMessage(const QString &verb, const QString &path, const QString &status = QString::null)
+static QString buildMessage(const QString &verb, const QString &path, const QString &status = QString())
 {
     QString msg(verb);
 
@@ -270,7 +270,7 @@ void SocketApi::slotReadSocket()
         QString line = QString::fromUtf8(socket->readLine()).normalized(QString::NormalizationForm_C);
         line.chop(1); // remove the '\n'
         qCInfo(lcSocketApi) << "Received SocketAPI message <--" << line << "from" << socket;
-        QByteArray command = line.split(":").value(0).toAscii();
+        QByteArray command = line.split(":").value(0).toLatin1();
         QByteArray functionWithArguments = "command_" + command + "(QString,SocketListener*)";
         int indexOfMethod = staticMetaObject.indexOfMethod(functionWithArguments);
 
@@ -307,7 +307,7 @@ void SocketApi::slotUnregisterPath(const QString &alias)
 
     Folder *f = FolderMan::instance()->folder(alias);
     if (f)
-        broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), removeTrailingSlash(f->path()), QString::null), true);
+        broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), removeTrailingSlash(f->path()), QString()), true);
 
     _registeredAliases.remove(alias);
 }
