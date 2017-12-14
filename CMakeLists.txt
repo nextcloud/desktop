@@ -200,6 +200,9 @@ if(BUILD_CLIENT)
     endif()
 
    find_package(ZLIB REQUIRED)
+   find_package(GLib2)
+   find_package(Gio)
+   find_package(Libcloudproviders)
 endif()
 
 if (NOT DEFINED APPLICATION_ICON_NAME)

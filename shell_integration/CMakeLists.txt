@@ -20,4 +20,6 @@ if( UNIX AND NOT APPLE )
       message("Dolphin plugin disabled: KDE Frameworks 5.16 not found")
     endif()
   endif()
+  add_subdirectory(libcloudproviders)
 endif()
+
