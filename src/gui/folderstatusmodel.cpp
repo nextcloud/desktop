@@ -396,6 +396,18 @@ FolderStatusModel::SubFolderInfo *FolderStatusModel::infoForIndex(const QModelIn
     }
 }
 
+FolderStatusModel::SubFolderInfo *FolderStatusModel::infoForFileId(const QByteArray& fileId) const
+{
+  for(int i = 0, end = _folders.size(); i < end; i++) {
+    auto *info = const_cast<SubFolderInfo *>(&_folders[i]);
+    if (info->_fileId == fileId) {
+      return info;
+    }
+  }
+
+  return nullptr;
+}
+
 QModelIndex FolderStatusModel::indexForPath(Folder *f, const QString &path) const
 {
     if (!f) {
