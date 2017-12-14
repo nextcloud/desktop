@@ -63,7 +63,6 @@ set(csync_SRCS
   csync.cpp
   csync_exclude.cpp
   csync_log.cpp
-  csync_time.c
   csync_util.cpp
   csync_misc.cpp
 
