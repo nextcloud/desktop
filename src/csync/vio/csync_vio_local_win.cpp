@@ -31,11 +31,11 @@
 #include "c_lib.h"
 #include "c_utf8.h"
 #include "csync_util.h"
-#include "csync_log.h"
 #include "csync_vio.h"
 
 #include "vio/csync_vio_local.h"
 
+Q_LOGGING_CATEGORY(lcCSyncVIOLocal, "sync.csync.vio_local", QtInfoMsg)
 
 /*
  * directory functions
@@ -235,13 +235,13 @@ static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf
                      FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT,
                      NULL );
     if( h == INVALID_HANDLE_VALUE ) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_CRIT, "CreateFileW failed on %ls", wuri);
+        qCCritical(lcCSyncVIOLocal, "CreateFileW failed on %ls", wuri);
         errno = GetLastError();
         return -1;
     }
 
     if(!GetFileInformationByHandle( h, &fileInfo ) ) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_CRIT, "GetFileInformationByHandle failed on %ls", wuri);
+        qCCritical(lcCSyncVIOLocal, "GetFileInformationByHandle failed on %ls", wuri);
         errno = GetLastError();
         CloseHandle(h);
         return -1;

@@ -697,8 +697,6 @@ void DiscoveryJob::start()
     _csync_ctx->callbacks.remote_closedir_hook = remote_vio_closedir_hook;
     _csync_ctx->callbacks.vio_userdata = this;
 
-    csync_set_log_callback(_log_callback);
-    csync_set_log_level(_log_level);
     _lastUpdateProgressCallbackCall.invalidate();
     int ret = csync_update(_csync_ctx);
 

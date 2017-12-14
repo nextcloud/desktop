@@ -86,7 +86,7 @@ int csync_update(CSYNC *ctx) {
   timer.start();
   ctx->current = LOCAL_REPLICA;
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "## Starting local discovery ##");
+  qCInfo(lcCSync, "## Starting local discovery ##");
 
   rc = csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
   if (rc < 0) {
@@ -104,7 +104,7 @@ int csync_update(CSYNC *ctx) {
   timer.restart();
   ctx->current = REMOTE_REPLICA;
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "## Starting remote discovery ##");
+  qCInfo(lcCSync, "## Starting remote discovery ##");
 
   rc = csync_ftw(ctx, "", csync_walker, MAX_DEPTH);
   if (rc < 0) {
