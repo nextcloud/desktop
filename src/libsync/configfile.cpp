@@ -21,10 +21,11 @@
 
 #include "creds/abstractcredentials.h"
 
+#include "csync_exclude.h"
+
 #ifndef TOKEN_AUTH_ONLY
 #include <QWidget>
 #include <QHeaderView>
-#include <QDesktopServices>
 #endif
 
 #include <QCoreApplication>
@@ -34,6 +35,7 @@
 #include <QLoggingCategory>
 #include <QSettings>
 #include <QNetworkProxy>
+#include <QStandardPaths>
 
 #define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
 #define DEFAULT_FULL_LOCAL_DISCOVERY_INTERVAL (60 * 60 * 1000) // 1 hour
@@ -82,7 +84,7 @@ static const char maxLogLinesC[] = "Logging/maxLogLines";
 
 const char certPath[] = "http_certificatePath";
 const char certPasswd[] = "http_certificatePasswd";
-QString ConfigFile::_confDir = QString::null;
+QString ConfigFile::_confDir = QString();
 bool ConfigFile::_askedUser = false;
 
 ConfigFile::ConfigFile()
@@ -250,24 +252,16 @@ QVariant ConfigFile::getPolicySetting(const QString &setting, const QVariant &de
 
 QString ConfigFile::configPath() const
 {
-#ifndef TOKEN_AUTH_ONLY
     if (_confDir.isEmpty()) {
-        //  Qt 5's QStandardPaths::writableLocation gives us wrong results (without /data/),
-        //  so we'll have to use the deprecated version for now
-        _confDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+        // On Unix, use the AppConfigLocation for the settings, that's configurable with the XDG_CONFIG_HOME env variable.
+        // On Windows, use AppDataLocation, that's where the roaming data is and where we should store the config file
+        _confDir = QStandardPaths::writableLocation(Utility::isWindows() ? QStandardPaths::AppDataLocation : QStandardPaths::AppConfigLocation);
     }
-#endif
     QString dir = _confDir;
 
     if (!dir.endsWith(QLatin1Char('/')))
         dir.append(QLatin1Char('/'));
     return dir;
-}
-
-QString ConfigFile::configPathWithAppName() const
-{
-    //HACK
-    return QFileInfo(configFile()).dir().absolutePath().append("/");
 }
 
 static const QLatin1String exclFile("sync-exclude.lst");
@@ -607,12 +601,12 @@ QString ConfigFile::proxyPassword() const
 
 int ConfigFile::useUploadLimit() const
 {
-    return getValue(useUploadLimitC, QString::null, 0).toInt();
+    return getValue(useUploadLimitC, QString(), 0).toInt();
 }
 
 int ConfigFile::useDownloadLimit() const
 {
-    return getValue(useDownloadLimitC, QString::null, 0).toInt();
+    return getValue(useDownloadLimitC, QString(), 0).toInt();
 }
 
 void ConfigFile::setUseUploadLimit(int val)
@@ -627,12 +621,12 @@ void ConfigFile::setUseDownloadLimit(int val)
 
 int ConfigFile::uploadLimit() const
 {
-    return getValue(uploadLimitC, QString::null, 10).toInt();
+    return getValue(uploadLimitC, QString(), 10).toInt();
 }
 
 int ConfigFile::downloadLimit() const
 {
-    return getValue(downloadLimitC, QString::null, 80).toInt();
+    return getValue(downloadLimitC, QString(), 80).toInt();
 }
 
 void ConfigFile::setUploadLimit(int kbytes)
@@ -748,4 +742,17 @@ std::unique_ptr<QSettings> ConfigFile::settingsWithGroup(const QString &group, Q
     return settings;
 }
 
+void ConfigFile::setupDefaultExcludeFilePaths(ExcludedFiles &excludedFiles)
+{
+    ConfigFile cfg;
+    QString systemList = cfg.excludeFile(ConfigFile::SystemScope);
+    qCInfo(lcConfigFile) << "Adding system ignore list to csync:" << systemList;
+    excludedFiles.addExcludeFilePath(systemList);
+
+    QString userList = cfg.excludeFile(ConfigFile::UserScope);
+    if (QFile::exists(userList)) {
+        qCInfo(lcConfigFile) << "Adding user defined ignore list to csync:" << userList;
+        excludedFiles.addExcludeFilePath(userList);
+    }
+}
 }

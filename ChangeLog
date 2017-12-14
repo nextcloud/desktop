@@ -1,9 +1,10 @@
 ChangeLog
 =========
 
-version 2.4.0 (2017-11-XX)
+version 2.4.0 (2017-12-XX)
 * If you're using 2.4.0 alpha1, please upgrade as the alpha1 had an issue with hidden files!
 * OAuth2 authentication support by opening external browser (#5668)
+* Shibboleth: Change to use OAuth2 if supported (#6198)
 * Sharing: Add support for multiple public link shares (#5655)
 * Sharing: Add option to copy/email private links (#5023, #5627)
 * Sharing: Add option "show file listing" (#5837)
@@ -61,6 +62,7 @@ version 2.4.0 (2017-11-XX)
 * Sync: Introduce overall errors that are not tied to a file (#5746)
 * Sync: Better messaging for 507 Insufficient Storage (#5537)
 * Sync: Create conflicts by comparing the hash of files with identical mtime/size (#5589)
+* Sync: Avoid downloads by comparing the hash of files with identical mtime/size (#6153)
 * Sync: Upload conflict files if OWNCLOUD_UPLOAD_CONFLICT_FILES environment variable is set (#6038)
 * Sync: Blacklist: Don't let errors become warnings (#5516)
 * Sync: Check etag again after active sync (#4116)

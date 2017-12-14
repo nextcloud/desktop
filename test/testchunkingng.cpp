@@ -66,16 +66,27 @@ private slots:
 
 
     void testResume () {
-
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
         const int size = 300 * 1000 * 1000; // 300 MB
         partialUpload(fakeFolder, "A/a0", size);
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
+        const auto &chunkMap = fakeFolder.uploadState().children.first().children;
+        quint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](quint64 s, const FileInfo &f) { return s + f.size; });
+        QVERIFY(uploadedSize > 50 * 1000 * 1000); // at least 50 MB
 
         // Add a fake file to make sure it gets deleted
         fakeFolder.uploadState().children.first().insert("10000", size);
+
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation) {
+                // Test that we properly resuming and are not sending past data again.
+                Q_ASSERT(request.rawHeader("OC-Chunk-Offset").toULongLong() >= uploadedSize);
+            }
+            return nullptr;
+        });
+
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());

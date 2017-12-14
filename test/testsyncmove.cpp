@@ -231,12 +231,25 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
     }
 
+    void testDuplicateFileId_data()
+    {
+        QTest::addColumn<QString>("prefix");
+
+        // There have been bugs related to how the original
+        // folder and the folder with the duplicate tree are
+        // ordered. Test both cases here.
+        QTest::newRow("first ordering") << "O"; // "O" > "A"
+        QTest::newRow("second ordering") << "0"; // "0" < "A"
+    }
+
     // If the same folder is shared in two different ways with the same
     // user, the target user will see duplicate file ids. We need to make
     // sure the move detection and sync still do the right thing in that
     // case.
     void testDuplicateFileId()
     {
+        QFETCH(QString, prefix);
+
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         auto &remote = fakeFolder.remoteModifier();
 
@@ -245,8 +258,8 @@ private slots:
         remote.mkdir("A/Q");
 
         // Duplicate every entry in A under O/A
-        remote.mkdir("O");
-        remote.children["O"].addChild(remote.children["A"]);
+        remote.mkdir(prefix);
+        remote.children[prefix].addChild(remote.children["A"]);
 
         // This already checks that the rename detection doesn't get
         // horribly confused if we add new files that have the same
@@ -263,28 +276,28 @@ private slots:
 
         // Try a remote file move
         remote.rename("A/a1", "A/W/a1m");
-        remote.rename("O/A/a1", "O/A/W/a1m");
+        remote.rename(prefix + "/A/a1", prefix + "/A/W/a1m");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(nGET, 0);
 
         // And a remote directory move
         remote.rename("A/W", "A/Q/W");
-        remote.rename("O/A/W", "O/A/Q/W");
+        remote.rename(prefix + "/A/W", prefix + "/A/Q/W");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(nGET, 0);
 
         // Partial file removal (in practice, A/a2 may be moved to O/a2, but we don't care)
-        remote.rename("O/A/a2", "O/a2");
+        remote.rename(prefix + "/A/a2", prefix + "/a2");
         remote.remove("A/a2");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(nGET, 0);
 
         // Local change plus remote move at the same time
-        fakeFolder.localModifier().appendByte("O/a2");
-        remote.rename("O/a2", "O/a3");
+        fakeFolder.localModifier().appendByte(prefix + "/a2");
+        remote.rename(prefix + "/a2", prefix + "/a3");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(nGET, 1);

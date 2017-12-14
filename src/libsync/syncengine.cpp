@@ -89,7 +89,9 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
 
     _csync_ctx.reset(new CSYNC(localPath.toUtf8().data(), journal));
 
-    _excludedFiles.reset(new ExcludedFiles(&_csync_ctx->excludes));
+    _excludedFiles.reset(new ExcludedFiles);
+    _csync_ctx->exclude_traversal_fn = _excludedFiles->csyncTraversalMatchFun();
+
     _syncFileStatusTracker.reset(new SyncFileStatusTracker(this));
 
     _clearTouchedFilesTimer.setSingleShot(true);
@@ -475,6 +477,9 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         break;
     case CSYNC_STATUS_INDIVIDUAL_TOO_DEEP:
         item->_errorString = tr("Folder hierarchy is too deep");
+        break;
+    case CSYNC_STATUS_INDIVIDUAL_CANNOT_ENCODE:
+        item->_errorString = tr("The filename cannot be encoded on your file system.");
         break;
     case CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE:
         item->_status = SyncFileItem::Conflict;

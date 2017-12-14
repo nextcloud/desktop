@@ -27,9 +27,9 @@
 #include <QTimer>
 #include <QMutex>
 #include <QCoreApplication>
-#include <QPixmap>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QPainter>
 
 #include "networkjobs.h"
 #include "account.h"
@@ -626,10 +626,11 @@ bool PropfindJob::finished()
 
 /*********************************************************************************************/
 
-AvatarJob::AvatarJob(AccountPtr account, QObject *parent)
+#ifndef TOKEN_AUTH_ONLY
+AvatarJob::AvatarJob(AccountPtr account, const QString &userId, int size, QObject *parent)
     : AbstractNetworkJob(account, QString(), parent)
 {
-    _avatarUrl = Utility::concatUrlPath(account->url(), QString("remote.php/dav/avatars/%1/128.png").arg(account->davUser()));
+    _avatarUrl = Utility::concatUrlPath(account->url(), QString("remote.php/dav/avatars/%1/%2.png").arg(userId, QString::number(size)));
 }
 
 void AvatarJob::start()
@@ -637,6 +638,26 @@ void AvatarJob::start()
     QNetworkRequest req;
     sendRequest("GET", _avatarUrl, req);
     AbstractNetworkJob::start();
+}
+
+QImage AvatarJob::makeCircularAvatar(const QImage &baseAvatar)
+{
+    int dim = baseAvatar.width();
+
+    QImage avatar(dim, dim, baseAvatar.format());
+    avatar.fill(Qt::transparent);
+
+    QPainter painter(&avatar);
+    painter.setRenderHint(QPainter::Antialiasing);
+
+    QPainterPath path;
+    path.addEllipse(0, 0, dim, dim);
+    painter.setClipPath(path);
+
+    painter.drawImage(0, 0, baseAvatar);
+    painter.end();
+
+    return avatar;
 }
 
 bool AvatarJob::finished()
@@ -656,6 +677,7 @@ bool AvatarJob::finished()
     emit(avatarPixmap(avImage));
     return true;
 }
+#endif
 
 /*********************************************************************************************/
 
@@ -758,7 +780,7 @@ JsonApiJob::JsonApiJob(const AccountPtr &account, const QString &path, QObject *
 {
 }
 
-void JsonApiJob::addQueryParams(QList<QPair<QString, QString>> params)
+void JsonApiJob::addQueryParams(const QUrlQuery &params)
 {
     _additionalParams = params;
 }
@@ -767,10 +789,9 @@ void JsonApiJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
-    QUrl url = Utility::concatUrlPath(account()->url(), path());
-    QList<QPair<QString, QString>> params = _additionalParams;
-    params << qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json"));
-    url.setQueryItems(params);
+    auto query = _additionalParams;
+    query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
+    QUrl url = Utility::concatUrlPath(account()->url(), path(), query);
     sendRequest("GET", url, req);
     AbstractNetworkJob::start();
 }
@@ -901,6 +922,38 @@ bool SimpleNetworkJob::finished()
 {
     emit finishedSignal(reply());
     return true;
+}
+
+void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
+    const QByteArray &numericFileId, QObject *target,
+    std::function<void(const QString &url)> targetFun)
+{
+    QString oldUrl;
+    if (!numericFileId.isEmpty())
+        oldUrl = account->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded);
+
+    // Retrieve the new link by PROPFIND
+    PropfindJob *job = new PropfindJob(account, remotePath, target);
+    job->setProperties(
+        QList<QByteArray>()
+        << "http://owncloud.org/ns:fileid" // numeric file id for fallback private link generation
+        << "http://owncloud.org/ns:privatelink");
+    job->setTimeout(10 * 1000);
+    QObject::connect(job, &PropfindJob::result, target, [=](const QVariantMap &result) {
+        auto privateLinkUrl = result["privatelink"].toString();
+        auto numericFileId = result["fileid"].toByteArray();
+        if (!privateLinkUrl.isEmpty()) {
+            targetFun(privateLinkUrl);
+        } else if (!numericFileId.isEmpty()) {
+            targetFun(account->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded));
+        } else {
+            targetFun(oldUrl);
+        }
+    });
+    QObject::connect(job, &PropfindJob::finishedWithError, target, [=](QNetworkReply *) {
+        targetFun(oldUrl);
+    });
+    job->start();
 }
 
 } // namespace OCC

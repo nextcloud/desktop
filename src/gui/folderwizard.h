@@ -149,6 +149,9 @@ public:
     explicit FolderWizard(AccountPtr account, QWidget *parent = 0);
     ~FolderWizard();
 
+    bool eventFilter(QObject *watched, QEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
+
 private:
     FolderWizardLocalPath *_folderWizardSourcePage;
     FolderWizardRemotePath *_folderWizardTargetPage;

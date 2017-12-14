@@ -17,6 +17,8 @@
 #define NETWORKJOBS_H
 
 #include "abstractnetworkjob.h"
+#include <QUrlQuery>
+#include <functional>
 
 class QUrl;
 class QJsonObject;
@@ -133,11 +135,9 @@ private:
     QList<QByteArray> _properties;
 };
 
-
+#ifndef TOKEN_AUTH_ONLY
 /**
- * @brief The AvatarJob class
- *
- * Retrieves the account users avatar from the server using a GET request.
+ * @brief Retrieves the account users avatar from the server using a GET request.
  *
  * If the server does not have the avatar, the result Pixmap is empty.
  *
@@ -147,15 +147,23 @@ class OWNCLOUDSYNC_EXPORT AvatarJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit AvatarJob(AccountPtr account, QObject *parent = 0);
+    /**
+     * @param userId The user for which to obtain the avatar
+     * @param size The size of the avatar (square so size*size)
+     */
+    explicit AvatarJob(AccountPtr account, const QString &userId, int size, QObject *parent = 0);
+
     void start() Q_DECL_OVERRIDE;
+
+    /** The retrieved avatar images don't have the circle shape by default */
+    static QImage makeCircularAvatar(const QImage &baseAvatar);
 
 signals:
     /**
      * @brief avatarPixmap - returns either a valid pixmap or not.
      */
 
-    void avatarPixmap(QImage);
+    void avatarPixmap(const QImage &);
 
 private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
@@ -163,6 +171,7 @@ private slots:
 private:
     QUrl _avatarUrl;
 };
+#endif
 
 /**
  * @brief Send a Proppatch request
@@ -331,7 +340,7 @@ public:
      *
      * This function needs to be called before start() obviously.
      */
-    void addQueryParams(QList<QPair<QString, QString>> params);
+    void addQueryParams(const QUrlQuery &params);
 
 public slots:
     void start() Q_DECL_OVERRIDE;
@@ -348,7 +357,7 @@ signals:
     void jsonReceived(const QJsonDocument &json, int statusCode);
 
 private:
-    QList<QPair<QString, QString>> _additionalParams;
+    QUrlQuery _additionalParams;
 };
 
 /**
@@ -401,6 +410,23 @@ signals:
 private slots:
     bool finished() Q_DECL_OVERRIDE;
 };
+
+/**
+ * @brief Runs a PROPFIND to figure out the private link url
+ *
+ * The numericFileId is used only to build the deprecatedPrivateLinkUrl
+ * locally as a fallback. If it's empty and the PROPFIND fails, targetFun
+ * will be called with an empty string.
+ *
+ * The job and signal connections are parented to the target QObject.
+ *
+ * Note: targetFun is guaranteed to be called only through the event
+ * loop and never directly.
+ */
+void OWNCLOUDSYNC_EXPORT fetchPrivateLinkUrl(
+    AccountPtr account, const QString &remotePath,
+    const QByteArray &numericFileId, QObject *target,
+    std::function<void(const QString &url)> targetFun);
 
 } // namespace OCC
 

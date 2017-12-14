@@ -81,8 +81,9 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     connect(_ui->pushButton_setPassword, &QAbstractButton::clicked, this, &ShareLinkWidget::slotPasswordReturnPressed);
     connect(_ui->checkBox_expire, &QAbstractButton::clicked, this, &ShareLinkWidget::slotCheckBoxExpireClicked);
     connect(_ui->calendar, &QDateTimeEdit::dateChanged, this, &ShareLinkWidget::slotExpireDateChanged);
-    connect(_ui->checkBox_editing, &QAbstractButton::clicked, this, &ShareLinkWidget::slotPermissionsCheckboxClicked);
-    connect(_ui->checkBox_fileListing, &QAbstractButton::clicked, this, &ShareLinkWidget::slotPermissionsCheckboxClicked);
+    connect(_ui->radio_readOnly, &QAbstractButton::clicked, this, &ShareLinkWidget::slotPermissionsClicked);
+    connect(_ui->radio_readWrite, &QAbstractButton::clicked, this, &ShareLinkWidget::slotPermissionsClicked);
+    connect(_ui->radio_uploadOnly, &QAbstractButton::clicked, this, &ShareLinkWidget::slotPermissionsClicked);
 
     _ui->errorLabel->hide();
 
@@ -149,7 +150,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     // File can't have public upload set; we also hide it if the capability isn't there
     _ui->widget_editing->setVisible(
         !_isFile && _account->capabilities().sharePublicLinkAllowUpload());
-    _ui->checkBox_fileListing->setVisible(
+    _ui->radio_uploadOnly->setVisible(
         _account->capabilities().sharePublicLinkSupportsUploadOnly());
 
 
@@ -158,12 +159,12 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     _linkContextMenu = new QMenu(this);
     connect(_linkContextMenu, &QMenu::triggered,
         this, &ShareLinkWidget::slotLinkContextMenuActionTriggered);
-    _deleteLinkAction = _linkContextMenu->addAction(tr("Delete"));
     _openLinkAction = _linkContextMenu->addAction(tr("Open link in browser"));
     _copyLinkAction = _linkContextMenu->addAction(tr("Copy link to clipboard"));
     _copyDirectLinkAction = _linkContextMenu->addAction(tr("Copy link to clipboard (direct download)"));
     _emailLinkAction = _linkContextMenu->addAction(tr("Send link by email"));
     _emailDirectLinkAction = _linkContextMenu->addAction(tr("Send link by email (direct download)"));
+    _deleteLinkAction = _linkContextMenu->addAction(tr("Delete"));
 
     /*
      * Create the share manager and connect it properly
@@ -282,7 +283,9 @@ void ShareLinkWidget::slotShareSelectionChanged()
     auto share = selectedShare();
     if (!share) {
         _ui->shareProperties->setEnabled(false);
-        _ui->checkBox_editing->setChecked(false);
+        _ui->radio_readOnly->setChecked(false);
+        _ui->radio_readWrite->setChecked(false);
+        _ui->radio_uploadOnly->setChecked(false);
         _ui->checkBox_expire->setChecked(false);
         _ui->checkBox_password->setChecked(false);
         return;
@@ -292,8 +295,11 @@ void ShareLinkWidget::slotShareSelectionChanged()
 
     _ui->checkBox_password->setEnabled(!_passwordRequired);
     _ui->checkBox_expire->setEnabled(!_expiryRequired);
-    _ui->checkBox_editing->setEnabled(
-        _account->capabilities().sharePublicLinkAllowUpload());
+    _ui->widget_editing->setEnabled(true);
+    if (!_account->capabilities().sharePublicLinkAllowUpload()) {
+        _ui->radio_readWrite->setEnabled(false);
+        _ui->radio_uploadOnly->setEnabled(false);
+    }
 
     // Password state
     _ui->checkBox_password->setText(tr("P&assword protect"));
@@ -324,9 +330,15 @@ void ShareLinkWidget::slotShareSelectionChanged()
 
     // Public upload state (box is hidden for files)
     if (!_isFile) {
-        _ui->checkBox_editing->setChecked(share->getPublicUpload());
-        _ui->checkBox_fileListing->setChecked(share->getShowFileListing());
-        _ui->checkBox_fileListing->setEnabled(share->getPublicUpload());
+        if (share->getPublicUpload()) {
+            if (share->getShowFileListing()) {
+                _ui->radio_readWrite->setChecked(true);
+            } else {
+                _ui->radio_uploadOnly->setChecked(true);
+            }
+        } else {
+            _ui->radio_readOnly->setChecked(true);
+        }
     }
 }
 
@@ -456,7 +468,7 @@ void ShareLinkWidget::slotCreateShareRequiresPassword(const QString &message)
     _ui->checkBox_password->setEnabled(false);
     _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
     _ui->checkBox_expire->setEnabled(false);
-    _ui->checkBox_editing->setEnabled(false);
+    _ui->widget_editing->setEnabled(false);
     if (!message.isEmpty()) {
         _ui->errorLabel->setText(message);
         _ui->errorLabel->show();
@@ -579,19 +591,18 @@ void ShareLinkWidget::slotDeleteShareClicked()
     confirmAndDeleteShare(share);
 }
 
-void ShareLinkWidget::slotPermissionsCheckboxClicked()
+void ShareLinkWidget::slotPermissionsClicked()
 {
     if (auto current = selectedShare()) {
-        _ui->checkBox_editing->setEnabled(false);
-        _ui->checkBox_fileListing->setEnabled(false);
+        _ui->widget_editing->setEnabled(false);
         _pi_editing->startAnimation();
         _ui->errorLabel->hide();
 
         SharePermissions perm = SharePermissionRead;
-        if (_ui->checkBox_editing->isChecked() && _ui->checkBox_fileListing->isChecked()) {
+        if (_ui->radio_readWrite->isChecked()) {
             perm = SharePermissionRead | SharePermissionCreate
                 | SharePermissionUpdate | SharePermissionDelete;
-        } else if (_ui->checkBox_editing->isChecked() && !_ui->checkBox_fileListing->isChecked()) {
+        } else if (_ui->radio_uploadOnly->isChecked()) {
             perm = SharePermissionCreate;
         }
         current->setPermissions(perm);

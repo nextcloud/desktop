@@ -23,6 +23,13 @@
 
 #include "ocsynclib.h"
 
+#include "csync.h"
+
+#include <QObject>
+#include <QSet>
+#include <QString>
+#include <QRegularExpression>
+
 enum csync_exclude_type_e {
   CSYNC_NOT_EXCLUDED   = 0,
   CSYNC_FILE_SILENTLY_EXCLUDED,
@@ -33,67 +40,156 @@ enum csync_exclude_type_e {
   CSYNC_FILE_EXCLUDE_LONG_FILENAME,
   CSYNC_FILE_EXCLUDE_HIDDEN,
   CSYNC_FILE_EXCLUDE_STAT_FAILED,
-  CSYNC_FILE_EXCLUDE_CONFLICT
+  CSYNC_FILE_EXCLUDE_CONFLICT,
+  CSYNC_FILE_EXCLUDE_CANNOT_ENCODE
 };
 typedef enum csync_exclude_type_e CSYNC_EXCLUDE_TYPE;
 
-#ifdef WITH_TESTING
-int OCSYNC_EXPORT _csync_exclude_add(c_strlist_t **inList, const char *string);
-#endif
+class ExcludedFilesTest;
 
 /**
- * @brief Load exclude list
+ * Manages file/directory exclusion.
  *
- * @param ctx    The context of the synchronizer.
- * @param fname  The filename to load.
+ * Most commonly exclude patterns are loaded from files. See
+ * addExcludeFilePath() and reloadExcludeFiles().
  *
- * @return  0 on success, -1 if an error occurred with errno set.
+ * Excluded files are primarily relevant for sync runs, and for
+ * file watcher filtering.
+ *
+ * Excluded files and ignored files are the same thing. But the
+ * selective sync blacklist functionality is a different thing
+ * entirely.
  */
-int OCSYNC_EXPORT csync_exclude_load(const char *fname, c_strlist_t **list);
+class OCSYNC_EXPORT ExcludedFiles : public QObject
+{
+    Q_OBJECT
+public:
+    ExcludedFiles();
+    ~ExcludedFiles();
 
-/**
- * @brief When all list loads and list are done
- *
- * Used to initialize internal data structures that build upon the loaded excludes.
- *
- * @param ctx
- */
-void OCSYNC_EXPORT csync_exclude_traversal_prepare(CSYNC *ctx);
+    /**
+     * Adds a new path to a file containing exclude patterns.
+     *
+     * Does not load the file. Use reloadExcludeFiles() afterwards.
+     */
+    void addExcludeFilePath(const QString &path);
 
-/**
- * @brief Check if the given path should be excluded in a traversal situation.
- *
- * It does only part of the work that csync_excluded does because it's assumed
- * that all leading directories have been run through csync_excluded_traversal()
- * before. This can be significantly faster.
- *
- * That means for '/foo/bar/file' only ('/foo/bar/file', 'file') is checked
- * against the exclude patterns.
- *
- * @param ctx   The synchronizer context.
- * @param path  The patch to check.
- *
- * @return  2 if excluded and needs cleanup, 1 if excluded, 0 if not.
- */
-CSYNC_EXCLUDE_TYPE OCSYNC_EXPORT csync_excluded_traversal(CSYNC *ctx, const char *path, int filetype);
+    /**
+     * Checks whether a file or directory should be excluded.
+     *
+     * @param filePath     the absolute path to the file
+     * @param basePath     folder path from which to apply exclude rules, ends with a /
+     */
+    bool isExcluded(
+        const QString &filePath,
+        const QString &basePath,
+        bool excludeHidden) const;
 
-/**
- * @brief Checks all path components if the whole path should be excluded
- *
- * @param excludes
- * @param path
- * @param filetype
- * @return
- */
-CSYNC_EXCLUDE_TYPE OCSYNC_EXPORT csync_excluded_no_ctx(c_strlist_t *excludes, const char *path, int filetype);
+    /**
+     * Adds an exclude pattern.
+     *
+     * Primarily used in tests. Patterns added this way are preserved when
+     * reloadExcludeFiles() is called.
+     */
+    void addManualExclude(const QByteArray &expr);
+
+    /**
+     * Removes all manually added exclude patterns.
+     *
+     * Primarily used in tests.
+     */
+    void clearManualExcludes();
+
+    /**
+     * Generate a hook for traversal exclude pattern matching
+     * that csync can use.
+     *
+     * Careful: The function will only be valid for as long as this
+     * ExcludedFiles instance stays alive.
+     */
+    auto csyncTraversalMatchFun() const
+        -> std::function<CSYNC_EXCLUDE_TYPE(const char *path, int filetype)>;
+
+public slots:
+    /**
+     * Reloads the exclude patterns from the registered paths.
+     */
+    bool reloadExcludeFiles();
+
+private:
+    /**
+     * @brief Match the exclude pattern against the full path.
+     *
+     * @param Path is folder-relative, should not start with a /.
+     *
+     * Note that this only matches patterns. It does not check whether the file
+     * or directory pointed to is hidden (or whether it even exists).
+     */
+    CSYNC_EXCLUDE_TYPE fullPatternMatch(const char *path, int filetype) const;
+
+    /**
+     * @brief Check if the given path should be excluded in a traversal situation.
+     *
+     * It does only part of the work that full() does because it's assumed
+     * that all leading directories have been run through traversal()
+     * before. This can be significantly faster.
+     *
+     * That means for 'foo/bar/file' only ('foo/bar/file', 'file') is checked
+     * against the exclude patterns.
+     *
+     * @param Path is folder-relative, should not start with a /.
+     *
+     * Note that this only matches patterns. It does not check whether the file
+     * or directory pointed to is hidden (or whether it even exists).
+     */
+    CSYNC_EXCLUDE_TYPE traversalPatternMatch(const char *path, int filetype) const;
+
+    /**
+     * Generate optimized regular expressions for the exclude patterns.
+     *
+     * The optimization works in two steps: First, all supported patterns are put
+     * into _fullRegexFile/_fullRegexDir. These regexes can be applied to the full
+     * path to determine whether it is excluded or not.
+     *
+     * The second is a performance optimization. The particularly common use
+     * case for excludes during a sync run is "traversal": Instead of checking
+     * the full path every time, we check each parent path with the traversal
+     * function incrementally.
+     *
+     * Example: When the sync run eventually arrives at "a/b/c it can assume
+     * that the traversal matching has already been run on "a", "a/b"
+     * and just needs to run the traversal matcher on "a/b/c".
+     *
+     * The full matcher is equivalent to or-combining the traversal match results
+     * of all parent paths:
+     *   full("a/b/c/d") == traversal("a") || traversal("a/b") || traversal("a/b/c")
+     *
+     * The traversal matcher can be extremely fast because it has a fast early-out
+     * case: It checks the bname part of the path against _bnameActivationRegex
+     * and only runs the full regex if the bname activation was triggered.
+     *
+     * Note: The traversal matcher will return not-excluded on some paths that the
+     * full matcher would exclude. Example: "b" is excluded. traversal("b/c")
+     * returns not-excluded because "c" isn't a bname activation pattern.
+     */
+    void prepare();
+
+    /// Files to load excludes from
+    QSet<QString> _excludeFiles;
+
+    /// Exclude patterns added with addManualExclude()
+    QList<QByteArray> _manualExcludes;
+
+    /// List of all active exclude patterns
+    QList<QByteArray> _allExcludes;
+
+    /// see prepare()
+    QRegularExpression _bnameActivationRegexFile;
+    QRegularExpression _bnameActivationRegexDir;
+    QRegularExpression _fullRegexFile;
+    QRegularExpression _fullRegexDir;
+
+    friend class ExcludedFilesTest;
+};
+
 #endif /* _CSYNC_EXCLUDE_H */
-
-/**
- * @brief Checks if filename is considered reserved by Windows
- * @param file_name filename
- * @return true if file is reserved, false otherwise
- */
-bool csync_is_windows_reserved_word(const char *file_name);
-
-
-/* vim: set ft=c.doxygen ts=8 sw=2 et cindent: */

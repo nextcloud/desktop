@@ -45,7 +45,7 @@ Q_LOGGING_CATEGORY(lcDb, "sync.database", QtInfoMsg)
 static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &query)
 {
     rec._path = query.baValue(0);
-    rec._inode = query.intValue(1);
+    rec._inode = query.int64Value(1);
     rec._modtime = query.int64Value(2);
     rec._type = query.intValue(3);
     rec._etag = query.baValue(4);

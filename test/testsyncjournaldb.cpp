@@ -50,7 +50,9 @@ private slots:
         QVERIFY(!record.isValid());
 
         record._path = "foo";
-        record._inode = 1234;
+        // Use a value that exceeds uint32 and isn't representable by the
+        // signed int being cast to uint64 either (like uint64::max would be)
+        record._inode = std::numeric_limits<quint32>::max() + 12ull;
         record._modtime = dropMsecs(QDateTime::currentDateTime());
         record._type = 5;
         record._etag = "789789";
@@ -71,8 +73,9 @@ private slots:
         QVERIFY(storedRecord == record);
 
         // Update metadata
-        record._inode = 12345;
         record._modtime = dropMsecs(QDateTime::currentDateTime().addDays(1));
+        // try a value that only fits uint64, not int64
+        record._inode = std::numeric_limits<quint64>::max() - std::numeric_limits<quint32>::max() - 1;
         record._type = 7;
         record._etag = "789FFF";
         record._fileId = "efg";

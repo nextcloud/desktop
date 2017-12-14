@@ -296,9 +296,7 @@ namespace {
 
         QString description(quint64 value) const
         {
-            return QCoreApplication::translate(
-                "Utility", name, 0, QCoreApplication::UnicodeUTF8,
-                value);
+            return QCoreApplication::translate("Utility", name, 0, value);
         }
     };
 // QTBUG-3945 and issue #4855: QT_TRANSLATE_NOOP does not work with plural form because lupdate
@@ -520,11 +518,11 @@ void Utility::sortFilenames(QStringList &fileNames)
     QCollator collator;
     collator.setNumericMode(true);
     collator.setCaseSensitivity(Qt::CaseInsensitive);
-    qSort(fileNames.begin(), fileNames.end(), collator);
+    std::sort(fileNames.begin(), fileNames.end(), collator);
 }
 
 QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
-    const QList<QPair<QString, QString>> &queryItems)
+    const QUrlQuery &queryItems)
 {
     QString path = url.path();
     if (!concatPath.isEmpty()) {
@@ -540,9 +538,7 @@ QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
 
     QUrl tmpUrl = url;
     tmpUrl.setPath(path);
-    if (queryItems.size() > 0) {
-        tmpUrl.setQueryItems(queryItems);
-    }
+    tmpUrl.setQuery(queryItems);
     return tmpUrl;
 }
 

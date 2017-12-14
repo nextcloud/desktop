@@ -25,6 +25,8 @@
 #include "folder.h"
 #include "openfilemanager.h"
 #include "activityitemdelegate.h"
+#include "guiutility.h"
+#include "accountstate.h"
 
 #include "ui_protocolwidget.h"
 
@@ -32,7 +34,115 @@
 
 namespace OCC {
 
-bool SortedTreeWidgetItem::operator<(const QTreeWidgetItem &other) const
+QString ProtocolItem::timeString(QDateTime dt, QLocale::FormatType format)
+{
+    const QLocale loc = QLocale::system();
+    QString dtFormat = loc.dateTimeFormat(format);
+    static const QRegExp re("(HH|H|hh|h):mm(?!:s)");
+    dtFormat.replace(re, "\\1:mm:ss");
+    return loc.toString(dt, dtFormat);
+}
+
+ProtocolItem *ProtocolItem::create(const QString &folder, const SyncFileItem &item)
+{
+    auto f = FolderMan::instance()->folder(folder);
+    if (!f) {
+        return 0;
+    }
+
+    QStringList columns;
+    QDateTime timestamp = QDateTime::currentDateTime();
+    const QString timeStr = timeString(timestamp);
+    const QString longTimeStr = timeString(timestamp, QLocale::LongFormat);
+
+    columns << timeStr;
+    columns << Utility::fileNameForGuiUse(item._originalFile);
+    columns << f->shortGuiLocalPath();
+
+    // If the error string is set, it's prefered because it is a useful user message.
+    QString message = item._errorString;
+    if (message.isEmpty()) {
+        message = Progress::asResultString(item);
+    }
+    columns << message;
+
+    QIcon icon;
+    if (item._status == SyncFileItem::NormalError
+        || item._status == SyncFileItem::FatalError
+        || item._status == SyncFileItem::DetailError
+        || item._status == SyncFileItem::BlacklistedError) {
+        icon = Theme::instance()->syncStateIcon(SyncResult::Error);
+    } else if (Progress::isWarningKind(item._status)) {
+        icon = Theme::instance()->syncStateIcon(SyncResult::Problem);
+    }
+
+    if (ProgressInfo::isSizeDependent(item)) {
+        columns << Utility::octetsToString(item._size);
+    }
+
+    ProtocolItem *twitem = new ProtocolItem(columns);
+    // Warning: The data and tooltips on the columns define an implicit
+    // interface and can only be changed with care.
+    twitem->setData(0, Qt::SizeHintRole, QSize(0, ActivityItemDelegate::rowHeight()));
+    twitem->setData(0, Qt::UserRole, timestamp);
+    twitem->setIcon(0, icon);
+    twitem->setToolTip(0, longTimeStr);
+    twitem->setToolTip(1, item._file);
+    twitem->setData(2, Qt::UserRole, folder);
+    twitem->setToolTip(3, message);
+    twitem->setData(3, Qt::UserRole, item._status);
+    return twitem;
+}
+
+SyncJournalFileRecord ProtocolItem::syncJournalRecord(QTreeWidgetItem *item)
+{
+    SyncJournalFileRecord rec;
+    auto f = folder(item);
+    if (!f)
+        return rec;
+    f->journalDb()->getFileRecord(item->toolTip(1), &rec);
+    return rec;
+}
+
+Folder *ProtocolItem::folder(QTreeWidgetItem *item)
+{
+    return FolderMan::instance()->folder(item->data(2, Qt::UserRole).toString());
+}
+
+void ProtocolItem::openContextMenu(QPoint globalPos, QTreeWidgetItem *item, QWidget *parent)
+{
+    auto f = ProtocolItem::folder(item);
+    if (!f)
+        return;
+    AccountPtr account = f->accountState()->account();
+    auto rec = ProtocolItem::syncJournalRecord(item);
+    // rec might not be valid
+
+    auto menu = new QMenu(parent);
+
+    if (rec.isValid()) {
+        // "Open in Browser" action
+        auto openInBrowser = menu->addAction(ProtocolWidget::tr("Open in browser"));
+        QObject::connect(openInBrowser, &QAction::triggered, parent, [parent, account, rec]() {
+            fetchPrivateLinkUrl(account, rec._path, rec.numericFileId(), parent,
+                [parent](const QString &url) {
+                    Utility::openBrowser(url, parent);
+                });
+        });
+    }
+
+    // More actions will be conditionally added to the context menu here later
+
+    if (menu->actions().isEmpty()) {
+        delete menu;
+        return;
+    }
+
+    menu->setAttribute(Qt::WA_DeleteOnClose);
+    menu->popup(globalPos);
+}
+
+bool ProtocolItem::operator<(const QTreeWidgetItem &other) const
 {
     int column = treeWidget()->sortColumn();
     if (column != 0) {
@@ -56,6 +166,9 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
 
     connect(_ui->_treeWidget, &QTreeWidget::itemActivated, this, &ProtocolWidget::slotOpenFile);
 
+    _ui->_treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(_ui->_treeWidget, &QTreeWidget::customContextMenuRequested, this, &ProtocolWidget::slotItemContextMenu);
+
     // Adjust copyToClipboard() when making changes here!
     QStringList header;
     header << tr("Time");
@@ -71,7 +184,7 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
 
     _ui->_treeWidget->setHeaderLabels(header);
     int timestampColumnWidth =
-        _ui->_treeWidget->fontMetrics().width(timeString(QDateTime::currentDateTime()))
+        _ui->_treeWidget->fontMetrics().width(ProtocolItem::timeString(QDateTime::currentDateTime()))
         + timestampColumnExtra;
     _ui->_treeWidget->setColumnWidth(0, timestampColumnWidth);
     _ui->_treeWidget->setColumnWidth(1, 180);
@@ -119,14 +232,13 @@ void ProtocolWidget::hideEvent(QHideEvent *ev)
     QWidget::hideEvent(ev);
 }
 
-
-QString ProtocolWidget::timeString(QDateTime dt, QLocale::FormatType format)
+void ProtocolWidget::slotItemContextMenu(const QPoint &pos)
 {
-    const QLocale loc = QLocale::system();
-    QString dtFormat = loc.dateTimeFormat(format);
-    static const QRegExp re("(HH|H|hh|h):mm(?!:s)");
-    dtFormat.replace(re, "\\1:mm:ss");
-    return loc.toString(dt, dtFormat);
+    auto item = _ui->_treeWidget->itemAt(pos);
+    if (!item)
+        return;
+    auto globalPos = _ui->_treeWidget->viewport()->mapToGlobal(pos);
+    ProtocolItem::openContextMenu(globalPos, item, this);
 }
 
 void ProtocolWidget::slotOpenFile(QTreeWidgetItem *item, int)
@@ -144,60 +256,11 @@ void ProtocolWidget::slotOpenFile(QTreeWidgetItem *item, int)
     }
 }
 
-QTreeWidgetItem *ProtocolWidget::createCompletedTreewidgetItem(const QString &folder, const SyncFileItem &item)
-{
-    auto f = FolderMan::instance()->folder(folder);
-    if (!f) {
-        return 0;
-    }
-
-    QStringList columns;
-    QDateTime timestamp = QDateTime::currentDateTime();
-    const QString timeStr = timeString(timestamp);
-    const QString longTimeStr = timeString(timestamp, QLocale::LongFormat);
-
-    columns << timeStr;
-    columns << Utility::fileNameForGuiUse(item._originalFile);
-    columns << f->shortGuiLocalPath();
-
-    // If the error string is set, it's prefered because it is a useful user message.
-    QString message = item._errorString;
-    if (message.isEmpty()) {
-        message = Progress::asResultString(item);
-    }
-    columns << message;
-
-    QIcon icon;
-    if (item._status == SyncFileItem::NormalError
-        || item._status == SyncFileItem::FatalError
-        || item._status == SyncFileItem::DetailError
-        || item._status == SyncFileItem::BlacklistedError) {
-        icon = Theme::instance()->syncStateIcon(SyncResult::Error);
-    } else if (Progress::isWarningKind(item._status)) {
-        icon = Theme::instance()->syncStateIcon(SyncResult::Problem);
-    }
-
-    if (ProgressInfo::isSizeDependent(item)) {
-        columns << Utility::octetsToString(item._size);
-    }
-
-    QTreeWidgetItem *twitem = new SortedTreeWidgetItem(columns);
-    twitem->setData(0, Qt::SizeHintRole, QSize(0, ActivityItemDelegate::rowHeight()));
-    twitem->setData(0, Qt::UserRole, timestamp);
-    twitem->setIcon(0, icon);
-    twitem->setToolTip(0, longTimeStr);
-    twitem->setToolTip(1, item._file);
-    twitem->setData(2, Qt::UserRole, folder);
-    twitem->setToolTip(3, message);
-    twitem->setData(3, Qt::UserRole, item._status);
-    return twitem;
-}
-
 void ProtocolWidget::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
 {
     if (item->hasErrorStatus())
         return;
-    QTreeWidgetItem *line = createCompletedTreewidgetItem(folder, *item);
+    QTreeWidgetItem *line = ProtocolItem::create(folder, *item);
     if (line) {
         // Limit the number of items
         int itemCnt = _ui->_treeWidget->topLevelItemCount();

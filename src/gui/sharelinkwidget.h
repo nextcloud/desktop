@@ -65,7 +65,7 @@ private slots:
     void slotCheckBoxPasswordClicked();
     void slotCheckBoxExpireClicked();
     void slotPasswordReturnPressed();
-    void slotPermissionsCheckboxClicked();
+    void slotPermissionsClicked();
     void slotExpireDateChanged(const QDate &date);
     void slotPasswordChanged(const QString &newText);
     void slotNameEdited(QTableWidgetItem *item);

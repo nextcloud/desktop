@@ -7,7 +7,7 @@
 
 #include <QtTest>
 
-#include "excludedfiles.h"
+#include "csync_exclude.h"
 
 using namespace OCC;
 
@@ -20,7 +20,7 @@ class TestExcludedFiles: public QObject
 private slots:
     void testFun()
     {
-        auto & excluded = ExcludedFiles::instance();
+        ExcludedFiles excluded;
         bool excludeHidden = true;
         bool keepHidden = false;
 
@@ -30,7 +30,7 @@ private slots:
         QVERIFY(excluded.isExcluded("/a/.b", "/a", excludeHidden));
 
         excluded.addExcludeFilePath(EXCLUDE_LIST_FILE);
-        excluded.reloadExcludes();
+        excluded.reloadExcludeFiles();
 
         QVERIFY(!excluded.isExcluded("/a/b", "/a", keepHidden));
         QVERIFY(excluded.isExcluded("/a/b~", "/a", keepHidden));

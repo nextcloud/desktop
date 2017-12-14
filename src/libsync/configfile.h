@@ -24,6 +24,7 @@
 
 class QWidget;
 class QHeaderView;
+class ExcludedFiles;
 
 namespace OCC {
 
@@ -42,7 +43,6 @@ public:
         SystemScope };
 
     QString configPath() const;
-    QString configPathWithAppName() const;
     QString configFile() const;
     QString excludeFile(Scope scope) const;
     static QString excludeFileFromSystem(); // doesn't access config dir
@@ -55,7 +55,7 @@ public:
     QByteArray caCerts();
     void setCaCerts(const QByteArray &);
 
-    bool passwordStorageAllowed(const QString &connection = QString::null);
+    bool passwordStorageAllowed(const QString &connection = QString());
 
     // max count of lines in the log window
     int maxLogLines() const;
@@ -153,6 +153,9 @@ public:
          with the given parent. If no parent is specified, the caller must destroy the settings */
     static std::unique_ptr<QSettings> settingsWithGroup(const QString &group, QObject *parent = 0);
 
+    /// Add the system and user exclude file path to the ExcludedFiles instance.
+    static void setupDefaultExcludeFilePaths(ExcludedFiles &excludedFiles);
+
 protected:
     QVariant getPolicySetting(const QString &policy, const QVariant &defaultValue = QVariant()) const;
     void storeData(const QString &group, const QString &key, const QVariant &value);
@@ -161,7 +164,7 @@ protected:
     bool dataExists(const QString &group, const QString &key) const;
 
 private:
-    QVariant getValue(const QString &param, const QString &group = QString::null,
+    QVariant getValue(const QString &param, const QString &group = QString(),
         const QVariant &defaultValue = QVariant()) const;
     void setValue(const QString &key, const QVariant &value);
 

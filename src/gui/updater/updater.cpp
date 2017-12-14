@@ -41,7 +41,7 @@ Updater *Updater::instance()
 
 QUrl Updater::addQueryParams(const QUrl &url)
 {
-    QUrl paramUrl = url;
+    QUrlQuery query;
     Theme *theme = Theme::instance();
     QString platform = QLatin1String("stranger");
     if (Utility::isLinux()) {
@@ -56,23 +56,25 @@ QUrl Updater::addQueryParams(const QUrl &url)
 
     QString sysInfo = getSystemInfo();
     if (!sysInfo.isEmpty()) {
-        paramUrl.addQueryItem(QLatin1String("client"), sysInfo);
+        query.addQueryItem(QLatin1String("client"), sysInfo);
     }
-    paramUrl.addQueryItem(QLatin1String("version"), clientVersion());
-    paramUrl.addQueryItem(QLatin1String("platform"), platform);
-    paramUrl.addQueryItem(QLatin1String("oem"), theme->appName());
+    query.addQueryItem(QLatin1String("version"), clientVersion());
+    query.addQueryItem(QLatin1String("platform"), platform);
+    query.addQueryItem(QLatin1String("oem"), theme->appName());
 
     QString suffix = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
-    paramUrl.addQueryItem(QLatin1String("versionsuffix"), suffix);
+    query.addQueryItem(QLatin1String("versionsuffix"), suffix);
     if (suffix.startsWith("nightly")
             || suffix.startsWith("alpha")
             || suffix.startsWith("rc")
             || suffix.startsWith("beta")) {
-        paramUrl.addQueryItem(QLatin1String("channel"), "beta");
+        query.addQueryItem(QLatin1String("channel"), "beta");
         // FIXME: Provide a checkbox in UI to enable regular versions to switch
         // to beta channel
     }
 
+    QUrl paramUrl = url;
+    paramUrl.setQuery(query);
     return paramUrl;
 }
 
@@ -90,7 +92,7 @@ QString Updater::getSystemInfo()
 
     return QString::fromLocal8Bit(output.toBase64());
 #else
-    return QString::null;
+    return QString();
 #endif
 }
 
