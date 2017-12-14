@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 
 project(client)
 
@@ -182,15 +182,6 @@ if(BUILD_CLIENT)
     endif()
     find_package(Sphinx)
     find_package(PdfLatex)
-
-    find_package(SQLite3 3.8.0 REQUIRED)
-    # On some OS, we want to use our own, not the system sqlite
-    if (USE_OUR_OWN_SQLITE3)
-        include_directories(BEFORE ${SQLITE3_INCLUDE_DIR})
-        if (WIN32)
-            add_definitions(-DSQLITE_API=__declspec\(dllimport\))
-        endif()
-    endif()
 
    find_package(ZLIB REQUIRED)
 endif()

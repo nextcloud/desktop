@@ -1,11 +1,6 @@
 project(libsync)
 set(CMAKE_AUTOMOC TRUE)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-# csync is required.
-include_directories(${CMAKE_SOURCE_DIR}/src/csync
-                    ${CMAKE_BINARY_DIR}/src/csync
-                   )
 
 if ( APPLE )
     list(APPEND OS_SPECIFIC_LINK_LIBRARIES
@@ -94,7 +89,8 @@ IF (NOT APPLE)
     )
 ENDIF(NOT APPLE)
 
-list(APPEND libsync_LINK_TARGETS
+add_library(${synclib_NAME} SHARED ${libsync_SRCS})
+target_link_libraries(${synclib_NAME}
     ocsync
     ${OS_SPECIFIC_LINK_LIBRARIES}
     Qt5::Core Qt5::Network
@@ -102,26 +98,24 @@ list(APPEND libsync_LINK_TARGETS
 
 if (NOT TOKEN_AUTH_ONLY)
     find_package(Qt5 REQUIRED COMPONENTS Widgets)
-    list(APPEND libsync_LINK_TARGETS Qt5::Widgets)
-endif()
-
-if(QTKEYCHAIN_FOUND OR QT5KEYCHAIN_FOUND)
-    list(APPEND libsync_LINK_TARGETS ${QTKEYCHAIN_LIBRARY})
-    include_directories(${QTKEYCHAIN_INCLUDE_DIR})
+    target_link_libraries(${synclib_NAME} Qt5::Widgets ${QTKEYCHAIN_LIBRARY})
+    target_include_directories(${synclib_NAME} PRIVATE ${QTKEYCHAIN_INCLUDE_DIR})
 endif()
 
 if(INOTIFY_FOUND)
-    include_directories(${INOTIFY_INCLUDE_DIR})
+    target_include_directories(${synclib_NAME} PRIVATE ${INOTIFY_INCLUDE_DIR})
     link_directories(${INOTIFY_LIBRARY_DIR})
+    target_link_libraries(${synclib_NAME} ${INOTIFY_LIBRARY} )
 endif()
 
-add_library(${synclib_NAME} SHARED ${libsync_SRCS} ${syncMoc})
 GENERATE_EXPORT_HEADER( ${synclib_NAME}
 	BASE_NAME ${synclib_NAME}
 	EXPORT_MACRO_NAME OWNCLOUDSYNC_EXPORT
         EXPORT_FILE_NAME owncloudlib.h
 	STATIC_DEFINE OWNCLOUD_BUILT_AS_STATIC
 )
+
+target_include_directories(${synclib_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 
 
 set_target_properties( ${synclib_NAME}  PROPERTIES
@@ -131,24 +125,6 @@ set_target_properties( ${synclib_NAME}  PROPERTIES
 )
 set_target_properties( ${synclib_NAME} PROPERTIES
 	INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
-
-target_link_libraries(${synclib_NAME} ${libsync_LINK_TARGETS} )
-
-if(INOTIFY_FOUND)
-    target_link_libraries(${synclib_NAME} ${INOTIFY_LIBRARY} )
-endif()
-
-if(BUILD_LIBRARIES_ONLY)
-    #add_library(${synclib_NAME}_static STATIC ${libsync_SRCS} ${syncMoc})
-    #qt5_use_modules(${synclib_NAME}_static Widgets Network Xml Sql)
-
-    #set_target_properties( ${synclib_NAME}_static  PROPERTIES
-    #    VERSION ${MIRALL_VERSION}
-    #    SOVERSION ${MIRALL_SOVERSION}
-    #)
-
-    #target_link_libraries(${synclib_NAME}_static ${libsync_LINK_TARGETS} )
-endif()
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     install(TARGETS ${synclib_NAME}

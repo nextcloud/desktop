@@ -1,3 +1,4 @@
+find_package(SQLite3 3.8.0 REQUIRED)
 include_directories(${CMAKE_SOURCE_DIR}/src
                     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer
                     ${CMAKE_SOURCE_DIR}/src/csync
@@ -8,6 +9,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src
                     ${CMAKE_BINARY_DIR}/src/libsync
                     ${CMAKE_CURRENT_SOURCE_DIR}
                     ${CMAKE_CURRENT_BINARY_DIR}
+                    ${SQLITE3_INCLUDE_DIR}
                    )
 
 include(owncloud_add_test.cmake)

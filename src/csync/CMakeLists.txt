@@ -23,32 +23,6 @@ if (MEM_NULL_TESTS)
   add_definitions(-DCSYNC_MEM_NULL_TESTS)
 endif (MEM_NULL_TESTS)
 
-# Statically include sqlite
-
-set(CSYNC_PUBLIC_INCLUDE_DIRS
-  ${CMAKE_CURRENT_BINARY_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CMAKE_CURRENT_SOURCE_DIR}/std
-  ${CMAKE_SOURCE_DIR}
-  CACHE INTERNAL "csync public include directories"
-)
-
-set(CSYNC_PRIVATE_INCLUDE_DIRS
-  ${SQLITE3_INCLUDE_DIRS}
-  ${CMAKE_BINARY_DIR}
-)
-
-set(CSYNC_LIBRARY
-  ocsync
-  CACHE INTERNAL "ocsync library"
-)
-
-set(CSYNC_LINK_LIBRARIES
-  ${CSYNC_REQUIRED_LIBRARIES}
-  ${SQLITE3_LIBRARIES}
-  Qt5::Core Qt5::Concurrent
-)
-
 # Specific option for builds tied to servers that do not support renaming extensions
 set(NO_RENAME_EXTENSION 0 CACHE BOOL "Do not issue rename if the extension changes")
 if(NO_RENAME_EXTENSION)
@@ -89,39 +63,39 @@ if(NOT HAVE_ASPRINTF AND NOT HAVE___MINGW_ASPRINTF)
     list(APPEND csync_SRCS std/asprintf.c)
 endif()
 
+if (USE_OUR_OWN_SQLITE3)
+    list(APPEND csync_SRCS ${SQLITE3_SOURCE})
+endif()
 
 configure_file(csync_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h)
 
-
-# Statically include sqlite
-if (USE_OUR_OWN_SQLITE3)
-    list(APPEND csync_SRCS ${SQLITE3_SOURCE})
-    if (WIN32)
-        # We want to export sqlite symbols from the ocsync DLL without
-        # having to patch both sqlite3.h and the amalgation sqlite3.c,
-        # so do the import/export magic manually through the build system.
-        remove_definitions(-DSQLITE_API=__declspec\(dllimport\))
-        add_definitions(-DSQLITE_API=__declspec\(dllexport\))
-    endif()
-endif()
-
-
+set(CSYNC_LIBRARY ocsync)
 add_library(${CSYNC_LIBRARY} SHARED ${common_SOURCES} ${csync_SRCS})
-#add_library(${CSYNC_LIBRARY}_static STATIC ${csync_SRCS})
 
 target_include_directories(
   ${CSYNC_LIBRARY}
-  PUBLIC ${CSYNC_PUBLIC_INCLUDE_DIRS}
-  PRIVATE ${CSYNC_PRIVATE_INCLUDE_DIRS}
+  PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/std
 )
 
-generate_export_header( ${CSYNC_LIBRARY}
+find_package(SQLite3 3.8.0 REQUIRED)
+if (USE_OUR_OWN_SQLITE3)
+    # make sure that the path for the local sqlite3 is before the system one
+    target_include_directories(${CSYNC_LIBRARY} BEFORE PRIVATE ${SQLITE3_INCLUDE_DIR})
+else()
+    target_include_directories(${CSYNC_LIBRARY} PRIVATE ${SQLITE3_INCLUDE_DIR})
+endif()
+
+
+generate_export_header(${CSYNC_LIBRARY}
   EXPORT_MACRO_NAME OCSYNC_EXPORT
   EXPORT_FILE_NAME ocsynclib.h
 )
 
-target_link_libraries(${CSYNC_LIBRARY} ${CSYNC_LINK_LIBRARIES})
-#target_link_libraries(${CSYNC_LIBRARY}_static ${CSYNC_LINK_LIBRARIES})
+target_link_libraries(${CSYNC_LIBRARY}
+  ${CSYNC_REQUIRED_LIBRARIES}
+  ${SQLITE3_LIBRARIES}
+  Qt5::Core Qt5::Concurrent
+)
 
 if(ZLIB_FOUND)
   target_link_libraries(${CSYNC_LIBRARY} ZLIB::ZLIB)

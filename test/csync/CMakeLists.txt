@@ -1,11 +1,9 @@
-project(tests C)
+project(tests)
 
 set(TORTURE_LIBRARY torture)
 
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}
-  ${CSYNC_PUBLIC_INCLUDE_DIRS}
-  ${CSTDLIB_PUBLIC_INCLUDE_DIRS}
   ${CMAKE_BINARY_DIR}
   ${CMOCKA_INCLUDE_DIR}
 )
@@ -13,9 +11,9 @@ include_directories(
 include_directories(${CHECK_INCLUDE_DIRS})
 # create test library
 add_library(${TORTURE_LIBRARY} STATIC torture.c cmdline.c)
-target_link_libraries(${TORTURE_LIBRARY} ${CMOCKA_LIBRARIES} ${CSYNC_LIBRARY} ${CSTDLIB_LIBRARY})
+target_link_libraries(${TORTURE_LIBRARY} ${CMOCKA_LIBRARIES} ${CSYNC_LIBRARY})
 
-set(TEST_TARGET_LIBRARIES ${TORTURE_LIBRARY})
+set(TEST_TARGET_LIBRARIES ${TORTURE_LIBRARY} Qt5::Core ocsync)
 
 # create tests
 

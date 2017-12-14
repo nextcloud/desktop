@@ -173,23 +173,6 @@ else()
    list(APPEND 3rdparty_SRC ../3rdparty/qtlockedfile/qtlockedfile_win.cpp )
 endif()
 
-set(3rdparty_INC
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtlockedfile
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtmacgoodies/src
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtsingleapplication
-    )
-
-include_directories(${3rdparty_INC})
-
-# csync is required.
-include_directories(${CMAKE_SOURCE_DIR}/src/csync
-                    ${CMAKE_BINARY_DIR}/src/csync
-                   )
-include_directories(../libsync ${CMAKE_CURRENT_BINARY_DIR}/../libsync)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}
-                    ${CMAKE_CURRENT_BINARY_DIR}
-                   )
 
 find_package(Qt5LinguistTools)
 if(Qt5LinguistTools_FOUND)
@@ -285,8 +268,9 @@ else()
     install(FILES ${qtkeychain_I18N} DESTINATION ${QM_DIR})
 endif()
 
-add_library(updater STATIC ${updater_SRCS} ${updaterMoc})
+add_library(updater STATIC ${updater_SRCS})
 target_link_libraries(updater ${synclib_NAME} Qt5::Widgets Qt5::Network Qt5::Xml)
+target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
@@ -299,6 +283,14 @@ target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::Network Qt5::
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} updater )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${OS_SPECIFIC_LINK_LIBRARIES} )
+
+target_include_directories(${APPLICATION_EXECUTABLE} PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
+    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtlockedfile
+    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtmacgoodies/src
+    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtsingleapplication
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
 
 ## handle DBUS for Fdo notifications
 if( UNIX AND NOT APPLE )
@@ -314,7 +306,7 @@ endif()
 
 if(WITH_CRASHREPORTER)
     target_link_libraries( ${APPLICATION_EXECUTABLE} crashreporter-handler)
-    include_directories( "../3rdparty/libcrashreporter-qt/src/" )
+    target_include_directories(${APPLICATION_EXECUTABLE} "../3rdparty/libcrashreporter-qt/src/" )
 
     if(UNIX AND NOT MAC)
         find_package(Threads REQUIRED)
