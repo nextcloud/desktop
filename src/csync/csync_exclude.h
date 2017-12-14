@@ -30,6 +30,8 @@
 #include <QString>
 #include <QRegularExpression>
 
+#include <functional>
+
 enum csync_exclude_type_e {
   CSYNC_NOT_EXCLUDED   = 0,
   CSYNC_FILE_SILENTLY_EXCLUDED,
@@ -108,7 +110,7 @@ public:
      * ExcludedFiles instance stays alive.
      */
     auto csyncTraversalMatchFun() const
-        -> std::function<CSYNC_EXCLUDE_TYPE(const char *path, int filetype)>;
+        -> std::function<CSYNC_EXCLUDE_TYPE(const char *path, ItemType filetype)>;
 
 public slots:
     /**
@@ -125,7 +127,7 @@ private:
      * Note that this only matches patterns. It does not check whether the file
      * or directory pointed to is hidden (or whether it even exists).
      */
-    CSYNC_EXCLUDE_TYPE fullPatternMatch(const char *path, int filetype) const;
+    CSYNC_EXCLUDE_TYPE fullPatternMatch(const char *path, ItemType filetype) const;
 
     /**
      * @brief Check if the given path should be excluded in a traversal situation.
@@ -142,7 +144,7 @@ private:
      * Note that this only matches patterns. It does not check whether the file
      * or directory pointed to is hidden (or whether it even exists).
      */
-    CSYNC_EXCLUDE_TYPE traversalPatternMatch(const char *path, int filetype) const;
+    CSYNC_EXCLUDE_TYPE traversalPatternMatch(const char *path, ItemType filetype) const;
 
     /**
      * Generate optimized regular expressions for the exclude patterns.

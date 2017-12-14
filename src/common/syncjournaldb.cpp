@@ -47,7 +47,7 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._path = query.baValue(0);
     rec._inode = query.int64Value(1);
     rec._modtime = query.int64Value(2);
-    rec._type = query.intValue(3);
+    rec._type = static_cast<ItemType>(query.intValue(3));
     rec._etag = query.baValue(4);
     rec._fileId = query.baValue(5);
     rec._remotePerm = RemotePermissions(query.baValue(6).constData());
@@ -1840,7 +1840,7 @@ void SyncJournalDb::avoidReadFromDbOnNextSync(const QByteArray &fileName)
 
     SqlQuery query(_db);
     // This query will match entries for which the path is a prefix of fileName
-    // Note: CSYNC_FTW_TYPE_DIR == 2
+    // Note: ItemTypeDirectory == 2
     query.prepare("UPDATE metadata SET md5='_invalid_' WHERE ?1 LIKE(path||'/%') AND type == 2;");
     query.bindValue(1, fileName);
     query.exec();

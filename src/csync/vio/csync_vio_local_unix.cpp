@@ -120,9 +120,9 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
     case DT_DIR:
     case DT_REG:
       if (dirent->d_type == DT_DIR) {
-        file_stat->type = CSYNC_FTW_TYPE_DIR;
+        file_stat->type = ItemTypeDirectory;
       } else {
-        file_stat->type = CSYNC_FTW_TYPE_FILE;
+        file_stat->type = ItemTypeFile;
       }
       break;
     default:
@@ -135,7 +135,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
 
   if (_csync_vio_local_stat_mb(fullPath.constData(), file_stat.get()) < 0) {
       // Will get excluded by _csync_detect_update.
-      file_stat->type = CSYNC_FTW_TYPE_SKIP;
+      file_stat->type = ItemTypeSkip;
   }
   return file_stat;
 }
@@ -160,17 +160,17 @@ static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf
 
     switch (sb.st_mode & S_IFMT) {
     case S_IFDIR:
-      buf->type = CSYNC_FTW_TYPE_DIR;
+      buf->type = ItemTypeDirectory;
       break;
     case S_IFREG:
-      buf->type = CSYNC_FTW_TYPE_FILE;
+      buf->type = ItemTypeFile;
       break;
     case S_IFLNK:
     case S_IFSOCK:
-      buf->type = CSYNC_FTW_TYPE_SLINK;
+      buf->type = ItemTypeSoftLink;
       break;
     default:
-      buf->type = CSYNC_FTW_TYPE_SKIP;
+      buf->type = ItemTypeSkip;
       break;
   }
 

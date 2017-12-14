@@ -178,7 +178,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                     // other is found as well?
                     qCDebug(lcReconcile, "Other has already been renamed to %s",
                         other->rename_path.constData());
-                } else if (cur->type == CSYNC_FTW_TYPE_DIR
+                } else if (cur->type == ItemTypeDirectory
                     // The local replica is reconciled first, so the remote tree would
                     // have either NONE or UPDATE_METADATA if the remote file is safe to
                     // move.
@@ -297,8 +297,8 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
             /* file on other replica is changed or new */
             case CSYNC_INSTRUCTION_NEW:
             case CSYNC_INSTRUCTION_EVAL:
-                if (other->type == CSYNC_FTW_TYPE_DIR &&
-                        cur->type == CSYNC_FTW_TYPE_DIR) {
+                if (other->type == ItemTypeDirectory &&
+                        cur->type == ItemTypeDirectory) {
                     // Folders of the same path are always considered equals
                     is_conflict = false;
                 } else {
@@ -375,7 +375,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                     // needs to delete the other entity first.
                     cur->instruction = CSYNC_INSTRUCTION_TYPE_CHANGE;
                     other->instruction = CSYNC_INSTRUCTION_NONE;
-                } else if (cur->type == CSYNC_FTW_TYPE_DIR) {
+                } else if (cur->type == ItemTypeDirectory) {
                     cur->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                     other->instruction = CSYNC_INSTRUCTION_NONE;
                 } else {
@@ -408,7 +408,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
     const char *repo = ctx->current == REMOTE_REPLICA ? "server" : "client";
     if(cur->instruction ==CSYNC_INSTRUCTION_NONE)
     {
-        if(cur->type == CSYNC_FTW_TYPE_DIR)
+        if(cur->type == ItemTypeDirectory)
         {
             qCDebug(lcReconcile,
                       "%-30s %s dir:  %s",
@@ -427,7 +427,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
     }
     else
     {
-        if(cur->type == CSYNC_FTW_TYPE_DIR)
+        if(cur->type == ItemTypeDirectory)
         {
             qCInfo(lcReconcile,
                       "%-30s %s dir:  %s",

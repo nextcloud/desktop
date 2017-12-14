@@ -172,21 +172,21 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
       // Detect symlinks, and treat junctions as symlinks too.
       if (handle->ffd.dwReserved0 == IO_REPARSE_TAG_SYMLINK
           || handle->ffd.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT) {
-          file_stat->type = CSYNC_FTW_TYPE_SLINK;
+          file_stat->type = ItemTypeSoftLink;
       } else {
           // The SIS and DEDUP reparse points should be treated as
           // regular files. We don't know about the other ones yet,
           // but will also treat them normally for now.
-          file_stat->type = CSYNC_FTW_TYPE_FILE;
+          file_stat->type = ItemTypeFile;
       }
     } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DEVICE
                 || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE
                 || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_TEMPORARY) {
-        file_stat->type = CSYNC_FTW_TYPE_SKIP;
+        file_stat->type = ItemTypeSkip;
     } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-        file_stat->type = CSYNC_FTW_TYPE_DIR;
+        file_stat->type = ItemTypeDirectory;
     } else {
-        file_stat->type = CSYNC_FTW_TYPE_FILE;
+        file_stat->type = ItemTypeFile;
     }
 
     /* Check for the hidden flag */
@@ -204,7 +204,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
 
     if (_csync_vio_local_stat_mb(fullPath.data(), file_stat.get()) < 0) {
         // Will get excluded by _csync_detect_update.
-        file_stat->type = CSYNC_FTW_TYPE_SKIP;
+        file_stat->type = ItemTypeSkip;
     }
 
     return file_stat;

@@ -42,13 +42,6 @@ public:
         Down
     };
 
-    enum Type {
-        UnknownType = 0,
-        File = CSYNC_FTW_TYPE_FILE,
-        Directory = CSYNC_FTW_TYPE_DIR,
-        SoftLink = CSYNC_FTW_TYPE_SLINK
-    };
-
     enum Status { // stored in 4 bits
         NoStatus,
 
@@ -101,7 +94,7 @@ public:
 
 
     SyncFileItem()
-        : _type(UnknownType)
+        : _type(ItemTypeSkip)
         , _direction(None)
         , _serverHasIgnoredFiles(false)
         , _hasBlacklistEntry(false)
@@ -173,7 +166,7 @@ public:
 
     bool isDirectory() const
     {
-        return _type == SyncFileItem::Directory;
+        return _type == ItemTypeDirectory;
     }
 
     /**
@@ -195,7 +188,7 @@ public:
     // Variables useful for everybody
     QString _file;
     QString _renameTarget;
-    Type _type BITFIELD(3);
+    ItemType _type BITFIELD(3);
     Direction _direction BITFIELD(3);
     bool _serverHasIgnoredFiles BITFIELD(1);
 

@@ -22,6 +22,7 @@
 #include <QString>
 #include <QDateTime>
 
+#include "csync.h"
 #include "ocsynclib.h"
 #include "remotepermissions.h"
 #include "common/utility.h"
@@ -56,7 +57,7 @@ public:
     QByteArray _path;
     quint64 _inode;
     qint64 _modtime;
-    int _type;
+    ItemType _type;
     QByteArray _etag;
     QByteArray _fileId;
     qint64 _fileSize;

@@ -153,7 +153,7 @@ struct OCSYNC_EXPORT csync_s {
    *
    * See ExcludedFiles in csync_exclude.
    */
-  std::function<CSYNC_EXCLUDE_TYPE(const char *path, int filetype)> exclude_traversal_fn;
+  std::function<CSYNC_EXCLUDE_TYPE(const char *path, ItemType filetype)> exclude_traversal_fn;
 
   struct {
     std::unordered_map<ByteArrayRef, QByteArray, ByteArrayRefHash> folder_renamed_to; // map from->to

@@ -184,7 +184,7 @@ static std::unique_ptr<csync_file_stat_t> create_fstat(const char *name,
         fs->path = "file.txt";
     }
 
-    fs->type = CSYNC_FTW_TYPE_FILE;
+    fs->type = ItemTypeFile;
 
     if (inode == 0) {
         fs->inode = 619070;

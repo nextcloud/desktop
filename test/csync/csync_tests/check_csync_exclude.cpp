@@ -90,22 +90,22 @@ static int teardown(void **state) {
 
 static int check_file_full(const char *path)
 {
-    return excludedFiles->fullPatternMatch(path, CSYNC_FTW_TYPE_FILE);
+    return excludedFiles->fullPatternMatch(path, ItemTypeFile);
 }
 
 static int check_dir_full(const char *path)
 {
-    return excludedFiles->fullPatternMatch(path, CSYNC_FTW_TYPE_DIR);
+    return excludedFiles->fullPatternMatch(path, ItemTypeDirectory);
 }
 
 static int check_file_traversal(const char *path)
 {
-    return excludedFiles->traversalPatternMatch(path, CSYNC_FTW_TYPE_FILE);
+    return excludedFiles->traversalPatternMatch(path, ItemTypeFile);
 }
 
 static int check_dir_traversal(const char *path)
 {
-    return excludedFiles->traversalPatternMatch(path, CSYNC_FTW_TYPE_DIR);
+    return excludedFiles->traversalPatternMatch(path, ItemTypeDirectory);
 }
 
 static void check_csync_exclude_add(void **)

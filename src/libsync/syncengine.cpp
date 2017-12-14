@@ -278,7 +278,7 @@ void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemVector &syncItems)
     QSet<QString> download_file_paths;
     foreach (const SyncFileItemPtr &it, syncItems) {
         if (it->_direction == SyncFileItem::Down
-            && it->_type == SyncFileItem::File) {
+            && it->_type == ItemTypeFile) {
             download_file_paths.insert(it->_file);
         }
     }
@@ -299,7 +299,7 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
     QSet<QString> upload_file_paths;
     foreach (const SyncFileItemPtr &it, syncItems) {
         if (it->_direction == SyncFileItem::Up
-            && it->_type == SyncFileItem::File) {
+            && it->_type == ItemTypeFile) {
             upload_file_paths.insert(it->_file);
         }
     }
@@ -529,7 +529,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         item->_errorString = tr("Filename encoding is not valid");
     }
 
-    bool isDirectory = file->type == CSYNC_FTW_TYPE_DIR;
+    bool isDirectory = file->type == ItemTypeDirectory;
 
     if (!file->etag.isEmpty()) {
         item->_etag = file->etag;
@@ -540,19 +540,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         item->_inode = file->inode;
     }
 
-    switch (file->type) {
-    case CSYNC_FTW_TYPE_DIR:
-        item->_type = SyncFileItem::Directory;
-        break;
-    case CSYNC_FTW_TYPE_FILE:
-        item->_type = SyncFileItem::File;
-        break;
-    case CSYNC_FTW_TYPE_SLINK:
-        item->_type = SyncFileItem::SoftLink;
-        break;
-    default:
-        item->_type = SyncFileItem::UnknownType;
-    }
+    item->_type = file->type;
 
     SyncFileItem::Direction dir = SyncFileItem::None;
 

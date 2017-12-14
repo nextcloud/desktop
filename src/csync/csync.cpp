@@ -49,6 +49,7 @@
 #include "csync_log.h"
 #include "csync_rename.h"
 #include "common/c_jhash.h"
+#include "common/syncjournalfilerecord.h"
 
 
 csync_s::csync_s(const char *localUri, OCC::SyncJournalDb *statedb)
@@ -401,4 +402,20 @@ int  csync_abort_requested(CSYNC *ctx)
   } else {
     return (1 == 0);
   }
+}
+
+std::unique_ptr<csync_file_stat_t> csync_file_stat_s::fromSyncJournalFileRecord(const OCC::SyncJournalFileRecord &rec)
+{
+    std::unique_ptr<csync_file_stat_t> st(new csync_file_stat_t);
+    st->path = rec._path;
+    st->inode = rec._inode;
+    st->modtime = rec._modtime;
+    st->type = static_cast<ItemType>(rec._type);
+    st->etag = rec._etag;
+    st->file_id = rec._fileId;
+    st->remotePerm = rec._remotePerm;
+    st->size = rec._fileSize;
+    st->has_ignored_files = rec._serverHasIgnoredFiles;
+    st->checksumHeader = rec._checksumHeader;
+    return st;
 }

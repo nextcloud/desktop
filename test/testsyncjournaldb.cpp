@@ -54,7 +54,7 @@ private slots:
         // signed int being cast to uint64 either (like uint64::max would be)
         record._inode = std::numeric_limits<quint32>::max() + 12ull;
         record._modtime = dropMsecs(QDateTime::currentDateTime());
-        record._type = 5;
+        record._type = ItemTypeDirectory;
         record._etag = "789789";
         record._fileId = "abcd";
         record._remotePerm = RemotePermissions("RW");
@@ -76,7 +76,7 @@ private slots:
         record._modtime = dropMsecs(QDateTime::currentDateTime().addDays(1));
         // try a value that only fits uint64, not int64
         record._inode = std::numeric_limits<quint64>::max() - std::numeric_limits<quint32>::max() - 1;
-        record._type = 7;
+        record._type = ItemTypeFile;
         record._etag = "789FFF";
         record._fileId = "efg";
         record._remotePerm = RemotePermissions("NV");

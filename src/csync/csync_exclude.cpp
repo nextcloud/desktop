@@ -393,9 +393,9 @@ bool ExcludedFiles::isExcluded(
     }
 
     QFileInfo fi(filePath);
-    csync_ftw_type_e type = CSYNC_FTW_TYPE_FILE;
+    ItemType type = ItemTypeFile;
     if (fi.isDir()) {
-        type = CSYNC_FTW_TYPE_DIR;
+        type = ItemTypeDirectory;
     }
 
     QString relativePath = filePath.mid(basePath.size());
@@ -406,7 +406,7 @@ bool ExcludedFiles::isExcluded(
     return fullPatternMatch(relativePath.toUtf8(), type) != CSYNC_NOT_EXCLUDED;
 }
 
-CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, int filetype) const
+CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, ItemType filetype) const
 {
     auto match = _csync_excluded_common(path);
     if (match != CSYNC_NOT_EXCLUDED)
@@ -426,7 +426,7 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, int fi
     QString bnameStr = QString::fromUtf8(bname);
 
     QRegularExpressionMatch m;
-    if (filetype == CSYNC_FTW_TYPE_DIR) {
+    if (filetype == ItemTypeDirectory) {
         m = _bnameActivationRegexDir.match(bnameStr);
     } else {
         m = _bnameActivationRegexFile.match(bnameStr);
@@ -437,7 +437,7 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, int fi
     // Now run the full match
 
     QString pathStr = QString::fromUtf8(path);
-    if (filetype == CSYNC_FTW_TYPE_DIR) {
+    if (filetype == ItemTypeDirectory) {
         m = _fullRegexDir.match(pathStr);
     } else {
         m = _fullRegexFile.match(pathStr);
@@ -452,7 +452,7 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, int fi
     return match;
 }
 
-CSYNC_EXCLUDE_TYPE ExcludedFiles::fullPatternMatch(const char *path, int filetype) const
+CSYNC_EXCLUDE_TYPE ExcludedFiles::fullPatternMatch(const char *path, ItemType filetype) const
 {
     auto match = _csync_excluded_common(path);
     if (match != CSYNC_NOT_EXCLUDED)
@@ -462,7 +462,7 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::fullPatternMatch(const char *path, int filetyp
 
     QString p = QString::fromUtf8(path);
     QRegularExpressionMatch m;
-    if (filetype == CSYNC_FTW_TYPE_DIR) {
+    if (filetype == ItemTypeDirectory) {
         m = _fullRegexDir.match(p);
     } else {
         m = _fullRegexFile.match(p);
@@ -478,9 +478,9 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::fullPatternMatch(const char *path, int filetyp
 }
 
 auto ExcludedFiles::csyncTraversalMatchFun() const
-    -> std::function<CSYNC_EXCLUDE_TYPE(const char *path, int filetype)>
+    -> std::function<CSYNC_EXCLUDE_TYPE(const char *path, ItemType filetype)>
 {
-    return [this](const char *path, int filetype) { return this->traversalPatternMatch(path, filetype); };
+    return [this](const char *path, ItemType filetype) { return this->traversalPatternMatch(path, filetype); };
 }
 
 static QString convertToRegexpSyntax(QString exclude)

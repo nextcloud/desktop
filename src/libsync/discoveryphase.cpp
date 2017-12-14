@@ -310,9 +310,9 @@ static std::unique_ptr<csync_file_stat_t> propertyMapToFileStat(const QMap<QStri
         QString value = it.value();
         if (property == "resourcetype") {
             if (value.contains("collection")) {
-                file_stat->type = CSYNC_FTW_TYPE_DIR;
+                file_stat->type = ItemTypeDirectory;
             } else {
-                file_stat->type = CSYNC_FTW_TYPE_FILE;
+                file_stat->type = ItemTypeFile;
             }
         } else if (property == "getlastmodified") {
             file_stat->modtime = oc_httpdate_parse(value.toUtf8());
