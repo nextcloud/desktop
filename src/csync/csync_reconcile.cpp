@@ -283,16 +283,6 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
         /* file on current replica is changed or new */
         case CSYNC_INSTRUCTION_EVAL:
         case CSYNC_INSTRUCTION_NEW:
-            // This operation is usually a no-op and will by default return false
-            if (csync_file_locked_or_open(ctx->local.uri, cur->path)) {
-                qCDebug(lcReconcile, "[Reconciler] IGNORING file %s/%s since it is locked / open", ctx->local.uri, cur->path.constData());
-                cur->instruction = CSYNC_INSTRUCTION_ERROR;
-                if (cur->error_status == CSYNC_STATUS_OK) // don't overwrite error
-                    cur->error_status = CYSNC_STATUS_FILE_LOCKED_OR_OPEN;
-                break;
-            } else {
-                //qCDebug(lcReconcile, "[Reconciler] not ignoring file %s/%s", ctx->local.uri, cur->path);
-            }
             switch (other->instruction) {
             /* file on other replica is changed or new */
             case CSYNC_INSTRUCTION_NEW:
