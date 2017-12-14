@@ -22,7 +22,6 @@ set(TEST_TARGET_LIBRARIES ${TORTURE_LIBRARY})
 # std
 add_cmocka_test(check_std_c_alloc std_tests/check_std_c_alloc.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_std_c_jhash std_tests/check_std_c_jhash.c ${TEST_TARGET_LIBRARIES})
-add_cmocka_test(check_std_c_path std_tests/check_std_c_path.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_std_c_str std_tests/check_std_c_str.c ${TEST_TARGET_LIBRARIES})
 
 

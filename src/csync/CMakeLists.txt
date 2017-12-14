@@ -69,7 +69,6 @@ set(csync_SRCS
   vio/csync_vio.cpp
 
   std/c_alloc.c
-  std/c_path.c
   std/c_string.c
   std/c_time.c
   std/c_utf8.cpp

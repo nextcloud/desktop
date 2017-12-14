@@ -22,7 +22,6 @@
 #include "c_private.h"
 #include "c_string.h"
 
-#include "c_path.h"
 #include "c_time.h"
 #include "c_utf8.h"
 
