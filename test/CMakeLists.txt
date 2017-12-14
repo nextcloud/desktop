@@ -1,5 +1,4 @@
-include_directories(${QT_INCLUDES}
-                    ${CMAKE_SOURCE_DIR}/src
+include_directories(${CMAKE_SOURCE_DIR}/src
                     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer
                     ${CMAKE_SOURCE_DIR}/src/csync
                     ${CMAKE_SOURCE_DIR}/src/csync/std
@@ -10,11 +9,6 @@ include_directories(${QT_INCLUDES}
                     ${CMAKE_CURRENT_SOURCE_DIR}
                     ${CMAKE_CURRENT_BINARY_DIR}
                    )
-
-include_directories()
-
-include(QtVersionAbstraction)
-setup_qt()
 
 include(owncloud_add_test.cmake)
 

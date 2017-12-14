@@ -27,13 +27,12 @@ endif()
 
 if(NOT BUILD_LIBRARIES_ONLY)
    add_executable(${cmd_NAME}  ${cmd_SRC})
-	qt5_use_modules(${cmd_NAME} Network )
 	set_target_properties(${cmd_NAME} PROPERTIES
 	        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
         set_target_properties(${cmd_NAME} PROPERTIES
 		INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
-	target_link_libraries(${cmd_NAME} ${synclib_NAME})
+	target_link_libraries(${cmd_NAME} ${synclib_NAME} Qt5::Core Qt5::Network)
 endif()
 
 if(BUILD_OWNCLOUD_OSX_BUNDLE)

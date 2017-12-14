@@ -95,10 +95,15 @@ IF (NOT APPLE)
 ENDIF(NOT APPLE)
 
 list(APPEND libsync_LINK_TARGETS
-    ${QT_LIBRARIES}
     ocsync
     ${OS_SPECIFIC_LINK_LIBRARIES}
+    Qt5::Core Qt5::Network
 )
+
+if (NOT TOKEN_AUTH_ONLY)
+    find_package(Qt5 REQUIRED COMPONENTS Widgets)
+    list(APPEND libsync_LINK_TARGETS Qt5::Widgets)
+endif()
 
 if(QTKEYCHAIN_FOUND OR QT5KEYCHAIN_FOUND)
     list(APPEND libsync_LINK_TARGETS ${QTKEYCHAIN_LIBRARY})
@@ -118,11 +123,6 @@ GENERATE_EXPORT_HEADER( ${synclib_NAME}
 	STATIC_DEFINE OWNCLOUD_BUILT_AS_STATIC
 )
 
-if(TOKEN_AUTH_ONLY)
-    qt5_use_modules(${synclib_NAME} Network)
-else()
-    qt5_use_modules(${synclib_NAME} Widgets Network)
-endif()
 
 set_target_properties( ${synclib_NAME}  PROPERTIES
 	VERSION ${MIRALL_VERSION}

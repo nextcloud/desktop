@@ -32,14 +32,12 @@ if(NOT BUILD_LIBRARIES_ONLY)
         ${crashreporter_RC_RCC}
     )
 
-    qt5_use_modules(${CRASHREPORTER_EXECUTABLE} Widgets Network)
-
     set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES AUTOMOC ON)
     set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
     set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}" )
     target_link_libraries(${CRASHREPORTER_EXECUTABLE}
         crashreporter-gui
-        ${QT_LIBRARIES}
+        Qt5::Core Qt5::Widgets
     )
 
     if(BUILD_OWNCLOUD_OSX_BUNDLE)

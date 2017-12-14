@@ -50,6 +50,7 @@ set(CSYNC_LIBRARY
 set(CSYNC_LINK_LIBRARIES
   ${CSYNC_REQUIRED_LIBRARIES}
   ${SQLITE3_LIBRARIES}
+  Qt5::Core Qt5::Concurrent
 )
 
 # Specific option for builds tied to servers that do not support renaming extensions
@@ -133,8 +134,6 @@ if(ZLIB_FOUND)
   target_link_libraries(${CSYNC_LIBRARY} ZLIB::ZLIB)
 endif(ZLIB_FOUND)
 
-find_package(Qt5Core REQUIRED)
-qt5_use_modules(${CSYNC_LIBRARY} Core Concurrent)
 
 # For src/common/utility_mac.cpp
 if (APPLE)

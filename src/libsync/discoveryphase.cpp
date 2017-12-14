@@ -15,7 +15,6 @@
 #include "discoveryphase.h"
 
 #include "account.h"
-#include "theme.h"
 #include "common/asserts.h"
 #include "common/checksums.h"
 
