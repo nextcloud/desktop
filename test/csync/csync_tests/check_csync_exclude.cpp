@@ -512,19 +512,17 @@ static void check_csync_exclude_expand_escapes(void **state)
 {
     (void)state;
 
-    const char *str = csync_exclude_expand_escapes(
-            "keep \\' \\\" \\? \\\\ \\a \\b \\f \\n \\r \\t \\v \\z \\#");
-    assert_true(0 == strcmp(
-            str, "keep ' \" ? \\\\ \a \b \f \n \r \t \v \\z #"));
-    SAFE_FREE(str);
+    QByteArray line = "keep \\' \\\" \\? \\\\ \\a \\b \\f \\n \\r \\t \\v \\z \\#";
+    csync_exclude_expand_escapes(line);
+    assert_true(0 == strcmp(line.constData(), "keep ' \" ? \\\\ \a \b \f \n \r \t \v \\z #"));
 
-    str = csync_exclude_expand_escapes("");
-    assert_true(0 == strcmp(str, ""));
-    SAFE_FREE(str);
+    line = "";
+    csync_exclude_expand_escapes(line);
+    assert_true(0 == strcmp(line.constData(), ""));
 
-    str = csync_exclude_expand_escapes("\\");
-    assert_true(0 == strcmp(str, "\\"));
-    SAFE_FREE(str);
+    line = "\\";
+    csync_exclude_expand_escapes(line);
+    assert_true(0 == strcmp(line.constData(), "\\"));
 }
 
 }; // class ExcludedFilesTest

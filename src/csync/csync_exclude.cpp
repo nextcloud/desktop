@@ -23,11 +23,6 @@
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
 #endif
-#include <stdio.h>
-
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
 
 #include "c_lib.h"
 #include "c_private.h"
@@ -42,125 +37,43 @@
 #include <QString>
 #include <QFileInfo>
 
-#ifdef _WIN32
-#include <io.h>
-#else
-#include <unistd.h>
-#endif
 
-#define CSYNC_LOG_CATEGORY_NAME "csync.exclude"
-#include "csync_log.h"
-
-/** Expands C-like escape sequences.
- *
- * The returned string is heap-allocated and owned by the caller.
+/** Expands C-like escape sequences (in place)
  */
-static const char *csync_exclude_expand_escapes(const char * input)
+static void csync_exclude_expand_escapes(QByteArray &input)
 {
-    size_t i_len = strlen(input) + 1;
-    char *out = (char*)c_malloc(i_len); // out can only be shorter
-
-    size_t i = 0;
     size_t o = 0;
-    for (; i < i_len; ++i) {
-        if (input[i] == '\\') {
+    char *line = input.data();
+    auto len = input.size();
+    for (int i = 0; i < len; ++i) {
+        if (line[i] == '\\') {
             // at worst input[i+1] is \0
-            switch (input[i+1]) {
-            case '\'': out[o++] = '\''; break;
-            case '"': out[o++] = '"'; break;
-            case '?': out[o++] = '?'; break;
-            case '#': out[o++] = '#'; break;
-            case 'a': out[o++] = '\a'; break;
-            case 'b': out[o++] = '\b'; break;
-            case 'f': out[o++] = '\f'; break;
-            case 'n': out[o++] = '\n'; break;
-            case 'r': out[o++] = '\r'; break;
-            case 't': out[o++] = '\t'; break;
-            case 'v': out[o++] = '\v'; break;
+            switch (line[i+1]) {
+            case '\'': line[o++] = '\''; break;
+            case '"': line[o++] = '"'; break;
+            case '?': line[o++] = '?'; break;
+            case '#': line[o++] = '#'; break;
+            case 'a': line[o++] = '\a'; break;
+            case 'b': line[o++] = '\b'; break;
+            case 'f': line[o++] = '\f'; break;
+            case 'n': line[o++] = '\n'; break;
+            case 'r': line[o++] = '\r'; break;
+            case 't': line[o++] = '\t'; break;
+            case 'v': line[o++] = '\v'; break;
             default:
                 // '\*' '\?' '\[' '\\' will be processed during regex translation
                 // '\\' is intentionally not expanded here (to avoid '\\*' and '\*'
                 // ending up meaning the same thing)
-                out[o++] = input[i];
-                out[o++] = input[i+1];
+                line[o++] = line[i];
+                line[o++] = line[i + 1];
                 break;
             }
             ++i;
         } else {
-            out[o++] = input[i];
+            line[o++] = line[i];
         }
     }
-    return out;
-}
-
-/** Loads patterns from a file and adds them to excludes */
-int csync_exclude_load(const char *fname, QList<QByteArray> *excludes) {
-  int fd = -1;
-  int i = 0;
-  int rc = -1;
-  int64_t size;
-  char *buf = NULL;
-  char *entry = NULL;
-  mbchar_t *w_fname;
-
-  if (fname == NULL) {
-      return -1;
-  }
-
-#ifdef _WIN32
-  _fmode = _O_BINARY;
-#endif
-
-  w_fname = c_utf8_path_to_locale(fname);
-  if (w_fname == NULL) {
-      return -1;
-  }
-
-  fd = _topen(w_fname, O_RDONLY);
-  c_free_locale_string(w_fname);
-  if (fd < 0) {
-    return -1;
-  }
-
-  size = lseek(fd, 0, SEEK_END);
-  if (size < 0) {
-    rc = -1;
-    goto out;
-  }
-  lseek(fd, 0, SEEK_SET);
-  if (size == 0) {
-    rc = 0;
-    goto out;
-  }
-  buf = (char*)c_malloc(size + 1);
-  if (read(fd, buf, size) != size) {
-    rc = -1;
-    goto out;
-  }
-  buf[size] = '\0';
-
-  /* FIXME: Use fgets and don't add duplicates */
-  entry = buf;
-  for (i = 0; i < size; i++) {
-    if (buf[i] == '\n' || buf[i] == '\r') {
-      if (entry != buf + i) {
-        buf[i] = '\0';
-        if (*entry != '#') {
-          const char *unescaped = csync_exclude_expand_escapes(entry);
-          excludes->append(unescaped);
-          CSYNC_LOG(CSYNC_LOG_PRIORITY_TRACE, "Adding entry: %s", unescaped);
-          SAFE_FREE(unescaped);
-        }
-      }
-      entry = buf + i + 1;
-    }
-  }
-
-  rc = 0;
-out:
-  SAFE_FREE(buf);
-  close(fd);
-  return rc;
+    input.resize(o);
 }
 
 // See http://support.microsoft.com/kb/74496 and
@@ -362,8 +275,18 @@ bool ExcludedFiles::reloadExcludeFiles()
     _allExcludes.clear();
     bool success = true;
     foreach (const QString &file, _excludeFiles) {
-        if (csync_exclude_load(file.toUtf8(), &_allExcludes) < 0)
+        QFile f(file);
+        if (!f.open(QIODevice::ReadOnly)) {
             success = false;
+            continue;
+        }
+        while (!f.atEnd()) {
+            QByteArray line = f.readLine().trimmed();
+            if (line.isEmpty() || line.startsWith('#'))
+                continue;
+            csync_exclude_expand_escapes(line);
+            _allExcludes.append(line);
+        }
     }
     _allExcludes.append(_manualExcludes);
     prepare();
