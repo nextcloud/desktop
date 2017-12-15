@@ -536,6 +536,7 @@ private slots:
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
 
+#ifndef Q_OS_WIN  // We can't have local file with these character
         // For current servers, no characters are forbidden
         fakeFolder.syncEngine().account()->setServerVersion("10.0.0");
         fakeFolder.localModifier().insert("A/\\:?*\"<>|.txt");
@@ -547,6 +548,7 @@ private slots:
         fakeFolder.localModifier().insert("B/\\:?*\"<>|.txt");
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentRemoteState().find("B/\\:?*\"<>|.txt"));
+#endif
 
         // We can override that by setting the capability
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ { "invalidFilenameRegex", "" } } } });
