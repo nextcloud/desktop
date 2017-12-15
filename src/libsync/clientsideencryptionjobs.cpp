@@ -162,7 +162,7 @@ void StoreMetaDataApiJob::start()
     };
     url.setQueryItems(params);
 
-    QByteArray data = QByteArray("metaData=") + _b64Metadata;
+    QByteArray data = QByteArray("metaData=") + QUrl::toPercentEncoding(_b64Metadata);
     auto buffer = new QBuffer(this);
     buffer->setData(data);
 

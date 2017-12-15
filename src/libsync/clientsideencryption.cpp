@@ -1137,9 +1137,8 @@ void FolderMetadata::setupExistingMetadata()
   // base 64 encrypted metadata. three transformations for it seems quite wrong.
   std::string encrypted_metadata_keys = meta_Data["metadata"]["metadataKeys"];
   QByteArray data = QByteArray::fromStdString(encrypted_metadata_keys);
-  QByteArray rawData = QByteArray::fromBase64(data);
 
-  std::string decrypted_metadata_keys = decryptMetadataKeys(rawData);
+  std::string decrypted_metadata_keys = decryptMetadataKeys(data);
   qDebug() << encrypted_metadata_keys;
   qDebug() << decrypted_metadata_keys;
 
