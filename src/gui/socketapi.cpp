@@ -48,8 +48,6 @@
 
 #include <QClipboard>
 
-#include <sqlite3.h>
-
 #include <QStandardPaths>
 
 

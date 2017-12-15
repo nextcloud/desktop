@@ -36,7 +36,6 @@
 #include <QHash>
 #include <stdint.h>
 #include <stdbool.h>
-#include <sqlite3.h>
 #include <map>
 #include <set>
 #include <functional>

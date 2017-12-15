@@ -18,6 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 #include "csync_update.cpp"
+#include <sqlite3.h>
 
 #include "torture.h"
 
