@@ -47,6 +47,7 @@ public:
 
     // to be used together with FolderStatusModel::FolderInfo::_path.
     bool isFolderEncrypted(const QString& path);
+    void setFolderEncryptedStatus(const QString& path, bool status);
 
 private slots:
     void folderEncryptedStatusFetched(const QMap<QString, bool> &values);

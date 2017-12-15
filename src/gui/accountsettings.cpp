@@ -258,6 +258,11 @@ void AccountSettings::doExpand()
 
 void AccountSettings::slotEncryptionFlagSuccess(const QByteArray& fileId)
 {
+    if (auto info = _model->infoForFileId(fileId)) {
+      accountsState()->account()->e2e()->setFolderEncryptedStatus(info->_path, true);
+    } else {
+      qCInfo(lcAccountSettings()) << "Could not get information from the current folder.";
+    }
     auto lockJob = new LockEncryptFolderApiJob(accountsState()->account(), fileId);
     connect(lockJob, &LockEncryptFolderApiJob::success,
             this, &AccountSettings::slotLockFolderSuccess);
@@ -332,7 +337,16 @@ void AccountSettings::slotMarkSubfolderDecrypted(const QByteArray& fileId)
 {
     auto job = new OCC::DeleteApiJob(accountsState()->account(),
         "ocs/v2.php/apps/end_to_end_encryption/api/v1/encrypted/" + QString(fileId));
-    connect(job, &OCC::DeleteApiJob::result, [](int httpResponse) {
+    connect(job, &OCC::DeleteApiJob::result, [this, &fileId](int httpResponse) {
+        if (httpResponse == 200) {
+          if (auto info = _model->infoForFileId(fileId)) {
+            accountsState()->account()->e2e()->setFolderEncryptedStatus(info->_path, false);
+          } else {
+            qCInfo(lcAccountSettings()) << "Could not get information for the current path.";
+          }
+        } else {
+          qCInfo(lcAccountSettings()) << "Response different than 200, cannot set folder to false.";
+        }
         qCInfo(lcAccountSettings) << "Decrypt Http Response" << httpResponse;
     });
     job->start();

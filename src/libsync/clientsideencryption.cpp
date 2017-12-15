@@ -676,6 +676,11 @@ void ClientSideEncryption::publicKeyFetched(Job *incoming) {
     job->start();
 }
 
+void ClientSideEncryption::setFolderEncryptedStatus(const QString& folder, bool status)
+{
+    _folder2encryptedStatus[folder] = status;
+}
+
 void ClientSideEncryption::privateKeyFetched(Job *incoming) {
     ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incoming);
 

@@ -962,6 +962,7 @@ bool DeleteApiJob::finished()
 
     const auto replyData = QString::fromUtf8(reply()->readAll());
     qCInfo(lcJsonApiJob()) << "TMX Delete Job" << replyData;
+    emit result(statusCode);
 		return true;
 }
 
