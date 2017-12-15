@@ -225,6 +225,29 @@ private:
     QByteArray _fileId;
 };
 
+class OWNCLOUDSYNC_EXPORT DeleteMetadataApiJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    explicit DeleteMetadataApiJob (
+        const AccountPtr &account,
+        const QByteArray& fileId,
+        QObject *parent = 0);
+
+public slots:
+    void start() override;
+
+protected:
+    bool finished() override;
+
+signals:
+    void success(const QByteArray& fileId);
+    void error(const QByteArray& fileId, int httpErrorCode);
+
+private:
+    QByteArray _fileId;
+};
+
 /* I cant use the propfind network job because it defaults to the
  * wrong dav url.
  */

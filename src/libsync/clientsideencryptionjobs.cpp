@@ -220,6 +220,39 @@ bool UnlockEncryptFolderApiJob::finished()
 }
 
 
+
+DeleteMetadataApiJob::DeleteMetadataApiJob(const AccountPtr& account,
+                                                  const QByteArray& fileId,
+                                                 QObject* parent)
+: AbstractNetworkJob(account, baseUrl() + QStringLiteral("encrypted/") + fileId, parent), _fileId(fileId)
+{
+}
+
+void DeleteMetadataApiJob::start()
+{
+    QNetworkRequest req;
+    req.setRawHeader("OCS-APIREQUEST", "true");
+
+    QUrl url = Utility::concatUrlPath(account()->url(), path());
+    sendRequest("DELETE", url, req);
+
+    AbstractNetworkJob::start();
+    qCInfo(lcCseJob()) << "Starting the request to remove the metadata.";
+}
+
+bool DeleteMetadataApiJob::finished()
+{
+    int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (retCode != 200) {
+        qCInfo(lcCseJob()) << "error removing metadata for" << path() << errorString() << retCode;
+        qCInfo(lcCseJob()) << "Full Error Log" << reply()->readAll();
+        emit error(_fileId, retCode);
+        return true;
+    }
+    emit success(_fileId);
+    return true;
+}
+
 LockEncryptFolderApiJob::LockEncryptFolderApiJob(const AccountPtr& account, const QByteArray& fileId, QObject* parent)
 : AbstractNetworkJob(account, baseUrl() + QStringLiteral("lock/") + fileId, parent), _fileId(fileId)
 {
