@@ -952,17 +952,18 @@ bool DeleteApiJob::finished()
                          << reply()->error()
                          << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
 
-    int statusCode = 0;
+    int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
 
     if (reply()->error() != QNetworkReply::NoError) {
-        qCWarning(lcJsonApiJob) << "Network error: " << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-        emit result(statusCode);
+        qCWarning(lcJsonApiJob) << "Network error: " << path() << errorString() << httpStatus;
+        emit result(httpStatus);
         return true;
     }
 
     const auto replyData = QString::fromUtf8(reply()->readAll());
     qCInfo(lcJsonApiJob()) << "TMX Delete Job" << replyData;
-    emit result(statusCode);
+    emit result(httpStatus);
 		return true;
 }
 

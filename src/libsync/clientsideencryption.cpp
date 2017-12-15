@@ -678,6 +678,7 @@ void ClientSideEncryption::publicKeyFetched(Job *incoming) {
 
 void ClientSideEncryption::setFolderEncryptedStatus(const QString& folder, bool status)
 {
+    qDebug() << "Setting folder" << folder << "as encrypted" << status;
     _folder2encryptedStatus[folder] = status;
 }
 
@@ -1287,16 +1288,12 @@ QByteArray FolderMetadata::encryptedMetadata() {
 	return _metadata;
 }
 
-
-
-
 bool ClientSideEncryption::isFolderEncrypted(const QString& path) {
   auto it = _folder2encryptedStatus.find(path);
   if (it == _folder2encryptedStatus.end())
     return false;
   return (*it);
 }
-
 
 FileEncryptionJob::FileEncryptionJob(QByteArray &key, QByteArray &iv, QFile *input, QFile *output, QObject *parent)
     : QObject(parent),
