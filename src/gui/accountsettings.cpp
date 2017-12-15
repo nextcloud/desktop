@@ -265,9 +265,9 @@ void AccountSettings::slotEncryptionFlagSuccess(const QByteArray& fileId)
     }
     auto lockJob = new LockEncryptFolderApiJob(accountsState()->account(), fileId);
     connect(lockJob, &LockEncryptFolderApiJob::success,
-            this, &AccountSettings::slotLockFolderSuccess);
+            this, &AccountSettings::slotLockForEncryptionSuccess);
     connect(lockJob, &LockEncryptFolderApiJob::error,
-            this, &AccountSettings::slotLockFolderError);
+            this, &AccountSettings::slotLockForEncryptionError);
     lockJob->start();
 }
 
@@ -276,7 +276,7 @@ void AccountSettings::slotEncryptionFlagError(const QByteArray& fileId, int http
     qDebug() << "Error on the encryption flag";
 }
 
-void AccountSettings::slotLockFolderSuccess(const QByteArray& fileId, const QByteArray &token)
+void AccountSettings::slotLockForEncryptionSuccess(const QByteArray& fileId, const QByteArray &token)
 {
 		accountsState()->account()->e2e()->setTokenForFolder(fileId, token);
 
@@ -312,7 +312,7 @@ void AccountSettings::slotUpdateMetadataError(const QByteArray& folderId, int ht
 	unlockJob->start();
 }
 
-void AccountSettings::slotLockFolderError(const QByteArray& fileId, int httpErrorCode)
+void AccountSettings::slotLockForEncryptionError(const QByteArray& fileId, int httpErrorCode)
 {
     qCInfo(lcAccountSettings()) << "Locking error" << httpErrorCode;
 }
@@ -333,23 +333,91 @@ void AccountSettings::slotMarkSubfolderEncrpted(const QByteArray& fileId)
     job->start();
 }
 
+
+// Order:
+// 1 - Lock folder,
+// 2 - Delete Metadata,
+// 3 - Unlock Folder,
+// 4 - Mark as Decrypted.
 void AccountSettings::slotMarkSubfolderDecrypted(const QByteArray& fileId)
 {
-    auto job = new OCC::DeleteApiJob(accountsState()->account(),
-        "ocs/v2.php/apps/end_to_end_encryption/api/v1/encrypted/" + QString(fileId));
-    connect(job, &OCC::DeleteApiJob::result, [this, &fileId](int httpResponse) {
-        if (httpResponse == 200) {
-          if (auto info = _model->infoForFileId(fileId)) {
-            accountsState()->account()->e2e()->setFolderEncryptedStatus(info->_path, false);
-          } else {
-            qCInfo(lcAccountSettings()) << "Could not get information for the current path.";
-          }
-        } else {
-          qCInfo(lcAccountSettings()) << "Response different than 200, cannot set folder to false.";
-        }
-        qCInfo(lcAccountSettings) << "Decrypt Http Response" << httpResponse;
-    });
-    job->start();
+  qDebug() << "Starting to mark as decrypted";
+  qDebug() << "Locking the folder";
+  auto lockJob = new LockEncryptFolderApiJob(accountsState()->account(), fileId);
+  connect(lockJob, &LockEncryptFolderApiJob::success,
+          this, &AccountSettings::slotLockForDecryptionSuccess);
+  connect(lockJob, &LockEncryptFolderApiJob::error,
+          this, &AccountSettings::slotLockForDecryptionError);
+  lockJob->start();
+}
+
+void AccountSettings::slotLockForDecryptionSuccess(const QByteArray& fileId, const QByteArray& token)
+{
+  qDebug() << "Locking success, trying to delete the metadata";
+  accountsState()->account()->e2e()->setTokenForFolder(fileId, token);
+  auto job = new DeleteMetadataApiJob(accountsState()->account(), fileId);
+  connect(job, &DeleteMetadataApiJob::success,
+          this, &AccountSettings::slotDeleteMetadataSuccess);
+  connect(job, &DeleteMetadataApiJob::error,
+          this, &AccountSettings::slotDeleteMetadataError);
+  job->start();
+}
+
+void AccountSettings::slotDeleteMetadataSuccess(const QByteArray& fileId)
+{
+  qDebug() << "Metadata successfully deleted, unlocking the folder";
+  auto token = accountsState()->account()->e2e()->tokenForFolder(fileId);
+  auto job = new UnlockEncryptFolderApiJob(accountsState()->account(), fileId, token);
+  connect(job, &UnlockEncryptFolderApiJob::success,
+          this, &AccountSettings::slotUnlockForDecryptionSuccess);
+  connect(job, &UnlockEncryptFolderApiJob::error,
+          this, &AccountSettings::slotUnlockForDecryptionError);
+  job->start();
+}
+
+void AccountSettings::slotUnlockForDecryptionSuccess(const QByteArray& fileId)
+{
+  qDebug() << "Unlocked the folder successfully, removing the encrypted bit.";
+  auto job = new OCC::DeleteApiJob(accountsState()->account(),
+      "ocs/v2.php/apps/end_to_end_encryption/api/v1/encrypted/" + QString(fileId));
+
+  // This Delete ApiJob is different than all other jobs used here, sigh.
+  connect(job, &OCC::DeleteApiJob::result, [this, &fileId](int httpResponse) {
+      if (httpResponse == 200) {
+          slotDecryptionFlagSuccess(fileId);
+      } else {
+          slotDecryptionFlagError(fileId, httpResponse);
+      }
+  });
+  job->start();
+}
+
+void AccountSettings::slotDecryptionFlagSuccess(const QByteArray& fileId)
+{
+    if (auto info = _model->infoForFileId(fileId)) {
+        accountsState()->account()->e2e()->setFolderEncryptedStatus(info->_path, false);
+    } else {
+        qCInfo(lcAccountSettings()) << "Could not get information for the current path.";
+    }
+}
+
+void AccountSettings::slotDecryptionFlagError(const QByteArray& fileID, int httpReturnCode)
+{
+    qDebug() << "Error Setting the Decryption Flag";
+}
+
+void AccountSettings::slotUnlockForDecryptionError(const QByteArray& fileId, int httpReturnCode)
+{
+
+}
+
+void AccountSettings::slotDeleteMetadataError(const QByteArray& fileId, int httpReturnCode)
+{
+  qDebug() << "Error deleting the metadata";
+}
+void AccountSettings::slotLockForDecryptionError(const QByteArray& fileId, int httpReturnCode)
+{
+  qDebug() << "Error Locking for decryption";
 }
 
 void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index, const QPoint& pos)

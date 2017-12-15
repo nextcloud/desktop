@@ -92,14 +92,26 @@ protected slots:
     void slotFolderListClicked(const QModelIndex &indx);
     void doExpand();
     void slotLinkActivated(const QString &link);
+
+    // Encryption Related Stuff.
     void slotEncryptionFlagSuccess(const QByteArray &folderId);
     void slotEncryptionFlagError(const QByteArray &folderId, int httpReturnCode);
-    void slotLockFolderSuccess(const QByteArray& folderId, const QByteArray& token);
-    void slotLockFolderError(const QByteArray &folderId, int httpReturnCode);
+    void slotLockForEncryptionSuccess(const QByteArray& folderId, const QByteArray& token);
+    void slotLockForEncryptionError(const QByteArray &folderId, int httpReturnCode);
     void slotUnlockFolderSuccess(const QByteArray& folderId);
     void slotUnlockFolderError(const QByteArray& folderId, int httpReturnCode);
 		void slotUploadMetadataSuccess(const QByteArray& folderId);
 		void slotUpdateMetadataError(const QByteArray& folderId, int httpReturnCode);
+
+    // Remove Encryotion Bit.
+    void slotLockForDecryptionSuccess(const QByteArray& folderId, const QByteArray& token);
+    void slotLockForDecryptionError(const QByteArray& folderId, int httpReturnCode);
+    void slotDeleteMetadataSuccess(const QByteArray& folderId);
+    void slotDeleteMetadataError(const QByteArray& folderId, int httpReturnCode);
+    void slotUnlockForDecryptionSuccess(const QByteArray& folderId);
+    void slotUnlockForDecryptionError(const QByteArray& folderId, int httpReturnCode);
+    void slotDecryptionFlagSuccess(const QByteArray& folderId);
+    void slotDecryptionFlagError(const QByteArray& folderId, int httpReturnCode);
 
 private:
     void showConnectionLabel(const QString &message,
