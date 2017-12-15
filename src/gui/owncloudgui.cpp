@@ -42,8 +42,10 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QSignalMapper>
+#ifdef WITH_LIBCLOUDPROVIDERS
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusInterface>
+#endif
 
 #if defined(Q_OS_X11)
 #include <QX11Info>
@@ -66,7 +68,9 @@ ownCloudGui::ownCloudGui(Application *parent)
 #endif
     _logBrowser(0)
     , _contextMenuVisibleOsx(false)
+#ifdef WITH_LIBCLOUDPROVIDERS
     , _bus(QDBusConnection::sessionBus())
+#endif
     , _recentActionsMenu(0)
     , _qdbusmenuWorkaround(false)
     , _app(parent)
