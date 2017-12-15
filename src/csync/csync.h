@@ -48,6 +48,9 @@
 #if defined(Q_CC_GNU) && !defined(Q_CC_INTEL) && !defined(Q_CC_CLANG) && (__GNUC__ * 100 + __GNUC_MINOR__ < 408)
 // openSuse 12.3 didn't like enum bitfields.
 #define BITFIELD(size)
+#elif defined(Q_CC_MSVC)
+// MSVC stores enum and bool as signed, so we need to add a bit for the sign
+#define BITFIELD(size) :(size+1)
 #else
 #define BITFIELD(size) :size
 #endif
