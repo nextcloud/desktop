@@ -25,7 +25,9 @@
 #include <QMenu>
 #include <QSize>
 #include <QTimer>
+#ifdef WITH_LIBCLOUDPROVIDERS
 #include <QDBusConnection>
+#endif
 
 namespace OCC {
 
@@ -128,7 +130,9 @@ private:
     // on OSX because aboutToHide is not reliable everywhere.
     bool _contextMenuVisibleOsx;
 
+#ifdef WITH_LIBCLOUDPROVIDERS
     QDBusConnection _bus;
+#endif
 
     QMenu *_recentActionsMenu;
     QVector<QMenu *> _accountMenus;
