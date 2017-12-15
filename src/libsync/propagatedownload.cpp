@@ -862,7 +862,7 @@ void PropagateDownloadFile::downloadFinished()
         if (propagator()->account()->capabilities().uploadConflictFiles()) {
             SyncFileItemPtr conflictItem = SyncFileItemPtr(new SyncFileItem);
             conflictItem->_file = conflictFileName;
-            conflictItem->_type = SyncFileItem::File;
+            conflictItem->_type = ItemTypeFile;
             conflictItem->_direction = SyncFileItem::Up;
             conflictItem->_instruction = CSYNC_INSTRUCTION_NEW;
             conflictItem->_modtime = conflictModTime;
