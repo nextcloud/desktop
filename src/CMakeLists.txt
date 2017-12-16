@@ -9,7 +9,7 @@ if(NOT TOKEN_AUTH_ONLY)
 endif()
 
 if(NOT MSVC)
-  if(NOT (CMAKE_SYSTEM_PROCESSOR MATCHES "^(parisc|hppa)"))
+  if(NOT (CMAKE_SYSTEM_PROCESSOR MATCHES "^(alpha|parisc|hppa)"))
     if((CMAKE_CXX_COMPILER_ID MATCHES "GNU") AND (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.9))
       set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fstack-protector --param=ssp-buffer-size=4")
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector --param=ssp-buffer-size=4")
