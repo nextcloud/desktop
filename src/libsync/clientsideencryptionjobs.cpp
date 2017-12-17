@@ -224,7 +224,7 @@ bool UnlockEncryptFolderApiJob::finished()
 DeleteMetadataApiJob::DeleteMetadataApiJob(const AccountPtr& account,
                                                   const QByteArray& fileId,
                                                  QObject* parent)
-: AbstractNetworkJob(account, baseUrl() + QStringLiteral("encrypted/") + fileId, parent), _fileId(fileId)
+: AbstractNetworkJob(account, baseUrl() + QStringLiteral("meta-data/") + fileId, parent), _fileId(fileId)
 {
 }
 
