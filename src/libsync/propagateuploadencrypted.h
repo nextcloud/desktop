@@ -1,0 +1,64 @@
+#ifndef PROPAGATEUPLOADENCRYPTED_H
+#define PROPAGATEUPLOADENCRYPTED_H
+
+#include <QObject>
+#include <QString>
+#include <QMap>
+#include <QByteArray>
+#include <QJsonDocument>
+#include <QNetworkReply>
+
+#include "owncloudpropagator.h"
+
+namespace OCC {
+/* This class is used if the server supports end to end encryption.
+ * It will fire for *any* folder, encrypted or not, because when the
+ * client starts the upload request we don't know if the folder is
+ * encrypted on the server.
+ *
+ * emits:
+ * finalized() if the encrypted file is ready to be uploaded
+ * error() if there was an error with the encryption
+ * folerNotEncrypted() if the file is within a folder that's not encrypted.
+ *
+ */
+class PropagateUploadEncrypted : public QObject
+{
+  Q_OBJECT
+public:
+    PropagateUploadEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item);
+    void start();
+
+private slots:
+    void slotFolderEncryptedStatusFetched(const QMap<QString, bool>& result);
+    void slotFolderEncryptedStatusError(int error);
+    void slotFolderEncryptedIdReceived(const QStringList &list);
+    void slotFolderEncryptedIdError(QNetworkReply *r);
+    void slotFolderLockedSuccessfully(const QByteArray& fileId, const QByteArray& token);
+    void slotFolderLockedError(const QByteArray& fileId, int httpErrorCode);
+    void slotTryLock(const QByteArray& fileId);
+    void slotFolderEncriptedMetadataReceived(const QJsonDocument &json, int statusCode);
+    void slotUnlockEncryptedFolderSuccess(const QByteArray& fileId);
+    void slotUnlockEncryptedFolderError(const QByteArray& fileId, int httpReturnCode);
+
+signals:
+    // Emmited after the file is encrypted and everythign is setup.
+    void finalized();
+    void error();
+
+    // Emited if the file is not in a encrypted folder.
+    void folerNotEncrypted();
+
+private:
+  OwncloudPropagator *_propagator;
+  SyncFileItemPtr _item;
+
+  QElapsedTimer _folderLockFirstTry;
+  bool _currentLockingInProgress;
+  QByteArray _folderToken;
+  QByteArray _folderId;
+};
+
+
+}
+#endif

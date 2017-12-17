@@ -53,6 +53,7 @@ set(libsync_SRCS
     propagateremotedelete.cpp
     propagateremotemove.cpp
     propagateremotemkdir.cpp
+    propagateuploadencrypted.cpp
     syncengine.cpp
     syncfileitem.cpp
     syncfilestatus.cpp

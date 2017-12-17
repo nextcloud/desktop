@@ -252,7 +252,8 @@ public:
 
     /* start should setup the file, path and size that will be send to the server */
     void start() Q_DECL_OVERRIDE;
-    void startUploadEncryptedFile();
+    void setupEncryptedFile();
+    void setupUnencryptedFile();
     void startUploadFile();
     bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return _item->_size < propagator()->smallFileSize(); }
 
@@ -277,24 +278,6 @@ public slots:
 private slots:
     void slotReplyAbortFinished();
     void slotPollFinished();
-
-    // Encryption Stuff
-    void slotFolderEncryptedStatusFetched(const QMap<QString, bool>& result);
-    void slotFolderEncryptedStatusError(int error);
-    void slotFolderEncryptedIdReceived(const QStringList &list);
-    void slotFolderEncryptedIdError(QNetworkReply *r);
-    void slotFolderLockedSuccessfully(const QByteArray& fileId, const QByteArray& token);
-    void slotFolderLockedError(const QByteArray& fileId, int httpErrorCode);
-    void slotTryLock(const QByteArray& fileId);
-    void slotFolderEncriptedMetadataReceived(const QJsonDocument &json, int statusCode);
-    void slotUnlockEncryptedFolderSuccess(const QByteArray& fileId);
-    void slotUnlockEncryptedFolderError(const QByteArray& fileId, int httpReturnCode);
-// Private Encryption Stuff
-private:
-    QElapsedTimer _folderLockFirstTry;
-    bool _currentLockingInProgress;
-    QByteArray _folderToken;
-    QByteArray _folderId;
 
 protected:
     /**
