@@ -396,18 +396,12 @@ FolderStatusModel::SubFolderInfo *FolderStatusModel::infoForIndex(const QModelIn
     }
 }
 
-
 /* Recursivelly traverse the file info looking for the id */
 FolderStatusModel::SubFolderInfo *FolderStatusModel::infoForFileId(const QByteArray& fileId, SubFolderInfo* info) const
 {
-  qDebug() << "Looking for " << fileId;
-  qDebug() << "Current size of the folders array" << _folders.size();
-
-  // We are in the root folder, start.
   const QVector<SubFolderInfo>& infoVec = info ? info->_subs : _folders;
   for(int i = 0, end = infoVec.size(); i < end; i++) {
     auto *info = const_cast<SubFolderInfo *>(&infoVec[i]);
-    qDebug() << "Current file id " << info->_fileId;
     if (info->_fileId == fileId) {
       return info;
     } else if (info->_subs.size()) {
