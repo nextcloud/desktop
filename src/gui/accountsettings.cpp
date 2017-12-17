@@ -408,7 +408,7 @@ void AccountSettings::slotDecryptionFlagError(const QByteArray& fileID, int http
 
 void AccountSettings::slotUnlockForDecryptionError(const QByteArray& fileId, int httpReturnCode)
 {
-
+    qDebug() << "Error unlocking folder after decryption";
 }
 
 void AccountSettings::slotDeleteMetadataError(const QByteArray& fileId, int httpReturnCode)
