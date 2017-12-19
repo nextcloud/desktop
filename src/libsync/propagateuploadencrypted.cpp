@@ -30,8 +30,8 @@ void PropagateUploadEncrypted::start()
       *
       * If the folder is unencrypted we just follow the old way.
       */
+      qDebug() << "Starting to send an encrypted file!";
       QFileInfo info(_item->_file);
-
       auto getEncryptedStatus = new GetFolderEncryptStatusJob(_propagator->account(),
                                                            info.path());
 
@@ -44,26 +44,15 @@ void PropagateUploadEncrypted::start()
 
 void PropagateUploadEncrypted::slotFolderEncryptedStatusFetched(const QMap<QString, bool>& result)
 {
-  qDebug() << "####################################";
-  qDebug() << "Encrypted Status Result by folder:";
-  for(const auto& path : result.keys()) {
-    qDebug() << result[path] << path;
-  }
-  qDebug() << "Uploading to Remote Folder: " << _propagator->_remoteFolder;
-  qDebug() << "Uploading from Local Dir" << _propagator->_localDir;
-  qDebug() << "Local File" << _item->_file;
-  qDebug() << QDir::cleanPath(_propagator->account()->url().path() + QLatin1Char('/')
-    + _propagator->account()->davPath() + _propagator->_remoteFolder + _item->_file);
+  qDebug() << "Encrypted Status Fetched";
   QFileInfo fileInfo(_item->_file);
   QString currFilePath = fileInfo.path();
   if (!currFilePath.endsWith(QDir::separator()))
     currFilePath += QDir::separator();
 
-  qDebug() << "###################################";
-  qDebug() << "Retrieved correctly the encrypted status of the folders." << result;
-
   /* We are inside an encrypted folder, we need to find it's Id. */
   if (result[currFilePath] == true) {
+      qDebug() << "Folder is encrypted, let's get the Id from it.";
       QFileInfo info(_item->_file);
       LsColJob *job = new LsColJob(_propagator->account(), info.path(), this);
       job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
@@ -71,6 +60,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedStatusFetched(const QMap<QStri
       connect(job, &LsColJob::finishedWithError, this, &PropagateUploadEncrypted::slotFolderEncryptedIdError);
       job->start();
   } else {
+    qDebug() << "Folder is not encrypted, getting back to default.";
     emit folerNotEncrypted();
   }
 }
@@ -88,6 +78,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedStatusFetched(const QMap<QStri
 
 void PropagateUploadEncrypted::slotFolderEncryptedIdReceived(const QStringList &list)
 {
+  qDebug() << "Received id of folder, trying to lock it so we can prepare the metadata";
   auto job = qobject_cast<LsColJob *>(sender());
   const auto& folderInfo = job->_folderInfos.value(list.first());
   _folderLockFirstTry.start();
@@ -104,7 +95,7 @@ void PropagateUploadEncrypted::slotTryLock(const QByteArray& fileId)
 
 void PropagateUploadEncrypted::slotFolderLockedSuccessfully(const QByteArray& fileId, const QByteArray& token)
 {
-  qDebug() << "Folder" << fileId << "Locked Successfully for Upload";
+  qDebug() << "Folder" << fileId << "Locked Successfully for Upload, Fetching Metadata";
   // Should I use a mutex here?
   _currentLockingInProgress = true;
   _folderToken = token;
@@ -118,9 +109,10 @@ void PropagateUploadEncrypted::slotFolderLockedSuccessfully(const QByteArray& fi
 
 void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDocument &json, int statusCode)
 {
-  qDebug() << "Metadata Received" << json.toVariant();
+  qDebug() << "Metadata Received, Preparing it for the new file." << json.toVariant();
 
   FolderMetadata metaData(_propagator->account(), json.toJson(QJsonDocument::Compact));
+  qDebug() << "Unlockign folder because I didn't finished the metadata yet.";
 
   auto *unlockJob = new UnlockEncryptFolderApiJob(_propagator->account(), _folderId, _folderToken, this);
   connect(unlockJob, &UnlockEncryptFolderApiJob::success, this, &PropagateUploadEncrypted::slotUnlockEncryptedFolderSuccess);
