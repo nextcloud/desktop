@@ -402,7 +402,7 @@ QByteArray EncryptionHelper::decryptStringSymmetric(const QByteArray& key, const
     free(ptext);
     EVP_CIPHER_CTX_free(ctx);
 
-    return QByteArray();
+    return result;
 }
 
 QByteArray EncryptionHelper::encryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
