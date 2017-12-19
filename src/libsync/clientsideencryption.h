@@ -117,7 +117,7 @@ private:
     QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
 
     QVector<EncryptedFile> _files;
-    QVector<int> _metadataKeys;
+    QVector<QByteArray> _metadataKeys;
     AccountPtr _account;
     QByteArray _metadata;
 };
