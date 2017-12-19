@@ -1277,7 +1277,7 @@ void FolderMetadata::setupEmptyMetadata() {
     };
 
     QJsonObject metaObject = {
-      {"metadata", metadataKeys},
+      {"metadata", metadata},
       {"files", files}
     };
 
