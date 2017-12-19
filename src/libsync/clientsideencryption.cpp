@@ -1194,10 +1194,6 @@ void FolderMetadata::setupEmptyMetadata() {
     QByteArray encryptedMetadataPass = encryptMetadataKey(newMetadataPass);
     QByteArray decryptedMetadataPass = decryptMetadataKey(encryptedMetadataPass);
 
-    qCInfo(lcCseMetadata()) << "Key Generated for the Metadata" << newMetadataPass;
-    qCInfo(lcCseMetadata()) << "Key Encrypted:" << encryptedMetadataPass;
-    qCInfo(lcCseMetadata()) << "Key Decrypted:" << decryptedMetadataPass;
-
     QString publicKey = _account->e2e()->_publicKey.toPem().toBase64();
     QString displayName = _account->displayName();
 
