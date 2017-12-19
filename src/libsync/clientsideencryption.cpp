@@ -45,6 +45,7 @@ namespace OCC
 
 Q_LOGGING_CATEGORY(lcCse, "sync.clientsideencryption", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcCseDecryption, "e2e", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCseMetadata, "metadata", QtInfoMsg)
 
 QString baseUrl(){
     return QStringLiteral("ocs/v2.php/apps/end_to_end_encryption/api/v1/");
@@ -1102,10 +1103,10 @@ auto metadataKeyDec(const QByteArray& data) -> QByteArray
 FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata) : _account(account), _metadata(metadata)
 {
     if (metadata.isEmpty()) {
-        qCInfo(lcCse()) << "Setupping Empty Metadata";
+        qCInfo(lcCseMetadata()) << "Setupping Empty Metadata";
         setupEmptyMetadata();
     } else {
-        qCInfo(lcCse()) << "Setting up existing metadata";
+        qCInfo(lcCseMetadata()) << "Setting up existing metadata";
         setupExistingMetadata();
     }
 }
@@ -1115,95 +1116,80 @@ void FolderMetadata::setupExistingMetadata()
   /* This is the json response from the server, it contains two extra objects that we are *not* interested.
   * ocs and data.
   */
-  std::string byteArray(_metadata.constData(), _metadata.length());
-  nlohmann::json j = nlohmann::json::parse(byteArray);
+  //std::string byteArray(_metadata.constData(), _metadata.length());
+  //nlohmann::json j = nlohmann::json::parse(byteArray);
 
   // The metadata is being retrieved as a string stored in a json.
   // This *seems* to be broken - the strung us nit base64 encoded,
   // I'm currently unsure if this is error on my side or in the server implementation.
   // And because inside of the meta-data there's an object called metadata, without '-'
   // make it really different.
-  auto meta_Data = nlohmann::json::parse(j["ocs"]["data"]["meta-data"].get<std::string>());
+  //auto meta_Data = nlohmann::json::parse(j["ocs"]["data"]["meta-data"].get<std::string>());
 
-  qDebug() << "######################################333";
-  qDebug() << " EXisting Metadata";
-  qDebug() << _metadata;
-  qDebug() << meta_Data.dump(4);
-  for (nlohmann::json::iterator it = meta_Data.begin(); it != meta_Data.end(); ++it) {
-    std::cout << it.key() << " : " << it.value() << std::endl;
-  }
-  qDebug() << "##########################################";
+  //qCInfo(lcCseMetadata()) << "######################################333";
+  //qCInfo(lcCseMetadata()) << " EXisting Metadata";
+  //qCInfo(lcCseMetadata()) << _metadata;
+  //qCInfo(lcCseMetadata()) << meta_Data.dump(4);
+  //for (nlohmann::json::iterator it = meta_Data.begin(); it != meta_Data.end(); ++it) {
+  //  std::cout << it.key() << " : " << it.value() << std::endl;
+ // }
+  //qCInfo(lcCseMetadata()) << "##########################################";
 
   // base 64 encrypted metadata. three transformations for it seems quite wrong.
-  std::string encrypted_metadata_keys = meta_Data["metadata"]["metadataKeys"];
-  QByteArray data = QByteArray::fromStdString(encrypted_metadata_keys);
-
-  std::string decrypted_metadata_keys = decryptMetadataKeys(data);
-  qDebug() << encrypted_metadata_keys;
-  qDebug() << decrypted_metadata_keys;
+  //QByteArray encrypted_metadata_keys = meta_Data["metadata"]["metadataKeys"];
+  //QByteArray decrypted_metadata_keys = decryptMetadataKey(encrypted_metadata_keys);
+  //qCInfo(lcCseMetadata()) << "Encrypted Key" << encrypted_metadata_keys;
+  //qCInfo(lcCseMetadata()) << "Decrypted Key" << decrypted_metadata_keys;
 
 }
 
 // RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.
-QByteArray FolderMetadata::encryptMetadataKeys(const nlohmann::json& metadataKeys) const {
+QByteArray FolderMetadata::encryptMetadataKey(const QByteArray& data) const {
 
     BIO *publicKeyBio = BIO_new(BIO_s_mem());
     QByteArray publicKeyPem = _account->e2e()->_publicKey.toPem();
     BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
     EVP_PKEY *publicKey = PEM_read_bio_PUBKEY(publicKeyBio, NULL, NULL, NULL);
 
-    auto data = QByteArray::fromStdString(metadataKeys.dump());
     auto ret = EncryptionHelper::encryptStringAsymmetric(publicKey, data);
-
     EVP_PKEY_free(publicKey);
-
-    return ret;
+    return ret; // ret is already b64
 }
 
-//TODO: Change this from std::string to QByteArray.
-std::string FolderMetadata::decryptMetadataKeys(const QByteArray& encryptedMetadatab64) const
+QByteArray FolderMetadata::decryptMetadataKey(const QByteArray& encryptedMetadata) const
 {
     BIO *privateKeyBio = BIO_new(BIO_s_mem());
     QByteArray privateKeyPem = _account->e2e()->_privateKey.toPem();
     BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
     EVP_PKEY *key = PEM_read_bio_PrivateKey(privateKeyBio, NULL, NULL, NULL);
 
-    auto rawData = QByteArray::fromBase64(encryptedMetadatab64);
-    auto decryptedData = EncryptionHelper::decryptStringAsymmetric(key, rawData);
-    std::string ret(decryptedData.constData(), decryptedData.length());
-    return ret;
+    return EncryptionHelper::decryptStringAsymmetric(
+      key, QByteArray::fromBase64(encryptedMetadata));
 }
 
 // AES/GCM/NoPadding (128 bit key size)
-QByteArray FolderMetadata::encryptJsonObject(const nlohmann::json& obj, const QByteArray pass) const {
-    auto data = QByteArray::fromStdString(obj.dump());
-    return EncryptionHelper::encryptStringSymmetric(pass, data);
+QByteArray FolderMetadata::encryptJsonObject(const QByteArray& obj, const QByteArray pass) const {
+    return EncryptionHelper::encryptStringSymmetric(pass, obj);
 }
 
-std::string FolderMetadata::decryptJsonObject(const std::string& encryptedMetadata, const std::string& pass) const
+QByteArray FolderMetadata::decryptJsonObject(const QByteArray& encryptedMetadata, const QByteArray& pass) const
 {
-    // Jesus, should I encrypt here in 128kb chunks?
-    // perhaps.
-
-    // Data is base64 encoded.
-    // TODO: Transform this bit into a function to remove duplicated code.
-    qCInfo(lcCse()) << "encryptedMetadata" << encryptedMetadata;
-    auto raw = QByteArray(encryptedMetadata.c_str(), encryptedMetadata.length());
-    auto b64d = QByteArray::fromBase64(raw);
-    auto in = (unsigned char *) b64d.constData();
+    qCInfo(lcCseMetadata()) << "encryptedMetadata" << encryptedMetadata;
+    auto raw = encryptedMetadata;
+    auto in = (unsigned char *) raw.constData();
     // The tag is appended but it is not part of the cipher text
-    size_t inlen = b64d.length() - 16;
+    size_t inlen = raw.length() - 16;
     auto tag = in + inlen;
 
     EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
     if (!ctx) {
-        qCInfo(lcCse()) << "Coult not create decryptioncontext, aborting.";
+        qCInfo(lcCseMetadata()) << "Coult not create decryptioncontext, aborting.";
         exit(1);
     }
 
     /* Initialise the decryption operation. */
     if(!EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
-        qCInfo(lcCse()) << "Error initialializing the decryption, aborting.";
+        qCInfo(lcCseMetadata()) << "Error initialializing the decryption, aborting.";
         exit(1);
     }
 
@@ -1211,14 +1197,14 @@ std::string FolderMetadata::decryptJsonObject(const std::string& encryptedMetada
 
     unsigned char *iv = (unsigned char *)"0123456789012345";
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, 16, NULL)) {
-        qCInfo(lcCse()) << "Could not set IV length, aborting.";
+        qCInfo(lcCseMetadata()) << "Could not set IV length, aborting.";
         exit(1);
     }
 
-    auto key = (const unsigned char*) pass.c_str();
+    auto key = (const unsigned char*) pass.constData();
     int err = EVP_DecryptInit_ex(ctx, NULL, NULL, key, iv);
     if (err != 1) {
-        qCInfo(lcCse()) << "Error setting the key and iv, aborting.";
+        qCInfo(lcCseMetadata()) << "Error setting the key and iv, aborting.";
         exit(1);
     }
 
@@ -1230,57 +1216,75 @@ std::string FolderMetadata::decryptJsonObject(const std::string& encryptedMetada
     auto out = (unsigned char *) OPENSSL_malloc(inlen + 16);
     err = EVP_DecryptUpdate(ctx, out, &outlen, in, inlen);
     if (err != 1) {
-        qCInfo(lcCse()) << "Error decrypting the json blob, aborting.";
+        qCInfo(lcCseMetadata()) << "Error decrypting the json blob, aborting.";
         exit(1);
     }
-    qCInfo(lcCse()) << "currently decrypted" << std::string( (char*) out, outlen);
-    qCInfo(lcCse()) << "Current decrypt  length" << outlen;
+    qCInfo(lcCseMetadata()) << "currently decrypted" << std::string( (char*) out, outlen);
+    qCInfo(lcCseMetadata()) << "Current decrypt  length" << outlen;
 
     /* Set expected tag value. Works in OpenSSL 1.0.1d and later */
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, 16, tag)) {
-        qCInfo(lcCse()) << "Error setting the tag, aborting.";
+        qCInfo(lcCseMetadata()) << "Error setting the tag, aborting.";
         exit(1);
     }
 
-    qCInfo(lcCse()) << "Tag: " << tag;
+    qCInfo(lcCseMetadata()) << "Tag: " << tag;
 
     int f_len = outlen;
     err = EVP_DecryptFinal_ex(ctx, out + outlen, &f_len);
     if (err != 1) {
-        qCInfo(lcCse()) << "Error finalyzing the decryption, aborting.";
+        qCInfo(lcCseMetadata()) << "Error finalyzing the decryption, aborting.";
         exit(1);
     }
 
-    qCInfo(lcCse()) << "Decryption finalized.";
-    const auto ret = std::string((char*) out, outlen);
+    qCInfo(lcCseMetadata()) << "Decryption finalized.";
+    const auto ret = QByteArray((char*) out, outlen);
     return ret;
 }
 
 void FolderMetadata::setupEmptyMetadata() {
-    using namespace nlohmann;
+    qDebug() << "Settint up empty metadata";
     QByteArray newMetadataPass = EncryptionHelper::generateRandom(16);
-    qCInfo(lcCse()) << "Key Generated for the Metadata" << newMetadataPass;
+    QByteArray encryptedMetadataPass = encryptMetadataKey(newMetadataPass);
+    QByteArray decryptedMetadataPass = decryptMetadataKey(encryptedMetadataPass);
 
-    json metadataKeyObj = {"0", newMetadataPass.toStdString()};
-    json recepient = {"recipient", {}};
+    qCInfo(lcCseMetadata()) << "Key Generated for the Metadata" << newMetadataPass;
+    qCInfo(lcCseMetadata()) << "Key Encrypted:" << encryptedMetadataPass;
+    qCInfo(lcCseMetadata()) << "Key Decrypted:" << decryptedMetadataPass;
 
-    auto b64String = encryptMetadataKeys(metadataKeyObj);
-    qCInfo(lcCse()) << "ENCRYPTED METADATA KEY" << b64String;
-    auto db64String = decryptMetadataKeys(b64String);
-    qCInfo(lcCse()) << "DECRYPTED METADATA KEY" << b64String;
-    auto sharingEncrypted = encryptJsonObject(recepient, newMetadataPass);
+    QString publicKey = _account->e2e()->_publicKey.toPem().toBase64();
+    QString displayName = _account->displayName();
 
-    json m = {
-        {"metadata", {
-            {"metadataKeys", b64String.toStdString()},
-            {"sharing", sharingEncrypted.toStdString()},
-            {"version",1}
-        }},
-            {"files", {
-        }}
+    QJsonObject recepient = {{
+      displayName,  publicKey
+    }};
+    QJsonDocument recepientDoc;
+    recepientDoc.setObject(recepient);
+
+    QString sharingEncrypted = encryptJsonObject(
+      recepientDoc.toJson(QJsonDocument::Compact), newMetadataPass);
+
+    QJsonObject metadataKeys = {
+        {"0", QString(encryptedMetadataPass)}
+    };
+    QJsonObject metadata = {
+      {"metadataKeys", metadataKeys},
+      {"sharing", sharingEncrypted},
+      {"version", 1}
     };
 
-    _metadata = QByteArray::fromStdString(m.dump());
+    QJsonObject files = {
+    };
+
+    QJsonObject metaObject = {
+      {"metadata", metadataKeys},
+      {"files", files}
+    };
+
+    QJsonDocument internalMetadata;
+    internalMetadata.setObject(metaObject);
+    _metadata = internalMetadata.toJson();
+    qDebug() << "Generated Json" << _metadata;
 }
 
 QByteArray FolderMetadata::encryptedMetadata() {

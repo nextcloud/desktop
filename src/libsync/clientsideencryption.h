@@ -15,8 +15,6 @@
 #include "accountfwd.h"
 #include "networkjobs.h"
 
-#include <nlohmann/json.hpp>
-
 namespace QKeychain {
 class Job;
 class WritePasswordJob;
@@ -112,12 +110,11 @@ private:
     void setupEmptyMetadata();
     void setupExistingMetadata();
 
-    QByteArray encryptMetadataKeys(const nlohmann::json& metadataKeys) const;
-    std::string decryptMetadataKeys(const QByteArray& encryptedMetadataKeysb64) const;
+    QByteArray encryptMetadataKey(const QByteArray& metadataKey) const;
+    QByteArray decryptMetadataKey(const QByteArray& encryptedKey) const;
 
-    std::string genMetadataPass() const;
-    QByteArray encryptJsonObject(const nlohmann::json& obj, const QByteArray pass) const;
-    std::string decryptJsonObject(const std::string& encryptedJsonBlob, const std::string& pass) const;
+    QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
+    QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
 
     QVector<EncryptedFile> _files;
     QVector<int> _metadataKeys;
