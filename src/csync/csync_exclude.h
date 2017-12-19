@@ -110,6 +110,11 @@ public:
     void clearManualExcludes();
 
     /**
+     * Adjusts behavior of wildcards. Only used for testing.
+     */
+    void setWildcardsMatchSlash(bool onoff);
+
+    /**
      * Generate a hook for traversal exclude pattern matching
      * that csync can use.
      *
@@ -199,6 +204,14 @@ private:
     QRegularExpression _fullRegexDir;
 
     bool _excludeConflictFiles = true;
+
+    /**
+     * Whether * and ? in patterns can match a /
+     *
+     * Unfortunately this was how matching was done on Windows so
+     * it continues to be enabled there.
+     */
+    bool _wildcardsMatchSlash = false;
 
     friend class ExcludedFilesTest;
 };

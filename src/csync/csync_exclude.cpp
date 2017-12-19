@@ -241,6 +241,8 @@ using namespace OCC;
 
 ExcludedFiles::ExcludedFiles()
 {
+    // Windows used to use PathMatchSpec which allows *foo to match abc/deffoo.
+    _wildcardsMatchSlash = Utility::isWindows();
 }
 
 ExcludedFiles::~ExcludedFiles()
@@ -268,6 +270,12 @@ void ExcludedFiles::clearManualExcludes()
 {
     _manualExcludes.clear();
     reloadExcludeFiles();
+}
+
+void ExcludedFiles::setWildcardsMatchSlash(bool onoff)
+{
+    _wildcardsMatchSlash = onoff;
+    prepare();
 }
 
 bool ExcludedFiles::reloadExcludeFiles()
@@ -409,7 +417,12 @@ auto ExcludedFiles::csyncTraversalMatchFun() const
     return [this](const char *path, ItemType filetype) { return this->traversalPatternMatch(path, filetype); };
 }
 
-static QString convertToRegexpSyntax(QString exclude)
+/**
+ * On linux we used to use fnmatch with FNM_PATHNAME, but the windows function we used
+ * didn't have that behavior. wildcardsMatchSlash can be used to control which behavior
+ * the resulting regex shall use.
+ */
+static QString convertToRegexpSyntax(QString exclude, bool wildcardsMatchSlash)
 {
     // Translate *, ?, [...] to their regex variants.
     // The escape sequences \*, \?, \[. \\ have a special meaning,
@@ -433,11 +446,19 @@ static QString convertToRegexpSyntax(QString exclude)
         switch (exclude[i].unicode()) {
         case '*':
             flush();
-            regex.append("[^/]*");
+            if (wildcardsMatchSlash) {
+                regex.append(".*");
+            } else {
+                regex.append("[^/]*");
+            }
             break;
         case '?':
             flush();
-            regex.append("[^/]");
+            if (wildcardsMatchSlash) {
+                regex.append(".");
+            } else {
+                regex.append("[^/]");
+            }
             break;
         case '[': {
             flush();
@@ -489,6 +510,42 @@ static QString convertToRegexpSyntax(QString exclude)
     }
     flush();
     return regex;
+}
+
+static QString extractBnameTrigger(const QString &exclude, bool wildcardsMatchSlash)
+{
+    // We can definitely drop everything to the left of a / - that will never match
+    // any bname.
+    QString pattern = exclude.mid(exclude.lastIndexOf('/') + 1);
+
+    // Easy case, nothing else can match a slash, so that's it.
+    if (!wildcardsMatchSlash)
+        return pattern;
+
+    // Otherwise it's more complicated. Examples:
+    // - "foo*bar" can match "fooX/Xbar", pattern is "*bar"
+    // - "foo*bar*" can match "fooX/XbarX", pattern is "*bar*"
+    // - "foo?bar" can match "foo/bar" but also "fooXbar", pattern is "*bar"
+
+    auto isWildcard = [](QChar c) { return c == QLatin1Char('*') || c == QLatin1Char('?'); };
+
+    // First, skip wildcards on the very right of the pattern
+    int i = pattern.size() - 1;
+    while (i >= 0 && isWildcard(pattern[i]))
+        --i;
+
+    // Then scan further until the next wildcard that could match a /
+    while (i >= 0 && !isWildcard(pattern[i]))
+        --i;
+
+    // Everything to the right is part of the pattern
+    pattern = pattern.mid(i + 1);
+
+    // And if there was a wildcard, it starts with a *
+    if (i >= 0)
+        pattern.prepend('*');
+
+    return pattern;
 }
 
 void ExcludedFiles::prepare()
@@ -556,15 +613,15 @@ void ExcludedFiles::prepare()
         auto &fullFileDir = removeExcluded ? fullFileDirRemove : fullFileDirKeep;
         auto &fullDir = removeExcluded ? fullDirRemove : fullDirKeep;
 
-        auto regexExclude = convertToRegexpSyntax(QString::fromUtf8(exclude));
+        auto regexExclude = convertToRegexpSyntax(QString::fromUtf8(exclude), _wildcardsMatchSlash);
         if (!fullPath) {
             regexAppend(bnameFileDir, bnameDir, regexExclude, matchDirOnly);
         } else {
             regexAppend(fullFileDir, fullDir, regexExclude, matchDirOnly);
 
-            // for activation, trigger on the 'bname' part of the full pattern
-            auto bnameExclude = exclude.mid(exclude.lastIndexOf('/') + 1);
-            auto regexBname = convertToRegexpSyntax(bnameExclude);
+            // For activation, trigger on the 'bname' part of the full pattern.
+            QString bnameExclude = extractBnameTrigger(exclude, _wildcardsMatchSlash);
+            auto regexBname = convertToRegexpSyntax(bnameExclude, true);
             regexAppend(bnameTriggerFileDir, bnameTriggerDir, regexBname, matchDirOnly);
         }
     }

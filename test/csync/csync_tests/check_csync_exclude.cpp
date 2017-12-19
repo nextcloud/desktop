@@ -40,6 +40,7 @@ static int setup(void **state) {
 
     csync = new CSYNC("/tmp/check_csync1", new OCC::SyncJournalDb(""));
     excludedFiles = new ExcludedFiles;
+    excludedFiles->setWildcardsMatchSlash(false);
     csync->exclude_traversal_fn = excludedFiles->csyncTraversalMatchFun();
 
     *state = csync;
@@ -51,6 +52,7 @@ static int setup_init(void **state) {
 
     csync = new CSYNC("/tmp/check_csync1", new OCC::SyncJournalDb(""));
     excludedFiles = new ExcludedFiles;
+    excludedFiles->setWildcardsMatchSlash(false);
     csync->exclude_traversal_fn = excludedFiles->csyncTraversalMatchFun();
 
     excludedFiles->addExcludeFilePath(EXCLUDE_LIST_FILE);
@@ -429,7 +431,101 @@ static void check_csync_pathes(void **)
     assert_int_equal(check_dir_full("/excludepath/withsubdir/foo"), CSYNC_FILE_EXCLUDE_LIST);
 }
 
-static void check_csync_is_windows_reserved_word(void **) {
+static void check_csync_wildcards(void **)
+{
+    excludedFiles->addManualExclude("a/foo*bar");
+    excludedFiles->addManualExclude("b/foo*bar*");
+    excludedFiles->addManualExclude("c/foo?bar");
+    excludedFiles->addManualExclude("d/foo?bar*");
+    excludedFiles->addManualExclude("e/foo?bar?");
+    excludedFiles->addManualExclude("g/bar*");
+    excludedFiles->addManualExclude("h/bar?");
+
+    excludedFiles->setWildcardsMatchSlash(false);
+
+    assert_int_equal(check_file_traversal("a/fooXYZbar"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_traversal("a/fooX/Zbar"), CSYNC_NOT_EXCLUDED);
+
+    assert_int_equal(check_file_traversal("b/fooXYZbarABC"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_traversal("b/fooX/ZbarABC"), CSYNC_NOT_EXCLUDED);
+
+    assert_int_equal(check_file_traversal("c/fooXbar"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_traversal("c/foo/bar"), CSYNC_NOT_EXCLUDED);
+
+    assert_int_equal(check_file_traversal("d/fooXbarABC"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_traversal("d/foo/barABC"), CSYNC_NOT_EXCLUDED);
+
+    assert_int_equal(check_file_traversal("e/fooXbarA"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_traversal("e/foo/barA"), CSYNC_NOT_EXCLUDED);
+
+    assert_int_equal(check_file_traversal("g/barABC"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_traversal("g/XbarABC"), CSYNC_NOT_EXCLUDED);
+
+    assert_int_equal(check_file_traversal("h/barZ"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_traversal("h/XbarZ"), CSYNC_NOT_EXCLUDED);
+
+    excludedFiles->setWildcardsMatchSlash(true);
+
+    assert_int_equal(check_file_traversal("a/fooX/Zbar"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_traversal("b/fooX/ZbarABC"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_traversal("c/foo/bar"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_traversal("d/foo/barABC"), CSYNC_FILE_EXCLUDE_LIST);
+    assert_int_equal(check_file_traversal("e/foo/barA"), CSYNC_FILE_EXCLUDE_LIST);
+}
+
+static void check_csync_regex_translation(void **)
+{
+    QByteArray storage;
+    auto translate = [&storage](const char *pattern) {
+        storage = convertToRegexpSyntax(pattern, false).toUtf8();
+        return storage.constData();
+    };
+
+    assert_string_equal(translate(""), "");
+    assert_string_equal(translate("abc"), "abc");
+    assert_string_equal(translate("a*c"), "a[^/]*c");
+    assert_string_equal(translate("a?c"), "a[^/]c");
+    assert_string_equal(translate("a[xyz]c"), "a[xyz]c");
+    assert_string_equal(translate("a[xyzc"), "a\\[xyzc");
+    assert_string_equal(translate("a[!xyz]c"), "a[^xyz]c");
+    assert_string_equal(translate("a\\*b\\?c\\[d\\\\e"), "a\\*b\\?c\\[d\\\\e");
+    assert_string_equal(translate("a.c"), "a\\.c");
+    assert_string_equal(translate("?𠜎?"), "[^/]\\𠜎[^/]"); // 𠜎 is 4-byte utf8
+}
+
+static void check_csync_bname_trigger(void **)
+{
+    bool wildcardsMatchSlash = false;
+    QByteArray storage;
+    auto translate = [&storage, &wildcardsMatchSlash](const char *pattern) {
+        storage = extractBnameTrigger(pattern, wildcardsMatchSlash).toUtf8();
+        return storage.constData();
+    };
+
+    assert_string_equal(translate(""), "");
+    assert_string_equal(translate("a/b/"), "");
+    assert_string_equal(translate("a/b/c"), "c");
+    assert_string_equal(translate("c"), "c");
+    assert_string_equal(translate("a/foo*"), "foo*");
+    assert_string_equal(translate("a/abc*foo*"), "abc*foo*");
+
+    wildcardsMatchSlash = true;
+
+    assert_string_equal(translate(""), "");
+    assert_string_equal(translate("a/b/"), "");
+    assert_string_equal(translate("a/b/c"), "c");
+    assert_string_equal(translate("c"), "c");
+    assert_string_equal(translate("*"), "*");
+    assert_string_equal(translate("a/foo*"), "foo*");
+    assert_string_equal(translate("a/abc?foo*"), "*foo*");
+    assert_string_equal(translate("a/abc*foo*"), "*foo*");
+    assert_string_equal(translate("a/abc?foo?"), "*foo?");
+    assert_string_equal(translate("a/abc*foo?*"), "*foo?*");
+    assert_string_equal(translate("a/abc*/foo*"), "foo*");
+}
+
+static void check_csync_is_windows_reserved_word(void **)
+{
     assert_true(csync_is_windows_reserved_word("CON"));
     assert_true(csync_is_windows_reserved_word("con"));
     assert_true(csync_is_windows_reserved_word("CON."));
@@ -537,6 +633,9 @@ int torture_run_tests(void)
         cmocka_unit_test_setup_teardown(T::check_csync_excluded_traversal, T::setup_init, T::teardown),
         cmocka_unit_test_setup_teardown(T::check_csync_dir_only, T::setup, T::teardown),
         cmocka_unit_test_setup_teardown(T::check_csync_pathes, T::setup_init, T::teardown),
+        cmocka_unit_test_setup_teardown(T::check_csync_wildcards, T::setup, T::teardown),
+        cmocka_unit_test_setup_teardown(T::check_csync_regex_translation, T::setup, T::teardown),
+        cmocka_unit_test_setup_teardown(T::check_csync_bname_trigger, T::setup, T::teardown),
         cmocka_unit_test_setup_teardown(T::check_csync_is_windows_reserved_word, T::setup_init, T::teardown),
         cmocka_unit_test_setup_teardown(T::check_csync_excluded_performance, T::setup_init, T::teardown),
         cmocka_unit_test(T::check_csync_exclude_expand_escapes),
