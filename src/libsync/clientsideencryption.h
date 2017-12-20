@@ -43,6 +43,8 @@ public:
     bool isFolderEncrypted(const QString& path);
     void setFolderEncryptedStatus(const QString& path, bool status);
 
+    void forgetSensitiveData();
+
 private slots:
     void folderEncryptedStatusFetched(const QMap<QString, bool> &values);
     void folderEncryptedStatusError(int error);

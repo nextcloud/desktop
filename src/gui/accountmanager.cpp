@@ -312,6 +312,9 @@ void AccountManager::deleteAccount(AccountState *account)
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->remove(account->account()->id());
 
+    // Forget E2E keys
+    account->account()->e2e()->forgetSensitiveData();
+
     emit accountRemoved(account);
 }
 

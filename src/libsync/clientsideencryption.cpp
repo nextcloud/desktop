@@ -52,6 +52,12 @@ QString baseUrl(){
 }
 
 namespace {
+    const char e2e_cert[] = "_e2e-certificate";
+    const char e2e_private[] = "_e2e-private";
+    const char e2e_mnemonic[] = "_e2e-mnemonic";
+} // ns
+
+namespace {
     void handleErrors(void)
     {
         ERR_print_errors_fp(stdout); // This line is not printing anything.
@@ -629,7 +635,7 @@ void ClientSideEncryption::initialize()
 void ClientSideEncryption::fetchFromKeyChain() {
     const QString kck = AbstractCredentials::keychainKey(
                 _account->url().toString(),
-                _account->credentials()->user() + "_e2e-certificate",
+                _account->credentials()->user() + e2e_cert,
                 _account->id()
     );
 
@@ -662,7 +668,7 @@ void ClientSideEncryption::publicKeyFetched(Job *incoming) {
 
     const QString kck = AbstractCredentials::keychainKey(
                 _account->url().toString(),
-                _account->credentials()->user() + "_e2e-private",
+                _account->credentials()->user() + e2e_private,
                 _account->id()
     );
 
@@ -701,7 +707,7 @@ void ClientSideEncryption::privateKeyFetched(Job *incoming) {
 
     const QString kck = AbstractCredentials::keychainKey(
                 _account->url().toString(),
-                _account->credentials()->user() + "_e2e-mnemonic",
+                _account->credentials()->user() + e2e_mnemonic,
                 _account->id()
     );
 
@@ -734,7 +740,7 @@ void ClientSideEncryption::mnemonicKeyFetched(QKeychain::Job *incoming) {
 void ClientSideEncryption::writePrivateKey() {
     const QString kck = AbstractCredentials::keychainKey(
                 _account->url().toString(),
-                _account->credentials()->user() + "_e2e-private",
+                _account->credentials()->user() + e2e_private,
                 _account->id()
     );
 
@@ -752,7 +758,7 @@ void ClientSideEncryption::writePrivateKey() {
 void ClientSideEncryption::writeCertificate() {
     const QString kck = AbstractCredentials::keychainKey(
                 _account->url().toString(),
-                _account->credentials()->user() + "_e2e-certificate",
+                _account->credentials()->user() + e2e_cert,
                 _account->id()
     );
 
@@ -770,7 +776,7 @@ void ClientSideEncryption::writeCertificate() {
 void ClientSideEncryption::writeMnemonic() {
     const QString kck = AbstractCredentials::keychainKey(
                 _account->url().toString(),
-                _account->credentials()->user() + "_e2e-mnemonic",
+                _account->credentials()->user() + e2e_mnemonic,
                 _account->id()
     );
 
@@ -783,6 +789,26 @@ void ClientSideEncryption::writeMnemonic() {
         qCInfo(lcCse()) << "Mnemonic stored in keychain";
     });
     job->start();
+}
+
+void ClientSideEncryption::forgetSensitiveData()
+{
+    _privateKey = QSslKey();
+    _certificate = QSslCertificate();
+    _publicKey = QSslKey();
+    _mnemonic = QString();
+
+    auto startDeleteJob = [this](QString user) {
+        DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
+        job->setInsecureFallback(false);
+        job->setKey(AbstractCredentials::keychainKey(_account->url().toString(), user, _account->id()));
+        job->start();
+    };
+
+    auto user = _account->credentials()->user();
+    startDeleteJob(user + e2e_private);
+    startDeleteJob(user + e2e_cert);
+    startDeleteJob(user + e2e_mnemonic);
 }
 
 bool ClientSideEncryption::hasPrivateKey() const
