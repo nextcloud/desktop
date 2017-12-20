@@ -7,6 +7,8 @@
 #include <QSslCertificate>
 #include <QSslKey>
 #include <QFile>
+#include <QVector>
+#include <QMap>
 
 #include <openssl/rsa.h>
 #include <openssl/evp.h>
@@ -141,7 +143,7 @@ private:
      * to ease the port to Nlohmann Json API
      */
     void setupEmptyMetadata();
-    void setupExistingMetadata();
+    void setupExistingMetadata(const QByteArray& metadata);
 
     QByteArray encryptMetadataKey(const QByteArray& metadataKey) const;
     QByteArray decryptMetadataKey(const QByteArray& encryptedKey) const;
@@ -150,9 +152,8 @@ private:
     QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
 
     QVector<EncryptedFile> _files;
-    QVector<QByteArray> _metadataKeys;
+    QMap<int, QByteArray> _metadataKeys;
     AccountPtr _account;
-    QByteArray _metadata;
     QVector<QPair<QString, QString>> _sharing;
 };
 
