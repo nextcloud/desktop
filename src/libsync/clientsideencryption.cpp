@@ -1288,8 +1288,12 @@ bool ClientSideEncryption::isFolderEncrypted(const QString& path) {
 
 void EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &iv, QFile *input, QFile *output)
 {
-    input->open(QIODevice::ReadOnly);
-    output->open(QIODevice::WriteOnly);
+    if (!input->open(QIODevice::ReadOnly)) {
+      qDebug() << "Could not open input file for reading" << input->errorString();
+    }
+    if (!output->open(QIODevice::WriteOnly)) {
+      qDebug() << "Could not oppen output file for writting" << output->errorString();
+    }
 
     // Init
     EVP_CIPHER_CTX *ctx;
@@ -1324,6 +1328,7 @@ void EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
     int len = 0;
     int total_len = 0;
 
+    qDebug() << "Starting to encrypt the file" << input->fileName() << input->atEnd();
     while(!input->atEnd()) {
         QByteArray data = input->read(1024);
 
@@ -1332,6 +1337,7 @@ void EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
             exit(-1);
         }
 
+        qDebug() << "Encrypting " << data;
         if(!EVP_EncryptUpdate(ctx, out, &len, (unsigned char *)data.constData(), data.size())) {
             qCInfo(lcCse()) << "Could not encrypt";
             exit(-1);
