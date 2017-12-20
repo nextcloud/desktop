@@ -24,6 +24,41 @@ namespace OCC {
 
 QString baseUrl();
 
+class EncryptionHelper {
+public:
+    static QByteArray generateRandom(int size);
+    static QByteArray generatePassword(const QString &wordlist, const QByteArray& salt);
+    static QByteArray encryptPrivateKey(
+            const QByteArray& key,
+            const QByteArray& privateKey,
+            const QByteArray &salt
+    );
+    static QByteArray decryptPrivateKey(
+            const QByteArray& key,
+            const QByteArray& data
+    );
+    static QByteArray encryptStringSymmetric(
+            const QByteArray& key,
+            const QByteArray& data
+    );
+    static QByteArray decryptStringSymmetric(
+            const QByteArray& key,
+            const QByteArray& data
+    );
+
+    //TODO: change those two EVP_PKEY into QSslKey.
+    static QByteArray encryptStringAsymmetric(
+            EVP_PKEY *publicKey,
+            const QByteArray& data
+    );
+    static QByteArray decryptStringAsymmetric(
+            EVP_PKEY *privateKey,
+            const QByteArray& data
+    );
+
+    static QByteArray BIO2ByteArray(BIO *b);
+};
+
 class ClientSideEncryption : public QObject {
     Q_OBJECT
 public:

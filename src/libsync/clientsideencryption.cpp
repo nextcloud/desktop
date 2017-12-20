@@ -65,41 +65,6 @@ namespace {
     }
 }
 
-class EncryptionHelper {
-public:
-    static QByteArray generateRandom(int size);
-    static QByteArray generatePassword(const QString &wordlist, const QByteArray& salt);
-    static QByteArray encryptPrivateKey(
-            const QByteArray& key,
-            const QByteArray& privateKey,
-            const QByteArray &salt
-    );
-    static QByteArray decryptPrivateKey(
-            const QByteArray& key,
-            const QByteArray& data
-    );
-    static QByteArray encryptStringSymmetric(
-            const QByteArray& key,
-            const QByteArray& data
-    );
-    static QByteArray decryptStringSymmetric(
-            const QByteArray& key,
-            const QByteArray& data
-    );
-
-    //TODO: change those two EVP_PKEY into QSslKey.
-    static QByteArray encryptStringAsymmetric(
-            EVP_PKEY *publicKey,
-            const QByteArray& data
-    );
-    static QByteArray decryptStringAsymmetric(
-            EVP_PKEY *privateKey,
-            const QByteArray& data
-    );
-
-    static QByteArray BIO2ByteArray(BIO *b);
-};
-
 QByteArray EncryptionHelper::generateRandom(int size) {
     unsigned char *tmp = (unsigned char *)malloc(sizeof(unsigned char) * size);
 
