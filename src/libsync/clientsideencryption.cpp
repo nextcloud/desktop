@@ -1363,6 +1363,7 @@ void EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
 
     input->close();
     output->close();
+    qDebug() << "File Encrypted Successfully";
 }
 
 FileDecryptionJob::FileDecryptionJob(QByteArray &key, QByteArray &iv, QFile *input, QFile *output, QObject *parent)

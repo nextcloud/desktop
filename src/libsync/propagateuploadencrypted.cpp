@@ -14,7 +14,8 @@ namespace OCC {
 
 PropagateUploadEncrypted::PropagateUploadEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item)
 : _propagator(propagator),
- _item(item)
+ _item(item),
+ _metadata(nullptr)
 {
 }
 
@@ -114,7 +115,7 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
   qDebug() << "Metadata Received, Preparing it for the new file." << json.toVariant();
 
   // Encrypt File!
-  FolderMetadata metaData(_propagator->account(), json.toJson(QJsonDocument::Compact));
+  _metadata = new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact));
 
   QFileInfo info(_item->_file);
 
@@ -132,16 +133,11 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
   encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
   encryptedFile.metadataKey = 1;
   encryptedFile.originalFilename = info.fileName();
-  metaData.addEncryptedFile(encryptedFile);
+  _metadata->addEncryptedFile(encryptedFile);
 
   qDebug() << "Encrypting the file";
   auto *input = new QFile(info.absoluteFilePath());
-
-  //TODO: Perhaps I should use a QTemporaryFile?
-  qDebug() << "Creating " << QDir::tempPath() + QDir::separator() + encryptedFile.encryptedFilename;
-
   auto *output = new QFile(QDir::tempPath() + QDir::separator() + encryptedFile.encryptedFilename);
-
   EncryptionHelper::fileEncryption(encryptedFile.encryptionKey,
                                   encryptedFile.initializationVector,
                                   input, output);

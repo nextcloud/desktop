@@ -13,7 +13,9 @@
 #include "owncloudpropagator.h"
 
 namespace OCC {
-/* This class is used if the server supports end to end encryption.
+class FolderMetadata;
+
+  /* This class is used if the server supports end to end encryption.
  * It will fire for *any* folder, encrypted or not, because when the
  * client starts the upload request we don't know if the folder is
  * encrypted on the server.
@@ -24,6 +26,7 @@ namespace OCC {
  * folerNotEncrypted() if the file is within a folder that's not encrypted.
  *
  */
+
 class PropagateUploadEncrypted : public QObject
 {
   Q_OBJECT
@@ -61,6 +64,7 @@ private:
   QByteArray _folderId;
   QByteArray _generatedKey;
   QByteArray _generatedIv;
+  FolderMetadata *_metadata;
 };
 
 
