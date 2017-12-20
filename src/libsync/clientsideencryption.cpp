@@ -1291,6 +1291,15 @@ QByteArray FolderMetadata::encryptedMetadata() {
     return internalMetadata.toJson();
 }
 
+void FolderMetadata::addEncryptedFile(const EncryptedFile &f) {
+    // TODO: check for duplicates
+    _files.append(f);
+}
+
+QVector<EncryptedFile> FolderMetadata::files() const {
+    return _files;
+}
+
 bool ClientSideEncryption::isFolderEncrypted(const QString& path) {
   auto it = _folder2encryptedStatus.find(path);
   if (it == _folder2encryptedStatus.end())
