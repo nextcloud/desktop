@@ -1144,7 +1144,7 @@ void FolderMetadata::setupExistingMetadata()
   // perhaps it's better to store a map instead of a vector, perhaps this just doesn't matter.
   for(auto it = metadataKeys.constBegin(), end = metadataKeys.constEnd(); it != end; it++) {
     QByteArray currB64Pass = it.value().toString().toLocal8Bit();
-    QByteArray decryptedKey = decryptMetadataKey(currB64Pass);
+    QByteArray decryptedKey = QByteArray::fromBase64(decryptMetadataKey(currB64Pass));
     _metadataKeys.push_back(decryptedKey);
   }
 
@@ -1174,7 +1174,7 @@ void FolderMetadata::setupExistingMetadata()
         QByteArray key = _metadataKeys.last();
 
         auto encryptedFile = fileObj["encrypted"].toString().toLocal8Bit();
-        auto decryptedFile = QByteArray::fromBase64(decryptJsonObject(encryptedFile, QByteArray::fromBase64(key)));
+        auto decryptedFile = QByteArray::fromBase64(decryptJsonObject(encryptedFile, key));
         auto decryptedFileDoc = QJsonDocument::fromJson(decryptedFile);
         auto decryptedFileObj = decryptedFileDoc.object();
 
