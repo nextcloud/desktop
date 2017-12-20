@@ -1100,23 +1100,23 @@ void ClientSideEncryption::folderEncryptedStatusError(int error)
 	qDebug() << "Failed to retrieve the status of the folders." << error;
 }
 
-FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata) : _account(account), _metadata(metadata)
+FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata) : _account(account)
 {
     if (metadata.isEmpty()) {
         qCInfo(lcCseMetadata()) << "Setupping Empty Metadata";
         setupEmptyMetadata();
     } else {
         qCInfo(lcCseMetadata()) << "Setting up existing metadata";
-        setupExistingMetadata();
+        setupExistingMetadata(metadata);
     }
 }
 
-void FolderMetadata::setupExistingMetadata()
+void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
 {
   /* This is the json response from the server, it contains two extra objects that we are *not* interested.
   * ocs and data.
   */
-  QJsonDocument doc = QJsonDocument::fromJson(_metadata);
+  QJsonDocument doc = QJsonDocument::fromJson(metadata);
   qCInfo(lcCseMetadata()) << doc.toJson(QJsonDocument::Compact);
 
   // The metadata is being retrieved as a string stored in a json.
@@ -1229,32 +1229,57 @@ QByteArray FolderMetadata::decryptJsonObject(const QByteArray& encryptedMetadata
 void FolderMetadata::setupEmptyMetadata() {
     qDebug() << "Settint up empty metadata";
     QByteArray newMetadataPass = EncryptionHelper::generateRandom(16);
-    QByteArray encryptedMetadataPass = encryptMetadataKey(newMetadataPass);
-    QByteArray decryptedMetadataPass = decryptMetadataKey(encryptedMetadataPass);
+    _metadataKeys.insert(0, newMetadataPass);
 
     QString publicKey = _account->e2e()->_publicKey.toPem().toBase64();
     QString displayName = _account->displayName();
 
-    QJsonObject recepient = {{
-      displayName,  publicKey
-    }};
+    _sharing.append({displayName, publicKey});
+}
+
+QByteArray FolderMetadata::encryptedMetadata() {
+    qDebug() << "Generating metadata";
+
+    QJsonObject metadataKeys;
+    for (auto it = _metadataKeys.constBegin(), end = _metadataKeys.constEnd(); it != end; it++) {
+        const QByteArray encryptedKey = encryptMetadataKey(it.value());
+        metadataKeys.insert(QString::number(it.key()), QString(encryptedKey));
+    }
+
+    QJsonObject recepients;
+    for (auto it = _sharing.constBegin(), end = _sharing.constEnd(); it != end; it++) {
+        recepients.insert(it->first, it->second);
+    }
     QJsonDocument recepientDoc;
-    recepientDoc.setObject(recepient);
+    recepientDoc.setObject(recepients);
+    QString sharingEncrypted = encryptJsonObject(recepientDoc.toJson(QJsonDocument::Compact), _metadataKeys.last());
 
-    QString sharingEncrypted = encryptJsonObject(
-      recepientDoc.toJson(QJsonDocument::Compact), newMetadataPass);
-
-    QJsonObject metadataKeys = {
-        {"0", QString(encryptedMetadataPass)}
-    };
     QJsonObject metadata = {
       {"metadataKeys", metadataKeys},
       {"sharing", sharingEncrypted},
       {"version", 1}
     };
 
-    QJsonObject files = {
-    };
+    QJsonObject files;
+    for (auto it = _files.constBegin(), end = _files.constEnd(); it != end; it++) {
+        QJsonObject encrypted;
+        encrypted.insert("key", QString(it->encryptionKey.toBase64()));
+        encrypted.insert("filename", it->originalFilename);
+        encrypted.insert("mimetype", QString(it->mimetype));
+        encrypted.insert("version", it->fileVersion);
+        QJsonDocument encryptedDoc;
+        encryptedDoc.setObject(encrypted);
+
+        QString encryptedEncrypted = encryptJsonObject(encryptedDoc.toJson(QJsonDocument::Compact), _metadataKeys.last());
+
+        QJsonObject file;
+        file.insert("encrypted", encryptedEncrypted);
+        file.insert("initializationVector", QString(it->initializationVector.toBase64()));
+        file.insert("authenticationTag", QString(it->authenticationTag.toBase64()));
+        file.insert("metadataKey", _metadataKeys.lastKey());
+
+        files.insert(it->encryptedFilename, file);
+    }
 
     QJsonObject metaObject = {
       {"metadata", metadata},
@@ -1263,12 +1288,7 @@ void FolderMetadata::setupEmptyMetadata() {
 
     QJsonDocument internalMetadata;
     internalMetadata.setObject(metaObject);
-    _metadata = internalMetadata.toJson();
-    qDebug() << "Generated Json" << _metadata;
-}
-
-QByteArray FolderMetadata::encryptedMetadata() {
-	return _metadata;
+    return internalMetadata.toJson();
 }
 
 bool ClientSideEncryption::isFolderEncrypted(const QString& path) {
