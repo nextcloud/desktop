@@ -125,7 +125,8 @@ class FileEncryptionJob : public QObject
 {
     Q_OBJECT
 public:
-    FileEncryptionJob(QByteArray &key, QByteArray &iv, QFile *input, QFile *output, QObject *parent = 0);
+    FileEncryptionJob(const QByteArray &key, const QByteArray &iv,
+                      QPointer<QFile> input, QPointer<QFile> output, QObject *parent = 0);
 
 public slots:
     void start();

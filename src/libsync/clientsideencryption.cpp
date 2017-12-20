@@ -1256,7 +1256,8 @@ bool ClientSideEncryption::isFolderEncrypted(const QString& path) {
   return (*it);
 }
 
-FileEncryptionJob::FileEncryptionJob(QByteArray &key, QByteArray &iv, QFile *input, QFile *output, QObject *parent)
+FileEncryptionJob::FileEncryptionJob(const QByteArray &key, const QByteArray &iv,
+                                     QPointer<QFile> input, QPointer<QFile> output, QObject *parent)
     : QObject(parent),
       _key(key),
       _iv(iv),
