@@ -1134,6 +1134,7 @@ void FolderMetadata::setupExistingMetadata()
   QJsonObject metadataObj = metaDataDoc.object()["metadata"].toObject();
   QJsonObject metadataKeys = metadataObj["metadataKeys"].toObject();
   QByteArray sharing = metadataObj["sharing"].toString().toLocal8Bit();
+  QJsonObject files = metaDataDoc.object()["files"].toObject();
 
   QJsonDocument debugHelper;
   debugHelper.setObject(metadataKeys);
@@ -1159,8 +1160,31 @@ void FolderMetadata::setupExistingMetadata()
     _sharing.push_back({it.key(), it.value().toString()});
   }
 
-  // Retrieve the stored files, right now the metadata produced by this client doesn't have files, we should append one.
-  // TODO: Parse the "files" part.
+    for (auto it = files.constBegin(), end = files.constEnd(); it != end; it++) {
+        EncryptedFile file;
+        file.encryptedFilename = it.key();
+
+        auto fileObj = it.value().toObject();
+        file.metadataKey = fileObj["metadataKey"].toInt();
+        file.authenticationTag = QByteArray::fromBase64(fileObj["authenticationTag"].toString().toLocal8Bit());
+        file.initializationVector = QByteArray::fromBase64(fileObj["initializationVector"].toString().toLocal8Bit());
+
+        //Decrypt encrypted part
+        //TODO actually get the right metadataKey;
+        QByteArray key = _metadataKeys.last();
+
+        auto encryptedFile = fileObj["encrypted"].toString().toLocal8Bit();
+        auto decryptedFile = QByteArray::fromBase64(decryptJsonObject(encryptedFile, QByteArray::fromBase64(key)));
+        auto decryptedFileDoc = QJsonDocument::fromJson(decryptedFile);
+        auto decryptedFileObj = decryptedFileDoc.object();
+
+        file.originalFilename = decryptedFileObj["filename"].toString();
+        file.encryptionKey = QByteArray::fromBase64(decryptedFileObj["key"].toString().toLocal8Bit());
+        file.mimetype = decryptedFileObj["mimetype"].toString().toLocal8Bit();
+        file.fileVersion = decryptedFileObj["version"].toInt();
+
+        _files.push_back(file);
+    }
 }
 
 // RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.
