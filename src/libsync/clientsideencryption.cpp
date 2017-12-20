@@ -1087,19 +1087,6 @@ void ClientSideEncryption::folderEncryptedStatusError(int error)
 	qDebug() << "Failed to retrieve the status of the folders." << error;
 }
 
-
-
-//TODO: Create an actuall encryption here.
-auto metadataKeyEnc(const QByteArray& data) -> QByteArray
-{
-    return data;
-}
-
-auto metadataKeyDec(const QByteArray& data) -> QByteArray
-{
-    return data;
-}
-
 FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata) : _account(account), _metadata(metadata)
 {
     if (metadata.isEmpty()) {
@@ -1151,6 +1138,7 @@ void FolderMetadata::setupExistingMetadata()
   qDebug() << "Sharing: " << sharing;
   QByteArray sharingDecrypted = decryptJsonObject(sharing, _metadataKeys.last());
   qDebug() << "Sharing Decrypted" << sharingDecrypted;
+  qDebug() << "Sharing B64 Decrypted" << QByteArray::fromBase64(sharingDecrypted);
 }
 
 // RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.
@@ -1161,7 +1149,8 @@ QByteArray FolderMetadata::encryptMetadataKey(const QByteArray& data) const {
     BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
     EVP_PKEY *publicKey = PEM_read_bio_PUBKEY(publicKeyBio, NULL, NULL, NULL);
 
-    auto ret = EncryptionHelper::encryptStringAsymmetric(publicKey, data);
+    // The metadata key is binary so base64 encode it first
+    auto ret = EncryptionHelper::encryptStringAsymmetric(publicKey, data.toBase64());
     EVP_PKEY_free(publicKey);
     return ret; // ret is already b64
 }
@@ -1173,8 +1162,13 @@ QByteArray FolderMetadata::decryptMetadataKey(const QByteArray& encryptedMetadat
     BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
     EVP_PKEY *key = PEM_read_bio_PrivateKey(privateKeyBio, NULL, NULL, NULL);
 
-    return EncryptionHelper::decryptStringAsymmetric(
-      key, QByteArray::fromBase64(encryptedMetadata));
+    // Also base64 decode the result
+    return QByteArray::fromBase64(
+                EncryptionHelper::decryptStringAsymmetric(
+                    key,
+                    QByteArray::fromBase64(encryptedMetadata)
+                    )
+                );
 }
 
 // AES/GCM/NoPadding (128 bit key size)
