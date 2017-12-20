@@ -185,9 +185,11 @@ void PropagateUploadFileCommon::start()
     }
 }
 
-void PropagateUploadFileCommon::setupEncryptedFile()
+void PropagateUploadFileCommon::setupEncryptedFile(const QString& path, const QString& filename, quint64 size)
 {
-
+    _fileToUpload._path = path;
+    _fileToUpload._file = filename;
+    _fileToUpload._size = size;
 }
 
 void PropagateUploadFileCommon::setupUnencryptedFile()

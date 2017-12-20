@@ -48,7 +48,7 @@ private slots:
 
 signals:
     // Emmited after the file is encrypted and everythign is setup.
-    void finalized();
+    void finalized(const QString& path, const QString& filename, quint64 size);
     void error();
 
     // Emited if the file is not in a encrypted folder.

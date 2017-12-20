@@ -143,8 +143,8 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
                                   input, output);
 
 
-  qDebug() << "Removing Temporary File Temporarely";
-  output->remove();
+  // File is Encrypted, Upload it.
+  emit finalized("","",0);
   input->deleteLater();
   output->deleteLater();
 

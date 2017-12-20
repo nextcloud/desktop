@@ -252,7 +252,7 @@ public:
 
     /* start should setup the file, path and size that will be send to the server */
     void start() Q_DECL_OVERRIDE;
-    void setupEncryptedFile();
+    void setupEncryptedFile(const QString& path, const QString& filename, quint64 size);
     void setupUnencryptedFile();
     void startUploadFile();
     bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return _item->_size < propagator()->smallFileSize(); }
