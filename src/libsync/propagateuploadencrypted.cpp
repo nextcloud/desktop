@@ -149,19 +149,13 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
                                   encryptedFile.initializationVector,
                                   input, output);
 
-
   // File is Encrypted, Upload it.
-  QFileInfo outputInfo(*output);
-  qDebug() << "Encrypted Info:" << outputInfo.path() <<outputInfo.fileName(),outputInfo.size();
-  // emit finalized(outputInfo.path(),outputInfo.fileName(),outputInfo.size());
+  QFileInfo outputInfo(output->fileName());
   input->deleteLater();
   output->deleteLater();
 
-  qDebug() << "Unlockign folder because I didn't finished the metadata yet.";
-  auto *unlockJob = new UnlockEncryptFolderApiJob(_propagator->account(), _folderId, _folderToken, this);
-  connect(unlockJob, &UnlockEncryptFolderApiJob::success, this, &PropagateUploadEncrypted::slotUnlockEncryptedFolderSuccess);
-  connect(unlockJob, &UnlockEncryptFolderApiJob::error, this, &PropagateUploadEncrypted::slotUnlockEncryptedFolderError);
-  unlockJob->start();
+  qDebug() << "Encrypted Info:" << outputInfo.path() << outputInfo.fileName() << outputInfo.size();
+  emit finalized(outputInfo.path(),outputInfo.fileName(),outputInfo.size());
 }
 
 void PropagateUploadEncrypted::slotUnlockEncryptedFolderSuccess(const QByteArray& fileId)

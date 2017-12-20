@@ -172,14 +172,14 @@ void PropagateUploadFileCommon::setDeleteExisting(bool enabled)
 void PropagateUploadFileCommon::start()
 {
     if (propagator()->account()->capabilities().clientSideEncryptionAvaliable()) {
-      auto *encryptedJob = new PropagateUploadEncrypted(propagator(), _item);
-      connect(encryptedJob, &PropagateUploadEncrypted::folerNotEncrypted,
+      _uploadEncryptedHelper = new PropagateUploadEncrypted(propagator(), _item);
+      connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::folerNotEncrypted,
         this, &PropagateUploadFileCommon::setupUnencryptedFile);
-      connect(encryptedJob, &PropagateUploadEncrypted::finalized,
+      connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,
         this, &PropagateUploadFileCommon::setupEncryptedFile);
-      connect(encryptedJob, &PropagateUploadEncrypted::error,
+      connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error,
         []{ qDebug() << "Error setting up encryption."; });
-      encryptedJob->start();
+      _uploadEncryptedHelper->start();
    } else {
       setupUnencryptedFile();
     }
@@ -187,13 +187,17 @@ void PropagateUploadFileCommon::start()
 
 void PropagateUploadFileCommon::setupEncryptedFile(const QString& path, const QString& filename, quint64 size)
 {
+    qDebug() << "Starting to upload encrypted file";
+    _uploadingEncrypted = true;
     _fileToUpload._path = path;
     _fileToUpload._file = filename;
     _fileToUpload._size = size;
+    startUploadFile();
 }
 
 void PropagateUploadFileCommon::setupUnencryptedFile()
 {
+    _uploadingEncrypted = false;
     _fileToUpload._file = _item->_file;
     _fileToUpload._size = _item->_size;
     _fileToUpload._path = propagator()->getFilePath(_fileToUpload._file);
@@ -671,6 +675,16 @@ void PropagateUploadFileCommon::finalize()
     propagator()->_journal->commit("upload file start");
 
     done(SyncFileItem::Success);
+
+    if (_uploadingEncrypted) {
+        qDebug() << "Encrypted file upload Successfully";
+        auto *unlockJob = new UnlockEncryptFolderApiJob(propagator()->account(),
+            _uploadEncryptedHelper->_folderId, _uploadEncryptedHelper->_folderToken, this);
+
+        connect(unlockJob, &UnlockEncryptFolderApiJob::success, []{ qDebug() << "Successfully Unlocked"; });
+        connect(unlockJob, &UnlockEncryptFolderApiJob::error, []{ qDebug() << "Unlock Error"; });
+        unlockJob->start();
+    }
 }
 
 void PropagateUploadFileCommon::prepareAbort(PropagatorJob::AbortType abortType) {

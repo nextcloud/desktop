@@ -182,6 +182,8 @@ signals:
     void finishedSignal();
 };
 
+class PropagateUploadEncrypted;
+
 /**
  * @brief The PropagateUploadFileCommon class is the code common between all chunking algorithms
  * @ingroup libsync
@@ -239,6 +241,8 @@ public:
         , _finished(false)
         , _deleteExisting(false)
         , _abortCount(0)
+        , _uploadEncryptedHelper(0)
+        , _uploadingEncrypted(false)
     {
     }
 
@@ -300,6 +304,9 @@ protected:
 
     // Bases headers that need to be sent with every chunk
     QMap<QByteArray, QByteArray> headers();
+private:
+  PropagateUploadEncrypted *_uploadEncryptedHelper;
+  bool _uploadingEncrypted;
 };
 
 /**

@@ -34,6 +34,10 @@ public:
     PropagateUploadEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item);
     void start();
 
+  // Used by propagateupload
+  QByteArray _folderToken;
+  QByteArray _folderId;
+
 private slots:
     void slotFolderEncryptedStatusFetched(const QMap<QString, bool>& result);
     void slotFolderEncryptedStatusError(int error);
@@ -60,8 +64,7 @@ private:
 
   QElapsedTimer _folderLockFirstTry;
   bool _currentLockingInProgress;
-  QByteArray _folderToken;
-  QByteArray _folderId;
+
   QByteArray _generatedKey;
   QByteArray _generatedIv;
   FolderMetadata *_metadata;
