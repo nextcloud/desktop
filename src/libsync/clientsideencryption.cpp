@@ -955,7 +955,7 @@ void ClientSideEncryption::encryptPrivateKey()
     _mnemonic = list.join(' ');
     qCInfo(lcCse()) << "mnemonic Generated:" << _mnemonic;
 
-    QString passPhrase = list.join(QString());
+    QString passPhrase = list.join(QString()).toLower();
     qCInfo(lcCse()) << "Passphrase Generated:" << passPhrase;
 
     /*TODO: C++17: auto [secretKey, salt]. */
@@ -1007,7 +1007,7 @@ void ClientSideEncryption::decryptPrivateKey(const QByteArray &key) {
             prev = dialog.textValue();
 
             _mnemonic = prev;
-            QString mnemonic = prev.split(" ").join(QString());
+            QString mnemonic = prev.split(" ").join(QString()).toLower();
             qCInfo(lcCse()) << "mnemonic:" << mnemonic;
             auto pass = EncryptionHelper::generatePassword(mnemonic);
             qCInfo(lcCse()) << "Generated key:" << pass.first;
