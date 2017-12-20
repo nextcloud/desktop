@@ -51,10 +51,6 @@ QString baseUrl(){
     return QStringLiteral("ocs/v2.php/apps/end_to_end_encryption/api/v1/");
 }
 
-QString baseDirectory() {
-    return QDir::homePath() + QStringLiteral("/.nextcloud-keys/");
-}
-
 namespace {
     void handleErrors(void)
     {
@@ -789,25 +785,14 @@ void ClientSideEncryption::writeMnemonic() {
     job->start();
 }
 
-
-QString publicKeyPath(AccountPtr account)
-{
-    return baseDirectory() + account->displayName() + ".pub";
-}
-
-QString privateKeyPath(AccountPtr account)
-{
-    return baseDirectory() + account->displayName() + ".rsa";
-}
-
 bool ClientSideEncryption::hasPrivateKey() const
 {
-    return QFileInfo(privateKeyPath(_account)).exists();
+    return !_privateKey.isNull();
 }
 
 bool ClientSideEncryption::hasPublicKey() const
 {
-    return QFileInfo(publicKeyPath(_account)).exists();
+    return !_publicKey.isNull();
 }
 
 void ClientSideEncryption::generateKeyPair()

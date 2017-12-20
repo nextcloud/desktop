@@ -10,7 +10,6 @@
 
 #include <openssl/rsa.h>
 #include <openssl/evp.h>
-#include <string>
 
 #include "accountfwd.h"
 #include "networkjobs.h"
@@ -24,9 +23,6 @@ class ReadPasswordJob;
 namespace OCC {
 
 QString baseUrl();
-QString baseDirectory();
-QString privateKeyPath(AccountPtr account);
-QString publicKeyPath(AccountPtr account);
 
 class ClientSideEncryption : public QObject {
     Q_OBJECT
