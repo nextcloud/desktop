@@ -7,6 +7,8 @@
 #include <QByteArray>
 #include <QJsonDocument>
 #include <QNetworkReply>
+#include <QFile>
+#include <QTemporaryFile>
 
 #include "owncloudpropagator.h"
 
@@ -57,6 +59,8 @@ private:
   bool _currentLockingInProgress;
   QByteArray _folderToken;
   QByteArray _folderId;
+  QByteArray _generatedKey;
+  QByteArray _generatedIv;
 };
 
 

@@ -7,6 +7,8 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QUrl>
+#include <QFile>
+#include <QTemporaryFile>
 
 namespace OCC {
 
@@ -111,9 +113,44 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
 {
   qDebug() << "Metadata Received, Preparing it for the new file." << json.toVariant();
 
+  // Encrypt File!
   FolderMetadata metaData(_propagator->account(), json.toJson(QJsonDocument::Compact));
-  qDebug() << "Unlockign folder because I didn't finished the metadata yet.";
 
+  QFileInfo info(_item->_file);
+
+  //Todo: Move this to the MetadataHandler.
+  /* This should actually first verify if we don't have this file on the metadata already
+   * and construct this code if there isn't.
+   */
+
+  qDebug() << "Creating the encrypted file metadata helper.";
+  EncryptedFile encryptedFile;
+  encryptedFile.authenticationTag = "NOISE"; // TODO: Remove the noise.
+  encryptedFile.encryptedFilename = EncryptionHelper::generateRandom(20);
+  encryptedFile.encryptionKey = EncryptionHelper::generateRandom(16);
+  encryptedFile.fileVersion = 1;
+  encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
+  encryptedFile.metadataKey = 1;
+  encryptedFile.originalFilename = info.fileName();
+  metaData.addEncryptedFile(encryptedFile);
+
+  qDebug() << "Encrypting the file";
+  QFile *input = new QFile(info.absoluteFilePath());
+
+  //TODO: Perhaps I should use a QTemporaryFile?
+  QFile *output = new QFile(QDir::tempPath() + encryptedFile.encryptedFilename);
+
+  EncryptionHelper::fileEncryption(encryptedFile.encryptionKey,
+                                  encryptedFile.initializationVector,
+                                  input, output);
+
+
+  qDebug() << "Removing Temporary File Temporarely";
+  output->remove();
+  input->deleteLater();
+  output->deleteLater();
+
+  qDebug() << "Unlockign folder because I didn't finished the metadata yet.";
   auto *unlockJob = new UnlockEncryptFolderApiJob(_propagator->account(), _folderId, _folderToken, this);
   connect(unlockJob, &UnlockEncryptFolderApiJob::success, this, &PropagateUploadEncrypted::slotUnlockEncryptedFolderSuccess);
   connect(unlockJob, &UnlockEncryptFolderApiJob::error, this, &PropagateUploadEncrypted::slotUnlockEncryptedFolderError);
