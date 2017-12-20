@@ -1145,7 +1145,7 @@ void FolderMetadata::setupExistingMetadata()
   for(auto it = metadataKeys.constBegin(), end = metadataKeys.constEnd(); it != end; it++) {
     QByteArray currB64Pass = it.value().toString().toLocal8Bit();
     QByteArray decryptedKey = QByteArray::fromBase64(decryptMetadataKey(currB64Pass));
-    _metadataKeys.push_back(decryptedKey);
+    _metadataKeys.insert(it.key().toInt(), decryptedKey);
   }
 
   // Cool, We actually have the key, we can decrypt the rest of the metadata.
@@ -1170,9 +1170,7 @@ void FolderMetadata::setupExistingMetadata()
         file.initializationVector = QByteArray::fromBase64(fileObj["initializationVector"].toString().toLocal8Bit());
 
         //Decrypt encrypted part
-        //TODO actually get the right metadataKey;
-        QByteArray key = _metadataKeys.last();
-
+        QByteArray key = _metadataKeys[file.metadataKey];
         auto encryptedFile = fileObj["encrypted"].toString().toLocal8Bit();
         auto decryptedFile = QByteArray::fromBase64(decryptJsonObject(encryptedFile, key));
         auto decryptedFileDoc = QJsonDocument::fromJson(decryptedFile);
