@@ -59,6 +59,9 @@ public:
     );
 
     static QByteArray BIO2ByteArray(BIO *b);
+
+    static void fileEncryption(const QByteArray &key, const QByteArray &iv,
+                      QFile *input, QFile *output);
 };
 
 class ClientSideEncryption : public QObject {
@@ -155,26 +158,6 @@ private:
     QMap<int, QByteArray> _metadataKeys;
     AccountPtr _account;
     QVector<QPair<QString, QString>> _sharing;
-};
-
-class FileEncryptionJob : public QObject
-{
-    Q_OBJECT
-public:
-    FileEncryptionJob(const QByteArray &key, const QByteArray &iv,
-                      QPointer<QFile> input, QPointer<QFile> output, QObject *parent = 0);
-
-public slots:
-    void start();
-
-signals:
-    void finished(QFile *output);
-
-private:
-    QByteArray _key;
-    QByteArray _iv;
-    QPointer<QFile> _input;
-    QPointer<QFile> _output;
 };
 
 class FileDecryptionJob : public QObject

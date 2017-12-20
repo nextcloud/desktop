@@ -1272,20 +1272,10 @@ bool ClientSideEncryption::isFolderEncrypted(const QString& path) {
   return (*it);
 }
 
-FileEncryptionJob::FileEncryptionJob(const QByteArray &key, const QByteArray &iv,
-                                     QPointer<QFile> input, QPointer<QFile> output, QObject *parent)
-    : QObject(parent),
-      _key(key),
-      _iv(iv),
-      _input(input),
-      _output(output)
+void EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &iv, QFile *input, QFile *output)
 {
-}
-
-void FileEncryptionJob::start()
-{
-    _input->open(QIODevice::ReadOnly);
-    _output->open(QIODevice::WriteOnly);
+    input->open(QIODevice::ReadOnly);
+    output->open(QIODevice::WriteOnly);
 
     // Init
     EVP_CIPHER_CTX *ctx;
@@ -1305,13 +1295,13 @@ void FileEncryptionJob::start()
     EVP_CIPHER_CTX_set_padding(ctx, 0);
 
     /* Set IV length. */
-    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, _iv.size(), NULL)) {
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), NULL)) {
         qCInfo(lcCse()) << "Could not set iv length";
         exit(-1);
     }
 
     /* Initialise key and IV */
-    if(!EVP_EncryptInit_ex(ctx, NULL, NULL, (const unsigned char *)_key.constData(), (const unsigned char *)_iv.constData())) {
+    if(!EVP_EncryptInit_ex(ctx, NULL, NULL, (const unsigned char *)key.constData(), (const unsigned char *)iv.constData())) {
         qCInfo(lcCse()) << "Could not set key and iv";
         exit(-1);
     }
@@ -1320,8 +1310,8 @@ void FileEncryptionJob::start()
     int len = 0;
     int total_len = 0;
 
-    while(!_input->atEnd()) {
-        QByteArray data = _input->read(1024);
+    while(!input->atEnd()) {
+        QByteArray data = input->read(1024);
 
         if (data.size() == 0) {
             qCInfo(lcCse()) << "Could not read data from file";
@@ -1333,7 +1323,7 @@ void FileEncryptionJob::start()
             exit(-1);
         }
 
-        _output->write((char *)out, len);
+        output->write((char *)out, len);
         total_len += len;
     }
 
@@ -1341,7 +1331,7 @@ void FileEncryptionJob::start()
         qCInfo(lcCse()) << "Could finalize encryption";
         exit(-1);
     }
-    _output->write((char *)out, len);
+    output->write((char *)out, len);
     total_len += len;
 
     /* Get the tag */
@@ -1351,16 +1341,14 @@ void FileEncryptionJob::start()
         exit(-1);
     }
 
-    _output->write((char *)tag, 16);
+    output->write((char *)tag, 16);
 
     free(out);
     free(tag);
     EVP_CIPHER_CTX_free(ctx);
 
-    _input->close();
-    _output->close();
-
-    emit finished(_output);
+    input->close();
+    output->close();
 }
 
 FileDecryptionJob::FileDecryptionJob(QByteArray &key, QByteArray &iv, QFile *input, QFile *output, QObject *parent)
