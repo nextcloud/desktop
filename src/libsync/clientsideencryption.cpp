@@ -65,7 +65,21 @@ namespace {
     }
 }
 
-QByteArray EncryptionHelper::generateRandom(int size) {
+QByteArray EncryptionHelper::generateRandomString(int size)
+{
+   const QByteArray possibleCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+   QByteArray randomString(size, '\0');
+   for(int i=0; i < size; ++i)
+   {
+       int index = qrand() % possibleCharacters.length();
+       randomString[i] = possibleCharacters.at(index);
+   }
+   return randomString;
+}
+
+QByteArray EncryptionHelper::generateRandom(int size)
+{
     unsigned char *tmp = (unsigned char *)malloc(sizeof(unsigned char) * size);
 
     int ret = RAND_bytes(tmp, size);

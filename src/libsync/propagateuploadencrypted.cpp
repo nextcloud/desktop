@@ -126,7 +126,7 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
   qDebug() << "Creating the encrypted file metadata helper.";
   EncryptedFile encryptedFile;
   encryptedFile.authenticationTag = "NOISE"; // TODO: Remove the noise.
-  encryptedFile.encryptedFilename = EncryptionHelper::generateRandom(20);
+  encryptedFile.encryptedFilename = EncryptionHelper::generateRandomString(20);
   encryptedFile.encryptionKey = EncryptionHelper::generateRandom(16);
   encryptedFile.fileVersion = 1;
   encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
@@ -135,10 +135,12 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
   metaData.addEncryptedFile(encryptedFile);
 
   qDebug() << "Encrypting the file";
-  QFile *input = new QFile(info.absoluteFilePath());
+  auto *input = new QFile(info.absoluteFilePath());
 
   //TODO: Perhaps I should use a QTemporaryFile?
-  QFile *output = new QFile(QDir::tempPath() + encryptedFile.encryptedFilename);
+  qDebug() << "Creating " << QDir::tempPath() + QDir::separator() + encryptedFile.encryptedFilename;
+
+  auto *output = new QFile(QDir::tempPath() + QDir::separator() + encryptedFile.encryptedFilename);
 
   EncryptionHelper::fileEncryption(encryptedFile.encryptionKey,
                                   encryptedFile.initializationVector,
