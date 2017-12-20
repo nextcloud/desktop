@@ -118,6 +118,7 @@ private:
     QVector<QByteArray> _metadataKeys;
     AccountPtr _account;
     QByteArray _metadata;
+    QVector<QPair<QString, QString>> _sharing;
 };
 
 class FileEncryptionJob : public QObject

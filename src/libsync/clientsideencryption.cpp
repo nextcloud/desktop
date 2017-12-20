@@ -1149,9 +1149,18 @@ void FolderMetadata::setupExistingMetadata()
 
   // Cool, We actually have the key, we can decrypt the rest of the metadata.
   qDebug() << "Sharing: " << sharing;
-  QByteArray sharingDecrypted = decryptJsonObject(sharing, _metadataKeys.last());
+  auto sharingDecrypted = QByteArray::fromBase64(decryptJsonObject(sharing, _metadataKeys.last()));
   qDebug() << "Sharing Decrypted" << sharingDecrypted;
-  qDebug() << "Sharing B64 Decrypted" << QByteArray::fromBase64(sharingDecrypted);
+
+  //Sharing is also a JSON object, so extract it and populate.
+  auto sharingDoc = QJsonDocument::fromJson(sharingDecrypted);
+  auto sharingObj = sharingDoc.object();
+  for (auto it = sharingObj.constBegin(), end = sharingObj.constEnd(); it != end; it++) {
+    _sharing.push_back({it.key(), it.value().toString()});
+  }
+
+  // Retrieve the stored files, right now the metadata produced by this client doesn't have files, we should append one.
+  // TODO: Parse the "files" part.
 }
 
 // RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.
