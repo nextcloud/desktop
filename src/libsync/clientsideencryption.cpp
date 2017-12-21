@@ -904,6 +904,7 @@ void ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
         if (retCode == 200) {
             QString cert = json.object().value("ocs").toObject().value("data").toObject().value("public-key").toString();
             _certificate = QSslCertificate(cert.toLocal8Bit(), QSsl::Pem);
+            _publicKey = _certificate.publicKey();
             qCInfo(lcCse()) << "Certificate saved, Encrypting Private Key.";
             encryptPrivateKey();
         }
