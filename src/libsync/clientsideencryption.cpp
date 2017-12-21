@@ -1151,7 +1151,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
         //Decrypt encrypted part
         QByteArray key = _metadataKeys[file.metadataKey];
         auto encryptedFile = fileObj["encrypted"].toString().toLocal8Bit();
-        auto decryptedFile = QByteArray::fromBase64(decryptJsonObject(encryptedFile, QByteArray::fromBase64(key)));
+        auto decryptedFile = QByteArray::fromBase64(decryptJsonObject(encryptedFile, key));
         auto decryptedFileDoc = QJsonDocument::fromJson(decryptedFile);
         auto decryptedFileObj = decryptedFileDoc.object();
 
