@@ -2,7 +2,7 @@ ChangeLog
 =========
 
 version 2.4.0 (2017-12-XX)
-* If you're using 2.4.0 alpha1, please upgrade as the alpha1 had an issue with hidden files!
+* If you're using 2.4.0 alpha1, please upgrade as previous alphas/rcs had an issue with hidden files and renames!
 * OAuth2 authentication support by opening external browser (#5668)
 * Shibboleth: Change to use OAuth2 if supported (#6198)
 * Sharing: Add support for multiple public link shares (#5655)
@@ -66,7 +66,7 @@ version 2.4.0 (2017-12-XX)
 * Sync: Upload conflict files if OWNCLOUD_UPLOAD_CONFLICT_FILES environment variable is set (#6038)
 * Sync: Blacklist: Don't let errors become warnings (#5516)
 * Sync: Check etag again after active sync (#4116)
-* Sync: Rename handling fixes: duplicate file ids (#6096)
+* Sync: Rename handling fixes: duplicate file ids (#6096, #6212)
 * Sync: Rename handling fixes: File size must be equal
 * Sync: Rename handling: Fix duplicate files on abort/resume sync (#5949)
 * Sync: Add capability for invalid filename regexes (#6092)
@@ -80,6 +80,7 @@ version 2.4.0 (2017-12-XX)
 * Crash fixes
 * Test improvements
 * Small UI layout fixes
+* Performance improvements
 * Maintenance Mode: Detect maintenance mode (#4485)
 * Maintenance Mode: Add a 1 to 5 min reconnection delay (#5872)
 * HTTP: Send a unique X-Request-ID with each request (#5853)
@@ -95,6 +96,7 @@ version 2.4.0 (2017-12-XX)
 * Compilation: Remove Qt 4 code (#6025, #5702, #5505)
 * Harmonize source code style with clang-format (#5732)
 * Switch over to Qt 5 function pointer signal/slot syntax (#6041)
+* Compile with stack-smashing protection
 * Updater: Rudimentary support for beta channel (#6048)
 
 version 2.3.4 (2017-11-02)
@@ -110,6 +112,7 @@ version 2.3.3 (2017-08-29)
 * Overlay Icons: Fix potential hangs on Windows
 * SyncJournalDB: Don't use ._ as filename pattern if that does not work because of SMB storage settings (#5844)
 * SyncJournalDB: Log reason for sqlite3 opening errors
+* Notifications: Proapgate "Dismiss" button action to server (#5922)
 * Switch Linux build also to Qt 5.6.2 (#5470)
 * Stopped maintaining Qt 4 buildability
 
