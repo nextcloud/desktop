@@ -203,6 +203,34 @@ private:
     QByteArray _b64Metadata;
 };
 
+class OWNCLOUDSYNC_EXPORT UpdateMetadataApiJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    explicit UpdateMetadataApiJob (
+        const AccountPtr &account,
+        const QByteArray& fileId,
+        const QByteArray& b64Metadata,
+        const QByteArray& lockedToken,
+        QObject *parent = 0);
+
+public slots:
+    void start() override;
+
+protected:
+    bool finished() override;
+
+signals:
+    void success(const QByteArray& fileId);
+    void error(const QByteArray& fileId, int httpReturnCode);
+
+private:
+    QByteArray _fileId;
+    QByteArray _b64Metadata;
+    QByteArray _token;
+};
+
+
 class OWNCLOUDSYNC_EXPORT GetMetadataApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
