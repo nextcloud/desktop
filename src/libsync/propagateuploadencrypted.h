@@ -11,6 +11,7 @@
 #include <QTemporaryFile>
 
 #include "owncloudpropagator.h"
+#include "clientsideencryption.h"
 
 namespace OCC {
 class FolderMetadata;
@@ -49,6 +50,8 @@ private slots:
     void slotFolderEncriptedMetadataReceived(const QJsonDocument &json, int statusCode);
     void slotUnlockEncryptedFolderSuccess(const QByteArray& fileId);
     void slotUnlockEncryptedFolderError(const QByteArray& fileId, int httpReturnCode);
+    void slotUpdateMetadataSuccess(const QByteArray& fileId);
+    void slotUpdateMetadataError(const QByteArray& fileId, int httpReturnCode);
 
 signals:
     // Emmited after the file is encrypted and everythign is setup.
@@ -68,6 +71,7 @@ private:
   QByteArray _generatedKey;
   QByteArray _generatedIv;
   FolderMetadata *_metadata;
+  EncryptedFile _encryptedFile;
 };
 
 

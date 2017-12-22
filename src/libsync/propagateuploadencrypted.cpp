@@ -141,12 +141,27 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
   encryptedFile.metadataKey = 1;
   encryptedFile.originalFilename = info.fileName();
   _metadata->addEncryptedFile(encryptedFile);
+  _encryptedFile = encryptedFile;
 
-  qDebug() << "Encrypting the file";
+  qDebug() << "Metadata created, sending to the server.";
+  auto job = new UpdateMetadataApiJob(_propagator->account(),
+                                      _folderId,
+                                      _metadata->encryptedMetadata(),
+                                      _folderToken);
+
+  connect(job, &UpdateMetadataApiJob::success, this, &PropagateUploadEncrypted::slotUpdateMetadataSuccess);
+  connect(job, &UpdateMetadataApiJob::error, this, &PropagateUploadEncrypted::slotUpdateMetadataError);
+  job->start();
+}
+
+void PropagateUploadEncrypted::slotUpdateMetadataSuccess(const QByteArray& fileId)
+{
+  qDebug() << "Uploading of the metadata success, Encrypting the file";
+  QFileInfo info(_propagator->_localDir + QDir::separator() + _item->_file);
   auto *input = new QFile(info.absoluteFilePath());
-  auto *output = new QFile(QDir::tempPath() + QDir::separator() + encryptedFile.encryptedFilename);
-  EncryptionHelper::fileEncryption(encryptedFile.encryptionKey,
-                                  encryptedFile.initializationVector,
+  auto *output = new QFile(QDir::tempPath() + QDir::separator() + _encryptedFile.encryptedFilename);
+  EncryptionHelper::fileEncryption(_encryptedFile.encryptionKey,
+                                  _encryptedFile.initializationVector,
                                   input, output);
 
   // File is Encrypted, Upload it.
@@ -155,7 +170,17 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
   output->deleteLater();
 
   qDebug() << "Encrypted Info:" << outputInfo.path() << outputInfo.fileName() << outputInfo.size();
-  emit finalized(outputInfo.path(),outputInfo.fileName(),outputInfo.size());
+  // emit finalized(outputInfo.path(),outputInfo.fileName(),outputInfo.size());
+
+  auto *unlockJob = new UnlockEncryptFolderApiJob(_propagator->account(), _folderId, _folderToken, this);
+  connect(unlockJob, &UnlockEncryptFolderApiJob::success, []{ qDebug() << "Successfully Unlocked"; });
+  connect(unlockJob, &UnlockEncryptFolderApiJob::error, []{ qDebug() << "Unlock Error"; });
+  unlockJob->start();
+}
+
+void PropagateUploadEncrypted::slotUpdateMetadataError(const QByteArray& fileId, int httpErrorResponse)
+{
+  qDebug() << "Update metadata error for folder" << fileId << "with error" << httpErrorResponse;
 }
 
 void PropagateUploadEncrypted::slotUnlockEncryptedFolderSuccess(const QByteArray& fileId)
