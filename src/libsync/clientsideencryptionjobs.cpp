@@ -184,12 +184,10 @@ bool StoreMetaDataApiJob::finished()
     return true;
 }
 
-
-
 UpdateMetadataApiJob::UpdateMetadataApiJob(const AccountPtr& account,
                                                  const QByteArray& fileId,
                                                  const QByteArray& b64Metadata,
-                                                 cinst QByteArray& token,
+                                                 const QByteArray& token,
                                                  QObject* parent)
 : AbstractNetworkJob(account, baseUrl() + QStringLiteral("meta-data/") + fileId, parent),
 _fileId(fileId),
@@ -205,14 +203,16 @@ void UpdateMetadataApiJob::start()
 
     QUrlQuery urlQuery;
     urlQuery.addQueryItem(QStringLiteral("format"), QStringLiteral("json"));
-    urlQuery.addQueryItem( _token);
+    urlQuery.addQueryItem(QStringLiteral("token"), _token);
 
     QUrl url = Utility::concatUrlPath(account()->url(), path());
     url.setQuery(urlQuery);
 
-    QByteArray data = QByteArray("metaData=") + QUrl::toPercentEncoding(_b64Metadata) +
-                      QByteArray("token=") + _token;
+    QUrlQuery params;
+    params.addQueryItem("metaData",QUrl::toPercentEncoding(_b64Metadata));
+    params.addQueryItem("token",_token);
 
+    QByteArray data = params.query().toLocal8Bit();
     auto buffer = new QBuffer(this);
     buffer->setData(data);
 
