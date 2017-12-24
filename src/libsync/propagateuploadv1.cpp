@@ -109,6 +109,7 @@ void PropagateUploadFileV1::startNextChunk()
     }
 
     const QString fileName = _fileToUpload._path;
+    qDebug() << "Trying to upload" << fileName;
     if (!device->prepareAndOpen(fileName, chunkStart, currentChunkSize)) {
         qCWarning(lcPropagateUpload) << "Could not prepare upload device: " << device->errorString();
 

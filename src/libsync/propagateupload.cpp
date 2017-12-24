@@ -189,7 +189,7 @@ void PropagateUploadFileCommon::setupEncryptedFile(const QString& path, const QS
 {
     qDebug() << "Starting to upload encrypted file";
     _uploadingEncrypted = true;
-    _fileToUpload._path = path;
+    _fileToUpload._path = path + QDir::separator() + filename;
     _fileToUpload._file = filename;
     _fileToUpload._size = size;
     startUploadFile();
@@ -229,9 +229,11 @@ void PropagateUploadFileCommon::startUploadFile() {
     propagator()->_activeJobList.append(this);
 
     if (!_deleteExisting) {
+        qDebug() << "Running the compute checksum";
         return slotComputeContentChecksum();
     }
 
+    qDebug() << "Deleting the current";
     auto job = new DeleteJob(propagator()->account(),
         propagator()->_remoteFolder + _fileToUpload._file,
         this);
@@ -243,18 +245,20 @@ void PropagateUploadFileCommon::startUploadFile() {
 
 void PropagateUploadFileCommon::slotComputeContentChecksum()
 {
+    qDebug() << "Tryint to compute the checksum of the file";
+    qDebug() << "Still trying to understand if this is the local file or the uploaded one";
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0)) {
         return;
     }
 
-    const QString filePath = propagator()->getFilePath(_fileToUpload._file);
+    const QString filePath = propagator()->getFilePath(_item->_file);
 
     // remember the modtime before checksumming to be able to detect a file
     // change during the checksum calculation - This goes inside of the _item->_file
     // and not the _fileToUpload because we are checking the original file, not there
     // probably temporary one.
     _item->_modtime = FileSystem::getModTime(filePath);
-
+    qDebug() << "Mod time" << _item->_modtime;
 #ifdef WITH_TESTING
     _stopWatch.start();
 #endif
@@ -349,8 +353,8 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
     if (prevModtime != _item->_modtime) {
         propagator()->_anotherSyncNeeded = true;
         callUnlockFolder();
+        qDebug() << "prevModtime" << prevModtime << "Curr" << _item->_modtime;
         done(SyncFileItem::SoftError, tr("Local file changed during syncing. It will be resumed."));
-        return;
     }
 
     quint64 fileSize = FileSystem::getSize(fullFilePath);
