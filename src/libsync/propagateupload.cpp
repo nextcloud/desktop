@@ -329,10 +329,12 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
         _item->_checksumHeader = _transmissionChecksumHeader;
     }
 
-    const QString fullFilePath = propagator()->getFilePath(_fileToUpload._file);
+    const QString fullFilePath = _fileToUpload._path;
+    const QString originalFilePath = propagator()->getFilePath(_item->_file);
 
     if (!FileSystem::fileExists(fullFilePath)) {
-        done(SyncFileItem::SoftError, tr("File Removed"));
+        callUnlockFolder();
+        done(SyncFileItem::SoftError, tr("File Removed (start upload) %1").arg(fullFilePath));
         return;
     }
 #ifdef WITH_TESTING
@@ -343,9 +345,10 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
     // but a potential checksum calculation could have taken some time during which the file could
     // have been changed again, so better check again here.
 
-    _item->_modtime = FileSystem::getModTime(fullFilePath);
+    _item->_modtime = FileSystem::getModTime(originalFilePath);
     if (prevModtime != _item->_modtime) {
         propagator()->_anotherSyncNeeded = true;
+        callUnlockFolder();
         done(SyncFileItem::SoftError, tr("Local file changed during syncing. It will be resumed."));
         return;
     }
@@ -358,6 +361,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
     // or not yet fully copied to the destination.
     if (fileIsStillChanging(*_item)) {
         propagator()->_anotherSyncNeeded = true;
+        callUnlockFolder();
         done(SyncFileItem::SoftError, tr("Local file changed during sync."));
         return;
     }
@@ -657,6 +661,7 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
 
 void PropagateUploadFileCommon::finalize()
 {
+    qDebug() << "Finalizing the upload. Check later if this is encrypted";
     _finished = true;
 
     // Update the quota, if known
@@ -674,10 +679,14 @@ void PropagateUploadFileCommon::finalize()
     propagator()->_journal->setUploadInfo(_item->_file, SyncJournalDb::UploadInfo());
     propagator()->_journal->commit("upload file start");
 
+    callUnlockFolder();
     done(SyncFileItem::Success);
+}
 
+void PropagateUploadFileCommon::callUnlockFolder()
+{
     if (_uploadingEncrypted) {
-        qDebug() << "Encrypted file upload Successfully";
+        qDebug() << "Calling Unlock";
         auto *unlockJob = new UnlockEncryptFolderApiJob(propagator()->account(),
             _uploadEncryptedHelper->_folderId, _uploadEncryptedHelper->_folderToken, this);
 

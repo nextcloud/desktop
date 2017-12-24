@@ -170,12 +170,8 @@ void PropagateUploadEncrypted::slotUpdateMetadataSuccess(const QByteArray& fileI
   output->deleteLater();
 
   qDebug() << "Encrypted Info:" << outputInfo.path() << outputInfo.fileName() << outputInfo.size();
-  // emit finalized(outputInfo.path(),outputInfo.fileName(),outputInfo.size());
-
-  auto *unlockJob = new UnlockEncryptFolderApiJob(_propagator->account(), _folderId, _folderToken, this);
-  connect(unlockJob, &UnlockEncryptFolderApiJob::success, []{ qDebug() << "Successfully Unlocked"; });
-  connect(unlockJob, &UnlockEncryptFolderApiJob::error, []{ qDebug() << "Unlock Error"; });
-  unlockJob->start();
+  qDebug() << "Finalizing the upload part, now the actuall uploader will take over";
+  emit finalized(outputInfo.path(),outputInfo.fileName(),outputInfo.size());
 }
 
 void PropagateUploadEncrypted::slotUpdateMetadataError(const QByteArray& fileId, int httpErrorResponse)

@@ -259,6 +259,7 @@ public:
     void setupEncryptedFile(const QString& path, const QString& filename, quint64 size);
     void setupUnencryptedFile();
     void startUploadFile();
+    void callUnlockFolder();
     bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return _item->_size < propagator()->smallFileSize(); }
 
 private slots:
