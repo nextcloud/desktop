@@ -118,18 +118,6 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
   _metadata = new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact));
 
   QFileInfo info(_propagator->_localDir + QDir::separator() + _item->_file);
-
-  //Todo: Move this to the MetadataHandler.
-  /* This should actually first verify if we don't have this file on the metadata already
-   * and construct this code if there isn't.
-   */
-  qDebug() << "Uploading to Remote Folder: " << _propagator->_remoteFolder;
-  qDebug() << "Uploading from Local Dir" << _propagator->_localDir;
-  qDebug() << "Local File" << _item->_file;
-  qDebug() << "Last Try" << QDir::cleanPath(_propagator->account()->url().path()
-    + QLatin1Char('/') + _propagator->account()->davPath()
-    + _propagator->_remoteFolder + _item->_file);
-
   qDebug() << "Creating the encrypted file metadata helper.";
 
   EncryptedFile encryptedFile;
