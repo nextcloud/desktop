@@ -80,6 +80,7 @@ static const char downloadLimitC[] = "BWLimit/downloadLimit";
 static const char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
 static const char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
 static const char confirmExternalStorageC[] = "confirmExternalStorage";
+static const char moveToTrashC[] = "moveToTrash";
 
 static const char maxLogLinesC[] = "Logging/maxLogLines";
 
@@ -682,6 +683,16 @@ bool ConfigFile::confirmExternalStorage() const
 void ConfigFile::setConfirmExternalStorage(bool isChecked)
 {
     setValue(confirmExternalStorageC, isChecked);
+}
+
+bool ConfigFile::moveToTrash() const
+{
+    return getValue(moveToTrashC, QString(), false).toBool();
+}
+
+void ConfigFile::setMoveToTrash(bool isChecked)
+{
+    setValue(moveToTrashC, isChecked);
 }
 
 bool ConfigFile::promptDeleteFiles() const

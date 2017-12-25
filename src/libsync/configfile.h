@@ -118,6 +118,8 @@ public:
     void setNewBigFolderSizeLimit(bool isChecked, quint64 mbytes);
     bool confirmExternalStorage() const;
     void setConfirmExternalStorage(bool);
+    bool moveToTrash() const;
+    void setMoveToTrash(bool);
 
     static bool setConfDir(const QString &value);
 
