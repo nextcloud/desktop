@@ -32,6 +32,9 @@ struct SyncOptions
     /** If a confirmation should be asked for external storages */
     bool _confirmExternalStorage = false;
 
+    /** If remotely deleted files are needed to move to trash */
+    bool _moveFilesToTrash = false;
+
     /** The initial un-adjusted chunk size in bytes for chunked uploads, both
      * for old and new chunking algorithm, which classifies the item to be chunked
      *
