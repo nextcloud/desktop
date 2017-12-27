@@ -78,11 +78,11 @@ On Release Day (for final release):
 * [ ] Win: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
 * [ ] Linux: Smoke test of one distro package (Install, make sure it does not explode, and check if all version indicators are correct)
 * [ ] Linux: Run @SamuAlfageme 's magic Linux-test-all-packages-script
-* [ ] Linux: Re-enable OBS publishing (or copy from testing to real release?)
-  * Let obs build and publish exactly once. then
-  * [ ] disable publishing and rebuild for the owncloud-client package and all its dependencies.
-  * [ ] double-check that there are no _aggregatepac from other projects, if so disable rebuilding there too.
-* [ ] Create a signed tag using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
+* [ ] Linux: Re-enable OBS publishing on the project (check for accidentially disabled packages too) 
+* Let obs build and publish exactly once. then
+  * [ ] disable publishing (on the obs project!) and rebuild the owncloud-client package and all its dependencies.
+  * [ ] double-check that there are no _aggregatepac from other projects
+  * [ ] Create a signed tag using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
 * [ ] Copy builds from ```testing``` to ```stable``` on download.owncloud.com, double check the download links. (make sure the .asc is there too)
 * [ ] Create a pull request to the owncloud.org repository to update the install page (strings.php, page-desktop.php). From now on download packages from the staging webserver.
 * [ ] Announce on https://central.owncloud.org
