@@ -41,15 +41,15 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcEtagJob, "sync.networkjob.etag", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcLsColJob, "sync.networkjob.lscol", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcCheckServerJob, "sync.networkjob.checkserver", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcPropfindJob, "sync.networkjob.propfind", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcAvatarJob, "sync.networkjob.avatar", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcMkColJob, "sync.networkjob.mkcol", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcProppatchJob, "sync.networkjob.proppatch", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcJsonApiJob, "sync.networkjob.jsonapi", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "sync.networkjob.determineauthtype", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcEtagJob, "nextcloud.sync.networkjob.etag", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcLsColJob, "nextcloud.sync.networkjob.lscol", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCheckServerJob, "nextcloud.sync.networkjob.checkserver", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropfindJob, "nextcloud.sync.networkjob.propfind", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcAvatarJob, "nextcloud.sync.networkjob.avatar", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcMkColJob, "nextcloud.sync.networkjob.mkcol", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcProppatchJob, "nextcloud.sync.networkjob.proppatch", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcJsonApiJob, "nextcloud.sync.networkjob.jsonapi", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "nextcloud.sync.networkjob.determineauthtype", QtInfoMsg)
 
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)

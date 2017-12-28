@@ -28,7 +28,7 @@ Q_DECLARE_METATYPE(QPersistentModelIndex)
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcFolderStatus, "gui.folder.model", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcFolderStatus, "nextcloud.gui.folder.model", QtInfoMsg)
 
 static const char propertyParentIndexC[] = "oc_parentIndex";
 static const char propertyPermissionMap[] = "oc_permissionMap";

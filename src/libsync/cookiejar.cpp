@@ -24,7 +24,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcCookieJar, "sync.cookiejar", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCookieJar, "nextcloud.sync.cookiejar", QtInfoMsg)
 
 namespace {
     const unsigned int JAR_VERSION = 23;

@@ -21,8 +21,8 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcDeleteJob, "sync.networkjob.delete", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcPropagateRemoteDelete, "sync.propagator.remotedelete", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcDeleteJob, "nextcloud.sync.networkjob.delete", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropagateRemoteDelete, "nextcloud.sync.propagator.remotedelete", QtInfoMsg)
 
 DeleteJob::DeleteJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)

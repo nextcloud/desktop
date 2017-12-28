@@ -24,7 +24,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcPropagateRemoteMkdir, "sync.propagator.remotemkdir", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropagateRemoteMkdir, "nextcloud.sync.propagator.remotemkdir", QtInfoMsg)
 
 void PropagateRemoteMkdir::start()
 {

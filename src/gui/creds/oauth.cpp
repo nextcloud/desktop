@@ -25,7 +25,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcOauth, "sync.credentials.oauth", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcOauth, "nextcloud.sync.credentials.oauth", QtInfoMsg)
 
 OAuth::~OAuth()
 {

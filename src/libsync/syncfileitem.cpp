@@ -21,7 +21,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcFileItem, "sync.fileitem", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcFileItem, "nextcloud.sync.fileitem", QtInfoMsg)
 
 SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QString &localFileName)
 {

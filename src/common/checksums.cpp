@@ -78,7 +78,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcChecksums, "sync.checksums", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcChecksums, "nextcloud.sync.checksums", QtInfoMsg)
 
 QByteArray makeChecksumHeader(const QByteArray &checksumType, const QByteArray &checksum)
 {

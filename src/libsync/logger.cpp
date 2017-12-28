@@ -24,7 +24,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcCsync, "sync.csync", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCsync, "nextcloud.sync.csync", QtInfoMsg)
 
 static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
 {

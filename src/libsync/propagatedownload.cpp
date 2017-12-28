@@ -37,8 +37,8 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcGetJob, "sync.networkjob.get", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcPropagateDownload, "sync.propagator.download", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcGetJob, "nextcloud.sync.networkjob.get", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropagateDownload, "nextcloud.sync.propagator.download", QtInfoMsg)
 
 // Always coming in with forward slashes.
 // In csync_excluded_no_ctx we ignore all files with longer than 254 chars

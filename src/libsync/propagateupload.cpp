@@ -43,9 +43,9 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcPutJob, "sync.networkjob.put", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcPollJob, "sync.networkjob.poll", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcPropagateUpload, "sync.propagator.upload", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPutJob, "nextcloud.sync.networkjob.put", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPollJob, "nextcloud.sync.networkjob.poll", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropagateUpload, "nextcloud.sync.propagator.upload", QtInfoMsg)
 
 /**
  * We do not want to upload files that are currently being modified.

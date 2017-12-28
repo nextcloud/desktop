@@ -21,7 +21,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcSharing, "gui.sharing", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcSharing, "nextcloud.gui.sharing", QtInfoMsg)
 
 Sharee::Sharee(const QString shareWith,
     const QString displayName,

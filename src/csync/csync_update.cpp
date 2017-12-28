@@ -52,7 +52,7 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
 
-Q_LOGGING_CATEGORY(lcUpdate, "sync.csync.updater", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcUpdate, "nextcloud.sync.csync.updater", QtInfoMsg)
 
 #ifdef NO_RENAME_EXTENSION
 /* Return true if the two path have the same extension. false otherwise. */

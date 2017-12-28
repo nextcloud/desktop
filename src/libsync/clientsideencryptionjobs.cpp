@@ -18,9 +18,9 @@
 #include "theme.h"
 #include "creds/abstractcredentials.h"
 
-Q_LOGGING_CATEGORY(lcSignPublicKeyApiJob, "sync.networkjob.sendcsr", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcStorePrivateKeyApiJob, "sync.networkjob.storeprivatekey", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcCseJob, "sync.networkjob.clientsideencrypt", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcSignPublicKeyApiJob, "nextcloud.sync.networkjob.sendcsr", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcStorePrivateKeyApiJob, "nextcloud.sync.networkjob.storeprivatekey", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCseJob, "nextcloud.sync.networkjob.clientsideencrypt", QtInfoMsg)
 
 namespace OCC {
 
