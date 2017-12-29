@@ -81,7 +81,7 @@ public:
     void fetchFolderEncryptedStatus();
 
     // to be used together with FolderStatusModel::FolderInfo::_path.
-    bool isFolderEncrypted(const QString& path);
+    bool isFolderEncrypted(const QString& path) const;
     void setFolderEncryptedStatus(const QString& path, bool status);
 
     void forgetSensitiveData();

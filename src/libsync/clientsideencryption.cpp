@@ -1279,9 +1279,9 @@ QVector<EncryptedFile> FolderMetadata::files() const {
     return _files;
 }
 
-bool ClientSideEncryption::isFolderEncrypted(const QString& path) {
-  auto it = _folder2encryptedStatus.find(path);
-  if (it == _folder2encryptedStatus.end())
+bool ClientSideEncryption::isFolderEncrypted(const QString& path) const {
+  auto it = _folder2encryptedStatus.constFind(path);
+  if (it == _folder2encryptedStatus.constEnd())
     return false;
   return (*it);
 }
