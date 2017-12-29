@@ -51,7 +51,7 @@
 #include <QTranslator>
 #include <QMenu>
 #include <QMessageBox>
-#include <QDesktopServices>
+#include <QStandardPaths>
 
 class QSocket;
 
@@ -128,7 +128,7 @@ Application::Application(int &argc, char **argv)
     if (!QFileInfo(confDir).exists()) {
         // Migrate from version <= 2.4
         setApplicationName(_theme->appNameGUI());
-        QString oldDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+        QString oldDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
         setApplicationName(_theme->appName());
         if (QFileInfo(oldDir).isDir()) {
             qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
