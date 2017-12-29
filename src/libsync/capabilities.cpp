@@ -85,8 +85,10 @@ bool Capabilities::shareResharing() const
 
 bool Capabilities::clientSideEncryptionAvaliable() const
 {
-    return _capabilities.keys().indexOf("end-to-end-encryption") != -1
-        ? _capabilities["end-to-end-encryption"].toMap()["enabled"].toBool() : false;
+    auto it = _capabilities.constFind(QStringLiteral("end-to-end-encryption"));
+    if (it != _capabilities.constEnd())
+        return (*it).toMap().value(QStringLiteral("enabled"), false).toBool();
+    return false;
 }
 
 bool Capabilities::notificationsAvailable() const
