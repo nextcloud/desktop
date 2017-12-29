@@ -20,7 +20,7 @@
 
 using namespace OCC;
 
-Q_LOGGING_CATEGORY(lcLockWatcher, "gui.lockwatcher", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcLockWatcher, "nextcloud.gui.lockwatcher", QtInfoMsg)
 
 static const int check_frequency = 20 * 1000; // ms
 

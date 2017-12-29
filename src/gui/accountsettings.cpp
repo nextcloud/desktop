@@ -60,7 +60,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcAccountSettings, "gui.account.settings", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcAccountSettings, "nextcloud.gui.account.settings", QtInfoMsg)
 
 static const char progressBarStyleC[] =
     "QProgressBar {"

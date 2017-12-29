@@ -43,9 +43,9 @@ using namespace QKeychain;
 namespace OCC
 {
 
-Q_LOGGING_CATEGORY(lcCse, "sync.clientsideencryption", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcCseDecryption, "e2e", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcCseMetadata, "metadata", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCse, "nextcloud.sync.clientsideencryption", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCseDecryption, "nextcloud.e2e", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCseMetadata, "nextcloud.metadata", QtInfoMsg)
 
 QString baseUrl(){
     return QStringLiteral("ocs/v2.php/apps/end_to_end_encryption/api/v1/");
@@ -655,7 +655,7 @@ void ClientSideEncryption::publicKeyFetched(Job *incoming) {
 
 void ClientSideEncryption::setFolderEncryptedStatus(const QString& folder, bool status)
 {
-    qDebug() << "Setting folder" << folder << "as encrypted" << status;
+    qCDebug(lcCse) << "Setting folder" << folder << "as encrypted" << status;
     _folder2encryptedStatus[folder] = status;
 }
 
@@ -1071,13 +1071,13 @@ void ClientSideEncryption::folderEncryptedStatusFetched(const QMap<QString, bool
 {
 	_refreshingEncryptionStatus = false;
 	_folder2encryptedStatus = result;
-	qDebug() << "Retrieved correctly the encrypted status of the folders." << result;
+    qCDebug(lcCse) << "Retrieved correctly the encrypted status of the folders." << result;
 }
 
 void ClientSideEncryption::folderEncryptedStatusError(int error)
 {
 	_refreshingEncryptionStatus = false;
-	qDebug() << "Failed to retrieve the status of the folders." << error;
+    qCDebug(lcCse) << "Failed to retrieve the status of the folders." << error;
 }
 
 FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata) : _account(account)
@@ -1118,7 +1118,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
 
   QJsonDocument debugHelper;
   debugHelper.setObject(metadataKeys);
-  qDebug() << "Keys: " << debugHelper.toJson(QJsonDocument::Compact);
+  qCDebug(lcCse) << "Keys: " << debugHelper.toJson(QJsonDocument::Compact);
 
   // Iterate over the document to store the keys. I'm unsure that the keys are in order,
   // perhaps it's better to store a map instead of a vector, perhaps this just doesn't matter.
@@ -1129,9 +1129,9 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
   }
 
   // Cool, We actually have the key, we can decrypt the rest of the metadata.
-  qDebug() << "Sharing: " << sharing;
+  qCDebug(lcCse) << "Sharing: " << sharing;
   auto sharingDecrypted = QByteArray::fromBase64(decryptJsonObject(sharing, _metadataKeys.last()));
-  qDebug() << "Sharing Decrypted" << sharingDecrypted;
+  qCDebug(lcCse) << "Sharing Decrypted" << sharingDecrypted;
 
   //Sharing is also a JSON object, so extract it and populate.
   auto sharingDoc = QJsonDocument::fromJson(sharingDecrypted);
@@ -1207,7 +1207,7 @@ QByteArray FolderMetadata::decryptJsonObject(const QByteArray& encryptedMetadata
 }
 
 void FolderMetadata::setupEmptyMetadata() {
-    qDebug() << "Settint up empty metadata";
+    qCDebug(lcCse) << "Settint up empty metadata";
     QByteArray newMetadataPass = EncryptionHelper::generateRandom(16);
     _metadataKeys.insert(0, newMetadataPass);
 
@@ -1218,7 +1218,7 @@ void FolderMetadata::setupEmptyMetadata() {
 }
 
 QByteArray FolderMetadata::encryptedMetadata() {
-    qDebug() << "Generating metadata";
+    qCDebug(lcCse) << "Generating metadata";
 
     QJsonObject metadataKeys;
     for (auto it = _metadataKeys.constBegin(), end = _metadataKeys.constEnd(); it != end; it++) {
@@ -1289,10 +1289,10 @@ bool ClientSideEncryption::isFolderEncrypted(const QString& path) {
 void EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &iv, QFile *input, QFile *output)
 {
     if (!input->open(QIODevice::ReadOnly)) {
-      qDebug() << "Could not open input file for reading" << input->errorString();
+      qCDebug(lcCse) << "Could not open input file for reading" << input->errorString();
     }
     if (!output->open(QIODevice::WriteOnly)) {
-      qDebug() << "Could not oppen output file for writting" << output->errorString();
+      qCDebug(lcCse) << "Could not oppen output file for writting" << output->errorString();
     }
 
     // Init
@@ -1328,7 +1328,7 @@ void EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
     int len = 0;
     int total_len = 0;
 
-    qDebug() << "Starting to encrypt the file" << input->fileName() << input->atEnd();
+    qCDebug(lcCse) << "Starting to encrypt the file" << input->fileName() << input->atEnd();
     while(!input->atEnd()) {
         QByteArray data = input->read(1024);
 
@@ -1337,7 +1337,7 @@ void EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
             exit(-1);
         }
 
-        qDebug() << "Encrypting " << data;
+        qCDebug(lcCse) << "Encrypting " << data;
         if(!EVP_EncryptUpdate(ctx, out, &len, (unsigned char *)data.constData(), data.size())) {
             qCInfo(lcCse()) << "Could not encrypt";
             exit(-1);
@@ -1369,7 +1369,7 @@ void EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
 
     input->close();
     output->close();
-    qDebug() << "File Encrypted Successfully";
+    qCDebug(lcCse) << "File Encrypted Successfully";
 }
 
 FileDecryptionJob::FileDecryptionJob(QByteArray &key, QByteArray &iv, QFile *input, QFile *output, QObject *parent)

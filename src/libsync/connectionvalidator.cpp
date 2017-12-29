@@ -28,7 +28,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcConnectionValidator, "sync.connectionvalidator", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcConnectionValidator, "nextcloud.sync.connectionvalidator", QtInfoMsg)
 
 // Make sure the timeout for this job is less than how often we get called
 // This makes sure we get tried often enough without "ConnectionValidator already running"

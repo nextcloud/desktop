@@ -40,7 +40,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcFolderMan, "gui.folder.manager", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcFolderMan, "nextcloud.gui.folder.manager", QtInfoMsg)
 
 FolderMan *FolderMan::_instance = 0;
 

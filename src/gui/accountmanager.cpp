@@ -38,7 +38,7 @@ static const char serverVersionC[] = "serverVersion";
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcAccountManager, "gui.account.manager", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcAccountManager, "nextcloud.gui.account.manager", QtInfoMsg)
 
 AccountManager *AccountManager::instance()
 {

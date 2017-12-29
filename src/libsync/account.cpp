@@ -38,7 +38,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcAccount, "sync.account", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcAccount, "nextcloud.sync.account", QtInfoMsg)
 
 Account::Account(QObject *parent)
     : QObject(parent)
