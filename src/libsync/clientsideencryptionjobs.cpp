@@ -126,11 +126,10 @@ void GetMetadataApiJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
+    QUrlQuery query;
+    query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
     QUrl url = Utility::concatUrlPath(account()->url(), path());
-    QList<QPair<QString, QString>> params = {
-        qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")),
-    };
-    url.setQueryItems(params);
+    url.setQuery(query);
 
     qCInfo(lcCseJob()) << "Requesting the metadata for the fileId" << _fileId << "as encrypted";
     sendRequest("GET", url, req);
@@ -161,11 +160,10 @@ void StoreMetaDataApiJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
+    QUrlQuery query;
+    query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
     QUrl url = Utility::concatUrlPath(account()->url(), path());
-    QList<QPair<QString, QString>> params = {
-        qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json")),
-    };
-    url.setQueryItems(params);
+    url.setQuery(query);
 
     QByteArray data = QByteArray("metaData=") + QUrl::toPercentEncoding(_b64Metadata);
     auto buffer = new QBuffer(this);
@@ -316,11 +314,10 @@ void LockEncryptFolderApiJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
+    QUrlQuery query;
+    query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
     QUrl url = Utility::concatUrlPath(account()->url(), path());
-    QList<QPair<QString, QString>> params = {
-        qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json"))
-    };
-    url.setQueryItems(params);
+    url.setQuery(query);
 
     qCInfo(lcCseJob()) << "locking the folder with id" << _fileId << "as encrypted";
     sendRequest("POST", url, req);
@@ -392,11 +389,10 @@ void StorePrivateKeyApiJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
+    QUrlQuery query;
+    query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
     QUrl url = Utility::concatUrlPath(account()->url(), path());
-    QList<QPair<QString, QString>> params = {
-        qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json"))
-    };
-    url.setQueryItems(params);
+    url.setQuery(query);
 
     qCInfo(lcStorePrivateKeyApiJob) << "Sending the private key" << _privKey.data();
     sendRequest("POST", url, req, &_privKey);
@@ -431,11 +427,10 @@ void SignPublicKeyApiJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
+    QUrlQuery query;
+    query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
     QUrl url = Utility::concatUrlPath(account()->url(), path());
-    QList<QPair<QString, QString>> params = {
-        qMakePair(QString::fromLatin1("format"), QString::fromLatin1("json"))
-    };
-    url.setQueryItems(params);
+    url.setQuery(query);
 
     qCInfo(lcSignPublicKeyApiJob) << "Sending the CSR" << _csr.data();
     sendRequest("POST", url, req, &_csr);
