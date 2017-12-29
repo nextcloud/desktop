@@ -162,7 +162,9 @@ void PropagateUploadEncrypted::slotUpdateMetadataSuccess(const QByteArray& fileI
 
   qCDebug(lcPropagateUpload) << "Encrypted Info:" << outputInfo.path() << outputInfo.fileName() << outputInfo.size();
   qCDebug(lcPropagateUpload) << "Finalizing the upload part, now the actuall uploader will take over";
-  emit finalized(outputInfo.path(),outputInfo.fileName(),outputInfo.size());
+  emit finalized(outputInfo.path() + QLatin1Char('/') + outputInfo.fileName(),
+                 _item->_file.section(QLatin1Char('/'), 0, -2) + QLatin1Char('/') + outputInfo.fileName(),
+                 outputInfo.size());
 }
 
 void PropagateUploadEncrypted::slotUpdateMetadataError(const QByteArray& fileId, int httpErrorResponse)

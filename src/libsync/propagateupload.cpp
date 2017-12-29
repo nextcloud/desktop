@@ -178,7 +178,7 @@ void PropagateUploadFileCommon::start()
       connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,
         this, &PropagateUploadFileCommon::setupEncryptedFile);
       connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error,
-        []{ qDebug() << "Error setting up encryption."; });
+        []{ qCDebug(lcPropagateUpload) << "Error setting up encryption."; });
       _uploadEncryptedHelper->start();
    } else {
       setupUnencryptedFile();
@@ -187,9 +187,9 @@ void PropagateUploadFileCommon::start()
 
 void PropagateUploadFileCommon::setupEncryptedFile(const QString& path, const QString& filename, quint64 size)
 {
-    qDebug() << "Starting to upload encrypted file";
+    qCDebug(lcPropagateUpload) << "Starting to upload encrypted file" << path << filename << size;
     _uploadingEncrypted = true;
-    _fileToUpload._path = path + QDir::separator() + filename;
+    _fileToUpload._path = path;
     _fileToUpload._file = filename;
     _fileToUpload._size = size;
     startUploadFile();
