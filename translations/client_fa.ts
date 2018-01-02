@@ -2653,7 +2653,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="42"/>
         <source>&amp;Create new</source>
-        <translation type="unfinished"/>
+        <translation>ایجاد جدید</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="105"/>
@@ -2689,7 +2689,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sharelinkwidget.cpp" line="115"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="299"/>
         <source>P&amp;assword protect</source>
-        <translation type="unfinished"/>
+        <translation>رمز عبور محافظت می شود</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
@@ -2775,7 +2775,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="457"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation type="unfinished"/>
+        <translation>اشتراک عمومی نیازمند رمز عبور است</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="475"/>
