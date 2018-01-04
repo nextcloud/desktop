@@ -208,8 +208,11 @@ if(QTKEYCHAIN_FOUND OR QT5KEYCHAIN_FOUND)
 endif()
 
 # add executable icon on windows and osx
-include( AddAppIconMacro )
-set(ownCloud_old ${ownCloud})
+
+# UPSTREAM our ECMAddAppIcon.cmake then require that version here
+# find_package(ECM 1.7.0 REQUIRED NO_MODULE)
+# list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+include(ECMAddAppIcon)
 
 # For historical reasons we can not use the application_shortname
 # for ownCloud but must rather set it manually.
@@ -217,11 +220,12 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
     set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
 endif()
 
-kde4_add_app_icon( ownCloud "${theme_dir}/colored/${APPLICATION_ICON_NAME}-*.png")
-list(APPEND final_src ${ownCloud})
-set(ownCloud ${ownCloud_old})
-
-
+file(GLOB_RECURSE OWNCLOUD_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon*")
+if(APPLE)
+    file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-sidebar*")
+    MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
+endif()
+ecm_add_app_icon(final_src ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASE "${APPLICATION_ICON_NAME}")
 
 if(UNIX AND NOT APPLE)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE")
