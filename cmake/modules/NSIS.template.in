@@ -461,6 +461,7 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${MING_BIN}\libgcc_s_sjlj-1.dll"
    File "${MING_BIN}\libstdc++-6.dll"
    File "${MING_BIN}\libwinpthread-1.dll"
+   File "${MING_BIN}\libssp-0.dll"
 
    ;CSync configs
    File "${SOURCE_PATH}/sync-exclude.lst"
