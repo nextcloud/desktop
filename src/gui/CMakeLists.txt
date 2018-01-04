@@ -299,6 +299,11 @@ if( UNIX AND NOT APPLE )
     target_compile_definitions(${APPLICATION_EXECUTABLE} PRIVATE "USE_FDO_NOTIFICATIONS")
 endif()
 
+if (APPLE)
+    find_package(Qt5 COMPONENTS MacExtras)
+    target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::MacExtras)
+endif()
+
 if (NOT NO_SHIBBOLETH)
     find_package(Qt5 COMPONENTS WebKitWidgets)
     target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::WebKitWidgets)
