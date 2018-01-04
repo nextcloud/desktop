@@ -18,6 +18,7 @@
 #include <QDialog>
 #include <QDateTime>
 #include <QLocale>
+#include <QTimer>
 
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
@@ -83,6 +84,9 @@ private:
 
     /// Wipes all insufficient remote storgage blacklist entries
     void retryInsufficentRemoteStorageErrors(const QString &folderAlias);
+
+    /// Each insert disables sorting, this timer reenables it
+    QTimer _reenableSorting;
 
     Ui::IssuesWidget *_ui;
 };
