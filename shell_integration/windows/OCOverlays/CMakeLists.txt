@@ -1,0 +1,15 @@
+add_library(OCOverlays MODULE
+    DllMain.cpp
+    OCOverlay.cpp
+    OCOverlayFactory.cpp
+    OCOverlayRegistrationHandler.cpp
+    stdafx.cpp
+)
+
+target_link_libraries(OCOverlays
+    OCUtil)
+
+install(TARGETS OCOverlays
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+)
