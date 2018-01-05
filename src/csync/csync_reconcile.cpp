@@ -279,7 +279,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
             /* If the file already exist on the other side, we have a conflict.
                Abort the rename and consider it is a new file. */
             cur->instruction = CSYNC_INSTRUCTION_NEW;
-            /* fall trough */
+            /* fall through */
         /* file on current replica is changed or new */
         case CSYNC_INSTRUCTION_EVAL:
         case CSYNC_INSTRUCTION_NEW:
