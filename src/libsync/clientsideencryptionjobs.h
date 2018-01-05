@@ -293,6 +293,7 @@ protected:
 
 signals:
 	void encryptStatusReceived(const QMap<QString, bool> folderMetadata2EncryptionStatus);
+    void encryptStatusFolderReceived(const QString &folder, bool isEncrypted);
 	void encryptStatusError(int statusCode);
 private:
   QString _folder;

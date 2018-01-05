@@ -41,26 +41,21 @@ void PropagateUploadEncrypted::start()
       auto getEncryptedStatus = new GetFolderEncryptStatusJob(_propagator->account(),
                                                            info.path());
 
-      connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusReceived,
+      connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusFolderReceived,
               this, &PropagateUploadEncrypted::slotFolderEncryptedStatusFetched);
       connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusError,
              this, &PropagateUploadEncrypted::slotFolderEncryptedStatusError);
       getEncryptedStatus->start();
 }
 
-void PropagateUploadEncrypted::slotFolderEncryptedStatusFetched(const QMap<QString, bool>& result)
+void PropagateUploadEncrypted::slotFolderEncryptedStatusFetched(const QString &folder, bool isEncrypted)
 {
-  qCDebug(lcPropagateUpload) << "Encrypted Status Fetched";
-  QFileInfo fileInfo(_item->_file);
-  QString currFilePath = fileInfo.path();
-  if (!currFilePath.endsWith(QDir::separator()))
-    currFilePath += QDir::separator();
+  qCDebug(lcPropagateUpload) << "Encrypted Status Fetched" << folder << isEncrypted;
 
   /* We are inside an encrypted folder, we need to find it's Id. */
-  if (result[currFilePath] == true) {
+  if (isEncrypted) {
       qCDebug(lcPropagateUpload) << "Folder is encrypted, let's get the Id from it.";
-      QFileInfo info(_item->_file);
-      LsColJob *job = new LsColJob(_propagator->account(), info.path(), this);
+      auto job = new LsColJob(_propagator->account(), folder, this);
       job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
       connect(job, &LsColJob::directoryListingSubfolders, this, &PropagateUploadEncrypted::slotFolderEncryptedIdReceived);
       connect(job, &LsColJob::finishedWithError, this, &PropagateUploadEncrypted::slotFolderEncryptedIdError);
