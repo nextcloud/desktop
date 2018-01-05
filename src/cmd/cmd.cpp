@@ -480,11 +480,6 @@ restart_sync:
         }
     } else {
         clientProxy.setupQtProxyFromConfig();
-        QString url(options.target_url);
-        if (url.startsWith("owncloud")) {
-            url.remove(0, 8);
-            url = QString("http%1").arg(url);
-        }
     }
 
     QStringList selectiveSyncList;
