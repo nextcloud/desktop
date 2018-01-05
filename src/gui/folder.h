@@ -276,9 +276,6 @@ public slots:
       */
     void startSync(const QStringList &pathList = QStringList());
 
-    void setProxyDirty(bool value);
-    bool proxyDirty();
-
     int slotDiscardDownloadProgress();
     int downloadInfoCount();
     int slotWipeErrorBlacklist();
@@ -351,7 +348,6 @@ private:
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;
     bool _csyncUnavail;
-    bool _proxyDirty;
     QPointer<RequestEtagJob> _requestEtagJob;
     QString _lastEtag;
     QElapsedTimer _timeSinceLastSyncDone;

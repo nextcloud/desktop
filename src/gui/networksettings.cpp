@@ -177,7 +177,7 @@ void NetworkSettings::saveProxySettings()
 
     // ...and set the folders dirty, they refresh their proxy next time they
     // start the sync.
-    FolderMan::instance()->setDirtyProxy(true);
+    FolderMan::instance()->setDirtyProxy();
 
     for (auto account : AccountManager::instance()->accounts()) {
         account->freshConnectionAttempt();
