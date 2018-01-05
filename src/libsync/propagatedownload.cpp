@@ -24,6 +24,7 @@
 #include "propagatorjobs.h"
 #include "common/checksums.h"
 #include "common/asserts.h"
+#include "clientsideencryptionjobs.h"
 
 #include <QLoggingCategory>
 #include <QNetworkAccessManager>
@@ -346,6 +347,66 @@ void PropagateDownloadFile::start()
         return;
 
     qCDebug(lcPropagateDownload) << _item->_file << propagator()->_activeJobList.count();
+    if (propagator()->account()->capabilities().clientSideEncryptionAvaliable()) {
+        QFileInfo info(_item->_file);
+        auto getEncryptedStatus = new GetFolderEncryptStatusJob(propagator()->account(), info.path());
+        connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusFolderReceived,
+                this, [this, info] (const QString &folder, bool isEncrypted) {
+            qCDebug(lcPropagateDownload) << "Get Folder is Encrypted Received" << folder << isEncrypted;
+            if (!isEncrypted) {
+                startAfterIsEncryptedIsChecked();
+                return;
+            }
+            _isEncrypted = true;
+
+            // Is encrypted Now we need the folder-id
+            auto job = new LsColJob(propagator()->account(), folder, this);
+            job->setProperties({"resourcetype", "http://owncloud.org/ns:fileid"});
+            connect(job, &LsColJob::directoryListingSubfolders, this, [job, this, info] (const QStringList &list) {
+                const QString folderId = list.first();
+                qCDebug(lcPropagateDownload) << "Received id of folder" << folderId;
+                const ExtraFolderInfo &folderInfo = job->_folderInfos.value(folderId);
+
+                // Now that we have the folder-id we need it's JSON metadata
+                auto metadataJob = new GetMetadataApiJob(propagator()->account(), folderInfo.fileId);
+                connect(metadataJob, &GetMetadataApiJob::jsonReceived,
+                        this, [this, info] (const QJsonDocument &json) {
+                    qCDebug(lcPropagateDownload) << "Metadata Received reading" << json.toJson() << _item->_file;
+                    const QString filename = info.fileName();
+                    auto meta = new FolderMetadata(propagator()->account(), json.toJson(QJsonDocument::Compact));
+                    const QVector<EncryptedFile> files = meta->files();
+                    for (const EncryptedFile &file : files) {
+                        qCDebug(lcPropagateDownload) << "file" << filename << file.encryptedFilename << file.originalFilename << file.encryptionKey;
+                        if (filename == file.encryptedFilename) {
+                            _encryptedInfo = file;
+                            qCDebug(lcPropagateDownload) << "Found matching encrypted metadata for file, starting download";
+                            startAfterIsEncryptedIsChecked();
+                            return;
+                        }
+                    }
+
+                    qCDebug(lcPropagateDownload) << "Failed to find encrypted metadata information of remote file" << filename;
+                });
+                metadataJob->start();
+            });
+            connect(job, &LsColJob::finishedWithError, this, []() {
+                qCDebug(lcPropagateDownload) << "Failed to get encrypted metadata of folder";
+            });
+            job->start();
+        });
+        connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusError,
+                this, [](int statusCode) {
+            qCDebug(lcPropagateDownload) << "Failed to get encrypted status of folder" << statusCode;
+        });
+
+        getEncryptedStatus->start();
+    } else {
+        startAfterIsEncryptedIsChecked();
+    }
+}
+
+void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
+{
     _stopwatch.start();
 
     if (_deleteExisting) {
@@ -785,7 +846,39 @@ void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumTy
 {
     _item->_checksumHeader = makeChecksumHeader(checksumType, checksum);
 
-    downloadFinished();
+    if (_isEncrypted) {
+        const QString tmpFileName = createDownloadTmpFileName(_item->_file + QLatin1String("_dec"));
+        qCDebug(lcPropagateDownload) << "Content Checksum Computed starting decryption" << tmpFileName;
+
+        _tmpFile.close();
+        auto _tmpOutput = new QFile(propagator()->getFilePath(tmpFileName), this);
+        auto job = new FileDecryptionJob(_encryptedInfo.encryptionKey,
+                                         _encryptedInfo.initializationVector,
+                                         &_tmpFile,
+                                         _tmpOutput);
+        connect(job, &FileDecryptionJob::finished, this, [this] (QFile *output) {
+            qCDebug(lcPropagateDownload) << "Decryption finished" << _tmpFile.fileName() << output->fileName();
+
+            _tmpFile.close();
+            output->close();
+            // we decripted the temporary into another temporary, so good bye old one
+            if (!_tmpFile.remove()) {
+                qCDebug(lcPropagateDownload) << "Failed to remove temporary file" << _tmpFile.errorString();
+                done(SyncFileItem::NormalError, _tmpFile.errorString());
+                return;
+            }
+            // Let's fool the rest of the logic into thinking this was the actual download
+            _tmpFile.setFileName(output->fileName());
+
+            // Let's fool the rest of the logic into thinking this is the right name of the DAV file
+            _item->_file = _item->_file.section(QLatin1Char('/'), 0, -2) + QLatin1Char('/') + _encryptedInfo.originalFilename;
+
+            downloadFinished();
+        });
+        job->start();
+    } else {
+        downloadFinished();
+    }
 }
 
 void PropagateDownloadFile::downloadFinished()

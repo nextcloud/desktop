@@ -34,7 +34,7 @@ void GetFolderEncryptStatusJob::start()
 	QNetworkRequest req;
 	req.setPriority(QNetworkRequest::HighPriority);
 	req.setRawHeader("OCS-APIREQUEST", "true");
-	req.setRawHeader("Content-Type", "application/xml");
+    req.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/xml"));
 
 	QByteArray xml = "<d:propfind xmlns:d=\"DAV:\"> <d:prop xmlns:nc=\"http://nextcloud.org/ns\"> <nc:is-encrypted/> </d:prop> </d:propfind>";
 	QBuffer *buf = new QBuffer(this);
@@ -105,6 +105,7 @@ bool GetFolderEncryptStatusJob::finished()
         }
 
         emit encryptStatusReceived(folderStatus);
+        emit encryptStatusFolderReceived(_folder, folderStatus.value(_folder + QLatin1Char('/')));
     } else {
         qCWarning(lcCseJob()) << "*not* successful, http result code is" << http_result_code
                                  << (http_result_code == 302 ? reply()->header(QNetworkRequest::LocationHeader).toString() : QLatin1String(""));
@@ -160,6 +161,7 @@ void StoreMetaDataApiJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
+    req.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/x-www-form-urlencoded"));
     QUrlQuery query;
     query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
     QUrl url = Utility::concatUrlPath(account()->url(), path());
@@ -203,6 +205,7 @@ void UpdateMetadataApiJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader("OCS-APIREQUEST", "true");
+    req.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/x-www-form-urlencoded"));
 
     QUrlQuery urlQuery;
     urlQuery.addQueryItem(QStringLiteral("format"), QStringLiteral("json"));

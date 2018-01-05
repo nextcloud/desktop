@@ -40,7 +40,7 @@ public:
   QByteArray _folderId;
 
 private slots:
-    void slotFolderEncryptedStatusFetched(const QMap<QString, bool>& result);
+    void slotFolderEncryptedStatusFetched(const QString &folder, bool isEncrypted);
     void slotFolderEncryptedStatusError(int error);
     void slotFolderEncryptedIdReceived(const QStringList &list);
     void slotFolderEncryptedIdError(QNetworkReply *r);
