@@ -88,11 +88,20 @@ pipeline:
             matrix:
                 BUILD: AppImage
 
+    Debian:
+        image: nextcloud-drone-debian:latest
+        commands:
+            - /bin/bash -c "./admin/linux/debian/drone-build.sh"
+        when:
+            matrix:
+                BUILD: Debian
+
 matrix:
     include:
         - TESTS: qt-5.7
         - TESTS: qt-5.8
         - TESTS: qt-5.9
         - BUILD: AppImage
+        - BUILD: Debian
 
 branches: [ master, 2.* ]
