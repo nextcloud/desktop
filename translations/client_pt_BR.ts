@@ -1429,7 +1429,7 @@ Itens onde a eliminação é permitida serão excluídos se eles evitarem que um
     <message>
         <location filename="../src/gui/issueswidget.ui" line="133"/>
         <source>There were too many issues. Not all will be visible here.</source>
-        <translation type="unfinished"/>
+        <translation>Havia muitos problemas. Nem todos serão visíveis aqui.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="155"/>
