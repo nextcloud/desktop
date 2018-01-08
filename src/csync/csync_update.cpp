@@ -497,7 +497,7 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
          * without a full remote discovery being triggered. */
         CSYNC_EXCLUDE_TYPE excluded = csync_excluded_traversal(ctx, st->path, st->type);
         if (excluded != CSYNC_NOT_EXCLUDED) {
-            qDebug(lcUpdate, "%s excluded (%d)", st->path.constData(), excluded);
+            qInfo(lcUpdate, "%s excluded from db read (%d)", st->path.constData(), excluded);
 
             if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE
                     || excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
@@ -516,7 +516,7 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
         ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
         return false;
     }
-    qDebug(lcUpdate, "%" PRId64 " entries read below path %s from db.", count, uri);
+    qInfo(lcUpdate, "%" PRId64 " entries read below path %s from db.", count, uri);
 
     return true;
 }
