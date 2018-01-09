@@ -629,7 +629,11 @@ bool PropfindJob::finished()
 AvatarJob::AvatarJob(AccountPtr account, QObject *parent)
     : AbstractNetworkJob(account, QString(), parent)
 {
-    _avatarUrl = Utility::concatUrlPath(account->url(), QString("remote.php/dav/avatars/%1/128.png").arg(account->davUser()));
+    if (account->serverVersionInt() >= Account::makeServerVersion(10, 0, 0)) {
+        _avatarUrl = Utility::concatUrlPath(account->url(), QString("remote.php/dav/avatars/%1/128.png").arg(account->davUser()));
+    } else {
+        _avatarUrl = Utility::concatUrlPath(account->url(), QString("index.php/avatar/%1/128").arg(account->davUser()));
+    }
 }
 
 void AvatarJob::start()
