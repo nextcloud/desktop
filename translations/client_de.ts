@@ -1430,7 +1430,7 @@ Objekte, bei denen Löschen erlaubt ist, werden gelöscht, wenn sie die Löschun
     <message>
         <location filename="../src/gui/issueswidget.ui" line="133"/>
         <source>There were too many issues. Not all will be visible here.</source>
-        <translation type="unfinished"/>
+        <translation>Es gab zu viele Probleme. Nicht alle können hier dargestellt werden.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="155"/>
