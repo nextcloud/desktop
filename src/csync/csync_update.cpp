@@ -150,10 +150,18 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       }
   }
 
-  if (ctx->current == REMOTE_REPLICA && QTextCodec::codecForLocale()->mibEnum() != 106) {
+  auto localCodec = QTextCodec::codecForLocale();
+  if (ctx->current == REMOTE_REPLICA && localCodec->mibEnum() != 106) {
       /* If the locale codec is not UTF-8, we must check that the filename from the server can
-       * be encoded in the local file system. */
-      if (!QTextCodec::codecForLocale()->canEncode(QString::fromUtf8(fs->path))) {
+       * be encoded in the local file system.
+       *
+       * We cannot use QTextCodec::canEncode() since that can incorrectly return true, see
+       * https://bugreports.qt.io/browse/QTBUG-6925.
+       */
+      QTextEncoder encoder(localCodec, QTextCodec::ConvertInvalidToNull);
+      if (encoder.fromUnicode(QString::fromUtf8(fs->path)).contains('\0')) {
+          qCDebug(lcUpdate, "cannot encode %s to local encoding %d",
+              fs->path.constData(), localCodec->mibEnum());
           excluded = CSYNC_FILE_EXCLUDE_CANNOT_ENCODE;
       }
   }
