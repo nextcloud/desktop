@@ -64,7 +64,8 @@ QUrl Updater::addQueryParams(const QUrl &url)
 
     QString suffix = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
     paramUrl.addQueryItem(QLatin1String("versionsuffix"), suffix);
-    if (suffix.startsWith("nightly")
+    if (suffix.startsWith("daily")
+            || suffix.startsWith("nightly")
             || suffix.startsWith("alpha")
             || suffix.startsWith("rc")
             || suffix.startsWith("beta")) {
