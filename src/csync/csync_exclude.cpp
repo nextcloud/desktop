@@ -361,29 +361,34 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, ItemTy
 
     QRegularExpressionMatch m;
     if (filetype == ItemTypeDirectory) {
-        m = _bnameActivationRegexDir.match(bnameStr);
+        m = _bnameTraversalRegexDir.match(bnameStr);
     } else {
-        m = _bnameActivationRegexFile.match(bnameStr);
+        m = _bnameTraversalRegexFile.match(bnameStr);
     }
     if (!m.hasMatch())
-        return match;
+        return CSYNC_NOT_EXCLUDED;
+    if (!m.captured(1).isEmpty()) {
+        return CSYNC_FILE_EXCLUDE_LIST;
+    } else if (!m.captured(2).isEmpty()) {
+        return CSYNC_FILE_EXCLUDE_AND_REMOVE;
+    }
 
-    // Now run the full match
-
+    // third capture: full path matching is triggered
     QString pathStr = QString::fromUtf8(path);
+
     if (filetype == ItemTypeDirectory) {
-        m = _fullRegexDir.match(pathStr);
+        m = _fullTraversalRegexDir.match(pathStr);
     } else {
-        m = _fullRegexFile.match(pathStr);
+        m = _fullTraversalRegexFile.match(pathStr);
     }
     if (m.hasMatch()) {
         if (!m.captured(1).isEmpty()) {
-            match = CSYNC_FILE_EXCLUDE_LIST;
+            return CSYNC_FILE_EXCLUDE_LIST;
         } else if (!m.captured(2).isEmpty()) {
-            match = CSYNC_FILE_EXCLUDE_AND_REMOVE;
+            return CSYNC_FILE_EXCLUDE_AND_REMOVE;
         }
     }
-    return match;
+    return CSYNC_NOT_EXCLUDED;
 }
 
 CSYNC_EXCLUDE_TYPE ExcludedFiles::fullPatternMatch(const char *path, ItemType filetype) const
@@ -552,16 +557,16 @@ void ExcludedFiles::prepare()
 {
     // Build regular expressions for the different cases.
     //
-    // To compose the _bnameActivationRegex and _fullRegex patterns we
-    // collect several subgroups of patterns here.
+    // To compose the _bnameTraversalRegex, _fullTraversalRegex and _fullRegex
+    // patterns we collect several subgroups of patterns here.
     //
     // * The "full" group will contain all patterns that contain a non-trailing
-    //   slash. They only make sense in the fullRegex.
+    //   slash. They only make sense in the fullRegex and fullTraversalRegex.
     // * The "bname" group contains all patterns without a non-trailing slash.
     //   These need separate handling in the _fullRegex (slash-containing
     //   patterns must be anchored to the front, these don't need it)
     // * The "bnameTrigger" group contains the bname part of all patterns in the
-    //   "full" group. These and the "bname" group become _bnameActivationRegex.
+    //   "full" group. These and the "bname" group become _bnameTraversalRegex.
     //
     // To complicate matters, the exclude patterns have two binary attributes
     // meaning we'll end up with 4 variants:
@@ -644,18 +649,37 @@ void ExcludedFiles::prepare()
     emptyMatchNothing(bnameTriggerFileDir);
     emptyMatchNothing(bnameTriggerDir);
 
-    // The bname activation regexe is applied to the bname only, so must be
-    // anchored in the beginning and in the end. It has the explicit triggers
-    // plus the bname-only patterns. Here we don't care about the remove/keep
-    // distinction.
-    _bnameActivationRegexFile.setPattern(
-        "^(?:" + bnameFileDirKeep + "|" + bnameFileDirRemove + "|" + bnameTriggerFileDir + ")$");
-    _bnameActivationRegexDir.setPattern(
-        "^(?:" + bnameFileDirKeep + "|" + bnameFileDirRemove
-        + "|" + bnameDirKeep + "|" + bnameFileDirRemove
-        + "|" + bnameTriggerFileDir + "|" + bnameTriggerDir + ")$");
+    // The bname activation regex is applied to the bname only, so must be
+    // anchored in the beginning and in the end. It has the structure:
+    // (exclude-and-keep)|(exclude-and-remove)|(bname triggers).
+    // If the third group matches, the fullActivatedRegex needs to be applied
+    // to the full path.
+    _bnameTraversalRegexFile.setPattern(
+        "^(" + bnameFileDirKeep + ")$|"
+        + "^(" + bnameFileDirRemove + ")$|"
+        + "^(" + bnameTriggerFileDir + ")$");
+    _bnameTraversalRegexDir.setPattern(
+        "^(" + bnameFileDirKeep + "|" + bnameDirKeep + ")$|"
+        + "^(" + bnameFileDirRemove + "|" + bnameDirRemove + ")$|"
+        + "^(" + bnameTriggerFileDir + "|" + bnameTriggerDir + ")$");
 
-    // The full regex has two captures, it's basic form is "(...)|(...)". The first
+    // The full traveral regex is applied to the full path if the bname activation
+    // capture matches. Its basic form is (exclude-and-keep)|(exclude-and-remove)".
+    // This pattern can be much simpler than fullRegex since we can assume a traversal
+    // situation and doesn't need to look for bname patterns in parent paths.
+    _fullTraversalRegexFile.setPattern(
+        QLatin1String("")
+        // Full patterns are anchored to the beginning
+        + "^(" + fullFileDirKeep + ")(?:$|/)"
+        + "|"
+        + "^(" + fullFileDirRemove + ")(?:$|/)");
+    _fullTraversalRegexDir.setPattern(
+        QLatin1String("")
+        + "^(" + fullFileDirKeep + "|" + fullDirKeep + ")(?:$|/)"
+        + "|"
+        + "^(" + fullFileDirRemove + "|" + fullDirRemove + ")(?:$|/)");
+
+    // The full regex has two captures, its basic form is "(...)|(...)". The first
     // capture has the keep/exclude-only patterns, the second the remove/exclude-and-remove
     // patterns.
     _fullRegexFile.setPattern(
@@ -684,10 +708,14 @@ void ExcludedFiles::prepare()
     QRegularExpression::PatternOptions patternOptions = QRegularExpression::NoPatternOption;
     if (OCC::Utility::fsCasePreserving())
         patternOptions |= QRegularExpression::CaseInsensitiveOption;
-    _bnameActivationRegexFile.setPatternOptions(patternOptions);
-    _bnameActivationRegexFile.optimize();
-    _bnameActivationRegexDir.setPatternOptions(patternOptions);
-    _bnameActivationRegexDir.optimize();
+    _bnameTraversalRegexFile.setPatternOptions(patternOptions);
+    _bnameTraversalRegexFile.optimize();
+    _bnameTraversalRegexDir.setPatternOptions(patternOptions);
+    _bnameTraversalRegexDir.optimize();
+    _fullTraversalRegexFile.setPatternOptions(patternOptions);
+    _fullTraversalRegexFile.optimize();
+    _fullTraversalRegexDir.setPatternOptions(patternOptions);
+    _fullTraversalRegexDir.optimize();
     _fullRegexFile.setPatternOptions(patternOptions);
     _fullRegexFile.optimize();
     _fullRegexDir.setPatternOptions(patternOptions);

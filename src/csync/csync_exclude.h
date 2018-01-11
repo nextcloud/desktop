@@ -179,8 +179,9 @@ private:
      *   full("a/b/c/d") == traversal("a") || traversal("a/b") || traversal("a/b/c")
      *
      * The traversal matcher can be extremely fast because it has a fast early-out
-     * case: It checks the bname part of the path against _bnameActivationRegex
-     * and only runs the full regex if the bname activation was triggered.
+     * case: It checks the bname part of the path against _bnameTraversalRegex
+     * and only runs a simplified _fullTraversalRegex on the whole path if bname
+     * activation for it was triggered.
      *
      * Note: The traversal matcher will return not-excluded on some paths that the
      * full matcher would exclude. Example: "b" is excluded. traversal("b/c")
@@ -198,8 +199,10 @@ private:
     QList<QByteArray> _allExcludes;
 
     /// see prepare()
-    QRegularExpression _bnameActivationRegexFile;
-    QRegularExpression _bnameActivationRegexDir;
+    QRegularExpression _bnameTraversalRegexFile;
+    QRegularExpression _bnameTraversalRegexDir;
+    QRegularExpression _fullTraversalRegexFile;
+    QRegularExpression _fullTraversalRegexDir;
     QRegularExpression _fullRegexFile;
     QRegularExpression _fullRegexDir;
 

@@ -118,10 +118,13 @@ static void check_csync_exclude_add(void **)
     assert_true(excludedFiles->_allExcludes.contains("/tmp/check_csync1/*"));
 
     assert_true(excludedFiles->_fullRegexFile.pattern().contains("csync1"));
-    assert_false(excludedFiles->_bnameActivationRegexFile.pattern().contains("csync1"));
+    assert_true(excludedFiles->_fullTraversalRegexFile.pattern().contains("csync1"));
+    assert_false(excludedFiles->_bnameTraversalRegexFile.pattern().contains("csync1"));
 
     excludedFiles->addManualExclude("foo");
-    assert_true(excludedFiles->_bnameActivationRegexFile.pattern().contains("foo"));
+    assert_true(excludedFiles->_bnameTraversalRegexFile.pattern().contains("foo"));
+    assert_true(excludedFiles->_fullRegexFile.pattern().contains("foo"));
+    assert_false(excludedFiles->_fullTraversalRegexFile.pattern().contains("foo"));
 }
 
 static void check_csync_excluded(void **)
