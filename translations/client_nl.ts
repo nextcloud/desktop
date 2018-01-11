@@ -1402,7 +1402,7 @@ Onderdelen die gewist mogen worden worden verwijderd als ze voorkomen dat een ma
     <message>
         <location filename="../src/gui/issueswidget.ui" line="20"/>
         <source>List of issues</source>
-        <translation type="unfinished"/>
+        <translation>Lijst met problemen</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="34"/>
@@ -1417,7 +1417,7 @@ Onderdelen die gewist mogen worden worden verwijderd als ze voorkomen dat een ma
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="50"/>
-        <location filename="../src/gui/issueswidget.cpp" line="77"/>
+        <location filename="../src/gui/issueswidget.cpp" line="83"/>
         <source>Folder</source>
         <translation>Map</translation>
     </message>
@@ -1429,30 +1429,35 @@ Onderdelen die gewist mogen worden worden verwijderd als ze voorkomen dat een ma
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
         <source>Show ignored files</source>
+        <translation>Tonen genegeerde bestanden</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.ui" line="133"/>
+        <source>There were too many issues. Not all will be visible here.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="148"/>
+        <location filename="../src/gui/issueswidget.ui" line="155"/>
         <source>Copy the issues list to the clipboard.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="151"/>
+        <location filename="../src/gui/issueswidget.ui" line="158"/>
         <source>Copy</source>
         <translation>Kopiëren</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="75"/>
+        <location filename="../src/gui/issueswidget.cpp" line="81"/>
         <source>Time</source>
         <translation>Tijd</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="76"/>
+        <location filename="../src/gui/issueswidget.cpp" line="82"/>
         <source>File</source>
         <translation>Bestand</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="78"/>
+        <location filename="../src/gui/issueswidget.cpp" line="84"/>
         <source>Issue</source>
         <translation>Probleem</translation>
     </message>
@@ -1694,7 +1699,7 @@ Onderdelen die gewist mogen worden worden verwijderd als ze voorkomen dat een ma
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="112"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Fout gemeld door de server: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
@@ -2674,7 +2679,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="178"/>
         <source>Link properties:</source>
-        <translation type="unfinished"/>
+        <translation>Link eigenschappen:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="220"/>
@@ -2736,7 +2741,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopiëren link naar klembord</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
@@ -2819,7 +2824,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="237"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopiëren link naar klembord</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="239"/>
@@ -2937,7 +2942,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="567"/>
         <source>Copy private link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopiëren privé-link naar klembord</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="568"/>

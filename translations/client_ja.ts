@@ -1396,7 +1396,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="20"/>
         <source>List of issues</source>
-        <translation>課題一覧</translation>
+        <translation>問題一覧</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="34"/>
@@ -1411,44 +1411,49 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="50"/>
-        <location filename="../src/gui/issueswidget.cpp" line="77"/>
+        <location filename="../src/gui/issueswidget.cpp" line="83"/>
         <source>Folder</source>
         <translation>フォルダー</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="73"/>
         <source>Show warnings</source>
-        <translation type="unfinished"/>
+        <translation>警告を表示</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
         <source>Show ignored files</source>
+        <translation>除外ファイルを表示</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.ui" line="133"/>
+        <source>There were too many issues. Not all will be visible here.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="148"/>
+        <location filename="../src/gui/issueswidget.ui" line="155"/>
         <source>Copy the issues list to the clipboard.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="151"/>
+        <location filename="../src/gui/issueswidget.ui" line="158"/>
         <source>Copy</source>
         <translation>コピー</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="75"/>
+        <location filename="../src/gui/issueswidget.cpp" line="81"/>
         <source>Time</source>
         <translation>時刻</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="76"/>
+        <location filename="../src/gui/issueswidget.cpp" line="82"/>
         <source>File</source>
         <translation>ファイル</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="78"/>
+        <location filename="../src/gui/issueswidget.cpp" line="84"/>
         <source>Issue</source>
-        <translation>課題</translation>
+        <translation>問題</translation>
     </message>
 </context>
 <context>
@@ -2681,7 +2686,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="20"/>
         <source>Anyone with the link has access to the file/folder</source>
-        <translation>リンクを知っている人はファイル/フォルダにアクセスできます</translation>
+        <translation>リンクを知っている人はファイル/フォルダーにアクセスできます</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="115"/>

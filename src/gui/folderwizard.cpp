@@ -568,10 +568,12 @@ void FolderWizard::resizeEvent(QResizeEvent *event)
     QWizard::resizeEvent(event);
 
     // workaround for QTBUG-22819: when the error label word wrap, the minimum height is not adjusted
-    int hfw = currentPage()->heightForWidth(currentPage()->width());
-    if (currentPage()->height() < hfw) {
-        currentPage()->setMinimumSize(currentPage()->minimumSizeHint().width(), hfw);
-        setTitleFormat(titleFormat()); // And another workaround for QTBUG-3396
+    if (auto page = currentPage()) {
+        int hfw = page->heightForWidth(page->width());
+        if (page->height() < hfw) {
+            page->setMinimumSize(page->minimumSizeHint().width(), hfw);
+            setTitleFormat(titleFormat()); // And another workaround for QTBUG-3396
+        }
     }
 }
 

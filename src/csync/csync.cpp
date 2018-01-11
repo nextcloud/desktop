@@ -86,6 +86,8 @@ int csync_update(CSYNC *ctx) {
   csync_gettime(&start);
   ctx->current = LOCAL_REPLICA;
 
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "## Starting local discovery ##");
+
   rc = csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
   if (rc < 0) {
     if(ctx->status_code == CSYNC_STATUS_OK) {
@@ -104,6 +106,8 @@ int csync_update(CSYNC *ctx) {
   /* update detection for remote replica */
   csync_gettime(&start);
   ctx->current = REMOTE_REPLICA;
+
+  CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "## Starting remote discovery ##");
 
   rc = csync_ftw(ctx, "", csync_walker, MAX_DEPTH);
   if (rc < 0) {

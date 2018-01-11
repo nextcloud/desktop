@@ -1414,7 +1414,7 @@ L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la supp
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="50"/>
-        <location filename="../src/gui/issueswidget.cpp" line="77"/>
+        <location filename="../src/gui/issueswidget.cpp" line="83"/>
         <source>Folder</source>
         <translation>Dossier</translation>
     </message>
@@ -1429,27 +1429,32 @@ L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la supp
         <translation>Voir les fichiers ignorés</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="148"/>
+        <location filename="../src/gui/issueswidget.ui" line="133"/>
+        <source>There were too many issues. Not all will be visible here.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.ui" line="155"/>
         <source>Copy the issues list to the clipboard.</source>
         <translation>Copier la liste des anomalies dans le presse-papier.</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="151"/>
+        <location filename="../src/gui/issueswidget.ui" line="158"/>
         <source>Copy</source>
         <translation>Copier</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="75"/>
+        <location filename="../src/gui/issueswidget.cpp" line="81"/>
         <source>Time</source>
         <translation>Heure</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="76"/>
+        <location filename="../src/gui/issueswidget.cpp" line="82"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="78"/>
+        <location filename="../src/gui/issueswidget.cpp" line="84"/>
         <source>Issue</source>
         <translation>Incident</translation>
     </message>

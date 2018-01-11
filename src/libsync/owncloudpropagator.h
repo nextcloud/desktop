@@ -224,8 +224,9 @@ public:
 
     virtual ~PropagatorCompositeJob()
     {
-        qDeleteAll(_jobsToDo);
-        qDeleteAll(_runningJobs);
+        // Don't delete jobs in _jobsToDo and _runningJobs: they have parents
+        // that will be responsible for cleanup. Deleting them here would risk
+        // deleting something that has already been deleted by a shared parent.
     }
 
     void appendJob(PropagatorJob *job);

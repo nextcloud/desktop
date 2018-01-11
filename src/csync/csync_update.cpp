@@ -151,10 +151,18 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       }
   }
 
-  if (ctx->current == REMOTE_REPLICA && QTextCodec::codecForLocale()->mibEnum() != 106) {
+  auto localCodec = QTextCodec::codecForLocale();
+  if (ctx->current == REMOTE_REPLICA && localCodec->mibEnum() != 106) {
       /* If the locale codec is not UTF-8, we must check that the filename from the server can
-       * be encoded in the local file system. */
-      if (!QTextCodec::codecForLocale()->canEncode(QString::fromUtf8(fs->path))) {
+       * be encoded in the local file system.
+       *
+       * We cannot use QTextCodec::canEncode() since that can incorrectly return true, see
+       * https://bugreports.qt.io/browse/QTBUG-6925.
+       */
+      QTextEncoder encoder(localCodec, QTextCodec::ConvertInvalidToNull);
+      if (encoder.fromUnicode(QString::fromUtf8(fs->path)).contains('\0')) {
+          qCDebug(lcUpdate, "cannot encode %s to local encoding %d",
+              fs->path.constData(), localCodec->mibEnum());
           excluded = CSYNC_FILE_EXCLUDE_CANNOT_ENCODE;
       }
   }
@@ -503,7 +511,7 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
         if (ctx->exclude_traversal_fn)
             excluded = ctx->exclude_traversal_fn(st->path, st->type);
         if (excluded != CSYNC_NOT_EXCLUDED) {
-            qDebug(lcUpdate, "%s excluded (%d)", st->path.constData(), excluded);
+            qInfo(lcUpdate, "%s excluded from db read (%d)", st->path.constData(), excluded);
 
             if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE
                     || excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
@@ -522,7 +530,7 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
         ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
         return false;
     }
-    qDebug(lcUpdate, "%" PRId64 " entries read below path %s from db.", count, uri);
+    qInfo(lcUpdate, "%" PRId64 " entries read below path %s from db.", count, uri);
 
     return true;
 }
