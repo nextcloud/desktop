@@ -31,7 +31,7 @@ node('CLIENT') {
             cd build
             cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE="Debug" -DUNIT_TESTING=1 ..
             make -j4
-            ctest -V --output-on-failure
+            LC_ALL=C.UTF-8 ctest -V --output-on-failure
             '''
         }
 
@@ -45,7 +45,7 @@ node('CLIENT') {
             cd build
             cmake -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE="Debug" -DUNIT_TESTING=1 ..
             ninja -j4
-            ctest -V --output-on-failure
+            LC_ALL=C.UTF-8 ctest -V --output-on-failure
             '''
         }
 
