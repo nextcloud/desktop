@@ -58,7 +58,9 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     //Is this a file or folder?
     QFileInfo fi(localPath);
     _isFile = fi.isFile();
-    _ui->nameLineEdit->setText(tr("%1 link").arg(fi.fileName()));
+
+    // Note: the share name cannot be longer than 64 characters
+    _ui->nameLineEdit->setText(tr("Public link"));
 
     // the following progress indicator widgets are added to layouts which makes them
     // automatically deleted once the dialog dies.
