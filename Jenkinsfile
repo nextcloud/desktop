@@ -21,8 +21,10 @@ node('CLIENT') {
         checkout scm
         sh '''git submodule update --init'''
 
-    stage 'Linux - GCC'
+    stage 'Linux - Pull Docker Image'
         linux.pull()
+
+    stage 'Linux - GCC'
         linux.inside {
             sh '''
             export HOME="$(pwd)/home"
@@ -36,7 +38,6 @@ node('CLIENT') {
         }
 
     stage 'Linux - Clang'
-        linux.pull()
         linux.inside {
             sh '''
             export HOME="$(pwd)/home"
@@ -49,8 +50,10 @@ node('CLIENT') {
             '''
         }
 
+    stage 'Win32 - Pull Docker Image'
+        win32.pull()
+
     stage 'Win32'
-        win32.pull() // make sure we have the latest available from Docker Hub
         win32.inside {
             sh '''
             rm -rf build-win32
