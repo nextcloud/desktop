@@ -1427,7 +1427,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="133"/>
         <source>There were too many issues. Not all will be visible here.</source>
-        <translation type="unfinished"/>
+        <translation>Было слишком много проблем. Не все будут видны здесь.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="155"/>
