@@ -89,7 +89,7 @@ pipeline:
                 BUILD: AppImage
 
     Debian:
-        image: nextcloud-drone-debian:latest
+        image: nextcloudci/client-debian-ci:client-debian-ci-1
         commands:
             - /bin/bash -c "./admin/linux/debian/drone-build.sh"
         when:
