@@ -57,7 +57,7 @@ void setLaunchOnStartup_private(const QString &appName, const QString &guiName, 
     QString desktopFileLocation = userAutoStartPath + appName + QLatin1String(".desktop");
     if (enable) {
         if (!QDir().exists(userAutoStartPath) && !QDir().mkpath(userAutoStartPath)) {
-            qCWarning(lcUtility) << "Could not create autostart folder";
+            qCWarning(lcUtility) << "Could not create autostart folder" << userAutoStartPath;
             return;
         }
         QFile iniFile(desktopFileLocation);
