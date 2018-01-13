@@ -5,6 +5,8 @@ add_library(OCContextMenu MODULE
     OCContextMenuFactory.cpp
     OCContextMenuRegHandler.cpp
     stdafx.cpp
+    OCContextMenu.rc
+    OCContextMenu.def
 )
 
 target_link_libraries(OCContextMenu

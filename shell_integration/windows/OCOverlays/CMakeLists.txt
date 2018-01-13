@@ -4,6 +4,8 @@ add_library(OCOverlays MODULE
     OCOverlayFactory.cpp
     OCOverlayRegistrationHandler.cpp
     stdafx.cpp
+    OCOverlay.rc
+    OCOverlays.def
 )
 
 target_link_libraries(OCOverlays
