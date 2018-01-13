@@ -314,8 +314,8 @@ if (NOT NO_SHIBBOLETH)
 endif()
 
 if(WITH_CRASHREPORTER)
-    target_link_libraries( ${APPLICATION_EXECUTABLE} crashreporter-handler)
-    target_include_directories(${APPLICATION_EXECUTABLE} "../3rdparty/libcrashreporter-qt/src/" )
+    target_link_libraries(${APPLICATION_EXECUTABLE} crashreporter-handler)
+    target_include_directories(${APPLICATION_EXECUTABLE} PRIVATE "../3rdparty/libcrashreporter-qt/src/")
 
     if(UNIX AND NOT MAC)
         find_package(Threads REQUIRED)
