@@ -13,8 +13,8 @@
 // compiler.
 
 
-def linux = docker.image('dominikschmidt/owncloud-client-ci-image:latest')
-def win32 = docker.image('guruz/docker-owncloud-client-win32:latest')
+def linux = docker.image('dominikschmidt/docker-owncloud-client-linux:latest')
+def win32 = docker.image('dominikschmidt/docker-owncloud-client-win32-cross:latest')
 
 node('CLIENT') {
     stage 'Checkout'
@@ -50,10 +50,10 @@ node('CLIENT') {
             '''
         }
 
-    stage 'Win32 - Pull Docker Image'
+    stage 'Win32 Cross - Pull Docker Image'
         win32.pull()
 
-    stage 'Win32'
+    stage 'Win32 Cross'
         win32.inside {
             sh '''
             rm -rf build-win32
