@@ -2648,7 +2648,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="42"/>
         <source>&amp;Create new</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Loo uus</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="105"/>
@@ -2699,7 +2699,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="61"/>
         <source>%1 link</source>
-        <translation type="unfinished"/>
+        <translation>%1 link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="91"/>
@@ -2760,7 +2760,7 @@ Selle kasutamine pole soovitatav.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="542"/>
         <source>Public link</source>
-        <translation type="unfinished"/>
+        <translation>Avalik link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="252"/>
