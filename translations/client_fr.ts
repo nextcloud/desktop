@@ -1735,8 +1735,8 @@ L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la supp
         <location filename="../src/gui/updater/ocupdater.cpp" line="104"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>Une nouvelle mise à jour de %1 est sur le point d&apos;être installée. 
-L&apos;assistant peut demander des privilèges additionnels durant le processus.</translation>
+        <translation>Une mise à jour de %1 est sur le point d&apos;être installée. 
+L&apos;assistant de mise à jour peut vous demandez des autorisations supplémentaires afin de procéder à l&apos;installation.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
