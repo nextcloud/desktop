@@ -23,6 +23,7 @@
 #include <QElapsedTimer>
 #include <QUrl>
 #include <QDir>
+#include <sqlite3.h>
 
 #include "common/syncjournaldb.h"
 #include "version.h"

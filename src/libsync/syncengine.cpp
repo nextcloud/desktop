@@ -534,9 +534,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
             item->_errorString = tr("Conflict: Server version downloaded, local copy renamed and not uploaded.");
         }
         break;
-    case CYSNC_STATUS_FILE_LOCKED_OR_OPEN:
-        item->_errorString = QLatin1String("File locked"); // don't translate, internal use!
-        break;
     case CSYNC_STATUS_INDIVIDUAL_STAT_FAILED:
         item->_errorString = tr("Stat failed.");
         break;

@@ -108,7 +108,6 @@ enum csync_status_codes_e {
     CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS,
     CSYNC_STATUS_INDIVIDUAL_TRAILING_SPACE,
     CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME,
-    CYSNC_STATUS_FILE_LOCKED_OR_OPEN,
     CSYNC_STATUS_INDIVIDUAL_EXCLUDE_HIDDEN,
     CSYNC_STATUS_INVALID_CHARACTERS,
     CSYNC_STATUS_INDIVIDUAL_STAT_FAILED,
@@ -223,10 +222,6 @@ typedef struct csync_s CSYNC;
 typedef int (*csync_auth_callback) (const char *prompt, char *buf, size_t len,
     int echo, int verify, void *userdata);
 
-typedef void (*csync_log_callback) (int verbosity,
-                                    const char *function,
-                                    const char *buffer);
-
 typedef void (*csync_update_callback) (bool local,
                                     const char *dirUrl,
                                     void *userdata);
@@ -303,39 +298,6 @@ csync_auth_callback OCSYNC_EXPORT csync_get_auth_callback(CSYNC *ctx);
  * @return              0 on success, less than 0 if an error occurred.
  */
 int OCSYNC_EXPORT csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb);
-
-/**
- * @brief Set the log level.
- *
- * @param[in]  level  The log verbosity.
- *
- * @return 0 on success, < 0 if an error occurred.
- */
-int OCSYNC_EXPORT csync_set_log_level(int level);
-
-/**
- * @brief Get the log verbosity
- *
- * @return            The log verbosity, -1 on error.
- */
-int OCSYNC_EXPORT csync_get_log_level(void);
-
-/**
- * @brief Get the logging callback set.
- *
- * @return              The logging callback set or NULL if an error
- *                      occurred.
- */
-csync_log_callback OCSYNC_EXPORT csync_get_log_callback(void);
-
-/**
- * @brief Set the logging callback.
- *
- * @param cb            The logging callback.
- *
- * @return              0 on success, less than 0 if an error occurred.
- */
-int OCSYNC_EXPORT csync_set_log_callback(csync_log_callback cb);
 
 /* Used for special modes or debugging */
 CSYNC_STATUS OCSYNC_EXPORT csync_get_status(CSYNC *ctx);

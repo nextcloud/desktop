@@ -21,3 +21,7 @@ if( UNIX AND NOT APPLE )
     endif()
   endif()
 endif()
+
+if(MSVC)
+  add_subdirectory(windows)
+endif()

@@ -36,7 +36,6 @@
 #include "c_lib.h"
 #include "csync_private.h"
 #include "csync_exclude.h"
-#include "csync_time.h"
 #include "csync_util.h"
 #include "csync_misc.h"
 #include "std/c_private.h"
@@ -46,10 +45,11 @@
 
 #include "vio/csync_vio.h"
 
-#include "csync_log.h"
 #include "csync_rename.h"
 #include "common/c_jhash.h"
 #include "common/syncjournalfilerecord.h"
+
+Q_LOGGING_CATEGORY(lcCSync, "sync.csync.csync", QtInfoMsg)
 
 
 csync_s::csync_s(const char *localUri, OCC::SyncJournalDb *statedb)
@@ -66,7 +66,6 @@ csync_s::csync_s(const char *localUri, OCC::SyncJournalDb *statedb)
 
 int csync_update(CSYNC *ctx) {
   int rc = -1;
-  struct timespec start, finish;
 
   if (ctx == NULL) {
     errno = EBADF;
@@ -79,14 +78,15 @@ int csync_update(CSYNC *ctx) {
   csync_memstat_check();
 
   if (!ctx->exclude_traversal_fn) {
-      CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "No exclude file loaded or defined!");
+      qCInfo(lcCSync, "No exclude file loaded or defined!");
   }
 
   /* update detection for local replica */
-  csync_gettime(&start);
+  QElapsedTimer timer;
+  timer.start();
   ctx->current = LOCAL_REPLICA;
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "## Starting local discovery ##");
+  qCInfo(lcCSync, "## Starting local discovery ##");
 
   rc = csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
   if (rc < 0) {
@@ -96,18 +96,15 @@ int csync_update(CSYNC *ctx) {
     return rc;
   }
 
-  csync_gettime(&finish);
-
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Update detection for local replica took %.2f seconds walking %zu files.",
-            c_secdiff(finish, start), ctx->local.files.size());
+  qCInfo(lcCSync) << "Update detection for local replica took" << timer.elapsed() / 1000.
+                  << "seconds walking" << ctx->local.files.size() << "files";
   csync_memstat_check();
 
   /* update detection for remote replica */
-  csync_gettime(&start);
+  timer.restart();
   ctx->current = REMOTE_REPLICA;
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "## Starting remote discovery ##");
+  qCInfo(lcCSync, "## Starting remote discovery ##");
 
   rc = csync_ftw(ctx, "", csync_walker, MAX_DEPTH);
   if (rc < 0) {
@@ -117,12 +114,9 @@ int csync_update(CSYNC *ctx) {
       return rc;
   }
 
-  csync_gettime(&finish);
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-            "Update detection for remote replica took %.2f seconds "
-            "walking %zu files.",
-            c_secdiff(finish, start), ctx->remote.files.size());
+  qCInfo(lcCSync) << "Update detection for remote replica took" << timer.elapsed() / 1000.
+                  << "seconds walking" << ctx->remote.files.size() << "files";
   csync_memstat_check();
 
   ctx->status |= CSYNC_STATUS_UPDATE;
@@ -133,7 +127,6 @@ int csync_update(CSYNC *ctx) {
 
 int csync_reconcile(CSYNC *ctx) {
   int rc = -1;
-  struct timespec start, finish;
 
   if (ctx == NULL) {
     errno = EBADF;
@@ -142,17 +135,15 @@ int csync_reconcile(CSYNC *ctx) {
   ctx->status_code = CSYNC_STATUS_OK;
 
   /* Reconciliation for local replica */
-  csync_gettime(&start);
+  QElapsedTimer timer;
+  timer.start();
 
   ctx->current = LOCAL_REPLICA;
 
   rc = csync_reconcile_updates(ctx);
 
-  csync_gettime(&finish);
-
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-      "Reconciliation for local replica took %.2f seconds visiting %zu files.",
-      c_secdiff(finish, start), ctx->local.files.size());
+  qCInfo(lcCSync) << "Reconciliation for local replica took " << timer.elapsed() / 1000.
+                  << "seconds visiting " << ctx->local.files.size() << " files.";
 
   if (rc < 0) {
       if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
@@ -162,17 +153,14 @@ int csync_reconcile(CSYNC *ctx) {
   }
 
   /* Reconciliation for remote replica */
-  csync_gettime(&start);
+  timer.restart();
 
   ctx->current = REMOTE_REPLICA;
 
   rc = csync_reconcile_updates(ctx);
 
-  csync_gettime(&finish);
-
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG,
-      "Reconciliation for remote replica took %.2f seconds visiting %zu files.",
-      c_secdiff(finish, start), ctx->remote.files.size());
+  qCInfo(lcCSync) << "Reconciliation for remote replica took " << timer.elapsed() / 1000.
+                  << "seconds visiting " << ctx->remote.files.size() << " files.";
 
   if (rc < 0) {
       if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {

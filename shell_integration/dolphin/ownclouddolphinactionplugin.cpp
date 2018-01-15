@@ -31,6 +31,7 @@
 
 class OwncloudDolphinPluginAction : public KAbstractFileItemActionPlugin
 {
+    Q_OBJECT
 public:
     explicit OwncloudDolphinPluginAction(QObject* parent, const QList<QVariant>&)
         : KAbstractFileItemActionPlugin(parent) { }

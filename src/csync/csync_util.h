@@ -30,8 +30,6 @@ const char OCSYNC_EXPORT *csync_instruction_str(enum csync_instructions_e instr)
 
 void OCSYNC_EXPORT csync_memstat_check(void);
 
-bool OCSYNC_EXPORT csync_file_locked_or_open( const char *dir, const char *fname);
-
 /* Returns true if we're reasonably certain that hash equality
  * for the header means content equality.
  *

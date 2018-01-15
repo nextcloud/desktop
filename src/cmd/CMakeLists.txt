@@ -7,17 +7,7 @@ set(cmd_SRC
     simplesslerrorhandler.cpp
     netrcparser.cpp
    )
-include_directories(${CMAKE_SOURCE_DIR}/src/libsync
-                    ${CMAKE_BINARY_DIR}/src/libsync
-                   )
 
-# csync is required.
-include_directories(${CMAKE_SOURCE_DIR}/src/csync
-                    ${CMAKE_BINARY_DIR}/src/csync
-                   )
-
-# Need tokenizer for netrc parser
-include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer)
 
 if(UNIX AND NOT APPLE)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE")
@@ -27,13 +17,15 @@ endif()
 
 if(NOT BUILD_LIBRARIES_ONLY)
    add_executable(${cmd_NAME}  ${cmd_SRC})
-	qt5_use_modules(${cmd_NAME} Network )
 	set_target_properties(${cmd_NAME} PROPERTIES
 	        RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
         set_target_properties(${cmd_NAME} PROPERTIES
 		INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
-	target_link_libraries(${cmd_NAME} ${synclib_NAME})
+    target_link_libraries(${cmd_NAME} ocsync ${synclib_NAME} Qt5::Core Qt5::Network)
+
+    # Need tokenizer for netrc parser
+    target_include_directories(${cmd_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer)
 endif()
 
 if(BUILD_OWNCLOUD_OSX_BUNDLE)
@@ -44,7 +36,6 @@ elseif(NOT BUILD_LIBRARIES_ONLY)
 	    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
 	    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR})
 endif()
-
 
 # FIXME: The following lines are dup in src/gui and src/cmd because it needs to be done after both are installed
 #FIXME: find a nice solution to make the second if(BUILD_OWNCLOUD_OSX_BUNDLE) unnecessary

@@ -41,28 +41,6 @@ extern "C" {
 
 #include <stdlib.h>
 
-struct c_strlist_s; typedef struct c_strlist_s c_strlist_t;
-
-/**
- * @brief Structure for a stringlist
- *
- * Using a for loop you can access the strings saved in the vector.
- *
- * c_strlist_t strlist;
- * int i;
- * for (i = 0; i < strlist->count; i++) {
- *   printf("value: %s", strlist->vector[i];
- * }
- */
-struct c_strlist_s {
-  /** The string vector */
-  char **vector;
-  /** The count of the strings saved in the vector */
-  size_t count;
-  /** Size of strings allocated */
-  size_t size;
-};
-
 /**
  * @brief Compare to strings case insensitively.
  *
@@ -84,68 +62,6 @@ int c_strncasecmp(const char *a, const char *b, size_t n);
  */
 int c_streq(const char *a, const char *b);
 
-/**
- * @brief Create a new stringlist.
- *
- * @param size  Size to allocate.
- *
- * @return  Pointer to the newly allocated stringlist. NULL if an error occurred.
- */
-c_strlist_t *c_strlist_new(size_t size);
-
-/**
- * @brief Expand the stringlist
- *
- * @param strlist  Stringlist to expand
- * @param size     New size of the strlinglist to expand
- *
- * @return  Pointer to the expanded stringlist. NULL if an error occurred.
- */
-c_strlist_t *c_strlist_expand(c_strlist_t *strlist, size_t size);
-
-/**
- * @brief  Add a string to the stringlist.
- *
- * Duplicates the string and stores it in the stringlist.
- *
- * @param strlist  Stringlist to add the string.
- * @param string   String to add.
- *
- * @return  0 on success, less than 0 and errno set if an error occurred.
- *          ENOBUFS if the list is full.
- */
-int c_strlist_add(c_strlist_t *strlist, const char *string);
-
-/**
- * @brief  Add a string to the stringlist, growing it if necessary
- *
- * Duplicates the string and stores it in the stringlist.
- * It also initializes the stringlist if it starts out as null.
- *
- * @param strlist  Stringlist to add the string.
- * @param string   String to add.
- *
- * @return  0 on success, less than 0 and errno set if an error occurred.
- */
-int c_strlist_add_grow(c_strlist_t **strlist, const char *string);
-
-/**
- * @brief Removes all strings from the list.
- *
- * Frees the strings.
- *
- * @param strlist  Stringlist to clear
- */
-void c_strlist_clear(c_strlist_t *strlist);
-
-/**
- * @brief Destroy the memory of the stringlist.
- *
- * Frees the strings and the stringlist.
- *
- * @param strlist  Stringlist to destroy
- */
-void c_strlist_destroy(c_strlist_t *strlist);
 
 /**
  * }@

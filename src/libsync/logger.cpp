@@ -19,12 +19,7 @@
 #include <QThread>
 #include <qmetaobject.h>
 
-#include "csync.h"
-#include "csync_log.h"
-
 namespace OCC {
-
-Q_LOGGING_CATEGORY(lcCsync, "sync.csync", QtInfoMsg)
 
 static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
 {
@@ -34,26 +29,6 @@ static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, cons
     }
 }
 
-static void csyncLogCatcher(int verbosity,
-    const char *function,
-    const char *buffer)
-{
-    if (verbosity <= CSYNC_LOG_PRIORITY_FATAL) {
-        QMessageLogger(0, 0, function, lcCsync().categoryName()).fatal("%s", buffer);
-    } else if (verbosity <= CSYNC_LOG_PRIORITY_CRIT) {
-        if (lcCsync().isCriticalEnabled())
-            QMessageLogger(0, 0, function, lcCsync().categoryName()).critical("%s", buffer);
-    } else if (verbosity <= CSYNC_LOG_PRIORITY_WARN) {
-        if (lcCsync().isWarningEnabled())
-            QMessageLogger(0, 0, function, lcCsync().categoryName()).warning("%s", buffer);
-    } else if (verbosity <= CSYNC_LOG_PRIORITY_INFO) {
-        if (lcCsync().isInfoEnabled())
-            QMessageLogger(0, 0, function, lcCsync().categoryName()).info("%s", buffer);
-    } else if (verbosity <= CSYNC_LOG_PRIORITY_NOTSET) {
-        if (lcCsync().isDebugEnabled())
-            QMessageLogger(0, 0, function, lcCsync().categoryName()).debug("%s", buffer);
-    }
-}
 
 Logger *Logger::instance()
 {
@@ -74,12 +49,7 @@ Logger::Logger(QObject *parent)
     qInstallMessageHandler(mirallLogCatcher);
 #else
     Q_UNUSED(mirallLogCatcher)
-    // Always get logging from csync in that case.
-    csync_set_log_level(11);
 #endif
-
-    // Setup CSYNC logging to forward to our own logger
-    csync_set_log_callback(csyncLogCatcher);
 }
 
 Logger::~Logger()
@@ -112,11 +82,6 @@ void Logger::log(Log log)
         msg = log.timeStamp.toString(QLatin1String("MM-dd hh:mm:ss:zzz")) + QLatin1Char(' ');
     }
 
-    if (log.source == Log::CSync) {
-        // msg += "csync - ";
-    } else {
-        // msg += "ownCloud - ";
-    }
     msg += QString().sprintf("%p ", (void *)QThread::currentThread());
     msg += log.message;
     // _logs.append(log);
@@ -151,7 +116,6 @@ void Logger::doLog(const QString &msg)
 void Logger::mirallLog(const QString &message)
 {
     Log log_;
-    log_.source = Log::Occ;
     log_.timeStamp = QDateTime::currentDateTimeUtc();
     log_.message = message;
 
@@ -161,18 +125,12 @@ void Logger::mirallLog(const QString &message)
 void Logger::setLogWindowActivated(bool activated)
 {
     QMutexLocker locker(&_mutex);
-
-    csync_set_log_level(11);
-
     _logWindowActivated = activated;
 }
 
 void Logger::setLogFile(const QString &name)
 {
     QMutexLocker locker(&_mutex);
-
-    csync_set_log_level(11);
-
     if (_logstream) {
         _logstream.reset(0);
         _logFile.close();

@@ -1,19 +1,21 @@
 project(gui)
+find_package(Qt5 REQUIRED COMPONENTS Widgets)
 set(CMAKE_AUTOMOC TRUE)
-
+set(CMAKE_AUTOUIC TRUE)
+set(CMAKE_AUTORCC TRUE)
 add_subdirectory(updater)
 
 #TODO Move resources files
-qt_add_resources(MIRALL_RC_SRC ../../client.qrc)
+set(MIRALL_RC_SRC ../../client.qrc)
 if (EXISTS "${OEM_THEME_DIR}/theme.qrc")
-    qt_add_resources(MIRALL_RC_SRC ${OEM_THEME_DIR}/theme.qrc)
+    list(APPEND MIRALL_RC_SRC ${OEM_THEME_DIR}/theme.qrc)
     set(theme_dir ${OEM_THEME_DIR}/theme)
 else()
-    qt_add_resources(MIRALL_RC_SRC ../../theme.qrc)
+    list(APPEND MIRALL_RC_SRC ../../theme.qrc)
     set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
 endif()
 
-set(client_UI
+set(client_UI_SRCS
     accountsettings.ui
     folderwizardsourcepage.ui
     folderwizardtargetpage.ui
@@ -40,8 +42,6 @@ set(client_UI
     wizard/owncloudsetupnocredspage.ui
     wizard/owncloudwizardresultpage.ui
 )
-
-qt_wrap_ui(client_UI_SRCS ${client_UI})
 
 set(client_SRCS
     accountmanager.cpp
@@ -173,26 +173,11 @@ else()
    list(APPEND 3rdparty_SRC ../3rdparty/qtlockedfile/qtlockedfile_win.cpp )
 endif()
 
-set(3rdparty_INC
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtlockedfile
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtmacgoodies/src
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtsingleapplication
-    )
 
-include_directories(${3rdparty_INC})
-
-# csync is required.
-include_directories(${CMAKE_SOURCE_DIR}/src/csync
-                    ${CMAKE_BINARY_DIR}/src/csync
-                   )
-include_directories(../libsync ${CMAKE_CURRENT_BINARY_DIR}/../libsync)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}
-                    ${CMAKE_CURRENT_BINARY_DIR}
-                   )
-
-
-qt_add_translation(client_I18N ${TRANSLATIONS})
+find_package(Qt5LinguistTools)
+if(Qt5LinguistTools_FOUND)
+    qt5_add_translation(client_I18N ${TRANSLATIONS})
+endif()
 
 IF( WIN32 )
     configure_file(
@@ -223,8 +208,11 @@ if(QTKEYCHAIN_FOUND OR QT5KEYCHAIN_FOUND)
 endif()
 
 # add executable icon on windows and osx
-include( AddAppIconMacro )
-set(ownCloud_old ${ownCloud})
+
+# UPSTREAM our ECMAddAppIcon.cmake then require that version here
+# find_package(ECM 1.7.0 REQUIRED NO_MODULE)
+# list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+include(ECMAddAppIcon)
 
 # For historical reasons we can not use the application_shortname
 # for ownCloud but must rather set it manually.
@@ -232,16 +220,12 @@ if (NOT DEFINED APPLICATION_ICON_NAME)
     set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
 endif()
 
-kde4_add_app_icon( ownCloud "${theme_dir}/colored/${APPLICATION_ICON_NAME}-*.png")
-list(APPEND final_src ${ownCloud})
-set(ownCloud ${ownCloud_old})
-
-if (WITH_DBUS)
-    set(ADDITIONAL_APP_MODULES DBus)
-endif(WITH_DBUS)
-if (NOT NO_SHIBBOLETH)
-    list(APPEND ADDITIONAL_APP_MODULES WebKitWidgets)
+file(GLOB_RECURSE OWNCLOUD_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon*")
+if(APPLE)
+    file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-sidebar*")
+    MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
 endif()
+ecm_add_app_icon(final_src ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASE "${APPLICATION_ICON_NAME}")
 
 if(UNIX AND NOT APPLE)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE")
@@ -266,14 +250,12 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
 
     # add_executable( ${APPLICATION_EXECUTABLE} main.cpp ${final_src})
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
-    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml Sql ${ADDITIONAL_APP_MODULES})
 else()
     # set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
     set(MACOSX_BUNDLE_ICON_FILE "ownCloud.icns")
 
     # we must add MACOSX_BUNDLE only if building a bundle
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp ${final_src})
-    qt5_use_modules(${APPLICATION_EXECUTABLE} Widgets Network Xml Sql  ${ADDITIONAL_APP_MODULES})
 
     set (QM_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/Translations)
     install(FILES ${client_I18N} DESTINATION ${QM_DIR})
@@ -290,9 +272,9 @@ else()
     install(FILES ${qtkeychain_I18N} DESTINATION ${QM_DIR})
 endif()
 
-add_library(updater STATIC ${updater_SRCS} ${updaterMoc})
-target_link_libraries(updater ${synclib_NAME})
-qt5_use_modules(updater Widgets Network Xml)
+add_library(updater STATIC ${updater_SRCS})
+target_link_libraries(updater ${synclib_NAME} Qt5::Widgets Qt5::Network Qt5::Xml)
+target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
@@ -301,20 +283,48 @@ set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
 	INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
-target_link_libraries( ${APPLICATION_EXECUTABLE} ${QT_LIBRARIES} )
+target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::Network Qt5::Xml)
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
 target_link_libraries( ${APPLICATION_EXECUTABLE} updater )
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${OS_SPECIFIC_LINK_LIBRARIES} )
 
+target_include_directories(${APPLICATION_EXECUTABLE} PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
+    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtlockedfile
+    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtmacgoodies/src
+    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtsingleapplication
+    ${CMAKE_CURRENT_BINARY_DIR}
+)
+
+## handle DBUS for Fdo notifications
+if( UNIX AND NOT APPLE )
+    find_package(Qt5 COMPONENTS DBus)
+    target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::DBus)
+    target_compile_definitions(${APPLICATION_EXECUTABLE} PRIVATE "USE_FDO_NOTIFICATIONS")
+endif()
+
+if (APPLE)
+    find_package(Qt5 COMPONENTS MacExtras)
+    target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::MacExtras)
+endif()
+
+if (NOT NO_SHIBBOLETH)
+    find_package(Qt5 COMPONENTS WebKitWidgets)
+    target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::WebKitWidgets)
+endif()
+
 if(WITH_CRASHREPORTER)
-    target_link_libraries( ${APPLICATION_EXECUTABLE} crashreporter-handler)
-    include_directories( "../3rdparty/libcrashreporter-qt/src/" )
+    target_link_libraries(${APPLICATION_EXECUTABLE} crashreporter-handler)
 
     if(UNIX AND NOT MAC)
         find_package(Threads REQUIRED)
         target_link_libraries( ${APPLICATION_EXECUTABLE} ${CMAKE_THREAD_LIBS_INIT})
     endif()
 endif()
+
+# application.cpp still uses QDesktopServices::storageLocation
+target_compile_definitions(${APPLICATION_EXECUTABLE} PRIVATE "QT_DISABLE_DEPRECATED_BEFORE=0")
+
 
 install(TARGETS ${APPLICATION_EXECUTABLE}
         RUNTIME DESTINATION bin

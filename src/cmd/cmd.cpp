@@ -331,7 +331,6 @@ int main(int argc, char **argv)
 
     parseOptions(app.arguments(), &options);
 
-    csync_set_log_level(options.silent ? 1 : 11);
     if (options.silent) {
         qInstallMessageHandler(nullMessageHandler);
     } else {
