@@ -1124,20 +1124,28 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
   // perhaps it's better to store a map instead of a vector, perhaps this just doesn't matter.
   for(auto it = metadataKeys.constBegin(), end = metadataKeys.constEnd(); it != end; it++) {
     QByteArray currB64Pass = it.value().toString().toLocal8Bit();
-    QByteArray decryptedKey = decryptMetadataKey(currB64Pass);
+    /*
+     * We have to base64 decode the metadatakey here. This was a misunderstanding in the RFC
+     * Now we should be compatible with Android and IOS. Maybe we can fix it later.
+     */
+    QByteArray decryptedKey = QByteArray::fromBase64(decryptMetadataKey(currB64Pass));
     _metadataKeys.insert(it.key().toInt(), decryptedKey);
   }
 
   // Cool, We actually have the key, we can decrypt the rest of the metadata.
   qCDebug(lcCse) << "Sharing: " << sharing;
-  auto sharingDecrypted = QByteArray::fromBase64(decryptJsonObject(sharing, _metadataKeys.last()));
-  qCDebug(lcCse) << "Sharing Decrypted" << sharingDecrypted;
+  if (sharing.size()) {
+      auto sharingDecrypted = QByteArray::fromBase64(decryptJsonObject(sharing, _metadataKeys.last()));
+      qCDebug(lcCse) << "Sharing Decrypted" << sharingDecrypted;
 
-  //Sharing is also a JSON object, so extract it and populate.
-  auto sharingDoc = QJsonDocument::fromJson(sharingDecrypted);
-  auto sharingObj = sharingDoc.object();
-  for (auto it = sharingObj.constBegin(), end = sharingObj.constEnd(); it != end; it++) {
-    _sharing.push_back({it.key(), it.value().toString()});
+      //Sharing is also a JSON object, so extract it and populate.
+      auto sharingDoc = QJsonDocument::fromJson(sharingDecrypted);
+      auto sharingObj = sharingDoc.object();
+      for (auto it = sharingObj.constBegin(), end = sharingObj.constEnd(); it != end; it++) {
+        _sharing.push_back({it.key(), it.value().toString()});
+      }
+  } else {
+      qCDebug(lcCse) << "Skipping sharing section since it is empty";
   }
 
     for (auto it = files.constBegin(), end = files.constEnd(); it != end; it++) {
@@ -1222,7 +1230,11 @@ QByteArray FolderMetadata::encryptedMetadata() {
 
     QJsonObject metadataKeys;
     for (auto it = _metadataKeys.constBegin(), end = _metadataKeys.constEnd(); it != end; it++) {
-        const QByteArray encryptedKey = encryptMetadataKey(it.value());
+        /*
+         * We have to already base64 encode the metadatakey here. This was a misunderstanding in the RFC
+         * Now we should be compatible with Android and IOS. Maybe we can fix it later.
+         */
+        const QByteArray encryptedKey = encryptMetadataKey(it.value().toBase64());
         metadataKeys.insert(QString::number(it.key()), QString(encryptedKey));
     }
 
