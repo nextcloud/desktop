@@ -115,7 +115,6 @@ Folder::~Folder()
     _engine.reset();
 }
 
-
 void Folder::checkLocalPath()
 {
     const QFileInfo fi(_definition.localPath);

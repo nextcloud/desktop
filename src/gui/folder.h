@@ -172,12 +172,6 @@ public:
     SyncResult syncResult() const;
 
     /**
-      * set the config file name.
-      */
-    void setConfigFile(const QString &);
-    QString configFile();
-
-    /**
       * This is called if the sync folder definition is removed. Do cleanups here.
       */
     virtual void wipe();
