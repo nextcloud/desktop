@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-owncloud">
+    <comment>ownCloud placeholder style</comment>
+    <glob pattern="*.owncloud"/>
+  </mime-type>
+</mime-info>
