@@ -1,3 +1,6 @@
+# This DockerFile is used to create the image used for Jenkins, the CI system (see Jenkinsfile)
+# It is not meant to be used to create the production packages.
+
 # Distro with Qt 5.6
 FROM ubuntu:yakkety
 

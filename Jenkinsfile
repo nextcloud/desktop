@@ -12,8 +12,9 @@
 // unlikely that a specific generator only breaks with a specific
 // compiler.
 
-
+// Constructed from the DockerFile in admin/linux/DockerFile
 def linux = docker.image('dominikschmidt/docker-owncloud-client-linux:latest')
+// Constructed from the DockerFile in admin/win/docker/DockerFile
 def win32 = docker.image('dominikschmidt/docker-owncloud-client-win32-cross:latest')
 
 node('CLIENT') {
