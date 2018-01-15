@@ -64,8 +64,13 @@ public:
     bool paused;
     /// whether the folder syncs hidden files
     bool ignoreHiddenFiles;
+
     /// the folder has client side encryption
     bool isClientSideEncrypted;
+
+    /// New files are downloaded as placeholders
+    bool usePlaceholders = false;
+
     /// The CLSID where this folder appears in registry for the Explorer navigation pane entry.
     QUuid navigationPaneClsid;
 
