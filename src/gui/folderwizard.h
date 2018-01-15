@@ -25,6 +25,8 @@
 #include "ui_folderwizardsourcepage.h"
 #include "ui_folderwizardtargetpage.h"
 
+class QCheckBox;
+
 namespace OCC {
 
 class SelectiveSyncWidget;
@@ -130,6 +132,7 @@ public:
 
 private:
     SelectiveSyncWidget *_selectiveSync;
+    QCheckBox *_placeholderCheckBox;
 };
 
 /**
