@@ -249,9 +249,6 @@ public:
     // Check for the directEditing capability
     void fetchDirectEditors(const QUrl &directEditingURL, const QString &directEditingETag);
 
-    bool usePlaceholders() const { return _usePlaceholders; }
-    void setUsePlaceholders(bool use) { _usePlaceholders = use; }
-
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -348,8 +345,6 @@ private:
     private:
         bool _isRemoteWipeRequested_HACK = false;
     // <-- FIXME MS@2019-12-07
-
-    bool _usePlaceholders = false;
 };
 }
 

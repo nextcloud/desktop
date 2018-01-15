@@ -52,7 +52,9 @@ private slots:
         QFETCH(bool, doLocalDiscovery);
 
         FakeFolder fakeFolder{FileInfo()};
-        fakeFolder.syncEngine().account()->setUsePlaceholders(true);
+        SyncOptions syncOptions;
+        syncOptions._usePlaceholders = true;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
 
@@ -132,7 +134,9 @@ private slots:
     void testWithNormalSync()
     {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.syncEngine().account()->setUsePlaceholders(true);
+        SyncOptions syncOptions;
+        syncOptions._usePlaceholders = true;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
 
@@ -168,7 +172,9 @@ private slots:
     void testPlaceholderDownload()
     {
         FakeFolder fakeFolder{FileInfo()};
-        fakeFolder.syncEngine().account()->setUsePlaceholders(true);
+        SyncOptions syncOptions;
+        syncOptions._usePlaceholders = true;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
 

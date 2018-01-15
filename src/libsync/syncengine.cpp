@@ -858,7 +858,7 @@ void SyncEngine::startSync()
         return shouldDiscoverLocally(path);
     };
 
-    _csync_ctx->new_files_are_placeholders = account()->usePlaceholders();
+    _csync_ctx->new_files_are_placeholders = _syncOptions._usePlaceholders;
 
     // If needed, make sure we have up to date E2E information before the
     // discovery phase, otherwise we start right away
