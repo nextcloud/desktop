@@ -233,9 +233,6 @@ public:
     /// Called by network jobs on credential errors, emits invalidCredentials()
     void handleInvalidCredentials();
 
-    bool usePlaceholders() const { return _usePlaceholders; }
-    void setUsePlaceholders(bool use) { _usePlaceholders = use; }
-
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -305,8 +302,6 @@ private:
 
     QString _davPath; // defaults to value from theme, might be overwritten in brandings
     friend class AccountManager;
-
-    bool _usePlaceholders = false;
 };
 }
 
