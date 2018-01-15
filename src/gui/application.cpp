@@ -461,6 +461,9 @@ void Application::parseOptions(const QStringList &options)
             _debugMode = true;
         } else if (option == QLatin1String("--version")) {
             _versionOnly = true;
+        } else if (option.endsWith(".owncloud")) {
+            // placeholder file, open it after the Folder were created (if the app is not terminated)
+            QTimer::singleShot(0, this, [this, option] { openPlaceholder(option); });
         } else {
             showHint("Unrecognized option '" + option.toStdString() + "'");
         }
@@ -626,5 +629,29 @@ void Application::showSettingsDialog()
     _gui->slotShowSettings();
 }
 
+void Application::openPlaceholder(const QString &filename)
+{
+    QLatin1String placeholderExt(".owncloud");
+    if (!filename.endsWith(placeholderExt)) {
+        qWarning(lcApplication) << "Can only handle file ending in .owncloud. Unable to open" << filename;
+        return;
+    }
+    QString normalName = filename.left(filename.size() - placeholderExt.size());
+    auto folder = FolderMan::instance()->folderForPath(filename);
+    if (!folder) {
+        qWarning(lcApplication) << "Can't find sync folder for" << filename;
+        // TODO: show a QMessageBox for errors
+        return;
+    }
+    QString relativePath = QDir::cleanPath(normalName).mid(folder->cleanPath().length() + 1);
+    folder->downloadPlaceholder(relativePath);
+    auto con = QSharedPointer<QMetaObject::Connection>::create();
+    *con = QObject::connect(folder, &Folder::syncFinished, [con, normalName] {
+        QObject::disconnect(*con);
+        if (QFile::exists(normalName)) {
+            QDesktopServices::openUrl(QUrl::fromLocalFile(normalName));
+        }
+    });
+}
 
 } // namespace OCC
