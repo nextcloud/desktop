@@ -282,6 +282,11 @@ public slots:
        */
     void slotWatchedPathChanged(const QString &path);
 
+    /**
+     * Mark a placeholder as being ready for download, and start a sync.
+     */
+    void downloadPlaceholder(const QString &relativepath);
+
 private slots:
     void slotSyncStarted();
     void slotSyncFinished(bool);

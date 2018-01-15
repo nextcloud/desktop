@@ -495,6 +495,26 @@ void Folder::slotWatchedPathChanged(const QString &path)
     scheduleThisFolderSoon();
 }
 
+void Folder::downloadPlaceholder(const QString &_relativepath)
+{
+    qCInfo(lcFolder) << "Download placeholder: " << _relativepath;
+    auto relativepath = _relativepath.toUtf8();
+
+    // Set in the database that we should download the file
+    SyncJournalFileRecord record;
+    _journal.getFileRecord(relativepath, &record);
+    if (!record.isValid())
+        return;
+    record._type = ItemTypePlaceholderDownload;
+    _journal.setFileRecord(record);
+
+    // Make sure we go over that file during the discovery
+    _journal.avoidReadFromDbOnNextSync(relativepath);
+
+    // Schedule a sync (Folder man will start the sync in a few ms)
+    slotScheduleThisFolder();
+}
+
 void Folder::saveToSettings() const
 {
     // Remove first to make sure we don't get duplicates
