@@ -12,8 +12,16 @@ OBS_PACKAGE=nextcloud-client
 
 pull_request=${DRONE_PULL_REQUEST:=master}
 
-#apt-get update -q
-#apt-get install -y devscripts cdbs osc
+env
+pwd
+
+if test -z "${DRONE_WORKSPACE}"; then
+    DRONE_WORKSPACE=`pwd`
+fi
+
+if test -z "${DRONE_DIR}"; then
+    DRONE_DIR=`dirname ${DRONE_WORKSPACE}`
+fi
 
 if test "$DEBIAN_SECRET_KEY" -a "$DEBIAN_SECRET_IV"; then
     openssl aes-256-cbc -K $DEBIAN_SECRET_KEY -iv $DEBIAN_SECRET_IV -in admin/linux/debian/signing-key.txt.enc -d | gpg --import
@@ -23,9 +31,10 @@ if test "$DEBIAN_SECRET_KEY" -a "$DEBIAN_SECRET_IV"; then
     touch ~/.has_ppa_keys
 fi
 
+cd "${DRONE_WORKSPACE}"
 read basever kind <<<$(admin/linux/debian/scripts/git2changelog.py /tmp/tmpchangelog stable)
 
-cd ..
+cd "${DRONE_DIR}"
 
 echo "$kind" > kind
 kind="release"
@@ -36,19 +45,17 @@ else
     repo=nextcloud-devs/client-alpha
 fi
 
-gitdir="src"
-
 origsourceopt=""
 
 if ! wget http://ppa.launchpad.net/${repo}/ubuntu/pool/main/n/nextcloud-client/nextcloud-client_${basever}.orig.tar.bz2; then
-    cp -a ${gitdir} nextcloud-client_${basever}
+    cp -a ${DRONE_WORKSPACE} nextcloud-client_${basever}
     tar cjf nextcloud-client_${basever}.orig.tar.bz2 --exclude .git nextcloud-client_${basever}
     origsourceopt="-sa"
 fi
 
 for distribution in xenial zesty artful stable; do
     rm -rf nextcloud-client_${basever}
-    cp -a ${gitdir} nextcloud-client_${basever}
+    cp -a ${DRONE_WORKSPACE} nextcloud-client_${basever}
 
     cd nextcloud-client_${basever}
 
