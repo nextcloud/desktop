@@ -1431,7 +1431,7 @@ L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la supp
     <message>
         <location filename="../src/gui/issueswidget.ui" line="133"/>
         <source>There were too many issues. Not all will be visible here.</source>
-        <translation type="unfinished"/>
+        <translation>De trop nombreuses questions se posent. Toutes n&apos;apparaissent pas ici.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="155"/>
