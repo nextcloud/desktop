@@ -35,10 +35,9 @@ on_finish:
 - ps: |
     Get-ChildItem $env:USERPROFILE\.craft\* | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
 
-#test_script:
-#- ps: |
-   #craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --test owncloud-client
-test: off
+test_script:
+- ps: |
+   craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --test owncloud-client
 
 environment:
     matrix:
