@@ -1,0 +1,51 @@
+version: '{build}-{branch}'
+
+branches:
+  only:
+    - master
+
+clone_depth: 50
+
+
+init:
+- ps: |
+    function craft($target) {
+        & C:\Python36\python.exe "C:\CraftMaster\CraftMaster\CraftMaster.py" --config "$env:APPVEYOR_BUILD_FOLDER\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER" --target $target -c $args
+        if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
+    }
+
+install:
+- ps: |
+    #use cmd to silence powershell behaviour for stderr
+    & cmd /C "git clone -q --depth=1 git://anongit.kde.org/craftmaster.git C:\CraftMaster\CraftMaster 2>&1"
+
+    craft $env:TARGET -i craft
+    craft $env:TARGET --install-deps owncloud-client
+
+build_script:
+- ps: |
+    craft $env:TARGET --no-cache --src-dir $env:APPVEYOR_BUILD_FOLDER owncloud-client
+
+after_build:
+- ps: |
+    craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --package owncloud-client
+
+
+on_finish:
+- ps: |
+    Get-ChildItem $env:USERPROFILE\.craft\* | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
+
+#test_script:
+#- ps: |
+   #craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --test owncloud-client
+test: off
+
+environment:
+    matrix:
+    - TARGET: windows-msvc2017_32-cl
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+    - TARGET: windows-msvc2017_64-cl
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+
+artifacts:
+  - path: binaries/*
