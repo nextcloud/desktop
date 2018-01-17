@@ -103,11 +103,13 @@ public:
      */
     virtual qint64 committedDiskSpace() const { return 0; }
 
-    /** Set the composite parent job
+    /** Set the associated composite job
      *
-     * Used only from PropagatorCompositeJob itself, when a job is added.
+     * Used only from PropagatorCompositeJob itself, when a job is added
+     * and from PropagateDirectory to associate the subJobs with the first
+     * job.
      */
-    void setCompositeParent(PropagatorCompositeJob *job) { _compositeParent = job; }
+    void setAssociatedComposite(PropagatorCompositeJob *job) { _associatedComposite = job; }
 
 public slots:
     /*
@@ -138,10 +140,13 @@ protected:
 
     /** If this job gets added to a composite job, this will point to the parent.
      *
+     * For the PropagateDirectory::_firstJob it will point to
+     * PropagateDirectory::_subJobs.
+     *
      * That can be useful for jobs that want to spawn follow-up jobs without
      * becoming composite jobs themselves.
      */
-    PropagatorCompositeJob *_compositeParent = nullptr;
+    PropagatorCompositeJob *_associatedComposite = nullptr;
 };
 
 /*
@@ -491,6 +496,18 @@ public:
      *  all jobs that are currently running.
      */
     DiskSpaceResult diskSpaceCheck() const;
+
+    /** Handles a conflict by renaming the file 'item'.
+     *
+     * Sets up conflict records.
+     *
+     * It also creates a new upload job in composite if the item that's
+     * moved away is a file and conflict uploads are requested.
+     *
+     * Returns true on success, false and error on error.
+     */
+    bool createConflict(const SyncFileItemPtr &item,
+        PropagatorCompositeJob *composite, QString *error);
 
 private slots:
 

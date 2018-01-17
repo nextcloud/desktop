@@ -345,6 +345,208 @@ private slots:
         QFETCH(QString, output);
         QCOMPARE(Utility::conflictFileBaseName(input.toUtf8()), output.toUtf8());
     }
+
+    void testLocalDirRemoteFileConflict()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        fakeFolder.syncEngine().account()->setCapabilities({ { "uploadConflictFiles", true } });
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+
+        auto cleanup = [&]() {
+            completeSpy.clear();
+        };
+        cleanup();
+
+        // 1) a NEW/NEW conflict
+        fakeFolder.localModifier().mkdir("Z");
+        fakeFolder.localModifier().mkdir("Z/subdir");
+        fakeFolder.localModifier().insert("Z/foo");
+        fakeFolder.remoteModifier().insert("Z", 63);
+
+        // 2) local file becomes a dir; remote file changes
+        fakeFolder.localModifier().remove("A/a1");
+        fakeFolder.localModifier().mkdir("A/a1");
+        fakeFolder.localModifier().insert("A/a1/bar");
+        fakeFolder.remoteModifier().appendByte("A/a1");
+
+        // 3) local dir gets a new file; remote dir becomes a file
+        fakeFolder.localModifier().insert("B/zzz");
+        fakeFolder.remoteModifier().remove("B");
+        fakeFolder.remoteModifier().insert("B", 31);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findConflicts(fakeFolder.currentLocalState());
+        conflicts += findConflicts(fakeFolder.currentLocalState().children["A"]);
+        QCOMPARE(conflicts.size(), 3);
+        std::sort(conflicts.begin(), conflicts.end());
+
+        auto conflictRecords = fakeFolder.syncJournal().conflictRecordPaths();
+        QCOMPARE(conflictRecords.size(), 3);
+        std::sort(conflictRecords.begin(), conflictRecords.end());
+
+        // 1)
+        QVERIFY(itemConflict(completeSpy, "Z"));
+        QCOMPARE(fakeFolder.currentLocalState().find("Z")->size, 63);
+        QVERIFY(conflicts[2].contains("Z"));
+        QCOMPARE(conflicts[2].toUtf8(), conflictRecords[2]);
+        QVERIFY(QFileInfo(fakeFolder.localPath() + conflicts[2]).isDir());
+        QVERIFY(QFile::exists(fakeFolder.localPath() + conflicts[2] + "/foo"));
+
+        // 2)
+        QVERIFY(itemConflict(completeSpy, "A/a1"));
+        QCOMPARE(fakeFolder.currentLocalState().find("A/a1")->size, 5);
+        QVERIFY(conflicts[0].contains("A/a1"));
+        QCOMPARE(conflicts[0].toUtf8(), conflictRecords[0]);
+        QVERIFY(QFileInfo(fakeFolder.localPath() + conflicts[0]).isDir());
+        QVERIFY(QFile::exists(fakeFolder.localPath() + conflicts[0] + "/bar"));
+
+        // 3)
+        QVERIFY(itemConflict(completeSpy, "B"));
+        QCOMPARE(fakeFolder.currentLocalState().find("B")->size, 31);
+        QVERIFY(conflicts[1].contains("B"));
+        QCOMPARE(conflicts[1].toUtf8(), conflictRecords[1]);
+        QVERIFY(QFileInfo(fakeFolder.localPath() + conflicts[1]).isDir());
+        QVERIFY(QFile::exists(fakeFolder.localPath() + conflicts[1] + "/zzz"));
+
+        // The contents of the conflict directories will only be uploaded after
+        // another sync.
+        QVERIFY(fakeFolder.syncEngine().isAnotherSyncNeeded() == ImmediateFollowUp);
+        cleanup();
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(itemSuccessful(completeSpy, conflicts[0], CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemSuccessful(completeSpy, conflicts[0] + "/bar", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemSuccessful(completeSpy, conflicts[1], CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemSuccessful(completeSpy, conflicts[1] + "/zzz", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemSuccessful(completeSpy, conflicts[2], CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemSuccessful(completeSpy, conflicts[2] + "/foo", CSYNC_INSTRUCTION_NEW));
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testLocalFileRemoteDirConflict()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        fakeFolder.syncEngine().account()->setCapabilities({ { "uploadConflictFiles", true } });
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+
+        // 1) a NEW/NEW conflict
+        fakeFolder.remoteModifier().mkdir("Z");
+        fakeFolder.remoteModifier().mkdir("Z/subdir");
+        fakeFolder.remoteModifier().insert("Z/foo");
+        fakeFolder.localModifier().insert("Z");
+
+        // 2) local dir becomes file: remote dir adds file
+        fakeFolder.localModifier().remove("A");
+        fakeFolder.localModifier().insert("A", 63);
+        fakeFolder.remoteModifier().insert("A/bar");
+
+        // 3) local file changes; remote file becomes dir
+        fakeFolder.localModifier().appendByte("B/b1");
+        fakeFolder.remoteModifier().remove("B/b1");
+        fakeFolder.remoteModifier().mkdir("B/b1");
+        fakeFolder.remoteModifier().insert("B/b1/zzz");
+
+        QVERIFY(fakeFolder.syncOnce());
+        auto conflicts = findConflicts(fakeFolder.currentLocalState());
+        conflicts += findConflicts(fakeFolder.currentLocalState().children["B"]);
+        QCOMPARE(conflicts.size(), 3);
+        std::sort(conflicts.begin(), conflicts.end());
+
+        auto conflictRecords = fakeFolder.syncJournal().conflictRecordPaths();
+        QCOMPARE(conflictRecords.size(), 3);
+        std::sort(conflictRecords.begin(), conflictRecords.end());
+
+        // 1)
+        QVERIFY(itemConflict(completeSpy, "Z"));
+        QVERIFY(conflicts[2].contains("Z"));
+        QCOMPARE(conflicts[2].toUtf8(), conflictRecords[2]);
+
+        // 2)
+        QVERIFY(itemConflict(completeSpy, "A"));
+        QVERIFY(conflicts[0].contains("A"));
+        QCOMPARE(conflicts[0].toUtf8(), conflictRecords[0]);
+
+        // 3)
+        QVERIFY(itemConflict(completeSpy, "B/b1"));
+        QVERIFY(conflicts[1].contains("B/b1"));
+        QCOMPARE(conflicts[1].toUtf8(), conflictRecords[1]);
+
+        // Also verifies that conflicts were uploaded
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testTypeConflictWithMove()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+
+        // the remote becomes a file, but a file inside the dir has moved away!
+        fakeFolder.remoteModifier().remove("A");
+        fakeFolder.remoteModifier().insert("A");
+        fakeFolder.localModifier().rename("A/a1", "a1");
+
+        // same, but with a new file inside the dir locally
+        fakeFolder.remoteModifier().remove("B");
+        fakeFolder.remoteModifier().insert("B");
+        fakeFolder.localModifier().rename("B/b1", "b1");
+        fakeFolder.localModifier().insert("B/new");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(itemSuccessful(completeSpy, "A", CSYNC_INSTRUCTION_TYPE_CHANGE));
+        QVERIFY(itemConflict(completeSpy, "B"));
+
+        auto conflicts = findConflicts(fakeFolder.currentLocalState());
+        std::sort(conflicts.begin(), conflicts.end());
+        QVERIFY(conflicts.size() == 2);
+        QVERIFY(conflicts[0].contains("A_conflict"));
+        QVERIFY(conflicts[1].contains("B_conflict"));
+        for (auto conflict : conflicts)
+            QDir(fakeFolder.localPath() + conflict).removeRecursively();
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Currently a1 and b1 don't get moved, but redownloaded
+    }
+
+    void testTypeChange()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+
+        // dir becomes file
+        fakeFolder.remoteModifier().remove("A");
+        fakeFolder.remoteModifier().insert("A");
+        fakeFolder.localModifier().remove("B");
+        fakeFolder.localModifier().insert("B");
+
+        // file becomes dir
+        fakeFolder.remoteModifier().remove("C/c1");
+        fakeFolder.remoteModifier().mkdir("C/c1");
+        fakeFolder.remoteModifier().insert("C/c1/foo");
+        fakeFolder.localModifier().remove("C/c2");
+        fakeFolder.localModifier().mkdir("C/c2");
+        fakeFolder.localModifier().insert("C/c2/bar");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(itemSuccessful(completeSpy, "A", CSYNC_INSTRUCTION_TYPE_CHANGE));
+        QVERIFY(itemSuccessful(completeSpy, "B", CSYNC_INSTRUCTION_TYPE_CHANGE));
+        QVERIFY(itemSuccessful(completeSpy, "C/c1", CSYNC_INSTRUCTION_TYPE_CHANGE));
+        QVERIFY(itemSuccessful(completeSpy, "C/c2", CSYNC_INSTRUCTION_TYPE_CHANGE));
+
+        // A becomes a conflict because we don't delete folders with files
+        // inside of them!
+        auto conflicts = findConflicts(fakeFolder.currentLocalState());
+        QVERIFY(conflicts.size() == 1);
+        QVERIFY(conflicts[0].contains("A_conflict"));
+        for (auto conflict : conflicts)
+            QDir(fakeFolder.localPath() + conflict).removeRecursively();
+
+        QVERIFY(fakeFolder.syncEngine().isAnotherSyncNeeded() == ImmediateFollowUp);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncConflict)

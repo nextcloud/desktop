@@ -697,14 +697,9 @@ void PropagateDownloadFile::deleteExistingFolder()
         // on error, just try to move it away...
     }
 
-    QString conflictDir = Utility::makeConflictFileName(
-        existingDir, Utility::qDateTimeFromTime_t(FileSystem::getModTime(existingDir)));
-
-    emit propagator()->touchedFile(existingDir);
-    emit propagator()->touchedFile(conflictDir);
-    QString renameError;
-    if (!FileSystem::rename(existingDir, conflictDir, &renameError)) {
-        done(SyncFileItem::NormalError, renameError);
+    QString error;
+    if (!propagator()->createConflict(_item, _associatedComposite, &error)) {
+        done(SyncFileItem::NormalError, error);
     }
 }
 
@@ -819,57 +814,13 @@ void PropagateDownloadFile::downloadFinished()
         return;
     }
 
-    // In case of conflict, make a backup of the old file
-    // Ignore conflicts where both files are binary equal
     bool isConflict = _item->_instruction == CSYNC_INSTRUCTION_CONFLICT
-        && !FileSystem::fileEquals(fn, _tmpFile.fileName());
+        && (QFileInfo(fn).isDir() || !FileSystem::fileEquals(fn, _tmpFile.fileName()));
     if (isConflict) {
-        QString renameError;
-        auto conflictModTime = FileSystem::getModTime(fn);
-        QString conflictFileName = Utility::makeConflictFileName(
-            _item->_file, Utility::qDateTimeFromTime_t(conflictModTime));
-        QString conflictFilePath = propagator()->getFilePath(conflictFileName);
-        if (!FileSystem::rename(fn, conflictFilePath, &renameError)) {
-            // If the rename fails, don't replace it.
-
-            // If the file is locked, we want to retry this sync when it
-            // becomes available again.
-            if (FileSystem::isFileLocked(fn)) {
-                emit propagator()->seenLockedFile(fn);
-            }
-
-            done(SyncFileItem::SoftError, renameError);
+        QString error;
+        if (!propagator()->createConflict(_item, _associatedComposite, &error)) {
+            done(SyncFileItem::SoftError, error);
             return;
-        }
-        qCInfo(lcPropagateDownload) << "Created conflict file" << fn << "->" << conflictFileName;
-
-        // Create a new conflict record. To get the base etag, we need to read it from the db.
-        ConflictRecord conflictRecord;
-        conflictRecord.path = conflictFileName.toUtf8();
-        conflictRecord.baseModtime = _item->_previousModtime;
-
-        SyncJournalFileRecord baseRecord;
-        if (propagator()->_journal->getFileRecord(_item->_originalFile, &baseRecord) && baseRecord.isValid()) {
-            conflictRecord.baseEtag = baseRecord._etag;
-            conflictRecord.baseFileId = baseRecord._fileId;
-        } else {
-            // We might very well end up with no fileid/etag for new/new conflicts
-        }
-
-        propagator()->_journal->setConflictRecord(conflictRecord);
-
-        // Create a new upload job if the new conflict file should be uploaded
-        if (propagator()->account()->capabilities().uploadConflictFiles()) {
-            SyncFileItemPtr conflictItem = SyncFileItemPtr(new SyncFileItem);
-            conflictItem->_file = conflictFileName;
-            conflictItem->_type = ItemTypeFile;
-            conflictItem->_direction = SyncFileItem::Up;
-            conflictItem->_instruction = CSYNC_INSTRUCTION_NEW;
-            conflictItem->_modtime = conflictModTime;
-            conflictItem->_size = _item->_previousSize;
-            ASSERT(_compositeParent);
-            emit propagator()->newItem(conflictItem);
-            _compositeParent->appendTask(conflictItem);
         }
     }
 

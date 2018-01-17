@@ -432,6 +432,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         item->_modtime = file->modtime;
         item->_size = file->size;
         item->_checksumHeader = file->checksumHeader;
+        item->_type = file->type;
     } else {
         if (instruction != CSYNC_INSTRUCTION_NONE) {
             qCWarning(lcEngine) << "ERROR: Instruction" << item->_instruction << "vs" << instruction << "for" << fileUtf8;
@@ -575,8 +576,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
     if (!item->_inode) {
         item->_inode = file->inode;
     }
-
-    item->_type = file->type;
 
     SyncFileItem::Direction dir = SyncFileItem::None;
 
