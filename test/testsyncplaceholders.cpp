@@ -131,6 +131,69 @@ private slots:
         cleanup();
     }
 
+    void testPlaceholderConflict()
+    {
+        FakeFolder fakeFolder{ FileInfo() };
+        SyncOptions syncOptions;
+        syncOptions._usePlaceholders = true;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+
+        auto cleanup = [&]() {
+            completeSpy.clear();
+        };
+        cleanup();
+
+        Logger::instance()->setLogDebug(true);
+        Logger::instance()->setLogFile("-");
+
+        // Create a placeholder for a new remote file
+        fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().insert("A/a1", 64);
+        fakeFolder.remoteModifier().insert("A/a2", 64);
+        fakeFolder.remoteModifier().mkdir("B");
+        fakeFolder.remoteModifier().insert("B/b1", 64);
+        fakeFolder.remoteModifier().insert("B/b2", 64);
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("B/b2.owncloud"));
+        cleanup();
+
+        // A: the correct file and a conflicting file are added, placeholders stay
+        // B: same setup, but the placeholders are deleted by the user
+        fakeFolder.localModifier().insert("A/a1", 64);
+        fakeFolder.localModifier().insert("A/a2", 30);
+        fakeFolder.localModifier().insert("B/b1", 64);
+        fakeFolder.localModifier().insert("B/b2", 30);
+        fakeFolder.localModifier().remove("B/b1.owncloud");
+        fakeFolder.localModifier().remove("B/b2.owncloud");
+        QVERIFY(fakeFolder.syncOnce());
+
+        // Everything is CONFLICT since mtimes are different even for a1/b1
+        QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_CONFLICT));
+        QVERIFY(itemInstruction(completeSpy, "A/a2", CSYNC_INSTRUCTION_CONFLICT));
+        QVERIFY(itemInstruction(completeSpy, "B/b1", CSYNC_INSTRUCTION_CONFLICT));
+        QVERIFY(itemInstruction(completeSpy, "B/b2", CSYNC_INSTRUCTION_CONFLICT));
+
+        // no placeholder files should remain
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a1.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a2.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("B/b1.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("B/b2.owncloud"));
+
+        // conflict files should exist
+        QCOMPARE(fakeFolder.syncJournal().conflictRecordPaths().size(), 2);
+
+        // nothing should have the placeholder tag
+        QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeFile);
+        QCOMPARE(dbRecord(fakeFolder, "A/a2")._type, ItemTypeFile);
+        QCOMPARE(dbRecord(fakeFolder, "B/b1")._type, ItemTypeFile);
+        QCOMPARE(dbRecord(fakeFolder, "B/b2")._type, ItemTypeFile);
+
+        cleanup();
+    }
+
     void testWithNormalSync()
     {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
@@ -199,11 +262,15 @@ private slots:
         fakeFolder.remoteModifier().insert("A/a2");
         fakeFolder.remoteModifier().insert("A/a3");
         fakeFolder.remoteModifier().insert("A/a4");
+        fakeFolder.remoteModifier().insert("A/a5");
+        fakeFolder.remoteModifier().insert("A/a6");
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
         QVERIFY(fakeFolder.currentLocalState().find("A/a2.owncloud"));
         QVERIFY(fakeFolder.currentLocalState().find("A/a3.owncloud"));
         QVERIFY(fakeFolder.currentLocalState().find("A/a4.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a5.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a6.owncloud"));
         cleanup();
 
         // Download by changing the db entry
@@ -211,16 +278,29 @@ private slots:
         triggerDownload("A/a2");
         triggerDownload("A/a3");
         triggerDownload("A/a4");
+        triggerDownload("A/a5");
+        triggerDownload("A/a6");
         fakeFolder.remoteModifier().appendByte("A/a2");
         fakeFolder.remoteModifier().remove("A/a3");
         fakeFolder.remoteModifier().rename("A/a4", "A/a4m");
+        fakeFolder.localModifier().insert("A/a5");
+        fakeFolder.localModifier().insert("A/a6");
+        fakeFolder.localModifier().remove("A/a6.owncloud");
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_NEW));
         QVERIFY(itemInstruction(completeSpy, "A/a2", CSYNC_INSTRUCTION_NEW));
         QVERIFY(itemInstruction(completeSpy, "A/a3", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(itemInstruction(completeSpy, "A/a4", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(itemInstruction(completeSpy, "A/a4m", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "A/a5", CSYNC_INSTRUCTION_CONFLICT));
+        QVERIFY(itemInstruction(completeSpy, "A/a6", CSYNC_INSTRUCTION_CONFLICT));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeFile);
+        QCOMPARE(dbRecord(fakeFolder, "A/a2")._type, ItemTypeFile);
+        QVERIFY(!dbRecord(fakeFolder, "A/a3").isValid());
+        QCOMPARE(dbRecord(fakeFolder, "A/a4m")._type, ItemTypeFile);
+        QCOMPARE(dbRecord(fakeFolder, "A/a5")._type, ItemTypeFile);
+        QCOMPARE(dbRecord(fakeFolder, "A/a6")._type, ItemTypeFile);
     }
 };
 

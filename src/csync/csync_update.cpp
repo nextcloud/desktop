@@ -226,9 +226,20 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                 base._e2eMangledName.constData(),
                 fs->type, base._type);
 
+      // If the db suggests a placeholder should be downloaded,
+      // treat the file as new on the remote.
       if (ctx->current == REMOTE_REPLICA && base._type == ItemTypePlaceholderDownload) {
           fs->instruction = CSYNC_INSTRUCTION_NEW;
           fs->type = ItemTypePlaceholderDownload;
+          goto out;
+      }
+
+      // If what the db thinks is a placeholder is actually a file/dir,
+      // treat it as new locally.
+      if (ctx->current == LOCAL_REPLICA
+          && (base._type == ItemTypePlaceholder || base._type == ItemTypePlaceholderDownload)
+          && fs->type != ItemTypePlaceholder) {
+          fs->instruction = CSYNC_INSTRUCTION_EVAL;
           goto out;
       }
 
@@ -755,6 +766,12 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
             && filename.endsWith(".owncloud")) {
         QByteArray db_uri = fullpath.mid(strlen(ctx->local.uri) + 1);
         db_uri = db_uri.left(db_uri.size() - 9);
+
+        // Don't overwrite data that was already retrieved from disk!
+        // This can happen if foo.owncloud exists and the user adds foo.
+        if (ctx->local.files.findFile(db_uri))
+            continue;
+
         if( ! fill_tree_from_db(ctx, db_uri.constData(), true) ) {
           errno = ENOENT;
           ctx->status_code = CSYNC_STATUS_OPENDIR_ERROR;
