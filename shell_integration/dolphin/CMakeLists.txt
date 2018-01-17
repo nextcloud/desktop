@@ -19,7 +19,6 @@ set_package_properties(DolphinVcs PROPERTIES
     PURPOSE "Provides plugin interfaces for Dolphin."
 )
 
-set(KDE_INSTALL_DIRS_NO_DEPRECATED TRUE)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDECompilerSettings)
