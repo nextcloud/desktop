@@ -85,7 +85,7 @@ if test -f ~/.has_ppa_keys; then
     debsign -k7D14AA7B nextcloud-client_*[0-9.][0-9].dsc nextcloud-client_*[0-9.][0-9]_source.changes
 fi
 
-if test "${pull_request}" = "master"; then
+#if test "${pull_request}" = "master"; then
     kind=`cat kind`
 
     if test "$kind" = "beta"; then
@@ -114,4 +114,4 @@ if test "${pull_request}" = "master"; then
         cd ${OBS_SUBDIR}
         osc commit -m "Travis update"
     fi
-fi
+#fi
