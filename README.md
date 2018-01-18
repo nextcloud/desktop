@@ -1,6 +1,7 @@
 # ownCloud Desktop Client
 
-[![Build Status](https://jenkins.owncloud.org/buildStatus/icon?job=owncloud-client/client/master)](https://jenkins.owncloud.org/job/owncloud-client/job/client/job/master/)
+[![Build Status](https://jenkins.owncloud.org/buildStatus/icon?job=owncloud-client/client/master)](https://jenkins.owncloud.org/job/owncloud-client/job/client/job/master/) [![Build status](https://ci.appveyor.com/api/projects/status/a1x3dslys7de6e21/branch/master?svg=true)](https://ci.appveyor.com/project/ownclouders/client/branch/master)
+
 
 ## Introduction
 
