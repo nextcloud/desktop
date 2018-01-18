@@ -54,7 +54,7 @@
 // This is the version that is returned when the client asks for the VERSION.
 // The first number should be changed if there is an incompatible change that breaks old clients.
 // The second number should be changed when there are new features.
-#define MIRALL_SOCKET_API_VERSION "1.0"
+#define MIRALL_SOCKET_API_VERSION "1.1"
 
 static inline QString removeTrailingSlash(QString path)
 {
@@ -535,7 +535,7 @@ void SocketApi::emailPrivateLink(const QString &link) const
         0);
 }
 
-void SocketApi::command_GET_STRINGS(const QString &, SocketListener *listener)
+void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *listener)
 {
     static std::array<std::pair<const char *, QString>, 5> strings { {
         { "SHARE_MENU_TITLE", tr("Share...") },
@@ -545,9 +545,35 @@ void SocketApi::command_GET_STRINGS(const QString &, SocketListener *listener)
     } };
     listener->sendMessage(QString("GET_STRINGS:BEGIN"));
     for (auto key_value : strings) {
-        listener->sendMessage(QString("STRING:%1:%2").arg(key_value.first, key_value.second));
+        if (argument.isEmpty() || argument == QLatin1String(key_value.first)) {
+            listener->sendMessage(QString("STRING:%1:%2").arg(key_value.first, key_value.second));
+        }
     }
     listener->sendMessage(QString("GET_STRINGS:END"));
+}
+
+void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListener *listener)
+{
+    listener->sendMessage(QString("GET_MENU_ITEMS:BEGIN"));
+    bool hasSeveralFiles = argument.contains(QLatin1Char('\x1e')); // Record Separator
+    Folder *syncFolder = hasSeveralFiles ? nullptr : FolderMan::instance()->folderForPath(argument);
+    if (syncFolder) {
+        QString systemPath = QDir::cleanPath(argument);
+        if (systemPath.endsWith(QLatin1Char('/'))) {
+            systemPath.truncate(systemPath.length() - 1);
+        }
+        QString relativePath = systemPath.mid(syncFolder->cleanPath().length() + 1);
+
+        SyncJournalFileRecord rec;
+        if (syncFolder->accountState()->isConnected() && syncFolder->journalDb()->getFileRecord(relativePath, &rec) && rec.isValid()) {
+            // If the file is on the DB, it is on the server
+            // TODO: check if sharing is allowed
+            listener->sendMessage(QLatin1String("MENU_ITEM:SHARE:") + tr("Share..."));
+            listener->sendMessage(QLatin1String("MENU_ITEM:COPY_PRIVATE_LINK:") + tr("Copy private link to clipboard"));
+            listener->sendMessage(QLatin1String("MENU_ITEM:EMAIL_PRIVATE_LINK:") + tr("Send private link by email..."));
+        }
+    }
+    listener->sendMessage(QString("GET_MENU_ITEMS:END"));
 }
 
 QString SocketApi::buildRegisterPathMessage(const QString &path)
