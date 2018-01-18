@@ -27,6 +27,7 @@
 #include <QInputDialog>
 #include <QLineEdit>
 #include <QIODevice>
+#include <QMessageBox>
 
 #include <keychain.h>
 
@@ -929,6 +930,14 @@ void ClientSideEncryption::encryptPrivateKey()
     QStringList list = WordList::getRandomWords(12);
     _mnemonic = list.join(' ');
     qCInfo(lcCse()) << "mnemonic Generated:" << _mnemonic;
+
+    QMessageBox msgBox;
+    msgBox.setText(tr("Note your encryption passphrase"));
+    msgBox.setDetailedText(_mnemonic);
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setStandardButtons(QMessageBox::Ok);
+
+    msgBox.exec();
 
     QString passPhrase = list.join(QString()).toLower();
     qCInfo(lcCse()) << "Passphrase Generated:" << passPhrase;
