@@ -568,9 +568,9 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         if (syncFolder->accountState()->isConnected() && syncFolder->journalDb()->getFileRecord(relativePath, &rec) && rec.isValid()) {
             // If the file is on the DB, it is on the server
             // TODO: check if sharing is allowed
-            listener->sendMessage(QLatin1String("MENU_ITEM:SHARE:") + tr("Share..."));
-            listener->sendMessage(QLatin1String("MENU_ITEM:COPY_PRIVATE_LINK:") + tr("Copy private link to clipboard"));
-            listener->sendMessage(QLatin1String("MENU_ITEM:EMAIL_PRIVATE_LINK:") + tr("Send private link by email..."));
+            listener->sendMessage(QLatin1String("MENU_ITEM:SHARE::") + tr("Share..."));
+            listener->sendMessage(QLatin1String("MENU_ITEM:COPY_PRIVATE_LINK::") + tr("Copy private link to clipboard"));
+            listener->sendMessage(QLatin1String("MENU_ITEM:EMAIL_PRIVATE_LINK::") + tr("Send private link by email..."));
         }
     }
     listener->sendMessage(QString("GET_MENU_ITEMS:END"));

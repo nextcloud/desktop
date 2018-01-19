@@ -71,9 +71,11 @@ public:
                 loop.quit();
             } else if (cmd.startsWith("MENU_ITEM:")) {
                 auto args = QString::fromUtf8(cmd).split(QLatin1Char(':'));
-                if (args.size() < 3)
+                if (args.size() < 4)
                     return;
-                auto action = menu->addAction(args.mid(2).join(QLatin1Char(':')));
+                auto action = menu->addAction(args.mid(3).join(QLatin1Char(':')));
+                if (args.value(2).contains(QLatin1Char('d')))
+                    action->setDisabled(true);
                 auto call = args.value(1).toLatin1();
                 connect(action, &QAction::triggered, [helper, call, files] {
                     helper->sendCommand(QByteArray(call + ":" + files + "\n"));
