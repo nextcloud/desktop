@@ -19,6 +19,7 @@ import os
 import urllib
 import socket
 import tempfile
+import time
 
 from gi.repository import GObject, Nautilus
 
@@ -55,8 +56,9 @@ class SocketConnect(GObject.GObject):
         self.registered_paths = {}
         self._watch_id = 0
         self._sock = None
-        self._listeners = [self._update_registered_paths]
+        self._listeners = [self._update_registered_paths, self._get_version]
         self._remainder = ''
+        self.protocolVersion = '1.0'
         self.nautilusVFSFile_table = {}  # not needed in this object actually but shared 
                                          # all over the other objects.
 
@@ -96,6 +98,7 @@ class SocketConnect(GObject.GObject):
                 self._watch_id = GObject.io_add_watch(self._sock, GObject.IO_IN, self._handle_notify)
                 print("Socket watch id: " + str(self._watch_id))
 
+                self.sendCommand('VERSION:\n')
                 self.sendCommand('GET_STRINGS:\n')
 
                 return False  # Don't run again
@@ -107,29 +110,43 @@ class SocketConnect(GObject.GObject):
 
         return True  # Run again, if enabled via timeout_add()
 
+    # Reads data that becomes available.
+    # New responses can be accessed with get_available_responses().
+    # Returns false if no data was received within timeout
+    def read_socket_data_with_timeout(self, timeout):
+        self._sock.settimeout(timeout)
+        try:
+            self._remainder += self._sock.recv(1024)
+        except socket.timeout:
+            return False
+        else:
+            return True
+        finally:
+            self._sock.settimeout(None)
+
+    # Parses response lines out of collected data, returns list of strings
+    def get_available_responses(self):
+        end = self._remainder.rfind('\n')
+        if end == -1:
+            return []
+        data = self._remainder[:end]
+        self._remainder = self._remainder[end+1:]
+        return data.split('\n')
+
     # Notify is the raw answer from the socket
     def _handle_notify(self, source, condition):
-        data = source.recv(1024)
-        # Prepend the remaining data from last call
-        if len(self._remainder) > 0:
-            data = self._remainder + data
-            self._remainder = ''
+        # Blocking is ok since we're notified of available data
+        self._remainder += self._sock.recv(1024)
 
-        if len(data) > 0:
-            # Remember the remainder for next round
-            lastNL = data.rfind('\n');
-            if lastNL > -1 and lastNL < len(data):
-                self._remainder = data[lastNL+1:]
-                data = data[:lastNL]
-
-            for l in data.split('\n'):
-                self._handle_server_response(l)
-        else:
+        if len(self._remainder) == 0:
             return False
+
+        for line in self.get_available_responses():
+            self.handle_server_response(line)
 
         return True  # Run again
 
-    def _handle_server_response(self, line):
+    def handle_server_response(self, line):
         print("Server response: " + line)
         parts = line.split(':')
         action = parts[0]
@@ -148,6 +165,10 @@ class SocketConnect(GObject.GObject):
             # that mirall went away. Try reconnecting.
             if not self.registered_paths:
                 self.reconnect()
+
+    def _get_version(self, action, args):
+        if action == 'VERSION':
+            self.protocolVersion = args[1]
 
 socketConnect = SocketConnect()
 
@@ -201,6 +222,56 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
         if topLevelFolder or not internalFile:
             return []
 
+        if socketConnect.protocolVersion >= '1.1':  # lexicographic!
+            return self.ask_for_menu_items(filename)
+        else:
+            return self.legacy_menu_items(filename)
+
+    def ask_for_menu_items(self, filename):
+        socketConnect.sendCommand('GET_MENU_ITEMS:{}\n'.format(filename))
+
+        done = False
+        start = time.time()
+        timeout = 0.1 # 100ms
+        menu_items = []
+        while not done:
+            dt = time.time() - start
+            if dt >= timeout:
+                break
+            if not socketConnect.read_socket_data_with_timeout(timeout - dt):
+                break
+            for line in socketConnect.get_available_responses():
+                # Process lines we don't care about
+                if done or not (line.startswith('GET_MENU_ITEMS:') or line.startswith('MENU_ITEM:')):
+                    socketConnect.handle_server_response(line)
+                    continue
+                if line == 'GET_MENU_ITEMS:END':
+                    done = True
+                    # don't break - we'd discard other responses
+                if line.startswith('MENU_ITEM:'):
+                    args = line.split(':')
+                    if len(args) < 4:
+                        continue
+                    menu_items.append([args[1], 'd' not in args[2], ':'.join(args[3:])])
+
+        if not done:
+            return self.legacy_menu_items(filename)
+
+        # Set up the 'ownCloud...' submenu
+        item_owncloud = Nautilus.MenuItem(
+            name='IntegrationMenu', label=self.strings.get('CONTEXT_MENU_TITLE', appname))
+        menu = Nautilus.Menu()
+        item_owncloud.set_submenu(menu)
+
+        for action, enabled, label in menu_items:
+            item = Nautilus.MenuItem(name=action, label=label, sensitive=enabled)
+            item.connect("activate", self.context_menu_action, action, filename)
+            menu.append_item(item)
+
+        return [item_owncloud]
+
+
+    def legacy_menu_items(self, filename):
         entry = socketConnect.nautilusVFSFile_table.get(filename)
         if not entry:
             return []
@@ -235,7 +306,7 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
         item = Nautilus.MenuItem(
             name='NautilusPython::ShareItem',
             label=self.strings.get('SHARE_MENU_TITLE', 'Share...'))
-        item.connect("activate", self.context_menu_action, 'SHARE', file)
+        item.connect("activate", self.context_menu_action, 'SHARE', filename)
         menu.append_item(item)
 
         # Add permalink menu options, but hide these options for older clients
@@ -243,20 +314,19 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
         if 'COPY_PRIVATE_LINK_MENU_TITLE' in self.strings:
             item_copyprivatelink = Nautilus.MenuItem(
                 name='CopyPrivateLink', label=self.strings.get('COPY_PRIVATE_LINK_MENU_TITLE', 'Copy private link to clipboard'))
-            item_copyprivatelink.connect("activate", self.context_menu_action, 'COPY_PRIVATE_LINK', file)
+            item_copyprivatelink.connect("activate", self.context_menu_action, 'COPY_PRIVATE_LINK', filename)
             menu.append_item(item_copyprivatelink)
 
         if 'EMAIL_PRIVATE_LINK_MENU_TITLE' in self.strings:
             item_emailprivatelink = Nautilus.MenuItem(
                 name='EmailPrivateLink', label=self.strings.get('EMAIL_PRIVATE_LINK_MENU_TITLE', 'Send private link by email...'))
-            item_emailprivatelink.connect("activate", self.context_menu_action, 'EMAIL_PRIVATE_LINK', file)
+            item_emailprivatelink.connect("activate", self.context_menu_action, 'EMAIL_PRIVATE_LINK', filename)
             menu.append_item(item_emailprivatelink)
 
         return [item_owncloud]
 
 
-    def context_menu_action(self, menu, action, file):
-        filename = get_local_path(file.get_uri())
+    def context_menu_action(self, menu, action, filename):
         print("Context menu: " + action + ' ' + filename)
         socketConnect.sendCommand(action + ":" + filename + "\n")
 
