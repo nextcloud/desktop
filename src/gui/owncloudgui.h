@@ -29,6 +29,11 @@
 #include <QDBusConnection>
 #endif
 
+#include <QJsonArray>
+
+class QJsonDocument;
+class QJsonObject;
+
 namespace OCC {
 
 class Folder;
@@ -65,6 +70,7 @@ public:
 
 signals:
     void setupProxy();
+    void serverError(int code, const QString &message);
 
 public slots:
     void setupContextMenu();
@@ -92,6 +98,7 @@ public slots:
     void slotOpenPath(const QString &path);
     void slotAccountStateChanged();
     void slotTrayMessageIfServerUnsupported(Account *account);
+    void slotExternalSitesFetched(const QJsonDocument &reply);
 
     /**
      * Open a share dialog for a file or folder.
@@ -104,6 +111,9 @@ public slots:
 
     void slotRemoveDestroyedShareDialogs();
 
+protected slots:
+    void slotOcsError(int statusCode, const QString &message);
+
 private slots:
     void slotLogin();
     void slotLogout();
@@ -111,10 +121,13 @@ private slots:
     void slotPauseAllFolders();
     void slotNewAccountWizard();
 
+
 private:
     void setPauseOnAllFoldersHelper(bool pause);
     void setupActions();
     void addAccountContextMenu(AccountStatePtr accountState, QMenu *menu, bool separateMenu);
+    void fetchExternalSites();
+    void setupExternalSitesMenu(QAction *actionBefore, QAction *actionTitle, QMenu *menu, QJsonArray sites);
 
     QPointer<Systray> _tray;
 #if defined(Q_OS_MAC)
@@ -151,7 +164,6 @@ private:
     QAction *_actionHelp;
     QAction *_actionQuit;
     QAction *_actionCrash;
-
     QList<QAction *> _recentItemsActions;
     Application *_app;
 };

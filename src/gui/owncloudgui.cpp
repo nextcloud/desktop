@@ -14,6 +14,7 @@
 
 #include "application.h"
 #include "owncloudgui.h"
+#include "ocsexternalsitesjob.h"
 #include "theme.h"
 #include "folderman.h"
 #include "configfile.h"
@@ -50,6 +51,9 @@
 #if defined(Q_OS_X11)
 #include <QX11Info>
 #endif
+
+#include <QJsonDocument>
+#include <QJsonObject>
 
 namespace OCC {
 
@@ -610,6 +614,7 @@ void ownCloudGui::updateContextMenu()
         _contextMenu->addAction(_actionNewAccountWizard);
     }
     _contextMenu->addAction(_actionSettings);
+
     if (!Theme::instance()->helpUrl().isEmpty()) {
         _contextMenu->addAction(_actionHelp);
     }
@@ -640,6 +645,8 @@ void ownCloudGui::updateContextMenu()
         connect(action, &QAction::triggered, this, &ownCloudGui::slotPauseAllFolders);
     }
     _contextMenu->addAction(_actionQuit);
+
+    fetchExternalSites();
 
     if (_qdbusmenuWorkaround) {
         _tray->show();
@@ -741,6 +748,61 @@ void ownCloudGui::setupActions()
         _actionCrash = 0;
     }
 }
+
+void ownCloudGui::fetchExternalSites(){
+    foreach (AccountStatePtr account, AccountManager::instance()->accounts()) {
+        OcsExternalSitesJob *job = new OcsExternalSitesJob(account->account());
+        job->setProperty(propertyAccountC, QVariant::fromValue(account->account()));
+        connect(job, &OcsExternalSitesJob::externalSitesJobFinished, this, &ownCloudGui::slotExternalSitesFetched);
+        connect(job, &OcsExternalSitesJob::ocsError, this, &ownCloudGui::slotOcsError);
+        job->getExternalSites();
+    }
+}
+
+void ownCloudGui::setupExternalSitesMenu(QAction *actionBefore, QAction *actionTitle, QMenu *menu, QJsonArray sites){
+    menu->insertSeparator(actionBefore);
+    menu->insertAction(actionBefore, actionTitle);
+    foreach (const QJsonValue &value, sites) {
+        QJsonObject site = value.toObject();
+        QAction *action = new QAction(site["name"].toString(), this);
+        connect(action, &QAction::triggered, this, [site] { QDesktopServices::openUrl(QUrl(site["url"].toString())); });
+        menu->insertAction(actionBefore, action);
+    }
+}
+
+void ownCloudGui::slotExternalSitesFetched(const QJsonDocument &reply)
+{
+    if(!reply.isEmpty()){
+        auto data = reply.object().value("ocs").toObject().value("data").toObject();
+        auto sitesList = data.value("sites").toArray();
+
+        if(sitesList.size() > 0){
+            QAction *externalSites = new QAction(tr("External sites:"), this);
+            externalSites->setDisabled(true);
+            auto accountList = AccountManager::instance()->accounts();
+
+            if(accountList.size() > 1){
+                // the list of external sites will be displayed under the account that it belongs to
+                if(auto account = qvariant_cast<AccountPtr>(sender()->property(propertyAccountC))){
+                    foreach (QMenu *menu, _accountMenus) {
+                        if(menu->title() == account->displayName()){
+                            setupExternalSitesMenu(_actionLogout, externalSites, menu, sitesList);
+                        }
+                    }
+                }
+             } else if(accountList.size() == 1){
+                setupExternalSitesMenu(_actionSettings, externalSites, _contextMenu.data(), sitesList);
+                _contextMenu->insertSeparator(_actionSettings);
+            }
+        }
+    }
+}
+
+void ownCloudGui::slotOcsError(int statusCode, const QString &message)
+{
+    emit serverError(statusCode, message);
+}
+
 
 void ownCloudGui::slotRebuildRecentMenus()
 {
