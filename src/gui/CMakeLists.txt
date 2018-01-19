@@ -60,6 +60,7 @@ set(client_SRCS
     navigationpanehelper.cpp
     networksettings.cpp
     ocsjob.cpp
+    ocsexternalsitesjob.cpp
     ocssharejob.cpp
     ocsshareejob.cpp
     openfilemanager.cpp
