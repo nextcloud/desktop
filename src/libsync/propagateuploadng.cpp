@@ -467,17 +467,6 @@ void PropagateUploadFileNG::slotMoveJobFinished()
         return;
     }
     _item->_responseTimeStamp = job->responseTimestamp();
-
-#ifdef WITH_TESTING
-    // performance logging
-    quint64 duration = _stopWatch.stop();
-    qCDebug(lcPropagateUpload) << "*==* duration UPLOAD" << _item->_size
-                               << _stopWatch.durationOfLap(QLatin1String("ContentChecksum"))
-                               << _stopWatch.durationOfLap(QLatin1String("TransmissionChecksum"))
-                               << duration;
-    // The job might stay alive for the whole sync, release this tiny bit of memory.
-    _stopWatch.reset();
-#endif
     finalize();
 }
 
