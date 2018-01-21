@@ -23,6 +23,8 @@
 #include <QSettings>
 #include <QDir>
 #include <QNetworkAccessManager>
+#include <QMessageBox>
+#include "clientsideencryption.h"
 
 namespace {
 static const char urlC[] = "url";
@@ -324,10 +326,23 @@ AccountPtr AccountManager::createAccount()
     acc->setSslErrorHandler(new SslDialogErrorHandler);
     connect(acc.data(), &Account::proxyAuthenticationRequired,
         ProxyAuthHandler::instance(), &ProxyAuthHandler::handleProxyAuthenticationRequired);
+
+    connect(acc.data()->e2e(), &ClientSideEncryption::mnemonicGenerated,
+             &AccountManager::displayMnemonic);
+
     return acc;
 }
 
+void AccountManager::displayMnemonic(const QString& mnemonic)
+{
+    QMessageBox msgBox;
+    msgBox.setText(tr("Note your encryption passphrase"));
+    msgBox.setDetailedText(mnemonic);
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setStandardButtons(QMessageBox::Ok);
 
+    msgBox.exec();
+}
 void AccountManager::shutdown()
 {
     auto accountsCopy = _accounts;

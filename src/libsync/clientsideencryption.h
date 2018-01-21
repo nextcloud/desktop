@@ -96,6 +96,7 @@ private slots:
 
 signals:
     void initializationFinished();
+    void mnemonicGenerated(const QString& mnemonic);
 
 private:
     void getPrivateKeyFromServer();
