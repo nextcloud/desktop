@@ -63,6 +63,9 @@ public:
 
     static void fileEncryption(const QByteArray &key, const QByteArray &iv,
                       QFile *input, QFile *output);
+
+    static void fileDecryption(const QByteArray &key, const QByteArray& iv,
+                               QFile *input, QFile *output);
 };
 
 class ClientSideEncryption : public QObject {
@@ -161,26 +164,6 @@ private:
     AccountPtr _account;
     QVector<QPair<QString, QString>> _sharing;
 };
-
-class FileDecryptionJob : public QObject
-{
-    Q_OBJECT
-public:
-    FileDecryptionJob(QByteArray &key, QByteArray &iv, QFile *input, QFile *output, QObject *parent = 0);
-
-public slots:
-    void start();
-
-signals:
-    void finished(QFile *output);
-
-private:
-    QByteArray _key;
-    QByteArray _iv;
-    QPointer<QFile> _input;
-    QPointer<QFile> _output;
-};
-
 
 } // namespace OCC
 #endif

@@ -1386,19 +1386,11 @@ void EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
     qCDebug(lcCse) << "File Encrypted Successfully";
 }
 
-FileDecryptionJob::FileDecryptionJob(QByteArray &key, QByteArray &iv, QFile *input, QFile *output, QObject *parent)
-    : QObject(parent),
-      _key(key),
-      _iv(iv),
-      _input(input),
-      _output(output)
+void EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& iv,
+                               QFile *input, QFile *output)
 {
-}
-
-void FileDecryptionJob::start()
-{
-    _input->open(QIODevice::ReadOnly);
-    _output->open(QIODevice::WriteOnly);
+    input->open(QIODevice::ReadOnly);
+    output->open(QIODevice::WriteOnly);
 
     // Init
     EVP_CIPHER_CTX *ctx;
@@ -1418,30 +1410,30 @@ void FileDecryptionJob::start()
     EVP_CIPHER_CTX_set_padding(ctx, 0);
 
     /* Set IV length. */
-    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, _iv.size(), NULL)) {
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,  iv.size(), NULL)) {
         qCInfo(lcCse()) << "Could not set iv length";
         exit(-1);
     }
 
     /* Initialise key and IV */
-    if(!EVP_DecryptInit_ex(ctx, NULL, NULL, (const unsigned char *)_key.constData(), (const unsigned char *)_iv.constData())) {
+    if(!EVP_DecryptInit_ex(ctx, NULL, NULL, (const unsigned char *) key.constData(), (const unsigned char *) iv.constData())) {
         qCInfo(lcCse()) << "Could not set key and iv";
         exit(-1);
     }
 
-    qint64 size = _input->size() - 16;
+    qint64 size = input->size() - 16;
 
     unsigned char *out = (unsigned char *)malloc(sizeof(unsigned char) * (1024 + 16 -1));
     int len = 0;
 
-    while(_input->pos() < size) {
+    while(input->pos() < size) {
 
-        int toRead = size - _input->pos();
+        int toRead = size - input->pos();
         if (toRead > 1024) {
             toRead = 1024;
         }
 
-        QByteArray data = _input->read(toRead);
+        QByteArray data = input->read(toRead);
 
         if (data.size() == 0) {
             qCInfo(lcCse()) << "Could not read data from file";
@@ -1453,10 +1445,10 @@ void FileDecryptionJob::start()
             exit(-1);
         }
 
-        _output->write((char *)out, len);
+        output->write((char *)out, len);
     }
 
-    QByteArray tag = _input->read(16);
+    QByteArray tag = input->read(16);
 
     /* Set expected tag value. Works in OpenSSL 1.0.1d and later */
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, tag.size(), (unsigned char *)tag.constData())) {
@@ -1468,15 +1460,13 @@ void FileDecryptionJob::start()
         qCInfo(lcCse()) << "Could finalize decryption";
         exit(-1);
     }
-    _output->write((char *)out, len);
+    output->write((char *)out, len);
 
     free(out);
     EVP_CIPHER_CTX_free(ctx);
 
-    _input->close();
-    _output->close();
-
-    emit finished(_output);
+    input->close();
+    output->close();
 }
 
 }
