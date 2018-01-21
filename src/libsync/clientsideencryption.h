@@ -61,7 +61,7 @@ public:
 
     static QByteArray BIO2ByteArray(BIO *b);
 
-    static void fileEncryption(const QByteArray &key, const QByteArray &iv,
+    static bool fileEncryption(const QByteArray &key, const QByteArray &iv,
                       QFile *input, QFile *output);
 
     static void fileDecryption(const QByteArray &key, const QByteArray& iv,

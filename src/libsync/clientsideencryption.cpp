@@ -1300,7 +1300,7 @@ bool ClientSideEncryption::isFolderEncrypted(const QString& path) const {
   return (*it);
 }
 
-void EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &iv, QFile *input, QFile *output)
+bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &iv, QFile *input, QFile *output)
 {
     if (!input->open(QIODevice::ReadOnly)) {
       qCDebug(lcCse) << "Could not open input file for reading" << input->errorString();
@@ -1315,13 +1315,13 @@ void EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
     /* Create and initialise the context */
     if(!(ctx = EVP_CIPHER_CTX_new())) {
         qCInfo(lcCse()) << "Could not create context";
-        exit(-1);
+        return false;
     }
 
     /* Initialise the decryption operation. */
     if(!EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
         qCInfo(lcCse()) << "Could not init cipher";
-        exit(-1);
+        return false;
     }
 
     EVP_CIPHER_CTX_set_padding(ctx, 0);
@@ -1329,13 +1329,13 @@ void EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
     /* Set IV length. */
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), NULL)) {
         qCInfo(lcCse()) << "Could not set iv length";
-        exit(-1);
+        return false;
     }
 
     /* Initialise key and IV */
     if(!EVP_EncryptInit_ex(ctx, NULL, NULL, (const unsigned char *)key.constData(), (const unsigned char *)iv.constData())) {
         qCInfo(lcCse()) << "Could not set key and iv";
-        exit(-1);
+        return false;
     }
 
     unsigned char *out = (unsigned char *)malloc(sizeof(unsigned char) * (1024 + 16 -1));
@@ -1348,13 +1348,13 @@ void EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
 
         if (data.size() == 0) {
             qCInfo(lcCse()) << "Could not read data from file";
-            exit(-1);
+            return false;
         }
 
         qCDebug(lcCse) << "Encrypting " << data;
         if(!EVP_EncryptUpdate(ctx, out, &len, (unsigned char *)data.constData(), data.size())) {
             qCInfo(lcCse()) << "Could not encrypt";
-            exit(-1);
+            return false;
         }
 
         output->write((char *)out, len);
@@ -1363,7 +1363,7 @@ void EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
 
     if(1 != EVP_EncryptFinal_ex(ctx, out, &len)) {
         qCInfo(lcCse()) << "Could finalize encryption";
-        exit(-1);
+        return false;
     }
     output->write((char *)out, len);
     total_len += len;
@@ -1372,7 +1372,7 @@ void EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
     unsigned char *tag = (unsigned char *)malloc(sizeof(unsigned char) * 16);
     if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, tag)) {
         qCInfo(lcCse()) << "Could not get tag";
-        exit(-1);
+        return false;
     }
 
     output->write((char *)tag, 16);
