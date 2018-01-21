@@ -21,6 +21,7 @@
 #include <QFile>
 
 namespace OCC {
+class PropagateDownloadEncrypted;
 
 /**
  * @brief The GETFileJob class
@@ -205,8 +206,11 @@ private:
     QFile _tmpFile;
     bool _deleteExisting;
     bool _isEncrypted = false;
+
     EncryptedFile _encryptedInfo;
 
     QElapsedTimer _stopwatch;
+
+    PropagateDownloadEncrypted *_downloadEncryptedHelper;
 };
 }

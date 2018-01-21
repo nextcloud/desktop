@@ -54,6 +54,7 @@ set(libsync_SRCS
     propagateremotemove.cpp
     propagateremotemkdir.cpp
     propagateuploadencrypted.cpp
+    propagatedownloadencrypted.cpp
     syncengine.cpp
     syncfileitem.cpp
     syncfilestatus.cpp
