@@ -72,6 +72,7 @@ private:
   QByteArray _generatedIv;
   FolderMetadata *_metadata;
   EncryptedFile _encryptedFile;
+  QString _completeFileName;
 };
 
 
