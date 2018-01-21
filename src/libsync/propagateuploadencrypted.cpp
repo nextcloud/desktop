@@ -146,9 +146,12 @@ void PropagateUploadEncrypted::slotUpdateMetadataSuccess(const QByteArray& fileI
   QFileInfo info(_propagator->_localDir + QDir::separator() + _item->_file);
   auto *input = new QFile(info.absoluteFilePath());
   auto *output = new QFile(QDir::tempPath() + QDir::separator() + _encryptedFile.encryptedFilename);
+
+  // TODO: Invert the operations. first enrypt, then generate the metadata.
+  QByteArray tag;
   EncryptionHelper::fileEncryption(_encryptedFile.encryptionKey,
                                   _encryptedFile.initializationVector,
-                                  input, output);
+                                  input, output, tag);
 
   // File is Encrypted, Upload it.
   QFileInfo outputInfo(output->fileName());

@@ -1300,7 +1300,7 @@ bool ClientSideEncryption::isFolderEncrypted(const QString& path) const {
   return (*it);
 }
 
-bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &iv, QFile *input, QFile *output)
+bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &iv, QFile *input, QFile *output, QByteArray& returnTag)
 {
     if (!input->open(QIODevice::ReadOnly)) {
       qCDebug(lcCse) << "Could not open input file for reading" << input->errorString();
@@ -1375,6 +1375,7 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
         return false;
     }
 
+    returnTag = QByteArray((const char*) tag, 16);
     output->write((char *)tag, 16);
 
     free(out);
