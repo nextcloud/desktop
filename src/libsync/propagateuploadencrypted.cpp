@@ -119,13 +119,15 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
   qCDebug(lcPropagateUploadEncrypted) << "Creating the encrypted file.";
 
   auto *input = new QFile(info.absoluteFilePath());
-  auto *output = new QFile(QDir::tempPath() + QDir::separator() + _encryptedFile.encryptedFilename);
+  // TODO: Get from metadata if it is a file update!
+  QByteArray encryptedFilename = EncryptionHelper::generateRandomString(20);
+  auto *output = new QFile(QDir::tempPath() + QDir::separator() + encryptedFilename);
 
   // TODO: Invert the operations. first enrypt, then generate the metadata.
   QByteArray tag;
-  EncryptionHelper::fileEncryption(_encryptedFile.encryptionKey,
-                                  _encryptedFile.initializationVector,
-                                  input, output, tag);
+  QByteArray key = EncryptionHelper::generateRandom(16);
+  QByteArray iv = EncryptionHelper::generateRandom(16);
+  EncryptionHelper::fileEncryption(key, iv, input, output, tag);
 
   input->deleteLater();
   output->deleteLater();
@@ -133,12 +135,14 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
   _completeFileName = output->fileName();
 
   qCDebug(lcPropagateUploadEncrypted) << "Creating the metadata for the encrypted file.";
+
+  // TODO: reuse existing and update it instead of always created a new file
   EncryptedFile encryptedFile;
   encryptedFile.authenticationTag = tag.toBase64(); // TODO: Check against Android to see if the metadata is correct..
-  encryptedFile.encryptedFilename = EncryptionHelper::generateRandomString(20);
-  encryptedFile.encryptionKey = EncryptionHelper::generateRandom(16);
+  encryptedFile.encryptedFilename = encryptedFilename;
+  encryptedFile.encryptionKey = key;
   encryptedFile.fileVersion = 1;
-  encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
+  encryptedFile.initializationVector = iv;
   encryptedFile.metadataKey = 1;
   encryptedFile.originalFilename = info.fileName();
   _metadata->addEncryptedFile(encryptedFile);
