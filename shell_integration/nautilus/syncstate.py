@@ -199,36 +199,38 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
 
     def get_file_items(self, window, files):
         # Show the menu extension to share a file or folder
-        #
-        # Show if file is OK.
-        # Ignore top level folders.
-        # Also show extension for folders
-        #  if there is a OK or SYNC underneath.
-        # This is only
 
-        if len(files) != 1:
-            return
-        file = files[0]
+        # Get usable file paths from the uris
+        all_internal_files = True
+        for i, file_uri in enumerate(files):
+            filename = get_local_path(file_uri.get_uri())
 
-        filename = get_local_path(file.get_uri())
-        # Check if its a folder (ends with an /), if yes add a "/"
-        # otherwise it will not find the entry in the table
-        isDir = os.path.isdir(filename + os.sep)
-        if isDir:
-            filename += os.sep
+            # Check if its a folder (ends with an /), if yes add a "/"
+            # otherwise it will not find the entry in the table
+            isDir = os.path.isdir(filename + os.sep)
+            if isDir:
+                filename += os.sep
 
-        # Check if toplevel folder, we need to ignore those as they cannot be shared
-        topLevelFolder, internalFile = self.check_registered_paths(filename)
-        if topLevelFolder or not internalFile:
+            # Check if toplevel folder, we need to ignore those as they cannot be shared
+            topLevelFolder, internalFile = self.check_registered_paths(filename)
+            if not internalFile:
+                all_internal_files = False
+
+            files[i] = filename
+
+        # Don't show a context menu if some selected files aren't in a sync folder
+        if not all_internal_files:
             return []
 
         if socketConnect.protocolVersion >= '1.1':  # lexicographic!
-            return self.ask_for_menu_items(filename)
+            return self.ask_for_menu_items(files)
         else:
-            return self.legacy_menu_items(filename)
+            return self.legacy_menu_items(files)
 
-    def ask_for_menu_items(self, filename):
-        socketConnect.sendCommand('GET_MENU_ITEMS:{}\n'.format(filename))
+    def ask_for_menu_items(self, files):
+        record_separator = '\x1e'
+        filesstring = record_separator.join(files)
+        socketConnect.sendCommand('GET_MENU_ITEMS:{}\n'.format(filesstring))
 
         done = False
         start = time.time()
@@ -255,7 +257,10 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
                     menu_items.append([args[1], 'd' not in args[2], ':'.join(args[3:])])
 
         if not done:
-            return self.legacy_menu_items(filename)
+            return self.legacy_menu_items(files)
+
+        if len(menu_items) == 0:
+            return []
 
         # Set up the 'ownCloud...' submenu
         item_owncloud = Nautilus.MenuItem(
@@ -265,13 +270,18 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
 
         for action, enabled, label in menu_items:
             item = Nautilus.MenuItem(name=action, label=label, sensitive=enabled)
-            item.connect("activate", self.context_menu_action, action, filename)
+            item.connect("activate", self.context_menu_action, action, filesstring)
             menu.append_item(item)
 
         return [item_owncloud]
 
 
-    def legacy_menu_items(self, filename):
+    def legacy_menu_items(self, files):
+        # No legacy menu for a selection of several files
+        if len(files) != 1:
+            return []
+        filename = files[0]
+
         entry = socketConnect.nautilusVFSFile_table.get(filename)
         if not entry:
             return []
