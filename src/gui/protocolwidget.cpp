@@ -195,7 +195,7 @@ QTreeWidgetItem *ProtocolWidget::createCompletedTreewidgetItem(const QString &fo
 
 void ProtocolWidget::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
 {
-    if (item->hasErrorStatus())
+    if (!item->showInProtocolTab())
         return;
     QTreeWidgetItem *line = createCompletedTreewidgetItem(folder, *item);
     if (line) {

@@ -178,18 +178,31 @@ public:
 
     /**
      * True if the item had any kind of error.
-     *
-     * Used for deciding whether an item belongs to the protocol or the
-     * issues list on the activity page and for checking whether an
-     * item should be announced in the notification message.
      */
     bool hasErrorStatus() const
     {
         return _status == SyncFileItem::SoftError
             || _status == SyncFileItem::NormalError
             || _status == SyncFileItem::FatalError
-            || _status == SyncFileItem::Conflict
             || !_errorString.isEmpty();
+    }
+
+    /**
+     * Whether this item should appear on the issues tab.
+     */
+    bool showInIssuesTab() const
+    {
+        return hasErrorStatus() || _status == SyncFileItem::Conflict;
+    }
+
+    /**
+     * Whether this item should appear on the protocol tab.
+     */
+    bool showInProtocolTab() const
+    {
+        return !showInIssuesTab()
+            // Don't show conflicts that were resolved as "not a conflict after all"
+            && !(_instruction == CSYNC_INSTRUCTION_CONFLICT && _status == SyncFileItem::Success);
     }
 
     // Variables useful for everybody
