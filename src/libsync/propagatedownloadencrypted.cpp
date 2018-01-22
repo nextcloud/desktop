@@ -12,6 +12,10 @@ PropagateDownloadEncrypted::PropagateDownloadEncrypted(OwncloudPropagator *propa
 {
 }
 
+void PropagateDownloadEncrypted::start() {
+  checkFolderEncryptedStatus();
+}
+
 void PropagateDownloadEncrypted::checkFolderEncryptedStatus()
 {
   auto getEncryptedStatus = new GetFolderEncryptStatusJob(_propagator->account(), _info.path());

@@ -359,6 +359,7 @@ void PropagateDownloadFile::start()
           _isEncrypted = true;
           startAfterIsEncryptedIsChecked();
         });
+        _downloadEncryptedHelper->start();
     } else {
         startAfterIsEncryptedIsChecked();
     }
