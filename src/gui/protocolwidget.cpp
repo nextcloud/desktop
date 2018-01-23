@@ -308,7 +308,7 @@ void ProtocolWidget::slotOpenFile(QTreeWidgetItem *item, int)
 
 void ProtocolWidget::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
 {
-    if (item->hasErrorStatus())
+    if (!item->showInProtocolTab())
         return;
     QTreeWidgetItem *line = ProtocolItem::create(folder, *item);
     if (line) {

@@ -217,7 +217,7 @@ void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &p
 
 void IssuesWidget::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
 {
-    if (!item->hasErrorStatus())
+    if (!item->showInIssuesTab())
         return;
     QTreeWidgetItem *line = ProtocolItem::create(folder, *item);
     if (!line)
