@@ -15,9 +15,13 @@
 # or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
 # for more details.
 
+import sys
+python3 = sys.version_info[0] >= 3
+
 import os
 import urllib
-import urllib.parse
+if python3:
+    import urllib.parse
 import socket
 import tempfile
 
@@ -31,11 +35,11 @@ appname = 'ownCloud'
 
 print("Initializing "+appname+"-client-nautilus extension")
 
-
 def get_local_path(url):
     if url[0:7] == 'file://':
         url = url[7:]
-    return urllib.parse.unquote(url)
+    unquote = urllib.parse.unquote if python3 else urllib.unquote
+    return unquote(url)
 
 def get_runtime_dir():
     """Returns the value of $XDG_RUNTIME_DIR, a directory path.
