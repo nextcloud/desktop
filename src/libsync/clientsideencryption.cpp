@@ -1286,6 +1286,14 @@ QByteArray FolderMetadata::encryptedMetadata() {
 }
 
 void FolderMetadata::addEncryptedFile(const EncryptedFile &f) {
+
+    for (int i = 0; i < _files.size(); i++) {
+        if (_files.at(i).originalFilename == f.originalFilename) {
+            _files.removeAt(i);
+            break;
+        }
+    }
+
     _files.append(f);
 }
 
