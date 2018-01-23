@@ -368,12 +368,10 @@ void PropagateUploadFileNG::slotPutFinished()
     //
     // Dynamic chunk sizing is enabled if the server configured a
     // target duration for each chunk upload.
-    double targetDuration = propagator()->syncOptions()._targetChunkUploadDuration;
-    if (targetDuration > 0) {
-        double uploadTime = job->msSinceStart() + 1; // add one to avoid div-by-zero
-
-        auto predictedGoodSize = static_cast<quint64>(
-            _currentChunkSize / uploadTime * targetDuration);
+    auto targetDuration = propagator()->syncOptions()._targetChunkUploadDuration;
+    if (targetDuration.count() > 0) {
+        auto uploadTime = ++job->msSinceStart(); // add one to avoid div-by-zero
+        qint64 predictedGoodSize = (_currentChunkSize * targetDuration) / uploadTime;
 
         // The whole targeting is heuristic. The predictedGoodSize will fluctuate
         // quite a bit because of external factors (like available bandwidth)
@@ -389,8 +387,8 @@ void PropagateUploadFileNG::slotPutFinished()
             targetSize,
             propagator()->syncOptions()._maxChunkSize);
 
-        qCInfo(lcPropagateUpload) << "Chunked upload of" << _currentChunkSize << "bytes took" << uploadTime
-                                  << "ms, desired is" << targetDuration << "ms, expected good chunk size is"
+        qCInfo(lcPropagateUpload) << "Chunked upload of" << _currentChunkSize << "bytes took" << uploadTime.count()
+                                  << "ms, desired is" << targetDuration.count() << "ms, expected good chunk size is"
                                   << predictedGoodSize << "bytes and nudged next chunk size to "
                                   << propagator()->_chunkSize << "bytes";
     }

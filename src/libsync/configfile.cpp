@@ -38,12 +38,13 @@
 #include <QStandardPaths>
 
 #define DEFAULT_REMOTE_POLL_INTERVAL 30000 // default remote poll time in milliseconds
-#define DEFAULT_FULL_LOCAL_DISCOVERY_INTERVAL (60 * 60 * 1000) // 1 hour
 #define DEFAULT_MAX_LOG_LINES 20000
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcConfigFile, "nextcloud.sync.configfile", QtInfoMsg)
+namespace chrono = std::chrono;
+
+Q_LOGGING_CATEGORY(lcConfigFile, "sync.configfile", QtInfoMsg)
 
 //static const char caCertsKeyC[] = "CaCertificates"; only used from account.cpp
 static const char remotePollIntervalC[] = "remotePollInterval";
@@ -88,6 +89,12 @@ const char certPath[] = "http_certificatePath";
 const char certPasswd[] = "http_certificatePasswd";
 QString ConfigFile::_confDir = QString();
 bool ConfigFile::_askedUser = false;
+
+static chrono::milliseconds millisecondsValue(const QSettings &setting, const char *key,
+    chrono::milliseconds defaultValue)
+{
+    return chrono::milliseconds(setting.value(QLatin1String(key), qlonglong(defaultValue.count())).toLongLong());
+};
 
 ConfigFile::ConfigFile()
 {
@@ -173,10 +180,10 @@ quint64 ConfigFile::minChunkSize() const
     return settings.value(QLatin1String(minChunkSizeC), 1000 * 1000).toLongLong(); // default to 1 MB
 }
 
-quint64 ConfigFile::targetChunkUploadDuration() const
+chrono::milliseconds ConfigFile::targetChunkUploadDuration() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(targetChunkUploadDurationC), 60 * 1000).toLongLong(); // default to 1 minute
+    return millisecondsValue(settings, targetChunkUploadDurationC, chrono::minutes(1));
 }
 
 void ConfigFile::setOptionalServerNotifications(bool show)
@@ -386,7 +393,7 @@ bool ConfigFile::dataExists(const QString &group, const QString &key) const
     return settings.contains(key);
 }
 
-int ConfigFile::remotePollInterval(const QString &connection) const
+chrono::milliseconds ConfigFile::remotePollInterval(const QString &connection) const
 {
     QString con(connection);
     if (connection.isEmpty())
@@ -395,33 +402,34 @@ int ConfigFile::remotePollInterval(const QString &connection) const
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup(con);
 
-    int remoteInterval = settings.value(QLatin1String(remotePollIntervalC), DEFAULT_REMOTE_POLL_INTERVAL).toInt();
-    if (remoteInterval < 5000) {
+    auto defaultPollInterval = chrono::milliseconds(DEFAULT_REMOTE_POLL_INTERVAL);
+    auto remoteInterval = millisecondsValue(settings, remotePollIntervalC, defaultPollInterval);
+    if (remoteInterval < chrono::seconds(5)) {
         qCWarning(lcConfigFile) << "Remote Interval is less than 5 seconds, reverting to" << DEFAULT_REMOTE_POLL_INTERVAL;
-        remoteInterval = DEFAULT_REMOTE_POLL_INTERVAL;
+        remoteInterval = defaultPollInterval;
     }
     return remoteInterval;
 }
 
-void ConfigFile::setRemotePollInterval(int interval, const QString &connection)
+void ConfigFile::setRemotePollInterval(chrono::milliseconds interval, const QString &connection)
 {
     QString con(connection);
     if (connection.isEmpty())
         con = defaultConnection();
 
-    if (interval < 5000) {
-        qCWarning(lcConfigFile) << "Remote Poll interval of " << interval << " is below five seconds.";
+    if (interval < chrono::seconds(5)) {
+        qCWarning(lcConfigFile) << "Remote Poll interval of " << interval.count() << " is below five seconds.";
         return;
     }
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup(con);
-    settings.setValue(QLatin1String(remotePollIntervalC), interval);
+    settings.setValue(QLatin1String(remotePollIntervalC), qlonglong(interval.count()));
     settings.sync();
 }
 
-quint64 ConfigFile::forceSyncInterval(const QString &connection) const
+chrono::milliseconds ConfigFile::forceSyncInterval(const QString &connection) const
 {
-    uint pollInterval = remotePollInterval(connection);
+    auto pollInterval = remotePollInterval(connection);
 
     QString con(connection);
     if (connection.isEmpty())
@@ -429,23 +437,23 @@ quint64 ConfigFile::forceSyncInterval(const QString &connection) const
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup(con);
 
-    quint64 defaultInterval = 2 * 60 * 60 * 1000ull; // 2h
-    quint64 interval = settings.value(QLatin1String(forceSyncIntervalC), defaultInterval).toULongLong();
+    auto defaultInterval = chrono::hours(2);
+    auto interval = millisecondsValue(settings, forceSyncIntervalC, defaultInterval);
     if (interval < pollInterval) {
-        qCWarning(lcConfigFile) << "Force sync interval is less than the remote poll inteval, reverting to" << pollInterval;
+        qCWarning(lcConfigFile) << "Force sync interval is less than the remote poll inteval, reverting to" << pollInterval.count();
         interval = pollInterval;
     }
     return interval;
 }
 
-qint64 ConfigFile::fullLocalDiscoveryInterval() const
+chrono::milliseconds OCC::ConfigFile::fullLocalDiscoveryInterval() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup(defaultConnection());
-    return settings.value(QLatin1String(fullLocalDiscoveryIntervalC), DEFAULT_FULL_LOCAL_DISCOVERY_INTERVAL).toLongLong();
+    return millisecondsValue(settings, fullLocalDiscoveryIntervalC, chrono::hours(1));
 }
 
-quint64 ConfigFile::notificationRefreshInterval(const QString &connection) const
+chrono::milliseconds ConfigFile::notificationRefreshInterval(const QString &connection) const
 {
     QString con(connection);
     if (connection.isEmpty())
@@ -453,16 +461,16 @@ quint64 ConfigFile::notificationRefreshInterval(const QString &connection) const
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup(con);
 
-    quint64 defaultInterval = 5 * 60 * 1000ull; // 5 minutes
-    quint64 interval = settings.value(QLatin1String(notificationRefreshIntervalC), defaultInterval).toULongLong();
-    if (interval < 60 * 1000ull) {
+    auto defaultInterval = chrono::minutes(5);
+    auto interval = millisecondsValue(settings, notificationRefreshIntervalC, defaultInterval);
+    if (interval < chrono::minutes(1)) {
         qCWarning(lcConfigFile) << "Notification refresh interval smaller than one minute, setting to one minute";
-        interval = 60 * 1000ull;
+        interval = chrono::minutes(1);
     }
     return interval;
 }
 
-int ConfigFile::updateCheckInterval(const QString &connection) const
+chrono::milliseconds ConfigFile::updateCheckInterval(const QString &connection) const
 {
     QString con(connection);
     if (connection.isEmpty())
@@ -470,12 +478,12 @@ int ConfigFile::updateCheckInterval(const QString &connection) const
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup(con);
 
-    int defaultInterval = 1000 * 60 * 60 * 10; // ten hours
-    int interval = settings.value(QLatin1String(updateCheckIntervalC), defaultInterval).toInt();
+    auto defaultInterval = chrono::hours(10);
+    auto interval = millisecondsValue(settings, updateCheckIntervalC, defaultInterval);
 
-    int minInterval = 1000 * 60 * 5;
+    auto minInterval = chrono::minutes(5);
     if (interval < minInterval) {
-        qCWarning(lcConfigFile) << "Update check interval less than five minutes, setting " << minInterval;
+        qCWarning(lcConfigFile) << "Update check interval less than five minutes, resetting to 5 minutes";
         interval = minInterval;
     }
     return interval;
