@@ -116,18 +116,35 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
   _metadata = new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact));
 
   QFileInfo info(_propagator->_localDir + QDir::separator() + _item->_file);
+
+  // Find existing metadata for this file
+  EncryptedFile encryptedFile;
+  QVector<EncryptedFile> files = _metadata->files();
+  for(EncryptedFile &file : files) {
+    if (file.originalFilename == _item->File) {
+      encryptedFile = file;
+    }
+  }
+
+  encryptedFile.encryptionKey = EncryptionHelper::generateRandom(16);
+  encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
+
+  // New encrypted file so set it all up!
+  if (encryptedFile.encryptedFilename.isEmpty()) {
+      encryptedFile.encryptedFilename = EncryptionHelper::generateRandomString(20);
+      encryptedFile.fileVersion = 1;
+      encryptedFile.metadataKey = 1;
+      encryptedFile.originalFilename = info.fileName();
+  }
+
+
   qCDebug(lcPropagateUploadEncrypted) << "Creating the encrypted file.";
 
   auto *input = new QFile(info.absoluteFilePath());
-  // TODO: Get from metadata if it is a file update!
-  QByteArray encryptedFilename = EncryptionHelper::generateRandomString(20);
-  auto *output = new QFile(QDir::tempPath() + QDir::separator() + encryptedFilename);
+  auto *output = new QFile(QDir::tempPath() + QDir::separator() + encryptedFile.encryptedFilename);
 
-  // TODO: Invert the operations. first enrypt, then generate the metadata.
   QByteArray tag;
-  QByteArray key = EncryptionHelper::generateRandom(16);
-  QByteArray iv = EncryptionHelper::generateRandom(16);
-  EncryptionHelper::fileEncryption(key, iv, input, output, tag);
+  EncryptionHelper::fileEncryption(encryptedFile.encryptionKey, encryptedFile.initializationVector, input, output, tag);
 
   input->deleteLater();
   output->deleteLater();
@@ -136,15 +153,8 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
 
   qCDebug(lcPropagateUploadEncrypted) << "Creating the metadata for the encrypted file.";
 
-  // TODO: reuse existing and update it instead of always created a new file
-  EncryptedFile encryptedFile;
-  encryptedFile.authenticationTag = tag.toBase64(); // TODO: Check against Android to see if the metadata is correct..
-  encryptedFile.encryptedFilename = encryptedFilename;
-  encryptedFile.encryptionKey = key;
-  encryptedFile.fileVersion = 1;
-  encryptedFile.initializationVector = iv;
-  encryptedFile.metadataKey = 1;
-  encryptedFile.originalFilename = info.fileName();
+  encryptedFile.authenticationTag = tag.toBase64();
+
   _metadata->addEncryptedFile(encryptedFile);
   _encryptedFile = encryptedFile;
 
