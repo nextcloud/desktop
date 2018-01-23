@@ -278,38 +278,56 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     QString trayMessage;
     FolderMan *folderMan = FolderMan::instance();
     Folder::Map map = folderMan->map();
-    SyncResult::Status overallResult = FolderMan::accountStatus(map.values()).status();
+
+    SyncResult::Status overallStatus = SyncResult::Undefined;
+    bool hasUnresolvedConflicts = false;
+    FolderMan::trayOverallStatus(map.values(), &overallStatus, &hasUnresolvedConflicts);
+
+    // If the sync succeeded but there are unresolved conflicts,
+    // show the problem icon!
+    auto iconStatus = overallStatus;
+    if (iconStatus == SyncResult::Success && hasUnresolvedConflicts) {
+        iconStatus = SyncResult::Problem;
+    }
+
+    // If we don't get a status for whatever reason, that's a Problem
+    if (iconStatus == SyncResult::Undefined) {
+        iconStatus = SyncResult::Problem;
+    }
+
+    QIcon statusIcon = Theme::instance()->syncStateIcon(iconStatus, true, contextMenuVisible());
+    _tray->setIcon(statusIcon);
 
     // create the tray blob message, check if we have an defined state
-    if (overallResult != SyncResult::Undefined && map.count() > 0) {
+    if (map.count() > 0) {
 #ifdef Q_OS_WIN
         // Windows has a 128-char tray tooltip length limit.
-        trayMessage = folderMan->statusToString(overallResult, false);
+        trayMessage = folderMan->trayTooltipStatusString(overallStatus, hasUnresolvedConflicts, false);
 #else
         QStringList allStatusStrings;
         foreach (Folder *folder, map.values()) {
-            QString folderMessage = folderMan->statusToString(folder->syncResult().status(), folder->syncPaused());
+            QString folderMessage = FolderMan::trayTooltipStatusString(
+                folder->syncResult().status(),
+                folder->syncResult().hasUnresolvedConflicts(),
+                folder->syncPaused());
             allStatusStrings += tr("Folder %1: %2").arg(folder->shortGuiLocalPath(), folderMessage);
         }
         trayMessage = allStatusStrings.join(QLatin1String("\n"));
 #endif
-
-        QIcon statusIcon = Theme::instance()->syncStateIcon(overallResult, true, contextMenuVisible());
-        _tray->setIcon(statusIcon);
         _tray->setToolTip(trayMessage);
 
-        if (overallResult == SyncResult::Success || overallResult == SyncResult::Problem) {
-            setStatusText(tr("Up to date"));
-        } else if (overallResult == SyncResult::Paused) {
+        if (overallStatus == SyncResult::Success || overallStatus == SyncResult::Problem) {
+            if (hasUnresolvedConflicts) {
+                setStatusText(tr("Unresolved conflicts"));
+            } else {
+                setStatusText(tr("Up to date"));
+            }
+        } else if (overallStatus == SyncResult::Paused) {
             setStatusText(tr("Synchronization is paused"));
         } else {
             setStatusText(tr("Error during synchronization"));
         }
     } else {
-        if (overallResult == SyncResult::Undefined)
-            overallResult = SyncResult::Problem;
-        QIcon icon = Theme::instance()->syncStateIcon(overallResult, true, contextMenuVisible());
-        _tray->setIcon(icon);
         _tray->setToolTip(tr("There are no sync folders configured."));
         setStatusText(tr("No sync folders configured"));
     }

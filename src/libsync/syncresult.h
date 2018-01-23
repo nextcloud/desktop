@@ -69,6 +69,7 @@ public:
     int numNewConflictItems() const { return _numNewConflictItems; }
     int numOldConflictItems() const { return _numOldConflictItems; }
     int numErrorItems() const { return _numErrorItems; }
+    bool hasUnresolvedConflicts() const { return _numNewConflictItems + _numOldConflictItems > 0; }
 
     const SyncFileItemPtr &firstItemNew() const { return _firstItemNew; }
     const SyncFileItemPtr &firstItemDeleted() const { return _firstItemDeleted; }
