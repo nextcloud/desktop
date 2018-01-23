@@ -49,6 +49,8 @@ public:
             const QByteArray& data
     );
 
+    static QByteArray privateKeyToPem(const QSslKey key);
+
     //TODO: change those two EVP_PKEY into QSslKey.
     static QByteArray encryptStringAsymmetric(
             EVP_PKEY *publicKey,

@@ -381,6 +381,23 @@ QByteArray EncryptionHelper::decryptStringSymmetric(const QByteArray& key, const
     return result;
 }
 
+QByteArray EncryptionHelper::privateKeyToPem(const QSslKey key) {
+    BIO *privateKeyBio = BIO_new(BIO_s_mem());
+    QByteArray privateKeyPem = key.toPem();
+    BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
+    EVP_PKEY *pkey = PEM_read_bio_PrivateKey(privateKeyBio, NULL, NULL, NULL);
+
+    BIO *pemBio = BIO_new(BIO_s_mem());
+    PEM_write_bio_PKCS8PrivateKey(pemBio, pkey, NULL, NULL, 0, NULL, NULL);
+    QByteArray pem = BIO2ByteArray(pemBio);
+
+    BIO_free_all(privateKeyBio);
+    BIO_free_all(pemBio);
+    EVP_PKEY_free(pkey);
+
+    return pem;
+}
+
 QByteArray EncryptionHelper::encryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
     QByteArray iv = generateRandom(16);
 
@@ -706,7 +723,7 @@ void ClientSideEncryption::mnemonicKeyFetched(QKeychain::Job *incoming) {
 
     _mnemonic = readJob->textData();
 
-    qCInfo(lcCse()) << "Mnemonic key fetched from keychain";
+    qCInfo(lcCse()) << "Mnemonic key fetched from keychain: " << _mnemonic;
 
     emit initializationFinished();
 }
@@ -937,7 +954,7 @@ void ClientSideEncryption::encryptPrivateKey()
 
     auto salt = EncryptionHelper::generateRandom(40);
     auto secretKey = EncryptionHelper::generatePassword(passPhrase, salt);
-    auto cryptedText = EncryptionHelper::encryptPrivateKey(secretKey, _privateKey.toPem(), salt);
+    auto cryptedText = EncryptionHelper::encryptPrivateKey(secretKey, EncryptionHelper::privateKeyToPem(_privateKey), salt);
 
     // Send private key to the server
 	auto job = new StorePrivateKeyApiJob(_account, baseUrl() + "private-key", this);
@@ -1240,6 +1257,7 @@ QByteArray FolderMetadata::encryptedMetadata() {
         metadataKeys.insert(QString::number(it.key()), QString(encryptedKey));
     }
 
+    /* NO SHARING IN V1
     QJsonObject recepients;
     for (auto it = _sharing.constBegin(), end = _sharing.constEnd(); it != end; it++) {
         recepients.insert(it->first, it->second);
@@ -1247,10 +1265,11 @@ QByteArray FolderMetadata::encryptedMetadata() {
     QJsonDocument recepientDoc;
     recepientDoc.setObject(recepients);
     QString sharingEncrypted = encryptJsonObject(recepientDoc.toJson(QJsonDocument::Compact), _metadataKeys.last());
+    */
 
     QJsonObject metadata = {
       {"metadataKeys", metadataKeys},
-      {"sharing", sharingEncrypted},
+      // {"sharing", sharingEncrypted},
       {"version", 1}
     };
 
