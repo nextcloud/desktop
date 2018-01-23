@@ -10,6 +10,7 @@
 #include <QFile>
 #include <QTemporaryFile>
 #include <QLoggingCategory>
+#include <QMimeDatabase>
 
 namespace OCC {
 
@@ -135,6 +136,8 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
       encryptedFile.fileVersion = 1;
       encryptedFile.metadataKey = 1;
       encryptedFile.originalFilename = info.fileName();
+      QMimeDatabase mdb;
+      encryptedFile.mimetype = mdb.mimeTypeForFile(info).name().toLocal8Bit();
   }
 
 
@@ -153,7 +156,7 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
 
   qCDebug(lcPropagateUploadEncrypted) << "Creating the metadata for the encrypted file.";
 
-  encryptedFile.authenticationTag = tag.toBase64();
+  encryptedFile.authenticationTag = tag;
 
   _metadata->addEncryptedFile(encryptedFile);
   _encryptedFile = encryptedFile;
