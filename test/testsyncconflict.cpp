@@ -80,6 +80,12 @@ private slots:
         fakeFolder.remoteModifier().appendByte("A/a2");
         fakeFolder.remoteModifier().appendByte("A/a2");
         QVERIFY(fakeFolder.syncOnce());
+
+        // Verify that the conflict names don't have the user name
+        for (const auto &name : findConflicts(fakeFolder.currentLocalState().children["A"])) {
+            QVERIFY(!name.contains(fakeFolder.syncEngine().account()->davUser()));
+        }
+
         QVERIFY(expectAndWipeConflict(fakeFolder.localModifier(), fakeFolder.currentLocalState(), "A/a1"));
         QVERIFY(expectAndWipeConflict(fakeFolder.localModifier(), fakeFolder.currentLocalState(), "A/a2"));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -120,6 +126,9 @@ private slots:
         QVERIFY(conflictMap.contains(a2FileId));
         QCOMPARE(conflictMap.size(), 2);
         QCOMPARE(Utility::conflictFileBaseName(conflictMap[a1FileId].toUtf8()), QByteArray("A/a1"));
+
+        // Check that the conflict file contains the username
+        QVERIFY(conflictMap[a1FileId].contains(QString("-%1-").arg(fakeFolder.syncEngine().account()->davUser())));
 
         QCOMPARE(remote.find(conflictMap[a1FileId])->contentChar, 'L');
         QCOMPARE(remote.find("A/a1")->contentChar, 'R');

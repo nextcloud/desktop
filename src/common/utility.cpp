@@ -542,7 +542,8 @@ QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
     return tmpUrl;
 }
 
-QString Utility::makeConflictFileName(const QString &fn, const QDateTime &dt)
+QString Utility::makeConflictFileName(
+    const QString &fn, const QDateTime &dt, const QString &user)
 {
     QString conflictFileName(fn);
     // Add _conflict-XXXX  before the extension.
@@ -551,9 +552,15 @@ QString Utility::makeConflictFileName(const QString &fn, const QDateTime &dt)
     if (dotLocation <= conflictFileName.lastIndexOf('/') + 1) {
         dotLocation = conflictFileName.size();
     }
-    QString timeString = dt.toString("yyyyMMdd-hhmmss");
 
-    conflictFileName.insert(dotLocation, "_conflict-" + timeString);
+    QString conflictMarker = QStringLiteral("_conflict-");
+    if (!user.isEmpty()) {
+        conflictMarker.append(sanitizeForFileName(user));
+        conflictMarker.append('-');
+    }
+    conflictMarker.append(dt.toString("yyyyMMdd-hhmmss"));
+
+    conflictFileName.insert(dotLocation, conflictMarker);
     return conflictFileName;
 }
 
@@ -593,6 +600,21 @@ QByteArray Utility::conflictFileBaseName(const QByteArray &conflictName)
         return conflictName.left(start) + conflictName.mid(end);
     }
     return "";
+}
+
+QString Utility::sanitizeForFileName(const QString &name)
+{
+    const auto invalid = QStringLiteral("/?<>\\:*|\"");
+    QString result;
+    result.reserve(name.size());
+    for (const auto c : name) {
+        if (!invalid.contains(c)
+            && c.category() != QChar::Other_Control
+            && c.category() != QChar::Other_Format) {
+            result.append(c);
+        }
+    }
+    return result;
 }
 
 } // namespace OCC

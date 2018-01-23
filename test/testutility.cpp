@@ -187,7 +187,28 @@ private slots:
         qunsetenv("OWNCLOUD_TEST_CASE_PRESERVING");
     }
 
+    void testSanitizeForFileName_data()
+    {
+        QTest::addColumn<QString>("input");
+        QTest::addColumn<QString>("output");
 
+        QTest::newRow("")
+            << "foobar"
+            << "foobar";
+        QTest::newRow("")
+            << "a/b?c<d>e\\f:g*h|i\"j"
+            << "abcdefghij";
+        QTest::newRow("")
+            << QString::fromLatin1("a\x01 b\x1f c\x80 d\x9f")
+            << "a b c d";
+    }
+
+    void testSanitizeForFileName()
+    {
+        QFETCH(QString, input);
+        QFETCH(QString, output);
+        QCOMPARE(sanitizeForFileName(input), output);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestUtility)
