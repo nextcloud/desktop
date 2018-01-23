@@ -126,6 +126,9 @@ public:
     bool showInExplorerNavigationPane() const;
     void setShowInExplorerNavigationPane(bool show);
 
+    bool showExternalSites() const;
+    void setShowExternalSites(bool show);
+
     int timeout() const;
     quint64 chunkSize() const;
     quint64 maxChunkSize() const;

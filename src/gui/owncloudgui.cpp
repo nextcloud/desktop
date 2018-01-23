@@ -17,7 +17,6 @@
 #include "ocsexternalsitesjob.h"
 #include "theme.h"
 #include "folderman.h"
-#include "configfile.h"
 #include "progressdispatcher.h"
 #include "owncloudsetupwizard.h"
 #include "sharedialog.h"
@@ -35,6 +34,7 @@
 #include "accountmanager.h"
 #include "common/syncjournalfilerecord.h"
 #include "creds/abstractcredentials.h"
+#include "configfile.h"
 #ifdef WITH_LIBCLOUDPROVIDERS
 #include "cloudproviders/cloudprovidermanager.h"
 #endif
@@ -646,7 +646,8 @@ void ownCloudGui::updateContextMenu()
     }
     _contextMenu->addAction(_actionQuit);
 
-    fetchExternalSites();
+    if(_cfg.showExternalSites())
+        fetchExternalSites();
 
     if (_qdbusmenuWorkaround) {
         _tray->show();

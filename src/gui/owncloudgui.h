@@ -18,6 +18,7 @@
 #include "systray.h"
 #include "connectionvalidator.h"
 #include "progressdispatcher.h"
+#include "configfile.h"
 
 #include <QObject>
 #include <QPointer>
@@ -166,6 +167,8 @@ private:
     QAction *_actionCrash;
     QList<QAction *> _recentItemsActions;
     Application *_app;
+
+    ConfigFile _cfg;
 };
 
 } // namespace OCC
