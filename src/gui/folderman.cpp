@@ -58,9 +58,9 @@ FolderMan::FolderMan(QObject *parent)
     _socketApi.reset(new SocketApi);
 
     ConfigFile cfg;
-    int polltime = cfg.remotePollInterval();
-    qCInfo(lcFolderMan) << "setting remote poll timer interval to" << polltime << "msec";
-    _etagPollTimer.setInterval(polltime);
+    std::chrono::milliseconds polltime = cfg.remotePollInterval();
+    qCInfo(lcFolderMan) << "setting remote poll timer interval to" << polltime.count() << "msec";
+    _etagPollTimer.setInterval(polltime.count());
     QObject::connect(&_etagPollTimer, &QTimer::timeout, this, &FolderMan::slotEtagPollTimerTimeout);
     _etagPollTimer.start();
 
@@ -652,13 +652,13 @@ void FolderMan::startScheduledSyncSoon()
 
     // Require a pause based on the duration of the last sync run.
     if (Folder *lastFolder = _lastSyncFolder) {
-        msSinceLastSync = lastFolder->msecSinceLastSync();
+        msSinceLastSync = lastFolder->msecSinceLastSync().count();
 
         //  1s   -> 1.5s pause
         // 10s   -> 5s pause
         //  1min -> 12s pause
         //  1h   -> 90s pause
-        qint64 pause = qSqrt(lastFolder->msecLastSyncDuration()) / 20.0 * 1000.0;
+        qint64 pause = qSqrt(lastFolder->msecLastSyncDuration().count()) / 20.0 * 1000.0;
         msDelay = qMax(msDelay, pause);
     }
 
@@ -723,7 +723,7 @@ void FolderMan::slotStartScheduledFolderSync()
 void FolderMan::slotEtagPollTimerTimeout()
 {
     ConfigFile cfg;
-    int polltime = cfg.remotePollInterval();
+    auto polltime = cfg.remotePollInterval();
 
     foreach (Folder *f, _folderMap) {
         if (!f) {
@@ -806,11 +806,10 @@ void FolderMan::slotScheduleFolderByTime()
         auto msecsSinceSync = f->msecSinceLastSync();
 
         // Possibly it's just time for a new sync run
-        bool forceSyncIntervalExpired =
-            quint64(msecsSinceSync) > ConfigFile().forceSyncInterval();
+        bool forceSyncIntervalExpired = msecsSinceSync > ConfigFile().forceSyncInterval();
         if (forceSyncIntervalExpired) {
             qCInfo(lcFolderMan) << "Scheduling folder" << f->alias()
-                                << "because it has been" << msecsSinceSync << "ms "
+                                << "because it has been" << msecsSinceSync.count() << "ms "
                                 << "since the last sync";
 
             scheduleFolder(f);
@@ -821,16 +820,15 @@ void FolderMan::slotScheduleFolderByTime()
         bool syncAgain =
             (f->consecutiveFailingSyncs() > 0 && f->consecutiveFailingSyncs() < 3)
             || f->syncEngine().isAnotherSyncNeeded() == DelayedFollowUp;
-        qint64 syncAgainDelay = 10 * 1000; // 10s for the first retry-after-fail
+        auto syncAgainDelay = std::chrono::seconds(10); // 10s for the first retry-after-fail
         if (f->consecutiveFailingSyncs() > 1)
-            syncAgainDelay = 60 * 1000; // 60s for each further attempt
-        if (syncAgain
-            && msecsSinceSync > syncAgainDelay) {
+            syncAgainDelay = std::chrono::seconds(60); // 60s for each further attempt
+        if (syncAgain && msecsSinceSync > syncAgainDelay) {
             qCInfo(lcFolderMan) << "Scheduling folder" << f->alias()
                                 << ", the last" << f->consecutiveFailingSyncs() << "syncs failed"
                                 << ", anotherSyncNeeded" << f->syncEngine().isAnotherSyncNeeded()
                                 << ", last status:" << f->syncResult().statusString()
-                                << ", time since last sync:" << msecsSinceSync;
+                                << ", time since last sync:" << msecsSinceSync.count();
 
             scheduleFolder(f);
             continue;

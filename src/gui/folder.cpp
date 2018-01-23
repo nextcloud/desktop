@@ -626,18 +626,17 @@ void Folder::startSync(const QStringList &pathList)
     setDirtyNetworkLimits();
     setSyncOptions();
 
-    static qint64 fullLocalDiscoveryInterval = []() {
+    static std::chrono::milliseconds fullLocalDiscoveryInterval = []() {
         auto interval = ConfigFile().fullLocalDiscoveryInterval();
         QByteArray env = qgetenv("OWNCLOUD_FULL_LOCAL_DISCOVERY_INTERVAL");
         if (!env.isEmpty()) {
-            interval = env.toLongLong();
+            interval = std::chrono::milliseconds(env.toLongLong());
         }
         return interval;
     }();
-    if (_folderWatcher && _folderWatcher->isReliable()
-        && _timeSinceLastFullLocalDiscovery.isValid()
-        && (fullLocalDiscoveryInterval < 0
-               || _timeSinceLastFullLocalDiscovery.elapsed() < fullLocalDiscoveryInterval)) {
+    if (_folderWatcher && _folderWatcher->isReliable() && _timeSinceLastFullLocalDiscovery.isValid()
+        && (fullLocalDiscoveryInterval.count() < 0
+               || _timeSinceLastFullLocalDiscovery.hasExpired(fullLocalDiscoveryInterval.count()))) {
         qCInfo(lcFolder) << "Allowing local discovery to read from the database";
         _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, _localDiscoveryPaths);
 
@@ -700,7 +699,7 @@ void Folder::setSyncOptions()
 
     QByteArray targetChunkUploadDurationEnv = qgetenv("OWNCLOUD_TARGET_CHUNK_UPLOAD_DURATION");
     if (!targetChunkUploadDurationEnv.isEmpty()) {
-        opt._targetChunkUploadDuration = targetChunkUploadDurationEnv.toUInt();
+        opt._targetChunkUploadDuration = std::chrono::milliseconds(targetChunkUploadDurationEnv.toUInt());
     } else {
         opt._targetChunkUploadDuration = cfgFile.targetChunkUploadDuration();
     }
@@ -822,7 +821,7 @@ void Folder::slotSyncFinished(bool success)
     // all come in.
     QTimer::singleShot(200, this, &Folder::slotEmitFinishedDelayed);
 
-    _lastSyncDuration = _timeSinceLastSyncStart.elapsed();
+    _lastSyncDuration = std::chrono::milliseconds(_timeSinceLastSyncStart.elapsed());
     _timeSinceLastSyncDone.start();
 
     // Increment the follow-up sync counter if necessary.

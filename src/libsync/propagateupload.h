@@ -139,9 +139,9 @@ public:
         return _errorString.isEmpty() ? AbstractNetworkJob::errorString() : _errorString;
     }
 
-    quint64 msSinceStart() const
+    std::chrono::milliseconds msSinceStart() const
     {
-        return _requestTimer.elapsed();
+        return std::chrono::milliseconds(_requestTimer.elapsed());
     }
 
 signals:
