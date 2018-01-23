@@ -522,6 +522,11 @@ void SocketApi::command_EMAIL_PRIVATE_LINK(const QString &localFile, SocketListe
     fetchPrivateLinkUrlHelper(localFile, this, &SocketApi::emailPrivateLink);
 }
 
+void SocketApi::command_OPEN_PRIVATE_LINK(const QString &localFile, SocketListener *)
+{
+    fetchPrivateLinkUrlHelper(localFile, this, &SocketApi::openPrivateLink);
+}
+
 void SocketApi::copyPrivateLinkToClipboard(const QString &link) const
 {
     QApplication::clipboard()->setText(link);
@@ -533,6 +538,11 @@ void SocketApi::emailPrivateLink(const QString &link) const
         tr("I shared something with you"),
         link,
         0);
+}
+
+void OCC::SocketApi::openPrivateLink(const QString &link) const
+{
+    Utility::openBrowser(link, nullptr);
 }
 
 void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *listener)
@@ -557,21 +567,33 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
     listener->sendMessage(QString("GET_MENU_ITEMS:BEGIN"));
     bool hasSeveralFiles = argument.contains(QLatin1Char('\x1e')); // Record Separator
     Folder *syncFolder = hasSeveralFiles ? nullptr : FolderMan::instance()->folderForPath(argument);
-    if (syncFolder) {
+    if (syncFolder && syncFolder->accountState()->isConnected()) {
         QString systemPath = QDir::cleanPath(argument);
         if (systemPath.endsWith(QLatin1Char('/'))) {
             systemPath.truncate(systemPath.length() - 1);
         }
-        QString relativePath = systemPath.mid(syncFolder->cleanPath().length() + 1);
 
         SyncJournalFileRecord rec;
-        if (syncFolder->accountState()->isConnected() && syncFolder->journalDb()->getFileRecord(relativePath, &rec) && rec.isValid()) {
-            // If the file is on the DB, it is on the server
-            // TODO: check if sharing is allowed
-            listener->sendMessage(QLatin1String("MENU_ITEM:SHARE::") + tr("Share..."));
-            listener->sendMessage(QLatin1String("MENU_ITEM:COPY_PRIVATE_LINK::") + tr("Copy private link to clipboard"));
-            listener->sendMessage(QLatin1String("MENU_ITEM:EMAIL_PRIVATE_LINK::") + tr("Send private link by email..."));
+        QString relativePath = systemPath.mid(syncFolder->cleanPath().length() + 1);
+        // If the file is on the DB, it is on the server
+        bool isOnTheServer = syncFolder->journalDb()->getFileRecord(relativePath, &rec) && rec.isValid();
+        auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
+
+        auto capabilities = syncFolder->accountState()->account()->capabilities();
+        auto theme = Theme::instance();
+        if (capabilities.shareAPI() && (theme->userGroupSharing() || (theme->linkSharing() && capabilities.sharePublicLink()))) {
+            // If sharing is globally disabled, do not show any sharing entries.
+            // If there is no permission to share for this file, add a disabled entry saying so
+            if (isOnTheServer && !rec._remotePerm.isNull() && !rec._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
+                listener->sendMessage(QLatin1String("MENU_ITEM:DISABLED:d:") + tr("Resharing this file is not allowed"));
+            } else {
+                listener->sendMessage(QLatin1String("MENU_ITEM:SHARE") + flagString + tr("Share..."));
+            }
+            listener->sendMessage(QLatin1String("MENU_ITEM:EMAIL_PRIVATE_LINK") + flagString + tr("Send private link by email..."));
+            listener->sendMessage(QLatin1String("MENU_ITEM:COPY_PRIVATE_LINK") + flagString + tr("Copy private link to clipboard"));
         }
+
+        listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
     }
     listener->sendMessage(QString("GET_MENU_ITEMS:END"));
 }
