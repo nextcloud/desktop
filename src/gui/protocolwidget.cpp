@@ -83,6 +83,16 @@ void ProtocolItem::setStatus(QTreeWidgetItem *item, SyncFileItem::Status status)
     item->setData(3, Qt::UserRole, status);
 }
 
+quint64 ProtocolItem::size(const QTreeWidgetItem *item)
+{
+    return item->data(4, Qt::UserRole).toULongLong();
+}
+
+void ProtocolItem::setSize(QTreeWidgetItem *item, quint64 size)
+{
+    item->setData(4, Qt::UserRole, size);
+}
+
 ProtocolItem *ProtocolItem::create(const QString &folder, const SyncFileItem &item)
 {
     auto f = FolderMan::instance()->folder(folder);
@@ -131,6 +141,7 @@ ProtocolItem *ProtocolItem::create(const QString &folder, const SyncFileItem &it
     setFilePath(twitem, item._file); // also sets toolTip(1)
     setFolderName(twitem, folder);
     setStatus(twitem, item._status);
+    setSize(twitem, item._size);
     return twitem;
 }
 
@@ -185,14 +196,16 @@ void ProtocolItem::openContextMenu(QPoint globalPos, QTreeWidgetItem *item, QWid
 bool ProtocolItem::operator<(const QTreeWidgetItem &other) const
 {
     int column = treeWidget()->sortColumn();
-    if (column != 0) {
-        return QTreeWidgetItem::operator<(other);
+    if (column == 0) {
+        // Items with empty "File" column are larger than others,
+        // otherwise sort by time (this uses lexicographic ordering)
+        return std::forward_as_tuple(text(1).isEmpty(), timestamp(this))
+            < std::forward_as_tuple(other.text(1).isEmpty(), timestamp(&other));
+    } else if (column == 4) {
+        return size(this) < size(&other);
     }
 
-    // Items with empty "File" column are larger than others,
-    // otherwise sort by time (this uses lexicographic ordering)
-    return std::forward_as_tuple(text(1).isEmpty(), timestamp(this))
-        < std::forward_as_tuple(other.text(1).isEmpty(), timestamp(&other));
+    return QTreeWidgetItem::operator<(other);
 }
 
 ProtocolWidget::ProtocolWidget(QWidget *parent)

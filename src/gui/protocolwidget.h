@@ -58,6 +58,8 @@ public:
     static void setTimestamp(QTreeWidgetItem *item, const QDateTime &timestamp);
     static SyncFileItem::Status status(const QTreeWidgetItem *item);
     static void setStatus(QTreeWidgetItem *item, SyncFileItem::Status status);
+    static quint64 size(const QTreeWidgetItem *item);
+    static void setSize(QTreeWidgetItem *item, quint64 size);
 
     static SyncJournalFileRecord syncJournalRecord(QTreeWidgetItem *item);
     static Folder *folder(QTreeWidgetItem *item);
