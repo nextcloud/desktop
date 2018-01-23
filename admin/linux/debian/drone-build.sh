@@ -12,8 +12,6 @@ OBS_PACKAGE=nextcloud-client
 
 pull_request=${DRONE_PULL_REQUEST:=master}
 
-env
-
 if test -z "${DRONE_WORKSPACE}"; then
     DRONE_WORKSPACE=`pwd`
 fi
