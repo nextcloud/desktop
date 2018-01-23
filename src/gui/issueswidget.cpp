@@ -154,7 +154,7 @@ void IssuesWidget::cleanItems(const QString &folder)
     int itemCnt = _ui->_treeWidget->topLevelItemCount();
     for (int cnt = itemCnt - 1; cnt >= 0; cnt--) {
         QTreeWidgetItem *item = _ui->_treeWidget->topLevelItem(cnt);
-        QString itemFolder = item->data(2, Qt::UserRole).toString();
+        QString itemFolder = ProtocolItem::folderName(item);
         if (itemFolder == folder) {
             delete item;
         }
@@ -197,11 +197,8 @@ void IssuesWidget::addItem(QTreeWidgetItem *item)
 
 void IssuesWidget::slotOpenFile(QTreeWidgetItem *item, int)
 {
-    QString folderName = item->data(2, Qt::UserRole).toString();
     QString fileName = item->text(1);
-
-    Folder *folder = FolderMan::instance()->folder(folderName);
-    if (folder) {
+    if (Folder *folder = ProtocolItem::folder(item)) {
         // folder->path() always comes back with trailing path
         QString fullPath = folder->path() + fileName;
         if (QFile(fullPath).exists()) {
@@ -288,13 +285,13 @@ bool IssuesWidget::shouldBeVisible(QTreeWidgetItem *item, AccountState *filterAc
     const QString &filterFolderAlias) const
 {
     bool visible = true;
-    auto status = item->data(3, Qt::UserRole);
+    auto status = ProtocolItem::status(item);
     visible &= (_ui->showIgnores->isChecked() || status != SyncFileItem::FileIgnored);
     visible &= (_ui->showWarnings->isChecked()
         || (status != SyncFileItem::SoftError
                && status != SyncFileItem::Restoration));
 
-    auto folderalias = item->data(2, Qt::UserRole).toString();
+    auto folderalias = ProtocolItem::folderName(item);
     if (filterAccount) {
         auto folder = FolderMan::instance()->folder(folderalias);
         visible &= folder && folder->accountState() == filterAccount;
@@ -443,7 +440,7 @@ void IssuesWidget::addErrorWidget(QTreeWidgetItem *item, const QString &message,
 
         auto button = new QPushButton("Retry all uploads", widget);
         button->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
-        auto folderAlias = item->data(2, Qt::UserRole).toString();
+        auto folderAlias = ProtocolItem::folderName(item);
         connect(button, &QPushButton::clicked,
             this, [this, folderAlias]() { retryInsufficentRemoteStorageErrors(folderAlias); });
         layout->addWidget(button);

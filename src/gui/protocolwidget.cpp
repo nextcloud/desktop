@@ -43,6 +43,46 @@ QString ProtocolItem::timeString(QDateTime dt, QLocale::FormatType format)
     return loc.toString(dt, dtFormat);
 }
 
+QString ProtocolItem::folderName(const QTreeWidgetItem *item)
+{
+    return item->data(2, Qt::UserRole).toString();
+}
+
+void ProtocolItem::setFolderName(QTreeWidgetItem *item, const QString &folderName)
+{
+    item->setData(2, Qt::UserRole, folderName);
+}
+
+QString ProtocolItem::filePath(const QTreeWidgetItem *item)
+{
+    return item->toolTip(1);
+}
+
+void ProtocolItem::setFilePath(QTreeWidgetItem *item, const QString &filePath)
+{
+    item->setToolTip(1, filePath);
+}
+
+QDateTime ProtocolItem::timestamp(const QTreeWidgetItem *item)
+{
+    return item->data(0, Qt::UserRole).toDateTime();
+}
+
+void ProtocolItem::setTimestamp(QTreeWidgetItem *item, const QDateTime &timestamp)
+{
+    item->setData(0, Qt::UserRole, timestamp);
+}
+
+SyncFileItem::Status ProtocolItem::status(const QTreeWidgetItem *item)
+{
+    return static_cast<SyncFileItem::Status>(item->data(3, Qt::UserRole).toInt());
+}
+
+void ProtocolItem::setStatus(QTreeWidgetItem *item, SyncFileItem::Status status)
+{
+    item->setData(3, Qt::UserRole, status);
+}
+
 ProtocolItem *ProtocolItem::create(const QString &folder, const SyncFileItem &item)
 {
     auto f = FolderMan::instance()->folder(folder);
@@ -84,13 +124,13 @@ ProtocolItem *ProtocolItem::create(const QString &folder, const SyncFileItem &it
     // Warning: The data and tooltips on the columns define an implicit
     // interface and can only be changed with care.
     twitem->setData(0, Qt::SizeHintRole, QSize(0, ActivityItemDelegate::rowHeight()));
-    twitem->setData(0, Qt::UserRole, timestamp);
     twitem->setIcon(0, icon);
     twitem->setToolTip(0, longTimeStr);
-    twitem->setToolTip(1, item._file);
-    twitem->setData(2, Qt::UserRole, folder);
     twitem->setToolTip(3, message);
-    twitem->setData(3, Qt::UserRole, item._status);
+    setTimestamp(twitem, timestamp);
+    setFilePath(twitem, item._file); // also sets toolTip(1)
+    setFolderName(twitem, folder);
+    setStatus(twitem, item._status);
     return twitem;
 }
 
@@ -100,22 +140,22 @@ SyncJournalFileRecord ProtocolItem::syncJournalRecord(QTreeWidgetItem *item)
     auto f = folder(item);
     if (!f)
         return rec;
-    f->journalDb()->getFileRecord(item->toolTip(1), &rec);
+    f->journalDb()->getFileRecord(filePath(item), &rec);
     return rec;
 }
 
 Folder *ProtocolItem::folder(QTreeWidgetItem *item)
 {
-    return FolderMan::instance()->folder(item->data(2, Qt::UserRole).toString());
+    return FolderMan::instance()->folder(folderName(item));
 }
 
 void ProtocolItem::openContextMenu(QPoint globalPos, QTreeWidgetItem *item, QWidget *parent)
 {
-    auto f = ProtocolItem::folder(item);
+    auto f = folder(item);
     if (!f)
         return;
     AccountPtr account = f->accountState()->account();
-    auto rec = ProtocolItem::syncJournalRecord(item);
+    auto rec = syncJournalRecord(item);
     // rec might not be valid
 
     auto menu = new QMenu(parent);
@@ -151,8 +191,8 @@ bool ProtocolItem::operator<(const QTreeWidgetItem &other) const
 
     // Items with empty "File" column are larger than others,
     // otherwise sort by time (this uses lexicographic ordering)
-    return std::forward_as_tuple(text(1).isEmpty(), data(0, Qt::UserRole).toDateTime())
-        < std::forward_as_tuple(other.text(1).isEmpty(), other.data(0, Qt::UserRole).toDateTime());
+    return std::forward_as_tuple(text(1).isEmpty(), timestamp(this))
+        < std::forward_as_tuple(other.text(1).isEmpty(), timestamp(&other));
 }
 
 ProtocolWidget::ProtocolWidget(QWidget *parent)
@@ -243,11 +283,8 @@ void ProtocolWidget::slotItemContextMenu(const QPoint &pos)
 
 void ProtocolWidget::slotOpenFile(QTreeWidgetItem *item, int)
 {
-    QString folderName = item->data(2, Qt::UserRole).toString();
     QString fileName = item->text(1);
-
-    Folder *folder = FolderMan::instance()->folder(folderName);
-    if (folder) {
+    if (Folder *folder = ProtocolItem::folder(item)) {
         // folder->path() always comes back with trailing path
         QString fullPath = folder->path() + fileName;
         if (QFile(fullPath).exists()) {
