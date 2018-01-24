@@ -19,7 +19,7 @@ namespace OCC {
 OcsExternalSitesJob::OcsExternalSitesJob(AccountPtr account)
     : OcsJob(account)
 {
-    setPath("ocs/v2.php/apps/external/api/v1/sites");
+    setPath("ocs/v2.php/apps/external/api/v1");
     connect(this, &OcsExternalSitesJob::jobFinished, this, &OcsExternalSitesJob::jobDone);
 }
 
