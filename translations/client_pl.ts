@@ -198,7 +198,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="438"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation>Usuń folder połączenia synchronizacji</translation>
+        <translation>Potwierdź usunięcie połączenia folderów synchronizacji</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="445"/>
@@ -1394,7 +1394,7 @@ Pozycje, dla których usuwanie jest dozwolone zostaną usunięte, jeżeli uprawn
     <message>
         <location filename="../src/gui/issueswidget.ui" line="20"/>
         <source>List of issues</source>
-        <translation type="unfinished"/>
+        <translation>Lista zdarzeń</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="34"/>
@@ -1416,22 +1416,22 @@ Pozycje, dla których usuwanie jest dozwolone zostaną usunięte, jeżeli uprawn
     <message>
         <location filename="../src/gui/issueswidget.ui" line="73"/>
         <source>Show warnings</source>
-        <translation type="unfinished"/>
+        <translation>Pokaż ostrzeżenia</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
         <source>Show ignored files</source>
-        <translation type="unfinished"/>
+        <translation>Pokaż ignorowane pliki</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="133"/>
         <source>There were too many issues. Not all will be visible here.</source>
-        <translation type="unfinished"/>
+        <translation>Wystąpiło bardzo wiele zdarzeń. Nie wszystkie będą tu widoczne</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="155"/>
         <source>Copy the issues list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Skopiuj listę zdarzeń do schowka</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="158"/>
@@ -1451,7 +1451,7 @@ Pozycje, dla których usuwanie jest dozwolone zostaną usunięte, jeżeli uprawn
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="84"/>
         <source>Issue</source>
-        <translation type="unfinished"/>
+        <translation>Zdarzenie</translation>
     </message>
 </context>
 <context>
@@ -1962,7 +1962,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>The server reported the following error:</source>
-        <translation type="unfinished"/>
+        <translation>Serwer zgłosił następujący błąd:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2690,12 +2690,12 @@ Niezalecane jest jego użycie.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="117"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="301"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="300"/>
         <source>P&amp;assword protect</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="414"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="413"/>
         <source>Password Protected</source>
         <translation>Zabezpieczone hasłem</translation>
     </message>
@@ -2716,24 +2716,24 @@ Niezalecane jest jego użycie.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="527"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="526"/>
         <source>Delete</source>
         <translation>Usuń</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
         <source>Open link in browser</source>
-        <translation type="unfinished"/>
+        <translation>Otwórz link w przeglądarce</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Skopuj link to schowka</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Copy link to clipboard (direct download)</source>
-        <translation type="unfinished"/>
+        <translation>Skopiuj link do schowa (pobieranie bezpośrednie)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
@@ -2743,41 +2743,41 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="167"/>
         <source>Send link by email (direct download)</source>
-        <translation type="unfinished"/>
+        <translation>Wyślij link e-mailem (pobieranie bezpośrednie)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="519"/>
         <source>Confirm Link Share Deletion</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="521"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="528"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="527"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="63"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="544"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="543"/>
         <source>Public link</source>
-        <translation type="unfinished"/>
+        <translation>Link publiczny</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="253"/>
         <source>Delete link share</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="459"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="458"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="477"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="476"/>
         <source>Please Set Password</source>
         <translation>Proszę podać hasło</translation>
     </message>
@@ -2807,12 +2807,12 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="235"/>
         <source>Open link in browser</source>
-        <translation type="unfinished"/>
+        <translation>Otwórz link w przeglądarce</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="237"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Skopuj link to schowka</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="239"/>
@@ -2930,12 +2930,12 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="567"/>
         <source>Copy private link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopiuj link prywatny do schowka</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="568"/>
         <source>Send private link by email...</source>
-        <translation type="unfinished"/>
+        <translation>Wyślij link prywatny przez e-mail</translation>
     </message>
 </context>
 <context>
