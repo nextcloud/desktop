@@ -774,8 +774,8 @@ void ownCloudGui::setupExternalSitesMenu(QAction *actionBefore, QAction *actionT
 void ownCloudGui::slotExternalSitesFetched(const QJsonDocument &reply)
 {
     if(!reply.isEmpty()){
-        auto data = reply.object().value("ocs").toObject().value("data").toObject();
-        auto sitesList = data.value("sites").toArray();
+        auto data = reply.object().value("ocs").toObject().value("data");
+        auto sitesList = data.toArray();
 
         if(sitesList.size() > 0){
             QAction *externalSites = new QAction(tr("External sites:"), this);
