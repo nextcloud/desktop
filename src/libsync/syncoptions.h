@@ -37,7 +37,7 @@ struct SyncOptions
     bool _moveFilesToTrash = false;
 
     /** Create a placeholder for new files instead of downloading */
-    bool _usePlaceholders = false;
+    bool _newFilesArePlaceholders = false;
 
     /** The initial un-adjusted chunk size in bytes for chunked uploads, both
      * for old and new chunking algorithm, which classifies the item to be chunked
