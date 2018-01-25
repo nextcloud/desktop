@@ -128,6 +128,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QLabel" name="_tooManyIssuesWarning">
+     <property name="text">
+      <string>There were too many issues. Not all will be visible here.</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <spacer name="horizontalSpacer">

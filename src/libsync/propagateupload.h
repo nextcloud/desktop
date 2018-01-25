@@ -211,12 +211,6 @@ protected:
     bool _finished BITFIELD(1); /// Tells that all the jobs have been finished
     bool _deleteExisting BITFIELD(1);
     quint64 _abortCount; /// Keep track of number of aborted items
-
-// measure the performance of checksum calc and upload
-#ifdef WITH_TESTING
-    Utility::StopWatch _stopWatch;
-#endif
-
     QByteArray _transmissionChecksumHeader;
 
 public:

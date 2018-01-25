@@ -42,13 +42,6 @@ public:
         Down
     };
 
-    enum Type {
-        UnknownType = 0,
-        File = CSYNC_FTW_TYPE_FILE,
-        Directory = CSYNC_FTW_TYPE_DIR,
-        SoftLink = CSYNC_FTW_TYPE_SLINK
-    };
-
     enum Status { // stored in 4 bits
         NoStatus,
 
@@ -101,7 +94,7 @@ public:
 
 
     SyncFileItem()
-        : _type(UnknownType)
+        : _type(ItemTypeSkip)
         , _direction(None)
         , _serverHasIgnoredFiles(false)
         , _hasBlacklistEntry(false)
@@ -173,29 +166,42 @@ public:
 
     bool isDirectory() const
     {
-        return _type == SyncFileItem::Directory;
+        return _type == ItemTypeDirectory;
     }
 
     /**
      * True if the item had any kind of error.
-     *
-     * Used for deciding whether an item belongs to the protocol or the
-     * issues list on the activity page and for checking whether an
-     * item should be announced in the notification message.
      */
     bool hasErrorStatus() const
     {
         return _status == SyncFileItem::SoftError
             || _status == SyncFileItem::NormalError
             || _status == SyncFileItem::FatalError
-            || _status == SyncFileItem::Conflict
             || !_errorString.isEmpty();
+    }
+
+    /**
+     * Whether this item should appear on the issues tab.
+     */
+    bool showInIssuesTab() const
+    {
+        return hasErrorStatus() || _status == SyncFileItem::Conflict;
+    }
+
+    /**
+     * Whether this item should appear on the protocol tab.
+     */
+    bool showInProtocolTab() const
+    {
+        return !showInIssuesTab()
+            // Don't show conflicts that were resolved as "not a conflict after all"
+            && !(_instruction == CSYNC_INSTRUCTION_CONFLICT && _status == SyncFileItem::Success);
     }
 
     // Variables useful for everybody
     QString _file;
     QString _renameTarget;
-    Type _type BITFIELD(3);
+    ItemType _type BITFIELD(3);
     Direction _direction BITFIELD(3);
     bool _serverHasIgnoredFiles BITFIELD(1);
 

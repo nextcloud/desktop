@@ -151,6 +151,13 @@ void AccountState::signOutByUi()
     setState(SignedOut);
 }
 
+void AccountState::freshConnectionAttempt()
+{
+    if (isConnected())
+        setState(Disconnected);
+    checkConnectivity();
+}
+
 void AccountState::signIn()
 {
     if (_state == SignedOut) {

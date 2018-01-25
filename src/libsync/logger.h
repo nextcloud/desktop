@@ -30,13 +30,7 @@ namespace OCC {
 
 struct Log
 {
-    typedef enum {
-        Occ,
-        CSync
-    } Source;
-
     QDateTime timeStamp;
-    Source source;
     QString message;
 };
 

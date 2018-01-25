@@ -49,6 +49,7 @@ qint64 freeSpaceLimit();
 
 class SyncJournalDb;
 class OwncloudPropagator;
+class PropagatorCompositeJob;
 
 /**
  * @brief the base class of propagator jobs
@@ -102,6 +103,14 @@ public:
      */
     virtual qint64 committedDiskSpace() const { return 0; }
 
+    /** Set the associated composite job
+     *
+     * Used only from PropagatorCompositeJob itself, when a job is added
+     * and from PropagateDirectory to associate the subJobs with the first
+     * job.
+     */
+    void setAssociatedComposite(PropagatorCompositeJob *job) { _associatedComposite = job; }
+
 public slots:
     /*
      * Asynchronous abort requires emit of abortFinished() signal,
@@ -128,6 +137,16 @@ signals:
     void abortFinished(SyncFileItem::Status status = SyncFileItem::NormalError);
 protected:
     OwncloudPropagator *propagator() const;
+
+    /** If this job gets added to a composite job, this will point to the parent.
+     *
+     * For the PropagateDirectory::_firstJob it will point to
+     * PropagateDirectory::_subJobs.
+     *
+     * That can be useful for jobs that want to spawn follow-up jobs without
+     * becoming composite jobs themselves.
+     */
+    PropagatorCompositeJob *_associatedComposite = nullptr;
 };
 
 /*
@@ -210,14 +229,12 @@ public:
 
     virtual ~PropagatorCompositeJob()
     {
-        qDeleteAll(_jobsToDo);
-        qDeleteAll(_runningJobs);
+        // Don't delete jobs in _jobsToDo and _runningJobs: they have parents
+        // that will be responsible for cleanup. Deleting them here would risk
+        // deleting something that has already been deleted by a shared parent.
     }
 
-    void appendJob(PropagatorJob *job)
-    {
-        _jobsToDo.append(job);
-    }
+    void appendJob(PropagatorJob *job);
     void appendTask(const SyncFileItemPtr &item)
     {
         _tasksToDo.append(item);
@@ -439,7 +456,10 @@ public:
 
     QString getFilePath(const QString &tmp_file_name) const;
 
+    /** Creates the job for an item.
+     */
     PropagateItemJob *createJob(const SyncFileItemPtr &item);
+
     void scheduleNextJob();
     void reportProgress(const SyncFileItem &, quint64 bytes);
 
@@ -477,6 +497,18 @@ public:
      */
     DiskSpaceResult diskSpaceCheck() const;
 
+    /** Handles a conflict by renaming the file 'item'.
+     *
+     * Sets up conflict records.
+     *
+     * It also creates a new upload job in composite if the item that's
+     * moved away is a file and conflict uploads are requested.
+     *
+     * Returns true on success, false and error on error.
+     */
+    bool createConflict(const SyncFileItemPtr &item,
+        PropagatorCompositeJob *composite, QString *error);
+
 private slots:
 
     void abortTimeout()
@@ -497,6 +529,7 @@ private slots:
     void scheduleNextJobImpl();
 
 signals:
+    void newItem(const SyncFileItemPtr &);
     void itemCompleted(const SyncFileItemPtr &);
     void progress(const SyncFileItem &, quint64 bytes);
     void finished(bool success);

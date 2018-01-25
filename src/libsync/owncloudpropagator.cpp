@@ -22,6 +22,7 @@
 #include "propagateremotemove.h"
 #include "propagateremotemkdir.h"
 #include "propagatorjobs.h"
+#include "filesystem.h"
 #include "common/utility.h"
 #include "account.h"
 #include "common/asserts.h"
@@ -368,8 +369,10 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
             return new PropagateRemoteDelete(this, item);
     case CSYNC_INSTRUCTION_NEW:
     case CSYNC_INSTRUCTION_TYPE_CHANGE:
+    case CSYNC_INSTRUCTION_CONFLICT:
         if (item->isDirectory()) {
-            if (item->_direction == SyncFileItem::Down) {
+            // CONFLICT has _direction == None
+            if (item->_direction != SyncFileItem::Up) {
                 auto job = new PropagateLocalMkdir(this, item);
                 job->setDeleteExistingFile(deleteExisting);
                 return job;
@@ -380,7 +383,6 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
             }
         } //fall through
     case CSYNC_INSTRUCTION_SYNC:
-    case CSYNC_INSTRUCTION_CONFLICT:
         if (item->_direction != SyncFileItem::Up) {
             auto job = new PropagateDownloadFile(this, item);
             job->setDeleteExistingFolder(deleteExisting);
@@ -431,6 +433,7 @@ void OwncloudPropagator::start(const SyncFileItemVector &items)
     directories.push(qMakePair(QString(), _rootJob.data()));
     QVector<PropagatorJob *> directoriesToRemove;
     QString removedDirectory;
+    QString maybeConflictDirectory;
     foreach (const SyncFileItemPtr &item, items) {
         if (!removedDirectory.isEmpty() && item->_file.startsWith(removedDirectory)) {
             // this is an item in a directory which is going to be removed.
@@ -461,6 +464,20 @@ void OwncloudPropagator::start(const SyncFileItemVector &items)
             } else {
                 qCWarning(lcPropagator) << "WARNING:  Job within a removed directory?  This should not happen!"
                                         << item->_file << item->_instruction;
+            }
+        }
+
+        // If a CONFLICT item contains files these can't be processed because
+        // the conflict handling is likely to rename the directory. This can happen
+        // when there's a new local directory at the same time as a remote file.
+        if (!maybeConflictDirectory.isEmpty()) {
+            if (item->destination().startsWith(maybeConflictDirectory)) {
+                qCInfo(lcPropagator) << "Skipping job inside CONFLICT directory"
+                                     << item->_file << item->_instruction;
+                item->_instruction = CSYNC_INSTRUCTION_NONE;
+                continue;
+            } else {
+                maybeConflictDirectory.clear();
             }
         }
 
@@ -512,6 +529,12 @@ void OwncloudPropagator::start(const SyncFileItemVector &items)
                 removedDirectory = item->_file + "/";
             } else {
                 directories.top().second->appendTask(item);
+            }
+
+            if (item->_instruction == CSYNC_INSTRUCTION_CONFLICT) {
+                // This might be a file or a directory on the local side. If it's a
+                // directory we want to skip processing items inside it.
+                maybeConflictDirectory = item->_file + "/";
             }
         }
     }
@@ -702,6 +725,72 @@ OwncloudPropagator::DiskSpaceResult OwncloudPropagator::diskSpaceCheck() const
     return DiskSpaceOk;
 }
 
+bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
+    PropagatorCompositeJob *composite, QString *error)
+{
+    QString fn = getFilePath(item->_file);
+
+    QString renameError;
+    auto conflictModTime = FileSystem::getModTime(fn);
+    QString conflictFileName = Utility::makeConflictFileName(
+        item->_file, Utility::qDateTimeFromTime_t(conflictModTime));
+    QString conflictFilePath = getFilePath(conflictFileName);
+
+    emit touchedFile(fn);
+    emit touchedFile(conflictFilePath);
+
+    if (!FileSystem::rename(fn, conflictFilePath, &renameError)) {
+        // If the rename fails, don't replace it.
+
+        // If the file is locked, we want to retry this sync when it
+        // becomes available again.
+        if (FileSystem::isFileLocked(fn)) {
+            emit seenLockedFile(fn);
+        }
+
+        if (error)
+            *error = renameError;
+        return false;
+    }
+    qCInfo(lcPropagator) << "Created conflict file" << fn << "->" << conflictFileName;
+
+    // Create a new conflict record. To get the base etag, we need to read it from the db.
+    ConflictRecord conflictRecord;
+    conflictRecord.path = conflictFileName.toUtf8();
+    conflictRecord.baseModtime = item->_previousModtime;
+
+    SyncJournalFileRecord baseRecord;
+    if (_journal->getFileRecord(item->_originalFile, &baseRecord) && baseRecord.isValid()) {
+        conflictRecord.baseEtag = baseRecord._etag;
+        conflictRecord.baseFileId = baseRecord._fileId;
+    } else {
+        // We might very well end up with no fileid/etag for new/new conflicts
+    }
+
+    _journal->setConflictRecord(conflictRecord);
+
+    // Create a new upload job if the new conflict file should be uploaded
+    if (account()->capabilities().uploadConflictFiles()) {
+        if (composite && !QFileInfo(conflictFilePath).isDir()) {
+            SyncFileItemPtr conflictItem = SyncFileItemPtr(new SyncFileItem);
+            conflictItem->_file = conflictFileName;
+            conflictItem->_type = ItemTypeFile;
+            conflictItem->_direction = SyncFileItem::Up;
+            conflictItem->_instruction = CSYNC_INSTRUCTION_NEW;
+            conflictItem->_modtime = conflictModTime;
+            conflictItem->_size = item->_previousSize;
+            emit newItem(conflictItem);
+            composite->appendTask(conflictItem);
+        } else {
+            // Directories we can't process in one go. The next sync run
+            // will take care of uploading the conflict dir contents.
+            _anotherSyncNeeded = true;
+        }
+    }
+
+    return true;
+}
+
 // ================================================================================
 
 PropagatorJob::PropagatorJob(OwncloudPropagator *propagator)
@@ -739,6 +828,12 @@ void PropagatorCompositeJob::slotSubJobAbortFinished()
     }
 }
 
+void PropagatorCompositeJob::appendJob(PropagatorJob *job)
+{
+    job->setAssociatedComposite(this);
+    _jobsToDo.append(job);
+}
+
 bool PropagatorCompositeJob::scheduleSelfOrChild()
 {
     if (_state == Finished) {
@@ -767,13 +862,8 @@ bool PropagatorCompositeJob::scheduleSelfOrChild()
     }
 
     // Now it's our turn, check if we have something left to do.
-    if (!_jobsToDo.isEmpty()) {
-        PropagatorJob *nextJob = _jobsToDo.first();
-        _jobsToDo.remove(0);
-        _runningJobs.append(nextJob);
-        return possiblyRunNextJob(nextJob);
-    }
-    while (!_tasksToDo.isEmpty()) {
+    // First, convert a task to a job if necessary
+    while (_jobsToDo.isEmpty() && !_tasksToDo.isEmpty()) {
         SyncFileItemPtr nextTask = _tasksToDo.first();
         _tasksToDo.remove(0);
         PropagatorJob *job = propagator()->createJob(nextTask);
@@ -781,9 +871,15 @@ bool PropagatorCompositeJob::scheduleSelfOrChild()
             qCWarning(lcDirectory) << "Useless task found for file" << nextTask->destination() << "instruction" << nextTask->_instruction;
             continue;
         }
-
-        _runningJobs.append(job);
-        return possiblyRunNextJob(job);
+        appendJob(job);
+        break;
+    }
+    // Then run the next job
+    if (!_jobsToDo.isEmpty()) {
+        PropagatorJob *nextJob = _jobsToDo.first();
+        _jobsToDo.remove(0);
+        _runningJobs.append(nextJob);
+        return possiblyRunNextJob(nextJob);
     }
 
     // If neither us or our children had stuff left to do we could hang. Make sure
@@ -851,6 +947,7 @@ PropagateDirectory::PropagateDirectory(OwncloudPropagator *propagator, const Syn
 {
     if (_firstJob) {
         connect(_firstJob.data(), &PropagatorJob::finished, this, &PropagateDirectory::slotFirstJobFinished);
+        _firstJob->setAssociatedComposite(&_subJobs);
     }
     connect(&_subJobs, &PropagatorJob::finished, this, &PropagateDirectory::slotSubJobsFinished);
 }
@@ -894,7 +991,9 @@ void PropagateDirectory::slotFirstJobFinished(SyncFileItem::Status status)
 {
     _firstJob.take()->deleteLater();
 
-    if (status != SyncFileItem::Success && status != SyncFileItem::Restoration) {
+    if (status != SyncFileItem::Success
+        && status != SyncFileItem::Restoration
+        && status != SyncFileItem::Conflict) {
         if (_state != Finished) {
             // Synchronously abort
             abort(AbortType::Synchronous);

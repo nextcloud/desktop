@@ -1085,12 +1085,10 @@ bool FolderMan::startFromScratch(const QString &localFolder)
     return true;
 }
 
-void FolderMan::setDirtyProxy(bool value)
+void FolderMan::setDirtyProxy()
 {
     foreach (Folder *f, _folderMap.values()) {
         if (f) {
-            f->setProxyDirty(value);
-
             if (f->accountState() && f->accountState()->account()
                 && f->accountState()->account()->networkAccessManager()) {
                 // Need to do this so we do not use the old determined system proxy

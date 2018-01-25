@@ -18,6 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 #include "csync_update.cpp"
+#include <sqlite3.h>
 
 #include "torture.h"
 
@@ -184,7 +185,7 @@ static std::unique_ptr<csync_file_stat_t> create_fstat(const char *name,
         fs->path = "file.txt";
     }
 
-    fs->type = CSYNC_FTW_TYPE_FILE;
+    fs->type = ItemTypeFile;
 
     if (inode == 0) {
         fs->inode = 619070;

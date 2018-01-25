@@ -105,6 +105,16 @@ public:
      * for the account and forgets the password. */
     void signOutByUi();
 
+    /** Tries to connect from scratch.
+     *
+     * Does nothing for signed out accounts.
+     * Connected accounts will be disconnected and try anew.
+     * Disconnected accounts will go to checkConnectivity().
+     *
+     * Useful for when network settings (proxy) change.
+     */
+    void freshConnectionAttempt();
+
     /// Move from SignedOut state to Disconnected (attempting to connect)
     void signIn();
 

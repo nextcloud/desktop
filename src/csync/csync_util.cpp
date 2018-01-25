@@ -34,8 +34,8 @@
 #include "csync_util.h"
 #include "vio/csync_vio.h"
 
-#define CSYNC_LOG_CATEGORY_NAME "csync.util"
-#include "csync_log.h"
+Q_LOGGING_CATEGORY(lcCSyncUtils, "sync.csync.utils", QtInfoMsg)
+
 
 typedef struct {
   const char *instr_str;
@@ -102,29 +102,8 @@ void csync_memstat_check(void) {
     return;
   }
 
-  CSYNC_LOG(CSYNC_LOG_PRIORITY_INFO, "Memory: %dK total size, %dK resident, %dK shared",
-                 m.size * 4, m.resident * 4, m.shared * 4);
-}
-
-bool (*csync_file_locked_or_open_ext) (const char*) = 0; // filled in by library user
-void set_csync_file_locked_or_open_ext(bool (*f) (const char*));
-void set_csync_file_locked_or_open_ext(bool (*f) (const char*)) {
-    csync_file_locked_or_open_ext = f;
-}
-
-bool csync_file_locked_or_open( const char *dir, const char *fname) {
-    char *tmp_uri = NULL;
-    bool ret;
-    if (!csync_file_locked_or_open_ext) {
-        return false;
-    }
-    if (asprintf(&tmp_uri, "%s/%s", dir, fname) < 0) {
-        return -1;
-    }
-    CSYNC_LOG(CSYNC_LOG_PRIORITY_DEBUG, "csync_file_locked_or_open %s", tmp_uri);
-    ret = csync_file_locked_or_open_ext(tmp_uri);
-    SAFE_FREE(tmp_uri);
-    return ret;
+  qCInfo(lcCSyncUtils, "Memory: %dK total size, %dK resident, %dK shared",
+      m.size * 4, m.resident * 4, m.shared * 4);
 }
 
 #ifndef HAVE_TIMEGM

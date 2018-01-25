@@ -172,12 +172,6 @@ public:
     SyncResult syncResult() const;
 
     /**
-      * set the config file name.
-      */
-    void setConfigFile(const QString &);
-    QString configFile();
-
-    /**
       * This is called if the sync folder definition is removed. Do cleanups here.
       */
     virtual void wipe();
@@ -276,9 +270,6 @@ public slots:
       */
     void startSync(const QStringList &pathList = QStringList());
 
-    void setProxyDirty(bool value);
-    bool proxyDirty();
-
     int slotDiscardDownloadProgress();
     int downloadInfoCount();
     int slotWipeErrorBlacklist();
@@ -351,7 +342,6 @@ private:
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;
     bool _csyncUnavail;
-    bool _proxyDirty;
     QPointer<RequestEtagJob> _requestEtagJob;
     QString _lastEtag;
     QElapsedTimer _timeSinceLastSyncDone;

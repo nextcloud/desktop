@@ -31,11 +31,11 @@
 #include "c_lib.h"
 #include "c_utf8.h"
 #include "csync_util.h"
-#include "csync_log.h"
 #include "csync_vio.h"
 
 #include "vio/csync_vio_local.h"
 
+Q_LOGGING_CATEGORY(lcCSyncVIOLocal, "sync.csync.vio_local", QtInfoMsg)
 
 /*
  * directory functions
@@ -172,21 +172,21 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
       // Detect symlinks, and treat junctions as symlinks too.
       if (handle->ffd.dwReserved0 == IO_REPARSE_TAG_SYMLINK
           || handle->ffd.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT) {
-          file_stat->type = CSYNC_FTW_TYPE_SLINK;
+          file_stat->type = ItemTypeSoftLink;
       } else {
           // The SIS and DEDUP reparse points should be treated as
           // regular files. We don't know about the other ones yet,
           // but will also treat them normally for now.
-          file_stat->type = CSYNC_FTW_TYPE_FILE;
+          file_stat->type = ItemTypeFile;
       }
     } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DEVICE
                 || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE
                 || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_TEMPORARY) {
-        file_stat->type = CSYNC_FTW_TYPE_SKIP;
+        file_stat->type = ItemTypeSkip;
     } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-        file_stat->type = CSYNC_FTW_TYPE_DIR;
+        file_stat->type = ItemTypeDirectory;
     } else {
-        file_stat->type = CSYNC_FTW_TYPE_FILE;
+        file_stat->type = ItemTypeFile;
     }
 
     /* Check for the hidden flag */
@@ -204,7 +204,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
 
     if (_csync_vio_local_stat_mb(fullPath.data(), file_stat.get()) < 0) {
         // Will get excluded by _csync_detect_update.
-        file_stat->type = CSYNC_FTW_TYPE_SKIP;
+        file_stat->type = ItemTypeSkip;
     }
 
     return file_stat;
@@ -235,13 +235,13 @@ static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf
                      FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT,
                      NULL );
     if( h == INVALID_HANDLE_VALUE ) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_CRIT, "CreateFileW failed on %ls", wuri);
+        qCCritical(lcCSyncVIOLocal, "CreateFileW failed on %ls", wuri);
         errno = GetLastError();
         return -1;
     }
 
     if(!GetFileInformationByHandle( h, &fileInfo ) ) {
-        CSYNC_LOG(CSYNC_LOG_PRIORITY_CRIT, "GetFileInformationByHandle failed on %ls", wuri);
+        qCCritical(lcCSyncVIOLocal, "GetFileInformationByHandle failed on %ls", wuri);
         errno = GetLastError();
         CloseHandle(h);
         return -1;

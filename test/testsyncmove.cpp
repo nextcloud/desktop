@@ -158,7 +158,7 @@ private slots:
 
         int nPUT = 0;
         int nDELETE = 0;
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &) {
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &, QIODevice *) {
             if (op == QNetworkAccessManager::PutOperation)
                 ++nPUT;
             if (op == QNetworkAccessManager::DeleteOperation)
@@ -268,7 +268,7 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         int nGET = 0;
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &) {
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &, QIODevice *) {
             if (op == QNetworkAccessManager::GetOperation)
                 ++nGET;
             return nullptr;
@@ -313,7 +313,7 @@ private slots:
         int nPUT = 0;
         int nMOVE = 0;
         int nDELETE = 0;
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &req) {
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *) {
             if (op == QNetworkAccessManager::GetOperation)
                 ++nGET;
             if (op == QNetworkAccessManager::PutOperation)

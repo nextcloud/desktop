@@ -79,7 +79,7 @@ private slots:
         // Add a fake file to make sure it gets deleted
         fakeFolder.uploadState().children.first().insert("10000", size);
 
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request) -> QNetworkReply * {
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (op == QNetworkAccessManager::PutOperation) {
                 // Test that we properly resuming and are not sending past data again.
                 Q_ASSERT(request.rawHeader("OC-Chunk-Offset").toULongLong() >= uploadedSize);
@@ -109,11 +109,11 @@ private slots:
         QByteArray moveChecksumHeader;
         int nGET = 0;
         int responseDelay = 10000; // bigger than abort-wait timeout
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request) -> QNetworkReply * {
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
                 QTimer::singleShot(50, parent, [&]() { fakeFolder.syncEngine().abort(); });
                 moveChecksumHeader = request.rawHeader("OC-Checksum");
-                return new FakeChunkMoveReply(fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, responseDelay, parent);
+                return new DelayedReply<FakeChunkMoveReply>(responseDelay, fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, parent);
             } else if (op == QNetworkAccessManager::GetOperation) {
                 nGET++;
             }
@@ -161,17 +161,6 @@ private slots:
         QVERIFY(!moveChecksumHeader.isEmpty());
         fakeFolder.remoteModifier().find("A/a0")->checksums = moveChecksumHeader;
 
-        // This time it's a real conflict, we have a remote checksum!
-        connection = connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToPropagate, [&](SyncFileItemVector &items) {
-            SyncFileItemPtr a0;
-            for (auto &item : items) {
-                if (item->_file == "A/a0")
-                    a0 = item;
-            }
-
-            QVERIFY(a0);
-            QCOMPARE(a0->_instruction, CSYNC_INSTRUCTION_CONFLICT);
-        });
         QVERIFY(fakeFolder.syncOnce());
         disconnect(connection);
         QCOMPARE(nGET, 0); // no new download, just a metadata update!
@@ -203,11 +192,11 @@ private slots:
         QByteArray moveChecksumHeader;
         int nGET = 0;
         int responseDelay = 2000; // smaller than abort-wait timeout
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request) -> QNetworkReply * {
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
                 QTimer::singleShot(50, parent, [&]() { fakeFolder.syncEngine().abort(); });
                 moveChecksumHeader = request.rawHeader("OC-Checksum");
-                return new FakeChunkMoveReply(fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, responseDelay, parent);
+                return new DelayedReply<FakeChunkMoveReply>(responseDelay, fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, parent);
             } else if (op == QNetworkAccessManager::GetOperation) {
                 nGET++;
             }
@@ -378,6 +367,65 @@ private slots:
         QVERIFY(fakeFolder.uploadState().children.first().name != chunkingId);
     }
 
+    // Check what happens when the connection is dropped on the PUT (non-chunking) or MOVE (chunking)
+    // for on the issue #5106
+    void connectionDroppedBeforeEtagRecieved_data()
+    {
+        QTest::addColumn<bool>("chunking");
+        QTest::newRow("big file") << true;
+        QTest::newRow("small file") << false;
+    }
+    void connectionDroppedBeforeEtagRecieved()
+    {
+        QFETCH(bool, chunking);
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ { "chunking", "1.0" } } }, { "checksums", QVariantMap{ { "supportedTypes", QStringList() << "SHA1" } } } });
+        const int size = chunking ? 150 * 1000 * 1000 : 300;
+
+        // Make the MOVE never reply, but trigger a client-abort and apply the change remotely
+        QByteArray checksumHeader;
+        int nGET = 0;
+        QScopedValueRollback<int> setHttpTimeout(AbstractNetworkJob::httpTimeout, 1);
+        int responseDelay = AbstractNetworkJob::httpTimeout * 1000 * 1000; // much bigger than http timeout (so a timeout will occur)
+        // This will perform the operation on the server, but the reply will not come to the client
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData) -> QNetworkReply * {
+            if (!chunking && op == QNetworkAccessManager::PutOperation) {
+                checksumHeader = request.rawHeader("OC-Checksum");
+                return new DelayedReply<FakePutReply>(responseDelay, fakeFolder.remoteModifier(), op, request, outgoingData->readAll(), &fakeFolder.syncEngine());
+            } else if (chunking && request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
+                checksumHeader = request.rawHeader("OC-Checksum");
+                return new DelayedReply<FakeChunkMoveReply>(responseDelay, fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, &fakeFolder.syncEngine());
+            } else if (op == QNetworkAccessManager::GetOperation) {
+                nGET++;
+            }
+            return nullptr;
+        });
+
+
+        // Test 1: a NEW file
+        fakeFolder.localModifier().insert("A/a0", size);
+        QVERIFY(!fakeFolder.syncOnce()); // timeout!
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState()); // but the upload succeeded
+        QVERIFY(!checksumHeader.isEmpty());
+        fakeFolder.remoteModifier().find("A/a0")->checksums = checksumHeader; // The test system don't do that automatically
+        // Should be resolved properly
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 0);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Test 2: Modify the file further
+        fakeFolder.localModifier().appendByte("A/a0");
+        QVERIFY(!fakeFolder.syncOnce()); // timeout!
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState()); // but the upload succeeded
+        fakeFolder.remoteModifier().find("A/a0")->checksums = checksumHeader;
+        // modify again, should not cause conflict
+        fakeFolder.localModifier().appendByte("A/a0");
+        QVERIFY(!fakeFolder.syncOnce()); // now it's trying to upload the modified file
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        fakeFolder.remoteModifier().find("A/a0")->checksums = checksumHeader;
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 0);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestChunkingNG)

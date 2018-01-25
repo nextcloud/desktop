@@ -1,5 +1,5 @@
-include_directories(${QT_INCLUDES}
-                    ${CMAKE_SOURCE_DIR}/src
+find_package(SQLite3 3.8.0 REQUIRED)
+include_directories(${CMAKE_SOURCE_DIR}/src
                     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer
                     ${CMAKE_SOURCE_DIR}/src/csync
                     ${CMAKE_SOURCE_DIR}/src/csync/std
@@ -9,12 +9,8 @@ include_directories(${QT_INCLUDES}
                     ${CMAKE_BINARY_DIR}/src/libsync
                     ${CMAKE_CURRENT_SOURCE_DIR}
                     ${CMAKE_CURRENT_BINARY_DIR}
+                    ${SQLITE3_INCLUDE_DIR}
                    )
-
-include_directories()
-
-include(QtVersionAbstraction)
-setup_qt()
 
 include(owncloud_add_test.cmake)
 
@@ -47,6 +43,7 @@ owncloud_add_test(FileSystem "")
 owncloud_add_test(Utility "")
 owncloud_add_test(SyncEngine "syncenginetestutils.h")
 owncloud_add_test(SyncMove "syncenginetestutils.h")
+owncloud_add_test(SyncConflict "syncenginetestutils.h")
 owncloud_add_test(SyncFileStatusTracker "syncenginetestutils.h")
 owncloud_add_test(ChunkingNg "syncenginetestutils.h")
 owncloud_add_test(UploadReset "syncenginetestutils.h")
