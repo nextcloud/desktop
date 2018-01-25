@@ -636,15 +636,15 @@ void Application::openPlaceholder(const QString &filename)
         qWarning(lcApplication) << "Can only handle file ending in .owncloud. Unable to open" << filename;
         return;
     }
-    QString normalName = filename.left(filename.size() - placeholderExt.size());
     auto folder = FolderMan::instance()->folderForPath(filename);
     if (!folder) {
         qWarning(lcApplication) << "Can't find sync folder for" << filename;
         // TODO: show a QMessageBox for errors
         return;
     }
-    QString relativePath = QDir::cleanPath(normalName).mid(folder->cleanPath().length() + 1);
+    QString relativePath = QDir::cleanPath(filename).mid(folder->cleanPath().length() + 1);
     folder->downloadPlaceholder(relativePath);
+    QString normalName = filename.left(filename.size() - placeholderExt.size());
     auto con = QSharedPointer<QMetaObject::Connection>::create();
     *con = QObject::connect(folder, &Folder::syncFinished, [con, normalName] {
         QObject::disconnect(*con);
