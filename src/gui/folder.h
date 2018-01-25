@@ -286,6 +286,7 @@ public slots:
 
     /**
      * Mark a placeholder as being ready for download, and start a sync.
+     * relativePath is the patch to the placeholder file (includeing the extension)
      */
     void downloadPlaceholder(const QString &relativepath);
 
