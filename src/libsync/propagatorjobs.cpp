@@ -110,9 +110,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
 
 void PropagateLocalRemove::start()
 {
-#ifdef Q_OS_UNIX
     _moveToTrash = propagator()->syncOptions()._moveFilesToTrash;
-#endif
 
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
@@ -127,16 +125,13 @@ void PropagateLocalRemove::start()
     }
 
     QString removeError;
-#ifdef Q_OS_UNIX
     if (_moveToTrash) {
         if ((QDir(filename).exists() || FileSystem::fileExists(filename))
             && !FileSystem::moveToTrash(filename, &removeError)) {
             done(SyncFileItem::NormalError, removeError);
             return;
         }
-    } else
-#endif
-    {
+    } else {
         if (_item->isDirectory()) {
             if (QDir(filename).exists() && !removeRecursively(QString())) {
                 done(SyncFileItem::NormalError, _error);

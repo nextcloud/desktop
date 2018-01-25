@@ -23,6 +23,7 @@
 #include <QUrl>
 #include <QFile>
 #include <QCryptographicHash>
+#include <QCoreApplication>
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -424,9 +425,9 @@ bool FileSystem::remove(const QString &fileName, QString *errorString)
     return true;
 }
 
-#ifdef Q_OS_UNIX
 bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
 {
+#if defined Q_OS_UNIX && !defined Q_OS_MAC
     QString trashPath, trashFilePath, trashInfoPath;
     QString xdgDataHome = QFile::decodeName(qgetenv("XDG_DATA_HOME"));
     if (xdgDataHome.isEmpty()) {
@@ -439,7 +440,7 @@ bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
     trashInfoPath = trashPath + "info/"; // trash info path contain delete files information
 
     if (!(QDir().mkpath(trashFilePath) && QDir().mkpath(trashInfoPath))) {
-        *errorString = QString("Could not make directories in trash");
+        *errorString = QCoreApplication::translate("FileSystem", "Could not make directories in trash");
         return false; //mkpath will return true if path exists
     }
 
@@ -453,12 +454,14 @@ bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
             suffix_number++;
         }
         if (!file.rename(f.absoluteFilePath(), path + QString::number(suffix_number))) { // rename(file old path, file trash path)
-            *errorString = QString("Could not move '%1' to '%2'").arg(f.absoluteFilePath(), path + QString::number(suffix_number));
+            *errorString = QCoreApplication::translate("FileSystem", "Could not move '%1' to '%2'")
+                               .arg(f.absoluteFilePath(), path + QString::number(suffix_number));
             return false;
         }
     } else {
         if (!file.rename(f.absoluteFilePath(), trashFilePath + f.fileName())) { // rename(file old path, file trash path)
-            *errorString = QString("Could not move '%1' to '%2'").arg(f.absoluteFilePath(), trashFilePath + f.fileName());
+            *errorString = QCoreApplication::translate("FileSystem", "Could not move '%1' to '%2'")
+                               .arg(f.absoluteFilePath(), trashFilePath + f.fileName());
             return false;
         }
     }
@@ -492,8 +495,12 @@ bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
     // create info file format of trash file----- END
 
     return true;
-}
+#else
+    Q_UNUSED(fileName)
+    *errorString = QCoreApplication::translate("FileSystem", "Moving to the trash is not implemented on this platform");
+    return false;
 #endif
+}
 
 bool FileSystem::isFileLocked(const QString &fileName)
 {
