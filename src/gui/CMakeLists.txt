@@ -173,8 +173,7 @@ else()
    list(APPEND 3rdparty_SRC ../3rdparty/qtlockedfile/qtlockedfile_win.cpp )
 endif()
 
-
-IF( NOT WIN32 AND NOT APPLE AND WITH_DBUS AND LIBCLOUDPROVIDERS_FOUND)
+IF( NOT WIN32 AND NOT APPLE AND LIBCLOUDPROVIDERS_FOUND)
     message("Building with libcloudproviderssupport")
     add_definitions(-DWITH_LIBCLOUDPROVIDERS)
     set(client_SRCS ${client_SRCS} cloudproviders/cloudprovidermanager.cpp)
@@ -295,7 +294,7 @@ set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
 )
 # Only relevant for Linux? On OS X it by default properly checks in the bundle directory next to the exe
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
-	INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
+        INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
 target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::Network Qt5::Xml)
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
