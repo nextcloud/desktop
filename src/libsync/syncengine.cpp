@@ -850,7 +850,7 @@ void SyncEngine::startSync()
     };
 
     _csync_ctx->new_files_are_placeholders = _syncOptions._newFilesArePlaceholders;
-
+    _csync_ctx->placeholder_suffix = _syncOptions._placeholderSuffix.toUtf8();
     bool ok;
     auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
     if (ok) {

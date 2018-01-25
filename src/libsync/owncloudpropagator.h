@@ -451,7 +451,7 @@ public:
     bool hasCaseClashAccessibilityProblem(const QString &relfile);
 
     QString getFilePath(const QString &tmp_file_name) const;
-    QString placeholderFilePath(const QString &fileName) const;
+    QString addPlaceholderSuffix(const QString &fileName) const;
 
     /** Creates the job for an item.
      */
