@@ -694,7 +694,7 @@ void Folder::setSyncOptions()
     opt._newBigFolderSizeLimit = newFolderLimit.first ? newFolderLimit.second * 1000LL * 1000LL : -1; // convert from MB to B
     opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
     opt._moveFilesToTrash = cfgFile.moveToTrash();
-    opt._usePlaceholders = _definition.usePlaceholders;
+    opt._newFilesArePlaceholders = _definition.usePlaceholders;
 
     QByteArray chunkSizeEnv = qgetenv("OWNCLOUD_CHUNK_SIZE");
     if (!chunkSizeEnv.isEmpty()) {

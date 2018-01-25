@@ -111,6 +111,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
     }
 
     csync_file_stat_t *other = other_tree->findFile(cur->path);
+
     if (!other) {
         if (ctx->current == REMOTE_REPLICA) {
             // The file was not found and the other tree is the local one
@@ -129,6 +130,31 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
         /* Check if it is ignored */
         other = _csync_check_ignored(other_tree, cur->path);
         /* If it is ignored, other->instruction will be  IGNORE so this one will also be ignored */
+    }
+
+    // If the user adds a file locally check whether a placeholder for that name exists.
+    // If so, go to "potential conflict" mode by switching the remote entry to be a
+    // real file.
+    if (!other
+        && ctx->current == LOCAL_REPLICA
+        && cur->instruction == CSYNC_INSTRUCTION_NEW
+        && cur->type != ItemTypePlaceholder) {
+        // Check if we have a placeholder entry in the remote tree
+        auto placeholderPath = cur->path;
+        placeholderPath.append(ctx->placeholder_suffix);
+        other = other_tree->findFile(placeholderPath);
+        if (!other) {
+            /* Check the renamed path as well. */
+            other = other_tree->findFile(csync_rename_adjust_parent_path(ctx, placeholderPath));
+        }
+        if (other && other->type == ItemTypePlaceholder) {
+            qCInfo(lcReconcile) << "Found placeholder for local" << cur->path << "in remote tree";
+            other->path = cur->path;
+            other->type = ItemTypePlaceholderDownload;
+            other->instruction = CSYNC_INSTRUCTION_EVAL;
+        } else {
+            other = nullptr;
+        }
     }
 
     /* file only found on current replica */
@@ -298,16 +324,6 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
         /* file on current replica is changed or new */
         case CSYNC_INSTRUCTION_EVAL:
         case CSYNC_INSTRUCTION_NEW:
-            // If the db says this is a placeholder, but there is a local item,
-            // go to "possible conflict" mode by adjusting the remote instruction.
-            if (ctx->current == LOCAL_REPLICA
-                && (other->type == ItemTypePlaceholder || other->type == ItemTypePlaceholderDownload)
-                && cur->type != ItemTypePlaceholder
-                && other->instruction == CSYNC_INSTRUCTION_NONE) {
-                other->instruction = CSYNC_INSTRUCTION_EVAL;
-                other->type = ItemTypePlaceholderDownload;
-            }
-
             switch (other->instruction) {
             /* file on other replica is changed or new */
             case CSYNC_INSTRUCTION_NEW:

@@ -858,7 +858,7 @@ void SyncEngine::startSync()
     _csync_ctx->read_remote_from_db = true;
     _lastLocalDiscoveryStyle = _csync_ctx->local_discovery_style;
 
-    _csync_ctx->new_files_are_placeholders = _syncOptions._usePlaceholders;
+    _csync_ctx->new_files_are_placeholders = _syncOptions._newFilesArePlaceholders;
 
     bool ok;
     auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);

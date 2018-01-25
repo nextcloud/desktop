@@ -220,6 +220,11 @@ struct OCSYNC_EXPORT csync_s {
    */
   bool new_files_are_placeholders = false;
 
+  /**
+   * The suffix to use for placeholder files.
+   */
+  QByteArray placeholder_suffix = ".owncloud";
+
   csync_s(const char *localUri, OCC::SyncJournalDb *statedb);
   ~csync_s();
   int reinitialize();

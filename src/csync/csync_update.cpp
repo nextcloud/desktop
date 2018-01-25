@@ -193,6 +193,22 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
   }
 
 
+  // The db entry might be for a placeholder, so look for that on the
+  // remote side. If we find one, change the current fs to look like a
+  // placeholder too, because that's what one would see if the remote
+  // db was filled from the database.
+  if (ctx->current == REMOTE_REPLICA && !base.isValid() && fs->type == ItemTypeFile) {
+      auto placeholderPath = fs->path;
+      placeholderPath.append(ctx->placeholder_suffix);
+      ctx->statedb->getFileRecord(placeholderPath, &base);
+      if (base.isValid() && base._type == ItemTypePlaceholder) {
+          fs->type = ItemTypePlaceholder;
+          fs->path = placeholderPath;
+      } else {
+          base = OCC::SyncJournalFileRecord();
+      }
+  }
+
   /*
    * When file is encrypted it's phash (path hash) will not match the local file phash,
    * we could match the e2eMangledName but that might be slow wihout index, and it's
@@ -246,10 +262,9 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       if (ctx->current == REMOTE_REPLICA && fs->etag != base._etag) {
           fs->instruction = CSYNC_INSTRUCTION_EVAL;
 
-          if (base._type == ItemTypePlaceholder && fs->type == ItemTypeFile) {
+          if (fs->type == ItemTypePlaceholder) {
               // If the local thing is a placeholder, we just update the metadata
               fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-              fs->type = ItemTypePlaceholder; // retain the PLACEHOLDER type in the db
           } else if (base._type != fs->type) {
               // Preserve the EVAL flag later on if the type has changed.
               fs->child_modified = true;
@@ -396,6 +411,14 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                   return;
               }
 
+              // Now we know there is a sane rename candidate.
+
+              // Rename of a placeholder
+              if (base._type == ItemTypePlaceholder && fs->type == ItemTypeFile) {
+                  fs->type = ItemTypePlaceholder;
+                  fs->path.append(ctx->placeholder_suffix);
+              }
+
               // Record directory renames
               if (fs->type == ItemTypeDirectory) {
                   // If the same folder was already renamed by a different entry,
@@ -435,11 +458,12 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
               }
           }
 
-          // Potentially turn new remote files into placeholders
+          // Turn new remote files into placeholders if the option is enabled.
           if (ctx->new_files_are_placeholders
               && fs->instruction == CSYNC_INSTRUCTION_NEW
               && fs->type == ItemTypeFile) {
               fs->type = ItemTypePlaceholder;
+              fs->path.append(ctx->placeholder_suffix);
           }
 
           goto out;
@@ -762,14 +786,15 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     // When encountering placeholder files, read the relevant
     // entry from the db instead.
     if (ctx->current == LOCAL_REPLICA
-            && dirent->type == ItemTypeFile
-            && filename.endsWith(".owncloud")) {
+        && dirent->type == ItemTypeFile
+        && filename.endsWith(ctx->placeholder_suffix)) {
         QByteArray db_uri = fullpath.mid(strlen(ctx->local.uri) + 1);
-        db_uri = db_uri.left(db_uri.size() - 9);
+        QByteArray base_uri = db_uri.left(db_uri.size() - ctx->placeholder_suffix.size());
 
-        // Don't overwrite data that was already retrieved from disk!
-        // This can happen if foo.owncloud exists and the user adds foo.
-        if (ctx->local.files.findFile(db_uri))
+        // Don't fill the local tree with placeholder data if a real
+        // file was found. The remote tree will still have the placeholder
+        // file.
+        if (ctx->local.files.findFile(base_uri))
             continue;
 
         if( ! fill_tree_from_db(ctx, db_uri.constData(), true) ) {

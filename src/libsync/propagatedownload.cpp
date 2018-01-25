@@ -375,7 +375,7 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
 
     // For placeholder files just create the file and be done
     if (_item->_type == ItemTypePlaceholder) {
-        auto fn = propagator()->placeholderFilePath(_item->_file);
+        auto fn = propagator()->getFilePath(_item->_file);
         qCDebug(lcPropagateDownload) << "creating placeholder file" << fn;
         QFile file(fn);
         file.open(QFile::ReadWrite);
@@ -391,6 +391,7 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
         auto fn = propagator()->placeholderFilePath(_item->_file);
         qCDebug(lcPropagateDownload) << "Downloading file that used to be a placeholder" << fn;
         QFile::remove(fn);
+        propagator()->_journal->deleteFileRecord(_item->_file + ".owncloud");
         _item->_type = ItemTypeFile;
     }
 
