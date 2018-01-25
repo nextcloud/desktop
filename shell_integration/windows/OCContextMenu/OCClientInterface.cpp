@@ -34,7 +34,7 @@ using namespace std;
 #define PIPE_TIMEOUT  5*1000 //ms
 #define SOCK_BUFFER 4096
 
-OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo()
+OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstring &files)
 {
     auto pipename = CommunicationSocket::DefaultPipePath();
 
@@ -45,7 +45,8 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo()
     if (!socket.Connect(pipename)) {
         return {};
     }
-    socket.SendMsg(L"GET_STRINGS\n");
+    socket.SendMsg(L"GET_STRINGS:CONTEXT_MENU_TITLE\n");
+    socket.SendMsg((L"GET_MENU_ITEMS:" + files + L"\n").data());
 
     ContextMenuInfo info;
     std::wstring response;
@@ -60,16 +61,14 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo()
                 wstring stringName, stringValue;
                 if (!StringUtil::extractChunks(response, stringName, stringValue))
                     continue;
-                if (stringName == L"SHARE_MENU_TITLE")
-                    info.shareMenuTitle = move(stringValue);
-                else if (stringName == L"CONTEXT_MENU_TITLE")
+                if (stringName == L"CONTEXT_MENU_TITLE")
                     info.contextMenuTitle = move(stringValue);
-                else if (stringName == L"COPY_PRIVATE_LINK_MENU_TITLE")
-                    info.copyLinkMenuTitle = move(stringValue);
-                else if (stringName == L"EMAIL_PRIVATE_LINK_MENU_TITLE")
-                    info.emailLinkMenuTitle = move(stringValue);
-            }
-            else if (StringUtil::begins_with(response, wstring(L"GET_STRINGS:END"))) {
+            } else if (StringUtil::begins_with(response, wstring(L"MENU_ITEM:"))) {
+                wstring commandName, flags, title;
+                if (!StringUtil::extractChunks(response, commandName, flags, title))
+                    continue;
+                info.menuItems.push_back({ commandName, flags, title });
+            } else if (StringUtil::begins_with(response, wstring(L"GET_MENU_ITEMS:END"))) {
                 break; // Stop once we completely received the last sent request
             }
         }
@@ -81,22 +80,7 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo()
     return info;
 }
 
-void OCClientInterface::RequestShare(const std::wstring &path)
-{
-    SendRequest(L"SHARE", path);
-}
-
-void OCClientInterface::RequestCopyLink(const std::wstring &path)
-{
-    SendRequest(L"COPY_PRIVATE_LINK", path);
-}
-
-void OCClientInterface::RequestEmailLink(const std::wstring &path)
-{
-    SendRequest(L"EMAIL_PRIVATE_LINK", path);
-}
-
-void OCClientInterface::SendRequest(wchar_t *verb, const std::wstring &path)
+void OCClientInterface::SendRequest(const wchar_t *verb, const std::wstring &path)
 {
     auto pipename = CommunicationSocket::DefaultPipePath();
 

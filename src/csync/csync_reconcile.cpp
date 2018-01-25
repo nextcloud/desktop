@@ -27,6 +27,7 @@
 #include "csync_rename.h"
 #include "common/c_jhash.h"
 #include "common/asserts.h"
+#include "common/syncjournalfilerecord.h"
 
 #include <QLoggingCategory>
 Q_LOGGING_CATEGORY(lcReconcile, "sync.csync.reconciler", QtInfoMsg)
@@ -177,7 +178,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                     // other is found as well?
                     qCDebug(lcReconcile, "Other has already been renamed to %s",
                         other->rename_path.constData());
-                } else if (cur->type == CSYNC_FTW_TYPE_DIR
+                } else if (cur->type == ItemTypeDirectory
                     // The local replica is reconciled first, so the remote tree would
                     // have either NONE or UPDATE_METADATA if the remote file is safe to
                     // move.
@@ -278,26 +279,16 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
             /* If the file already exist on the other side, we have a conflict.
                Abort the rename and consider it is a new file. */
             cur->instruction = CSYNC_INSTRUCTION_NEW;
-            /* fall trough */
+            /* fall through */
         /* file on current replica is changed or new */
         case CSYNC_INSTRUCTION_EVAL:
         case CSYNC_INSTRUCTION_NEW:
-            // This operation is usually a no-op and will by default return false
-            if (csync_file_locked_or_open(ctx->local.uri, cur->path)) {
-                qCDebug(lcReconcile, "[Reconciler] IGNORING file %s/%s since it is locked / open", ctx->local.uri, cur->path.constData());
-                cur->instruction = CSYNC_INSTRUCTION_ERROR;
-                if (cur->error_status == CSYNC_STATUS_OK) // don't overwrite error
-                    cur->error_status = CYSNC_STATUS_FILE_LOCKED_OR_OPEN;
-                break;
-            } else {
-                //qCDebug(lcReconcile, "[Reconciler] not ignoring file %s/%s", ctx->local.uri, cur->path);
-            }
             switch (other->instruction) {
             /* file on other replica is changed or new */
             case CSYNC_INSTRUCTION_NEW:
             case CSYNC_INSTRUCTION_EVAL:
-                if (other->type == CSYNC_FTW_TYPE_DIR &&
-                        cur->type == CSYNC_FTW_TYPE_DIR) {
+                if (other->type == ItemTypeDirectory &&
+                        cur->type == ItemTypeDirectory) {
                     // Folders of the same path are always considered equals
                     is_conflict = false;
                 } else {
@@ -316,6 +307,35 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                         (ctx->current == REMOTE_REPLICA ? cur->checksumHeader : other->checksumHeader);
                     if (!remoteChecksumHeader.isEmpty()) {
                         is_conflict = true;
+
+                        // Do we have an UploadInfo for this?
+                        // Maybe the Upload was completed, but the connection was broken just before
+                        // we recieved the etag (Issue #5106)
+                        auto up = ctx->statedb->getUploadInfo(cur->path);
+                        if (up._valid && up._contentChecksum == remoteChecksumHeader) {
+                            // Solve the conflict into an upload, or nothing
+                            auto remoteNode = ctx->current == REMOTE_REPLICA ? cur : other;
+                            auto localNode = ctx->current == REMOTE_REPLICA ? other : cur;
+                            remoteNode->instruction = CSYNC_INSTRUCTION_NONE;
+                            localNode->instruction = up._modtime == localNode->modtime ? CSYNC_INSTRUCTION_UPDATE_METADATA : CSYNC_INSTRUCTION_SYNC;
+
+                            // Update the etag and other server metadata in the journal already
+                            // (We can't use a typical CSYNC_INSTRUCTION_UPDATE_METADATA because
+                            // we must not store the size/modtime from the file system)
+                            OCC::SyncJournalFileRecord rec;
+                            if (ctx->statedb->getFileRecord(remoteNode->path, &rec)) {
+                                rec._path = remoteNode->path;
+                                rec._etag = remoteNode->etag;
+                                rec._fileId = remoteNode->file_id;
+                                rec._modtime = remoteNode->modtime;
+                                rec._type = remoteNode->type;
+                                rec._fileSize = remoteNode->size;
+                                rec._remotePerm = remoteNode->remotePerm;
+                                rec._checksumHeader = remoteNode->checksumHeader;
+                                ctx->statedb->setFileRecordMetadata(rec);
+                            }
+                            break;
+                        }
                     }
 
                     // SO: If there is no checksum, we can have !is_conflict here
@@ -345,7 +365,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                     // needs to delete the other entity first.
                     cur->instruction = CSYNC_INSTRUCTION_TYPE_CHANGE;
                     other->instruction = CSYNC_INSTRUCTION_NONE;
-                } else if (cur->type == CSYNC_FTW_TYPE_DIR) {
+                } else if (cur->type == ItemTypeDirectory) {
                     cur->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                     other->instruction = CSYNC_INSTRUCTION_NONE;
                 } else {
@@ -378,7 +398,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
     const char *repo = ctx->current == REMOTE_REPLICA ? "server" : "client";
     if(cur->instruction ==CSYNC_INSTRUCTION_NONE)
     {
-        if(cur->type == CSYNC_FTW_TYPE_DIR)
+        if(cur->type == ItemTypeDirectory)
         {
             qCDebug(lcReconcile,
                       "%-30s %s dir:  %s",
@@ -397,7 +417,7 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
     }
     else
     {
-        if(cur->type == CSYNC_FTW_TYPE_DIR)
+        if(cur->type == ItemTypeDirectory)
         {
             qCInfo(lcReconcile,
                       "%-30s %s dir:  %s",

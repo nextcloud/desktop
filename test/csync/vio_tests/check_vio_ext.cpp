@@ -218,7 +218,7 @@ static void traverse_dir(void **state, const char *dir, int *cnt)
           continue;
         }
 
-        is_dir = (dirent->type == CSYNC_FTW_TYPE_DIR) ? 1:0;
+        is_dir = (dirent->type == ItemTypeDirectory) ? 1:0;
 
         assert_int_not_equal( asprintf( &subdir, "%s/%s", dir, dirent->path.constData() ), -1 );
 

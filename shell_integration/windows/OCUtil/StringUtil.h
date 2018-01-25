@@ -61,6 +61,30 @@ public:
         thirdChunk = source.substr(statusEnd + 1);
         return true;
     }
+
+    static bool extractChunks(const std::wstring &source, std::wstring &secondChunk, std::wstring &thirdChunk, std::wstring &forthChunk)
+    {
+        auto statusBegin = source.find(L':', 0);
+        assert(statusBegin != std::wstring::npos);
+
+        auto statusEnd = source.find(L':', statusBegin + 1);
+        if (statusEnd == std::wstring::npos) {
+            // the command do not contains two colon?
+            return false;
+        }
+
+        auto thirdColon = source.find(L':', statusEnd + 1);
+        if (statusEnd == std::wstring::npos) {
+            // the command do not contains three colon?
+            return false;
+        }
+
+        // Assume the caller extracted the chunk before the first colon.
+        secondChunk = source.substr(statusBegin + 1, statusEnd - statusBegin - 1);
+        thirdChunk = source.substr(statusEnd + 1, thirdColon - statusEnd - 1);
+        forthChunk = source.substr(thirdColon + 1);
+        return true;
+    }
 };
 
 #endif // STRINGUTIL_H

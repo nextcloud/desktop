@@ -230,6 +230,7 @@ void PropagateUploadFileNG::startNewUpload()
     pi._valid = true;
     pi._transferid = _transferId;
     pi._modtime = _item->_modtime;
+    pi._contentChecksum = _item->_checksumHeader;
     propagator()->_journal->setUploadInfo(_item->_file, pi);
     propagator()->_journal->commit("Upload info");
     QMap<QByteArray, QByteArray> headers;
@@ -466,17 +467,6 @@ void PropagateUploadFileNG::slotMoveJobFinished()
         return;
     }
     _item->_responseTimeStamp = job->responseTimestamp();
-
-#ifdef WITH_TESTING
-    // performance logging
-    quint64 duration = _stopWatch.stop();
-    qCDebug(lcPropagateUpload) << "*==* duration UPLOAD" << _item->_size
-                               << _stopWatch.durationOfLap(QLatin1String("ContentChecksum"))
-                               << _stopWatch.durationOfLap(QLatin1String("TransmissionChecksum"))
-                               << duration;
-    // The job might stay alive for the whole sync, release this tiny bit of memory.
-    _stopWatch.reset();
-#endif
     finalize();
 }
 

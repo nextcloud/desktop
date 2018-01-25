@@ -43,10 +43,24 @@ void PropagateUploadFileV1::doStartUpload()
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
 
-    if (progressInfo._valid && progressInfo._modtime == _item->_modtime) {
+    if (progressInfo._valid && progressInfo._modtime == _item->_modtime
+        && (progressInfo._contentChecksum == _item->_checksumHeader || progressInfo._contentChecksum.isEmpty() || _item->_checksumHeader.isEmpty())) {
         _startChunk = progressInfo._chunk;
         _transferId = progressInfo._transferid;
         qCInfo(lcPropagateUpload) << _item->_file << ": Resuming from chunk " << _startChunk;
+    } else if (_chunkCount <= 1 && !_item->_checksumHeader.isEmpty()) {
+        // If there is only one chunk, write the checksum in the database, so if the PUT is sent
+        // to the server, but the connection drops before we get the etag, we can check the checksum
+        // in reconcile (issue #5106)
+        SyncJournalDb::UploadInfo pi;
+        pi._valid = true;
+        pi._chunk = 0;
+        pi._transferid = _transferId;
+        pi._modtime = _item->_modtime;
+        pi._errorCount = 0;
+        pi._contentChecksum = _item->_checksumHeader;
+        propagator()->_journal->setUploadInfo(_item->_file, pi);
+        propagator()->_journal->commit("Upload info");
     }
 
     _currentChunk = 0;
@@ -274,6 +288,7 @@ void PropagateUploadFileV1::slotPutFinished()
         pi._transferid = _transferId;
         pi._modtime = _item->_modtime;
         pi._errorCount = 0; // successful chunk upload resets
+        pi._contentChecksum = _item->_checksumHeader;
         propagator()->_journal->setUploadInfo(_item->_file, pi);
         propagator()->_journal->commit("Upload info");
         startNextChunk();
@@ -302,17 +317,6 @@ void PropagateUploadFileV1::slotPutFinished()
         // Well, the mtime was not set
         done(SyncFileItem::SoftError, "Server does not support X-OC-MTime");
     }
-
-#ifdef WITH_TESTING
-    // performance logging
-    quint64 duration = _stopWatch.stop();
-    qCDebug(lcPropagateUpload) << "*==* duration UPLOAD" << _item->_size
-                               << _stopWatch.durationOfLap(QLatin1String("ContentChecksum"))
-                               << _stopWatch.durationOfLap(QLatin1String("TransmissionChecksum"))
-                               << duration;
-    // The job might stay alive for the whole sync, release this tiny bit of memory.
-    _stopWatch.reset();
-#endif
 
     finalize();
 }

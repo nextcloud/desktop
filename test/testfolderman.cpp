@@ -107,7 +107,7 @@ private slots:
         QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1/folder").isNull());
         QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1/folder/f").isNull());
 
-
+#ifndef Q_OS_WIN // no links on windows, no permissions
         // make a bunch of links
         QVERIFY(QFile::link(dirPath + "/sub/free", dirPath + "/link1"));
         QVERIFY(QFile::link(dirPath + "/sub", dirPath + "/link2"));
@@ -129,7 +129,6 @@ private slots:
         QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/link4").isNull());
         QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/link3/folder").isNull());
 
-
         // test some non existing sub path (error)
         QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1/some/sub/path").isNull());
         QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/ownCloud2/blublu").isNull());
@@ -140,12 +139,13 @@ private slots:
         QVERIFY(folderman->checkPathValidityForNewFolder(dirPath + "/link1/subfolder").isNull());
         QVERIFY(folderman->checkPathValidityForNewFolder(dirPath + "/link2/free/subfolder").isNull());
 
-        // Invalid paths
-        QVERIFY(!folderman->checkPathValidityForNewFolder("").isNull());
-
         // Should not have the rights
         QVERIFY(!folderman->checkPathValidityForNewFolder("/").isNull());
         QVERIFY(!folderman->checkPathValidityForNewFolder("/usr/bin/somefolder").isNull());
+#endif
+
+        // Invalid paths
+        QVERIFY(!folderman->checkPathValidityForNewFolder("").isNull());
     }
 
     void testFindGoodPathForNewSyncFolder()

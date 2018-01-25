@@ -178,7 +178,7 @@ public:
     /** Queues all folders for syncing. */
     void scheduleAllFolders();
 
-    void setDirtyProxy(bool value = true);
+    void setDirtyProxy();
     void setDirtyNetworkLimits();
 
     /**

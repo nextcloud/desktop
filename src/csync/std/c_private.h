@@ -102,10 +102,6 @@ typedef struct stat csync_stat_t;
 #endif
 #endif
 
-#ifndef HAVE_STRERROR_R
-#define strerror_r(errnum, buf, buflen) snprintf(buf, buflen, "%s", strerror(errnum))
-#endif
-
 #ifndef HAVE_LSTAT
 #define lstat _stat
 #endif

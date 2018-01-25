@@ -39,6 +39,12 @@
 
 namespace OCC {
 
+/**
+ * If more issues are reported than this they will not show up
+ * to avoid performance issues around sorting this many issues.
+ */
+static const int maxIssueCount = 50000;
+
 IssuesWidget::IssuesWidget(QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::IssuesWidget)
@@ -100,6 +106,14 @@ IssuesWidget::IssuesWidget(QWidget *parent)
 #if defined(Q_OS_MAC)
     _ui->_treeWidget->setMinimumWidth(400);
 #endif
+
+    _reenableSorting.setInterval(5000);
+    connect(&_reenableSorting, &QTimer::timeout, this,
+        [this]() { _ui->_treeWidget->setSortingEnabled(true); });
+
+    _ui->_tooManyIssuesWarning->hide();
+    connect(this, &IssuesWidget::issueCountUpdated, this,
+        [this](int count) { _ui->_tooManyIssuesWarning->setVisible(count >= maxIssueCount); });
 }
 
 IssuesWidget::~IssuesWidget()
@@ -140,7 +154,7 @@ void IssuesWidget::cleanItems(const QString &folder)
     int itemCnt = _ui->_treeWidget->topLevelItemCount();
     for (int cnt = itemCnt - 1; cnt >= 0; cnt--) {
         QTreeWidgetItem *item = _ui->_treeWidget->topLevelItem(cnt);
-        QString itemFolder = item->data(2, Qt::UserRole).toString();
+        QString itemFolder = ProtocolItem::folderName(item);
         if (itemFolder == folder) {
             delete item;
         }
@@ -157,11 +171,17 @@ void IssuesWidget::addItem(QTreeWidgetItem *item)
     if (!item)
         return;
 
-    int insertLoc = 0;
+    int count = _ui->_treeWidget->topLevelItemCount();
+    if (count >= maxIssueCount)
+        return;
+
+    _ui->_treeWidget->setSortingEnabled(false);
+    _reenableSorting.start();
 
     // Insert item specific errors behind the others
+    int insertLoc = 0;
     if (!item->text(1).isEmpty()) {
-        for (int i = 0; i < _ui->_treeWidget->topLevelItemCount(); ++i) {
+        for (int i = 0; i < count; ++i) {
             if (_ui->_treeWidget->topLevelItem(i)->text(1).isEmpty()) {
                 insertLoc = i + 1;
             } else {
@@ -177,11 +197,8 @@ void IssuesWidget::addItem(QTreeWidgetItem *item)
 
 void IssuesWidget::slotOpenFile(QTreeWidgetItem *item, int)
 {
-    QString folderName = item->data(2, Qt::UserRole).toString();
     QString fileName = item->text(1);
-
-    Folder *folder = FolderMan::instance()->folder(folderName);
-    if (folder) {
+    if (Folder *folder = ProtocolItem::folder(item)) {
         // folder->path() always comes back with trailing path
         QString fullPath = folder->path() + fileName;
         if (QFile(fullPath).exists()) {
@@ -200,7 +217,7 @@ void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &p
 
 void IssuesWidget::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
 {
-    if (!item->hasErrorStatus())
+    if (!item->showInIssuesTab())
         return;
     QTreeWidgetItem *line = ProtocolItem::create(folder, *item);
     if (!line)
@@ -268,13 +285,13 @@ bool IssuesWidget::shouldBeVisible(QTreeWidgetItem *item, AccountState *filterAc
     const QString &filterFolderAlias) const
 {
     bool visible = true;
-    auto status = item->data(3, Qt::UserRole);
+    auto status = ProtocolItem::status(item);
     visible &= (_ui->showIgnores->isChecked() || status != SyncFileItem::FileIgnored);
     visible &= (_ui->showWarnings->isChecked()
         || (status != SyncFileItem::SoftError
                && status != SyncFileItem::Restoration));
 
-    auto folderalias = item->data(2, Qt::UserRole).toString();
+    auto folderalias = ProtocolItem::folderName(item);
     if (filterAccount) {
         auto folder = FolderMan::instance()->folder(folderalias);
         visible &= folder && folder->accountState() == filterAccount;
@@ -423,7 +440,7 @@ void IssuesWidget::addErrorWidget(QTreeWidgetItem *item, const QString &message,
 
         auto button = new QPushButton("Retry all uploads", widget);
         button->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
-        auto folderAlias = item->data(2, Qt::UserRole).toString();
+        auto folderAlias = ProtocolItem::folderName(item);
         connect(button, &QPushButton::clicked,
             this, [this, folderAlias]() { retryInsufficentRemoteStorageErrors(folderAlias); });
         layout->addWidget(button);

@@ -161,6 +161,15 @@ signals:
 private slots:
     void slotFolderDiscovered(bool local, const QString &folder);
     void slotRootEtagReceived(const QString &);
+
+    /** Called when a SyncFileItem gets accepted for a sync.
+     *
+     * Mostly done in initial creation inside treewalkFile but
+     * can also be called via the propagator for items that are
+     * created during propagation.
+     */
+    void slotNewItem(const SyncFileItemPtr &item);
+
     void slotItemCompleted(const SyncFileItemPtr &item);
     void slotFinished(bool success);
     void slotProgress(const SyncFileItem &item, quint64 curent);
@@ -199,6 +208,9 @@ private:
 
     // Removes stale error blacklist entries from the journal.
     void deleteStaleErrorBlacklistEntries(const SyncFileItemVector &syncItems);
+
+    // Removes stale and adds missing conflict records after sync
+    void conflictRecordMaintenance();
 
     // cleanup and emit the finished signal
     void finalize(bool success);

@@ -182,17 +182,23 @@ namespace Utility {
          with the given parent. If no parent is specified, the caller must destroy the settings */
     OCSYNC_EXPORT std::unique_ptr<QSettings> settingsWithGroup(const QString &group, QObject *parent = 0);
 
+    /** Returns a file name based on \a fn that's suitable for a conflict.
+     */
+    OCSYNC_EXPORT QString makeConflictFileName(const QString &fn, const QDateTime &dt);
+
     /** Returns whether a file name indicates a conflict file
-     *
-     * See FileSystem::makeConflictFileName.
      */
     OCSYNC_EXPORT bool isConflictFile(const char *name);
+    OCSYNC_EXPORT bool isConflictFile(const QString &name);
 
-    /** Returns whether conflict files should be uploaded.
+    /** Find the base name for a conflict file name
      *
-     * Experimental! Real feature planned for 2.5.
+     * Will return an empty string if it's not a conflict file.
+     *
+     * Prefer to use the data from the conflicts table in the journal to determine
+     * a conflict's base file.
      */
-    OCSYNC_EXPORT bool shouldUploadConflictFiles();
+    OCSYNC_EXPORT QByteArray conflictFileBaseName(const QByteArray &conflictName);
 
 #ifdef Q_OS_WIN
     OCSYNC_EXPORT QVariant registryGetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName);

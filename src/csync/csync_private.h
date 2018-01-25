@@ -36,7 +36,6 @@
 #include <QHash>
 #include <stdint.h>
 #include <stdbool.h>
-#include <sqlite3.h>
 #include <map>
 #include <set>
 #include <functional>
@@ -153,7 +152,7 @@ struct OCSYNC_EXPORT csync_s {
    *
    * See ExcludedFiles in csync_exclude.
    */
-  std::function<CSYNC_EXCLUDE_TYPE(const char *path, int filetype)> exclude_traversal_fn;
+  std::function<CSYNC_EXCLUDE_TYPE(const char *path, ItemType filetype)> exclude_traversal_fn;
 
   struct {
     std::unordered_map<ByteArrayRef, QByteArray, ByteArrayRefHash> folder_renamed_to; // map from->to
@@ -202,6 +201,8 @@ struct OCSYNC_EXPORT csync_s {
   std::set<QByteArray> locally_touched_dirs;
 
   bool ignore_hidden_files = true;
+
+  bool upload_conflict_files = false;
 
   csync_s(const char *localUri, OCC::SyncJournalDb *statedb);
   ~csync_s();

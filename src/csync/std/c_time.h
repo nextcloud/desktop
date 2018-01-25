@@ -21,6 +21,8 @@
 #ifndef _C_TIME_H
 #define _C_TIME_H
 
+#include "ocsynclib.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -31,34 +33,7 @@ extern "C" {
 #include <sys/time.h>
 #endif
 
-/**
- * @brief Calculate time difference
- *
- * The c_tspecdiff function returns the time elapsed between time time1 and time
- * time0 represented as timespec.
- *
- * @param time1 The time.
- * @param time0 The time.
- *
- * @return time elapsed between time1 and time0.
- */
-struct timespec c_tspecdiff(struct timespec time1, struct timespec time0);
-
-/**
- * @brief Calculate time difference.
- *
- * The function returns the time elapsed between time clock1 and time
- * clock0 represented as double (in seconds and milliseconds).
- *
- * @param clock1 The time.
- * @param clock0 The time.
- *
- * @return time elapsed between clock1 and clock0 in seconds and
- *         milliseconds.
- */
-double c_secdiff(struct timespec clock1, struct timespec clock0);
-
-int c_utimes(const char *uri, const struct timeval *times);
+OCSYNC_EXPORT int c_utimes(const char *uri, const struct timeval *times);
 
 #ifdef __cplusplus
 }

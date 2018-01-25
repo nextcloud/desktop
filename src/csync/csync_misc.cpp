@@ -44,7 +44,6 @@
 #include "c_lib.h"
 #include "csync_misc.h"
 #include "csync_macros.h"
-#include "csync_log.h"
 
 #ifdef HAVE_FNMATCH
 #include <fnmatch.h>

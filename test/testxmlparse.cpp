@@ -238,6 +238,40 @@ private slots:
         QVERIFY(_subdirs.size() == 0);
     }
 
+    void testParserTruncatedXml() {
+        const QByteArray testXml = "<?xml version='1.0' encoding='utf-8'?>"
+              "<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:oc=\"http://owncloud.org/ns\">"
+              "<d:response>"
+              "<d:href>/oc/remote.php/webdav/sharefolder/</d:href>"
+              "<d:propstat>"
+              "<d:prop>"
+              "<oc:id>00004213ocobzus5kn6s</oc:id>"
+              "<oc:permissions>RDNVCK</oc:permissions>"
+              "<oc:size>121780</oc:size>"
+              "<d:getetag>\"5527beb0400b0\"</d:getetag>"
+              "<d:resourcetype>"
+              "<d:collection/>"
+              "</d:resourcetype>"
+              "<d:getlastmodified>Fri, 06 Feb 2015 13:49:55 GMT</d:getlastmodified>"
+              "</d:prop>"
+              "<d:status>HTTP/1.1 200 OK</d:status>"
+              "</d:propstat>"; // no proper end here
+
+
+        LsColXMLParser parser;
+
+        connect( &parser, SIGNAL(directoryListingSubfolders(const QStringList&)),
+                 this, SLOT(slotDirectoryListingSubFolders(const QStringList&)) );
+        connect( &parser, SIGNAL(directoryListingIterated(const QString&, const QMap<QString,QString>&)),
+                 this, SLOT(slotDirectoryListingIterated(const QString&, const QMap<QString,QString>&)) );
+        connect( &parser, SIGNAL(finishedWithoutError()),
+                 this, SLOT(slotFinishedSuccessfully()) );
+
+        QHash <QString, qint64> sizes;
+        QVERIFY(!parser.parse( testXml, &sizes, "/oc/remote.php/webdav/sharefolder" ));
+        QVERIFY(!_success);
+    }
+
     void testParserBogfusHref1() {
         const QByteArray testXml = "<?xml version='1.0' encoding='utf-8'?>"
               "<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:oc=\"http://owncloud.org/ns\">"

@@ -41,6 +41,9 @@ private slots:
     void saveProxySettings();
     void saveBWLimitSettings();
 
+    /// Red marking of host field if empty and enabled
+    void checkEmptyProxyHost();
+
 private:
     void loadProxySettings();
     void loadBWLimitSettings();

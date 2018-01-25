@@ -441,7 +441,8 @@ public:
         QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
     }
 
-    Q_INVOKABLE void respond() {
+    Q_INVOKABLE virtual void respond()
+    {
         emit uploadProgress(fileInfo->size, fileInfo->size);
         setRawHeader("OC-ETag", fileInfo->etag.toLatin1());
         setRawHeader("ETag", fileInfo->etag.toLatin1());
@@ -451,7 +452,11 @@ public:
         emit finished();
     }
 
-    void abort() override { }
+    void abort() override
+    {
+        setError(OperationCanceledError, "abort");
+        emit finished();
+    }
     qint64 readData(char *, qint64) override { return 0; }
 };
 
@@ -615,7 +620,7 @@ class FakeChunkMoveReply : public QNetworkReply
 public:
     FakeChunkMoveReply(FileInfo &uploadsFileInfo, FileInfo &remoteRootFileInfo,
         QNetworkAccessManager::Operation op, const QNetworkRequest &request,
-        quint64 delayMs, QObject *parent)
+        QObject *parent)
         : QNetworkReply{ parent }
     {
         setRequest(request);
@@ -675,10 +680,11 @@ public:
         fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
         remoteRootFileInfo.find(fileName, /*invalidate_etags=*/true);
 
-        QTimer::singleShot(delayMs, this, &FakeChunkMoveReply::respond);
+        QTimer::singleShot(0, this, &FakeChunkMoveReply::respond);
     }
 
-    Q_INVOKABLE void respond() {
+    Q_INVOKABLE virtual void respond()
+    {
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 201);
         setRawHeader("OC-ETag", fileInfo->etag.toLatin1());
         setRawHeader("ETag", fileInfo->etag.toLatin1());
@@ -694,7 +700,12 @@ public:
         emit finished();
     }
 
-    void abort() override { }
+    void abort() override
+    {
+        setError(OperationCanceledError, "abort");
+        emit finished();
+    }
+
     qint64 readData(char *, qint64) override { return 0; }
 };
 
@@ -744,10 +755,32 @@ public:
     qint64 readData(char *, qint64) override { return 0; }
 };
 
+// A delayed reply
+template <class OriginalReply>
+class DelayedReply : public OriginalReply
+{
+public:
+    template <typename... Args>
+    explicit DelayedReply(quint64 delayMS, Args &&... args)
+        : OriginalReply(std::forward<Args>(args)...)
+        , _delayMs(delayMS)
+    {
+    }
+    quint64 _delayMs;
+
+    void respond() override
+    {
+        QTimer::singleShot(_delayMs, static_cast<OriginalReply *>(this), [this] {
+            // Explicit call to bases's respond();
+            this->OriginalReply::respond();
+        });
+    }
+};
+
 class FakeQNAM : public QNetworkAccessManager
 {
 public:
-    using Override = std::function<QNetworkReply *(Operation, const QNetworkRequest &)>;
+    using Override = std::function<QNetworkReply *(Operation, const QNetworkRequest &, QIODevice *)>;
 
 private:
     FileInfo _remoteRootFileInfo;
@@ -770,7 +803,7 @@ protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request,
                                          QIODevice *outgoingData = 0) {
         if (_override) {
-            if (auto reply = _override(op, request))
+            if (auto reply = _override(op, request, outgoingData))
                 return reply;
         }
         const QString fileName = getFilePathFromUrl(request.url());
@@ -796,7 +829,7 @@ protected:
         else if (verb == QLatin1String("MOVE") && !isUpload)
             return new FakeMoveReply{info, op, request, this};
         else if (verb == QLatin1String("MOVE") && isUpload)
-            return new FakeChunkMoveReply{ info, _remoteRootFileInfo, op, request, 0, this };
+            return new FakeChunkMoveReply{ info, _remoteRootFileInfo, op, request, this };
         else {
             qDebug() << verb << outgoingData;
             Q_UNREACHABLE();

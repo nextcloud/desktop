@@ -23,3 +23,6 @@ if( UNIX AND NOT APPLE )
   add_subdirectory(libcloudproviders)
 endif()
 
+if(MSVC)
+  add_subdirectory(windows)
+endif()
