@@ -20,6 +20,7 @@ if test -z "${DRONE_DIR}"; then
     DRONE_DIR=`dirname ${DRONE_WORKSPACE}`
 fi
 
+
 if test "$DEBIAN_SECRET_KEY" -a "$DEBIAN_SECRET_IV"; then
     openssl aes-256-cbc -K $DEBIAN_SECRET_KEY -iv $DEBIAN_SECRET_IV -in admin/linux/debian/signing-key.txt.enc -d | gpg --import
 
