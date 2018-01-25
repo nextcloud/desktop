@@ -388,10 +388,11 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
     // If we want to download something that used to be a placeholder,
     // wipe the placeholder and proceed with a normal download
     if (_item->_type == ItemTypePlaceholderDownload) {
-        auto fn = propagator()->placeholderFilePath(_item->_file);
+        auto placeholder = propagator()->addPlaceholderSuffix(_item->_file);
+        auto fn = propagator()->getFilePath(placeholder);
         qCDebug(lcPropagateDownload) << "Downloading file that used to be a placeholder" << fn;
         QFile::remove(fn);
-        propagator()->_journal->deleteFileRecord(_item->_file + ".owncloud");
+        propagator()->_journal->deleteFileRecord(placeholder);
         _item->_type = ItemTypeFile;
     }
 

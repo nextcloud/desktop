@@ -386,8 +386,8 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
                    ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop)
     install(FILES  ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop DESTINATION ${DATADIR}/applications )
 
-    #FIXME! branding
-    install(FILES owncloud.xml DESTINATION ${DATADIR}/mime/packages )
+    configure_file(owncloud.xml.in ${APPLICATION_EXECUTABLE}.xml)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.xml DESTINATION ${DATADIR}/mime/packages )
 
     find_package(ECM 1.2.0 CONFIG)
     set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")

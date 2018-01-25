@@ -590,9 +590,9 @@ QString OwncloudPropagator::getFilePath(const QString &tmp_file_name) const
     return _localDir + tmp_file_name;
 }
 
-QString OwncloudPropagator::placeholderFilePath(const QString &fileName) const
+QString OwncloudPropagator::addPlaceholderSuffix(const QString &fileName) const
 {
-    return getFilePath(fileName) + QLatin1String(".owncloud");
+    return fileName + _syncOptions._placeholderSuffix;
 }
 
 void OwncloudPropagator::scheduleNextJob()

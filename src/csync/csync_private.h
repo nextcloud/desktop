@@ -223,7 +223,7 @@ struct OCSYNC_EXPORT csync_s {
   /**
    * The suffix to use for placeholder files.
    */
-  QByteArray placeholder_suffix = ".owncloud";
+  QByteArray placeholder_suffix;
 
   csync_s(const char *localUri, OCC::SyncJournalDb *statedb);
   ~csync_s();
