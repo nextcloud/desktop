@@ -116,9 +116,6 @@ void PropagateLocalRemove::start()
         return;
 
     QString filename = propagator()->_localDir + _item->_file;
-    if (_item->_type == ItemTypePlaceholder || _item->_type == ItemTypePlaceholderDownload)
-        filename = propagator()->placeholderFilePath(_item->_file);
-
     qCDebug(lcPropagateLocalRemove) << filename;
 
     if (propagator()->localFileNameClash(_item->_file)) {
@@ -225,11 +222,6 @@ void PropagateLocalRename::start()
 
     QString existingFile = propagator()->getFilePath(_item->_file);
     QString targetFile = propagator()->getFilePath(_item->_renameTarget);
-
-    if (_item->_type == ItemTypePlaceholder || _item->_type == ItemTypePlaceholderDownload) {
-        existingFile = propagator()->placeholderFilePath(_item->_file);
-        targetFile = propagator()->placeholderFilePath(_item->_renameTarget);
-    }
 
     // if the file is a file underneath a moved dir, the _item->file is equal
     // to _item->renameTarget and the file is not moved as a result.

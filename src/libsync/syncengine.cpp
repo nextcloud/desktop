@@ -849,7 +849,7 @@ void SyncEngine::startSync()
         return shouldDiscoverLocally(path);
     };
 
-    _csync_ctx->new_files_are_placeholders = _syncOptions._usePlaceholders;
+    _csync_ctx->new_files_are_placeholders = _syncOptions._newFilesArePlaceholders;
 
     bool ok;
     auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
