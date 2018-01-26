@@ -37,6 +37,7 @@
 #include "updater/ocupdater.h"
 #include "owncloudsetupwizard.h"
 #include "version.h"
+#include "csync_exclude.h"
 
 #include "config.h"
 
@@ -171,6 +172,9 @@ Application::Application(int &argc, char **argv)
     ConfigFile cfg;
     if (!AbstractNetworkJob::httpTimeout)
         AbstractNetworkJob::httpTimeout = cfg.timeout();
+
+    ExcludedFiles::setupPlaceholderExclude(
+        cfg.excludeFile(ConfigFile::UserScope), OWNCLOUD_PLACEHOLDER_SUFFIX);
 
     _folderManager.reset(new FolderMan);
 
