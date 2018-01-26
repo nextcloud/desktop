@@ -33,9 +33,12 @@
 #include "csync_misc.h"
 
 #include "common/utility.h"
+#include "../version.h"
 
 #include <QString>
 #include <QFileInfo>
+#include <QFile>
+#include <QDir>
 
 
 /** Expands C-like escape sequences (in place)
@@ -240,6 +243,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const char *path, bool excludeC
 using namespace OCC;
 
 ExcludedFiles::ExcludedFiles()
+    : _clientVersion(MIRALL_VERSION_MAJOR, MIRALL_VERSION_MINOR, MIRALL_VERSION_PATCH)
 {
     // Windows used to use PathMatchSpec which allows *foo to match abc/deffoo.
     _wildcardsMatchSlash = Utility::isWindows();
@@ -278,6 +282,34 @@ void ExcludedFiles::setWildcardsMatchSlash(bool onoff)
     prepare();
 }
 
+void ExcludedFiles::setClientVersion(ExcludedFiles::Version version)
+{
+    _clientVersion = version;
+}
+
+void ExcludedFiles::setupPlaceholderExclude(
+    const QString &excludeFile, const QByteArray &placeholderExtension)
+{
+    if (!QFile::exists(excludeFile)) {
+        // Ensure the parent paths exist
+        QDir().mkpath(QFileInfo(excludeFile).dir().absolutePath());
+    } else {
+        // Does the exclude file contain the exclude already?
+        QFile file(excludeFile);
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
+        auto data = file.readAll();
+        file.close();
+        if (data.contains("\n*" + placeholderExtension + "\n"))
+            return;
+    }
+
+    // Add it to the file
+    QFile file(excludeFile);
+    file.open(QIODevice::ReadWrite | QIODevice::Append);
+    file.write("\n#!version < 2.5.0\n*" + placeholderExtension + "\n");
+    file.close();
+}
+
 bool ExcludedFiles::reloadExcludeFiles()
 {
     _allExcludes.clear();
@@ -290,6 +322,10 @@ bool ExcludedFiles::reloadExcludeFiles()
         }
         while (!f.atEnd()) {
             QByteArray line = f.readLine().trimmed();
+            if (line.startsWith("#!version")) {
+                if (!versionDirectiveKeepNextLine(line))
+                    f.readLine();
+            }
             if (line.isEmpty() || line.startsWith('#'))
                 continue;
             csync_exclude_expand_escapes(line);
@@ -299,6 +335,32 @@ bool ExcludedFiles::reloadExcludeFiles()
     _allExcludes.append(_manualExcludes);
     prepare();
     return success;
+}
+
+bool ExcludedFiles::versionDirectiveKeepNextLine(const QByteArray &directive) const
+{
+    if (!directive.startsWith("#!version"))
+        return true;
+    QByteArrayList args = directive.split(' ');
+    if (args.size() != 3)
+        return true;
+    QByteArray op = args[1];
+    QByteArrayList argVersions = args[2].split('.');
+    if (argVersions.size() != 3)
+        return true;
+
+    auto argVersion = std::make_tuple(argVersions[0].toInt(), argVersions[1].toInt(), argVersions[2].toInt());
+    if (op == "<=")
+        return _clientVersion <= argVersion;
+    if (op == "<")
+        return _clientVersion < argVersion;
+    if (op == ">")
+        return _clientVersion > argVersion;
+    if (op == ">=")
+        return _clientVersion >= argVersion;
+    if (op == "==")
+        return _clientVersion == argVersion;
+    return true;
 }
 
 bool ExcludedFiles::isExcluded(
