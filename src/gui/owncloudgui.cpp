@@ -14,6 +14,7 @@
 
 #include "application.h"
 #include "owncloudgui.h"
+#include "ocsappsjob.h"
 #include "ocsexternalsitesjob.h"
 #include "theme.h"
 #include "folderman.h"
@@ -649,6 +650,8 @@ void ownCloudGui::updateContextMenu()
     if(_cfg.showExternalSites())
         fetchExternalSites();
 
+    fetchApps();
+
     if (_qdbusmenuWorkaround) {
         _tray->show();
     }
@@ -798,6 +801,56 @@ void ownCloudGui::slotExternalSitesFetched(const QJsonDocument &reply)
         }
     }
 }
+
+void ownCloudGui::fetchApps(){
+    foreach (AccountStatePtr account, AccountManager::instance()->accounts()) {
+        OcsAppsJob *job = new OcsAppsJob(account->account());
+        job->setProperty(propertyAccountC, QVariant::fromValue(account->account()));
+        connect(job, &OcsAppsJob::appsJobFinished, this, &ownCloudGui::slotAppsFetched);
+        connect(job, &OcsAppsJob::ocsError, this, &ownCloudGui::slotOcsError);
+        job->getApps();
+    }
+}
+
+void ownCloudGui::setupAppsMenu(QAction *actionBefore, QAction *actionTitle, QMenu *menu, QJsonArray apps){
+    menu->insertSeparator(actionBefore);
+    menu->insertAction(actionBefore, actionTitle);
+    foreach (const QJsonValue &value, apps) {
+        QString app = value.toString();
+        QAction *action = new QAction(app, this);
+        connect(action, &QAction::triggered, this, [] { QDesktopServices::openUrl(QUrl(Theme::instance()->helpUrl())); });
+        menu->insertAction(actionBefore, action);
+    }
+}
+
+void ownCloudGui::slotAppsFetched(const QJsonDocument &reply)
+{
+    if(!reply.isEmpty()){
+        auto data = reply.object().value("ocs").toObject().value("data").toObject().value("apps");
+        auto appsList = data.toArray();
+
+        if(appsList.size() > 0){
+            QAction *apps = new QAction(tr("Apps:"), this);
+            apps->setDisabled(true);
+            auto accountList = AccountManager::instance()->accounts();
+
+            if(accountList.size() > 1){
+                // the list of apps will be displayed under the account that it belongs to
+                if(auto account = qvariant_cast<AccountPtr>(sender()->property(propertyAccountC))){
+                    foreach (QMenu *menu, _accountMenus) {
+                        if(menu->title() == account->displayName()){
+                            setupAppsMenu(_actionLogout, apps, menu, appsList);
+                        }
+                    }
+                }
+             } else if(accountList.size() == 1){
+                setupAppsMenu(_actionSettings, apps, _contextMenu.data(), appsList);
+                _contextMenu->insertSeparator(_actionSettings);
+            }
+        }
+    }
+}
+
 
 void ownCloudGui::slotOcsError(int statusCode, const QString &message)
 {
