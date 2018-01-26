@@ -12,8 +12,8 @@
  * for more details.
  */
 
-#ifndef EXTERNALSITESJOB_H
-#define EXTERNALSITESJOB_H
+#ifndef OCSEXTERNALSITESJOB_H
+#define OCSEXTERNALSITESJOB_H
 
 #include "ocsjob.h"
 class QJsonDocument;
@@ -21,7 +21,7 @@ class QJsonDocument;
 namespace OCC {
 
 /**
- * @brief The ExternalSitesJob class
+ * @brief The OcsExternalSitesJob class
  * @ingroup gui
  *
  * Fetching expernal sites from the OCS External Sites API
@@ -34,8 +34,6 @@ public:
 
     /**
      * Get a list of external sites
-     *
-     * @param path Path to request external sites for
      */
     void getExternalSites();
 
@@ -52,4 +50,4 @@ private slots:
 };
 }
 
-#endif // EXTERNALSITESJOB_H
+#endif // OCSEXTERNALSITESJOB_H
