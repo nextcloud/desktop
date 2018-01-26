@@ -527,6 +527,22 @@ void SocketApi::command_OPEN_PRIVATE_LINK(const QString &localFile, SocketListen
     fetchPrivateLinkUrlHelper(localFile, this, &SocketApi::openPrivateLink);
 }
 
+void SocketApi::command_DOWNLOAD_PLACEHOLDER(const QString &filesArg, SocketListener *)
+{
+    QStringList files = filesArg.split(QLatin1Char('\x1e')); // Record Separator
+    auto placeholderSuffix = QStringLiteral(OWNCLOUD_PLACEHOLDER_SUFFIX);
+
+    for (const auto &file : files) {
+        if (!file.endsWith(placeholderSuffix))
+            continue;
+        auto folder = FolderMan::instance()->folderForPath(file);
+        if (folder) {
+            QString relativePath = QDir::cleanPath(file).mid(folder->cleanPath().length() + 1);
+            folder->downloadPlaceholder(relativePath);
+        }
+    }
+}
+
 void SocketApi::copyPrivateLinkToClipboard(const QString &link) const
 {
     QApplication::clipboard()->setText(link);
@@ -565,9 +581,25 @@ void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *lis
 void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListener *listener)
 {
     listener->sendMessage(QString("GET_MENU_ITEMS:BEGIN"));
-    bool hasSeveralFiles = argument.contains(QLatin1Char('\x1e')); // Record Separator
-    Folder *syncFolder = hasSeveralFiles ? nullptr : FolderMan::instance()->folderForPath(argument);
-    if (syncFolder && syncFolder->accountState()->isConnected()) {
+    QStringList files = argument.split(QLatin1Char('\x1e')); // Record Separator
+
+    // Find the common sync folder.
+    // syncFolder will be null if files are in different folders.
+    Folder *syncFolder = nullptr;
+    for (const auto &file : files) {
+        auto folder = FolderMan::instance()->folderForPath(file);
+        if (folder != syncFolder) {
+            if (!syncFolder) {
+                syncFolder = folder;
+            } else {
+                syncFolder = nullptr;
+                break;
+            }
+        }
+    }
+
+    // Sharing actions show for single files only
+    if (syncFolder && files.size() == 1 && syncFolder->accountState()->isConnected()) {
         QString systemPath = QDir::cleanPath(argument);
         if (systemPath.endsWith(QLatin1Char('/'))) {
             systemPath.truncate(systemPath.length() - 1);
@@ -595,6 +627,19 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
 
         listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
     }
+
+    // Placeholder download action
+    if (syncFolder) {
+        auto placeholderSuffix = QStringLiteral(OWNCLOUD_PLACEHOLDER_SUFFIX);
+        bool hasPlaceholderFile = false;
+        for (const auto &file : files) {
+            if (file.endsWith(placeholderSuffix))
+                hasPlaceholderFile = true;
+        }
+        if (hasPlaceholderFile)
+            listener->sendMessage(QLatin1String("MENU_ITEM:DOWNLOAD_PLACEHOLDER::") + tr("Download file(s)", "", files.size()));
+    }
+
     listener->sendMessage(QString("GET_MENU_ITEMS:END"));
 }
 
