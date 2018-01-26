@@ -76,6 +76,7 @@ public:
 
     bool isSyncRunning() const { return _syncRunning; }
 
+    SyncOptions syncOptions() const { return _syncOptions; }
     void setSyncOptions(const SyncOptions &options) { _syncOptions = options; }
     bool ignoreHiddenFiles() const { return _csync_ctx->ignore_hidden_files; }
     void setIgnoreHiddenFiles(bool ignore) { _csync_ctx->ignore_hidden_files = ignore; }
