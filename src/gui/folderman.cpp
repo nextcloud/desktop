@@ -934,7 +934,7 @@ Folder *FolderMan::addFolderInternal(FolderDefinition folderDefinition,
     return folder;
 }
 
-Folder *FolderMan::folderForPath(const QString &path)
+Folder *FolderMan::folderForPath(const QString &path, QString *relativePath)
 {
     QString absolutePath = QDir::cleanPath(path) + QLatin1Char('/');
 
@@ -942,10 +942,16 @@ Folder *FolderMan::folderForPath(const QString &path)
         const QString folderPath = folder->cleanPath() + QLatin1Char('/');
 
         if (absolutePath.startsWith(folderPath, (Utility::isWindows() || Utility::isMac()) ? Qt::CaseInsensitive : Qt::CaseSensitive)) {
+            if (relativePath) {
+                *relativePath = absolutePath.mid(folderPath.length());
+                relativePath->chop(1); // we added a '/' above
+            }
             return folder;
         }
     }
 
+    if (relativePath)
+        relativePath->clear();
     return 0;
 }
 

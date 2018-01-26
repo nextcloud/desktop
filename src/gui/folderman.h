@@ -77,8 +77,13 @@ public:
     /** Removes a folder */
     void removeFolder(Folder *);
 
-    /** Returns the folder which the file or directory stored in path is in */
-    Folder *folderForPath(const QString &path);
+    /**
+     * Returns the folder which the file or directory stored in path is in
+     *
+     * Optionally, the path relative to the found folder is returned in
+     * relativePath.
+     */
+    Folder *folderForPath(const QString &path, QString *relativePath = nullptr);
 
     /**
       * returns a list of local files that exist on the local harddisk for an
