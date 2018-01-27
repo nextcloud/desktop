@@ -506,7 +506,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="358"/>
         <source>You received new notifications from %1, %2 and other accounts.</source>
-        <translation>Sieh haben %n neue Benachrichtigungen von %1, %2 und anderen Konten erhalten.</translation>
+        <translation>Sie haben %n neue Benachrichtigungen von %1, %2 und anderen Konten erhalten.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="362"/>
@@ -995,7 +995,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation>Nach Änderungen suchen in &apos;%1&apos;</translation>
+        <translation>Suche nach Änderungen in &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="884"/>
@@ -1103,7 +1103,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="550"/>
         <source>Add Sync Connection</source>
-        <translation>Ordner-Synchronisation hinzufügen</translation>
+        <translation>Synchronisation hinzufügen</translation>
     </message>
 </context>
 <context>
@@ -1144,7 +1144,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="223"/>
         <source>Authentication failed accessing %1</source>
-        <translation>Beim Zugriff auf %1 ist die Authentifizierung fehlgeschlagen</translation>
+        <translation>Die Authentifizierung ist beim Zugriff auf %1 fehlgeschlagen</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="225"/>
@@ -1233,7 +1233,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/generalsettings.ui" line="171"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation>Bestätigung erfragen, bevor Ordner synchronisiert werden. Grenze:</translation>
+        <translation>Bestätigung erfragen, bevor Ordner synchronisiert werden die größer sind als:</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="191"/>
@@ -2800,7 +2800,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="108"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can direct people to this shared file or folder &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;by giving them a private link&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sie können Leute direkt zu dieser Freigabe leiten&lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;, wenn Sie Ihnen einen privaten Link&lt;/span&gt;&lt;/a&gt;gibst.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sie können Personen direkt zu dieser Freigabe leiten&lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;, wenn Sie Ihnen diesen privaten Link: &lt;/span&gt;&lt;/a&gt;geben.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="186"/>
@@ -3247,7 +3247,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1290"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
-        <translation>Nicht erlaubt, da Sie keine Rechte zur Erstellung von Unterordnern haben</translation>
+        <translation>Nicht erlaubt, da Sie keine Rechte zur Erstellung von übergeordneten Ordnern haben</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1297"/>
@@ -3327,12 +3327,12 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="450"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation>Dateinamen enden mit einem Punkt, die in diesem Dateisystem nicht unterstützt wird.</translation>
+        <translation>Dateinamen die mit einem Punkt enden sind in diesem Dateisystem nicht unterstützt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="460"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation>Dateinamen beinhalten das Zeichen &apos;%1&apos; und diese werden in diesem Dateisystems nicht unterstützt.</translation>
+        <translation>Dateinamen beinhalten das Zeichen &apos;%1&apos; diese werden in diesem Dateisystem nicht unterstützt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="463"/>
@@ -3342,7 +3342,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="468"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>Dateiname endet mit Leerzeichen.</translation>
+        <translation>Der Dateiname endet mit Leerzeichen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="471"/>
@@ -3372,7 +3372,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="707"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
-        <translation>Ungültige Zeichenm bitte benennen Sie &quot;%1&quot; um</translation>
+        <translation>Ungültige Zeichen, bitte benennen Sie &quot;%1&quot; um</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="827"/>
@@ -3603,12 +3603,12 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="240"/>
         <source>Disconnected from some accounts</source>
-        <translation>Verbindungen zu einigen Konnten getrennt</translation>
+        <translation>Die Verbindungen zu einigen Konnten wurde getrennt</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="251"/>
         <source>Disconnected from accounts:</source>
-        <translation>Verbindungen zu Konnten getrennt:</translation>
+        <translation>Verbindungen zu Konnten wurde getrennt:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="253"/>
@@ -3844,7 +3844,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation>Bitte wechseln Sie zum Fortfahren in deinen Browser.</translation>
+        <translation>Bitte wechseln Sie zum Fortfahren in den Browser.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
