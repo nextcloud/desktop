@@ -92,6 +92,7 @@ pipeline:
         image: nextcloudci/client-debian-ci:client-debian-ci-1
         commands:
             - /bin/bash -c "./admin/linux/debian/drone-build.sh"
+        secrets: [ DEBIAN_SECRET_KEY, DEBIAN_SECRET_IV ]
         when:
             matrix:
                 BUILD: Debian
