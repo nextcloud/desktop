@@ -674,9 +674,19 @@ void PropagateUploadFileCommon::finalize()
         quotaIt.value() -= _fileToUpload._size;
 
     // Update the database entry - use the local file, not the temporary one.
-    if (!propagator()->_journal->setFileRecord(_item->toSyncJournalFileRecordWithInode(propagator()->getFilePath(_item->_file)))) {
+    const auto filePath = propagator()->getFilePath(_item->_file);
+    const auto fileRecord = _item->toSyncJournalFileRecordWithInode(filePath);
+    if (!propagator()->_journal->setFileRecord(fileRecord)) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
+    }
+
+    if (_uploadingEncrypted) {
+      if (!propagator()->_journal->setE2eRelation(_item->_encryptedFileName, _item->_file)) {
+        qDebug() << "Error saving the encryption relation of the file.";
+      } else {
+        qDebug() << "Sabed the encryption relation of the file successfully";
+      }
     }
 
     // Remove from the progress database:
