@@ -140,6 +140,8 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
       encryptedFile.mimetype = mdb.mimeTypeForFile(info).name().toLocal8Bit();
   }
 
+  _item->_isEndToEndEncrypted = true;
+  _item->_encryptedFileName = encryptedFile.encryptedFilename;
 
   qCDebug(lcPropagateUploadEncrypted) << "Creating the encrypted file.";
 

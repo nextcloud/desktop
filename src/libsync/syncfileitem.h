@@ -195,6 +195,12 @@ public:
     // Variables useful for everybody
     QString _file;
     QString _renameTarget;
+
+    /// Whether there's end to end encryption on this file.
+    /// If the file is encrypted, the _encryptedFilename is
+    /// the encrypted name on the server.
+    bool _isEndToEndEncrypted;
+    QString _encryptedFileName;
     Type _type BITFIELD(3);
     Direction _direction BITFIELD(3);
     bool _serverHasIgnoredFiles BITFIELD(1);
