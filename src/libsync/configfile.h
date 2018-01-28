@@ -129,6 +129,9 @@ public:
     bool showExternalSites() const;
     void setShowExternalSites(bool show);
 
+    bool showApps() const;
+    void setShowApps(bool show);
+
     int timeout() const;
     quint64 chunkSize() const;
     quint64 maxChunkSize() const;

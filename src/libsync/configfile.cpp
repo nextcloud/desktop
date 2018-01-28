@@ -56,6 +56,7 @@ static const char crashReporterC[] = "crashReporter";
 static const char optionalDesktopNoficationsC[] = "optionalDesktopNotifications";
 static const char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
 static const char showExternalSitesC[] = "showExternalSites";
+static const char showAppsC[] = "showApps";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
 static const char updateCheckIntervalC[] = "updateCheckInterval";
 static const char geometryC[] = "geometry";
@@ -158,6 +159,19 @@ void ConfigFile::setShowExternalSites(bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(showExternalSitesC), show);
+    settings.sync();
+}
+
+bool ConfigFile::showApps() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(showAppsC), false).toBool();
+}
+
+void ConfigFile::setShowApps(bool show)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(showAppsC), show);
     settings.sync();
 }
 
