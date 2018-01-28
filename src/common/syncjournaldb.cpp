@@ -1444,6 +1444,27 @@ QString SyncJournalDb::getE2eMangledName(const QString& originalName)
   return _getE2eFileMangledName->stringValue(0);
 }
 
+bool SyncJournalDb::setE2eRelation(const QString& mangledName, const QString& originalName)
+{
+  Q_ASSERT(!mangledName.isEmpty());
+  Q_ASSERT(!originalName.isEmpty());
+
+  if (mangledName.isEmpty()) {
+        qCDebug(lcDb) << "Cant create e2e relation on the database, mangled name is empty.";
+        return false;
+  }
+
+  if (originalName.isEmpty()) {
+        qCDebug(lcDb) << "Cant create e2e relation on the database, original name is empty.";
+        return false;
+  }
+
+  _setE2eFileRelationQuery->reset_and_clear_bindings();
+  _setE2eFileRelationQuery->bindValue(1, mangledName);
+  _setE2eFileRelationQuery->bindValue(2, originalName);
+  return _setE2eFileRelationQuery->exec();
+}
+
 QVector<SyncJournalDb::DownloadInfo> SyncJournalDb::getAndDeleteStaleDownloadInfos(const QSet<QString> &keep)
 {
     QVector<SyncJournalDb::DownloadInfo> empty_result;

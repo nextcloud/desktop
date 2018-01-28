@@ -138,6 +138,7 @@ public:
     void avoidRenamesOnNextSync(const QByteArray &path);
     void setPollInfo(const PollInfo &);
 
+    bool setE2eRelation(const QString& mangledName, const QString& originalName);
     QString getE2eMangledName(const QString& originalName);
 
     QVector<PollInfo> getPollInfos();
