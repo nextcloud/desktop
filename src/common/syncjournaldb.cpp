@@ -1423,31 +1423,45 @@ void SyncJournalDb::setDownloadInfo(const QString &file, const SyncJournalDb::Do
 QString SyncJournalDb::getE2eMangledName(const QString& originalName)
 {
   QMutexLocker locker(&_mutex);
-  if (checkConnect()) {
+  qCDebug(lcDb) << "######### Trying to find database entry for name " << originalName << ". #######";
+
+  if (! checkConnect()) {
+    qCDebug(lcDb) << "######### Connection to the database is wrong. #######";
     return QString{};
   }
 
   if (originalName.isEmpty()) {
+    qCDebug(lcDb) << "######### Original Name is Empty. #######";
     return QString{};
   }
 
   _getE2eFileMangledName->reset_and_clear_bindings();
   _getE2eFileMangledName->bindValue(1, originalName);
   if (!_getE2eFileMangledName->exec()) {
+    qCDebug(lcDb) << "######### Error Executing query. #######";
     return QString{};
   }
 
   if (!_getE2eFileMangledName->next()) {
+    qCDebug(lcDb) << "######### Query returned empty. #######";
     return QString{};
   }
 
-  return _getE2eFileMangledName->stringValue(0);
+  const QString ret = _getE2eFileMangledName->stringValue(0);
+
+  qCDebug(lcDb) << "The return of the mangled name is" << ret;
+  return ret;
 }
 
 bool SyncJournalDb::setE2eRelation(const QString& mangledName, const QString& originalName)
 {
   Q_ASSERT(!mangledName.isEmpty());
   Q_ASSERT(!originalName.isEmpty());
+
+  if (! checkConnect()) {
+    qCDebug(lcDb) << "######### Connection to the database is wrong. #######";
+    return false;
+  }
 
   if (mangledName.isEmpty()) {
         qCDebug(lcDb) << "Cant create e2e relation on the database, mangled name is empty.";
