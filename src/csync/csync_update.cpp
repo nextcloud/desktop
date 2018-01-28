@@ -343,8 +343,21 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                   csync_rename_record(ctx, base._path, fs->path);
               }
 
-              qCDebug(lcUpdate, "remote rename detected based on fileid %s --> %s", base._path.constData(), fs->path.constData());
-              fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
+              /* A remote rename can also mean Encryption Mangled Name.
+               * if we find one of those in the database, we ignore it.
+               */
+              qCDebug(lcUpdate) << "Tryig to get the mangled name!";
+              QString remoteEncryptedName = ctx->statedb->getE2eMangledName(fs->path);
+              qCDebug(lcUpdate) << "Remote Encrypted Name stored for" << fs->path << "is"
+                << (remoteEncryptedName.isEmpty() ? "Empty" : remoteEncryptedName);
+              qCDebug(lcUpdate) << "And for the last part" << ctx->statedb->getE2eMangledName(fs->path.split('/')[1]);
+
+              if (remoteEncryptedName.isEmpty()) {
+                qCDebug(lcUpdate, "remote rename detected based on fileid %s --> %s", base._path.constData(), fs->path.constData());
+                fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
+              } else {
+                qCDebug(lcUpdate) << "Should *not* rename the file.";
+              }
               done = true;
           };
 
