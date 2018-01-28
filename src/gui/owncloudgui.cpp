@@ -650,7 +650,8 @@ void ownCloudGui::updateContextMenu()
     if(_cfg.showExternalSites())
         fetchExternalSites();
 
-    fetchApps();
+    if(_cfg.showApps())
+        fetchApps();
 
     if (_qdbusmenuWorkaround) {
         _tray->show();
@@ -815,11 +816,15 @@ void ownCloudGui::fetchApps(){
 void ownCloudGui::setupAppsMenu(QAction *actionBefore, QAction *actionTitle, QMenu *menu, QJsonArray apps){
     menu->insertSeparator(actionBefore);
     menu->insertAction(actionBefore, actionTitle);
+
     foreach (const QJsonValue &value, apps) {
+        // TO DO: list all apps in the menu or just a few?
         QString app = value.toString();
-        QAction *action = new QAction(app, this);
-        connect(action, &QAction::triggered, this, [] { QDesktopServices::openUrl(QUrl(Theme::instance()->helpUrl())); });
-        menu->insertAction(actionBefore, action);
+        if(app == "calendar"){
+            QAction *action = new QAction("Calendar", this);
+            connect(action, &QAction::triggered, this, [] { QDesktopServices::openUrl(QUrl()); });
+            menu->insertAction(actionBefore, action);
+        }
     }
 }
 
