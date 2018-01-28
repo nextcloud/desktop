@@ -52,6 +52,9 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     _ui->showExternalSitesCheckBox->setChecked(false);
     connect(_ui->showExternalSitesCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowExternalSites);
 
+    _ui->showAppsCheckBox->setChecked(false);
+    connect(_ui->showAppsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowApps);
+
     // setup about section
     QString about = Theme::instance()->about();
     if (about.isEmpty()) {
@@ -119,6 +122,7 @@ void GeneralSettings::loadMiscSettings()
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->desktopNotificationsCheckBox->setChecked(cfgFile.optionalDesktopNotifications());
     _ui->showExternalSitesCheckBox->setChecked(cfgFile.showExternalSites());
+    _ui->showAppsCheckBox->setChecked(cfgFile.showApps());
     _ui->showInExplorerNavigationPaneCheckBox->setChecked(cfgFile.showInExplorerNavigationPane());
     _ui->crashreporterCheckBox->setChecked(cfgFile.crashReporter());
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
@@ -197,6 +201,11 @@ void GeneralSettings::slotIgnoreFilesEditor()
 void GeneralSettings::slotShowExternalSites(bool checked){
     ConfigFile cfgFile;
     cfgFile.setShowExternalSites(checked);
+}
+
+void GeneralSettings::slotShowApps(bool checked){
+    ConfigFile cfgFile;
+    cfgFile.setShowApps(checked);
 }
 
 } // namespace OCC

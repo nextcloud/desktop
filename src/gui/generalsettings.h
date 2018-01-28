@@ -47,8 +47,8 @@ private slots:
     void slotUpdateInfo();
     void slotIgnoreFilesEditor();
     void loadMiscSettings();
-    void slotShowExternalSites(bool checked);
-
+    void slotShowExternalSites(bool);
+    void slotShowApps(bool);
 private:
     Ui::GeneralSettings *_ui;
     QPointer<IgnoreListEditor> _ignoreEditor;
