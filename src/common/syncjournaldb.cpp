@@ -1420,6 +1420,30 @@ void SyncJournalDb::setDownloadInfo(const QString &file, const SyncJournalDb::Do
     }
 }
 
+QString SyncJournalDb::getE2eMangledName(const QString& originalName)
+{
+  QMutexLocker locker(&_mutex);
+  if (checkConnect()) {
+    return QString{};
+  }
+
+  if (originalName.isEmpty()) {
+    return QString{};
+  }
+
+  _getE2eFileMangledName->reset_and_clear_bindings();
+  _getE2eFileMangledName->bindValue(1, originalName);
+  if (!_getE2eFileMangledName->exec()) {
+    return QString{};
+  }
+
+  if (!_getE2eFileMangledName->next()) {
+    return QString{};
+  }
+
+  return _getE2eFileMangledName->stringValue(0);
+}
+
 QVector<SyncJournalDb::DownloadInfo> SyncJournalDb::getAndDeleteStaleDownloadInfos(const QSet<QString> &keep)
 {
     QVector<SyncJournalDb::DownloadInfo> empty_result;

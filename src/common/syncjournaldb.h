@@ -137,6 +137,9 @@ public:
     void avoidRenamesOnNextSync(const QString &path) { avoidRenamesOnNextSync(path.toUtf8()); }
     void avoidRenamesOnNextSync(const QByteArray &path);
     void setPollInfo(const PollInfo &);
+
+    QString getE2eMangledName(const QString& originalName);
+
     QVector<PollInfo> getPollInfos();
 
     enum SelectiveSyncListType {
