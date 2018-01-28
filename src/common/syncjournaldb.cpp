@@ -761,6 +761,8 @@ void SyncJournalDb::close()
     _getDataFingerprintQuery.reset(0);
     _setDataFingerprintQuery1.reset(0);
     _setDataFingerprintQuery2.reset(0);
+    _setE2eFileRelationQuery.reset(0);
+    _getE2eFileMangledName.reset(0);
 
     _db.close();
     _avoidReadFromDbOnNextSyncFilter.clear();
