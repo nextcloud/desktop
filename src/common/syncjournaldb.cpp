@@ -704,7 +704,7 @@ bool SyncJournalDb::checkConnect()
     }
 
     _getE2eFileMangledName.reset(new SqlQuery(_db));
-    if (_getE2eFileMangledName->prepare("SELECT mangledname FROM e2efilemap WHERE mangledname =?1;")) {
+    if (_getE2eFileMangledName->prepare("SELECT mangledname FROM e2efilemap WHERE name =?1;")) {
       return sqlFail("prepare _getE2eFileMangledName", *_getE2eFileMangledName);
     }
 
