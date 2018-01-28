@@ -455,6 +455,17 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("Create table version", createQuery);
     }
 
+    /* maps the end to end filename in the server/metadata to the actuall filename in disk
+     */
+    createQuery.prepare("CREATE TABLE IF NOT EXISTS e2efilemap("
+                        "mangledname TEXT UNIQUE,"
+                        "name TEXT UNIQUE"
+                        ")");
+
+    if (!createQuery.exec()) {
+      return sqlFail("Create table e2efilemap", createQuery);
+    }
+
     bool forceRemoteDiscovery = false;
 
     SqlQuery versionQuery("SELECT major, minor, patch FROM version;", _db);
@@ -690,6 +701,16 @@ bool SyncJournalDb::checkConnect()
     _setDataFingerprintQuery2.reset(new SqlQuery(_db));
     if (_setDataFingerprintQuery2->prepare("INSERT INTO datafingerprint (fingerprint) VALUES (?1);")) {
         return sqlFail("prepare _setDataFingerprintQuery2", *_setDataFingerprintQuery2);
+    }
+
+    _getE2eFileMangledName.reset(new SqlQuery(_db));
+    if (_getE2eFileMangledName->prepare("SELECT mangledname FROM e2efilemap WHERE mangledname =?1;")) {
+      return sqlFail("prepare _getE2eFileMangledName", *_getE2eFileMangledName);
+    }
+
+    _setE2eFileRelationQuery.reset(new SqlQuery(_db));
+    if (_setE2eFileRelationQuery->prepare("INSERT INTO e2efilemap (mangledname, name) VALUES (?1, ?2);")) {
+      return sqlFail("prepare _setE2eFileRelationQuery", *_setE2eFileRelationQuery);
     }
 
     // don't start a new transaction now

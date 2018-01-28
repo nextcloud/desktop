@@ -266,6 +266,10 @@ private:
     QScopedPointer<SqlQuery> _setDataFingerprintQuery1;
     QScopedPointer<SqlQuery> _setDataFingerprintQuery2;
 
+    // End to End Encryption Related Queries/
+    QScopedPointer<SqlQuery> _setE2eFileRelationQuery;
+    QScopedPointer<SqlQuery> _getE2eFileMangledName;
+
     /* This is the list of paths we called avoidReadFromDbOnNextSync on.
      * It means that they should not be written to the DB in any case since doing
      * that would write the etag and would void the purpose of avoidReadFromDbOnNextSync
