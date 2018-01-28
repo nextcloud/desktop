@@ -928,6 +928,10 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
         return;
     }
     propagator()->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
+    if (_isEncrypted) {
+      propagator()->_journal->setE2eRelation(_item->_encryptedFileName, _item->_file);
+    }
+
     propagator()->_journal->commit("download file start2");
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 
