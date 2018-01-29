@@ -1430,7 +1430,7 @@ Los elementos cuya eliminación está permitida serán eliminados si impiden que
     <message>
         <location filename="../src/gui/issueswidget.ui" line="133"/>
         <source>There were too many issues. Not all will be visible here.</source>
-        <translation type="unfinished"/>
+        <translation>Hay demasiados problemas, No todos se visualizan aquí.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="155"/>
