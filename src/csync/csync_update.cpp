@@ -47,6 +47,7 @@
 #include "common/asserts.h"
 
 #include <QtCore/QTextCodec>
+#include <QtCore/QFile>
 
 // Needed for PRIu64 on MinGW in C++ mode.
 #define __STDC_FORMAT_MACROS
@@ -789,18 +790,10 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         && dirent->type == ItemTypeFile
         && filename.endsWith(ctx->placeholder_suffix)) {
         QByteArray db_uri = fullpath.mid(strlen(ctx->local.uri) + 1);
-        QByteArray base_uri = db_uri.left(db_uri.size() - ctx->placeholder_suffix.size());
-
-        // Don't fill the local tree with placeholder data if a real
-        // file was found. The remote tree will still have the placeholder
-        // file.
-        if (ctx->local.files.findFile(base_uri))
-            continue;
 
         if( ! fill_tree_from_db(ctx, db_uri.constData(), true) ) {
-          errno = ENOENT;
-          ctx->status_code = CSYNC_STATUS_OPENDIR_ERROR;
-          goto error;
+            qCWarning(lcUpdate) << "Placeholder without db entry for" << filename;
+            QFile::remove(fullpath);
         }
 
         continue;

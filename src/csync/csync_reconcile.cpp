@@ -176,9 +176,12 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                 cur->instruction = CSYNC_INSTRUCTION_NEW;
                 break;
             }
-            if (cur->type == ItemTypePlaceholder && ctx->current == REMOTE_REPLICA) {
-                /* Do not remove on the server if the local placeholder is gone:
-                 * instead reestablish the local placeholder */
+            /* If the local placeholder is gone it should be reestablished.
+             * Unless the base file is seen in the local tree now. */
+            if (cur->type == ItemTypePlaceholder
+                && ctx->current == REMOTE_REPLICA
+                && cur->path.endsWith(ctx->placeholder_suffix)
+                && !other_tree->findFile(cur->path.left(cur->path.size() - ctx->placeholder_suffix.size()))) {
                 cur->instruction = CSYNC_INSTRUCTION_NEW;
                 break;
             }
@@ -430,6 +433,17 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
             // NEW are treated equivalently during reconcile.
             if (cur->instruction == CSYNC_INSTRUCTION_EVAL)
                 cur->instruction = CSYNC_INSTRUCTION_NEW;
+            break;
+        case CSYNC_INSTRUCTION_NONE:
+            // NONE/NONE on placeholders might become a REMOVE if the base file
+            // is found in the local tree.
+            if (cur->type == ItemTypePlaceholder
+                && other->instruction == CSYNC_INSTRUCTION_NONE
+                && ctx->current == LOCAL_REPLICA
+                && cur->path.endsWith(ctx->placeholder_suffix)
+                && ctx->local.files.findFile(cur->path.left(cur->path.size() - ctx->placeholder_suffix.size()))) {
+                cur->instruction = CSYNC_INSTRUCTION_REMOVE;
+            }
             break;
         default:
             break;
