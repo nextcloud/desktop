@@ -114,7 +114,7 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
   qCDebug(lcPropagateUploadEncrypted) << "Metadata Received, Preparing it for the new file." << json.toVariant();
 
   // Encrypt File!
-  _metadata = new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact));
+  _metadata = new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode);
 
   QFileInfo info(_propagator->_localDir + QDir::separator() + _item->_file);
 
@@ -164,14 +164,24 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
   _encryptedFile = encryptedFile;
 
   qCDebug(lcPropagateUploadEncrypted) << "Metadata created, sending to the server.";
-  auto job = new UpdateMetadataApiJob(_propagator->account(),
+
+  if (statusCode == 404) {
+    auto job = new StoreMetaDataApiJob(_propagator->account(),
+                                       _folderId,
+                                       _metadata->encryptedMetadata());
+    connect(job, &StoreMetaDataApiJob::success, this, &PropagateUploadEncrypted::slotUpdateMetadataSuccess);
+    connect(job, &StoreMetaDataApiJob::error, this, &PropagateUploadEncrypted::slotUpdateMetadataError);
+    job->start();
+  } else {
+    auto job = new UpdateMetadataApiJob(_propagator->account(),
                                       _folderId,
                                       _metadata->encryptedMetadata(),
                                       _folderToken);
 
-  connect(job, &UpdateMetadataApiJob::success, this, &PropagateUploadEncrypted::slotUpdateMetadataSuccess);
-  connect(job, &UpdateMetadataApiJob::error, this, &PropagateUploadEncrypted::slotUpdateMetadataError);
-  job->start();
+    connect(job, &UpdateMetadataApiJob::success, this, &PropagateUploadEncrypted::slotUpdateMetadataSuccess);
+    connect(job, &UpdateMetadataApiJob::error, this, &PropagateUploadEncrypted::slotUpdateMetadataError);
+    job->start();
+  }
 }
 
 void PropagateUploadEncrypted::slotUpdateMetadataSuccess(const QByteArray& fileId)

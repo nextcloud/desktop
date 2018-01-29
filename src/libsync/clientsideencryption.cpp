@@ -1099,9 +1099,9 @@ void ClientSideEncryption::folderEncryptedStatusError(int error)
     qCDebug(lcCse) << "Failed to retrieve the status of the folders." << error;
 }
 
-FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata) : _account(account)
+FolderMetadata::FolderMetadata(AccountPtr account, const QByteArray& metadata, int statusCode) : _account(account)
 {
-    if (metadata.isEmpty()) {
+    if (metadata.isEmpty() || statusCode == 404) {
         qCInfo(lcCseMetadata()) << "Setupping Empty Metadata";
         setupEmptyMetadata();
     } else {

@@ -142,7 +142,7 @@ struct EncryptedFile {
 
 class FolderMetadata {
 public:
-    FolderMetadata(AccountPtr account, const QByteArray& metadata = QByteArray());
+    FolderMetadata(AccountPtr account, const QByteArray& metadata = QByteArray(), int statusCode = -1);
     QByteArray encryptedMetadata();
     void addEncryptedFile(const EncryptedFile& f);
     QVector<EncryptedFile> files() const;
