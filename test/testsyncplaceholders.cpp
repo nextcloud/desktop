@@ -141,6 +141,26 @@ private slots:
         QVERIFY(!dbRecord(fakeFolder, "A/a1.owncloud").isValid());
         QVERIFY(!dbRecord(fakeFolder, "A/a1m.owncloud").isValid());
         cleanup();
+
+        // Edge case: Local placeholder but no db entry for some reason
+        fakeFolder.remoteModifier().insert("A/a2", 64);
+        fakeFolder.remoteModifier().insert("A/a3", 64);
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find("A/a2.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a3.owncloud"));
+        cleanup();
+
+        fakeFolder.syncEngine().journal()->deleteFileRecord("A/a2.owncloud");
+        fakeFolder.syncEngine().journal()->deleteFileRecord("A/a3.owncloud");
+        fakeFolder.remoteModifier().remove("A/a3");
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find("A/a2.owncloud"));
+        QVERIFY(itemInstruction(completeSpy, "A/a2.owncloud", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(dbRecord(fakeFolder, "A/a2.owncloud").isValid());
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a3.owncloud"));
+        QVERIFY(!dbRecord(fakeFolder, "A/a3.owncloud").isValid());
+        cleanup();
     }
 
     void testPlaceholderConflict()
@@ -335,7 +355,7 @@ private slots:
     }
 
     // Check what might happen if an older sync client encounters placeholders
-    void testOldVersion()
+    void testOldVersion1()
     {
         FakeFolder fakeFolder{ FileInfo() };
         SyncOptions syncOptions;
@@ -377,6 +397,39 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("A/a1"));
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1.owncloud"));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    // Older versions may leave db entries for foo and foo.owncloud
+    void testOldVersion2()
+    {
+        FakeFolder fakeFolder{ FileInfo() };
+
+        // Sync a file
+        fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().insert("A/a1");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Create the placeholder too
+        // In the wild, the new version would create the placeholder and the db entry
+        // while the old version would download the plain file.
+        fakeFolder.localModifier().insert("A/a1.owncloud");
+        auto &db = fakeFolder.syncJournal();
+        SyncJournalFileRecord rec;
+        db.getFileRecord(QByteArray("A/a1"), &rec);
+        rec._type = ItemTypePlaceholder;
+        rec._path = "A/a1.owncloud";
+        db.setFileRecord(rec);
+
+        SyncOptions syncOptions;
+        syncOptions._newFilesArePlaceholders = true;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+
+        // Check that a sync removes the placeholder and its db entry
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a1.owncloud"));
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(!dbRecord(fakeFolder, "A/a1.owncloud").isValid());
     }
 };
 
