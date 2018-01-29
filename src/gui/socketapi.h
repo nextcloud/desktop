@@ -86,6 +86,15 @@ private:
     /** Sends translated/branded strings that may be useful to the integration */
     Q_INVOKABLE void command_GET_STRINGS(const QString &argument, SocketListener *listener);
 
+    /** Send the list of menu item. (added in version 1.1)
+     * argument is a list of files for which the menu should be shown, separated by '\x1e'
+     * Reply with  GET_MENU_ITEMS:BEGIN
+     * followed by several MENU_ITEM:[Action]:[flag]:[Text]
+     * If flag contains 'd', the menu should be disabled
+     * and ends with GET_MENU_ITEMS:END
+     */
+    Q_INVOKABLE void command_GET_MENU_ITEMS(const QString &argument, SocketListener *listener);
+
     QString buildRegisterPathMessage(const QString &path);
 
     QSet<QString> _registeredAliases;

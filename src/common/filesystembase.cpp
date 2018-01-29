@@ -403,27 +403,6 @@ QByteArray FileSystem::calcAdler32(const QString &filename)
 }
 #endif
 
-QString FileSystem::makeConflictFileName(const QString &fn, const QDateTime &dt)
-{
-    QString conflictFileName(fn);
-    // Add _conflict-XXXX  before the extension.
-    int dotLocation = conflictFileName.lastIndexOf('.');
-    // If no extension, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
-    if (dotLocation <= conflictFileName.lastIndexOf('/') + 1) {
-        dotLocation = conflictFileName.size();
-    }
-    QString timeString = dt.toString("yyyyMMdd-hhmmss");
-
-    // Additional marker
-    QByteArray conflictFileUserName = qgetenv("CSYNC_CONFLICT_FILE_USERNAME");
-    if (conflictFileUserName.isEmpty())
-        conflictFileName.insert(dotLocation, "_conflict-" + timeString);
-    else
-        conflictFileName.insert(dotLocation, "_conflict_" + QString::fromUtf8(conflictFileUserName) + "-" + timeString);
-
-    return conflictFileName;
-}
-
 bool FileSystem::remove(const QString &fileName, QString *errorString)
 {
 #ifdef Q_OS_WIN

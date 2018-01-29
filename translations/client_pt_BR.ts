@@ -412,44 +412,44 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="516"/>
-        <location filename="../src/gui/activitywidget.cpp" line="564"/>
+        <location filename="../src/gui/activitywidget.cpp" line="515"/>
+        <location filename="../src/gui/activitywidget.cpp" line="563"/>
         <source>Server Activity</source>
         <translation>Atividade do Servidor</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="523"/>
+        <location filename="../src/gui/activitywidget.cpp" line="522"/>
         <source>Sync Protocol</source>
         <translation>Protocolo de Sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="572"/>
+        <location filename="../src/gui/activitywidget.cpp" line="571"/>
         <source>Not Synced</source>
         <translation>Não Sincronizado</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="575"/>
+        <location filename="../src/gui/activitywidget.cpp" line="574"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
         <translation>Não sincronizada (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="607"/>
+        <location filename="../src/gui/activitywidget.cpp" line="606"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation>A lista de atividades do servidor tem sido copiados para o clipboard.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="611"/>
+        <location filename="../src/gui/activitywidget.cpp" line="610"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation>A lista de atividades do servidor foi copiada para a área de transferência.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="614"/>
+        <location filename="../src/gui/activitywidget.cpp" line="613"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
         <translation>A lista de itens não sincronizados foi copiada para a área de transferência.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="619"/>
+        <location filename="../src/gui/activitywidget.cpp" line="618"/>
         <source>Copied to clipboard</source>
         <translation>Copiado para área de transferência</translation>
     </message>
@@ -1412,7 +1412,7 @@ Itens onde a eliminação é permitida serão excluídos se eles evitarem que um
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="50"/>
-        <location filename="../src/gui/issueswidget.cpp" line="77"/>
+        <location filename="../src/gui/issueswidget.cpp" line="83"/>
         <source>Folder</source>
         <translation>Pasta</translation>
     </message>
@@ -1427,27 +1427,32 @@ Itens onde a eliminação é permitida serão excluídos se eles evitarem que um
         <translation>Mostrar arquivos ignorados</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="148"/>
+        <location filename="../src/gui/issueswidget.ui" line="133"/>
+        <source>There were too many issues. Not all will be visible here.</source>
+        <translation>Havia muitos problemas. Nem todos serão visíveis aqui.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.ui" line="155"/>
         <source>Copy the issues list to the clipboard.</source>
         <translation>Copie a lista de problemas para a área de transferência.</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="151"/>
+        <location filename="../src/gui/issueswidget.ui" line="158"/>
         <source>Copy</source>
         <translation>Copiar</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="75"/>
+        <location filename="../src/gui/issueswidget.cpp" line="81"/>
         <source>Time</source>
         <translation>Horário</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="76"/>
+        <location filename="../src/gui/issueswidget.cpp" line="82"/>
         <source>File</source>
         <translation>Arquivo</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.cpp" line="78"/>
+        <location filename="../src/gui/issueswidget.cpp" line="84"/>
         <source>Issue</source>
         <translation>Problemas</translation>
     </message>
@@ -2500,6 +2505,14 @@ It is not advisable to use it.</source>
     </message>
 </context>
 <context>
+    <name>OCC::ServerNotificationHandler</name>
+    <message>
+        <location filename="../src/gui/servernotificationhandler.cpp" line="103"/>
+        <source>Dismiss</source>
+        <translation>Dispensar</translation>
+    </message>
+</context>
+<context>
     <name>OCC::SettingsDialog</name>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
@@ -2677,99 +2690,95 @@ It is not advisable to use it.</source>
         <translation>Qualquer pessoa com o link tem acesso ao arquivo/pasta</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="115"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="299"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="117"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="301"/>
         <source>P&amp;assword protect</source>
         <translation>S&amp;enha de proteção</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="412"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="414"/>
         <source>Password Protected</source>
         <translation>Protegido por Senha</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="94"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="96"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>O arquivo não pode ser partilhado, pois foi compartilhado sem permissão de compartilhamento.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="61"/>
-        <source>%1 link</source>
-        <translation>%1 linque</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="91"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="93"/>
         <source>Link shares have been disabled</source>
         <translation>Os compartilhamentos de linque foram desativados</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="105"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="107"/>
         <source>Create public link share</source>
         <translation>Criar linque de compartilhamento público</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="525"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="527"/>
         <source>Delete</source>
         <translation>Excluir</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="161"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
         <source>Open link in browser</source>
         <translation>Abrir linque no navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="162"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Copy link to clipboard</source>
         <translation>Copiar o linque para a área de transferência</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Copy link to clipboard (direct download)</source>
         <translation>Copiar o linque para a área de transferência (download direto)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
         <source>Send link by email</source>
         <translation>Enviar linque por e-mail</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="167"/>
         <source>Send link by email (direct download)</source>
         <translation>Enviar linque por e-mail (download direto)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="518"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
         <source>Confirm Link Share Deletion</source>
         <translation>Confirmar o Link de Eliminação de Compartilhamento</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="519"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="521"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Você realmente deseja excluir o compartilhamento de links públicos &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Nota: Esta ação não pode ser desfeita.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="526"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="528"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="542"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="63"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="544"/>
         <source>Public link</source>
         <translation>Linque público</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="252"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
         <source>Delete link share</source>
         <translation>Excluir linque de compartilhamento</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="457"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="459"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>Comp&amp;artilhamento público requer uma senha</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="475"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="477"/>
         <source>Please Set Password</source>
         <translation>Por favor, Definir senha</translation>
     </message>

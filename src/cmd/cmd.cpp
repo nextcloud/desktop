@@ -331,7 +331,6 @@ int main(int argc, char **argv)
 
     parseOptions(app.arguments(), &options);
 
-    csync_set_log_level(options.silent ? 1 : 11);
     if (options.silent) {
         qInstallMessageHandler(nullMessageHandler);
     } else {
@@ -420,6 +419,30 @@ int main(int argc, char **argv)
         folder.chop(1);
     }
 
+    if (!options.proxy.isNull()) {
+        QString host;
+        int port = 0;
+        bool ok;
+
+        QStringList pList = options.proxy.split(':');
+        if (pList.count() == 3) {
+            // http: //192.168.178.23 : 8080
+            //  0            1            2
+            host = pList.at(1);
+            if (host.startsWith("//"))
+                host.remove(0, 2);
+
+            port = pList.at(2).toInt(&ok);
+
+            QNetworkProxyFactory::setUseSystemConfiguration(false);
+            QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::HttpProxy, host, port));
+        } else {
+            qFatal("Could not read httpproxy. The proxy should have the format \"http://hostname:port\".");
+        }
+    } else {
+        clientProxy.setupQtProxyFromConfig();
+    }
+
     SimpleSslErrorHandler *sslErrorHandler = new SimpleSslErrorHandler;
 
     HttpCredentialsText *cred = new HttpCredentialsText(user, password);
@@ -457,35 +480,7 @@ int main(int argc, char **argv)
     int restartCount = 0;
 restart_sync:
 
-
     opts = &options;
-
-    if (!options.proxy.isNull()) {
-        QString host;
-        int port = 0;
-        bool ok;
-
-        QStringList pList = options.proxy.split(':');
-        if (pList.count() == 3) {
-            // http: //192.168.178.23 : 8080
-            //  0            1            2
-            host = pList.at(1);
-            if (host.startsWith("//"))
-                host.remove(0, 2);
-
-            port = pList.at(2).toInt(&ok);
-
-            QNetworkProxyFactory::setUseSystemConfiguration(false);
-            QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::HttpProxy, host, port));
-        }
-    } else {
-        clientProxy.setupQtProxyFromConfig();
-        QString url(options.target_url);
-        if (url.startsWith("owncloud")) {
-            url.remove(0, 8);
-            url = QString("http%1").arg(url);
-        }
-    }
 
     QStringList selectiveSyncList;
     if (!options.unsyncedfolders.isEmpty()) {

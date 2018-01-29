@@ -306,6 +306,19 @@ QString ConfigFile::excludeFileFromSystem()
         QFileInfo nextToBinary(QCoreApplication::applicationDirPath(), exclFile);
         if (nextToBinary.exists()) {
             fi = nextToBinary;
+        } else {
+            // For AppImage, the file might reside under a temporary mount path
+            QDir d(QCoreApplication::applicationDirPath()); // supposed to be /tmp/mount.xyz/usr/bin
+            d.cdUp(); // go out of bin
+            d.cdUp(); // go out of usr
+            if (!d.isRoot()) { // it is really a mountpoint
+                if (d.cd("etc") && d.cd(Theme::instance()->appName())) {
+                    QFileInfo inMountDir(d, exclFile);
+                    if (inMountDir.exists()) {
+                        fi = inMountDir;
+                    }
+                };
+            }
         }
     }
 #endif

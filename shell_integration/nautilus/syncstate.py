@@ -15,10 +15,16 @@
 # or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
 # for more details.
 
+import sys
+python3 = sys.version_info[0] >= 3
+
 import os
 import urllib
+if python3:
+    import urllib.parse
 import socket
 import tempfile
+import time
 
 from gi.repository import GObject, Nautilus
 
@@ -30,11 +36,11 @@ appname = 'ownCloud'
 
 print("Initializing "+appname+"-client-nautilus extension")
 
-
 def get_local_path(url):
     if url[0:7] == 'file://':
         url = url[7:]
-    return urllib.unquote(url)
+    unquote = urllib.parse.unquote if python3 else urllib.unquote
+    return unquote(url)
 
 def get_runtime_dir():
     """Returns the value of $XDG_RUNTIME_DIR, a directory path.
@@ -55,8 +61,9 @@ class SocketConnect(GObject.GObject):
         self.registered_paths = {}
         self._watch_id = 0
         self._sock = None
-        self._listeners = [self._update_registered_paths]
-        self._remainder = ''
+        self._listeners = [self._update_registered_paths, self._get_version]
+        self._remainder = ''.encode()
+        self.protocolVersion = '1.0'
         self.nautilusVFSFile_table = {}  # not needed in this object actually but shared 
                                          # all over the other objects.
 
@@ -74,7 +81,7 @@ class SocketConnect(GObject.GObject):
         # print("Server command: " + cmd)
         if self.connected:
             try:
-                self._sock.send(cmd)
+                self._sock.send(cmd.encode())
             except:
                 print("Sending failed.")
                 self.reconnect()
@@ -96,6 +103,7 @@ class SocketConnect(GObject.GObject):
                 self._watch_id = GObject.io_add_watch(self._sock, GObject.IO_IN, self._handle_notify)
                 print("Socket watch id: " + str(self._watch_id))
 
+                self.sendCommand('VERSION:\n')
                 self.sendCommand('GET_STRINGS:\n')
 
                 return False  # Don't run again
@@ -107,29 +115,43 @@ class SocketConnect(GObject.GObject):
 
         return True  # Run again, if enabled via timeout_add()
 
+    # Reads data that becomes available.
+    # New responses can be accessed with get_available_responses().
+    # Returns false if no data was received within timeout
+    def read_socket_data_with_timeout(self, timeout):
+        self._sock.settimeout(timeout)
+        try:
+            self._remainder += self._sock.recv(1024)
+        except socket.timeout:
+            return False
+        else:
+            return True
+        finally:
+            self._sock.settimeout(None)
+
+    # Parses response lines out of collected data, returns list of strings
+    def get_available_responses(self):
+        end = self._remainder.rfind('\n'.encode())
+        if end == -1:
+            return []
+        data = self._remainder[:end]
+        self._remainder = self._remainder[end+1:]
+        return data.decode().split('\n')
+
     # Notify is the raw answer from the socket
     def _handle_notify(self, source, condition):
-        data = source.recv(1024)
-        # Prepend the remaining data from last call
-        if len(self._remainder) > 0:
-            data = self._remainder + data
-            self._remainder = ''
+        # Blocking is ok since we're notified of available data
+        self._remainder += self._sock.recv(1024)
 
-        if len(data) > 0:
-            # Remember the remainder for next round
-            lastNL = data.rfind('\n');
-            if lastNL > -1 and lastNL < len(data):
-                self._remainder = data[lastNL+1:]
-                data = data[:lastNL]
-
-            for l in data.split('\n'):
-                self._handle_server_response(l)
-        else:
+        if len(self._remainder) == 0:
             return False
+
+        for line in self.get_available_responses():
+            self.handle_server_response(line)
 
         return True  # Run again
 
-    def _handle_server_response(self, line):
+    def handle_server_response(self, line):
         print("Server response: " + line)
         parts = line.split(':')
         action = parts[0]
@@ -148,6 +170,10 @@ class SocketConnect(GObject.GObject):
             # that mirall went away. Try reconnecting.
             if not self.registered_paths:
                 self.reconnect()
+
+    def _get_version(self, action, args):
+        if action == 'VERSION':
+            self.protocolVersion = args[1]
 
 socketConnect = SocketConnect()
 
@@ -178,28 +204,88 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
 
     def get_file_items(self, window, files):
         # Show the menu extension to share a file or folder
-        #
-        # Show if file is OK.
-        # Ignore top level folders.
-        # Also show extension for folders
-        #  if there is a OK or SYNC underneath.
-        # This is only
 
-        if len(files) != 1:
-            return
-        file = files[0]
+        # Get usable file paths from the uris
+        all_internal_files = True
+        for i, file_uri in enumerate(files):
+            filename = get_local_path(file_uri.get_uri())
 
-        filename = get_local_path(file.get_uri())
-        # Check if its a folder (ends with an /), if yes add a "/"
-        # otherwise it will not find the entry in the table
-        isDir = os.path.isdir(filename + os.sep)
-        if isDir:
-            filename += os.sep
+            # Check if its a folder (ends with an /), if yes add a "/"
+            # otherwise it will not find the entry in the table
+            isDir = os.path.isdir(filename + os.sep)
+            if isDir:
+                filename += os.sep
 
-        # Check if toplevel folder, we need to ignore those as they cannot be shared
-        topLevelFolder, internalFile = self.check_registered_paths(filename)
-        if topLevelFolder or not internalFile:
+            # Check if toplevel folder, we need to ignore those as they cannot be shared
+            topLevelFolder, internalFile = self.check_registered_paths(filename)
+            if not internalFile:
+                all_internal_files = False
+
+            files[i] = filename
+
+        # Don't show a context menu if some selected files aren't in a sync folder
+        if not all_internal_files:
             return []
+
+        if socketConnect.protocolVersion >= '1.1':  # lexicographic!
+            return self.ask_for_menu_items(files)
+        else:
+            return self.legacy_menu_items(files)
+
+    def ask_for_menu_items(self, files):
+        record_separator = '\x1e'
+        filesstring = record_separator.join(files)
+        socketConnect.sendCommand('GET_MENU_ITEMS:{}\n'.format(filesstring))
+
+        done = False
+        start = time.time()
+        timeout = 0.1 # 100ms
+        menu_items = []
+        while not done:
+            dt = time.time() - start
+            if dt >= timeout:
+                break
+            if not socketConnect.read_socket_data_with_timeout(timeout - dt):
+                break
+            for line in socketConnect.get_available_responses():
+                # Process lines we don't care about
+                if done or not (line.startswith('GET_MENU_ITEMS:') or line.startswith('MENU_ITEM:')):
+                    socketConnect.handle_server_response(line)
+                    continue
+                if line == 'GET_MENU_ITEMS:END':
+                    done = True
+                    # don't break - we'd discard other responses
+                if line.startswith('MENU_ITEM:'):
+                    args = line.split(':')
+                    if len(args) < 4:
+                        continue
+                    menu_items.append([args[1], 'd' not in args[2], ':'.join(args[3:])])
+
+        if not done:
+            return self.legacy_menu_items(files)
+
+        if len(menu_items) == 0:
+            return []
+
+        # Set up the 'ownCloud...' submenu
+        item_owncloud = Nautilus.MenuItem(
+            name='IntegrationMenu', label=self.strings.get('CONTEXT_MENU_TITLE', appname))
+        menu = Nautilus.Menu()
+        item_owncloud.set_submenu(menu)
+
+        for action, enabled, label in menu_items:
+            item = Nautilus.MenuItem(name=action, label=label, sensitive=enabled)
+            item.connect("activate", self.context_menu_action, action, filesstring)
+            menu.append_item(item)
+
+        return [item_owncloud]
+
+
+    def legacy_menu_items(self, files):
+        # No legacy menu for a selection of several files
+        if len(files) != 1:
+            return []
+        filename = files[0]
 
         entry = socketConnect.nautilusVFSFile_table.get(filename)
         if not entry:
@@ -235,7 +321,7 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
         item = Nautilus.MenuItem(
             name='NautilusPython::ShareItem',
             label=self.strings.get('SHARE_MENU_TITLE', 'Share...'))
-        item.connect("activate", self.context_menu_action, 'SHARE', file)
+        item.connect("activate", self.context_menu_action, 'SHARE', filename)
         menu.append_item(item)
 
         # Add permalink menu options, but hide these options for older clients
@@ -243,20 +329,19 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
         if 'COPY_PRIVATE_LINK_MENU_TITLE' in self.strings:
             item_copyprivatelink = Nautilus.MenuItem(
                 name='CopyPrivateLink', label=self.strings.get('COPY_PRIVATE_LINK_MENU_TITLE', 'Copy private link to clipboard'))
-            item_copyprivatelink.connect("activate", self.context_menu_action, 'COPY_PRIVATE_LINK', file)
+            item_copyprivatelink.connect("activate", self.context_menu_action, 'COPY_PRIVATE_LINK', filename)
             menu.append_item(item_copyprivatelink)
 
         if 'EMAIL_PRIVATE_LINK_MENU_TITLE' in self.strings:
             item_emailprivatelink = Nautilus.MenuItem(
                 name='EmailPrivateLink', label=self.strings.get('EMAIL_PRIVATE_LINK_MENU_TITLE', 'Send private link by email...'))
-            item_emailprivatelink.connect("activate", self.context_menu_action, 'EMAIL_PRIVATE_LINK', file)
+            item_emailprivatelink.connect("activate", self.context_menu_action, 'EMAIL_PRIVATE_LINK', filename)
             menu.append_item(item_emailprivatelink)
 
         return [item_owncloud]
 
 
-    def context_menu_action(self, menu, action, file):
-        filename = get_local_path(file.get_uri())
+    def context_menu_action(self, menu, action, filename):
         print("Context menu: " + action + ' ' + filename)
         socketConnect.sendCommand(action + ":" + filename + "\n")
 

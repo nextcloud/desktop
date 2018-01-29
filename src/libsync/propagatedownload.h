@@ -206,8 +206,8 @@ private:
     QFile _tmpFile;
     bool _deleteExisting;
     bool _isEncrypted = false;
-
     EncryptedFile _encryptedInfo;
+    ConflictRecord _conflictRecord;
 
     QElapsedTimer _stopwatch;
 

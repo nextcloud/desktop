@@ -52,7 +52,6 @@ Folder::Folder(const FolderDefinition &definition,
     , _accountState(accountState)
     , _definition(definition)
     , _csyncUnavail(false)
-    , _proxyDirty(true)
     , _lastSyncDuration(0)
     , _consecutiveFailingSyncs(0)
     , _consecutiveFollowUpSyncs(0)
@@ -115,7 +114,6 @@ Folder::~Folder()
     // Reset then engine first as it will abort and try to access members of the Folder
     _engine.reset();
 }
-
 
 void Folder::checkLocalPath()
 {
@@ -600,22 +598,9 @@ bool Folder::reloadExcludes()
     return _engine->excludedFiles().reloadExcludeFiles();
 }
 
-void Folder::setProxyDirty(bool value)
-{
-    _proxyDirty = value;
-}
-
-bool Folder::proxyDirty()
-{
-    return _proxyDirty;
-}
-
 void Folder::startSync(const QStringList &pathList)
 {
     Q_UNUSED(pathList)
-    if (proxyDirty()) {
-        setProxyDirty(false);
-    }
 
     if (isBusy()) {
         qCCritical(lcFolder) << "ERROR csync is still running and new sync requested.";

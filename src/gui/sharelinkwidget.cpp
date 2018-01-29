@@ -58,7 +58,9 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     //Is this a file or folder?
     QFileInfo fi(localPath);
     _isFile = fi.isFile();
-    _ui->nameLineEdit->setText(tr("%1 link").arg(fi.fileName()));
+
+    // Note: the share name cannot be longer than 64 characters
+    _ui->nameLineEdit->setText(tr("Public link"));
 
     // the following progress indicator widgets are added to layouts which makes them
     // automatically deleted once the dialog dies.
@@ -222,11 +224,10 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         // Connect all shares signals to gui slots
         connect(share.data(), &Share::serverError, this, &ShareLinkWidget::slotServerError);
         connect(share.data(), &Share::shareDeleted, this, &ShareLinkWidget::slotDeleteShareFetched);
-        connect(share.data(), SIGNAL(expireDateSet()), SLOT(slotExpireSet()));
-        connect(share.data(), SIGNAL(publicUploadSet()), SLOT(slotPermissionsSet()));
-        connect(share.data(), SIGNAL(passwordSet()), SLOT(slotPasswordSet()));
-        connect(share.data(), SIGNAL(passwordSetError(int, QString)), SLOT(slotPasswordSetError(int, QString)));
         connect(share.data(), &Share::permissionsSet, this, &ShareLinkWidget::slotPermissionsSet);
+        connect(linkShare.data(), &LinkShare::expireDateSet, this, &ShareLinkWidget::slotExpireSet);
+        connect(linkShare.data(), &LinkShare::passwordSet, this, &ShareLinkWidget::slotPasswordSet);
+        connect(linkShare.data(), &LinkShare::passwordSetError, this, &ShareLinkWidget::slotPasswordSetError);
 
         // Build the table row
         auto row = table->rowCount();

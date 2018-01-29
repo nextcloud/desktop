@@ -49,6 +49,18 @@ public:
     static ProtocolItem *create(const QString &folder, const SyncFileItem &item);
     static QString timeString(QDateTime dt, QLocale::FormatType format = QLocale::NarrowFormat);
 
+    // accessors for extra data stored in the item
+    static QString folderName(const QTreeWidgetItem *item);
+    static void setFolderName(QTreeWidgetItem *item, const QString &folderName);
+    static QString filePath(const QTreeWidgetItem *item);
+    static void setFilePath(QTreeWidgetItem *item, const QString &filePath);
+    static QDateTime timestamp(const QTreeWidgetItem *item);
+    static void setTimestamp(QTreeWidgetItem *item, const QDateTime &timestamp);
+    static SyncFileItem::Status status(const QTreeWidgetItem *item);
+    static void setStatus(QTreeWidgetItem *item, SyncFileItem::Status status);
+    static quint64 size(const QTreeWidgetItem *item);
+    static void setSize(QTreeWidgetItem *item, quint64 size);
+
     static SyncJournalFileRecord syncJournalRecord(QTreeWidgetItem *item);
     static Folder *folder(QTreeWidgetItem *item);
 

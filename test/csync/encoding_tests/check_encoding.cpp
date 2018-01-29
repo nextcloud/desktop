@@ -19,7 +19,6 @@
  */
 #include <stdio.h>
 #include "c_string.h"
-#include "c_path.h"
 #include "c_utf8.h"
 #include "common/filesystembase.h"
 #include "torture.h"

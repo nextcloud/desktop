@@ -227,12 +227,6 @@ protected:
       quint64 _size;
     };
     UploadFileInfo _fileToUpload;
-
-// measure the performance of checksum calc and upload
-#ifdef WITH_TESTING
-    Utility::StopWatch _stopWatch;
-#endif
-
     QByteArray _transmissionChecksumHeader;
 
 public:

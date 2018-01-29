@@ -21,6 +21,7 @@
 #include <QObject>
 #include <QBasicTimer>
 #include <QLocalSocket>
+#include <QRegularExpression>
 #include "ownclouddolphinpluginhelper_export.h"
 
 class OWNCLOUDDOLPHINPLUGINHELPER_EXPORT OwncloudDolphinPluginHelper : public QObject {
@@ -44,6 +45,8 @@ public:
     QString copyPrivateLinkTitle() const { return _strings["COPY_PRIVATE_LINK_MENU_TITLE"]; }
     QString emailPrivateLinkTitle() const { return _strings["EMAIL_PRIVATE_LINK_MENU_TITLE"]; }
 
+    QByteArray version() { return _version; }
+
 signals:
     void commandRecieved(const QByteArray &cmd);
 
@@ -61,4 +64,5 @@ private:
     QBasicTimer _connectTimer;
 
     QMap<QString, QString> _strings;
+    QByteArray _version;
 };

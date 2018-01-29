@@ -15,7 +15,6 @@
 #include "discoveryphase.h"
 
 #include "account.h"
-#include "theme.h"
 #include "common/asserts.h"
 #include "common/checksums.h"
 
@@ -310,9 +309,9 @@ static std::unique_ptr<csync_file_stat_t> propertyMapToFileStat(const QMap<QStri
         QString value = it.value();
         if (property == "resourcetype") {
             if (value.contains("collection")) {
-                file_stat->type = CSYNC_FTW_TYPE_DIR;
+                file_stat->type = ItemTypeDirectory;
             } else {
-                file_stat->type = CSYNC_FTW_TYPE_FILE;
+                file_stat->type = ItemTypeFile;
             }
         } else if (property == "getlastmodified") {
             file_stat->modtime = oc_httpdate_parse(value.toUtf8());
@@ -698,8 +697,6 @@ void DiscoveryJob::start()
     _csync_ctx->callbacks.remote_closedir_hook = remote_vio_closedir_hook;
     _csync_ctx->callbacks.vio_userdata = this;
 
-    csync_set_log_callback(_log_callback);
-    csync_set_log_level(_log_level);
     _lastUpdateProgressCallbackCall.invalidate();
     int ret = csync_update(_csync_ctx);
 

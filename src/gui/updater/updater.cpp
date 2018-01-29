@@ -13,6 +13,7 @@
  */
 
 #include <QUrl>
+#include <QUrlQuery>
 #include <QProcess>
 
 #include "updater/updater.h"
@@ -39,7 +40,7 @@ Updater *Updater::instance()
     return _instance;
 }
 
-QUrl Updater::addQueryParams(const QUrl &url)
+QUrlQuery Updater::getQueryParams()
 {
     QUrlQuery query;
     Theme *theme = Theme::instance();
@@ -64,7 +65,8 @@ QUrl Updater::addQueryParams(const QUrl &url)
 
     QString suffix = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
     query.addQueryItem(QLatin1String("versionsuffix"), suffix);
-    if (suffix.startsWith("nightly")
+    if (suffix.startsWith("daily")
+            || suffix.startsWith("nightly")
             || suffix.startsWith("alpha")
             || suffix.startsWith("rc")
             || suffix.startsWith("beta")) {
@@ -73,9 +75,7 @@ QUrl Updater::addQueryParams(const QUrl &url)
         // to beta channel
     }
 
-    QUrl paramUrl = url;
-    paramUrl.setQuery(query);
-    return paramUrl;
+    return query;
 }
 
 
@@ -107,9 +107,16 @@ Updater *Updater::create()
         qCWarning(lcUpdater) << "Not a valid updater URL, will not do update check";
         return 0;
     }
-    updateBaseUrl = addQueryParams(updateBaseUrl);
+
+    auto urlQuery = getQueryParams();
+
 #if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
-    updateBaseUrl.addQueryItem(QLatin1String("sparkle"), QLatin1String("true"));
+    urlQuery.addQueryItem(QLatin1String("sparkle"), QLatin1String("true"));
+#endif
+
+    updateBaseUrl.setQuery(urlQuery);
+
+#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
     return new SparkleUpdater(updateBaseUrl.toString());
 #elif defined(Q_OS_WIN32)
     // the best we can do is notify about updates

@@ -26,6 +26,7 @@
 #include "ownsql.h"
 #include "common/utility.h"
 #include "common/asserts.h"
+#include <sqlite3.h>
 
 #define SQLITE_SLEEP_TIME_USEC 100000
 #define SQLITE_REPEAT_COUNT 20

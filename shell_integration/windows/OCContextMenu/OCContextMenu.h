@@ -17,6 +17,8 @@
 
 #pragma once
 #include <shlobj.h>     // For IShellExtInit and IContextMenu
+#include <string>
+#include "OCClientInterface.h"
 
 class OCContextMenu : public IShellExtInit, public IContextMenu
 {
@@ -43,21 +45,9 @@ private:
 	// Reference count of component.
 	long m_cRef;
 
-	// The name of the selected file.
-	wchar_t m_szSelectedFile[MAX_PATH];
-
-    // The method that handles the "ocshare" verb.
-    void OnVerbShare(HWND hWnd);
-    void OnVerbCopyLink(HWND hWnd);
-    void OnVerbEmailLink(HWND hWnd);
-
-	PWSTR m_pszMenuText;
-	PCSTR m_pszVerb;
-	PCWSTR m_pwszVerb;
-	PCSTR m_pszVerbCanonicalName;
-	PCWSTR m_pwszVerbCanonicalName;
-	PCSTR m_pszVerbHelpText;
-	PCWSTR m_pwszVerbHelpText;
+	// The name of the selected files (separated by '\x1e')
+	std::wstring m_selectedFiles;
+	OCClientInterface::ContextMenuInfo m_info;
 };
 	
 #endif //OCCONTEXTMENU_H

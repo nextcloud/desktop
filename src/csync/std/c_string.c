@@ -32,7 +32,6 @@
 #include <wchar.h>
 
 #include "c_string.h"
-#include "c_path.h"
 #include "c_alloc.h"
 #include "c_macro.h"
 
@@ -63,107 +62,4 @@ int c_streq(const char *a, const char *b) {
   }
 
   return 0;
-}
-
-c_strlist_t *c_strlist_new(size_t size) {
-  c_strlist_t *strlist = NULL;
-
-  if (size == 0) {
-    errno = EINVAL;
-    return NULL;
-  }
-
-  strlist = c_malloc(sizeof(c_strlist_t));
-  if (strlist == NULL) {
-    return NULL;
-  }
-
-  strlist->vector = (char **) c_malloc(size * sizeof(char *));
-  strlist->count = 0;
-  strlist->size = size;
-
-  return strlist;
-}
-
-c_strlist_t *c_strlist_expand(c_strlist_t *strlist, size_t size) {
-  if (strlist == NULL || size == 0) {
-    errno = EINVAL;
-    return NULL;
-  }
-
-  if (strlist->size >= size) {
-    return strlist;
-  }
-
-  strlist->vector = (char **) c_realloc(strlist->vector, size * sizeof(char *));
-  if (strlist->vector == NULL) {
-    return NULL;
-  }
-
-  strlist->size = size;
-
-  return strlist;
-}
-
-int c_strlist_add(c_strlist_t *strlist, const char *string) {
-  if (strlist == NULL || string == NULL) {
-    return -1;
-  }
-
-  if (strlist->count < strlist->size) {
-    strlist->vector[strlist->count] = c_strdup(string);
-    if (strlist->vector[strlist->count] == NULL) {
-      return -1;
-    }
-    strlist->count++;
-  } else {
-    errno = ENOBUFS;
-    return -1;
-  }
-
-  return 0;
-}
-
-int c_strlist_add_grow(c_strlist_t **strlist, const char *string) {
-  if (*strlist == NULL) {
-    *strlist = c_strlist_new(32);
-    if (*strlist == NULL) {
-      return -1;
-    }
-  }
-
-  if ((*strlist)->count == (*strlist)->size) {
-    c_strlist_t *list = c_strlist_expand(*strlist, 2 * (*strlist)->size);
-    if (list == NULL) {
-      return -1;
-    }
-    *strlist = list;
-  }
-
-  return c_strlist_add(*strlist, string);
-}
-
-void c_strlist_clear(c_strlist_t *strlist) {
-  size_t i = 0;
-
-  if (strlist == NULL) {
-    return;
-  }
-
-  for (i = 0; i < strlist->count; i++) {
-    SAFE_FREE(strlist->vector[i]);
-  }
-
-  strlist->count = 0;
-}
-
-void c_strlist_destroy(c_strlist_t *strlist) {
-
-  if (strlist == NULL) {
-    return;
-  }
-
-  c_strlist_clear(strlist);
-  SAFE_FREE(strlist->vector);
-  SAFE_FREE(strlist);
 }

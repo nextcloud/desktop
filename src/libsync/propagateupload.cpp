@@ -258,10 +258,6 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
     // and not the _fileToUpload because we are checking the original file, not there
     // probably temporary one.
     _item->_modtime = FileSystem::getModTime(filePath);
-    qDebug() << "Mod time" << _item->_modtime;
-#ifdef WITH_TESTING
-    _stopWatch.start();
-#endif
 
     QByteArray checksumType = contentChecksumType();
 
@@ -290,11 +286,6 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
 void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray &contentChecksumType, const QByteArray &contentChecksum)
 {
     _item->_checksumHeader = makeChecksumHeader(contentChecksumType, contentChecksum);
-
-#ifdef WITH_TESTING
-    _stopWatch.addLapTime(QLatin1String("ContentChecksum"));
-    _stopWatch.start();
-#endif
 
     // Reuse the content checksum as the transmission checksum if possible
     const auto supportedTransmissionChecksums =
@@ -341,10 +332,6 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
         done(SyncFileItem::SoftError, tr("File Removed (start upload) %1").arg(fullFilePath));
         return;
     }
-#ifdef WITH_TESTING
-    _stopWatch.addLapTime(QLatin1String("TransmissionChecksum"));
-#endif
-
     time_t prevModtime = _item->_modtime; // the _item value was set in PropagateUploadFile::start()
     // but a potential checksum calculation could have taken some time during which the file could
     // have been changed again, so better check again here.
@@ -660,6 +647,19 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
         //  csync_owncloud.c's owncloud_file_id always strips the quotes.
         headers["If-Match"] = '"' + _item->_etag + '"';
     }
+
+    // Set up a conflict file header pointing to the original file
+    auto conflictRecord = propagator()->_journal->conflictRecord(_item->_file.toUtf8());
+    if (conflictRecord.isValid()) {
+        headers["OC-Conflict"] = "1";
+        if (!conflictRecord.baseFileId.isEmpty())
+            headers["OC-ConflictBaseFileId"] = conflictRecord.baseFileId;
+        if (conflictRecord.baseModtime != -1)
+            headers["OC-ConflictBaseMtime"] = QByteArray::number(conflictRecord.baseModtime);
+        if (!conflictRecord.baseEtag.isEmpty())
+            headers["OC-ConflictBaseEtag"] = conflictRecord.baseEtag;
+    }
+
     return headers;
 }
 

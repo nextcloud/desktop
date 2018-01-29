@@ -301,7 +301,7 @@ bool FolderStatusModel::setData(const QModelIndex &index, const QVariant &value,
                 // also check all the children
                 for (int i = 0; i < info->_subs.count(); ++i) {
                     if (info->_subs[i]._checked != Qt::Checked) {
-                        setData(index.child(i, 0), Qt::Checked, Qt::CheckStateRole);
+                        setData(this->index(i, 0, index), Qt::Checked, Qt::CheckStateRole);
                     }
                 }
             }
@@ -316,7 +316,7 @@ bool FolderStatusModel::setData(const QModelIndex &index, const QVariant &value,
                 // Uncheck all the children
                 for (int i = 0; i < info->_subs.count(); ++i) {
                     if (info->_subs[i]._checked != Qt::Unchecked) {
-                        setData(index.child(i, 0), Qt::Unchecked, Qt::CheckStateRole);
+                        setData(this->index(i, 0, index), Qt::Unchecked, Qt::CheckStateRole);
                     }
                 }
             }
@@ -735,7 +735,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     }
 
     for (auto it = undecidedIndexes.begin(); it != undecidedIndexes.end(); ++it) {
-        suggestExpand(idx.child(*it, 0));
+        suggestExpand(index(*it, 0, idx));
     }
 
 /* We need lambda function for the following code.

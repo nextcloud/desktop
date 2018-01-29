@@ -119,6 +119,11 @@ public:
      */
     QString invalidFilenameRegex() const;
 
+    /**
+     * Whether conflict files should remain local (default) or should be uploaded.
+     */
+    bool uploadConflictFiles() const;
+
 private:
     QVariantMap _capabilities;
 };

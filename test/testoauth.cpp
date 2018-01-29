@@ -111,7 +111,7 @@ public:
         account->setUrl(sOAuthTestServer);
         account->setCredentials(new FakeCredentials{fakeQnam});
         fakeQnam->setParent(this);
-        fakeQnam->setOverride([this] (QNetworkAccessManager::Operation op, const QNetworkRequest &req) {
+        fakeQnam->setOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *) {
             return this->tokenReply(op, req);
         });
 

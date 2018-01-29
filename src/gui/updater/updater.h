@@ -19,6 +19,7 @@
 #include <QObject>
 
 class QUrl;
+class QUrlQuery;
 
 namespace OCC {
 
@@ -50,7 +51,7 @@ protected:
 
 private:
     static QString getSystemInfo();
-    static QUrl addQueryParams(const QUrl &url);
+    static QUrlQuery getQueryParams();
     static Updater *create();
     static Updater *_instance;
 };

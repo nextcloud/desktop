@@ -42,8 +42,10 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QSignalMapper>
+#ifdef WITH_LIBCLOUDPROVIDERS
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusInterface>
+#endif
 
 #if defined(Q_OS_X11)
 #include <QX11Info>
@@ -66,7 +68,9 @@ ownCloudGui::ownCloudGui(Application *parent)
 #endif
     _logBrowser(0)
     , _contextMenuVisibleOsx(false)
+#ifdef WITH_LIBCLOUDPROVIDERS
     , _bus(QDBusConnection::sessionBus())
+#endif
     , _recentActionsMenu(0)
     , _qdbusmenuWorkaround(false)
     , _app(parent)
@@ -566,18 +570,11 @@ void ownCloudGui::updateContextMenu()
 
     bool isConfigured = (!accountList.isEmpty());
     bool atLeastOneConnected = false;
-    bool atLeastOneSignedOut = false;
-    bool atLeastOneSignedIn = false;
     bool atLeastOnePaused = false;
     bool atLeastOneNotPaused = false;
     foreach (auto a, accountList) {
         if (a->isConnected()) {
             atLeastOneConnected = true;
-        }
-        if (a->isSignedOut()) {
-            atLeastOneSignedOut = true;
-        } else {
-            atLeastOneSignedIn = true;
         }
     }
     foreach (auto f, FolderMan::instance()->map()) {
@@ -641,22 +638,6 @@ void ownCloudGui::updateContextMenu()
         }
         QAction *action = _contextMenu->addAction(text);
         connect(action, &QAction::triggered, this, &ownCloudGui::slotPauseAllFolders);
-    }
-    if (atLeastOneSignedIn) {
-        if (accountList.count() > 1) {
-            _actionLogout->setText(tr("Log out of all accounts"));
-        } else {
-            _actionLogout->setText(tr("Log out"));
-        }
-        _contextMenu->addAction(_actionLogout);
-    }
-    if (atLeastOneSignedOut) {
-        if (accountList.count() > 1) {
-            _actionLogin->setText(tr("Log in to all accounts..."));
-        } else {
-            _actionLogin->setText(tr("Log in..."));
-        }
-        _contextMenu->addAction(_actionLogin);
     }
     _contextMenu->addAction(_actionQuit);
 

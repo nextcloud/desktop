@@ -30,6 +30,8 @@
 #include <QString>
 #include <QRegularExpression>
 
+#include <functional>
+
 enum csync_exclude_type_e {
   CSYNC_NOT_EXCLUDED   = 0,
   CSYNC_FILE_SILENTLY_EXCLUDED,
@@ -75,6 +77,13 @@ public:
     void addExcludeFilePath(const QString &path);
 
     /**
+     * Whether conflict files shall be excluded.
+     *
+     * Defaults to true.
+     */
+    void setExcludeConflictFiles(bool onoff);
+
+    /**
      * Checks whether a file or directory should be excluded.
      *
      * @param filePath     the absolute path to the file
@@ -101,6 +110,11 @@ public:
     void clearManualExcludes();
 
     /**
+     * Adjusts behavior of wildcards. Only used for testing.
+     */
+    void setWildcardsMatchSlash(bool onoff);
+
+    /**
      * Generate a hook for traversal exclude pattern matching
      * that csync can use.
      *
@@ -108,7 +122,7 @@ public:
      * ExcludedFiles instance stays alive.
      */
     auto csyncTraversalMatchFun() const
-        -> std::function<CSYNC_EXCLUDE_TYPE(const char *path, int filetype)>;
+        -> std::function<CSYNC_EXCLUDE_TYPE(const char *path, ItemType filetype)>;
 
 public slots:
     /**
@@ -125,7 +139,7 @@ private:
      * Note that this only matches patterns. It does not check whether the file
      * or directory pointed to is hidden (or whether it even exists).
      */
-    CSYNC_EXCLUDE_TYPE fullPatternMatch(const char *path, int filetype) const;
+    CSYNC_EXCLUDE_TYPE fullPatternMatch(const char *path, ItemType filetype) const;
 
     /**
      * @brief Check if the given path should be excluded in a traversal situation.
@@ -142,7 +156,7 @@ private:
      * Note that this only matches patterns. It does not check whether the file
      * or directory pointed to is hidden (or whether it even exists).
      */
-    CSYNC_EXCLUDE_TYPE traversalPatternMatch(const char *path, int filetype) const;
+    CSYNC_EXCLUDE_TYPE traversalPatternMatch(const char *path, ItemType filetype) const;
 
     /**
      * Generate optimized regular expressions for the exclude patterns.
@@ -165,8 +179,9 @@ private:
      *   full("a/b/c/d") == traversal("a") || traversal("a/b") || traversal("a/b/c")
      *
      * The traversal matcher can be extremely fast because it has a fast early-out
-     * case: It checks the bname part of the path against _bnameActivationRegex
-     * and only runs the full regex if the bname activation was triggered.
+     * case: It checks the bname part of the path against _bnameTraversalRegex
+     * and only runs a simplified _fullTraversalRegex on the whole path if bname
+     * activation for it was triggered.
      *
      * Note: The traversal matcher will return not-excluded on some paths that the
      * full matcher would exclude. Example: "b" is excluded. traversal("b/c")
@@ -184,10 +199,22 @@ private:
     QList<QByteArray> _allExcludes;
 
     /// see prepare()
-    QRegularExpression _bnameActivationRegexFile;
-    QRegularExpression _bnameActivationRegexDir;
+    QRegularExpression _bnameTraversalRegexFile;
+    QRegularExpression _bnameTraversalRegexDir;
+    QRegularExpression _fullTraversalRegexFile;
+    QRegularExpression _fullTraversalRegexDir;
     QRegularExpression _fullRegexFile;
     QRegularExpression _fullRegexDir;
+
+    bool _excludeConflictFiles = true;
+
+    /**
+     * Whether * and ? in patterns can match a /
+     *
+     * Unfortunately this was how matching was done on Windows so
+     * it continues to be enabled there.
+     */
+    bool _wildcardsMatchSlash = false;
 
     friend class ExcludedFilesTest;
 };

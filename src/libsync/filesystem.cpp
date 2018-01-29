@@ -23,7 +23,6 @@ extern "C" int c_utimes(const char *, const struct timeval *);
 
 #include "csync.h"
 #include "vio/csync_vio_local.h"
-#include "std/c_path.h"
 #include "std/c_string.h"
 #include "std/c_utf8.h"
 

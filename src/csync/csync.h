@@ -34,7 +34,6 @@
 
 #include "std/c_private.h"
 #include "ocsynclib.h"
-#include "common/syncjournalfilerecord.h"
 
 #include <sys/stat.h>
 #include <stdbool.h>
@@ -45,9 +44,16 @@
 #include <QByteArray>
 #include "common/remotepermissions.h"
 
+namespace OCC {
+class SyncJournalFileRecord;
+}
+
 #if defined(Q_CC_GNU) && !defined(Q_CC_INTEL) && !defined(Q_CC_CLANG) && (__GNUC__ * 100 + __GNUC_MINOR__ < 408)
 // openSuse 12.3 didn't like enum bitfields.
 #define BITFIELD(size)
+#elif defined(Q_CC_MSVC)
+// MSVC stores enum and bool as signed, so we need to add a bit for the sign
+#define BITFIELD(size) :(size+1)
 #else
 #define BITFIELD(size) :size
 #endif
@@ -102,7 +108,6 @@ enum csync_status_codes_e {
     CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS,
     CSYNC_STATUS_INDIVIDUAL_TRAILING_SPACE,
     CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME,
-    CYSNC_STATUS_FILE_LOCKED_OR_OPEN,
     CSYNC_STATUS_INDIVIDUAL_EXCLUDE_HIDDEN,
     CSYNC_STATUS_INVALID_CHARACTERS,
     CSYNC_STATUS_INDIVIDUAL_STAT_FAILED,
@@ -148,11 +153,13 @@ enum csync_instructions_e {
                                                       but without any propagation (UPDATE|RECONCILE) */
 };
 
-enum csync_ftw_type_e {
-    CSYNC_FTW_TYPE_FILE,
-    CSYNC_FTW_TYPE_SLINK,
-    CSYNC_FTW_TYPE_DIR,
-    CSYNC_FTW_TYPE_SKIP
+// This enum is used with BITFIELD(3) and BITFIELD(4) in several places.
+// Also, this value is stored in the database, so beware of value changes.
+enum ItemType {
+    ItemTypeFile = 0,
+    ItemTypeSoftLink = 1,
+    ItemTypeDirectory = 2,
+    ItemTypeSkip = 3
 };
 
 
@@ -169,7 +176,7 @@ struct OCSYNC_EXPORT csync_file_stat_s {
   uint64_t inode;
 
   OCC::RemotePermissions remotePerm;
-  enum csync_ftw_type_e type BITFIELD(4);
+  ItemType type BITFIELD(4);
   bool child_modified BITFIELD(1);
   bool has_ignored_files BITFIELD(1); // Specify that a directory, or child directory contains ignored files.
   bool is_hidden BITFIELD(1); // Not saved in the DB, only used during discovery for local files.
@@ -196,7 +203,7 @@ struct OCSYNC_EXPORT csync_file_stat_s {
     : modtime(0)
     , size(0)
     , inode(0)
-    , type(CSYNC_FTW_TYPE_SKIP)
+    , type(ItemTypeSkip)
     , child_modified(false)
     , has_ignored_files(false)
     , is_hidden(false)
@@ -204,21 +211,7 @@ struct OCSYNC_EXPORT csync_file_stat_s {
     , instruction(CSYNC_INSTRUCTION_NONE)
   { }
 
-  static std::unique_ptr<csync_file_stat_t> fromSyncJournalFileRecord(const OCC::SyncJournalFileRecord &rec)
-  {
-    std::unique_ptr<csync_file_stat_t> st(new csync_file_stat_t);
-    st->path = rec._path;
-    st->inode = rec._inode;
-    st->modtime = rec._modtime;
-    st->type = static_cast<csync_ftw_type_e>(rec._type);
-    st->etag = rec._etag;
-    st->file_id = rec._fileId;
-    st->remotePerm = rec._remotePerm;
-    st->size = rec._fileSize;
-    st->has_ignored_files = rec._serverHasIgnoredFiles;
-    st->checksumHeader = rec._checksumHeader;
-    return st;
-  }
+  static std::unique_ptr<csync_file_stat_t> fromSyncJournalFileRecord(const OCC::SyncJournalFileRecord &rec);
 };
 
 /**
@@ -228,10 +221,6 @@ typedef struct csync_s CSYNC;
 
 typedef int (*csync_auth_callback) (const char *prompt, char *buf, size_t len,
     int echo, int verify, void *userdata);
-
-typedef void (*csync_log_callback) (int verbosity,
-                                    const char *function,
-                                    const char *buffer);
 
 typedef void (*csync_update_callback) (bool local,
                                     const char *dirUrl,
@@ -309,39 +298,6 @@ csync_auth_callback OCSYNC_EXPORT csync_get_auth_callback(CSYNC *ctx);
  * @return              0 on success, less than 0 if an error occurred.
  */
 int OCSYNC_EXPORT csync_set_auth_callback(CSYNC *ctx, csync_auth_callback cb);
-
-/**
- * @brief Set the log level.
- *
- * @param[in]  level  The log verbosity.
- *
- * @return 0 on success, < 0 if an error occurred.
- */
-int OCSYNC_EXPORT csync_set_log_level(int level);
-
-/**
- * @brief Get the log verbosity
- *
- * @return            The log verbosity, -1 on error.
- */
-int OCSYNC_EXPORT csync_get_log_level(void);
-
-/**
- * @brief Get the logging callback set.
- *
- * @return              The logging callback set or NULL if an error
- *                      occurred.
- */
-csync_log_callback OCSYNC_EXPORT csync_get_log_callback(void);
-
-/**
- * @brief Set the logging callback.
- *
- * @param cb            The logging callback.
- *
- * @return              0 on success, less than 0 if an error occurred.
- */
-int OCSYNC_EXPORT csync_set_log_callback(csync_log_callback cb);
 
 /* Used for special modes or debugging */
 CSYNC_STATUS OCSYNC_EXPORT csync_get_status(CSYNC *ctx);

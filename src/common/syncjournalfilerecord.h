@@ -22,6 +22,7 @@
 #include <QString>
 #include <QDateTime>
 
+#include "csync.h"
 #include "ocsynclib.h"
 #include "remotepermissions.h"
 #include "common/utility.h"
@@ -56,7 +57,7 @@ public:
     QByteArray _path;
     quint64 _inode;
     qint64 _modtime;
-    int _type;
+    ItemType _type;
     QByteArray _etag;
     QByteArray _fileId;
     qint64 _fileSize;
@@ -109,6 +110,43 @@ public:
     QString _renameTarget;
 
     bool isValid() const;
+};
+
+/** Represents a conflict in the conflicts table.
+ *
+ * In the following the "conflict file" is the file with the "_conflict-"
+ * tag and the base file is the file that its a conflict for. So if
+ * a/foo.txt is the base file, its conflict file could be
+ * a/foo_conflict-1234.txt.
+ */
+class OCSYNC_EXPORT ConflictRecord
+{
+public:
+    /** Path to the _conflict- file
+     *
+     * So if a/foo.txt has a conflict, this path would point to
+     * a/foo_conflict-1234.txt.
+     *
+     * The path is sync-folder relative.
+     */
+    QByteArray path;
+
+    /// File id of the base file
+    QByteArray baseFileId;
+
+    /** Modtime of the base file
+     *
+     * may not be available and be -1
+     */
+    qint64 baseModtime = -1;
+
+    /** Etag of the base file
+     *
+     * may not be available and empty
+     */
+    QByteArray baseEtag;
+
+    bool isValid() const { return !path.isEmpty(); }
 };
 }
 

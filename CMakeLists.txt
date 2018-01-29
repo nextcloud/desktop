@@ -1,6 +1,5 @@
-
 cmake_minimum_required(VERSION 3.2)
-cmake_policy(VERSION 3.2.0)
+set(CMAKE_CXX_STANDARD 14)
 
 project(client)
 
@@ -58,14 +57,6 @@ if(NOT WITH_CRASHREPORTER)
     message(STATUS "Build of crashreporter disabled.")
 endif()
 
-#####
-## handle DBUS for Fdo notifications
-if( UNIX AND NOT APPLE )
-    add_definitions( -DUSE_FDO_NOTIFICATIONS)
-    set(WITH_DBUS ON)
-endif()
-####
-
 include(GNUInstallDirs)
 include(DefineInstallationPaths)
 include(GenerateExportHeader)
@@ -73,6 +64,12 @@ include(GenerateExportHeader)
 include(GetGitRevisionDescription)
 
 get_git_head_revision(GIT_REFSPEC GIT_SHA1)
+
+add_definitions(
+    -DQT_USE_QSTRINGBUILDER
+    -DQT_MESSAGELOGCONTEXT #enable function name and line number in debug output
+    -DQT_DEPRECATED_WARNINGS
+)
 
 # if we cannot get it from git, directly try .tag (packages)
 # this will work if the tar balls have been properly created
@@ -187,16 +184,6 @@ if(BUILD_CLIENT)
     find_package(Sphinx)
     find_package(PdfLatex)
     find_package(OpenSSL REQUIRED VERSION 1.0)
-    find_package(SQLite3 3.8.0 REQUIRED)
-    # On some OS, we want to use our own, not the system sqlite
-    if (USE_OUR_OWN_SQLITE3)
-        include_directories(BEFORE ${SQLITE3_INCLUDE_DIR})
-        if (WIN32)
-            add_definitions(-DSQLITE_API=__declspec\(dllimport\))
-        endif()
-
-
-    endif()
 
    find_package(ZLIB REQUIRED)
    find_package(GLib2)
@@ -219,20 +206,6 @@ add_definitions( -DNOMINMAX )
 add_definitions( -D_WIN32_WINNT=0x0600)
 add_definitions( -DWINVER=0x0600)
 endif( WIN32 )
-
-include(QtVersionAbstraction)
-setup_qt()
-if (${Qt5Core_VERSION_MAJOR} EQUAL "5")
-    if (${Qt5Core_VERSION_MINOR} EQUAL "6" OR ${Qt5Core_VERSION_MINOR} GREATER 6)
-    else()
-      message(STATUS "If possible compile me with Qt 5.6 or higher.")
-    endif()
-    if (${Qt5Core_VERSION_MINOR} EQUAL "9" OR ${Qt5Core_VERSION_MINOR} GREATER 9)
-    else()
-      message(STATUS "For HTTP2 use Qt 5.9.2 or higher.")
-    endif()
-endif()
-message("Qt ${Qt5Core_VERSION} at ${Qt5Core_INCLUDE_DIRS}")
 
 if (APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")

@@ -112,6 +112,7 @@ public:
         qint64 _modtime;
         int _errorCount;
         bool _valid;
+        QByteArray _contentChecksum;
     };
 
     struct PollInfo
@@ -210,6 +211,22 @@ public:
     void setDataFingerprint(const QByteArray &dataFingerprint);
     QByteArray dataFingerprint();
 
+
+    // Conflict record functions
+
+    /// Store a new or updated record in the database
+    void setConflictRecord(const ConflictRecord &record);
+
+    /// Retrieve a conflict record by path of the _conflict- file
+    ConflictRecord conflictRecord(const QByteArray &path);
+
+    /// Delete a conflict record by path of the _conflict- file
+    void deleteConflictRecord(const QByteArray &path);
+
+    /// Return all paths of _conflict- files with records in the db
+    QByteArrayList conflictRecordPaths();
+
+
     /**
      * Delete any file entry. This will force the next sync to re-sync everything as if it was new,
      * restoring everyfile on every remote. If a file is there both on the client and server side,
@@ -269,6 +286,9 @@ private:
     QScopedPointer<SqlQuery> _getDataFingerprintQuery;
     QScopedPointer<SqlQuery> _setDataFingerprintQuery1;
     QScopedPointer<SqlQuery> _setDataFingerprintQuery2;
+    QScopedPointer<SqlQuery> _getConflictRecordQuery;
+    QScopedPointer<SqlQuery> _setConflictRecordQuery;
+    QScopedPointer<SqlQuery> _deleteConflictRecordQuery;
 
     // End to End Encryption Related Queries/
     QScopedPointer<SqlQuery> _setE2eFileRelationQuery;

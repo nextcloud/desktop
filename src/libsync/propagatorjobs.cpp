@@ -151,13 +151,21 @@ void PropagateLocalMkdir::start()
     // When turning something that used to be a file into a directory
     // we need to delete the file first.
     QFileInfo fi(newDirStr);
-    if (_deleteExistingFile && fi.exists() && fi.isFile()) {
-        QString removeError;
-        if (!FileSystem::remove(newDirStr, &removeError)) {
-            done(SyncFileItem::NormalError,
-                tr("could not delete file %1, error: %2")
-                    .arg(newDirStr, removeError));
-            return;
+    if (fi.exists() && fi.isFile()) {
+        if (_deleteExistingFile) {
+            QString removeError;
+            if (!FileSystem::remove(newDirStr, &removeError)) {
+                done(SyncFileItem::NormalError,
+                    tr("could not delete file %1, error: %2")
+                        .arg(newDirStr, removeError));
+                return;
+            }
+        } else if (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT) {
+            QString error;
+            if (!propagator()->createConflict(_item, _associatedComposite, &error)) {
+                done(SyncFileItem::SoftError, error);
+                return;
+            }
         }
     }
 
@@ -186,7 +194,10 @@ void PropagateLocalMkdir::start()
     }
     propagator()->_journal->commit("localMkdir");
 
-    done(SyncFileItem::Success);
+    auto resultStatus = _item->_instruction == CSYNC_INSTRUCTION_CONFLICT
+        ? SyncFileItem::Conflict
+        : SyncFileItem::Success;
+    done(resultStatus);
 }
 
 void PropagateLocalMkdir::setDeleteExistingFile(bool enabled)

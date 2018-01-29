@@ -278,7 +278,7 @@ void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemVector &syncItems)
     QSet<QString> download_file_paths;
     foreach (const SyncFileItemPtr &it, syncItems) {
         if (it->_direction == SyncFileItem::Down
-            && it->_type == SyncFileItem::File) {
+            && it->_type == ItemTypeFile) {
             download_file_paths.insert(it->_file);
         }
     }
@@ -299,7 +299,7 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
     QSet<QString> upload_file_paths;
     foreach (const SyncFileItemPtr &it, syncItems) {
         if (it->_direction == SyncFileItem::Up
-            && it->_type == SyncFileItem::File) {
+            && it->_type == ItemTypeFile) {
             upload_file_paths.insert(it->_file);
         }
     }
@@ -327,6 +327,45 @@ void SyncEngine::deleteStaleErrorBlacklistEntries(const SyncFileItemVector &sync
 
     // Delete from journal.
     _journal->deleteStaleErrorBlacklistEntries(blacklist_file_paths);
+}
+
+void SyncEngine::conflictRecordMaintenance()
+{
+    // Remove stale conflict entries from the database
+    // by checking which files still exist and removing the
+    // missing ones.
+    auto conflictRecordPaths = _journal->conflictRecordPaths();
+    for (const auto &path : conflictRecordPaths) {
+        auto fsPath = _propagator->getFilePath(QString::fromUtf8(path));
+        if (!QFileInfo(fsPath).exists()) {
+            _journal->deleteConflictRecord(path);
+        }
+    }
+
+    // Did the sync see any conflict files that don't yet have records?
+    // If so, add them now.
+    //
+    // This happens when the conflicts table is new or when conflict files
+    // are downlaoded but the server doesn't send conflict headers.
+    for (const auto &path : _seenFiles) {
+        if (!Utility::isConflictFile(path))
+            continue;
+
+        auto bapath = path.toUtf8();
+        if (!conflictRecordPaths.contains(bapath)) {
+            ConflictRecord record;
+            record.path = bapath;
+
+            // Determine fileid of target file
+            auto basePath = Utility::conflictFileBaseName(bapath);
+            SyncJournalFileRecord baseRecord;
+            if (_journal->getFileRecord(basePath, &baseRecord) && baseRecord.isValid()) {
+                record.baseFileId = baseRecord._fileId;
+            }
+
+            _journal->setConflictRecord(record);
+        }
+    }
 }
 
 int SyncEngine::treewalkLocal(csync_file_stat_t *file, csync_file_stat_t *other, void *data)
@@ -393,6 +432,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         item->_modtime = file->modtime;
         item->_size = file->size;
         item->_checksumHeader = file->checksumHeader;
+        item->_type = file->type;
     } else {
         if (instruction != CSYNC_INSTRUCTION_NONE) {
             qCWarning(lcEngine) << "ERROR: Instruction" << item->_instruction << "vs" << instruction << "for" << fileUtf8;
@@ -483,7 +523,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         break;
     case CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE:
         item->_status = SyncFileItem::Conflict;
-        if (Utility::shouldUploadConflictFiles()) {
+        if (account()->capabilities().uploadConflictFiles()) {
             // For uploaded conflict files, files with no action performed on them should
             // be displayed: but we mustn't overwrite the instruction if something happens
             // to the file!
@@ -494,9 +534,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         } else {
             item->_errorString = tr("Conflict: Server version downloaded, local copy renamed and not uploaded.");
         }
-        break;
-    case CYSNC_STATUS_FILE_LOCKED_OR_OPEN:
-        item->_errorString = QLatin1String("File locked"); // don't translate, internal use!
         break;
     case CSYNC_STATUS_INDIVIDUAL_STAT_FAILED:
         item->_errorString = tr("Stat failed.");
@@ -529,7 +566,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         item->_errorString = tr("Filename encoding is not valid");
     }
 
-    bool isDirectory = file->type == CSYNC_FTW_TYPE_DIR;
+    bool isDirectory = file->type == ItemTypeDirectory;
 
     if (!file->etag.isEmpty()) {
         item->_etag = file->etag;
@@ -538,20 +575,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
 
     if (!item->_inode) {
         item->_inode = file->inode;
-    }
-
-    switch (file->type) {
-    case CSYNC_FTW_TYPE_DIR:
-        item->_type = SyncFileItem::Directory;
-        break;
-    case CSYNC_FTW_TYPE_FILE:
-        item->_type = SyncFileItem::File;
-        break;
-    case CSYNC_FTW_TYPE_SLINK:
-        item->_type = SyncFileItem::SoftLink;
-        break;
-    default:
-        item->_type = SyncFileItem::UnknownType;
     }
 
     SyncFileItem::Direction dir = SyncFileItem::None;
@@ -564,7 +587,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
             _hasNoneFiles = true;
         }
         // Put none-instruction conflict files into the syncfileitem list
-        if (Utility::shouldUploadConflictFiles()
+        if (account()->capabilities().uploadConflictFiles()
             && file->error_status == CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE
             && item->_instruction == CSYNC_INSTRUCTION_IGNORE) {
             break;
@@ -680,8 +703,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         checkErrorBlacklisting(*item);
     }
 
-    _progressInfo->adjustTotalsForFile(*item);
-
     _needsUpdate = true;
 
     if (other) {
@@ -689,6 +710,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         item->_previousSize = other->size;
     }
 
+    slotNewItem(item);
     _syncItemMap.insert(key, item);
     return re;
 }
@@ -817,6 +839,9 @@ void SyncEngine::startSync()
         // database creation error!
     }
 
+    _csync_ctx->upload_conflict_files = _account->capabilities().uploadConflictFiles();
+    _excludedFiles->setExcludeConflictFiles(!_account->capabilities().uploadConflictFiles());
+
     _csync_ctx->read_remote_from_db = true;
     _lastLocalDiscoveryStyle = _csync_ctx->local_discovery_style;
 
@@ -904,6 +929,11 @@ void SyncEngine::slotRootEtagReceived(const QString &e)
         _remoteRootEtag = e;
         emit rootEtag(_remoteRootEtag);
     }
+}
+
+void SyncEngine::slotNewItem(const SyncFileItemPtr &item)
+{
+    _progressInfo->adjustTotalsForFile(*item);
 }
 
 void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
@@ -1063,6 +1093,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     connect(_propagator.data(), &OwncloudPropagator::touchedFile, this, &SyncEngine::slotAddTouchedFile);
     connect(_propagator.data(), &OwncloudPropagator::insufficientLocalStorage, this, &SyncEngine::slotInsufficientLocalStorage);
     connect(_propagator.data(), &OwncloudPropagator::insufficientRemoteStorage, this, &SyncEngine::slotInsufficientRemoteStorage);
+    connect(_propagator.data(), &OwncloudPropagator::newItem, this, &SyncEngine::slotNewItem);
 
     // apply the network limits to the propagator
     setNetworkLimits(_uploadLimit, _downloadLimit);
@@ -1128,10 +1159,11 @@ void SyncEngine::slotFinished(bool success)
         _journal->setDataFingerprint(_discoveryMainThread->_dataFingerprint);
     }
 
-    // emit the treewalk results.
     if (!_journal->postSyncCleanup(_seenFiles, _temporarilyUnavailablePaths)) {
         qCDebug(lcEngine) << "Cleaning of synced ";
     }
+
+    conflictRecordMaintenance();
 
     _journal->commit("All Finished.", false);
 
