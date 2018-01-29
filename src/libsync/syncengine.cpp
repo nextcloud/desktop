@@ -861,6 +861,12 @@ void SyncEngine::startSync()
     _csync_ctx->new_files_are_placeholders = _syncOptions._newFilesArePlaceholders;
     _csync_ctx->placeholder_suffix = _syncOptions._placeholderSuffix.toUtf8();
 
+    if (_csync_ctx->new_files_are_placeholders && _csync_ctx->placeholder_suffix.isEmpty()) {
+        csyncError(tr("Using placeholder files, but placeholder suffix is not set"));
+        finalize(false);
+        return;
+    }
+
     // If needed, make sure we have up to date E2E information before the
     // discovery phase, otherwise we start right away
     if (_account->capabilities().clientSideEncryptionAvailable()) {
