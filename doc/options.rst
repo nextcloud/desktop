@@ -1,7 +1,7 @@
-You have the option of starting your ownCloud desktop client with the 
-``owncloud`` command. The following options are supported:
+You have the option of starting your Nextcloud desktop client with the 
+``nextcloud`` command. The following options are supported:
 
-``owncloud -h`` or ``owncloud --help``
+``nextcloud -h`` or ``nextcloud --help``
         Displays all command options.
 
 The other options are:

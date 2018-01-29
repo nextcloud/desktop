@@ -1,4 +1,4 @@
-When disk space is low the ownCloud Client will be unable to synchronize all files. This section describes its behavior in a low disk space situation as well as the options that influence it.
+When disk space is low the Nextcloud Client will be unable to synchronize all files. This section describes its behavior in a low disk space situation as well as the options that influence it.
 
 1. Synchronization of a folder aborts entirely if the remaining disk space falls below 50 MB. This threshold can be adjusted with the ``OWNCLOUD_CRITICAL_FREE_SPACE_BYTES`` environment variable.
 

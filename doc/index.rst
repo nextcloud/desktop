@@ -1,7 +1,7 @@
 .. _contents:
 
-ownCloud Desktop Client Manual
-==============================
+Nextcloud Desktop Client Manual
+===============================
 
 .. toctree::
    :maxdepth: 2

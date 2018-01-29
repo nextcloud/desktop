@@ -19,10 +19,10 @@ Environment Variables
 .. index:: env vars
 .. include:: envvars.rst
 
-ownCloud Command Line Client
-----------------------------
-.. index:: owncloudcmd
-.. include:: owncloudcmd.rst
+Nextcloud Command Line Client
+-----------------------------
+.. index:: nextcloudcmd
+.. include:: nextcloudcmd.rst
 
 Low Disk Space
 --------------

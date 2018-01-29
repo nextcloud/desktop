@@ -3,16 +3,12 @@ The Automatic Updater
 =====================
 
 The Automatic Updater ensures that you always have the 
-latest features and bug fixes for your ownCloud synchronization client.
+latest features and bug fixes for your Nextcloud synchronization client.
 
 The Automatic Updater updates only on Mac OS X and Windows computers; Linux 
 users only need to use their normal package managers. However, on Linux systems 
 the Updater will check for updates and notify you when a new version is 
 available.
-
-.. note:: Because of various technical issues, desktop sync clients older than 
-   1.7 will not be allowed to connect and sync with the ownCloud 8.1+ server. It 
-   is highly recommended to keep your client updated.
 
 Basic Workflow
 --------------
@@ -23,11 +19,11 @@ operating systems.
 Windows
 ^^^^^^^
 
-The ownCloud client checks for updates and downloads them when available. You
+The Nextcloud client checks for updates and downloads them when available. You
 can view the update status under ``Settings -> General -> Updates`` in the
-ownCloud client.
+Nextcloud client.
 
-If an update is available, and has been successfully downloaded, the ownCloud
+If an update is available, and has been successfully downloaded, the Nextcloud
 client starts a silent update prior to its next launch and then restarts
 itself. Should the silent update fail, the client offers a manual download.
 
@@ -36,7 +32,7 @@ itself. Should the silent update fail, the client offers a manual download.
 Mac OS X
 ^^^^^^^^
 
-If a new update is available, the ownCloud client initializes a pop-up dialog
+If a new update is available, the Nextcloud client initializes a pop-up dialog
 to alert you of the update and requesting that you update to the latest
 version. Due to their use of the Sparkle frameworks, this is the default
 process for Mac OS X applications.
@@ -44,7 +40,7 @@ process for Mac OS X applications.
 Linux
 ^^^^^
 
-Linux distributions provide their own update tools, so ownCloud clients that use
+Linux distributions provide their own update tools, so Nextcloud clients that use
 the Linux operating system do not perform any updates on their own. The client 
 will inform you (``Settings -> General -> Updates``) when an update is 
 available.
@@ -62,7 +58,7 @@ Preventing Automatic Updates in Windows Environments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Users may disable automatic updates by adding this line to the [General] 
-section of their ``owncloud.cfg`` files::
+section of their ``nextcloud.cfg`` files::
 
  skipUpdateCheck=true
 
@@ -75,8 +71,8 @@ To prevent automatic updates, but allow manual overrides:
 
 1. Edit these Registry keys:
 
-    a. (32-bit-Windows) ``HKEY_LOCAL_MACHINE\Software\ownCloud\ownCloud``
-    b. (64-bit-Windows) ``HKEY_LOCAL_MACHINE\Software\Wow6432Node\ownCloud\ownCloud``
+    a. (32-bit-Windows) ``HKEY_LOCAL_MACHINE\Software\Nextcloud\Nextcloud``
+    b. (64-bit-Windows) ``HKEY_LOCAL_MACHINE\Software\Wow6432Node\Nextcloud\Nextcloud``
 
 2. Add the key ``skipUpdateCheck`` (of type DWORD).
 
@@ -91,19 +87,13 @@ To prevent automatic updates and disallow manual overrides:
 
 1. Edit this Registry key:
 
-    ``HKEY_LOCAL_MACHINE\Software\Policies\ownCloud\ownCloud``
+    ``HKEY_LOCAL_MACHINE\Software\Policies\Nextcloud\Nextcloud``
 
 2. Add the key ``skipUpdateCheck`` (of type DWORD).
 
 3. Specify a value of ``1`` to the machine.
 
-.. note:: Enterprise branded clients 
-   (see `Building Branded ownCloud Clients 
-   <https://doc.owncloud.org/branded_clients/>`_) have different key names, 
-   which are set in ownBrander using the Application Vendor and Application 
-   Name fields. Your key names look like this::
-
-   ``HKEY_LOCAL_MACHINE\Software\Policies\myCompanyName\myAppName``
+.. note:: branded clients have different key names
 
 
 Preventing Automatic Updates in Mac OS X Environments
@@ -111,15 +101,15 @@ Preventing Automatic Updates in Mac OS X Environments
 
 You can disable the automatic update mechanism, in the Mac OS X operating system,
 by copying the file
-``owncloud.app/Contents/Resources/deny_autoupdate_com.owncloud.desktopclient.plist``
-to ``/Library/Preferences/com.owncloud.desktopclient.plist``.
+``nextcloud.app/Contents/Resources/deny_autoupdate_com.nextcloud.desktopclient.plist``
+to ``/Library/Preferences/com.nextcloud.desktopclient.plist``.
 
 Preventing Automatic Updates in Linux Environments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Because the Linux client does not provide automatic updating functionality, there is no
 need to remove the automatic-update check.  However, if you want to disable it edit your desktop
-client configuration file, ``$HOME/.config/ownCloud/owncloud.cfg``.
+client configuration file, ``$HOME/.config/Nextcloud/nextcloud.cfg``.
 Add this line to the [General] section::
 
     skipUpdateCheck=true
