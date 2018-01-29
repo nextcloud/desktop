@@ -51,7 +51,7 @@
 #include <QTranslator>
 #include <QMenu>
 #include <QMessageBox>
-#include <QStandardPaths>
+#include <QDesktopServices>
 
 class QSocket;
 

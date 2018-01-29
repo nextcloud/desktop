@@ -122,7 +122,7 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
   EncryptedFile encryptedFile;
   QVector<EncryptedFile> files = _metadata->files();
   for(EncryptedFile &file : files) {
-    if (file.originalFilename == _item->File) {
+    if (file.originalFilename == _item->_file) {
       encryptedFile = file;
     }
   }
