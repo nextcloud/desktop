@@ -242,11 +242,11 @@ void ProgressInfo::setProgressComplete(const SyncFileItem &item)
         return;
     }
 
-    _currentItems.remove(item._file);
     _fileProgress.setCompleted(_fileProgress._completed + item._affectedItems);
     if (ProgressInfo::isSizeDependent(item)) {
         _totalSizeOfCompletedJobs += _currentItems[item._file]._progress._total;
     }
+    _currentItems.remove(item._file);
     recomputeCompletedSize();
     _lastCompletedItem = item;
 }
