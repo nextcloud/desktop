@@ -70,7 +70,7 @@ public:
                                QFile *input, QFile *output);
 };
 
-class ClientSideEncryption : public QObject {
+class OWNCLOUDSYNC_EXPORT ClientSideEncryption : public QObject {
     Q_OBJECT
 public:
     ClientSideEncryption();
@@ -140,7 +140,7 @@ struct EncryptedFile {
     int metadataKey;
 };
 
-class FolderMetadata {
+class OWNCLOUDSYNC_EXPORT FolderMetadata {
 public:
     FolderMetadata(AccountPtr account, const QByteArray& metadata = QByteArray(), int statusCode = -1);
     QByteArray encryptedMetadata();
