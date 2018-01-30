@@ -257,8 +257,10 @@ void ProgressInfo::setProgressItem(const SyncFileItem &item, quint64 completed)
         return;
     }
 
-    _currentItems[item._file]._item = item;
-    _currentItems[item._file]._progress._total = item._size;
+    if (!_currentItems.contains(item._file)) {
+        _currentItems[item._file]._item = item;
+        _currentItems[item._file]._progress._total = item._size;
+    }
     _currentItems[item._file]._progress.setCompleted(completed);
     recomputeCompletedSize();
 
