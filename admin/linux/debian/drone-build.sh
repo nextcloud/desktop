@@ -20,6 +20,7 @@ if test -z "${DRONE_DIR}"; then
     DRONE_DIR=`dirname ${DRONE_WORKSPACE}`
 fi
 
+set +x
 if test "$DEBIAN_SECRET_KEY" -a "$DEBIAN_SECRET_IV"; then
     openssl aes-256-cbc -K $DEBIAN_SECRET_KEY -iv $DEBIAN_SECRET_IV -in admin/linux/debian/signing-key.txt.enc -d | gpg --import
 
@@ -27,6 +28,7 @@ if test "$DEBIAN_SECRET_KEY" -a "$DEBIAN_SECRET_IV"; then
 
     touch ~/.has_ppa_keys
 fi
+set -x
 
 cd "${DRONE_WORKSPACE}"
 read basever kind <<<$(admin/linux/debian/scripts/git2changelog.py /tmp/tmpchangelog stable)
