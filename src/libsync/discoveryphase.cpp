@@ -274,7 +274,8 @@ void DiscoverySingleDirectoryJob::start()
           << "http://owncloud.org/ns:downloadURL"
           << "http://owncloud.org/ns:dDC"
           << "http://owncloud.org/ns:permissions"
-          << "http://owncloud.org/ns:checksums";
+          << "http://owncloud.org/ns:checksums"
+          << "http://owncloud.org/ns:zsync";
     if (_isRootPath)
         props << "http://owncloud.org/ns:data-fingerprint";
     if (_account->serverVersionInt() >= Account::makeServerVersion(10, 0, 0)) {
@@ -344,6 +345,8 @@ static std::unique_ptr<csync_file_stat_t> propertyMapToFileStat(const QMap<QStri
                 // Piggy back on the persmission field
                 file_stat->remotePerm.setPermission(RemotePermissions::IsShared);
             }
+        } else if (property == "zsync" && value.toUtf8() == "true") {
+            file_stat->remotePerm.setPermission(RemotePermissions::HasZSyncMetadata);
         }
     }
     return file_stat;

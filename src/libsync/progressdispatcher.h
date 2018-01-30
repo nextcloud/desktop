@@ -91,6 +91,19 @@ public:
      */
     void adjustTotalsForFile(const SyncFileItem &item);
 
+    /**
+     * Update totals for item.
+     * adjustTotalsForFile is called during the treewalk phase to collect
+     * the initial total size and file count.
+     * updateTotalsForFile is called at most once per item during propagation
+     * to adjust them when new information has become available.
+     *
+     * Example: With delta-sync, the actual size of the download will only
+     * be known during propagation - this function adjusts the total size
+     * to account for it.
+     */
+    void updateTotalsForFile(const SyncFileItem &item, quint64 newSize);
+
     quint64 totalFiles() const;
     quint64 completedFiles() const;
 

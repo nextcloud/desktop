@@ -462,6 +462,7 @@ public:
 
     void scheduleNextJob();
     void reportProgress(const SyncFileItem &, quint64 bytes);
+    void reportFileTotal(const SyncFileItem &item, quint64 newSize);
 
     void abort()
     {
@@ -532,6 +533,7 @@ signals:
     void newItem(const SyncFileItemPtr &);
     void itemCompleted(const SyncFileItemPtr &);
     void progress(const SyncFileItem &, quint64 bytes);
+    void updateFileTotal(const SyncFileItem &, quint64 newSize);
     void finished(bool success);
 
     /** Emitted when propagation has problems with a locked file. */

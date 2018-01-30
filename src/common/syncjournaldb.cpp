@@ -495,11 +495,12 @@ bool SyncJournalDb::checkConnect()
             forceRemoteDiscovery = true;
         }
 
-        // There was a bug in versions <2.3.0 that could lead to stale
-        // local files and a remote discovery will fix them.
-        // See #5190 #5242.
-        if (major == 2 && minor < 3) {
-            qCInfo(lcDb) << "upgrade form client < 2.3.0 detected! forcing remote discovery";
+        // - There was a bug in versions <2.3.0 that could lead to stale
+        //   local files and a remote discovery will fix them.
+        //   See #5190 #5242.
+        // - New remote HasZSyncMetadata permission added, invalidate cache
+        if (major == 2 && minor < 5) {
+            qCInfo(lcDb) << "upgrade from client < 2.5.0 detected! forcing remote discovery";
             forceRemoteDiscovery = true;
         }
 

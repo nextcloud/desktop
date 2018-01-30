@@ -26,6 +26,7 @@
 #include "propagateremotedelete.h"
 #include "propagatedownload.h"
 #include "common/asserts.h"
+#include "configfile.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -1088,6 +1089,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         this, &SyncEngine::slotItemCompleted);
     connect(_propagator.data(), &OwncloudPropagator::progress,
         this, &SyncEngine::slotProgress);
+    connect(_propagator.data(), &OwncloudPropagator::updateFileTotal,
+        this, &SyncEngine::updateFileTotal);
     connect(_propagator.data(), &OwncloudPropagator::finished, this, &SyncEngine::slotFinished, Qt::QueuedConnection);
     connect(_propagator.data(), &OwncloudPropagator::seenLockedFile, this, &SyncEngine::seenLockedFile);
     connect(_propagator.data(), &OwncloudPropagator::touchedFile, this, &SyncEngine::slotAddTouchedFile);
@@ -1208,6 +1211,11 @@ void SyncEngine::slotProgress(const SyncFileItem &item, quint64 current)
     emit transmissionProgress(*_progressInfo);
 }
 
+void SyncEngine::updateFileTotal(const SyncFileItem &item, quint64 newSize)
+{
+    _progressInfo->updateTotalsForFile(item, newSize);
+    emit transmissionProgress(*_progressInfo);
+}
 
 /* Given a path on the remote, give the path as it is when the rename is done */
 QString SyncEngine::adjustRenamedPath(const QString &original)

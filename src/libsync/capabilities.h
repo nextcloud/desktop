@@ -43,6 +43,7 @@ public:
     bool sharePublicLinkMultiple() const;
     bool shareResharing() const;
     bool chunkingNg() const;
+    QString zsyncSupportedVersion() const;
 
     /// disable parallel upload in chunking
     bool chunkingParallelUploadDisabled() const;
