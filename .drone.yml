@@ -88,6 +88,12 @@ pipeline:
             matrix:
                 BUILD: AppImage
 
+    documentation:
+        image: nextcloudci/documentation:documentation-5
+        commands:
+            - cd doc
+            - make html
+
 matrix:
     include:
         - TESTS: qt-5.7
