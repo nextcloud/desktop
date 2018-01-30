@@ -327,7 +327,7 @@ void ZsyncGenerateRunnable::run()
     /* Okay, start writing the zsync file */
     fprintf(meta.get(), "zsync: 0.6.3\n");
     fprintf(meta.get(), "Blocksize: %lu\n", _blocksize);
-    fprintf(meta.get(), "Length: %llu\n", _len);
+    fprintf(meta.get(), "Length: %lu\n", _len);
     fprintf(meta.get(), "Hash-Lengths: %d,%d,%d\n", seq_matches, rsum_len,
         checksum_len);
 

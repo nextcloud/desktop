@@ -99,7 +99,7 @@ class ZsyncGenerateRunnable : public QObject, public QRunnable
 {
     Q_OBJECT
     size_t _blocksize = ZSYNC_BLOCKSIZE;
-    off_t _len = 0;
+    size_t _len = 0;
     const QString _file;
     SHA1_CTX _shactx;
 
