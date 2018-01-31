@@ -52,7 +52,7 @@ if ! wget http://ppa.launchpad.net/${repo}/ubuntu/pool/main/n/nextcloud-client/n
     origsourceopt="-sa"
 fi
 
-for distribution in xenial zesty artful stable; do
+for distribution in xenial artful bionic stable; do
     rm -rf nextcloud-client_${basever}
     cp -a ${DRONE_WORKSPACE} nextcloud-client_${basever}
 
@@ -77,22 +77,12 @@ for distribution in xenial zesty artful stable; do
     dpkg-source --build .
     dpkg-genchanges -S ${origsourceopt} > "../nextcloud-client_${fullver}_source.changes"
 
-    ls -al
-
     if test -f ~/.has_ppa_keys; then
         debsign -k7D14AA7B -S
     fi
 
     cd ..
 done
-
-ls -al
-
-
-#if test -f ~/.has_ppa_keys; then
-#    ls -al
-#    debsign -k7D14AA7B -S nextcloud-client_*[0-9.][0-9].dsc nextcloud-client_*[0-9.][0-9]_source.changes
-#fi
 
 #if test "${pull_request}" = "master"; then
     kind=`cat kind`
