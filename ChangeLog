@@ -1,7 +1,7 @@
 ChangeLog
 =========
 
-version 2.4.0 (2017-12-XX)
+version 2.4.0 (2017-12-21)
 * If you're using 2.4.0 alpha1, please upgrade as previous alphas/rcs had an issue with hidden files and renames!
 * OAuth2 authentication support by opening external browser (#5668)
 * Shibboleth: Change to use OAuth2 if supported (#6198)
