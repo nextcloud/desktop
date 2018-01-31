@@ -336,8 +336,11 @@ AccountPtr AccountManager::createAccount()
 void AccountManager::displayMnemonic(const QString& mnemonic)
 {
     QMessageBox msgBox;
-    msgBox.setText(tr("Note your encryption passphrase"));
+    msgBox.setText(tr("All 12 words together make a very strong password, "
+                      "letting only you view and make use of your encrypted files. "
+                      "Please write it down and keep it somewhere safe."));
     msgBox.setDetailedText(mnemonic);
+    msgBox.setWindowTitle(tr("Make note of your 12 word encryption password"));
     msgBox.setIcon(QMessageBox::Information);
     msgBox.setStandardButtons(QMessageBox::Ok);
 
