@@ -50,7 +50,7 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     addPattern(".csync_journal.db*", /*deletable=*/false, /*readonly=*/true);
     addPattern("._sync_*.db*", /*deletable=*/false, /*readonly=*/true);
     addPattern(".sync_*.db*", /*deletable=*/false, /*readonly=*/true);
-    readIgnoreFile(cfgFile.excludeFile(ConfigFile::SystemScope), true);
+    readIgnoreFile(cfgFile.excludeFile(ConfigFile::SystemScope), false);
     readIgnoreFile(cfgFile.excludeFile(ConfigFile::UserScope), false);
 
     connect(this, &QDialog::accepted, this, &IgnoreListEditor::slotUpdateLocalIgnoreList);
