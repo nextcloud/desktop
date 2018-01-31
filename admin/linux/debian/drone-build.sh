@@ -77,12 +77,21 @@ for distribution in xenial zesty artful stable; do
     dpkg-source --build .
     dpkg-genchanges -S ${origsourceopt} > "../nextcloud-client_${fullver}_source.changes"
 
+    ls -al
+
+    if test -f ~/.has_ppa_keys; then
+        debsign -k7D14AA7B -S
+    fi
+
     cd ..
 done
 
-if test -f ~/.has_ppa_keys; then
-    debsign -k7D14AA7B nextcloud-client_*[0-9.][0-9].dsc nextcloud-client_*[0-9.][0-9]_source.changes
-fi
+ls -al
+
+#if test -f ~/.has_ppa_keys; then
+#    ls -al
+#    debsign -k7D14AA7B -S nextcloud-client_*[0-9.][0-9].dsc nextcloud-client_*[0-9.][0-9]_source.changes
+#fi
 
 #if test "${pull_request}" = "master"; then
     kind=`cat kind`
