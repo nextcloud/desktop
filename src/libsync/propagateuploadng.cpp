@@ -36,14 +36,14 @@
 
 namespace OCC {
 
-QUrl PropagateUploadFileNG::chunkUrl(qint64 chunk)
+QUrl PropagateUploadFileNG::chunkUrl(qint64 chunkOffset)
 {
     QString path = QLatin1String("remote.php/dav/uploads/")
         + propagator()->account()->davUser()
         + QLatin1Char('/') + QString::number(_transferId);
-    if (chunk != -1) {
+    if (chunkOffset != -1) {
         // We need to do add leading 0 because the server orders the chunk alphabetically
-        path += QLatin1Char('/') + QString::number(quint64(chunk)).rightJustified(16, '0'); // 1e16 is 10 petabyte
+        path += QLatin1Char('/') + QString::number(quint64(chunkOffset)).rightJustified(16, '0'); // 1e16 is 10 petabyte
     }
     return Utility::concatUrlPath(propagator()->account()->url(), path);
 }
@@ -308,18 +308,15 @@ void PropagateUploadFileNG::slotPropfindFinished()
     slotJobDestroyed(job); // remove it from the _jobs list
     propagator()->_activeJobList.removeOne(this);
 
-    _currentChunk = 0;
+    _currentChunkOffset = 0;
     _sent = 0;
 
-    for (auto &chunkId : _serverChunks.keys()) {
-        if (updateRanges(chunkId, _serverChunks[chunkId].size)) {
-            _sent += _serverChunks[chunkId].size;
-            _serverChunks.remove(chunkId);
+    for (auto chunkOffset : _serverChunks.keys()) {
+        if (updateRanges(chunkOffset, _serverChunks[chunkOffset].size)) {
+            _sent += _serverChunks[chunkOffset].size;
+            _serverChunks.remove(chunkOffset);
         }
     }
-
-    if (!_rangesToUpload.isEmpty())
-        _currentChunk = _rangesToUpload.first().start;
 
     if (_sent > _bytesToUpload) {
         // Normally this can't happen because the size is xor'ed with the transfer id, and it is
@@ -331,7 +328,7 @@ void PropagateUploadFileNG::slotPropfindFinished()
         return;
     }
 
-    qCInfo(lcPropagateUpload) << "Resuming " << _item->_file << " from chunk " << _currentChunk << "; sent =" << _sent;
+    qCInfo(lcPropagateUpload) << "Resuming " << _item->_file << "; sent =" << _sent << "; total=" << _bytesToUpload;
 
     if (!_serverChunks.isEmpty()) {
         qCInfo(lcPropagateUpload) << "To Delete" << _serverChunks.keys();
@@ -495,13 +492,13 @@ void PropagateUploadFileNG::startNextChunk()
         return;
     }
 
-    _currentChunk = _rangesToUpload.first().start;
+    _currentChunkOffset = _rangesToUpload.first().start;
     _currentChunkSize = qMin(propagator()->_chunkSize, _rangesToUpload.first().size);
 
     auto device = new UploadDevice(&propagator()->_bandwidthManager);
     const QString fileName = propagator()->getFilePath(_item->_file);
 
-    if (!device->prepareAndOpen(fileName, _currentChunk, _currentChunkSize)) {
+    if (!device->prepareAndOpen(fileName, _currentChunkOffset, _currentChunkSize)) {
         qCWarning(lcPropagateUpload) << "Could not prepare upload device: " << device->errorString();
 
         // If the file is currently locked, we want to retry the sync
@@ -515,10 +512,10 @@ void PropagateUploadFileNG::startNextChunk()
     }
 
     QMap<QByteArray, QByteArray> headers;
-    headers["OC-Chunk-Offset"] = QByteArray::number(_currentChunk);
+    headers["OC-Chunk-Offset"] = QByteArray::number(_currentChunkOffset);
 
     _sent += _currentChunkSize;
-    QUrl url = chunkUrl(_currentChunk);
+    QUrl url = chunkUrl(_currentChunkOffset);
 
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
     PUTFileJob *job = new PUTFileJob(propagator()->account(), url, device, headers, 0, this);
@@ -531,7 +528,7 @@ void PropagateUploadFileNG::startNextChunk()
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     job->start();
     propagator()->_activeJobList.append(this);
-    updateRanges(_currentChunk, _currentChunkSize);
+    updateRanges(_currentChunkOffset, _currentChunkSize);
 }
 
 void PropagateUploadFileNG::slotZsyncGenerationFinished(const QString &generatedFileName)

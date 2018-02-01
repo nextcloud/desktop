@@ -336,14 +336,30 @@ class PropagateUploadFileNG : public PropagateUploadFileCommon
 {
     Q_OBJECT
 private:
-    quint64 _sent = 0; /// amount of data (bytes) that was already sent
+    /** Amount of data that was already sent in bytes.
+     *
+     * If this job is resuming an upload, this number includes bytes that were
+     * sent in previous jobs.
+     */
+    quint64 _sent = 0;
+
+    /** Amount of data that needs to be sent to the server in bytes.
+     *
+     * For normal uploads this will be the file size, for zsync uploads it can
+     * be less.
+     *
+     * This value is intended to be comparable to _sent: it's always the total
+     * amount of data that needs to be present at the server to finish the upload -
+     * regardless of whether previous jobs have already sent something.
+     */
+    quint64 _bytesToUpload;
+
     uint _transferId = 0; /// transfer id (part of the url)
-    int _currentChunk = 0; /// id of the next chunk that will be sent
+    int _currentChunkOffset = 0; /// byte offset of the next chunk data that will be sent
     quint64 _currentChunkSize = 0; /// current chunk size
     bool _removeJobError = false; /// if not null, there was an error removing the job
     bool _zsyncSupported = false; /// if zsync is supported this will be set to true
     bool _isZsyncMetadataUploadRunning = false; // flag to ensure that zsync metadata upload is complete before job is
-    quint64 _bytesToUpload; // in case of zsync upload this will hold the actual bytes to upload, normal upload will be file size
 
     // Map chunk number with its size  from the PROPFIND on resume.
     // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
@@ -364,9 +380,9 @@ private:
 
     /**
      * Return the URL of a chunk.
-     * If chunk == -1, returns the URL of the parent folder containing the chunks
+     * If chunkOffset == -1, returns the URL of the parent folder containing the chunks
      */
-    QUrl chunkUrl(qint64 chunk = -1);
+    QUrl chunkUrl(qint64 chunkOffset = -1);
     bool updateRanges(quint64 start, quint64 size);
 
 public:
