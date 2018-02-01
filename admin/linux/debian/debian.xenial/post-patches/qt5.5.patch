@@ -1,0 +1,13 @@
+Binary files nextcloud-client-2.4.0.orig/.git/index and nextcloud-client-2.4.0/.git/index differ
+diff -ruN nextcloud-client-2.4.0.orig/src/CMakeLists.txt nextcloud-client-2.4.0/src/CMakeLists.txt
+--- nextcloud-client-2.4.0.orig/src/CMakeLists.txt	2018-02-01 19:16:38.461162563 +0100
++++ nextcloud-client-2.4.0/src/CMakeLists.txt	2018-02-01 19:20:20.253824030 +0100
+@@ -4,7 +4,7 @@
+ 
+ set(synclib_NAME ${APPLICATION_EXECUTABLE}sync)
+ 
+-find_package(Qt5 5.6 COMPONENTS Core Network Xml Concurrent REQUIRED)
++find_package(Qt5 5.5 COMPONENTS Core Network Xml Concurrent REQUIRED)
+ if (Qt5Core_VERSION VERSION_LESS 5.9.0)
+ message(STATUS "For HTTP/2 support, compile with Qt 5.9 or higher.")
+ endif()

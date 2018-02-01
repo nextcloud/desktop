@@ -70,6 +70,14 @@ for distribution in xenial artful bionic stable; do
     else
         cat admin/linux/debian/debian/changelog >> debian/changelog
     fi
+
+    for p in debian/post-patches/*.patch; do
+        if test -f "${p}"; then
+            echo "Applying ${p}"
+            patch -p1 < "${p}"
+        fi
+    done
+
     fullver=`head -1 debian/changelog | sed "s:nextcloud-client (\([^)]*\)).*:\1:"`
 
     EDITOR=true dpkg-source --commit . local-changes
