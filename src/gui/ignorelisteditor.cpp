@@ -37,27 +37,23 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     ui->setupUi(this);
 
+    ConfigFile cfgFile;
     ui->descriptionLabel->setText(tr("Files or folders matching a pattern will not be synchronized.\n\n"
                                      "Items where deletion is allowed will be deleted if they prevent a "
                                      "directory from being removed. "
                                      "This is useful for meta data."));
-
-    ConfigFile cfgFile;
     readOnlyTooltip = tr("This entry is provided by the system at '%1' "
                          "and cannot be modified in this view.")
                           .arg(QDir::toNativeSeparators(cfgFile.excludeFile(ConfigFile::SystemScope)));
 
-    addPattern(".csync_journal.db*", /*deletable=*/false, /*readonly=*/true);
-    addPattern("._sync_*.db*", /*deletable=*/false, /*readonly=*/true);
-    addPattern(".sync_*.db*", /*deletable=*/false, /*readonly=*/true);
-    readIgnoreFile(cfgFile.excludeFile(ConfigFile::SystemScope), false);
-    readIgnoreFile(cfgFile.excludeFile(ConfigFile::UserScope), false);
+    populateIgnoreFileTable();
 
     connect(this, &QDialog::accepted, this, &IgnoreListEditor::slotUpdateLocalIgnoreList);
     ui->removePushButton->setEnabled(false);
     connect(ui->tableWidget, &QTableWidget::itemSelectionChanged, this, &IgnoreListEditor::slotItemSelectionChanged);
     connect(ui->removePushButton, &QAbstractButton::clicked, this, &IgnoreListEditor::slotRemoveCurrentItem);
     connect(ui->addPushButton, &QAbstractButton::clicked, this, &IgnoreListEditor::slotAddPattern);
+    connect(ui->buttonBox, &QDialogButtonBox::clicked, this, &IgnoreListEditor::slotRestoreDefaults);
 
     ui->tableWidget->resizeColumnsToContents();
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(patternCol, QHeaderView::Stretch);
@@ -150,6 +146,11 @@ void IgnoreListEditor::slotAddPattern()
     ui->tableWidget->scrollToBottom();
 }
 
+void IgnoreListEditor::slotRestoreDefaults(QAbstractButton *button){
+    if(ui->buttonBox->buttonRole(button) == QDialogButtonBox::ResetRole)
+        populateIgnoreFileTable();
+}
+
 void IgnoreListEditor::readIgnoreFile(const QString &file, bool readOnly)
 {
     QFile ignores(file);
@@ -167,6 +168,18 @@ void IgnoreListEditor::readIgnoreFile(const QString &file, bool readOnly)
             }
         }
     }
+}
+
+void IgnoreListEditor::populateIgnoreFileTable(){
+    ui->tableWidget->setRowCount(0);
+
+    addPattern(".csync_journal.db*", /*deletable=*/false, /*readonly=*/true);
+    addPattern("._sync_*.db*", /*deletable=*/false, /*readonly=*/true);
+    addPattern(".sync_*.db*", /*deletable=*/false, /*readonly=*/true);
+
+    ConfigFile cfgFile;
+    readIgnoreFile(cfgFile.excludeFile(ConfigFile::SystemScope), false);
+    readIgnoreFile(cfgFile.excludeFile(ConfigFile::UserScope), false);
 }
 
 int IgnoreListEditor::addPattern(const QString &pattern, bool deletable, bool readOnly)
