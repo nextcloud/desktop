@@ -4,7 +4,7 @@ Sync Algorithm
 Overview
 --------
 
-This is a technical description of the synchronization (sync) algorithm used by the ownCloud client.
+This is a technical description of the synchronization (sync) algorithm used by the Nextcloud client.
 
 The sync algorithm is the thing that looks at the local and remote file system trees and the sync journal and decides which steps need to be taken to bring the two trees into synchronization. It's different from the propagator, whose job it is to actually execute these steps.
 
@@ -13,7 +13,7 @@ Definitions
 -----------
 
   - local tree: The files and directories on the local file system that shall be kept in sync with the remote tree.
-  - remote tree: The files and directories on the ownCloud server that shall be kept in sync with the local tree.
+  - remote tree: The files and directories on the Nextcloud server that shall be kept in sync with the local tree.
   - sync journal (journal): A snapshot of file and directory metadata that the sync algorithm uses as a baseline to detect local or remote changes. Typically stored in a database.
   - file and directory metadata:
     - mtimes

@@ -1,0 +1,23 @@
+{# Switch to icon instead of text in `sm` view size for BS3 only. #}
+{%- if prev or next %}
+<ul class="prevnext-title list-unstyled list-inline">
+{%- endif %}
+{%- if prev %}
+  <li class="prev">
+    <a href="{{ prev.link|e }}" title="{{ _('Previous Chapter: ') + prev.title|striptags }}">
+      {%- if theme_bootstrap_version == "3" -%}<span class="glyphicon glyphicon-chevron-left visible-sm"></span>{%- endif -%}
+      <span class="hidden-sm">{{ "&laquo;"|safe }} {{ prev.title|striptags }}</span>
+    </a>
+  </li>
+{%- endif %}
+{%- if next %}
+  <li class="next">
+    <a href="{{ next.link|e }}" title="{{ _('Next Chapter: ') + next.title|striptags }}">
+      {%- if theme_bootstrap_version == "3" -%}<span class="glyphicon glyphicon-chevron-right visible-sm"></span>{%- endif -%}
+      <span class="hidden-sm">{{ next.title|striptags }} {{ "&raquo;"|safe }}</span>
+    </a>
+  </li>
+{%- endif %}
+{%- if prev or next %}
+</ul>
+{%- endif %}

@@ -6,7 +6,7 @@ Visual Tour
 Icon
 ----
 
-The ownCloud Client remains in the background and is visible
+The Nextcloud Client remains in the background and is visible
 as an icon in the system tray (Windows, KDE), status bar
 (MAC OS X), or notification area (Ubuntu).
 
@@ -20,19 +20,19 @@ Menu
 A right click on the icon (left click on Ubuntu and Mac OS X)
 provides the following menu:
 
-* ``Open ownCloud in browser``: Opens the ownCloud web interface
-* ``Open folder 'ownCloud'``: Opens the local folder.  If multiple
+* ``Open Nextcloud in browser``: Opens the Nextcloud web interface
+* ``Open folder 'Nextcloud'``: Opens the local folder.  If multiple
   sync targets have been defined, an entry will exist for each local folder.
 * **Disk space indicator**: Shows how much space is used on the server.
 * Operation indicator: Shows the status of the current sync process, or
   ``Up to date`` if server and client are in sync.
 * **Recent Changes**: shows the last six files modified by sync operations,
   and provides access to the Sync status, which lists all changes
-  since the last restart of ownCloud Client.
+  since the last restart of Nextcloud Client.
 * ``Settings...``: provides access to the settings menu.
 * ``Help``: Opens a browser to display this help.
 * ``Log out``: Logs the client out of the server.
-* ``Quit ownCloud``: Quits ownCloud Client, ending a currently running
+* ``Quit Nextcloud``: Quits Nextcloud Client, ending a currently running
   sync run.
 
 Settings
@@ -48,7 +48,7 @@ folders in the account and gives the ability to modify them.
 
 Where:
 
-* ``Connected to <ownCloud instance> as <user>``: Indicates the ownCloud server
+* ``Connected to <Nextcloud instance> as <user>``: Indicates the Nextcloud server
   which the client is syncing with and the user account on that server.
 
 * ``Add Folder Sync Connection...``: Provides the ability to add another folder to the sync
@@ -60,7 +60,7 @@ Where:
   root.  First, remove the root from sync, then add the folders to sync as
   desired.
 * ``Storage Usage``: Provides further details on the storage utilization on the
-  ownCloud server.
+  Nextcloud server.
 * ``Edit Ignored Files``: Provides a list of files which will be ignored, i.e.,
   will not sync between the client and server. The ignored files editor allows
   adding patterns for files or directories that should be excluded from the
@@ -68,7 +68,7 @@ Where:
   ‘*’ indicating multiple characters, or a question mark ‘?’ indicating a single
   character.
 
-* ``Modify Account``: Allows the user to change the ownCloud server being synced
+* ``Modify Account``: Allows the user to change the Nextcloud server being synced
   to. It brings up the Setting up an Account (see above) windows.
 
 .. image:: images/settings_account.png
@@ -120,7 +120,7 @@ The tab provides several useful options:
 
 * ``Launch on System Startup``: This option is automatically activated
   once a user has conimaged his account. Un-checking the box will cause
-  ownCloud client to not launch on startup for a particular user.
+  Nextcloud client to not launch on startup for a particular user.
 * ``Show Desktop Nofications``: When checked, bubble notifications when
   a set of sync operations has been performed are provided.
 * ``Use Monochrome Icons``:  Use less obtrusive icons. Especially useful
@@ -141,7 +141,7 @@ This tab consolidates ``Proxy Settings`` and ``Bandwith Limiting``:
 Proxy Settings
 ^^^^^^^^^^^^^^
 
-* ``No Proxy``: Check this if ownCloud Client should circumvent the default
+* ``No Proxy``: Check this if Nextcloud Client should circumvent the default
   proxy conimaged on the system.
 * ``Use system proxy``: Default, will follow the systems proxy settings.
   On Linux, this will only pick up the value of the variable ``http_proxy``.
@@ -162,14 +162,14 @@ Bandwidth Limiting
 
 The Download Bandwidth can be either unlimited (default) or limited to a
 custom value.  This is the bandwidth available for data flowing from the
-ownCloud Server to the client.
+Nextcloud Server to the client.
 
 The Upload Bandwidth, the bandwidth available or data flowing from the
-ownCloud client to the server, has an additional option to limit automatically.
+Nextcloud client to the server, has an additional option to limit automatically.
 
-When this option is checked, the ownCloud client will surrender available
+When this option is checked, the Nextcloud client will surrender available
 bandwidth to other applications.  Use this option if there are issues with
-real time communication in conjunction with the ownCloud Client.
+real time communication in conjunction with the Nextcloud Client.
 
 .. _ignoredFilesEditor-label:
 
@@ -178,7 +178,7 @@ The Ignored Files Editor
 
 .. index:: ignored files, exclude files, pattern
 
-ownCloud Client has the ability to exclude files from the sync process.
+Nextcloud Client has the ability to exclude files from the sync process.
 The ignored files editor allows editing of custom patterns for files or 
 directories that should be excluded from the sync process. 
 
@@ -205,7 +205,7 @@ which are matched by this pattern are fleeting metadata which the client will
 .. note:: Custom entries are currently not validated for syntactical
    correctness by the editor, but might fail to load correctly.
 
-In addition to this list, ownCloud Client always excludes files with
+In addition to this list, Nextcloud Client always excludes files with
 characters that cannot be synced to other file systems. 
 
 With version 1.5.0 it also ignores files that caused individual errors 

@@ -3,17 +3,17 @@ Appendix B: History and Architecture
 
 .. index:: architecture
 
-ownCloud provides desktop sync clients to synchronize the contents of local
-directories from computers, tablets, and handheld devices to the ownCloud
+Nextcloud provides desktop sync clients to synchronize the contents of local
+directories from computers, tablets, and handheld devices to the Nextcloud
 server.
 
 Synchronization is accomplished using csync_, a bidirectional file
 synchronizing tool that provides both a command line client as well as a
 library. A special module for csync was written to synchronize with the
-ownCloud built-in WebDAV server.
+Nextcloud built-in WebDAV server.
 
-The ownCloud Client software is written in C++ using the `Qt Framework`_. As a
-result, the ownCloud Client runs on Linux, Windows, and MacOS.
+The Nextcloud Client software is written in C++ using the `Qt Framework`_. As a
+result, the Nextcloud Client runs on Linux, Windows, and MacOS.
 
 .. _csync: http://www.csync.org
 .. _`Qt Framework`: http://www.qt-project.org
@@ -29,14 +29,14 @@ same. When synchronized:
   synchronized repository.
 - If a file is deleted in one repository, it is deleted in any other.
 
-It is important to note that the ownCloud synchronization process does not use
+It is important to note that the Nextcloud synchronization process does not use
 a typical client/server system where the server is always master.  This is a
-major difference between the ownCloud synchronization process and other systems
+major difference between the Nextcloud synchronization process and other systems
 like a file backup, where only changes to files or folders and the addition of
 new files are propagated, but these files and folders are never deleted unless
 explicitly deleted in the backup.
 
-During synchronization, the ownCloud Client checks both repositories for
+During synchronization, the Nextcloud Client checks both repositories for
 changes frequently. This process is referred to as a *sync run*. In between
 sync runs, the local repository is monitored by a file system monitoring
 process that starts a sync run immediately if something was edited, added, or
@@ -46,7 +46,7 @@ Synchronization by Time versus ETag
 -----------------------------------
 .. index:: time stamps, file times, etag, unique id
 
-Until the release of ownCloud 4.5 and ownCloud Client 1.1, the ownCloud
+Until the release of the client version 1.1, the Nextcloud
 synchronization process employed a single file property -- the file modification
 time -- to decide which file was newer and needed to be synchronized to the
 other repository.
@@ -58,22 +58,18 @@ general meaning. One design goal of csync is to not require a special server
 component. This design goal is why csync was chosen as the backend component.
 
 To compare the modification times of two files from different systems, csync
-must operate on the same base. Before ownCloud Client version 1.1.0, csync
+must operate on the same base. Before client version 1.1.0, csync
 required both device repositories to run on the exact same time.  This
 requirement was achieved through the use of enterprise standard `NTP time
 synchronization`_ on all machines.
 
-Because this timing strategy is rather fragile without the use of NTP, ownCloud
-4.5 introduced a unique number (for each file?) that changes whenever the file
+Because this timing strategy is rather fragile without the use of NTP, the Nextcloud
+server provides a unique number that changes whenever the file
 changes. Although this number is a unique value, it is not a hash of the file.
 Instead, it is a randomly chosen number, that is transmitted in the Etag_
 field. Because the file number changes if the file changes, its use is
 guaranteed to determine if one of the files has changed and, thereby, launching
 a synchronization process.
-
-.. note:: ownCloud Client release 1.1 and later requires file ID capabilities
-   on the ownCloud server.  Servers that run with release earlier than 4.5.0 do
-   not support using the file ID functionality.
 
 Before the 1.3.0 release of the Desktop Client, the synchronization process
 might create false conflict files if time deviates. Original and changed files
@@ -84,29 +80,6 @@ Like files, directories also hold a unique ID that changes whenever one of the
 contained files or directories is modified. Because this is a recursive
 process, it significantly reduces the effort required for a synchronization
 cycle, because the client only analyzes directories with a modified ID.
-
-
-The following table outlines the different synchronization methods used,
-depending on server/client combination:
-
-.. index:: compatiblity table
-
-+--------------------+-------------------+----------------------------+
-| Server Version     | Client Version    | Sync Methods               |
-+====================+===================+============================+
-| 4.0.x or earlier   | 1.0.5 or earlier  | Time Stamp                 |
-+--------------------+-------------------+----------------------------+
-| 4.0.x or earlier   | 1.1 or later      | n/a (incompatible)         |
-+--------------------+-------------------+----------------------------+
-| 4.5 or later       | 1.0.5 or earlier  | Time Stamp                 |
-+--------------------+-------------------+----------------------------+
-| 4.5 or later       | 1.1 or later      | File ID, Time Stamp        |
-+--------------------+-------------------+----------------------------+
-
-We strongly recommend using ownCloud Server release 4.5 or later when using
-ownCloud Client 1.1 or later. Using an incompatible time stamp-based
-synchronization mechanism can lead to data loss in rare cases, especially when
-multiple clients are involved and one utilizes a non-synchronized NTP time.
 
 .. _`NTP time synchronization`: http://en.wikipedia.org/wiki/Network_Time_Protocol
 .. _Etag: http://en.wikipedia.org/wiki/HTTP_ETag
@@ -124,7 +97,7 @@ determines that the file has been modified in the local repository.
    detecting changes, because
    the value does not depend on time shifts and such.
 
-For the remote (that is, ownCloud server) repository, the client compares the
+For the remote (that is, Nextcloud server) repository, the client compares the
 ETag of each file with its expected value. Again, the expected ETag value is
 queried from the client database. If the ETag is the same, the file has not
 changed and no synchronization occurs.
@@ -143,138 +116,139 @@ the remote file will be downloaded and saved as message.txt.
 
 Conflict files are always created on the client and never on the server.
 
-Checksum Algorithm Negotiation
-------------------------------
+..
+  Checksum Algorithm Negotiation
+  ------------------------------
 
-In ownCloud 10.0 we implemented a checksum feature which checks the file integrity on upload and download by computing a checksum after the file transfer finishes.
-The client queries the server capabilities after login to decide which checksum algorithm to use.
-Currently, SHA1 is hard-coded in the official server release and can't be changed by the end-user. 
-Note that the server additionally also supports MD5 and Adler-32, but the desktop client will always use the checksum algorithm announced in the capabilities:
+  In ownCloud 10.0 we implemented a checksum feature which checks the file integrity on upload and download by computing a checksum after the file transfer finishes.
+  The client queries the server capabilities after login to decide which checksum algorithm to use.
+  Currently, SHA1 is hard-coded in the official server release and can't be changed by the end-user. 
+  Note that the server additionally also supports MD5 and Adler-32, but the desktop client will always use the checksum algorithm announced in the capabilities:
 
-::
+  ::
 
-  GET http://localhost:8000/ocs/v1.php/cloud/capabilities?format=json
+    GET http://localhost:8000/ocs/v1.php/cloud/capabilities?format=json
 
-::
+  ::
 
-  json
-  {
-     "ocs":{
-        "meta":{
-           "status":"ok",
-           "statuscode":100,
-           "message":"OK",
-           "totalitems":"",
-           "itemsperpage":""
-        },
-        "data":{
-           "version":{
-              "major":10,
-              "minor":0,
-              "micro":0,
-              "string":"10.0.0 beta",
-              "edition":"Community"
-           },
-           "capabilities":{
-              "core":{
-                 "pollinterval":60,
-                 "webdav-root":"remote.php/webdav"
-              },
-              "dav":{
-                 "chunking":"1.0"
-              },
-              "files_sharing":{
-                 "api_enabled":true,
-                 "public":{
-                    "enabled":true,
-                    "password":{
-                       "enforced":false
-                    },
-                    "expire_date":{
-                       "enabled":false
-                    },
-                    "send_mail":false,
-                    "upload":true
-                 },
-                 "user":{
-                    "send_mail":false
-                 },
-                 "resharing":true,
-                 "group_sharing":true,
-                 "federation":{
-                    "outgoing":true,
-                    "incoming":true
-                 }
-              },
-              "checksums":{
-                 "supportedTypes":[
-                    "SHA1"
-                 ],
-                 "preferredUploadType":"SHA1"
-              },
-              "files":{
-                 "bigfilechunking":true,
-                 "blacklisted_files":[
-                    ".htaccess"
-                 ],
-                 "undelete":true,
-                 "versioning":true
-              }
-           }
-        }
-     }
-  }
+    json
+    {
+      "ocs":{
+          "meta":{
+            "status":"ok",
+            "statuscode":100,
+            "message":"OK",
+            "totalitems":"",
+            "itemsperpage":""
+          },
+          "data":{
+            "version":{
+                "major":10,
+                "minor":0,
+                "micro":0,
+                "string":"10.0.0 beta",
+                "edition":"Community"
+            },
+            "capabilities":{
+                "core":{
+                  "pollinterval":60,
+                  "webdav-root":"remote.php/webdav"
+                },
+                "dav":{
+                  "chunking":"1.0"
+                },
+                "files_sharing":{
+                  "api_enabled":true,
+                  "public":{
+                      "enabled":true,
+                      "password":{
+                        "enforced":false
+                      },
+                      "expire_date":{
+                        "enabled":false
+                      },
+                      "send_mail":false,
+                      "upload":true
+                  },
+                  "user":{
+                      "send_mail":false
+                  },
+                  "resharing":true,
+                  "group_sharing":true,
+                  "federation":{
+                      "outgoing":true,
+                      "incoming":true
+                  }
+                },
+                "checksums":{
+                  "supportedTypes":[
+                      "SHA1"
+                  ],
+                  "preferredUploadType":"SHA1"
+                },
+                "files":{
+                  "bigfilechunking":true,
+                  "blacklisted_files":[
+                      ".htaccess"
+                  ],
+                  "undelete":true,
+                  "versioning":true
+                }
+            }
+          }
+      }
+    }
 
-Upload
-~~~~~~
+  Upload
+  ~~~~~~
 
-A checksum is calculated with the previously negotiated algorithm by the client and sent along with the file in an HTTP Header. 
-```OC-Checksum: [algorithm]:[checksum]```
+  A checksum is calculated with the previously negotiated algorithm by the client and sent along with the file in an HTTP Header. 
+  ```OC-Checksum: [algorithm]:[checksum]```
 
-.. image:: ./images/checksums/client-activity.png
+  .. image:: ./images/checksums/client-activity.png
 
-During file upload, the server computes SHA1, MD5, and Adler-32 checksums and compares one of them to the checksum supplied by the client. 
+  During file upload, the server computes SHA1, MD5, and Adler-32 checksums and compares one of them to the checksum supplied by the client. 
 
-On mismatch, the server returns HTTP Status code 400 (Bad Request) thus signaling the client that the upload failed. 
-The server then discards the upload, and the client blacklists the file:
+  On mismatch, the server returns HTTP Status code 400 (Bad Request) thus signaling the client that the upload failed. 
+  The server then discards the upload, and the client blacklists the file:
 
-.. image:: ./images/checksums/testing-checksums.png
+  .. image:: ./images/checksums/testing-checksums.png
 
-::
+  ::
 
-  <?xml version='1.0' encoding='utf-8'?>
-  <d:error xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">
-    <s:exception>Sabre\DAV\Exception\BadRequest</s:exception>
-    <s:message>The computed checksum does not match the one received from the
-  client.</s:message>
-  </d:error>
+    <?xml version='1.0' encoding='utf-8'?>
+    <d:error xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns">
+      <s:exception>Sabre\DAV\Exception\BadRequest</s:exception>
+      <s:message>The computed checksum does not match the one received from the
+    client.</s:message>
+    </d:error>
 
-The client retries the upload using exponential back-off. 
-On success (matching checksum) the computed checksums are stored by the server in ``oc_filecache`` alongside the file.
+  The client retries the upload using exponential back-off. 
+  On success (matching checksum) the computed checksums are stored by the server in ``oc_filecache`` alongside the file.
 
-Chunked Upload
-~~~~~~~~~~~~~~
+  Chunked Upload
+  ~~~~~~~~~~~~~~
 
-Mostly same as above. 
-The checksum of the full file is sent with every chunk of the file. 
-But the server only compares the checksum after receiving the checksum sent with the last chunk.
+  Mostly same as above. 
+  The checksum of the full file is sent with every chunk of the file. 
+  But the server only compares the checksum after receiving the checksum sent with the last chunk.
 
-Download
-~~~~~~~~
+  Download
+  ~~~~~~~~
 
-The server sends the checksum in an HTTP header with the file. (same format as above).
-If no checksum is found in ``oc_filecache`` (freshly mounted external storage) it is computed and stored in ``oc_filecache`` on the first download. 
-The checksum is then provided on all subsequent downloads but not on the first. 
+  The server sends the checksum in an HTTP header with the file. (same format as above).
+  If no checksum is found in ``oc_filecache`` (freshly mounted external storage) it is computed and stored in ``oc_filecache`` on the first download. 
+  The checksum is then provided on all subsequent downloads but not on the first. 
 
 .. _ignored-files-label:
 
 Ignored Files
 -------------
 
-The ownCloud Client supports the ability to exclude or ignore certain files from the synchronization process. 
-Some system wide file patterns that are used to exclude or ignore files are included with the client by default and the ownCloud Client provides the ability to add custom patterns.
+The Nextcloud Client supports the ability to exclude or ignore certain files from the synchronization process. 
+Some system wide file patterns that are used to exclude or ignore files are included with the client by default and the Nextcloud Client provides the ability to add custom patterns.
 
-By default, the ownCloud Client ignores the following files:
+By default, the Nextcloud Client ignores the following files:
 
 * Files matched by one of the patterns defined in the Ignored Files Editor
 * Files containing characters that do not work on certain file systems ``(`\, /, :, ?, *, ", >, <, |`)``.
@@ -320,7 +294,7 @@ The client stores the ETag number in a per-directory database, called the
 *journal*.  This database is a hidden file contained in the directory to be
 synchronized.
 
-If the journal database is removed, the ownCloud Client CSync backend rebuilds
+If the journal database is removed, the Nextcloud Client CSync backend rebuilds
 the database by comparing the files and their modification times. This process
 ensures that both server and client are synchronized using the appropriate NTP
 time before restarting the client following a database removal.
