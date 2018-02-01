@@ -271,10 +271,10 @@ void PropagateUploadFileNG::slotPropfindIterate(const QString &name, const QMap<
     }
     bool ok = false;
     QString chunkName = name.mid(name.lastIndexOf('/') + 1);
-    auto chunkId = chunkName.toUInt(&ok);
+    quint64 chunkOffset = chunkName.toULongLong(&ok);
     if (ok) {
         ServerChunkInfo chunkinfo = { properties["getcontentlength"].toULongLong(), chunkName };
-        _serverChunks[chunkId] = chunkinfo;
+        _serverChunks[chunkOffset] = chunkinfo;
     }
 }
 
