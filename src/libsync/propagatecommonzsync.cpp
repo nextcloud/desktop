@@ -239,8 +239,10 @@ int ZsyncGenerateRunnable::read_stream_write_blocksums(FILE *fin, FILE *fout)
             write_block_sums(buf, got, fout);
             _len += got;
         } else {
-            if (ferror(fin))
+            if (ferror(fin)) {
+                free(buf);
                 return stream_error("fread", fin);
+            }
         }
     }
     free(buf);
