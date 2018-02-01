@@ -95,6 +95,7 @@ void IgnoreListEditor::slotUpdateLocalIgnoreList()
     QString ignoreFile = cfgFile.excludeFile(ConfigFile::UserScope);
     QFile ignores(ignoreFile);
     if (ignores.open(QIODevice::WriteOnly)) {
+        QFile::resize(ignoreFile, 0);
         for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
             QTableWidgetItem *patternItem = ui->tableWidget->item(row, patternCol);
             QTableWidgetItem *deletableItem = ui->tableWidget->item(row, deletableCol);
