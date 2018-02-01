@@ -301,7 +301,7 @@ private slots:
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
 
         int nGET = 0;
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &) {
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &, QIODevice *) {
             if (op == QNetworkAccessManager::GetOperation)
                 ++nGET;
             return nullptr;
@@ -431,7 +431,7 @@ private slots:
         int remoteQuota = 1000;
         int n507 = 0, nPUT = 0;
         auto parent = new QObject;
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request) -> QNetworkReply * {
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (op == QNetworkAccessManager::PutOperation) {
                 nPUT++;
                 if (request.rawHeader("OC-Total-Length").toInt() > remoteQuota) {
@@ -472,7 +472,7 @@ private slots:
         QByteArray checksumValue;
         QByteArray contentMd5Value;
 
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request) -> QNetworkReply * {
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (op == QNetworkAccessManager::GetOperation) {
                 auto reply = new FakeGetReply(fakeFolder.remoteModifier(), op, request, &parent);
                 if (!checksumValue.isNull())
@@ -536,6 +536,7 @@ private slots:
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
 
+#ifndef Q_OS_WIN  // We can't have local file with these character
         // For current servers, no characters are forbidden
         fakeFolder.syncEngine().account()->setServerVersion("10.0.0");
         fakeFolder.localModifier().insert("A/\\:?*\"<>|.txt");
@@ -547,6 +548,7 @@ private slots:
         fakeFolder.localModifier().insert("B/\\:?*\"<>|.txt");
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentRemoteState().find("B/\\:?*\"<>|.txt"));
+#endif
 
         // We can override that by setting the capability
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ { "invalidFilenameRegex", "" } } } });
@@ -619,6 +621,56 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(localFileExists("A/.hidden"));
         QVERIFY(fakeFolder.currentRemoteState().find("B/.hidden"));
+    }
+
+    void testNoLocalEncoding()
+    {
+        auto utf8Locale = QTextCodec::codecForLocale();
+        if (utf8Locale->mibEnum() != 106) {
+            QSKIP("Test only works for UTF8 locale");
+        }
+
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Utf8 locale can sync both
+        fakeFolder.remoteModifier().insert("A/tößt");
+        fakeFolder.remoteModifier().insert("A/t𠜎t");
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find("A/tößt"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/t𠜎t"));
+
+        // Try again with a locale that can represent ö but not 𠜎 (4-byte utf8).
+        QTextCodec::setCodecForLocale(QTextCodec::codecForName("ISO-8859-15"));
+        QVERIFY(QTextCodec::codecForLocale()->mibEnum() == 111);
+
+        fakeFolder.remoteModifier().insert("B/tößt");
+        fakeFolder.remoteModifier().insert("B/t𠜎t");
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find("B/tößt"));
+        QVERIFY(!fakeFolder.currentLocalState().find("B/t𠜎t"));
+        QVERIFY(!fakeFolder.currentLocalState().find("B/t?t"));
+        QVERIFY(!fakeFolder.currentLocalState().find("B/t??t"));
+        QVERIFY(!fakeFolder.currentLocalState().find("B/t???t"));
+        QVERIFY(!fakeFolder.currentLocalState().find("B/t????t"));
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentRemoteState().find("B/tößt"));
+        QVERIFY(fakeFolder.currentRemoteState().find("B/t𠜎t"));
+
+        // Try again with plain ascii
+        QTextCodec::setCodecForLocale(QTextCodec::codecForName("ASCII"));
+        QVERIFY(QTextCodec::codecForLocale()->mibEnum() == 3);
+
+        fakeFolder.remoteModifier().insert("C/tößt");
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.currentLocalState().find("C/tößt"));
+        QVERIFY(!fakeFolder.currentLocalState().find("C/t??t"));
+        QVERIFY(!fakeFolder.currentLocalState().find("C/t????t"));
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentRemoteState().find("C/tößt"));
+
+        QTextCodec::setCodecForLocale(utf8Locale);
     }
 };
 

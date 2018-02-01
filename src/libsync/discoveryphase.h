@@ -157,8 +157,6 @@ class DiscoveryJob : public QObject
     Q_OBJECT
     friend class DiscoveryMainThread;
     CSYNC *_csync_ctx;
-    csync_log_callback _log_callback;
-    int _log_level;
     QElapsedTimer _lastUpdateProgressCallbackCall;
 
     /**
@@ -191,12 +189,7 @@ public:
         : QObject(parent)
         , _csync_ctx(ctx)
     {
-        // We need to forward the log property as csync uses thread local
-        // and updates run in another thread
-        _log_callback = csync_get_log_callback();
-        _log_level = csync_get_log_level();
     }
-
     QStringList _selectiveSyncBlackList;
     QStringList _selectiveSyncWhiteList;
     SyncOptions _syncOptions;

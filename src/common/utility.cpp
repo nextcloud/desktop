@@ -542,6 +542,21 @@ QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
     return tmpUrl;
 }
 
+QString Utility::makeConflictFileName(const QString &fn, const QDateTime &dt)
+{
+    QString conflictFileName(fn);
+    // Add _conflict-XXXX  before the extension.
+    int dotLocation = conflictFileName.lastIndexOf('.');
+    // If no extension, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
+    if (dotLocation <= conflictFileName.lastIndexOf('/') + 1) {
+        dotLocation = conflictFileName.size();
+    }
+    QString timeString = dt.toString("yyyyMMdd-hhmmss");
+
+    conflictFileName.insert(dotLocation, "_conflict-" + timeString);
+    return conflictFileName;
+}
+
 bool Utility::isConflictFile(const char *name)
 {
     const char *bname = std::strrchr(name, '/');
@@ -551,32 +566,33 @@ bool Utility::isConflictFile(const char *name)
         bname = name;
     }
 
-    if (std::strstr(bname, "_conflict-"))
-        return true;
-
-    if (shouldUploadConflictFiles()) {
-        // For uploads, we want to consider files with any kind of username tag
-        // as conflict files. (pattern *_conflict_*-)
-        const char *startOfMarker = std::strstr(bname, "_conflict_");
-        if (startOfMarker && std::strchr(startOfMarker, '-'))
-            return true;
-    } else {
-        // Old behavior: optionally, files with the specific string in the env variable
-        // appended are also considered conflict files.
-        static auto conflictFileUsername = qgetenv("CSYNC_CONFLICT_FILE_USERNAME");
-        static auto usernameConflictId = QByteArray("_conflict_" + conflictFileUsername + "-");
-        if (!conflictFileUsername.isEmpty() && std::strstr(bname, usernameConflictId.constData())) {
-            return true;
-        }
-    }
-
-    return false;
+    return std::strstr(bname, "_conflict-");
 }
 
-bool Utility::shouldUploadConflictFiles()
+bool Utility::isConflictFile(const QString &name)
 {
-    static bool uploadConflictFiles = qEnvironmentVariableIntValue("OWNCLOUD_UPLOAD_CONFLICT_FILES") != 0;
-    return uploadConflictFiles;
+    auto bname = name.midRef(name.lastIndexOf('/') + 1);
+    return bname.contains("_conflict-", Utility::fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive);
+}
+
+QByteArray Utility::conflictFileBaseName(const QByteArray &conflictName)
+{
+    // This function must be able to deal with conflict files for conflict files.
+    // To do this, we scan backwards, for the outermost conflict marker and
+    // strip only that to generate the conflict file base name.
+    int from = conflictName.size();
+    while (from != -1) {
+        auto start = conflictName.lastIndexOf("_conflict-", from);
+        if (start == -1)
+            return "";
+        from = start - 1;
+
+        auto end = conflictName.indexOf('.', start);
+        if (end == -1)
+            end = conflictName.size();
+        return conflictName.left(start) + conflictName.mid(end);
+    }
+    return "";
 }
 
 } // namespace OCC

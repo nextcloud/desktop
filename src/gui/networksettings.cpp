@@ -20,8 +20,11 @@
 #include "application.h"
 #include "configfile.h"
 #include "folderman.h"
+#include "accountmanager.h"
 
 #include <QNetworkProxy>
+#include <QString>
+#include <QList>
 
 namespace OCC {
 
@@ -73,6 +76,10 @@ NetworkSettings::NetworkSettings(QWidget *parent)
     connect(_ui->autoDownloadLimitRadioButton, &QAbstractButton::clicked, this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->downloadSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &NetworkSettings::saveBWLimitSettings);
     connect(_ui->uploadSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &NetworkSettings::saveBWLimitSettings);
+
+    // Warn about empty proxy host
+    connect(_ui->hostLineEdit, &QLineEdit::textChanged, this, &NetworkSettings::checkEmptyProxyHost);
+    checkEmptyProxyHost();
 }
 
 NetworkSettings::~NetworkSettings()
@@ -150,6 +157,7 @@ void NetworkSettings::saveProxySettings()
 {
     ConfigFile cfgFile;
 
+    checkEmptyProxyHost();
     if (_ui->noProxyRadioButton->isChecked()) {
         cfgFile.setProxyType(QNetworkProxy::NoProxy);
     } else if (_ui->systemProxyRadioButton->isChecked()) {
@@ -169,7 +177,11 @@ void NetworkSettings::saveProxySettings()
 
     // ...and set the folders dirty, they refresh their proxy next time they
     // start the sync.
-    FolderMan::instance()->setDirtyProxy(true);
+    FolderMan::instance()->setDirtyProxy();
+
+    for (auto account : AccountManager::instance()->accounts()) {
+        account->freshConnectionAttempt();
+    }
 }
 
 void NetworkSettings::saveBWLimitSettings()
@@ -194,6 +206,15 @@ void NetworkSettings::saveBWLimitSettings()
     cfgFile.setUploadLimit(_ui->uploadSpinBox->value());
 
     FolderMan::instance()->setDirtyNetworkLimits();
+}
+
+void NetworkSettings::checkEmptyProxyHost()
+{
+    if (_ui->hostLineEdit->isEnabled() && _ui->hostLineEdit->text().isEmpty()) {
+        _ui->hostLineEdit->setStyleSheet("border: 1px solid red");
+    } else {
+        _ui->hostLineEdit->setStyleSheet(QString());
+    }
 }
 
 } // namespace OCC

@@ -59,6 +59,7 @@ void OwncloudDolphinPluginHelper::sendCommand(const char* data)
 
 void OwncloudDolphinPluginHelper::slotConnected()
 {
+    sendCommand("VERSION:\n");
     sendCommand("GET_STRINGS:\n");
 }
 
@@ -98,6 +99,16 @@ void OwncloudDolphinPluginHelper::slotReadyRead()
                 _strings[args[1]] = args.mid(2).join(QLatin1Char(':'));
             }
             continue;
+        } else if (line.startsWith("VERSION:")) {
+            auto args = line.split(':');
+            auto version = args.value(2);
+            _version = version;
+            if (!version.startsWith("1.")) {
+                // Incompatible version, disconnect forever
+                _connectTimer.stop();
+                _socket.disconnectFromServer();
+                return;
+            }
         }
         emit commandRecieved(line);
     }

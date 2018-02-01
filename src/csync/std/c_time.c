@@ -22,51 +22,8 @@
 #include "c_private.h"
 #include "c_string.h"
 
-#include "c_path.h"
 #include "c_time.h"
 #include "c_utf8.h"
-
-struct timespec c_tspecdiff(struct timespec time1, struct timespec time0) {
-  struct timespec ret;
-  int xsec = 0;
-  int sign = 1;
-
-  if (time0.tv_nsec > time1.tv_nsec) {
-    xsec = (int) ((time0.tv_nsec - time1.tv_nsec) / (1E9 + 1));
-    time0.tv_nsec -= (long int) (1E9 * xsec);
-    time0.tv_sec += xsec;
-  }
-
-  if ((time1.tv_nsec - time0.tv_nsec) > 1E9) {
-    xsec = (int) ((time1.tv_nsec - time0.tv_nsec) / 1E9);
-    time0.tv_nsec += (long int) (1E9 * xsec);
-    time0.tv_sec -= xsec;
-  }
-
-  ret.tv_sec = time1.tv_sec - time0.tv_sec;
-  ret.tv_nsec = time1.tv_nsec - time0.tv_nsec;
-
-  if (time1.tv_sec < time0.tv_sec) {
-    sign = -1;
-  }
-
-  ret.tv_sec = ret.tv_sec * sign;
-
-  return ret;
-}
-
-double c_secdiff(struct timespec clock1, struct timespec clock0) {
-  double ret;
-  struct timespec diff;
-
-  diff = c_tspecdiff(clock1, clock0);
-
-  ret = diff.tv_sec;
-  ret += (double) diff.tv_nsec / (double) 1E9;
-
-  return ret;
-}
-
 
 #ifdef HAVE_UTIMES
 int c_utimes(const char *uri, const struct timeval *times) {

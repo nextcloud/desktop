@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# ownCloud Documentation documentation build configuration file, created by
+# Nextcloud Documentation documentation build configuration file, created by
 # sphinx-quickstart on Mon Oct 22 23:16:40 2012.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -28,7 +28,7 @@ import sys, os
 extensions = ['sphinx.ext.todo']
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['@CMAKE_CURRENT_SOURCE_DIR@/ocdoc/_shared_assets/templates']
+templates_path = ['_shared_assets/templates']
 
 # The suffix of source filenames.
 source_suffix = '.rst'
@@ -40,8 +40,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'ownCloud Client Manual'
-copyright = u'2013-2016, The ownCloud developers'
+project = u'Nextcloud Client Manual'
+copyright = u'2013-2018, The Nextcloud developers'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -95,7 +95,7 @@ pygments_style = 'sphinx'
 #html_theme_options = {}
 
 # Add any paths that contain custom themes here, relative to this directory.
-html_theme_path = ['@CMAKE_CURRENT_SOURCE_DIR@/ocdoc/_shared_assets/themes']
+html_theme_path = ['_shared_assets/themes']
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
@@ -120,7 +120,7 @@ html_short_title = "Client Manual"
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['@CMAKE_CURRENT_SOURCE_DIR@/ocdoc/_shared_assets/static']
+html_static_path = ['_shared_assets/static']
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -164,7 +164,7 @@ html_show_sphinx = False
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'ownCloudClientManual'
+htmlhelp_basename = 'NextcloudClientManual'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -183,8 +183,8 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'ownCloudClientManual.tex', u'ownCloud Client Manual',
-   u'The ownCloud developers', 'manual'),
+  ('index', 'NextcloudClientManual.tex', u'Nextcloud Client Manual',
+   u'The Nextcloud developers', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -213,10 +213,10 @@ latex_logo = 'logo-blue.pdf'
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('owncloud.1', 'owncloud', u'File synchronisation desktop utility.',
-     [u'The ownCloud developers'], 1),
-    ('owncloudcmd.1', 'owncloudcmd', u'Command line ownCloud client tool.',
-     [u'The ownCloud developers'], 1),
+    ('nextcloud.1', 'nextcloud', u'File synchronisation desktop utility.',
+     [u'The Nextcloud developers'], 1),
+    ('nextcloudcmd.1', 'nextcloudcmd', u'Command line Nextcloud client tool.',
+     [u'The Nextcloud developers'], 1),
 ]
 
 # If true, show URL addresses after external links.
@@ -229,8 +229,8 @@ man_show_urls = True
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'ownCloudClientManual', u'ownCloud Client Manual',
-   u'The ownCloud developers', 'ownCloud', 'The ownCloud Client Manual.',
+  ('index', 'NextcloudClientManual', u'Nextcloud Client Manual',
+   u'The Nextcloud developers', 'Nextcloud', 'The Nextcloud Client Manual.',
    'Miscellaneous'),
 ]
 
@@ -247,10 +247,10 @@ texinfo_documents = [
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u'ownCloud Client Manual'
-epub_author = u'The ownCloud developers'
-epub_publisher = u'The ownCloud developers'
-epub_copyright = u'2013-2016, The ownCloud developers'
+epub_title = u'Nextcloud Client Manual'
+epub_author = u'The Nextcloud developers'
+epub_publisher = u'The Nextcloud developers'
+epub_copyright = u'2013-2018, The Nextcloud developers'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.

@@ -391,7 +391,7 @@ bool LsColJob::finished()
 
 namespace {
     const char statusphpC[] = "status.php";
-    const char owncloudDirC[] = "owncloud/";
+    const char nextcloudDirC[] = "nextcloud/";
 }
 
 CheckServerJob::CheckServerJob(AccountPtr account, QObject *parent)
@@ -496,7 +496,7 @@ bool CheckServerJob::finished()
     // at the original location
     if ((reply()->error() == QNetworkReply::ContentNotFoundError) && (!_subdirFallback)) {
         _subdirFallback = true;
-        setPath(QLatin1String(owncloudDirC) + QLatin1String(statusphpC));
+        setPath(QLatin1String(nextcloudDirC) + QLatin1String(statusphpC));
         start();
         qCInfo(lcCheckServerJob) << "Retrying with" << reply()->url();
         return false;
@@ -630,7 +630,11 @@ bool PropfindJob::finished()
 AvatarJob::AvatarJob(AccountPtr account, const QString &userId, int size, QObject *parent)
     : AbstractNetworkJob(account, QString(), parent)
 {
-    _avatarUrl = Utility::concatUrlPath(account->url(), QString("remote.php/dav/avatars/%1/%2.png").arg(userId, QString::number(size)));
+    if (account->serverVersionInt() >= Account::makeServerVersion(10, 0, 0)) {
+        _avatarUrl = Utility::concatUrlPath(account->url(), QString("remote.php/dav/avatars/%1/%2.png").arg(userId, QString::number(size)));
+    } else {
+        _avatarUrl = Utility::concatUrlPath(account->url(), QString("index.php/avatar/%1/%2").arg(userId, QString::number(size)));
+    }
 }
 
 void AvatarJob::start()

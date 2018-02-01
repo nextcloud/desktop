@@ -77,8 +77,6 @@ protected:
     void parseOptions(const QStringList &);
     void setupTranslations();
     void setupLogging();
-    void enterNextLogFile();
-    bool checkConfigExists(bool openSettings);
 
 signals:
     void folderRemoved();

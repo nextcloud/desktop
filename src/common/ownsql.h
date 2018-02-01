@@ -19,12 +19,13 @@
 #ifndef OWNSQL_H
 #define OWNSQL_H
 
-#include <sqlite3.h>
-
 #include <QObject>
 #include <QVariant>
 
 #include "ocsynclib.h"
+
+struct sqlite3;
+struct sqlite3_stmt;
 
 namespace OCC {
 

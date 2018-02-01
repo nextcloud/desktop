@@ -46,18 +46,14 @@ public:
     struct ContextMenuInfo {
         std::vector<std::wstring> watchedDirectories;
         std::wstring contextMenuTitle;
-        std::wstring shareMenuTitle;
-        std::wstring copyLinkMenuTitle;
-        std::wstring emailLinkMenuTitle;
+        struct MenuItem
+        {
+            std::wstring command, flags, title;
+        };
+        std::vector<MenuItem> menuItems;
     };
-    static ContextMenuInfo FetchInfo();
-
-    static void RequestShare(const std::wstring &path);
-    static void RequestCopyLink(const std::wstring &path);
-    static void RequestEmailLink(const std::wstring &path);
-
-private:
-    static void SendRequest(wchar_t *verb, const std::wstring &path);
+    static ContextMenuInfo FetchInfo(const std::wstring &files);
+    static void SendRequest(const wchar_t *verb, const std::wstring &path);
 };
 
 #endif //ABSTRACTSOCKETHANDLER_H

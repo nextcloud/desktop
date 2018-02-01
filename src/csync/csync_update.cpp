@@ -117,7 +117,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
     return -1;
   }
 
-  if (fs->type == CSYNC_FTW_TYPE_SKIP) {
+  if (fs->type == ItemTypeSkip) {
       excluded =CSYNC_FILE_EXCLUDE_STAT_FAILED;
   } else {
       /* Check if file is excluded */
@@ -151,21 +151,29 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       }
   }
 
-  if (ctx->current == REMOTE_REPLICA && QTextCodec::codecForLocale()->mibEnum() != 106) {
+  auto localCodec = QTextCodec::codecForLocale();
+  if (ctx->current == REMOTE_REPLICA && localCodec->mibEnum() != 106) {
       /* If the locale codec is not UTF-8, we must check that the filename from the server can
-       * be encoded in the local file system. */
-      if (!QTextCodec::codecForLocale()->canEncode(QString::fromUtf8(fs->path))) {
+       * be encoded in the local file system.
+       *
+       * We cannot use QTextCodec::canEncode() since that can incorrectly return true, see
+       * https://bugreports.qt.io/browse/QTBUG-6925.
+       */
+      QTextEncoder encoder(localCodec, QTextCodec::ConvertInvalidToNull);
+      if (encoder.fromUnicode(QString::fromUtf8(fs->path)).contains('\0')) {
+          qCDebug(lcUpdate, "cannot encode %s to local encoding %d",
+              fs->path.constData(), localCodec->mibEnum());
           excluded = CSYNC_FILE_EXCLUDE_CANNOT_ENCODE;
       }
   }
 
-  if (fs->type == CSYNC_FTW_TYPE_FILE ) {
+  if (fs->type == ItemTypeFile ) {
     if (fs->modtime == 0) {
       qCDebug(lcUpdate, "file: %s - mtime is zero!", fs->path.constData());
     }
   }
 
-  if (excluded > CSYNC_NOT_EXCLUDED || fs->type == CSYNC_FTW_TYPE_SLINK) {
+  if (excluded > CSYNC_NOT_EXCLUDED || fs->type == ItemTypeSoftLink) {
       fs->instruction = CSYNC_INSTRUCTION_IGNORE;
       if (ctx->current_fs) {
           ctx->current_fs->has_ignored_files = true;
@@ -238,7 +246,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       bool metadata_differ = (ctx->current == REMOTE_REPLICA && (fs->file_id != base._fileId
                                                           || fs->remotePerm != base._remotePerm))
                            || (ctx->current == LOCAL_REPLICA && fs->inode != base._inode);
-      if (fs->type == CSYNC_FTW_TYPE_DIR && ctx->current == REMOTE_REPLICA
+      if (fs->type == ItemTypeDirectory && ctx->current == REMOTE_REPLICA
               && !metadata_differ && ctx->read_remote_from_db) {
           /* If both etag and file id are equal for a directory, read all contents from
            * the database.
@@ -277,7 +285,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
 
           bool isRename =
               base.isValid() && base._type == fs->type
-                  && ((base._modtime == fs->modtime && base._fileSize == fs->size) || fs->type == CSYNC_FTW_TYPE_DIR)
+                  && ((base._modtime == fs->modtime && base._fileSize == fs->size) || fs->type == ItemTypeDirectory)
 #ifdef NO_RENAME_EXTENSION
                   && _csync_sameextension(base._path, fs->path)
 #endif
@@ -286,7 +294,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
 
           // Verify the checksum where possible
           if (isRename && !base._checksumHeader.isEmpty() && ctx->callbacks.checksum_hook
-              && fs->type == CSYNC_FTW_TYPE_FILE) {
+              && fs->type == ItemTypeFile) {
                   fs->checksumHeader = ctx->callbacks.checksum_hook(
                       _rel_to_abs(ctx, fs->path), base._checksumHeader,
                       ctx->callbacks.checksum_userdata);
@@ -300,7 +308,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
               qCDebug(lcUpdate, "pot rename detected based on inode # %" PRId64 "", (uint64_t) fs->inode);
               /* inode found so the file has been renamed */
               fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
-              if (fs->type == CSYNC_FTW_TYPE_DIR) {
+              if (fs->type == ItemTypeDirectory) {
                   csync_rename_record(ctx, base._path, fs->path);
               }
           }
@@ -325,7 +333,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                   done = true;
                   return;
               }
-              if (fs->type != CSYNC_FTW_TYPE_DIR && base._etag != fs->etag) {
+              if (fs->type != ItemTypeDirectory && base._etag != fs->etag) {
                   /* File with different etag, don't do a rename, but download the file again */
                   qCWarning(lcUpdate, "file etag different, not a rename");
                   done = true;
@@ -333,7 +341,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
               }
 
               // Record directory renames
-              if (fs->type == CSYNC_FTW_TYPE_DIR) {
+              if (fs->type == ItemTypeDirectory) {
                   // If the same folder was already renamed by a different entry,
                   // skip to the next candidate
                   if (ctx->renames.folder_renamed_to.count(base._path) > 0) {
@@ -354,7 +362,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
           }
 
           if (fs->instruction == CSYNC_INSTRUCTION_NEW
-              && fs->type == CSYNC_FTW_TYPE_DIR
+              && fs->type == ItemTypeDirectory
               && ctx->current == REMOTE_REPLICA
               && ctx->callbacks.checkSelectiveSyncNewFolderHook) {
               if (ctx->callbacks.checkSelectiveSyncNewFolderHook(ctx->callbacks.update_callback_userdata, fs->path, fs->remotePerm)) {
@@ -369,7 +377,7 @@ out:
 
   /* Set the ignored error string. */
   if (fs->instruction == CSYNC_INSTRUCTION_IGNORE) {
-      if( fs->type == CSYNC_FTW_TYPE_SLINK ) {
+      if( fs->type == ItemTypeSoftLink ) {
           fs->error_status = CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK; /* Symbolic links are ignored. */
       } else {
           if (excluded == CSYNC_FILE_EXCLUDE_LIST) {
@@ -394,13 +402,13 @@ out:
   if (fs->instruction != CSYNC_INSTRUCTION_NONE
       && fs->instruction != CSYNC_INSTRUCTION_IGNORE
       && fs->instruction != CSYNC_INSTRUCTION_UPDATE_METADATA
-      && fs->type != CSYNC_FTW_TYPE_DIR) {
+      && fs->type != ItemTypeDirectory) {
     fs->child_modified = true;
   }
 
   // If conflict files are uploaded, they won't be marked as IGNORE / CSYNC_FILE_EXCLUDE_CONFLICT
   // but we still want them marked!
-  if (OCC::Utility::shouldUploadConflictFiles()) {
+  if (ctx->upload_conflict_files) {
       if (OCC::Utility::isConflictFile(fs->path.constData())) {
           fs->error_status = CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE;
       }
@@ -436,21 +444,21 @@ int csync_walker(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs) {
   }
 
   switch (fs->type) {
-    case CSYNC_FTW_TYPE_FILE:
+    case ItemTypeFile:
       if (ctx->current == REMOTE_REPLICA) {
           qCDebug(lcUpdate, "file: %s [file_id=%s size=%" PRIu64 "]", fs->path.constData(), fs->file_id.constData(), fs->size);
       } else {
           qCDebug(lcUpdate, "file: %s [inode=%" PRIu64 " size=%" PRIu64 "]", fs->path.constData(), fs->inode, fs->size);
       }
       break;
-  case CSYNC_FTW_TYPE_DIR: /* enter directory */
+  case ItemTypeDirectory: /* enter directory */
       if (ctx->current == REMOTE_REPLICA) {
           qCDebug(lcUpdate, "directory: %s [file_id=%s]", fs->path.constData(), fs->file_id.constData());
       } else {
           qCDebug(lcUpdate, "directory: %s [inode=%" PRIu64 "]", fs->path.constData(), fs->inode);
       }
       break;
-  case CSYNC_FTW_TYPE_SLINK:
+  case ItemTypeSoftLink:
     qCDebug(lcUpdate, "symlink: %s - not supported", fs->path.constData());
     break;
   default:
@@ -503,7 +511,7 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
         if (ctx->exclude_traversal_fn)
             excluded = ctx->exclude_traversal_fn(st->path, st->type);
         if (excluded != CSYNC_NOT_EXCLUDED) {
-            qDebug(lcUpdate, "%s excluded (%d)", st->path.constData(), excluded);
+            qInfo(lcUpdate, "%s excluded from db read (%d)", st->path.constData(), excluded);
 
             if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE
                     || excluded == CSYNC_FILE_SILENTLY_EXCLUDED) {
@@ -522,7 +530,7 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
         ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
         return false;
     }
-    qDebug(lcUpdate, "%" PRId64 " entries read below path %s from db.", count, uri);
+    qInfo(lcUpdate, "%" PRId64 " entries read below path %s from db.", count, uri);
 
     return true;
 }
@@ -690,7 +698,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     }
 
     previous_fs = ctx->current_fs;
-    bool recurse = dirent->type == CSYNC_FTW_TYPE_DIR;
+    bool recurse = dirent->type == ItemTypeDirectory;
 
     /* Call walker function for each file */
     rc = fn(ctx, std::move(dirent));

@@ -81,7 +81,7 @@ pipeline:
                 TESTS: qt-5.9
 
     AppImage-5.9:
-        image: nextcloudci/client-appimage-ci:client-appimage-ci-6
+        image: nextcloudci/client-appimage-ci:client-appimage-ci-8
         commands:
             - /bin/bash -c "./admin/linux/build-appimage.sh"
         when:
@@ -97,6 +97,15 @@ pipeline:
             matrix:
                 BUILD: Debian
 
+    documentation:
+        image: nextcloudci/documentation:documentation-5
+        commands:
+            - cd doc
+            - make html
+        when:
+            matrix:
+                TESTS: documentation
+
 matrix:
     include:
         - TESTS: qt-5.7
@@ -104,5 +113,6 @@ matrix:
         - TESTS: qt-5.9
         - BUILD: AppImage
         - BUILD: Debian
+        - TESTS: documentation
 
 branches: [ master, 2.* ]

@@ -202,6 +202,7 @@ private:
     QPointer<GETFileJob> _job;
     QFile _tmpFile;
     bool _deleteExisting;
+    ConflictRecord _conflictRecord;
 
     QElapsedTimer _stopwatch;
 };

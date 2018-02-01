@@ -23,7 +23,6 @@
 
 #include "c_macro.h"
 #include "c_alloc.h"
-#include "c_path.h"
 #include "c_string.h"
 #include "c_time.h"
 #include "c_private.h"

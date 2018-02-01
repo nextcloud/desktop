@@ -15,6 +15,7 @@
 #include "capabilities.h"
 
 #include <QVariantMap>
+#include <QDebug>
 
 namespace OCC {
 
@@ -147,5 +148,15 @@ QList<int> Capabilities::httpErrorCodesThatResetFailingChunkedUploads() const
 QString Capabilities::invalidFilenameRegex() const
 {
     return _capabilities["dav"].toMap()["invalidFilenameRegex"].toString();
+}
+
+bool Capabilities::uploadConflictFiles() const
+{
+    static auto envIsSet = !qEnvironmentVariableIsEmpty("OWNCLOUD_UPLOAD_CONFLICT_FILES");
+    static int envValue = qEnvironmentVariableIntValue("OWNCLOUD_UPLOAD_CONFLICT_FILES");
+    if (envIsSet)
+        return envValue != 0;
+
+    return _capabilities["uploadConflictFiles"].toBool();
 }
 }

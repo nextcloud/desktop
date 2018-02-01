@@ -1,6 +1,5 @@
 if(APPLE)
-# Contrary to popular belief, this is called like this no matter what theme/OEM.
-set(OC_OEM_SHARE_ICNS "${CMAKE_BINARY_DIR}/src/gui/ownCloud.icns")
+set(OC_OEM_SHARE_ICNS "${CMAKE_BINARY_DIR}/src/gui/${APPLICATION_ICON_NAME}.icns")
 
 # The bundle identifier and application group need to have compatible values with the client
 # to be able to open a Mach port across the extension's sandbox boundary.
