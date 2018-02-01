@@ -9,39 +9,39 @@ in the system tray (Windows, KDE), status bar (Mac OS X), or notification area
 (Linux).
 
 .. figure:: images/icon.png
-   :alt: Status icon, little cloud with green circle and white checkmark 
+   :alt: Status icon, green circle and white checkmark 
 
 The status indicator uses icons to indicate the current status of your 
 synchronization. The green circle with the white checkmark tells you that your 
 synchronization is current and you are connected to your Nextcloud server.
 
 .. figure:: images/icon-syncing.png
-   :alt: Status icon, little cloud with blue circle and white semi-circles
+   :alt: Status icon, blue circle and white semi-circles
 
 The blue icon with the white semi-circles means synchronization is in progress.
 
 .. figure:: images/icon-paused.png
-   :alt: Status icon, little cloud with yellow circle and vertical parallel 
+   :alt: Status icon, yellow circle and vertical parallel 
     lines
 
 The yellow icon with the parallel lines tells you your synchronization 
 has been paused. (Most likely by you.)
 
 .. figure:: images/icon-offline.png
-   :alt: Status icon, little gray cloud with gray circle and three horizontal 
+   :alt: Status icon, gray circle and three horizontal 
     white dots
 
 The gray icon with three white dots means your sync client has lost its 
 connection with your Nextcloud server.
 
 .. figure:: images/icon-information.png
-   :alt: Status icon, little cloud with letter "i" in white circle
+   :alt: Status icon, sign "!" in yellow circle
 
-When you see a white circle with the letter "i" that is the informational icon, 
+When you see a yellow circle with the sign "!" that is the informational icon, 
 so you should click it to see what it has to tell you.
 
 .. figure:: images/icon-error.png
-   :alt: Status icon, little cloud with red circle and white x
+   :alt: Status icon, red circle and white x
 
 The red circle with the white "x" indicates a configuration error, such as an 
 incorrect login or server URL.
@@ -69,7 +69,7 @@ This menu provides the following options:
 A left-click on your systray icon opens the desktop client to the account 
 settings window.
 
-.. figure:: images/client6.png
+.. figure:: images/client-6.png
    :alt: Account settings window
 
 Configuring Nextcloud Account Settings
@@ -209,7 +209,7 @@ automatically on a regular basis. Notifications are displayed in the Server
 Activity tab, and if you have **Show Desktop Notifications** enabled (General 
 tab) you'll also see a systray notification.
 
-.. figure:: images/client12.png
+.. figure:: images/client-12.png
    :alt: Activity window with notification.
 
 This also displays notifications sent to users by the Nextcloud admin via the 

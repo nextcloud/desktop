@@ -8,6 +8,7 @@ Nextcloud Desktop Client Manual
 
    introduction
    installing
+   visualtour
    navigating
    advancedusage
    autoupdate
