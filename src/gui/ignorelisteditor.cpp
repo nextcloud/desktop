@@ -55,6 +55,7 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     connect(ui->tableWidget, &QTableWidget::itemSelectionChanged, this, &IgnoreListEditor::slotItemSelectionChanged);
     connect(ui->removePushButton, &QAbstractButton::clicked, this, &IgnoreListEditor::slotRemoveCurrentItem);
     connect(ui->addPushButton, &QAbstractButton::clicked, this, &IgnoreListEditor::slotAddPattern);
+    connect(ui->removeAllPushButton, &QAbstractButton::clicked, this, &IgnoreListEditor::slotRemoveAllItems);
     connect(ui->buttonBox, &QDialogButtonBox::clicked, this, &IgnoreListEditor::slotRestoreDefaults);
 
     ui->tableWidget->resizeColumnsToContents();
@@ -95,6 +96,13 @@ void IgnoreListEditor::slotItemSelectionChanged()
 void IgnoreListEditor::slotRemoveCurrentItem()
 {
     ui->tableWidget->removeRow(ui->tableWidget->currentRow());
+}
+
+void IgnoreListEditor::slotRemoveAllItems()
+{
+    ui->tableWidget->clearContents();
+    ui->tableWidget->setRowCount(0);
+    populateTableReadOnlyValues();
 }
 
 void IgnoreListEditor::slotUpdateLocalIgnoreList()

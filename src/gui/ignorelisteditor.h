@@ -46,6 +46,7 @@ private slots:
     void slotUpdateLocalIgnoreList();
     void slotAddPattern();
     void slotRestoreDefaults(QAbstractButton *button);
+    void slotRemoveAllItems();
 
 private:
     void readIgnoreFile(const QString &file, bool readOnly);
