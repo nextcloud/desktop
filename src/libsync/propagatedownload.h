@@ -89,6 +89,15 @@ class GETFileZsyncJob : public GETJob
     /* these must be in this order so the destructors are done in the right order */
     zsync_unique_ptr<struct zsync_state> _zs = nullptr;
     zsync_unique_ptr<struct zsync_receiver> _zr = nullptr;
+
+    /** Byte ranges that need to be received.
+     *
+     * As returned by zsync_needed_byte_ranges()
+     *
+     * That means: [begin0, end0, begin1, end1, ...]
+     * where begin and end are *inclusive* and the last
+     * end may very well exceed the total file size.
+     */
     zsync_unique_ptr<off_t> _zbyterange = nullptr;
 
 public:

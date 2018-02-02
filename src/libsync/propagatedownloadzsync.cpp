@@ -60,6 +60,10 @@ GETFileZsyncJob::GETFileZsyncJob(OwncloudPropagator *propagator, SyncFileItemPtr
 
 void GETFileZsyncJob::startCurrentRange(quint64 start, quint64 end)
 {
+    // The end of the range might exceed the file size.
+    // It's size-1 because the Range header is end-inclusive.
+    end = qMin(end, _item->_size - 1);
+
     _headers["Range"] = "bytes=" + QByteArray::number(start) + '-' + QByteArray::number(end);
 
     qCDebug(lcZsyncGet) << path() << "HTTP GET with range" << _headers["Range"];
