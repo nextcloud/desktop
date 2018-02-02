@@ -46,7 +46,9 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
                          "and cannot be modified in this view.")
                           .arg(QDir::toNativeSeparators(cfgFile.excludeFile(ConfigFile::SystemScope)));
 
-    populateIgnoreFileTable();
+    ui->tableWidget->setRowCount(0);
+    populateTableReadOnlyValues();
+    readIgnoreFile(cfgFile.excludeFile(ConfigFile::UserScope), false);
 
     connect(this, &QDialog::accepted, this, &IgnoreListEditor::slotUpdateLocalIgnoreList);
     ui->removePushButton->setEnabled(false);
@@ -65,6 +67,12 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
 IgnoreListEditor::~IgnoreListEditor()
 {
     delete ui;
+}
+
+void IgnoreListEditor::populateTableReadOnlyValues(){
+    addPattern(".csync_journal.db*", /*deletable=*/false, /*readonly=*/true);
+    addPattern("._sync_*.db*", /*deletable=*/false, /*readonly=*/true);
+    addPattern(".sync_*.db*", /*deletable=*/false, /*readonly=*/true);
 }
 
 bool IgnoreListEditor::ignoreHiddenFiles()
@@ -95,6 +103,7 @@ void IgnoreListEditor::slotUpdateLocalIgnoreList()
     QString ignoreFile = cfgFile.excludeFile(ConfigFile::UserScope);
     QFile ignores(ignoreFile);
     if (ignores.open(QIODevice::WriteOnly)) {
+        // rewrites the whole file since now the user can also remove system patterns
         QFile::resize(ignoreFile, 0);
         for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
             QTableWidgetItem *patternItem = ui->tableWidget->item(row, patternCol);
@@ -148,8 +157,12 @@ void IgnoreListEditor::slotAddPattern()
 }
 
 void IgnoreListEditor::slotRestoreDefaults(QAbstractButton *button){
-    if(ui->buttonBox->buttonRole(button) == QDialogButtonBox::ResetRole)
-        populateIgnoreFileTable();
+    if(ui->buttonBox->buttonRole(button) == QDialogButtonBox::ResetRole){
+        ConfigFile cfgFile;
+        ui->tableWidget->setRowCount(0);
+        populateTableReadOnlyValues();
+        readIgnoreFile(cfgFile.excludeFile(ConfigFile::SystemScope), false);
+    }
 }
 
 void IgnoreListEditor::readIgnoreFile(const QString &file, bool readOnly)
@@ -169,18 +182,6 @@ void IgnoreListEditor::readIgnoreFile(const QString &file, bool readOnly)
             }
         }
     }
-}
-
-void IgnoreListEditor::populateIgnoreFileTable(){
-    ui->tableWidget->setRowCount(0);
-
-    addPattern(".csync_journal.db*", /*deletable=*/false, /*readonly=*/true);
-    addPattern("._sync_*.db*", /*deletable=*/false, /*readonly=*/true);
-    addPattern(".sync_*.db*", /*deletable=*/false, /*readonly=*/true);
-
-    ConfigFile cfgFile;
-    readIgnoreFile(cfgFile.excludeFile(ConfigFile::SystemScope), false);
-    readIgnoreFile(cfgFile.excludeFile(ConfigFile::UserScope), false);
 }
 
 int IgnoreListEditor::addPattern(const QString &pattern, bool deletable, bool readOnly)
