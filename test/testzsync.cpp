@@ -51,7 +51,8 @@ private slots:
         fakeFolder.localModifier().insert("A/a0", size);
         fakeFolder.localModifier().appendByte("A/a0", 'X');
         qsrand(QDateTime::currentDateTime().toTime_t());
-        for (int i = 0; i < 10; i++) {
+        const int nModifications = 10;
+        for (int i = 0; i < nModifications; i++) {
             quint64 offset = qrand() % size;
             fakeFolder.localModifier().modifyByte("A/a0", offset, 'Y');
         }
@@ -65,6 +66,7 @@ private slots:
         });
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(metadata.startsWith("zsync: "));
 
         // Keep hold of original file contents
         QFile f(fakeFolder.localPath() + "/A/a0");
@@ -77,6 +79,7 @@ private slots:
         fakeFolder.localModifier().insert("A/a0", size);
         auto currentMtime = QDateTime::currentDateTimeUtc();
         fakeFolder.remoteModifier().setModTime("A/a0", currentMtime);
+        quint64 transferedData = 0;
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             QUrlQuery query(request.url());
             if (op == QNetworkAccessManager::GetOperation) {
@@ -84,12 +87,24 @@ private slots:
                     return new FakeGetWithDataReply{ fakeFolder.remoteModifier(), metadata, op, request, this };
                 }
 
-                return new FakeGetWithDataReply{ fakeFolder.remoteModifier(), data, op, request, this };
+                auto reply = new FakeGetWithDataReply{ fakeFolder.remoteModifier(), data, op, request, this };
+                transferedData += reply->size;
+                return reply;
             }
 
             return nullptr;
         });
         QVERIFY(fakeFolder.syncOnce());
+
+        // We didn't transfer the whole file
+        // (plus one because of the new trailing byte)
+        QVERIFY(transferedData <= (nModifications + 1) * ZSYNC_BLOCKSIZE);
+
+        // Verify that the newly propagated file was assembled to have the expected data
+        f.open(QIODevice::ReadOnly);
+        QVERIFY(data == f.readAll());
+        f.close();
+
         auto conflicts = findConflicts(fakeFolder.currentLocalState().children["A"]);
         QCOMPARE(conflicts.size(), 1);
         for (auto c : conflicts) {
@@ -123,6 +138,7 @@ private slots:
         });
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(metadata.startsWith("zsync: "));
 
         // Test 2: Modify local contents and ensure that modified chunks are sent
         QVector<quint64> mods;

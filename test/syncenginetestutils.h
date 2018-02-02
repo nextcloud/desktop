@@ -675,7 +675,7 @@ public:
             int res = sscanf(r, "bytes=%llu-%llu", &start, &end);
             if (res == 2) {
                 payload += start;
-                size -= start;
+                size = end - start + 1;
             }
         }
     }
