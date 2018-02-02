@@ -92,7 +92,7 @@ for distribution in xenial artful bionic stable; do
     cd ..
 done
 
-#if test "${pull_request}" = "master"; then
+if test "${pull_request}" = "master"; then
     kind=`cat kind`
 
     if test "$kind" = "beta"; then
@@ -121,4 +121,4 @@ done
         cd ${OBS_SUBDIR}
         osc commit -m "Travis update"
     fi
-#fi
+fi
