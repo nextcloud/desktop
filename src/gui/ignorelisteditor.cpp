@@ -47,8 +47,7 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
                          "and cannot be modified in this view.")
                           .arg(QDir::toNativeSeparators(cfgFile.excludeFile(ConfigFile::SystemScope)));
 
-    ui->tableWidget->setRowCount(0);
-    populateTableReadOnlyValues();
+    setupTableReadOnlyItems();
     readIgnoreFile(cfgFile.excludeFile(ConfigFile::UserScope), false);
 
     connect(this, &QDialog::accepted, this, &IgnoreListEditor::slotUpdateLocalIgnoreList);
@@ -71,10 +70,12 @@ IgnoreListEditor::~IgnoreListEditor()
     delete ui;
 }
 
-void IgnoreListEditor::populateTableReadOnlyValues(){
+void IgnoreListEditor::setupTableReadOnlyItems(){
+    ui->tableWidget->setRowCount(0);
     addPattern(".csync_journal.db*", /*deletable=*/false, /*readonly=*/true);
     addPattern("._sync_*.db*", /*deletable=*/false, /*readonly=*/true);
     addPattern(".sync_*.db*", /*deletable=*/false, /*readonly=*/true);
+    ui->removeAllPushButton->setEnabled(false);
 }
 
 bool IgnoreListEditor::ignoreHiddenFiles()
@@ -104,8 +105,7 @@ void IgnoreListEditor::slotRemoveCurrentItem()
 void IgnoreListEditor::slotRemoveAllItems()
 {
     ui->tableWidget->clearContents();
-    ui->tableWidget->setRowCount(0);
-    populateTableReadOnlyValues();
+    setupTableReadOnlyItems();
 }
 
 void IgnoreListEditor::slotUpdateLocalIgnoreList()
@@ -170,8 +170,7 @@ void IgnoreListEditor::slotAddPattern()
 void IgnoreListEditor::slotRestoreDefaults(QAbstractButton *button){
     if(ui->buttonBox->buttonRole(button) == QDialogButtonBox::ResetRole){
         ConfigFile cfgFile;
-        ui->tableWidget->setRowCount(0);
-        populateTableReadOnlyValues();
+        setupTableReadOnlyItems();
         readIgnoreFile(cfgFile.excludeFile(ConfigFile::SystemScope), false);
     }
 }
@@ -215,10 +214,7 @@ int IgnoreListEditor::addPattern(const QString &pattern, bool deletable, bool re
         deletableItem->setFlags(deletableItem->flags() ^ Qt::ItemIsEnabled);
     }
 
-    // most of the time we will have more than the read only rows
     ui->removeAllPushButton->setEnabled(true);
-    if(ui->tableWidget->rowCount() == readOnlyRows)
-        ui->removeAllPushButton->setEnabled(false);
 
     return newRow;
 }

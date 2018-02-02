@@ -50,7 +50,7 @@ private slots:
 
 private:
     void readIgnoreFile(const QString &file, bool readOnly);
-    void populateTableReadOnlyValues();
+    void setupTableReadOnlyItems();
     int addPattern(const QString &pattern, bool deletable, bool readOnly);
     QString readOnlyTooltip;
     Ui::IgnoreListEditor *ui;
