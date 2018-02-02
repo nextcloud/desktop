@@ -183,7 +183,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="316"/>
         <source>Remove folder sync connection</source>
-        <translation>Verwijderen map sync verbinding</translation>
+        <translation>Verwijder map-synchronisatie verbinding</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="387"/>
@@ -198,12 +198,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="438"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation>Bevestig verwijderen Map Sync verbinding</translation>
+        <translation>Bevestig verwijderen map-synchronisatie verbinding</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="445"/>
         <source>Remove Folder Sync Connection</source>
-        <translation>Verwijderen Map Sync verbinding</translation>
+        <translation>Verwijder map-synchronisatie verbinding</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="527"/>
@@ -921,17 +921,17 @@ Doorgaan met deze synchronisatie overschrijft al uw bestanden door een eerdere v
     <message>
         <location filename="../src/gui/folderman.cpp" line="1344"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Lokale map %1 bevat al een map die wordt gebruikt voor een mapsync verbinding. Kies een andere!</translation>
+        <translation>Lokale map %1 bevat al een map die wordt gebruikt voor een map-synchronisatie verbinding. Kies een andere!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1354"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Lokale map %1 zit al in een map die wordt gebruikt voor een mapsync verbinding. Kies een andere!</translation>
+        <translation>Lokale map %1 zit al in een map die wordt gebruikt voor een map-synchronisatie verbinding. Kies een andere!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1362"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Lokale map %1 is een symbolische link. De doellink zit al in een map die in een mapsync verbinding wordt gebruikt. Kies een andere!</translation>
+        <translation>Lokale map %1 is een symbolische link. De doellink zit al in een map die in een map-synchronisatie verbinding wordt gebruikt. Kies een andere!</translation>
     </message>
 </context>
 <context>
@@ -939,7 +939,7 @@ Doorgaan met deze synchronisatie overschrijft al uw bestanden door een eerdere v
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="46"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Toevoegen mapsync verbinding</translation>
+        <translation>Voeg map synchronisatie verbinding toe</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="249"/>
@@ -1098,7 +1098,7 @@ Doorgaan met deze synchronisatie overschrijft al uw bestanden door een eerdere v
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Toevoegen mapsync verbinding</translation>
+        <translation>Voeg map-synchronisatie verbinding toe</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="550"/>
