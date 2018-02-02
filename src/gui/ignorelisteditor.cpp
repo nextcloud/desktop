@@ -29,6 +29,7 @@ namespace OCC {
 
 static int patternCol = 0;
 static int deletableCol = 1;
+static int readOnlyRows = 3;
 
 IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     : QDialog(parent)
@@ -96,6 +97,8 @@ void IgnoreListEditor::slotItemSelectionChanged()
 void IgnoreListEditor::slotRemoveCurrentItem()
 {
     ui->tableWidget->removeRow(ui->tableWidget->currentRow());
+    if(ui->tableWidget->rowCount() == readOnlyRows)
+        ui->removeAllPushButton->setEnabled(false);
 }
 
 void IgnoreListEditor::slotRemoveAllItems()
@@ -211,6 +214,11 @@ int IgnoreListEditor::addPattern(const QString &pattern, bool deletable, bool re
         patternItem->setToolTip(readOnlyTooltip);
         deletableItem->setFlags(deletableItem->flags() ^ Qt::ItemIsEnabled);
     }
+
+    // most of the time we will have more than the read only rows
+    ui->removeAllPushButton->setEnabled(true);
+    if(ui->tableWidget->rowCount() == readOnlyRows)
+        ui->removeAllPushButton->setEnabled(false);
 
     return newRow;
 }
