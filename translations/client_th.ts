@@ -913,7 +913,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1369"/>
         <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder Please pick another one!</source>
-        <translation>โฟลเดอร์ต้นทาง %1 ได้ถูกเก็บข้อมูลของพาทแล้ว ลิงค์เป้าหมายมีโฟลเดอร์ที่ประสานข้อมูลแล้ว โปรดเลือกอันอื่น!</translation>
+        <translation>โฟลเดอร์ต้นทาง %1 ได้ถูกเก็บข้อมูลของพาทแล้ว ลิงก์เป้าหมายมีโฟลเดอร์ที่ประสานข้อมูลแล้ว โปรดเลือกอันอื่น!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1384"/>
@@ -934,7 +934,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderman.cpp" line="1362"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>โฟลเดอร์ต้นทาง %1 เป็นการเชื่อมโยงสัญลักษณ์ 
-เป้าหมายของลิงค์มีเนื้อหาที่ถูกใช้ไปแล้วในโฟลเดอร์ที่ประสานข้อมูล กรุณาเลือกอีกอันหนึ่ง!</translation>
+เป้าหมายของลิงก์มีเนื้อหาที่ถูกใช้ไปแล้วในโฟลเดอร์ที่ประสานข้อมูล กรุณาเลือกอีกอันหนึ่ง!</translation>
     </message>
 </context>
 <context>
@@ -2633,7 +2633,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="218"/>
         <source>Public Links</source>
-        <translation>ลิงค์สาธารณะ</translation>
+        <translation>ลิงก์สาธารณะ</translation>
     </message>
 </context>
 <context>
@@ -2656,7 +2656,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="35"/>
         <source>Enter a name to create a new public link...</source>
-        <translation>ป้อนชื่อเพื่อสร้างลิงค์สาธารณะใหม่...</translation>
+        <translation>ป้อนชื่อเพื่อสร้างลิงก์สาธารณะใหม่...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="42"/>
@@ -2676,7 +2676,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="178"/>
         <source>Link properties:</source>
-        <translation>คุณสมบัติของลิงค์:</translation>
+        <translation>คุณสมบัติของลิงก์:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="220"/>
@@ -2691,7 +2691,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="20"/>
         <source>Anyone with the link has access to the file/folder</source>
-        <translation>ทุกคนที่มีลิงค์สามารถเข้าถึงไฟล์หรือโฟลเดอร์ได้</translation>
+        <translation>ทุกคนที่มีลิงก์สามารถเข้าถึงไฟล์หรือโฟลเดอร์ได้</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="117"/>
@@ -2712,12 +2712,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="93"/>
         <source>Link shares have been disabled</source>
-        <translation>แชร์ลิงค์แล้วถูกปิดใช้งาน</translation>
+        <translation>แชร์ลิงก์แล้วถูกปิดใช้งาน</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="107"/>
         <source>Create public link share</source>
-        <translation>สร้างแชร์ลิงค์สาธารณะ</translation>
+        <translation>สร้างแชร์ลิงก์สาธารณะ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
@@ -2728,37 +2728,37 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
         <source>Open link in browser</source>
-        <translation>เปิดลิงค์ในเบราว์เซอร์</translation>
+        <translation>เปิดลิงก์ในเบราว์เซอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Copy link to clipboard</source>
-        <translation>คัดลอกลิงค์ไปยังคลิปบอร์ด</translation>
+        <translation>คัดลอกลิงก์ไปยังคลิปบอร์ด</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Copy link to clipboard (direct download)</source>
-        <translation>คัดลอกลิงค์ทางอีเมล (ดาวน์โหลดโดยตรง)</translation>
+        <translation>คัดลอกลิงก์ทางอีเมล (ดาวน์โหลดโดยตรง)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
         <source>Send link by email</source>
-        <translation>ส่งลิงค์ทางอีเมล</translation>
+        <translation>ส่งลิงก์ทางอีเมล</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="167"/>
         <source>Send link by email (direct download)</source>
-        <translation>ส่งลิงค์ทางอีเมล (ดาวน์โหลดโดยตรง)</translation>
+        <translation>ส่งลิงก์ทางอีเมล (ดาวน์โหลดโดยตรง)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="519"/>
         <source>Confirm Link Share Deletion</source>
-        <translation>ยืนยันการลบลิงค์ที่แชร์</translation>
+        <translation>ยืนยันการลบลิงก์ที่แชร์</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;คุณต้องการลบลิงค์ที่แชร์แบบสาธารณะ&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;หมายเหตุ: ไม่สามารถยกเลิกการดำเนินการนี้ได้&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;คุณต้องการลบลิงก์ที่แชร์แบบสาธารณะ&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;หมายเหตุ: ไม่สามารถยกเลิกการดำเนินการนี้ได้&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="527"/>
@@ -2769,12 +2769,12 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sharelinkwidget.cpp" line="63"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="543"/>
         <source>Public link</source>
-        <translation>ลิงค์สาธารณะ</translation>
+        <translation>ลิงก์สาธารณะ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="253"/>
         <source>Delete link share</source>
-        <translation>ลบลิงค์ที่แชร์</translation>
+        <translation>ลบลิงก์ที่แชร์</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="458"/>
@@ -2822,7 +2822,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="239"/>
         <source>Send link by email</source>
-        <translation>ส่งลิงค์ทางอีเมล</translation>
+        <translation>ส่งลิงก์ทางอีเมล</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="249"/>
@@ -2935,12 +2935,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="567"/>
         <source>Copy private link to clipboard</source>
-        <translation>คัดลอกลิงค์ส่วนตัวไปยังคลิปบอร์ด</translation>
+        <translation>คัดลอกลิงก์ส่วนตัวไปยังคลิปบอร์ด</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="568"/>
         <source>Send private link by email...</source>
-        <translation>ส่งลิงค์ส่วนตัวทางอีเมล...</translation>
+        <translation>ส่งลิงก์ส่วนตัวทางอีเมล...</translation>
     </message>
 </context>
 <context>
@@ -3318,7 +3318,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="443"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation>ลิงค์สัญลักษณ์จะไม่ได้รับการสนับสนุนในการประสานข้อมูล</translation>
+        <translation>ลิงก์สัญลักษณ์จะไม่ได้รับการสนับสนุนในการประสานข้อมูล</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="446"/>
