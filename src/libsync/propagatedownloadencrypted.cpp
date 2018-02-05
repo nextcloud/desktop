@@ -121,9 +121,8 @@ bool PropagateDownloadEncrypted::decryptFile(QFile& tmpFile)
     // Let's fool the rest of the logic into thinking this was the actual download
     tmpFile.setFileName(_tmpOutput->fileName());
 
-    //TODO: This seems what's breaking the logic.
-    // Let's fool the rest of the logic into thinking this is the right name of the DAV file
-    _item->_file = _item->_file.section(QLatin1Char('/'), 0, -2)
+    // all encrypted files need to be renamed after
+    _item->_renameTarget = _item->_file.section(QLatin1Char('/'), 0, -2)
       + QLatin1Char('/') + _encryptedInfo.originalFilename;
 
     _item->_isEndToEndEncrypted = true;
