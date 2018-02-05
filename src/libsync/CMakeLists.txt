@@ -77,6 +77,7 @@ set( libsync_SRCS
     ../3rdparty/zsync/c/librcksum/state.c
     ../3rdparty/zsync/c/libzsync/sha1.c
     ../3rdparty/zsync/c/libzsync/zsync.c
+    ../3rdparty/zsync/c/libzsync/zsyncfile.c
     ../3rdparty/zsync/c/progress.c
 )
 
@@ -92,6 +93,8 @@ endif()
 
 set_source_files_properties( ../3rdparty/zsync/c/libzsync/zsync.c
     PROPERTIES COMPILE_FLAGS -DVERSION=\\"0.6.3\\" )
+set_source_files_properties( ../3rdparty/zsync/c/libzsync/zsyncfile.c
+    PROPERTIES COMPILE_FLAGS "-DVERSION=\\\"0.6.3\\\" -DSIZEOF_OFF_T=8" )
 
 ## end zsync
 

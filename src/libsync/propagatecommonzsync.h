@@ -98,15 +98,7 @@ signals:
 class ZsyncGenerateRunnable : public QObject, public QRunnable
 {
     Q_OBJECT
-    size_t _blocksize = ZSYNC_BLOCKSIZE;
-    size_t _len = 0;
     const QString _file;
-    SHA1_CTX _shactx;
-
-    int fcopy_hashes(FILE *fin, FILE *fout, size_t rsum_bytes, size_t hash_bytes);
-    int write_block_sums(unsigned char *buf, size_t got, FILE *f);
-    int read_stream_write_blocksums(FILE *fin, FILE *fout);
-    int stream_error(const char *func, FILE *stream);
 
 public:
     explicit ZsyncGenerateRunnable(const QString &file)

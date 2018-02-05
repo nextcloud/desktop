@@ -34,14 +34,11 @@
 #include <QNetworkAccessManager>
 #include <QFileInfo>
 #include <QDir>
-#include <cmath>
-#include <cstring>
 #include <QTemporaryDir>
 
-#ifdef Q_OS_UNIX
-#include <unistd.h>
-#include <arpa/inet.h>
-#endif
+extern "C" {
+#include "libzsync/zsyncfile.h"
+}
 
 namespace OCC {
 
@@ -151,102 +148,9 @@ void ZsyncSeedRunnable::run()
     emit finishedSignal(zs.release());
 }
 
-/**
- * Exit with IO-related error message
- */
-int ZsyncGenerateRunnable::stream_error(const char *func, FILE *stream)
+static void log_zsync_errors(const char *func, FILE *stream, void */*error_context*/)
 {
-    QString error = QString(func) + QString(": ") + QString(strerror(ferror(stream)));
-    emit failedSignal(error);
-    return -1;
-}
-
-/**
- * Copy the full block checksums from their temporary store file to the .zsync,
- * stripping the hashes down to the desired lengths specified by the last 2
- * parameters.
- */
-int ZsyncGenerateRunnable::fcopy_hashes(FILE *fin, FILE *fout, size_t rsum_bytes, size_t hash_bytes)
-{
-    unsigned char buf[CHECKSUM_SIZE + 4];
-    size_t len;
-
-    while ((len = fread(buf, 1, sizeof(buf), fin)) > 0) {
-        /* write trailing rsum_bytes of the rsum (trailing because the second part of the rsum is more useful in practice for hashing), and leading checksum_bytes of the checksum */
-        if (fwrite(buf + 4 - rsum_bytes, 1, rsum_bytes, fout) < rsum_bytes)
-            break;
-        if (fwrite(buf + 4, 1, hash_bytes, fout) < hash_bytes)
-            break;
-    }
-    if (ferror(fin)) {
-        return stream_error("fread", fin);
-    }
-    if (ferror(fout)) {
-        return stream_error("fwrite", fout);
-    }
-
-    return 0;
-}
-
-/**
- * Given one block of data, calculate the checksums for this block and write
- * them (as raw bytes) to the given output stream
- */
-int ZsyncGenerateRunnable::write_block_sums(unsigned char *buf, size_t got, FILE *f)
-{
-    struct rsum r;
-    unsigned char checksum[CHECKSUM_SIZE];
-
-    /* Pad for our checksum, if this is a short last block  */
-    if (got < _blocksize)
-        memset(buf + got, 0, _blocksize - got);
-
-    /* Do rsum and checksum, and convert to network endian */
-    r = rcksum_calc_rsum_block(buf, _blocksize);
-    rcksum_calc_checksum(&checksum[0], buf, _blocksize);
-    r.a = htons(r.a);
-    r.b = htons(r.b);
-
-    /* Write them raw to the stream */
-    if (fwrite(&r, sizeof r, 1, f) != 1)
-        return stream_error("fwrite", f);
-    if (fwrite(checksum, sizeof checksum, 1, f) != 1)
-        return stream_error("fwrite", f);
-
-    return 0;
-}
-
-/**
- * Reads the data stream and writes to the zsync stream the blocksums for the
- * given data. No compression handling.
- */
-int ZsyncGenerateRunnable::read_stream_write_blocksums(FILE *fin, FILE *fout)
-{
-    unsigned char *buf = (unsigned char *)malloc(_blocksize);
-
-    if (!buf) {
-        fprintf(stderr, "out of memory\n");
-        exit(1);
-    }
-
-    while (!feof(fin)) {
-        int got = fread(buf, 1, _blocksize, fin);
-
-        if (got > 0) {
-            /* The SHA-1 sum, unlike our internal block-based sums, is on the whole file and nothing else - no padding */
-            SHA1Update(&_shactx, buf, got);
-
-            write_block_sums(buf, got, fout);
-            _len += got;
-        } else {
-            if (ferror(fin)) {
-                free(buf);
-                return stream_error("fread", fin);
-            }
-        }
-    }
-    free(buf);
-    return 0;
+    qCWarning(lcZsyncGenerate) << "Zsync error: " << func << ": " << strerror(ferror(stream));
 }
 
 void ZsyncGenerateRunnable::run()
@@ -254,7 +158,6 @@ void ZsyncGenerateRunnable::run()
     // Create a temporary file to use with zsync_begin()
     QTemporaryFile zsynctf, zsyncmeta;
     zsyncmeta.open();
-    zsyncmeta.setAutoRemove(false);
     zsynctf.open();
 
     int metaHandle = zsyncmeta.handle();
@@ -272,7 +175,6 @@ void ZsyncGenerateRunnable::run()
     /* Ensure that metadata file is not buffered, since we are using handles directly */
     setvbuf(meta.get(), NULL, _IONBF, 0);
 
-    int rsum_len, checksum_len, seq_matches;
     qCDebug(lcZsyncGenerate) << "Starting generation of:" << _file;
 
     QByteArray fileString = _file.toLocal8Bit();
@@ -286,80 +188,47 @@ void ZsyncGenerateRunnable::run()
         return;
     }
 
+    zsync_unique_ptr<zsyncfile_state> state(zsyncfile_init(ZSYNC_BLOCKSIZE), [](zsyncfile_state *state) {
+        zsyncfile_finish(&state);
+    });
+    state->stream_error = &log_zsync_errors;
+
     /* Read the input file and construct the checksum of the whole file, and
      * the per-block checksums */
-    SHA1Init(&_shactx);
-    if (read_stream_write_blocksums(in.get(), tf.get())) {
+    if (zsyncfile_read_stream_write_blocksums(in.get(), tf.get(), /*no_look_inside=*/1, state.get()) != 0) {
         QString error = QString(tr("Failed to write block sums:")) + _file;
-        FileSystem::remove(zsyncmeta.fileName());
         emit failedSignal(error);
         return;
     }
 
-    { /* Decide how long a rsum hash and checksum hash per block we need for this file */
-        seq_matches = 1;
-        rsum_len = ceil(((log(_len) + log(_blocksize)) / log(2) - 8.6) / 8);
-        /* For large files, the optimum weak checksum size can be more than
-         * what we have available. Switch to seq_matches for this case. */
-        if (rsum_len > 4) {
-            /* seq_matches > 1 in theory would reduce the amount of rsum_len
-             * needed, since we get effectively rsum_len*seq_matches required
-             * to match before a strong checksum is calculated. In practice,
-             * consecutive blocks in the file can be highly correlated, so we
-             * want to keep the maximum available rsum_len as well. */
-            // XXX: disabled: this seems to cause unmatched blocks at end of
-            //      files with sizes which are unaligned to blocksize
-            // seq_matches = 2;
-            rsum_len = 4;
-        }
+    // We don't care for the optimal checksum lengths computed by
+    // compute_rsum_checksum_len() since we use blocks much larger
+    // than the default (1 MB instead of 8 kB) and can just store the full
+    // 20 bytes per block.
+    // There was also the following issue about seq_matches == 2:
+    //      this seems to cause unmatched blocks at end of
+    //      files with sizes which are unaligned to blocksize
+    int rsum_len = 4;
+    int checksum_len = 16;
+    int seq_matches = 1;
 
-        /* min lengths of rsums to store */
-        rsum_len = max(2, rsum_len);
-
-        /* Now the checksum length; min of two calculations */
-        checksum_len = max(ceil(
-                               (20 + (log(_len) + log(1 + _len / _blocksize)) / log(2))
-                               / seq_matches / 8),
-            ceil((20 + log(1 + _len / _blocksize) / log(2)) / 8));
-
-        /* Keep checksum_len within 4-16 bytes */
-        checksum_len = min(16, max(4, checksum_len));
-    }
-
-    /* Okay, start writing the zsync file */
-    fprintf(meta.get(), "zsync: 0.6.3\n");
-    fprintf(meta.get(), "Blocksize: %lu\n", _blocksize);
-    fprintf(meta.get(), "Length: %lu\n", _len);
-    fprintf(meta.get(), "Hash-Lengths: %d,%d,%d\n", seq_matches, rsum_len,
-        checksum_len);
-
-    { /* Write out SHA1 checksum of the entire file */
-        unsigned char digest[SHA1_DIGEST_LENGTH];
-        unsigned int i;
-
-        fputs("SHA-1: ", meta.get());
-
-        SHA1Final(digest, &_shactx);
-
-        for (i = 0; i < sizeof digest; i++)
-            fprintf(meta.get(), "%02x", digest[i]);
-        fputc('\n', meta.get());
-    }
-
-    /* End of headers */
-    fputc('\n', meta.get());
-
-    /* Now copy the actual block hashes to the .zsync */
-    rewind(tf.get());
-    if (fcopy_hashes(tf.get(), meta.get(), rsum_len, checksum_len)) {
-        QString error = QString(tr("Failed to copy hashes:")) + _file;
-        FileSystem::remove(zsyncmeta.fileName());
+    if (zsyncfile_write(
+            meta.get(), tf.get(),
+            rsum_len, checksum_len, seq_matches,
+            0, 0, 0, // recompress
+            0, 0, // fname, mtime
+            0, 0, // urls
+            0, 0, // Uurls
+            state.get())
+        != 0) {
+        QString error = QString(tr("Failed to write zsync metadata file:")) + _file;
         emit failedSignal(error);
         return;
     }
 
     qCDebug(lcZsyncGenerate) << "Done generation of:" << zsyncmeta.fileName();
 
+    zsyncmeta.setAutoRemove(false);
     emit finishedSignal(zsyncmeta.fileName());
 }
 }
