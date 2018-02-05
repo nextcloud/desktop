@@ -205,7 +205,7 @@ public:
     /// Whether there's end to end encryption on this file.
     /// If the file is encrypted, the _encryptedFilename is
     /// the encrypted name on the server.
-    bool _isEndToEndEncrypted;
+    bool _isEndToEndEncrypted = false;
     QString _encryptedFileName;
     ItemType _type BITFIELD(3);
     Direction _direction BITFIELD(3);

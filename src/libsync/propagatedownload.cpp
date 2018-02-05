@@ -835,12 +835,13 @@ void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumTy
 
 void PropagateDownloadFile::downloadFinished()
 {
-    QString fn = propagator()->getFilePath(_item->_file);
+    const QString itemFile = _item->_isEndToEndEncrypted ? _item->_renameTarget : _item->_file;
+    const QString fn = propagator()->getFilePath(itemFile);
 
     // In case of file name clash, report an error
     // This can happen if another parallel download saved a clashing file.
-    if (propagator()->localFileNameClash(_item->_file)) {
-        done(SyncFileItem::NormalError, tr("File %1 cannot be saved because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
+    if (propagator()->localFileNameClash(itemFile)) {
+        done(SyncFileItem::NormalError, tr("File %1 cannot be saved because of a local file name clash!").arg(QDir::toNativeSeparators(itemFile)));
         return;
     }
 
@@ -928,7 +929,8 @@ void PropagateDownloadFile::downloadFinished()
 
 void PropagateDownloadFile::updateMetadata(bool isConflict)
 {
-    QString fn = propagator()->getFilePath(_item->_file);
+    const QString itemFile = _item->_isEndToEndEncrypted ? _item->_renameTarget : _item->_file;
+    const QString fn = propagator()->getFilePath(itemFile);
 
     if (!propagator()->_journal->setFileRecord(_item->toSyncJournalFileRecordWithInode(fn))) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
@@ -936,7 +938,7 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
     }
     propagator()->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
     if (_isEncrypted) {
-      propagator()->_journal->setE2eRelation(_item->_encryptedFileName, _item->_file);
+      propagator()->_journal->setE2eRelation(_item->_encryptedFileName, _item->_renameTarget);
     }
 
     propagator()->_journal->commit("download file start2");
