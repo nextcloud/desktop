@@ -75,6 +75,15 @@ if test -d "${scriptdir}/../debian.${distribution}"; then
     tar cf - -C "${scriptdir}/../debian.${distribution}" . | tar xf - -C "${packagedir}/debian"
 fi
 
+pushd "${packagedir}"
+for p in debian/post-patches/*.patch; do
+    if test -f "${p}"; then
+        echo "Applying ${p}"
+        patch -p1 < "${p}"
+    fi
+done
+popd
+
 "${scriptdir}/git2changelog.py"  /tmp/git2changelog "${distribution}"
 mv "${packagedir}/debian/changelog" "${packagedir}/debian/changelog.old"
 cat /tmp/git2changelog "${packagedir}/debian/changelog.old" > "${packagedir}/debian/changelog"

@@ -1,7 +1,7 @@
 clone:
   git:
     image: plugins/git
-    depth: 1
+    tags: true
 
 pipeline:
     qt-5.7:
@@ -88,6 +88,15 @@ pipeline:
             matrix:
                 BUILD: AppImage
 
+    Debian:
+        image: nextcloudci/client-debian-ci:client-debian-ci-2
+        commands:
+            - /bin/bash -c "./admin/linux/debian/drone-build.sh"
+        secrets: [ DEBIAN_SECRET_KEY, DEBIAN_SECRET_IV ]
+        when:
+            matrix:
+                BUILD: Debian
+
     documentation:
         image: nextcloudci/documentation:documentation-5
         commands:
@@ -103,6 +112,7 @@ matrix:
         - TESTS: qt-5.8
         - TESTS: qt-5.9
         - BUILD: AppImage
+        - BUILD: Debian
         - TESTS: documentation
 
 branches: [ master, 2.* ]
