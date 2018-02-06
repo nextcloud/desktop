@@ -30,11 +30,6 @@ after_build:
 - ps: |
     craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --package owncloud-client
 
-
-on_finish:
-- ps: |
-    Get-ChildItem $env:USERPROFILE\.craft\* | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
-
 test_script:
 - ps: |
    craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --test owncloud-client
@@ -45,6 +40,3 @@ environment:
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     - TARGET: windows-msvc2017_64-cl
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-
-artifacts:
-  - path: binaries/*
