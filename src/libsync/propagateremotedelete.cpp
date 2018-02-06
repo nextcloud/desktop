@@ -65,10 +65,17 @@ void PropagateRemoteDelete::start()
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    qCDebug(lcPropagateRemoteDelete) << _item->_file;
+
+    QString remoteFile = _item->_file;
+    if (!_item->_encryptedFileName.isEmpty()) {
+        remoteFile = _item->_encryptedFileName;
+        // TODO update the JSON metadata
+    }
+
+    qCDebug(lcPropagateRemoteDelete) << "local" << _item->_file << "remote" << remoteFile;
 
     _job = new DeleteJob(propagator()->account(),
-        propagator()->_remoteFolder + _item->_file,
+        propagator()->_remoteFolder + remoteFile,
         this);
     connect(_job.data(), &DeleteJob::finishedSignal, this, &PropagateRemoteDelete::slotDeleteJobFinished);
     propagator()->_activeJobList.append(this);

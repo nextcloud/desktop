@@ -131,7 +131,7 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
   encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
 
   // New encrypted file so set it all up!
-  if (encryptedFile.encryptedFilename.isEmpty()) {
+  if (_item->_encryptedFileName.isEmpty()) {
       encryptedFile.encryptedFilename = EncryptionHelper::generateRandomString(20);
       encryptedFile.fileVersion = 1;
       encryptedFile.metadataKey = 1;
@@ -141,7 +141,8 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
   }
 
   _item->_isEndToEndEncrypted = true;
-  _item->_encryptedFileName = encryptedFile.encryptedFilename;
+  _item->_encryptedFileName = _item->_file.section(QLatin1Char('/'), 0, -2)
+          + QLatin1Char('/') + encryptedFile.encryptedFilename;
 
   qCDebug(lcPropagateUploadEncrypted) << "Creating the encrypted file.";
 

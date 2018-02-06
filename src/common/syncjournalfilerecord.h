@@ -64,6 +64,7 @@ public:
     RemotePermissions _remotePerm;
     bool _serverHasIgnoredFiles;
     QByteArray _checksumHeader;
+    QByteArray _e2eMangledName;
 };
 
 bool OCSYNC_EXPORT

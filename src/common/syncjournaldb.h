@@ -139,9 +139,6 @@ public:
     void avoidRenamesOnNextSync(const QByteArray &path);
     void setPollInfo(const PollInfo &);
 
-    bool setE2eRelation(const QString& mangledName, const QString& originalName);
-    QString getE2eMangledName(const QString& originalName);
-
     QVector<PollInfo> getPollInfos();
 
     enum SelectiveSyncListType {
@@ -289,10 +286,6 @@ private:
     QScopedPointer<SqlQuery> _getConflictRecordQuery;
     QScopedPointer<SqlQuery> _setConflictRecordQuery;
     QScopedPointer<SqlQuery> _deleteConflictRecordQuery;
-
-    // End to End Encryption Related Queries/
-    QScopedPointer<SqlQuery> _setE2eFileRelationQuery;
-    QScopedPointer<SqlQuery> _getE2eFileMangledName;
 
     /* This is the list of paths we called avoidReadFromDbOnNextSync on.
      * It means that they should not be written to the DB in any case since doing

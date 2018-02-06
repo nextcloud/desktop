@@ -681,14 +681,6 @@ void PropagateUploadFileCommon::finalize()
         return;
     }
 
-    if (_uploadingEncrypted) {
-      if (!propagator()->_journal->setE2eRelation(_item->_encryptedFileName, _item->_file)) {
-        qDebug() << "Error saving the encryption relation of the file.";
-      } else {
-        qDebug() << "Sabed the encryption relation of the file successfully";
-      }
-    }
-
     // Remove from the progress database:
     propagator()->_journal->setUploadInfo(_item->_file, SyncJournalDb::UploadInfo());
     propagator()->_journal->commit("upload file start");
