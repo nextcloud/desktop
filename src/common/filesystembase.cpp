@@ -478,4 +478,22 @@ bool FileSystem::isLnkFile(const QString &filename)
     return filename.endsWith(".lnk");
 }
 
+bool FileSystem::isJunction(const QString &filename)
+{
+#ifdef Q_OS_WIN
+    WIN32_FIND_DATA findData;
+    HANDLE hFind = FindFirstFileEx((const wchar_t *)filename.utf16(), FindExInfoBasic, &findData, FindExSearchNameMatch, NULL, 0);
+    if (hFind != INVALID_HANDLE_VALUE) {
+        FindClose(hFind);
+        return false;
+    }
+    return findData.dwFileAttributes != INVALID_FILE_ATTRIBUTES
+        && findData.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT
+        && findData.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT;
+#else
+    Q_UNUSED(filename);
+    return false;
+#endif
+}
+
 } // namespace OCC
