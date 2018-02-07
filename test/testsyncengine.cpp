@@ -172,6 +172,14 @@ private slots:
         fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
                                                                 {"parentFolder/subFolderA/"});
         fakeFolder.syncEngine().journal()->avoidReadFromDbOnNextSync(QByteArrayLiteral("parentFolder/subFolderA/"));
+        auto getEtag = [&](const QByteArray &file) {
+            SyncJournalFileRecord rec;
+            fakeFolder.syncJournal().getFileRecord(file, &rec);
+            return rec._etag;
+        };
+        QVERIFY(getEtag("parentFolder") == "_invalid_");
+        QVERIFY(getEtag("parentFolder/subFolderA") == "_invalid_");
+        QVERIFY(getEtag("parentFolder/subFolderA/subsubFolder") != "_invalid_");
 
         // But touch local file before the next sync, such that the local folder
         // can't be removed
