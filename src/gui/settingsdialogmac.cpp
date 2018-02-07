@@ -121,6 +121,7 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
 
     ConfigFile cfg;
     cfg.restoreGeometry(this);
+    _activitySettings->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
 }
 
 void SettingsDialogMac::closeEvent(QCloseEvent *event)
