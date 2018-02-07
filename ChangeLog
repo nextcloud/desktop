@@ -5,6 +5,7 @@ version 2.4.1 (2017-02-xx)
 * Ignore files with file names that can't be encoded for the filesystem (#6287, #5676, #5719)
 * Issues: Speed up insertion and add hard upper limit (#6272)
 * Notifications: Fix "Dismiss" action
+* Notifications: Fix timer invocation on macOS
 * Protocol: Remove entries for auto resolved conflicts (#6316)
 * owncloudcmd: Set proxy before capabilities call (#6281)
 * owncloudcmd: Do not do the capability call when --nonshib is passed
