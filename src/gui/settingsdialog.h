@@ -59,6 +59,7 @@ public slots:
     void showIssuesList(const QString &folderAlias);
     void slotSwitchPage(QAction *action);
     void slotRefreshActivity(AccountState *accountState);
+    void slotRefreshActivityAccountStateSender();
     void slotAccountAvatarChanged();
     void slotAccountDisplayNameChanged();
 

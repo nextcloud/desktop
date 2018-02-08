@@ -6,6 +6,7 @@ version 2.4.1 (2017-02-xx)
 * Issues: Speed up insertion and add hard upper limit (#6272)
 * Notifications: Fix "Dismiss" action
 * Notifications: Fix timer invocation on macOS
+* Notifications: Immediately poll when account online
 * Protocol: Remove entries for auto resolved conflicts (#6316)
 * owncloudcmd: Set proxy before capabilities call (#6281)
 * owncloudcmd: Do not do the capability call when --nonshib is passed
