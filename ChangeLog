@@ -13,6 +13,7 @@ version 2.4.1 (2017-02-xx)
 * Avatars: Use old location for servers <10 (#6279)
 * Link shares: Change default share name (#6298)
 * Nautilus integration: Work with python2 and python3
+* HTTP2: Only allow with Qt 5.9.4 (#6285)
 * Crash fixes
 
 version 2.4.0 (2017-12-21)
