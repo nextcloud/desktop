@@ -148,7 +148,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="182"/>
         <source>No account configured.</source>
-        <translation>Nincs beállított kapcsolat.</translation>
+        <translation>Nincs beállított fiók.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="195"/>
@@ -373,7 +373,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="132"/>
         <source>Maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>Karbantartás Mód</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="134"/>
@@ -388,7 +388,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="138"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>A hitelesítő adatok kérése</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="140"/>
@@ -446,7 +446,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="613"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>A nem szinkronizált elemek listája átkerült a vágólapra.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="618"/>
@@ -529,7 +529,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation type="unfinished"/>
+        <translation>Tanúsítvány és kulcs (pkcs12):</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
@@ -557,17 +557,17 @@
     <message>
         <location filename="../src/gui/application.cpp" line="164"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Hiba történt egy konfigurációs fájl elérésében</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="165"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Hiba történt a (z) %1 konfigurációs fájl elérésekor.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="168"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Kilépés egy sajátCloud-ból</translation>
     </message>
 </context>
 <context>
@@ -753,7 +753,7 @@
         <location filename="../src/gui/folder.cpp" line="891"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation type="unfinished"/>
+        <translation>Hozzáadt egy mappát egy külső tárból.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="892"/>
@@ -766,14 +766,14 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>A kiszolgáló egy &quot;% 1&quot; mappában levő összes fájlt törölték.Ezek a törlések szinkronizálódnak a helyi szinkronizálási mappájukhoz, így az ilyen fájlok nem érhetők el, hacsak nem jogosult a visszaállításra. Ha úgy dönt, hogy megtartja a fájlokat, akkor újra szinkronizálódik a szerverrel, ha jogosult erre.Ha úgy dönt, hogy törli a fájlokat, akkor nem lesznek elérhetők, hacsak nem vagy egy tulajdonos.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="932"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>A (z) &quot;% 1&quot; helyi szinkronmappában található összes fájl törölve lett. Ezek a törlések szinkronizálásra kerülnek a kiszolgálóval, így az ilyen fájlok nem érhetők el, hacsak vissza nem állítják őket.Biztos benne, hogy ezeket a műveleteket szinkronizálni szeretné a kiszolgálóval?Ha ez baleset volt, és úgy döntenél, hogy megőrzi a fájlokat, újra szinkronizálódik a kiszolgálóról.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="936"/>
@@ -795,7 +795,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>Ez a szinkronizálás a &quot;% 1&quot; szinkronizálási mappában korábbi időpontban alaphelyzetbe állítja a fájlokat.Ez azért lehetséges, mert egy biztonsági másolat visszaállt a kiszolgálón.Ha a szokásos módon folytatja a szinkronizálást, az régebbi fájl felülírja az összes fájlt egy korábbi állapotban. Meg szeretné őrizni a helyi legfrissebb fájlokat konfliktusfájlokként?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="962"/>
@@ -903,7 +903,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1369"/>
         <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>A % 1 helyi mappa szimbolikus hivatkozást tartalmaz. A linkcél tartalmazza egy már szinkronizált mappát Kérjük válasszon másikat!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1384"/>
@@ -931,12 +931,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="46"/>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Mappaszinkronizáció hozzáadása</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="249"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Szinkronizálás a helyi mappával</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="296"/>
@@ -954,7 +954,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="145"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Kattintson erre a gombra egy mappa szinkronizálásához.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="154"/>
@@ -1089,12 +1089,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Mappaszinkronizáció hozzáadása</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="550"/>
         <source>Add Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Szinkronizálási kapcsolat hozzáadása</translation>
     </message>
 </context>
 <context>
@@ -1120,7 +1120,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="181"/>
         <source>Create Remote Folder</source>
-        <translation type="unfinished"/>
+        <translation>Távoli mappa létrehozása</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="182"/>
@@ -1409,22 +1409,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="73"/>
         <source>Show warnings</source>
-        <translation type="unfinished"/>
+        <translation>Figyelmeztetések megjelenítése</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
         <source>Show ignored files</source>
-        <translation type="unfinished"/>
+        <translation>A figyelmen kívülhagyott fájlok megjelenítése</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="133"/>
         <source>There were too many issues. Not all will be visible here.</source>
-        <translation type="unfinished"/>
+        <translation>Túl sok kérdés volt. Nem minden jelen lesz látható.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="155"/>
         <source>Copy the issues list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Másolja a problémák listáját a vágólapra.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="158"/>
@@ -1444,7 +1444,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="84"/>
         <source>Issue</source>
-        <translation type="unfinished"/>
+        <translation>Probléma</translation>
     </message>
 </context>
 <context>
@@ -1659,12 +1659,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="55"/>
         <source>Created at %1</source>
-        <translation type="unfinished"/>
+        <translation>% 1 létrehozva</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="104"/>
         <source>Closing in a few seconds...</source>
-        <translation type="unfinished"/>
+        <translation>Néhány másodpercen belül lezárva ...</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="138"/>
@@ -1781,7 +1781,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="49"/>
         <source>Setup local folder options</source>
-        <translation type="unfinished"/>
+        <translation>Helyi mappa beállítások megadása</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="58"/>
@@ -1830,7 +1830,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation type="unfinished"/>
+        <translation>Válasszon egy másik URL-t</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
@@ -1876,7 +1876,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="44"/>
         <source>Login in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Jelentkezzen be egy böngészőbe</translation>
     </message>
 </context>
 <context>
@@ -1983,7 +1983,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="489"/>
         <source>No remote folder specified!</source>
-        <translation type="unfinished"/>
+        <translation>Nincs megadva távoli mappa!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="495"/>
@@ -2130,7 +2130,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="630"/>
         <source>The file could not be downloaded completely.</source>
-        <translation type="unfinished"/>
+        <translation>A fájl nem tölthető le teljesen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="637"/>
@@ -2158,7 +2158,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="234"/>
         <source>; Restoration Failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Helyreállítás sikertelen: % 1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="355"/>
@@ -2614,7 +2614,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="211"/>
         <source>Users and Groups</source>
-        <translation type="unfinished"/>
+        <translation>Felhasználók és csoportok</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="218"/>
@@ -2662,7 +2662,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="178"/>
         <source>Link properties:</source>
-        <translation type="unfinished"/>
+        <translation>Link tulajdonságai:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="220"/>
@@ -2703,7 +2703,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="107"/>
         <source>Create public link share</source>
-        <translation type="unfinished"/>
+        <translation>Hozzon létre nyilvános link megosztást</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
@@ -2714,17 +2714,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
         <source>Open link in browser</source>
-        <translation type="unfinished"/>
+        <translation>Nyissa meg egy linket egy böngészőben</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Link másolása egy vágólapra</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Copy link to clipboard (direct download)</source>
-        <translation type="unfinished"/>
+        <translation>Link másolása a vágólapra (közvetlen letöltés)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
@@ -2734,12 +2734,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="167"/>
         <source>Send link by email (direct download)</source>
-        <translation type="unfinished"/>
+        <translation>Link elküldése e-mailben (közvetlen letöltés)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="519"/>
         <source>Confirm Link Share Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Egy link megosztásának törlési megerősítése</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
@@ -2755,12 +2755,12 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sharelinkwidget.cpp" line="63"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="543"/>
         <source>Public link</source>
-        <translation type="unfinished"/>
+        <translation>Nyilvános link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="253"/>
         <source>Delete link share</source>
-        <translation type="unfinished"/>
+        <translation>Törölje a link megosztását</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="458"/>
@@ -2798,12 +2798,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="235"/>
         <source>Open link in browser</source>
-        <translation type="unfinished"/>
+        <translation>Nyissa meg egy linket egy böngészőben</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="237"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Link másolása egy vágólapra</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="239"/>
@@ -2818,7 +2818,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Megosztottam veled valamit</translation>
     </message>
 </context>
 <context>
@@ -2911,22 +2911,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="557"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Megosztottam veled valamit</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="565"/>
         <source>Share...</source>
-        <translation type="unfinished"/>
+        <translation>Ossza meg ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="567"/>
         <source>Copy private link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Privát hivatkozás másolás a vágólapra</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="568"/>
         <source>Send private link by email...</source>
-        <translation type="unfinished"/>
+        <translation>Privát e-mail küldése: ...</translation>
     </message>
 </context>
 <context>
@@ -3042,7 +3042,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sslbutton.cpp" line="192"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation type="unfinished"/>
+        <translation>Ez a kapcsolat NEM biztonságos, mivel nem titkosított.</translation>
     </message>
 </context>
 <context>
@@ -3198,7 +3198,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="188"/>
         <source>Error while reading folder.</source>
-        <translation type="unfinished"/>
+        <translation>Hiba történt egy térképen olvasása közben.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="264"/>
@@ -3434,7 +3434,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation type="unfinished"/>
+        <translation>Szinkronizálási napló</translation>
     </message>
 </context>
 <context>
@@ -3610,18 +3610,18 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="272"/>
         <source>Account synchronization is disabled</source>
-        <translation type="unfinished"/>
+        <translation>A fiókszinkronizálás le van tiltva</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="273"/>
         <location filename="../src/gui/owncloudgui.cpp" line="304"/>
         <source>Synchronization is paused</source>
-        <translation type="unfinished"/>
+        <translation>A szinkronizálás szünetel</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="306"/>
         <source>Error during synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Hiba történt egy szinkronizálás közben</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="314"/>
@@ -3641,7 +3641,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
         <source>Unpause all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Szüntesse meg az összes szinkronizálást</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
@@ -3661,17 +3661,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="618"/>
         <source>Log out of all accounts</source>
-        <translation type="unfinished"/>
+        <translation>Jelentkezzen ki minden fiókból</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="626"/>
         <source>Log in to all accounts...</source>
-        <translation type="unfinished"/>
+        <translation>Jelentkezzen be az összes fiókba ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="710"/>
         <source>New account...</source>
-        <translation type="unfinished"/>
+        <translation>Új fiók ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="728"/>
@@ -3841,7 +3841,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Nyisd meg újra egy böngészőt</translation>
     </message>
 </context>
 <context>
@@ -3860,7 +3860,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="86"/>
         <source>Ser&amp;ver Address</source>
-        <translation type="unfinished"/>
+        <translation>Szerver címe</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="102"/>
@@ -3917,12 +3917,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/utility.cpp" line="451"/>
         <source>now</source>
-        <translation type="unfinished"/>
+        <translation>A legtöbb</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="453"/>
         <source>Less than a minute ago</source>
-        <translation type="unfinished"/>
+        <translation>Kevesebb, mint egy perce</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="456"/>
@@ -3932,7 +3932,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/utility.cpp" line="459"/>
         <source>Some time ago</source>
-        <translation type="unfinished"/>
+        <translation>Kis idővel ezelött</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="145"/>
@@ -3956,7 +3956,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/utility.cpp" line="138"/>
         <source>%L1 KB</source>
-        <translation type="unfinished"/>
+        <translation>%L1 KB</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="141"/>
