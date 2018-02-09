@@ -28,7 +28,7 @@ QString baseUrl();
 
 class EncryptionHelper {
 public:
-    static QByteArray generateRandomString(int size);
+    static QByteArray generateRandomFilename();
     static QByteArray generateRandom(int size);
     static QByteArray generatePassword(const QString &wordlist, const QByteArray& salt);
     static QByteArray encryptPrivateKey(

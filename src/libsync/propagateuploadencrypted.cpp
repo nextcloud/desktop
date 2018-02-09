@@ -132,7 +132,7 @@ void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDo
 
   // New encrypted file so set it all up!
   if (encryptedFile.encryptedFilename.isEmpty()) {
-      encryptedFile.encryptedFilename = EncryptionHelper::generateRandomString(20);
+      encryptedFile.encryptedFilename = EncryptionHelper::generateRandomFilename();
       encryptedFile.fileVersion = 1;
       encryptedFile.metadataKey = 1;
       encryptedFile.originalFilename = info.fileName();
