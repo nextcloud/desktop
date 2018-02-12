@@ -39,7 +39,7 @@ Q_LOGGING_CATEGORY(lcDb, "nextcloud.sync.database", QtInfoMsg)
 
 #define GET_FILE_RECORD_QUERY \
         "SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize," \
-        "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum" \
+        "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum, e2eMangledName " \
         " FROM metadata" \
         "  LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
 
@@ -55,6 +55,7 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._fileSize = query.int64Value(7);
     rec._serverHasIgnoredFiles = (query.intValue(8) > 0);
     rec._checksumHeader = query.baValue(9);
+    rec._e2eMangledName = query.baValue(10);
 }
 
 static QString defaultJournalMode(const QString &dbPath)
@@ -468,17 +469,6 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("Create table version", createQuery);
     }
 
-    /* maps the end to end filename in the server/metadata to the actuall filename in disk
-     */
-    createQuery.prepare("CREATE TABLE IF NOT EXISTS e2efilemap("
-                        "mangledname TEXT UNIQUE,"
-                        "name TEXT UNIQUE"
-                        ")");
-
-    if (!createQuery.exec()) {
-      return sqlFail("Create table e2efilemap", createQuery);
-    }
-
     bool forceRemoteDiscovery = false;
 
     SqlQuery versionQuery("SELECT major, minor, patch FROM version;", _db);
@@ -595,8 +585,8 @@ bool SyncJournalDb::checkConnect()
 
     _setFileRecordQuery.reset(new SqlQuery(_db));
     if (_setFileRecordQuery->prepare("INSERT OR REPLACE INTO metadata "
-                                     "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, contentChecksum, contentChecksumTypeId) "
-                                     "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16);")) {
+                                     "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, contentChecksum, contentChecksumTypeId, e2eMangledName) "
+                                     "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17);")) {
         return sqlFail("prepare _setFileRecordQuery", *_setFileRecordQuery);
     }
 
@@ -716,16 +706,6 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("prepare _setDataFingerprintQuery2", *_setDataFingerprintQuery2);
     }
 
-    _getE2eFileMangledName.reset(new SqlQuery(_db));
-    if (_getE2eFileMangledName->prepare("SELECT mangledname FROM e2efilemap WHERE name =?1;")) {
-      return sqlFail("prepare _getE2eFileMangledName", *_getE2eFileMangledName);
-    }
-
-    _setE2eFileRelationQuery.reset(new SqlQuery(_db));
-    if (_setE2eFileRelationQuery->prepare("INSERT INTO e2efilemap (mangledname, name) VALUES (?1, ?2);")) {
-      return sqlFail("prepare _setE2eFileRelationQuery", *_setE2eFileRelationQuery);
-    }
-
     _getConflictRecordQuery.reset(new SqlQuery(_db));
     if (_getConflictRecordQuery->prepare("SELECT baseFileId, baseModtime, baseEtag FROM conflicts WHERE path=?1;")) {
         return sqlFail("prepare _getConflictRecordQuery", *_getConflictRecordQuery);
@@ -791,8 +771,6 @@ void SyncJournalDb::close()
     _getDataFingerprintQuery.reset(0);
     _setDataFingerprintQuery1.reset(0);
     _setDataFingerprintQuery2.reset(0);
-    _setE2eFileRelationQuery.reset(0);
-    _getE2eFileMangledName.reset(0);
     _getConflictRecordQuery.reset(0);
     _setConflictRecordQuery.reset(0);
     _deleteConflictRecordQuery.reset(0);
@@ -814,7 +792,7 @@ bool SyncJournalDb::updateDatabaseStructure()
 
 bool SyncJournalDb::updateMetadataTableStructure()
 {
-    QStringList columns = tableColumns("metadata");
+    const QStringList columns = tableColumns("metadata");
     bool re = true;
 
     // check if the file_id column is there and create it if not
@@ -903,6 +881,16 @@ bool SyncJournalDb::updateMetadataTableStructure()
             re = false;
         }
         commitInternal("update database structure: add contentChecksumTypeId col");
+    }
+
+    if (!columns.contains(QLatin1String("e2eMangledName"))) {
+        SqlQuery query(_db);
+        query.prepare("ALTER TABLE metadata ADD COLUMN e2eMangledName TEXT;");
+        if (!query.exec()) {
+            sqlFail("updateMetadataTableStructure: add e2eMangledName column", query);
+            re = false;
+        }
+        commitInternal("update database structure: add e2eMangledName col");
     }
 
     if (!tableColumns("uploadinfo").contains("contentChecksum")) {
@@ -1063,6 +1051,7 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
         _setFileRecordQuery->bindValue(14, record._serverHasIgnoredFiles ? 1 : 0);
         _setFileRecordQuery->bindValue(15, checksum);
         _setFileRecordQuery->bindValue(16, contentChecksumTypeId);
+        _setFileRecordQuery->bindValue(17, record._e2eMangledName);
 
         if (!_setFileRecordQuery->exec()) {
             return false;
@@ -1382,6 +1371,7 @@ bool SyncJournalDb::setFileRecordMetadata(const SyncJournalFileRecord &record)
     existing._remotePerm = record._remotePerm;
     existing._fileSize = record._fileSize;
     existing._serverHasIgnoredFiles = record._serverHasIgnoredFiles;
+    existing._e2eMangledName = record._e2eMangledName;
     return setFileRecord(existing);
 }
 
@@ -1461,65 +1451,6 @@ void SyncJournalDb::setDownloadInfo(const QString &file, const SyncJournalDb::Do
             return;
         }
     }
-}
-
-QString SyncJournalDb::getE2eMangledName(const QString& originalName)
-{
-  QMutexLocker locker(&_mutex);
-  qCDebug(lcDb) << "######### Trying to find database entry for name " << originalName << ". #######";
-
-  if (! checkConnect()) {
-    qCDebug(lcDb) << "######### Connection to the database is wrong. #######";
-    return QString{};
-  }
-
-  if (originalName.isEmpty()) {
-    qCDebug(lcDb) << "######### Original Name is Empty. #######";
-    return QString{};
-  }
-
-  _getE2eFileMangledName->reset_and_clear_bindings();
-  _getE2eFileMangledName->bindValue(1, originalName);
-  if (!_getE2eFileMangledName->exec()) {
-    qCDebug(lcDb) << "######### Error Executing query. #######";
-    return QString{};
-  }
-
-  if (!_getE2eFileMangledName->next()) {
-    qCDebug(lcDb) << "######### Query returned empty. #######";
-    return QString{};
-  }
-
-  const QString ret = _getE2eFileMangledName->stringValue(0);
-
-  qCDebug(lcDb) << "The return of the mangled name is" << ret;
-  return ret;
-}
-
-bool SyncJournalDb::setE2eRelation(const QString& mangledName, const QString& originalName)
-{
-  Q_ASSERT(!mangledName.isEmpty());
-  Q_ASSERT(!originalName.isEmpty());
-
-  if (! checkConnect()) {
-    qCDebug(lcDb) << "######### Connection to the database is wrong. #######";
-    return false;
-  }
-
-  if (mangledName.isEmpty()) {
-        qCDebug(lcDb) << "Cant create e2e relation on the database, mangled name is empty.";
-        return false;
-  }
-
-  if (originalName.isEmpty()) {
-        qCDebug(lcDb) << "Cant create e2e relation on the database, original name is empty.";
-        return false;
-  }
-
-  _setE2eFileRelationQuery->reset_and_clear_bindings();
-  _setE2eFileRelationQuery->bindValue(1, mangledName);
-  _setE2eFileRelationQuery->bindValue(2, originalName);
-  return _setE2eFileRelationQuery->exec();
 }
 
 QVector<SyncJournalDb::DownloadInfo> SyncJournalDb::getAndDeleteStaleDownloadInfos(const QSet<QString> &keep)

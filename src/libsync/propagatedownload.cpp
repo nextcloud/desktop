@@ -934,9 +934,11 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }
-    propagator()->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
+
     if (_isEncrypted) {
-      propagator()->_journal->setE2eRelation(_item->_encryptedFileName, _item->_file);
+        propagator()->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
+    } else {
+        propagator()->_journal->setDownloadInfo(_item->_encryptedFileName, SyncJournalDb::DownloadInfo());
     }
 
     propagator()->_journal->commit("download file start2");
