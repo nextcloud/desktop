@@ -1734,8 +1734,8 @@ Elementer hvor sletting er tillatt, vil bli slettet hvis de forhindrer fjerning 
         <location filename="../src/gui/updater/ocupdater.cpp" line="104"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>En ny oppdatering for %1 er i ferd med å bli installert. Oppdateringen
-kan be om flere rettigheter under behandlingen.</translation>
+        <translation>En ny oppdatering for %1 vil bli installert. Oppdateringen
+kan be om flere rettigheter underveis.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
@@ -1780,7 +1780,7 @@ kan be om flere rettigheter under behandlingen.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="178"/>
         <source>Update Check</source>
-        <translation>Oppdateringssjek</translation>
+        <translation>Oppdateringssjekk</translation>
     </message>
 </context>
 <context>
