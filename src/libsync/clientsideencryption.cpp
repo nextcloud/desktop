@@ -65,12 +65,12 @@ namespace {
     }
 }
 
-QByteArray EncryptionHelper::generateRandomString(int size)
+QByteArray EncryptionHelper::generateRandomFilename()
 {
-   const QByteArray possibleCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+   const QByteArray possibleCharacters = "0123456789abcdef";
 
-   QByteArray randomString(size, '\0');
-   for(int i=0; i < size; ++i)
+   QByteArray randomString(32, '\0');
+   for(int i=0; i < 32; ++i)
    {
        int index = qrand() % possibleCharacters.length();
        randomString[i] = possibleCharacters.at(index);
