@@ -87,7 +87,7 @@ On Release Day (for final release):
 * [ ] Create a pull request to the owncloud.org repository to update the install page (strings.php, page-desktop.php). From now on download packages from the staging webserver.
 * [ ] Announce on https://central.owncloud.org
 * [ ] Announce on announcements@owncloud.org
-* [ ] Inform packagers @dragotin (openSUSE) @hefee (Debian)
+* [ ] Inform packagers @dragotin (openSUSE) @hefee (Debian) @Germano0 (Fedora)
 * [ ] Create git signed tag in client repository using ```git tag -u E94E7B37 tagname```
 * [ ] Send out Social (tweet, blog, other)
 * [ ] Send out customer communication (if any)
