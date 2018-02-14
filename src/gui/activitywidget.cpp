@@ -37,6 +37,7 @@
 #include "servernotificationhandler.h"
 #include "theme.h"
 #include "ocsjob.h"
+#include "configfile.h"
 
 #include "ui_activitywidget.h"
 
@@ -308,8 +309,11 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
         }
 
         // Assemble a tray notification
-        QString log = tr("Notification for %1.").arg(activity._accName);
-        emit guiLog(log, activity._subject);
+        ConfigFile cfg;
+        if(cfg.optionalDesktopNotifications()){
+            QString log = tr("Notification for %1.").arg(activity._accName);
+            emit guiLog(log, activity._subject);
+         }
     }
 
     // check if there are widgets that have no corresponding activity from
@@ -599,7 +603,10 @@ void ActivitySettings::slotCopyToClipboard()
     }
 
     QApplication::clipboard()->setText(text);
-    emit guiLog(tr("Copied to clipboard"), message);
+
+    ConfigFile cfg;
+    if(cfg.optionalActivityNotifications())
+        emit guiLog(tr("Copied to clipboard"), message);
 }
 
 void ActivitySettings::slotRemoveAccount(AccountState *ptr)

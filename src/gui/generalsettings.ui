@@ -20,6 +20,13 @@
       <string>General Settings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="syncNotificationsCheckBox">
+        <property name="text">
+         <string>Show Sync Notifications</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="0">
        <widget class="QCheckBox" name="autostartCheckBox">
         <property name="text">
@@ -41,6 +48,13 @@
         </property>
         <property name="text">
          <string>Use &amp;Monochrome Icons</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QCheckBox" name="activityNotificationsCheckBox">
+        <property name="text">
+         <string>Show Activity Notifications</string>
         </property>
        </widget>
       </item>

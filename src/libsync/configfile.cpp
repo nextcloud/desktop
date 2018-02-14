@@ -53,7 +53,9 @@ static const char notificationRefreshIntervalC[] = "notificationRefreshInterval"
 static const char monoIconsC[] = "monoIcons";
 static const char promptDeleteC[] = "promptDeleteAllFiles";
 static const char crashReporterC[] = "crashReporter";
-static const char optionalDesktopNoficationsC[] = "optionalDesktopNotifications";
+static const char optionalDesktopNotificationsC[] = "optionalDesktopNotifications";
+static const char optionalSyncNotificationsC[] = "optionalSyncNotifications";
+static const char optionalActivityNotificationsC[] = "optionalActivityNotifications";
 static const char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
 static const char updateCheckIntervalC[] = "updateCheckInterval";
@@ -124,7 +126,19 @@ bool ConfigFile::setConfDir(const QString &value)
 bool ConfigFile::optionalDesktopNotifications() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(optionalDesktopNoficationsC), true).toBool();
+    return settings.value(QLatin1String(optionalDesktopNotificationsC), true).toBool();
+}
+
+bool ConfigFile::optionalSyncNotifications() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(optionalSyncNotificationsC), false).toBool();
+}
+
+bool ConfigFile::optionalActivityNotifications() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(optionalActivityNotificationsC), false).toBool();
 }
 
 bool ConfigFile::showInExplorerNavigationPane() const
@@ -180,7 +194,21 @@ quint64 ConfigFile::targetChunkUploadDuration() const
 void ConfigFile::setOptionalDesktopNotifications(bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(optionalDesktopNoficationsC), show);
+    settings.setValue(QLatin1String(optionalDesktopNotificationsC), show);
+    settings.sync();
+}
+
+void ConfigFile::setOptionalSyncNotifications(bool show)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(optionalSyncNotificationsC), show);
+    settings.sync();
+}
+
+void ConfigFile::setOptionalActivityNotifications(bool show)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(optionalActivityNotificationsC), show);
     settings.sync();
 }
 

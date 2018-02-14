@@ -44,6 +44,10 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
     connect(_ui->desktopNotificationsCheckBox, &QAbstractButton::toggled,
         this, &GeneralSettings::slotToggleOptionalDesktopNotifications);
+    connect(_ui->syncNotificationsCheckBox, &QAbstractButton::toggled,
+        this, &GeneralSettings::slotToggleOptionalSyncNotifications);
+    connect(_ui->activityNotificationsCheckBox, &QAbstractButton::toggled,
+        this, &GeneralSettings::slotToggleOptionalActivityNotifications);
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
     _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
@@ -115,6 +119,8 @@ void GeneralSettings::loadMiscSettings()
     ConfigFile cfgFile;
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->desktopNotificationsCheckBox->setChecked(cfgFile.optionalDesktopNotifications());
+    _ui->syncNotificationsCheckBox->setChecked(cfgFile.optionalSyncNotifications());
+    _ui->activityNotificationsCheckBox->setChecked(cfgFile.optionalActivityNotifications());
     _ui->showInExplorerNavigationPaneCheckBox->setChecked(cfgFile.showInExplorerNavigationPane());
     _ui->crashreporterCheckBox->setChecked(cfgFile.crashReporter());
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
@@ -170,6 +176,20 @@ void GeneralSettings::slotToggleOptionalDesktopNotifications(bool enable)
     ConfigFile cfgFile;
     cfgFile.setOptionalDesktopNotifications(enable);
 }
+
+void GeneralSettings::slotToggleOptionalSyncNotifications(bool enable)
+{
+    ConfigFile cfgFile;
+    cfgFile.setOptionalSyncNotifications(enable);
+}
+
+
+void GeneralSettings::slotToggleOptionalActivityNotifications(bool enable)
+{
+    ConfigFile cfgFile;
+    cfgFile.setOptionalActivityNotifications(enable);
+}
+
 
 void GeneralSettings::slotShowInExplorerNavigationPane(bool checked)
 {

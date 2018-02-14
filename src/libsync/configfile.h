@@ -123,6 +123,12 @@ public:
     bool optionalDesktopNotifications() const;
     void setOptionalDesktopNotifications(bool show);
 
+    bool optionalSyncNotifications() const;
+    void setOptionalSyncNotifications(bool show);
+
+    bool optionalActivityNotifications() const;
+    void setOptionalActivityNotifications(bool show);
+
     bool showInExplorerNavigationPane() const;
     void setShowInExplorerNavigationPane(bool show);
 
