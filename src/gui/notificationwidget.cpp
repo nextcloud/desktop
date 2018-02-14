@@ -16,6 +16,7 @@
 #include "QProgressIndicator.h"
 #include "common/utility.h"
 #include "common/asserts.h"
+#include "guiutility.h"
 
 #include <QPushButton>
 
@@ -61,8 +62,25 @@ void NotificationWidget::setActivity(const Activity &activity)
     }
     _buttons.clear();
 
+    // open the notification in the browser if there is a link
+    if(!_myActivity._links.isEmpty()){
+        QString buttonText(tr("Open"));
+
+        if(_myActivity._appName == "spreed")
+            buttonText = tr("Join call");
+
+        if(_myActivity._appName == "updatenotification")
+            buttonText = tr("Update");
+
+        QPushButton *openBrowser = _ui._buttonBox->addButton(buttonText, QDialogButtonBox::AcceptRole);
+        openBrowser->setDefault(true);
+        connect(openBrowser, &QAbstractButton::clicked, this, &NotificationWidget::slotOpenBrowserButtonClicked);
+        _buttons.prepend(openBrowser);
+    }
+
     // display buttons for the links
     if (activity._links.isEmpty()) {
+        // this condition is never satisfied since there is always a 'dismiss' ActivityLink being added at servernotificationhandler...
         // in case there is no action defined, do a close button.
         QPushButton *b = _ui._buttonBox->addButton(QDialogButtonBox::Close);
         b->setDefault(true);
@@ -83,6 +101,11 @@ Activity NotificationWidget::activity() const
     return _myActivity;
 }
 
+void NotificationWidget::slotOpenBrowserButtonClicked(){
+    QUrl url(_myActivity._link);
+    Utility::openBrowser(url, this);
+}
+
 void NotificationWidget::slotButtonClicked()
 {
     QObject *buttonWidget = QObject::sender();
@@ -96,6 +119,10 @@ void NotificationWidget::slotButtonClicked()
             }
             _buttons.at(i)->setEnabled(false);
         }
+
+        // there is an extra button: 'Open'
+        if(!_myActivity._link.isEmpty())
+            index--;
 
         // if the button was found, the link must be called
         if (index > -1 && _myActivity._links.count() == 0) {

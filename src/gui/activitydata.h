@@ -59,6 +59,7 @@ public:
     QUrl _link;
     QDateTime _dateTime;
     QString _accName;
+    QString _appName;
 
     QVector<ActivityLink> _links;
     /**

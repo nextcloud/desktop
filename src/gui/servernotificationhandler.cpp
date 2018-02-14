@@ -79,6 +79,8 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         a._id = json.value("notification_id").toInt();
         a._subject = json.value("subject").toString();
         a._message = json.value("message").toString();
+        a._appName = json.value("app").toString();
+
         QString s = json.value("link").toString();
         if (!s.isEmpty()) {
             a._link = QUrl(s);
@@ -86,6 +88,8 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         a._dateTime = QDateTime::fromString(json.value("datetime").toString(), Qt::ISODate);
 
         auto actions = json.value("actions").toArray();
+        qDebug() << "Notification ACTIONS:"
+                 << json.value("actions").toString();
         foreach (auto action, actions) {
             auto actionJson = action.toObject();
             ActivityLink al;
@@ -105,6 +109,10 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         al._verb  = "DELETE";
         al._isPrimary = false;
         a._links.append(al);
+
+        qDebug() << "Notification LINK:"
+                 << a._link;
+
 
         list.append(a);
     }
