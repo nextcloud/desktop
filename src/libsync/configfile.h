@@ -120,14 +120,14 @@ public:
 
     static bool setConfDir(const QString &value);
 
-    bool optionalDesktopNotifications() const;
-    void setOptionalDesktopNotifications(bool show);
+    bool optionalServerNotifications() const;
+    void setOptionalServerNotifications(bool show);
 
-    bool optionalSyncNotifications() const;
-    void setOptionalSyncNotifications(bool show);
+    bool optionalServerActivities() const;
+    void setOptionalServerActivities(bool show);
 
-    bool optionalActivityNotifications() const;
-    void setOptionalActivityNotifications(bool show);
+    bool optionalClientSyncActivities() const;
+    void setOptionalClientSyncActivities(bool show);
 
     bool showInExplorerNavigationPane() const;
     void setShowInExplorerNavigationPane(bool show);

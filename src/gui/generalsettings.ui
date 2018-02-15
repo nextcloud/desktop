@@ -21,9 +21,9 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="1" column="1">
-       <widget class="QCheckBox" name="syncNotificationsCheckBox">
+       <widget class="QCheckBox" name="serverActivitiesCheckBox">
         <property name="text">
-         <string>Show Sync Notifications</string>
+         <string>Show Server &amp;Activities</string>
         </property>
        </widget>
       </item>
@@ -35,9 +35,9 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QCheckBox" name="desktopNotificationsCheckBox">
+       <widget class="QCheckBox" name="serverNotificationsCheckBox">
         <property name="text">
-         <string>Show &amp;Desktop Notifications</string>
+         <string>Show Server &amp;Notifications</string>
         </property>
        </widget>
       </item>
@@ -52,9 +52,18 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QCheckBox" name="activityNotificationsCheckBox">
+       <widget class="QCheckBox" name="clientSyncActivitiesCheckBox">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="toolTipDuration">
+         <number>-1</number>
+        </property>
+        <property name="whatsThis">
+         <string/>
+        </property>
         <property name="text">
-         <string>Show Activity Notifications</string>
+         <string>Show &amp;Client Sync Activities</string>
         </property>
        </widget>
       </item>
@@ -267,7 +276,7 @@
  </widget>
  <tabstops>
   <tabstop>autostartCheckBox</tabstop>
-  <tabstop>desktopNotificationsCheckBox</tabstop>
+  <tabstop>serverNotificationsCheckBox</tabstop>
   <tabstop>monoIconsCheckBox</tabstop>
   <tabstop>ignoredFilesButton</tabstop>
   <tabstop>newFolderLimitCheckBox</tabstop>

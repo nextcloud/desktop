@@ -42,12 +42,18 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 {
     _ui->setupUi(this);
 
-    connect(_ui->desktopNotificationsCheckBox, &QAbstractButton::toggled,
-        this, &GeneralSettings::slotToggleOptionalDesktopNotifications);
-    connect(_ui->syncNotificationsCheckBox, &QAbstractButton::toggled,
-        this, &GeneralSettings::slotToggleOptionalSyncNotifications);
-    connect(_ui->activityNotificationsCheckBox, &QAbstractButton::toggled,
-        this, &GeneralSettings::slotToggleOptionalActivityNotifications);
+    connect(_ui->serverNotificationsCheckBox, &QAbstractButton::toggled,
+        this, &GeneralSettings::slotToggleOptionalServerNotifications);
+    _ui->serverNotificationsCheckBox->setToolTip(tr("Server notifications that require attention."));
+
+    connect(_ui->serverActivitiesCheckBox, &QAbstractButton::toggled,
+        this, &GeneralSettings::slotToggleOptionalServerActivities);
+    _ui->serverActivitiesCheckBox->setToolTip(tr("Activity feed from the server."));
+
+    connect(_ui->clientSyncActivitiesCheckBox, &QAbstractButton::toggled,
+        this, &GeneralSettings::slotToggleOptionalClientSyncActivities);
+    _ui->clientSyncActivitiesCheckBox->setToolTip(tr("Client sync activity."));
+
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
     _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
@@ -118,9 +124,9 @@ void GeneralSettings::loadMiscSettings()
     QScopedValueRollback<bool> scope(_currentlyLoading, true);
     ConfigFile cfgFile;
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
-    _ui->desktopNotificationsCheckBox->setChecked(cfgFile.optionalDesktopNotifications());
-    _ui->syncNotificationsCheckBox->setChecked(cfgFile.optionalSyncNotifications());
-    _ui->activityNotificationsCheckBox->setChecked(cfgFile.optionalActivityNotifications());
+    _ui->serverNotificationsCheckBox->setChecked(cfgFile.optionalServerNotifications());
+    _ui->serverActivitiesCheckBox->setChecked(cfgFile.optionalServerActivities());
+    _ui->clientSyncActivitiesCheckBox->setChecked(cfgFile.optionalClientSyncActivities());
     _ui->showInExplorerNavigationPaneCheckBox->setChecked(cfgFile.showInExplorerNavigationPane());
     _ui->crashreporterCheckBox->setChecked(cfgFile.crashReporter());
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
@@ -171,23 +177,23 @@ void GeneralSettings::slotToggleLaunchOnStartup(bool enable)
     Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), enable);
 }
 
-void GeneralSettings::slotToggleOptionalDesktopNotifications(bool enable)
+void GeneralSettings::slotToggleOptionalServerNotifications(bool enable)
 {
     ConfigFile cfgFile;
-    cfgFile.setOptionalDesktopNotifications(enable);
+    cfgFile.setOptionalServerNotifications(enable);
 }
 
-void GeneralSettings::slotToggleOptionalSyncNotifications(bool enable)
+void GeneralSettings::slotToggleOptionalServerActivities(bool enable)
 {
     ConfigFile cfgFile;
-    cfgFile.setOptionalSyncNotifications(enable);
+    cfgFile.setOptionalServerActivities(enable);
 }
 
 
-void GeneralSettings::slotToggleOptionalActivityNotifications(bool enable)
+void GeneralSettings::slotToggleOptionalClientSyncActivities(bool enable)
 {
     ConfigFile cfgFile;
-    cfgFile.setOptionalActivityNotifications(enable);
+    cfgFile.setOptionalClientSyncActivities(enable);
 }
 
 

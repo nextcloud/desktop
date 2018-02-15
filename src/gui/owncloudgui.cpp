@@ -16,7 +16,6 @@
 #include "owncloudgui.h"
 #include "theme.h"
 #include "folderman.h"
-#include "configfile.h"
 #include "progressdispatcher.h"
 #include "owncloudsetupwizard.h"
 #include "sharedialog.h"
@@ -682,10 +681,7 @@ void ownCloudGui::slotShowTrayMessage(const QString &title, const QString &msg)
 
 void ownCloudGui::slotShowOptionalTrayMessage(const QString &title, const QString &msg)
 {
-    ConfigFile cfg;
-    if (cfg.optionalDesktopNotifications()) {
-        slotShowTrayMessage(title, msg);
-    }
+    slotShowTrayMessage(title, msg);
 }
 
 

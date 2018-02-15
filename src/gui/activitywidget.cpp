@@ -310,7 +310,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
 
         // Assemble a tray notification
         ConfigFile cfg;
-        if(cfg.optionalDesktopNotifications()){
+        if(cfg.optionalServerNotifications()){
             QString log = tr("Notification for %1.").arg(activity._accName);
             emit guiLog(log, activity._subject);
          }
@@ -604,9 +604,7 @@ void ActivitySettings::slotCopyToClipboard()
 
     QApplication::clipboard()->setText(text);
 
-    ConfigFile cfg;
-    if(cfg.optionalActivityNotifications())
-        emit guiLog(tr("Copied to clipboard"), message);
+    emit guiLog(tr("Copied to clipboard"), message);
 }
 
 void ActivitySettings::slotRemoveAccount(AccountState *ptr)

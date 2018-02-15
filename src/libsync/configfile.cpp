@@ -53,9 +53,9 @@ static const char notificationRefreshIntervalC[] = "notificationRefreshInterval"
 static const char monoIconsC[] = "monoIcons";
 static const char promptDeleteC[] = "promptDeleteAllFiles";
 static const char crashReporterC[] = "crashReporter";
-static const char optionalDesktopNotificationsC[] = "optionalDesktopNotifications";
-static const char optionalSyncNotificationsC[] = "optionalSyncNotifications";
-static const char optionalActivityNotificationsC[] = "optionalActivityNotifications";
+static const char optionalServerNotificationsC[] = "optionalServerNotifications";
+static const char optionalServerActivitiesC[] = "optionalServerActivities";
+static const char optionalClientSyncActivitiesC[] = "optionalClientSyncActivities";
 static const char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
 static const char updateCheckIntervalC[] = "updateCheckInterval";
@@ -123,22 +123,22 @@ bool ConfigFile::setConfDir(const QString &value)
     return false;
 }
 
-bool ConfigFile::optionalDesktopNotifications() const
+bool ConfigFile::optionalServerNotifications() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(optionalDesktopNotificationsC), true).toBool();
+    return settings.value(QLatin1String(optionalServerNotificationsC), true).toBool();
 }
 
-bool ConfigFile::optionalSyncNotifications() const
+bool ConfigFile::optionalServerActivities() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(optionalSyncNotificationsC), false).toBool();
+    return settings.value(QLatin1String(optionalServerActivitiesC), false).toBool();
 }
 
-bool ConfigFile::optionalActivityNotifications() const
+bool ConfigFile::optionalClientSyncActivities() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(optionalActivityNotificationsC), false).toBool();
+    return settings.value(QLatin1String(optionalClientSyncActivitiesC), false).toBool();
 }
 
 bool ConfigFile::showInExplorerNavigationPane() const
@@ -191,24 +191,24 @@ quint64 ConfigFile::targetChunkUploadDuration() const
     return settings.value(QLatin1String(targetChunkUploadDurationC), 60 * 1000).toLongLong(); // default to 1 minute
 }
 
-void ConfigFile::setOptionalDesktopNotifications(bool show)
+void ConfigFile::setOptionalServerNotifications(bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(optionalDesktopNotificationsC), show);
+    settings.setValue(QLatin1String(optionalServerNotificationsC), show);
     settings.sync();
 }
 
-void ConfigFile::setOptionalSyncNotifications(bool show)
+void ConfigFile::setOptionalServerActivities(bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(optionalSyncNotificationsC), show);
+    settings.setValue(QLatin1String(optionalServerActivitiesC), show);
     settings.sync();
 }
 
-void ConfigFile::setOptionalActivityNotifications(bool show)
+void ConfigFile::setOptionalClientSyncActivities(bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(optionalActivityNotificationsC), show);
+    settings.setValue(QLatin1String(optionalClientSyncActivitiesC), show);
     settings.sync();
 }
 

@@ -59,6 +59,8 @@ void ServerNotificationHandler::slotFetchNotifications(AccountState *ptr)
 
 void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &json, int statusCode)
 {
+    QString strJson(json.toJson(QJsonDocument::Compact));
+    qDebug() << strJson;
     if (statusCode != 200) {
         qCWarning(lcServerNotification) << "Notifications failed with status code " << statusCode;
         deleteLater();

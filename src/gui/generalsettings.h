@@ -42,9 +42,9 @@ public:
 private slots:
     void saveMiscSettings();
     void slotToggleLaunchOnStartup(bool);
-    void slotToggleOptionalDesktopNotifications(bool);
-    void slotToggleOptionalSyncNotifications(bool);
-    void slotToggleOptionalActivityNotifications(bool);
+    void slotToggleOptionalServerNotifications(bool);
+    void slotToggleOptionalServerActivities(bool);
+    void slotToggleOptionalClientSyncActivities(bool);
     void slotShowInExplorerNavigationPane(bool);
     void slotUpdateInfo();
     void slotIgnoreFilesEditor();
