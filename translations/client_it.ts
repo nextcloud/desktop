@@ -1711,7 +1711,7 @@ Gli elementi per i quali è consentita l&apos;eliminazione, saranno eliminati se
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="125"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Errore di login&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="131"/>
@@ -1961,7 +1961,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>The server reported the following error:</source>
-        <translation type="unfinished"/>
+        <translation>Il server riporta il seguente errore:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2123,7 +2123,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="459"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation type="unfinished"/>
+        <translation>Il download ridurrebbe lo spazio su disco al di sotto del limite</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
@@ -2310,7 +2310,7 @@ Non è consigliabile utilizzarlo.</translation>
         <location filename="../src/libsync/propagateupload.cpp" line="186"/>
         <location filename="../src/libsync/propagateupload.cpp" line="549"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;upload eccede di %1 la quota della cartella</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="622"/>
@@ -2670,7 +2670,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="178"/>
         <source>Link properties:</source>
-        <translation type="unfinished"/>
+        <translation>Proprietà di collegamento:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="220"/>
@@ -2742,7 +2742,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="167"/>
         <source>Send link by email (direct download)</source>
-        <translation type="unfinished"/>
+        <translation>Invia link tramite email (download diretto)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="519"/>
@@ -3238,7 +3238,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="812"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Non posso aprire o creare il database locale di sincronizzazione. Assicurarsi di avere il i permessi di scrittura nella cartella di sincronizzazione</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1290"/>
@@ -3253,7 +3253,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1600"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation type="unfinished"/>
+        <translation>Lo spazio su disco è scarso: I downloads che ridurranno lo spazio libero al di sotto di %1 verranno saltati.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1607"/>
@@ -4182,7 +4182,7 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Si è verificato un errore all&apos;avvio del browser per accedere all&apos;URL% 1. Forse non è stato configurato nessun browser predefinito?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="55"/>
