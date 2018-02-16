@@ -49,8 +49,8 @@ void NotificationWidget::setActivity(const Activity &activity)
     _ui._messageLabel->setText(activity._message);
 
     _ui._notifIcon->setPixmap(QPixmap(":/client/resources/bell.png"));
-    _ui._notifIcon->setMinimumWidth(64);
-    _ui._notifIcon->setMinimumHeight(64);
+    _ui._notifIcon->setMinimumWidth(28);
+    _ui._notifIcon->setMinimumHeight(28);
     _ui._notifIcon->show();
 
     QString tText = tr("Created at %1").arg(Utility::timeAgoInWords(activity._dateTime));
