@@ -127,7 +127,7 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
     }
 
     QString key = name + "," + flavor;
-    QIcon &cached = _iconCache[key];
+    QIcon &cached = _iconCache[key]; // Take reference, this will also "set" the cache entry
     if (cached.isNull()) {
         if (QIcon::hasThemeIcon(name)) {
             // use from theme

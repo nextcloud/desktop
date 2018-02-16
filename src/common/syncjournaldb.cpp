@@ -33,6 +33,13 @@
 
 #include "common/c_jhash.h"
 
+// SQL expression to check whether path.startswith(prefix + '/')
+// Note: '/' + 1 == '0'
+#define IS_PREFIX_PATH_OF(prefix, path) \
+    "(" path " > (" prefix "||'/') AND " path " < (" prefix "||'0'))"
+#define IS_PREFIX_PATH_OR_EQUAL(prefix, path) \
+    "(" path " == " prefix " OR " IS_PREFIX_PATH_OF(prefix, path) ")"
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcDb, "sync.database", QtInfoMsg)
@@ -565,7 +572,7 @@ bool SyncJournalDb::checkConnect()
     _getFilesBelowPathQuery.reset(new SqlQuery(_db));
     if (_getFilesBelowPathQuery->prepare(
             GET_FILE_RECORD_QUERY
-            " WHERE path > (?1||'/') AND path < (?1||'0')"
+            " WHERE " IS_PREFIX_PATH_OF("?1", "path")
             // We want to ensure that the contents of a directory are sorted
             // directly behind the directory itself. Without this ORDER BY
             // an ordering like foo, foo-2, foo/file would be returned.
@@ -648,7 +655,7 @@ bool SyncJournalDb::checkConnect()
     }
 
     _deleteFileRecordRecursively.reset(new SqlQuery(_db));
-    if (_deleteFileRecordRecursively->prepare("DELETE FROM metadata WHERE path LIKE(?||'/%')")) {
+    if (_deleteFileRecordRecursively->prepare("DELETE FROM metadata WHERE " IS_PREFIX_PATH_OF("?1", "path"))) {
         return sqlFail("prepare _deleteFileRecordRecursively", *_deleteFileRecordRecursively);
     }
 
@@ -1848,9 +1855,8 @@ void SyncJournalDb::avoidRenamesOnNextSync(const QByteArray &path)
     }
 
     SqlQuery query(_db);
-    query.prepare("UPDATE metadata SET fileid = '', inode = '0' WHERE path == ?1 OR path LIKE(?2||'/%')");
+    query.prepare("UPDATE metadata SET fileid = '', inode = '0' WHERE " IS_PREFIX_PATH_OR_EQUAL("?1", "path"));
     query.bindValue(1, path);
-    query.bindValue(2, path);
     query.exec();
 
     // We also need to remove the ETags so the update phase refreshes the directory paths
@@ -1860,25 +1866,28 @@ void SyncJournalDb::avoidRenamesOnNextSync(const QByteArray &path)
 
 void SyncJournalDb::avoidReadFromDbOnNextSync(const QByteArray &fileName)
 {
-    // Make sure that on the next sync, fileName is not read from the DB but uses the PROPFIND to
-    // get the info from the server
-    // We achieve that by clearing the etag of the parents directory recursively
-
     QMutexLocker locker(&_mutex);
 
     if (!checkConnect()) {
         return;
     }
 
+    // Remove trailing slash
+    auto argument = fileName;
+    if (argument.endsWith('/'))
+        argument.chop(1);
+
     SqlQuery query(_db);
     // This query will match entries for which the path is a prefix of fileName
     // Note: ItemTypeDirectory == 2
-    query.prepare("UPDATE metadata SET md5='_invalid_' WHERE ?1 LIKE(path||'/%') AND type == 2;");
-    query.bindValue(1, fileName);
+    query.prepare("UPDATE metadata SET md5='_invalid_' WHERE " IS_PREFIX_PATH_OR_EQUAL("path", "?1") " AND type == 2;");
+    query.bindValue(1, argument);
     query.exec();
 
-    // Prevent future overwrite of the etag for this sync
-    _avoidReadFromDbOnNextSyncFilter.append(fileName);
+    // Prevent future overwrite of the etags of this folder and all
+    // parent folders for this sync
+    argument.append('/');
+    _avoidReadFromDbOnNextSyncFilter.append(argument);
 }
 
 void SyncJournalDb::forceRemoteDiscoveryNextSync()

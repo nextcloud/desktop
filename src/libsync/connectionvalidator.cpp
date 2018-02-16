@@ -317,6 +317,7 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
     // Record that the server supports HTTP/2
+    // Actual decision if we should use HTTP/2 is done in AccessManager::createRequest
     if (auto job = qobject_cast<AbstractNetworkJob *>(sender())) {
         if (auto reply = job->reply()) {
             _account->setHttp2Supported(
