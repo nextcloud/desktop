@@ -782,7 +782,7 @@ void SyncJournalDb::close()
     _deleteConflictRecordQuery.reset(0);
 
     _db.close();
-    _avoidReadFromDbOnNextSyncFilter.clear();
+    clearEtagStorageFilter();
     _metadataTableIsEmpty = false;
 }
 
@@ -999,10 +999,10 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
     SyncJournalFileRecord record = _record;
     QMutexLocker locker(&_mutex);
 
-    if (!_avoidReadFromDbOnNextSyncFilter.isEmpty()) {
+    if (!_etagStorageFilter.isEmpty()) {
         // If we are a directory that should not be read from db next time, don't write the etag
         QByteArray prefix = record._path + "/";
-        foreach (const QByteArray &it, _avoidReadFromDbOnNextSyncFilter) {
+        foreach (const QByteArray &it, _etagStorageFilter) {
             if (it.startsWith(prefix)) {
                 qCInfo(lcDb) << "Filtered writing the etag of" << prefix << "because it is a prefix of" << it;
                 record._etag = "_invalid_";
@@ -1887,7 +1887,12 @@ void SyncJournalDb::avoidReadFromDbOnNextSync(const QByteArray &fileName)
     // Prevent future overwrite of the etags of this folder and all
     // parent folders for this sync
     argument.append('/');
-    _avoidReadFromDbOnNextSyncFilter.append(argument);
+    _etagStorageFilter.append(argument);
+}
+
+void SyncJournalDb::clearEtagStorageFilter()
+{
+    _etagStorageFilter.clear();
 }
 
 void SyncJournalDb::forceRemoteDiscoveryNextSync()
