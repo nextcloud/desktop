@@ -40,13 +40,15 @@ namespace EncryptionHelper {
             const QByteArray& key,
             const QByteArray& data
     );
-    QByteArray encryptStringSymmetric(
+    bool encryptStringSymmetric(
             const QByteArray& key,
-            const QByteArray& data
+            const QByteArray& data,
+            QByteArray& out
     );
-    QByteArray decryptStringSymmetric(
+    bool decryptStringSymmetric(
             const QByteArray& key,
-            const QByteArray& data
+            const QByteArray& data,
+            QByteArray& out
     );
 
     QByteArray privateKeyToPem(const QSslKey key);

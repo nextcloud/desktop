@@ -307,7 +307,7 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     return QByteArray::fromBase64(result);
 }
 
-QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
+bool decryptStringSymmetric(const QByteArray& key, const QByteArray& data, QByteArray& out) {
     qCInfo(lcCse()) << "decryptStringSymmetric key: " << key;
     qCInfo(lcCse()) << "decryptStringSymmetric data: " << data;
 
@@ -332,28 +332,28 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     /* Create and initialise the context */
     if(!(ctx = EVP_CIPHER_CTX_new())) {
         qCInfo(lcCse()) << "Error creating cipher";
-        return QByteArray();
+        return false;
     }
 
     /* Initialise the decryption operation. */
     if(!EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
         qCInfo(lcCse()) << "Error initialising context with aes 128";
         EVP_CIPHER_CTX_free(ctx);
-        return QByteArray();
+        return false;
     }
 
     /* Set IV length. Not necessary if this is 12 bytes (96 bits) */
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), NULL)) {
         qCInfo(lcCse()) << "Error setting IV size";
         EVP_CIPHER_CTX_free(ctx);
-        return QByteArray();
+        return false;
     }
 
     /* Initialise key and IV */
     if(!EVP_DecryptInit_ex(ctx, NULL, NULL, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
         qCInfo(lcCse()) << "Error initialising key and iv";
         EVP_CIPHER_CTX_free(ctx);
-        return QByteArray();
+        return false;
     }
 
     unsigned char *ptext = (unsigned char *)calloc(cipherTXT.size() + 16, sizeof(unsigned char));
@@ -366,7 +366,7 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
         qCInfo(lcCse()) << "Could not decrypt";
         EVP_CIPHER_CTX_free(ctx);
         free(ptext);
-        return QByteArray();
+        return false;
     }
 
     /* Set expected tag value. Works in OpenSSL 1.0.1d and later */
@@ -374,7 +374,7 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
         qCInfo(lcCse()) << "Could not set tag";
         EVP_CIPHER_CTX_free(ctx);
         free(ptext);
-        return QByteArray();
+        return false;
     }
 
     /* Finalise the decryption. A positive return value indicates success,
@@ -385,7 +385,7 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
         qCInfo(lcCse()) << "Tag did not match!";
         EVP_CIPHER_CTX_free(ctx);
         free(ptext);
-        return QByteArray();
+        return false;
     }
 
     QByteArray result((char *)ptext, plen);
@@ -393,7 +393,8 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     free(ptext);
     EVP_CIPHER_CTX_free(ctx);
 
-    return result;
+    out = result;
+    return true;
 }
 
 QByteArray privateKeyToPem(const QSslKey key) {
@@ -413,7 +414,7 @@ QByteArray privateKeyToPem(const QSslKey key) {
     return pem;
 }
 
-QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
+bool encryptStringSymmetric(const QByteArray& key, const QByteArray& data, QByteArray& out) {
     QByteArray iv = generateRandom(16);
 
     EVP_CIPHER_CTX *ctx;
@@ -421,12 +422,14 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     if(!(ctx = EVP_CIPHER_CTX_new())) {
         qCInfo(lcCse()) << "Error creating cipher";
         handleErrors();
+        return false;
     }
 
     /* Initialise the decryption operation. */
     if(!EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
         qCInfo(lcCse()) << "Error initializing context with aes_128";
         handleErrors();
+        return false;
     }
 
     // No padding
@@ -436,12 +439,14 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), NULL)) {
         qCInfo(lcCse()) << "Error setting iv length";
         handleErrors();
+        return false;
     }
 
     /* Initialise key and IV */
     if(!EVP_EncryptInit_ex(ctx, NULL, NULL, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
         qCInfo(lcCse()) << "Error initialising key and iv";
         handleErrors();
+        return false;
     }
 
     // We write the data base64 encoded
@@ -455,6 +460,7 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     if(!EVP_EncryptUpdate(ctx, ctext, &len, (unsigned char *)dataB64.constData(), dataB64.size())) {
         qCInfo(lcCse()) << "Error encrypting";
         handleErrors();
+        return false;
     }
 
     int clen = len;
@@ -465,6 +471,7 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     if(1 != EVP_EncryptFinal_ex(ctx, ctext + len, &len)) {
         qCInfo(lcCse()) << "Error finalizing encryption";
         handleErrors();
+        return false;
     }
     clen += len;
 
@@ -473,6 +480,7 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, tag)) {
         qCInfo(lcCse()) << "Error getting the tag";
         handleErrors();
+        return false;
     }
 
     QByteArray cipherTXT((char *)ctext, clen);
@@ -482,7 +490,8 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     result += "fA==";
     result += iv.toBase64();
 
-    return result;
+    out = result;
+    return true;
 }
 
 bool decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data, QByteArray& outParam) {
@@ -1236,12 +1245,20 @@ QByteArray FolderMetadata::decryptMetadataKey(const QByteArray& encryptedMetadat
 // AES/GCM/NoPadding (128 bit key size)
 QByteArray FolderMetadata::encryptJsonObject(const QByteArray& obj, const QByteArray pass) const
 {
-    return EncryptionHelper::encryptStringSymmetric(pass, obj);
+    QByteArray ret;
+    if (!EncryptionHelper::encryptStringSymmetric(pass, obj, ret)) {
+        //TODO: handle errors.
+    }
+    return ret;
 }
 
 QByteArray FolderMetadata::decryptJsonObject(const QByteArray& encryptedMetadata, const QByteArray& pass) const
 {
-    return EncryptionHelper::decryptStringSymmetric(pass, encryptedMetadata);
+    QByteArray ret;
+    if (!EncryptionHelper::decryptStringSymmetric(pass, encryptedMetadata, ret)) {
+        // TODO: handle errors
+    }
+    return ret;
 }
 
 void FolderMetadata::setupEmptyMetadata() {
@@ -1423,6 +1440,8 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
     input->close();
     output->close();
     qCDebug(lcCse) << "File Encrypted Successfully";
+
+    return true;
 }
 
 bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& iv,
