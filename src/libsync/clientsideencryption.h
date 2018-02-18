@@ -63,7 +63,7 @@ namespace EncryptionHelper {
     bool fileEncryption(const QByteArray &key, const QByteArray &iv,
                       QFile *input, QFile *output, QByteArray& returnTag);
 
-    void fileDecryption(const QByteArray &key, const QByteArray& iv,
+    bool fileDecryption(const QByteArray &key, const QByteArray& iv,
                                QFile *input, QFile *output);
 }
 
