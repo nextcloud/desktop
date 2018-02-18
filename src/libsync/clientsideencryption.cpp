@@ -58,6 +58,8 @@ namespace {
 } // ns
 
 namespace {
+    QByteArray encryptionError;
+
     QByteArray BIO2ByteArray(BIO *b) {
         int pending = BIO_ctrl_pending(b);
         char *tmp = (char *)calloc(pending+1, sizeof(char));
@@ -69,17 +71,21 @@ namespace {
         return res;
     }
 
-    QByteArray handleErrors(void)
+    void handleErrors(void)
     {
         auto *bioErrors = BIO_new(BIO_s_mem());
         ERR_print_errors(bioErrors); // This line is not printing anything.
-        auto errors = BIO2ByteArray(bioErrors);
+        encryptionError = BIO2ByteArray(bioErrors);
         BIO_free_all(bioErrors);
-        return errors;
     }
 }
 
 namespace EncryptionHelper {
+
+QByteArray lastError() {
+    return encryptionError;
+}
+
 QByteArray generateRandomFilename()
 {
    const QByteArray possibleCharacters = "0123456789abcdef";

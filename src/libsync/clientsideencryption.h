@@ -71,6 +71,8 @@ namespace EncryptionHelper {
 
     bool fileDecryption(const QByteArray &key, const QByteArray& iv,
                                QFile *input, QFile *output);
+
+    QByteArray lastError();
 }
 
 class OWNCLOUDSYNC_EXPORT ClientSideEncryption : public QObject {
