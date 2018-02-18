@@ -30,6 +30,7 @@ namespace EncryptionHelper {
     QByteArray generateRandomFilename();
     QByteArray generateRandom(int size);
     QByteArray generatePassword(const QString &wordlist, const QByteArray& salt);
+
     QByteArray encryptPrivateKey(
             const QByteArray& key,
             const QByteArray& privateKey,
@@ -51,13 +52,16 @@ namespace EncryptionHelper {
     QByteArray privateKeyToPem(const QSslKey key);
 
     //TODO: change those two EVP_PKEY into QSslKey.
-    QByteArray encryptStringAsymmetric(
+    bool encryptStringAsymmetric(
             EVP_PKEY *publicKey,
-            const QByteArray& data
+            const QByteArray& data,
+            QByteArray& out
     );
-    QByteArray decryptStringAsymmetric(
+
+    bool decryptStringAsymmetric(
             EVP_PKEY *privateKey,
-            const QByteArray& data
+            const QByteArray& data,
+            QByteArray& out
     );
 
     bool fileEncryption(const QByteArray &key, const QByteArray &iv,

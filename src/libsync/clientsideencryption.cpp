@@ -485,7 +485,7 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     return result;
 }
 
-QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data) {
+bool decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data, QByteArray& outParam) {
     int err = -1;
 
     qCInfo(lcCseDecryption()) << "Start to work the decryption.";
@@ -493,32 +493,32 @@ QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data)
     if (!ctx) {
         qCInfo(lcCseDecryption()) << "Could not create the PKEY context.";
         handleErrors();
-        exit(1);
+        return false;
     }
 
     err = EVP_PKEY_decrypt_init(ctx);
     if (err <= 0) {
         qCInfo(lcCseDecryption()) << "Could not init the decryption of the metadata";
         handleErrors();
-        exit(1);
+        return false;
     }
 
     if (EVP_PKEY_CTX_set_rsa_padding(ctx, RSA_PKCS1_OAEP_PADDING) <= 0) {
         qCInfo(lcCseDecryption()) << "Error setting the encryption padding.";
         handleErrors();
-        exit(1);
+        return false;
     }
 
     if (EVP_PKEY_CTX_set_rsa_oaep_md(ctx, EVP_sha256()) <= 0) {
         qCInfo(lcCseDecryption()) << "Error setting OAEP SHA 256";
         handleErrors();
-        exit(1);
+        return false;
     }
 
     if (EVP_PKEY_CTX_set_rsa_mgf1_md(ctx, EVP_sha256()) <= 0) {
         qCInfo(lcCseDecryption()) << "Error setting MGF1 padding";
         handleErrors();
-        exit(1);
+        return false;
     }
 
     size_t outlen = 0;
@@ -526,7 +526,7 @@ QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data)
     if (err <= 0) {
         qCInfo(lcCseDecryption()) << "Could not determine the buffer length";
         handleErrors();
-        exit(1);
+        return false;
     } else {
         qCInfo(lcCseDecryption()) << "Size of output is: " << outlen;
         qCInfo(lcCseDecryption()) << "Size of data is: " << data.size();
@@ -536,13 +536,13 @@ QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data)
     if (!out) {
         qCInfo(lcCseDecryption()) << "Could not alloc space for the decrypted metadata";
         handleErrors();
-        exit(1);
+        return false;
     }
 
     if (EVP_PKEY_decrypt(ctx, out, &outlen, (unsigned char *)data.constData(), data.size()) <= 0) {
         qCInfo(lcCseDecryption()) << "Could not decrypt the data.";
         ERR_print_errors_fp(stdout); // This line is not printing anything.
-        exit(1);
+        return false;
     } else {
         qCInfo(lcCseDecryption()) << "data decrypted successfully";
     }
@@ -550,42 +550,44 @@ QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data)
     const auto ret = std::string((char*) out, outlen);
     QByteArray raw((const char*) out, outlen);
     qCInfo(lcCse()) << raw;
-    return raw;
+
+    outParam = raw;
+    return true;
 }
 
-QByteArray encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray& data) {
+bool encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray& data, QByteArray& outParam) {
     int err = -1;
 
     auto ctx = EVP_PKEY_CTX_new(publicKey, ENGINE_get_default_RSA());
     if (!ctx) {
         qCInfo(lcCse()) << "Could not initialize the pkey context.";
-        exit(1);
+        return false;
     }
 
     if (EVP_PKEY_encrypt_init(ctx) != 1) {
         qCInfo(lcCse()) << "Error initilaizing the encryption.";
-        exit(1);
+        return false;
     }
 
     if (EVP_PKEY_CTX_set_rsa_padding(ctx, RSA_PKCS1_OAEP_PADDING) <= 0) {
         qCInfo(lcCse()) << "Error setting the encryption padding.";
-        exit(1);
+        return false;
     }
 
     if (EVP_PKEY_CTX_set_rsa_oaep_md(ctx, EVP_sha256()) <= 0) {
         qCInfo(lcCse()) << "Error setting OAEP SHA 256";
-        exit(1);
+        return false;
     }
 
     if (EVP_PKEY_CTX_set_rsa_mgf1_md(ctx, EVP_sha256()) <= 0) {
         qCInfo(lcCse()) << "Error setting MGF1 padding";
-        exit(1);
+        return false;
     }
 
     size_t outLen = 0;
     if (EVP_PKEY_encrypt(ctx, NULL, &outLen, (unsigned char *)data.constData(), data.size()) != 1) {
         qCInfo(lcCse()) << "Error retrieving the size of the encrypted data";
-        exit(1);
+        return false;
     } else {
         qCInfo(lcCse()) << "Encrption Length:" << outLen;
     }
@@ -593,18 +595,19 @@ QByteArray encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray& data) 
     unsigned char *out = (uchar*) OPENSSL_malloc(outLen);
     if (!out) {
         qCInfo(lcCse()) << "Error requesting memory for the encrypted contents";
-        exit(1);
+        return false;
     }
 
     if (EVP_PKEY_encrypt(ctx, out, &outLen, (unsigned char *)data.constData(), data.size()) != 1) {
         qCInfo(lcCse()) << "Could not encrypt key." << err;
-        exit(1);
+        return false;
     }
 
     // Transform the encrypted data into base64.
     QByteArray raw((const char*) out, outLen);
     qCInfo(lcCse()) << raw.toBase64();
-    return raw.toBase64();
+    outParam = raw;
+    return true;
 }
 
 }
@@ -1206,7 +1209,10 @@ QByteArray FolderMetadata::encryptMetadataKey(const QByteArray& data) const {
     EVP_PKEY *publicKey = PEM_read_bio_PUBKEY(publicKeyBio, NULL, NULL, NULL);
 
     // The metadata key is binary so base64 encode it first
-    auto ret = EncryptionHelper::encryptStringAsymmetric(publicKey, data.toBase64());
+    QByteArray ret;
+    if (!EncryptionHelper::encryptStringAsymmetric(publicKey, data.toBase64(), ret)) {
+        //TODO: Handle Errors.
+    }
     EVP_PKEY_free(publicKey);
     return ret; // ret is already b64
 }
@@ -1219,12 +1225,12 @@ QByteArray FolderMetadata::decryptMetadataKey(const QByteArray& encryptedMetadat
     EVP_PKEY *key = PEM_read_bio_PrivateKey(privateKeyBio, NULL, NULL, NULL);
 
     // Also base64 decode the result
-    return QByteArray::fromBase64(
-                EncryptionHelper::decryptStringAsymmetric(
-                    key,
-                    QByteArray::fromBase64(encryptedMetadata)
-                    )
-                );
+    QByteArray out;
+    if (!EncryptionHelper::decryptStringAsymmetric(key, QByteArray::fromBase64(encryptedMetadata), out)) {
+        //TODO: Handle Errors.
+    }
+
+    return QByteArray::fromBase64(out);
 }
 
 // AES/GCM/NoPadding (128 bit key size)
