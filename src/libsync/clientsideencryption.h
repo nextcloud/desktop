@@ -160,11 +160,11 @@ private:
     void setupEmptyMetadata();
     void setupExistingMetadata(const QByteArray& metadata);
 
-    QByteArray encryptMetadataKey(const QByteArray& metadataKey) const;
-    QByteArray decryptMetadataKey(const QByteArray& encryptedKey) const;
+    bool encryptMetadataKey(const QByteArray& metadataKey, QByteArray& out) const;
+    bool decryptMetadataKey(const QByteArray& encryptedKey, QByteArray& out) const;
 
-    QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
-    QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
+    bool encryptJsonObject(const QByteArray& obj, const QByteArray& pass, QByteArray& out) const;
+    bool decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass, QByteArray& out) const;
 
     QVector<EncryptedFile> _files;
     QMap<int, QByteArray> _metadataKeys;
