@@ -206,11 +206,13 @@ void PropagateUploadFileCommon::setupUnencryptedFile()
 
 void PropagateUploadFileCommon::startUploadFile() {
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0)) {
+        callUnlockFolder();
         return;
     }
 
     // Check if the specific file can be accessed
     if (propagator()->hasCaseClashAccessibilityProblem(_fileToUpload._file)) {
+        callUnlockFolder();
         done(SyncFileItem::NormalError, tr("File %1 cannot be uploaded because another file with the same name, differing only in case, exists").arg(QDir::toNativeSeparators(_item->_file)));
         return;
     }
@@ -222,6 +224,7 @@ void PropagateUploadFileCommon::startUploadFile() {
         // Necessary for blacklisting logic
         _item->_httpErrorCode = 507;
         emit propagator()->insufficientRemoteStorage();
+        callUnlockFolder();
         done(SyncFileItem::DetailError, tr("Upload of %1 exceeds the quota for the folder").arg(Utility::octetsToString(_fileToUpload._size)));
         return;
     }
@@ -524,6 +527,7 @@ void PropagateUploadFileCommon::slotPollFinished()
 
     if (job->_item->_status != SyncFileItem::Success) {
         _finished = true;
+        callUnlockFolder();
         done(job->_item->_status, job->_item->_errorString);
         return;
     }
@@ -617,6 +621,7 @@ void PropagateUploadFileCommon::abort(PropagatorJob::AbortType abortType)
 void PropagateUploadFileCommon::abortWithError(SyncFileItem::Status status, const QString &error)
 {
     _finished = true;
+    callUnlockFolder();
     abort(AbortType::Synchronous);
     done(status, error);
 }
@@ -677,6 +682,7 @@ void PropagateUploadFileCommon::finalize()
     const auto filePath = propagator()->getFilePath(_item->_file);
     const auto fileRecord = _item->toSyncJournalFileRecordWithInode(filePath);
     if (!propagator()->_journal->setFileRecord(fileRecord)) {
+        callUnlockFolder();
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }
