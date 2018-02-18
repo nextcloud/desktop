@@ -58,6 +58,17 @@ namespace {
 } // ns
 
 namespace {
+    QByteArray BIO2ByteArray(BIO *b) {
+        int pending = BIO_ctrl_pending(b);
+        char *tmp = (char *)calloc(pending+1, sizeof(char));
+        BIO_read(b, tmp, pending);
+
+        QByteArray res(tmp, pending);
+        free(tmp);
+
+        return res;
+    }
+
     void handleErrors(void)
     {
         ERR_print_errors_fp(stdout); // This line is not printing anything.
@@ -592,17 +603,6 @@ QByteArray EncryptionHelper::encryptStringAsymmetric(EVP_PKEY *publicKey, const 
     return raw.toBase64();
 }
 
-QByteArray EncryptionHelper::BIO2ByteArray(BIO *b) {
-    int pending = BIO_ctrl_pending(b);
-    char *tmp = (char *)calloc(pending+1, sizeof(char));
-    BIO_read(b, tmp, pending);
-
-    QByteArray res(tmp, pending);
-    free(tmp);
-
-    return res;
-}
-
 ClientSideEncryption::ClientSideEncryption()
 {
 }
@@ -847,7 +847,7 @@ void ClientSideEncryption::generateKeyPair()
         qCInfo(lcCse()) << "Could not read private key from bio.";
         return;
     }
-    QByteArray key = EncryptionHelper::BIO2ByteArray(privKey);
+    QByteArray key = BIO2ByteArray(privKey);
     _privateKey = QSslKey(key, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
 
     qCInfo(lcCse()) << "Keys generated correctly, sending to server.";
@@ -907,7 +907,7 @@ void ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
 
     BIO *out = BIO_new(BIO_s_mem());
     ret = PEM_write_bio_X509_REQ(out, x509_req);
-    QByteArray output = EncryptionHelper::BIO2ByteArray(out);
+    QByteArray output = BIO2ByteArray(out);
     BIO_free(out);
     EVP_PKEY_free(keyPair);
 
