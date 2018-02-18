@@ -69,10 +69,13 @@ namespace {
         return res;
     }
 
-    void handleErrors(void)
+    QByteArray handleErrors(void)
     {
-        ERR_print_errors_fp(stdout); // This line is not printing anything.
-        fflush(stdout);
+        auto *bioErrors = BIO_new(BIO_s_mem());
+        ERR_print_errors(bioErrors); // This line is not printing anything.
+        auto errors = BIO2ByteArray(bioErrors);
+        BIO_free_all(bioErrors);
+        return errors;
     }
 }
 
