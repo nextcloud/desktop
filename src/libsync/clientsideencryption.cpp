@@ -79,7 +79,8 @@ namespace {
     }
 }
 
-QByteArray EncryptionHelper::generateRandomFilename()
+namespace EncryptionHelper {
+QByteArray generateRandomFilename()
 {
    const QByteArray possibleCharacters = "0123456789abcdef";
 
@@ -92,7 +93,7 @@ QByteArray EncryptionHelper::generateRandomFilename()
    return randomString;
 }
 
-QByteArray EncryptionHelper::generateRandom(int size)
+QByteArray generateRandom(int size)
 {
     unsigned char *tmp = (unsigned char *)malloc(sizeof(unsigned char) * size);
 
@@ -108,7 +109,7 @@ QByteArray EncryptionHelper::generateRandom(int size)
     return result;
 }
 
-QByteArray EncryptionHelper::generatePassword(const QString& wordlist, const QByteArray& salt) {
+QByteArray generatePassword(const QString& wordlist, const QByteArray& salt) {
     qCInfo(lcCse()) << "Start encryption key generation!";
 
     const int iterationCount = 1024;
@@ -138,7 +139,7 @@ QByteArray EncryptionHelper::generatePassword(const QString& wordlist, const QBy
     return password;
 }
 
-QByteArray EncryptionHelper::encryptPrivateKey(
+QByteArray encryptPrivateKey(
         const QByteArray& key,
         const QByteArray& privateKey,
         const QByteArray& salt
@@ -217,7 +218,7 @@ QByteArray EncryptionHelper::encryptPrivateKey(
     return result;
 }
 
-QByteArray EncryptionHelper::decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
+QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     qCInfo(lcCse()) << "decryptStringSymmetric key: " << key;
     qCInfo(lcCse()) << "decryptStringSymmetric data: " << data;
 
@@ -306,7 +307,7 @@ QByteArray EncryptionHelper::decryptPrivateKey(const QByteArray& key, const QByt
     return QByteArray::fromBase64(result);
 }
 
-QByteArray EncryptionHelper::decryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
+QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
     qCInfo(lcCse()) << "decryptStringSymmetric key: " << key;
     qCInfo(lcCse()) << "decryptStringSymmetric data: " << data;
 
@@ -395,7 +396,7 @@ QByteArray EncryptionHelper::decryptStringSymmetric(const QByteArray& key, const
     return result;
 }
 
-QByteArray EncryptionHelper::privateKeyToPem(const QSslKey key) {
+QByteArray privateKeyToPem(const QSslKey key) {
     BIO *privateKeyBio = BIO_new(BIO_s_mem());
     QByteArray privateKeyPem = key.toPem();
     BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
@@ -412,7 +413,7 @@ QByteArray EncryptionHelper::privateKeyToPem(const QSslKey key) {
     return pem;
 }
 
-QByteArray EncryptionHelper::encryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
+QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
     QByteArray iv = generateRandom(16);
 
     EVP_CIPHER_CTX *ctx;
@@ -484,7 +485,7 @@ QByteArray EncryptionHelper::encryptStringSymmetric(const QByteArray& key, const
     return result;
 }
 
-QByteArray EncryptionHelper::decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data) {
+QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data) {
     int err = -1;
 
     qCInfo(lcCseDecryption()) << "Start to work the decryption.";
@@ -552,7 +553,7 @@ QByteArray EncryptionHelper::decryptStringAsymmetric(EVP_PKEY *privateKey, const
     return raw;
 }
 
-QByteArray EncryptionHelper::encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray& data) {
+QByteArray encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray& data) {
     int err = -1;
 
     auto ctx = EVP_PKEY_CTX_new(publicKey, ENGINE_get_default_RSA());
@@ -606,6 +607,7 @@ QByteArray EncryptionHelper::encryptStringAsymmetric(EVP_PKEY *publicKey, const 
     return raw.toBase64();
 }
 
+}
 ClientSideEncryption::ClientSideEncryption()
 {
 }

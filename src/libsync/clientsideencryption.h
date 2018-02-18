@@ -26,47 +26,46 @@ namespace OCC {
 
 QString baseUrl();
 
-class EncryptionHelper {
-public:
-    static QByteArray generateRandomFilename();
-    static QByteArray generateRandom(int size);
-    static QByteArray generatePassword(const QString &wordlist, const QByteArray& salt);
-    static QByteArray encryptPrivateKey(
+namespace EncryptionHelper {
+    QByteArray generateRandomFilename();
+    QByteArray generateRandom(int size);
+    QByteArray generatePassword(const QString &wordlist, const QByteArray& salt);
+    QByteArray encryptPrivateKey(
             const QByteArray& key,
             const QByteArray& privateKey,
             const QByteArray &salt
     );
-    static QByteArray decryptPrivateKey(
+    QByteArray decryptPrivateKey(
             const QByteArray& key,
             const QByteArray& data
     );
-    static QByteArray encryptStringSymmetric(
+    QByteArray encryptStringSymmetric(
             const QByteArray& key,
             const QByteArray& data
     );
-    static QByteArray decryptStringSymmetric(
+    QByteArray decryptStringSymmetric(
             const QByteArray& key,
             const QByteArray& data
     );
 
-    static QByteArray privateKeyToPem(const QSslKey key);
+    QByteArray privateKeyToPem(const QSslKey key);
 
     //TODO: change those two EVP_PKEY into QSslKey.
-    static QByteArray encryptStringAsymmetric(
+    QByteArray encryptStringAsymmetric(
             EVP_PKEY *publicKey,
             const QByteArray& data
     );
-    static QByteArray decryptStringAsymmetric(
+    QByteArray decryptStringAsymmetric(
             EVP_PKEY *privateKey,
             const QByteArray& data
     );
 
-    static bool fileEncryption(const QByteArray &key, const QByteArray &iv,
+    bool fileEncryption(const QByteArray &key, const QByteArray &iv,
                       QFile *input, QFile *output, QByteArray& returnTag);
 
-    static void fileDecryption(const QByteArray &key, const QByteArray& iv,
+    void fileDecryption(const QByteArray &key, const QByteArray& iv,
                                QFile *input, QFile *output);
-};
+}
 
 class OWNCLOUDSYNC_EXPORT ClientSideEncryption : public QObject {
     Q_OBJECT
