@@ -14,8 +14,7 @@
 
 #include "application.h"
 #include "owncloudgui.h"
-#include "ocsappsjob.h"
-#include "ocsexternalsitesjob.h"
+#include "ocsnavigationappsjob.h"
 #include "theme.h"
 #include "folderman.h"
 #include "progressdispatcher.h"
@@ -647,11 +646,7 @@ void ownCloudGui::updateContextMenu()
     }
     _contextMenu->addAction(_actionQuit);
 
-    if(_cfg.showExternalSites())
-        fetchExternalSites();
-
-    if(_cfg.showApps())
-        fetchApps();
+    fetchNavigationApps();
 
     if (_qdbusmenuWorkaround) {
         _tray->show();
@@ -754,66 +749,17 @@ void ownCloudGui::setupActions()
     }
 }
 
-void ownCloudGui::fetchExternalSites(){
+void ownCloudGui::fetchNavigationApps(){
     foreach (AccountStatePtr account, AccountManager::instance()->accounts()) {
-        OcsExternalSitesJob *job = new OcsExternalSitesJob(account->account());
+        OcsNavigationAppsJob *job = new OcsNavigationAppsJob(account->account());
         job->setProperty(propertyAccountC, QVariant::fromValue(account->account()));
-        connect(job, &OcsExternalSitesJob::externalSitesJobFinished, this, &ownCloudGui::slotExternalSitesFetched);
-        connect(job, &OcsExternalSitesJob::ocsError, this, &ownCloudGui::slotOcsError);
-        job->getExternalSites();
+        connect(job, &OcsNavigationAppsJob::appsJobFinished, this, &ownCloudGui::slotNavigationAppsFetched);
+        connect(job, &OcsNavigationAppsJob::ocsError, this, &ownCloudGui::slotOcsError);
+        job->getNavigationApps();
     }
 }
 
-void ownCloudGui::setupExternalSitesMenu(QAction *actionBefore, QAction *actionTitle, QMenu *menu, QJsonArray sites){
-    menu->insertSeparator(actionBefore);
-    menu->insertAction(actionBefore, actionTitle);
-    foreach (const QJsonValue &value, sites) {
-        QJsonObject site = value.toObject();
-        QAction *action = new QAction(site["name"].toString(), this);
-        connect(action, &QAction::triggered, this, [site] { QDesktopServices::openUrl(QUrl(site["url"].toString())); });
-        menu->insertAction(actionBefore, action);
-    }
-}
-
-void ownCloudGui::slotExternalSitesFetched(const QJsonDocument &reply)
-{
-    if(!reply.isEmpty()){
-        auto data = reply.object().value("ocs").toObject().value("data");
-        auto sitesList = data.toArray();
-
-        if(sitesList.size() > 0){
-            QAction *externalSites = new QAction(tr("External sites:"), this);
-            externalSites->setDisabled(true);
-            auto accountList = AccountManager::instance()->accounts();
-
-            if(accountList.size() > 1){
-                // the list of external sites will be displayed under the account that it belongs to
-                if(auto account = qvariant_cast<AccountPtr>(sender()->property(propertyAccountC))){
-                    foreach (QMenu *menu, _accountMenus) {
-                        if(menu->title() == account->displayName()){
-                            setupExternalSitesMenu(_actionLogout, externalSites, menu, sitesList);
-                        }
-                    }
-                }
-             } else if(accountList.size() == 1){
-                setupExternalSitesMenu(_actionSettings, externalSites, _contextMenu.data(), sitesList);
-                _contextMenu->insertSeparator(_actionSettings);
-            }
-        }
-    }
-}
-
-void ownCloudGui::fetchApps(){
-    foreach (AccountStatePtr account, AccountManager::instance()->accounts()) {
-        OcsAppsJob *job = new OcsAppsJob(account->account());
-        job->setProperty(propertyAccountC, QVariant::fromValue(account->account()));
-        connect(job, &OcsAppsJob::appsJobFinished, this, &ownCloudGui::slotAppsFetched);
-        connect(job, &OcsAppsJob::ocsError, this, &ownCloudGui::slotOcsError);
-        job->getApps();
-    }
-}
-
-void ownCloudGui::setupAppsMenu(QAction *actionBefore, QAction *actionTitle, QMenu *menu, QJsonArray apps){
+void ownCloudGui::setupNavigationAppsMenu(QAction *actionBefore, QAction *actionTitle, QMenu *menu, QJsonArray apps){
     menu->insertSeparator(actionBefore);
     menu->insertAction(actionBefore, actionTitle);
 
@@ -828,7 +774,7 @@ void ownCloudGui::setupAppsMenu(QAction *actionBefore, QAction *actionTitle, QMe
     }
 }
 
-void ownCloudGui::slotAppsFetched(const QJsonDocument &reply)
+void ownCloudGui::slotNavigationAppsFetched(const QJsonDocument &reply)
 {
     if(!reply.isEmpty()){
         auto data = reply.object().value("ocs").toObject().value("data").toObject().value("apps");
@@ -844,12 +790,12 @@ void ownCloudGui::slotAppsFetched(const QJsonDocument &reply)
                 if(auto account = qvariant_cast<AccountPtr>(sender()->property(propertyAccountC))){
                     foreach (QMenu *menu, _accountMenus) {
                         if(menu->title() == account->displayName()){
-                            setupAppsMenu(_actionLogout, apps, menu, appsList);
+                            setupNavigationAppsMenu(_actionLogout, apps, menu, appsList);
                         }
                     }
                 }
              } else if(accountList.size() == 1){
-                setupAppsMenu(_actionSettings, apps, _contextMenu.data(), appsList);
+                setupNavigationAppsMenu(_actionSettings, apps, _contextMenu.data(), appsList);
                 _contextMenu->insertSeparator(_actionSettings);
             }
         }
