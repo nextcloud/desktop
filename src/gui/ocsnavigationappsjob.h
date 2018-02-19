@@ -12,8 +12,8 @@
  * for more details.
  */
 
-#ifndef OCSEXTERNALSITESJOB_H
-#define OCSEXTERNALSITESJOB_H
+#ifndef OCSNAVIGATIONAPPSJOB_H
+#define OCSNAVIGATIONAPPSJOB_H
 
 #include "ocsjob.h"
 class QJsonDocument;
@@ -21,21 +21,22 @@ class QJsonDocument;
 namespace OCC {
 
 /**
- * @brief The OcsExternalSitesJob class
+ * @brief The OcsAppsJob class
  * @ingroup gui
  *
- * Fetching expernal sites from the OCS External Sites API
+ * Fetching enabled apps from the OCS Apps API
  */
-class OcsExternalSitesJob : public OcsJob
+class OcsNavigationAppsJob : public OcsJob
 {
     Q_OBJECT
 public:
-    explicit OcsExternalSitesJob(AccountPtr account);
+    explicit OcsNavigationAppsJob(AccountPtr account);
 
     /**
-     * Get a list of external sites
+     * Get a list of enabled apps and external sites
+     * visible in the Navigation menu
      */
-    void getExternalSites();
+    void getNavigationApps();
 
 signals:
     /**
@@ -43,11 +44,11 @@ signals:
      *
      * @param reply The reply
      */
-    void externalSitesJobFinished(const QJsonDocument &reply);
+    void appsJobFinished(const QJsonDocument &reply);
 
 private slots:
     void jobDone(const QJsonDocument &reply);
 };
 }
 
-#endif // OCSEXTERNALSITESJOB_H
+#endif // OCSNAVIGATIONAPPSJOB_H

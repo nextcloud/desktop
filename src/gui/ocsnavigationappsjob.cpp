@@ -12,26 +12,26 @@
  * for more details.
  */
 
-#include "ocsexternalsitesjob.h"
+#include "ocsnavigationappsjob.h"
 
 namespace OCC {
 
-OcsExternalSitesJob::OcsExternalSitesJob(AccountPtr account)
+OcsNavigationAppsJob::OcsNavigationAppsJob(AccountPtr account)
     : OcsJob(account)
 {
-    setPath("ocs/v2.php/apps/external/api/v1");
-    connect(this, &OcsExternalSitesJob::jobFinished, this, &OcsExternalSitesJob::jobDone);
+    setPath("ocs/v2.php/core/navigation/apps");
+    connect(this, &OcsNavigationAppsJob::jobFinished, this, &OcsNavigationAppsJob::jobDone);
 }
 
-void OcsExternalSitesJob::getExternalSites()
+void OcsNavigationAppsJob::getNavigationApps()
 {
     setVerb("GET");
     start();
 }
 
-void OcsExternalSitesJob::jobDone(const QJsonDocument &reply)
+void OcsNavigationAppsJob::jobDone(const QJsonDocument &reply)
 {
 
-    emit externalSitesJobFinished(reply);
+    emit appsJobFinished(reply);
 }
 }
