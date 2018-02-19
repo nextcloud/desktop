@@ -49,12 +49,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
     connect(_ui->autostartCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleLaunchOnStartup);
 
-    _ui->showExternalSitesCheckBox->setChecked(false);
-    connect(_ui->showExternalSitesCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowExternalSites);
-
-    _ui->showAppsCheckBox->setChecked(false);
-    connect(_ui->showAppsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowApps);
-
     // setup about section
     QString about = Theme::instance()->about();
     if (about.isEmpty()) {
@@ -121,8 +115,6 @@ void GeneralSettings::loadMiscSettings()
     ConfigFile cfgFile;
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->desktopNotificationsCheckBox->setChecked(cfgFile.optionalDesktopNotifications());
-    _ui->showExternalSitesCheckBox->setChecked(cfgFile.showExternalSites());
-    _ui->showAppsCheckBox->setChecked(cfgFile.showApps());
     _ui->showInExplorerNavigationPaneCheckBox->setChecked(cfgFile.showInExplorerNavigationPane());
     _ui->crashreporterCheckBox->setChecked(cfgFile.crashReporter());
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
@@ -196,16 +188,6 @@ void GeneralSettings::slotIgnoreFilesEditor()
     } else {
         ownCloudGui::raiseDialog(_ignoreEditor);
     }
-}
-
-void GeneralSettings::slotShowExternalSites(bool checked){
-    ConfigFile cfgFile;
-    cfgFile.setShowExternalSites(checked);
-}
-
-void GeneralSettings::slotShowApps(bool checked){
-    ConfigFile cfgFile;
-    cfgFile.setShowApps(checked);
 }
 
 } // namespace OCC

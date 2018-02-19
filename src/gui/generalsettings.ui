@@ -20,33 +20,13 @@
       <string>General Settings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="2" column="1">
-       <widget class="QCheckBox" name="showAppsCheckBox">
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="monoIconsCheckBox">
+        <property name="toolTip">
+         <string>For System Tray</string>
+        </property>
         <property name="text">
-         <string>Show enabled apps in  tray menu</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QCheckBox" name="showExternalSitesCheckBox">
-        <property name="text">
-         <string>Show external sites list in tray menu</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-        <property name="tristate">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QCheckBox" name="desktopNotificationsCheckBox">
-        <property name="text">
-         <string>Show &amp;Desktop Notifications</string>
+         <string>Use &amp;Monochrome Icons</string>
         </property>
        </widget>
       </item>
@@ -57,13 +37,10 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="monoIconsCheckBox">
-        <property name="toolTip">
-         <string>For System Tray</string>
-        </property>
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="desktopNotificationsCheckBox">
         <property name="text">
-         <string>Use &amp;Monochrome Icons</string>
+         <string>Show &amp;Desktop Notifications</string>
         </property>
        </widget>
       </item>
