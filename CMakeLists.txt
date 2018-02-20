@@ -211,9 +211,6 @@ endif()
 file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/client_*.ts)
 set(TRANSLATIONS ${TRANS_FILES})
 
-# Make sure we set this before recursing into child folders.
-set(WITH_TESTING ${UNIT_TESTING})
-
 if(BUILD_CLIENT)
     add_subdirectory(src)
     if(NOT BUILD_LIBRARIES_ONLY)
