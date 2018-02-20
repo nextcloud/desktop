@@ -254,15 +254,17 @@ void Utility::usleep(int usec)
     QThread::usleep(usec);
 }
 
-bool Utility::fsCasePreserving()
-{
-#ifdef WITH_TESTING
+// This can be overriden from the tests
+OCSYNC_EXPORT bool fsCasePreserving_override = []()-> bool {
     QByteArray env = qgetenv("OWNCLOUD_TEST_CASE_PRESERVING");
     if (!env.isEmpty())
         return env.toInt();
-#endif
+    return Utility::isWindows() || Utility::isMac();
+}();
 
-    return isWindows() || isMac();
+bool Utility::fsCasePreserving()
+{
+    return fsCasePreserving_override;
 }
 
 bool Utility::fileNamesEqual(const QString &fn1, const QString &fn2)
