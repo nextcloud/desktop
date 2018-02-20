@@ -121,6 +121,10 @@ void Folder::checkLocalPath()
 {
     const QFileInfo fi(_definition.localPath);
     _canonicalLocalPath = fi.canonicalFilePath();
+#ifdef Q_OS_MAC
+    // Workaround QTBUG-55896  (Should be fixed in Qt 5.8)
+    _canonicalLocalPath = _canonicalLocalPath.normalized(QString::NormalizationForm_C);
+#endif
     if (_canonicalLocalPath.isEmpty()) {
         qCWarning(lcFolder) << "Broken symlink:" << _definition.localPath;
         _canonicalLocalPath = _definition.localPath;
