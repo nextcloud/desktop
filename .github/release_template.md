@@ -42,11 +42,12 @@ For all alphas, betas and RCs (Copy this section for each alpha/beta/rc):
 * [ ] Mac: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
 * [ ] Win: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
 * [ ] Linux: Smoke test of one distro package (Install, make sure it does not explode, and check if all version indicators are correct)
+* [ ] Linux: Run @SamuAlfageme 's magic Linux-test-all-packages-script
 * [ ] Create a signed tag using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
 * [ ] Create a pull request to the owncloud.org repository to update the install page (strings.php, page-desktop.php) and the changelog on owncloud.org. From now on download packages from the staging webserver.
-* [ ] Inform community mailinglists devel@owncloud.org and testpilots@owncloud.org
-* [ ] Inform packagers @dragotin (openSUSE) @hefee (Debian)
+* [ ] Inform packagers @dragotin (openSUSE) @hefee (Debian) @Germano0 (Fedora)
 * [ ] Announce on https://central.owncloud.org
+* [ ] Inform community mailinglists devel@owncloud.org and testpilots@owncloud.org (make sure to mention it is an rc). Link to the central post so discussion happens there.
 * [ ] Check crash reporter
 
 One week before the final release:
@@ -84,11 +85,13 @@ On Release Day (for final release):
   * [ ] double-check that there are no _aggregatepac from other projects
   * [ ] Create a signed tag using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
 * [ ] Copy builds from ```testing``` to ```stable``` on download.owncloud.com, double check the download links. (make sure the .asc is there too)
-* [ ] Create a pull request to the owncloud.org repository to update the install page (strings.php, page-desktop.php). From now on download packages from the staging webserver.
-* [ ] Announce on https://central.owncloud.org
-* [ ] Announce on announcements@owncloud.org
-* [ ] Inform packagers @dragotin (openSUSE) @hefee (Debian) @Germano0 (Fedora)
 * [ ] Create git signed tag in client repository using ```git tag -u E94E7B37 tagname```
+* [ ] Create a (draft) release on https://github.com/owncloud/client/releases
+* [ ] Update https://owncloud.org/changelog/desktop-client/
+* [ ] Update https://owncloud.org/download/#owncloud-desktop-client
+* [ ] Announce on https://central.owncloud.org
+* [ ] Announce on announcements@owncloud.org Link to the central post so discussion happens there.
+* [ ] Inform packagers @dragotin (openSUSE) @hefee (Debian) @Germano0 (Fedora)
 * [ ] Send out Social (tweet, blog, other)
 * [ ] Send out customer communication (if any)
 * [ ] Inform GCX that the new version is released (gcx@owncloud.com)
