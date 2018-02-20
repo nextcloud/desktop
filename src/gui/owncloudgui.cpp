@@ -759,44 +759,43 @@ void ownCloudGui::fetchNavigationApps(){
     }
 }
 
-void ownCloudGui::setupNavigationAppsMenu(QAction *actionBefore, QAction *actionTitle, QMenu *menu, QJsonArray apps){
-    menu->insertSeparator(actionBefore);
-    menu->insertAction(actionBefore, actionTitle);
-
-    foreach (const QJsonValue &value, apps) {
-        // TO DO: list all apps in the menu or just a few?
-        QString app = value.toString();
-        if(app == "calendar"){
-            QAction *action = new QAction("Calendar", this);
-            connect(action, &QAction::triggered, this, [] { QDesktopServices::openUrl(QUrl()); });
-            menu->insertAction(actionBefore, action);
-        }
-    }
-}
-
 void ownCloudGui::slotNavigationAppsFetched(const QJsonDocument &reply)
 {
     if(!reply.isEmpty()){
-        auto data = reply.object().value("ocs").toObject().value("data").toObject().value("apps");
-        auto appsList = data.toArray();
+        auto element = reply.object().value("ocs").toObject().value("data");
+        auto navLinks = element.toArray();
 
-        if(appsList.size() > 0){
-            QAction *apps = new QAction(tr("Apps:"), this);
-            apps->setDisabled(true);
-            auto accountList = AccountManager::instance()->accounts();
+        if(navLinks.size() > 0){
+            if(auto account = qvariant_cast<AccountPtr>(sender()->property(propertyAccountC))){
 
-            if(accountList.size() > 1){
-                // the list of apps will be displayed under the account that it belongs to
-                if(auto account = qvariant_cast<AccountPtr>(sender()->property(propertyAccountC))){
+                // when there is only one account add the nav links above the settings
+                QMenu *accountMenu = _contextMenu.data();
+                QAction *actionBefore = _actionSettings;
+
+                // when there is more than one account add the nav links bellow the account submenu
+                if(AccountManager::instance()->accounts().size() > 1){
+                    // the list of apps will be displayed under the account that it belongs to and before Log out
+                    actionBefore = _actionLogout;
                     foreach (QMenu *menu, _accountMenus) {
                         if(menu->title() == account->displayName()){
-                            setupNavigationAppsMenu(_actionLogout, apps, menu, appsList);
+                            accountMenu = menu;
+                            break;
                         }
                     }
                 }
-             } else if(accountList.size() == 1){
-                setupNavigationAppsMenu(_actionSettings, apps, _contextMenu.data(), appsList);
-                _contextMenu->insertSeparator(_actionSettings);
+
+                // Create submenu with links
+                QMenu *navLinksMenu = new QMenu(tr("Apps"));
+                accountMenu->insertSeparator(actionBefore);
+                accountMenu->insertMenu(actionBefore, navLinksMenu);
+                foreach (const QJsonValue &value, navLinks) {
+                    auto navLink = value.toObject();
+                    QAction *action = new QAction(navLink.value("name").toString(), this);
+                    QUrl href(account->url().host() + navLink.value("href").toString());
+                    connect(action, &QAction::triggered, this, [href] { QDesktopServices::openUrl(href); });
+                    navLinksMenu->addAction(action);
+                }
+                accountMenu->insertSeparator(actionBefore);
             }
         }
     }
