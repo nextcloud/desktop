@@ -11,6 +11,10 @@
 
 using namespace OCC::Utility;
 
+namespace OCC {
+OCSYNC_EXPORT extern bool fsCasePreserving_override;
+}
+
 class TestUtility : public QObject
 {
     Q_OBJECT
@@ -150,12 +154,12 @@ private slots:
 
     void testFsCasePreserving()
     {
-        qputenv("OWNCLOUD_TEST_CASE_PRESERVING", "1");
-        QVERIFY(fsCasePreserving());
-        qputenv("OWNCLOUD_TEST_CASE_PRESERVING", "0");
-        QVERIFY(! fsCasePreserving());
-        qunsetenv("OWNCLOUD_TEST_CASE_PRESERVING");
         QVERIFY(isMac() || isWindows() ? fsCasePreserving() : ! fsCasePreserving());
+        QScopedValueRollback<bool> scope(OCC::fsCasePreserving_override);
+        OCC::fsCasePreserving_override = 1;
+        QVERIFY(fsCasePreserving());
+        OCC::fsCasePreserving_override = 0;
+        QVERIFY(! fsCasePreserving());
     }
 
     void testFileNamesEqual()
@@ -178,13 +182,12 @@ private slots:
         QVERIFY(fileNamesEqual(a+"/test", b+"/test")); // both exist
         QVERIFY(fileNamesEqual(a+"/test/TESTI", b+"/test/../test/TESTI")); // both exist
 
-        qputenv("OWNCLOUD_TEST_CASE_PRESERVING", "1");
+        QScopedValueRollback<bool> scope(OCC::fsCasePreserving_override, true);
         QVERIFY(fileNamesEqual(a+"/test", b+"/TEST")); // both exist
 
         QVERIFY(!fileNamesEqual(a+"/test", b+"/test/TESTI")); // both are different
 
         dir.remove();
-        qunsetenv("OWNCLOUD_TEST_CASE_PRESERVING");
     }
 
     void testSanitizeForFileName_data()
