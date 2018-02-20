@@ -613,6 +613,7 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("A/tößt"));
         QVERIFY(fakeFolder.currentLocalState().find("A/t𠜎t"));
 
+#if !defined(Q_OS_MAC) && !defined(Q_OS_WIN)
         // Try again with a locale that can represent ö but not 𠜎 (4-byte utf8).
         QTextCodec::setCodecForLocale(QTextCodec::codecForName("ISO-8859-15"));
         QVERIFY(QTextCodec::codecForLocale()->mibEnum() == 111);
@@ -643,6 +644,7 @@ private slots:
         QVERIFY(fakeFolder.currentRemoteState().find("C/tößt"));
 
         QTextCodec::setCodecForLocale(utf8Locale);
+#endif
     }
 };
 
