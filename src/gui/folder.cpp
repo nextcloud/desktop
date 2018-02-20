@@ -643,9 +643,13 @@ void Folder::startSync(const QStringList &pathList)
         }
         return interval;
     }();
-    if (_folderWatcher && _folderWatcher->isReliable() && _timeSinceLastFullLocalDiscovery.isValid()
-        && (fullLocalDiscoveryInterval.count() < 0
-               || _timeSinceLastFullLocalDiscovery.hasExpired(fullLocalDiscoveryInterval.count()))) {
+    bool hasDoneFullLocalDiscovery = _timeSinceLastFullLocalDiscovery.isValid();
+    bool periodicFullLocalDiscoveryNow =
+        fullLocalDiscoveryInterval.count() >= 0 // negative means we don't require periodic full runs
+        && _timeSinceLastFullLocalDiscovery.hasExpired(fullLocalDiscoveryInterval.count());
+    if (_folderWatcher && _folderWatcher->isReliable()
+        && hasDoneFullLocalDiscovery
+        && !periodicFullLocalDiscoveryNow) {
         qCInfo(lcFolder) << "Allowing local discovery to read from the database";
         _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, _localDiscoveryPaths);
 
