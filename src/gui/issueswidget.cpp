@@ -18,6 +18,7 @@
 #include "issueswidget.h"
 #include "configfile.h"
 #include "syncresult.h"
+#include "syncengine.h"
 #include "logger.h"
 #include "theme.h"
 #include "folderman.h"
@@ -145,7 +146,13 @@ void IssuesWidget::hideEvent(QHideEvent *ev)
     QWidget::hideEvent(ev);
 }
 
-void IssuesWidget::cleanItems(const QString &folder)
+static bool persistsUntilLocalDiscovery(QTreeWidgetItem *item)
+{
+    const auto status = ProtocolItem::status(item);
+    return status == SyncFileItem::Conflict || status == SyncFileItem::FileIgnored;
+}
+
+void IssuesWidget::cleanItems(const std::function<bool(QTreeWidgetItem *)> &shouldDelete)
 {
     _ui->_treeWidget->setSortingEnabled(false);
 
@@ -154,10 +161,8 @@ void IssuesWidget::cleanItems(const QString &folder)
     int itemCnt = _ui->_treeWidget->topLevelItemCount();
     for (int cnt = itemCnt - 1; cnt >= 0; cnt--) {
         QTreeWidgetItem *item = _ui->_treeWidget->topLevelItem(cnt);
-        QString itemFolder = ProtocolItem::folderName(item);
-        if (itemFolder == folder) {
+        if (shouldDelete(item))
             delete item;
-        }
     }
 
     _ui->_treeWidget->setSortingEnabled(true);
@@ -209,9 +214,35 @@ void IssuesWidget::slotOpenFile(QTreeWidgetItem *item, int)
 
 void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
 {
-    if (progress.status() == ProgressInfo::Starting) {
-        // The sync is restarting, clean the old items
-        cleanItems(folder);
+    if (progress.status() == ProgressInfo::Reconcile) {
+        // Wipe all non-persistent entries - as well as the persistent ones
+        // in cases where a local discovery was done.
+        auto f = FolderMan::instance()->folder(folder);
+        if (!f)
+            return;
+        const auto &engine = f->syncEngine();
+        const auto style = engine.lastLocalDiscoveryStyle();
+        const auto &discoveryDirs = engine.currentLocalDiscoveryDirs();
+        cleanItems([&](QTreeWidgetItem *item) {
+            if (ProtocolItem::folderName(item) != folder)
+                return false;
+            if (style == LocalDiscoveryStyle::FilesystemOnly)
+                return true;
+            if (!persistsUntilLocalDiscovery(item))
+                return true;
+
+            // Definitely wipe the entry if the file no longer exists
+            if (!QFileInfo(f->path() + ProtocolItem::filePath(item)).exists())
+                return true;
+
+            auto path = QFileInfo(ProtocolItem::filePath(item)).dir().path().toUtf8();
+            if (path == ".")
+                path.clear();
+
+            // TODO: This logic has to match csync_ftw's
+            auto it = discoveryDirs.lower_bound(path);
+            return it != discoveryDirs.end() && it->startsWith(path);
+        });
     }
 }
 

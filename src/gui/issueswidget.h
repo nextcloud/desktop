@@ -77,7 +77,7 @@ private:
     QString currentFolderFilter() const;
     bool shouldBeVisible(QTreeWidgetItem *item, AccountState *filterAccount,
         const QString &filterFolderAlias) const;
-    void cleanItems(const QString &folder);
+    void cleanItems(const std::function<bool(QTreeWidgetItem *)> &shouldDelete);
     void addItem(QTreeWidgetItem *item);
 
     /// Add the special error widget for the category, if any
