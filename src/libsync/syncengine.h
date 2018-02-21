@@ -114,11 +114,13 @@ public:
     void setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> dirs = {});
 
     /**
-     * Access the dirs that shall be rediscovered for DatabaseAndFilesystem discovery.
+     * Returns whether the given folder-relative path should be locally discovered
+     * given the local discovery options.
      *
-     * This is only valid during Discovery and Reconcile phases of the sync run.
+     * Example: If path is 'foo/bar' and style is DatabaseAndFilesystem and dirs contains
+     *     'foo/bar/touched_file', then the result will be true.
      */
-    const std::set<QByteArray> &currentLocalDiscoveryDirs() const;
+    bool shouldDiscoverLocally(const QByteArray &path) const;
 
     /** Access the last sync run's local discovery style */
     LocalDiscoveryStyle lastLocalDiscoveryStyle() const { return _lastLocalDiscoveryStyle; }
@@ -308,7 +310,9 @@ private:
     QSet<QString> _uniqueErrors;
 
     /** The kind of local discovery the last sync run used */
-    LocalDiscoveryStyle _lastLocalDiscoveryStyle = LocalDiscoveryStyle::DatabaseAndFilesystem;
+    LocalDiscoveryStyle _lastLocalDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
+    LocalDiscoveryStyle _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
+    std::set<QByteArray> _localDiscoveryPaths;
 };
 }
 
