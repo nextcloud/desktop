@@ -1619,6 +1619,11 @@ void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QB
     _csync_ctx->locally_touched_dirs = std::move(dirs);
 }
 
+const std::set<QByteArray> &SyncEngine::currentLocalDiscoveryDirs() const
+{
+    return _csync_ctx->locally_touched_dirs;
+}
+
 void SyncEngine::abort()
 {
     if (_propagator)
