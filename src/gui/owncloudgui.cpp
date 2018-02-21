@@ -58,6 +58,7 @@
 namespace OCC {
 
 const char propertyAccountC[] = "oc_account";
+const char propertyMenuC[] = "oc_account_menu";
 
 ownCloudGui::ownCloudGui(Application *parent)
     : QObject(parent)
@@ -397,11 +398,13 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
             QAction *enable = menu->addAction(tr("Unpause all folders"));
             enable->setProperty(propertyAccountC, QVariant::fromValue(accountState));
             connect(enable, &QAction::triggered, this, &ownCloudGui::slotUnpauseAllFolders);
+            _storedActionsForNavApps.append(enable);
         }
         if (!allPaused) {
             QAction *enable = menu->addAction(tr("Pause all folders"));
             enable->setProperty(propertyAccountC, QVariant::fromValue(accountState));
             connect(enable, &QAction::triggered, this, &ownCloudGui::slotPauseAllFolders);
+            _storedActionsForNavApps.append(enable);
         }
 
         if (accountState->isSignedOut()) {
@@ -412,6 +415,7 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
             QAction *signout = menu->addAction(tr("Log out"));
             signout->setProperty(propertyAccountC, QVariant::fromValue(accountState));
             connect(signout, &QAction::triggered, this, &ownCloudGui::slotLogout);
+            _storedActionsForNavApps.append(signout);
         }
     }
 }
@@ -568,7 +572,7 @@ void ownCloudGui::updateContextMenu()
         menu->deleteLater();
     }
     _accountMenus.clear();
-
+    _storedActionsForNavApps.clear();
 
     auto accountList = AccountManager::instance()->accounts();
 
@@ -596,9 +600,11 @@ void ownCloudGui::updateContextMenu()
             _contextMenu->addMenu(accountMenu);
 
             addAccountContextMenu(account, accountMenu, true);
+            fetchNavigationApps(account, accountMenu);
         }
     } else if (accountList.count() == 1) {
         addAccountContextMenu(accountList.first(), _contextMenu.data(), false);
+        fetchNavigationApps(accountList.first(), _contextMenu.data());
     }
 
     _contextMenu->addSeparator();
@@ -645,8 +651,6 @@ void ownCloudGui::updateContextMenu()
         connect(action, &QAction::triggered, this, &ownCloudGui::slotPauseAllFolders);
     }
     _contextMenu->addAction(_actionQuit);
-
-    fetchNavigationApps();
 
     if (_qdbusmenuWorkaround) {
         _tray->show();
@@ -736,11 +740,6 @@ void ownCloudGui::setupActions()
     _actionQuit = new QAction(tr("Quit %1").arg(Theme::instance()->appNameGUI()), this);
     QObject::connect(_actionQuit, SIGNAL(triggered(bool)), _app, SLOT(quit()));
 
-    _actionLogin = new QAction(tr("Log in..."), this);
-    connect(_actionLogin, &QAction::triggered, this, &ownCloudGui::slotLogin);
-    _actionLogout = new QAction(tr("Log out"), this);
-    connect(_actionLogout, &QAction::triggered, this, &ownCloudGui::slotLogout);
-
     if (_app->debugMode()) {
         _actionCrash = new QAction(tr("Crash now", "Only shows in debug mode to allow testing the crash handler"), this);
         connect(_actionCrash, &QAction::triggered, _app, &Application::slotCrash);
@@ -749,14 +748,13 @@ void ownCloudGui::setupActions()
     }
 }
 
-void ownCloudGui::fetchNavigationApps(){
-    foreach (AccountStatePtr account, AccountManager::instance()->accounts()) {
-        OcsNavigationAppsJob *job = new OcsNavigationAppsJob(account->account());
-        job->setProperty(propertyAccountC, QVariant::fromValue(account->account()));
-        connect(job, &OcsNavigationAppsJob::appsJobFinished, this, &ownCloudGui::slotNavigationAppsFetched);
-        connect(job, &OcsNavigationAppsJob::ocsError, this, &ownCloudGui::slotOcsError);
-        job->getNavigationApps();
-    }
+void ownCloudGui::fetchNavigationApps(AccountStatePtr account, QMenu *accountMenu){
+    OcsNavigationAppsJob *job = new OcsNavigationAppsJob(account->account());
+    job->setProperty(propertyAccountC, QVariant::fromValue(account->account()));
+    job->setProperty(propertyMenuC, QVariant::fromValue(accountMenu));
+    connect(job, &OcsNavigationAppsJob::appsJobFinished, this, &ownCloudGui::slotNavigationAppsFetched);
+    connect(job, &OcsNavigationAppsJob::ocsError, this, &ownCloudGui::slotOcsError);
+    job->getNavigationApps();
 }
 
 void ownCloudGui::slotNavigationAppsFetched(const QJsonDocument &reply)
@@ -767,35 +765,42 @@ void ownCloudGui::slotNavigationAppsFetched(const QJsonDocument &reply)
 
         if(navLinks.size() > 0){
             if(auto account = qvariant_cast<AccountPtr>(sender()->property(propertyAccountC))){
+                if(QMenu *accountMenu = qvariant_cast<QMenu*>(sender()->property(propertyMenuC))){
 
-                // when there is only one account add the nav links above the settings
-                QMenu *accountMenu = _contextMenu.data();
-                QAction *actionBefore = _actionSettings;
+                    // when there is only one account add the nav links above the settings
+                    QAction *actionBefore = _actionSettings;
 
-                // when there is more than one account add the nav links bellow the account submenu
-                if(AccountManager::instance()->accounts().size() > 1){
-                    // the list of apps will be displayed under the account that it belongs to and before Log out
-                    actionBefore = _actionLogout;
-                    foreach (QMenu *menu, _accountMenus) {
-                        if(menu->title() == account->displayName()){
-                            accountMenu = menu;
-                            break;
+                    // when there is more than one account add the nav links bellow the account submenu
+                    if(AccountManager::instance()->accounts().size() > 1){
+                        foreach(QAction *action, _storedActionsForNavApps){
+                            qDebug() << "Action: "
+                                     << action->text();
+                            if(auto actionAccount = qvariant_cast<AccountStatePtr>(action->property(propertyAccountC))){
+                                qDebug() << "Account found!"
+                                         << actionAccount->account()->displayName();
+                                if(actionAccount->account()->displayName() == account->displayName()){
+                                    qDebug() << "Menu found!"
+                                             << actionAccount->account()->displayName();
+                                    actionBefore = action;
+                                    break;
+                                }
+                             }
                         }
                     }
-                }
 
-                // Create submenu with links
-                QMenu *navLinksMenu = new QMenu(tr("Apps"));
-                accountMenu->insertSeparator(actionBefore);
-                accountMenu->insertMenu(actionBefore, navLinksMenu);
-                foreach (const QJsonValue &value, navLinks) {
-                    auto navLink = value.toObject();
-                    QAction *action = new QAction(navLink.value("name").toString(), this);
-                    QUrl href(account->url().host() + navLink.value("href").toString());
-                    connect(action, &QAction::triggered, this, [href] { QDesktopServices::openUrl(href); });
-                    navLinksMenu->addAction(action);
+                    // Create submenu with links
+                    QMenu *navLinksMenu = new QMenu(tr("Apps"));
+                    accountMenu->insertSeparator(actionBefore);
+                    accountMenu->insertMenu(actionBefore, navLinksMenu);
+                    foreach (const QJsonValue &value, navLinks) {
+                        auto navLink = value.toObject();
+                        QAction *action = new QAction(navLink.value("name").toString(), this);
+                        QUrl href(account->url().host() + navLink.value("href").toString());
+                        connect(action, &QAction::triggered, this, [href] { QDesktopServices::openUrl(href); });
+                        navLinksMenu->addAction(action);
+                    }
+                    accountMenu->insertSeparator(actionBefore);
                 }
-                accountMenu->insertSeparator(actionBefore);
             }
         }
     }

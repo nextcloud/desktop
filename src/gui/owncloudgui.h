@@ -126,7 +126,7 @@ private:
     void setPauseOnAllFoldersHelper(bool pause);
     void setupActions();
     void addAccountContextMenu(AccountStatePtr accountState, QMenu *menu, bool separateMenu);
-    void fetchNavigationApps();
+    void fetchNavigationApps(AccountStatePtr account, QMenu *accountMenu);
 
 
     QPointer<Systray> _tray;
@@ -153,9 +153,6 @@ private:
     QTimer _workaroundBatchTrayUpdate;
     QMap<QString, QPointer<ShareDialog>> _shareDialogs;
 
-    QAction *_actionLogin;
-    QAction *_actionLogout;
-
     QAction *_actionNewAccountWizard;
     QAction *_actionSettings;
     QAction *_actionStatus;
@@ -165,6 +162,7 @@ private:
     QAction *_actionQuit;
     QAction *_actionCrash;
     QList<QAction *> _recentItemsActions;
+    QList<QAction *> _storedActionsForNavApps;
     Application *_app;
 
     ConfigFile _cfg;
