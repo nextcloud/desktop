@@ -20,7 +20,6 @@
 #include "syncresult.h"
 #include "progressdispatcher.h"
 #include "common/syncjournaldb.h"
-#include "clientproxy.h"
 #include "networkjobs.h"
 
 #include <csync.h>
@@ -359,8 +358,6 @@ private:
     int _consecutiveFollowUpSyncs;
 
     SyncJournalDb _journal;
-
-    ClientProxy _clientProxy;
 
     QScopedPointer<SyncRunFileLog> _fileLog;
 

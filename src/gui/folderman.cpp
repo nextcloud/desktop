@@ -37,6 +37,7 @@
 #include <QtCore>
 #include <QMutableSetIterator>
 #include <QSet>
+#include <QNetworkProxy>
 
 namespace OCC {
 
