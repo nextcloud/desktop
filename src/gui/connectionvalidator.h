@@ -98,8 +98,7 @@ public:
         MaintenanceMode, // maintenance enabled in status.php
         Timeout // actually also used for other errors on the authed request
     };
-
-    static QString statusString(Status);
+    Q_ENUM(Status);
 
     // How often should the Application ask this object to check for the connection?
     enum { DefaultCallingIntervalMsec = 32 * 1000 };

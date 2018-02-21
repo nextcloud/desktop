@@ -94,7 +94,6 @@ public:
 
     ConnectionStatus connectionStatus() const;
     QStringList connectionErrors() const;
-    static QString connectionStatusString(ConnectionStatus status);
 
     State state() const;
     static QString stateString(State state);
