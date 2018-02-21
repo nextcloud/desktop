@@ -181,7 +181,8 @@ public:
     SyncFileItem _lastCompletedItem;
 
     // Used during local and remote update phase
-    QString _currentDiscoveredFolder;
+    QString _currentDiscoveredRemoteFolder;
+    QString _currentDiscoveredLocalFolder;
 
     void setProgressComplete(const SyncFileItem &item);
 
