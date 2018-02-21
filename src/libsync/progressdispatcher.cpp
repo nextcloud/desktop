@@ -139,7 +139,8 @@ void ProgressInfo::reset()
     _status = Starting;
 
     _currentItems.clear();
-    _currentDiscoveredFolder.clear();
+    _currentDiscoveredRemoteFolder.clear();
+    _currentDiscoveredLocalFolder.clear();
     _sizeProgress = Progress();
     _fileProgress = Progress();
     _totalSizeOfCompletedJobs = 0;

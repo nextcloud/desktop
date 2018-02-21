@@ -933,9 +933,18 @@ void SyncEngine::startSync()
     QMetaObject::invokeMethod(discoveryJob, "start", Qt::QueuedConnection);
 }
 
-void SyncEngine::slotFolderDiscovered(bool /*local*/, const QString &folder)
+void SyncEngine::slotFolderDiscovered(bool local, const QString &folder)
 {
-    _progressInfo->_currentDiscoveredFolder = folder;
+    // Currently remote and local discovery never run in parallel
+    // Note: Currently this slot is only called occasionally! See the throttling
+    //       in DiscoveryJob::update_job_update_callback.
+    if (local) {
+        _progressInfo->_currentDiscoveredLocalFolder = folder;
+        _progressInfo->_currentDiscoveredRemoteFolder.clear();
+    } else {
+        _progressInfo->_currentDiscoveredRemoteFolder = folder;
+        _progressInfo->_currentDiscoveredLocalFolder.clear();
+    }
     emit transmissionProgress(*_progressInfo);
 }
 
@@ -972,7 +981,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         _journal->commitIfNeededAndStartNewTransaction("Post discovery");
     }
 
-    _progressInfo->_currentDiscoveredFolder.clear();
+    _progressInfo->_currentDiscoveredRemoteFolder.clear();
+    _progressInfo->_currentDiscoveredLocalFolder.clear();
     _progressInfo->_status = ProgressInfo::Reconcile;
     emit transmissionProgress(*_progressInfo);
 

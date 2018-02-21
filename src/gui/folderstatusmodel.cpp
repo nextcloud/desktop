@@ -873,11 +873,16 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
           << FolderStatusDelegate::WarningCount
           << Qt::ToolTipRole;
 
-    if (progress.status() == ProgressInfo::Discovery
-        && !progress._currentDiscoveredFolder.isEmpty()) {
-        pi->_overallSyncString = tr("Checking for changes in '%1'").arg(progress._currentDiscoveredFolder);
-        emit dataChanged(index(folderIndex), index(folderIndex), roles);
-        return;
+    if (progress.status() == ProgressInfo::Discovery) {
+        if (!progress._currentDiscoveredRemoteFolder.isEmpty()) {
+            pi->_overallSyncString = tr("Checking for changes in remote '%1'").arg(progress._currentDiscoveredRemoteFolder);
+            emit dataChanged(index(folderIndex), index(folderIndex), roles);
+            return;
+        } else if (!progress._currentDiscoveredLocalFolder.isEmpty()) {
+            pi->_overallSyncString = tr("Checking for changes in local '%1'").arg(progress._currentDiscoveredLocalFolder);
+            emit dataChanged(index(folderIndex), index(folderIndex), roles);
+            return;
+        }
     }
 
     if (progress.status() == ProgressInfo::Reconcile) {
