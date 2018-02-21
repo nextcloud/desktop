@@ -32,7 +32,7 @@ class ConfigFile;
  * @brief The ClientProxy class
  * @ingroup libsync
  */
-class OWNCLOUDSYNC_EXPORT ClientProxy : public QObject
+class ClientProxy : public QObject
 {
     Q_OBJECT
 public:
@@ -61,7 +61,7 @@ private:
     QUrl _url;
 };
 
-OWNCLOUDSYNC_EXPORT QString printQNetworkProxy(const QNetworkProxy &proxy);
+QString printQNetworkProxy(const QNetworkProxy &proxy);
 }
 
 #endif // CLIENTPROXY_H
