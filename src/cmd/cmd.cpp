@@ -33,7 +33,6 @@
 #include "syncengine.h"
 #include "common/syncjournaldb.h"
 #include "config.h"
-#include "connectionvalidator.h"
 
 #include "cmd.h"
 
@@ -82,8 +81,6 @@ struct CmdOptions
 // we can't use csync_set_userdata because the SyncEngine sets it already.
 // So we have to use a global variable
 CmdOptions *opts = 0;
-
-const qint64 timeoutToUseMsec = qMax(1000, ConnectionValidator::DefaultCallingIntervalMsec - 5 * 1000);
 
 class EchoDisabler
 {
@@ -460,7 +457,6 @@ int main(int argc, char **argv)
 
         QEventLoop loop;
         JsonApiJob *job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/capabilities"));
-        job->setTimeout(timeoutToUseMsec);
         QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
             auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
             qDebug() << "Server capabilities" << caps;
