@@ -569,23 +569,12 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   bool do_read_from_db = (ctx->current == REMOTE_REPLICA && ctx->remote.read_from_db);
   const char *db_uri = uri;
 
-  if (ctx->current == LOCAL_REPLICA
-      && ctx->local_discovery_style == LocalDiscoveryStyle::DatabaseAndFilesystem) {
+  if (ctx->current == LOCAL_REPLICA && ctx->should_discover_locally_fn) {
       const char *local_uri = uri + strlen(ctx->local.uri);
       if (*local_uri == '/')
           ++local_uri;
       db_uri = local_uri;
-      do_read_from_db = true;
-
-      // Minor bug: local_uri doesn't have a trailing /. Example: Assume it's "d/foo"
-      // and we want to check whether we should read from the db. Assume "d/foo a" is
-      // in locally_touched_dirs. Then this check will say no, don't read from the db!
-      // (because "d/foo" < "d/foo a" < "d/foo/bar")
-      // C++14: Could skip the conversion to QByteArray here.
-      auto it = ctx->locally_touched_dirs.lower_bound(QByteArray(local_uri));
-      if (it != ctx->locally_touched_dirs.end() && it->startsWith(local_uri)) {
-          do_read_from_db = false;
-      }
+      do_read_from_db = !ctx->should_discover_locally_fn(QByteArray(local_uri));
   }
 
   if (!depth) {

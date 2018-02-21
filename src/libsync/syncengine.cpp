@@ -860,7 +860,11 @@ void SyncEngine::startSync()
     _excludedFiles->setExcludeConflictFiles(!_account->capabilities().uploadConflictFiles());
 
     _csync_ctx->read_remote_from_db = true;
-    _lastLocalDiscoveryStyle = _csync_ctx->local_discovery_style;
+
+    _lastLocalDiscoveryStyle = _localDiscoveryStyle;
+    _csync_ctx->should_discover_locally_fn = [this](const QByteArray &path) {
+        return shouldDiscoverLocally(path);
+    };
 
     bool ok;
     auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
@@ -1084,6 +1088,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     // Re-init the csync context to free memory
     _csync_ctx->reinitialize();
+    _localDiscoveryPaths.clear();
 
     // To announce the beginning of the sync
     emit aboutToPropagate(syncItems);
@@ -1225,6 +1230,8 @@ void SyncEngine::finalize(bool success)
     _temporarilyUnavailablePaths.clear();
     _renamedFolders.clear();
     _uniqueErrors.clear();
+    _localDiscoveryPaths.clear();
+    _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
 
     _clearTouchedFilesTimer.start();
 }
@@ -1631,13 +1638,32 @@ AccountPtr SyncEngine::account() const
 
 void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> dirs)
 {
-    _csync_ctx->local_discovery_style = style;
-    _csync_ctx->locally_touched_dirs = std::move(dirs);
+    _localDiscoveryStyle = style;
+    _localDiscoveryPaths = std::move(dirs);
 }
 
-const std::set<QByteArray> &SyncEngine::currentLocalDiscoveryDirs() const
+bool SyncEngine::shouldDiscoverLocally(const QByteArray &path) const
 {
-    return _csync_ctx->locally_touched_dirs;
+    if (_localDiscoveryStyle == LocalDiscoveryStyle::FilesystemOnly)
+        return true;
+
+    auto it = _localDiscoveryPaths.lower_bound(path);
+    if (it == _localDiscoveryPaths.end() || !it->startsWith(path))
+        return false;
+
+    // maybe an exact match or an empty path?
+    if (it->size() == path.size() || path.isEmpty())
+        return true;
+
+    // check for a prefix + / match
+    forever {
+        if (it->size() > path.size() && it->at(path.size()) == '/')
+            return true;
+        ++it;
+        if (it == _localDiscoveryPaths.end() || !it->startsWith(path))
+            return false;
+    }
+    return false;
 }
 
 void SyncEngine::abort()

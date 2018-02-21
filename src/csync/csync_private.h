@@ -190,15 +190,7 @@ struct OCSYNC_EXPORT csync_s {
    */
   bool read_remote_from_db = false;
 
-  LocalDiscoveryStyle local_discovery_style = LocalDiscoveryStyle::FilesystemOnly;
-
-  /**
-   * List of folder-relative directory paths that should be scanned on the
-   * filesystem if the local_discovery_style suggests it.
-   *
-   * Their parents will be scanned too. The paths don't start with a /.
-   */
-  std::set<QByteArray> locally_touched_dirs;
+  std::function<bool(const QByteArray &)> should_discover_locally_fn;
 
   bool ignore_hidden_files = true;
 

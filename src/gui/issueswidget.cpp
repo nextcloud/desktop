@@ -222,7 +222,6 @@ void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &p
             return;
         const auto &engine = f->syncEngine();
         const auto style = engine.lastLocalDiscoveryStyle();
-        const auto &discoveryDirs = engine.currentLocalDiscoveryDirs();
         cleanItems([&](QTreeWidgetItem *item) {
             if (ProtocolItem::folderName(item) != folder)
                 return false;
@@ -239,9 +238,7 @@ void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &p
             if (path == ".")
                 path.clear();
 
-            // TODO: This logic has to match csync_ftw's
-            auto it = discoveryDirs.lower_bound(path);
-            return it != discoveryDirs.end() && it->startsWith(path);
+            return engine.shouldDiscoverLocally(path);
         });
     }
 }

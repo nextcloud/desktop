@@ -310,9 +310,6 @@ int csync_s::reinitialize() {
   renames.folder_renamed_from.clear();
   renames.folder_renamed_to.clear();
 
-  local_discovery_style = LocalDiscoveryStyle::FilesystemOnly;
-  locally_touched_dirs.clear();
-
   status = CSYNC_STATUS_INIT;
   SAFE_FREE(error_string);
 
