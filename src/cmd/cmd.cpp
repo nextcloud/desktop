@@ -23,10 +23,10 @@
 #include <QFileInfo>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QNetworkProxy>
 #include <qdebug.h>
 
 #include "account.h"
-#include "clientproxy.h"
 #include "configfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
 #include "creds/httpcredentials.h"
 #include "simplesslerrorhandler.h"
@@ -327,7 +327,6 @@ int main(int argc, char **argv)
     options.restartTimes = 3;
     options.uplimit = 0;
     options.downlimit = 0;
-    ClientProxy clientProxy;
 
     parseOptions(app.arguments(), &options);
 
@@ -439,8 +438,6 @@ int main(int argc, char **argv)
         } else {
             qFatal("Could not read httpproxy. The proxy should have the format \"http://hostname:port\".");
         }
-    } else {
-        clientProxy.setupQtProxyFromConfig();
     }
 
     SimpleSslErrorHandler *sslErrorHandler = new SimpleSslErrorHandler;
