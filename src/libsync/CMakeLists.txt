@@ -24,8 +24,6 @@ set(libsync_SRCS
     wordlist.cpp
     bandwidthmanager.cpp
     capabilities.cpp
-    clientproxy.cpp
-    connectionvalidator.cpp
     cookiejar.cpp
     discoveryphase.cpp
     filesystem.cpp
