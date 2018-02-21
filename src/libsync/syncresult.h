@@ -68,6 +68,7 @@ public:
     int numRenamedItems() const { return _numRenamedItems; }
     int numNewConflictItems() const { return _numNewConflictItems; }
     int numOldConflictItems() const { return _numOldConflictItems; }
+    void setNumOldConflictItems(int n) { _numOldConflictItems = n; }
     int numErrorItems() const { return _numErrorItems; }
 
     const SyncFileItemPtr &firstItemNew() const { return _firstItemNew; }

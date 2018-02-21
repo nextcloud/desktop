@@ -241,6 +241,20 @@ void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &p
             return engine.shouldDiscoverLocally(path);
         });
     }
+    if (progress.status() == ProgressInfo::Done) {
+        // We keep track very well of pending conflicts.
+        // Inform other components about them.
+        QStringList conflicts;
+        auto tree = _ui->_treeWidget;
+        for (int i = 0; i < tree->topLevelItemCount(); ++i) {
+            auto item = tree->topLevelItem(i);
+            if (ProtocolItem::folderName(item) == folder
+                && ProtocolItem::status(item) == SyncFileItem::Conflict) {
+                conflicts.append(ProtocolItem::filePath(item));
+            }
+        }
+        emit ProgressDispatcher::instance()->folderConflicts(folder, conflicts);
+    }
 }
 
 void IssuesWidget::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
