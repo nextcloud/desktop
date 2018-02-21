@@ -40,35 +40,6 @@ ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
 {
 }
 
-QString ConnectionValidator::statusString(Status stat)
-{
-    switch (stat) {
-    case Undefined:
-        return QLatin1String("Undefined");
-    case Connected:
-        return QLatin1String("Connected");
-    case NotConfigured:
-        return QLatin1String("Not configured");
-    case ServerVersionMismatch:
-        return QLatin1String("Server Version Mismatch");
-    case CredentialsNotReady:
-        return QLatin1String("Credentials not ready");
-    case CredentialsWrong:
-        return QLatin1String("Credentials Wrong");
-    case SslError:
-        return QLatin1String("SSL Error");
-    case StatusNotFound:
-        return QLatin1String("Status not found");
-    case ServiceUnavailable:
-        return QLatin1String("Service unavailable");
-    case MaintenanceMode:
-        return QLatin1String("Maintenance mode");
-    case Timeout:
-        return QLatin1String("Timeout");
-    }
-    return QLatin1String("status undeclared.");
-}
-
 void ConnectionValidator::checkServerAndAuth()
 {
     if (!_account) {
