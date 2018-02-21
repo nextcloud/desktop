@@ -296,6 +296,11 @@ signals:
      */
     void syncError(const QString &folder, const QString &message, ErrorCategory category);
 
+    /**
+     * @brief Emitted for a folder when a sync is done, listing all pending conflicts
+     */
+    void folderConflicts(const QString &folder, const QStringList &conflictPaths);
+
 protected:
     void setProgressInfo(const QString &folder, const ProgressInfo &progress);
 

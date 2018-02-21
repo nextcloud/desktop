@@ -63,6 +63,7 @@ protected:
 signals:
     void copyToClipboard();
     void issueCountUpdated(int);
+    void folderConflicts(QString folder, QStringList conflictPaths);
 
 private slots:
     void slotRefreshIssues();
