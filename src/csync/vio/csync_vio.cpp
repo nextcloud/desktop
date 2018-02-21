@@ -40,7 +40,7 @@ csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name) {
       break;
     case LOCAL_REPLICA:
 	if( ctx->callbacks.update_callback ) {
-        ctx->callbacks.update_callback(ctx->current, name, ctx->callbacks.update_callback_userdata);
+        ctx->callbacks.update_callback(/*local=*/true, name, ctx->callbacks.update_callback_userdata);
 	}
       return csync_vio_local_opendir(name);
       break;

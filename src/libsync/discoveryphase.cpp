@@ -488,8 +488,7 @@ void DiscoveryMainThread::doOpendirSlot(const QString &subPath, DiscoveryDirecto
         fullPath.chop(1);
     }
 
-    // emit _discoveryJob->folderDiscovered(false, subPath);
-    _discoveryJob->update_job_update_callback(false, subPath.toUtf8(), _discoveryJob);
+    _discoveryJob->update_job_update_callback(/*local=*/false, subPath.toUtf8(), _discoveryJob);
 
     // Result gets written in there
     _currentDiscoveryDirectoryResult = r;
