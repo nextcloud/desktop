@@ -47,6 +47,7 @@ private slots:
     void slotUpdateInfo();
     void slotIgnoreFilesEditor();
     void loadMiscSettings();
+
 private:
     Ui::GeneralSettings *_ui;
     QPointer<IgnoreListEditor> _ignoreEditor;

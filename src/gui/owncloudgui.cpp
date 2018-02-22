@@ -17,6 +17,7 @@
 #include "ocsnavigationappsjob.h"
 #include "theme.h"
 #include "folderman.h"
+#include "configfile.h"
 #include "progressdispatcher.h"
 #include "owncloudsetupwizard.h"
 #include "sharedialog.h"
@@ -34,7 +35,6 @@
 #include "accountmanager.h"
 #include "common/syncjournalfilerecord.h"
 #include "creds/abstractcredentials.h"
-#include "configfile.h"
 #ifdef WITH_LIBCLOUDPROVIDERS
 #include "cloudproviders/cloudprovidermanager.h"
 #endif
@@ -54,6 +54,7 @@
 
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QJsonArray>
 
 namespace OCC {
 
@@ -398,13 +399,11 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
             QAction *enable = menu->addAction(tr("Unpause all folders"));
             enable->setProperty(propertyAccountC, QVariant::fromValue(accountState));
             connect(enable, &QAction::triggered, this, &ownCloudGui::slotUnpauseAllFolders);
-            _storedActionsForNavApps.append(enable);
         }
         if (!allPaused) {
             QAction *enable = menu->addAction(tr("Pause all folders"));
             enable->setProperty(propertyAccountC, QVariant::fromValue(accountState));
             connect(enable, &QAction::triggered, this, &ownCloudGui::slotPauseAllFolders);
-            _storedActionsForNavApps.append(enable);
         }
 
         if (accountState->isSignedOut()) {
@@ -415,7 +414,6 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
             QAction *signout = menu->addAction(tr("Log out"));
             signout->setProperty(propertyAccountC, QVariant::fromValue(accountState));
             connect(signout, &QAction::triggered, this, &ownCloudGui::slotLogout);
-            _storedActionsForNavApps.append(signout);
         }
     }
 }
@@ -572,7 +570,6 @@ void ownCloudGui::updateContextMenu()
         menu->deleteLater();
     }
     _accountMenus.clear();
-    _storedActionsForNavApps.clear();
 
     auto accountList = AccountManager::instance()->accounts();
 
@@ -620,7 +617,6 @@ void ownCloudGui::updateContextMenu()
         _contextMenu->addAction(_actionNewAccountWizard);
     }
     _contextMenu->addAction(_actionSettings);
-
     if (!Theme::instance()->helpUrl().isEmpty()) {
         _contextMenu->addAction(_actionHelp);
     }
@@ -762,7 +758,6 @@ void ownCloudGui::slotNavigationAppsFetched(const QJsonDocument &reply)
     if(!reply.isEmpty()){
         auto element = reply.object().value("ocs").toObject().value("data");
         auto navLinks = element.toArray();
-
         if(navLinks.size() > 0){
             if(auto account = qvariant_cast<AccountPtr>(sender()->property(propertyAccountC))){
                 if(QMenu *accountMenu = qvariant_cast<QMenu*>(sender()->property(propertyMenuC))){
@@ -770,17 +765,13 @@ void ownCloudGui::slotNavigationAppsFetched(const QJsonDocument &reply)
                     // when there is only one account add the nav links above the settings
                     QAction *actionBefore = _actionSettings;
 
-                    // when there is more than one account add the nav links bellow the account submenu
+                    // when there is more than one account add the nav links above pause/unpause folder or logout action
                     if(AccountManager::instance()->accounts().size() > 1){
-                        foreach(QAction *action, _storedActionsForNavApps){
-                            qDebug() << "Action: "
-                                     << action->text();
+                        foreach(QAction *action, accountMenu->actions()){
+
+                            // pause/unpause folder and logout actions have propertyAccountC
                             if(auto actionAccount = qvariant_cast<AccountStatePtr>(action->property(propertyAccountC))){
-                                qDebug() << "Account found!"
-                                         << actionAccount->account()->displayName();
-                                if(actionAccount->account()->displayName() == account->displayName()){
-                                    qDebug() << "Menu found!"
-                                             << actionAccount->account()->displayName();
+                                if(actionAccount->account() == account){
                                     actionBefore = action;
                                     break;
                                 }
@@ -806,12 +797,10 @@ void ownCloudGui::slotNavigationAppsFetched(const QJsonDocument &reply)
     }
 }
 
-
 void ownCloudGui::slotOcsError(int statusCode, const QString &message)
 {
     emit serverError(statusCode, message);
 }
-
 
 void ownCloudGui::slotRebuildRecentMenus()
 {

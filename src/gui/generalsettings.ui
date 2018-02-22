@@ -20,16 +20,6 @@
       <string>General Settings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="monoIconsCheckBox">
-        <property name="toolTip">
-         <string>For System Tray</string>
-        </property>
-        <property name="text">
-         <string>Use &amp;Monochrome Icons</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QCheckBox" name="autostartCheckBox">
         <property name="text">
@@ -41,6 +31,16 @@
        <widget class="QCheckBox" name="desktopNotificationsCheckBox">
         <property name="text">
          <string>Show &amp;Desktop Notifications</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="monoIconsCheckBox">
+        <property name="toolTip">
+         <string>For System Tray</string>
+        </property>
+        <property name="text">
+         <string>Use &amp;Monochrome Icons</string>
         </property>
        </widget>
       </item>
@@ -252,6 +252,9 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>autostartCheckBox</tabstop>
+  <tabstop>desktopNotificationsCheckBox</tabstop>
+  <tabstop>monoIconsCheckBox</tabstop>
   <tabstop>ignoredFilesButton</tabstop>
   <tabstop>newFolderLimitCheckBox</tabstop>
   <tabstop>newFolderLimitSpinBox</tabstop>

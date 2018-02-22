@@ -18,7 +18,6 @@
 #include "systray.h"
 #include "connectionvalidator.h"
 #include "progressdispatcher.h"
-#include "configfile.h"
 
 #include <QObject>
 #include <QPointer>
@@ -29,11 +28,6 @@
 #ifdef WITH_LIBCLOUDPROVIDERS
 #include <QDBusConnection>
 #endif
-
-#include <QJsonArray>
-
-class QJsonDocument;
-class QJsonObject;
 
 namespace OCC {
 
@@ -100,6 +94,7 @@ public slots:
     void slotAccountStateChanged();
     void slotTrayMessageIfServerUnsupported(Account *account);
     void slotNavigationAppsFetched(const QJsonDocument &reply);
+
     /**
      * Open a share dialog for a file or folder.
      *
@@ -121,13 +116,11 @@ private slots:
     void slotPauseAllFolders();
     void slotNewAccountWizard();
 
-
 private:
     void setPauseOnAllFoldersHelper(bool pause);
     void setupActions();
     void addAccountContextMenu(AccountStatePtr accountState, QMenu *menu, bool separateMenu);
     void fetchNavigationApps(AccountStatePtr account, QMenu *accountMenu);
-
 
     QPointer<Systray> _tray;
 #if defined(Q_OS_MAC)
@@ -161,11 +154,9 @@ private:
     QAction *_actionHelp;
     QAction *_actionQuit;
     QAction *_actionCrash;
-    QList<QAction *> _recentItemsActions;
-    QList<QAction *> _storedActionsForNavApps;
-    Application *_app;
 
-    ConfigFile _cfg;
+    QList<QAction *> _recentItemsActions;
+    Application *_app;
 };
 
 } // namespace OCC
