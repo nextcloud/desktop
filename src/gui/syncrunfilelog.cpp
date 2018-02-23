@@ -133,7 +133,8 @@ void SyncRunFileLog::start(const QString &folderPath)
 void SyncRunFileLog::logItem(const SyncFileItem &item)
 {
     // don't log the directory items that are in the list
-    if (item._direction == SyncFileItem::None) {
+    if (item._direction == SyncFileItem::None
+        || item._instruction == CSYNC_INSTRUCTION_IGNORE) {
         return;
     }
     QString ts = QString::fromLatin1(item._responseTimeStamp);
