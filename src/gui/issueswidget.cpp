@@ -196,6 +196,17 @@ void IssuesWidget::addItem(QTreeWidgetItem *item)
         }
     }
 
+    // Wipe any existing message for the same folder and path
+    auto newData = ProtocolItem::extraData(item);
+    for (int i = 0; i < count; ++i) {
+        auto otherItem = _ui->_treeWidget->topLevelItem(i);
+        auto otherData = ProtocolItem::extraData(otherItem);
+        if (otherData.path == newData.path && otherData.folderName == newData.folderName) {
+            delete otherItem;
+            break;
+        }
+    }
+
     _ui->_treeWidget->insertTopLevelItem(insertLoc, item);
     item->setHidden(!shouldBeVisible(item, currentAccountFilter(), currentFolderFilter()));
     emit issueCountUpdated(_ui->_treeWidget->topLevelItemCount());
