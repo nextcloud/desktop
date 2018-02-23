@@ -44,7 +44,6 @@ private slots:
     void slotToggleLaunchOnStartup(bool);
     void slotToggleOptionalServerNotifications(bool);
     void slotToggleOptionalServerActivities(bool);
-    void slotToggleOptionalClientSyncActivities(bool);
     void slotShowInExplorerNavigationPane(bool);
     void slotUpdateInfo();
     void slotIgnoreFilesEditor();

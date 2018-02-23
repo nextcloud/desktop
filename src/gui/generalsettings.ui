@@ -20,10 +20,13 @@
       <string>General Settings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="1">
-       <widget class="QCheckBox" name="serverActivitiesCheckBox">
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="monoIconsCheckBox">
+        <property name="toolTip">
+         <string>For System Tray</string>
+        </property>
         <property name="text">
-         <string>Show Server &amp;Activities</string>
+         <string>Use &amp;Monochrome Icons</string>
         </property>
        </widget>
       </item>
@@ -41,29 +44,10 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QCheckBox" name="monoIconsCheckBox">
-        <property name="toolTip">
-         <string>For System Tray</string>
-        </property>
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="serverActivitiesCheckBox">
         <property name="text">
-         <string>Use &amp;Monochrome Icons</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QCheckBox" name="clientSyncActivitiesCheckBox">
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="toolTipDuration">
-         <number>-1</number>
-        </property>
-        <property name="whatsThis">
-         <string/>
-        </property>
-        <property name="text">
-         <string>Show &amp;Client Sync Activities</string>
+         <string>Show Server &amp;Activities</string>
         </property>
        </widget>
       </item>

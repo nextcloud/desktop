@@ -126,9 +126,6 @@ public:
     bool optionalServerActivities() const;
     void setOptionalServerActivities(bool show);
 
-    bool optionalClientSyncActivities() const;
-    void setOptionalClientSyncActivities(bool show);
-
     bool showInExplorerNavigationPane() const;
     void setShowInExplorerNavigationPane(bool show);
 

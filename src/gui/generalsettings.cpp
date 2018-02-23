@@ -50,10 +50,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         this, &GeneralSettings::slotToggleOptionalServerActivities);
     _ui->serverActivitiesCheckBox->setToolTip(tr("Activity feed from the server."));
 
-    connect(_ui->clientSyncActivitiesCheckBox, &QAbstractButton::toggled,
-        this, &GeneralSettings::slotToggleOptionalClientSyncActivities);
-    _ui->clientSyncActivitiesCheckBox->setToolTip(tr("Client sync activity."));
-
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
     _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
@@ -126,7 +122,6 @@ void GeneralSettings::loadMiscSettings()
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->serverNotificationsCheckBox->setChecked(cfgFile.optionalServerNotifications());
     _ui->serverActivitiesCheckBox->setChecked(cfgFile.optionalServerActivities());
-    _ui->clientSyncActivitiesCheckBox->setChecked(cfgFile.optionalClientSyncActivities());
     _ui->showInExplorerNavigationPaneCheckBox->setChecked(cfgFile.showInExplorerNavigationPane());
     _ui->crashreporterCheckBox->setChecked(cfgFile.crashReporter());
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
@@ -188,14 +183,6 @@ void GeneralSettings::slotToggleOptionalServerActivities(bool enable)
     ConfigFile cfgFile;
     cfgFile.setOptionalServerActivities(enable);
 }
-
-
-void GeneralSettings::slotToggleOptionalClientSyncActivities(bool enable)
-{
-    ConfigFile cfgFile;
-    cfgFile.setOptionalClientSyncActivities(enable);
-}
-
 
 void GeneralSettings::slotShowInExplorerNavigationPane(bool checked)
 {
