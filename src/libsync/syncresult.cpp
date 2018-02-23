@@ -185,10 +185,8 @@ void SyncResult::processCompletedItem(const SyncFileItemPtr &item)
                 // nothing.
                 break;
             }
-        } else if (item->_direction == SyncFileItem::None) {
-            if (item->_instruction == CSYNC_INSTRUCTION_IGNORE) {
-                _foundFilesNotSynced = true;
-            }
+        } else if (item->_instruction == CSYNC_INSTRUCTION_IGNORE) {
+            _foundFilesNotSynced = true;
         }
     }
 }

@@ -148,8 +148,9 @@ void IssuesWidget::hideEvent(QHideEvent *ev)
 
 static bool persistsUntilLocalDiscovery(QTreeWidgetItem *item)
 {
-    const auto status = ProtocolItem::extraData(item).status;
-    return status == SyncFileItem::Conflict || status == SyncFileItem::FileIgnored;
+    const auto data = ProtocolItem::extraData(item);
+    return data.status == SyncFileItem::Conflict
+        || (data.status == SyncFileItem::FileIgnored && data.direction == SyncFileItem::Up);
 }
 
 void IssuesWidget::cleanItems(const std::function<bool(QTreeWidgetItem *)> &shouldDelete)

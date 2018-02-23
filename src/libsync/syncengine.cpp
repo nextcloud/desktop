@@ -272,13 +272,29 @@ bool SyncEngine::checkErrorBlacklisting(SyncFileItem &item)
     return true;
 }
 
+static bool isFileTransferInstruction(csync_instructions_e instruction)
+{
+    return instruction == CSYNC_INSTRUCTION_CONFLICT
+        || instruction == CSYNC_INSTRUCTION_NEW
+        || instruction == CSYNC_INSTRUCTION_SYNC
+        || instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
+}
+
+static bool isFileModifyingInstruction(csync_instructions_e instruction)
+{
+    return isFileTransferInstruction(instruction)
+        || instruction == CSYNC_INSTRUCTION_RENAME
+        || instruction == CSYNC_INSTRUCTION_REMOVE;
+}
+
 void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemVector &syncItems)
 {
     // Find all downloadinfo paths that we want to preserve.
     QSet<QString> download_file_paths;
     foreach (const SyncFileItemPtr &it, syncItems) {
         if (it->_direction == SyncFileItem::Down
-            && it->_type == ItemTypeFile) {
+            && it->_type == ItemTypeFile
+            && isFileTransferInstruction(it->_instruction)) {
             download_file_paths.insert(it->_file);
         }
     }
@@ -299,7 +315,8 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
     QSet<QString> upload_file_paths;
     foreach (const SyncFileItemPtr &it, syncItems) {
         if (it->_direction == SyncFileItem::Up
-            && it->_type == ItemTypeFile) {
+            && it->_type == ItemTypeFile
+            && isFileTransferInstruction(it->_instruction)) {
             upload_file_paths.insert(it->_file);
         }
     }
@@ -664,7 +681,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
         break;
     case CSYNC_INSTRUCTION_CONFLICT:
-    case CSYNC_INSTRUCTION_IGNORE:
     case CSYNC_INSTRUCTION_ERROR:
         dir = SyncFileItem::None;
         break;
@@ -692,6 +708,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
     case CSYNC_INSTRUCTION_NEW:
     case CSYNC_INSTRUCTION_EVAL:
     case CSYNC_INSTRUCTION_STAT_ERROR:
+    case CSYNC_INSTRUCTION_IGNORE:
     default:
         dir = remote ? SyncFileItem::Down : SyncFileItem::Up;
         break;
@@ -1024,7 +1041,9 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     if (!invalidFilenamePattern.isEmpty()) {
         const QRegExp invalidFilenameRx(invalidFilenamePattern);
         for (auto it = syncItems.begin(); it != syncItems.end(); ++it) {
-            if ((*it)->_direction == SyncFileItem::Up && (*it)->destination().contains(invalidFilenameRx)) {
+            if ((*it)->_direction == SyncFileItem::Up
+                && isFileModifyingInstruction((*it)->_instruction)
+                && (*it)->destination().contains(invalidFilenameRx)) {
                 (*it)->_errorString = tr("File name contains at least one invalid character");
                 (*it)->_instruction = CSYNC_INSTRUCTION_IGNORE;
             }
@@ -1253,7 +1272,8 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
     SyncFileItemPtr needle;
 
     for (SyncFileItemVector::iterator it = syncItems.begin(); it != syncItems.end(); ++it) {
-        if ((*it)->_direction != SyncFileItem::Up) {
+        if ((*it)->_direction != SyncFileItem::Up
+            || !isFileModifyingInstruction((*it)->_instruction)) {
             // Currently we only check server-side permissions
             continue;
         }

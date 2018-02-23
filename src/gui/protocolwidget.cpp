@@ -106,6 +106,7 @@ ProtocolItem *ProtocolItem::create(const QString &folder, const SyncFileItem &it
     data.folderName = folder;
     data.status = item._status;
     data.size = item._size;
+    data.direction = item._direction;
     ProtocolItem::setExtraData(twitem, data);
     return twitem;
 }
