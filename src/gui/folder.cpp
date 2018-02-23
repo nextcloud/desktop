@@ -494,6 +494,8 @@ void Folder::slotWatchedPathChanged(const QString &path)
         return; // probably a spurious notification
     }
 
+    warnOnNewExcludedItem(record, relativePath);
+
     emit watchedFileChangedExternally(path);
 
     // Also schedule this folder for a sync, but only after some delay:
@@ -979,6 +981,38 @@ void Folder::slotFolderConflicts(const QString &folder, const QStringList &confl
     // If the number of conflicts is too low, adjust it upwards
     if (conflictPaths.size() > r.numNewConflictItems() + r.numOldConflictItems())
         r.setNumOldConflictItems(conflictPaths.size() - r.numNewConflictItems());
+}
+
+void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QStringRef &path)
+{
+    // Never warn for items in the database
+    if (record.isValid())
+        return;
+
+    // Don't warn for items that no longer exist.
+    // Note: This assumes we're getting file watcher notifications
+    // for folders only on creation and deletion - if we got a notification
+    // on content change that would create spurious warnings.
+    QFileInfo fi(_canonicalLocalPath + path);
+    if (!fi.exists())
+        return;
+
+    bool ok = false;
+    auto blacklist = _journal.getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+    if (!ok)
+        return;
+    if (!blacklist.contains(path + "/"))
+        return;
+
+    const auto message = fi.isDir()
+        ? tr("The folder %1 was created but was excluded from synchronization previously. "
+             "Data inside it will not be synchronized.")
+              .arg(fi.filePath())
+        : tr("The file %1 was created but was excluded from synchronization previously. "
+             "It will not be synchronized.")
+              .arg(fi.filePath());
+
+    Logger::instance()->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);
 }
 
 void Folder::scheduleThisFolderSoon()
