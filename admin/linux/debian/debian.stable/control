@@ -33,6 +33,7 @@ Homepage: https://github.com/nextcloud/client_theming
 Package: nextcloud-client
 Architecture: any
 Depends: libnextcloudsync0 (=${binary:Version}), ${shlibs:Depends}, ${misc:Depends}, nextcloud-client-l10n
+Recommends: libgnome-keyring0
 Description: Nextcloud desktop sync client
  Use the desktop client to keep your files synchronized
  between your Nextcloud server and your desktop. Select
