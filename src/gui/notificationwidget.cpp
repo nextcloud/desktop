@@ -41,7 +41,6 @@ void NotificationWidget::setActivity(const Activity &activity)
     _accountName = activity._accName;
     ASSERT(!_accountName.isEmpty());
 
-    // _ui._headerLabel->setText( );
     _ui._subjectLabel->setVisible(!activity._subject.isEmpty());
     _ui._messageLabel->setVisible(!activity._message.isEmpty());
 
@@ -49,8 +48,8 @@ void NotificationWidget::setActivity(const Activity &activity)
     _ui._messageLabel->setText(activity._message);
 
     _ui._notifIcon->setPixmap(QPixmap(":/client/resources/bell.png"));
-    _ui._notifIcon->setMinimumWidth(28);
-    _ui._notifIcon->setMinimumHeight(28);
+    _ui._notifIcon->setMinimumWidth(22);
+    _ui._notifIcon->setMinimumHeight(22);
     _ui._notifIcon->show();
 
     QString tText = tr("Created at %1").arg(Utility::timeAgoInWords(activity._dateTime));
@@ -63,15 +62,8 @@ void NotificationWidget::setActivity(const Activity &activity)
     _buttons.clear();
 
     // open the notification in the browser if there is a link
-    if(!_myActivity._links.isEmpty()){
-        QString buttonText(tr("Open"));
-
-        if(_myActivity._appName == "spreed")
-            buttonText = tr("Join call");
-
-        if(_myActivity._appName == "updatenotification")
-            buttonText = tr("Update");
-
+    if(!_myActivity._link.isEmpty()){
+        QString buttonText(tr("More information"));
         QPushButton *openBrowser = _ui._buttonBox->addButton(buttonText, QDialogButtonBox::AcceptRole);
         openBrowser->setDefault(true);
         connect(openBrowser, &QAbstractButton::clicked, this, &NotificationWidget::slotOpenBrowserButtonClicked);
@@ -80,7 +72,7 @@ void NotificationWidget::setActivity(const Activity &activity)
 
     // display buttons for the links
     if (activity._links.isEmpty()) {
-        // this condition is never satisfied since there is always a 'dismiss' ActivityLink being added at servernotificationhandler...
+        // is there any case where this code is executed?
         // in case there is no action defined, do a close button.
         QPushButton *b = _ui._buttonBox->addButton(QDialogButtonBox::Close);
         b->setDefault(true);
