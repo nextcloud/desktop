@@ -249,8 +249,6 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
     bool newNotificationShown = false;
 
     foreach (auto activity, list) {
-        qDebug() << "Notification list"
-                 << activity._subject;
         if (_blacklistedNotifications.contains(activity)) {
             qCInfo(lcActivity) << "Activity in blacklist, skip";
             continue;
@@ -311,9 +309,12 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
         // Assemble a tray notification
         ConfigFile cfg;
         if(cfg.optionalServerNotifications()){
-            QString log = tr("Notification for %1.").arg(activity._accName);
-            emit guiLog(log, activity._subject);
-         }
+            if(AccountManager::instance()->accounts().count() == 1){
+                emit guiLog(activity._subject, "");
+            } else {
+                emit guiLog(activity._subject, activity._accName);
+            }
+        }
     }
 
     // check if there are widgets that have no corresponding activity from
