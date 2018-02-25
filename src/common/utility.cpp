@@ -431,27 +431,38 @@ QString Utility::timeAgoInWords(const QDateTime &dt, const QDateTime &from)
         now = from;
     }
 
-    if (dt.daysTo(now) > 0) {
-        int dtn = dt.daysTo(now);
-        return QObject::tr("%n day(s) ago", "", dtn);
+    if (dt.daysTo(now) == 1) {
+        return QObject::tr("%n day ago", "", dt.daysTo(now));
+    } else if (dt.daysTo(now) > 1) {
+        return QObject::tr("%n days ago", "", dt.daysTo(now));
     } else {
         qint64 secs = dt.secsTo(now);
         if (secs < 0) {
             return QObject::tr("in the future");
         }
+
         if (floor(secs / 3600.0) > 0) {
             int hours = floor(secs / 3600.0);
-            return (QObject::tr("%n hour(s) ago", "", hours));
+            if(hours == 1){
+                return (QObject::tr("%n hour ago", "", hours));
+            } else {
+                return (QObject::tr("%n hours ago", "", hours));
+            }
         } else {
             int minutes = qRound(secs / 60.0);
+
             if (minutes == 0) {
                 if (secs < 5) {
                     return QObject::tr("now");
                 } else {
                     return QObject::tr("Less than a minute ago");
                 }
+
+            } else if(minutes == 1){
+                return (QObject::tr("%n minute ago", "", minutes));
+            } else {
+                return (QObject::tr("%n minutes ago", "", minutes));
             }
-            return (QObject::tr("%n minute(s) ago", "", minutes));
         }
     }
     return QObject::tr("Some time ago");
