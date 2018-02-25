@@ -44,7 +44,13 @@
    <item row="0" column="1">
     <layout class="QVBoxLayout" name="verticalLayout">
      <property name="spacing">
-      <number>4</number>
+      <number>6</number>
+     </property>
+     <property name="topMargin">
+      <number>5</number>
+     </property>
+     <property name="bottomMargin">
+      <number>5</number>
      </property>
      <item>
       <layout class="QHBoxLayout" name="labelsHorizontalLayout" stretch="1,1">
@@ -112,10 +118,16 @@
         <bool>false</bool>
        </property>
        <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
+       </property>
+       <property name="margin">
+        <number>0</number>
+       </property>
+       <property name="indent">
+        <number>28</number>
        </property>
       </widget>
      </item>
@@ -134,7 +146,7 @@
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>32</width>
+           <width>28</width>
            <height>20</height>
           </size>
          </property>
@@ -151,7 +163,7 @@
           <string>TextLabel</string>
          </property>
          <property name="alignment">
-          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
