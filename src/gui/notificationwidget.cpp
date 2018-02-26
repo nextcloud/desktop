@@ -52,7 +52,7 @@ void NotificationWidget::setActivity(const Activity &activity)
     _ui._notifIcon->setMinimumHeight(22);
     _ui._notifIcon->show();
 
-    QString tText = tr("Created at %1").arg(Utility::timeAgoInWords(activity._dateTime));
+    QString tText = tr("%1").arg(Utility::timeAgoInWords(activity._dateTime));
     _ui._timeLabel->setText(tText);
 
     // always remove the buttons
