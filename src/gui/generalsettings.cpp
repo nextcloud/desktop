@@ -46,10 +46,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         this, &GeneralSettings::slotToggleOptionalServerNotifications);
     _ui->serverNotificationsCheckBox->setToolTip(tr("Server notifications that require attention."));
 
-    connect(_ui->serverActivitiesCheckBox, &QAbstractButton::toggled,
-        this, &GeneralSettings::slotToggleOptionalServerActivities);
-    _ui->serverActivitiesCheckBox->setToolTip(tr("Activity feed from the server."));
-
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
     _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
@@ -121,7 +117,6 @@ void GeneralSettings::loadMiscSettings()
     ConfigFile cfgFile;
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->serverNotificationsCheckBox->setChecked(cfgFile.optionalServerNotifications());
-    _ui->serverActivitiesCheckBox->setChecked(cfgFile.optionalServerActivities());
     _ui->showInExplorerNavigationPaneCheckBox->setChecked(cfgFile.showInExplorerNavigationPane());
     _ui->crashreporterCheckBox->setChecked(cfgFile.crashReporter());
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
@@ -176,12 +171,6 @@ void GeneralSettings::slotToggleOptionalServerNotifications(bool enable)
 {
     ConfigFile cfgFile;
     cfgFile.setOptionalServerNotifications(enable);
-}
-
-void GeneralSettings::slotToggleOptionalServerActivities(bool enable)
-{
-    ConfigFile cfgFile;
-    cfgFile.setOptionalServerActivities(enable);
 }
 
 void GeneralSettings::slotShowInExplorerNavigationPane(bool checked)

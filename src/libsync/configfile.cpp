@@ -54,7 +54,6 @@ static const char monoIconsC[] = "monoIcons";
 static const char promptDeleteC[] = "promptDeleteAllFiles";
 static const char crashReporterC[] = "crashReporter";
 static const char optionalServerNotificationsC[] = "optionalServerNotifications";
-static const char optionalServerActivitiesC[] = "optionalServerActivities";
 static const char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
 static const char updateCheckIntervalC[] = "updateCheckInterval";
@@ -128,12 +127,6 @@ bool ConfigFile::optionalServerNotifications() const
     return settings.value(QLatin1String(optionalServerNotificationsC), false).toBool();
 }
 
-bool ConfigFile::optionalServerActivities() const
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    return settings.value(QLatin1String(optionalServerActivitiesC), false).toBool();
-}
-
 bool ConfigFile::showInExplorerNavigationPane() const
 {
     const bool defaultValue =
@@ -188,13 +181,6 @@ void ConfigFile::setOptionalServerNotifications(bool show)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(optionalServerNotificationsC), show);
-    settings.sync();
-}
-
-void ConfigFile::setOptionalServerActivities(bool show)
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(optionalServerActivitiesC), show);
     settings.sync();
 }
 

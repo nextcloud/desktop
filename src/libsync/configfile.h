@@ -123,9 +123,6 @@ public:
     bool optionalServerNotifications() const;
     void setOptionalServerNotifications(bool show);
 
-    bool optionalServerActivities() const;
-    void setOptionalServerActivities(bool show);
-
     bool showInExplorerNavigationPane() const;
     void setShowInExplorerNavigationPane(bool show);
 
