@@ -90,6 +90,9 @@ private:
     /// Each insert disables sorting, this timer reenables it
     QTimer _reenableSorting;
 
+    /// Optimization: keep track of all folder/paths pairs that have an associated issue
+    QSet<QPair<QString, QString>> _pathsWithIssues;
+
     Ui::IssuesWidget *_ui;
 };
 }

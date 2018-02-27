@@ -46,6 +46,11 @@ namespace OCC {
  */
 static const int maxIssueCount = 50000;
 
+static QPair<QString, QString> pathsWithIssuesKey(const ProtocolItem::ExtraData &data)
+{
+    return qMakePair(data.folderName, data.path);
+}
+
 IssuesWidget::IssuesWidget(QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::IssuesWidget)
@@ -162,8 +167,10 @@ void IssuesWidget::cleanItems(const std::function<bool(QTreeWidgetItem *)> &shou
     int itemCnt = _ui->_treeWidget->topLevelItemCount();
     for (int cnt = itemCnt - 1; cnt >= 0; cnt--) {
         QTreeWidgetItem *item = _ui->_treeWidget->topLevelItem(cnt);
-        if (shouldDelete(item))
+        if (shouldDelete(item)) {
+            _pathsWithIssues.remove(pathsWithIssuesKey(ProtocolItem::extraData(item)));
             delete item;
+        }
     }
 
     _ui->_treeWidget->setSortingEnabled(true);
@@ -198,16 +205,19 @@ void IssuesWidget::addItem(QTreeWidgetItem *item)
 
     // Wipe any existing message for the same folder and path
     auto newData = ProtocolItem::extraData(item);
-    for (int i = 0; i < count; ++i) {
-        auto otherItem = _ui->_treeWidget->topLevelItem(i);
-        auto otherData = ProtocolItem::extraData(otherItem);
-        if (otherData.path == newData.path && otherData.folderName == newData.folderName) {
-            delete otherItem;
-            break;
+    if (_pathsWithIssues.contains(pathsWithIssuesKey(newData))) {
+        for (int i = 0; i < count; ++i) {
+            auto otherItem = _ui->_treeWidget->topLevelItem(i);
+            auto otherData = ProtocolItem::extraData(otherItem);
+            if (otherData.path == newData.path && otherData.folderName == newData.folderName) {
+                delete otherItem;
+                break;
+            }
         }
     }
 
     _ui->_treeWidget->insertTopLevelItem(insertLoc, item);
+    _pathsWithIssues.insert(pathsWithIssuesKey(newData));
     item->setHidden(!shouldBeVisible(item, currentAccountFilter(), currentFolderFilter()));
     emit issueCountUpdated(_ui->_treeWidget->topLevelItemCount());
 }
