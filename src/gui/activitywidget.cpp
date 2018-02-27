@@ -304,15 +304,15 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
                 }
             }
             _guiLoggedNotifications.insert(activity._id);
-        }
 
-        // Assemble a tray notification
-        ConfigFile cfg;
-        if(cfg.optionalServerNotifications()){
-            if(AccountManager::instance()->accounts().count() == 1){
-                emit guiLog(activity._subject, "");
-            } else {
-                emit guiLog(activity._subject, activity._accName);
+            // Assemble a tray notification for the NEW notification
+            ConfigFile cfg;
+            if(cfg.optionalServerNotifications()){
+                if(AccountManager::instance()->accounts().count() == 1){
+                    emit guiLog(activity._subject, "");
+                } else {
+                    emit guiLog(activity._subject, activity._accName);
+                }
             }
         }
     }
