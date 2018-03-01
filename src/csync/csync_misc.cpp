@@ -125,14 +125,12 @@ CSYNC_STATUS csync_errno_to_status(int error, CSYNC_STATUS default_status)
   case EEXIST:                /* File exists */
     status = CSYNC_STATUS_FILE_EXISTS;
     break;
-  case EINVAL:
-    status = CSYNC_STATUS_PARAM_ERROR;
-    break;
   case ENOSPC:
     status = CSYNC_STATUS_OUT_OF_SPACE;
     break;
 
     /* All the remaining basic errnos: */
+  case EINVAL:                 /* Invalid argument */
   case EIO:                    /* I/O error */
   case ESRCH:                  /* No such process */
   case EINTR:                  /* Interrupted system call */
