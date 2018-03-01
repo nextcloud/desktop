@@ -72,7 +72,8 @@ On Release Day (for final release):
 * [ ] Create build for using owncloud-client-trigger (uncheck the "nightly build" checkbox, use the proper dropdown for version suffix) for theme 'testpilotcloud'
 * [ ] Only now download the last created source .tar.xz and sign it with gpg. Copy the signature into a new .asc file. (timing issue because currently 'testpilotcloud' re-creates the source .tar.xz) (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
 * [ ] Branch isv:ownCloud:desktop to isv:ownCloud:desktop:client-X.Y.Z before overwriting https://github.com/owncloud/administration/blob/master/jenkins/obs_integration/obs-backup-prj.sh (the linux packages will land in the :testing repository still)
-  * Update [OBS repository](https://build.opensuse.org/project/show?project=isv%3AownCloud%3Adesktop) `isv:ownCloud:desktop`
+  ```obs-backup-prj.sh isv:ownCloud:desktop isv:ownCloud:desktop:client-2.4.1 owncloud-client 2.4.1 # (if not already done)```
+
 * [ ] Re-download Mac builds and check signature. Interactive in installer window
 * [ ] Re-download Win build check signature. From Mac or Linux: ```osslsigncode verify ownCloud-version-setup.exe```
 * [ ] Mac: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
@@ -82,6 +83,8 @@ On Release Day (for final release):
 * [ ] Win/Mac Copy builds from ```testing``` to ```stable``` on download.owncloud.com, double check the download links. (make sure the .asc is there too)
 * [ ] Linux: disable publishing on project isv:ownCloud:desktop
 * [ ] Linux: Use https://github.com/owncloud/administration/blob/master/jenkins/obs_integration/obs-deepcopy-prj.sh to copy from isv:ownCloud:community:testing to isv:ownCloud:desktop
+  ```obs-deepcopy-prj.sh isv:ownCloud:desktop:testing isv:ownCloud:desktop```
+  ```obs-deepcopy-prj.sh isv:ownCloud:testpilot:testing isv:ownCloud:testpilot```
 * [ ] Linux: Re-enable OBS publishing on the project after official release date and if all distros build (check for accidentially disabled packages too) 
 * [ ] Linux: Wait until everything is built and published, then disable publishing on project isv:ownCloud:desktop
 * [ ] Create git signed tag in client repository using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
