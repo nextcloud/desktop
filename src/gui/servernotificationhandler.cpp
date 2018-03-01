@@ -24,7 +24,7 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcServerNotification, "gui.servernotification", QtInfoMsg)
 
-const QString notificationsPath = QLatin1String("ocs/v2.php/apps/notifications/api/v1/notifications");
+const QString notificationsPath = QLatin1String("ocs/v2.php/apps/notifications/api/v2/notifications");
 
 ServerNotificationHandler::ServerNotificationHandler(QObject *parent)
     : QObject(parent)
