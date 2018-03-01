@@ -18,6 +18,7 @@
 #include <QDialog>
 
 class QListWidgetItem;
+class QAbstractButton;
 
 namespace OCC {
 
@@ -44,9 +45,12 @@ private slots:
     void slotRemoveCurrentItem();
     void slotUpdateLocalIgnoreList();
     void slotAddPattern();
+    void slotRestoreDefaults(QAbstractButton *button);
+    void slotRemoveAllItems();
 
 private:
     void readIgnoreFile(const QString &file, bool readOnly);
+    void setupTableReadOnlyItems();
     int addPattern(const QString &pattern, bool deletable, bool readOnly);
     QString readOnlyTooltip;
     Ui::IgnoreListEditor *ui;
