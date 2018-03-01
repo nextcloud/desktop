@@ -16,6 +16,7 @@ Some weeks before the release:
 * [ ] Ensure Windows Overlay DLLs are rebuilt
 * [ ] Check nightly builds are up and running, that is Jenkins jobs ownCloud-client-linux, ownCloud-client-osx and ownCloud-client-win32 all green.
 * [ ] Ensure Linux nightlies are built too for all distros https://build.opensuse.org/package/show/isv:ownCloud:community:nightly/owncloud-client
+  * Check if patches still apply in the linux packages
 * [ ] Build branded clients through the scripting machine and smoke test one or two branded clients (especially with predefined url)
 * [ ] Upload a nightly build of the windows version to virustotal.com
   * Contact AV vendors whom's engine reports a virus
@@ -35,6 +36,7 @@ For all alphas, betas and RCs (Copy this section for each alpha/beta/rc):
 * [ ] Add last updates to Changelog in the client source repository.
 * [ ] Branch off a release branch called VERSION-rcX or VERSION-betaX  (without v, v is for tags)
 * [ ] Edit ```VERSION.cmake``` to set the suffix to beta1, beta2 etc. Commit the result to the release branch only
+* [ ] Make sure to increase the version number of the branched of release, e.g. if you release 2.3.2 then you should change VERSION.cmake in 2.3 to 2.3.3 since that branch now will be 2.3.3
 * [ ] Create build for using owncloud-client-trigger (uncheck the "nightly build" checkbox, use the proper dropdown for version suffix) for theme 'ownCloud'
 * [ ] Create build for using owncloud-client-trigger (uncheck the "nightly build" checkbox, use the proper dropdown for version suffix) for theme 'testpilotcloud'
 * [ ] Only now download the last created source .tar.xz and sign it with gpg. Copy the signature into a new .asc file. (timing issue because currently 'testpilotcloud' re-creates the source .tar.xz)
@@ -64,28 +66,25 @@ Day before final Release:
 
 On Release Day (for final release):
 * [ ] Add last updates to Changelog in the client source repository.
-* [ ] Branch off a release branch called VERSION-rcX or VERSION-betaX  (without v, v is for tags)
-* [ ] Edit ```VERSION.cmake``` to set the suffix to beta1, beta2 etc. Commit the result to the release branch only
-* [ ] Make sure to increase the version number of the branched of release, e.g. if you release 2.3.2 then you should change VERSION.cmake in 2.3 to 2.3.3 since that branch now will be 2.3.3
+* [ ] Branch off a release branch called VERSION  (without v, v is for tags)
+* [ ] Edit ```VERSION.cmake``` to set the suffix to "" etc. Commit the result to the release branch only
 * [ ] Create build for using owncloud-client-trigger (uncheck the "nightly build" checkbox, use the proper dropdown for version suffix) for theme 'ownCloud'
 * [ ] Create build for using owncloud-client-trigger (uncheck the "nightly build" checkbox, use the proper dropdown for version suffix) for theme 'testpilotcloud'
 * [ ] Only now download the last created source .tar.xz and sign it with gpg. Copy the signature into a new .asc file. (timing issue because currently 'testpilotcloud' re-creates the source .tar.xz) (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
-* [ ] Branch isv:ownCloud:desktop to isv:ownCloud:desktop:client-X.Y.Z before overwriting https://github.com/owncloud/administration/blob/master/jenkins/obs_integration/obs-backup-prj.sh
-  * Check if patches still apply in the linux packages
+* [ ] Branch isv:ownCloud:desktop to isv:ownCloud:desktop:client-X.Y.Z before overwriting https://github.com/owncloud/administration/blob/master/jenkins/obs_integration/obs-backup-prj.sh (the linux packages will land in the :testing repository still)
   * Update [OBS repository](https://build.opensuse.org/project/show?project=isv%3AownCloud%3Adesktop) `isv:ownCloud:desktop`
 * [ ] Re-download Mac builds and check signature. Interactive in installer window
 * [ ] Re-download Win build check signature. From Mac or Linux: ```osslsigncode verify ownCloud-version-setup.exe```
 * [ ] Mac: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
 * [ ] Win: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
 * [ ] Linux: Smoke test of one distro package (Install, make sure it does not explode, and check if all version indicators are correct)
-* [ ] Linux: Run @SamuAlfageme 's magic Linux-test-all-packages-script
-* [ ] Linux: Re-enable OBS publishing on the project (check for accidentially disabled packages too) 
-* Let obs build and publish exactly once. then
-  * [ ] disable publishing (on the obs project!) and rebuild the owncloud-client package and all its dependencies.
-  * [ ] double-check that there are no _aggregatepac from other projects
-  * [ ] Create a signed tag using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
-* [ ] Copy builds from ```testing``` to ```stable``` on download.owncloud.com, double check the download links. (make sure the .asc is there too)
-* [ ] Create git signed tag in client repository using ```git tag -u E94E7B37 tagname```
+* [ ] Linux: Run @SamuAlfageme 's client-linux-tests Jenkins job (this tests only package installations!) (maybe adjust REPO_URL so it takes it from OBS :testing repository..?)
+* [ ] Win/Mac Copy builds from ```testing``` to ```stable``` on download.owncloud.com, double check the download links. (make sure the .asc is there too)
+* [ ] Linux: disable publishing on project isv:ownCloud:desktop
+* [ ] Linux: Use https://github.com/owncloud/administration/blob/master/jenkins/obs_integration/obs-deepcopy-prj.sh to copy from isv:ownCloud:community:testing to isv:ownCloud:desktop
+* [ ] Linux: Re-enable OBS publishing on the project after official release date and if all distros build (check for accidentially disabled packages too) 
+* [ ] Linux: Wait until everything is built and published, then disable publishing on project isv:ownCloud:desktop
+* [ ] Create git signed tag in client repository using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
 * [ ] Create a (draft) release on https://github.com/owncloud/client/releases
 * [ ] Update https://owncloud.org/changelog/desktop-client/
 * [ ] Update https://owncloud.org/download/#owncloud-desktop-client
