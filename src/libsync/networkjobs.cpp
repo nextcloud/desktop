@@ -789,14 +789,18 @@ void JsonApiJob::addQueryParams(const QUrlQuery &params)
     _additionalParams = params;
 }
 
+void JsonApiJob::addRawHeader(const QByteArray &headerName, const QByteArray &value)
+{
+   _request.setRawHeader(headerName, value);
+}
+
 void JsonApiJob::start()
 {
-    QNetworkRequest req;
-    req.setRawHeader("OCS-APIREQUEST", "true");
+    addRawHeader("OCS-APIREQUEST", "true");
     auto query = _additionalParams;
     query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
     QUrl url = Utility::concatUrlPath(account()->url(), path(), query);
-    sendRequest("GET", url, req);
+    sendRequest("GET", url, _request);
     AbstractNetworkJob::start();
 }
 
@@ -807,7 +811,6 @@ bool JsonApiJob::finished()
                          << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
 
     int statusCode = 0;
-
     if (reply()->error() != QNetworkReply::NoError) {
         qCWarning(lcJsonApiJob) << "Network error: " << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
         emit jsonReceived(QJsonDocument(), statusCode);
@@ -838,6 +841,9 @@ bool JsonApiJob::finished()
         emit jsonReceived(json, statusCode);
         return true;
     }
+
+    if(reply()->rawHeaderList().contains("ETag"))
+        emit etagResponseHeaderReceived(reply()->rawHeader("ETag"), statusCode);
 
     emit jsonReceived(json, statusCode);
     return true;
