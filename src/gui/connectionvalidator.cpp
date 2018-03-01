@@ -275,15 +275,15 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
     qCInfo(lcConnectionValidator) << _account->url() << "has server version" << version;
     _account->setServerVersion(version);
 
-    // We cannot deal with servers < 5.0.0
+    // We cannot deal with servers < 7.0.0
     if (_account->serverVersionInt()
-        && _account->serverVersionInt() < Account::makeServerVersion(5, 0, 0)) {
+        && _account->serverVersionInt() < Account::makeServerVersion(7, 0, 0)) {
         _errors.append(tr("The configured server for this client is too old"));
         _errors.append(tr("Please update to the latest server and restart the client."));
         reportResult(ServerVersionMismatch);
         return false;
     }
-    // We attempt to work with servers >= 5.0.0 but warn users.
+    // We attempt to work with servers >= 7.0.0 but warn users.
     // Check usages of Account::serverVersionUnsupported() for details.
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)

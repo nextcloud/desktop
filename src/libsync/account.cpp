@@ -463,7 +463,7 @@ bool Account::serverVersionUnsupported() const
         // not detected yet, assume it is fine.
         return false;
     }
-    return serverVersionInt() < makeServerVersion(7, 0, 0);
+    return serverVersionInt() < makeServerVersion(9, 1, 0);
 }
 
 void Account::setServerVersion(const QString &version)
