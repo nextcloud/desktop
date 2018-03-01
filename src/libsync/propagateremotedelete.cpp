@@ -111,11 +111,6 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
     _item->_httpErrorCode = httpStatus;
 
     if (err != QNetworkReply::NoError && err != QNetworkReply::ContentNotFoundError) {
-        if (checkForProblemsWithShared(_item->_httpErrorCode,
-                tr("The file has been removed from a read only share. It was restored."))) {
-            return;
-        }
-
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
             &propagator()->_anotherSyncNeeded);
         done(status, _job->errorString());
