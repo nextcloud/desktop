@@ -385,16 +385,6 @@ void SyncEngine::conflictRecordMaintenance()
     }
 }
 
-int SyncEngine::treewalkLocal(csync_file_stat_t *file, csync_file_stat_t *other, void *data)
-{
-    return static_cast<SyncEngine *>(data)->treewalkFile(file, other, false);
-}
-
-int SyncEngine::treewalkRemote(csync_file_stat_t *file, csync_file_stat_t *other, void *data)
-{
-    return static_cast<SyncEngine *>(data)->treewalkFile(file, other, true);
-}
-
 /**
  * The main function in the post-reconcile phase.
  *
@@ -1023,11 +1013,11 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _temporarilyUnavailablePaths.clear();
     _renamedFolders.clear();
 
-    if (csync_walk_local_tree(_csync_ctx.data(), &treewalkLocal, 0) < 0) {
+    if (csync_walk_local_tree(_csync_ctx.data(), [this](csync_file_stat_t *f, csync_file_stat_t *o) { return treewalkFile(f, o, false); } ) < 0) {
         qCWarning(lcEngine) << "Error in local treewalk.";
         walkOk = false;
     }
-    if (walkOk && csync_walk_remote_tree(_csync_ctx.data(), &treewalkRemote, 0) < 0) {
+    if (walkOk && csync_walk_remote_tree(_csync_ctx.data(), [this](csync_file_stat_t *f, csync_file_stat_t *o) { return treewalkFile(f, o, true); } ) < 0) {
         qCWarning(lcEngine) << "Error in remote treewalk.";
     }
 

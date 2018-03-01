@@ -40,6 +40,7 @@
 #include <stdint.h>
 #include <sys/types.h>
 #include <config_csync.h>
+#include <functional>
 #include <memory>
 #include <QByteArray>
 #include "common/remotepermissions.h"
@@ -305,29 +306,27 @@ CSYNC_STATUS OCSYNC_EXPORT csync_get_status(CSYNC *ctx);
 /* Used for special modes or debugging */
 int OCSYNC_EXPORT csync_set_status(CSYNC *ctx, int status);
 
-typedef int csync_treewalk_visit_func(csync_file_stat_t *cur, csync_file_stat_t *other, void*);
+using csync_treewalk_visit_func = std::function<int(csync_file_stat_t *cur, csync_file_stat_t *other)>;
 
 /**
  * @brief Walk the local file tree and call a visitor function for each file.
  *
  * @param ctx           The csync context.
  * @param visitor       A callback function to handle the file info.
- * @param filter        A filter, built from or'ed csync_instructions_e
  *
  * @return              0 on success, less than 0 if an error occurred.
  */
-int OCSYNC_EXPORT csync_walk_local_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int filter);
+int OCSYNC_EXPORT csync_walk_local_tree(CSYNC *ctx, const csync_treewalk_visit_func &visitor);
 
 /**
  * @brief Walk the remote file tree and call a visitor function for each file.
  *
  * @param ctx           The csync context.
  * @param visitor       A callback function to handle the file info.
- * @param filter        A filter, built from and'ed csync_instructions_e
  *
  * @return              0 on success, less than 0 if an error occurred.
  */
-int OCSYNC_EXPORT csync_walk_remote_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int filter);
+int OCSYNC_EXPORT csync_walk_remote_tree(CSYNC *ctx, const csync_treewalk_visit_func &visitor);
 
 /**
  * @brief Get the csync status string.
