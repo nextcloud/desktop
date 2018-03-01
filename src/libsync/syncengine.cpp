@@ -129,9 +129,6 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
     case CSYNC_STATUS_NO_MODULE:
         errStr = tr("<p>The %1 plugin for csync could not be loaded.<br/>Please verify the installation!</p>").arg(qApp->applicationName());
         break;
-    case CSYNC_STATUS_PARAM_ERROR:
-        errStr = tr("CSync fatal parameter error.");
-        break;
     case CSYNC_STATUS_UPDATE_ERROR:
         errStr = tr("CSync processing step update failed.");
         break;
