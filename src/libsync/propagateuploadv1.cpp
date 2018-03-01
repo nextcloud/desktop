@@ -197,20 +197,13 @@ void PropagateUploadFileV1::slotPutFinished()
         return;
     }
 
+    _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     QNetworkReply::NetworkError err = job->reply()->error();
-
     if (err != QNetworkReply::NoError) {
-        _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        if (checkForProblemsWithShared(_item->_httpErrorCode,
-                tr("The file was edited locally but is part of a read only share. "
-                   "It is restored and your edit is in the conflict file."))) {
-            return;
-        }
         commonErrorHandling(job);
         return;
     }
 
-    _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     // The server needs some time to process the request and provide us with a poll URL
     if (_item->_httpErrorCode == 202) {
         _finished = true;
