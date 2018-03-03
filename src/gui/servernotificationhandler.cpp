@@ -63,7 +63,6 @@ void ServerNotificationHandler::slotFetchNotifications(AccountState *ptr)
 }
 
 void ServerNotificationHandler::slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode){
-    qCWarning(lcServerNotification) << "New Notification ETag Response Header received " << value;
     if(statusCode == successStatusCode){
         qCWarning(lcServerNotification) << "New Notification ETag Response Header received " << value;
         AccountState *account = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));

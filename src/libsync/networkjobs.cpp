@@ -49,6 +49,7 @@ Q_LOGGING_CATEGORY(lcMkColJob, "sync.networkjob.mkcol", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcProppatchJob, "sync.networkjob.proppatch", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcJsonApiJob, "sync.networkjob.jsonapi", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "sync.networkjob.determineauthtype", QtInfoMsg)
+const int notModifiedStatusCode = 304;
 
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
@@ -811,8 +812,9 @@ bool JsonApiJob::finished()
                          << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
 
     int statusCode = 0;
+    int httpStatusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (reply()->error() != QNetworkReply::NoError) {
-        qCWarning(lcJsonApiJob) << "Network error: " << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        qCWarning(lcJsonApiJob) << "Network error: " << path() << errorString() << httpStatusCode;
         emit jsonReceived(QJsonDocument(), statusCode);
         return true;
     }
@@ -824,7 +826,9 @@ bool JsonApiJob::finished()
             // this is a error message coming back from ocs.
             statusCode = rex.cap(1).toInt();
         }
-
+    } else if(jsonStr.isEmpty() && httpStatusCode == notModifiedStatusCode){
+        qCWarning(lcJsonApiJob) << "Nothing changed so nothing to retrieve - status code: " << httpStatusCode;
+        statusCode = httpStatusCode;
     } else {
         QRegExp rex("\"statuscode\":(\\d+),");
         // example: "{"ocs":{"meta":{"status":"ok","statuscode":100,"message":null},"data":{"version":{"major":8,"minor":"... (504)
@@ -833,17 +837,18 @@ bool JsonApiJob::finished()
         }
     }
 
+    // save new ETag value
+    if(reply()->rawHeaderList().contains("ETag"))
+        emit etagResponseHeaderReceived(reply()->rawHeader("ETag"), statusCode);
+
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(jsonStr.toUtf8(), &error);
-    // empty or invalid response
-    if (error.error != QJsonParseError::NoError || json.isNull()) {
+    // empty or invalid response and status code is != 304 because jsonStr is expected to be empty
+    if ((error.error != QJsonParseError::NoError || json.isNull()) && httpStatusCode != notModifiedStatusCode) {
         qCWarning(lcJsonApiJob) << "invalid JSON!" << jsonStr << error.errorString();
         emit jsonReceived(json, statusCode);
         return true;
     }
-
-    if(reply()->rawHeaderList().contains("ETag"))
-        emit etagResponseHeaderReceived(reply()->rawHeader("ETag"), statusCode);
 
     emit jsonReceived(json, statusCode);
     return true;
