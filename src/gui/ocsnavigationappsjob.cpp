@@ -26,6 +26,7 @@ OcsNavigationAppsJob::OcsNavigationAppsJob(AccountPtr account)
 void OcsNavigationAppsJob::getNavigationApps()
 {
     setVerb("GET");
+    addParam("absolute", "true");
     start();
 }
 

@@ -786,7 +786,7 @@ void ownCloudGui::slotNavigationAppsFetched(const QJsonDocument &reply)
                     foreach (const QJsonValue &value, navLinks) {
                         auto navLink = value.toObject();
                         QAction *action = new QAction(navLink.value("name").toString(), this);
-                        QUrl href(account->url().host() + navLink.value("href").toString());
+                        QUrl href(navLink.value("href").toString());
                         connect(action, &QAction::triggered, this, [href] { QDesktopServices::openUrl(href); });
                         navLinksMenu->addAction(action);
                     }
