@@ -36,27 +36,45 @@
       <string>Files Ignored by Patterns</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="1">
-       <widget class="QPushButton" name="removePushButton">
+      <item row="4" column="0" colspan="2">
+       <widget class="QLabel" name="descriptionLabel">
         <property name="enabled">
          <bool>true</bool>
         </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
-         <string>Remove</string>
+         <string/>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::PlainText</enum>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="addPushButton">
+      <item row="3" column="1">
+       <spacer name="verticalSpacer">
         <property name="enabled">
          <bool>true</bool>
         </property>
-        <property name="text">
-         <string>Add</string>
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
         </property>
-       </widget>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>213</height>
+         </size>
+        </property>
+       </spacer>
       </item>
-      <item row="0" column="0" rowspan="3">
+      <item row="0" column="0" rowspan="4">
        <widget class="QTableWidget" name="tableWidget">
         <property name="enabled">
          <bool>true</bool>
@@ -82,41 +100,30 @@
         </column>
        </widget>
       </item>
-      <item row="2" column="1">
-       <spacer name="verticalSpacer">
+      <item row="1" column="1">
+       <widget class="QPushButton" name="removePushButton">
         <property name="enabled">
          <bool>true</bool>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>213</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="3" column="0" colspan="2">
-       <widget class="QLabel" name="descriptionLabel">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
         </property>
         <property name="text">
-         <string/>
+         <string>Remove</string>
         </property>
-        <property name="textFormat">
-         <enum>Qt::PlainText</enum>
-        </property>
-        <property name="wordWrap">
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="addPushButton">
+        <property name="enabled">
          <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Add</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="removeAllPushButton">
+        <property name="text">
+         <string>Remove all</string>
         </property>
        </widget>
       </item>
@@ -126,7 +133,7 @@
    <item row="4" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::RestoreDefaults</set>
      </property>
     </widget>
    </item>

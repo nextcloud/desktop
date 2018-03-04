@@ -1,25 +1,25 @@
-The ownCloud Client reads a configuration file.  You can locate this configuration file as follows:
+The Nextcloud Client reads a configuration file.  You can locate this configuration file as follows:
 
 On Linux distributions:
-        ``$HOME/.config/ownCloud/owncloud.cfg``
+        ``$HOME/.config/Nextcloud/nextcloud.cfg``
 
 On Microsoft Windows systems:
-        ``%APPDATA%\ownCloud\owncloud.cfg``
+        ``%APPDATA%\Nextcloud\nextcloud.cfg``
 
 On MAC OS X systems:
-        ``$HOME/Library/Preferences/ownCloud/owncloud.cfg``
+        ``$HOME/Library/Preferences/Nextcloud/nextcloud.cfg``
 
 
 The configuration file contains settings using the Microsoft Windows .ini file
-format. You can overwrite changes using the ownCloud configuration dialog.
+format. You can overwrite changes using the Nextcloud configuration dialog.
 
-.. note:: Use caution when making changes to the ownCloud Client configuration
+.. note:: Use caution when making changes to the Nextcloud Client configuration
    file.  Incorrect settings can produce unintended results.
 
 Some interesting values that can be set on the configuration file are:
 
 +----------------------------------------------------------------------------------------------------------------------------------------------------------+
-| ``[ownCloud]`` section                                                                                                                                   |
+| ``[Nextcloud]`` section                                                                                                                                  |
 +=================================+===============+========================================================================================================+
 | Variable                        | Default       | Meaning                                                                                                |
 +---------------------------------+---------------+--------------------------------------------------------------------------------------------------------+

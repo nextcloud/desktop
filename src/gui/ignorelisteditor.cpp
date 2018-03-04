@@ -29,6 +29,7 @@ namespace OCC {
 
 static int patternCol = 0;
 static int deletableCol = 1;
+static int readOnlyRows = 3;
 
 IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     : QDialog(parent)
@@ -37,20 +38,16 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     ui->setupUi(this);
 
+    ConfigFile cfgFile;
     ui->descriptionLabel->setText(tr("Files or folders matching a pattern will not be synchronized.\n\n"
                                      "Items where deletion is allowed will be deleted if they prevent a "
                                      "directory from being removed. "
                                      "This is useful for meta data."));
-
-    ConfigFile cfgFile;
     readOnlyTooltip = tr("This entry is provided by the system at '%1' "
                          "and cannot be modified in this view.")
                           .arg(QDir::toNativeSeparators(cfgFile.excludeFile(ConfigFile::SystemScope)));
 
-    addPattern(".csync_journal.db*", /*deletable=*/false, /*readonly=*/true);
-    addPattern("._sync_*.db*", /*deletable=*/false, /*readonly=*/true);
-    addPattern(".sync_*.db*", /*deletable=*/false, /*readonly=*/true);
-    readIgnoreFile(cfgFile.excludeFile(ConfigFile::SystemScope), true);
+    setupTableReadOnlyItems();
     readIgnoreFile(cfgFile.excludeFile(ConfigFile::UserScope), false);
 
     connect(this, &QDialog::accepted, this, &IgnoreListEditor::slotUpdateLocalIgnoreList);
@@ -58,6 +55,8 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     connect(ui->tableWidget, &QTableWidget::itemSelectionChanged, this, &IgnoreListEditor::slotItemSelectionChanged);
     connect(ui->removePushButton, &QAbstractButton::clicked, this, &IgnoreListEditor::slotRemoveCurrentItem);
     connect(ui->addPushButton, &QAbstractButton::clicked, this, &IgnoreListEditor::slotAddPattern);
+    connect(ui->removeAllPushButton, &QAbstractButton::clicked, this, &IgnoreListEditor::slotRemoveAllItems);
+    connect(ui->buttonBox, &QDialogButtonBox::clicked, this, &IgnoreListEditor::slotRestoreDefaults);
 
     ui->tableWidget->resizeColumnsToContents();
     ui->tableWidget->horizontalHeader()->setSectionResizeMode(patternCol, QHeaderView::Stretch);
@@ -69,6 +68,14 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
 IgnoreListEditor::~IgnoreListEditor()
 {
     delete ui;
+}
+
+void IgnoreListEditor::setupTableReadOnlyItems(){
+    ui->tableWidget->setRowCount(0);
+    addPattern(".csync_journal.db*", /*deletable=*/false, /*readonly=*/true);
+    addPattern("._sync_*.db*", /*deletable=*/false, /*readonly=*/true);
+    addPattern(".sync_*.db*", /*deletable=*/false, /*readonly=*/true);
+    ui->removeAllPushButton->setEnabled(false);
 }
 
 bool IgnoreListEditor::ignoreHiddenFiles()
@@ -91,6 +98,14 @@ void IgnoreListEditor::slotItemSelectionChanged()
 void IgnoreListEditor::slotRemoveCurrentItem()
 {
     ui->tableWidget->removeRow(ui->tableWidget->currentRow());
+    if(ui->tableWidget->rowCount() == readOnlyRows)
+        ui->removeAllPushButton->setEnabled(false);
+}
+
+void IgnoreListEditor::slotRemoveAllItems()
+{
+    ui->tableWidget->clearContents();
+    setupTableReadOnlyItems();
 }
 
 void IgnoreListEditor::slotUpdateLocalIgnoreList()
@@ -99,6 +114,8 @@ void IgnoreListEditor::slotUpdateLocalIgnoreList()
     QString ignoreFile = cfgFile.excludeFile(ConfigFile::UserScope);
     QFile ignores(ignoreFile);
     if (ignores.open(QIODevice::WriteOnly)) {
+        // rewrites the whole file since now the user can also remove system patterns
+        QFile::resize(ignoreFile, 0);
         for (int row = 0; row < ui->tableWidget->rowCount(); ++row) {
             QTableWidgetItem *patternItem = ui->tableWidget->item(row, patternCol);
             QTableWidgetItem *deletableItem = ui->tableWidget->item(row, deletableCol);
@@ -150,6 +167,14 @@ void IgnoreListEditor::slotAddPattern()
     ui->tableWidget->scrollToBottom();
 }
 
+void IgnoreListEditor::slotRestoreDefaults(QAbstractButton *button){
+    if(ui->buttonBox->buttonRole(button) == QDialogButtonBox::ResetRole){
+        ConfigFile cfgFile;
+        setupTableReadOnlyItems();
+        readIgnoreFile(cfgFile.excludeFile(ConfigFile::SystemScope), false);
+    }
+}
+
 void IgnoreListEditor::readIgnoreFile(const QString &file, bool readOnly)
 {
     QFile ignores(file);
@@ -188,6 +213,8 @@ int IgnoreListEditor::addPattern(const QString &pattern, bool deletable, bool re
         patternItem->setToolTip(readOnlyTooltip);
         deletableItem->setFlags(deletableItem->flags() ^ Qt::ItemIsEnabled);
     }
+
+    ui->removeAllPushButton->setEnabled(true);
 
     return newRow;
 }
