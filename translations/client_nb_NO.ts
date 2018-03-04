@@ -1720,7 +1720,7 @@ Elementer hvor sletting er tillatt, vil bli slettet hvis de forhindrer fjerning 
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="131"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Feil bruker&lt;/h1&gt;&lt;p&gt;Du logget inn med bruker &lt;em&gt;%1&lt;/em&gt;, men må logge inn med bruker &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Logg ut av %3 i en annen tab, &lt;a href=&apos;%4&apos;&gt;klikk deretter her&lt;/a&gt; og logg inn som bruker %2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
