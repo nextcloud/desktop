@@ -113,7 +113,7 @@ On Release Day (for final release):
 A few days after the release (for final release)
 * [ ] Review changes in the release branch, merge back into master
 * [ ] check the crash reporter if auto update is a good idea or we need a new release
-* [ ] Update the updater script ```clientupdater.php```
+* [ ] Update the updater script ```clientupdater.php``` https://github.com/owncloud/enterprise/wiki/How-to-use-the-Client-Updater#updating-the-owncloud-hosted-updater
 * [ ] Execute announced deprecations. Disable builds for deprecated platforms. Update accordingly: https://doc.owncloud.org/server/latest/admin_manual/installation/system_requirements.html#desktop
 * [ ] Increment version number in nightly builds. Special case: after the last release in a branch, jump forward to the 'next release branch'... That may mean, this is nightly is the same as edge then.
 
