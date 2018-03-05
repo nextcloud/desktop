@@ -79,7 +79,7 @@ On Release Day (for final release):
 * [ ] Mac: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
 * [ ] Win: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
 * [ ] Linux: Smoke test of one distro package (Install, make sure it does not explode, and check if all version indicators are correct)
-* [ ] Linux: Run @SamuAlfageme 's client-linux-tests Jenkins job (this tests only package installations!) (maybe adjust REPO_URL so it takes it from OBS :testing repository..?)
+* [ ] Linux: Run @SamuAlfageme 's client-linux-tests Jenkins job (this tests only package installations!) Adjust REPO_URL in https://jenkins.int.owncloud.com/job/client-linux-tests/build (Better: gitlab?)
 * [ ] Win/Mac Copy builds from ```testing``` to ```stable``` on download.owncloud.com, double check the download links. (make sure the .asc is there too)
 * [ ] Linux: disable publishing on project isv:ownCloud:desktop
 * [ ] Linux: Use https://github.com/owncloud/administration/blob/master/jenkins/obs_integration/obs-deepcopy-prj.sh to copy from isv:ownCloud:community:testing to isv:ownCloud:desktop
@@ -90,7 +90,7 @@ On Release Day (for final release):
 * [ ] Create git signed tag in client repository using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
 * [ ] Create a (draft) release on https://github.com/owncloud/client/releases
 * [ ] Update https://owncloud.org/changelog/desktop-client/
-* [ ] Update https://owncloud.org/download/#owncloud-desktop-client
+* [ ] Update https://owncloud.org/download/#owncloud-desktop-client -> Download ownCloud -> click open 'Desktop Client', edit win/mac/lin, each all three tabs "Production", "Technical Preview" [disabled], "Test pilot" 
 * [ ] Announce on https://central.owncloud.org
 * [ ] Announce on announcements@owncloud.org Link to the central post so discussion happens there.
 * [ ] Inform packagers @dragotin (openSUSE) @hefee (Debian) @Germano0 (Fedora)
