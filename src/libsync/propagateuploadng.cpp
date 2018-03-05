@@ -74,48 +74,69 @@ void PropagateUploadFileNG::slotZsyncSeedFinished(void *_zs)
 
     qCDebug(lcZsyncPut) << "Number of ranges:" << _nrange;
 
+    // The remote file size according to zsync metadata
+    quint64 remoteSize = static_cast<quint64>(zsync_file_length(zs.get()));
+
     /* If we have no ranges then we have equal files and we are done */
-    if (_nrange == 0 && _item->_size == quint64(zsync_file_length(zs.get()))) {
+    if (_nrange == 0 && _item->_size == remoteSize) {
         propagator()->reportFileTotal(*_item, 0);
         finalize();
         return;
     }
 
-    /**
-     * If the `_item->size` is smaller than remote file then zbyterange is expected to have ranges that are
-     * outside it's size. This is because of the simplicity of the current upload algorithm in `zsync`. It
-     * currently will just return all the differences between the two files up to the remote file
-     * size. This is because of the case of `Moved` blocks within a file, blocks that are at the end of
-     * the remote file might be useful to the local file, they might just need to be moved them earlier in
-     * the file.
-     */
+    // Size of combined uploads
     int totalBytes = 0;
+
+    /* The rightmost range returned by zsync can be larger than the local or remote
+     * file size. That happens because zsync only considers whole blocks.
+     *
+     * There are two symmetric cases:
+     *
+     *   local smaller than remote (block size 6 bytes)
+     *     local:   abcdefg
+     *     remote:  abcdefaaa
+     *     blocks:        000000
+     *     desired:       0
+     *
+     *   remote smaller than local (block size 6 bytes)
+     *     local:   abcdefaaa
+     *     remote:  abcdefg
+     *     blocks:        000000
+     *     desired:       011     (so two blocks, the second one will be added below)
+     *
+     * To address this we limit the zsync blocks to min(localsize, remotesize). That
+     * way we only attempt to upload data that's locally available (local smaller)
+     * and can easily handle the case of a locally grown file below (remote smaller).
+     */
+    quint64 minSize = qMin(_item->_size, remoteSize);
     for (int i = 0; i < _nrange; i++) {
         UploadRangeInfo rangeinfo = { quint64(zbyterange.get()[(2 * i)]), quint64(zbyterange.get()[(2 * i) + 1]) - quint64(zbyterange.get()[(2 * i)]) + 1 };
-        if (rangeinfo.start < _item->_size) {
-            if (rangeinfo.start + rangeinfo.size > _item->_size)
-                rangeinfo.size = _item->_size - rangeinfo.start;
+        if (rangeinfo.start < minSize) {
+            if (rangeinfo.end() > minSize)
+                rangeinfo.size = minSize - rangeinfo.start;
             _rangesToUpload.append(rangeinfo);
             totalBytes += rangeinfo.size;
         }
     }
 
-    /**
-     * _item->_size here is the local file size, where as zsync_file_length will provide the size
-     * of the remote item according to the zsync metadata downloaded. So if we have more bytes than
-     * remote then we must assume we have to upload them. This is related to the simple implementation
-     * for upload path today, but is an area for future work.
-     */
-    if (_item->_size > quint64(zsync_file_length(zs.get()))) {
-        quint64 appendedBytes = _item->_size - quint64(zsync_file_length(zs.get()));
-        UploadRangeInfo rangeinfo = { quint64(zsync_file_length(zs.get())), appendedBytes };
-        _rangesToUpload.append(rangeinfo);
-        totalBytes += rangeinfo.size;
+    // If the local file has grown, upload the new local data
+    if (_item->_size > remoteSize) {
+        quint64 appendedBytes = _item->_size - remoteSize;
+        // Append to the last range if possible
+        if (!_rangesToUpload.isEmpty() && _rangesToUpload.last().end() == remoteSize) {
+            _rangesToUpload.last().size += appendedBytes;
+        } else {
+            UploadRangeInfo rangeinfo = { remoteSize, appendedBytes };
+            _rangesToUpload.append(rangeinfo);
+        }
+        totalBytes += appendedBytes;
     }
 
+    for (const auto &range : _rangesToUpload)
+        qCDebug(lcZsyncPut) << "Upload range:" << range.start << range.size;
     qCDebug(lcZsyncPut) << "Total bytes:" << totalBytes;
-    propagator()->reportFileTotal(*_item, totalBytes);
 
+    propagator()->reportFileTotal(*_item, totalBytes);
     _bytesToUpload = totalBytes;
 
     doStartUploadNext();

@@ -375,6 +375,7 @@ private:
     {
         quint64 start;
         quint64 size;
+        quint64 end() const { return start + size; }
     };
     QVector<UploadRangeInfo> _rangesToUpload;
 
