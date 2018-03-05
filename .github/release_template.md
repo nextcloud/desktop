@@ -100,10 +100,8 @@ On Release Day (for final release):
 * [ ] Inform release-coordination@owncloud.com
 * [ ] Ensure marketing is aware (marketing@owncloud.com)
 * [ ] Take pride and celebrate!
-* [ ] Also update the testpilotcloud builds for that release version and make sure they show up on the download page
 * [ ] Tell GCX to increment the minimum supported version for enterprise customers
 * [ ] Check if minimum.supported.desktop.version (https://github.com/owncloud/core/blob/master/config/config.sample.php#L1152) needs to be updated in server
-* [ ] Linux OBS: Update the testing repository to the latest stable version.
 
 15 minutes after after release:
 * [ ] Test all advertised download links to have the expected version
