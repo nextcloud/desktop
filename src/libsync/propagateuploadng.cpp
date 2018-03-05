@@ -300,11 +300,7 @@ void PropagateUploadFileNG::slotPropfindIterate(const QString &name, const QMap<
 }
 
 
-/*
- * Finds the range starting at 'start' and removes the first 'size' bytes from it. If it becomes
- * empty, remove the range.
- */
-bool PropagateUploadFileNG::updateRanges(quint64 start, quint64 size)
+bool PropagateUploadFileNG::markRangeAsDone(quint64 start, quint64 size)
 {
     bool found = false;
     for (auto iter = _rangesToUpload.begin(); iter != _rangesToUpload.end(); ++iter) {
@@ -333,9 +329,13 @@ void PropagateUploadFileNG::slotPropfindFinished()
     _sent = 0;
 
     for (auto chunkOffset : _serverChunks.keys()) {
-        if (updateRanges(chunkOffset, _serverChunks[chunkOffset].size)) {
-            _sent += _serverChunks[chunkOffset].size;
+        auto chunkSize = _serverChunks[chunkOffset].size;
+        if (markRangeAsDone(chunkOffset, chunkSize)) {
+            qCDebug(lcPropagateUpload) << "Reusing existing data:" << chunkOffset << chunkSize;
+            _sent += chunkSize;
             _serverChunks.remove(chunkOffset);
+        } else {
+            qCDebug(lcPropagateUpload) << "Discarding existing data:" << chunkOffset << chunkSize;
         }
     }
 
@@ -535,7 +535,6 @@ void PropagateUploadFileNG::startNextChunk()
     QMap<QByteArray, QByteArray> headers;
     headers["OC-Chunk-Offset"] = QByteArray::number(_currentChunkOffset);
 
-    _sent += _currentChunkSize;
     QUrl url = chunkUrl(_currentChunkOffset);
 
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
@@ -549,7 +548,6 @@ void PropagateUploadFileNG::startNextChunk()
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     job->start();
     propagator()->_activeJobList.append(this);
-    updateRanges(_currentChunkOffset, _currentChunkSize);
 }
 
 void PropagateUploadFileNG::slotZsyncGenerationFinished(const QString &generatedFileName)
@@ -624,6 +622,10 @@ void PropagateUploadFileNG::slotPutFinished()
         commonErrorHandling(job);
         return;
     }
+
+    // Mark the range as uploaded
+    markRangeAsDone(_currentChunkOffset, _currentChunkSize);
+    _sent += _currentChunkSize;
 
     ENFORCE(_sent <= _bytesToUpload, "can't send more than size");
 
@@ -744,7 +746,7 @@ void PropagateUploadFileNG::slotUploadProgress(qint64 sent, qint64 total)
     if (sent == 0 && total == 0) {
         return;
     }
-    propagator()->reportProgress(*_item, _sent + sent - total);
+    propagator()->reportProgress(*_item, _sent + sent);
 }
 
 void PropagateUploadFileNG::abort(PropagatorJob::AbortType abortType)

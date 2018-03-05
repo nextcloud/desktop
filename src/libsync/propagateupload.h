@@ -384,7 +384,14 @@ private:
      * If chunkOffset == -1, returns the URL of the parent folder containing the chunks
      */
     QUrl chunkUrl(qint64 chunkOffset = -1);
-    bool updateRanges(quint64 start, quint64 size);
+
+    /**
+     * Finds the range starting at 'start' in _rangesToUpload and removes the first
+     * 'size' bytes from it. If it becomes empty, remove the range.
+     *
+     * Retuns false if no matching range was found.
+     */
+    bool markRangeAsDone(quint64 start, quint64 size);
 
 public:
     PropagateUploadFileNG(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
