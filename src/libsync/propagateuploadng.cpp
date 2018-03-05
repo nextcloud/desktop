@@ -478,6 +478,8 @@ void PropagateUploadFileNG::doFinalMove()
     if (!_rangesToUpload.isEmpty())
         return;
 
+    ENFORCE(_jobs.isEmpty(), "MOVE for upload even though jobs are still running");
+
     _finished = true;
     // Finish with a MOVE
     QString destination = QDir::cleanPath(propagator()->account()->url().path() + QLatin1Char('/')
@@ -515,7 +517,6 @@ void PropagateUploadFileNG::startNextChunk()
 
     // All ranges complete!
     if (_rangesToUpload.isEmpty()) {
-        Q_ASSERT(_jobs.isEmpty()); // There should be no running job anymore
         doFinalMove();
         return;
     }
@@ -587,7 +588,6 @@ void PropagateUploadFileNG::slotZsyncGenerationFinished(const QString &generated
         this, &PropagateUploadFileNG::slotUploadProgress);
     connect(job, &PUTFileJob::uploadProgress,
         device, &UploadDevice::slotJobUploadProgress);
-    connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     job->start();
     propagator()->_activeJobList.append(this);
 
@@ -597,6 +597,11 @@ void PropagateUploadFileNG::slotZsyncGenerationFinished(const QString &generated
 void PropagateUploadFileNG::slotZsyncMetadataUploadFinished()
 {
     qCDebug(lcPropagateUpload) << "Uploading of .zsync complete";
+
+    PUTFileJob *job = qobject_cast<PUTFileJob *>(sender());
+    ASSERT(job);
+    slotJobDestroyed(job);
+
     _isZsyncMetadataUploadRunning = false;
     doFinalMove();
 }
