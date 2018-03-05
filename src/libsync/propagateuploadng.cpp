@@ -407,7 +407,14 @@ void PropagateUploadFileNG::slotDeleteJobFinished()
         }
     }
 
-    if (_jobs.isEmpty()) {
+    // If no more Delete jobs are running, we can continue
+    // (the zsync metadata upload might run in parallel)
+    bool runningDeleteJobs = false;
+    for (auto otherJob : _jobs) {
+        if (qobject_cast<DeleteJob *>(otherJob))
+            runningDeleteJobs = true;
+    }
+    if (!runningDeleteJobs) {
         propagator()->_activeJobList.removeOne(this);
         if (_removeJobError) {
             // There was an error removing some files, just start over
