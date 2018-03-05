@@ -740,12 +740,15 @@ public:
         open(QIODevice::ReadOnly);
 
         QString source = getFilePathFromUrl(request.url());
+        bool zsync = false;
         Q_ASSERT(!source.isEmpty());
         Q_ASSERT(source.endsWith("/.file") || source.endsWith("/.file.zsync"));
         if (source.endsWith("/.file"))
             source = source.left(source.length() - qstrlen("/.file"));
-        if (source.endsWith("/.file.zsync"))
+        if (source.endsWith("/.file.zsync")) {
             source = source.left(source.length() - qstrlen("/.file.zsync"));
+            zsync = true;
+        }
         auto sourceFolder = uploadsFileInfo.find(source);
         Q_ASSERT(sourceFolder);
         Q_ASSERT(sourceFolder->isDir);
@@ -754,14 +757,17 @@ public:
         qlonglong prev = 0;
         char payload = '\0';
 
+        QString fileName = getFilePathFromUrl(QUrl::fromEncoded(request.rawHeader("Destination")));
+        Q_ASSERT(!fileName.isEmpty());
 
         // Ignore .zsync metadata
         if (sourceFolder->children.contains(".zsync"))
             sourceFolder->children.remove(".zsync");
 
+        // Compute the size and content from the chunks if possible
         for (auto chunkName : sourceFolder->children.keys()) {
             auto &x = sourceFolder->children[chunkName];
-            if (chunkName.toLongLong() != prev)
+            if (!zsync && chunkName.toLongLong() != prev)
                 break;
             Q_ASSERT(!x.isDir);
             Q_ASSERT(x.size > 0); // There should not be empty chunks
@@ -771,12 +777,18 @@ public:
             ++count;
             prev = chunkName.toLongLong() + x.size;
         }
-
-        Q_ASSERT(count > 1); // There should be at least two chunks, otherwise why would we use chunking?
         QCOMPARE(sourceFolder->children.count(), count); // There should not be holes or extra files
 
-        QString fileName = getFilePathFromUrl(QUrl::fromEncoded(request.rawHeader("Destination")));
-        Q_ASSERT(!fileName.isEmpty());
+        // For zsync, get the size from the header, and allow no-chunk uploads (shrinking files)
+        if (zsync) {
+            size = request.rawHeader("OC-Total-File-Length").toInt();
+            if (count == 0) {
+                if (auto info = remoteRootFileInfo.find(fileName))
+                    payload = info->contentChar;
+            }
+        }
+
+        // NOTE: This does not actually assemble the file data from the chunks!
 
         if ((fileInfo = remoteRootFileInfo.find(fileName))) {
             QVERIFY(request.hasRawHeader("If")); // The client should put this header

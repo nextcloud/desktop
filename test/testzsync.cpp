@@ -166,6 +166,118 @@ private slots:
         fakeFolder.remoteModifier().appendByte("A/a0", 'X');
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void testFileUploadGrowShrink()
+    {
+        FakeFolder fakeFolder{ FileInfo() };
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ { "chunking", "1.0" }, { "zsync", "1.0" } } } });
+
+        SyncOptions opt;
+        opt._deltaSyncEnabled = true;
+        opt._deltaSyncMinFileSize = 0;
+        int chunkSize = 2 * 1000 * 1000;
+        opt._minChunkSize = opt._maxChunkSize = opt._initialChunkSize = chunkSize; // don't dynamically size chunks
+        fakeFolder.syncEngine().setSyncOptions(opt);
+
+        const int zsyncBlockSize = 1024 * 1024;
+
+        QByteArray metadata;
+        QList<QPair<int, int>> putChunks;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *data) -> QNetworkReply * {
+            // Handle .zsync file storage and retrieval - note that preparing a PUT already updates the
+            // zsync file data before the upload is finalized with a MOVE here.
+            QUrlQuery query(request.url());
+            if (request.url().toString().endsWith(".zsync") && op == QNetworkAccessManager::PutOperation) {
+                metadata = data->readAll();
+                return new FakePutReply{ fakeFolder.uploadState(), op, request, metadata, this };
+            }
+            if (op == QNetworkAccessManager::GetOperation && query.hasQueryItem("zsync")) {
+                return new FakeGetWithDataReply{ fakeFolder.remoteModifier(), metadata, op, request, this };
+            }
+            // Grab chunk offset and size
+            if (op == QNetworkAccessManager::PutOperation) {
+                auto payload = data->readAll();
+                putChunks.append({ request.rawHeader("OC-Chunk-Offset").toInt(), payload.size() });
+                return new FakePutReply{ fakeFolder.uploadState(), op, request, payload, this };
+            }
+            return nullptr;
+        });
+
+        // Note: The remote side doesn't actually store the file contents
+
+        // Test 1: NEW file upload with zsync metadata
+        auto totalSize = 2 * zsyncBlockSize + 5;
+        fakeFolder.localModifier().insert("a0", totalSize);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(putChunks.size() == 2);
+        QVERIFY(putChunks[0] == qMakePair(0, 2000000));
+        QVERIFY(putChunks[1] == qMakePair(2000000, totalSize - 2000000));
+
+        // Test 2: Appending data to the file
+        putChunks.clear();
+        totalSize += 1;
+        fakeFolder.localModifier().appendByte("a0", 'Q');
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(putChunks.size() == 1);
+        QVERIFY(putChunks[0] == qMakePair(2 * zsyncBlockSize, 6));
+
+        // Test 3: reduce the file size
+        putChunks.clear();
+        totalSize -= 10;
+        fakeFolder.localModifier().remove("a0");
+        fakeFolder.localModifier().insert("a0", totalSize);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(putChunks.size() == 1);
+        QVERIFY(putChunks[0] == qMakePair(zsyncBlockSize, totalSize - zsyncBlockSize)); // technically unnecessary
+
+        // Test 4: add a large amount, such that the zsync block gets chunked
+        putChunks.clear();
+        totalSize += int(1.5 * chunkSize);
+        fakeFolder.localModifier().remove("a0");
+        fakeFolder.localModifier().insert("a0", totalSize);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(putChunks.size() == 3);
+        // The first block stays, the rest is re-uploaded, total upload size is roughly 1MiB + 1.5 * 2MB = slightly more than 4MB
+        QVERIFY(putChunks[0] == qMakePair(zsyncBlockSize, chunkSize));
+        QVERIFY(putChunks[1] == qMakePair(zsyncBlockSize + chunkSize, chunkSize));
+        QVERIFY(putChunks[2] == qMakePair(zsyncBlockSize + 2 * chunkSize, totalSize - (zsyncBlockSize + 2 * chunkSize)));
+
+        // Test 5: append and change an early block at the same time
+        putChunks.clear();
+        totalSize += 1;
+        fakeFolder.localModifier().appendByte("a0", 'Q');
+        fakeFolder.localModifier().modifyByte("a0", 5, 'Q');
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(putChunks.size() == 2);
+        QVERIFY(putChunks[0] == qMakePair(0, zsyncBlockSize));
+        QVERIFY(putChunks[1] == qMakePair(4 * zsyncBlockSize, totalSize - 4 * zsyncBlockSize));
+
+        // Test 6: Shrink to an aligned size
+        putChunks.clear();
+        totalSize = 2 * zsyncBlockSize;
+        fakeFolder.localModifier().remove("a0");
+        fakeFolder.localModifier().insert("a0", totalSize);
+        fakeFolder.localModifier().modifyByte("a0", 5, 'Q'); // same data as before
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(putChunks.size() == 0);
+
+        // Test 7: Grow to an aligned size
+        putChunks.clear();
+        totalSize = 3 * zsyncBlockSize;
+        fakeFolder.localModifier().remove("a0");
+        fakeFolder.localModifier().insert("a0", totalSize);
+        fakeFolder.localModifier().modifyByte("a0", 5, 'Q'); // same data as before
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(putChunks.size() == 1);
+        QVERIFY(putChunks[0] == qMakePair(2 * zsyncBlockSize, zsyncBlockSize));
+    }
 };
 
 QTEST_GUILESS_MAIN(TestZsync)
