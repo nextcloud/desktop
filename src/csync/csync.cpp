@@ -126,12 +126,7 @@ int csync_update(CSYNC *ctx) {
 }
 
 int csync_reconcile(CSYNC *ctx) {
-  int rc = -1;
-
-  if (ctx == NULL) {
-    errno = EBADF;
-    return -1;
-  }
+  Q_ASSERT(ctx);
   ctx->status_code = CSYNC_STATUS_OK;
 
   /* Reconciliation for local replica */
@@ -140,39 +135,23 @@ int csync_reconcile(CSYNC *ctx) {
 
   ctx->current = LOCAL_REPLICA;
 
-  rc = csync_reconcile_updates(ctx);
+  csync_reconcile_updates(ctx);
 
   qCInfo(lcCSync) << "Reconciliation for local replica took " << timer.elapsed() / 1000.
                   << "seconds visiting " << ctx->local.files.size() << " files.";
-
-  if (rc < 0) {
-      if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
-          ctx->status_code = csync_errno_to_status( errno, CSYNC_STATUS_RECONCILE_ERROR );
-      }
-      return rc;
-  }
 
   /* Reconciliation for remote replica */
   timer.restart();
 
   ctx->current = REMOTE_REPLICA;
 
-  rc = csync_reconcile_updates(ctx);
+  csync_reconcile_updates(ctx);
 
   qCInfo(lcCSync) << "Reconciliation for remote replica took " << timer.elapsed() / 1000.
                   << "seconds visiting " << ctx->remote.files.size() << " files.";
 
-  if (rc < 0) {
-      if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
-          ctx->status_code = csync_errno_to_status(errno,  CSYNC_STATUS_RECONCILE_ERROR );
-      }
-      return rc;
-  }
-
   ctx->status |= CSYNC_STATUS_RECONCILE;
-
-  rc = 0;
-  return rc;
+  return 0;
 }
 
 /*

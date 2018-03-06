@@ -73,7 +73,6 @@ enum csync_status_codes_e {
   CSYNC_STATUS_FILESYSTEM_UNKNOWN, /* UNUSED */
   CSYNC_STATUS_TREE_ERROR,         /* csync trees could not be created */
   CSYNC_STATUS_UPDATE_ERROR,       /* general update or discovery error */
-  CSYNC_STATUS_RECONCILE_ERROR,    /* general reconcile error */
   CSYNC_STATUS_PROPAGATE_ERROR,    /* OBSOLETE */
   CSYNC_STATUS_REMOTE_ACCESS_ERROR, /* UNUSED */
   CSYNC_STATUS_REMOTE_CREATE_ERROR, /* UNUSED */

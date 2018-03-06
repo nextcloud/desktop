@@ -132,9 +132,6 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
     case CSYNC_STATUS_UPDATE_ERROR:
         errStr = tr("CSync processing step update failed.");
         break;
-    case CSYNC_STATUS_RECONCILE_ERROR:
-        errStr = tr("CSync processing step reconcile failed.");
-        break;
     case CSYNC_STATUS_PROXY_AUTH_ERROR:
         errStr = tr("CSync could not authenticate at the proxy.");
         break;
