@@ -123,26 +123,8 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("CSync failed to load or create the journal file. "
                     "Make sure you have read and write permissions in the local sync folder.");
         break;
-    case CSYNC_STATUS_STATEDB_CORRUPTED:
-        errStr = tr("CSync failed to load the journal file. The journal file is corrupted.");
-        break;
-    case CSYNC_STATUS_NO_MODULE:
-        errStr = tr("<p>The %1 plugin for csync could not be loaded.<br/>Please verify the installation!</p>").arg(qApp->applicationName());
-        break;
     case CSYNC_STATUS_UPDATE_ERROR:
         errStr = tr("CSync processing step update failed.");
-        break;
-    case CSYNC_STATUS_PROXY_AUTH_ERROR:
-        errStr = tr("CSync could not authenticate at the proxy.");
-        break;
-    case CSYNC_STATUS_LOOKUP_ERROR:
-        errStr = tr("CSync failed to lookup proxy or server.");
-        break;
-    case CSYNC_STATUS_SERVER_AUTH_ERROR:
-        errStr = tr("CSync failed to authenticate at the %1 server.").arg(qApp->applicationName());
-        break;
-    case CSYNC_STATUS_CONNECT_ERROR:
-        errStr = tr("CSync failed to connect to the network.");
         break;
     case CSYNC_STATUS_TIMEOUT:
         errStr = tr("A network connection timeout happened.");
@@ -754,7 +736,7 @@ void SyncEngine::handleSyncError(CSYNC *ctx, const char *state)
 
     if (CSYNC_STATUS_IS_EQUAL(err, CSYNC_STATUS_ABORTED)) {
         qCInfo(lcEngine) << "Update phase was aborted by user!";
-    } else if (CSYNC_STATUS_IS_EQUAL(err, CSYNC_STATUS_SERVICE_UNAVAILABLE) || CSYNC_STATUS_IS_EQUAL(err, CSYNC_STATUS_CONNECT_ERROR)) {
+    } else if (CSYNC_STATUS_IS_EQUAL(err, CSYNC_STATUS_SERVICE_UNAVAILABLE)) {
         emit csyncUnavailable();
     } else {
         csyncError(errStr);

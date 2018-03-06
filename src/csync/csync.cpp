@@ -203,8 +203,6 @@ static int _csync_walk_tree(CSYNC *ctx, csync_s::FileMap &tree, const csync_tree
 {
     for (auto &pair : tree) {
         if (_csync_treewalk_visitor(pair.second.get(), ctx, visitor) < 0) {
-            if( ctx->status_code == CSYNC_STATUS_OK )
-                ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_TREE_ERROR);
             return -1;
         }
     }
