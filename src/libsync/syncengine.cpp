@@ -120,11 +120,11 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("Success.");
         break;
     case CSYNC_STATUS_STATEDB_LOAD_ERROR:
-        errStr = tr("CSync failed to load or create the journal file. "
+        errStr = tr("Failed to load or create the journal file. "
                     "Make sure you have read and write permissions in the local sync folder.");
         break;
     case CSYNC_STATUS_UPDATE_ERROR:
-        errStr = tr("CSync processing step update failed.");
+        errStr = tr("Discovery step failed.");
         break;
     case CSYNC_STATUS_TIMEOUT:
         errStr = tr("A network connection timeout happened.");
@@ -133,16 +133,16 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("A HTTP transmission error happened.");
         break;
     case CSYNC_STATUS_PERMISSION_DENIED:
-        errStr = tr("CSync failed due to unhandled permission denied.");
+        errStr = tr("Permission denied.");
         break;
     case CSYNC_STATUS_NOT_FOUND:
-        errStr = tr("CSync failed to access") + " "; // filename gets added.
+        errStr = tr("File or directory not found:") + " "; // filename gets added.
         break;
     case CSYNC_STATUS_FILE_EXISTS:
-        errStr = tr("CSync tried to create a folder that already exists.");
+        errStr = tr("Tried to create a folder that already exists.");
         break;
     case CSYNC_STATUS_OUT_OF_SPACE:
-        errStr = tr("CSync: No space on %1 server available.").arg(qApp->applicationName());
+        errStr = tr("No space on %1 server available.").arg(qApp->applicationName());
         break;
     case CSYNC_STATUS_UNSUCCESSFUL:
         errStr = tr("CSync unspecified error.");
