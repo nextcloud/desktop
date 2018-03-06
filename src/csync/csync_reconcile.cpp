@@ -92,7 +92,7 @@ static csync_file_stat_t *_csync_check_ignored(csync_s::FileMap *tree, const Byt
  * (timestamp is newer), it is not overwritten. If both files, on the
  * source and the destination, have been changed, the newer file wins.
  */
-static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
+static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
     csync_s::FileMap *our_tree = nullptr;
     csync_s::FileMap *other_tree = nullptr;
 
@@ -434,11 +434,9 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                       cur->path.constData());
         }
     }
-
-    return 0;
 }
 
-int csync_reconcile_updates(CSYNC *ctx) {
+void csync_reconcile_updates(CSYNC *ctx) {
   csync_s::FileMap *tree = nullptr;
 
   switch (ctx->current) {
@@ -453,12 +451,8 @@ int csync_reconcile_updates(CSYNC *ctx) {
   }
 
   for (auto &pair : *tree) {
-    if (_csync_merge_algorithm_visitor(pair.second.get(), ctx) < 0) {
-      ctx->status_code = CSYNC_STATUS_RECONCILE_ERROR;
-      return -1;
-    }
+    _csync_merge_algorithm_visitor(pair.second.get(), ctx);
   }
-  return 0;
 }
 
 /* vim: set ts=8 sw=2 et cindent: */
