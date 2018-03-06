@@ -78,24 +78,6 @@ CSYNC_STATUS csync_errno_to_status(int error, CSYNC_STATUS default_status)
     status = CSYNC_STATUS_OK;
     break;
     /* The custom errnos first. */
-  case ERRNO_GENERAL_ERROR:
-    status = CSYNC_STATUS_UNSUCCESSFUL;
-    break;
-  case ERRNO_LOOKUP_ERROR: /* In Neon: Server or proxy hostname lookup failed */
-    status = CSYNC_STATUS_LOOKUP_ERROR;
-    break;
-  case ERRNO_USER_UNKNOWN_ON_SERVER: /* Neon: User authentication on server failed. */
-    status = CSYNC_STATUS_SERVER_AUTH_ERROR;
-    break;
-  case ERRNO_PROXY_AUTH:
-    status = CSYNC_STATUS_PROXY_AUTH_ERROR; /* Neon: User authentication on proxy failed */
-    break;
-  case ERRNO_CONNECT:
-    status = CSYNC_STATUS_CONNECT_ERROR; /* Network: Connection error */
-    break;
-  case ERRNO_TIMEOUT:
-    status = CSYNC_STATUS_TIMEOUT; /* Network: Timeout error */
-    break;
   case ERRNO_SERVICE_UNAVAILABLE:
     status = CSYNC_STATUS_SERVICE_UNAVAILABLE;  /* Service temporarily down */
     break;
@@ -105,9 +87,6 @@ CSYNC_STATUS csync_errno_to_status(int error, CSYNC_STATUS default_status)
   case EFBIG:
     status = CSYNC_STATUS_FILE_SIZE_ERROR;          /* File larger than 2MB */
     break;
-  case ERRNO_PRECONDITION:
-  case ERRNO_RETRY:
-  case ERRNO_REDIRECT:
   case ERRNO_WRONG_CONTENT:
     status = CSYNC_STATUS_HTTP_ERROR;
     break;
@@ -160,7 +139,6 @@ CSYNC_STATUS csync_errno_to_status(int error, CSYNC_STATUS default_status)
   case EMLINK:                /* Too many links */
   case EPIPE:                 /* Broken pipe */
 
-  case ERRNO_ERROR_STRING:
   default:
     status = default_status;
   }
