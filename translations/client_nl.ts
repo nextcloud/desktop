@@ -183,7 +183,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="316"/>
         <source>Remove folder sync connection</source>
-        <translation>Verwijderen map sync verbinding</translation>
+        <translation>Verwijder map-synchronisatie verbinding</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="387"/>
@@ -198,12 +198,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="438"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation>Bevestig verwijderen Map Sync verbinding</translation>
+        <translation>Bevestig verwijderen map-synchronisatie verbinding</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="445"/>
         <source>Remove Folder Sync Connection</source>
-        <translation>Verwijderen Map Sync verbinding</translation>
+        <translation>Verwijder map-synchronisatie verbinding</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="527"/>
@@ -921,17 +921,17 @@ Doorgaan met deze synchronisatie overschrijft al uw bestanden door een eerdere v
     <message>
         <location filename="../src/gui/folderman.cpp" line="1344"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Lokale map %1 bevat al een map die wordt gebruikt voor een mapsync verbinding. Kies een andere!</translation>
+        <translation>Lokale map %1 bevat al een map die wordt gebruikt voor een map-synchronisatie verbinding. Kies een andere!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1354"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Lokale map %1 zit al in een map die wordt gebruikt voor een mapsync verbinding. Kies een andere!</translation>
+        <translation>Lokale map %1 zit al in een map die wordt gebruikt voor een map-synchronisatie verbinding. Kies een andere!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1362"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Lokale map %1 is een symbolische link. De doellink zit al in een map die in een mapsync verbinding wordt gebruikt. Kies een andere!</translation>
+        <translation>Lokale map %1 is een symbolische link. De doellink zit al in een map die in een map-synchronisatie verbinding wordt gebruikt. Kies een andere!</translation>
     </message>
 </context>
 <context>
@@ -939,7 +939,7 @@ Doorgaan met deze synchronisatie overschrijft al uw bestanden door een eerdere v
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="46"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Toevoegen mapsync verbinding</translation>
+        <translation>Voeg map synchronisatie verbinding toe</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="249"/>
@@ -1098,7 +1098,7 @@ Doorgaan met deze synchronisatie overschrijft al uw bestanden door een eerdere v
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Toevoegen mapsync verbinding</translation>
+        <translation>Voeg map-synchronisatie verbinding toe</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="550"/>
@@ -2550,28 +2550,28 @@ We adviseren deze site niet te gebruiken.</translation>
 <context>
     <name>OCC::SettingsDialogMac</name>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="93"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="94"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="97"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="98"/>
         <source>Activity</source>
         <translation>Activiteit</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="111"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="112"/>
         <source>General</source>
         <translation>Algemeen</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="115"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="116"/>
         <source>Network</source>
         <translation>Netwerk</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="152"/>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="211"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="154"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="221"/>
         <source>Account</source>
         <translation>Account</translation>
     </message>
@@ -2698,12 +2698,12 @@ We adviseren deze site niet te gebruiken.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="117"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="301"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="300"/>
         <source>P&amp;assword protect</source>
         <translation>&amp;Wachtwoord beveiligd</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="414"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="413"/>
         <source>Password Protected</source>
         <translation>Wachtwoord beveiligd</translation>
     </message>
@@ -2724,7 +2724,7 @@ We adviseren deze site niet te gebruiken.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="527"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="526"/>
         <source>Delete</source>
         <translation>Verwijderen</translation>
     </message>
@@ -2754,38 +2754,38 @@ We adviseren deze site niet te gebruiken.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="519"/>
         <source>Confirm Link Share Deletion</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="521"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="528"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="527"/>
         <source>Cancel</source>
         <translation>Annuleren</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="63"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="544"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="543"/>
         <source>Public link</source>
         <translation>Openbare Link</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="253"/>
         <source>Delete link share</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="459"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="458"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>Openbaar de&amp;len vereist een wachtwoord</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="477"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="476"/>
         <source>Please Set Password</source>
         <translation>Stel uw wachtwoord in</translation>
     </message>

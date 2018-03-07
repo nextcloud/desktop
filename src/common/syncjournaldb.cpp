@@ -23,7 +23,6 @@
 #include <QElapsedTimer>
 #include <QUrl>
 #include <QDir>
-#include <sqlite3.h>
 
 #include "common/syncjournaldb.h"
 #include "version.h"
@@ -32,6 +31,13 @@
 #include "common/checksums.h"
 
 #include "common/c_jhash.h"
+
+// SQL expression to check whether path.startswith(prefix + '/')
+// Note: '/' + 1 == '0'
+#define IS_PREFIX_PATH_OF(prefix, path) \
+    "(" path " > (" prefix "||'/') AND " path " < (" prefix "||'0'))"
+#define IS_PREFIX_PATH_OR_EQUAL(prefix, path) \
+    "(" path " == " prefix " OR " IS_PREFIX_PATH_OF(prefix, path) ")"
 
 namespace OCC {
 
@@ -48,7 +54,7 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._path = query.baValue(0);
     rec._inode = query.int64Value(1);
     rec._modtime = query.int64Value(2);
-    rec._type = static_cast<ItemType>(query.intValue(3));
+    rec._type = query.intValue(3);
     rec._etag = query.baValue(4);
     rec._fileId = query.baValue(5);
     rec._remotePerm = RemotePermissions(query.baValue(6).constData());
@@ -390,7 +396,6 @@ bool SyncJournalDb::checkConnect()
                         "errorcount INTEGER,"
                         "size INTEGER(8),"
                         "modtime INTEGER(8),"
-                        "contentChecksum TEXT,"
                         "PRIMARY KEY(path)"
                         ");");
 
@@ -439,23 +444,12 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("Create table version", createQuery);
     }
 
-    // create the datafingerprint table.
+    // create the checksumtype table.
     createQuery.prepare("CREATE TABLE IF NOT EXISTS datafingerprint("
                         "fingerprint TEXT UNIQUE"
                         ");");
     if (!createQuery.exec()) {
         return sqlFail("Create table datafingerprint", createQuery);
-    }
-
-    // create the conflicts table.
-    createQuery.prepare("CREATE TABLE IF NOT EXISTS conflicts("
-                        "path TEXT PRIMARY KEY,"
-                        "baseFileId TEXT,"
-                        "baseEtag TEXT,"
-                        "baseModtime INTEGER"
-                        ");");
-    if (!createQuery.exec()) {
-        return sqlFail("Create table conflicts", createQuery);
     }
 
     createQuery.prepare("CREATE TABLE IF NOT EXISTS version("
@@ -560,26 +554,11 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("prepare _getFileRecordQueryByFileId", *_getFileRecordQueryByFileId);
     }
 
-    // This query is used to skip discovery and fill the tree from the
-    // database instead
     _getFilesBelowPathQuery.reset(new SqlQuery(_db));
     if (_getFilesBelowPathQuery->prepare(
             GET_FILE_RECORD_QUERY
-            " WHERE path > (?1||'/') AND path < (?1||'0')"
-            // We want to ensure that the contents of a directory are sorted
-            // directly behind the directory itself. Without this ORDER BY
-            // an ordering like foo, foo-2, foo/file would be returned.
-            // With the trailing /, we get foo-2, foo, foo/file. This property
-            // is used in fill_tree_from_db().
-            " ORDER BY path||'/' ASC")) {
+            " WHERE " IS_PREFIX_PATH_OF("?1", "path") " ORDER BY path||'/' ASC")) {
         return sqlFail("prepare _getFilesBelowPathQuery", *_getFilesBelowPathQuery);
-    }
-
-    _getAllFilesQuery.reset(new SqlQuery(_db));
-    if (_getAllFilesQuery->prepare(
-            GET_FILE_RECORD_QUERY
-            " ORDER BY path||'/' ASC")) {
-        return sqlFail("prepare _getAllFilesQuery", *_getAllFilesQuery);
     }
 
     _setFileRecordQuery.reset(new SqlQuery(_db));
@@ -624,15 +603,15 @@ bool SyncJournalDb::checkConnect()
     }
 
     _getUploadInfoQuery.reset(new SqlQuery(_db));
-    if (_getUploadInfoQuery->prepare("SELECT chunk, transferid, errorcount, size, modtime, contentChecksum FROM "
+    if (_getUploadInfoQuery->prepare("SELECT chunk, transferid, errorcount, size, modtime FROM "
                                      "uploadinfo WHERE path=?1")) {
         return sqlFail("prepare _getUploadInfoQuery", *_getUploadInfoQuery);
     }
 
     _setUploadInfoQuery.reset(new SqlQuery(_db));
     if (_setUploadInfoQuery->prepare("INSERT OR REPLACE INTO uploadinfo "
-                                     "(path, chunk, transferid, errorcount, size, modtime, contentChecksum) "
-                                     "VALUES ( ?1 , ?2, ?3 , ?4 ,  ?5, ?6 , ?7 )")) {
+                                     "(path, chunk, transferid, errorcount, size, modtime) "
+                                     "VALUES ( ?1 , ?2, ?3 , ?4 ,  ?5, ?6 )")) {
         return sqlFail("prepare _setUploadInfoQuery", *_setUploadInfoQuery);
     }
 
@@ -648,7 +627,7 @@ bool SyncJournalDb::checkConnect()
     }
 
     _deleteFileRecordRecursively.reset(new SqlQuery(_db));
-    if (_deleteFileRecordRecursively->prepare("DELETE FROM metadata WHERE path LIKE(?||'/%')")) {
+    if (_deleteFileRecordRecursively->prepare("DELETE FROM metadata WHERE " IS_PREFIX_PATH_OF("?1", "path"))) {
         return sqlFail("prepare _deleteFileRecordRecursively", *_deleteFileRecordRecursively);
     }
 
@@ -705,23 +684,6 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("prepare _setDataFingerprintQuery2", *_setDataFingerprintQuery2);
     }
 
-    _getConflictRecordQuery.reset(new SqlQuery(_db));
-    if (_getConflictRecordQuery->prepare("SELECT baseFileId, baseModtime, baseEtag FROM conflicts WHERE path=?1;")) {
-        return sqlFail("prepare _getConflictRecordQuery", *_getConflictRecordQuery);
-    }
-
-    _setConflictRecordQuery.reset(new SqlQuery(_db));
-    if (_setConflictRecordQuery->prepare("INSERT OR REPLACE INTO conflicts "
-                                         "(path, baseFileId, baseModtime, baseEtag) "
-                                         "VALUES (?1, ?2, ?3, ?4);")) {
-        return sqlFail("prepare _setConflictRecordQuery", *_setConflictRecordQuery);
-    }
-
-    _deleteConflictRecordQuery.reset(new SqlQuery(_db));
-    if (_deleteConflictRecordQuery->prepare("DELETE FROM conflicts WHERE path=?1;")) {
-        return sqlFail("prepare _deleteConflictRecordQuery", *_deleteConflictRecordQuery);
-    }
-
     // don't start a new transaction now
     commitInternal(QString("checkConnect End"), false);
 
@@ -749,7 +711,6 @@ void SyncJournalDb::close()
     _getFileRecordQueryByInode.reset(0);
     _getFileRecordQueryByFileId.reset(0);
     _getFilesBelowPathQuery.reset(0);
-    _getAllFilesQuery.reset(0);
     _setFileRecordQuery.reset(0);
     _setFileRecordChecksumQuery.reset(0);
     _setFileRecordLocalMetadataQuery.reset(0);
@@ -770,9 +731,6 @@ void SyncJournalDb::close()
     _getDataFingerprintQuery.reset(0);
     _setDataFingerprintQuery1.reset(0);
     _setDataFingerprintQuery2.reset(0);
-    _getConflictRecordQuery.reset(0);
-    _setConflictRecordQuery.reset(0);
-    _deleteConflictRecordQuery.reset(0);
 
     _db.close();
     _avoidReadFromDbOnNextSyncFilter.clear();
@@ -880,16 +838,6 @@ bool SyncJournalDb::updateMetadataTableStructure()
             re = false;
         }
         commitInternal("update database structure: add contentChecksumTypeId col");
-    }
-
-    if (!tableColumns("uploadinfo").contains("contentChecksum")) {
-        SqlQuery query(_db);
-        query.prepare("ALTER TABLE uploadinfo ADD COLUMN contentChecksum TEXT;");
-        if (!query.exec()) {
-            sqlFail("updateMetadataTableStructure: add contentChecksum column", query);
-            re = false;
-        }
-        commitInternal("update database structure: add contentChecksum col for uploadinfo");
     }
 
 
@@ -1189,23 +1137,16 @@ bool SyncJournalDb::getFilesBelowPath(const QByteArray &path, const std::functio
     if (!checkConnect())
         return false;
 
-    // Since the path column doesn't store the starting /, the getFilesBelowPathQuery
-    // can't be used for the root path "". It would scan for (path > '/' and path < '0')
-    // and find nothing. So, unfortunately, we have to use a different query for
-    // retrieving the whole tree.
-    auto &query = path.isEmpty() ? _getAllFilesQuery : _getFilesBelowPathQuery;
+    _getFilesBelowPathQuery->reset_and_clear_bindings();
+    _getFilesBelowPathQuery->bindValue(1, path);
 
-    query->reset_and_clear_bindings();
-    if (query == _getFilesBelowPathQuery)
-        query->bindValue(1, path);
-
-    if (!query->exec()) {
+    if (!_getFilesBelowPathQuery->exec()) {
         return false;
     }
 
-    while (query->next()) {
+    while (_getFilesBelowPathQuery->next()) {
         SyncJournalFileRecord rec;
-        fillFileRecordFromGetQuery(rec, *query);
+        fillFileRecordFromGetQuery(rec, *_getFilesBelowPathQuery);
         rowCallback(rec);
     }
 
@@ -1515,7 +1456,6 @@ SyncJournalDb::UploadInfo SyncJournalDb::getUploadInfo(const QString &file)
             res._errorCount = _getUploadInfoQuery->intValue(2);
             res._size = _getUploadInfoQuery->int64Value(3);
             res._modtime = _getUploadInfoQuery->int64Value(4);
-            res._contentChecksum = _getUploadInfoQuery->baValue(5);
             res._valid = ok;
         }
     }
@@ -1538,7 +1478,6 @@ void SyncJournalDb::setUploadInfo(const QString &file, const SyncJournalDb::Uplo
         _setUploadInfoQuery->bindValue(4, i._errorCount);
         _setUploadInfoQuery->bindValue(5, i._size);
         _setUploadInfoQuery->bindValue(6, i._modtime);
-        _setUploadInfoQuery->bindValue(7, i._contentChecksum);
 
         if (!_setUploadInfoQuery->exec()) {
             return;
@@ -1848,9 +1787,8 @@ void SyncJournalDb::avoidRenamesOnNextSync(const QByteArray &path)
     }
 
     SqlQuery query(_db);
-    query.prepare("UPDATE metadata SET fileid = '', inode = '0' WHERE path == ?1 OR path LIKE(?2||'/%')");
+    query.prepare("UPDATE metadata SET fileid = '', inode = '0' WHERE " IS_PREFIX_PATH_OR_EQUAL("?1", "path"));
     query.bindValue(1, path);
-    query.bindValue(2, path);
     query.exec();
 
     // We also need to remove the ETags so the update phase refreshes the directory paths
@@ -1860,25 +1798,28 @@ void SyncJournalDb::avoidRenamesOnNextSync(const QByteArray &path)
 
 void SyncJournalDb::avoidReadFromDbOnNextSync(const QByteArray &fileName)
 {
-    // Make sure that on the next sync, fileName is not read from the DB but uses the PROPFIND to
-    // get the info from the server
-    // We achieve that by clearing the etag of the parents directory recursively
-
     QMutexLocker locker(&_mutex);
 
     if (!checkConnect()) {
         return;
     }
 
+    // Remove trailing slash
+    auto argument = fileName;
+    if (argument.endsWith('/'))
+        argument.chop(1);
+
     SqlQuery query(_db);
     // This query will match entries for which the path is a prefix of fileName
-    // Note: ItemTypeDirectory == 2
-    query.prepare("UPDATE metadata SET md5='_invalid_' WHERE ?1 LIKE(path||'/%') AND type == 2;");
-    query.bindValue(1, fileName);
+    // Note: CSYNC_FTW_TYPE_DIR == 2
+    query.prepare("UPDATE metadata SET md5='_invalid_' WHERE " IS_PREFIX_PATH_OR_EQUAL("path", "?1") " AND type == 2;");
+    query.bindValue(1, argument);
     query.exec();
 
-    // Prevent future overwrite of the etag for this sync
-    _avoidReadFromDbOnNextSyncFilter.append(fileName);
+    // Prevent future overwrite of the etags of this folder and all
+    // parent folders for this sync
+    argument.append('/');
+    _avoidReadFromDbOnNextSyncFilter.append(argument);
 }
 
 void SyncJournalDb::forceRemoteDiscoveryNextSync()
@@ -1983,72 +1924,6 @@ void SyncJournalDb::setDataFingerprint(const QByteArray &dataFingerprint)
     _setDataFingerprintQuery2->exec();
 }
 
-void SyncJournalDb::setConflictRecord(const ConflictRecord &record)
-{
-    QMutexLocker locker(&_mutex);
-    if (!checkConnect())
-        return;
-
-    auto &query = *_setConflictRecordQuery;
-    query.reset_and_clear_bindings();
-    query.bindValue(1, record.path);
-    query.bindValue(2, record.baseFileId);
-    query.bindValue(3, record.baseModtime);
-    query.bindValue(4, record.baseEtag);
-    ASSERT(query.exec());
-}
-
-ConflictRecord SyncJournalDb::conflictRecord(const QByteArray &path)
-{
-    ConflictRecord entry;
-
-    QMutexLocker locker(&_mutex);
-    if (!checkConnect())
-        return entry;
-
-    auto &query = *_getConflictRecordQuery;
-    query.reset_and_clear_bindings();
-    query.bindValue(1, path);
-    ASSERT(query.exec());
-    if (!query.next())
-        return entry;
-
-    entry.path = path;
-    entry.baseFileId = query.baValue(0);
-    entry.baseModtime = query.int64Value(1);
-    entry.baseEtag = query.baValue(2);
-    return entry;
-}
-
-void SyncJournalDb::deleteConflictRecord(const QByteArray &path)
-{
-    QMutexLocker locker(&_mutex);
-    if (!checkConnect())
-        return;
-
-    auto &query = *_deleteConflictRecordQuery;
-    query.reset_and_clear_bindings();
-    query.bindValue(1, path);
-    ASSERT(query.exec());
-}
-
-QByteArrayList SyncJournalDb::conflictRecordPaths()
-{
-    QMutexLocker locker(&_mutex);
-    if (!checkConnect())
-        return {};
-
-    SqlQuery query(_db);
-    query.prepare("SELECT path FROM conflicts");
-    ASSERT(query.exec());
-
-    QByteArrayList paths;
-    while (query.next())
-        paths.append(query.baValue(0));
-
-    return paths;
-}
-
 void SyncJournalDb::clearFileTable()
 {
     QMutexLocker lock(&_mutex);
@@ -2112,8 +1987,7 @@ bool operator==(const SyncJournalDb::UploadInfo &lhs,
         && lhs._modtime == rhs._modtime
         && lhs._valid == rhs._valid
         && lhs._size == rhs._size
-        && lhs._transferid == rhs._transferid
-        && lhs._contentChecksum == rhs._contentChecksum;
+        && lhs._transferid == rhs._transferid;
 }
 
 } // namespace OCC

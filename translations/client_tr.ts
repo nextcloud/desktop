@@ -2536,28 +2536,28 @@ Kullanmanız önerilmez.</translation>
 <context>
     <name>OCC::SettingsDialogMac</name>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="93"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="94"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="97"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="98"/>
         <source>Activity</source>
         <translation>Etkinlik</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="111"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="112"/>
         <source>General</source>
         <translation>Genel</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="115"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="116"/>
         <source>Network</source>
         <translation>Ağ</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="152"/>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="211"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="154"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="221"/>
         <source>Account</source>
         <translation>Hesap</translation>
     </message>
@@ -2684,12 +2684,12 @@ Kullanmanız önerilmez.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="117"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="301"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="300"/>
         <source>P&amp;assword protect</source>
         <translation>&amp;Parola koruması</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="414"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="413"/>
         <source>Password Protected</source>
         <translation>Parola Korumalı</translation>
     </message>
@@ -2710,7 +2710,7 @@ Kullanmanız önerilmez.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="527"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="526"/>
         <source>Delete</source>
         <translation>Sil</translation>
     </message>
@@ -2740,38 +2740,38 @@ Kullanmanız önerilmez.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="519"/>
         <source>Confirm Link Share Deletion</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="521"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="528"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="527"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="63"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="544"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="543"/>
         <source>Public link</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="253"/>
         <source>Delete link share</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="459"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="458"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>Herkese &amp;açık paylaşım için parola gerekir</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="477"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="476"/>
         <source>Please Set Password</source>
         <translation>Lütfen Parola Atayın</translation>
     </message>
