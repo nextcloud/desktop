@@ -172,6 +172,14 @@ private slots:
         fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
                                                                 {"parentFolder/subFolderA/"});
         fakeFolder.syncEngine().journal()->avoidReadFromDbOnNextSync(QByteArrayLiteral("parentFolder/subFolderA/"));
+        auto getEtag = [&](const QByteArray &file) {
+            SyncJournalFileRecord rec;
+            fakeFolder.syncJournal().getFileRecord(file, &rec);
+            return rec._etag;
+        };
+        QVERIFY(getEtag("parentFolder") == "_invalid_");
+        QVERIFY(getEtag("parentFolder/subFolderA") == "_invalid_");
+        QVERIFY(getEtag("parentFolder/subFolderA/subsubFolder") != "_invalid_");
 
         // But touch local file before the next sync, such that the local folder
         // can't be removed
@@ -641,6 +649,7 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("A/tößt"));
         QVERIFY(fakeFolder.currentLocalState().find("A/t𠜎t"));
 
+#if !defined(Q_OS_MAC) && !defined(Q_OS_WIN)
         // Try again with a locale that can represent ö but not 𠜎 (4-byte utf8).
         QTextCodec::setCodecForLocale(QTextCodec::codecForName("ISO-8859-15"));
         QVERIFY(QTextCodec::codecForLocale()->mibEnum() == 111);
@@ -671,6 +680,7 @@ private slots:
         QVERIFY(fakeFolder.currentRemoteState().find("C/tößt"));
 
         QTextCodec::setCodecForLocale(utf8Locale);
+#endif
     }
 };
 

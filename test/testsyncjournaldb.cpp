@@ -54,7 +54,7 @@ private slots:
         // signed int being cast to uint64 either (like uint64::max would be)
         record._inode = std::numeric_limits<quint32>::max() + 12ull;
         record._modtime = dropMsecs(QDateTime::currentDateTime());
-        record._type = ItemTypeDirectory;
+        record._type = 5;
         record._etag = "789789";
         record._fileId = "abcd";
         record._remotePerm = RemotePermissions("RW");
@@ -76,7 +76,7 @@ private slots:
         record._modtime = dropMsecs(QDateTime::currentDateTime().addDays(1));
         // try a value that only fits uint64, not int64
         record._inode = std::numeric_limits<quint64>::max() - std::numeric_limits<quint32>::max() - 1;
-        record._type = ItemTypeFile;
+        record._type = 7;
         record._etag = "789FFF";
         record._fileId = "efg";
         record._remotePerm = RemotePermissions("NV");
@@ -183,26 +183,119 @@ private slots:
         QCOMPARE(record.numericFileId(), QByteArray("123456789"));
     }
 
-    void testConflictRecord()
+    void testAvoidReadFromDbOnNextSync()
     {
-        ConflictRecord record;
-        record.path = "abc";
-        record.baseFileId = "def";
-        record.baseModtime = 1234;
-        record.baseEtag = "ghi";
+        auto invalidEtag = QByteArray("_invalid_");
+        auto initialEtag = QByteArray("etag");
+        auto makeEntry = [&](const QByteArray &path, int type) {
+            SyncJournalFileRecord record;
+            record._path = path;
+            record._type = type;
+            record._etag = initialEtag;
+            _db.setFileRecord(record);
+        };
+        auto getEtag = [&](const QByteArray &path) {
+            SyncJournalFileRecord record;
+            _db.getFileRecord(path, &record);
+            return record._etag;
+        };
 
-        QVERIFY(!_db.conflictRecord(record.path).isValid());
+        makeEntry("foodir", 2);
+        makeEntry("otherdir", 2);
+        makeEntry("foo%", 2); // wildcards don't apply
+        makeEntry("foodi_", 2); // wildcards don't apply
+        makeEntry("foodir/file", 0);
+        makeEntry("foodir/subdir", 2);
+        makeEntry("foodir/subdir/file", 0);
+        makeEntry("foodir/otherdir", 2);
+        makeEntry("fo", 2); // prefix, but does not match
+        makeEntry("foodir/sub", 2); // prefix, but does not match
+        makeEntry("foodir/subdir/subsubdir", 2);
+        makeEntry("foodir/subdir/subsubdir/file", 0);
+        makeEntry("foodir/subdir/otherdir", 2);
 
-        _db.setConflictRecord(record);
-        auto newRecord = _db.conflictRecord(record.path);
-        QVERIFY(newRecord.isValid());
-        QCOMPARE(newRecord.path, record.path);
-        QCOMPARE(newRecord.baseFileId, record.baseFileId);
-        QCOMPARE(newRecord.baseModtime, record.baseModtime);
-        QCOMPARE(newRecord.baseEtag, record.baseEtag);
+        _db.avoidReadFromDbOnNextSync(QByteArray("foodir/subdir"));
 
-        _db.deleteConflictRecord(record.path);
-        QVERIFY(!_db.conflictRecord(record.path).isValid());
+        // Direct effects of parent directories being set to _invalid_
+        QCOMPARE(getEtag("foodir"), invalidEtag);
+        QCOMPARE(getEtag("foodir/subdir"), invalidEtag);
+        QCOMPARE(getEtag("foodir/subdir/subsubdir"), initialEtag);
+
+        QCOMPARE(getEtag("foodir/file"), initialEtag);
+        QCOMPARE(getEtag("foodir/subdir/file"), initialEtag);
+        QCOMPARE(getEtag("foodir/subdir/subsubdir/file"), initialEtag);
+
+        QCOMPARE(getEtag("fo"), initialEtag);
+        QCOMPARE(getEtag("foo%"), initialEtag);
+        QCOMPARE(getEtag("foodi_"), initialEtag);
+        QCOMPARE(getEtag("otherdir"), initialEtag);
+        QCOMPARE(getEtag("foodir/otherdir"), initialEtag);
+        QCOMPARE(getEtag("foodir/sub"), initialEtag);
+        QCOMPARE(getEtag("foodir/subdir/otherdir"), initialEtag);
+
+        // Indirect effects: setFileRecord() calls filter etags
+        initialEtag = "etag2";
+
+        makeEntry("foodir", 2);
+        QCOMPARE(getEtag("foodir"), invalidEtag);
+        makeEntry("foodir/subdir", 2);
+        QCOMPARE(getEtag("foodir/subdir"), invalidEtag);
+        makeEntry("foodir/subdir/subsubdir", 2);
+        QCOMPARE(getEtag("foodir/subdir/subsubdir"), initialEtag);
+        makeEntry("fo", 2);
+        QCOMPARE(getEtag("fo"), initialEtag);
+        makeEntry("foodir/sub", 2);
+        QCOMPARE(getEtag("foodir/sub"), initialEtag);
+    }
+
+    void testRecursiveDelete()
+    {
+        auto makeEntry = [&](const QByteArray &path) {
+            SyncJournalFileRecord record;
+            record._path = path;
+            _db.setFileRecord(record);
+        };
+
+        QByteArrayList elements;
+        elements
+            << "foo"
+            << "foo/file"
+            << "bar"
+            << "moo"
+            << "moo/file"
+            << "foo%bar"
+            << "foo bla bar/file"
+            << "fo_"
+            << "fo_/file";
+        for (auto elem : elements)
+            makeEntry(elem);
+
+        auto checkElements = [&]() {
+            bool ok = true;
+            for (auto elem : elements) {
+                SyncJournalFileRecord record;
+                _db.getFileRecord(elem, &record);
+                if (!record.isValid()) {
+                    qWarning() << "Missing record: " << elem;
+                    ok = false;
+                }
+            }
+            return ok;
+        };
+
+        _db.deleteFileRecord("moo", true);
+        elements.removeAll("moo");
+        elements.removeAll("moo/file");
+        QVERIFY(checkElements());
+
+        _db.deleteFileRecord("fo_", true);
+        elements.removeAll("fo_");
+        elements.removeAll("fo_/file");
+        QVERIFY(checkElements());
+
+        _db.deleteFileRecord("foo%bar", true);
+        elements.removeAll("foo%bar");
+        QVERIFY(checkElements());
     }
 
 private:
