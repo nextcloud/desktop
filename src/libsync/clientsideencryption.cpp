@@ -24,13 +24,18 @@
 #include <QXmlStreamReader>
 #include <QXmlStreamNamespaceDeclaration>
 #include <QStack>
-#include <QInputDialog>
-#include <QLineEdit>
+
 #include <QIODevice>
 
 #include <keychain.h>
 
 #include "wordlist.h"
+
+// Those includes shouldn't be here but currently they are to ease the pain of refactoring.
+#include <QInputDialog>
+#include <QMessageBox>
+#include <QLineEdit>
+#include <QApplication>
 
 QDebug operator<<(QDebug out, const std::string& str)
 {
@@ -145,10 +150,11 @@ QByteArray generatePassword(const QString& wordlist, const QByteArray& salt) {
     return password;
 }
 
-QByteArray encryptPrivateKey(
+bool encryptPrivateKey(
         const QByteArray& key,
         const QByteArray& privateKey,
-        const QByteArray& salt
+        const QByteArray& salt,
+        QByteArray& out
         ) {
 
     QByteArray iv = generateRandom(12);
@@ -158,12 +164,14 @@ QByteArray encryptPrivateKey(
     if(!(ctx = EVP_CIPHER_CTX_new())) {
         qCInfo(lcCse()) << "Error creating cipher";
         handleErrors();
+        return false;
     }
 
     /* Initialise the decryption operation. */
     if(!EVP_EncryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL)) {
         qCInfo(lcCse()) << "Error initializing context with aes_256";
         handleErrors();
+        return false;
     }
 
     // No padding
@@ -173,12 +181,14 @@ QByteArray encryptPrivateKey(
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), NULL)) {
         qCInfo(lcCse()) << "Error setting iv length";
         handleErrors();
+        return false;
     }
 
     /* Initialise key and IV */
     if(!EVP_EncryptInit_ex(ctx, NULL, NULL, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
         qCInfo(lcCse()) << "Error initialising key and iv";
         handleErrors();
+        return false;
     }
 
     // We write the base64 encoded private key
@@ -192,6 +202,7 @@ QByteArray encryptPrivateKey(
     if(!EVP_EncryptUpdate(ctx, ctext, &len, (unsigned char *)privateKeyB64.constData(), privateKeyB64.size())) {
         qCInfo(lcCse()) << "Error encrypting";
         handleErrors();
+        return false;
     }
 
     int clen = len;
@@ -210,6 +221,7 @@ QByteArray encryptPrivateKey(
     if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, tag)) {
         qCInfo(lcCse()) << "Error getting the tag";
         handleErrors();
+        return false;
     }
 
     QByteArray cipherTXT((char *)ctext, clen);
@@ -221,10 +233,11 @@ QByteArray encryptPrivateKey(
     result += "fA==";
     result += salt.toBase64();
 
-    return result;
+    out = result;
+    return true;
 }
 
-QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
+bool decryptPrivateKey(const QByteArray& key, const QByteArray& data, QByteArray& out) {
     qCInfo(lcCse()) << "decryptStringSymmetric key: " << key;
     qCInfo(lcCse()) << "decryptStringSymmetric data: " << data;
 
@@ -249,28 +262,28 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     /* Create and initialise the context */
     if(!(ctx = EVP_CIPHER_CTX_new())) {
         qCInfo(lcCse()) << "Error creating cipher";
-        return QByteArray();
+        return false;
     }
 
     /* Initialise the decryption operation. */
     if(!EVP_DecryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL)) {
         qCInfo(lcCse()) << "Error initialising context with aes 256";
         EVP_CIPHER_CTX_free(ctx);
-        return QByteArray();
+        return false;
     }
 
     /* Set IV length. Not necessary if this is 12 bytes (96 bits) */
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), NULL)) {
         qCInfo(lcCse()) << "Error setting IV size";
         EVP_CIPHER_CTX_free(ctx);
-        return QByteArray();
+        return false;
     }
 
     /* Initialise key and IV */
     if(!EVP_DecryptInit_ex(ctx, NULL, NULL, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
         qCInfo(lcCse()) << "Error initialising key and iv";
         EVP_CIPHER_CTX_free(ctx);
-        return QByteArray();
+        return false;
     }
 
     unsigned char *ptext = (unsigned char *)calloc(cipherTXT.size() + 16, sizeof(unsigned char));
@@ -283,7 +296,7 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
         qCInfo(lcCse()) << "Could not decrypt";
         EVP_CIPHER_CTX_free(ctx);
         free(ptext);
-        return QByteArray();
+        return false;
     }
 
     /* Set expected tag value. Works in OpenSSL 1.0.1d and later */
@@ -291,7 +304,7 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
         qCInfo(lcCse()) << "Could not set tag";
         EVP_CIPHER_CTX_free(ctx);
         free(ptext);
-        return QByteArray();
+        return false;
     }
 
     /* Finalise the decryption. A positive return value indicates success,
@@ -302,7 +315,7 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
         qCInfo(lcCse()) << "Tag did not match!";
         EVP_CIPHER_CTX_free(ctx);
         free(ptext);
-        return QByteArray();
+        return false;
     }
 
     QByteArray result((char *)ptext, plen);
@@ -310,7 +323,8 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     free(ptext);
     EVP_CIPHER_CTX_free(ctx);
 
-    return QByteArray::fromBase64(result);
+    out = QByteArray::fromBase64(result);
+    return true;
 }
 
 bool decryptStringSymmetric(const QByteArray& key, const QByteArray& data, QByteArray& out) {
@@ -977,7 +991,17 @@ void ClientSideEncryption::encryptPrivateKey()
 
     auto salt = EncryptionHelper::generateRandom(40);
     auto secretKey = EncryptionHelper::generatePassword(passPhrase, salt);
-    auto cryptedText = EncryptionHelper::encryptPrivateKey(secretKey, EncryptionHelper::privateKeyToPem(_privateKey), salt);
+
+
+    QByteArray cryptedText;
+    if (!EncryptionHelper::encryptPrivateKey(
+        secretKey, EncryptionHelper::privateKeyToPem(_privateKey), salt, cryptedText)) {
+          //TODO: Verify possible errors.
+        QMessageBox::warning(nullptr, "Error", "Error, could not encrypt the private key, cannot continue");
+        qApp->quit();
+
+
+    }
 
     // Send private key to the server
 	auto job = new StorePrivateKeyApiJob(_account, baseUrl() + "private-key", this);
@@ -1036,7 +1060,15 @@ void ClientSideEncryption::decryptPrivateKey(const QByteArray &key) {
             auto pass = EncryptionHelper::generatePassword(mnemonic, salt);
             qCInfo(lcCse()) << "Generated key:" << pass;
 
-            QByteArray privateKey = EncryptionHelper::decryptPrivateKey(pass, key2);
+
+            QByteArray privateKey;
+            if (!EncryptionHelper::decryptPrivateKey(pass, key2, privateKey)) {
+              QMessageBox::warning(nullptr, "Error", "There was an issue decrypting your private key, \n"
+                "please verify your password and try again");
+              prev.clear();
+              continue;
+            }
+
             _privateKey = QSslKey(privateKey, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
 
             qCInfo(lcCse()) << "Private key: " << _privateKey.toPem();
@@ -1048,8 +1080,8 @@ void ClientSideEncryption::decryptPrivateKey(const QByteArray &key) {
                 break;
             }
         } else {
-            _mnemonic = QString();
-            _privateKey = QSslKey();
+            _mnemonic.clear();
+            _privateKey.clear();
             qCInfo(lcCse()) << "Cancelled";
             break;
         }
@@ -1172,7 +1204,12 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
      */
     QByteArray b64Metadata;
     if (!decryptMetadataKey(currB64Pass, b64Metadata)) {
-        //TODO: Handle Errors.
+        QMessageBox::warning(nullptr, "Error",
+          "Could not fetch key for current file in the metadata \n"
+          "The file will not be deleted, but it will be encrypted \n"
+          "and will not be possible to open it, please get in contact \n"
+          "with the developer with the metadata so we can analize the errors");
+        return;
     }
 
     QByteArray decryptedKey = QByteArray::fromBase64(b64Metadata);
@@ -1184,7 +1221,11 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
   if (sharing.size()) {
       QByteArray jsonb64;
       if (!decryptJsonObject(sharing, _metadataKeys.last(), jsonb64)) {
-          // TODO: Handle Errors
+          QMessageBox::warning(nullptr, "Error",
+            "Could not decrypt the metadata, please file a bug report \n"
+            "The file will not be deleted, but it will be encrypted \n"
+            "and will not be possible to open it, please get in contact \n"
+            "with the metadata so we can analize the errors.");
       }
 
       auto sharingDecrypted = QByteArray::fromBase64(jsonb64);

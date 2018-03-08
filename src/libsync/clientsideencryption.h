@@ -31,20 +31,25 @@ namespace EncryptionHelper {
     QByteArray generateRandom(int size);
     QByteArray generatePassword(const QString &wordlist, const QByteArray& salt);
 
-    QByteArray encryptPrivateKey(
+    bool encryptPrivateKey(
             const QByteArray& key,
             const QByteArray& privateKey,
-            const QByteArray &salt
+            const QByteArray& salt,
+            const QByteArray& out
     );
-    QByteArray decryptPrivateKey(
+
+    bool decryptPrivateKey(
             const QByteArray& key,
-            const QByteArray& data
+            const QByteArray& data,
+            const QByteArray& out
     );
+
     bool encryptStringSymmetric(
             const QByteArray& key,
             const QByteArray& data,
             QByteArray& out
     );
+
     bool decryptStringSymmetric(
             const QByteArray& key,
             const QByteArray& data,
