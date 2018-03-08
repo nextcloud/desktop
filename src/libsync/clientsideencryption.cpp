@@ -262,12 +262,14 @@ bool decryptPrivateKey(const QByteArray& key, const QByteArray& data, QByteArray
     /* Create and initialise the context */
     if(!(ctx = EVP_CIPHER_CTX_new())) {
         qCInfo(lcCse()) << "Error creating cipher";
+        handleErrors();
         return false;
     }
 
     /* Initialise the decryption operation. */
     if(!EVP_DecryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL)) {
         qCInfo(lcCse()) << "Error initialising context with aes 256";
+        handleErrors();
         EVP_CIPHER_CTX_free(ctx);
         return false;
     }
@@ -275,6 +277,7 @@ bool decryptPrivateKey(const QByteArray& key, const QByteArray& data, QByteArray
     /* Set IV length. Not necessary if this is 12 bytes (96 bits) */
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), NULL)) {
         qCInfo(lcCse()) << "Error setting IV size";
+        handleErrors();
         EVP_CIPHER_CTX_free(ctx);
         return false;
     }
@@ -282,6 +285,7 @@ bool decryptPrivateKey(const QByteArray& key, const QByteArray& data, QByteArray
     /* Initialise key and IV */
     if(!EVP_DecryptInit_ex(ctx, NULL, NULL, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
         qCInfo(lcCse()) << "Error initialising key and iv";
+        handleErrors();
         EVP_CIPHER_CTX_free(ctx);
         return false;
     }
@@ -294,6 +298,7 @@ bool decryptPrivateKey(const QByteArray& key, const QByteArray& data, QByteArray
      */
     if(!EVP_DecryptUpdate(ctx, ptext, &plen, (unsigned char *)cipherTXT.constData(), cipherTXT.size())) {
         qCInfo(lcCse()) << "Could not decrypt";
+        handleErrors();
         EVP_CIPHER_CTX_free(ctx);
         free(ptext);
         return false;
@@ -302,6 +307,7 @@ bool decryptPrivateKey(const QByteArray& key, const QByteArray& data, QByteArray
     /* Set expected tag value. Works in OpenSSL 1.0.1d and later */
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, tag.size(), (unsigned char *)tag.constData())) {
         qCInfo(lcCse()) << "Could not set tag";
+        handleErrors();
         EVP_CIPHER_CTX_free(ctx);
         free(ptext);
         return false;
@@ -313,6 +319,7 @@ bool decryptPrivateKey(const QByteArray& key, const QByteArray& data, QByteArray
     int len = plen;
     if (EVP_DecryptFinal_ex(ctx, ptext + plen, &len) == 0) {
         qCInfo(lcCse()) << "Tag did not match!";
+        handleErrors();
         EVP_CIPHER_CTX_free(ctx);
         free(ptext);
         return false;
@@ -590,32 +597,38 @@ bool encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray& data, QByteA
     auto ctx = EVP_PKEY_CTX_new(publicKey, ENGINE_get_default_RSA());
     if (!ctx) {
         qCInfo(lcCse()) << "Could not initialize the pkey context.";
+        handleErrors();
         return false;
     }
 
     if (EVP_PKEY_encrypt_init(ctx) != 1) {
         qCInfo(lcCse()) << "Error initilaizing the encryption.";
+        handleErrors();
         return false;
     }
 
     if (EVP_PKEY_CTX_set_rsa_padding(ctx, RSA_PKCS1_OAEP_PADDING) <= 0) {
         qCInfo(lcCse()) << "Error setting the encryption padding.";
+        handleErrors();
         return false;
     }
 
     if (EVP_PKEY_CTX_set_rsa_oaep_md(ctx, EVP_sha256()) <= 0) {
         qCInfo(lcCse()) << "Error setting OAEP SHA 256";
+        handleErrors();
         return false;
     }
 
     if (EVP_PKEY_CTX_set_rsa_mgf1_md(ctx, EVP_sha256()) <= 0) {
         qCInfo(lcCse()) << "Error setting MGF1 padding";
+        handleErrors();
         return false;
     }
 
     size_t outLen = 0;
     if (EVP_PKEY_encrypt(ctx, NULL, &outLen, (unsigned char *)data.constData(), data.size()) != 1) {
         qCInfo(lcCse()) << "Error retrieving the size of the encrypted data";
+        handleErrors();
         return false;
     } else {
         qCInfo(lcCse()) << "Encrption Length:" << outLen;
@@ -624,11 +637,13 @@ bool encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray& data, QByteA
     unsigned char *out = (uchar*) OPENSSL_malloc(outLen);
     if (!out) {
         qCInfo(lcCse()) << "Error requesting memory for the encrypted contents";
+        handleErrors();
         return false;
     }
 
     if (EVP_PKEY_encrypt(ctx, out, &outLen, (unsigned char *)data.constData(), data.size()) != 1) {
         qCInfo(lcCse()) << "Could not encrypt key." << err;
+        handleErrors();
         return false;
     }
 
@@ -863,16 +878,19 @@ void ClientSideEncryption::generateKeyPair()
 
     if(EVP_PKEY_keygen_init(ctx) <= 0) {
         qCInfo(lcCse()) << "Couldn't initialize the key generator";
+        handleErrors();
         return;
     }
 
     if(EVP_PKEY_CTX_set_rsa_keygen_bits(ctx, rsaKeyLen) <= 0) {
         qCInfo(lcCse()) << "Couldn't initialize the key generator bits";
+        handleErrors();
         return;
     }
 
     if(EVP_PKEY_keygen(ctx, &localKeyPair) <= 0) {
         qCInfo(lcCse()) << "Could not generate the key";
+        handleErrors();
         return;
     }
     EVP_PKEY_CTX_free(ctx);
@@ -882,6 +900,7 @@ void ClientSideEncryption::generateKeyPair()
     BIO *privKey = BIO_new(BIO_s_mem());
     if (PEM_write_bio_PrivateKey(privKey, localKeyPair, NULL, NULL, 0, NULL, NULL) <= 0) {
         qCInfo(lcCse()) << "Could not read private key from bio.";
+        handleErrors();
         return;
     }
     QByteArray key = BIO2ByteArray(privKey);
@@ -923,6 +942,7 @@ void ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
         ret = X509_NAME_add_entry_by_txt(x509_name, v.first,  MBSTRING_ASC, (ucharp) v.second, -1, -1, 0);
         if (ret != 1) {
             qCInfo(lcCse()) << "Error Generating the Certificate while adding" << v.first << v.second;
+            handleErrors();
             X509_REQ_free(x509_req);
             return;
         }
@@ -931,6 +951,7 @@ void ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
     ret = X509_REQ_set_pubkey(x509_req, keyPair);
     if (ret != 1){
         qCInfo(lcCse()) << "Error setting the public key on the csr";
+        handleErrors();
         X509_REQ_free(x509_req);
         return;
     }
@@ -938,6 +959,7 @@ void ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
     ret = X509_REQ_sign(x509_req, keyPair, EVP_sha1());    // return x509_req->signature->length
     if (ret <= 0){
         qCInfo(lcCse()) << "Error setting the public key on the csr";
+        handleErrors();
         X509_REQ_free(x509_req);
         return;
     }
@@ -1226,6 +1248,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
             "The file will not be deleted, but it will be encrypted \n"
             "and will not be possible to open it, please get in contact \n"
             "with the metadata so we can analize the errors.");
+          return;
       }
 
       auto sharingDecrypted = QByteArray::fromBase64(jsonb64);
@@ -1256,7 +1279,12 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
 
         auto encryptedFile = fileObj["encrypted"].toString().toLocal8Bit();
         if (!decryptJsonObject(encryptedFile, key, jsonObjectB64)) {
-            //TODO: Handle Errors
+          QMessageBox::warning(nullptr, "Error",
+            "Could not decrypt the metadata, please file a bug report \n"
+            "The file will not be deleted, but it will be encrypted \n"
+            "and will not be possible to open it, please get in contact \n"
+            "with the metadata so we can analize the errors.\n");
+          return;
         }
 
         auto decryptedFile = QByteArray::fromBase64(jsonObjectB64);
@@ -1351,7 +1379,11 @@ QByteArray FolderMetadata::encryptedMetadata() {
          */
         QByteArray encryptedKey;
         if (!encryptMetadataKey(it.value().toBase64(), encryptedKey)) {
-            //TODO: Handle Errors
+          QMessageBox::warning(nullptr, "Error",
+            "Could not encrypt the metadata, please file a bug report \n"
+            "this means that we will not be able to setup this file nor upload it.\n"
+            "please get in contact so can analize the errors.\n");
+          return {};
         }
 
         metadataKeys.insert(QString::number(it.key()), QString(encryptedKey));
@@ -1385,7 +1417,11 @@ QByteArray FolderMetadata::encryptedMetadata() {
 
         QByteArray encryptedData;
         if (!encryptJsonObject(encryptedDoc.toJson(QJsonDocument::Compact), _metadataKeys.last(), encryptedData)) {
-            //TODO: Handle Errors
+          QMessageBox::warning(nullptr, "Error",
+            "Could not encrypt the metadata, please file a bug report \n"
+            "this means that we will not be able to setup this file nor upload it.\n"
+            "please get in contact so can analize the errors.\n");
+          return {};
         }
 
         QString encryptedEncrypted = encryptedData;
@@ -1447,12 +1483,14 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
     /* Create and initialise the context */
     if(!(ctx = EVP_CIPHER_CTX_new())) {
         qCInfo(lcCse()) << "Could not create context";
+        handleErrors();
         return false;
     }
 
     /* Initialise the decryption operation. */
     if(!EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
         qCInfo(lcCse()) << "Could not init cipher";
+        handleErrors();
         return false;
     }
 
@@ -1461,12 +1499,14 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
     /* Set IV length. */
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), NULL)) {
         qCInfo(lcCse()) << "Could not set iv length";
+        handleErrors();
         return false;
     }
 
     /* Initialise key and IV */
     if(!EVP_EncryptInit_ex(ctx, NULL, NULL, (const unsigned char *)key.constData(), (const unsigned char *)iv.constData())) {
         qCInfo(lcCse()) << "Could not set key and iv";
+        handleErrors();
         return false;
     }
 
@@ -1480,12 +1520,14 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
 
         if (data.size() == 0) {
             qCInfo(lcCse()) << "Could not read data from file";
+            handleErrors();
             return false;
         }
 
         qCDebug(lcCse) << "Encrypting " << data;
         if(!EVP_EncryptUpdate(ctx, out, &len, (unsigned char *)data.constData(), data.size())) {
             qCInfo(lcCse()) << "Could not encrypt";
+            handleErrors();
             return false;
         }
 
@@ -1495,6 +1537,7 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
 
     if(1 != EVP_EncryptFinal_ex(ctx, out, &len)) {
         qCInfo(lcCse()) << "Could finalize encryption";
+        handleErrors();
         return false;
     }
     output->write((char *)out, len);
@@ -1533,12 +1576,14 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
     /* Create and initialise the context */
     if(!(ctx = EVP_CIPHER_CTX_new())) {
         qCInfo(lcCse()) << "Could not create context";
+        handleErrors();
         return false;
     }
 
     /* Initialise the decryption operation. */
     if(!EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
         qCInfo(lcCse()) << "Could not init cipher";
+        handleErrors();
         return false;
     }
 
@@ -1547,12 +1592,14 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
     /* Set IV length. */
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,  iv.size(), NULL)) {
         qCInfo(lcCse()) << "Could not set iv length";
+        handleErrors();
         return false;
     }
 
     /* Initialise key and IV */
     if(!EVP_DecryptInit_ex(ctx, NULL, NULL, (const unsigned char *) key.constData(), (const unsigned char *) iv.constData())) {
         qCInfo(lcCse()) << "Could not set key and iv";
+        handleErrors();
         return false;
     }
 
@@ -1577,6 +1624,7 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
 
         if(!EVP_DecryptUpdate(ctx, out, &len, (unsigned char *)data.constData(), data.size())) {
             qCInfo(lcCse()) << "Could not decrypt";
+            handleErrors();
             return false;
         }
 
@@ -1588,11 +1636,13 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
     /* Set expected tag value. Works in OpenSSL 1.0.1d and later */
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, tag.size(), (unsigned char *)tag.constData())) {
         qCInfo(lcCse()) << "Could not set expected tag";
+        handleErrors();
         return false;
     }
 
     if(1 != EVP_DecryptFinal_ex(ctx, out, &len)) {
         qCInfo(lcCse()) << "Could finalize decryption";
+        handleErrors();
         return false;
     }
     output->write((char *)out, len);
