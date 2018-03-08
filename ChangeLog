@@ -1,7 +1,7 @@
 ChangeLog
 =========
 
-version 2.4.1 (2017-03-05)
+version 2.4.1 (2018-03-05)
 * Ignore files with file names that can't be encoded for the filesystem (#6287, #5676, #5719)
 * Issues: Speed up insertion and add hard upper limit (#6272)
 * Notifications: Fix "Dismiss" action
