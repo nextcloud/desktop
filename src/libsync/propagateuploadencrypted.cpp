@@ -105,11 +105,14 @@ void PropagateUploadEncrypted::slotFolderLockedSuccessfully(const QByteArray& fi
 
   auto job = new GetMetadataApiJob(_propagator->account(), _folderId);
   connect(job, &GetMetadataApiJob::jsonReceived,
-          this, &PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived);
+          this, &PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived);
+  connect(job, &GetMetadataApiJob::error,
+          this, &PropagateUploadEncrypted::slotFolderEncryptedMetadataReceivedError);
+
   job->start();
 }
 
-void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDocument &json, int statusCode)
+void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode)
 {
   qCDebug(lcPropagateUploadEncrypted) << "Metadata Received, Preparing it for the new file." << json.toVariant();
 
@@ -198,19 +201,17 @@ void PropagateUploadEncrypted::slotUpdateMetadataSuccess(const QByteArray& fileI
                  outputInfo.size());
 }
 
+void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceivedError(const QByteArray& fileId, int statusCode)
+{
+    qCDebug(lcPropagateUploadEncrypted) << "There was an error retrieving the metadata, unlocking the folder";
+    qCDebug(lcPropagateUploadEncrypted) << "and cancelling the upload of this file temporarely.";
+    emit error();
+}
+
 void PropagateUploadEncrypted::slotUpdateMetadataError(const QByteArray& fileId, int httpErrorResponse)
 {
-  qCDebug(lcPropagateUploadEncrypted) << "Update metadata error for folder" << fileId << "with error" << httpErrorResponse;
-}
-
-void PropagateUploadEncrypted::slotUnlockEncryptedFolderSuccess(const QByteArray& fileId)
-{
-    qCDebug(lcPropagateUploadEncrypted) << "Unlock Job worked for folder " << fileId;
-}
-
-void PropagateUploadEncrypted::slotUnlockEncryptedFolderError(const QByteArray& fileId, int httpStatusCode)
-{
-  qCDebug(lcPropagateUploadEncrypted) << "There was an error unlocking " << fileId << httpStatusCode;
+    qCDebug(lcPropagateUploadEncrypted) << "Update metadata error for folder" << fileId << "with error" << httpErrorResponse;
+    emit error();
 }
 
 void PropagateUploadEncrypted::slotFolderLockedError(const QByteArray& fileId, int httpErrorCode)
@@ -222,12 +223,15 @@ void PropagateUploadEncrypted::slotFolderLockedError(const QByteArray& fileId, i
       qCDebug(lcPropagateUploadEncrypted) << "Error locking the folder while no other update is locking it up.";
       qCDebug(lcPropagateUploadEncrypted) << "Perhaps another client locked it.";
       qCDebug(lcPropagateUploadEncrypted) << "Abort";
+      emit error();
       return;
     }
 
     // Perhaps I should remove the elapsed timer if the lock is from this client?
+    // or increase the timer to more than 5 minutes?
     if (_folderLockFirstTry.elapsed() > /* five minutes */ 1000 * 60 * 5 ) {
       qCDebug(lcPropagateUploadEncrypted) << "One minute passed, ignoring more attemps to lock the folder.";
+      emit error();
       return;
     }
     slotTryLock(fileId);
@@ -239,11 +243,13 @@ void PropagateUploadEncrypted::slotFolderLockedError(const QByteArray& fileId, i
 void PropagateUploadEncrypted::slotFolderEncryptedIdError(QNetworkReply *r)
 {
   qCDebug(lcPropagateUploadEncrypted) << "Error retrieving the Id of the encrypted folder.";
+  emit error();
 }
 
-void PropagateUploadEncrypted::slotFolderEncryptedStatusError(int error)
+void PropagateUploadEncrypted::slotFolderEncryptedStatusError(int httpError)
 {
-    qCDebug(lcPropagateUploadEncrypted) << "Failed to retrieve the status of the folders." << error;
+    qCDebug(lcPropagateUploadEncrypted) << "Failed to retrieve the status of the folders." << httpError;
+    emit error();
 }
 
 } // namespace OCC

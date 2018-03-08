@@ -178,7 +178,10 @@ void PropagateUploadFileCommon::start()
       connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::finalized,
         this, &PropagateUploadFileCommon::setupEncryptedFile);
       connect(_uploadEncryptedHelper, &PropagateUploadEncrypted::error,
-        []{ qCDebug(lcPropagateUpload) << "Error setting up encryption."; });
+        [this]{
+            qCDebug(lcPropagateUpload) << "Error setting up encryption.";
+            abortWithError(SyncFileItem::Status::FatalError, "Could not setup enrypted file.");
+        });
       _uploadEncryptedHelper->start();
    } else {
       setupUnencryptedFile();

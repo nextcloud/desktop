@@ -82,6 +82,7 @@ namespace {
         ERR_print_errors(bioErrors); // This line is not printing anything.
         encryptionError = BIO2ByteArray(bioErrors);
         BIO_free_all(bioErrors);
+        qCInfo(lcCse()) << encryptionError;
     }
 }
 
@@ -1214,7 +1215,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
 
   QJsonDocument debugHelper;
   debugHelper.setObject(metadataKeys);
-  qCDebug(lcCse) << "Keys: " << debugHelper.toJson(QJsonDocument::Compact);
+  qCInfo(lcCseMetadata()) << "Keys: " << debugHelper.toJson(QJsonDocument::Compact);
 
   // Iterate over the document to store the keys. I'm unsure that the keys are in order,
   // perhaps it's better to store a map instead of a vector, perhaps this just doesn't matter.
@@ -1225,6 +1226,9 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
      * Now we should be compatible with Android and IOS. Maybe we can fix it later.
      */
     QByteArray b64Metadata;
+
+    qCInfo(lcCseMetadata()) << "Current key being decrypted" << currB64Pass;
+
     if (!decryptMetadataKey(currB64Pass, b64Metadata)) {
         QMessageBox::warning(nullptr, "Error",
           "Could not fetch key for current file in the metadata \n"
@@ -1239,7 +1243,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
   }
 
   // Cool, We actually have the key, we can decrypt the rest of the metadata.
-  qCDebug(lcCse) << "Sharing: " << sharing;
+  qCInfo(lcCse) << "Sharing: " << sharing;
   if (sharing.size()) {
       QByteArray jsonb64;
       if (!decryptJsonObject(sharing, _metadataKeys.last(), jsonb64)) {
