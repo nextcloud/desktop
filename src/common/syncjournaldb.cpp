@@ -35,11 +35,11 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcDb, "sync.database", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcDb, "nextcloud.sync.database", QtInfoMsg)
 
 #define GET_FILE_RECORD_QUERY \
         "SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize," \
-        "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum" \
+        "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum, e2eMangledName " \
         " FROM metadata" \
         "  LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
 
@@ -55,6 +55,7 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._fileSize = query.int64Value(7);
     rec._serverHasIgnoredFiles = (query.intValue(8) > 0);
     rec._checksumHeader = query.baValue(9);
+    rec._e2eMangledName = query.baValue(10);
 }
 
 static QString defaultJournalMode(const QString &dbPath)
@@ -584,8 +585,8 @@ bool SyncJournalDb::checkConnect()
 
     _setFileRecordQuery.reset(new SqlQuery(_db));
     if (_setFileRecordQuery->prepare("INSERT OR REPLACE INTO metadata "
-                                     "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, contentChecksum, contentChecksumTypeId) "
-                                     "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16);")) {
+                                     "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, contentChecksum, contentChecksumTypeId, e2eMangledName) "
+                                     "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17);")) {
         return sqlFail("prepare _setFileRecordQuery", *_setFileRecordQuery);
     }
 
@@ -791,7 +792,7 @@ bool SyncJournalDb::updateDatabaseStructure()
 
 bool SyncJournalDb::updateMetadataTableStructure()
 {
-    QStringList columns = tableColumns("metadata");
+    const QStringList columns = tableColumns("metadata");
     bool re = true;
 
     // check if the file_id column is there and create it if not
@@ -880,6 +881,16 @@ bool SyncJournalDb::updateMetadataTableStructure()
             re = false;
         }
         commitInternal("update database structure: add contentChecksumTypeId col");
+    }
+
+    if (!columns.contains(QLatin1String("e2eMangledName"))) {
+        SqlQuery query(_db);
+        query.prepare("ALTER TABLE metadata ADD COLUMN e2eMangledName TEXT;");
+        if (!query.exec()) {
+            sqlFail("updateMetadataTableStructure: add e2eMangledName column", query);
+            re = false;
+        }
+        commitInternal("update database structure: add e2eMangledName col");
     }
 
     if (!tableColumns("uploadinfo").contains("contentChecksum")) {
@@ -1040,6 +1051,7 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
         _setFileRecordQuery->bindValue(14, record._serverHasIgnoredFiles ? 1 : 0);
         _setFileRecordQuery->bindValue(15, checksum);
         _setFileRecordQuery->bindValue(16, contentChecksumTypeId);
+        _setFileRecordQuery->bindValue(17, record._e2eMangledName);
 
         if (!_setFileRecordQuery->exec()) {
             return false;
@@ -1359,6 +1371,7 @@ bool SyncJournalDb::setFileRecordMetadata(const SyncJournalFileRecord &record)
     existing._remotePerm = record._remotePerm;
     existing._fileSize = record._fileSize;
     existing._serverHasIgnoredFiles = record._serverHasIgnoredFiles;
+    existing._e2eMangledName = record._e2eMangledName;
     return setFileRecord(existing);
 }
 

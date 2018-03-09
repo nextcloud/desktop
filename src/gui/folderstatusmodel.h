@@ -37,6 +37,8 @@ class FolderStatusModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
+    enum {FileIdRole = Qt::UserRole+1};
+
     FolderStatusModel(QObject *parent = 0);
     ~FolderStatusModel();
     void setAccountState(const AccountState *accountState);
@@ -79,9 +81,9 @@ public:
         bool _hasError; // If the last fetching job ended in an error
         QString _lastErrorString;
         bool _fetchingLabel; // Whether a 'fetching in progress' label is shown.
-
         // undecided folders are the big folders that the user has not accepted yet
         bool _isUndecided;
+        QByteArray _fileId; // the file id for this folder on the server.
 
         Qt::CheckState _checked;
 
@@ -118,7 +120,7 @@ public:
         FetchLabel };
     ItemType classify(const QModelIndex &index) const;
     SubFolderInfo *infoForIndex(const QModelIndex &index) const;
-
+    SubFolderInfo *infoForFileId(const QByteArray &fileId, SubFolderInfo *info = nullptr) const;
     // If the selective sync check boxes were changed
     bool isDirty() { return _dirty; }
 
@@ -168,7 +170,6 @@ signals:
 
     // Tell the view that this item should be expanded because it has an undecided item
     void suggestExpand(const QModelIndex &);
-
     friend struct SubFolderInfo;
 };
 

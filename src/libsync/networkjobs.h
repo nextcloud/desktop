@@ -17,6 +17,8 @@
 #define NETWORKJOBS_H
 
 #include "abstractnetworkjob.h"
+
+#include <QBuffer>
 #include <QUrlQuery>
 #include <functional>
 
@@ -44,6 +46,32 @@ private slots:
 };
 
 /**
+ * @brief sends a DELETE http request to a url.
+ *
+ * See Nextcloud API usage for the possible DELETE requests.
+ *
+ * This does *not* delete files, it does a http request.
+ */
+class OWNCLOUDSYNC_EXPORT DeleteApiJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    explicit DeleteApiJob(AccountPtr account, const QString &path, QObject *parent = 0);
+    void start() override;
+
+signals:
+    void result(int httpCode);
+
+private slots:
+    virtual bool finished() override;
+};
+
+struct ExtraFolderInfo {
+    QByteArray fileId;
+    qint64 size = -1;
+};
+
+/**
  * @brief The LsColJob class
  * @ingroup libsync
  */
@@ -53,7 +81,9 @@ class OWNCLOUDSYNC_EXPORT LsColXMLParser : public QObject
 public:
     explicit LsColXMLParser();
 
-    bool parse(const QByteArray &xml, QHash<QString, qint64> *sizes, const QString &expectedPath);
+    bool parse(const QByteArray &xml,
+               QHash<QString, ExtraFolderInfo> *sizes,
+               const QString &expectedPath);
 
 signals:
     void directoryListingSubfolders(const QStringList &items);
@@ -69,7 +99,7 @@ public:
     explicit LsColJob(AccountPtr account, const QString &path, QObject *parent = 0);
     explicit LsColJob(AccountPtr account, const QUrl &url, QObject *parent = 0);
     void start() Q_DECL_OVERRIDE;
-    QHash<QString, qint64> _sizes;
+    QHash<QString, ExtraFolderInfo> _folderInfos;
 
     /**
      * Used to specify which properties shall be retrieved.

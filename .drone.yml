@@ -79,7 +79,6 @@ pipeline:
         when:
             matrix:
                 TESTS: qt-5.9
-
     AppImage-5.9:
         image: nextcloudci/client-appimage-ci:client-appimage-ci-8
         commands:

@@ -43,7 +43,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcConfigFile, "sync.configfile", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcConfigFile, "nextcloud.sync.configfile", QtInfoMsg)
 
 //static const char caCertsKeyC[] = "CaCertificates"; only used from account.cpp
 static const char remotePollIntervalC[] = "remotePollInterval";

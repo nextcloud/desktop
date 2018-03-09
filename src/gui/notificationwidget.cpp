@@ -23,7 +23,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcNotifications, "gui.notifications", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcNotifications, "nextcloud.gui.notifications", QtInfoMsg)
 
 NotificationWidget::NotificationWidget(QWidget *parent)
     : QWidget(parent)

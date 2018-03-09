@@ -24,6 +24,8 @@
 #include "propagatorjobs.h"
 #include "common/checksums.h"
 #include "common/asserts.h"
+#include "clientsideencryptionjobs.h"
+#include "propagatedownloadencrypted.h"
 
 #include <QLoggingCategory>
 #include <QNetworkAccessManager>
@@ -37,8 +39,8 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcGetJob, "sync.networkjob.get", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcPropagateDownload, "sync.propagator.download", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcGetJob, "nextcloud.sync.networkjob.get", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropagateDownload, "nextcloud.sync.propagator.download", QtInfoMsg)
 
 // Always coming in with forward slashes.
 // In csync_excluded_no_ctx we ignore all files with longer than 254 chars
@@ -344,8 +346,27 @@ void PropagateDownloadFile::start()
 {
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
+    _isEncrypted = false;
 
     qCDebug(lcPropagateDownload) << _item->_file << propagator()->_activeJobList.count();
+
+    if (propagator()->account()->capabilities().clientSideEncryptionAvaliable()) {
+        _downloadEncryptedHelper = new PropagateDownloadEncrypted(propagator(), _item);
+        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::folderStatusNotEncrypted, [this] {
+          startAfterIsEncryptedIsChecked();
+        });
+        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::folderStatusEncrypted, [this] {
+          _isEncrypted = true;
+          startAfterIsEncryptedIsChecked();
+        });
+        _downloadEncryptedHelper->start();
+    } else {
+        startAfterIsEncryptedIsChecked();
+    }
+}
+
+void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
+{
     _stopwatch.start();
 
     if (_deleteExisting) {
@@ -800,7 +821,16 @@ void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumTy
 {
     _item->_checksumHeader = makeChecksumHeader(checksumType, checksum);
 
-    downloadFinished();
+    if (_isEncrypted) {
+        if (_downloadEncryptedHelper->decryptFile(_tmpFile)) {
+          downloadFinished();
+        } else {
+          done(SyncFileItem::NormalError, _downloadEncryptedHelper->errorString());
+        }
+
+    } else {
+        downloadFinished();
+    }
 }
 
 void PropagateDownloadFile::downloadFinished()
@@ -904,7 +934,13 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }
-    propagator()->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
+
+    if (_isEncrypted) {
+        propagator()->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
+    } else {
+        propagator()->_journal->setDownloadInfo(_item->_encryptedFileName, SyncJournalDb::DownloadInfo());
+    }
+
     propagator()->_journal->commit("download file start2");
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 

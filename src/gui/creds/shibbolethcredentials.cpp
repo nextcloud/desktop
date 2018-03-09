@@ -39,7 +39,7 @@ using namespace QKeychain;
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcShibboleth, "gui.credentials.shibboleth", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcShibboleth, "nextcloud.gui.credentials.shibboleth", QtInfoMsg)
 
 namespace {
 

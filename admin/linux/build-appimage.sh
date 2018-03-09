@@ -5,9 +5,6 @@ set -xe
 mkdir /app
 mkdir /build
 
-export CC=/usr/bin/gcc-7
-export CXX=/usr/bin/g++-7
-
 #Set Qt-5.9
 export QT_BASE_DIR=/opt/qt59
 export QTDIR=$QT_BASE_DIR

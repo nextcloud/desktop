@@ -30,7 +30,7 @@ using namespace QKeychain;
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcHttpCredentialsGui, "sync.credentials.http.gui", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcHttpCredentialsGui, "nextcloud.sync.credentials.http.gui", QtInfoMsg)
 
 void HttpCredentialsGui::askFromUser()
 {
@@ -139,22 +139,21 @@ void HttpCredentialsGui::showDialog()
 QString HttpCredentialsGui::requestAppPasswordText(const Account *account)
 {
     int version = account->serverVersionInt();
-    QString path;
+    auto url = account->url().toString();
+    if (url.endsWith('/'))
+        url.chop(1);
 
     if (version >= Account::makeServerVersion(13, 0, 0)) {
-        path = QLatin1String("index.php/settings/user/security");
+        url += QLatin1String("/index.php/settings/user/security");
     } else if (version >= Account::makeServerVersion(12, 0, 0)) {
-        path = QLatin1String("index.php/settings/personal#security");
+        url += QLatin1String("/index.php/settings/personal#security");
     } else if (version >= Account::makeServerVersion(11, 0, 0)) {
-        path = QLatin1String("index.php/settings/personal#apppasswords");
+        url += QLatin1String("/index.php/settings/personal#apppasswords");
     } else {
         return QString();
     }
 
-    auto baseUrl = account->url().toString();
-    if (baseUrl.endsWith('/'))
-        baseUrl.chop(1);
     return tr("<a href=\"%1\">Click here</a> to request an app password from the web interface.")
-        .arg(baseUrl + path);
+        .arg(url);
 }
 } // namespace OCC

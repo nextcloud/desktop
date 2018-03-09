@@ -23,7 +23,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcStatusTracker, "sync.statustracker", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcStatusTracker, "nextcloud.sync.statustracker", QtInfoMsg)
 
 static int pathCompare( const QString& lhs, const QString& rhs )
 {

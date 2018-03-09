@@ -1,5 +1,5 @@
-set( APPLICATION_NAME       "Nextcloud" )
-set( APPLICATION_SHORTNAME  "Nextcloud" )
+set( APPLICATION_NAME       "Nextcloud-e2e" )
+set( APPLICATION_SHORTNAME  "Nextcloud-e2e" )
 set( APPLICATION_EXECUTABLE "nextcloud" )
 set( APPLICATION_DOMAIN     "nextcloud.com" )
 set( APPLICATION_VENDOR     "Nextcloud GmbH" )

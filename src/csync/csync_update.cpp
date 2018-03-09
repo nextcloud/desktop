@@ -52,7 +52,7 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
 
-Q_LOGGING_CATEGORY(lcUpdate, "sync.csync.updater", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcUpdate, "nextcloud.sync.csync.updater", QtInfoMsg)
 
 #ifdef NO_RENAME_EXTENSION
 /* Return true if the two path have the same extension. false otherwise. */
@@ -191,6 +191,12 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
       return -1;
   }
+
+  /*
+   * When file is encrypted it's phash (path hash) will not match the local file phash,
+   * we could match the e2eMangledName but that might be slow wihout index, and it's
+   * not UNIQUE at the moment.
+   */
 
   if(base.isValid()) { /* there is an entry in the database */
       /* we have an update! */
@@ -351,7 +357,16 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                   csync_rename_record(ctx, base._path, fs->path);
               }
 
-              qCDebug(lcUpdate, "remote rename detected based on fileid %s --> %s", base._path.constData(), fs->path.constData());
+              /* A remote rename can also mean Encryption Mangled Name.
+               * if we find one of those in the database, we ignore it.
+               */
+              if (!base._e2eMangledName.isEmpty()) {
+                  qCWarning(lcUpdate, "Encrypted file can not rename");
+                  done = true;
+                  return;
+              }
+
+              qCDebug(lcUpdate, "remote rename detected based on fileid %s --> %s", qPrintable(base._path), qPrintable(fs->path.constData()));
               fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
               done = true;
           };

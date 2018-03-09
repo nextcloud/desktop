@@ -182,6 +182,8 @@ signals:
     void finishedSignal();
 };
 
+class PropagateUploadEncrypted;
+
 /**
  * @brief The PropagateUploadFileCommon class is the code common between all chunking algorithms
  * @ingroup libsync
@@ -211,6 +213,20 @@ protected:
     bool _finished BITFIELD(1); /// Tells that all the jobs have been finished
     bool _deleteExisting BITFIELD(1);
     quint64 _abortCount; /// Keep track of number of aborted items
+
+    /* This is a minified version of the SyncFileItem,
+     * that holds only the specifics about the file that's
+     * being uploaded.
+     *
+     * This is needed if we wanna apply changes on the file
+     * that's being uploaded while keeping the original on disk.
+     */
+    struct UploadFileInfo {
+      QString _file; /// I'm still unsure if I should use a SyncFilePtr here.
+      QString _path; /// the full path on disk.
+      quint64 _size;
+    };
+    UploadFileInfo _fileToUpload;
     QByteArray _transmissionChecksumHeader;
 
 public:
@@ -219,6 +235,8 @@ public:
         , _finished(false)
         , _deleteExisting(false)
         , _abortCount(0)
+        , _uploadEncryptedHelper(0)
+        , _uploadingEncrypted(false)
     {
     }
 
@@ -230,8 +248,12 @@ public:
      */
     void setDeleteExisting(bool enabled);
 
+    /* start should setup the file, path and size that will be send to the server */
     void start() Q_DECL_OVERRIDE;
-
+    void setupEncryptedFile(const QString& path, const QString& filename, quint64 size);
+    void setupUnencryptedFile();
+    void startUploadFile();
+    void callUnlockFolder();
     bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return _item->_size < propagator()->smallFileSize(); }
 
 private slots:
@@ -277,6 +299,9 @@ protected:
 
     // Bases headers that need to be sent with every chunk
     QMap<QByteArray, QByteArray> headers();
+private:
+  PropagateUploadEncrypted *_uploadEncryptedHelper;
+  bool _uploadingEncrypted;
 };
 
 /**

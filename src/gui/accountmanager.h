@@ -97,6 +97,9 @@ public slots:
     /// Saves account state data, not including the account
     void saveAccountState(AccountState *a);
 
+    /// Display a Box with the mnemonic so the user can copy it to a safe place.
+    static void displayMnemonic(const QString& mnemonic);
+
 
 Q_SIGNALS:
     void accountAdded(AccountState *account);

@@ -22,7 +22,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcServerNotification, "gui.servernotification", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcServerNotification, "nextcloud.gui.servernotification", QtInfoMsg)
 
 const QString notificationsPath = QLatin1String("ocs/v2.php/apps/notifications/api/v1/notifications");
 

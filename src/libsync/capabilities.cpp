@@ -15,9 +15,13 @@
 #include "capabilities.h"
 
 #include <QVariantMap>
+#include <QLoggingCategory>
+
 #include <QDebug>
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcServerCapabilities, "nextcloud.sync.server.capabilities", QtInfoMsg)
 
 
 Capabilities::Capabilities(const QVariantMap &capabilities)
@@ -78,6 +82,14 @@ bool Capabilities::sharePublicLinkMultiple() const
 bool Capabilities::shareResharing() const
 {
     return _capabilities["files_sharing"].toMap()["resharing"].toBool();
+}
+
+bool Capabilities::clientSideEncryptionAvaliable() const
+{
+    auto it = _capabilities.constFind(QStringLiteral("end-to-end-encryption"));
+    if (it != _capabilities.constEnd())
+        return (*it).toMap().value(QStringLiteral("enabled"), false).toBool();
+    return false;
 }
 
 bool Capabilities::notificationsAvailable() const

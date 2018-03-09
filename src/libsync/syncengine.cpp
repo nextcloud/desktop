@@ -53,7 +53,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcEngine, "sync.engine", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcEngine, "nextcloud.sync.engine", QtInfoMsg)
 
 static const int s_touchedFilesMaxAgeMs = 15 * 1000;
 bool SyncEngine::s_anySyncRunning = false;
