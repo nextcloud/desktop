@@ -59,6 +59,7 @@ set(client_SRCS
     logbrowser.cpp
     navigationpanehelper.cpp
     networksettings.cpp
+    ocsnavigationappsjob.cpp
     ocsjob.cpp
     ocssharejob.cpp
     ocsshareejob.cpp

@@ -14,6 +14,7 @@
 
 #include "application.h"
 #include "owncloudgui.h"
+#include "ocsnavigationappsjob.h"
 #include "theme.h"
 #include "folderman.h"
 #include "configfile.h"
@@ -51,9 +52,14 @@
 #include <QX11Info>
 #endif
 
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+
 namespace OCC {
 
 const char propertyAccountC[] = "oc_account";
+const char propertyMenuC[] = "oc_account_menu";
 
 ownCloudGui::ownCloudGui(Application *parent)
     : QObject(parent)
@@ -565,7 +571,6 @@ void ownCloudGui::updateContextMenu()
     }
     _accountMenus.clear();
 
-
     auto accountList = AccountManager::instance()->accounts();
 
     bool isConfigured = (!accountList.isEmpty());
@@ -592,9 +597,11 @@ void ownCloudGui::updateContextMenu()
             _contextMenu->addMenu(accountMenu);
 
             addAccountContextMenu(account, accountMenu, true);
+            fetchNavigationApps(account, accountMenu);
         }
     } else if (accountList.count() == 1) {
         addAccountContextMenu(accountList.first(), _contextMenu.data(), false);
+        fetchNavigationApps(accountList.first(), _contextMenu.data());
     }
 
     _contextMenu->addSeparator();
@@ -729,17 +736,70 @@ void ownCloudGui::setupActions()
     _actionQuit = new QAction(tr("Quit %1").arg(Theme::instance()->appNameGUI()), this);
     QObject::connect(_actionQuit, SIGNAL(triggered(bool)), _app, SLOT(quit()));
 
-    _actionLogin = new QAction(tr("Log in..."), this);
-    connect(_actionLogin, &QAction::triggered, this, &ownCloudGui::slotLogin);
-    _actionLogout = new QAction(tr("Log out"), this);
-    connect(_actionLogout, &QAction::triggered, this, &ownCloudGui::slotLogout);
-
     if (_app->debugMode()) {
         _actionCrash = new QAction(tr("Crash now", "Only shows in debug mode to allow testing the crash handler"), this);
         connect(_actionCrash, &QAction::triggered, _app, &Application::slotCrash);
     } else {
         _actionCrash = 0;
     }
+}
+
+void ownCloudGui::fetchNavigationApps(AccountStatePtr account, QMenu *accountMenu){
+    OcsNavigationAppsJob *job = new OcsNavigationAppsJob(account->account());
+    job->setProperty(propertyAccountC, QVariant::fromValue(account->account()));
+    job->setProperty(propertyMenuC, QVariant::fromValue(accountMenu));
+    connect(job, &OcsNavigationAppsJob::appsJobFinished, this, &ownCloudGui::slotNavigationAppsFetched);
+    connect(job, &OcsNavigationAppsJob::ocsError, this, &ownCloudGui::slotOcsError);
+    job->getNavigationApps();
+}
+
+void ownCloudGui::slotNavigationAppsFetched(const QJsonDocument &reply)
+{
+    if(!reply.isEmpty()){
+        auto element = reply.object().value("ocs").toObject().value("data");
+        auto navLinks = element.toArray();
+        if(navLinks.size() > 0){
+            if(auto account = qvariant_cast<AccountPtr>(sender()->property(propertyAccountC))){
+                if(QMenu *accountMenu = qvariant_cast<QMenu*>(sender()->property(propertyMenuC))){
+
+                    // when there is only one account add the nav links above the settings
+                    QAction *actionBefore = _actionSettings;
+
+                    // when there is more than one account add the nav links above pause/unpause folder or logout action
+                    if(AccountManager::instance()->accounts().size() > 1){
+                        foreach(QAction *action, accountMenu->actions()){
+
+                            // pause/unpause folder and logout actions have propertyAccountC
+                            if(auto actionAccount = qvariant_cast<AccountStatePtr>(action->property(propertyAccountC))){
+                                if(actionAccount->account() == account){
+                                    actionBefore = action;
+                                    break;
+                                }
+                             }
+                        }
+                    }
+
+                    // Create submenu with links
+                    QMenu *navLinksMenu = new QMenu(tr("Apps"));
+                    accountMenu->insertSeparator(actionBefore);
+                    accountMenu->insertMenu(actionBefore, navLinksMenu);
+                    foreach (const QJsonValue &value, navLinks) {
+                        auto navLink = value.toObject();
+                        QAction *action = new QAction(navLink.value("name").toString(), this);
+                        QUrl href(navLink.value("href").toString());
+                        connect(action, &QAction::triggered, this, [href] { QDesktopServices::openUrl(href); });
+                        navLinksMenu->addAction(action);
+                    }
+                    accountMenu->insertSeparator(actionBefore);
+                }
+            }
+        }
+    }
+}
+
+void ownCloudGui::slotOcsError(int statusCode, const QString &message)
+{
+    emit serverError(statusCode, message);
 }
 
 void ownCloudGui::slotRebuildRecentMenus()
