@@ -373,7 +373,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="132"/>
         <source>Maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>Mode de manteniment</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="134"/>
@@ -1415,12 +1415,12 @@ Els elements que poden ser eliminats s&apos;eliminaran si impedeixen que una car
     <message>
         <location filename="../src/gui/issueswidget.ui" line="73"/>
         <source>Show warnings</source>
-        <translation type="unfinished"/>
+        <translation>Mostra avisos</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
         <source>Show ignored files</source>
-        <translation type="unfinished"/>
+        <translation>Mostra arxius descartats</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="133"/>
@@ -2507,7 +2507,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/servernotificationhandler.cpp" line="103"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Ignora</translation>
     </message>
 </context>
 <context>
@@ -2622,12 +2622,12 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="211"/>
         <source>Users and Groups</source>
-        <translation type="unfinished"/>
+        <translation>Usuaris i Grups</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="218"/>
         <source>Public Links</source>
-        <translation type="unfinished"/>
+        <translation>Enllaços públics</translation>
     </message>
 </context>
 <context>
@@ -2650,7 +2650,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="35"/>
         <source>Enter a name to create a new public link...</source>
-        <translation type="unfinished"/>
+        <translation>Escriu un nom per crear un enllaç públic...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="42"/>
@@ -2670,12 +2670,12 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="178"/>
         <source>Link properties:</source>
-        <translation type="unfinished"/>
+        <translation>Propietats de l&apos;enllaç:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="220"/>
         <source>Show file listing</source>
-        <translation type="unfinished"/>
+        <translation>Motra el llistat de fitxers</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="200"/>
@@ -2685,7 +2685,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="20"/>
         <source>Anyone with the link has access to the file/folder</source>
-        <translation type="unfinished"/>
+        <translation>Qualsevol podrà accedir a l&apos;arxiu o carpeta amb aquest link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="117"/>
@@ -2727,7 +2727,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copiar al portadocuments</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
@@ -2763,7 +2763,7 @@ No és aconsellada usar-la.</translation>
         <location filename="../src/gui/sharelinkwidget.cpp" line="63"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="543"/>
         <source>Public link</source>
-        <translation type="unfinished"/>
+        <translation>Enllaç públic</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="253"/>
@@ -2811,7 +2811,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="237"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copiar al portadocuments</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="239"/>
@@ -2826,7 +2826,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>He compartit amb tu</translation>
     </message>
 </context>
 <context>
@@ -2919,7 +2919,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="557"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>He compartit amb tu</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="565"/>
@@ -3850,7 +3850,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Reobrir navegador</translation>
     </message>
 </context>
 <context>
@@ -4177,7 +4177,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="33"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>No es pot obrir el navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>

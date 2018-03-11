@@ -2742,7 +2742,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
         <source>Send link by email</source>
-        <translation>Enviar hiperligação por e-mail</translation>
+        <translation>Enviar hiperligação por correio eletrónico</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="167"/>
@@ -2821,7 +2821,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="239"/>
         <source>Send link by email</source>
-        <translation>Enviar hiperligação por e-mail</translation>
+        <translation>Enviar hiperligação por correio eletrónico</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="249"/>
@@ -2939,7 +2939,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="568"/>
         <source>Send private link by email...</source>
-        <translation type="unfinished"/>
+        <translation>Enviar hiperligação privada por correio eletrónico...</translation>
     </message>
 </context>
 <context>
