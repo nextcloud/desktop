@@ -47,7 +47,7 @@ For all alphas, betas and RCs (Copy this section for each alpha/beta/rc):
 * [ ] Linux: Run @SamuAlfageme 's magic Linux-test-all-packages-script
 * [ ] Create a signed tag using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
 * [ ] Create a pull request to the owncloud.org repository to update the install page (strings.php, page-desktop.php) and the changelog on owncloud.org. From now on download packages from the staging webserver.
-* [ ] Inform packagers @dragotin (openSUSE) @hefee (Debian) @Germano0 (Fedora)
+* [ ] Inform packagers @dragotin (openSUSE), @hefee (Debian), ??? (Fedora)
 * [ ] Announce on https://central.owncloud.org
 * [ ] Inform community mailinglists devel@owncloud.org and testpilots@owncloud.org (make sure to mention it is an rc). Link to the central post so discussion happens there.
 * [ ] Check crash reporter
