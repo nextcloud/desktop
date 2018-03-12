@@ -12,7 +12,11 @@ version 2.4.1 (2018-03-05)
 * owncloudcmd: Do not do the capability call when --nonshib is passed
 * Avatars: Use old location for servers <10 (#6279)
 * Link shares: Change default share name (#6298)
+* Sharing: Use maximum allowed permissions for new share (#6346)
 * Nautilus integration: Work with python2 and python3
+* Windows: Don't delete contents behind directory junctions (#6322)
+* SyncJournal: Don't use LIKE with paths (#6322)
+* Fix setting launch-on-startup when the first account is set up (#6347)
 * HTTP2: Only allow with Qt 5.9.4 (#6285)
 * Crash fixes
 
