@@ -409,7 +409,9 @@ void Folder::createGuiLog(const QString &filename, LogStatus status, int count,
         }
 
         if (!text.isEmpty()) {
-            logger->postOptionalGuiLog(tr("Sync Activity"), text);
+            // Ignores the settings in case of an error or conflict
+            if(status == LogStatusError || status == LogStatusConflict)
+                logger->postOptionalGuiLog(tr("Sync Activity"), text);
         }
     }
 }

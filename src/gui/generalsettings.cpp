@@ -42,8 +42,10 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 {
     _ui->setupUi(this);
 
-    connect(_ui->desktopNotificationsCheckBox, &QAbstractButton::toggled,
-        this, &GeneralSettings::slotToggleOptionalDesktopNotifications);
+    connect(_ui->serverNotificationsCheckBox, &QAbstractButton::toggled,
+        this, &GeneralSettings::slotToggleOptionalServerNotifications);
+    _ui->serverNotificationsCheckBox->setToolTip(tr("Server notifications that require attention."));
+
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
     _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
@@ -114,7 +116,7 @@ void GeneralSettings::loadMiscSettings()
     QScopedValueRollback<bool> scope(_currentlyLoading, true);
     ConfigFile cfgFile;
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
-    _ui->desktopNotificationsCheckBox->setChecked(cfgFile.optionalDesktopNotifications());
+    _ui->serverNotificationsCheckBox->setChecked(cfgFile.optionalServerNotifications());
     _ui->showInExplorerNavigationPaneCheckBox->setChecked(cfgFile.showInExplorerNavigationPane());
     _ui->crashreporterCheckBox->setChecked(cfgFile.crashReporter());
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
@@ -165,10 +167,10 @@ void GeneralSettings::slotToggleLaunchOnStartup(bool enable)
     Utility::setLaunchOnStartup(theme->appName(), theme->appNameGUI(), enable);
 }
 
-void GeneralSettings::slotToggleOptionalDesktopNotifications(bool enable)
+void GeneralSettings::slotToggleOptionalServerNotifications(bool enable)
 {
     ConfigFile cfgFile;
-    cfgFile.setOptionalDesktopNotifications(enable);
+    cfgFile.setOptionalServerNotifications(enable);
 }
 
 void GeneralSettings::slotShowInExplorerNavigationPane(bool checked)

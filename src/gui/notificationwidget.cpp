@@ -16,6 +16,7 @@
 #include "QProgressIndicator.h"
 #include "common/utility.h"
 #include "common/asserts.h"
+#include "guiutility.h"
 
 #include <QPushButton>
 
@@ -40,7 +41,6 @@ void NotificationWidget::setActivity(const Activity &activity)
     _accountName = activity._accName;
     ASSERT(!_accountName.isEmpty());
 
-    // _ui._headerLabel->setText( );
     _ui._subjectLabel->setVisible(!activity._subject.isEmpty());
     _ui._messageLabel->setVisible(!activity._message.isEmpty());
 
@@ -48,11 +48,11 @@ void NotificationWidget::setActivity(const Activity &activity)
     _ui._messageLabel->setText(activity._message);
 
     _ui._notifIcon->setPixmap(QPixmap(":/client/resources/bell.png"));
-    _ui._notifIcon->setMinimumWidth(64);
-    _ui._notifIcon->setMinimumHeight(64);
+    _ui._notifIcon->setMinimumWidth(22);
+    _ui._notifIcon->setMinimumHeight(22);
     _ui._notifIcon->show();
 
-    QString tText = tr("Created at %1").arg(Utility::timeAgoInWords(activity._dateTime));
+    QString tText = tr("%1").arg(Utility::timeAgoInWords(activity._dateTime));
     _ui._timeLabel->setText(tText);
 
     // always remove the buttons
@@ -61,8 +61,18 @@ void NotificationWidget::setActivity(const Activity &activity)
     }
     _buttons.clear();
 
+    // open the notification in the browser if there is a link
+    if(!_myActivity._link.isEmpty()){
+        QString buttonText(tr("More information"));
+        QPushButton *openBrowser = _ui._buttonBox->addButton(buttonText, QDialogButtonBox::AcceptRole);
+        openBrowser->setDefault(true);
+        connect(openBrowser, &QAbstractButton::clicked, this, &NotificationWidget::slotOpenBrowserButtonClicked);
+        _buttons.prepend(openBrowser);
+    }
+
     // display buttons for the links
     if (activity._links.isEmpty()) {
+        // is there any case where this code is executed?
         // in case there is no action defined, do a close button.
         QPushButton *b = _ui._buttonBox->addButton(QDialogButtonBox::Close);
         b->setDefault(true);
@@ -83,6 +93,11 @@ Activity NotificationWidget::activity() const
     return _myActivity;
 }
 
+void NotificationWidget::slotOpenBrowserButtonClicked(){
+    QUrl url(_myActivity._link);
+    Utility::openBrowser(url, this);
+}
+
 void NotificationWidget::slotButtonClicked()
 {
     QObject *buttonWidget = QObject::sender();
@@ -96,6 +111,10 @@ void NotificationWidget::slotButtonClicked()
             }
             _buttons.at(i)->setEnabled(false);
         }
+
+        // there is an extra button: 'Open'
+        if(!_myActivity._link.isEmpty())
+            index--;
 
         // if the button was found, the link must be called
         if (index > -1 && _myActivity._links.count() == 0) {

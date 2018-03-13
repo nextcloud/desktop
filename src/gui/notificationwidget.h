@@ -46,6 +46,7 @@ public slots:
 
 private slots:
     void slotButtonClicked();
+    void slotOpenBrowserButtonClicked();
 
 private:
     Ui_NotificationWidget _ui;

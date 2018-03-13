@@ -131,6 +131,16 @@ public:
      */
     void tagLastSuccessfullETagRequest();
 
+    /** Saves the ETag Response header from the last Notifications api
+     * request with statusCode 200.
+    */
+    QByteArray notificationsEtagResponseHeader() const;
+
+    /** Returns the ETag Response header from the last Notifications api
+     * request with statusCode 200.
+    */
+    void setNotificationsEtagResponseHeader(const QByteArray &value);
+
 public slots:
     /// Triggers a ping to the server to update state and
     /// connection status and errors.
@@ -157,6 +167,7 @@ private:
     bool _waitingForNewCredentials;
     QElapsedTimer _timeSinceLastETagCheck;
     QPointer<ConnectionValidator> _connectionValidator;
+    QByteArray _notificationsEtagResponseHeader;
 
     /**
      * Starts counting when the server starts being back up after 503 or

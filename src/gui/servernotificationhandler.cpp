@@ -24,7 +24,10 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcServerNotification, "gui.servernotification", QtInfoMsg)
 
-const QString notificationsPath = QLatin1String("ocs/v2.php/apps/notifications/api/v1/notifications");
+const QString notificationsPath = QLatin1String("ocs/v2.php/apps/notifications/api/v2/notifications");
+const char propertyAccountStateC[] = "oc_account_state";
+const int successStatusCode = 200;
+const int notModifiedStatusCode = 304;
 
 ServerNotificationHandler::ServerNotificationHandler(QObject *parent)
     : QObject(parent)
@@ -52,22 +55,38 @@ void ServerNotificationHandler::slotFetchNotifications(AccountState *ptr)
     _notificationJob = new JsonApiJob(ptr->account(), notificationsPath, this);
     QObject::connect(_notificationJob.data(), &JsonApiJob::jsonReceived,
         this, &ServerNotificationHandler::slotNotificationsReceived);
-    _notificationJob->setProperty("AccountStatePtr", QVariant::fromValue<AccountState *>(ptr));
-
+    QObject::connect(_notificationJob.data(), &JsonApiJob::etagResponseHeaderReceived,
+        this, &ServerNotificationHandler::slotEtagResponseHeaderReceived);
+    _notificationJob->setProperty(propertyAccountStateC, QVariant::fromValue<AccountState *>(ptr));
+    _notificationJob->addRawHeader("If-None-Match", ptr->notificationsEtagResponseHeader());
     _notificationJob->start();
+}
+
+void ServerNotificationHandler::slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode){
+    if(statusCode == successStatusCode){
+        qCWarning(lcServerNotification) << "New Notification ETag Response Header received " << value;
+        AccountState *account = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));
+        account->setNotificationsEtagResponseHeader(value);
+    }
 }
 
 void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &json, int statusCode)
 {
-    if (statusCode != 200) {
+    if (statusCode != successStatusCode && statusCode != notModifiedStatusCode) {
         qCWarning(lcServerNotification) << "Notifications failed with status code " << statusCode;
+        deleteLater();
+        return;
+    }
+
+    if (statusCode == notModifiedStatusCode) {
+        qCWarning(lcServerNotification) << "Status code " << statusCode << " Not Modified - No new notifications.";
         deleteLater();
         return;
     }
 
     auto notifies = json.object().value("ocs").toObject().value("data").toArray();
 
-    AccountState *ai = qvariant_cast<AccountState *>(sender()->property("AccountStatePtr"));
+    AccountState *ai = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));
 
     ActivityList list;
 
@@ -79,9 +98,15 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         a._id = json.value("notification_id").toInt();
         a._subject = json.value("subject").toString();
         a._message = json.value("message").toString();
+
         QString s = json.value("link").toString();
         if (!s.isEmpty()) {
-            a._link = QUrl(s);
+            QUrl link(s);
+            if(link.host().isEmpty()){
+                link.setScheme(ai->account()->url().scheme());
+                link.setHost(ai->account()->url().host());
+            }
+            a._link = link;
         }
         a._dateTime = QDateTime::fromString(json.value("datetime").toString(), Qt::ISODate);
 
