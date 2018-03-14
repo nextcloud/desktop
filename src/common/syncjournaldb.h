@@ -248,7 +248,7 @@ private:
     void commitInternal(const QString &context, bool startTrans = true);
     void startTransaction();
     void commitTransaction();
-    QStringList tableColumns(const QString &table);
+    QVector<QByteArray> tableColumns(const QByteArray &table);
     bool checkConnect();
 
     // Same as forceRemoteDiscoveryNextSync but without acquiring the lock
@@ -265,7 +265,6 @@ private:
     int _transaction;
     bool _metadataTableIsEmpty;
 
-    // NOTE! when adding a query, don't forget to reset it in SyncJournalDb::close
     QScopedPointer<SqlQuery> _getFileRecordQuery;
     QScopedPointer<SqlQuery> _getFileRecordQueryByInode;
     QScopedPointer<SqlQuery> _getFileRecordQueryByFileId;
@@ -315,7 +314,7 @@ private:
      * Typically WAL initially, but may be set to other modes via environment
      * variable, for specific filesystems, or when WAL fails in a particular way.
      */
-    QString _journalMode;
+    QByteArray _journalMode;
 };
 
 bool OCSYNC_EXPORT
