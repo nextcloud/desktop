@@ -32,7 +32,7 @@ System Requirements
 - CentOS 6 & 7 (64-bit only)
 - Debian 8.0 & 9.0
 - Fedora 25 & 26 & 27
-- Ubuntu 16.04 & 16.10 & 17.10
+- Ubuntu 16.04 & 17.04 & 17.10
 - openSUSE Leap 42.2 & 42.3
 
 .. note::
