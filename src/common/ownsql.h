@@ -29,6 +29,8 @@ struct sqlite3_stmt;
 
 namespace OCC {
 
+class SqlQuery;
+
 /**
  * @brief The SqlDatabase class
  * @ingroup libsync
@@ -38,6 +40,7 @@ class OCSYNC_EXPORT SqlDatabase
     Q_DISABLE_COPY(SqlDatabase)
 public:
     explicit SqlDatabase();
+    ~SqlDatabase();
 
     bool isOpen();
     bool openOrCreateReadWrite(const QString &filename);
@@ -62,6 +65,9 @@ private:
     sqlite3 *_db;
     QString _error; // last error string
     int _errId;
+
+    friend class SqlQuery;
+    QVector<SqlQuery *> _queries;
 };
 
 /**
@@ -73,7 +79,7 @@ class OCSYNC_EXPORT SqlQuery
     Q_DISABLE_COPY(SqlQuery)
 public:
     explicit SqlQuery(SqlDatabase &db);
-    explicit SqlQuery(const QString &sql, SqlDatabase &db);
+    explicit SqlQuery(const QByteArray &sql, SqlDatabase &db);
 
     ~SqlQuery();
     QString error() const;
@@ -81,7 +87,6 @@ public:
 
     /// Checks whether the value at the given column index is NULL
     bool nullValue(int index);
-
 
     QString stringValue(int index);
     int intValue(int index);
@@ -91,7 +96,7 @@ public:
     bool isSelect();
     bool isPragma();
     bool exec();
-    int prepare(const QString &sql, bool allow_failure = false);
+    int prepare(const QByteArray &sql, bool allow_failure = false);
     bool next();
     void bindValue(int pos, const QVariant &value);
     QString lastQuery() const;
@@ -100,11 +105,12 @@ public:
     void finish();
 
 private:
-    sqlite3 *_db;
-    sqlite3_stmt *_stmt;
+    SqlDatabase *_sqldb = nullptr;
+    sqlite3 *_db = nullptr;
+    sqlite3_stmt *_stmt = nullptr;
     QString _error;
     int _errId;
-    QString _sql;
+    QByteArray _sql;
 };
 
 } // namespace OCC

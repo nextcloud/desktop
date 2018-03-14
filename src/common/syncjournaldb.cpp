@@ -65,7 +65,7 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._e2eMangledName = query.baValue(10);
 }
 
-static QString defaultJournalMode(const QString &dbPath)
+static QByteArray defaultJournalMode(const QString &dbPath)
 {
 #if defined(Q_OS_WIN)
     // See #2693: Some exFAT file systems seem unable to cope with the
@@ -95,7 +95,7 @@ SyncJournalDb::SyncJournalDb(const QString &dbFilePath, QObject *parent)
     , _metadataTableIsEmpty(false)
 {
     // Allow forcing the journal mode for debugging
-    static QString envJournalMode = QString::fromLocal8Bit(qgetenv("OWNCLOUD_SQLITE_JOURNAL_MODE"));
+    static QByteArray envJournalMode = qgetenv("OWNCLOUD_SQLITE_JOURNAL_MODE");
     _journalMode = envJournalMode;
     if (_journalMode.isEmpty()) {
         _journalMode = defaultJournalMode(_dbFile);
@@ -314,7 +314,7 @@ bool SyncJournalDb::checkConnect()
         qCInfo(lcDb) << "sqlite3 version" << pragma1.stringValue(0);
     }
 
-    pragma1.prepare(QString("PRAGMA journal_mode=%1;").arg(_journalMode));
+    pragma1.prepare("PRAGMA journal_mode=" + _journalMode + ";");
     if (!pragma1.exec()) {
         return sqlFail("Set PRAGMA journal_mode", pragma1);
     } else {
@@ -323,9 +323,9 @@ bool SyncJournalDb::checkConnect()
     }
 
     // For debugging purposes, allow temp_store to be set
-    static QString env_temp_store = QString::fromLocal8Bit(qgetenv("OWNCLOUD_SQLITE_TEMP_STORE"));
+    static QByteArray env_temp_store = qgetenv("OWNCLOUD_SQLITE_TEMP_STORE");
     if (!env_temp_store.isEmpty()) {
-        pragma1.prepare(QString("PRAGMA temp_store = %1;").arg(env_temp_store));
+        pragma1.prepare("PRAGMA temp_store = " + env_temp_store + ";");
         if (!pragma1.exec()) {
             return sqlFail("Set PRAGMA temp_store", pragma1);
         }
@@ -678,12 +678,12 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("prepare _deleteFileRecordRecursively", *_deleteFileRecordRecursively);
     }
 
-    QString sql("SELECT lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration, renameTarget, errorCategory "
-                "FROM blacklist WHERE path=?1");
+    QByteArray sql("SELECT lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration, renameTarget, errorCategory "
+                   "FROM blacklist WHERE path=?1");
     if (Utility::fsCasePreserving()) {
         // if the file system is case preserving we have to check the blacklist
         // case insensitively
-        sql += QLatin1String(" COLLATE NOCASE");
+        sql += " COLLATE NOCASE";
     }
     _getErrorBlacklistQuery.reset(new SqlQuery(_db));
     if (_getErrorBlacklistQuery->prepare(sql)) {
@@ -771,36 +771,6 @@ void SyncJournalDb::close()
 
     commitTransaction();
 
-    _getFileRecordQuery.reset(0);
-    _getFileRecordQueryByMangledName.reset(0);
-    _getFileRecordQueryByInode.reset(0);
-    _getFileRecordQueryByFileId.reset(0);
-    _getFilesBelowPathQuery.reset(0);
-    _getAllFilesQuery.reset(0);
-    _setFileRecordQuery.reset(0);
-    _setFileRecordChecksumQuery.reset(0);
-    _setFileRecordLocalMetadataQuery.reset(0);
-    _getDownloadInfoQuery.reset(0);
-    _setDownloadInfoQuery.reset(0);
-    _deleteDownloadInfoQuery.reset(0);
-    _getUploadInfoQuery.reset(0);
-    _setUploadInfoQuery.reset(0);
-    _deleteUploadInfoQuery.reset(0);
-    _deleteFileRecordPhash.reset(0);
-    _deleteFileRecordRecursively.reset(0);
-    _getErrorBlacklistQuery.reset(0);
-    _setErrorBlacklistQuery.reset(0);
-    _getSelectiveSyncListQuery.reset(0);
-    _getChecksumTypeIdQuery.reset(0);
-    _getChecksumTypeQuery.reset(0);
-    _insertChecksumTypeQuery.reset(0);
-    _getDataFingerprintQuery.reset(0);
-    _setDataFingerprintQuery1.reset(0);
-    _setDataFingerprintQuery2.reset(0);
-    _getConflictRecordQuery.reset(0);
-    _setConflictRecordQuery.reset(0);
-    _deleteConflictRecordQuery.reset(0);
-
     _db.close();
     _avoidReadFromDbOnNextSyncFilter.clear();
     _metadataTableIsEmpty = false;
@@ -818,7 +788,8 @@ bool SyncJournalDb::updateDatabaseStructure()
 
 bool SyncJournalDb::updateMetadataTableStructure()
 {
-    const QStringList columns = tableColumns("metadata");
+
+    auto columns = tableColumns("metadata");
     bool re = true;
 
     // check if the file_id column is there and create it if not
@@ -826,7 +797,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
         return false;
     }
 
-    if (columns.indexOf(QLatin1String("fileid")) == -1) {
+    if (columns.indexOf("fileid") == -1) {
         SqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN fileid VARCHAR(128);");
         if (!query.exec()) {
@@ -841,7 +812,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
         }
         commitInternal("update database structure: add fileid col");
     }
-    if (columns.indexOf(QLatin1String("remotePerm")) == -1) {
+    if (columns.indexOf("remotePerm") == -1) {
         SqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN remotePerm VARCHAR(128);");
         if (!query.exec()) {
@@ -850,7 +821,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
         }
         commitInternal("update database structure (remotePerm)");
     }
-    if (columns.indexOf(QLatin1String("filesize")) == -1) {
+    if (columns.indexOf("filesize") == -1) {
         SqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN filesize BIGINT;");
         if (!query.exec()) {
@@ -880,7 +851,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
         commitInternal("update database structure: add path index");
     }
 
-    if (columns.indexOf(QLatin1String("ignoredChildrenRemote")) == -1) {
+    if (columns.indexOf("ignoredChildrenRemote") == -1) {
         SqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN ignoredChildrenRemote INT;");
         if (!query.exec()) {
@@ -890,7 +861,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
         commitInternal("update database structure: add ignoredChildrenRemote col");
     }
 
-    if (columns.indexOf(QLatin1String("contentChecksum")) == -1) {
+    if (columns.indexOf("contentChecksum") == -1) {
         SqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN contentChecksum TEXT;");
         if (!query.exec()) {
@@ -899,7 +870,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
         }
         commitInternal("update database structure: add contentChecksum col");
     }
-    if (columns.indexOf(QLatin1String("contentChecksumTypeId")) == -1) {
+    if (columns.indexOf("contentChecksumTypeId") == -1) {
         SqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN contentChecksumTypeId INTEGER;");
         if (!query.exec()) {
@@ -909,7 +880,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
         commitInternal("update database structure: add contentChecksumTypeId col");
     }
 
-    if (!columns.contains(QLatin1String("e2eMangledName"))) {
+    if (!columns.contains("e2eMangledName")) {
         SqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN e2eMangledName TEXT;");
         if (!query.exec()) {
@@ -935,7 +906,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
 
 bool SyncJournalDb::updateErrorBlacklistTableStructure()
 {
-    QStringList columns = tableColumns("blacklist");
+    auto columns = tableColumns("blacklist");
     bool re = true;
 
     // check if the file_id column is there and create it if not
@@ -943,7 +914,7 @@ bool SyncJournalDb::updateErrorBlacklistTableStructure()
         return false;
     }
 
-    if (columns.indexOf(QLatin1String("lastTryTime")) == -1) {
+    if (columns.indexOf("lastTryTime") == -1) {
         SqlQuery query(_db);
         query.prepare("ALTER TABLE blacklist ADD COLUMN lastTryTime INTEGER(8);");
         if (!query.exec()) {
@@ -957,7 +928,7 @@ bool SyncJournalDb::updateErrorBlacklistTableStructure()
         }
         commitInternal("update database structure: add lastTryTime, ignoreDuration cols");
     }
-    if (columns.indexOf(QLatin1String("renameTarget")) == -1) {
+    if (columns.indexOf("renameTarget") == -1) {
         SqlQuery query(_db);
         query.prepare("ALTER TABLE blacklist ADD COLUMN renameTarget VARCHAR(4096);");
         if (!query.exec()) {
@@ -967,7 +938,7 @@ bool SyncJournalDb::updateErrorBlacklistTableStructure()
         commitInternal("update database structure: add renameTarget col");
     }
 
-    if (columns.indexOf(QLatin1String("errorCategory")) == -1) {
+    if (columns.indexOf("errorCategory") == -1) {
         SqlQuery query(_db);
         query.prepare("ALTER TABLE blacklist ADD COLUMN errorCategory INTEGER(8);");
         if (!query.exec()) {
@@ -987,26 +958,20 @@ bool SyncJournalDb::updateErrorBlacklistTableStructure()
     return re;
 }
 
-QStringList SyncJournalDb::tableColumns(const QString &table)
+QVector<QByteArray> SyncJournalDb::tableColumns(const QByteArray &table)
 {
-    QStringList columns;
-    if (!table.isEmpty()) {
-        if (checkConnect()) {
-            QString q = QString("PRAGMA table_info('%1');").arg(table);
-            SqlQuery query(_db);
-            query.prepare(q);
-
-            if (!query.exec()) {
-                return columns;
-            }
-
-            while (query.next()) {
-                columns.append(query.stringValue(1));
-            }
-        }
+    QVector<QByteArray> columns;
+    if (!checkConnect()) {
+        return columns;
+    }
+    SqlQuery query("PRAGMA table_info('" + table + "');", _db);
+    if (!query.exec()) {
+        return columns;
+    }
+    while (query.next()) {
+        columns.append(query.baValue(1));
     }
     qCDebug(lcDb) << "Columns in the current journal: " << columns;
-
     return columns;
 }
 
