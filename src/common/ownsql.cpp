@@ -237,7 +237,7 @@ SqlQuery::~SqlQuery()
         finish();
     }
     if (_sqldb) {
-        _sqldb->_queries.removeAll(this);
+        _sqldb->_queries.remove(this);
     }
 }
 
@@ -271,6 +271,7 @@ int SqlQuery::prepare(const QByteArray &sql, bool allow_failure)
             qCWarning(lcSql) << "Sqlite prepare statement error:" << _error << "in" << _sql;
             ENFORCE(allow_failure, "SQLITE Prepare error");
         }
+        _sqldb->_queries.insert(this);
     }
     return _errId;
 }
@@ -467,5 +468,19 @@ void SqlQuery::reset_and_clear_bindings()
         SQLITE_DO(sqlite3_clear_bindings(_stmt));
     }
 }
+
+bool SqlQuery::init(const QByteArray &sql, OCC::SqlDatabase &db)
+{
+    ENFORCE(!_sqldb || &db == _sqldb);
+    _sqldb = &db;
+    _db = db.sqliteDb();
+    if (_stmt) {
+        reset_and_clear_bindings();
+        return true;
+    } else {
+        return prepare(sql) == 0;
+    }
+}
+
 
 } // namespace OCC

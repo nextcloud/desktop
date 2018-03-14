@@ -67,7 +67,7 @@ private:
     int _errId;
 
     friend class SqlQuery;
-    QVector<SqlQuery *> _queries;
+    QSet<SqlQuery *> _queries;
 };
 
 /**
@@ -78,8 +78,15 @@ class OCSYNC_EXPORT SqlQuery
 {
     Q_DISABLE_COPY(SqlQuery)
 public:
+    explicit SqlQuery() = default;
     explicit SqlQuery(SqlDatabase &db);
     explicit SqlQuery(const QByteArray &sql, SqlDatabase &db);
+    /**
+     * Prepare the SQLQuery if it was not prepared yet.
+     * Otherwise, clear the results and the bindings.
+     * return false if there is an error
+     */
+    bool init(const QByteArray &sql, SqlDatabase &db);
 
     ~SqlQuery();
     QString error() const;
