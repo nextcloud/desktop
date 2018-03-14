@@ -339,6 +339,9 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
 GenericName[oc]=Dorsièr de Sincronizacion
 Name[oc]=@APPLICATION_NAME@ sincronizacion del client
@@ -422,6 +425,10 @@ Comment[ko]=@APPLICATION_NAME@ 데스크톱 동기화 클라이언트
 GenericName[ko]=폴더 동기화
 Name[ko]=@APPLICATION_NAME@ 데스크톱 동기화 클라이언트
 Icon[ko]=@APPLICATION_EXECUTABLE@
+Comment[lo]=@APPLICATION_NAME@ ການປະສານຂໍ້ມູນຄອມພິວເຕີລູກຂ່າຍ
+GenericName[lo]=ໂຟນເດີຊິງ
+Name[lo]=@APPLICATION_NAME@ ຊິງຄອມພິວເຕີລູກຂ່າຍ 
+Icon[lo]=@APPLICATION_EXECUTABLE@
 Comment[hu_HU]=@APPLICATION_NAME@ asztali szinkronizációs kliens
 GenericName[hu_HU]=Könyvtár szinkronizálás
 Name[hu_HU]=@APPLICATION_NAME@ asztali szinkr. kliens
