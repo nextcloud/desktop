@@ -114,8 +114,6 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
         auto label = new QLabel(tr("The server does not allow sharing"));
         label->setWordWrap(true);
         label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        layout()->replaceWidget(_ui->shareWidgets, label);
-        _ui->shareWidgets->hide();
         return;
     }
 
@@ -200,7 +198,7 @@ void ShareDialog::showSharingUi()
         label->setText(tr("The file can not be shared because it was shared without sharing permission."));
         label->setWordWrap(true);
         label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        layout()->replaceWidget(_ui->shareWidgets, label);
+        //layout()->replaceWidget(_ui->shareWidgets, label);
         return;
     }
 
@@ -211,14 +209,14 @@ void ShareDialog::showSharingUi()
 
     if (userGroupSharing) {
         _userGroupWidget = new ShareUserGroupWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, _privateLinkUrl, this);
-        _ui->shareWidgets->addTab(_userGroupWidget, tr("Users and Groups"));
+        _ui->verticalLayout->addWidget(_userGroupWidget);
         _userGroupWidget->getShares();
     }
 
     if (theme->linkSharing()) {
         _linkWidget = new ShareLinkWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, this);
         _linkWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-        _ui->shareWidgets->addTab(_linkWidget, tr("Public Links"));
+        _ui->verticalLayout->addWidget(_linkWidget);
         _linkWidget->getShares();
 
         if (_startPage == ShareDialogStartPage::PublicLinks)

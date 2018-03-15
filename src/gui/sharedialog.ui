@@ -64,10 +64,20 @@
     </layout>
    </item>
    <item>
-    <widget class="QTabWidget" name="shareWidgets"/>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="buttonBoxLayout">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="rightMargin">
+      <number>6</number>
+     </property>
      <item>
       <widget class="QDialogButtonBox" name="buttonBox">
        <property name="sizePolicy">

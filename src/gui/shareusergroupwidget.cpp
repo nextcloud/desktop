@@ -87,7 +87,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     connect(_manager, &ShareManager::shareCreated, this, &ShareUserGroupWidget::getShares);
     connect(_manager, &ShareManager::serverError, this, &ShareUserGroupWidget::displayError);
     connect(_ui->shareeLineEdit, &QLineEdit::returnPressed, this, &ShareUserGroupWidget::slotLineEditReturn);
-    connect(_ui->privateLinkText, &QLabel::linkActivated, this, &ShareUserGroupWidget::slotPrivateLinkShare);
+    //connect(_ui->privateLinkText, &QLabel::linkActivated, this, &ShareUserGroupWidget::slotPrivateLinkShare);
 
     // By making the next two QueuedConnections we can override
     // the strings the completer sets on the line edit.
@@ -183,6 +183,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     auto layout = new QVBoxLayout(newViewPort);
     layout->setMargin(0);
     layout->setSpacing(0);
+    layout->setAlignment(Qt::AlignVCenter);
 
     QSize minimumSize = newViewPort->sizeHint();
     int x = 0;
@@ -207,7 +208,9 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         }
     }
     if (layout->isEmpty()) {
-        layout->addWidget(new QLabel(tr("The item is not shared with any users or groups")));
+        QLabel *notSharedYetLabel = new QLabel(tr("The item is not shared with any users or groups"));
+        notSharedYetLabel->setAlignment(Qt::AlignHCenter);
+        layout->addWidget(notSharedYetLabel);
     } else {
         layout->addStretch(1);
     }
