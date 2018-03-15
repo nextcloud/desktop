@@ -236,9 +236,6 @@ SqlQuery::~SqlQuery()
     if (_stmt) {
         finish();
     }
-    if (_sqldb) {
-        _sqldb->_queries.remove(this);
-    }
 }
 
 SqlQuery::SqlQuery(const QByteArray &sql, SqlDatabase &db)
@@ -270,17 +267,22 @@ int SqlQuery::prepare(const QByteArray &sql, bool allow_failure)
             _error = QString::fromUtf8(sqlite3_errmsg(_db));
             qCWarning(lcSql) << "Sqlite prepare statement error:" << _error << "in" << _sql;
             ENFORCE(allow_failure, "SQLITE Prepare error");
+        } else {
+            ASSERT(_stmt);
+            _sqldb->_queries.insert(this);
         }
-        _sqldb->_queries.insert(this);
     }
     return _errId;
 }
 
-// There is no overloads to QByteArray::startWith that takes Qt::CaseInsensitive
-template <int N>
-static bool startsWithInsensitive(const QByteArray &a, const char (&cal)[N])
+/**
+ * There is no overloads to QByteArray::startWith that takes Qt::CaseInsensitive.
+ * Returns true if 'a' starts with 'b' in a case insensitive way
+ */
+static bool startsWithInsensitive(const QByteArray &a, const char *b)
 {
-    return a.size() >= N - 1 && qstrnicmp(a.constData(), cal, N - 1) == 0;
+    int len = strlen(b);
+    return a.size() >= len && qstrnicmp(a.constData(), b, len) == 0;
 }
 
 bool SqlQuery::isSelect()
@@ -457,8 +459,13 @@ int SqlQuery::numRowsAffected()
 
 void SqlQuery::finish()
 {
+    if (!_stmt)
+        return;
     SQLITE_DO(sqlite3_finalize(_stmt));
     _stmt = 0;
+    if (_sqldb) {
+        _sqldb->_queries.remove(this);
+    }
 }
 
 void SqlQuery::reset_and_clear_bindings()
@@ -469,7 +476,7 @@ void SqlQuery::reset_and_clear_bindings()
     }
 }
 
-bool SqlQuery::init(const QByteArray &sql, OCC::SqlDatabase &db)
+bool SqlQuery::initOrReset(const QByteArray &sql, OCC::SqlDatabase &db)
 {
     ENFORCE(!_sqldb || &db == _sqldb);
     _sqldb = &db;
