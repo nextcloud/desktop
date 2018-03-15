@@ -61,6 +61,9 @@ public:
         QWidget *parent = 0);
     ~ShareUserGroupWidget();
 
+signals:
+    void togglePublicLinkShare(bool);
+
 public slots:
     void getShares();
 

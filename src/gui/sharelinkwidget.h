@@ -55,6 +55,7 @@ public:
         QWidget *parent = 0);
     ~ShareLinkWidget();
     void getShares();
+    void toggleButton(bool show);
 
 private slots:
     void slotSharesFetched(const QList<QSharedPointer<Share>> &shares);

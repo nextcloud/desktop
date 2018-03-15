@@ -49,9 +49,9 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     , _maxSharingPermissions(maxSharingPermissions)
     , _privateLinkUrl(accountState->account()->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded))
     , _startPage(startPage)
-    , _linkWidget(NULL)
-    , _userGroupWidget(NULL)
-    , _progressIndicator(NULL)
+    , _linkWidget(nullptr)
+    , _userGroupWidget(nullptr)
+    , _progressIndicator(nullptr)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -59,15 +59,8 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
 
     _ui->setupUi(this);
 
-    QPushButton *closeButton = _ui->buttonBox->button(QDialogButtonBox::Close);
-    connect(closeButton, &QAbstractButton::clicked, this, &QWidget::close);
-
     // We want to act on account state changes
     connect(_accountState.data(), &AccountState::stateChanged, this, &ShareDialog::slotAccountStateChanged);
-
-    // Because people press enter in the dialog and we don't want to close for that
-    closeButton->setDefault(false);
-    closeButton->setAutoDefault(false);
 
     // Set icon
     QFileInfo f_info(_localPath);
@@ -76,8 +69,6 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     auto pixmap = icon.pixmap(thumbnailSize, thumbnailSize);
     if (pixmap.width() > 0) {
         _ui->label_icon->setPixmap(pixmap);
-    } else {
-        _ui->label_icon->hide();
     }
 
     // Set filename
@@ -88,7 +79,6 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     f.setPointSize(f.pointSize() * 1.4);
     _ui->label_name->setFont(f);
 
-    _ui->label_sharePath->setWordWrap(true);
     QString ocDir(_sharePath);
     ocDir.truncate(ocDir.length() - fileName.length());
 
@@ -111,9 +101,10 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     this->setWindowTitle(tr("%1 Sharing").arg(Theme::instance()->appNameGUI()));
 
     if (!accountState->account()->capabilities().shareAPI()) {
-        auto label = new QLabel(tr("The server does not allow sharing"));
-        label->setWordWrap(true);
-        label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        //auto label = new QLabel(tr("The server does not allow sharing"));
+        //label->setWordWrap(true);
+        //label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        //layout()->replaceWidget(_ui->shareWidgets, label);
         return;
     }
 
@@ -123,10 +114,10 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
         job->start();
     }
 
-    _progressIndicator = new QProgressIndicator(this);
-    _progressIndicator->startAnimation();
-    _progressIndicator->setToolTip(tr("Retrieving maximum possible sharing permissions from server..."));
-    _ui->buttonBoxLayout->insertWidget(0, _progressIndicator);
+//    _progressIndicator = new QProgressIndicator(this);
+//    _progressIndicator->startAnimation();
+//    _progressIndicator->setToolTip(tr("Retrieving maximum possible sharing permissions from server..."));
+//    _ui->buttonBoxLayout->insertWidget(0, _progressIndicator);
 
     // Server versions >= 9.1 support the "share-permissions" property
     // older versions will just return share-permissions: ""
@@ -185,7 +176,7 @@ void ShareDialog::slotPropfindError()
 
 void ShareDialog::showSharingUi()
 {
-    _progressIndicator->stopAnimation();
+    //_progressIndicator->stopAnimation();
 
     auto theme = Theme::instance();
 
@@ -197,8 +188,6 @@ void ShareDialog::showSharingUi()
         auto label = new QLabel(this);
         label->setText(tr("The file can not be shared because it was shared without sharing permission."));
         label->setWordWrap(true);
-        label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        //layout()->replaceWidget(_ui->shareWidgets, label);
         return;
     }
 
@@ -209,19 +198,27 @@ void ShareDialog::showSharingUi()
 
     if (userGroupSharing) {
         _userGroupWidget = new ShareUserGroupWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, _privateLinkUrl, this);
-        _ui->verticalLayout->addWidget(_userGroupWidget);
+        connect(_userGroupWidget, &ShareUserGroupWidget::togglePublicLinkShare, this, &ShareDialog::slotTogglePublicLinkShareDisplay);
+        _ui->verticalLayout->insertWidget(1, _userGroupWidget);
         _userGroupWidget->getShares();
     }
 
     if (theme->linkSharing()) {
         _linkWidget = new ShareLinkWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, this);
-        _linkWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
-        _ui->verticalLayout->addWidget(_linkWidget);
+        _ui->verticalLayout->insertWidget(2, _linkWidget);
         _linkWidget->getShares();
 
         if (_startPage == ShareDialogStartPage::PublicLinks)
             _ui->shareWidgets->setCurrentWidget(_linkWidget);
     }
+}
+
+void ShareDialog::slotTogglePublicLinkShareDisplay(bool show)
+{
+  if(show)
+      _linkWidget->toggleButton(true);
+  else
+      _linkWidget->toggleButton(false);
 }
 
 void ShareDialog::slotThumbnailFetched(const int &statusCode, const QByteArray &reply)
@@ -243,11 +240,11 @@ void ShareDialog::slotAccountStateChanged(int state)
     bool enabled = (state == AccountState::State::Connected);
     qCDebug(lcSharing) << "Account connected?" << enabled;
 
-    if (_userGroupWidget != NULL) {
+    if (_userGroupWidget != nullptr) {
         _userGroupWidget->setEnabled(enabled);
     }
 
-    if (_linkWidget != NULL) {
+    if (_linkWidget != nullptr) {
         _linkWidget->setEnabled(enabled);
     }
 }

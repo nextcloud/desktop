@@ -51,9 +51,9 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
 {
     _ui->setupUi(this);
 
-    _ui->linkShares->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
-    _ui->linkShares->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
-    _ui->linkShares->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
+//    _ui->linkShares->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Stretch);
+//    _ui->linkShares->horizontalHeader()->setSectionResizeMode(1, QHeaderView::ResizeToContents);
+//    _ui->linkShares->horizontalHeader()->setSectionResizeMode(2, QHeaderView::ResizeToContents);
 
     //Is this a file or folder?
     QFileInfo fi(localPath);
@@ -68,10 +68,11 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     _pi_password = new QProgressIndicator();
     _pi_date = new QProgressIndicator();
     _pi_editing = new QProgressIndicator();
-    _ui->horizontalLayout_create->addWidget(_pi_create);
-    _ui->horizontalLayout_password->addWidget(_pi_password);
-    _ui->layout_editing->addWidget(_pi_editing, 0, 2);
-    _ui->horizontalLayout_expire->insertWidget(_ui->horizontalLayout_expire->count() - 1, _pi_date);
+    //_ui->horizontalLayout_create->addWidget(_pi_create);
+    //_ui->horizontalLayout_password->addWidget(_pi_password);
+    //_ui->layout_editing->addWidget(_pi_editing, 0, 2);
+    //_ui->horizontalLayout_expire->insertWidget(_ui->horizontalLayout_expire->count() - 1, _pi_date);
+    _ui->createShareButton->hide();
 
     connect(_ui->nameLineEdit, &QLineEdit::returnPressed, this, &ShareLinkWidget::slotShareNameEntered);
     connect(_ui->createShareButton, &QAbstractButton::clicked, this, &ShareLinkWidget::slotShareNameEntered);
@@ -83,9 +84,9 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     connect(_ui->pushButton_setPassword, &QAbstractButton::clicked, this, &ShareLinkWidget::slotPasswordReturnPressed);
     connect(_ui->checkBox_expire, &QAbstractButton::clicked, this, &ShareLinkWidget::slotCheckBoxExpireClicked);
     connect(_ui->calendar, &QDateTimeEdit::dateChanged, this, &ShareLinkWidget::slotExpireDateChanged);
-    connect(_ui->radio_readOnly, &QAbstractButton::clicked, this, &ShareLinkWidget::slotPermissionsClicked);
-    connect(_ui->radio_readWrite, &QAbstractButton::clicked, this, &ShareLinkWidget::slotPermissionsClicked);
-    connect(_ui->radio_uploadOnly, &QAbstractButton::clicked, this, &ShareLinkWidget::slotPermissionsClicked);
+    //connect(_ui->radio_readOnly, &QAbstractButton::clicked, this, &ShareLinkWidget::slotPermissionsClicked);
+    //connect(_ui->radio_readWrite, &QAbstractButton::clicked, this, &ShareLinkWidget::slotPermissionsClicked);
+    //connect(_ui->radio_uploadOnly, &QAbstractButton::clicked, this, &ShareLinkWidget::slotPermissionsClicked);
 
     _ui->errorLabel->hide();
 
@@ -111,6 +112,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     }
 
     _ui->shareProperties->setEnabled(false);
+    _ui->shareProperties->setVisible(false);
 
     _ui->pushButton_setPassword->setEnabled(false);
     _ui->lineEdit_password->setEnabled(false);
@@ -150,10 +152,10 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     }
 
     // File can't have public upload set; we also hide it if the capability isn't there
-    _ui->widget_editing->setVisible(
-        !_isFile && _account->capabilities().sharePublicLinkAllowUpload());
-    _ui->radio_uploadOnly->setVisible(
-        _account->capabilities().sharePublicLinkSupportsUploadOnly());
+//    _ui->widget_editing->setVisible(
+//        !_isFile && _account->capabilities().sharePublicLinkAllowUpload());
+    //_ui->radio_uploadOnly->setVisible(
+        //_account->capabilities().sharePublicLinkSupportsUploadOnly());
 
 
     // Prepare sharing menu
@@ -183,6 +185,13 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
 ShareLinkWidget::~ShareLinkWidget()
 {
     delete _ui;
+}
+
+void ShareLinkWidget::toggleButton(bool show){
+    if(show)
+        _ui->createShareButton->show();
+    else
+        _ui->createShareButton->hide();
 }
 
 void ShareLinkWidget::getShares()
@@ -276,8 +285,10 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
     }
 
     if (!_namesSupported) {
-        _ui->createShareButton->setEnabled(table->rowCount() == 0);
+        _ui->createShareButton->setHidden(table->rowCount() == 0);
     }
+    if(table->rowCount() == 0)
+        _ui->linkShares->setHidden(true);
 }
 
 void ShareLinkWidget::slotShareSelectionChanged()
@@ -292,11 +303,11 @@ void ShareLinkWidget::slotShareSelectionChanged()
 
     auto share = selectedShare();
     if (!share) {
-        _selectedShareId.clear();
-        _ui->shareProperties->setEnabled(false);
-        _ui->radio_readOnly->setChecked(false);
-        _ui->radio_readWrite->setChecked(false);
-        _ui->radio_uploadOnly->setChecked(false);
+        _ui->shareProperties->setHidden(false);
+        _ui->shareProperties->setVisible(false);
+        //_ui->radio_readOnly->setChecked(false);
+        //_ui->radio_readWrite->setChecked(false);
+        //_ui->radio_uploadOnly->setChecked(false);
         _ui->checkBox_expire->setChecked(false);
         _ui->checkBox_password->setChecked(false);
         return;
@@ -305,14 +316,15 @@ void ShareLinkWidget::slotShareSelectionChanged()
     _selectedShareId = share->getId();
 
     _ui->shareProperties->setEnabled(true);
+    _ui->shareProperties->setVisible(true);
 
     _ui->checkBox_password->setEnabled(!_passwordRequired);
     _ui->checkBox_expire->setEnabled(!_expiryRequired);
-    _ui->widget_editing->setEnabled(true);
-    if (!_account->capabilities().sharePublicLinkAllowUpload()) {
-        _ui->radio_readWrite->setEnabled(false);
-        _ui->radio_uploadOnly->setEnabled(false);
-    }
+//    _ui->widget_editing->setEnabled(true);
+//    if (!_account->capabilities().sharePublicLinkAllowUpload()) {
+//        _ui->radio_readWrite->setEnabled(false);
+//        _ui->radio_uploadOnly->setEnabled(false);
+//    }
 
     // Password state
     _ui->checkBox_password->setText(tr("P&assword protect"));
@@ -342,17 +354,17 @@ void ShareLinkWidget::slotShareSelectionChanged()
     }
 
     // Public upload state (box is hidden for files)
-    if (!_isFile) {
-        if (share->getPublicUpload()) {
-            if (share->getShowFileListing()) {
-                _ui->radio_readWrite->setChecked(true);
-            } else {
-                _ui->radio_uploadOnly->setChecked(true);
-            }
-        } else {
-            _ui->radio_readOnly->setChecked(true);
-        }
-    }
+//    if (!_isFile) {
+//        if (share->getPublicUpload()) {
+//            if (share->getShowFileListing()) {
+//                //_ui->radio_readWrite->setChecked(true);
+//            } else {
+//                //_ui->radio_uploadOnly->setChecked(true);
+//            }
+//        } else {
+//            //_ui->radio_readOnly->setChecked(true);
+//        }
+//    }
 }
 
 void ShareLinkWidget::setExpireDate(const QDate &date)
@@ -464,6 +476,9 @@ void ShareLinkWidget::slotShareNameEntered()
     }
     _pi_create->startAnimation();
     _manager->createLinkShare(_sharePath, _ui->nameLineEdit->text(), QString());
+    if(!_account->capabilities().sharePublicLinkMultiple())
+        _ui->createShareButton->setHidden(true);
+    _ui->linkShares->setHidden(false);
 }
 
 void ShareLinkWidget::slotDeleteShareFetched()
@@ -490,11 +505,12 @@ void ShareLinkWidget::slotCreateShareRequiresPassword(const QString &message)
     _pi_create->stopAnimation();
     _pi_password->stopAnimation();
     _ui->shareProperties->setEnabled(true);
+    _ui->shareProperties->setVisible(true);
     _ui->checkBox_password->setChecked(true);
     _ui->checkBox_password->setEnabled(false);
     _ui->checkBox_password->setText(tr("Public sh&aring requires a password"));
     _ui->checkBox_expire->setEnabled(false);
-    _ui->widget_editing->setEnabled(false);
+    //_ui->widget_editing->setEnabled(false);
     if (!message.isEmpty()) {
         _ui->errorLabel->setText(message);
         _ui->errorLabel->show();
@@ -620,17 +636,17 @@ void ShareLinkWidget::slotDeleteShareClicked()
 void ShareLinkWidget::slotPermissionsClicked()
 {
     if (auto current = selectedShare()) {
-        _ui->widget_editing->setEnabled(false);
+        //_ui->widget_editing->setEnabled(false);
         _pi_editing->startAnimation();
         _ui->errorLabel->hide();
 
         SharePermissions perm = SharePermissionRead;
-        if (_ui->radio_readWrite->isChecked()) {
-            perm = SharePermissionRead | SharePermissionCreate
-                | SharePermissionUpdate | SharePermissionDelete;
-        } else if (_ui->radio_uploadOnly->isChecked()) {
-            perm = SharePermissionCreate;
-        }
+//        if (_ui->radio_readWrite->isChecked()) {
+//            perm = SharePermissionRead | SharePermissionCreate
+//                | SharePermissionUpdate | SharePermissionDelete;
+//        } else if (_ui->radio_uploadOnly->isChecked()) {
+//            perm = SharePermissionCreate;
+//        }
         current->setPermissions(perm);
     }
 }
