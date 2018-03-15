@@ -73,6 +73,26 @@ private:
 /**
  * @brief The SqlQuery class
  * @ingroup libsync
+ *
+ * There is basically 3 ways to initialize and use a query:
+ *
+    SqlQuery q1;
+    [...]
+    q1.initOrReset(...);
+    q1.bindValue(...);
+    q1.exec(...)
+ *
+    SqlQuery q2(db);
+    q2.prepare(...);
+    [...]
+    q2.reset_and_clear_bindings();
+    q2.bindValue(...);
+    q2.exec(...)
+ *
+    SqlQuery q3("...", db);
+    q3.bindValue(...);
+    q3.exec(...)
+ *
  */
 class OCSYNC_EXPORT SqlQuery
 {
@@ -82,11 +102,17 @@ public:
     explicit SqlQuery(SqlDatabase &db);
     explicit SqlQuery(const QByteArray &sql, SqlDatabase &db);
     /**
-     * Prepare the SQLQuery if it was not prepared yet.
+     * Prepare the SqlQuery if it was not prepared yet.
      * Otherwise, clear the results and the bindings.
      * return false if there is an error
      */
-    bool init(const QByteArray &sql, SqlDatabase &db);
+    bool initOrReset(const QByteArray &sql, SqlDatabase &db);
+    /**
+     * Prepare the SqlQuery.
+     * If the query was already prepared, this will first call finish(), and re-prepare it.
+     * This function must only be used if the constructor was setting a SqlDatabase
+     */
+    int prepare(const QByteArray &sql, bool allow_failure = false);
 
     ~SqlQuery();
     QString error() const;
@@ -99,11 +125,9 @@ public:
     int intValue(int index);
     quint64 int64Value(int index);
     QByteArray baValue(int index);
-
     bool isSelect();
     bool isPragma();
     bool exec();
-    int prepare(const QByteArray &sql, bool allow_failure = false);
     bool next();
     void bindValue(int pos, const QVariant &value);
     QString lastQuery() const;

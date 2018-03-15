@@ -545,12 +545,12 @@ bool SyncJournalDb::checkConnect()
     if (forceRemoteDiscovery) {
         forceRemoteDiscoveryNextSyncLocked();
     }
-    if (!_deleteDownloadInfoQuery.init("DELETE FROM downloadinfo WHERE path=?1", _db)) {
+    if (!_deleteDownloadInfoQuery.initOrReset("DELETE FROM downloadinfo WHERE path=?1", _db)) {
         return sqlFail("prepare _deleteDownloadInfoQuery", _deleteDownloadInfoQuery);
     }
 
 
-    if (!_deleteUploadInfoQuery.init("DELETE FROM uploadinfo WHERE path=?1", _db)) {
+    if (!_deleteUploadInfoQuery.initOrReset("DELETE FROM uploadinfo WHERE path=?1", _db)) {
         return sqlFail("prepare _deleteUploadInfoQuery", _deleteUploadInfoQuery);
     }
 
@@ -561,7 +561,7 @@ bool SyncJournalDb::checkConnect()
         // case insensitively
         sql += " COLLATE NOCASE";
     }
-    if (!_getErrorBlacklistQuery.init(sql, _db)) {
+    if (!_getErrorBlacklistQuery.initOrReset(sql, _db)) {
         return sqlFail("prepare _getErrorBlacklistQuery", _getErrorBlacklistQuery);
     }
 
@@ -831,7 +831,7 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
         parseChecksumHeader(record._checksumHeader, &checksumType, &checksum);
         int contentChecksumTypeId = mapChecksumType(checksumType);
 
-        if (!_setFileRecordQuery.init(QByteArrayLiteral(
+        if (!_setFileRecordQuery.initOrReset(QByteArrayLiteral(
             "INSERT OR REPLACE INTO metadata "
             "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, contentChecksum, contentChecksumTypeId) "
             "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16);"), _db)) {
@@ -877,7 +877,7 @@ bool SyncJournalDb::deleteFileRecord(const QString &filename, bool recursively)
         // if (!recursively) {
         // always delete the actual file.
 
-        if (!_deleteFileRecordPhash.init(QByteArrayLiteral("DELETE FROM metadata WHERE phash=?1"), _db))
+        if (!_deleteFileRecordPhash.initOrReset(QByteArrayLiteral("DELETE FROM metadata WHERE phash=?1"), _db))
             return false;
 
         qlonglong phash = getPHash(filename.toUtf8());
@@ -887,7 +887,7 @@ bool SyncJournalDb::deleteFileRecord(const QString &filename, bool recursively)
             return false;
 
         if (recursively) {
-            if (!_deleteFileRecordRecursively.init(QByteArrayLiteral("DELETE FROM metadata WHERE " IS_PREFIX_PATH_OF("?1", "path")), _db))
+            if (!_deleteFileRecordRecursively.initOrReset(QByteArrayLiteral("DELETE FROM metadata WHERE " IS_PREFIX_PATH_OF("?1", "path")), _db))
                 return false;
             _deleteFileRecordRecursively.bindValue(1, filename);
             if (!_deleteFileRecordRecursively.exec()) {
@@ -918,7 +918,7 @@ bool SyncJournalDb::getFileRecord(const QByteArray &filename, SyncJournalFileRec
         return false;
 
     if (!filename.isEmpty()) {
-        if (!_getFileRecordQuery.init(QByteArrayLiteral(GET_FILE_RECORD_QUERY " WHERE phash=?1"), _db))
+        if (!_getFileRecordQuery.initOrReset(QByteArrayLiteral(GET_FILE_RECORD_QUERY " WHERE phash=?1"), _db))
             return false;
 
         _getFileRecordQuery.bindValue(1, getPHash(filename));
@@ -957,7 +957,7 @@ bool SyncJournalDb::getFileRecordByInode(quint64 inode, SyncJournalFileRecord *r
     if (!checkConnect())
         return false;
 
-    if (!_getFileRecordQueryByInode.init(QByteArrayLiteral(GET_FILE_RECORD_QUERY " WHERE inode=?1"), _db))
+    if (!_getFileRecordQueryByInode.initOrReset(QByteArrayLiteral(GET_FILE_RECORD_QUERY " WHERE inode=?1"), _db))
         return false;
 
     _getFileRecordQueryByInode.bindValue(1, inode);
@@ -981,7 +981,7 @@ bool SyncJournalDb::getFileRecordsByFileId(const QByteArray &fileId, const std::
     if (!checkConnect())
         return false;
 
-    if (!_getFileRecordQueryByFileId.init(QByteArrayLiteral(GET_FILE_RECORD_QUERY " WHERE fileid=?1"), _db))
+    if (!_getFileRecordQueryByFileId.initOrReset(QByteArrayLiteral(GET_FILE_RECORD_QUERY " WHERE fileid=?1"), _db))
         return false;
 
     _getFileRecordQueryByFileId.bindValue(1, fileId);
@@ -1016,13 +1016,13 @@ bool SyncJournalDb::getFilesBelowPath(const QByteArray &path, const std::functio
         // and find nothing. So, unfortunately, we have to use a different query for
         // retrieving the whole tree.
 
-        if (!_getAllFilesQuery.init(QByteArrayLiteral( GET_FILE_RECORD_QUERY " ORDER BY path||'/' ASC"), _db))
+        if (!_getAllFilesQuery.initOrReset(QByteArrayLiteral( GET_FILE_RECORD_QUERY " ORDER BY path||'/' ASC"), _db))
             return false;
         query = &_getAllFilesQuery;
     } else {
         // This query is used to skip discovery and fill the tree from the
         // database instead
-        if (!_getFilesBelowPathQuery.init(QByteArrayLiteral(
+        if (!_getFilesBelowPathQuery.initOrReset(QByteArrayLiteral(
                 GET_FILE_RECORD_QUERY
                 " WHERE " IS_PREFIX_PATH_OF("?1", "path")
                 // We want to ensure that the contents of a directory are sorted
@@ -1135,7 +1135,7 @@ bool SyncJournalDb::updateFileRecordChecksum(const QString &filename,
 
     int checksumTypeId = mapChecksumType(contentChecksumType);
 
-    if (!_setFileRecordChecksumQuery.init(QByteArrayLiteral(
+    if (!_setFileRecordChecksumQuery.initOrReset(QByteArrayLiteral(
             "UPDATE metadata"
             " SET contentChecksum = ?2, contentChecksumTypeId = ?3"
             " WHERE phash == ?1;"), _db)) {
@@ -1162,7 +1162,7 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
     }
 
 
-    if (!_setFileRecordLocalMetadataQuery.init(QByteArrayLiteral(
+    if (!_setFileRecordLocalMetadataQuery.initOrReset(QByteArrayLiteral(
             "UPDATE metadata"
             " SET inode=?2, modtime=?3, filesize=?4"
             " WHERE phash == ?1;"), _db)) {
@@ -1234,7 +1234,7 @@ SyncJournalDb::DownloadInfo SyncJournalDb::getDownloadInfo(const QString &file)
 
     if (checkConnect()) {
 
-        if (!_getDownloadInfoQuery.init(QByteArrayLiteral(
+        if (!_getDownloadInfoQuery.initOrReset(QByteArrayLiteral(
                 "SELECT tmpfile, etag, errorcount FROM downloadinfo WHERE path=?1"), _db)) {
             return res;
         }
@@ -1264,7 +1264,7 @@ void SyncJournalDb::setDownloadInfo(const QString &file, const SyncJournalDb::Do
 
 
     if (i._valid) {
-        if (!_setDownloadInfoQuery.init(QByteArrayLiteral(
+        if (!_setDownloadInfoQuery.initOrReset(QByteArrayLiteral(
                 "INSERT OR REPLACE INTO downloadinfo "
                 "(path, tmpfile, etag, errorcount) "
                 "VALUES ( ?1 , ?2, ?3, ?4 )"), _db)) {
@@ -1343,7 +1343,7 @@ SyncJournalDb::UploadInfo SyncJournalDb::getUploadInfo(const QString &file)
     UploadInfo res;
 
     if (checkConnect()) {
-        if (!_getUploadInfoQuery.init(QByteArrayLiteral(
+        if (!_getUploadInfoQuery.initOrReset(QByteArrayLiteral(
                 "SELECT chunk, transferid, errorcount, size, modtime, contentChecksum FROM "
                 "uploadinfo WHERE path=?1"), _db)) {
             return res;
@@ -1377,7 +1377,7 @@ void SyncJournalDb::setUploadInfo(const QString &file, const SyncJournalDb::Uplo
     }
 
     if (i._valid) {
-        if (!_setUploadInfoQuery.init(QByteArrayLiteral(
+        if (!_setUploadInfoQuery.initOrReset(QByteArrayLiteral(
             "INSERT OR REPLACE INTO uploadinfo "
             "(path, chunk, transferid, errorcount, size, modtime, contentChecksum) "
             "VALUES ( ?1 , ?2, ?3 , ?4 ,  ?5, ?6 , ?7 )"), _db)) {
@@ -1576,7 +1576,7 @@ void SyncJournalDb::setErrorBlacklistEntry(const SyncJournalErrorBlacklistRecord
         return;
     }
 
-    if (!_setErrorBlacklistQuery.init(QByteArrayLiteral(
+    if (!_setErrorBlacklistQuery.initOrReset(QByteArrayLiteral(
         "INSERT OR REPLACE INTO blacklist "
         "(path, lastTryEtag, lastTryModtime, retrycount, errorstring, lastTryTime, ignoreDuration, renameTarget, errorCategory) "
         "VALUES ( ?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)"), _db)) {
@@ -1654,7 +1654,7 @@ QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncList
         return result;
     }
 
-    if (!_getSelectiveSyncListQuery.init(QByteArrayLiteral("SELECT path FROM selectivesync WHERE type=?1"), _db)) {
+    if (!_getSelectiveSyncListQuery.initOrReset(QByteArrayLiteral("SELECT path FROM selectivesync WHERE type=?1"), _db)) {
         *ok = false;
         return result;
     }
@@ -1779,7 +1779,7 @@ QByteArray SyncJournalDb::getChecksumType(int checksumTypeId)
 
     // Retrieve the id
     auto &query = _getChecksumTypeQuery;
-    if (!query.init(QByteArrayLiteral("SELECT name FROM checksumtype WHERE id=?1"), _db))
+    if (!query.initOrReset(QByteArrayLiteral("SELECT name FROM checksumtype WHERE id=?1"), _db))
         return {};
     query.bindValue(1, checksumTypeId);
     if (!query.exec()) {
@@ -1800,7 +1800,7 @@ int SyncJournalDb::mapChecksumType(const QByteArray &checksumType)
     }
 
     // Ensure the checksum type is in the db
-    if (!_insertChecksumTypeQuery.init(QByteArrayLiteral("INSERT OR IGNORE INTO checksumtype (name) VALUES (?1)"), _db))
+    if (!_insertChecksumTypeQuery.initOrReset(QByteArrayLiteral("INSERT OR IGNORE INTO checksumtype (name) VALUES (?1)"), _db))
         return 0;
     _insertChecksumTypeQuery.bindValue(1, checksumType);
     if (!_insertChecksumTypeQuery.exec()) {
@@ -1808,7 +1808,7 @@ int SyncJournalDb::mapChecksumType(const QByteArray &checksumType)
     }
 
     // Retrieve the id
-    if (!_getChecksumTypeIdQuery.init(QByteArrayLiteral("SELECT id FROM checksumtype WHERE name=?1"), _db))
+    if (!_getChecksumTypeIdQuery.initOrReset(QByteArrayLiteral("SELECT id FROM checksumtype WHERE name=?1"), _db))
         return 0;
     _getChecksumTypeIdQuery.bindValue(1, checksumType);
     if (!_getChecksumTypeIdQuery.exec()) {
@@ -1829,7 +1829,7 @@ QByteArray SyncJournalDb::dataFingerprint()
         return QByteArray();
     }
 
-    if (!_getDataFingerprintQuery.init(QByteArrayLiteral("SELECT fingerprint FROM datafingerprint"), _db))
+    if (!_getDataFingerprintQuery.initOrReset(QByteArrayLiteral("SELECT fingerprint FROM datafingerprint"), _db))
         return QByteArray();
 
     if (!_getDataFingerprintQuery.exec()) {
@@ -1849,8 +1849,8 @@ void SyncJournalDb::setDataFingerprint(const QByteArray &dataFingerprint)
         return;
     }
 
-    if (!_setDataFingerprintQuery1.init(QByteArrayLiteral("DELETE FROM datafingerprint;"), _db)
-        || !_setDataFingerprintQuery2.init(QByteArrayLiteral("INSERT INTO datafingerprint (fingerprint) VALUES (?1);"), _db)) {
+    if (!_setDataFingerprintQuery1.initOrReset(QByteArrayLiteral("DELETE FROM datafingerprint;"), _db)
+        || !_setDataFingerprintQuery2.initOrReset(QByteArrayLiteral("INSERT INTO datafingerprint (fingerprint) VALUES (?1);"), _db)) {
         return;
     }
 
@@ -1867,7 +1867,7 @@ void SyncJournalDb::setConflictRecord(const ConflictRecord &record)
         return;
 
     auto &query = _setConflictRecordQuery;
-    ASSERT(query.init(QByteArrayLiteral(
+    ASSERT(query.initOrReset(QByteArrayLiteral(
                           "INSERT OR REPLACE INTO conflicts "
                           "(path, baseFileId, baseModtime, baseEtag) "
                           "VALUES (?1, ?2, ?3, ?4);"),
@@ -1887,7 +1887,7 @@ ConflictRecord SyncJournalDb::conflictRecord(const QByteArray &path)
     if (!checkConnect())
         return entry;
     auto &query = _getConflictRecordQuery;
-    ASSERT(query.init(QByteArrayLiteral("SELECT baseFileId, baseModtime, baseEtag FROM conflicts WHERE path=?1;"), _db));
+    ASSERT(query.initOrReset(QByteArrayLiteral("SELECT baseFileId, baseModtime, baseEtag FROM conflicts WHERE path=?1;"), _db));
     query.bindValue(1, path);
     ASSERT(query.exec());
     if (!query.next())
@@ -1906,7 +1906,7 @@ void SyncJournalDb::deleteConflictRecord(const QByteArray &path)
     if (!checkConnect())
         return;
 
-    ASSERT(_deleteConflictRecordQuery.init("DELETE FROM conflicts WHERE path=?1;", _db));
+    ASSERT(_deleteConflictRecordQuery.initOrReset("DELETE FROM conflicts WHERE path=?1;", _db));
     _deleteConflictRecordQuery.bindValue(1, path);
     ASSERT(_deleteConflictRecordQuery.exec());
 }
