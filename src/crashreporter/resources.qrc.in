@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="@CRASHREPORTER_ICON_FILENAME@">@CRASHREPORTER_ICON_PATH@</file>
+    </qresource>
+</RCC>

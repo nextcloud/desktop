@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/">
-        <file alias="owncloud-icon.png">../../theme/colored/128-owncloud-icon.png</file>
-    </qresource>
-</RCC>
