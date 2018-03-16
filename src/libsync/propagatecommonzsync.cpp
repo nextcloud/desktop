@@ -204,17 +204,13 @@ void ZsyncGenerateRunnable::run()
     // We don't care for the optimal checksum lengths computed by
     // compute_rsum_checksum_len() since we use blocks much larger
     // than the default (1 MB instead of 8 kB) and can just store the full
-    // 20 bytes per block.
-    // There was also the following issue about seq_matches == 2:
-    //      this seems to cause unmatched blocks at end of
-    //      files with sizes which are unaligned to blocksize
-    int rsum_len = 4;
+    // 24 bytes per block.
+    int rsum_len = 8;
     int checksum_len = 16;
-    int seq_matches = 1;
 
     if (zsyncfile_write(
             meta.get(), tf.get(),
-            rsum_len, checksum_len, seq_matches,
+            rsum_len, checksum_len,
             0, 0, 0, // recompress
             0, 0, // fname, mtime
             0, 0, // urls
