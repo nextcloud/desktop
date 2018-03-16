@@ -216,12 +216,6 @@ endif()
 # list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 include(ECMAddAppIcon)
 
-# For historical reasons we can not use the application_shortname
-# for ownCloud but must rather set it manually.
-if (NOT DEFINED APPLICATION_ICON_NAME)
-    set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
-endif()
-
 file(GLOB_RECURSE OWNCLOUD_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon*")
 if(APPLE)
     file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-sidebar*")
