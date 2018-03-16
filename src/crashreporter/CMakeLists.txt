@@ -21,13 +21,14 @@ if(NOT BUILD_LIBRARIES_ONLY)
         ${crashreporter_SOURCES}
         ${crashreporter_HEADERS_MOC}
         ${crashreporter_UI_HEADERS}
-        ${crashreporter_RC_RCC}
+        ${crashreporter_RC}
     )
 
     find_package(Qt5 REQUIRED COMPONENTS Widgets)
 
     target_include_directories(${CRASHREPORTER_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
     set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES AUTOMOC ON)
+    set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES AUTORCC ON)
     set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
     set_target_properties(${CRASHREPORTER_EXECUTABLE} PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}" )
     target_link_libraries(${CRASHREPORTER_EXECUTABLE}
