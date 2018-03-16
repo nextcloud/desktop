@@ -21,6 +21,7 @@
 
 #include <QObject>
 #include <QVariant>
+#include <QSet>
 
 #include "ocsynclib.h"
 
