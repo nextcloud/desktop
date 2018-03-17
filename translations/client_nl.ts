@@ -4186,7 +4186,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="33"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>Kon het browser niet openen</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
