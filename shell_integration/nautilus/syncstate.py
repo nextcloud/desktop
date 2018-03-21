@@ -38,8 +38,10 @@ print("Initializing "+appname+"-client-nautilus extension")
 def get_local_path(url):
     if url[0:7] == 'file://':
         url = url[7:]
-    unquote = urllib.parse.unquote if python3 else urllib.unquote
-    return unquote(url)
+    if python3:
+        return urllib.parse.unquote(url)
+    else:
+        return urllib.unquote(url).decode('utf-8')
 
 def get_runtime_dir():
     """Returns the value of $XDG_RUNTIME_DIR, a directory path.
@@ -61,7 +63,7 @@ class SocketConnect(GObject.GObject):
         self._watch_id = 0
         self._sock = None
         self._listeners = [self._update_registered_paths]
-        self._remainder = ''.encode()
+        self._remainder = ''.encode('utf-8')
         self.nautilusVFSFile_table = {}  # not needed in this object actually but shared 
                                          # all over the other objects.
 
@@ -79,7 +81,7 @@ class SocketConnect(GObject.GObject):
         # print("Server command: " + cmd)
         if self.connected:
             try:
-                self._sock.send(cmd.encode())
+                self._sock.send(cmd.encode('utf-8'))
             except:
                 print("Sending failed.")
                 self.reconnect()
@@ -118,17 +120,17 @@ class SocketConnect(GObject.GObject):
         # Prepend the remaining data from last call
         if len(self._remainder) > 0:
             data = self._remainder + data
-            self._remainder = ''.encode()
+            self._remainder = ''.encode('utf-8')
 
         if len(data) > 0:
             # Remember the remainder for next round
-            lastNL = data.rfind('\n'.encode());
+            lastNL = data.rfind('\n'.encode('utf-8'));
             if lastNL > -1 and lastNL < len(data):
                 self._remainder = data[lastNL+1:]
                 data = data[:lastNL]
 
-            for l in data.split('\n'.encode()):
-                self._handle_server_response(l.decode())
+            for l in data.split('\n'.encode('utf-8')):
+                self._handle_server_response(l.decode('utf-8'))
         else:
             return False
 
