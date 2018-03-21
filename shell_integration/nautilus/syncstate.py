@@ -39,8 +39,10 @@ print("Initializing "+appname+"-client-nautilus extension")
 def get_local_path(url):
     if url[0:7] == 'file://':
         url = url[7:]
-    unquote = urllib.parse.unquote if python3 else urllib.unquote
-    return unquote(url)
+    if python3:
+        return urllib.parse.unquote(url)
+    else:
+        return urllib.unquote(url).decode('utf-8')
 
 def get_runtime_dir():
     """Returns the value of $XDG_RUNTIME_DIR, a directory path.
@@ -62,7 +64,7 @@ class SocketConnect(GObject.GObject):
         self._watch_id = 0
         self._sock = None
         self._listeners = [self._update_registered_paths, self._get_version]
-        self._remainder = ''.encode()
+        self._remainder = ''.encode('utf-8')
         self.protocolVersion = '1.0'
         self.nautilusVFSFile_table = {}  # not needed in this object actually but shared 
                                          # all over the other objects.
@@ -81,7 +83,7 @@ class SocketConnect(GObject.GObject):
         # print("Server command: " + cmd)
         if self.connected:
             try:
-                self._sock.send(cmd.encode())
+                self._sock.send(cmd.encode('utf-8'))
             except:
                 print("Sending failed.")
                 self.reconnect()
@@ -131,12 +133,12 @@ class SocketConnect(GObject.GObject):
 
     # Parses response lines out of collected data, returns list of strings
     def get_available_responses(self):
-        end = self._remainder.rfind('\n'.encode())
+        end = self._remainder.rfind('\n')
         if end == -1:
             return []
         data = self._remainder[:end]
         self._remainder = self._remainder[end+1:]
-        return data.decode().split('\n')
+        return data.decode('utf-8').split('\n')
 
     # Notify is the raw answer from the socket
     def _handle_notify(self, source, condition):
