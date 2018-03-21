@@ -5,6 +5,7 @@ set( APPLICATION_DOMAIN     "nextcloud.com" )
 set( APPLICATION_VENDOR     "Nextcloud GmbH" )
 set( APPLICATION_UPDATE_URL "https://updates.nextcloud.org/client/" CACHE string "URL for updater" )
 set( APPLICATION_ICON_NAME  "Nextcloud" )
+set( APPLICATION_PLACEHOLDER_SUFFIX "owncloud" CACHE STRING "Placeholder suffix (not including the .)")
 
 set( LINUX_PACKAGE_SHORTNAME "nextcloud" )
 

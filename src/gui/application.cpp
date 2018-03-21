@@ -174,7 +174,7 @@ Application::Application(int &argc, char **argv)
         AbstractNetworkJob::httpTimeout = cfg.timeout();
 
     ExcludedFiles::setupPlaceholderExclude(
-        cfg.excludeFile(ConfigFile::UserScope), OWNCLOUD_PLACEHOLDER_SUFFIX);
+        cfg.excludeFile(ConfigFile::UserScope), APPLICATION_DOTPLACEHOLDER_SUFFIX);
 
     _folderManager.reset(new FolderMan);
 
@@ -465,7 +465,7 @@ void Application::parseOptions(const QStringList &options)
             _debugMode = true;
         } else if (option == QLatin1String("--version")) {
             _versionOnly = true;
-        } else if (option.endsWith(QStringLiteral(OWNCLOUD_PLACEHOLDER_SUFFIX))) {
+        } else if (option.endsWith(QStringLiteral(APPLICATION_DOTPLACEHOLDER_SUFFIX))) {
             // placeholder file, open it after the Folder were created (if the app is not terminated)
             QTimer::singleShot(0, this, [this, option] { openPlaceholder(option); });
         } else {
@@ -635,7 +635,7 @@ void Application::showSettingsDialog()
 
 void Application::openPlaceholder(const QString &filename)
 {
-    QString placeholderExt = QStringLiteral(OWNCLOUD_PLACEHOLDER_SUFFIX);
+    QString placeholderExt = QStringLiteral(APPLICATION_DOTPLACEHOLDER_SUFFIX);
     if (!filename.endsWith(placeholderExt)) {
         qWarning(lcApplication) << "Can only handle file ending in .owncloud. Unable to open" << filename;
         return;
