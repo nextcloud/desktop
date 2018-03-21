@@ -180,8 +180,6 @@ if(APPLE)
   set( SOCKETAPI_TEAM_IDENTIFIER_PREFIX "" CACHE STRING "SocketApi prefix (including a following dot) that must match the codesign key's TeamIdentifier/Organizational Unit" )
 endif()
 
-set(OWNCLOUD_PLACEHOLDER_SUFFIX ".owncloud" CACHE STRING "Placeholder suffix (must start with a .)")
-
 if(BUILD_CLIENT)
     if(APPLE AND BUILD_UPDATER)
         find_package(Sparkle)
