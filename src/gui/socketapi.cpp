@@ -528,7 +528,7 @@ void SocketApi::command_OPEN_PRIVATE_LINK(const QString &localFile, SocketListen
 void SocketApi::command_DOWNLOAD_PLACEHOLDER(const QString &filesArg, SocketListener *)
 {
     QStringList files = filesArg.split(QLatin1Char('\x1e')); // Record Separator
-    auto placeholderSuffix = QStringLiteral(OWNCLOUD_PLACEHOLDER_SUFFIX);
+    auto placeholderSuffix = QStringLiteral(APPLICATION_DOTPLACEHOLDER_SUFFIX);
 
     for (const auto &file : files) {
         if (!file.endsWith(placeholderSuffix))
@@ -628,7 +628,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
 
     // Placeholder download action
     if (syncFolder) {
-        auto placeholderSuffix = QStringLiteral(OWNCLOUD_PLACEHOLDER_SUFFIX);
+        auto placeholderSuffix = QStringLiteral(APPLICATION_DOTPLACEHOLDER_SUFFIX);
         bool hasPlaceholderFile = false;
         for (const auto &file : files) {
             if (file.endsWith(placeholderSuffix))
