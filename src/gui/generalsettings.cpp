@@ -55,7 +55,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         _ui->aboutGroupBox->hide();
     } else {
         _ui->aboutLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
-        _ui->aboutLabel->setText(about);
+        _ui->aboutLabel->setText("<qt><style> p{padding-bottom:0; margin-bottom:0;padding-top:2; margin-top: 2; font-size:smaller;};</style>"+about+"</qt>");
         _ui->aboutLabel->setWordWrap(true);
         _ui->aboutLabel->setOpenExternalLinks(true);
     }
