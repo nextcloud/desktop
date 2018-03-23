@@ -23,13 +23,6 @@
 #include <QRunnable>
 #include <QThreadPool>
 
-extern "C" {
-#include "librcksum/rcksum.h"
-#include "libzsync/zmap.h"
-#include "libzsync/sha1.h"
-#include "libzsync/zsync.h"
-}
-
 #define ZSYNC_BLOCKSIZE (1 * 1024 * 1024) // must be power of 2
 
 namespace OCC {

@@ -16,6 +16,11 @@
  *
  */
 
+extern "C" {
+#include "libzsync/zsync.h"
+#include "libzsync/zsyncfile.h"
+}
+
 #include "config.h"
 #include "propagateupload.h"
 #include "owncloudpropagator_p.h"
@@ -35,10 +40,6 @@
 #include <QFileInfo>
 #include <QDir>
 #include <QTemporaryDir>
-
-extern "C" {
-#include "libzsync/zsyncfile.h"
-}
 
 namespace OCC {
 

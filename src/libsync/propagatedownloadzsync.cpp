@@ -16,6 +16,10 @@
  *
  */
 
+extern "C" {
+#include "libzsync/zsync.h"
+}
+
 #include "config.h"
 #include "owncloudpropagator_p.h"
 #include "propagatedownload.h"

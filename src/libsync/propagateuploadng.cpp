@@ -12,6 +12,10 @@
  * for more details.
  */
 
+extern "C" {
+#include "libzsync/zsync.h"
+}
+
 #include "config.h"
 #include "propagateupload.h"
 #include "owncloudpropagator_p.h"
@@ -134,7 +138,7 @@ void PropagateUploadFileNG::slotZsyncSeedFinished(void *_zs)
 
     for (const auto &range : _rangesToUpload)
         qCDebug(lcZsyncPut) << "Upload range:" << range.start << range.size;
-    qCDebug(lcZsyncPut) << "Total bytes:" << totalBytes;
+    qCDebug(lcZsyncPut) << "Total bytes:" << totalBytes << "of file size" << _item->_size;
 
     propagator()->reportFileTotal(*_item, totalBytes);
     _bytesToUpload = totalBytes;
