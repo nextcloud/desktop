@@ -35,6 +35,8 @@ public:
     PropagateUploadEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item);
     void start();
 
+    /* unlocks the current folder that holds this file */
+    void unlockFolder();
   // Used by propagateupload
   QByteArray _folderToken;
   QByteArray _folderId;
@@ -47,9 +49,8 @@ private slots:
     void slotFolderLockedSuccessfully(const QByteArray& fileId, const QByteArray& token);
     void slotFolderLockedError(const QByteArray& fileId, int httpErrorCode);
     void slotTryLock(const QByteArray& fileId);
-    void slotFolderEncriptedMetadataReceived(const QJsonDocument &json, int statusCode);
-    void slotUnlockEncryptedFolderSuccess(const QByteArray& fileId);
-    void slotUnlockEncryptedFolderError(const QByteArray& fileId, int httpReturnCode);
+    void slotFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode);
+    void slotFolderEncryptedMetadataError(const QByteArray& fileId, int httpReturnCode);
     void slotUpdateMetadataSuccess(const QByteArray& fileId);
     void slotUpdateMetadataError(const QByteArray& fileId, int httpReturnCode);
 

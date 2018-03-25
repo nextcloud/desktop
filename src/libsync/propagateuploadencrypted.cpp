@@ -105,11 +105,20 @@ void PropagateUploadEncrypted::slotFolderLockedSuccessfully(const QByteArray& fi
 
   auto job = new GetMetadataApiJob(_propagator->account(), _folderId);
   connect(job, &GetMetadataApiJob::jsonReceived,
-          this, &PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived);
+          this, &PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived);
+  connect(job, &GetMetadataApiJob::error,
+          this, &PropagateUploadEncrypted::slotFolderEncryptedMetadataError);
+
   job->start();
 }
 
-void PropagateUploadEncrypted::slotFolderEncriptedMetadataReceived(const QJsonDocument &json, int statusCode)
+void PropagateUploadEncrypted::slotFolderEncryptedMetadataError(const QByteArray& fileId, int httpReturnCode)
+{
+  qCDebug(lcPropagateUploadEncrypted()) << "Error Getting the encrypted metadata. unlock the folder.";
+  unlockFolder();
+}
+
+void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode)
 {
   qCDebug(lcPropagateUploadEncrypted) << "Metadata Received, Preparing it for the new file." << json.toVariant();
 
@@ -201,16 +210,8 @@ void PropagateUploadEncrypted::slotUpdateMetadataSuccess(const QByteArray& fileI
 void PropagateUploadEncrypted::slotUpdateMetadataError(const QByteArray& fileId, int httpErrorResponse)
 {
   qCDebug(lcPropagateUploadEncrypted) << "Update metadata error for folder" << fileId << "with error" << httpErrorResponse;
-}
-
-void PropagateUploadEncrypted::slotUnlockEncryptedFolderSuccess(const QByteArray& fileId)
-{
-    qCDebug(lcPropagateUploadEncrypted) << "Unlock Job worked for folder " << fileId;
-}
-
-void PropagateUploadEncrypted::slotUnlockEncryptedFolderError(const QByteArray& fileId, int httpStatusCode)
-{
-  qCDebug(lcPropagateUploadEncrypted) << "There was an error unlocking " << fileId << httpStatusCode;
+  qCDebug(lcPropagateUploadEncrypted()) << "Unlocking the folder.";
+  unlockFolder();
 }
 
 void PropagateUploadEncrypted::slotFolderLockedError(const QByteArray& fileId, int httpErrorCode)
@@ -244,6 +245,17 @@ void PropagateUploadEncrypted::slotFolderEncryptedIdError(QNetworkReply *r)
 void PropagateUploadEncrypted::slotFolderEncryptedStatusError(int error)
 {
     qCDebug(lcPropagateUploadEncrypted) << "Failed to retrieve the status of the folders." << error;
+}
+
+void PropagateUploadEncrypted::unlockFolder()
+{
+    qDebug() << "Calling Unlock";
+    auto *unlockJob = new UnlockEncryptFolderApiJob(_propagator->account(),
+        _folderId, _folderToken, this);
+
+    connect(unlockJob, &UnlockEncryptFolderApiJob::success, []{ qDebug() << "Successfully Unlocked"; });
+    connect(unlockJob, &UnlockEncryptFolderApiJob::error, []{ qDebug() << "Unlock Error"; });
+    unlockJob->start();
 }
 
 } // namespace OCC

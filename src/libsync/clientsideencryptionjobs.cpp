@@ -140,9 +140,11 @@ void GetMetadataApiJob::start()
 bool GetMetadataApiJob::finished()
 {
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (retCode != 200)
+    if (retCode != 200) {
         qCInfo(lcCseJob()) << "error requesting the metadata" << path() << errorString() << retCode;
-
+        emit error(_fileId, retCode);
+        return true;
+    }
     QJsonParseError error;
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());

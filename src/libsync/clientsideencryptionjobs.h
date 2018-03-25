@@ -248,6 +248,7 @@ protected:
 
 signals:
     void jsonReceived(const QJsonDocument &json, int statusCode);
+    void error(const QByteArray& fileId, int httpReturnCode);
 
 private:
     QByteArray _fileId;
