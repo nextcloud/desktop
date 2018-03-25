@@ -314,8 +314,12 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
                     emit guiLog(activity._subject, activity._accName);
                 }
             }
+            _newNotifications.append(activity);
         }
+        i++;
     }
+   //_model->addToActivityList(AccountManager::instance()->account(listAccountName).data(), _newNotifications);
+    _model->addToActivityList(AccountManager::instance()->account(listAccountName).data(), list);
 
     // check if there are widgets that have no corresponding activity from
     // the server any more. Collect them in a list
