@@ -281,7 +281,17 @@ void AccountSettings::slotLockForEncryptionSuccess(const QByteArray& fileId, con
 		accountsState()->account()->e2e()->setTokenForFolder(fileId, token);
 
 		FolderMetadata emptyMetadata(accountsState()->account());
-		auto storeMetadataJob = new StoreMetaDataApiJob(accountsState()->account(), fileId, emptyMetadata.encryptedMetadata());
+    auto encryptedMetadata = emptyMetadata.encryptedMetadata();
+    if (encryptedMetadata.isEmpty()) {
+      //TODO: Mark the folder as unencrypted as the metadata generation failed.
+      QMessageBox::warning(nullptr, "Warning",
+          "Could not generate the metadata for encryption, Unlocking the folder. \n"
+          "This can be an issue with your OpenSSL libraries, please note that OpenSSL 1.1 is \n"
+          "not compatible with Nextcloud yet."
+      );
+      return;
+    }
+    auto storeMetadataJob = new StoreMetaDataApiJob(accountsState()->account(), fileId, emptyMetadata.encryptedMetadata());
 		connect(storeMetadataJob, &StoreMetaDataApiJob::success,
 						this, &AccountSettings::slotUploadMetadataSuccess);
 		connect(storeMetadataJob, &StoreMetaDataApiJob::error,

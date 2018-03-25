@@ -421,12 +421,14 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     if(!(ctx = EVP_CIPHER_CTX_new())) {
         qCInfo(lcCse()) << "Error creating cipher";
         handleErrors();
+        return {};
     }
 
     /* Initialise the decryption operation. */
     if(!EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
         qCInfo(lcCse()) << "Error initializing context with aes_128";
         handleErrors();
+        return {};
     }
 
     // No padding
@@ -436,12 +438,14 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), NULL)) {
         qCInfo(lcCse()) << "Error setting iv length";
         handleErrors();
+        return {};
     }
 
     /* Initialise key and IV */
     if(!EVP_EncryptInit_ex(ctx, NULL, NULL, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
         qCInfo(lcCse()) << "Error initialising key and iv";
         handleErrors();
+        return {};
     }
 
     // We write the data base64 encoded
@@ -455,6 +459,7 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     if(!EVP_EncryptUpdate(ctx, ctext, &len, (unsigned char *)dataB64.constData(), dataB64.size())) {
         qCInfo(lcCse()) << "Error encrypting";
         handleErrors();
+        return {};
     }
 
     int clen = len;
@@ -465,6 +470,7 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     if(1 != EVP_EncryptFinal_ex(ctx, ctext + len, &len)) {
         qCInfo(lcCse()) << "Error finalizing encryption";
         handleErrors();
+        return {};
     }
     clen += len;
 
@@ -473,6 +479,7 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_GET_TAG, 16, tag)) {
         qCInfo(lcCse()) << "Error getting the tag";
         handleErrors();
+        return {};
     }
 
     QByteArray cipherTXT((char *)ctext, clen);
@@ -1289,6 +1296,9 @@ QByteArray FolderMetadata::encryptedMetadata() {
         encryptedDoc.setObject(encrypted);
 
         QString encryptedEncrypted = encryptJsonObject(encryptedDoc.toJson(QJsonDocument::Compact), _metadataKeys.last());
+        if (encryptedEncrypted.isEmpty()) {
+          qCDebug(lcCse) << "Metadata generation failed!";
+        }
 
         QJsonObject file;
         file.insert("encrypted", encryptedEncrypted);
@@ -1417,6 +1427,7 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
     input->close();
     output->close();
     qCDebug(lcCse) << "File Encrypted Successfully";
+    return true;
 }
 
 void EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& iv,
