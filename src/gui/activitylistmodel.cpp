@@ -46,6 +46,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     a = _finalList.at(index.row());
+    qDebug() << "Adding activity/notification: " << a._subject;
+    qDebug() << "Adding activity/notification: " << a._message;
     AccountStatePtr ast = AccountManager::instance()->account(a._accName);
     if (!ast)
         return QVariant();
@@ -173,6 +175,25 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
     combineActivityLists();
 }
 
+void ActivityListModel::addToActivityList(AccountState *ast, ActivityList list) {
+    _activityLists[ast].append(list);
+    //endInsertRows();
+    ActivityList resultList;
+
+    foreach (ActivityList list, _activityLists.values()) {
+        resultList.append(list);
+    }
+
+    std::sort(resultList.begin(), resultList.end());
+
+    beginResetModel();
+    _finalList.clear();
+    endResetModel();
+
+    beginInsertRows(QModelIndex(), 0, resultList.count());
+    _finalList = resultList;
+    endInsertRows();
+}
 
 void ActivityListModel::combineActivityLists()
 {
