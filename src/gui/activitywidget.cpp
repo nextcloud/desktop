@@ -49,10 +49,11 @@
 
 namespace OCC {
 
-ActivityWidget::ActivityWidget(QWidget *parent)
+ActivityWidget::ActivityWidget(QWidget *parent, AccountState *account)
     : QWidget(parent)
     , _ui(new Ui::ActivityWidget)
     , _notificationRequestsRunning(0)
+    , _account(account)
 {
     _ui->setupUi(this);
 
@@ -497,8 +498,9 @@ void ActivityWidget::slotCheckToCleanWidgets()
 
 /* ==================================================================== */
 
-ActivitySettings::ActivitySettings(QWidget *parent)
+ActivitySettings::ActivitySettings(QWidget *parent, AccountState *account)
     : QWidget(parent)
+    , _account(account)
 {
     QHBoxLayout *hbox = new QHBoxLayout(this);
     setLayout(hbox);
@@ -506,24 +508,24 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     // create a tab widget for the three activity views
     _tab = new QTabWidget(this);
     hbox->addWidget(_tab);
-    _activityWidget = new ActivityWidget(this);
+    _activityWidget = new ActivityWidget(this, _account);
     _activityTabId = _tab->addTab(_activityWidget, Theme::instance()->applicationIcon(), tr("Server Activity"));
     connect(_activityWidget, &ActivityWidget::copyToClipboard, this, &ActivitySettings::slotCopyToClipboard);
     connect(_activityWidget, &ActivityWidget::hideActivityTab, this, &ActivitySettings::setActivityTabHidden);
     connect(_activityWidget, &ActivityWidget::guiLog, this, &ActivitySettings::guiLog);
     connect(_activityWidget, &ActivityWidget::newNotification, this, &ActivitySettings::slotShowActivityTab);
 
-    _protocolWidget = new ProtocolWidget(this);
-    _protocolTabId = _tab->addTab(_protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
-    connect(_protocolWidget, &ProtocolWidget::copyToClipboard, this, &ActivitySettings::slotCopyToClipboard);
+//    _protocolWidget = new ProtocolWidget(this);
+//    _protocolTabId = _tab->addTab(_protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
+//    connect(_protocolWidget, &ProtocolWidget::copyToClipboard, this, &ActivitySettings::slotCopyToClipboard);
 
-    _issuesWidget = new IssuesWidget(this);
-    _syncIssueTabId = _tab->addTab(_issuesWidget, Theme::instance()->syncStateIcon(SyncResult::Problem), QString());
-    slotShowIssueItemCount(0); // to display the label.
-    connect(_issuesWidget, &IssuesWidget::issueCountUpdated,
-        this, &ActivitySettings::slotShowIssueItemCount);
-    connect(_issuesWidget, &IssuesWidget::copyToClipboard,
-        this, &ActivitySettings::slotCopyToClipboard);
+//    _issuesWidget = new IssuesWidget(this);
+//    _syncIssueTabId = _tab->addTab(_issuesWidget, Theme::instance()->syncStateIcon(SyncResult::Problem), QString());
+//    slotShowIssueItemCount(0); // to display the label.
+//    connect(_issuesWidget, &IssuesWidget::issueCountUpdated,
+//        this, &ActivitySettings::slotShowIssueItemCount);
+//    connect(_issuesWidget, &IssuesWidget::copyToClipboard,
+//        this, &ActivitySettings::slotCopyToClipboard);
 
     // Add a progress indicator to spin if the acitivity list is updated.
     _progressIndicator = new QProgressIndicator(this);
@@ -578,14 +580,14 @@ void ActivitySettings::slotShowActivityTab()
     }
 }
 
-void ActivitySettings::slotShowIssuesTab(const QString &folderAlias)
-{
-    if (_syncIssueTabId == -1)
-        return;
-    _tab->setCurrentIndex(_syncIssueTabId);
+//void ActivitySettings::slotShowIssuesTab(const QString &folderAlias)
+//{
+//    if (_syncIssueTabId == -1)
+//        return;
+//    _tab->setCurrentIndex(_syncIssueTabId);
 
-    _issuesWidget->showFolderErrors(folderAlias);
-}
+//    _issuesWidget->showFolderErrors(folderAlias);
+//}
 
 void ActivitySettings::slotCopyToClipboard()
 {
@@ -601,12 +603,12 @@ void ActivitySettings::slotCopyToClipboard()
         message = tr("The server activity list has been copied to the clipboard.");
     } else if (idx == _protocolTabId) {
         // the protocol widget
-        _protocolWidget->storeSyncActivity(ts);
+        //_protocolWidget->storeSyncActivity(ts);
         message = tr("The sync activity list has been copied to the clipboard.");
     } else if (idx == _syncIssueTabId) {
         // issues Widget
         message = tr("The list of unsynced items has been copied to the clipboard.");
-        _issuesWidget->storeSyncIssues(ts);
+        //_issuesWidget->storeSyncIssues(ts);
     }
 
     QApplication::clipboard()->setText(text);

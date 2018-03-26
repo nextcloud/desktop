@@ -84,19 +84,35 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     setObjectName("Settings"); // required as group for saveGeometry call
     setWindowTitle(Theme::instance()->appNameGUI());
 
+    connect(AccountManager::instance(), &AccountManager::accountAdded,
+        this, &SettingsDialog::accountAdded);
+    connect(AccountManager::instance(), &AccountManager::accountRemoved,
+        this, &SettingsDialog::accountRemoved);
+
     _actionGroup = new QActionGroup(this);
     _actionGroup->setExclusive(true);
 
-    // Note: all the actions have a '\n' because the account name is in two lines and
-    // all buttons must have the same size in order to keep a good layout
-    _activityAction = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
-    _actionGroup->addAction(_activityAction);
-    _toolBar->addAction(_activityAction);
-    _activitySettings = new ActivitySettings;
-    _ui->stack->addWidget(_activitySettings);
-    connect(_activitySettings, &ActivitySettings::guiLog, _gui,
-        &ownCloudGui::slotShowOptionalTrayMessage);
-    _activitySettings->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
+    foreach (auto ai, AccountManager::instance()->accounts()) {
+        accountAdded(ai.data());
+
+        _activitySettings[ai] = new ActivitySettings(this, ai.data());
+        _ui->stack->addWidget(_activitySettings[ai]);
+        connect(_activitySettings[ai], &ActivitySettings::guiLog, _gui,
+            &ownCloudGui::slotShowOptionalTrayMessage);
+        _activitySettings[ai]->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
+
+        // Note: all the actions have a '\n' because the account name is in two lines and
+        // all buttons must have the same size in order to keep a good layout
+        QAction *action = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
+        action->setProperty("account", QVariant::fromValue(ai));
+        _actionGroup->addAction(action);
+        _toolBar->addSeparator();
+        _toolBar->addAction(action);
+        _actionGroupWidgets.insert(action, _activitySettings[ai]);
+        connect(action, &QAction::triggered, this, &SettingsDialog::showActivityPage);
+
+        slotRefreshActivity(ai.data());
+    }
 
     // Adds space
     QWidget* spacer = new QWidget();
@@ -115,19 +131,10 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
 
-    _actionGroupWidgets.insert(_activityAction, _activitySettings);
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
 
     connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
-
-    connect(AccountManager::instance(), &AccountManager::accountAdded,
-        this, &SettingsDialog::accountAdded);
-    connect(AccountManager::instance(), &AccountManager::accountRemoved,
-        this, &SettingsDialog::accountRemoved);
-    foreach (auto ai, AccountManager::instance()->accounts()) {
-        accountAdded(ai.data());
-    }
 
     QTimer::singleShot(1, this, &SettingsDialog::showFirstPage);
 
@@ -194,18 +201,18 @@ void SettingsDialog::showFirstPage()
 
 void SettingsDialog::showActivityPage()
 {
-    if (_activityAction) {
-        _activityAction->trigger();
+    if (auto account = qvariant_cast<AccountStatePtr>(sender()->property("account"))) {
+        _activitySettings[account]->show();
     }
 }
 
-void SettingsDialog::showIssuesList(const QString &folderAlias)
-{
-    if (!_activityAction)
-        return;
-    _activityAction->trigger();
-    _activitySettings->slotShowIssuesTab(folderAlias);
-}
+//void SettingsDialog::showIssuesList(const QString &folderAlias)
+//{
+//    if (!_activityAction)
+//        return;
+//    _activityAction->trigger();
+//    _activitySettings->slotShowIssuesTab(folderAlias);
+//}
 
 void SettingsDialog::accountAdded(AccountState *s)
 {
@@ -228,7 +235,7 @@ void SettingsDialog::accountAdded(AccountState *s)
         accountAction->setToolTip(s->account()->displayName());
         accountAction->setIconText(SettingsDialogCommon::shortDisplayNameForSettings(s->account().data(),  height * buttonSizeRatio));
     }
-    _toolBar->insertAction(_toolBar->actions().at(0), accountAction);
+    _toolBar->addAction(accountAction);
     auto accountSettings = new AccountSettings(s, this);
     _ui->stack->insertWidget(0, accountSettings);
     _actionGroup->addAction(accountAction);
@@ -238,14 +245,14 @@ void SettingsDialog::accountAdded(AccountState *s)
     connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotFoldersChanged);
     connect(accountSettings, &AccountSettings::openFolderAlias,
         _gui, &ownCloudGui::slotFolderOpenAction);
-    connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
+    //connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
     connect(s->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
     connect(s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
 
     // Refresh immediatly when getting online
     connect(s, &AccountState::isConnectedChanged, this, &SettingsDialog::slotRefreshActivityAccountStateSender);
 
-    slotRefreshActivity(s);
+    //slotRefreshActivity(s);
 }
 
 void SettingsDialog::slotAccountAvatarChanged()
@@ -300,7 +307,7 @@ void SettingsDialog::accountRemoved(AccountState *s)
     if (_actionForAccount.contains(s->account().data())) {
         _actionForAccount.remove(s->account().data());
     }
-    _activitySettings->slotRemoveAccount(s);
+    _activitySettings[AccountManager::instance()->account(s->account()->displayName())]->slotRemoveAccount(s);
 
     // Hide when the last account is deleted. We want to enter the same
     // state we'd be in the client was started up without an account
@@ -395,7 +402,7 @@ void SettingsDialog::slotRefreshActivityAccountStateSender()
 void SettingsDialog::slotRefreshActivity(AccountState *accountState)
 {
     if (accountState) {
-        _activitySettings->slotRefresh(accountState);
+        _activitySettings[AccountManager::instance()->account(accountState->account()->displayName())]->slotRefresh(accountState);
     }
 }
 
