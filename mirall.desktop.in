@@ -18,6 +18,9 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+
+
+# Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
 GenericName[oc]=Dorsièr de Sincronizacion
 Name[oc]=@APPLICATION_NAME@ sincronizacion del client
@@ -182,9 +185,9 @@ Comment[lt_LT]=@APPLICATION_NAME@ darbalaukio sinchronizavimo programa
 GenericName[lt_LT]=Katalogo sinchnorizacija
 Name[lt_LT]=@APPLICATION_NAME@ darbalaukio programa
 Icon[lt_LT]=@APPLICATION_EXECUTABLE@
-Comment[th_TH]=@APPLICATION_NAME@ ไคลเอนต์ประสานข้อมูลเดสก์ท็อป
+Comment[th_TH]=@APPLICATION_NAME@ ประสานข้อมูลด้วยโปรแกรมบนเดสก์ท็อป
 GenericName[th_TH]=ประสานข้อมูลโฟลเดอร์
-Name[th_TH]= @APPLICATION_NAME@ ไคลเอนต์ประสานข้อมูลเดสก์ท็อป
+Name[th_TH]= @APPLICATION_NAME@ ประสานข้อมูลด้วยโปรแกรมบนเดสก์ท็อป
 Icon[th_TH]=@APPLICATION_EXECUTABLE@
 Comment[es_MX]=Cliente de escritorio para  sincronziación de @APPLICATION_NAME@
 GenericName[es_MX]=Sincronización de Carpetas
