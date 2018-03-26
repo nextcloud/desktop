@@ -630,6 +630,7 @@ void ClientSideEncryption::initialize()
     if (!_account->capabilities().clientSideEncryptionAvaliable()) {
         qCInfo(lcCse()) << "No Client side encryption avaliable on server.";
         emit initializationFinished();
+        return;
     }
 
     fetchFromKeyChain();
