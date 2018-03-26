@@ -25,6 +25,7 @@
 #include "owncloudgui.h"
 #include "account.h"
 #include "activitydata.h"
+#include "accountmanager.h"
 
 #include "ui_activitywidget.h"
 
@@ -58,7 +59,8 @@ class ActivityWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ActivityWidget(QWidget *parent = 0);
+    explicit ActivityWidget(QWidget *parent = 0,
+                            AccountState *account = AccountManager::instance()->accounts().first().data());
     ~ActivityWidget();
     QSize sizeHint() const Q_DECL_OVERRIDE { return ownCloudGui::settingsDialogSize(); }
     void storeActivityList(QTextStream &ts);
@@ -117,6 +119,8 @@ private:
 
     ActivityListModel *_model;
     QVBoxLayout *_notificationsLayout;
+
+    AccountState *_account;
 };
 
 
@@ -131,7 +135,8 @@ class ActivitySettings : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ActivitySettings(QWidget *parent = 0);
+    explicit ActivitySettings(QWidget *parent = 0,
+                              AccountState *account = AccountManager::instance()->accounts().first().data());
     ~ActivitySettings();
     QSize sizeHint() const Q_DECL_OVERRIDE { return ownCloudGui::settingsDialogSize(); }
 
@@ -141,7 +146,7 @@ public slots:
 
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
 
-    void slotShowIssuesTab(const QString &folderAlias);
+    //void slotShowIssuesTab(const QString &folderAlias);
 
 private slots:
     void slotCopyToClipboard();
@@ -167,6 +172,8 @@ private:
     QProgressIndicator *_progressIndicator;
     QTimer _notificationCheckTimer;
     QHash<AccountState *, QElapsedTimer> _timeSinceLastCheck;
+
+    AccountState *_account;
 };
 }
 #endif // ActivityWIDGET_H

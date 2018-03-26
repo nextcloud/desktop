@@ -56,7 +56,7 @@ public:
 public slots:
     void showFirstPage();
     void showActivityPage();
-    void showIssuesList(const QString &folderAlias);
+//    void showIssuesList(const QString &folderAlias);
     void slotSwitchPage(QAction *action);
     void slotRefreshActivity(AccountState *accountState);
     void slotRefreshActivityAccountStateSender();
@@ -91,9 +91,8 @@ private:
 
     QToolBar *_toolBar;
 
-    ActivitySettings *_activitySettings;
+    QMap<AccountStatePtr, ActivitySettings *> _activitySettings;
 
-    QAction *_activityAction;
     ownCloudGui *_gui;
 };
 }
