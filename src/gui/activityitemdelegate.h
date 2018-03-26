@@ -30,6 +30,7 @@ public:
         UserIconRole,
         AccountRole,
         ActionTextRole,
+        MessageRole,
         PathRole,
         LinkRole,
         PointInTimeRole,

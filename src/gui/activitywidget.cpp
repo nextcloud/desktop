@@ -174,6 +174,7 @@ void ActivityWidget::storeActivityList(QTextStream &ts)
     ActivityList activities = _model->activityList();
 
     foreach (Activity activity, activities) {
+        QString message = activity._message.isEmpty()? "Message!" : activity._message;
         ts << right
            // account name
            << qSetFieldWidth(30)
@@ -199,12 +200,15 @@ void ActivityWidget::storeActivityList(QTextStream &ts)
            // separator
            << qSetFieldWidth(0) << ","
 
-           // message (mostly empty)
-           << qSetFieldWidth(55)
-           << activity._message
-           //
-           << qSetFieldWidth(0)
-           << endl;
+          // message
+          << qSetFieldWidth(55)
+          << message
+          // separator
+          << qSetFieldWidth(0) << ","
+
+          //
+          << qSetFieldWidth(0)
+          << endl;
     }
 }
 
@@ -316,9 +320,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
             }
             _newNotifications.append(activity);
         }
-        i++;
     }
-   //_model->addToActivityList(AccountManager::instance()->account(listAccountName).data(), _newNotifications);
     _model->addToActivityList(AccountManager::instance()->account(listAccountName).data(), list);
 
     // check if there are widgets that have no corresponding activity from
