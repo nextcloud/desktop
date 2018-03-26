@@ -160,7 +160,16 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   QFile output(QDir::tempPath() + QDir::separator() + encryptedFile.encryptedFilename);
 
   QByteArray tag;
-  EncryptionHelper::fileEncryption(encryptedFile.encryptionKey, encryptedFile.initializationVector, &input, &output, tag);
+  bool encryptionResult = EncryptionHelper::fileEncryption(
+    encryptedFile.encryptionKey,
+    encryptedFile.initializationVector,
+    &input, &output, tag);
+
+  if (!encryptionResult) {
+    qCDebug(lcPropagateUploadEncrypted()) << "There was an error encrypting the file, aborting upload.";
+    unlockFolder();
+    return;
+  }
 
   _completeFileName = output.fileName();
 
