@@ -189,6 +189,10 @@ void SslButton::slotUpdateMenu()
 
     AccountPtr account = _accountState->account();
 
+    if (account->isHttp2Supported()) {
+        _menu->addAction("HTTP/2")->setEnabled(false);
+    }
+
     if (account->url().scheme() == QLatin1String("https")) {
         QString sslVersion = account->_sessionCipher.protocolString()
             + ", " + account->_sessionCipher.authenticationMethod()
