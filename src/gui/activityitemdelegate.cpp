@@ -79,9 +79,9 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     QIcon actionIcon = qvariant_cast<QIcon>(index.data(ActionIconRole));
     QIcon userIcon = qvariant_cast<QIcon>(index.data(UserIconRole));
     QString actionText = qvariant_cast<QString>(index.data(ActionTextRole));
-    QString pathText = qvariant_cast<QString>(index.data(PathRole));
-
-    QString remoteLink = qvariant_cast<QString>(index.data(LinkRole));
+    QString messageText = qvariant_cast<QString>(index.data(MessageRole));
+//    QString pathText = qvariant_cast<QString>(index.data(PathRole));
+//    QString remoteLink = qvariant_cast<QString>(index.data(LinkRole));
     QString timeText = qvariant_cast<QString>(index.data(PointInTimeRole));
     QString accountRole = qvariant_cast<QString>(index.data(AccountRole));
     bool accountOnline = qvariant_cast<bool>(index.data(AccountConnectedRole));
@@ -110,9 +110,14 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     timeBox.setWidth(timeBoxWidth);
     timeBox.setHeight(fm.height());
 
+    // text rect
+    QRect messageTextBox = timeBox;\
+    messageTextBox.setRight(timeBox.left() - margin);
+    messageTextBox.setLeft(messageTextBox.right() - timeBoxWidth);
+
     QRect actionTextBox = timeBox;
     actionTextBox.setLeft(userIconRect.right() + margin);
-    actionTextBox.setRight(timeBox.left() - margin);
+    actionTextBox.setRight(messageTextBox.left() - margin);
 
     /* === start drawing === */
     QPixmap pm = actionIcon.pixmap(iconWidth, iconHeight, QIcon::Normal);
@@ -134,6 +139,10 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     const QString elidedAction = fm.elidedText(actionText, Qt::ElideRight, actionTextBox.width());
     painter->drawText(actionTextBox, elidedAction);
+
+    const QString elidedMessage = fm.elidedText(messageText, Qt::ElideRight, messageTextBox.width());
+    painter->drawText(messageTextBox, elidedMessage);
+
 
     int atPos = accountRole.indexOf(QLatin1Char('@'));
     if (atPos > -1) {
