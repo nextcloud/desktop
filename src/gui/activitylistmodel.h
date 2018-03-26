@@ -64,6 +64,7 @@ private:
     void combineActivityLists();
 
     QMap<AccountState *, ActivityList> _activityLists;
+    QMap<AccountState *, ActivityList> _notificationLists;
     ActivityList _finalList;
     QSet<AccountState *> _currentlyFetching;
 };
