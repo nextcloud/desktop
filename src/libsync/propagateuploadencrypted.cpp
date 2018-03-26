@@ -156,16 +156,13 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
 
   qCDebug(lcPropagateUploadEncrypted) << "Creating the encrypted file.";
 
-  auto *input = new QFile(info.absoluteFilePath());
-  auto *output = new QFile(QDir::tempPath() + QDir::separator() + encryptedFile.encryptedFilename);
+  QFile input(info.absoluteFilePath());
+  QFile output(QDir::tempPath() + QDir::separator() + encryptedFile.encryptedFilename);
 
   QByteArray tag;
-  EncryptionHelper::fileEncryption(encryptedFile.encryptionKey, encryptedFile.initializationVector, input, output, tag);
+  EncryptionHelper::fileEncryption(encryptedFile.encryptionKey, encryptedFile.initializationVector, &input, &output, tag);
 
-  input->deleteLater();
-  output->deleteLater();
-
-  _completeFileName = output->fileName();
+  _completeFileName = output.fileName();
 
   qCDebug(lcPropagateUploadEncrypted) << "Creating the metadata for the encrypted file.";
 
