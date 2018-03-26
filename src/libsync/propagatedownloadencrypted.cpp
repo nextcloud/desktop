@@ -100,16 +100,16 @@ bool PropagateDownloadEncrypted::decryptFile(QFile& tmpFile)
     qCDebug(lcPropagateDownloadEncrypted) << "Content Checksum Computed starting decryption" << tmpFileName;
 
     tmpFile.close();
-    auto _tmpOutput = new QFile(_propagator->getFilePath(tmpFileName), this);
+    QFile _tmpOutput(_propagator->getFilePath(tmpFileName), this);
     EncryptionHelper::fileDecryption(_encryptedInfo.encryptionKey,
                                       _encryptedInfo.initializationVector,
                                       &tmpFile,
-                                      _tmpOutput);
+                                      &_tmpOutput);
 
-    qCDebug(lcPropagateDownloadEncrypted) << "Decryption finished" << tmpFile.fileName() << _tmpOutput->fileName();
+    qCDebug(lcPropagateDownloadEncrypted) << "Decryption finished" << tmpFile.fileName() << _tmpOutput.fileName();
 
     tmpFile.close();
-    _tmpOutput->close();
+    _tmpOutput.close();
 
     // we decripted the temporary into another temporary, so good bye old one
     if (!tmpFile.remove()) {
@@ -119,7 +119,7 @@ bool PropagateDownloadEncrypted::decryptFile(QFile& tmpFile)
     }
 
     // Let's fool the rest of the logic into thinking this was the actual download
-    tmpFile.setFileName(_tmpOutput->fileName());
+    tmpFile.setFileName(_tmpOutput.fileName());
 
     //TODO: This seems what's breaking the logic.
     // Let's fool the rest of the logic into thinking this is the right name of the DAV file
