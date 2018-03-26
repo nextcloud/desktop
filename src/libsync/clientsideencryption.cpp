@@ -500,32 +500,32 @@ QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data)
     if (!ctx) {
         qCInfo(lcCseDecryption()) << "Could not create the PKEY context.";
         handleErrors();
-        exit(1);
+        return {};
     }
 
     err = EVP_PKEY_decrypt_init(ctx);
     if (err <= 0) {
         qCInfo(lcCseDecryption()) << "Could not init the decryption of the metadata";
         handleErrors();
-        exit(1);
+        return {};
     }
 
     if (EVP_PKEY_CTX_set_rsa_padding(ctx, RSA_PKCS1_OAEP_PADDING) <= 0) {
         qCInfo(lcCseDecryption()) << "Error setting the encryption padding.";
         handleErrors();
-        exit(1);
+        return {};
     }
 
     if (EVP_PKEY_CTX_set_rsa_oaep_md(ctx, EVP_sha256()) <= 0) {
         qCInfo(lcCseDecryption()) << "Error setting OAEP SHA 256";
         handleErrors();
-        exit(1);
+        return {};
     }
 
     if (EVP_PKEY_CTX_set_rsa_mgf1_md(ctx, EVP_sha256()) <= 0) {
         qCInfo(lcCseDecryption()) << "Error setting MGF1 padding";
         handleErrors();
-        exit(1);
+        return {};
     }
 
     size_t outlen = 0;
@@ -533,7 +533,7 @@ QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data)
     if (err <= 0) {
         qCInfo(lcCseDecryption()) << "Could not determine the buffer length";
         handleErrors();
-        exit(1);
+        return {};
     } else {
         qCInfo(lcCseDecryption()) << "Size of output is: " << outlen;
         qCInfo(lcCseDecryption()) << "Size of data is: " << data.size();
@@ -543,13 +543,13 @@ QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data)
     if (!out) {
         qCInfo(lcCseDecryption()) << "Could not alloc space for the decrypted metadata";
         handleErrors();
-        exit(1);
+        return {};
     }
 
     if (EVP_PKEY_decrypt(ctx, out, &outlen, (unsigned char *)data.constData(), data.size()) <= 0) {
         qCInfo(lcCseDecryption()) << "Could not decrypt the data.";
         ERR_print_errors_fp(stdout); // This line is not printing anything.
-        exit(1);
+        return {};
     } else {
         qCInfo(lcCseDecryption()) << "data decrypted successfully";
     }
@@ -1160,7 +1160,13 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
      * We have to base64 decode the metadatakey here. This was a misunderstanding in the RFC
      * Now we should be compatible with Android and IOS. Maybe we can fix it later.
      */
-    QByteArray decryptedKey = QByteArray::fromBase64(decryptMetadataKey(currB64Pass));
+    QByteArray b64DecryptedKey = decryptMetadataKey(currB64Pass);
+    if (b64DecryptedKey.isEmpty()) {
+      qCDebug(lcCse()) << "Could not decrypt metadata for key" << it.key();
+      continue;
+    }
+
+    QByteArray decryptedKey = QByteArray::fromBase64(b64DecryptedKey);
     _metadataKeys.insert(it.key().toInt(), decryptedKey);
   }
 
@@ -1227,12 +1233,15 @@ QByteArray FolderMetadata::decryptMetadataKey(const QByteArray& encryptedMetadat
     EVP_PKEY *key = PEM_read_bio_PrivateKey(privateKeyBio, NULL, NULL, NULL);
 
     // Also base64 decode the result
-    return QByteArray::fromBase64(
-                EncryptionHelper::decryptStringAsymmetric(
-                    key,
-                    QByteArray::fromBase64(encryptedMetadata)
-                    )
-                );
+    QByteArray decryptResult = EncryptionHelper::decryptStringAsymmetric(
+                    key, QByteArray::fromBase64(encryptedMetadata));
+
+    if (decryptResult.isEmpty())
+    {
+      qCDebug(lcCse()) << "ERROR. Could not decrypt the metadata key";
+      return {};
+    }
+    return QByteArray::fromBase64(decryptResult);
 }
 
 // AES/GCM/NoPadding (128 bit key size)
