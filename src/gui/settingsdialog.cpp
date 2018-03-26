@@ -114,6 +114,11 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
         slotRefreshActivity(ai.data());
     }
 
+    // Adds space
+    QWidget* spacer = new QWidget();
+    spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
+    _toolBar->addWidget(spacer);
+
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
     _actionGroup->addAction(generalAction);
     _toolBar->addAction(generalAction);
