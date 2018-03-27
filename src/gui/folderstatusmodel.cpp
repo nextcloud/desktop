@@ -526,7 +526,7 @@ bool FolderStatusModel::canFetchMore(const QModelIndex &parent) const
         return false;
     }
     auto info = infoForIndex(parent);
-    if (!info || info->_fetched || info->_fetching)
+    if (!info || info->_fetched || info->_fetchingJob)
         return false;
     if (info->_hasError) {
         // Keep showing the error to the user, it will be hidden when the account reconnects
@@ -540,10 +540,9 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
 {
     auto info = infoForIndex(parent);
 
-    if (!info || info->_fetched || info->_fetching)
+    if (!info || info->_fetched || info->_fetchingJob)
         return;
     info->resetSubs(this, parent);
-    info->_fetching = true;
     QString path = info->_folder->remotePath();
     if (info->_path != QLatin1String("/")) {
         if (!path.endsWith(QLatin1Char('/'))) {
@@ -552,6 +551,7 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
         path += info->_path;
     }
     LsColJob *job = new LsColJob(_accountState->account(), path, this);
+    info->_fetchingJob = job;
     job->setProperties(QList<QByteArray>() << "resourcetype"
                                            << "http://owncloud.org/ns:size"
                                            << "http://owncloud.org/ns:permissions");
@@ -596,18 +596,18 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     if (!parentInfo) {
         return;
     }
-    ASSERT(parentInfo->_fetching); // we should only get a result if we were doing a fetch
+    ASSERT(parentInfo->_fetchingJob == job);
     ASSERT(parentInfo->_subs.isEmpty());
 
     if (parentInfo->hasLabel()) {
         beginRemoveRows(idx, 0, 0);
-        parentInfo->_lastErrorString.clear();
         parentInfo->_hasError = false;
         parentInfo->_fetchingLabel = false;
         endRemoveRows();
     }
 
-    parentInfo->_fetching = false;
+    parentInfo->_lastErrorString.clear();
+    parentInfo->_fetchingJob = nullptr;
     parentInfo->_fetched = true;
 
     QUrl url = parentInfo->_folder->remoteUrl();
@@ -1197,7 +1197,7 @@ void FolderStatusModel::slotShowFetchProgress()
         if (it.value().elapsed() > 800) {
             auto idx = it.key();
             auto *info = infoForIndex(idx);
-            if (info && info->_fetching) {
+            if (info && info->_fetchingJob) {
                 bool add = !info->hasLabel();
                 if (add) {
                     beginInsertRows(idx, 0, 0);
@@ -1220,7 +1220,7 @@ bool FolderStatusModel::SubFolderInfo::hasLabel() const
 void FolderStatusModel::SubFolderInfo::resetSubs(FolderStatusModel *model, QModelIndex index)
 {
     _fetched = false;
-    _fetching = false;
+    delete _fetchingJob;
     if (hasLabel()) {
         model->beginRemoveRows(index, 0, 0);
         _fetchingLabel = false;

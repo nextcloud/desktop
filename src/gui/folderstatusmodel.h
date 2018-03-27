@@ -20,6 +20,7 @@
 #include <QLoggingCategory>
 #include <QVector>
 #include <QElapsedTimer>
+#include <QPointer>
 
 class QNetworkReply;
 namespace OCC {
@@ -28,6 +29,7 @@ Q_DECLARE_LOGGING_CATEGORY(lcFolderStatus)
 
 class Folder;
 class ProgressInfo;
+class LsColJob;
 
 /**
  * @brief The FolderStatusModel class
@@ -59,7 +61,6 @@ public:
             , _size(0)
             , _isExternal(false)
             , _fetched(false)
-            , _fetching(false)
             , _hasError(false)
             , _fetchingLabel(false)
             , _isUndecided(false)
@@ -75,7 +76,7 @@ public:
         bool _isExternal;
 
         bool _fetched; // If we did the LSCOL for this folder already
-        bool _fetching; // Whether a LSCOL job is currently running
+        QPointer<LsColJob> _fetchingJob; // Currently running LsColJob
         bool _hasError; // If the last fetching job ended in an error
         QString _lastErrorString;
         bool _fetchingLabel; // Whether a 'fetching in progress' label is shown.
