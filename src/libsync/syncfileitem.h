@@ -82,10 +82,9 @@ public:
         /** For files whose errors were blacklisted
          *
          * If an file is blacklisted due to an error it isn't even reattempted. These
-         * errors should appear in the issues tab, but not on the account settings and
-         * should not cause the sync run to fail.
+         * errors should appear in the issues tab but should be silent otherwise.
          *
-         * A DetailError that doesn't cause sync failure.
+         * A SoftError caused by blacklisting.
          */
         BlacklistedError
     };

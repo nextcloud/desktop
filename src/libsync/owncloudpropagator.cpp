@@ -820,10 +820,13 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
     ASSERT(i >= 0);
     _runningJobs.remove(i);
 
+    // Any sub job error will cause the whole composite to fail. This is important
+    // for knowing whether to update the etag in PropagateDirectory, for example.
     if (status == SyncFileItem::FatalError
         || status == SyncFileItem::NormalError
         || status == SyncFileItem::SoftError
-        || status == SyncFileItem::DetailError) {
+        || status == SyncFileItem::DetailError
+        || status == SyncFileItem::BlacklistedError) {
         _hasError = status;
     }
 
