@@ -111,6 +111,14 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
         _actionGroupWidgets.insert(action, _activitySettings[ai]);
         connect(action, &QAction::triggered, this, &SettingsDialog::showActivityPage);
 
+        // Adds space
+        if(AccountManager::instance()->accounts().last() != ai){
+            QWidget* spacer = new QWidget();
+            spacer->setMinimumWidth(30);
+            spacer->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+            _toolBar->addWidget(spacer);
+        }
+
         slotRefreshActivity(ai.data());
     }
 
