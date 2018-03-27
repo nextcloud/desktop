@@ -156,7 +156,7 @@ class PropagateItemJob : public PropagatorJob
 {
     Q_OBJECT
 protected:
-    void done(SyncFileItem::Status status, const QString &errorString = QString());
+    virtual void done(SyncFileItem::Status status, const QString &errorString = QString());
 
     /*
      * set a custom restore job message that is used if the restore job succeeded.

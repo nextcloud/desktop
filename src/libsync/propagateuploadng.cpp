@@ -274,6 +274,7 @@ void PropagateUploadFileNG::startNextChunk()
     if (_currentChunkSize == 0) {
         Q_ASSERT(_jobs.isEmpty()); // There should be no running job anymore
         _finished = true;
+
         // Finish with a MOVE
         QString destination = QDir::cleanPath(propagator()->account()->url().path() + QLatin1Char('/')
             + propagator()->account()->davPath() + propagator()->_remoteFolder + _item->_file);
@@ -389,12 +390,12 @@ void PropagateUploadFileNG::slotPutFinished()
                                   << propagator()->_chunkSize << "bytes";
     }
 
-    bool finished = _sent == _item->_size;
+    _finished = _sent == _item->_size;
 
     // Check if the file still exists
     const QString fullFilePath(propagator()->getFilePath(_item->_file));
     if (!FileSystem::fileExists(fullFilePath)) {
-        if (!finished) {
+        if (!_finished) {
             abortWithError(SyncFileItem::SoftError, tr("The local file was removed during sync."));
             return;
         } else {
@@ -405,13 +406,13 @@ void PropagateUploadFileNG::slotPutFinished()
     // Check whether the file changed since discovery.
     if (!FileSystem::verifyFileUnchanged(fullFilePath, _item->_size, _item->_modtime)) {
         propagator()->_anotherSyncNeeded = true;
-        if (!finished) {
+        if (!_finished) {
             abortWithError(SyncFileItem::SoftError, tr("Local file changed during sync."));
             return;
         }
     }
 
-    if (!finished) {
+    if (!_finished) {
         // Deletes an existing blacklist entry on successful chunk upload
         if (_item->_hasBlacklistEntry) {
             propagator()->_journal->wipeErrorBlacklistEntry(_item->_file);
