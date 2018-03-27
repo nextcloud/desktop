@@ -27,13 +27,13 @@ class ServerNotificationHandler : public QObject
 {
     Q_OBJECT
 public:
-    explicit ServerNotificationHandler(QObject *parent = 0);
+    explicit ServerNotificationHandler(AccountState *accountState, QObject *parent = 0);
 
 signals:
     void newNotificationList(ActivityList);
 
 public slots:
-    void slotFetchNotifications(AccountState *ptr);
+    void slotFetchNotifications();
 
 private slots:
     void slotNotificationsReceived(const QJsonDocument &json, int statusCode);
@@ -41,6 +41,7 @@ private slots:
 
 private:
     QPointer<JsonApiJob> _notificationJob;
+    AccountState *_accountState;
 };
 }
 
