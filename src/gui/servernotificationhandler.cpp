@@ -29,36 +29,39 @@ const char propertyAccountStateC[] = "oc_account_state";
 const int successStatusCode = 200;
 const int notModifiedStatusCode = 304;
 
-ServerNotificationHandler::ServerNotificationHandler(QObject *parent)
+ServerNotificationHandler::ServerNotificationHandler(AccountState *accountState, QObject *parent)
     : QObject(parent)
+    , _accountState(accountState)
 {
 }
 
-void ServerNotificationHandler::slotFetchNotifications(AccountState *ptr)
+void ServerNotificationHandler::slotFetchNotifications()
 {
     // check connectivity and credentials
-    if (!(ptr && ptr->isConnected() && ptr->account() && ptr->account()->credentials() && ptr->account()->credentials()->ready())) {
+    if (!(_accountState && _accountState->isConnected() &&
+          _accountState->account() && _accountState->account()->credentials() &&
+          _accountState->account()->credentials()->ready())) {
         deleteLater();
         return;
     }
     // check if the account has notifications enabled. If the capabilities are
     // not yet valid, its assumed that notifications are available.
-    if (ptr->account()->capabilities().isValid()) {
-        if (!ptr->account()->capabilities().notificationsAvailable()) {
-            qCInfo(lcServerNotification) << "Account" << ptr->account()->displayName() << "does not have notifications enabled.";
+    if (_accountState->account()->capabilities().isValid()) {
+        if (!_accountState->account()->capabilities().notificationsAvailable()) {
+            qCInfo(lcServerNotification) << "Account" << _accountState->account()->displayName() << "does not have notifications enabled.";
             deleteLater();
             return;
         }
     }
 
     // if the previous notification job has finished, start next.
-    _notificationJob = new JsonApiJob(ptr->account(), notificationsPath, this);
+    _notificationJob = new JsonApiJob(_accountState->account(), notificationsPath, this);
     QObject::connect(_notificationJob.data(), &JsonApiJob::jsonReceived,
         this, &ServerNotificationHandler::slotNotificationsReceived);
     QObject::connect(_notificationJob.data(), &JsonApiJob::etagResponseHeaderReceived,
         this, &ServerNotificationHandler::slotEtagResponseHeaderReceived);
-    _notificationJob->setProperty(propertyAccountStateC, QVariant::fromValue<AccountState *>(ptr));
-    _notificationJob->addRawHeader("If-None-Match", ptr->notificationsEtagResponseHeader());
+    _notificationJob->setProperty(propertyAccountStateC, QVariant::fromValue<AccountState *>(_accountState));
+    _notificationJob->addRawHeader("If-None-Match", _accountState->notificationsEtagResponseHeader());
     _notificationJob->start();
 }
 
