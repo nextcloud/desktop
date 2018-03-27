@@ -3097,12 +3097,12 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="200"/>
+        <location filename="../src/gui/sslbutton.cpp" line="204"/>
         <source>No support for SSL session tickets/identifiers</source>
         <translation>Keine Unterstützung für SSL session tickets</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="210"/>
+        <location filename="../src/gui/sslbutton.cpp" line="214"/>
         <source>Certificate information:</source>
         <translation>Zertifikatsinformation:</translation>
     </message>

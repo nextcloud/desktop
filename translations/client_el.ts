@@ -3098,12 +3098,12 @@ It is not advisable to use it.</source>
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="200"/>
+        <location filename="../src/gui/sslbutton.cpp" line="204"/>
         <source>No support for SSL session tickets/identifiers</source>
         <translation>Χωρίς υποστήριξη για ταυτοποιητές συνεδρίας SSL</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslbutton.cpp" line="210"/>
+        <location filename="../src/gui/sslbutton.cpp" line="214"/>
         <source>Certificate information:</source>
         <translation>Πληροφορίες πιστοποιητικού:</translation>
     </message>
