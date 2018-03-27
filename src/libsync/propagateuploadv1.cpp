@@ -309,6 +309,7 @@ void PropagateUploadFileV1::slotPutFinished()
         qCWarning(lcPropagateUpload) << "Server does not support X-OC-MTime" << job->reply()->rawHeader("X-OC-MTime");
         // Well, the mtime was not set
         done(SyncFileItem::SoftError, "Server does not support X-OC-MTime");
+        return;
     }
 
     finalize();
