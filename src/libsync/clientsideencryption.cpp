@@ -1440,7 +1440,7 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
     return true;
 }
 
-void EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& iv,
+bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& iv,
                                QFile *input, QFile *output)
 {
     input->open(QIODevice::ReadOnly);
@@ -1452,13 +1452,13 @@ void EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
     /* Create and initialise the context */
     if(!(ctx = EVP_CIPHER_CTX_new())) {
         qCInfo(lcCse()) << "Could not create context";
-        exit(-1);
+        return false;
     }
 
     /* Initialise the decryption operation. */
     if(!EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
         qCInfo(lcCse()) << "Could not init cipher";
-        exit(-1);
+        return false;
     }
 
     EVP_CIPHER_CTX_set_padding(ctx, 0);
@@ -1466,13 +1466,13 @@ void EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
     /* Set IV length. */
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,  iv.size(), NULL)) {
         qCInfo(lcCse()) << "Could not set iv length";
-        exit(-1);
+        return false;
     }
 
     /* Initialise key and IV */
     if(!EVP_DecryptInit_ex(ctx, NULL, NULL, (const unsigned char *) key.constData(), (const unsigned char *) iv.constData())) {
         qCInfo(lcCse()) << "Could not set key and iv";
-        exit(-1);
+        return false;
     }
 
     qint64 size = input->size() - 16;
@@ -1491,12 +1491,12 @@ void EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
 
         if (data.size() == 0) {
             qCInfo(lcCse()) << "Could not read data from file";
-            exit(-1);
+            return false;
         }
 
         if(!EVP_DecryptUpdate(ctx, out, &len, (unsigned char *)data.constData(), data.size())) {
             qCInfo(lcCse()) << "Could not decrypt";
-            exit(-1);
+            return false;
         }
 
         output->write((char *)out, len);
@@ -1507,12 +1507,12 @@ void EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
     /* Set expected tag value. Works in OpenSSL 1.0.1d and later */
     if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_TAG, tag.size(), (unsigned char *)tag.constData())) {
         qCInfo(lcCse()) << "Could not set expected tag";
-        exit(-1);
+        return false;
     }
 
     if(1 != EVP_DecryptFinal_ex(ctx, out, &len)) {
         qCInfo(lcCse()) << "Could finalize decryption";
-        exit(-1);
+        return false;
     }
     output->write((char *)out, len);
 
@@ -1521,6 +1521,7 @@ void EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
 
     input->close();
     output->close();
+    return true;
 }
 
 }

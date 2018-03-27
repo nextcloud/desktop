@@ -101,7 +101,7 @@ bool PropagateDownloadEncrypted::decryptFile(QFile& tmpFile)
 
     tmpFile.close();
     QFile _tmpOutput(_propagator->getFilePath(tmpFileName), this);
-    EncryptionHelper::fileDecryption(_encryptedInfo.encryptionKey,
+    bool fileDecrypted = EncryptionHelper::fileDecryption(_encryptedInfo.encryptionKey,
                                       _encryptedInfo.initializationVector,
                                       &tmpFile,
                                       &_tmpOutput);
