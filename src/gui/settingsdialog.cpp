@@ -95,7 +95,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     foreach (auto ai, AccountManager::instance()->accounts()) {
         accountAdded(ai.data());
 
-        _activitySettings[ai] = new ActivitySettings(this, ai.data());
+        _activitySettings[ai] = new ActivitySettings(ai.data(), this);
         _ui->stack->addWidget(_activitySettings[ai]);
         connect(_activitySettings[ai], &ActivitySettings::guiLog, _gui,
             &ownCloudGui::slotShowOptionalTrayMessage);
@@ -307,7 +307,7 @@ void SettingsDialog::accountRemoved(AccountState *s)
     if (_actionForAccount.contains(s->account().data())) {
         _actionForAccount.remove(s->account().data());
     }
-    _activitySettings[AccountManager::instance()->account(s->account()->displayName())]->slotRemoveAccount(s);
+    _activitySettings[AccountManager::instance()->account(s->account()->displayName())]->slotRemoveAccount();
 
     // Hide when the last account is deleted. We want to enter the same
     // state we'd be in the client was started up without an account
@@ -401,8 +401,9 @@ void SettingsDialog::slotRefreshActivityAccountStateSender()
 
 void SettingsDialog::slotRefreshActivity(AccountState *accountState)
 {
-    if (accountState) {
-        _activitySettings[AccountManager::instance()->account(accountState->account()->displayName())]->slotRefresh(accountState);
+    if (accountState->isConnected()) {
+        qDebug() << "!! Fetching activities and notifications for" << accountState->account()->displayName();
+        _activitySettings[AccountManager::instance()->account(accountState->account()->displayName())]->slotRefresh();
     }
 }
 
