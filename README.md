@@ -27,18 +27,6 @@ https://github.com/owncloud/client.
 [Building the Client](http://doc.owncloud.org/desktop/2.3/building.html)
 in the ownCloud Desktop Client manual.
 
-## Maintainers and Contributors
-
-The maintainers of this repository are:
-
-* Klaas Freitag <freitag@owncloud.com>
-* Daniel Molkentin <danimo@owncloud.com>
-* Markus Goetz <guruz@owncloud.com>
-* Olivier Goffart <ogoffart@owncloud.com>
-
-ownCloud Desktop Client is developed by the ownCloud community and receives
-patches from a variety of authors.
-
 ## Reporting issues and contributing
 
 If you find any bugs or have any suggestion for improvement, please
@@ -55,6 +43,23 @@ we can accept your patch.
 If you want to contact us, e.g. before starting a more complex feature,
 you can join us at
 [#owncloud-client-dev](irc://irc.freenode.net/#owncloud-client-dev).
+
+## Maintainers and Contributors
+
+The current maintainers of this repository are:
+
+* Markus Goetz <guruz@owncloud.com>
+* Olivier Goffart <ogoffart@owncloud.com>
+* Christian Kamm <mail@ckamm.de>
+
+ownCloud Desktop Client is developed by the ownCloud community and [receives
+patches from a variety of authors](https://github.com/owncloud/client/graphs/contributors).
+
+Past maintainers:
+
+* Klaas Freitag <freitag@owncloud.com>
+* Daniel Molkentin <daniel@molkentin.de>
+* Andreas Schneider <asn@cryptomilk.org>
 
 ## License
 
