@@ -59,8 +59,7 @@ class ActivityWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ActivityWidget(QWidget *parent = 0,
-                            AccountState *account = AccountManager::instance()->accounts().first().data());
+    explicit ActivityWidget(AccountState *accountState, QWidget *parent = 0);
     ~ActivityWidget();
     QSize sizeHint() const Q_DECL_OVERRIDE { return ownCloudGui::settingsDialogSize(); }
     void storeActivityList(QTextStream &ts);
@@ -75,10 +74,10 @@ public:
 
 public slots:
     void slotOpenFile(QModelIndex indx);
-    void slotRefreshActivities(AccountState *ptr);
-    void slotRefreshNotifications(AccountState *ptr);
-    void slotRemoveAccount(AccountState *ptr);
-    void slotAccountActivityStatus(AccountState *ast, int statusCode);
+    void slotRefreshActivities();
+    void slotRefreshNotifications();
+    void slotRemoveAccount();
+    void slotAccountActivityStatus(int statusCode);
     void slotRequestCleanupAndBlacklist(const Activity &blacklistActivity);
 
 signals:
@@ -120,7 +119,7 @@ private:
     ActivityListModel *_model;
     QVBoxLayout *_notificationsLayout;
 
-    AccountState *_account;
+    AccountState *_accountState;
 };
 
 
@@ -135,14 +134,14 @@ class ActivitySettings : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ActivitySettings(QWidget *parent = 0,
-                              AccountState *account = AccountManager::instance()->accounts().first().data());
+    explicit ActivitySettings(AccountState *accountState, QWidget *parent = 0);
+
     ~ActivitySettings();
     QSize sizeHint() const Q_DECL_OVERRIDE { return ownCloudGui::settingsDialogSize(); }
 
 public slots:
-    void slotRefresh(AccountState *ptr);
-    void slotRemoveAccount(AccountState *ptr);
+    void slotRefresh();
+    void slotRemoveAccount();
 
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
 
@@ -161,19 +160,12 @@ signals:
 private:
     bool event(QEvent *e) Q_DECL_OVERRIDE;
 
-    QTabWidget *_tab;
-    int _activityTabId;
-    int _protocolTabId;
-    int _syncIssueTabId;
-
     ActivityWidget *_activityWidget;
-    ProtocolWidget *_protocolWidget;
-    IssuesWidget *_issuesWidget;
     QProgressIndicator *_progressIndicator;
     QTimer _notificationCheckTimer;
     QHash<AccountState *, QElapsedTimer> _timeSinceLastCheck;
 
-    AccountState *_account;
+    AccountState *_accountState;
 };
 }
 #endif // ActivityWIDGET_H
