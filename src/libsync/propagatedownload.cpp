@@ -359,6 +359,10 @@ void PropagateDownloadFile::start()
           _isEncrypted = true;
           startAfterIsEncryptedIsChecked();
         });
+        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::failed, [this] {
+          done(SyncFileItem::NormalError,
+               tr("File %1 can not be downloaded because encryption information is missing.").arg(QDir::toNativeSeparators(_item->_file)));
+        });
         _downloadEncryptedHelper->start();
     } else {
         startAfterIsEncryptedIsChecked();

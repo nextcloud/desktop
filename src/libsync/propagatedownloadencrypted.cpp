@@ -78,6 +78,7 @@ void PropagateDownloadEncrypted::checkFolderEncryptedMetadata(const QJsonDocumen
   const QString filename = _info.fileName();
   auto meta = new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact));
   const QVector<EncryptedFile> files = meta->files();
+
   for (const EncryptedFile &file : files) {
     qCDebug(lcPropagateDownloadEncrypted) << "file" << filename << file.encryptedFilename << file.originalFilename << file.encryptionKey;
     if (filename == file.encryptedFilename) {
@@ -88,7 +89,8 @@ void PropagateDownloadEncrypted::checkFolderEncryptedMetadata(const QJsonDocumen
     }
   }
 
-  qCDebug(lcPropagateDownloadEncrypted) << "Failed to find encrypted metadata information of remote file" << filename;
+  emit failed();
+  qCCritical(lcPropagateDownloadEncrypted) << "Failed to find encrypted metadata information of remote file" << filename;
 }
 
 // TODO: Fix this. Exported in the wrong place.
