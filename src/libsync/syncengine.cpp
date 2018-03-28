@@ -1622,10 +1622,10 @@ AccountPtr SyncEngine::account() const
     return _account;
 }
 
-void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> dirs)
+void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> paths)
 {
     _localDiscoveryStyle = style;
-    _localDiscoveryPaths = std::move(dirs);
+    _localDiscoveryPaths = std::move(paths);
 }
 
 bool SyncEngine::shouldDiscoverLocally(const QByteArray &path) const
