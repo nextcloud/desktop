@@ -103,7 +103,7 @@ public:
     /**
      * Control whether local discovery should read from filesystem or db.
      *
-     * If style is DatabaseAndFilesystem, dirs a set of file paths relative to
+     * If style is DatabaseAndFilesystem, paths a set of file paths relative to
      * the synced folder. All the parent directories of these paths will not
      * be read from the db and scanned on the filesystem.
      *
@@ -111,7 +111,7 @@ public:
      * revert afterwards. Use _lastLocalDiscoveryStyle to discover the last
      * sync's style.
      */
-    void setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> dirs = {});
+    void setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> paths = {});
 
     /**
      * Returns whether the given folder-relative path should be locally discovered
