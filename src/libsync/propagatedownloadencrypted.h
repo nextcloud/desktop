@@ -31,6 +31,7 @@ public slots:
 signals:
   void folderStatusEncrypted();
   void folderStatusNotEncrypted();
+  void failed();
 
   void decryptionFinished();
 
