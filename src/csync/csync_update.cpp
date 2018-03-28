@@ -210,14 +210,12 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       /* we have an update! */
       qCInfo(lcUpdate, "Database entry found for %s, compare: %" PRId64 " <-> %" PRId64
                                           ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64
-                                          ", size: %" PRId64 " <-> %" PRId64 ", perms: %x <-> %x, ignore: %d, e2e: %s",
-                base._path.constData(),
+                                          ", size: %" PRId64 " <-> %" PRId64 ", perms: %x <-> %x"
+                                          ", checksum: %s <-> %s , ignore: %d",
                 ((int64_t) fs->modtime), ((int64_t) base._modtime),
                 fs->etag.constData(), base._etag.constData(), (uint64_t) fs->inode, (uint64_t) base._inode,
-                (uint64_t) fs->size, (uint64_t) base._fileSize,
-                *reinterpret_cast<short*>(&fs->remotePerm), *reinterpret_cast<short*>(&base._remotePerm),
-                base._serverHasIgnoredFiles,
-                base._e2eMangledName.constData());
+                (uint64_t) fs->size, (uint64_t) base._fileSize, *reinterpret_cast<short*>(&fs->remotePerm), *reinterpret_cast<short*>(&base._remotePerm), fs->checksumHeader.constData(),
+                base._checksumHeader.constData(), base._serverHasIgnoredFiles);
       if (ctx->current == REMOTE_REPLICA && fs->etag != base._etag) {
           fs->instruction = CSYNC_INSTRUCTION_EVAL;
 
