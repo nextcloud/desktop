@@ -42,7 +42,7 @@ QStringList findConflicts(const FileInfo &dir)
 {
     QStringList conflicts;
     for (const auto &item : dir.children) {
-        if (item.name.contains("conflict")) {
+        if (item.name.contains("(conflicted copy")) {
             conflicts.append(item.path());
         }
     }
@@ -56,7 +56,7 @@ bool expectAndWipeConflict(FileModifier &local, FileInfo state, const QString pa
     if (!base)
         return false;
     for (const auto &item : base->children) {
-        if (item.name.startsWith(pathComponents.fileName()) && item.name.contains("_conflict")) {
+        if (item.name.startsWith(pathComponents.fileName()) && item.name.contains("(conflicted copy")) {
             local.remove(item.path());
             return true;
         }
