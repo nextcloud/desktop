@@ -548,19 +548,23 @@ QString Utility::makeConflictFileName(
     const QString &fn, const QDateTime &dt, const QString &user)
 {
     QString conflictFileName(fn);
-    // Add _conflict-XXXX  before the extension.
+    // Add conflict tag before the extension.
     int dotLocation = conflictFileName.lastIndexOf('.');
     // If no extension, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
     if (dotLocation <= conflictFileName.lastIndexOf('/') + 1) {
         dotLocation = conflictFileName.size();
     }
 
-    QString conflictMarker = QStringLiteral("_conflict-");
+    QString conflictMarker = QStringLiteral(" (conflicted copy ");
     if (!user.isEmpty()) {
-        conflictMarker.append(sanitizeForFileName(user));
-        conflictMarker.append('-');
+        // Don't allow parens in the user name, to ensure
+        // we can find the beginning and end of the conflict tag.
+        const auto userName = sanitizeForFileName(user).replace('(', '_').replace(')', '_');
+        conflictMarker.append(userName);
+        conflictMarker.append(' ');
     }
-    conflictMarker.append(dt.toString("yyyyMMdd-hhmmss"));
+    conflictMarker.append(dt.toString("yyyy-MM-dd hhmmss"));
+    conflictMarker.append(')');
 
     conflictFileName.insert(dotLocation, conflictMarker);
     return conflictFileName;
@@ -575,13 +579,28 @@ bool Utility::isConflictFile(const char *name)
         bname = name;
     }
 
-    return std::strstr(bname, "_conflict-");
+    // Old pattern
+    if (std::strstr(bname, "_conflict-"))
+        return true;
+
+    // New pattern
+    if (std::strstr(bname, "(conflicted copy"))
+        return true;
+
+    return false;
 }
 
 bool Utility::isConflictFile(const QString &name)
 {
     auto bname = name.midRef(name.lastIndexOf('/') + 1);
-    return bname.contains("_conflict-", Utility::fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive);
+
+    if (bname.contains(QStringLiteral("_conflict-")))
+        return true;
+
+    if (bname.contains(QStringLiteral("(conflicted copy")))
+        return true;
+
+    return false;
 }
 
 QByteArray Utility::conflictFileBaseName(const QByteArray &conflictName)
@@ -589,19 +608,29 @@ QByteArray Utility::conflictFileBaseName(const QByteArray &conflictName)
     // This function must be able to deal with conflict files for conflict files.
     // To do this, we scan backwards, for the outermost conflict marker and
     // strip only that to generate the conflict file base name.
-    int from = conflictName.size();
-    while (from != -1) {
-        auto start = conflictName.lastIndexOf("_conflict-", from);
-        if (start == -1)
-            return "";
-        from = start - 1;
+    auto startOld = conflictName.lastIndexOf("_conflict-");
 
-        auto end = conflictName.indexOf('.', start);
-        if (end == -1)
-            end = conflictName.size();
-        return conflictName.left(start) + conflictName.mid(end);
+    // A single space before "(conflicted copy" is considered part of the tag
+    auto startNew = conflictName.lastIndexOf("(conflicted copy");
+    if (startNew > 0 && conflictName[startNew - 1] == ' ')
+        startNew -= 1;
+
+    // The rightmost tag is relevant
+    auto tagStart = qMax(startOld, startNew);
+    if (tagStart == -1)
+        return "";
+
+    // Find the end of the tag
+    auto tagEnd = conflictName.size();
+    auto dot = conflictName.lastIndexOf('.'); // dot could be part of user name for new tag!
+    if (dot > tagStart)
+        tagEnd = dot;
+    if (tagStart == startNew) {
+        auto paren = conflictName.indexOf(')', tagStart);
+        if (paren != -1)
+            tagEnd = paren + 1;
     }
-    return "";
+    return conflictName.left(tagStart) + conflictName.mid(tagEnd);
 }
 
 QString Utility::sanitizeForFileName(const QString &name)

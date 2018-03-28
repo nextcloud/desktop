@@ -114,18 +114,15 @@ public:
 
 /** Represents a conflict in the conflicts table.
  *
- * In the following the "conflict file" is the file with the "_conflict-"
- * tag and the base file is the file that its a conflict for. So if
- * a/foo.txt is the base file, its conflict file could be
- * a/foo_conflict-1234.txt.
+ * In the following the "conflict file" is the file that has the conflict
+ * tag in the filename, and the base file is the file that it's a conflict for.
+ * So if "a/foo.txt" is the base file, its conflict file could be
+ * "a/foo (conflicted copy 1234).txt".
  */
 class OCSYNC_EXPORT ConflictRecord
 {
 public:
-    /** Path to the _conflict- file
-     *
-     * So if a/foo.txt has a conflict, this path would point to
-     * a/foo_conflict-1234.txt.
+    /** Path to the file with the conflict tag in the name
      *
      * The path is sync-folder relative.
      */
