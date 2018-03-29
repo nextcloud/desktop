@@ -126,27 +126,31 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   _metadata = new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode);
 
   QFileInfo info(_propagator->_localDir + QDir::separator() + _item->_file);
+  const QString fileName = info.fileName();
 
   // Find existing metadata for this file
+  bool found = false;
   EncryptedFile encryptedFile;
   QVector<EncryptedFile> files = _metadata->files();
   for(EncryptedFile &file : files) {
-    if (file.originalFilename == _item->_file) {
+    if (file.originalFilename == fileName) {
       encryptedFile = file;
+      found = true;
     }
   }
 
-  encryptedFile.encryptionKey = EncryptionHelper::generateRandom(16);
-  encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
+
 
   // New encrypted file so set it all up!
-
-  if (encryptedFile.encryptedFilename.isEmpty()) {
+  if (!found) {
+      encryptedFile.encryptionKey = EncryptionHelper::generateRandom(16);
       encryptedFile.encryptedFilename = EncryptionHelper::generateRandomFilename();
+      encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
       encryptedFile.fileVersion = 1;
       encryptedFile.metadataKey = 1;
-      encryptedFile.originalFilename = info.fileName();
-      QMimeDatabase mdb;
+      encryptedFile.originalFilename = fileName;
+
+      static thread_local QMimeDatabase mdb;
       encryptedFile.mimetype = mdb.mimeTypeForFile(info).name().toLocal8Bit();
   }
 
