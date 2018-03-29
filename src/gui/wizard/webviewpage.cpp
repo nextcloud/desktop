@@ -7,6 +7,7 @@
 #include "owncloudwizard.h"
 #include "creds/webflowcredentials.h"
 #include "webview.h"
+#include "account.h"
 
 namespace OCC {
 
@@ -57,8 +58,11 @@ void WebViewPage::urlCatched(QString user, QString pass, QString host) {
     _user = user;
     _pass = pass;
 
+    AccountPtr account = _ocWizard->account();
+    account->setUrl(host);
+
     qCInfo(lcWizardWebiewPage()) << "URL: " << field("OCUrl").toString();
-    emit connectToOCUrl(field("OCUrl").toString().simplified());
+    emit connectToOCUrl(host);
 }
 
 }

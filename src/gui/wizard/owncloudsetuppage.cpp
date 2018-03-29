@@ -68,6 +68,7 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     slotUrlChanged(QLatin1String("")); // don't jitter UI
     connect(_ui.leUrl, &QLineEdit::textChanged, this, &OwncloudSetupPage::slotUrlChanged);
     connect(_ui.leUrl, &QLineEdit::editingFinished, this, &OwncloudSetupPage::slotUrlEditFinished);
+    connect(_ui.createAccountButton, &QPushButton::clicked, this, &OwncloudSetupPage::slotGotoProviderList);
 
     addCertDial = new AddCertificateDialog(this);
 }
@@ -97,6 +98,16 @@ void OwncloudSetupPage::setupCustomization()
 
     variant = theme->customMedia(Theme::oCSetupBottom);
     WizardCommon::setupCustomMedia(variant, _ui.bottomLabel);
+}
+
+void OwncloudSetupPage::slotGotoProviderList()
+{
+
+    setServerUrl("http://localhost:8113/");
+    _ocWizard->setAuthType(DetermineAuthTypeJob::AuthType::WebViewFlow);
+    _authTypeKnown = true;
+    _checking = false;
+    emit completeChanged();
 }
 
 // slot hit from textChanged of the url entry field.

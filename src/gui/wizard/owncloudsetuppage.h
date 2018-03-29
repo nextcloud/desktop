@@ -64,6 +64,7 @@ public slots:
 protected slots:
     void slotUrlChanged(const QString &);
     void slotUrlEditFinished();
+    void slotGotoProviderList();
 
     void setupCustomization();
 
