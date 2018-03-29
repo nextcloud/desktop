@@ -615,7 +615,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1017"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1020"/>
         <source>Error writing metadata to the database</source>
         <translation>Hiba történt a metaadatok megadása az adatbázisban</translation>
     </message>
@@ -2147,7 +2147,7 @@ Nem ajánlott használni.</translation>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="969"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="972"/>
         <source>Error writing metadata to the database</source>
         <translation>Hiba történt a metaadatok megadásához a adatbázisban</translation>
     </message>

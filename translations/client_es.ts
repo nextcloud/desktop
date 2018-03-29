@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="443"/>
         <source>Could not make directories in trash</source>
-        <translation>No se pueden crear directorios en la papelera.</translation>
+        <translation>No se pueden crear carpetas en la papelera.</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="457"/>
@@ -615,7 +615,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1017"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1020"/>
         <source>Error writing metadata to the database</source>
         <translation>Error al escribir los metadatos en la base de datos</translation>
     </message>
@@ -2154,7 +2154,7 @@ No se recomienda usarla.</translation>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="969"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="972"/>
         <source>Error writing metadata to the database</source>
         <translation>Error al escribir los metadatos en la base de datos</translation>
     </message>
