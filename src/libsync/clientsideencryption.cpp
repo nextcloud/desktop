@@ -27,6 +27,7 @@
 #include <QInputDialog>
 #include <QLineEdit>
 #include <QIODevice>
+#include <QUuid>
 
 #include <keychain.h>
 
@@ -82,15 +83,7 @@ namespace {
 namespace EncryptionHelper {
 QByteArray generateRandomFilename()
 {
-   const QByteArray possibleCharacters = "0123456789abcdef";
-
-   QByteArray randomString(32, '\0');
-   for(int i=0; i < 32; ++i)
-   {
-       int index = qrand() % possibleCharacters.length();
-       randomString[i] = possibleCharacters.at(index);
-   }
-   return randomString;
+    return QUuid::createUuid().toRfc4122().toHex();
 }
 
 QByteArray generateRandom(int size)
