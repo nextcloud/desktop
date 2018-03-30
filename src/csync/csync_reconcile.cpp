@@ -110,7 +110,20 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
         break;
     }
 
-    csync_file_stat_t *other = other_tree->findFile(cur->path);;
+    csync_file_stat_t *other;
+    if (!cur->e2eMangledName.isEmpty()) {
+        // When the file has the e2e mangled name data the other tree
+        // must be the remote one, so search with the mangled name that will match there
+        other = other_tree->findFile(cur->e2eMangledName);
+    } else {
+        other = other_tree->findFile(cur->path);
+
+        if (!other && ctx->current == REMOTE_REPLICA) {
+            // The file was not found and the other is the local tree
+            // so check if the path doesn't match a mangled file name
+            other = other_tree->findFileMangledName(cur->path);
+        }
+    }
 
     if (!other) {
         /* Check the renamed path as well. */
@@ -318,7 +331,6 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                             auto localNode = ctx->current == REMOTE_REPLICA ? other : cur;
                             remoteNode->instruction = CSYNC_INSTRUCTION_NONE;
                             localNode->instruction = up._modtime == localNode->modtime ? CSYNC_INSTRUCTION_UPDATE_METADATA : CSYNC_INSTRUCTION_SYNC;
-
                             // Update the etag and other server metadata in the journal already
                             // (We can't use a typical CSYNC_INSTRUCTION_UPDATE_METADATA because
                             // we must not store the size/modtime from the file system)

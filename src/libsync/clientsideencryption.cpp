@@ -938,13 +938,13 @@ void ClientSideEncryption::generateCSR(EVP_PKEY *keyPair)
 
 void ClientSideEncryption::setTokenForFolder(const QByteArray& folderId, const QByteArray& token)
 {
-	_folder2token[folderId] = token;
+    _folder2token[folderId] = token;
 }
 
 QByteArray ClientSideEncryption::tokenForFolder(const QByteArray& folderId) const
 {
-	Q_ASSERT(_folder2token.contains(folderId));
-	return _folder2token[folderId];
+    Q_ASSERT(_folder2token.contains(folderId));
+    return _folder2token[folderId];
 }
 
 void ClientSideEncryption::encryptPrivateKey()
@@ -963,23 +963,23 @@ void ClientSideEncryption::encryptPrivateKey()
     auto cryptedText = EncryptionHelper::encryptPrivateKey(secretKey, EncryptionHelper::privateKeyToPem(_privateKey), salt);
 
     // Send private key to the server
-	auto job = new StorePrivateKeyApiJob(_account, baseUrl() + "private-key", this);
+    auto job = new StorePrivateKeyApiJob(_account, baseUrl() + "private-key", this);
     job->setPrivateKey(cryptedText);
-	connect(job, &StorePrivateKeyApiJob::jsonReceived, [this](const QJsonDocument& doc, int retCode) {
-		Q_UNUSED(doc);
-		switch(retCode) {
-			case 200:
+    connect(job, &StorePrivateKeyApiJob::jsonReceived, [this](const QJsonDocument& doc, int retCode) {
+        Q_UNUSED(doc);
+        switch(retCode) {
+            case 200:
                 qCInfo(lcCse()) << "Private key stored encrypted on server.";
                 writePrivateKey();
                 writeCertificate();
                 writeMnemonic();
-				emit initializationFinished();
-				break;
-			default:
-				qCInfo(lcCse()) << "Store private key failed, return code:" << retCode;
-		}
-	});
-	job->start();
+                emit initializationFinished();
+                break;
+            default:
+                qCInfo(lcCse()) << "Store private key failed, return code:" << retCode;
+        }
+    });
+    job->start();
 }
 
 void ClientSideEncryption::decryptPrivateKey(const QByteArray &key) {
@@ -1083,25 +1083,25 @@ void ClientSideEncryption::getPublicKeyFromServer()
 }
 
 void ClientSideEncryption::fetchFolderEncryptedStatus() {
-	_refreshingEncryptionStatus = true;
-	auto getEncryptedStatus = new GetFolderEncryptStatusJob(_account, QString());
-	connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusReceived,
-					this, &ClientSideEncryption::folderEncryptedStatusFetched);
-	connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusError,
-					this, &ClientSideEncryption::folderEncryptedStatusError);
-	getEncryptedStatus->start();
+    _refreshingEncryptionStatus = true;
+    auto getEncryptedStatus = new GetFolderEncryptStatusJob(_account, QString());
+    connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusReceived,
+                    this, &ClientSideEncryption::folderEncryptedStatusFetched);
+    connect(getEncryptedStatus, &GetFolderEncryptStatusJob::encryptStatusError,
+                    this, &ClientSideEncryption::folderEncryptedStatusError);
+    getEncryptedStatus->start();
 }
 
 void ClientSideEncryption::folderEncryptedStatusFetched(const QMap<QString, bool>& result)
 {
-	_refreshingEncryptionStatus = false;
-	_folder2encryptedStatus = result;
+    _refreshingEncryptionStatus = false;
+    _folder2encryptedStatus = result;
     qCDebug(lcCse) << "Retrieved correctly the encrypted status of the folders." << result;
 }
 
 void ClientSideEncryption::folderEncryptedStatusError(int error)
 {
-	_refreshingEncryptionStatus = false;
+    _refreshingEncryptionStatus = false;
     qCDebug(lcCse) << "Failed to retrieve the status of the folders." << error;
 }
 
