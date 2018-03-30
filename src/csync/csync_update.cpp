@@ -192,6 +192,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       return -1;
   }
 
+
   /*
    * When file is encrypted it's phash (path hash) will not match the local file phash,
    * we could match the e2eMangledName but that might be slow wihout index, and it's
@@ -199,6 +200,10 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
    */
 
   if(base.isValid()) { /* there is an entry in the database */
+      // When the file is loaded from the file system it misses
+      // the e2e mangled name
+      fs->e2eMangledName = base._e2eMangledName;
+
       /* we have an update! */
       qCInfo(lcUpdate, "Database entry found, compare: %" PRId64 " <-> %" PRId64
                                           ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64
