@@ -4,18 +4,18 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="443"/>
         <source>Could not make directories in trash</source>
-        <translation type="unfinished"/>
+        <translation>Verzeichnisse können nicht im Papierkorb erstellt werden</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="457"/>
         <location filename="../src/common/filesystembase.cpp" line="463"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; konnte nicht nach &apos;%2&apos; verschoben werden</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="500"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>Das Verschieben in den Papierkorb wird auf dieser Plattform nicht unterstützt</translation>
     </message>
 </context>
 <context>
@@ -894,7 +894,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/folderman.cpp" line="1219"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation war erfolgreich, ungelöster Konflikte. </translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1221"/>
