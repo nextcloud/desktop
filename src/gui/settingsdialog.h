@@ -74,6 +74,7 @@ private slots:
 
 private:
     void customizeStyle();
+    void activityAdded(AccountState *);
 
     QIcon createColorAwareIcon(const QString &name);
     QAction *createColorAwareAction(const QString &iconName, const QString &fileName);
@@ -82,6 +83,7 @@ private:
     Ui::SettingsDialog *const _ui;
 
     QActionGroup *_actionGroup;
+    QAction *_actionBefore;
     // Maps the actions from the action group to the corresponding widgets
     QHash<QAction *, QWidget *> _actionGroupWidgets;
 
@@ -90,7 +92,7 @@ private:
     QHash<Account *, QAction *> _actionForAccount;
 
     QToolBar *_toolBar;
-    QMap<AccountStatePtr, ActivitySettings *> _activitySettings;
+    QMap<AccountState *, ActivitySettings *> _activitySettings;
 
     ownCloudGui *_gui;
 };
