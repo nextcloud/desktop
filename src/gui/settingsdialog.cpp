@@ -92,46 +92,12 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroup = new QActionGroup(this);
     _actionGroup->setExclusive(true);
 
-    foreach (auto ai, AccountManager::instance()->accounts()) {
-        accountAdded(ai.data());
-
-        _activitySettings[ai] = new ActivitySettings(ai.data(), this);
-        _ui->stack->addWidget(_activitySettings[ai]);
-        connect(_activitySettings[ai], &ActivitySettings::guiLog, _gui,
-            &ownCloudGui::slotShowOptionalTrayMessage);
-        _activitySettings[ai]->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
-
-        // Note: all the actions have a '\n' because the account name is in two lines and
-        // all buttons must have the same size in order to keep a good layout
-        QAction *action = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
-        action->setProperty("account", QVariant::fromValue(ai));
-        _actionGroup->addAction(action);
-        _toolBar->addSeparator();
-        _toolBar->addAction(action);
-        _actionGroupWidgets.insert(action, _activitySettings[ai]);
-        connect(action, &QAction::triggered, this, &SettingsDialog::showActivityPage);
-
-        // Adds space
-        if(AccountManager::instance()->accounts().last() != ai){
-            QWidget* spacer = new QWidget();
-            spacer->setMinimumWidth(30);
-            spacer->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-            _toolBar->addWidget(spacer);
-        }
-
-        slotRefreshActivity(ai.data());
-    }
-
-    // Adds space
-    QWidget* spacer = new QWidget();
-    spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
-    _toolBar->addWidget(spacer);
-
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
     _actionGroup->addAction(generalAction);
     _toolBar->addAction(generalAction);
     GeneralSettings *generalSettings = new GeneralSettings;
     _ui->stack->addWidget(generalSettings);
+    _actionBefore = generalAction;
 
     QAction *networkAction = createColorAwareAction(QLatin1String(":/client/resources/network.png"), tr("Network"));
     _actionGroup->addAction(networkAction);
@@ -141,6 +107,15 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
+
+    foreach (auto ai, AccountManager::instance()->accounts()) {
+        accountAdded(ai.data());
+    }
+
+    // Adds space
+    QWidget* spacer = new QWidget();
+    spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
+    _toolBar->insertWidget(_actionBefore, spacer);
 
     connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
 
@@ -209,8 +184,9 @@ void SettingsDialog::showFirstPage()
 
 void SettingsDialog::showActivityPage()
 {
-    if (auto account = qvariant_cast<AccountStatePtr>(sender()->property("account"))) {
+    if (auto account = qvariant_cast<AccountState*>(sender()->property("account"))) {
         _activitySettings[account]->show();
+        _ui->stack->setCurrentWidget(_activitySettings[account]);
     }
 }
 
@@ -221,6 +197,26 @@ void SettingsDialog::showActivityPage()
 //    _activityAction->trigger();
 //    _activitySettings->slotShowIssuesTab(folderAlias);
 //}
+
+void SettingsDialog::activityAdded(AccountState *s){
+    _activitySettings[s] = new ActivitySettings(s, this);
+    _ui->stack->addWidget(_activitySettings[s]);
+    connect(_activitySettings[s], &ActivitySettings::guiLog, _gui,
+        &ownCloudGui::slotShowOptionalTrayMessage);
+
+    ConfigFile cfg;
+    _activitySettings[s]->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
+
+    // Note: all the actions have a '\n' because the account name is in two lines and
+    // all buttons must have the same size in order to keep a good layout
+    QAction *action = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
+    action->setProperty("account", QVariant::fromValue(s));
+    _toolBar->insertSeparator(_actionBefore);
+    _toolBar->insertAction(_actionBefore, action);
+    _actionGroup->addAction(action);
+    _actionGroupWidgets.insert(action, _activitySettings[s]);
+    connect(action, &QAction::triggered, this, &SettingsDialog::showActivityPage);
+}
 
 void SettingsDialog::accountAdded(AccountState *s)
 {
@@ -243,7 +239,8 @@ void SettingsDialog::accountAdded(AccountState *s)
         accountAction->setToolTip(s->account()->displayName());
         accountAction->setIconText(SettingsDialogCommon::shortDisplayNameForSettings(s->account().data(),  height * buttonSizeRatio));
     }
-    _toolBar->addAction(accountAction);
+
+    _toolBar->insertAction(_actionBefore, accountAction);
     auto accountSettings = new AccountSettings(s, this);
     _ui->stack->insertWidget(0, accountSettings);
     _actionGroup->addAction(accountAction);
@@ -258,9 +255,16 @@ void SettingsDialog::accountAdded(AccountState *s)
     connect(s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
 
     // Refresh immediatly when getting online
-    connect(s, &AccountState::isConnectedChanged, this, &SettingsDialog::slotRefreshActivityAccountStateSender);
+    //connect(s, &AccountState::isConnectedChanged, this, &SettingsDialog::slotRefreshActivityAccountStateSender);
 
     //slotRefreshActivity(s);
+
+    activityAdded(s);
+    QWidget* spacer = new QWidget();
+    spacer->setMinimumWidth(30);
+    spacer->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    _toolBar->insertWidget(_actionBefore, spacer);
+    slotRefreshActivity(s);
 }
 
 void SettingsDialog::slotAccountAvatarChanged()
@@ -315,7 +319,7 @@ void SettingsDialog::accountRemoved(AccountState *s)
     if (_actionForAccount.contains(s->account().data())) {
         _actionForAccount.remove(s->account().data());
     }
-    _activitySettings[AccountManager::instance()->account(s->account()->displayName())]->slotRemoveAccount();
+    _activitySettings[s]->slotRemoveAccount();
 
     // Hide when the last account is deleted. We want to enter the same
     // state we'd be in the client was started up without an account
@@ -411,7 +415,7 @@ void SettingsDialog::slotRefreshActivity(AccountState *accountState)
 {
     if (accountState->isConnected()) {
         qDebug() << "!! Fetching activities and notifications for" << accountState->account()->displayName();
-        _activitySettings[AccountManager::instance()->account(accountState->account()->displayName())]->slotRefresh();
+        _activitySettings[accountState]->slotRefresh();
     }
 }
 
