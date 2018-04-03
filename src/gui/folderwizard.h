@@ -130,6 +130,9 @@ public:
     void initializePage() override;
     void cleanupPage() override;
 
+private slots:
+    void placeholderCheckboxClicked();
+
 private:
     SelectiveSyncWidget *_selectiveSync;
     QCheckBox *_placeholderCheckBox;

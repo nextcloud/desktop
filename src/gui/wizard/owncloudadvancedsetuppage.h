@@ -41,6 +41,7 @@ public:
     bool validatePage() override;
     QString localFolder() const;
     QStringList selectiveSyncBlacklist() const;
+    bool usePlaceholderSync() const;
     bool isConfirmBigFolderChecked() const;
     void setRemoteFolder(const QString &remoteFolder);
     void setMultipleFoldersExist(bool exist);
@@ -57,9 +58,12 @@ private slots:
     void slotSelectFolder();
     void slotSyncEverythingClicked();
     void slotSelectiveSyncClicked();
+    void slotPlaceholderSyncClicked();
     void slotQuotaRetrieved(const QVariantMap &result);
 
 private:
+    void setRadioChecked(QRadioButton *radio);
+
     void setupCustomization();
     void updateStatus();
     bool dataChanged();

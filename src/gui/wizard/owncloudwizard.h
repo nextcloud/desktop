@@ -67,6 +67,7 @@ public:
     QString ocUrl() const;
     QString localFolder() const;
     QStringList selectiveSyncBlacklist() const;
+    bool usePlaceholderSync() const;
     bool isConfirmBigFolderChecked() const;
 
     void enableFinishOnResultWidget(bool enable);
@@ -75,6 +76,13 @@ public:
     AbstractCredentials *getCredentials() const;
 
     void bringToTop();
+
+    /**
+     * Shows a dialog explaining the placeholder mode and warning about it
+     * being experimental. Calles the callback with true if enabling was
+     * chosen.
+     */
+    static void askExperimentalPlaceholderFeature(const std::function<void(bool enable)> &callback);
 
     // FIXME: Can those be local variables?
     // Set from the OwncloudSetupPage, later used from OwncloudHttpCredsPage
