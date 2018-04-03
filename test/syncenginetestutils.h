@@ -772,7 +772,7 @@ public:
             Q_ASSERT(!x.isDir);
             Q_ASSERT(x.size > 0); // There should not be empty chunks
             size += x.size;
-            Q_ASSERT(!payload || payload == x.contentChar);
+            Q_ASSERT(!payload || payload == x.contentChar || !"For zsync all chunks must start with the same character");
             payload = x.contentChar;
             ++count;
             prev = chunkName.toLongLong() + x.size;
