@@ -424,6 +424,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         item->_file = fileUtf8;
     }
     item->_originalFile = item->_file;
+    item->_encryptedFileName = file->e2eMangledName;
 
     if (item->_instruction == CSYNC_INSTRUCTION_NONE
         || (item->_instruction == CSYNC_INSTRUCTION_IGNORE && instruction != CSYNC_INSTRUCTION_NONE)) {

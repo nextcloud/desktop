@@ -1334,6 +1334,16 @@ void FolderMetadata::addEncryptedFile(const EncryptedFile &f) {
     _files.append(f);
 }
 
+void FolderMetadata::removeEncryptedFile(const EncryptedFile &f)
+{
+    for (int i = 0; i < _files.size(); i++) {
+        if (_files.at(i).originalFilename == f.originalFilename) {
+            _files.removeAt(i);
+            break;
+        }
+    }
+}
+
 QVector<EncryptedFile> FolderMetadata::files() const {
     return _files;
 }
