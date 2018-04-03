@@ -67,7 +67,7 @@ private:
   SyncFileItemPtr _item;
 
   QElapsedTimer _folderLockFirstTry;
-  bool _currentLockingInProgress;
+  bool _currentLockingInProgress = false;
 
   QByteArray _generatedKey;
   QByteArray _generatedIv;
