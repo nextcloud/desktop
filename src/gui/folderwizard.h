@@ -130,6 +130,9 @@ public:
     virtual void initializePage() Q_DECL_OVERRIDE;
     virtual void cleanupPage() Q_DECL_OVERRIDE;
 
+private slots:
+    void placeholderCheckboxClicked();
+
 private:
     SelectiveSyncWidget *_selectiveSync;
     QCheckBox *_placeholderCheckBox;

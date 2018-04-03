@@ -14,6 +14,7 @@
  */
 
 #include "account.h"
+#include "config.h"
 #include "configfile.h"
 #include "theme.h"
 
@@ -32,6 +33,7 @@
 
 #include <QtCore>
 #include <QtGui>
+#include <QMessageBox>
 
 #include <stdlib.h>
 
@@ -115,6 +117,11 @@ QString OwncloudWizard::localFolder() const
 QStringList OwncloudWizard::selectiveSyncBlacklist() const
 {
     return _advancedSetupPage->selectiveSyncBlacklist();
+}
+
+bool OwncloudWizard::usePlaceholderSync() const
+{
+    return _advancedSetupPage->usePlaceholderSync();
 }
 
 bool OwncloudWizard::isConfirmBigFolderChecked() const
@@ -253,6 +260,27 @@ AbstractCredentials *OwncloudWizard::getCredentials() const
     }
 
     return 0;
+}
+
+void OwncloudWizard::askExperimentalPlaceholderFeature(const std::function<void(bool enable)> &callback)
+{
+    auto msgBox = new QMessageBox(
+        QMessageBox::Warning,
+        tr("Enable experimental feature?"),
+        tr("When the \"synchronize placeholders\" mode is enabled no files will be downloaded initially. "
+           "Instead, a tiny \"%1\" file will be created for each file on the server. "
+           "The contents can be downloaded by running these files or by using their context menu."
+           "\n\n"
+           "This is a new, experimental mode. If you decide to use it, please report any "
+           "issues that come up.")
+            .arg(APPLICATION_DOTPLACEHOLDER_SUFFIX));
+    msgBox->addButton(tr("Enable experimental mode"), QMessageBox::AcceptRole);
+    msgBox->addButton(tr("Stay safe"), QMessageBox::RejectRole);
+    connect(msgBox, &QMessageBox::finished, msgBox, [callback, msgBox](int result) {
+        callback(result == QMessageBox::AcceptRole);
+        msgBox->deleteLater();
+    });
+    msgBox->open();
 }
 
 } // end namespace
