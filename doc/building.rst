@@ -13,6 +13,14 @@ desktop client.
 
 These instructions are updated to work with version |version| of the ownCloud Client.
 
+
+Compiling via ownBrander
+------------------------
+
+If you don't want to go through the trouble of doing all the compile work manually,
+you can use `ownBrander`_ to create installer images for all platforms.
+
+
 Getting Source Code
 -------------------
 
@@ -51,8 +59,8 @@ distribution. Make sure the repositories for source packages are enabled.
 
 3. Follow the :ref:`generic-build-instructions`, starting with step 2.
 
-Mac OS X
---------
+macOS
+-----
 
 In addition to needing XCode (along with the command line tools), developing in
 the Mac OS X environment requires extra dependencies.  You can install these
@@ -77,29 +85,23 @@ To set up your build environment for development using HomeBrew_:
 
     brew tap owncloud/owncloud
 
-5. Install a Qt5 version with qtwebkit support::
+5. Install a Qt5 version, ideally from from 5.10.1::
 
-    brew install qt5 --with-qtwebkit
+    brew install qt5
 
 6. Install any missing dependencies::
 
     brew install $(brew deps owncloud-client)
 
-7. Add Qt from brew to the path::
+7. Install qtkeychain from here:  git clone https://github.com/frankosterfeld/qtkeychain.git
+   make sure you make the same install prefix as later while building the client e.g.
+   ``-DCMAKE_INSTALL_PREFIX=/Path/to/client/../install``
 
-    export PATH=/usr/local/Cellar/qt5/5.x.y/bin:$PATH
+8. For compilation of the client, follow the :ref:`generic-build-instructions`.
 
-   Where ``x.y`` is the current version of Qt 5 that brew has installed
-   on your machine.
-8. Install qtkeychain from here:  git clone https://github.com/frankosterfeld/qtkeychain.git
-   make sure you make the same install prefix as later while building the client e.g.  -            
-   ``DCMAKE_INSTALL_PREFIX=/Path/to/client-install``
+9. Install the Packages_ package creation tool.
 
-9. For compilation of the client, follow the :ref:`generic-build-instructions`.
-
-10. Install the Packages_ package creation tool.
-
-11. In the build directory, run ``admin/osx/create_mac.sh <build_dir> <install_dir>``. 
+10. In the build directory, run ``admin/osx/create_mac.sh <CMAKE_INSTALL_DIR> <build dir> <installer sign identity>``.
     If you have a developer signing certificate, you can specify
     its Common Name as a third parameter (use quotes) to have the package
     signed automatically.
@@ -152,7 +154,7 @@ follow `Windows Installer Build (Cross-Compile)`_ instead.
 
 7. Build the client::
 
-     cmake -G "MinGW Makefiles" ../client
+     cmake -G "MinGW Makefiles" -DNO_SHIBBOLETH=1 ../client
      mingw32-make
 
    .. note:: You can try using ninja to build in parallel using
@@ -220,16 +222,14 @@ In order to make setup simple, you can use the provided Dockerfile to build your
 Generic Build Instructions
 --------------------------
 
-Compared to previous versions, building the desktop sync client has become easier. Unlike
-earlier versions, CSync, which is the sync engine library of the client, is now
-part of the client source repository and not a separate module.
-
 To build the most up-to-date version of the client:
 
 1. Clone the latest versions of the client from Git_ as follows::
 
      git clone git://github.com/owncloud/client.git
      cd client
+     # master this default, but you can also check out a tag like v2.4.1
+     git checkout master
      git submodule init
      git submodule update
 
@@ -240,19 +240,18 @@ To build the most up-to-date version of the client:
 
 3. Configure the client build::
 
-     cmake -DCMAKE_BUILD_TYPE="Debug" ..
-    
-   .. note:: You must use absolute paths for the ``include`` and ``library``
-            directories.
+     cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/  -DNO_SHIBBOLETH=1 ..``
 
-   .. note:: On Mac OS X, you need to specify ``-DCMAKE_INSTALL_PREFIX=target``,
-            where ``target`` is a private location, i.e. in parallel to your build
-            dir by specifying ``../install``.
-            
-   .. note:: qtkeychain must be compiled with the same prefix e.g ``CMAKE_INSTALL_PREFIX=/Users/path/to/client/install/ .``
-   
-   .. note:: Example:: ``cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/  -DNO_SHIBBOLETH=1``
-   
+.. note:: You must use absolute paths for the ``include`` and ``library``
+         directories.
+
+.. note:: On Mac OS X, you need to specify ``-DCMAKE_INSTALL_PREFIX=target``,
+         where ``target`` is a private location, i.e. in parallel to your build
+         dir by specifying ``../install``.
+
+.. note:: qtkeychain must be compiled with the same prefix e.g ``-DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/``
+
+
 4. Call ``make``.
 
    The owncloud binary will appear in the ``bin`` directory.
@@ -264,11 +263,10 @@ The following are known cmake parameters:
 
 * ``QTKEYCHAIN_LIBRARY=/path/to/qtkeychain.dylib -DQTKEYCHAIN_INCLUDE_DIR=/path/to/qtkeychain/``:
    Used for stored credentials.  When compiling with Qt5, the library is called ``qt5keychain.dylib.``
-   You need to compile QtKeychain with the same Qt version.
+   You need to compile QtKeychain with the same Qt version. If you install QtKeychain into the CMAKE_PREFIX_PATH then you don't need to specify the path manually.
 * ``WITH_DOC=TRUE``: Creates doc and manpages through running ``make``; also adds install statements,
   providing the ability to install using ``make install``.
-* ``CMAKE_PREFIX_PATH=/path/to/Qt5.2.0/5.2.0/yourarch/lib/cmake/``: Builds using Qt5.
-* ``BUILD_WITH_QT4=ON``: Builds using Qt4 (even if Qt5 is found).
+* ``CMAKE_PREFIX_PATH=/path/to/Qt5.10.1/5.10.1/yourarch/lib/cmake/``: Builds using that Qt version.
 * ``CMAKE_INSTALL_PREFIX=path``: Set an install prefix. This is mandatory on Mac OS
 
 .. _ownCloud repository from OBS: http://software.opensuse.org/download/package? 
@@ -285,3 +283,4 @@ The following are known cmake parameters:
 .. _QtKeychain: https://github.com/frankosterfeld/qtkeychain
 .. _Packages: http://s.sudre.free.fr/Software/Packages/about.html
 .. _Index of repositories: http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/
+.. _ownBrander: https://doc.owncloud.org/branded_clients/
