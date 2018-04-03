@@ -132,6 +132,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   bool found = false;
   EncryptedFile encryptedFile;
   QVector<EncryptedFile> files = _metadata->files();
+
   for(EncryptedFile &file : files) {
     if (file.originalFilename == fileName) {
       encryptedFile = file;
@@ -154,7 +155,6 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
       encryptedFile.mimetype = mdb.mimeTypeForFile(info).name().toLocal8Bit();
   }
 
-  _item->_isEndToEndEncrypted = true;
   _item->_encryptedFileName = _item->_file.section(QLatin1Char('/'), 0, -2)
           + QLatin1Char('/') + encryptedFile.encryptedFilename;
 

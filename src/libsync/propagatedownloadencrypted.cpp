@@ -125,7 +125,6 @@ bool PropagateDownloadEncrypted::decryptFile(QFile& tmpFile)
 
     //TODO: This seems what's breaking the logic.
     // Let's fool the rest of the logic into thinking this is the right name of the DAV file
-    _item->_isEndToEndEncrypted = true;
     _item->_encryptedFileName = _item->_file;
     _item->_file = _item->_file.section(QLatin1Char('/'), 0, -2)
             + QLatin1Char('/') + _encryptedInfo.originalFilename;
