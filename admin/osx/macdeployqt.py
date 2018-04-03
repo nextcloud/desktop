@@ -343,6 +343,13 @@ if LooseVersion(qt_version) >= LooseVersion("5.10.0"):
 for plugin in QT_PLUGINS:
   FixPlugin(FindQtPlugin(plugin), os.path.dirname(plugin))
 
+if LooseVersion(qt_version) >= LooseVersion("5.10.0"):
+  args = ['plutil', '-insert', 'LSMinimumSystemVersion', '-string', '10.10.0', os.path.join(bundle_dir, 'Contents', 'Info.plist')]
+  commands.append(args)
+else:
+  args = ['plutil', '-insert', 'LSMinimumSystemVersion', '-string', '10.7.0', os.path.join(bundle_dir, 'Contents', 'Info.plist')]
+  commands.append(args)
+
 if len(sys.argv) <= 2:
   print 'Will run %d commands:' % len(commands)
   for command in commands:

@@ -27,11 +27,9 @@
         <key>CFBundleShortVersionString</key>
         <string>@MIRALL_VERSION_STRING@</string>
         <key>NSHumanReadableCopyright</key>
-        <string>(C) 2014-2016 @APPLICATION_VENDOR@</string>
+        <string>(C) 2014-2018 @APPLICATION_VENDOR@</string>
         <key>SUShowReleaseNotes</key>
         <false/>
-        <key>LSMinimumBundleVersion</key>
-        <string>10.7.0</string>
         <key>SUPublicDSAKeyFile</key>
         <string>dsa_pub.pem</string>
 </dict>
