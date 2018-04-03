@@ -13,6 +13,7 @@
  */
 
 #include "propagateremotedelete.h"
+#include "propagateremotedeleteencrypted.h"
 #include "owncloudpropagator_p.h"
 #include "account.h"
 #include "common/asserts.h"
@@ -65,18 +66,25 @@ void PropagateRemoteDelete::start()
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-
-    QString remoteFile = _item->_file;
     if (!_item->_encryptedFileName.isEmpty()) {
-        remoteFile = _item->_encryptedFileName;
-        // TODO update the JSON metadata
+        auto job = new PropagateRemoteDeleteEncrypted(propagator(), _item, this);
+        connect(job, &PropagateRemoteDeleteEncrypted::finished, this, [this] (bool success) {
+            Q_UNUSED(success) // Should we skip file deletion in case of failure?
+            createDeleteJob(_item->_encryptedFileName);
+        });
+        job->start();
+    } else {
+        createDeleteJob(_item->_file);
     }
+}
 
-    qCDebug(lcPropagateRemoteDelete) << "local" << _item->_file << "remote" << remoteFile;
+void PropagateRemoteDelete::createDeleteJob(const QString &filename)
+{
+    qCInfo(lcPropagateRemoteDelete) << "Deleting file, local" << _item->_file << "remote" << filename;
 
     _job = new DeleteJob(propagator()->account(),
-        propagator()->_remoteFolder + remoteFile,
-        this);
+                         propagator()->_remoteFolder + filename,
+                         this);
     connect(_job.data(), &DeleteJob::finishedSignal, this, &PropagateRemoteDelete::slotDeleteJobFinished);
     propagator()->_activeJobList.append(this);
     _job->start();

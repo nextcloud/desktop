@@ -43,6 +43,7 @@ set(libsync_SRCS
     propagateuploadv1.cpp
     propagateuploadng.cpp
     propagateremotedelete.cpp
+    propagateremotedeleteencrypted.cpp
     propagateremotemove.cpp
     propagateremotemkdir.cpp
     propagateuploadencrypted.cpp

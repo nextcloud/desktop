@@ -142,6 +142,7 @@ public:
     FolderMetadata(AccountPtr account, const QByteArray& metadata = QByteArray(), int statusCode = -1);
     QByteArray encryptedMetadata();
     void addEncryptedFile(const EncryptedFile& f);
+    void removeEncryptedFile(const EncryptedFile& f);
     QVector<EncryptedFile> files() const;
 
 
