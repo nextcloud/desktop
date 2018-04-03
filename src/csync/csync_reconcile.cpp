@@ -110,18 +110,14 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
         break;
     }
 
-    csync_file_stat_t *other;
-    if (!cur->e2eMangledName.isEmpty()) {
-        // When the file has the e2e mangled name data the other tree
-        // must be the remote one, so search with the mangled name that will match there
-        other = other_tree->findFile(cur->e2eMangledName);
-    } else {
-        other = other_tree->findFile(cur->path);
-
-        if (!other && ctx->current == REMOTE_REPLICA) {
-            // The file was not found and the other is the local tree
-            // so check if the path doesn't match a mangled file name
+    csync_file_stat_t *other = other_tree->findFile(cur->path);
+    if (!other) {
+        if (ctx->current == REMOTE_REPLICA) {
+            // The file was not found and the other tree is the local one
+            // check if the path doesn't match a mangled file name
             other = other_tree->findFileMangledName(cur->path);
+        } else {
+            other = other_tree->findFile(cur->e2eMangledName);
         }
     }
 

@@ -547,6 +547,13 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("prepare _getFileRecordQuery", *_getFileRecordQuery);
     }
 
+    _getFileRecordQueryByMangledName.reset(new SqlQuery(_db));
+    if (_getFileRecordQueryByMangledName->prepare(
+            GET_FILE_RECORD_QUERY
+            " WHERE e2eMangledName=?1")) {
+        return sqlFail("prepare _getFileRecordQueryByMangledName", *_getFileRecordQueryByMangledName);
+    }
+
     _getFileRecordQueryByInode.reset(new SqlQuery(_db));
     if (_getFileRecordQueryByInode->prepare(
             GET_FILE_RECORD_QUERY
@@ -747,6 +754,7 @@ void SyncJournalDb::close()
     commitTransaction();
 
     _getFileRecordQuery.reset(0);
+    _getFileRecordQueryByMangledName.reset(0);
     _getFileRecordQueryByInode.reset(0);
     _getFileRecordQueryByFileId.reset(0);
     _getFilesBelowPathQuery.reset(0);
@@ -1129,6 +1137,44 @@ bool SyncJournalDb::getFileRecord(const QByteArray &filename, SyncJournalFileRec
             if (errId != SQLITE_DONE) { // only do this if the problem is different from SQLITE_DONE
                 QString err = _getFileRecordQuery->error();
                 qCWarning(lcDb) << "No journal entry found for " << filename << "Error: " << err;
+                close();
+            }
+        }
+    }
+    return true;
+}
+
+bool SyncJournalDb::getFileRecordByE2eMangledName(const QString &mangledName, SyncJournalFileRecord *rec)
+{
+    QMutexLocker locker(&_mutex);
+
+    // Reset the output var in case the caller is reusing it.
+    Q_ASSERT(rec);
+    rec->_path.clear();
+    Q_ASSERT(!rec->isValid());
+
+    if (_metadataTableIsEmpty)
+        return true; // no error, yet nothing found (rec->isValid() == false)
+
+    if (!checkConnect())
+        return false;
+
+    if (!mangledName.isEmpty()) {
+        _getFileRecordQueryByMangledName->reset_and_clear_bindings();
+        _getFileRecordQueryByMangledName->bindValue(1, mangledName);
+
+        if (!_getFileRecordQueryByMangledName->exec()) {
+            close();
+            return false;
+        }
+
+        if (_getFileRecordQueryByMangledName->next()) {
+            fillFileRecordFromGetQuery(*rec, *_getFileRecordQueryByMangledName);
+        } else {
+            int errId = _getFileRecordQueryByMangledName->errorId();
+            if (errId != SQLITE_DONE) { // only do this if the problem is different from SQLITE_DONE
+                QString err = _getFileRecordQueryByMangledName->error();
+                qCWarning(lcDb) << "No journal entry found for mangled name" << mangledName << "Error: " << err;
                 close();
             }
         }
