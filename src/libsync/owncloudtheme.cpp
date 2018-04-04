@@ -19,8 +19,6 @@
 #ifndef TOKEN_AUTH_ONLY
 #include <QPixmap>
 #include <QIcon>
-#include <QStyle>
-#include <QApplication>
 #endif
 #include <QCoreApplication>
 
@@ -35,62 +33,12 @@ ownCloudTheme::ownCloudTheme()
 {
 }
 
-QString ownCloudTheme::configFileName() const
-{
-    return QLatin1String("owncloud.cfg");
-}
-
-QString ownCloudTheme::about() const
-{
-    QString devString;
-    devString = tr("<p>Version %2. For more information visit <a href=\"%3\">https://%4</a></p>"
-                       "<p>For known issues and help, please visit: <a href=\"https://central.owncloud.org/c/desktop-client\">https://central.owncloud.org</a></p>"
-                       "<p><small>By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, "
-                       " Jan-Christoph Borchardt, and others.</small></p>"
-                       "<p>Copyright ownCloud GmbH</p>"
-                       "<p>Licensed under the GNU General Public License (GPL) Version 2.0<br/>"
-                       "ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH "
-                       "in the United States, other countries, or both.</p>")
-                    .arg(Utility::escape(MIRALL_VERSION_STRING),
-                        Utility::escape("https://" MIRALL_STRINGIFY(APPLICATION_DOMAIN)),
-                        Utility::escape(MIRALL_STRINGIFY(APPLICATION_DOMAIN)));
-
-    devString += gitSHA1();
-    return devString;
-}
-
 #ifndef TOKEN_AUTH_ONLY
-QIcon ownCloudTheme::trayFolderIcon(const QString &) const
+QVariant ownCloudTheme::customMedia(CustomMediaType)
 {
-    QPixmap fallback = qApp->style()->standardPixmap(QStyle::SP_FileDialogNewFolder);
-    return QIcon::fromTheme("folder", fallback);
+    return QVariant();
 }
-
-QIcon ownCloudTheme::applicationIcon() const
-{
-    return themeIcon(QLatin1String("owncloud-icon"));
-}
-
-
-QVariant ownCloudTheme::customMedia(Theme::CustomMediaType type)
-{
-    if (type == Theme::oCSetupTop) {
-        // return QCoreApplication::translate("ownCloudTheme",
-        //                                   "If you don't have an ownCloud server yet, "
-        //                                   "see <a href=\"https://owncloud.com\">owncloud.com</a> for more info.",
-        //                                   "Top text in setup wizard. Keep short!");
-        return QVariant();
-    } else {
-        return QVariant();
-    }
-}
-
 #endif
-
-QString ownCloudTheme::helpUrl() const
-{
-    return QString::fromLatin1("https://doc.owncloud.org/desktop/%1.%2/").arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR);
-}
 
 #ifndef TOKEN_AUTH_ONLY
 QColor ownCloudTheme::wizardHeaderBackgroundColor() const
@@ -109,14 +57,4 @@ QPixmap ownCloudTheme::wizardHeaderLogo() const
 }
 
 #endif
-
-QString ownCloudTheme::appName() const
-{
-    return QLatin1String("ownCloud");
-}
-
-QString ownCloudTheme::appNameGUI() const
-{
-    return QLatin1String("ownCloud");
-}
 }
