@@ -51,7 +51,9 @@ private slots:
         auto &modifier = remote ? fakeFolder.remoteModifier() : fakeFolder.localModifier();
 
         int counter = 0;
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &, QIODevice *) -> QNetworkReply * {
+        QByteArray reqId;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *) -> QNetworkReply * {
+            reqId = req.rawHeader("X-Request-ID");
             if (!remote && op == QNetworkAccessManager::PutOperation)
                 ++counter;
             if (remote && op == QNetworkAccessManager::GetOperation)
@@ -82,6 +84,7 @@ private slots:
             QCOMPARE(entry._retryCount, 1);
             QCOMPARE(counter, 1);
             QVERIFY(entry._ignoreDuration > 0);
+            QCOMPARE(entry._requestId, reqId);
 
             if (remote)
                 QCOMPARE(journalRecord(fakeFolder, "A")._etag, initialEtag);
@@ -102,6 +105,7 @@ private slots:
             QCOMPARE(entry._retryCount, 1);
             QCOMPARE(counter, 1);
             QVERIFY(entry._ignoreDuration > 0);
+            QCOMPARE(entry._requestId, reqId);
 
             if (remote)
                 QCOMPARE(journalRecord(fakeFolder, "A")._etag, initialEtag);
@@ -128,6 +132,7 @@ private slots:
             QCOMPARE(entry._retryCount, 2);
             QCOMPARE(counter, 2);
             QVERIFY(entry._ignoreDuration > 0);
+            QCOMPARE(entry._requestId, reqId);
 
             if (remote)
                 QCOMPARE(journalRecord(fakeFolder, "A")._etag, initialEtag);
@@ -149,6 +154,7 @@ private slots:
             QCOMPARE(entry._retryCount, 3);
             QCOMPARE(counter, 3);
             QVERIFY(entry._ignoreDuration > 0);
+            QCOMPARE(entry._requestId, reqId);
 
             if (remote)
                 QCOMPARE(journalRecord(fakeFolder, "A")._etag, initialEtag);

@@ -275,6 +275,11 @@ QByteArray AbstractNetworkJob::responseTimestamp()
     return _responseTimestamp;
 }
 
+QByteArray AbstractNetworkJob::requestId()
+{
+    return  _reply ? _reply->request().rawHeader("X-Request-ID") : QByteArray();
+}
+
 QString AbstractNetworkJob::errorString() const
 {
     if (_timedout) {
