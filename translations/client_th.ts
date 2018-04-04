@@ -4,18 +4,18 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="443"/>
         <source>Could not make directories in trash</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถสร้างไดเรกทอรีในถังขยะ</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="457"/>
         <location filename="../src/common/filesystembase.cpp" line="463"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>ย้ายข้อมูลจาก &apos;%1&apos;  ไป &apos;%1&apos; ไม่ได้</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="500"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>การย้ายไปที่ถังขยะยังใช้งานไม่ได้บนแพลตฟอร์มนี้</translation>
     </message>
 </context>
 <context>
@@ -666,7 +666,7 @@
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="390"/>
         <source>The server file discovery reply is missing data.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่มีข้อมูลการตอบกลับจากการค้นหาไฟล์ในเซิร์ฟเวอร์</translation>
     </message>
 </context>
 <context>
@@ -766,31 +766,41 @@
         <translation>ความเคลื่อนไหวของการประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="628"/>
+        <location filename="../src/gui/folder.cpp" line="630"/>
         <source>Could not read system exclude file</source>
         <translation>ไม่สามารถอ่าน ยกเว้นไฟล์ระบบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="949"/>
+        <location filename="../src/gui/folder.cpp" line="951"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>โฟลเดอร์ใหม่มีขนาดใหญ่กว่า %1 เมกะไบต์ ได้ถูกเพิ่ม: %2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="952"/>
+        <location filename="../src/gui/folder.cpp" line="954"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>โฟลเดอร์ที่มีพื้นที่จัดเก็บข้อมูลภายนอกได้ถูกเพิ่ม
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="953"/>
+        <location filename="../src/gui/folder.cpp" line="955"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>กรุณาไปในส่วนของการตั้งค่าเพื่อเลือก ถ้าคุณต้องการจะดาวน์โหลด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1018"/>
+        <location filename="../src/gui/folder.cpp" line="1010"/>
+        <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1013"/>
+        <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folder.cpp" line="1052"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -801,7 +811,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 หากคุณตัดสินใจที่จะลบไฟล์ก็จะทำให้ไม่มีใครสามารถใช้งานโฟลเดอร์นี้ได้เพราะคุณเป็นเจ้าของ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1023"/>
+        <location filename="../src/gui/folder.cpp" line="1057"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -811,22 +821,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
 ถ้าเรื่องนี้เป็นอุบัติเหตุและคุณตัดสินใจที่จะเก็บไฟล์ของคุณ ไฟล์ของคุณก็จะถูกประสานข้อมูลใหม่อีกครั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1027"/>
+        <location filename="../src/gui/folder.cpp" line="1061"/>
         <source>Remove All Files?</source>
         <translation>ลบไฟล์ทั้งหมด?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1030"/>
+        <location filename="../src/gui/folder.cpp" line="1064"/>
         <source>Remove all files</source>
         <translation>ลบไฟล์ทั้งหมด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1031"/>
+        <location filename="../src/gui/folder.cpp" line="1065"/>
         <source>Keep files</source>
         <translation>เก็บไฟล์เอาไว้</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1048"/>
+        <location filename="../src/gui/folder.cpp" line="1082"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
@@ -835,17 +845,17 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 ไฟล์ปัจจุบันของคุณทั้งหมดจะถูกเขียนทับด้วยไฟล์เก่า คุณต้องการเก็บไฟล์ไว้?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1053"/>
+        <location filename="../src/gui/folder.cpp" line="1087"/>
         <source>Backup detected</source>
         <translation>ตรวจพบการสำรองข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1056"/>
+        <location filename="../src/gui/folder.cpp" line="1090"/>
         <source>Normal Synchronisation</source>
         <translation>ประสานข้อมูลปกติ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1057"/>
+        <location filename="../src/gui/folder.cpp" line="1091"/>
         <source>Keep Local Files as Conflict</source>
         <translation>เก็บไฟล์ต้นทางเป็นไฟล์ที่มีปัญหา</translation>
     </message>
@@ -895,7 +905,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1219"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>ซิงค์สำเร็จแต่ยังมีข้อขัดแย้งที่ยังไม่ได้รับการแก้ไข</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1221"/>
@@ -1024,12 +1034,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>กำลังตรวจหาการเปลี่ยนแปลงในรีโมต &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="882"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>กำลังตรวจหาการเปลี่ยนแปลงที่ต้นทาง &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="889"/>
@@ -1303,7 +1313,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="226"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation type="unfinished"/>
+        <translation>แสดงการประสานข้อมูลโฟลเดอร์ และหน้าต่างการนำทางของ Explorer</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="243"/>
@@ -1961,7 +1971,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="339"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถโหลดใบรับรอง รหัสผ่านไม่ถูกต้อง?</translation>
     </message>
 </context>
 <context>
@@ -2688,7 +2698,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="262"/>
         <source>Read &amp;&amp; Write</source>
-        <translation type="unfinished"/>
+        <translation>อ่าน &amp;&amp; เขียน</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="275"/>
@@ -2991,7 +3001,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="588"/>
         <source>Resharing this file is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>การแชร์ไฟล์นี้ต่อไม่ได้รับอนุญาต</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="596"/>
@@ -3289,32 +3299,32 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="123"/>
         <source>Failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถโหลดหรือสร้างไฟล์เจอร์นัล ตรวจสอบให้แน่ใจว่าคุณได้อ่านและเขียนสิทธิ์ในโฟลเดอร์ประสานข้อมูลที่ต้นทาง</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="127"/>
         <source>Discovery step failed.</source>
-        <translation type="unfinished"/>
+        <translation>ขั้นตอนการค้นพบล้มเหลว</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="136"/>
         <source>Permission denied.</source>
-        <translation type="unfinished"/>
+        <translation>การอนุญาตถูกปฏิเสธ</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="139"/>
         <source>File or directory not found:</source>
-        <translation type="unfinished"/>
+        <translation>ไม่พบไฟล์หรือไดเรกทอรี:</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="142"/>
         <source>Tried to create a folder that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>พยายามสร้างโฟลเดอร์ที่มีอยู่แล้ว</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="145"/>
         <source>No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่มีพื้นที่ว่างบนเซิร์ฟเวอร์ %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="154"/>
@@ -3646,7 +3656,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="321"/>
         <source>Unresolved conflicts</source>
-        <translation type="unfinished"/>
+        <translation>มีข้อขัดแย้งที่ยังไม่ได้รับการแก้ไข</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="328"/>
@@ -3717,12 +3727,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="784"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>กำลังตรวจหาการเปลี่ยนแปลงในรีโมต &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="787"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>กำลังตรวจหาการเปลี่ยนแปลงที่ต้นทาง &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="802"/>
@@ -3876,7 +3886,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>เกิดข้อผิดพลาดขณะเชื่อมต่อ กรุณาลองอีกครั้ง</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
