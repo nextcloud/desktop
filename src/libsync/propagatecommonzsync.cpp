@@ -126,10 +126,18 @@ void ZsyncSeedRunnable::run()
     }
 
     {
-        /* Simple uncompressed file - open it */
+        // Open the content input file.
+        //
+        // Zsync expects a FILE*. We get that by opening a QFile, getting the file
+        // descriptor with ::handle() and then duping and fdopening that.
+        //
+        // A less convoluted alternative would be to just get the file descriptor
+        // - FileSystem::openAndSeekFileSharedRead() already has it on windows -
+        // and to skip the QFile::open() entirely.
         QFile file(_zsyncFilePath);
-        if (!file.open(QIODevice::ReadOnly)) {
-            QString errorString = tr("Unable to open file.");
+        QString error;
+        if (!FileSystem::openAndSeekFileSharedRead(&file, &error, 0)) {
+            QString errorString = tr("Unable to open file: %1").arg(error);
             emit failedSignal(errorString);
             return;
         }
@@ -178,13 +186,21 @@ void ZsyncGenerateRunnable::run()
 
     qCDebug(lcZsyncGenerate) << "Starting generation of:" << _file;
 
-    QByteArray fileString = _file.toLocal8Bit();
-    zsync_unique_ptr<FILE> in(fopen(fileString, "r"), [](FILE *f) {
+    // See ZsyncSeedRunnable for details on FILE creation
+    QFile inFile(_file);
+    QString error;
+    if (!FileSystem::openAndSeekFileSharedRead(&inFile, &error, 0)) {
+        FileSystem::remove(zsyncmeta.fileName());
+        QString error = tr("Failed to open input file %1: %2").arg(_file, error);
+        emit failedSignal(error);
+        return;
+    }
+    zsync_unique_ptr<FILE> in(fdopen(dup(inFile.handle()), "r"), [](FILE *f) {
         fclose(f);
     });
     if (!in) {
-        QString error = QString(tr("Failed to open input file:")) + _file;
         FileSystem::remove(zsyncmeta.fileName());
+        QString error = tr("Failed to open input file: %1").arg(_file);
         emit failedSignal(error);
         return;
     }
