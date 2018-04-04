@@ -208,7 +208,10 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
   if(base.isValid()) { /* there is an entry in the database */
       // When the file is loaded from the file system it misses
       // the e2e mangled name
-      fs->e2eMangledName = base._e2eMangledName;
+      if (fs->e2eMangledName.isEmpty() && !base._e2eMangledName.isEmpty()) {
+          fs->e2eMangledName = base._e2eMangledName;
+          fs->path = base._path;
+      }
 
       /* we have an update! */
       qCInfo(lcUpdate, "Database entry found for %s, compare: %" PRId64 " <-> %" PRId64
