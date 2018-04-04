@@ -579,7 +579,9 @@
 					</dict>
 				</dict>
 				<key>INSTALLATION TYPE</key>
-				<integer>0</integer>
+                                <integer>1</integer>
+                                <key>MODE</key>
+                                <integer>1</integer>
 			</dict>
 			<key>INSTALLATION_STEPS</key>
 			<array>
