@@ -131,9 +131,9 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   // Find existing metadata for this file
   bool found = false;
   EncryptedFile encryptedFile;
-  QVector<EncryptedFile> files = _metadata->files();
+  const QVector<EncryptedFile> files = _metadata->files();
 
-  for(EncryptedFile &file : files) {
+  for(const EncryptedFile &file : files) {
     if (file.originalFilename == fileName) {
       encryptedFile = file;
       found = true;
