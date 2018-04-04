@@ -93,6 +93,8 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
     QNetworkReply::NetworkError err = _job->reply()->error();
     const int httpStatus = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     _item->_httpErrorCode = httpStatus;
+    _item->_responseTimeStamp = _job->responseTimestamp();
+    _item->_requestId = _job->requestId();
 
     if (err != QNetworkReply::NoError && err != QNetworkReply::ContentNotFoundError) {
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
@@ -100,8 +102,6 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
         done(status, _job->errorString());
         return;
     }
-
-    _item->_responseTimeStamp = _job->responseTimestamp();
 
     // A 404 reply is also considered a success here: We want to make sure
     // a file is gone from the server. It not being there in the first place

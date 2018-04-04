@@ -198,6 +198,8 @@ void PropagateUploadFileV1::slotPutFinished()
     }
 
     _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    _item->_responseTimeStamp = job->responseTimestamp();
+    _item->_requestId = job->requestId();
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
         commonErrorHandling(job);
@@ -298,8 +300,6 @@ void PropagateUploadFileV1::slotPutFinished()
     }
 
     _item->_etag = etag;
-
-    _item->_responseTimeStamp = job->responseTimestamp();
 
     if (job->reply()->rawHeader("X-OC-MTime") != "accepted") {
         // X-OC-MTime is supported since owncloud 5.0.   But not when chunking.

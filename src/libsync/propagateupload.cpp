@@ -107,6 +107,7 @@ bool PollJob::finished()
     QNetworkReply::NetworkError err = reply()->error();
     if (err != QNetworkReply::NoError) {
         _item->_httpErrorCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        _item->_requestId = requestId();
         _item->_status = classifyError(err, _item->_httpErrorCode);
         _item->_errorString = errorString();
 

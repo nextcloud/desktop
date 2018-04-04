@@ -141,6 +141,7 @@ static SyncJournalErrorBlacklistRecord createBlacklistEntry(
     entry._lastTryTime = Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc());
     entry._renameTarget = item._renameTarget;
     entry._retryCount = old._retryCount + 1;
+    entry._requestId = item._requestId;
 
     static qint64 minBlacklistTime(getMinBlacklistTime());
     static qint64 maxBlacklistTime(qMax(getMaxBlacklistTime(), minBlacklistTime));

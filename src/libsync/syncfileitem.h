@@ -223,6 +223,7 @@ public:
     RemotePermissions _remotePerm;
     QString _errorString; // Contains a string only in case of error
     QByteArray _responseTimeStamp;
+    QByteArray _requestId; // X-Request-Id of the failed request
     quint32 _affectedItems; // the number of affected items by the operation on this item.
     // usually this value is 1, but for removes on dirs, it might be much higher.
 

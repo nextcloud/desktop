@@ -69,6 +69,8 @@ public:
     bool followRedirects() const { return _followRedirects; }
 
     QByteArray responseTimestamp();
+    /* Content of the X-Request-ID header. (Only set after the request is sent) */
+    QByteArray requestId();
 
     qint64 timeoutMsec() const { return _timer.interval(); }
     bool timedOut() const { return _timedout; }
