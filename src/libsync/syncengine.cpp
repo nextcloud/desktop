@@ -303,6 +303,8 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
     // Delete the stales chunk on the server.
     if (account()->capabilities().chunkingNg()) {
         foreach (uint transferId, ids) {
+            if (!transferId)
+                continue; // Was not a chunked upload
             QUrl url = Utility::concatUrlPath(account()->url(), QLatin1String("remote.php/dav/uploads/") + account()->davUser() + QLatin1Char('/') + QString::number(transferId));
             (new DeleteJob(account(), url, this))->start();
         }
