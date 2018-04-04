@@ -701,7 +701,7 @@
 			<key>BUILD_PATH</key>
 			<dict>
 				<key>PATH</key>
-				<string>../install/.</string>
+                                <string>@CMAKE_INSTALL_PREFIX@/.</string>
 				<key>PATH_TYPE</key>
 				<integer>3</integer>
 			</dict>
