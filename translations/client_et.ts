@@ -135,17 +135,17 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
         <source>Synchronize all</source>
-        <translation type="unfinished"/>
+        <translation>Sünkrooni kõik</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="205"/>
         <source>Synchronize none</source>
-        <translation type="unfinished"/>
+        <translation>Ära sünkrooni midagi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="212"/>
         <source>Apply manual changes</source>
-        <translation type="unfinished"/>
+        <translation>Rakenda käsitsi tehtud muudatused</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="260"/>
@@ -187,17 +187,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="299"/>
         <source>Choose what to sync</source>
-        <translation>Vali, mida sünkroniseerida</translation>
+        <translation>Vali, mida sünkroonida</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="305"/>
         <source>Force sync now</source>
-        <translation type="unfinished"/>
+        <translation>Sünkrooni jõuga kohe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="307"/>
         <source>Restart sync</source>
-        <translation type="unfinished"/>
+        <translation>Taaskäivita sünkroonimine</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="316"/>
@@ -586,7 +586,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="192"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Sulge ownCloud</translation>
     </message>
 </context>
 <context>
