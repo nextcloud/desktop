@@ -44,8 +44,8 @@
 
 namespace {
 const char TOOLBAR_CSS[] =
-    "QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 1px solid %2; spacing: 0; } "
-    "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 5px; } "
+    "QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 0 solid %2; spacing: 0; } "
+    "QToolBar QToolButton { background: %1; border: none; border-bottom: 0 solid %2; margin: 0; padding: 5px 15px 5px 15px; } "
     "QToolBar QToolBarExtension { padding:0; } "
     "QToolBar QToolButton:checked { background: %3; color: %4; }";
 
@@ -91,13 +91,26 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     _actionGroup = new QActionGroup(this);
     _actionGroup->setExclusive(true);
+    connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
+
+    foreach (auto ai, AccountManager::instance()->accounts()) {
+        accountAdded(ai.data());
+    }
+
+    _actionBefore = new QAction;
+    _toolBar->addAction(_actionBefore);
+
+    // Adds space
+    QWidget* spacer = new QWidget();
+    spacer->setMinimumWidth(100);
+    spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
+    _toolBar->addWidget(spacer);
 
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
     _actionGroup->addAction(generalAction);
     _toolBar->addAction(generalAction);
     GeneralSettings *generalSettings = new GeneralSettings;
     _ui->stack->addWidget(generalSettings);
-    _actionBefore = generalAction;
 
     QAction *networkAction = createColorAwareAction(QLatin1String(":/client/resources/network.png"), tr("Network"));
     _actionGroup->addAction(networkAction);
@@ -107,18 +120,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
-
-    // Adds space
-    QWidget* spacer = new QWidget();
-    spacer->setMinimumWidth(100);
-    spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
-    _toolBar->insertWidget(_actionBefore, spacer);
-
-    foreach (auto ai, AccountManager::instance()->accounts()) {
-        accountAdded(ai.data());
-    }
-
-    connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
 
     QTimer::singleShot(1, this, &SettingsDialog::showFirstPage);
 
@@ -261,10 +262,6 @@ void SettingsDialog::accountAdded(AccountState *s)
     //slotRefreshActivity(s);
 
     activityAdded(s);
-    QWidget* spacer = new QWidget();
-    spacer->setMinimumWidth(30);
-    spacer->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    _toolBar->insertWidget(_actionBefore, spacer);
     slotRefreshActivity(s);
 }
 
@@ -317,16 +314,6 @@ void SettingsDialog::accountRemoved(AccountState *s)
         }
     }
 
-//    _ui->stack->insertWidget(0, accountSettings);
-//    _actionGroup->addAction(accountAction);
-//    _actionGroupWidgets.insert(accountAction, accountSettings);
-//    _actionForAccount.insert(s->account().data(), accountAction);
-
-//    _toolBar->insertSeparator(_actionBefore);
-//    _toolBar->insertAction(_actionBefore, action);
-//    _actionGroup->addAction(action);
-//    _actionGroupWidgets.insert(action, _activitySettings[s]);
-
     if (_actionForAccount.contains(s->account().data())) {
         _actionForAccount.remove(s->account().data());
     }
@@ -339,6 +326,7 @@ void SettingsDialog::accountRemoved(AccountState *s)
             _actionGroupWidgets.remove(action);
             _toolBar->removeAction(action);
         }
+        _toolBar->widgetForAction(_actionBefore)->hide();
         _activitySettings.remove(s);
     }
 
