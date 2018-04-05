@@ -104,6 +104,14 @@ void OwncloudAdvancedSetupPage::initializePage()
 {
     WizardCommon::initErrorLabel(_ui.errorLabel);
 
+    if (!ConfigFile().showExperimentalOptions()) {
+        // If the layout were wrapped in a widget, the auto-grouping of the
+        // radio buttons no longer works and there are surprising margins.
+        // Just manually hide the button and remove the layout.
+        _ui.rPlaceholderSync->hide();
+        _ui.wSyncStrategy->layout()->removeItem(_ui.lPlaceholderSync);
+    }
+
     _checking = false;
     _ui.lSelectiveSyncSizeLabel->setText(QString());
     _ui.lSyncEverythingSizeLabel->setText(QString());

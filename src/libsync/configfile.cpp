@@ -64,6 +64,7 @@ static const char chunkSizeC[] = "chunkSize";
 static const char minChunkSizeC[] = "minChunkSize";
 static const char maxChunkSizeC[] = "maxChunkSize";
 static const char targetChunkUploadDurationC[] = "targetChunkUploadDuration";
+static const char showExperimentalOptionsC[] = "showExperimentalOptions";
 
 static const char proxyHostC[] = "Proxy/host";
 static const char proxyTypeC[] = "Proxy/type";
@@ -734,6 +735,12 @@ void ConfigFile::setCrashReporter(bool enabled)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(crashReporterC), enabled);
+}
+
+bool ConfigFile::showExperimentalOptions() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(showExperimentalOptionsC), false).toBool();
 }
 
 QString ConfigFile::certificatePath() const
