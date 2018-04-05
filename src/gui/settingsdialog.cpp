@@ -108,14 +108,15 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
 
+    // Adds space
+    QWidget* spacer = new QWidget();
+    spacer->setMinimumWidth(100);
+    spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
+    _toolBar->insertWidget(_actionBefore, spacer);
+
     foreach (auto ai, AccountManager::instance()->accounts()) {
         accountAdded(ai.data());
     }
-
-    // Adds space
-    QWidget* spacer = new QWidget();
-    spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
-    _toolBar->insertWidget(_actionBefore, spacer);
 
     connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
 
@@ -211,7 +212,7 @@ void SettingsDialog::activityAdded(AccountState *s){
     // all buttons must have the same size in order to keep a good layout
     QAction *action = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
     action->setProperty("account", QVariant::fromValue(s));
-    _toolBar->insertSeparator(_actionBefore);
+    _actionGroupWidgets.insert(_toolBar->insertSeparator(_actionBefore), _activitySettings[s]);
     _toolBar->insertAction(_actionBefore, action);
     _actionGroup->addAction(action);
     _actionGroupWidgets.insert(action, _activitySettings[s]);
@@ -316,10 +317,30 @@ void SettingsDialog::accountRemoved(AccountState *s)
         }
     }
 
+//    _ui->stack->insertWidget(0, accountSettings);
+//    _actionGroup->addAction(accountAction);
+//    _actionGroupWidgets.insert(accountAction, accountSettings);
+//    _actionForAccount.insert(s->account().data(), accountAction);
+
+//    _toolBar->insertSeparator(_actionBefore);
+//    _toolBar->insertAction(_actionBefore, action);
+//    _actionGroup->addAction(action);
+//    _actionGroupWidgets.insert(action, _activitySettings[s]);
+
     if (_actionForAccount.contains(s->account().data())) {
         _actionForAccount.remove(s->account().data());
     }
-    _activitySettings[s]->slotRemoveAccount();
+
+    if(_activitySettings.contains(s)){
+        _activitySettings[s]->slotRemoveAccount();
+        _activitySettings[s]->hide();
+        // get the settings widget and the separator
+        foreach(QAction *action, _actionGroupWidgets.keys(_activitySettings[s])){
+            _actionGroupWidgets.remove(action);
+            _toolBar->removeAction(action);
+        }
+        _activitySettings.remove(s);
+    }
 
     // Hide when the last account is deleted. We want to enter the same
     // state we'd be in the client was started up without an account
