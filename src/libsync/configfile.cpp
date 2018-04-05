@@ -80,6 +80,7 @@ static const char logDirC[] = "logDir";
 static const char logDebugC[] = "logDebug";
 static const char logExpireC[] = "logExpire";
 static const char logFlushC[] = "logFlush";
+static const char showExperimentalOptionsC[] = "showExperimentalOptions";
 
 static const char proxyHostC[] = "Proxy/host";
 static const char proxyTypeC[] = "Proxy/type";
@@ -970,6 +971,12 @@ void ConfigFile::setLogFlush(bool enabled)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(logFlushC), enabled);
+}
+
+bool ConfigFile::showExperimentalOptions() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(showExperimentalOptionsC), false).toBool();
 }
 
 QString ConfigFile::certificatePath() const

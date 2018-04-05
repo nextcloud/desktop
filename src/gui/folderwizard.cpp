@@ -493,9 +493,12 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
     auto *layout = new QVBoxLayout(this);
     _selectiveSync = new SelectiveSyncWidget(account, this);
     layout->addWidget(_selectiveSync);
-    _placeholderCheckBox = new QCheckBox(tr("Create placeholders instead of downloading files (experimental)"));
-    connect(_placeholderCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::placeholderCheckboxClicked);
-    layout->addWidget(_placeholderCheckBox);
+
+    if (ConfigFile().showExperimentalOptions()) {
+        _placeholderCheckBox = new QCheckBox(tr("Create placeholders instead of downloading files (experimental)"));
+        connect(_placeholderCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::placeholderCheckboxClicked);
+        layout->addWidget(_placeholderCheckBox);
+    }
 }
 
 FolderWizardSelectiveSync::~FolderWizardSelectiveSync() = default;
