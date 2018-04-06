@@ -39,6 +39,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     const QString &localPath,
     SharePermissions maxSharingPermissions,
     const QByteArray &numericFileId,
+    ShareDialogStartPage startPage,
     QWidget *parent)
     : QDialog(parent)
     , _ui(new Ui::ShareDialog)
@@ -47,6 +48,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     , _localPath(localPath)
     , _maxSharingPermissions(maxSharingPermissions)
     , _privateLinkUrl(accountState->account()->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded))
+    , _startPage(startPage)
     , _linkWidget(NULL)
     , _userGroupWidget(NULL)
     , _progressIndicator(NULL)
@@ -217,6 +219,9 @@ void ShareDialog::showSharingUi()
         _linkWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
         _ui->shareWidgets->addTab(_linkWidget, tr("Public Links"));
         _linkWidget->getShares();
+
+        if (_startPage == ShareDialogStartPage::PublicLinks)
+            _ui->shareWidgets->setCurrentWidget(_linkWidget);
     }
 }
 
