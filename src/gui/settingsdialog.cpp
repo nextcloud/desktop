@@ -45,9 +45,12 @@
 namespace {
 const char TOOLBAR_CSS[] =
     "QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 0 solid %2; spacing: 0; } "
-    "QToolBar QToolButton { background: %1; border: none; border-bottom: 0 solid %2; margin: 0; padding: 5px 15px 5px 15px; } "
+    "QToolBar QToolButton { background: %1; border: none; border-bottom: 0 solid %2; margin: 0; padding: 5px; } "
     "QToolBar QToolBarExtension { padding:0; } "
     "QToolBar QToolButton:checked { background: %3; color: %4; }";
+
+const char TOOLBUTTON_CSS[] =
+    "margin-right: 20px;";
 
 static const float buttonSizeRatio = 1.618; // golden ratio
 }
@@ -102,7 +105,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     // Adds space
     QWidget* spacer = new QWidget();
-    spacer->setMinimumWidth(100);
+    spacer->setMinimumWidth(30);
     spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
     _toolBar->addWidget(spacer);
 
@@ -352,6 +355,10 @@ void SettingsDialog::customizeStyle()
         QToolButton *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));
         if (btn) {
             btn->setIcon(icon);
+
+            //these are the activity buttons
+            if(qvariant_cast<AccountState*>(a->property("account")))
+                btn->setStyleSheet(QString::fromLatin1(TOOLBUTTON_CSS));
         }
     }
 }

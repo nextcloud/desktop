@@ -175,7 +175,6 @@ void ActivityWidget::storeActivityList(QTextStream &ts)
     ActivityList activities = _model->activityList();
 
     foreach (Activity activity, activities) {
-        QString message = activity._message.isEmpty()? "Message!" : activity._message;
         ts << right
            // account name
            << qSetFieldWidth(30)
@@ -203,7 +202,7 @@ void ActivityWidget::storeActivityList(QTextStream &ts)
 
           // message
           << qSetFieldWidth(55)
-          << message
+          << activity._message
           // separator
           << qSetFieldWidth(0) << ","
 
