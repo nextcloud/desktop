@@ -1683,6 +1683,8 @@ void SyncJournalDb::setSelectiveSyncList(SyncJournalDb::SelectiveSyncListType ty
         return;
     }
 
+    startTransaction();
+
     //first, delete all entries of this type
     SqlQuery delQuery("DELETE FROM selectivesync WHERE type == ?1", _db);
     delQuery.bindValue(1, int(type));
@@ -1699,6 +1701,8 @@ void SyncJournalDb::setSelectiveSyncList(SyncJournalDb::SelectiveSyncListType ty
             qCWarning(lcDb) << "SQL error when inserting into selective sync" << type << path << delQuery.error();
         }
     }
+
+    commitInternal("setSelectiveSyncList");
 }
 
 void SyncJournalDb::avoidRenamesOnNextSync(const QByteArray &path)
