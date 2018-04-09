@@ -26,6 +26,8 @@
 #define OCS_SUCCESS_STATUS_CODE 100
 // Apparantly the v2.php URLs can return that
 #define OCS_SUCCESS_STATUS_CODE_V2 200
+// not modified when using  ETag
+#define OCS_NOT_MODIFIED_STATUS_CODE_V2 304
 
 class QJsonDocument;
 
@@ -99,6 +101,14 @@ public:
      */
     static int getJsonReturnCode(const QJsonDocument &json, QString &message);
 
+    /**
+     * @brief Adds header to the request e.g. "If-None-Match"
+     * @param headerName a string with the header name
+     * @param value a string with the value
+     */
+    void addRawHeader(const QByteArray &headerName, const QByteArray &value);
+
+
 protected slots:
 
     /**
@@ -113,7 +123,7 @@ signals:
      *
      * @param reply the reply
      */
-    void jobFinished(QJsonDocument reply);
+    void jobFinished(QJsonDocument reply, int statusCode);
 
     /**
      * The status code was not one of the expected (passing)
@@ -124,6 +134,14 @@ signals:
      */
     void ocsError(int statusCode, const QString &message);
 
+    /**
+     * @brief etagResponseHeaderReceived - signal to report the ETag response header value
+     * from ocs api v2
+     * @param value - the ETag response header value
+     * @param statusCode - the OCS status code: 100 (!) for success
+     */
+    void etagResponseHeaderReceived(const QByteArray &value, int statusCode);
+
 private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
 
@@ -131,6 +149,7 @@ private:
     QByteArray _verb;
     QList<QPair<QString, QString>> _params;
     QVector<int> _passStatusCodes;
+    QNetworkRequest _request;
 };
 }
 
