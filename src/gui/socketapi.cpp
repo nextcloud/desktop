@@ -183,6 +183,10 @@ SocketApi::SocketApi(QObject *parent)
         // Example for developer builds (with ad-hoc signing identity): "" "com.owncloud.desktopclient" ".socketApi"
         // Example for official signed packages: "9B5WD74GWJ." "com.owncloud.desktopclient" ".socketApi"
         socketPath = SOCKETAPI_TEAM_IDENTIFIER_PREFIX APPLICATION_REV_DOMAIN ".socketApi";
+#ifdef Q_OS_MAC
+        // Tell Finder to use the Extension (checking it from System Preferences -> Extensions)
+        system("pluginkit -e use -i  " APPLICATION_REV_DOMAIN ".FinderSyncExt &");
+#endif
     } else if (Utility::isLinux() || Utility::isBSD()) {
         QString runtimeDir;
         runtimeDir = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
@@ -220,6 +224,11 @@ SocketApi::~SocketApi()
     // All remaining sockets will be destroyed with _localServer, their parent
     ASSERT(_listeners.isEmpty() || _listeners.first().socket->parent() == &_localServer);
     _listeners.clear();
+
+#ifdef Q_OS_MAC
+    // Unload the extension (uncheck from System Preferences -> Extensions)
+    system("pluginkit -e ignore -i  " APPLICATION_REV_DOMAIN ".FinderSyncExt &");
+#endif
 }
 
 void SocketApi::slotNewConnection()
