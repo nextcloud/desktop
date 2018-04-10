@@ -187,6 +187,16 @@ void AccountState::setNotificationsEtagResponseHeader(const QByteArray &value)
     _notificationsEtagResponseHeader = value;
 }
 
+QByteArray AccountState::navigationAppsEtagResponseHeader() const
+{
+    return _navigationAppsEtagResponseHeader;
+}
+
+void AccountState::setNavigationAppsEtagResponseHeader(const QByteArray &value)
+{
+    _navigationAppsEtagResponseHeader = value;
+}
+
 void AccountState::checkConnectivity()
 {
     if (isSignedOut() || _waitingForNewCredentials) {
