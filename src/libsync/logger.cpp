@@ -14,6 +14,8 @@
 
 #include "logger.h"
 
+#include "config.h"
+
 #include <QDir>
 #include <QStringList>
 #include <QThread>
@@ -97,10 +99,15 @@ void Logger::log(Log log)
  */
 bool Logger::isNoop() const
 {
-    QMutexLocker lock(const_cast<QMutex *>(&_mutex));
+    QMutexLocker lock(&_mutex);
     return !_logstream && !_logWindowActivated;
 }
 
+bool Logger::isLoggingToFile() const
+{
+    QMutexLocker lock(&_mutex);
+    return _logstream;
+}
 
 void Logger::doLog(const QString &msg)
 {
@@ -183,6 +190,35 @@ void Logger::setLogDebug(bool debug)
     _logDebug = debug;
 }
 
+QString Logger::temporaryFolderLogDirPath() const
+{
+    QString dirName = APPLICATION_SHORTNAME + QString("-logdir");
+    return QDir::temp().filePath(dirName);
+}
+
+void Logger::setupTemporaryFolderLogDir()
+{
+    auto dir = temporaryFolderLogDirPath();
+    if (!QDir().mkpath(dir))
+        return;
+    setLogDebug(true);
+    setLogExpire(4 /*hours*/);
+    setLogDir(dir);
+    _temporaryFolderLogDir = true;
+}
+
+void Logger::disableTemporaryFolderLogDir()
+{
+    if (!_temporaryFolderLogDir)
+        return;
+
+    enterNextLogFile();
+    setLogDir(QString());
+    setLogDebug(false);
+    setLogFile(QString());
+    _temporaryFolderLogDir = false;
+}
+
 static bool compressLog(const QString &originalName, const QString &targetName)
 {
     QFile original(originalName);
@@ -214,30 +250,30 @@ void Logger::enterNextLogFile()
             dir.mkpath(".");
         }
 
-        // Find out what is the file with the highest number if any
+        // Tentative new log name, will be adjusted if one like this already exists
+        QDateTime now = QDateTime::currentDateTime();
+        QString newLogName = now.toString("yyyyMMdd_HHmm") + "_owncloud.log";
+
+        // Expire old log files and deal with conflicts
         QStringList files = dir.entryList(QStringList("*owncloud.log.*"),
             QDir::Files);
         QRegExp rx(R"(.*owncloud\.log\.(\d+).*)");
-        uint maxNumber = 0;
-        QDateTime now = QDateTime::currentDateTimeUtc();
+        int maxNumber = -1;
         foreach (const QString &s, files) {
-            if (rx.exactMatch(s)) {
-                maxNumber = qMax(maxNumber, rx.cap(1).toUInt());
-                if (_logExpire > 0) {
-                    QFileInfo fileInfo = dir.absoluteFilePath(s);
-                    if (fileInfo.lastModified().addSecs(60 * 60 * _logExpire) < now) {
-                        dir.remove(s);
-                    }
+            if (_logExpire > 0) {
+                QFileInfo fileInfo(dir.absoluteFilePath(s));
+                if (fileInfo.lastModified().addSecs(60 * 60 * _logExpire) < now) {
+                    dir.remove(s);
                 }
             }
+            if (s.startsWith(newLogName) && rx.exactMatch(s)) {
+                maxNumber = qMax(maxNumber, rx.cap(1).toInt());
+            }
         }
+        newLogName.append("." + QString::number(maxNumber + 1));
 
-        QString filename = _logDirectory + "/"
-            + QDateTime::currentDateTime().toString("yyyyMMdd_HHmm")
-            + "_owncloud.log."
-            + QString::number(maxNumber + 1);
         auto previousLog = _logFile.fileName();
-        setLogFile(filename);
+        setLogFile(dir.filePath(newLogName));
 
         if (!previousLog.isEmpty()) {
             QString compressedName = previousLog + ".gz";

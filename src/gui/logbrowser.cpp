@@ -96,6 +96,20 @@ LogBrowser::LogBrowser(QWidget *parent)
 
     mainLayout->addWidget(btnbox);
 
+    // button to permanently save logs
+    _permanentLogging = new QCheckBox;
+    _permanentLogging->setText(tr("Permanently save logs"));
+    _permanentLogging->setToolTip(
+        tr("When this option is enabled and no other logging is configured, "
+           "logs will be written to a temporary folder and expire after a few hours. "
+           "This setting persists across client restarts.\n"
+           "\n"
+           "Logs will be written to %1")
+            .arg(Logger::instance()->temporaryFolderLogDirPath()));
+    _permanentLogging->setChecked(ConfigFile().automaticLogDir());
+    btnbox->addButton(_permanentLogging, QDialogButtonBox::ActionRole);
+    connect(_permanentLogging, &QCheckBox::toggled, this, &LogBrowser::togglePermanentLogging);
+
     // clear button
     _clearBtn = new QPushButton;
     _clearBtn->setText(tr("Clear"));
@@ -214,6 +228,20 @@ void LogBrowser::slotSave()
 void LogBrowser::slotClearLog()
 {
     _logWidget->clear();
+}
+
+void LogBrowser::togglePermanentLogging(bool enabled)
+{
+    ConfigFile().setAutomaticLogDir(enabled);
+
+    auto logger = Logger::instance();
+    if (enabled) {
+        if (!logger->isLoggingToFile()) {
+            logger->setupTemporaryFolderLogDir();
+        }
+    } else {
+        logger->disableTemporaryFolderLogDir();
+    }
 }
 
 } // namespace
