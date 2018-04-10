@@ -89,6 +89,9 @@ public:
     bool crashReporter() const;
     void setCrashReporter(bool enabled);
 
+    bool automaticLogDir() const;
+    void setAutomaticLogDir(bool enabled);
+
     // proxy settings
     void setProxyType(int proxyType,
         const QString &host = QString(),
