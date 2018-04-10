@@ -138,8 +138,8 @@ under the original file name.
 
 Example: Assume there is a conflict in message.txt because its contents have
 changed both locally and remotely since the last sync run. The local file with
-the local changes will be renamed to message_conflict-20160101-153110.txt and
-the remote file will be downloaded and saved as message.txt.
+the local changes will be renamed to "message (conflicted copy 2016-01-01 153110).txt"
+and the remote file will be downloaded and saved as message.txt.
 
 Conflict files are always created on the client and never on the server.
 
@@ -281,6 +281,7 @@ By default, the ownCloud Client ignores the following files:
 * Files with a name longer than 254 characters.
 * The file ``Desktop.ini`` in the root of a synced folder.
 * Files matching the pattern ``*_conflict-*`` unless conflict file uploading is enabled.
+* Files matching the pattern ``*(conflicted copy*`` unless conflict file uploading is enabled.
 * Windows only: Files containing characters that do not work on typical Windows filesystems ``(`\, /, :, ?, *, ", >, <, |`)``.
 * Windows only: Files with a trailing space or dot.
 * Windows only: Filenames that are reserved on Windows.
