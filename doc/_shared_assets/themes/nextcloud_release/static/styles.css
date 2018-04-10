@@ -1,0 +1,498 @@
+/* This css file should only be used for Documentation. Do not replace styles.css in owncloud.org website with this file */
+
+
+@font-face {
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: normal;
+        src: local('Open Sans'), local('OpenSans'), url(fonts/OpenSans-Regular.woff) format('woff'), url(fonts/OpenSans-Regular.ttf) format('ttf');
+}
+
+@font-face {
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: bold;
+        src: local('Open Sans Bold'), local('OpenSans-Bold'), url(fonts/OpenSans-Bold.woff) format('woff'), url(fonts/OpenSans-Bold.ttf) format('ttf');
+}
+
+@font-face {
+        font-family: 'Open Sans';
+        font-style: italic;
+        font-weight: normal;
+        src: local('Open Sans Italic'), local('OpenSans-Italic'), url(fonts/OpenSans-Italic.woff) format('woff'), url(fonts/OpenSans-Bold.ttf) format('ttf');
+}
+
+@font-face {
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: light;
+        src: local('Open Sans Light'), local('OpenSans-Light'), url(fonts/OpenSans-Light.woff) format('woff'), url(fonts/OpenSans-Light.ttf) format('ttf');
+}
+
+span.avoidwrap {
+        display:inline-block;
+}
+
+@media only screen and (max-width: 700px) {
+        div .hideonsmall {
+                display: none;
+        }
+}
+
+/* Make background white, font grey and default buttons a bit darker to compensate */
+body {
+        font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, "Font Awesome", sans-serif !important;
+        color: #555;
+        background: white;
+}
+
+h1, h2, h3 {
+        font-weight: 300;
+}
+h1 {
+        font-size: 45px;
+}
+h2 {
+        font-size: 27px;
+        margin-bottom: 12px;
+}
+h3 {
+        font-size: 22px;
+        margin: 12px 0;
+}
+
+
+.btn-default {
+        background: rgba(240,240,240,.9);
+        border: 1px solid rgba(210,210,210,.9);
+}
+
+.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
+        background: white;
+        border: 1px solid rgba(240,240,240,.9);
+}
+
+.btn-primary {
+        background: #55739a;
+        border: 1px solid #1D2D44;
+        color: white;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+        background: #428BCA;
+        border: 1px solid #1D2D44;
+        color: white;
+}
+
+/* Alert Settings */
+
+.admonition.note {.alert();.alert-info(); border: 1px solid #428BCA !important; padding-left: 60px; padding-top: 15px;  background: #d9edf7 url(img/note_pencil.svg) no-repeat 15px center; }
+.admonition.note a {color: #428BCA; font-weight: bold;}
+.admonition.warning {.alert();.alert-danger();  border:1px solid rgba(221,17,68,0.85); color: #d14; padding-left: 60px; padding-top: 15px;  background: #f7f7f9 url(img/warning.svg) no-repeat 15px center; }
+.admonition.warning a {color: #d14; font-weight: bold;}
+.admonition-title { display: none;}
+
+button a {color: #1d2d44}
+button a:hover {text-decoration: none; }
+
+.no-underline a {
+  border: 0px none transparent !important;
+}
+/* Remove line under page headers (defined in main.min.css) */
+div.page-header {
+border-bottom: 0px solid #EEE;
+}
+/* Remove border from navbar (defined in main.min.css) */
+.navbar {
+border: 1px solid transparent;
+}
+
+.banner img {
+        padding: 15px 0;
+}
+
+div.box-head {
+  display: none;
+}
+
+h3.ft-title {
+  text-align: center;
+  font-weight: 100;
+  font-size: 23px;
+}
+
+h2.featuretitle {
+  font-weight: 400;
+  font-size: 25px;
+}
+
+
+.page-content-header > div > h1 {
+  display: inline;
+  margin-top: 0;
+}
+
+.page-content-header > div > a.rss-button {
+  vertical-align: baseline;
+  margin-left: 20px;
+  color: rgb(206, 91, 0);
+}
+
+.page-content-header > div > form > input[type=text] {
+  display: inline;
+  width: 78%;
+}
+
+.banner ul#menu-header.nav>li:not(.menu-install) >a:hover {
+  border-bottom: 2px solid white;
+}
+
+.banner ul#menu-header.nav>li>a {
+  padding-bottom: 6px;
+  font-size: 1em;
+}
+
+.banner ul#menu-header.nav>li.menu-commercial>a:hover{
+  border-bottom: 2px solid #e8733b;
+}
+
+.btn.btn-orange {
+  background-color: #e8733b;
+  color: white;
+}
+
+
+div.sub-nav {
+  margin-top: -20px;
+}
+
+li.top-nav-active > a {
+  border-bottom: 2px solid white;
+}
+
+div.feature-wide-row-wrap {
+  background-color: #1D2D44;
+  color: white;
+  padding-bottom: 20px;
+}
+
+div.feature-wide-row-wrap div.featureblock{
+  text-align: center;
+  padding-top: 15px;
+  font-weight: 200;
+}
+
+div.feature-wide-row-wrap div.featureblock i {
+  font-size: 25px;
+}
+
+div.feature-wide-row-wrap div.featureblock h3.ft-title {
+  margin-top: 0;
+}
+
+/*  the header */
+
+.navbar-header .logo {
+  width: 121px;
+}
+
+.banner ul#menu-header.nav>li.menu-get-owncloud {
+        padding: 0 0 0 15px;
+        margin-top: 7px;
+        margin-left: 10px;
+        background-color: #428BCA;
+        border-radius: 6px;
+        border-color: #357EBD}
+
+.banner ul#menu-header.nav>li.menu-get-owncloud a{
+        padding: 7px 16px 7px 0;
+        line-height: 1.25;
+        border-bottom: 0
+}
+
+.contribook_bloguserpicture img {
+        margin-right: 0;
+}
+
+i[class*='icon-'] {
+        font-style: normal;
+}
+
+/*  the footer */
+
+div.footer-text {
+  color: #AAAAAA;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+div.footer-social-icons > div {
+  text-align: center;
+  margin: 50px 17px -20px -14px;
+}
+
+div.footer-social-icons> div > a:hover {
+  opacity: 0.8;
+}
+
+div.footer-social-icons img {
+  margin: 0 30px 30px 0;
+}
+
+footer div.footer-nav>h4 {
+        font-size: 1.125em;
+        color: #FFFFFF;
+}
+
+div.thumbnail > img {
+        margin-bottom: 0;
+}
+
+/*  Make YouTube videos responsive */
+@media(min-width: 995px) {
+  .videoWrapper {
+    position: relative;
+    padding-bottom: 28.12%; /* 16:9 - lets them be quarter screen size.  56.25% for full */
+    padding-top: 25px;
+    width: 50%; /* 100%  for full screen size */
+    height: 0;
+  }
+  .videoWrapper iframe {
+    position: absolute;
+    margin-left: 50%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media(max-width: 996px) {
+  .videoWrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 30px;
+    height: 0;
+    width: 100%;
+    padding-left: -50%;
+  }
+
+  .videoWrapper iframe, .videoWrapper object, .videoWrapper embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+
+
+/* -- Start specific css for documentation -- */
+
+.sidebar h1 {
+  font-size: 1.5em;
+  margin: 0;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+.sidebar-search form {
+  display: flex;
+  width: 100%;
+}
+.sidebar-search input,
+.sidebar-search button {
+  margin: 10px;
+}
+.sidebar-search input {
+  flex-grow: 1;
+  margin-right: 0;
+}
+
+ul#menu-support.menu {
+  padding-left: 0;
+}
+ul#menu-support.menu > ul {
+  padding-left: 0px;
+  list-style: none;
+}
+ul#menu-support.menu ul {
+  background-color: white;
+}
+/* round bullets for the second level entries */
+ul#menu-support.menu ul ul {
+  list-style-type: disc;
+}
+/* square bullets for the third level entries */
+ul#menu-support.menu ul ul ul {
+  list-style-type: square;
+}
+/* set to default padding for the sublist of the current entry */
+ul#menu-support.menu ul > li.current > ul {
+  padding-left: 20px;
+  color: #428BCA;
+}
+/* set a padding for all list entry elements below the first level */
+ul#menu-support.menu > ul li {
+  padding: 5px;
+  padding-left: 0px;
+}
+/* setting the padding for the first level entries */
+ul#menu-support.menu > ul > li,
+ul#menu-support.menu > ul li.toctree-l1 {
+  padding: 5px 10px;
+}
+/* additional padding to the bottom, to have equal border width */
+ul#menu-support.menu > ul li.toctree-l1.current {
+  padding-bottom: 10px;
+}
+
+#menu-support {
+    padding-left: 0;
+}
+#menu-support > ul {
+    padding-left: 0;
+    list-style-type: none;
+}
+
+#menu-support > ul > li {
+    padding: 5px 9px;
+    padding-right: 0;
+}
+
+#menu-support > ul > li {
+    border-top: 1px solid #ccc;
+}
+
+#menu-support > ul:last-child {
+    border-bottom: 1px solid #ccc;
+}
+
+#menu-support ul ul {
+    padding-left: 27px;
+}
+
+.headerlink {
+  color: rgba(66, 139, 202,0.5);
+  display: none;
+  margin-left: 5px;
+}
+.section:hover > * > .headerlink {
+  display: inline-block;
+}
+.section:hover > dl > dt > .headerlink {
+  display: inline-block;
+}
+.method:hover .headerlink {
+  display: inline-block;
+}
+a:hover, a:active {
+  color: #3276B1;
+}
+li.next {
+  float: right;
+}
+.page-content img {
+  max-width: 100%;
+}
+
+@media (min-width: 1200px) {
+  .banner ul#menu-header.nav>li:not(.menu-install)>a {
+	width: auto;
+	margin-bottom: 19px;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+    .banner ul#menu-header.nav {
+	width: 49%;
+	padding-top: 0;
+   }
+   .banner ul#menu-header.nav>li:not(.menu-install)>a {
+	height: 1.5em;
+	margin-bottom: 10px;
+   }
+    body.install div#instructions-server div.instructions,
+    body.install div#instructions-web div.instructions,
+    body.install div#instructions-packages div.instructions {
+    margin-top: 11%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .banner ul#menu-header.nav {
+	width: 64%;
+	padding-top: 0;
+   }
+   .banner ul#menu-header.nav>li:not(.menu-install)>a {
+	height: 1.5em;
+	margin-bottom: 10px;
+   }
+    body.install div#instructions-server div.instructions,
+    body.install div#instructions-web div.instructions,
+    body.install div#instructions-packages div.instructions {
+    margin-top: 16%;
+  }
+}
+
+@media (min-width: 500px) and (max-width: 767px) {
+    body.install div#instructions-server div.instructions,
+    body.install div#instructions-web div.instructions,
+    body.install div#instructions-packages div.instructions {
+    margin-top: 20%;
+  }
+}
+
+@media (max-width: 499px) {
+    body.install div#instructions-server div.instructions,
+    body.install div#instructions-web div.instructions,
+    body.install div#instructions-packages div.instructions {
+    margin-top: 32%;
+  }
+}
+
+@media (max-width: 767px) {
+  a.brand {
+    padding-left: 15px;
+  }
+  .banner ul#menu-header.nav {
+    float: left;
+  }
+  .banner ul#menu-header.nav > li {
+      padding-top: 0px;
+  }
+  .banner ul#menu-header.nav > li.menu-install {
+      margin-top: 23px;
+      margin-bottom: 10px;
+  }
+  .banner ul#menu-header.nav > li:not(.menu-install) > a {
+      line-height: 1.5em;
+      margin-bottom: 14px;
+      padding-bottom: 0;
+  }
+  .navbar-collapse.in {
+    overflow-y: visible;
+   }
+}
+
+/*  --  End specific css for documentation --  */
+
+.terminal-image {
+  box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
+}
+
+li.next {
+  float: right;
+}
+
+.not-front .content.row,
+.content > .main > .row {
+  margin-top: 0;
+}
+.page-content {
+  margin-top: 10px;
+}
+.content > .main > .row .sidebar {
+  border-right: 1px solid #ccc;
+}

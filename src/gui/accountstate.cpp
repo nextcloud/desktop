@@ -35,6 +35,7 @@ AccountState::AccountState(AccountPtr account)
     , _connectionStatus(ConnectionValidator::Undefined)
     , _waitingForNewCredentials(false)
     , _maintenanceToConnectedDelay(60000 + (qrand() % (4 * 60000))) // 1-5min delay
+    , _notificationsEtagResponseHeader("*")
 {
     qRegisterMetaType<AccountState *>("AccountState*");
 
@@ -174,6 +175,16 @@ bool AccountState::isConnected() const
 void AccountState::tagLastSuccessfullETagRequest()
 {
     _timeSinceLastETagCheck.start();
+}
+
+QByteArray AccountState::notificationsEtagResponseHeader() const
+{
+    return _notificationsEtagResponseHeader;
+}
+
+void AccountState::setNotificationsEtagResponseHeader(const QByteArray &value)
+{
+    _notificationsEtagResponseHeader = value;
 }
 
 void AccountState::checkConnectivity()

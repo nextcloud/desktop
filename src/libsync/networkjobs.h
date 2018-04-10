@@ -371,6 +371,7 @@ public:
      * This function needs to be called before start() obviously.
      */
     void addQueryParams(const QUrlQuery &params);
+    void addRawHeader(const QByteArray &headerName, const QByteArray &value);
 
 public slots:
     void start() Q_DECL_OVERRIDE;
@@ -386,8 +387,17 @@ signals:
      */
     void jsonReceived(const QJsonDocument &json, int statusCode);
 
+    /**
+     * @brief etagResponseHeaderReceived - signal to report the ETag response header value
+     * from ocs api v2
+     * @param value - the ETag response header value
+     * @param statusCode - the OCS status code: 100 (!) for success
+     */
+    void etagResponseHeaderReceived(const QByteArray &value, int statusCode);
+
 private:
     QUrlQuery _additionalParams;
+    QNetworkRequest _request;
 };
 
 /**

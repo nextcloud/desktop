@@ -65,6 +65,7 @@ public:
 
 signals:
     void setupProxy();
+    void serverError(int code, const QString &message);
 
 public slots:
     void setupContextMenu();
@@ -92,6 +93,7 @@ public slots:
     void slotOpenPath(const QString &path);
     void slotAccountStateChanged();
     void slotTrayMessageIfServerUnsupported(Account *account);
+    void slotNavigationAppsFetched(const QJsonDocument &reply);
 
     /**
      * Open a share dialog for a file or folder.
@@ -104,6 +106,9 @@ public slots:
 
     void slotRemoveDestroyedShareDialogs();
 
+protected slots:
+    void slotOcsError(int statusCode, const QString &message);
+
 private slots:
     void slotLogin();
     void slotLogout();
@@ -115,6 +120,7 @@ private:
     void setPauseOnAllFoldersHelper(bool pause);
     void setupActions();
     void addAccountContextMenu(AccountStatePtr accountState, QMenu *menu, bool separateMenu);
+    void fetchNavigationApps(AccountStatePtr account, QMenu *accountMenu);
 
     QPointer<Systray> _tray;
 #if defined(Q_OS_MAC)
@@ -139,9 +145,6 @@ private:
     bool _qdbusmenuWorkaround;
     QTimer _workaroundBatchTrayUpdate;
     QMap<QString, QPointer<ShareDialog>> _shareDialogs;
-
-    QAction *_actionLogin;
-    QAction *_actionLogout;
 
     QAction *_actionNewAccountWizard;
     QAction *_actionSettings;

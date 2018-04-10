@@ -4,44 +4,44 @@ Using the Synchronization Client
 
 .. index:: navigating, usage
 
-The ownCloud Desktop Client remains in the background and is visible as an icon 
+The Nextcloud Desktop Client remains in the background and is visible as an icon 
 in the system tray (Windows, KDE), status bar (Mac OS X), or notification area 
 (Linux).
 
 .. figure:: images/icon.png
-   :alt: Status icon, little cloud with green circle and white checkmark 
+   :alt: Status icon, green circle and white checkmark 
 
 The status indicator uses icons to indicate the current status of your 
 synchronization. The green circle with the white checkmark tells you that your 
-synchronization is current and you are connected to your ownCloud server.
+synchronization is current and you are connected to your Nextcloud server.
 
 .. figure:: images/icon-syncing.png
-   :alt: Status icon, little cloud with blue circle and white semi-circles
+   :alt: Status icon, blue circle and white semi-circles
 
 The blue icon with the white semi-circles means synchronization is in progress.
 
 .. figure:: images/icon-paused.png
-   :alt: Status icon, little cloud with yellow circle and vertical parallel 
+   :alt: Status icon, yellow circle and vertical parallel 
     lines
 
 The yellow icon with the parallel lines tells you your synchronization 
 has been paused. (Most likely by you.)
 
 .. figure:: images/icon-offline.png
-   :alt: Status icon, little gray cloud with gray circle and three horizontal 
+   :alt: Status icon, gray circle and three horizontal 
     white dots
 
 The gray icon with three white dots means your sync client has lost its 
-connection with your ownCloud server.
+connection with your Nextcloud server.
 
 .. figure:: images/icon-information.png
-   :alt: Status icon, little cloud with letter "i" in white circle
+   :alt: Status icon, sign "!" in yellow circle
 
-When you see a white circle with the letter "i" that is the informational icon, 
+When you see a yellow circle with the sign "!" that is the informational icon, 
 so you should click it to see what it has to tell you.
 
 .. figure:: images/icon-error.png
-   :alt: Status icon, little cloud with red circle and white x
+   :alt: Status icon, red circle and white x
 
 The red circle with the white "x" indicates a configuration error, such as an 
 incorrect login or server URL.
@@ -64,16 +64,16 @@ This menu provides the following options:
 * Help menu
 * Pause synchronizations
 * An option to log in or log out of all of your accounts at once
-* Quit ownCloud, logging out and closing the client
+* Quit Nextcloud, logging out and closing the client
 
 A left-click on your systray icon opens the desktop client to the account 
 settings window.
 
-.. figure:: images/client6.png
+.. figure:: images/client-6.png
    :alt: Account settings window
 
-Configuring ownCloud Account Settings
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Configuring Nextcloud Account Settings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. index:: account settings, user, password, Server URL
 
@@ -81,8 +81,8 @@ At the top of the window are tabs for each configured sync account, and three
 others for Activity, General and Network settings. On your account tabs you 
 have the following features:
 
-* Connection status, showing which ownCloud server you are connected to, and 
-  your ownCloud username.
+* Connection status, showing which Nextcloud server you are connected to, and 
+  your Nextcloud username.
 * An **Account** button, which contains a dropdown menu with **Add New**, 
   **Log Out**, and **Remove**.
 * Used and available space on the server.
@@ -98,7 +98,7 @@ the sync status bar offers four additional options:
 * Pause Sync / Resume Sync
 * Remove folder sync connection
 
-**Open Folder** opens your local ownCloud sync folder.
+**Open Folder** opens your local Nextcloud sync folder.
 
 **Pause Sync** pauses sync operations without making any changes to your 
 account. It will continue to update file and folder lists, without 
@@ -108,7 +108,7 @@ Folder Sync Connection**.
 .. figure:: images/client-7.png
    :alt: Extra options for sync operations
    
-.. note:: ownCloud does not preserve the mtime (modification time) of 
+.. note:: Nextcloud does not preserve the mtime (modification time) of 
    directories, though it does update the mtimes on files. See  
    `Wrong folder date when syncing 
    <https://github.com/owncloud/core/issues/7009>`_ for discussion of this.  
@@ -116,7 +116,7 @@ Folder Sync Connection**.
 Adding New Accounts
 ^^^^^^^^^^^^^^^^^^^
 
-You may configure multiple ownCloud accounts in your desktop sync client. Simply 
+You may configure multiple Nextcloud accounts in your desktop sync client. Simply 
 click the **Account** > **Add New** button on any account tab to add a new 
 account, and then follow the account creation wizard. The new account will 
 appear as a new tab in the settings dialog, where you can adjust its settings at 
@@ -125,9 +125,9 @@ any time. Use **Account** > **Remove** to delete accounts.
 File Manager Overlay Icons
 --------------------------
 
-The ownCloud sync client provides overlay icons, in addition to the normal file 
+The Nextcloud sync client provides overlay icons, in addition to the normal file 
 type icons, for your system file manager (Explorer on Windows, Finder on Mac and 
-Nautilus on Linux) to indicate the sync status of your ownCloud files.
+Nautilus on Linux) to indicate the sync status of your Nextcloud files.
 
 The overlay icons are similar to the systray icons introduced above. They 
 behave differently on files and directories according to sync status 
@@ -158,28 +158,28 @@ that does not change the status of the parent directories.
 Sharing From Your Desktop
 -------------------------
 
-The ownCloud desktop sync client integrates with your file manager: Finder on 
+The Nextcloud desktop sync client integrates with your file manager: Finder on 
 Mac OS X, Explorer on Windows, and Nautilus on Linux. (Linux users must install 
-the ``owncloud-client-nautilus`` plugin.) You can create share links, and share 
-with internal ownCloud users the same way as in your ownCloud Web interface.
+the ``Nextcloud-client-nautilus`` plugin.) You can create share links, and share 
+with internal Nextcloud users the same way as in your Nextcloud Web interface.
 
 .. figure:: images/mac-share.png
    :alt: Sync client integration in Windows Explorer.
    
 Right-click your systray icon, hover over the account you want to use, and 
-left-click "Open folder [folder name] to quickly enter your local ownCloud 
+left-click "Open folder [folder name] to quickly enter your local Nextcloud 
 folder. Right-click the file or folder you want to share to expose the share 
-dialog, and click **Share with ownCloud**.
+dialog, and click **Share with Nextcloud**.
 
 .. figure:: images/share-1.png
    :alt: Sharing from Windows Explorer.
    
-The share dialog has all the same options as your ownCloud Web interface.
+The share dialog has all the same options as your Nextcloud Web interface.
 
 .. figure:: images/share-2.png
    :alt: Share dialog in Windows Explorer.
 
-Use **Share with ownCloud** to see who you have shared with, and to modify 
+Use **Share with Nextcloud** to see who you have shared with, and to modify 
 their permissions, or to delete the share.   
    
 Activity Window
@@ -200,8 +200,8 @@ Server Notifications
 --------------------
 
 Starting with version 2.2.0, the client will display notifications from your 
-ownCloud server that require manual interaction by you. For example, when a 
-user on a remote ownCloud creates a new Federated share for you, you can accept 
+Nextcloud server that require manual interaction by you. For example, when a 
+user on a remote Nextcloud creates a new Federated share for you, you can accept 
 it from your desktop client.
 
 The desktop client automatically checks for available notifications 
@@ -209,10 +209,10 @@ automatically on a regular basis. Notifications are displayed in the Server
 Activity tab, and if you have **Show Desktop Notifications** enabled (General 
 tab) you'll also see a systray notification.
 
-.. figure:: images/client12.png
+.. figure:: images/client-12.png
    :alt: Activity window with notification.
 
-This also displays notifications sent to users by the ownCloud admin via the 
+This also displays notifications sent to users by the Nextcloud admin via the 
 Announcements app.
 
 General Window
@@ -253,7 +253,7 @@ can use the *Ignored Files Editor* (General tab.)
 For your convenience, the editor is pre-populated with a default list of 
 typical 
 ignore patterns. These patterns are contained in a system file (typically 
-``sync-exclude.lst``) located in the ownCloud Client application directory. You 
+``sync-exclude.lst``) located in the Nextcloud Client application directory. You 
 cannot modify these pre-populated patterns directly from the editor. However, 
 if 
 necessary, you can hover over any pattern in the list to show the path and 
@@ -285,7 +285,7 @@ and removed by the client.
 In addition to excluding files and directories that use patterns defined in
 this list:
 
-- The ownCloud Client always excludes files containing characters that cannot
+- The Nextcloud Client always excludes files containing characters that cannot
   be synchronized to other file systems.
 
 - Files are removed that cause individual errors three times during a 

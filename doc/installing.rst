@@ -2,8 +2,8 @@
 Installing the Desktop Synchronization Client
 =============================================
 
-You can download the  latest version of the ownCloud Desktop Synchronization 
-Client from the `ownCloud download page`_. 
+You can download the  latest version of the Nextcloud Desktop Synchronization 
+Client from the `Nextcloud download page`_. 
 There are clients for Linux, Mac OS X, and Microsoft Windows.
 
 Installation on Mac OS X and Windows is the same as for any software 
@@ -29,32 +29,24 @@ System Requirements
 
 - Windows 7+
 - Mac OS X 10.7+ (**64-bit only**)
-- CentOS 6 & 7 (64-bit only)
-- Debian 7.0 & 8.0 & 9.0
-- Fedora 24 & 25 & 26
-- Ubuntu 16.04 & 16.10 & 17.04
-- openSUSE Leap 42.1 & 42.2 & 42.3
-
-.. note::
-   For Linux distributions, we support, if technically feasible, the latest 2 versions per platform and the previous `LTS`_.
 
 Installation Wizard
 -------------------
 
 The installation wizard takes you step-by-step through configuration options and 
-account setup. First you need to enter the URL of your ownCloud server.
+account setup. First you need to enter the URL of your Nextcloud server.
 
 .. image:: images/client-1.png
-   :alt: form for entering ownCloud server URL
+   :alt: form for entering Nextcloud server URL
    
-Enter your ownCloud login on the next screen.
+Enter your Nextcloud login on the next screen.
 
 .. image:: images/client-2.png
-   :alt: form for entering your ownCloud login
+   :alt: form for entering your Nextcloud login
 
 On the Local Folder Option screen you may sync 
-all of your files on the ownCloud server, or select individual folders. The 
-default local sync folder is ``ownCloud``, in your home directory. You may 
+all of your files on the Nextcloud server, or select individual folders. The 
+default local sync folder is ``Nextcloud``, in your home directory. You may 
 change this as well.
 
 .. image:: images/client-3.png
@@ -62,17 +54,17 @@ change this as well.
     them in.
    
 When you have completed selecting your sync folders, click the Connect button 
-at the bottom right. The client will attempt to connect to your ownCloud 
+at the bottom right. The client will attempt to connect to your Nextcloud 
 server, and when it is successful you'll see two buttons: one to connect to 
-your ownCloud Web GUI, and one to open your local folder. It will also start 
+your Nextcloud Web GUI, and one to open your local folder. It will also start 
 synchronizing your files.
 
 .. image:: images/client-4.png
    :alt: A successful server connection, showing a button to connect to your 
-    Web GUI, and one to open your local ownCloud folder
+    Web GUI, and one to open your local Nextcloud folder
 
 Click the Finish button, and you're all done. 
 
 .. Links
    
-.. _ownCloud download page: https://owncloud.com/download/#desktop-clients
+.. _Nextcloud download page: https://nextcloud.com/download/#install-clients

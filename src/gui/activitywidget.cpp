@@ -37,6 +37,7 @@
 #include "servernotificationhandler.h"
 #include "theme.h"
 #include "ocsjob.h"
+#include "configfile.h"
 
 #include "ui_activitywidget.h"
 
@@ -303,6 +304,16 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
                 }
             }
             _guiLoggedNotifications.insert(activity._id);
+
+            // Assemble a tray notification for the NEW notification
+            ConfigFile cfg;
+            if(cfg.optionalServerNotifications()){
+                if(AccountManager::instance()->accounts().count() == 1){
+                    emit guiLog(activity._subject, "");
+                } else {
+                    emit guiLog(activity._subject, activity._accName);
+                }
+            }
         }
     }
 
@@ -339,31 +350,9 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
 
     checkActivityTabVisibility();
 
-    int newGuiLogCount = accNotified.count();
-
-    if (newGuiLogCount > 0) {
+    if (newNotificationShown) {
         // restart the gui log timer now that we show a notification
         _guiLogTimer.start();
-
-        // Assemble a tray notification
-        QString msg = tr("You received %n new notification(s) from %2.", "", accNotified[accNotified.keys().at(0)]).arg(accNotified.keys().at(0));
-
-        if (newGuiLogCount >= 2) {
-            QString acc1 = accNotified.keys().at(0);
-            QString acc2 = accNotified.keys().at(1);
-            if (newGuiLogCount == 2) {
-                int notiCount = accNotified[acc1] + accNotified[acc2];
-                msg = tr("You received %n new notification(s) from %1 and %2.", "", notiCount).arg(acc1, acc2);
-            } else {
-                msg = tr("You received new notifications from %1, %2 and other accounts.").arg(acc1, acc2);
-            }
-        }
-
-        const QString log = tr("%1 Notifications - Action Required").arg(Theme::instance()->appNameGUI());
-        emit guiLog(log, msg);
-    }
-
-    if (newNotificationShown) {
         emit newNotification();
     }
 }
@@ -615,6 +604,7 @@ void ActivitySettings::slotCopyToClipboard()
     }
 
     QApplication::clipboard()->setText(text);
+
     emit guiLog(tr("Copied to clipboard"), message);
 }
 

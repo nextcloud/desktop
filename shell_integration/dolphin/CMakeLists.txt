@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 2.8.12)
 include(FeatureSummary)
 set(QT_MIN_VERSION "5.3.0")
 set(KF5_MIN_VERSION "5.16.0")
+set(KDE_INSTALL_USE_QT_SYS_PATHS ON CACHE BOOL "Install the plugin in the right directory")
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS Core Network)
 

@@ -4,26 +4,25 @@ Glossary
 .. glossary::
    :sorted:
 
-   ownCloud Sync Client
-   ownCloud Client
-     Name of the official ownCloud syncing client for desktop, which runs on
+   Nextcloud Sync Client
+   Nextcloud Client
+     Name of the official Nextcloud syncing client for desktop, which runs on
      Windows, Mac OS X and Linux. It uses the CSync sync engine for 
-     synchronization with the ownCloud server.
+     synchronization with the Nextcloud server.
 
-   ownCloud Server
-     The server counter part of ownCloud Client as provided by the ownCloud
+   Nextcloud Server
+     The server counter part of Nextcloud Client as provided by the Nextcloud
      community.
 
    mtime
    modification time
    file modification time
      File property used to determine whether the servers' or the clients' file
-     is more recent. Standard procedure in oCC 1.0.5 and earlier, used by
-     oCC 1.1 and later only when no sync database exists and files already
+     is more recent. Used only when no sync database exists and files already
      exist in the client directory.
 
    unique id
    ETag
-     ID assigned to every file starting with ownCloud server 4.5 and submitted
+     ID assigned to every file and submitted
      via the HTTP ``Etag``. Used to check if files on client and server have
      changed.
