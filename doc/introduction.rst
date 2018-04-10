@@ -25,3 +25,4 @@ improvements.
   * Add warnings for old server versions
   * Update of QtKeyChain to support Windows credential store
   * Packaging of dolphin overlay icon module for bleeding edge distributions
+
