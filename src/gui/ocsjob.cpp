@@ -106,18 +106,24 @@ bool OcsJob::finished()
     const QByteArray replyData = reply()->readAll();
 
     QJsonParseError error;
+    QString message;
+    int statusCode = 0;
     auto json = QJsonDocument::fromJson(replyData, &error);
+
+    // when it is null we might have a 304 so get status code from reply() and gives a warning...
     if (error.error != QJsonParseError::NoError) {
+        statusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         qCWarning(lcOcs) << "Could not parse reply to"
                          << _verb
                          << Utility::concatUrlPath(account()->url(), path())
                          << _params
                          << error.errorString()
                          << ":" << replyData;
+    } else {
+        statusCode  = getJsonReturnCode(json, message);
     }
 
-    QString message;
-    const int statusCode = getJsonReturnCode(json, message);
+    //... then it checks for the statusCode
     if (!_passStatusCodes.contains(statusCode)) {
         qCWarning(lcOcs) << "Reply to"
                          << _verb
@@ -125,6 +131,7 @@ bool OcsJob::finished()
                          << _params
                          << "has unexpected status code:" << statusCode << replyData;
         emit ocsError(statusCode, message);
+
     } else {
         // save new ETag value
         if(reply()->rawHeaderList().contains("ETag"))
