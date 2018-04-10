@@ -740,57 +740,87 @@ void ownCloudGui::setupActions()
     }
 }
 
+void ownCloudGui::slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode){
+    if(statusCode == 200){
+        qCWarning(lcApplication) << "New navigation apps ETag Response Header received " << value;
+        auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC));
+        account->setNavigationAppsEtagResponseHeader(value);
+    }
+}
+
 void ownCloudGui::fetchNavigationApps(AccountStatePtr account, QMenu *accountMenu){
     OcsNavigationAppsJob *job = new OcsNavigationAppsJob(account->account());
-    job->setProperty(propertyAccountC, QVariant::fromValue(account->account()));
+    job->setProperty(propertyAccountC, QVariant::fromValue(account));
     job->setProperty(propertyMenuC, QVariant::fromValue(accountMenu));
+    job->addRawHeader("If-None-Match", account->navigationAppsEtagResponseHeader());
     connect(job, &OcsNavigationAppsJob::appsJobFinished, this, &ownCloudGui::slotNavigationAppsFetched);
+    connect(job, &OcsNavigationAppsJob::etagResponseHeaderReceived, this, &ownCloudGui::slotEtagResponseHeaderReceived);
     connect(job, &OcsNavigationAppsJob::ocsError, this, &ownCloudGui::slotOcsError);
     job->getNavigationApps();
 }
 
-void ownCloudGui::slotNavigationAppsFetched(const QJsonDocument &reply)
-{
-    if(!reply.isEmpty()){
-        auto element = reply.object().value("ocs").toObject().value("data");
-        auto navLinks = element.toArray();
+void ownCloudGui::buildNavigationAppsMenu(QMenu *accountMenu){
+    QMapIterator<AccountStatePtr, QJsonArray> it(_navApps);
+    while(it.hasNext()){
+
+        //qDebug() << it.key() << it.value();
+
+        auto account = it.key();
+        auto navLinks = it.value();
+
         if(navLinks.size() > 0){
-            if(auto account = qvariant_cast<AccountPtr>(sender()->property(propertyAccountC))){
-                if(QMenu *accountMenu = qvariant_cast<QMenu*>(sender()->property(propertyMenuC))){
 
-                    // when there is only one account add the nav links above the settings
-                    QAction *actionBefore = _actionSettings;
+            // when there is only one account add the nav links above the settings
+            QAction *actionBefore = _actionSettings;
 
-                    // when there is more than one account add the nav links above pause/unpause folder or logout action
-                    if(AccountManager::instance()->accounts().size() > 1){
-                        foreach(QAction *action, accountMenu->actions()){
+            // when there is more than one account add the nav links above pause/unpause folder or logout action
+            if(AccountManager::instance()->accounts().size() > 1){
+                foreach(QAction *action, accountMenu->actions()){
 
-                            // pause/unpause folder and logout actions have propertyAccountC
-                            if(auto actionAccount = qvariant_cast<AccountStatePtr>(action->property(propertyAccountC))){
-                                if(actionAccount->account() == account){
-                                    actionBefore = action;
-                                    break;
-                                }
-                             }
+                    // pause/unpause folder and logout actions have propertyAccountC
+                    if(auto actionAccount = qvariant_cast<AccountStatePtr>(action->property(propertyAccountC))){
+                        if(actionAccount == account){
+                            actionBefore = action;
+                            break;
                         }
                     }
-
-                    // Create submenu with links
-                    QMenu *navLinksMenu = new QMenu(tr("Apps"));
-                    accountMenu->insertSeparator(actionBefore);
-                    accountMenu->insertMenu(actionBefore, navLinksMenu);
-                    foreach (const QJsonValue &value, navLinks) {
-                        auto navLink = value.toObject();
-                        QAction *action = new QAction(navLink.value("name").toString(), this);
-                        QUrl href(navLink.value("href").toString());
-                        connect(action, &QAction::triggered, this, [href] { QDesktopServices::openUrl(href); });
-                        navLinksMenu->addAction(action);
-                    }
-                    accountMenu->insertSeparator(actionBefore);
                 }
             }
+
+            // Create submenu with links
+            QMenu *navLinksMenu = new QMenu(tr("Apps"));
+            accountMenu->insertSeparator(actionBefore);
+            accountMenu->insertMenu(actionBefore, navLinksMenu);
+            foreach (const QJsonValue &value, navLinks) {
+                auto navLink = value.toObject();
+                QAction *action = new QAction(navLink.value("name").toString(), this);
+                QUrl href(navLink.value("href").toString());
+                connect(action, &QAction::triggered, this, [href] { QDesktopServices::openUrl(href); });
+                navLinksMenu->addAction(action);
+            }
+            accountMenu->insertSeparator(actionBefore);
         }
+
+        it.next();
     }
+}
+
+void ownCloudGui::slotNavigationAppsFetched(const QJsonDocument &reply, int statusCode)
+{
+    if (statusCode == 304) {
+        qCWarning(lcApplication) << "Status code " << statusCode << " Not Modified - No new navigation apps.";
+    } else {
+        if(!reply.isEmpty()){
+            auto element = reply.object().value("ocs").toObject().value("data");
+            auto navLinks = element.toArray();
+            if(auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))){
+                _navApps.insert(account, navLinks);
+            }
+         }
+    }
+
+    if(QMenu *accountMenu = qvariant_cast<QMenu*>(sender()->property(propertyMenuC)))
+        buildNavigationAppsMenu(accountMenu);
 }
 
 void ownCloudGui::slotOcsError(int statusCode, const QString &message)
