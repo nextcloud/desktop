@@ -19,6 +19,8 @@
 #include <QThread>
 #include <qmetaobject.h>
 
+#include <zlib.h>
+
 namespace OCC {
 
 static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
@@ -181,18 +183,41 @@ void Logger::setLogDebug(bool debug)
     _logDebug = debug;
 }
 
+static bool compressLog(const QString &originalName, const QString &targetName)
+{
+    QFile original(originalName);
+    if (!original.open(QIODevice::ReadOnly))
+        return false;
+    auto compressed = gzopen(targetName.toUtf8(), "wb");
+    if (!compressed) {
+        return false;
+    }
+
+    while (!original.atEnd()) {
+        auto data = original.read(1024 * 1024);
+        auto written = gzwrite(compressed, data.data(), data.size());
+        if (written != data.size()) {
+            gzclose(compressed);
+            return false;
+        }
+    }
+    gzclose(compressed);
+    return true;
+}
+
 void Logger::enterNextLogFile()
 {
     if (!_logDirectory.isEmpty()) {
+
         QDir dir(_logDirectory);
         if (!dir.exists()) {
             dir.mkpath(".");
         }
 
         // Find out what is the file with the highest number if any
-        QStringList files = dir.entryList(QStringList("owncloud.log.*"),
+        QStringList files = dir.entryList(QStringList("*owncloud.log.*"),
             QDir::Files);
-        QRegExp rx("owncloud.log.(\\d+)");
+        QRegExp rx(R"(.*owncloud\.log\.(\d+).*)");
         uint maxNumber = 0;
         QDateTime now = QDateTime::currentDateTimeUtc();
         foreach (const QString &s, files) {
@@ -207,8 +232,21 @@ void Logger::enterNextLogFile()
             }
         }
 
-        QString filename = _logDirectory + "/owncloud.log." + QString::number(maxNumber + 1);
+        QString filename = _logDirectory + "/"
+            + QDateTime::currentDateTime().toString("yyyyMMdd_HHmm")
+            + "_owncloud.log."
+            + QString::number(maxNumber + 1);
+        auto previousLog = _logFile.fileName();
         setLogFile(filename);
+
+        if (!previousLog.isEmpty()) {
+            QString compressedName = previousLog + ".gz";
+            if (compressLog(previousLog, compressedName)) {
+                QFile::remove(previousLog);
+            } else {
+                QFile::remove(compressedName);
+            }
+        }
     }
 }
 
