@@ -2672,37 +2672,17 @@ It is not advisable to use it.</source>
         <translation>Compartilhar NewDocument.odt</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="206"/>
-        <source>Users can view and download contents.</source>
-        <translation>Usuários podem ver e baixar conteúdos.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="232"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="225"/>
         <source>Upload only (File Drop)</source>
         <translation>Apenas enviar (Deixar um Arquivo)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="238"/>
         <source>Receive files from others without revealing the contents of the folder.</source>
         <translation>Receba arquivos de outros sem revelar o conteúdo da pasta.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="255"/>
-        <source>Read only</source>
-        <translation>Somente leitura</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="262"/>
-        <source>Read &amp;&amp; Write</source>
-        <translation>Ler &amp;&amp; Escrever</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="275"/>
-        <source>Users can view, download, edit and upload contents.</source>
-        <translation>Usuários podem ver, baixar, editar e enviar conteúdos.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="350"/>
+        <location filename="../src/gui/sharelinkwidget.ui" line="343"/>
         <source>TextLabel</source>
         <translation>RótuloTexto</translation>
     </message>
@@ -2732,9 +2712,24 @@ It is not advisable to use it.</source>
         <translation>Configurar senha</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="178"/>
-        <source>Link properties:</source>
-        <translation>Propriedades do linque:</translation>
+        <location filename="../src/gui/sharelinkwidget.ui" line="199"/>
+        <source>Recipients can view or download contents.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="248"/>
+        <source>Download / View</source>
+        <translation>Baixar/Visualizar</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="255"/>
+        <source>Download / View / Upload</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="268"/>
+        <source>Recipients can view, download, edit, delete and upload contents.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="20"/>
