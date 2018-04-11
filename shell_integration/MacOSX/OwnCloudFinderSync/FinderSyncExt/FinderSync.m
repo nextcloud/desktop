@@ -21,7 +21,7 @@
 - (instancetype)init
 {
 	self = [super init];
-
+	
 	FIFinderSyncController *syncController = [FIFinderSyncController defaultController];
 	NSBundle *extBundle = [NSBundle bundleForClass:[self class]];
 	// This was added to the bundle's Info.plist to get it from the build system
@@ -43,7 +43,7 @@
 	[syncController setBadgeImage:sync label:@"Synchronizing" forBadgeIdentifier:@"NEW+SWM"];
 	[syncController setBadgeImage:warning label:@"Ignored" forBadgeIdentifier:@"IGNORE+SWM"];
 	[syncController setBadgeImage:error label:@"Error" forBadgeIdentifier:@"ERROR+SWM"];
-	
+
 	// The Mach port name needs to:
 	// - Be prefixed with the code signing Team ID
 	// - Then infixed with the sandbox App Group
@@ -55,12 +55,12 @@
 	// the sandboxed App Extension needs.
 	// https://developer.apple.com/library/mac/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html#//apple_ref/doc/uid/TP40011183-CH3-SW24
 	NSString *serverName = [socketApiPrefix stringByAppendingString:@".socketApi"];
-	// NSLog(@"FinderSync serverName %@", serverName);
+	//NSLog(@"FinderSync serverName %@", serverName);
 
 	_syncClientProxy = [[SyncClientProxy alloc] initWithDelegate:self serverName:serverName];
 	_registeredDirectories = [[NSMutableSet alloc] init];
 	_strings = [[NSMutableDictionary alloc] init];
-	
+
 	[_syncClientProxy start];
 	return self;
 }
@@ -74,12 +74,26 @@
 		NSLog(@"ERROR: Could not determine file type of %@", [url path]);
 		isDir = NO;
 	}
-	
+
 	NSString* normalizedPath = [[url path] decomposedStringWithCanonicalMapping];
 	[_syncClientProxy askForIcon:normalizedPath isDirectory:isDir];
 }
 
 #pragma mark - Menu and toolbar item support
+
+- (NSString*) selectedPathsSeparatedByRecordSeparator
+{
+	FIFinderSyncController *syncController = [FIFinderSyncController defaultController];
+	NSMutableString *string = [[NSMutableString alloc] init];
+	[syncController.selectedItemURLs enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
+		if (string.length > 0) {
+			[string appendString:@"\x1e"]; // record separator
+		}
+		NSString* normalizedPath = [[obj path] decomposedStringWithCanonicalMapping];
+		[string appendString:normalizedPath];
+	}];
+	return string;
+}
 
 - (NSMenu *)menuForMenuKind:(FIMenuKind)whichMenu
 {
@@ -101,54 +115,43 @@
 		}
 	}];
 
+	NSString *paths = [self selectedPathsSeparatedByRecordSeparator];
+	// calling this IPC calls us back from client with several MENU_ITEM entries and then our askOnSocket returns again
+	[_syncClientProxy askOnSocket:paths query:@"GET_MENU_ITEMS"];
+
 	id contextMenuTitle = [_strings objectForKey:@"CONTEXT_MENU_TITLE"];
-	id shareTitle = [_strings objectForKey:@"SHARE_MENU_TITLE"];
-	id copyLinkTitle = [_strings objectForKey:@"COPY_PRIVATE_LINK_MENU_TITLE"];
-	id emailLinkTitle = [_strings objectForKey:@"EMAIL_PRIVATE_LINK_MENU_TITLE"];
 	if (contextMenuTitle && !onlyRootsSelected) {
-        NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
-        NSMenu *subMenu = [[NSMenu alloc] initWithTitle:@""];
-        NSMenuItem *subMenuItem = [menu addItemWithTitle:contextMenuTitle action:nil keyEquivalent:@""];
-        subMenuItem.submenu = subMenu;
-        subMenuItem.image = [[NSBundle mainBundle] imageForResource:@"app.icns"];
+		NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
+		NSMenu *subMenu = [[NSMenu alloc] initWithTitle:@""];
+		NSMenuItem *subMenuItem = [menu addItemWithTitle:contextMenuTitle action:nil keyEquivalent:@""];
+		subMenuItem.submenu = subMenu;
+		subMenuItem.image = [[NSBundle mainBundle] imageForResource:@"app.icns"];
 
-		[subMenu addItemWithTitle:shareTitle action:@selector(shareMenuAction:) keyEquivalent:@""];
-		[subMenu addItemWithTitle:copyLinkTitle action:@selector(copyLinkMenuAction:) keyEquivalent:@""];
-		[subMenu addItemWithTitle:emailLinkTitle action:@selector(emailLinkMenuAction:) keyEquivalent:@""];
-
+		// There is an annoying bug in macOS (at least 10.13.3), it does not use/copy over the representedObject of a menu item
+		// So we have to use tag instead.
+		int idx = 0;
+		for (NSArray* item in _menuItems) {
+			NSMenuItem *actionItem = [subMenu addItemWithTitle:[item valueForKey:@"text"]
+														action:@selector(subMenuActionClicked:)
+												 keyEquivalent:@""];
+			[actionItem setTag:idx];
+			[actionItem setTarget:self];
+			NSString *flags = [item valueForKey:@"flags"]; // e.g. "d"
+			if ([flags rangeOfString:@"d"].location != NSNotFound) {
+				[actionItem setEnabled:false];
+			}
+			idx++;
+		}
 		return menu;
 	}
 	return nil;
 }
 
-- (IBAction)shareMenuAction:(id)sender
-{
-	NSArray* items = [[FIFinderSyncController defaultController] selectedItemURLs];
-
-	[items enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-		NSString* normalizedPath = [[obj path] decomposedStringWithCanonicalMapping];
-		[_syncClientProxy askOnSocket:normalizedPath query:@"SHARE"];
-	}];
-}
-
-- (IBAction)copyLinkMenuAction:(id)sender
-{
-	NSArray* items = [[FIFinderSyncController defaultController] selectedItemURLs];
-
-	[items enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-		NSString* normalizedPath = [[obj path] decomposedStringWithCanonicalMapping];
-		[_syncClientProxy askOnSocket:normalizedPath query:@"COPY_PRIVATE_LINK"];
-	}];
-}
-
-- (IBAction)emailLinkMenuAction:(id)sender
-{
-	NSArray* items = [[FIFinderSyncController defaultController] selectedItemURLs];
-
-	[items enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-		NSString* normalizedPath = [[obj path] decomposedStringWithCanonicalMapping];
-		[_syncClientProxy askOnSocket:normalizedPath query:@"EMAIL_PRIVATE_LINK"];
-	}];
+- (void)subMenuActionClicked:(id)sender {
+	long idx = [(NSMenuItem*)sender tag];
+	NSString *command = [[_menuItems objectAtIndex:idx] valueForKey:@"command"];
+	NSString *paths = [self selectedPathsSeparatedByRecordSeparator];
+	[_syncClientProxy askOnSocket:paths query:command];
 }
 
 #pragma mark - SyncClientProxyDelegate implementation
@@ -179,6 +182,14 @@
 - (void)setString:(NSString*)key value:(NSString*)value
 {
 	[_strings setObject:value forKey:key];
+}
+
+- (void)resetMenuItems
+{
+	_menuItems = [[NSMutableArray alloc] init];
+}
+- (void)addMenuItem:(NSDictionary *)item {
+	[_menuItems addObject:item];
 }
 
 - (void)connectionDidDie

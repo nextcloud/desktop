@@ -231,6 +231,8 @@ SocketApi::~SocketApi()
 
 void SocketApi::slotNewConnection()
 {
+    // Note that on macOS this is not actually a line-based QIODevice, it's a SocketApiSocket which is our
+    // custom message based macOS IPC.
     QIODevice *socket = _localServer.nextPendingConnection();
 
     if (!socket) {
