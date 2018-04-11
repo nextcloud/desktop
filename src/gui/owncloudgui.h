@@ -123,7 +123,7 @@ private:
     void setupActions();
     void addAccountContextMenu(AccountStatePtr accountState, QMenu *menu, bool separateMenu);
     void fetchNavigationApps(AccountStatePtr account, QMenu *accountMenu);
-    void buildNavigationAppsMenu(QMenu *accountMenu);
+    void buildNavigationAppsMenu(AccountStatePtr account, QMenu *accountMenu);
 
     QPointer<Systray> _tray;
 #if defined(Q_OS_MAC)
