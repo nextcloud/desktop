@@ -2961,41 +2961,41 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="489"/>
+        <location filename="../src/gui/socketapi.cpp" line="498"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Compartilhar com %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="538"/>
+        <location filename="../src/gui/socketapi.cpp" line="547"/>
         <source>I shared something with you</source>
         <translation>Eu compartilhei algo com você</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="551"/>
-        <location filename="../src/gui/socketapi.cpp" line="590"/>
+        <location filename="../src/gui/socketapi.cpp" line="560"/>
+        <location filename="../src/gui/socketapi.cpp" line="599"/>
         <source>Share...</source>
         <translation>Compartilhar...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="553"/>
-        <location filename="../src/gui/socketapi.cpp" line="593"/>
+        <location filename="../src/gui/socketapi.cpp" line="562"/>
+        <location filename="../src/gui/socketapi.cpp" line="602"/>
         <source>Copy private link to clipboard</source>
         <translation>Copie o linque privado para a área de transferência</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="554"/>
-        <location filename="../src/gui/socketapi.cpp" line="592"/>
+        <location filename="../src/gui/socketapi.cpp" line="563"/>
+        <location filename="../src/gui/socketapi.cpp" line="601"/>
         <source>Send private link by email...</source>
         <translation>Envie o linque privado por e-mail...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="588"/>
+        <location filename="../src/gui/socketapi.cpp" line="597"/>
         <source>Resharing this file is not allowed</source>
         <translation>Não é permitido compartilhar novamente este arquivo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="596"/>
+        <location filename="../src/gui/socketapi.cpp" line="605"/>
         <source>Open in browser</source>
         <translation>Abrir no navegador</translation>
     </message>

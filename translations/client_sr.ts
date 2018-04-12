@@ -2953,41 +2953,41 @@ It is not advisable to use it.</source>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="489"/>
+        <location filename="../src/gui/socketapi.cpp" line="498"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Подели са %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="538"/>
+        <location filename="../src/gui/socketapi.cpp" line="547"/>
         <source>I shared something with you</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="551"/>
-        <location filename="../src/gui/socketapi.cpp" line="590"/>
+        <location filename="../src/gui/socketapi.cpp" line="560"/>
+        <location filename="../src/gui/socketapi.cpp" line="599"/>
         <source>Share...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="553"/>
-        <location filename="../src/gui/socketapi.cpp" line="593"/>
+        <location filename="../src/gui/socketapi.cpp" line="562"/>
+        <location filename="../src/gui/socketapi.cpp" line="602"/>
         <source>Copy private link to clipboard</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="554"/>
-        <location filename="../src/gui/socketapi.cpp" line="592"/>
+        <location filename="../src/gui/socketapi.cpp" line="563"/>
+        <location filename="../src/gui/socketapi.cpp" line="601"/>
         <source>Send private link by email...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="588"/>
+        <location filename="../src/gui/socketapi.cpp" line="597"/>
         <source>Resharing this file is not allowed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="596"/>
+        <location filename="../src/gui/socketapi.cpp" line="605"/>
         <source>Open in browser</source>
         <translation>Отвори у прегледачу</translation>
     </message>
