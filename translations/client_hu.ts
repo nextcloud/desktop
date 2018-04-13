@@ -1521,36 +1521,48 @@ A törlésre engedélyezett elemeket törölni fogják, ha megakadályozzák a k
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
+        <source>Permanently save logs</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/logbrowser.cpp" line="103"/>
+        <source>When this option is enabled and no other logging is configured, logs will be written to a temporary folder and expire after a few hours. This setting persists across client restarts.
+
+Logs will be written to %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/logbrowser.cpp" line="115"/>
         <source>Clear</source>
         <translation>Törlés</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="102"/>
+        <location filename="../src/gui/logbrowser.cpp" line="116"/>
         <source>Clear the log display.</source>
         <translation>Törölje a naplózás kimenetét.</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="108"/>
+        <location filename="../src/gui/logbrowser.cpp" line="122"/>
         <source>S&amp;ave</source>
         <translation>Menté&amp;s</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="109"/>
+        <location filename="../src/gui/logbrowser.cpp" line="123"/>
         <source>Save the log file to a file on disk for debugging.</source>
         <translation>A naplófájl mentése a helyi gépre.</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="198"/>
+        <location filename="../src/gui/logbrowser.cpp" line="212"/>
         <source>Save log file</source>
         <translation>Naplófájl mentése</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="208"/>
+        <location filename="../src/gui/logbrowser.cpp" line="222"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location filename="../src/gui/logbrowser.cpp" line="208"/>
+        <location filename="../src/gui/logbrowser.cpp" line="222"/>
         <source>Could not write to log file %1</source>
         <translation>Naplófájl írása nem lehet: %1</translation>
     </message>
@@ -1558,12 +1570,12 @@ A törlésre engedélyezett elemeket törölni fogják, ha megakadályozzák a k
 <context>
     <name>OCC::Logger</name>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="153"/>
+        <location filename="../src/libsync/logger.cpp" line="162"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location filename="../src/libsync/logger.cpp" line="154"/>
+        <location filename="../src/libsync/logger.cpp" line="163"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
         <translation>&lt;nobr&gt;&apos;%1&apos; fájlt&lt;br/&gt;nem lehet írásra megnyitni.&lt;br/&gt;&lt;br/&gt;A naplózás kimenete &lt;b&gt;nem&lt;/b&gt; menthető!&lt;/nobr&gt;</translation>
     </message>
@@ -2956,41 +2968,41 @@ Nem ajánlott használni.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="498"/>
+        <location filename="../src/gui/socketapi.cpp" line="500"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Megosztás vele: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="547"/>
+        <location filename="../src/gui/socketapi.cpp" line="549"/>
         <source>I shared something with you</source>
         <translation>Megosztottam veled valamit</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="560"/>
-        <location filename="../src/gui/socketapi.cpp" line="599"/>
+        <location filename="../src/gui/socketapi.cpp" line="562"/>
+        <location filename="../src/gui/socketapi.cpp" line="601"/>
         <source>Share...</source>
         <translation>Ossza meg ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="562"/>
-        <location filename="../src/gui/socketapi.cpp" line="602"/>
+        <location filename="../src/gui/socketapi.cpp" line="564"/>
+        <location filename="../src/gui/socketapi.cpp" line="604"/>
         <source>Copy private link to clipboard</source>
         <translation>Privát hivatkozás másolás a vágólapra</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="563"/>
-        <location filename="../src/gui/socketapi.cpp" line="601"/>
+        <location filename="../src/gui/socketapi.cpp" line="565"/>
+        <location filename="../src/gui/socketapi.cpp" line="603"/>
         <source>Send private link by email...</source>
         <translation>Privát e-mail küldése: ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="597"/>
+        <location filename="../src/gui/socketapi.cpp" line="599"/>
         <source>Resharing this file is not allowed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="605"/>
+        <location filename="../src/gui/socketapi.cpp" line="607"/>
         <source>Open in browser</source>
         <translation>Megnyitás böngészőben</translation>
     </message>
@@ -3500,243 +3512,243 @@ Nem ajánlott használni.</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="267"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="270"/>
         <source>Please sign in</source>
         <translation>Belépés szükséges</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="313"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="316"/>
         <source>Folder %1: %2</source>
         <translation>Mappa %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="334"/>
         <source>There are no sync folders configured.</source>
         <translation>Nincsenek megadva szinkronizálandó mappák.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="340"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="343"/>
         <source>Open in browser</source>
         <translation>Megnyitás böngészőben</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="389"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="646"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="740"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="392"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="649"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="743"/>
         <source>Log in...</source>
         <translation>Bejelentkezés...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="393"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="638"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="742"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="396"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="641"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="745"/>
         <source>Log out</source>
         <translation>Kilépés</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="462"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="465"/>
         <source>Recent Changes</source>
         <translation>Legutóbbi változások</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="367"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="370"/>
         <source>Managed Folders:</source>
         <translation>Kezelt mappák:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="370"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="373"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>„%1” könyvtár megnyitása</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="342"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="345"/>
         <source>Open %1 in browser</source>
         <translation>%1 megnyitása böngészőben</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="725"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="728"/>
         <source>Unknown status</source>
         <translation>Ismeretlen állapot</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="727"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="730"/>
         <source>Settings...</source>
         <translation>Beállítások...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="729"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="732"/>
         <source>Details...</source>
         <translation>Részletek...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="735"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="738"/>
         <source>Help</source>
         <translation>Súgó</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="737"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="740"/>
         <source>Quit %1</source>
         <translation>%1 kilépés</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="248"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="251"/>
         <source>Disconnected from %1</source>
         <translation>Szétcsatlakozva innen: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="198"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="201"/>
         <source>Unsupported Server Version</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="199"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="202"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="238"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="241"/>
         <source>Disconnected</source>
         <translation>Szétcsatlakozva</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="240"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="243"/>
         <source>Disconnected from some accounts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="251"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="254"/>
         <source>Disconnected from accounts:</source>
         <translation>Szétcsatlakozva a fiókokból: ó</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="253"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="256"/>
         <source>Account %1: %2</source>
         <translation>%1 fiók: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="268"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="271"/>
         <source>Signed out</source>
         <translation>Kijelentkezve</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="272"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="275"/>
         <source>Account synchronization is disabled</source>
         <translation>A fiókszinkronizálás le van tiltva</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="273"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="326"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="276"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="329"/>
         <source>Synchronization is paused</source>
         <translation>A szinkronizálás szünetel</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="321"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="324"/>
         <source>Unresolved conflicts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="328"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
         <source>Error during synchronization</source>
         <translation>Hiba történt egy szinkronizálás közben</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="332"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="335"/>
         <source>No sync folders configured</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="378"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="381"/>
         <source>Unpause all folders</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="383"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="386"/>
         <source>Pause all folders</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="617"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="620"/>
         <source>Unpause all synchronization</source>
         <translation>Szüntesse meg az összes szinkronizálást</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="619"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="622"/>
         <source>Unpause synchronization</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="627"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="630"/>
         <source>Pause all synchronization</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="629"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="632"/>
         <source>Pause synchronization</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="636"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="639"/>
         <source>Log out of all accounts</source>
         <translation>Jelentkezzen ki minden fiókból</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="644"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="647"/>
         <source>Log in to all accounts...</source>
         <translation>Jelentkezzen be az összes fiókba ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="728"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="731"/>
         <source>New account...</source>
         <translation>Új fiók ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="746"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="749"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="762"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="765"/>
         <source>No items synced recently</source>
         <translation>Mostanában nincs szinkronizált elem</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="784"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="787"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="787"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="790"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="802"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="805"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>%1/%2 szinkronizálása (%3 maradt)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="807"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="810"/>
         <source>Syncing %1 of %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="816"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="819"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>%1 szinkronizálása (%2 maradt)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="819"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="822"/>
         <source>Syncing %1</source>
         <translation>%1 szinkronizálása</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="837"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="840"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="323"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="326"/>
         <source>Up to date</source>
         <translation>Naprakész</translation>
     </message>
