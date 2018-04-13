@@ -29,6 +29,7 @@ public:
     enum datarole { ActionIconRole = Qt::UserRole + 1,
         UserIconRole,
         AccountRole,
+        ActionsLinksRole,
         ActionTextRole,
         MessageRole,
         PathRole,

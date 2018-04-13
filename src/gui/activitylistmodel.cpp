@@ -67,11 +67,25 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         }
         return QVariant();
         break;
-    case ActivityItemDelegate::ActionIconRole:
-        return QVariant(); // FIXME once the action can be quantified, display on Icon
+    case ActivityItemDelegate::ActionsLinksRole:{
+        QList<QVariant> customList;
+        foreach (ActivityLink customItem, a._links) {
+            QVariant customVariant;
+            customVariant.setValue(customItem);
+            customList << customVariant;
+        }
+        return customList;
         break;
-    case ActivityItemDelegate::UserIconRole:
-        return QIcon(QLatin1String(":/client/resources/account.png"));
+    }
+//    case ActivityItemDelegate::UserIconRole:
+//        return QIcon(QLatin1String(":/client/resources/account.png"));
+//        break;
+    case ActivityItemDelegate::ActionIconRole:
+        if(a._type == Activity::NotificationType)
+            return QIcon(QLatin1String(":/client/resources/bell.png"));
+        else if(a._type == Activity::ActivityType)
+            return QIcon(QLatin1String(":/client/resources/activity.png"));
+        return QVariant();
         break;
     case Qt::ToolTipRole:
     case ActivityItemDelegate::ActionTextRole:

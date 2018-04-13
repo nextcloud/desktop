@@ -18,6 +18,7 @@
 #include "folderstatusmodel.h"
 #include "folderman.h"
 #include "accountstate.h"
+#include "activitydata.h"
 #include <theme.h>
 #include <account.h>
 
@@ -67,64 +68,105 @@ QSize ActivityItemDelegate::sizeHint(const QStyleOptionViewItem &option,
 void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
     const QModelIndex &index) const
 {
+//  QIcon userIcon = qvariant_cast<QIcon>(index.data(UserIconRole));
+//  QString pathText = qvariant_cast<QString>(index.data(PathRole));
+//  QString remoteLink = qvariant_cast<QString>(index.data(LinkRole));
+//  userIconRect.setLeft(actionIconRect.right() + margin);
+//  userIconRect.setWidth(iconWidth);
+//  userIconRect.setHeight(iconHeight);
+//  userIconRect.setTop(actionIconRect.top());
+//  QRect userIconRect = option.rect;
+//  pm = userIcon.pixmap(iconWidth, iconHeight, QIcon::Normal);
+//  painter->drawPixmap(QPoint(userIconRect.left(), userIconRect.top()), pm);
+
     QStyledItemDelegate::paint(painter, option, index);
-
     QFont font = option.font;
-
     QFontMetrics fm(font);
     int margin = fm.height() / 4;
 
     painter->save();
 
     QIcon actionIcon = qvariant_cast<QIcon>(index.data(ActionIconRole));
-    QIcon userIcon = qvariant_cast<QIcon>(index.data(UserIconRole));
     QString actionText = qvariant_cast<QString>(index.data(ActionTextRole));
+    QList<QVariant> customList = index.data(ActionsLinksRole).toList();
+    QList<ActivityLink> actionLinks;
+    foreach(QVariant customItem, customList){
+        actionLinks << qvariant_cast<ActivityLink>(customItem);
+    }
+    QUrl link = qvariant_cast<QString>(index.data(LinkRole));
     QString messageText = qvariant_cast<QString>(index.data(MessageRole));
-//    QString pathText = qvariant_cast<QString>(index.data(PathRole));
-//    QString remoteLink = qvariant_cast<QString>(index.data(LinkRole));
     QString timeText = qvariant_cast<QString>(index.data(PointInTimeRole));
     QString accountRole = qvariant_cast<QString>(index.data(AccountRole));
     bool accountOnline = qvariant_cast<bool>(index.data(AccountConnectedRole));
 
+    // activity/notification icons
     QRect actionIconRect = option.rect;
-    QRect userIconRect = option.rect;
-
     int iconHeight = qRound(fm.height() / 5.0 * 8.0);
     int iconWidth = iconHeight;
-
     actionIconRect.setLeft(option.rect.left() + margin);
     actionIconRect.setWidth(iconWidth);
     actionIconRect.setHeight(iconHeight);
     actionIconRect.setTop(actionIconRect.top() + margin);
-    userIconRect.setLeft(actionIconRect.right() + margin);
-    userIconRect.setWidth(iconWidth);
-    userIconRect.setHeight(iconHeight);
-    userIconRect.setTop(actionIconRect.top());
 
-    int textTopOffset = qRound((iconHeight - fm.height()) / 2.0);
     // time rect
     QRect timeBox;
+    int textTopOffset = qRound((iconHeight - fm.height()) / 2.0);
     int timeBoxWidth = fm.boundingRect(QLatin1String("4 hour(s) ago on longlongdomain.org")).width(); // FIXME.
     timeBox.setTop(actionIconRect.top() + textTopOffset);
     timeBox.setLeft(option.rect.right() - timeBoxWidth - margin);
     timeBox.setWidth(timeBoxWidth);
     timeBox.setHeight(fm.height());
 
-    // text rect
-    QRect messageTextBox = timeBox;\
-    messageTextBox.setRight(timeBox.left() - margin);
-    messageTextBox.setLeft(messageTextBox.right() - timeBoxWidth);
-
+    // subject text rect
     QRect actionTextBox = timeBox;
-    actionTextBox.setLeft(userIconRect.right() + margin);
+    actionTextBox.setLeft(actionIconRect.right() + margin);
+
+    // message text rect
+    QRect messageTextBox = timeBox;
+    messageTextBox.setRight(timeBox.left() - margin);
+
+    // set position
     actionTextBox.setRight(messageTextBox.left() - margin);
+    // goes more to the left
+    messageTextBox.setLeft(actionTextBox.right() - timeBoxWidth - timeBoxWidth);
+
+    // dismiss button
+    QList<QStyleOptionButton> buttons;
+    foreach (ActivityLink actionLink, actionLinks) {
+        QStyleOptionButton button;
+        button.rect = option.rect;
+
+        int size = buttons.size();
+        int left = messageTextBox.right() - (timeBoxWidth) - margin;
+        if(size > 0)
+            left = (size * buttons.at(size-1).rect.width()) - margin;
+
+        button.rect.setLeft(left);
+        button.rect.setWidth(timeBoxWidth/3);
+        button.text = actionLink._label;
+        buttons.append(button);
+    }
+
+    if(!link.isEmpty()){
+        QStyleOptionButton button;
+        button.rect = option.rect;
+
+        int size = buttons.size();
+        int left = messageTextBox.right() - (timeBoxWidth) - margin;
+        if(size > 0)
+            left = (size * buttons.at(size-1).rect.width()) - margin;
+
+        button.rect.setLeft(left);
+        button.rect.setWidth(timeBoxWidth/2);
+        button.text = tr("More Information");
+        buttons.append(button);
+    }
+
+
 
     /* === start drawing === */
     QPixmap pm = actionIcon.pixmap(iconWidth, iconHeight, QIcon::Normal);
     painter->drawPixmap(QPoint(actionIconRect.left(), actionIconRect.top()), pm);
-
-    pm = userIcon.pixmap(iconWidth, iconHeight, QIcon::Normal);
-    painter->drawPixmap(QPoint(userIconRect.left(), userIconRect.top()), pm);
 
     QPalette::ColorGroup cg = option.state & QStyle::State_Enabled
         ? QPalette::Normal
@@ -143,6 +185,9 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     const QString elidedMessage = fm.elidedText(messageText, Qt::ElideRight, messageTextBox.width());
     painter->drawText(messageTextBox, elidedMessage);
 
+    foreach (QStyleOptionButton button, buttons) {
+        QApplication::style()->drawControl(QStyle::CE_PushButton, &button, painter);
+    }
 
     int atPos = accountRole.indexOf(QLatin1Char('@'));
     if (atPos > -1) {
