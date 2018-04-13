@@ -85,4 +85,6 @@ bool operator<(const Activity &rhs, const Activity &lhs);
 typedef QList<Activity> ActivityList;
 }
 
+Q_DECLARE_METATYPE(OCC::ActivityLink)
+
 #endif // ACTIVITYDATA_H

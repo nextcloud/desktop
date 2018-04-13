@@ -18,6 +18,7 @@
 #include "folderstatusmodel.h"
 #include "folderman.h"
 #include "accountstate.h"
+#include "activitydata.h"
 #include <theme.h>
 #include <account.h>
 
@@ -79,6 +80,11 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     QIcon actionIcon = qvariant_cast<QIcon>(index.data(ActionIconRole));
     QIcon userIcon = qvariant_cast<QIcon>(index.data(UserIconRole));
     QString actionText = qvariant_cast<QString>(index.data(ActionTextRole));
+    QList<QVariant> customList = index.data(ActionsLinksRole).toList();
+    QList<ActivityLink> actionLinks;
+    foreach(QVariant customItem, customList){
+        actionLinks << qvariant_cast<ActivityLink>(customItem);
+    }
     QString messageText = qvariant_cast<QString>(index.data(MessageRole));
 //    QString pathText = qvariant_cast<QString>(index.data(PathRole));
 //    QString remoteLink = qvariant_cast<QString>(index.data(LinkRole));
