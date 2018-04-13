@@ -30,6 +30,7 @@
 // Only possible in later versions, we're not up to date here.
 - (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle
 {
+    Q_UNUSED(bundle)
     qCDebug(OCC::lcUpdater) << "may check: YES";
     return YES;
 }
@@ -37,17 +38,22 @@
 // Sent when a valid update is found by the update driver.
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update
 {
+    Q_UNUSED(updater)
+    Q_UNUSED(update)
 }
 
 // Sent when a valid update is not found.
 // Does not seem to get called ever.
 - (void)updaterDidNotFindUpdate:(SUUpdater *)update
 {
+    Q_UNUSED(update)
 }
 
 // Sent immediately before installing the specified update.
 - (void)updater:(SUUpdater *)updater willInstallUpdate:(SUAppcastItem *)update
 {
+    Q_UNUSED(updater)
+    Q_UNUSED(update)
 }
 
 // Tried implementing those methods, but they never ever seem to get called
