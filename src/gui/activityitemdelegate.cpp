@@ -116,20 +116,23 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     timeBox.setWidth(timeBoxWidth);
     timeBox.setHeight(fm.height());
 
-    // message text rect
-    QRect messageTextBox = timeBox;\
-    messageTextBox.setRight(timeBox.left() - margin);
-    messageTextBox.setLeft(messageTextBox.right() - timeBoxWidth);
-
     // subject text rect
     QRect actionTextBox = timeBox;
     actionTextBox.setLeft(actionIconRect.right() + margin);
+
+    // message text rect
+    QRect messageTextBox = timeBox;
+    messageTextBox.setRight(timeBox.left() - margin);
+
+    // set position
     actionTextBox.setRight(messageTextBox.left() - margin);
+    // goes more to the left
+    messageTextBox.setLeft(actionTextBox.right() - timeBoxWidth - timeBoxWidth);
 
     // dismiss button
     QStyleOptionButton dismissBtn;
     dismissBtn.rect = option.rect;
-    dismissBtn.rect.setLeft(messageTextBox.right() - margin);
+    dismissBtn.rect.setLeft(messageTextBox.right() - timeBoxWidth - margin);
     dismissBtn.rect.setWidth(timeBoxWidth);
     //dismissBtn.rect.setRight(timeBox.left() - margin);
 
