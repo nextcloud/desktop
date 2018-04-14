@@ -77,8 +77,15 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return customList;
         break;
     }
-    case ActivityItemDelegate::UserIconRole:
-        return QIcon(QLatin1String(":/client/resources/account.png"));
+//    case ActivityItemDelegate::UserIconRole:
+//        return QIcon(QLatin1String(":/client/resources/account.png"));
+//        break;
+    case ActivityItemDelegate::ActionIconRole:
+        if(a._type == Activity::NotificationType)
+            return QIcon(QLatin1String(":/client/resources/bell.png"));
+        else if(a._type == Activity::ActivityType)
+            return QIcon(QLatin1String(":/client/resources/activity.png"));
+        return QVariant();
         break;
     case Qt::ToolTipRole:
     case ActivityItemDelegate::ActionTextRole:

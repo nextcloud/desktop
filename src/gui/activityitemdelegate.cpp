@@ -98,33 +98,35 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     QString accountRole = qvariant_cast<QString>(index.data(AccountRole));
     bool accountOnline = qvariant_cast<bool>(index.data(AccountConnectedRole));
 
+    // activity/notification icons
     QRect actionIconRect = option.rect;
     int iconHeight = qRound(fm.height() / 5.0 * 8.0);
     int iconWidth = iconHeight;
-
     actionIconRect.setLeft(option.rect.left() + margin);
     actionIconRect.setWidth(iconWidth);
     actionIconRect.setHeight(iconHeight);
     actionIconRect.setTop(actionIconRect.top() + margin);
 
-    int textTopOffset = qRound((iconHeight - fm.height()) / 2.0);
     // time rect
     QRect timeBox;
+    int textTopOffset = qRound((iconHeight - fm.height()) / 2.0);
     int timeBoxWidth = fm.boundingRect(QLatin1String("4 hour(s) ago on longlongdomain.org")).width(); // FIXME.
     timeBox.setTop(actionIconRect.top() + textTopOffset);
     timeBox.setLeft(option.rect.right() - timeBoxWidth - margin);
     timeBox.setWidth(timeBoxWidth);
     timeBox.setHeight(fm.height());
 
-    // text rect
+    // message text rect
     QRect messageTextBox = timeBox;\
     messageTextBox.setRight(timeBox.left() - margin);
     messageTextBox.setLeft(messageTextBox.right() - timeBoxWidth);
 
+    // subject text rect
     QRect actionTextBox = timeBox;
     actionTextBox.setLeft(actionIconRect.right() + margin);
     actionTextBox.setRight(messageTextBox.left() - margin);
 
+    // dismiss button
     QStyleOptionButton dismissBtn;
     dismissBtn.rect = option.rect;
     dismissBtn.rect.setLeft(messageTextBox.right() - margin);
