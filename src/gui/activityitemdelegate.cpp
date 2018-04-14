@@ -68,17 +68,25 @@ QSize ActivityItemDelegate::sizeHint(const QStyleOptionViewItem &option,
 void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
     const QModelIndex &index) const
 {
+//  QIcon userIcon = qvariant_cast<QIcon>(index.data(UserIconRole));
+//  QString pathText = qvariant_cast<QString>(index.data(PathRole));
+//  QString remoteLink = qvariant_cast<QString>(index.data(LinkRole));
+//  userIconRect.setLeft(actionIconRect.right() + margin);
+//  userIconRect.setWidth(iconWidth);
+//  userIconRect.setHeight(iconHeight);
+//  userIconRect.setTop(actionIconRect.top());
+//  QRect userIconRect = option.rect;
+//  pm = userIcon.pixmap(iconWidth, iconHeight, QIcon::Normal);
+//  painter->drawPixmap(QPoint(userIconRect.left(), userIconRect.top()), pm);
+
     QStyledItemDelegate::paint(painter, option, index);
-
     QFont font = option.font;
-
     QFontMetrics fm(font);
     int margin = fm.height() / 4;
 
     painter->save();
 
     QIcon actionIcon = qvariant_cast<QIcon>(index.data(ActionIconRole));
-    QIcon userIcon = qvariant_cast<QIcon>(index.data(UserIconRole));
     QString actionText = qvariant_cast<QString>(index.data(ActionTextRole));
     QList<QVariant> customList = index.data(ActionsLinksRole).toList();
     QList<ActivityLink> actionLinks;
@@ -86,15 +94,11 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         actionLinks << qvariant_cast<ActivityLink>(customItem);
     }
     QString messageText = qvariant_cast<QString>(index.data(MessageRole));
-//    QString pathText = qvariant_cast<QString>(index.data(PathRole));
-//    QString remoteLink = qvariant_cast<QString>(index.data(LinkRole));
     QString timeText = qvariant_cast<QString>(index.data(PointInTimeRole));
     QString accountRole = qvariant_cast<QString>(index.data(AccountRole));
     bool accountOnline = qvariant_cast<bool>(index.data(AccountConnectedRole));
 
     QRect actionIconRect = option.rect;
-    QRect userIconRect = option.rect;
-
     int iconHeight = qRound(fm.height() / 5.0 * 8.0);
     int iconWidth = iconHeight;
 
@@ -102,10 +106,6 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     actionIconRect.setWidth(iconWidth);
     actionIconRect.setHeight(iconHeight);
     actionIconRect.setTop(actionIconRect.top() + margin);
-    userIconRect.setLeft(actionIconRect.right() + margin);
-    userIconRect.setWidth(iconWidth);
-    userIconRect.setHeight(iconHeight);
-    userIconRect.setTop(actionIconRect.top());
 
     int textTopOffset = qRound((iconHeight - fm.height()) / 2.0);
     // time rect
@@ -122,15 +122,18 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     messageTextBox.setLeft(messageTextBox.right() - timeBoxWidth);
 
     QRect actionTextBox = timeBox;
-    actionTextBox.setLeft(userIconRect.right() + margin);
+    actionTextBox.setLeft(actionIconRect.right() + margin);
     actionTextBox.setRight(messageTextBox.left() - margin);
+
+    QStyleOptionButton dismissBtn;
+    dismissBtn.rect = option.rect;
+    dismissBtn.rect.setLeft(messageTextBox.right() - margin);
+    dismissBtn.rect.setWidth(timeBoxWidth);
+    //dismissBtn.rect.setRight(timeBox.left() - margin);
 
     /* === start drawing === */
     QPixmap pm = actionIcon.pixmap(iconWidth, iconHeight, QIcon::Normal);
     painter->drawPixmap(QPoint(actionIconRect.left(), actionIconRect.top()), pm);
-
-    pm = userIcon.pixmap(iconWidth, iconHeight, QIcon::Normal);
-    painter->drawPixmap(QPoint(userIconRect.left(), userIconRect.top()), pm);
 
     QPalette::ColorGroup cg = option.state & QStyle::State_Enabled
         ? QPalette::Normal
@@ -149,6 +152,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     const QString elidedMessage = fm.elidedText(messageText, Qt::ElideRight, messageTextBox.width());
     painter->drawText(messageTextBox, elidedMessage);
 
+    QApplication::style()->drawControl(QStyle::CE_PushButton, &dismissBtn, painter);
 
     int atPos = accountRole.indexOf(QLatin1Char('@'));
     if (atPos > -1) {
