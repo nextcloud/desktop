@@ -228,6 +228,16 @@ QString Theme::helpUrl() const
     return QString::fromLatin1("https://doc.owncloud.org/desktop/%1.%2/").arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR);
 }
 
+QString Theme::conflictHelpUrl() const
+{
+    auto baseUrl = helpUrl();
+    if (baseUrl.isEmpty())
+        return QString();
+    if (!baseUrl.endsWith('/'))
+        baseUrl.append('/');
+    return baseUrl + QStringLiteral("conflicts.html");
+}
+
 QString Theme::overrideServerUrl() const
 {
     return QString();
@@ -538,6 +548,5 @@ QString Theme::versionSwitchOutput() const
     stream << "Using '" << QSslSocket::sslLibraryVersionString() << "'" << endl;
     return helpText;
 }
-
 
 } // end namespace client
