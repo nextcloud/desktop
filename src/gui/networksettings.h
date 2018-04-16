@@ -44,6 +44,9 @@ private slots:
     /// Red marking of host field if empty and enabled
     void checkEmptyProxyHost();
 
+protected:
+    void showEvent(QShowEvent *event) override;
+
 private:
     void loadProxySettings();
     void loadBWLimitSettings();
