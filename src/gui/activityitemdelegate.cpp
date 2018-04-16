@@ -93,6 +93,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     foreach(QVariant customItem, customList){
         actionLinks << qvariant_cast<ActivityLink>(customItem);
     }
+    QUrl link = qvariant_cast<QString>(index.data(LinkRole));
     QString messageText = qvariant_cast<QString>(index.data(MessageRole));
     QString timeText = qvariant_cast<QString>(index.data(PointInTimeRole));
     QString accountRole = qvariant_cast<QString>(index.data(AccountRole));
@@ -130,11 +131,38 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     messageTextBox.setLeft(actionTextBox.right() - timeBoxWidth - timeBoxWidth);
 
     // dismiss button
-    QStyleOptionButton dismissBtn;
-    dismissBtn.rect = option.rect;
-    dismissBtn.rect.setLeft(messageTextBox.right() - timeBoxWidth - margin);
-    dismissBtn.rect.setWidth(timeBoxWidth);
-    //dismissBtn.rect.setRight(timeBox.left() - margin);
+    QList<QStyleOptionButton> buttons;
+    foreach (ActivityLink actionLink, actionLinks) {
+        QStyleOptionButton button;
+        button.rect = option.rect;
+
+        int size = buttons.size();
+        int left = messageTextBox.right() - (timeBoxWidth) - margin;
+        if(size > 0)
+            left = (size * buttons.at(size-1).rect.width()) - margin;
+
+        button.rect.setLeft(left);
+        button.rect.setWidth(timeBoxWidth/3);
+        button.text = actionLink._label;
+        buttons.append(button);
+    }
+
+    if(!link.isEmpty()){
+        QStyleOptionButton button;
+        button.rect = option.rect;
+
+        int size = buttons.size();
+        int left = messageTextBox.right() - (timeBoxWidth) - margin;
+        if(size > 0)
+            left = (size * buttons.at(size-1).rect.width()) - margin;
+
+        button.rect.setLeft(left);
+        button.rect.setWidth(timeBoxWidth/2);
+        button.text = tr("More Information");
+        buttons.append(button);
+    }
+
+
 
     /* === start drawing === */
     QPixmap pm = actionIcon.pixmap(iconWidth, iconHeight, QIcon::Normal);
@@ -157,7 +185,9 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     const QString elidedMessage = fm.elidedText(messageText, Qt::ElideRight, messageTextBox.width());
     painter->drawText(messageTextBox, elidedMessage);
 
-    QApplication::style()->drawControl(QStyle::CE_PushButton, &dismissBtn, painter);
+    foreach (QStyleOptionButton button, buttons) {
+        QApplication::style()->drawControl(QStyle::CE_PushButton, &button, painter);
+    }
 
     int atPos = accountRole.indexOf(QLatin1Char('@'));
     if (atPos > -1) {
