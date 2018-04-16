@@ -114,10 +114,26 @@ public:
 
     /**
     * URL to documentation.
+    *
     * This is opened in the browser when the "Help" action is selected from the tray menu.
-    * (If it is an empty stringn the action is removed from the menu. Defaults to ownCloud's help)
+    *
+    * If the function is overridden to return an empty string the action is removed from
+    * the menu.
+    *
+    * Defaults to Nextclouds client documentation website.
     */
     virtual QString helpUrl() const;
+
+    /**
+     * The url to use for showing help on conflicts.
+     *
+     * If the function is overridden to return an empty string no help link will be shown.
+     *
+     * Defaults to helpUrl() + "conflicts.html", which is a page in ownCloud's client
+     * documentation website. If helpUrl() is empty, this function will also return the
+     * empty string.
+     */
+    virtual QString conflictHelpUrl() const;
 
     /**
      * Setting a value here will pre-define the server url.
@@ -331,7 +347,6 @@ public:
      * important dependency versions.
      */
     virtual QString versionSwitchOutput() const;
-
 
 protected:
 #ifndef TOKEN_AUTH_ONLY
