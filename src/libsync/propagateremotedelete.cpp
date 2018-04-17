@@ -53,8 +53,7 @@ void DeleteJob::start()
 bool DeleteJob::finished()
 {
     qCInfo(lcDeleteJob) << "DELETE of" << reply()->request().url() << "FINISHED WITH STATUS"
-                        << reply()->error()
-                        << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
+                       << replyStatusString();
 
     emit finishedSignal();
     return true;
