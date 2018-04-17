@@ -657,7 +657,7 @@ void PropagateDownloadFile::slotGetFinished()
                 &propagator()->_anotherSyncNeeded);
         }
 
-        done(status, job->errorString());
+        done(status,_item->_httpErrorCode >= 400 ? job->errorStringParsingBody() : job->errorString());
         return;
     }
 
