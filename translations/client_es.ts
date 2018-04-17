@@ -1336,6 +1336,21 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
     </message>
 </context>
 <context>
+    <name>OCC::GetOrCreatePublicLinkShare</name>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="570"/>
+        <source>Sharing error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="571"/>
+        <source>Could not retrieve or create the public link share. Error:
+
+%1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="100"/>
@@ -1530,14 +1545,14 @@ Los elementos cuya eliminación está permitida serán eliminados si impiden que
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
         <source>Permanently save logs</source>
-        <translation type="unfinished"/>
+        <translation>Guardar registros permanentemente</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="103"/>
         <source>When this option is enabled and no other logging is configured, logs will be written to a temporary folder and expire after a few hours. This setting persists across client restarts.
 
 Logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Cuando esta opción está habilitada y ningún otro registro está configurado, los rergistros serán escritos a una carpeta temporal y caducarán al cabo de unas pocas horas. Esta configuración se mantiene tras reiniciar el cliente. Los registros serán escritos a %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="115"/>
@@ -2638,42 +2653,42 @@ No se recomienda usarla.</translation>
         <translation>Ruta de OwnCloud:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="109"/>
+        <location filename="../src/gui/sharedialog.cpp" line="111"/>
         <source>%1 Sharing</source>
         <translation>%1 Compartiendo</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="84"/>
+        <location filename="../src/gui/sharedialog.cpp" line="86"/>
         <source>%1</source>
         <translation>%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="106"/>
+        <location filename="../src/gui/sharedialog.cpp" line="108"/>
         <source>Folder: %2</source>
         <translation>Carpeta: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="112"/>
+        <location filename="../src/gui/sharedialog.cpp" line="114"/>
         <source>The server does not allow sharing</source>
         <translation>El servidor no permite compartir</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="127"/>
+        <location filename="../src/gui/sharedialog.cpp" line="129"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
         <translation>Descargando el maximo número de permisos compartidos del servidor...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="197"/>
+        <location filename="../src/gui/sharedialog.cpp" line="199"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>El archivo no puede compartirse; ya que fue compartido sin permisos correspondientes.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="211"/>
+        <location filename="../src/gui/sharedialog.cpp" line="213"/>
         <source>Users and Groups</source>
         <translation>Usuarios y Grupos</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="218"/>
+        <location filename="../src/gui/sharedialog.cpp" line="220"/>
         <source>Public Links</source>
         <translation>Enlaces Publicos</translation>
     </message>
@@ -2975,41 +2990,51 @@ No se recomienda usarla.</translation>
 <context>
     <name>OCC::SocketApi</name>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="500"/>
+        <location filename="../src/gui/socketapi.cpp" line="507"/>
         <source>Share with %1</source>
         <comment>parameter is ownCloud</comment>
         <translation>Compartir con %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="549"/>
+        <location filename="../src/gui/socketapi.cpp" line="541"/>
+        <source>Context menu share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="662"/>
         <source>I shared something with you</source>
         <translation>He compartido algo contigo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="562"/>
-        <location filename="../src/gui/socketapi.cpp" line="601"/>
+        <location filename="../src/gui/socketapi.cpp" line="675"/>
+        <location filename="../src/gui/socketapi.cpp" line="705"/>
         <source>Share...</source>
         <translation>Compartir...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="564"/>
-        <location filename="../src/gui/socketapi.cpp" line="604"/>
+        <location filename="../src/gui/socketapi.cpp" line="677"/>
+        <location filename="../src/gui/socketapi.cpp" line="722"/>
         <source>Copy private link to clipboard</source>
         <translation>Copiar enlace privado al portapapeles</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="565"/>
-        <location filename="../src/gui/socketapi.cpp" line="603"/>
+        <location filename="../src/gui/socketapi.cpp" line="678"/>
         <source>Send private link by email...</source>
         <translation>Enviar enlace privado por e-mail...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="599"/>
+        <location filename="../src/gui/socketapi.cpp" line="703"/>
         <source>Resharing this file is not allowed</source>
         <translation>No está permitido volver a compartir este archivo</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="607"/>
+        <location filename="../src/gui/socketapi.cpp" line="716"/>
+        <location filename="../src/gui/socketapi.cpp" line="718"/>
+        <source>Copy public link to clipboard</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/socketapi.cpp" line="772"/>
         <source>Open in browser</source>
         <translation>Abrir en navegador</translation>
     </message>
@@ -3247,48 +3272,48 @@ No se recomienda usarla.</translation>
         <translation>%1 (no realizado por el error anterior, intente de nuevo %2)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="511"/>
+        <location filename="../src/libsync/syncengine.cpp" line="513"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Se ignoran los Archivos/Carpetas ocultos.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="514"/>
+        <location filename="../src/libsync/syncengine.cpp" line="516"/>
         <source>Folder hierarchy is too deep</source>
         <translation>demasiadas subcarpetas anidadas</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="530"/>
+        <location filename="../src/libsync/syncengine.cpp" line="532"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Conflicto: Versión del servidor descargada, La copia local ha sido renombrada pero no se ha podido subir.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="796"/>
+        <location filename="../src/libsync/syncengine.cpp" line="798"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Solo %1 disponible, se necesita por lo menos %2 para comenzar</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="831"/>
+        <location filename="../src/libsync/syncengine.cpp" line="833"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>Imposible abrir o crear la BBDD local de sync. Asegurese de que tiene permisos de escritura en la carpeta de sync.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1345"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1347"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>No permitido porque no tienes permiso para añadir un directorio padre</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1352"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1354"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>No permitido porque no tienes permiso para añadir archivos a ese directorio</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1685"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1687"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Poco espacio libre en disco: La descarga lo reducirá por debajo del %1, deberia abortar.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1692"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1694"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>No hay suficiente espacio libre en el servidor para algunas subidas.</translation>
     </message>
@@ -3348,129 +3373,129 @@ No se recomienda usarla.</translation>
         <translation>Ocurrió un error interno número %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="480"/>
+        <location filename="../src/libsync/syncengine.cpp" line="482"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>No se admiten enlaces simbólicos en la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="483"/>
+        <location filename="../src/libsync/syncengine.cpp" line="485"/>
         <source>File is listed on the ignore list.</source>
         <translation>El fichero está en la lista de ignorados</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="487"/>
+        <location filename="../src/libsync/syncengine.cpp" line="489"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>Los nombres de archivo que terminan con un punto no son compatibles con este sistema de archivos.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="497"/>
+        <location filename="../src/libsync/syncengine.cpp" line="499"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
         <translation>Los nombres de archivo que contengan el caracter &apos;%1&apos;  no son compatibles con este sistema de archivos.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="500"/>
+        <location filename="../src/libsync/syncengine.cpp" line="502"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>El nombre del archivo es una palabra reservada del sistema de archivos.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="505"/>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
         <source>Filename contains trailing spaces.</source>
         <translation>El nombre del archivo contiene espacios finales.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="508"/>
+        <location filename="../src/libsync/syncengine.cpp" line="510"/>
         <source>Filename is too long.</source>
         <translation>El nombre del archivo es demasiado largo.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="517"/>
+        <location filename="../src/libsync/syncengine.cpp" line="519"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>El nombre de archivo no se puede codificar en tu sistema de archivos.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="526"/>
+        <location filename="../src/libsync/syncengine.cpp" line="528"/>
         <source>Unresolved conflict.</source>
         <translation>Conflicto sin resolver.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="534"/>
+        <location filename="../src/libsync/syncengine.cpp" line="536"/>
         <source>Stat failed.</source>
         <translation>Stat ha fallado.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="561"/>
+        <location filename="../src/libsync/syncengine.cpp" line="563"/>
         <source>Filename encoding is not valid</source>
         <translation>Los caracteres del nombre de fichero no son válidos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="726"/>
+        <location filename="../src/libsync/syncengine.cpp" line="728"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>Caracteres inválidos, por favor renombre &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="859"/>
+        <location filename="../src/libsync/syncengine.cpp" line="861"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>No se pudo leer la lista de bloqueo de la base de datos local</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="900"/>
+        <location filename="../src/libsync/syncengine.cpp" line="902"/>
         <source>Unable to read from the sync journal.</source>
         <translation>No se ha podido leer desde el registro de sincronización</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="963"/>
+        <location filename="../src/libsync/syncengine.cpp" line="965"/>
         <source>Cannot open the sync journal</source>
         <translation>No es posible abrir el diario de sincronización</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1029"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1031"/>
         <source>File name contains at least one invalid character</source>
         <translation>Nombre de archivo contiene al menos un caracter no válido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1271"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1311"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1273"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1313"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado porque se encuentra en la lista negra de &quot;elija qué va a sincronizar&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1330"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1332"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>No permitido porque no tienes permiso para añadir subdirectorios a ese directorio</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1377"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1379"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>No está permitido subir este archivo porque es de solo lectura en el servidor, restaurando.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1393"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1412"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1395"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1414"/>
         <source>Not allowed to remove, restoring</source>
         <translation>No está permitido borrar, restaurando.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1426"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1428"/>
         <source>Local files and share folder removed.</source>
         <translation>Se han eliminado los archivos locales y la carpeta compartida.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1480"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1482"/>
         <source>Move not allowed, item restored</source>
         <translation>No está permitido mover, elemento restaurado.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1491"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1493"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>No está permitido mover, porque %1 es de sólo lectura.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1491"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1493"/>
         <source>the destination</source>
         <translation>destino</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1491"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1493"/>
         <source>the source</source>
         <translation>origen</translation>
     </message>
