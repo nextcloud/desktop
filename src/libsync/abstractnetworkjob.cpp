@@ -27,6 +27,7 @@
 #include <QMutex>
 #include <QCoreApplication>
 #include <QAuthenticator>
+#include <QMetaEnum>
 
 #include "networkjobs.h"
 #include "account.h"
@@ -308,6 +309,15 @@ void AbstractNetworkJob::onTimedOut()
     }
 }
 
+QString AbstractNetworkJob::replyStatusString() {
+    Q_ASSERT(reply());
+    if (reply()->error() == QNetworkReply::NoError) {
+        return QLatin1String("OK");
+    } else {
+        QString enumStr = QMetaEnum::fromType<QNetworkReply::NetworkError>().valueToKey(static_cast<int>(reply()->error()));
+        return QStringLiteral("%1 %2").arg(enumStr, errorString());
+    }
+}
 
 NetworkJobTimeoutPauser::NetworkJobTimeoutPauser(QNetworkReply *reply)
 {
