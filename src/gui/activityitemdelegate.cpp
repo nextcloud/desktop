@@ -83,17 +83,11 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     QFont font = option.font;
     QFontMetrics fm(font);
     int margin = fm.height() / 4;
-
     painter->save();
 
     QIcon actionIcon = qvariant_cast<QIcon>(index.data(ActionIconRole));
+    Activity::Type activityType = qvariant_cast<Activity::Type>(index.data(ActionRole));
     QString actionText = qvariant_cast<QString>(index.data(ActionTextRole));
-    QList<QVariant> customList = index.data(ActionsLinksRole).toList();
-    QList<ActivityLink> actionLinks;
-    foreach(QVariant customItem, customList){
-        actionLinks << qvariant_cast<ActivityLink>(customItem);
-    }
-    QUrl link = qvariant_cast<QString>(index.data(LinkRole));
     QString messageText = qvariant_cast<QString>(index.data(MessageRole));
     QString timeText = qvariant_cast<QString>(index.data(PointInTimeRole));
     QString accountRole = qvariant_cast<QString>(index.data(AccountRole));
@@ -110,59 +104,93 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     // time rect
     QRect timeBox;
+    int atPos = accountRole.indexOf(QLatin1Char('@'));
+    if (atPos > -1) {
+        accountRole.remove(0, atPos + 1);
+    }
+    QString timeStr = tr("%1 on %2").arg(timeText, accountRole);
+    if (!accountOnline) timeStr = tr("%1 on %2 (disconnected)").arg(timeText, accountRole);
     int textTopOffset = qRound((iconHeight - fm.height()) / 2.0);
-    int timeBoxWidth = fm.boundingRect(QLatin1String("4 hour(s) ago on longlongdomain.org")).width(); // FIXME.
+    int timeBoxWidth = fm.width(timeStr);
     timeBox.setTop(actionIconRect.top() + textTopOffset);
     timeBox.setLeft(option.rect.right() - timeBoxWidth - margin);
-    timeBox.setWidth(timeBoxWidth);
+    timeBox.setRight(option.rect.right() + margin);
     timeBox.setHeight(fm.height());
 
     // subject text rect
     QRect actionTextBox = timeBox;
+    int actionTextBoxWidth = fm.width(actionText);
     actionTextBox.setLeft(actionIconRect.right() + margin);
+    actionTextBox.setRight(actionTextBox.left() + actionTextBoxWidth + margin);
 
     // message text rect
     QRect messageTextBox = timeBox;
-    messageTextBox.setRight(timeBox.left() - margin);
+    if(!messageText.isEmpty()){
+        int messageTextBoxWidth = fm.width(messageText.prepend(" - "));
+        messageTextBox.setLeft(actionTextBox.right() - margin);
+        messageTextBox.setRight(messageTextBox.left() + messageTextBoxWidth);
+    } else {
+        messageTextBox.setWidth(0);
+    }
 
-    // set position
-    actionTextBox.setRight(messageTextBox.left() - margin);
-    // goes more to the left
-    messageTextBox.setLeft(actionTextBox.right() - timeBoxWidth - timeBoxWidth);
-
-    // dismiss button
+    // Action buttons
+    int buttonsWidth = 0;
     QList<QStyleOptionButton> buttons;
-    foreach (ActivityLink actionLink, actionLinks) {
-        QStyleOptionButton button;
-        button.rect = option.rect;
+    if(activityType == Activity::Type::NotificationType){
+        QList<QVariant> customList = index.data(ActionsLinksRole).toList();
+        QList<ActivityLink> actionLinks;
+        foreach(QVariant customItem, customList){
+            actionLinks << qvariant_cast<ActivityLink>(customItem);
+        }
+        QUrl link = qvariant_cast<QString>(index.data(LinkRole));
 
-        int size = buttons.size();
-        int left = messageTextBox.right() - (timeBoxWidth) - margin;
-        if(size > 0)
-            left = (size * buttons.at(size-1).rect.width()) - margin;
+        int rightMargin = margin * 2;
+        int leftMargin = margin * 4;
+        int right = timeBox.left() - rightMargin;
+        int left = timeBox.left() - leftMargin;
 
-        button.rect.setLeft(left);
-        button.rect.setWidth(timeBoxWidth/3);
-        button.text = actionLink._label;
-        buttons.append(button);
-    }
+        // dismiss button - draw buttons from right to left
+        foreach (ActivityLink actionLink, actionLinks) {
+            QStyleOptionButton button;
+            button.rect = option.rect;
 
-    if(!link.isEmpty()){
-        QStyleOptionButton button;
-        button.rect = option.rect;
+            int size = buttons.size();
+            int btnTextWidth = fm.width(actionLink._label.toAscii());
 
-        int size = buttons.size();
-        int left = messageTextBox.right() - (timeBoxWidth) - margin;
-        if(size > 0)
-            left = (size * buttons.at(size-1).rect.width()) - margin;
+            if(size > 0){
+                right = buttons.at(size-1).rect.left() - rightMargin;
+                left = buttons.at(size-1).rect.left() - leftMargin;
+            }
 
-        button.rect.setLeft(left);
-        button.rect.setWidth(timeBoxWidth/2);
-        button.text = tr("More Information");
-        buttons.append(button);
-    }
+            button.rect.setLeft(left - btnTextWidth);
+            button.rect.setRight(right);
+            button.text = actionLink._label;
+            buttons.append(button);
+            buttonsWidth += button.rect.width();
+        }
 
+        // More information button
 
+        if(!link.isEmpty()){
+            const QString buttonText = tr("More Information");
+            QStyleOptionButton button;
+            button.rect = option.rect;
+
+            int size = buttons.size();
+            int btnTextWidth = fm.width(buttonText);
+
+            if(size > 0){
+                right = buttons.at(size-1).rect.left() - rightMargin;
+                left = buttons.at(size-1).rect.left() - leftMargin;
+            }
+
+            button.rect.setLeft(left - btnTextWidth);
+            button.rect.setRight(right);
+            button.text = buttonText;
+            buttons.append(button);
+            buttonsWidth += button.rect.width();
+        }
+     }
 
     /* === start drawing === */
     QPixmap pm = actionIcon.pixmap(iconWidth, iconHeight, QIcon::Normal);
@@ -179,31 +207,26 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         painter->setPen(option.palette.color(cg, QPalette::Text));
     }
 
-    const QString elidedAction = fm.elidedText(actionText, Qt::ElideRight, actionTextBox.width());
+    int spaceLeftForText = (option.rect.width() - (actionIconRect.width() + buttonsWidth))/4;
+
+    const QString elidedAction = fm.elidedText(actionText, Qt::ElideRight, spaceLeftForText);
     painter->drawText(actionTextBox, elidedAction);
 
-    const QString elidedMessage = fm.elidedText(messageText, Qt::ElideRight, messageTextBox.width());
-    painter->drawText(messageTextBox, elidedMessage);
+    if(!messageText.isEmpty()){
+        const QString elidedMessage = fm.elidedText(messageText, Qt::ElideRight, spaceLeftForText);
+        painter->drawText(messageTextBox, elidedMessage);
+    }
 
     foreach (QStyleOptionButton button, buttons) {
         QApplication::style()->drawControl(QStyle::CE_PushButton, &button, painter);
     }
 
-    int atPos = accountRole.indexOf(QLatin1Char('@'));
-    if (atPos > -1) {
-        accountRole.remove(0, atPos + 1);
-    }
-
-    QString timeStr;
-    if (accountOnline) {
-        timeStr = tr("%1 on %2").arg(timeText, accountRole);
-    } else {
-        timeStr = tr("%1 on %2 (disconnected)").arg(timeText, accountRole);
+    if (!accountOnline) {
         QPalette p = option.palette;
         painter->setPen(p.color(QPalette::Disabled, QPalette::Text));
     }
-    const QString elidedTime = fm.elidedText(timeStr, Qt::ElideRight, timeBox.width());
 
+    const QString elidedTime = fm.elidedText(timeStr, Qt::ElideRight, spaceLeftForText);
     painter->drawText(timeBox, elidedTime);
     painter->restore();
 }
