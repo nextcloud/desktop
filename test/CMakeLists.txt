@@ -55,6 +55,7 @@ nextcloud_add_test(ChunkingNg "syncenginetestutils.h")
 nextcloud_add_test(UploadReset "syncenginetestutils.h")
 nextcloud_add_test(AllFilesDeleted "syncenginetestutils.h")
 nextcloud_add_test(Blacklist "syncenginetestutils.h")
+nextcloud_add_test(LocalDiscovery "syncenginetestutils.h")
 nextcloud_add_test(FolderWatcher "${FolderWatcher_SRC}")
 
 if( UNIX AND NOT APPLE )
