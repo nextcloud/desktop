@@ -47,6 +47,7 @@ set(libsync_SRCS
     syncfileitem.cpp
     syncfilestatus.cpp
     syncfilestatustracker.cpp
+    localdiscoverytracker.cpp
     syncresult.cpp
     theme.cpp
     creds/dummycredentials.cpp

@@ -39,6 +39,7 @@ class SyncEngine;
 class AccountState;
 class SyncRunFileLog;
 class FolderWatcher;
+class LocalDiscoveryTracker;
 
 /**
  * @brief The FolderDefinition class
@@ -399,20 +400,9 @@ private:
     QScopedPointer<FolderWatcher> _folderWatcher;
 
     /**
-     * The paths that should be checked by the next local discovery.
-     *
-     * Mostly a collection of files the filewatchers have reported as touched.
-     * Also includes files that have had errors in the last sync run.
+     * Keeps track of locally dirty files so we can skip local discovery sometimes.
      */
-    std::set<QByteArray> _localDiscoveryPaths;
-
-    /**
-     * The paths that the current sync run used for local discovery.
-     *
-     * For failing syncs, this list will be merged into _localDiscoveryPaths
-     * again when the sync is done to make sure everything is retried.
-     */
-    std::set<QByteArray> _previousLocalDiscoveryPaths;
+    QScopedPointer<LocalDiscoveryTracker> _localDiscoveryTracker;
 };
 }
 
