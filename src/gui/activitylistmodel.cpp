@@ -87,6 +87,12 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             return QIcon(QLatin1String(":/client/resources/activity.png"));
         return QVariant();
         break;
+    case ActivityItemDelegate::ActionRole:{
+        QVariant type;
+        type.setValue(a._type);
+        return type;
+        break;
+    }
     case Qt::ToolTipRole:
     case ActivityItemDelegate::ActionTextRole:
         return a._subject;
