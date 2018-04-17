@@ -87,13 +87,8 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     painter->save();
 
     QIcon actionIcon = qvariant_cast<QIcon>(index.data(ActionIconRole));
+    Activity::Type activityType = qvariant_cast<Activity::Type>(index.data(ActionRole));
     QString actionText = qvariant_cast<QString>(index.data(ActionTextRole));
-    QList<QVariant> customList = index.data(ActionsLinksRole).toList();
-    QList<ActivityLink> actionLinks;
-    foreach(QVariant customItem, customList){
-        actionLinks << qvariant_cast<ActivityLink>(customItem);
-    }
-    QUrl link = qvariant_cast<QString>(index.data(LinkRole));
     QString messageText = qvariant_cast<QString>(index.data(MessageRole));
     QString timeText = qvariant_cast<QString>(index.data(PointInTimeRole));
     QString accountRole = qvariant_cast<QString>(index.data(AccountRole));
@@ -130,39 +125,44 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     // goes more to the left
     messageTextBox.setLeft(actionTextBox.right() - timeBoxWidth - timeBoxWidth);
 
-    // dismiss button
+    // Actions
     QList<QStyleOptionButton> buttons;
-    foreach (ActivityLink actionLink, actionLinks) {
-        QStyleOptionButton button;
-        button.rect = option.rect;
+    if(activityType == Activity::Type::NotificationType){
+        QList<QVariant> customList = index.data(ActionsLinksRole).toList();
+        QList<ActivityLink> actionLinks;
+        foreach(QVariant customItem, customList){
+            actionLinks << qvariant_cast<ActivityLink>(customItem);
+        }
+        QUrl link = qvariant_cast<QString>(index.data(LinkRole));
 
-        int size = buttons.size();
-        int left = messageTextBox.right() - (timeBoxWidth) - margin;
-        if(size > 0)
-            left = (size * buttons.at(size-1).rect.width()) - margin;
+        // More information button
+        if(!link.isEmpty()){
+            QStyleOptionButton button;
+            button.rect = option.rect;
+            int right = messageText.isEmpty()? actionTextBox.right() : messageTextBox.right();
+            int left = right + margin - (timeBoxWidth*2);
+            button.rect.setLeft(left);
+            button.rect.setWidth(timeBoxWidth/1.5);
+            button.text = tr("More Information");
+            buttons.append(button);
+        }
 
-        button.rect.setLeft(left);
-        button.rect.setWidth(timeBoxWidth/3);
-        button.text = actionLink._label;
-        buttons.append(button);
-    }
+        // dismiss button
+        foreach (ActivityLink actionLink, actionLinks) {
+            QStyleOptionButton button;
+            button.rect = option.rect;
 
-    if(!link.isEmpty()){
-        QStyleOptionButton button;
-        button.rect = option.rect;
+            int size = buttons.size();
+            int left = buttons.at(size-1).rect.right() + margin;
 
-        int size = buttons.size();
-        int left = messageTextBox.right() - (timeBoxWidth) - margin;
-        if(size > 0)
-            left = (size * buttons.at(size-1).rect.width()) - margin;
+            button.rect.setLeft(left);
+            button.rect.setWidth(timeBoxWidth/3);
+            button.text = actionLink._label;
+            buttons.append(button);
+        }
 
-        button.rect.setLeft(left);
-        button.rect.setWidth(timeBoxWidth/2);
-        button.text = tr("More Information");
-        buttons.append(button);
-    }
-
-
+        qDebug() << "Buttons!" << buttons;
+     }
 
     /* === start drawing === */
     QPixmap pm = actionIcon.pixmap(iconWidth, iconHeight, QIcon::Normal);
@@ -203,8 +203,8 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         painter->setPen(p.color(QPalette::Disabled, QPalette::Text));
     }
     const QString elidedTime = fm.elidedText(timeStr, Qt::ElideRight, timeBox.width());
-
     painter->drawText(timeBox, elidedTime);
+
     painter->restore();
 }
 
