@@ -715,8 +715,8 @@ class FakeErrorReply : public QNetworkReply
     Q_OBJECT
 public:
     FakeErrorReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request,
-                   QObject *parent, int httpErrorCode)
-    : QNetworkReply{parent}, _httpErrorCode(httpErrorCode) {
+                   QObject *parent, int httpErrorCode, const QByteArray &body = QByteArray())
+    : QNetworkReply{parent}, _httpErrorCode(httpErrorCode), _body(body) {
         setRequest(request);
         setUrl(request.url());
         setOperation(op);
@@ -732,9 +732,15 @@ public:
     }
 
     void abort() override { }
-    qint64 readData(char *, qint64) override { return 0; }
+    qint64 readData(char *buf, qint64 max) override {
+        max = qMin<qint64>(max, _body.size());
+        memcpy(buf, _body.constData(), max);
+        _body = _body.mid(max);
+        return max;
+    }
 
     int _httpErrorCode;
+    QByteArray _body;
 };
 
 // A reply that never responds

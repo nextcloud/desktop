@@ -88,6 +88,34 @@ private slots:
         QCOMPARE(ranges, QByteArray("bytes=" + QByteArray::number(stopAfter) + "-"));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void testErrorMessage () {
+        // This test's main goal is to test that the error string from the server is shown in the UI
+
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        auto size = 3'500'000;
+        fakeFolder.remoteModifier().insert("A/broken", size);
+
+        QByteArray serverMessage = "The file was not downloaded because the tests wants so!";
+
+        // First, download only the first 3 MB of the file
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith("A/broken")) {
+                return new FakeErrorReply(op, request, this, 400,
+                    "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                    "<d:error xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\">\n"
+                    "<s:exception>Sabre\\DAV\\Exception\\Forbidden</s:exception>\n"
+                    "<s:message>"+serverMessage+"</s:message>\n"
+                    "</d:error>");
+            }
+            return nullptr;
+        });
+
+        QVERIFY(!fakeFolder.syncOnce());  // Fail because A/broken
+        QCOMPARE(getItem(completeSpy, "A/broken")->_status, SyncFileItem::NormalError);
+        QVERIFY(getItem(completeSpy, "A/broken")->_errorString.contains(serverMessage));
+    }
 };
 
 QTEST_GUILESS_MAIN(TestDownload)
