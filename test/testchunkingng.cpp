@@ -64,8 +64,8 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.count(), 2); // the transfer was done with chunking
     }
 
-
-    void testResume () {
+    // Test resuming when there's a confusing chunk added
+    void testResume1() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
         const int size = 300 * 1000 * 1000; // 300 MB
@@ -76,13 +76,15 @@ private slots:
         quint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](quint64 s, const FileInfo &f) { return s + f.size; });
         QVERIFY(uploadedSize > 50 * 1000 * 1000); // at least 50 MB
 
-        // Add a fake file to make sure it gets deleted
+        // Add a fake chunk to make sure it gets deleted
         fakeFolder.uploadState().children.first().insert("10000", size);
 
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (op == QNetworkAccessManager::PutOperation) {
                 // Test that we properly resuming and are not sending past data again.
                 Q_ASSERT(request.rawHeader("OC-Chunk-Offset").toULongLong() >= uploadedSize);
+            } else if (op == QNetworkAccessManager::DeleteOperation) {
+                Q_ASSERT(request.url().path().endsWith("/10000"));
             }
             return nullptr;
         });
@@ -94,6 +96,134 @@ private slots:
         // The same chunk id was re-used
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         QCOMPARE(fakeFolder.uploadState().children.first().name, chunkingId);
+    }
+
+    // Test resuming when one of the uploaded chunks got removed
+    void testResume2() {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+
+        // Reduce max chunk size a bit so we get more chunks
+        SyncOptions options;
+        options._maxChunkSize = 30 * 1000 * 1000;
+        fakeFolder.syncEngine().setSyncOptions(options);
+
+        const int size = 300 * 1000 * 1000; // 300 MB
+        partialUpload(fakeFolder, "A/a0", size);
+        QCOMPARE(fakeFolder.uploadState().children.count(), 1);
+        auto chunkingId = fakeFolder.uploadState().children.first().name;
+        const auto &chunkMap = fakeFolder.uploadState().children.first().children;
+        quint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](quint64 s, const FileInfo &f) { return s + f.size; });
+        QVERIFY(uploadedSize > 50 * 1000 * 1000); // at least 50 MB
+        QVERIFY(chunkMap.size() >= 3); // at least three chunks
+
+        QStringList chunksToDelete;
+
+        // Remove the second chunk, so all further chunks will be deleted and resent
+        auto firstChunk = chunkMap.first();
+        auto secondChunk = *(chunkMap.begin() + 1);
+        for (const auto& name : chunkMap.keys().mid(2)) {
+            chunksToDelete.append(name);
+        }
+        fakeFolder.uploadState().children.first().remove(secondChunk.name);
+
+        QStringList deletedPaths;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation) {
+                // Test that we properly resuming, not resending the first chunk
+                Q_ASSERT(request.rawHeader("OC-Chunk-Offset").toLongLong() >= firstChunk.size);
+            } else if (op == QNetworkAccessManager::DeleteOperation) {
+                deletedPaths.append(request.url().path());
+            }
+            return nullptr;
+        });
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        for (const auto& toDelete : chunksToDelete) {
+            bool wasDeleted = false;
+            for (const auto& deleted : deletedPaths) {
+                if (deleted.mid(deleted.lastIndexOf('/') + 1) == toDelete) {
+                    wasDeleted = true;
+                    break;
+                }
+            }
+            QVERIFY(wasDeleted);
+        }
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size);
+        // The same chunk id was re-used
+        QCOMPARE(fakeFolder.uploadState().children.count(), 1);
+        QCOMPARE(fakeFolder.uploadState().children.first().name, chunkingId);
+    }
+
+    // Test resuming when all chunks are already present
+    void testResume3() {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        const int size = 300 * 1000 * 1000; // 300 MB
+        partialUpload(fakeFolder, "A/a0", size);
+        QCOMPARE(fakeFolder.uploadState().children.count(), 1);
+        auto chunkingId = fakeFolder.uploadState().children.first().name;
+        const auto &chunkMap = fakeFolder.uploadState().children.first().children;
+        quint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](quint64 s, const FileInfo &f) { return s + f.size; });
+        QVERIFY(uploadedSize > 50 * 1000 * 1000); // at least 50 MB
+
+        // Add a chunk that makes the file completely uploaded
+        fakeFolder.uploadState().children.first().insert(
+            QString::number(chunkMap.size()).rightJustified(8, '0'), size - uploadedSize);
+
+        bool sawPut = false;
+        bool sawDelete = false;
+        bool sawMove = false;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation) {
+                sawPut = true;
+            } else if (op == QNetworkAccessManager::DeleteOperation) {
+                sawDelete = true;
+            } else if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
+                sawMove = true;
+            }
+            return nullptr;
+        });
+
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(sawMove);
+        QVERIFY(!sawPut);
+        QVERIFY(!sawDelete);
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size);
+        // The same chunk id was re-used
+        QCOMPARE(fakeFolder.uploadState().children.count(), 1);
+        QCOMPARE(fakeFolder.uploadState().children.first().name, chunkingId);
+    }
+
+    // Test resuming (or rather not resuming!) for the error case of the sum of
+    // chunk sizes being larger than the file size
+    void testResume4() {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
+        const int size = 300 * 1000 * 1000; // 300 MB
+        partialUpload(fakeFolder, "A/a0", size);
+        QCOMPARE(fakeFolder.uploadState().children.count(), 1);
+        auto chunkingId = fakeFolder.uploadState().children.first().name;
+        const auto &chunkMap = fakeFolder.uploadState().children.first().children;
+        quint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](quint64 s, const FileInfo &f) { return s + f.size; });
+        QVERIFY(uploadedSize > 50 * 1000 * 1000); // at least 50 MB
+
+        // Add a chunk that makes the file more than completely uploaded
+        fakeFolder.uploadState().children.first().insert(
+            QString::number(chunkMap.size()).rightJustified(8, '0'), size - uploadedSize + 100);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size);
+        // Used a new transfer id but wiped the old one
+        QCOMPARE(fakeFolder.uploadState().children.count(), 1);
+        QVERIFY(fakeFolder.uploadState().children.first().name != chunkingId);
     }
 
     // Check what happens when we abort during the final MOVE and the
