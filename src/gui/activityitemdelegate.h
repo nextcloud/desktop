@@ -31,6 +31,7 @@ public:
         AccountRole,
         ActionsLinksRole,
         ActionTextRole,
+        ActionRole,
         MessageRole,
         PathRole,
         LinkRole,
