@@ -102,7 +102,7 @@ void SyncRunFileLog::start(const QString &folderPath)
 
     int length = folderPath.split(QString(QDir::separator())).length();
     const QString filename = foldername + QString(QDir::separator())  ///
-          +"." + folderPath.split(QString(QDir::separator())).at(length - 2) + QLatin1String("_sync.log");
+          + folderPath.split(QString(QDir::separator())).at(length - 2) + QLatin1String("_sync.log");
 
     // When the file is too big, just rename it to an old name.
     QFileInfo info(filename);
