@@ -196,8 +196,8 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
     combineActivityLists();
 }
 
-void ActivityListModel::addToActivityList(ActivityList list) {
-    _notificationLists.append(list);
+void ActivityListModel::addToActivityList(Activity activity) {
+    _notificationLists.prepend(activity);
     combineActivityLists();
 }
 
@@ -205,10 +205,11 @@ void ActivityListModel::combineActivityLists()
 {
     ActivityList resultList;
 
+    std::sort(_notificationLists.begin(), _notificationLists.end());
     resultList.append(_notificationLists);
-    resultList.append(_activityLists);
 
-    std::sort(resultList.begin(), resultList.end());
+    std::sort(_activityLists.begin(), _activityLists.end());
+    resultList.append(_activityLists);
 
     beginResetModel();
     _finalList.clear();
