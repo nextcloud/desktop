@@ -45,10 +45,9 @@ private slots:
         fakeFolder.localModifier().insert("A/Y/y2");
         fakeFolder.localModifier().insert("B/b3");
         fakeFolder.remoteModifier().insert("C/c3");
-
         tracker.addTouchedPath("A/X");
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, tracker.localDiscoveryPaths());
 
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, tracker.localDiscoveryPaths());
         tracker.startSyncPartialDiscovery();
         QVERIFY(fakeFolder.syncOnce());
 
@@ -96,6 +95,59 @@ private slots:
             {});
 
         QVERIFY(!engine.shouldDiscoverLocally(""));
+    }
+
+    // Check whether item success and item failure adjusts the
+    // tracker correctly.
+    void testTrackerItemCompletion()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+
+        LocalDiscoveryTracker tracker;
+        connect(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted, &tracker, &LocalDiscoveryTracker::slotItemCompleted);
+        connect(&fakeFolder.syncEngine(), &SyncEngine::finished, &tracker, &LocalDiscoveryTracker::slotSyncFinished);
+        auto trackerContains = [&](const char *path) {
+            return tracker.localDiscoveryPaths().find(path) != tracker.localDiscoveryPaths().end();
+        };
+
+        tracker.addTouchedPath("A/spurious");
+
+        fakeFolder.localModifier().insert("A/a3");
+        tracker.addTouchedPath("A/a3");
+
+        fakeFolder.localModifier().insert("A/a4");
+        fakeFolder.serverErrorPaths().append("A/a4");
+        // We're not adding a4 as touched, it's in the same folder as a3 and will be seen.
+        // And due to the error it should be added to the explicit list while a3 gets removed.
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, tracker.localDiscoveryPaths());
+        tracker.startSyncPartialDiscovery();
+        QVERIFY(!fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.currentRemoteState().find("A/a3"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("A/a4"));
+        QVERIFY(!trackerContains("A/a3"));
+        QVERIFY(trackerContains("A/a4"));
+        QVERIFY(trackerContains("A/spurious")); // not removed since overall sync not successful
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
+        tracker.startSyncFullDiscovery();
+        QVERIFY(!fakeFolder.syncOnce());
+
+        QVERIFY(!fakeFolder.currentRemoteState().find("A/a4"));
+        QVERIFY(trackerContains("A/a4")); // had an error, still here
+        QVERIFY(!trackerContains("A/spurious")); // removed due to full discovery
+
+        fakeFolder.serverErrorPaths().clear();
+        fakeFolder.syncJournal().wipeErrorBlacklist();
+        tracker.addTouchedPath("A/newspurious"); // will be removed due to successful sync
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, tracker.localDiscoveryPaths());
+        tracker.startSyncPartialDiscovery();
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.currentRemoteState().find("A/a4"));
+        QVERIFY(tracker.localDiscoveryPaths().empty());
     }
 };
 
