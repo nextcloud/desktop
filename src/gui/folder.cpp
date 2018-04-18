@@ -501,6 +501,26 @@ void Folder::slotWatchedPathChanged(const QString &path)
     scheduleThisFolderSoon();
 }
 
+void Folder::downloadPlaceholder(const QString &_relativepath)
+{
+    qCInfo(lcFolder) << "Download placeholder: " << _relativepath;
+    auto relativepath = _relativepath.toUtf8();
+
+    // Set in the database that we should download the file
+    SyncJournalFileRecord record;
+    _journal.getFileRecord(relativepath, &record);
+    if (!record.isValid())
+        return;
+    record._type = ItemTypePlaceholderDownload;
+    _journal.setFileRecord(record);
+
+    // Make sure we go over that file during the discovery
+    _journal.avoidReadFromDbOnNextSync(relativepath);
+
+    // Schedule a sync (Folder man will start the sync in a few ms)
+    slotScheduleThisFolder();
+}
+
 void Folder::saveToSettings() const
 {
     // Remove first to make sure we don't get duplicates
@@ -684,6 +704,8 @@ void Folder::setSyncOptions()
     opt._newBigFolderSizeLimit = newFolderLimit.first ? newFolderLimit.second * 1000LL * 1000LL : -1; // convert from MB to B
     opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
     opt._moveFilesToTrash = cfgFile.moveToTrash();
+    opt._newFilesArePlaceholders = _definition.usePlaceholders;
+    opt._placeholderSuffix = QStringLiteral(APPLICATION_DOTPLACEHOLDER_SUFFIX);
 
     QByteArray chunkSizeEnv = qgetenv("OWNCLOUD_CHUNK_SIZE");
     if (!chunkSizeEnv.isEmpty()) {
@@ -1106,6 +1128,7 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
     settings.setValue(QLatin1String("targetPath"), folder.targetPath);
     settings.setValue(QLatin1String("paused"), folder.paused);
     settings.setValue(QLatin1String("ignoreHiddenFiles"), folder.ignoreHiddenFiles);
+    settings.setValue(QLatin1String("usePlaceholders"), folder.usePlaceholders);
 
     // Happens only on Windows when the explorer integration is enabled.
     if (!folder.navigationPaneClsid.isNull())
@@ -1126,6 +1149,7 @@ bool FolderDefinition::load(QSettings &settings, const QString &alias,
     folder->paused = settings.value(QLatin1String("paused")).toBool();
     folder->ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), QVariant(true)).toBool();
     folder->navigationPaneClsid = settings.value(QLatin1String("navigationPaneClsid")).toUuid();
+    folder->usePlaceholders = settings.value(QLatin1String("usePlaceholders")).toBool();
     settings.endGroup();
 
     // Old settings can contain paths with native separators. In the rest of the

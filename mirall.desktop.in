@@ -8,77 +8,7 @@ GenericName=Folder Sync
 Icon=@APPLICATION_EXECUTABLE@
 Keywords=@APPLICATION_NAME@;syncing;file;sharing;
 X-GNOME-Autostart-Delay=3
-
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
+MimeType=application/x-@APPLICATION_EXECUTABLE@
 
 # Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client

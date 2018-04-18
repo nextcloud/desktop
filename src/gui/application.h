@@ -72,6 +72,11 @@ public slots:
     // TODO: this should not be public
     void slotownCloudWizardDone(int);
     void slotCrash();
+    /**
+     * Will download a placeholder file, and open the result.
+     * The argument is the filename of the placeholder file (including the extension)
+     */
+    void openPlaceholder(const QString &filename);
 
 protected:
     void parseOptions(const QStringList &);

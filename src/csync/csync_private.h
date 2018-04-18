@@ -196,6 +196,16 @@ struct OCSYNC_EXPORT csync_s {
 
   bool upload_conflict_files = false;
 
+  /**
+   * Whether new remote files should start out as placeholders.
+   */
+  bool new_files_are_placeholders = false;
+
+  /**
+   * The suffix to use for placeholder files.
+   */
+  QByteArray placeholder_suffix;
+
   csync_s(const char *localUri, OCC::SyncJournalDb *statedb);
   ~csync_s();
   int reinitialize();

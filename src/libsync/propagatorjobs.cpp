@@ -116,7 +116,6 @@ void PropagateLocalRemove::start()
         return;
 
     QString filename = propagator()->_localDir + _item->_file;
-
     qCDebug(lcPropagateLocalRemove) << filename;
 
     if (propagator()->localFileNameClash(_item->_file)) {

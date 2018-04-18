@@ -92,6 +92,9 @@ public:
     bool automaticLogDir() const;
     void setAutomaticLogDir(bool enabled);
 
+    // Whether experimental UI options should be shown
+    bool showExperimentalOptions() const;
+
     // proxy settings
     void setProxyType(int proxyType,
         const QString &host = QString(),

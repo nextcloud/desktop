@@ -656,6 +656,22 @@ void SocketApi::copyUrlToClipboard(const QString &link)
     QApplication::clipboard()->setText(link);
 }
 
+void SocketApi::command_DOWNLOAD_PLACEHOLDER(const QString &filesArg, SocketListener *)
+{
+    QStringList files = filesArg.split(QLatin1Char('\x1e')); // Record Separator
+    auto placeholderSuffix = QStringLiteral(APPLICATION_DOTPLACEHOLDER_SUFFIX);
+
+    for (const auto &file : files) {
+        if (!file.endsWith(placeholderSuffix))
+            continue;
+        QString relativePath;
+        auto folder = FolderMan::instance()->folderForPath(file, &relativePath);
+        if (folder) {
+            folder->downloadPlaceholder(relativePath);
+        }
+    }
+}
+
 void SocketApi::emailPrivateLink(const QString &link)
 {
     Utility::openEmailComposer(
@@ -734,11 +750,10 @@ SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
     if (data.localPath.endsWith(QLatin1Char('/')))
         data.localPath.chop(1);
 
-    data.folder = FolderMan::instance()->folderForPath(data.localPath);
+    data.folder = FolderMan::instance()->folderForPath(data.localPath, &data.folderRelativePath);
     if (!data.folder)
         return data;
 
-    data.folderRelativePath = data.localPath.mid(data.folder->cleanPath().length() + 1);
     data.accountRelativePath = QDir(data.folder->remotePath()).filePath(data.folderRelativePath);
 
     return data;
@@ -763,14 +778,47 @@ SyncJournalFileRecord SocketApi::FileData::journalRecord() const
 void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListener *listener)
 {
     listener->sendMessage(QString("GET_MENU_ITEMS:BEGIN"));
-    bool hasSeveralFiles = argument.contains(QLatin1Char('\x1e')); // Record Separator
-    FileData fileData = hasSeveralFiles ? FileData{} : FileData::get(argument);
-    bool isOnTheServer = fileData.journalRecord().isValid();
-    auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
-    if (fileData.folder && fileData.folder->accountState()->isConnected()) {
-        sendSharingContextMenuOptions(fileData, listener);
-        listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
+    QStringList files = argument.split(QLatin1Char('\x1e')); // Record Separator
+
+    // Find the common sync folder.
+    // syncFolder will be null if files are in different folders.
+    Folder *folder = nullptr;
+    for (const auto &file : files) {
+        auto f = FolderMan::instance()->folderForPath(file);
+        if (f != folder) {
+            if (!folder) {
+                folder = f;
+            } else {
+                folder = nullptr;
+                break;
+            }
+        }
     }
+
+    // Some options only show for single files
+    if (files.size() == 1) {
+        FileData fileData = FileData::get(files.first());
+        bool isOnTheServer = fileData.journalRecord().isValid();
+        auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
+
+        if (fileData.folder && fileData.folder->accountState()->isConnected()) {
+            sendSharingContextMenuOptions(fileData, listener);
+            listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
+        }
+    }
+
+    // Placeholder download action
+    if (folder) {
+        auto placeholderSuffix = QStringLiteral(APPLICATION_DOTPLACEHOLDER_SUFFIX);
+        bool hasPlaceholderFile = false;
+        for (const auto &file : files) {
+            if (file.endsWith(placeholderSuffix))
+                hasPlaceholderFile = true;
+        }
+        if (hasPlaceholderFile)
+            listener->sendMessage(QLatin1String("MENU_ITEM:DOWNLOAD_PLACEHOLDER::") + tr("Download file(s)", "", files.size()));
+    }
+
     listener->sendMessage(QString("GET_MENU_ITEMS:END"));
 }
 

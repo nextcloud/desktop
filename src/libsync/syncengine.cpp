@@ -614,7 +614,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
             if (remote) {
                 QString filePath = _localPath + item->_file;
 
-                if (other) {
+                if (other && other->type != ItemTypePlaceholder && other->type != ItemTypePlaceholderDownload) {
                     // Even if the mtime is different on the server, we always want to keep the mtime from
                     // the file system in the DB, this is to avoid spurious upload on the next sync
                     item->_modtime = other->modtime;
@@ -850,6 +850,14 @@ void SyncEngine::startSync()
     _csync_ctx->should_discover_locally_fn = [this](const QByteArray &path) {
         return shouldDiscoverLocally(path);
     };
+
+    _csync_ctx->new_files_are_placeholders = _syncOptions._newFilesArePlaceholders;
+    _csync_ctx->placeholder_suffix = _syncOptions._placeholderSuffix.toUtf8();
+    if (_csync_ctx->new_files_are_placeholders && _csync_ctx->placeholder_suffix.isEmpty()) {
+        csyncError(tr("Using placeholder files, but placeholder suffix is not set"));
+        finalize(false);
+        return;
+    }
 
     bool ok;
     auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);

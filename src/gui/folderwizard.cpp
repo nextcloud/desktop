@@ -36,6 +36,7 @@
 #include <QTreeWidget>
 #include <QVBoxLayout>
 #include <QEvent>
+#include <QCheckBox>
 
 #include <stdlib.h>
 
@@ -481,6 +482,12 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
     QVBoxLayout *layout = new QVBoxLayout(this);
     _selectiveSync = new SelectiveSyncWidget(account, this);
     layout->addWidget(_selectiveSync);
+
+    if (ConfigFile().showExperimentalOptions()) {
+        _placeholderCheckBox = new QCheckBox(tr("Create placeholders instead of downloading files (experimental)"));
+        connect(_placeholderCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::placeholderCheckboxClicked);
+        layout->addWidget(_placeholderCheckBox);
+    }
 }
 
 FolderWizardSelectiveSync::~FolderWizardSelectiveSync()
@@ -508,6 +515,7 @@ void FolderWizardSelectiveSync::initializePage()
 bool FolderWizardSelectiveSync::validatePage()
 {
     wizard()->setProperty("selectiveSyncBlackList", QVariant(_selectiveSync->createBlackList()));
+    wizard()->setProperty("usePlaceholders", QVariant(_placeholderCheckBox->isChecked()));
     return true;
 }
 
@@ -519,6 +527,18 @@ void FolderWizardSelectiveSync::cleanupPage()
         alias = Theme::instance()->appName();
     _selectiveSync->setFolderInfo(targetPath, alias);
     QWizardPage::cleanupPage();
+}
+
+void FolderWizardSelectiveSync::placeholderCheckboxClicked()
+{
+    // The click has already had an effect on the box, so if it's
+    // checked it was newly activated.
+    if (_placeholderCheckBox->isChecked()) {
+        OwncloudWizard::askExperimentalPlaceholderFeature([this](bool enable) {
+            if (!enable)
+                _placeholderCheckBox->setChecked(false);
+        });
+    }
 }
 
 

@@ -5,6 +5,7 @@ set( APPLICATION_DOMAIN     "owncloud.com" )
 set( APPLICATION_VENDOR     "ownCloud" )
 set( APPLICATION_UPDATE_URL "https://updates.owncloud.com/client/" CACHE string "URL for updater" )
 set( APPLICATION_ICON_NAME  "owncloud" )
+set( APPLICATION_PLACEHOLDER_SUFFIX "owncloud" CACHE STRING "Placeholder suffix (not including the .)")
 
 set( LINUX_PACKAGE_SHORTNAME "owncloud" )
 

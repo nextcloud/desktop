@@ -65,6 +65,8 @@ public:
     bool paused;
     /// whether the folder syncs hidden files
     bool ignoreHiddenFiles;
+    /// New files are downloaded as placeholders
+    bool usePlaceholders = false;
     /// The CLSID where this folder appears in registry for the Explorer navigation pane entry.
     QUuid navigationPaneClsid;
 
@@ -281,6 +283,12 @@ public slots:
        * sync run to be scheduled.
        */
     void slotWatchedPathChanged(const QString &path);
+
+    /**
+     * Mark a placeholder as being ready for download, and start a sync.
+     * relativePath is the patch to the placeholder file (includeing the extension)
+     */
+    void downloadPlaceholder(const QString &relativepath);
 
 private slots:
     void slotSyncStarted();

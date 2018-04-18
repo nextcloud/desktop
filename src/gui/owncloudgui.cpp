@@ -1034,7 +1034,8 @@ void ownCloudGui::raiseDialog(QWidget *raiseWidget)
 
 void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage)
 {
-    const auto folder = FolderMan::instance()->folderForPath(localPath);
+    QString file;
+    const auto folder = FolderMan::instance()->folderForPath(localPath, &file);
     if (!folder) {
         qCWarning(lcApplication) << "Could not open share dialog for" << localPath << "no responsible folder found";
         return;
@@ -1045,7 +1046,6 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
 
     const auto accountState = folder->accountState();
 
-    const QString file = localPath.mid(folder->cleanPath().length() + 1);
     SyncJournalFileRecord fileRecord;
 
     bool resharingAllowed = true; // lets assume the good
