@@ -1,0 +1,91 @@
+#
+# We are building GCC with make and Clang with ninja, the combinations are more
+# or less arbitrarily chosen. We just want to check that both compilers and both
+# CMake generators work. It's unlikely that a specific generator only breaks
+# with a specific compiler.
+#
+
+workspace:
+  base: /drone
+  path: src/github.com/owncloud/client
+
+branches:
+  - master
+  - 2.4
+
+clone:
+  git:
+    image: plugins/git
+    pull: true
+    tags: false
+
+pipeline:
+  prepare-clang:
+    image: owncloudci/client:latest
+    pull: true
+    environment:
+      - LC_ALL=C.UTF-8
+    commands:
+      - mkdir clang-build
+      - cd clang-build
+      - cmake -GNinja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE="Debug" -DUNIT_TESTING=1 ..
+
+  building-clang:
+    image: owncloudci/client:latest
+    pull: true
+    environment:
+      - LC_ALL=C.UTF-8
+    commands:
+      - cd clang-build
+      - ninja -j4
+
+  testing-clang:
+    image: owncloudci/client:latest
+    pull: true
+    environment:
+      - LC_ALL=C.UTF-8
+    commands:
+      - cd clang-build
+      - useradd -m -s /bin/bash tester
+      - chown -R tester:tester .
+      - su-exec tester ctest --output-on-failure
+
+  prepare-gcc:
+    image: owncloudci/client:latest
+    pull: true
+    environment:
+      - LC_ALL=C.UTF-8
+    commands:
+      - mkdir gcc-build
+      - cd gcc-build
+      - cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE="Debug" -DUNIT_TESTING=1 ..
+
+  building-gcc:
+    image: owncloudci/client:latest
+    pull: true
+    environment:
+      - LC_ALL=C.UTF-8
+    commands:
+      - cd gcc-build
+      - make -j4
+
+  testing-gcc:
+    image: owncloudci/client:latest
+    pull: true
+    environment:
+      - LC_ALL=C.UTF-8
+    commands:
+      - cd gcc-build
+      - useradd -m -s /bin/bash tester
+      - chown -R tester:tester .
+      - su-exec tester ctest --output-on-failure
+
+  notify-slack:
+    image: plugins/slack
+    pull: true
+    secrets: [ slack_webhook ]
+    channel: desktop
+    when:
+      local: false
+      status: [ changed, failure ]
+      event: [ push ]
