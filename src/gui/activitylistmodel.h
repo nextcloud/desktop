@@ -47,7 +47,7 @@ public:
     void fetchMore(const QModelIndex &) Q_DECL_OVERRIDE;
 
     ActivityList activityList() { return _finalList; }
-    void addToActivityList(ActivityList list);
+    void addToActivityList(Activity activity);
 
 public slots:
     void slotRefreshActivity();
