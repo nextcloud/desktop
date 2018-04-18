@@ -611,7 +611,7 @@ void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFile, SocketListene
         return;
 
     AccountPtr account = fileData.folder->accountState()->account();
-    auto job = new GetOrCreatePublicLinkShare(account, fileData.accountRelativePath, [this](const QString &url) { copyUrlToClipboard(url); }, this);
+    auto job = new GetOrCreatePublicLinkShare(account, fileData.accountRelativePath, [](const QString &url) { copyUrlToClipboard(url); }, this);
     job->run();
 }
 
