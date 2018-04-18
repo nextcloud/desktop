@@ -21,7 +21,9 @@
 #include <QThread>
 #include <qmetaobject.h>
 
+#ifdef ZLIB_FOUND
 #include <zlib.h>
+#endif
 
 namespace OCC {
 
@@ -221,6 +223,7 @@ void Logger::disableTemporaryFolderLogDir()
 
 static bool compressLog(const QString &originalName, const QString &targetName)
 {
+#ifdef ZLIB_FOUND
     QFile original(originalName);
     if (!original.open(QIODevice::ReadOnly))
         return false;
@@ -239,6 +242,9 @@ static bool compressLog(const QString &originalName, const QString &targetName)
     }
     gzclose(compressed);
     return true;
+#else
+    return false;
+#endif
 }
 
 void Logger::enterNextLogFile()
