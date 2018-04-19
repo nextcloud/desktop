@@ -19,6 +19,8 @@
 #include <QTextStream>
 #include <QScopedPointer>
 #include <QElapsedTimer>
+#include <QStandardPaths>
+#include <QDir>
 
 #include "syncfileitem.h"
 
