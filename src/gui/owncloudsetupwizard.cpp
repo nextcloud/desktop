@@ -57,7 +57,6 @@ OwncloudSetupWizard::OwncloudSetupWizard(QObject *parent)
     connect(_ocWizard, &OwncloudWizard::basicSetupFinished,
         this, &OwncloudSetupWizard::slotAssistantFinished, Qt::QueuedConnection);
     connect(_ocWizard, &QDialog::finished, this, &QObject::deleteLater);
-    connect(_ocWizard, &OwncloudWizard::skipFolderConfiguration, this, &OwncloudSetupWizard::slotSkipFolderConfiguration);
 }
 
 OwncloudSetupWizard::~OwncloudSetupWizard()
@@ -597,15 +596,12 @@ bool OwncloudSetupWizard::ensureStartFromScratch(const QString &localFolder)
 // Method executed when the user end has finished the basic setup.
 void OwncloudSetupWizard::slotAssistantFinished(int result)
 {
-    FolderMan *folderMan = FolderMan::instance();
-
     if (result == QDialog::Rejected) {
-        qCInfo(lcWizard) << "Rejected the new config, use the old!";
-
-    } else if (result == QDialog::Accepted) {
-        // This may or may not wipe all folder definitions, depending
-        // on whether a new account is activated or the existing one
-        // is changed.
+        // Wizard was cancelled
+    } else if (_ocWizard->manualFolderConfig()) {
+        applyAccountChanges();
+    } else {
+        FolderMan *folderMan = FolderMan::instance();
         auto account = applyAccountChanges();
 
         QString localFolder = FolderDefinition::prepareLocalPath(_ocWizard->localFolder());
@@ -637,16 +633,6 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
 
     // notify others.
     emit ownCloudWizardDone(result);
-}
-
-void OwncloudSetupWizard::slotSkipFolderConfiguration()
-{
-    applyAccountChanges();
-
-    disconnect(_ocWizard, &OwncloudWizard::basicSetupFinished,
-        this, &OwncloudSetupWizard::slotAssistantFinished);
-    _ocWizard->close();
-    emit ownCloudWizardDone(QDialog::Accepted);
 }
 
 AccountState *OwncloudSetupWizard::applyAccountChanges()

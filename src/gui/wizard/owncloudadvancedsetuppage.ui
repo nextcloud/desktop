@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>912</width>
-    <height>633</height>
+    <height>635</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -240,7 +240,7 @@
           <item>
            <widget class="QRadioButton" name="rSyncEverything">
             <property name="text">
-             <string>S&amp;ync everything from server</string>
+             <string>S&amp;ynchronize everything from server</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -383,6 +383,42 @@
         <item>
          <layout class="QHBoxLayout" name="lPlaceholderSync">
           <item>
+           <widget class="QRadioButton" name="rManualFolder">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When this option is selected, the wizard will close without synchronizing anything. You can use the &amp;quot;Add Folder Sync Connection&amp;quot; button from the account settings to choose which pair of local and remote folder you wish to synchronize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When this option is selected, the wizard will close without synchronizing anything. You can use the &amp;quot;Add Folder Sync Connection&amp;quot; button from the account settings to choose which pair of local and remote folder you wish to synchronize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Manually create folder sync connections </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
            <widget class="QRadioButton" name="rPlaceholderSync">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -391,7 +427,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>Create placeholders instead of downloading files (experimental)</string>
+             <string>Create placeholders instead of downloading files (e&amp;xperimental)</string>
             </property>
             <property name="checkable">
              <bool>false</bool>
@@ -399,7 +435,7 @@
            </widget>
           </item>
           <item>
-           <spacer name="horizontalSpacer_5">
+           <spacer name="horizontalSpacer_6">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -456,6 +492,19 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>rSyncEverything</tabstop>
+  <tabstop>confCheckBoxSize</tabstop>
+  <tabstop>confSpinBox</tabstop>
+  <tabstop>confCheckBoxExternal</tabstop>
+  <tabstop>rSelectiveSync</tabstop>
+  <tabstop>bSelectiveSync</tabstop>
+  <tabstop>rManualFolder</tabstop>
+  <tabstop>rPlaceholderSync</tabstop>
+  <tabstop>pbSelectLocalFolder</tabstop>
+  <tabstop>radioButton</tabstop>
+  <tabstop>cbSyncFromScratch</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -485,8 +534,8 @@
      <y>83</y>
     </hint>
     <hint type="destinationlabel">
-     <x>952</x>
-     <y>134</y>
+     <x>864</x>
+     <y>147</y>
     </hint>
    </hints>
   </connection>
@@ -501,8 +550,8 @@
      <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1076</x>
-     <y>136</y>
+     <x>902</x>
+     <y>147</y>
     </hint>
    </hints>
   </connection>
@@ -519,6 +568,70 @@
     <hint type="destinationlabel">
      <x>382</x>
      <y>174</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rManualFolder</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>pbSelectLocalFolder</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>197</x>
+     <y>269</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>219</x>
+     <y>404</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rManualFolder</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>resolutionWidget</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>260</x>
+     <y>266</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>443</x>
+     <y>437</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rManualFolder</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lLocal</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>163</x>
+     <y>267</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>88</x>
+     <y>438</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rManualFolder</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lLocalIcon</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>551</x>
+     <y>262</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>54</x>
+     <y>400</y>
     </hint>
    </hints>
   </connection>

@@ -79,7 +79,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 #endif
     connect(_advancedSetupPage, &OwncloudAdvancedSetupPage::createLocalAndRemoteFolders,
         this, &OwncloudWizard::createLocalAndRemoteFolders);
-    connect(this, &QWizard::customButtonClicked, this, &OwncloudWizard::skipFolderConfiguration);
 
 
     Theme *theme = Theme::instance();
@@ -92,7 +91,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setOption(QWizard::NoCancelButton);
     setTitleFormat(Qt::RichText);
     setSubTitleFormat(Qt::RichText);
-    setButtonText(QWizard::CustomButton1, tr("Skip folders configuration"));
 }
 
 void OwncloudWizard::setAccount(AccountPtr account)
@@ -118,6 +116,11 @@ QStringList OwncloudWizard::selectiveSyncBlacklist() const
 bool OwncloudWizard::usePlaceholderSync() const
 {
     return _advancedSetupPage->usePlaceholderSync();
+}
+
+bool OwncloudWizard::manualFolderConfig() const
+{
+    return _advancedSetupPage->manualFolderConfig();
 }
 
 bool OwncloudWizard::isConfirmBigFolderChecked() const
@@ -207,7 +210,6 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
         done(Accepted);
     }
 
-    setOption(QWizard::HaveCustomButton1, id == WizardCommon::Page_AdvancedSetup);
     if (id == WizardCommon::Page_AdvancedSetup && _credentialsPage == _browserCredsPage) {
         // For OAuth, disable the back button in the Page_AdvancedSetup because we don't want
         // to re-open the browser.

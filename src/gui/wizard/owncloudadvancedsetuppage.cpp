@@ -62,6 +62,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
     connect(_ui.rSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
     connect(_ui.rPlaceholderSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotPlaceholderSyncClicked);
     connect(_ui.bSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
+    connect(_ui.rManualFolder, &QAbstractButton::clicked, this, [this] { setRadioChecked(_ui.rManualFolder); });
 
     QIcon appIcon = theme->applicationIcon();
     _ui.lServerIcon->setText(QString());
@@ -235,6 +236,11 @@ QStringList OwncloudAdvancedSetupPage::selectiveSyncBlacklist() const
 bool OwncloudAdvancedSetupPage::usePlaceholderSync() const
 {
     return _ui.rPlaceholderSync->isChecked();
+}
+
+bool OwncloudAdvancedSetupPage::manualFolderConfig() const
+{
+    return _ui.rManualFolder->isChecked();
 }
 
 bool OwncloudAdvancedSetupPage::isConfirmBigFolderChecked() const
