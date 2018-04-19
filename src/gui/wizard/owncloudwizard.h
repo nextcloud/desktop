@@ -64,6 +64,8 @@ public:
     QString ocUrl() const;
     QString localFolder() const;
     QStringList selectiveSyncBlacklist() const;
+    bool usePlaceholderSync() const;
+    bool manualFolderConfig() const;
     bool isConfirmBigFolderChecked() const;
 
     void enableFinishOnResultWidget(bool enable);
@@ -90,7 +92,6 @@ signals:
     void createLocalAndRemoteFolders(const QString &, const QString &);
     // make sure to connect to this, rather than finished(int)!!
     void basicSetupFinished(int);
-    void skipFolderConfiguration();
     void needCertificate();
 
 private:
