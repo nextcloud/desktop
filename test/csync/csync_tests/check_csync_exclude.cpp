@@ -642,7 +642,7 @@ static void check_placeholder_exclude(void **state)
     QByteArray expected = "\n#!version < 2.5.0\n*.owncloud\n";
 
     // Case 1: No file exists yet, parent dirs are missing too
-    path = tempDir.filePath("foo/bar/exclude.lst");
+    path = tempDir.path() + "/foo/bar/exclude.lst";
     ExcludedFiles::setupPlaceholderExclude(path, ".owncloud");
 
     assert_true(QFile::exists(path));
