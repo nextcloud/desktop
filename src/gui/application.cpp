@@ -658,4 +658,18 @@ void Application::openPlaceholder(const QString &filename)
     });
 }
 
+bool Application::event(QEvent *event)
+{
+#ifdef Q_OS_MAC
+    if (event->type() == QEvent::FileOpen) {
+        QFileOpenEvent *openEvent = static_cast<QFileOpenEvent *>(event);
+        qCDebug(lcApplication) << "QFileOpenEvent" << openEvent->file();
+        // placeholder file, open it after the Folder were created (if the app is not terminated)
+        QString fn = openEvent->file();
+        QTimer::singleShot(0, this, [this, fn] { openPlaceholder(fn); });
+    }
+#endif
+    return SharedTools::QtSingleApplication::event(event);
+}
+
 } // namespace OCC

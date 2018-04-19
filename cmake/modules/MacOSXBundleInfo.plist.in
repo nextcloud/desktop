@@ -34,5 +34,42 @@
         <string>10.7.0</string>
         <key>SUPublicDSAKeyFile</key>
         <string>dsa_pub.pem</string>
+
+<key>UTExportedTypeDeclarations</key>
+<array>
+    <dict>
+        <key>UTTypeIdentifier</key>
+        <string>@APPLICATION_REV_DOMAIN@.placeholder</string>
+        <key>UTTypeTagSpecification</key>
+        <dict>
+            <key>public.filename-extension</key>
+            <string>@APPLICATION_PLACEHOLDER_SUFFIX@</string>
+            <key>public.mime-type</key>
+            <string>application/octet-stream</string>
+        </dict>
+        <key>UTTypeConformsTo</key>
+         <array>
+             <string>public.data</string>
+         </array>
+    </dict>
+</array>
+
+<key>CFBundleDocumentTypes</key>
+<array>
+    <dict>
+        <key>CFBundleTypeName</key>
+        <string>@APPLICATION_EXECUTABLE@ Download Placeholder</string>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>LSHandlerRank</key>
+        <string>Owner</string>
+        <key>LSItemContentTypes</key>
+        <array>
+            <string>@APPLICATION_REV_DOMAIN@.placeholder</string>
+        </array>
+    </dict>
+</array>
+
+
 </dict>
 </plist>

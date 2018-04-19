@@ -82,6 +82,7 @@ protected:
     void parseOptions(const QStringList &);
     void setupTranslations();
     void setupLogging();
+    bool event(QEvent *event);
 
 signals:
     void folderRemoved();
