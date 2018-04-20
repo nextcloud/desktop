@@ -5,12 +5,19 @@ project(client)
 
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
+
 set(OEM_THEME_DIR "" CACHE STRING "Define directory containing a custom theme")
 if ( EXISTS ${OEM_THEME_DIR}/OEM.cmake )
      include ( ${OEM_THEME_DIR}/OEM.cmake )
 else ()
      include ( ${CMAKE_SOURCE_DIR}/OWNCLOUD.cmake )
 endif()
+
+# Default suffix if the theme doesn't define one
+if(NOT DEFINED APPLICATION_PLACEHOLDER_SUFFIX)
+    set(APPLICATION_PLACEHOLDER_SUFFIX "${APPLICATION_SHORTNAME}_placeholder" CACHE STRING "Placeholder suffix (not including the .)")
+endif()
+
 # need this logic to not mess with re/uninstallations via macosx.pkgproj
 if(${APPLICATION_REV_DOMAIN} STREQUAL "com.owncloud.desktopclient")
     set(APPLICATION_REV_DOMAIN_INSTALLER "com.ownCloud.client")
