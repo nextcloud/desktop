@@ -672,134 +672,134 @@
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="141"/>
+        <location filename="../src/gui/folder.cpp" line="148"/>
         <source>Local folder %1 does not exist.</source>
         <translation>%1 helyi mappa nem létezik.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="144"/>
+        <location filename="../src/gui/folder.cpp" line="151"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 valószínűleg könyvtár, de nem az.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="147"/>
+        <location filename="../src/gui/folder.cpp" line="154"/>
         <source>%1 is not readable.</source>
         <translation>%1 nem olvasható.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="371"/>
+        <location filename="../src/gui/folder.cpp" line="378"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 sikeresen törölve.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="378"/>
+        <location filename="../src/gui/folder.cpp" line="385"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 sikeresen letöltve.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="385"/>
+        <location filename="../src/gui/folder.cpp" line="392"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 sikeresen feltöltve.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="392"/>
+        <location filename="../src/gui/folder.cpp" line="399"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 átnevezve erre: %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="399"/>
+        <location filename="../src/gui/folder.cpp" line="406"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 áthelyezve ide: %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="369"/>
+        <location filename="../src/gui/folder.cpp" line="376"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 és %n további fájl törölve.</numerusform><numerusform>%1 és %n további fájl törölve.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="376"/>
+        <location filename="../src/gui/folder.cpp" line="383"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
         <translation><numerusform>%1 és %n további fájl letöltve.</numerusform><numerusform>%1 és %n további fájl letöltve.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="383"/>
+        <location filename="../src/gui/folder.cpp" line="390"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 és %n további fájl feltöltve.</numerusform><numerusform>%1 és %n további fájl feltöltve.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="390"/>
+        <location filename="../src/gui/folder.cpp" line="397"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1 átnevezve erre: %2 és még %n további fájl átnevezve.</numerusform><numerusform>%1 átnevezve erre: %2 és még %n további fájl átnevezve.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="397"/>
+        <location filename="../src/gui/folder.cpp" line="404"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 áthelyezve ide: %2 és még %n további fájl áthelyezve.</numerusform><numerusform>%1 áthelyezve ide: %2 és még %n további fájl áthelyezve.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="404"/>
+        <location filename="../src/gui/folder.cpp" line="411"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 és %n további fájl szinkronizálási konfliktussal rendelkezik.</numerusform><numerusform>%1 és %n további fájl szinkronizálási konfliktussal rendelkezik.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="406"/>
+        <location filename="../src/gui/folder.cpp" line="413"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 fájl szinkronizálási konfliktussal rendelkezik. Kérjük ellenőrizze a konfliktus fájlt!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="411"/>
+        <location filename="../src/gui/folder.cpp" line="418"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>%1 és %n további fájlt nem sikerült szinkronizálni. Bővebb információ a naplófájlban.</numerusform><numerusform>%1 és %n további fájlt nem sikerült szinkronizálni. Bővebb információ a naplófájlban.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="413"/>
+        <location filename="../src/gui/folder.cpp" line="420"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 nem sikerült szinkronizálni. Bővebb információ a naplófájlban.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="419"/>
+        <location filename="../src/gui/folder.cpp" line="426"/>
         <source>Sync Activity</source>
         <translation>Szinkronizálási aktivitás</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="650"/>
+        <location filename="../src/gui/folder.cpp" line="656"/>
         <source>Could not read system exclude file</source>
         <translation>Nem sikerült olvasni a rendszer kizárási fájlját</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="973"/>
+        <location filename="../src/gui/folder.cpp" line="944"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>A (z) % 1 MB-nál nagyobb új mappa hozzáadva: % 2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="976"/>
+        <location filename="../src/gui/folder.cpp" line="947"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Hozzáadt egy mappát egy külső tárból.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="977"/>
+        <location filename="../src/gui/folder.cpp" line="948"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>A beállítások megadásához válassza ki, ha szeretné letölteni.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1032"/>
+        <location filename="../src/gui/folder.cpp" line="1003"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1035"/>
+        <location filename="../src/gui/folder.cpp" line="1006"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1074"/>
+        <location filename="../src/gui/folder.cpp" line="1045"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -807,46 +807,46 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <translation>A kiszolgáló egy &quot;% 1&quot; mappában levő összes fájlt törölték.Ezek a törlések szinkronizálódnak a helyi szinkronizálási mappájukhoz, így az ilyen fájlok nem érhetők el, hacsak nem jogosult a visszaállításra. Ha úgy dönt, hogy megtartja a fájlokat, akkor újra szinkronizálódik a szerverrel, ha jogosult erre.Ha úgy dönt, hogy törli a fájlokat, akkor nem lesznek elérhetők, hacsak nem vagy egy tulajdonos.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1079"/>
+        <location filename="../src/gui/folder.cpp" line="1050"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
         <translation>A (z) &quot;% 1&quot; helyi szinkronmappában található összes fájl törölve lett. Ezek a törlések szinkronizálásra kerülnek a kiszolgálóval, így az ilyen fájlok nem érhetők el, hacsak vissza nem állítják őket.Biztos benne, hogy ezeket a műveleteket szinkronizálni szeretné a kiszolgálóval?Ha ez baleset volt, és úgy döntenél, hogy megőrzi a fájlokat, újra szinkronizálódik a kiszolgálóról.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1083"/>
+        <location filename="../src/gui/folder.cpp" line="1054"/>
         <source>Remove All Files?</source>
         <translation>Törli az összes fájlt?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1086"/>
+        <location filename="../src/gui/folder.cpp" line="1057"/>
         <source>Remove all files</source>
         <translation>Összes fájl eltávolítása</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1087"/>
+        <location filename="../src/gui/folder.cpp" line="1058"/>
         <source>Keep files</source>
         <translation>Fájlok megtartása</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1104"/>
+        <location filename="../src/gui/folder.cpp" line="1075"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
         <translation>Ez a szinkronizálás a &quot;% 1&quot; szinkronizálási mappában korábbi időpontban alaphelyzetbe állítja a fájlokat.Ez azért lehetséges, mert egy biztonsági másolat visszaállt a kiszolgálón.Ha a szokásos módon folytatja a szinkronizálást, az régebbi fájl felülírja az összes fájlt egy korábbi állapotban. Meg szeretné őrizni a helyi legfrissebb fájlokat konfliktusfájlokként?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1109"/>
+        <location filename="../src/gui/folder.cpp" line="1080"/>
         <source>Backup detected</source>
         <translation>Biztonsági mentés észlelve</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1112"/>
+        <location filename="../src/gui/folder.cpp" line="1083"/>
         <source>Normal Synchronisation</source>
         <translation>Normal szinkronizáció</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1113"/>
+        <location filename="../src/gui/folder.cpp" line="1084"/>
         <source>Keep Local Files as Conflict</source>
         <translation>Helyi file-ok megtartása konfliktusként</translation>
     </message>
