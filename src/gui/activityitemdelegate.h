@@ -46,9 +46,15 @@ public:
     static int rowHeight();
     static int iconHeight();
 
+signals:
+    void buttonClickedOnItemView(const QModelIndex &index);
+
 private:
     static int _margin;
     static int _iconHeight;
+    static int _buttonWidth;
+    static int _timeWidth;
+    static int _buttonHeight;
 };
 
 } // namespace OCC
