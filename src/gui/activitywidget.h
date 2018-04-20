@@ -86,6 +86,7 @@ signals:
     void rowsInserted();
     void hideActivityTab(bool);
     void newNotification();
+    void sendNotificationRequest(const QString &, const QString &link, const QByteArray &verb);
 
 private slots:
     void slotBuildNotificationDisplay(const ActivityList &list);
@@ -95,6 +96,8 @@ private slots:
     void endNotificationRequest(NotificationWidget *widget, int replyCode);
     void scheduleWidgetToRemove(NotificationWidget *widget, int milliseconds = 100);
     void slotCheckToCleanWidgets();
+    void slotNotificationRequestFinished(int statusCode);
+    void slotButtonClickedOnListView(const QModelIndex &index);
 
 private:
     void showLabels();

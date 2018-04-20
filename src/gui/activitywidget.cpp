@@ -92,6 +92,9 @@ ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
 
     connect(_model, &QAbstractItemModel::rowsInserted, this, &ActivityWidget::rowsInserted);
 
+    connect(delegate, &ActivityItemDelegate::buttonClickedOnItemView, this, &ActivityWidget::slotButtonClickedOnListView);
+    connect(this, &ActivityWidget::sendNotificationRequest, this, &ActivityWidget::slotSendNotificationRequest);
+
     connect(_ui->_activityList, &QListView::activated, this, &ActivityWidget::slotOpenFile);
 
     connect(&_removeTimer, &QTimer::timeout, this, &ActivityWidget::slotCheckToCleanWidgets);
@@ -101,6 +104,49 @@ ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
 ActivityWidget::~ActivityWidget()
 {
     delete _ui;
+}
+
+void ActivityWidget::slotButtonClickedOnListView(const QModelIndex &index){
+    QList<QVariant> customList = index.data(ActivityItemDelegate::ActionsLinksRole).toList();
+    QList<ActivityLink> actionLinks;
+    foreach(QVariant customItem, customList){
+        actionLinks << qvariant_cast<ActivityLink>(customItem);
+    }
+
+    QMenu menu;
+    QUrl link = qvariant_cast<QString>(index.data(ActivityItemDelegate::LinkRole));
+    if(!link.isEmpty()){
+        QAction *menuAction = new QAction(tr("More Information"), &menu);
+        connect(menuAction, &QAction::triggered, this, [link] { QDesktopServices::openUrl(link); });
+        menu.addAction(menuAction);
+    }
+
+    foreach (ActivityLink actionLink, actionLinks) {
+        QAction *menuAction = new QAction(actionLink._label, &menu);
+        connect(menuAction, &QAction::triggered, this, [this, index, actionLink] {
+            qCInfo(lcActivity) << "Notification Link: " << actionLink._verb << actionLink._link;
+            emit this->sendNotificationRequest(qvariant_cast<QString>(index.data(ActivityItemDelegate::AccountRole)), actionLink._link, actionLink._verb);
+        });
+        menu.addAction(menuAction);
+    }
+
+    menu.exec(QCursor::pos());
+}
+
+void ActivityWidget::slotNotificationRequestFinished(int statusCode)
+{
+    int i = 0;
+    QString doneText;
+    QLocale locale;
+
+    QString timeStr = locale.toString(QTime::currentTime());
+
+    // the ocs API returns stat code 100 or 200 inside the xml if it succeeded.
+    if (statusCode != OCS_SUCCESS_STATUS_CODE && statusCode != OCS_SUCCESS_STATUS_CODE_V2) {
+        qCWarning(lcActivity) << "Notification Request to Server failed, leave button visible.";
+    } else {
+        qCWarning(lcActivity) << "Notification Request to Server successed, leave button visible.";
+    }
 }
 
 void ActivityWidget::slotRefreshActivities()
