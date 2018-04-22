@@ -20,6 +20,9 @@ MimeType=application/x-@APPLICATION_EXECUTABLE@
 
 
 # Translations
+
+
+# Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
 GenericName[oc]=Dorsièr de Sincronizacion
 Name[oc]=@APPLICATION_NAME@ sincronizacion del client
@@ -71,8 +74,8 @@ Icon[eu]=@APPLICATION_EXECUTABLE@
 GenericName[fa]=همسان سازی پوشه‌ها
 Name[fa]=@APPLICATION_EXECUTABLE@ نسخه‌ی همسان سازی مشتری
 Icon[fa]=@APPLICATION_EXECUTABLE@
-Comment[fr]=Synchronisez vos dossiers avec un serveur @APPLICATION_NAME@
-GenericName[fr]=Synchronisation de dossier
+Comment[fr]=Client de synchronisation @APPLICATION_NAME@
+GenericName[fr]=Synchronisation de dossiers
 Name[fr]=Client de synchronisation @APPLICATION_NAME@
 Icon[fr]=@APPLICATION_EXECUTABLE@
 Comment[gl]=@APPLICATION_NAME@ cliente de sincronización para escritorio

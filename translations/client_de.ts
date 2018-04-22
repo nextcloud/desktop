@@ -1219,7 +1219,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="487"/>
         <source>Create placeholders instead of downloading files (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>Platzhalter erstellen anstatt die Dateien herunter zu laden (Experimental)</translation>
     </message>
 </context>
 <context>
@@ -2174,24 +2174,26 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="259"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Experimentelle Funktion aktivieren?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="260"/>
         <source>When the &quot;synchronize placeholders&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file on the server. The contents can be downloaded by running these files or by using their context menu.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Wenn der Modus &quot;Platzhalter synchronisieren&quot; aktiviert ist, werden die Dateien nicht sofort heruntergeladen. Stattdessen wird auf dem Server für jede Datei eine kleine &quot;%1&quot;-Datei erstellt. Der Inhalt der Dateien wird beim Ausführen der Dateien oder durch Nutzung dessen Kontextmenü heruntergeladen.
+
+Dies ist ein neuer experimentaler Modus.Wenn Sie sich dafür entscheiden, diesen Modu zu nutzen, berichten Sie bitte jeden Fehler der auftritt.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="267"/>
         <source>Enable experimental mode</source>
-        <translation type="unfinished"/>
+        <translation>Experimentellen Modus aktivieren</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="268"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Sicher bleiben</translation>
     </message>
 </context>
 <context>
@@ -3073,7 +3075,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message numerus="yes">
         <location filename="../src/gui/socketapi.cpp" line="819"/>
         <source>Download file(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Datei herunterladen</numerusform><numerusform>Dateien herunterladen</numerusform></translation>
     </message>
 </context>
 <context>
@@ -3473,7 +3475,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="857"/>
         <source>Using placeholder files, but placeholder suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Platzhalter-Dateien werden verwendet, aber Suffix nicht definiert</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="869"/>
@@ -3906,7 +3908,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="394"/>
         <source>Create placeholders instead of downloading files (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>Platzhalter erstellen anstatt die Dateien herunter zu laden (Experimental)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="431"/>
