@@ -452,55 +452,6 @@ void SocketApi::command_VERSION(const QString &, SocketListener *listener)
     listener->sendMessage(QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
 }
 
-void SocketApi::command_SHARE_STATUS(const QString &localFile, SocketListener *listener)
-{
-    auto fileData = FileData::get(localFile);
-    if (!fileData.folder) {
-        const QString message = QLatin1String("SHARE_STATUS:NOP:") + QDir::toNativeSeparators(localFile);
-        listener->sendMessage(message);
-        return;
-    }
-
-    SyncFileStatus fileStatus = fileData.syncFileStatus();
-
-    // Verify the file is on the server (to our knowledge of course)
-    if (fileStatus.tag() != SyncFileStatus::StatusUpToDate) {
-        const QString message = QLatin1String("SHARE_STATUS:NOTSYNCED:") + QDir::toNativeSeparators(localFile);
-        listener->sendMessage(message);
-        return;
-    }
-
-    const Capabilities capabilities = fileData.folder->accountState()->account()->capabilities();
-
-    if (!capabilities.shareAPI()) {
-        const QString message = QLatin1String("SHARE_STATUS:DISABLED:") + QDir::toNativeSeparators(localFile);
-        listener->sendMessage(message);
-    } else {
-        auto theme = Theme::instance();
-        QString available;
-
-        if (theme->userGroupSharing()) {
-            available = "USER,GROUP";
-        }
-
-        if (theme->linkSharing() && capabilities.sharePublicLink()) {
-            if (available.isEmpty()) {
-                available = "LINK";
-            } else {
-                available += ",LINK";
-            }
-        }
-
-        if (available.isEmpty()) {
-            const QString message = QLatin1String("SHARE_STATUS:DISABLED") + ":" + QDir::toNativeSeparators(localFile);
-            listener->sendMessage(message);
-        } else {
-            const QString message = QLatin1String("SHARE_STATUS:") + available + ":" + QDir::toNativeSeparators(localFile);
-            listener->sendMessage(message);
-        }
-    }
-}
-
 void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketListener *listener)
 {
     listener->sendMessage(QLatin1String("SHARE_MENU_TITLE:") + tr("Share with %1", "parameter is ownCloud").arg(Theme::instance()->appNameGUI()));
