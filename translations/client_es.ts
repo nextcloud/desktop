@@ -2174,7 +2174,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="259"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>¿Activar característica experimental?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="260"/>
@@ -2186,12 +2186,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="267"/>
         <source>Enable experimental mode</source>
-        <translation type="unfinished"/>
+        <translation>Activar modo experimental</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="268"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Permanecer seguro</translation>
     </message>
 </context>
 <context>
@@ -3073,7 +3073,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message numerus="yes">
         <location filename="../src/gui/socketapi.cpp" line="819"/>
         <source>Download file(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Descargar archivoº</numerusform><numerusform>Descargar archivos</numerusform></translation>
     </message>
 </context>
 <context>
