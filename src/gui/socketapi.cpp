@@ -376,10 +376,8 @@ void SocketApi::processShareRequest(const QString &localFile, SocketListener *li
         const QString message = QLatin1String("SHARE:NOP:") + QDir::toNativeSeparators(localFile);
         listener->sendMessage(message);
     } else {
-        SyncFileStatus fileStatus = fileData.syncFileStatus();
-
-        // Verify the file is on the server (to our knowledge of course)
-        if (fileStatus.tag() != SyncFileStatus::StatusUpToDate) {
+        // If the file doesn't have a journal record, it might not be uploaded yet
+        if (!fileData.journalRecord().isValid()) {
             const QString message = QLatin1String("SHARE:NOTSYNCED:") + QDir::toNativeSeparators(localFile);
             listener->sendMessage(message);
             return;
