@@ -1,0 +1,16 @@
+[main]
+host = https://www.transifex.com
+lang_map = bg_BG: bg, cs_CZ: cs, de_DE: de, fi_FI: fi, hu_HU: hu, nb_NO: nb, sk_SK: sk, th_TH: th, ja_JP: ja, pt_PT: pt, et_EE: et
+
+[nextcloud.client]
+host = https://www.transifex.com
+source_lang = en
+source_file = translations/client_en.ts
+file_filter = translations/client_<lang>.ts
+type = QT
+
+[nextcloud.client-desktop]
+host = https://www.transifex.com
+source_file = mirall.desktop.in
+source_lang = en
+type = DESKTOP
