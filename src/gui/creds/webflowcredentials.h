@@ -26,23 +26,23 @@ public:
     explicit WebFlowCredentials();
     WebFlowCredentials(const QString &user, const QString &password, const QSslCertificate &certificate = QSslCertificate(), const QSslKey &key = QSslKey());
 
-    QString authType() const Q_DECL_OVERRIDE;
-    QString user() const Q_DECL_OVERRIDE;
+    QString authType() const override;
+    QString user() const override;
     QString password() const;
-    QNetworkAccessManager *createQNAM() const Q_DECL_OVERRIDE;
+    QNetworkAccessManager *createQNAM() const override;
 
-    bool ready() const Q_DECL_OVERRIDE;
+    bool ready() const override;
 
-    void fetchFromKeychain() Q_DECL_OVERRIDE;
-    void askFromUser() Q_DECL_OVERRIDE;
+    void fetchFromKeychain() override;
+    void askFromUser() override;
 
-    bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;
-    void persist() Q_DECL_OVERRIDE;
-    void invalidateToken() Q_DECL_OVERRIDE;
-    void forgetSensitiveData() Q_DECL_OVERRIDE;
+    bool stillValid(QNetworkReply *reply) override;
+    void persist() override;
+    void invalidateToken() override;
+    void forgetSensitiveData() override;
 
     // To fetch the user name as early as possible
-    void setAccount(Account *account) Q_DECL_OVERRIDE;
+    void setAccount(Account *account) override;
 
 private slots:
     void slotAuthentication(QNetworkReply *reply, QAuthenticator *authenticator);

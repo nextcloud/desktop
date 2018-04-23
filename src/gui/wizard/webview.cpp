@@ -98,7 +98,7 @@ void WebViewPageUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *reques
         }
     }
 
-    qCInfo(lcWizardWebiew()) << "Got user: " << user << ", password: " << password << ", server: " << server;
+    qCInfo(lcWizardWebiew()) << "Got user: " << user << ", server: " << server;
 
     emit urlCatched(user, password, server);
 }

@@ -52,7 +52,7 @@ void WebViewPage::setConnected() {
 }
 
 void WebViewPage::urlCatched(QString user, QString pass, QString host) {
-    qCInfo(lcWizardWebiewPage()) << "Got user: " << user << ", password: " << pass << ", server: " << host;
+    qCInfo(lcWizardWebiewPage()) << "Got user: " << user << ", server: " << host;
 
     _user = user;
     _pass = pass;

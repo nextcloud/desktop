@@ -117,7 +117,7 @@ void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user,
         return;
     }
 
-    qCInfo(lcWebFlowCredentials()) << "New password is:" << pass;
+    qCInfo(lcWebFlowCredentials()) << "Obtained a new password";
 
     _password = pass;
     _ready = true;
