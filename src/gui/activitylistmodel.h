@@ -48,6 +48,7 @@ public:
 
     ActivityList activityList() { return _finalList; }
     void addToActivityList(Activity activity);
+    void removeFromActivityList(int row);
 
 public slots:
     void slotRefreshActivity();
