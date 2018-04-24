@@ -332,6 +332,9 @@ private slots:
     /** Warn users if they create a file or folder that is selective-sync excluded */
     void warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QStringRef &path);
 
+    /** Warn users about an unreliable folder watcher */
+    void slotWatcherUnreliable(const QString &message);
+
 private:
     bool reloadExcludes();
 
