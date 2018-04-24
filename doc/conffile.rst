@@ -50,7 +50,8 @@ Some interesting values that can be set on the configuration file are:
 |                                 |               | This option only works on linux                                                                        |
 +---------------------------------+---------------+--------------------------------------------------------------------------------------------------------+
 | ``showExperimentalOptions``     | ``false``     | Whether to show experimental options that are still undergoing testing in the user interface.          |
-|                                 |               | Turning this on does not enable experimental behavior on its own. It does enable user inferface options that can be used to opt in to experimental features. |
+|                                 |               | Turning this on does not enable experimental behavior on its own. It does enable user inferface        |
+|                                 |               | options that can be used to opt in to experimental features.                                           |
 +---------------------------------+---------------+--------------------------------------------------------------------------------------------------------+
 
 
