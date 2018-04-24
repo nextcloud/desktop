@@ -101,8 +101,23 @@ void SyncRunFileLog::start(const QString &folderPath)
     }
 
     int length = folderPath.split(QString(QDir::separator())).length();
-    const QString filename = foldername + QString(QDir::separator())  ///
-          + folderPath.split(QString(QDir::separator())).at(length - 2) + QLatin1String("_sync.log");
+    QString filenameRaw = foldername + QString(QDir::separator())  ///
+          + folderPath.split(QString(QDir::separator())).at(length - 2);
+    QString filename = filenameRaw + QLatin1String("_sync.log");
+
+    while(QFile::exists(filename)) {    
+       
+       QFile file(filename);
+       file.open(QIODevice::ReadOnly| QIODevice::Text);
+       QTextStream in(&file);
+       QString line = in.readLine();
+
+       if(QString::compare(folderPath,line,Qt::CaseSensitive)!=0) {
+           filename = filenameRaw + QLatin1String("_1") + QLatin1String("_sync.log");
+	   filenameRaw += QLatin1String("_1");
+       }
+       else break;
+    }
 
     // When the file is too big, just rename it to an old name.
     QFileInfo info(filename);
@@ -120,6 +135,7 @@ void SyncRunFileLog::start(const QString &folderPath)
 
 
     if (!exists) {
+        _out << folderPath.toLatin1() << endl;
         // We are creating a new file, add the note.
         _out << "# timestamp | duration | file | instruction | dir | modtime | etag | "
                 "size | fileId | status | errorString | http result code | "
