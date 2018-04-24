@@ -117,8 +117,7 @@ void SyncRunFileLog::start(const QString &folderPath)
         // We are creating a new file, add the note.
         _out << "# timestamp | duration | file | instruction | dir | modtime | etag | "
                 "size | fileId | status | errorString | http result code | "
-                "other size | other modtime | other etag | other fileId | "
-                "other instruction"
+                "other size | other modtime | X-Request-ID"
              << endl;
 
         FileSystem::setFileHidden(filename, true);
@@ -164,9 +163,7 @@ void SyncRunFileLog::logItem(const SyncFileItem &item)
     _out << QString::number(item._httpErrorCode) << L;
     _out << QString::number(item._previousSize) << L;
     _out << QString::number(item._previousModtime) << L;
-    _out /* << other etag (removed) */ << L;
-    _out /* << other fileId (removed) */ << L;
-    _out /* << other instruction (removed) */ << L;
+    _out << item._requestId << L;
 
     _out << endl;
 }
