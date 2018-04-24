@@ -123,9 +123,10 @@ void ActivityWidget::slotButtonClickedOnListView(const QModelIndex &index){
 
     foreach (ActivityLink actionLink, actionLinks) {
         QAction *menuAction = new QAction(actionLink._label, &menu);
+        menuAction->setProperty("activityRow", QVariant::fromValue(index.row()));
         connect(menuAction, &QAction::triggered, this, [this, index, actionLink] {
             qCInfo(lcActivity) << "Notification Link: " << actionLink._verb << actionLink._link;
-            emit this->sendNotificationRequest(qvariant_cast<QString>(index.data(ActivityItemDelegate::AccountRole)), actionLink._link, actionLink._verb);
+            emit this->sendNotificationRequest(qvariant_cast<QString>(index.data(ActivityItemDelegate::AccountRole)), actionLink._link, actionLink._verb, index.row());
         });
         menu.addAction(menuAction);
     }
@@ -145,6 +146,9 @@ void ActivityWidget::slotNotificationRequestFinished(int statusCode)
     if (statusCode != OCS_SUCCESS_STATUS_CODE && statusCode != OCS_SUCCESS_STATUS_CODE_V2) {
         qCWarning(lcActivity) << "Notification Request to Server failed, leave button visible.";
     } else {
+       // to do use the model to rebuild the list or remove the item
+        qDebug() << "activity to be removed from row" << sender()->property("activityRow").toInt();
+        _model->removeFromActivityList(sender()->property("activityRow").toInt());
         qCWarning(lcActivity) << "Notification Request to Server successed, leave button visible.";
     }
 }
@@ -409,7 +413,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
     }
 }
 
-void ActivityWidget::slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb)
+void ActivityWidget::slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row)
 {
     qCInfo(lcActivity) << "Server Notification Request " << verb << link << "on account" << accountName;
     NotificationWidget *theSender = qobject_cast<NotificationWidget *>(sender());
@@ -425,7 +429,9 @@ void ActivityWidget::slotSendNotificationRequest(const QString &accountName, con
             NotificationConfirmJob *job = new NotificationConfirmJob(acc->account());
             QUrl l(link);
             job->setLinkAndVerb(l, verb);
-            job->setWidget(theSender);
+            job->setProperty("activityRow", QVariant::fromValue(row));
+            // save the activity to be hidden or the QModelIndex
+            //job->setProperty();
             connect(job, &AbstractNetworkJob::networkError,
                 this, &ActivityWidget::slotNotifyNetworkError);
             connect(job, &NotificationConfirmJob::jobFinished,
@@ -444,9 +450,7 @@ void ActivityWidget::slotSendNotificationRequest(const QString &accountName, con
 void ActivityWidget::endNotificationRequest(NotificationWidget *widget, int replyCode)
 {
     _notificationRequestsRunning--;
-    if (widget) {
-        widget->slotNotificationRequestFinished(replyCode);
-    }
+    slotNotificationRequestFinished(replyCode);
 }
 
 void ActivityWidget::slotNotifyNetworkError(QNetworkReply *reply)
@@ -477,7 +481,7 @@ void ActivityWidget::slotNotifyServerFinished(const QString &reply, int replyCod
     // Add 200 millisecs to the predefined value to make sure that the timer in
     // widget's method readyToClose() has elapsed.
     if (replyCode == OCS_SUCCESS_STATUS_CODE || replyCode == OCS_SUCCESS_STATUS_CODE_V2) {
-        scheduleWidgetToRemove(job->widget());
+        //scheduleWidgetToRemove(job->widget());
     }
 }
 
