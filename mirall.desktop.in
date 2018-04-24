@@ -29,6 +29,9 @@ MimeType=application/x-@APPLICATION_EXECUTABLE@
 
 
 # Translations
+
+
+# Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
 GenericName[oc]=Dorsièr de Sincronizacion
 Name[oc]=@APPLICATION_NAME@ sincronizacion del client
@@ -117,8 +120,8 @@ GenericName[lo]=ໂຟນເດີຊິງ
 Name[lo]=@APPLICATION_NAME@ ຊິງຄອມພິວເຕີລູກຂ່າຍ 
 Icon[lo]=@APPLICATION_EXECUTABLE@
 Comment[hu_HU]=@APPLICATION_NAME@ asztali szinkronizációs kliens
-GenericName[hu_HU]=Könyvtár szinkronizálás
-Name[hu_HU]=@APPLICATION_NAME@ asztali szinkr. kliens
+GenericName[hu_HU]=Mappaszinkronizálás
+Name[hu_HU]=@APPLICATION_NAME@ asztali szinkronizációs kliens
 Icon[hu_HU]=@APPLICATION_EXECUTABLE@
 Comment[af_ZA]=@APPLICATION_NAME@ werkskermsinchroniseerkliënt
 GenericName[af_ZA]=Vouersinchronisering
