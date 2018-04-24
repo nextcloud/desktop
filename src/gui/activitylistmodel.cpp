@@ -201,6 +201,16 @@ void ActivityListModel::addToActivityList(Activity activity) {
     combineActivityLists();
 }
 
+void ActivityListModel::removeFromActivityList(int row) {
+    if(removeRow(row))
+        qDebug() << "Row removed!!" << row;
+    else
+        qDebug() << "Row not removed!!" << row;
+
+    _notificationLists.removeAt(row);
+    combineActivityLists();
+}
+
 void ActivityListModel::combineActivityLists()
 {
     ActivityList resultList;

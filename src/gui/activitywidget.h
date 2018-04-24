@@ -86,11 +86,11 @@ signals:
     void rowsInserted();
     void hideActivityTab(bool);
     void newNotification();
-    void sendNotificationRequest(const QString &, const QString &link, const QByteArray &verb);
+    void sendNotificationRequest(const QString &, const QString &link, const QByteArray &verb, int row);
 
 private slots:
     void slotBuildNotificationDisplay(const ActivityList &list);
-    void slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb);
+    void slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
     void slotNotifyNetworkError(QNetworkReply *);
     void slotNotifyServerFinished(const QString &reply, int replyCode);
     void endNotificationRequest(NotificationWidget *widget, int replyCode);
