@@ -30,7 +30,9 @@ namespace OCC {
 
 int ActivityItemDelegate::_iconHeight = 0;
 int ActivityItemDelegate::_margin = 0;
-int ActivityItemDelegate::_buttonWidth = 0;
+int ActivityItemDelegate::_primaryButtonWidth = 0;
+int ActivityItemDelegate::_secondaryButtonWidth = 0;
+int ActivityItemDelegate::_spaceBetweenButtons = 0;
 int ActivityItemDelegate::_timeWidth = 0;
 int ActivityItemDelegate::_buttonHeight = 0;
 
@@ -55,9 +57,9 @@ int ActivityItemDelegate::rowHeight()
         QFont f = opt.font;
         QFontMetrics fm(f);
 
-        _margin = fm.height() / 4;
+        _margin = fm.height() / 2;
     }
-    return iconHeight() + 2 * _margin;
+    return iconHeight() + 5 * _margin;
 }
 
 QSize ActivityItemDelegate::sizeHint(const QStyleOptionViewItem &option,
@@ -71,126 +73,158 @@ QSize ActivityItemDelegate::sizeHint(const QStyleOptionViewItem &option,
 void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
     const QModelIndex &index) const
 {
-//  QIcon userIcon = qvariant_cast<QIcon>(index.data(UserIconRole));
-//  QString pathText = qvariant_cast<QString>(index.data(PathRole));
-//  QString remoteLink = qvariant_cast<QString>(index.data(LinkRole));
-//  userIconRect.setLeft(actionIconRect.right() + margin);
-//  userIconRect.setWidth(iconWidth);
-//  userIconRect.setHeight(iconHeight);
-//  userIconRect.setTop(actionIconRect.top());
-//  QRect userIconRect = option.rect;
-//  pm = userIcon.pixmap(iconWidth, iconHeight, QIcon::Normal);
-//  painter->drawPixmap(QPoint(userIconRect.left(), userIconRect.top()), pm);
-
     QStyledItemDelegate::paint(painter, option, index);
     QFont font = option.font;
     QFontMetrics fm(font);
-    int margin = fm.height() / 4;
+    int margin = fm.height() / 2.5;
     painter->save();
+    int iconSize = 16;
+    int iconOffset = qRound(fm.height() / 4.0 * 7.0);
+    int offset = 4;
 
-    QIcon actionIcon = qvariant_cast<QIcon>(index.data(ActionIconRole));
+    // get the data
     Activity::Type activityType = qvariant_cast<Activity::Type>(index.data(ActionRole));
+    QIcon actionIcon = qvariant_cast<QIcon>(index.data(ActionIconRole));
     QString actionText = qvariant_cast<QString>(index.data(ActionTextRole));
     QString messageText = qvariant_cast<QString>(index.data(MessageRole));
+    QList<QVariant> customList = index.data(ActionsLinksRole).toList();
     QString timeText = qvariant_cast<QString>(index.data(PointInTimeRole));
-    QString accountRole = qvariant_cast<QString>(index.data(AccountRole));
     bool accountOnline = qvariant_cast<bool>(index.data(AccountConnectedRole));
 
     // activity/notification icons
     QRect actionIconRect = option.rect;
-    int iconHeight = qRound(fm.height() / 5.0 * 8.0);
-    int iconWidth = iconHeight;
-    actionIconRect.setLeft(option.rect.left() + margin);
-    actionIconRect.setWidth(iconWidth);
-    actionIconRect.setHeight(iconHeight);
-    actionIconRect.setTop(actionIconRect.top() + margin);
-
-    // time rect
-    QRect timeBox;
-    int atPos = accountRole.indexOf(QLatin1Char('@'));
-    if (atPos > -1) {
-        accountRole.remove(0, atPos + 1);
-    }
-    QString timeStr = tr("%1 on %2").arg(timeText, accountRole);
-    if (!accountOnline) timeStr = tr("%1 on %2 (disconnected)").arg(timeText, accountRole);
-    int textTopOffset = qRound((iconHeight - fm.height()) / 2.0);
-    int timeBoxWidth = fm.width(timeStr);
-    timeBox.setTop(actionIconRect.top() + textTopOffset);
-    timeBox.setLeft(option.rect.right() - timeBoxWidth - margin);
-    timeBox.setRight(option.rect.right() + margin);
-    timeBox.setHeight(fm.height());
-    _timeWidth = timeBox.width();
+    actionIconRect.setLeft(option.rect.left() + iconOffset/3);
+    actionIconRect.setRight(option.rect.left() + iconOffset);
+    actionIconRect.setTop(option.rect.top() + qRound((option.rect.height() - 16)/3.0));
 
     // subject text rect
-    QRect actionTextBox = timeBox;
+    QRect actionTextBox = actionIconRect;
     int actionTextBoxWidth = fm.width(actionText);
+    actionTextBox.setTop(option.rect.top() + margin + offset/2);
+    actionTextBox.setHeight(fm.height());
     actionTextBox.setLeft(actionIconRect.right() + margin);
     actionTextBox.setRight(actionTextBox.left() + actionTextBoxWidth + margin);
 
     // message text rect
-    QRect messageTextBox = timeBox;
-    if(!messageText.isEmpty()){
-        int messageTextBoxWidth = fm.width(messageText.prepend(" - "));
-        messageTextBox.setLeft(actionTextBox.right() - margin);
-        messageTextBox.setRight(messageTextBox.left() + messageTextBoxWidth);
-    } else {
-        messageTextBox.setWidth(0);
+    QRect messageTextBox = actionTextBox;
+    messageTextBox.setTop(option.rect.top() + fm.height() + margin);
+    messageTextBox.setHeight(actionTextBox.height());
+    messageTextBox.setBottom(messageTextBox.top() + fm.height());
+    if(messageText.isEmpty()){
+        messageTextBox.setHeight(0);
+        messageTextBox.setBottom(messageTextBox.top());
     }
 
-    QStyleOptionButton optionsButton;
+    // time box rect
+    QRect timeBox = messageTextBox;
+    QString timeStr = tr("%1").arg(timeText);
+    timeBox.setTop(option.rect.top() + fm.height() + fm.height() + margin + offset/2);
+    timeBox.setHeight(actionTextBox.height());
+    timeBox.setBottom(timeBox.top() + fm.height());
+
+    // buttons
+    QStyleOptionButton primaryButton;
+    QStyleOptionButton secondaryButton;
     if(activityType == Activity::Type::NotificationType){
-        int rightMargin = margin * 2;
-        int leftMargin = margin * 4;
-        int right = timeBox.left() - rightMargin;
-        int left = timeBox.left() - leftMargin;
-        optionsButton.rect = option.rect;
-        optionsButton.text = "...";
-        int btnTextWidth = fm.width(optionsButton.text.toAscii());
-        optionsButton.rect.setLeft(left - btnTextWidth);
-        optionsButton.rect.setRight(right);
-        optionsButton.rect.setTop(option.rect.top() + 5);
-        optionsButton.rect.setHeight(option.rect.height() - 10);
-        optionsButton.features |= QStyleOptionButton::DefaultButton;
-        optionsButton.state |= QStyle::State_Raised;
-        _buttonWidth = optionsButton.rect.size().width();
-        _buttonHeight = optionsButton.rect.height();
+        int rightMargin = margin;
+        int leftMargin = margin * offset;
+        int top = option.rect.top() + margin - offset;
+        int buttonSize = option.rect.height()/2.5;
+         _buttonHeight = buttonSize;
+        _spaceBetweenButtons = leftMargin;
+
+        // Secondary will be 'Dismiss' or '...'
+        secondaryButton.rect = option.rect;
+        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/close.svg"));
+        if(customList.size() > 1)
+            secondaryButton.icon = QIcon(QLatin1String(":/client/resources/more.png"));
+
+        int right = option.rect.right() - rightMargin;
+        int left = right - buttonSize;
+        secondaryButton.iconSize = QSize(buttonSize, buttonSize);
+        secondaryButton.rect.setLeft(left);
+        secondaryButton.rect.setRight(right);
+        secondaryButton.rect.setTop(top);
+        secondaryButton.rect.setHeight(_buttonHeight);
+        secondaryButton.features |= QStyleOptionButton::DefaultButton;
+        secondaryButton.state |= QStyle::State_Raised;
+
+        // Primary button will be 'More Information'
+        primaryButton.rect = option.rect;
+        primaryButton.text = tr("More information");
+        right = secondaryButton.rect.left() - rightMargin;
+        left = secondaryButton.rect.left() - leftMargin;
+        primaryButton.rect.setLeft(left - fm.width(primaryButton.text));
+        primaryButton.rect.setRight(right);
+        primaryButton.rect.setTop(top);
+        primaryButton.rect.setHeight(_buttonHeight);
+        primaryButton.features |= QStyleOptionButton::DefaultButton;
+        primaryButton.state |= QStyle::State_Raised;
+
+        // save info to be able to filter mouse clicks
+        _primaryButtonWidth = primaryButton.rect.size().width();
+        _secondaryButtonWidth = secondaryButton.rect.size().width();
     }
 
-    /* === start drawing === */
-    QPixmap pm = actionIcon.pixmap(iconWidth, iconHeight, QIcon::Normal);
+    // draw the icon
+    QPixmap pm = actionIcon.pixmap(iconSize, iconSize, QIcon::Normal);
     painter->drawPixmap(QPoint(actionIconRect.left(), actionIconRect.top()), pm);
 
+    // change pen color if use is not online
+    QPalette p = option.palette;
+    if(!accountOnline)
+        painter->setPen(p.color(QPalette::Disabled, QPalette::Text));
+
+    // change pen color if the line is selected
     QPalette::ColorGroup cg = option.state & QStyle::State_Enabled
         ? QPalette::Normal
         : QPalette::Disabled;
     if (cg == QPalette::Normal && !(option.state & QStyle::State_Active))
         cg = QPalette::Inactive;
-    if (option.state & QStyle::State_Selected) {
+
+    if (option.state & QStyle::State_Selected)
         painter->setPen(option.palette.color(cg, QPalette::HighlightedText));
-    } else {
+    else
         painter->setPen(option.palette.color(cg, QPalette::Text));
-    }
 
-    int spaceLeftForText = (option.rect.width() - (actionIconRect.width() + _buttonWidth))/4;
+    // calculate space for text - use the max possible before using the elipses
+    int spaceLeftForText = option.rect.width() - (actionIconRect.width() + margin) -
+                             (_primaryButtonWidth + _secondaryButtonWidth + _spaceBetweenButtons);
 
+    // draw the subject
     const QString elidedAction = fm.elidedText(actionText, Qt::ElideRight, spaceLeftForText);
     painter->drawText(actionTextBox, elidedAction);
 
+    // draw the buttons
+    if(activityType == Activity::Type::NotificationType){
+        QApplication::style()->drawControl(QStyle::CE_PushButton, &primaryButton, painter);
+        QApplication::style()->drawControl(QStyle::CE_PushButton, &secondaryButton, painter);
+    }
+
+    // draw the message
+    // change pen color for the message
     if(!messageText.isEmpty()){
+        painter->setPen(p.color(QPalette::Disabled, QPalette::Text));
+
+        // check if line is selected
+        if (option.state & QStyle::State_Selected)
+            painter->setPen(option.palette.color(cg, QPalette::HighlightedText));
+
         const QString elidedMessage = fm.elidedText(messageText, Qt::ElideRight, spaceLeftForText);
         painter->drawText(messageTextBox, elidedMessage);
     }
 
-    if(activityType == Activity::Type::NotificationType)
-        QApplication::style()->drawControl(QStyle::CE_PushButton, &optionsButton, painter);
+    // change pen color for the time
+    painter->setPen(p.color(QPalette::Disabled, QPalette::Highlight));
 
-    if (!accountOnline) {
-        QPalette p = option.palette;
-        painter->setPen(p.color(QPalette::Disabled, QPalette::Text));
-    }
+    // check if line is selected
+    if (option.state & QStyle::State_Selected)
+        painter->setPen(option.palette.color(cg, QPalette::HighlightedText));
 
+    // draw the time
     const QString elidedTime = fm.elidedText(timeStr, Qt::ElideRight, spaceLeftForText);
     painter->drawText(timeBox, elidedTime);
+
     painter->restore();
 }
 
@@ -200,14 +234,27 @@ bool ActivityItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
     if(qvariant_cast<Activity::Type>(index.data(ActionRole)) == Activity::Type::NotificationType){
         if (event->type() == QEvent::MouseButtonRelease){
             QMouseEvent *mouseEvent = (QMouseEvent*)event;
-            int x = option.rect.left() + option.rect.width() - _buttonWidth - _timeWidth;
-            int y = option.rect.top();
-            if (mouseEvent->x() > x && mouseEvent->x() < (x + _buttonWidth)){
-                if(mouseEvent->y() > y && mouseEvent->y() < (y + _buttonHeight))
-                    emit buttonClickedOnItemView(index);
+            if(mouseEvent){
+                int mouseEventX = mouseEvent->x();
+                int mouseEventY = mouseEvent->y();
+                int buttonsWidth = _primaryButtonWidth + _spaceBetweenButtons + _secondaryButtonWidth;
+                int x = option.rect.left() + option.rect.width() - buttonsWidth - _timeWidth;
+                int y = option.rect.top();
+
+                if (mouseEventX > x && mouseEventX < x + buttonsWidth){
+                    if(mouseEventY > y && mouseEventY < y + _buttonHeight){
+                        if (mouseEventX > x && mouseEventX < x + _primaryButtonWidth)
+                            emit primaryButtonClickedOnItemView(index);
+
+                        x += _primaryButtonWidth + _spaceBetweenButtons;
+                        if (mouseEventX > x && mouseEventX < x + _secondaryButtonWidth)
+                            emit secondaryButtonClickedOnItemView(index);
+                    }
+                }
             }
         }
     }
+
     return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 

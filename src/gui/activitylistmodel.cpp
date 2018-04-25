@@ -29,6 +29,8 @@
 #include "activitydata.h"
 #include "activitylistmodel.h"
 
+#include "servernotificationhandler.h"
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcActivity, "nextcloud.gui.activity", QtInfoMsg)
@@ -42,6 +44,10 @@ ActivityListModel::ActivityListModel(AccountState *accountState, QWidget *parent
 QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 {
     Activity a;
+
+    // filter the get action here
+    // send only the text of the get action
+    // if there is more than one send the icon? the ...
 
     if (!index.isValid())
         return QVariant();
@@ -67,7 +73,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         }
         return QVariant();
         break;
-    case ActivityItemDelegate::ActionsLinksRole:{
+     case ActivityItemDelegate::ActionsLinksRole:{
         QList<QVariant> customList;
         foreach (ActivityLink customItem, a._links) {
             QVariant customVariant;
@@ -81,10 +87,12 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 //        return QIcon(QLatin1String(":/client/resources/account.png"));
 //        break;
     case ActivityItemDelegate::ActionIconRole:
-        if(a._type == Activity::NotificationType)
-            return QIcon(QLatin1String(":/client/resources/bell.png"));
-        else if(a._type == Activity::ActivityType)
-            return QIcon(QLatin1String(":/client/resources/activity.png"));
+        if(a._type == Activity::NotificationType){
+           QIcon cachedIcon = ServerNotificationHandler::iconCache.value(a._id);
+           if(!cachedIcon.isNull())
+               return cachedIcon;
+           else return QIcon(QLatin1String(":/client/resources/bell.svg"));
+        } else return QIcon(QLatin1String(":/client/resources/activity.png"));
         return QVariant();
         break;
     case ActivityItemDelegate::ActionRole:{
