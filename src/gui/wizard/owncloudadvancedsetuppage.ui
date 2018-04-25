@@ -378,7 +378,7 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="lPlaceholderSync">
+         <layout class="QHBoxLayout" name="horizontalLayout_40">
           <item>
            <widget class="QRadioButton" name="rManualFolder">
             <property name="sizePolicy">
@@ -414,7 +414,7 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <layout class="QHBoxLayout" name="lPlaceholderSync">
           <item>
            <widget class="QRadioButton" name="rPlaceholderSync">
             <property name="sizePolicy">
