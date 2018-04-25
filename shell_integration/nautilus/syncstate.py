@@ -97,18 +97,15 @@ class SocketConnect(GObject.GObject):
             self._sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             sock_file = os.path.join(get_runtime_dir(), appname, "socket")
             try:
-                print("Socket File: " + sock_file)
                 self._sock.connect(sock_file) # fails if sock_file doesn't exist
                 self.connected = True
-                print("Setting connected to %r." % self.connected )
                 self._watch_id = GObject.io_add_watch(self._sock, GObject.IO_IN, self._handle_notify)
-                print("Socket watch id: " + str(self._watch_id))
 
                 self.sendCommand('GET_STRINGS:\n')
 
                 return False  # Don't run again
             except Exception as e:
-                print("Could not connect to unix socket. " + str(e))
+                print("Could not connect to unix socket " + sock_file + ". " + str(e))
         except Exception as e:  # Bad habbit
             print("Connect could not be established, try again later.")
             self._sock.close()
@@ -138,7 +135,7 @@ class SocketConnect(GObject.GObject):
         return True  # Run again
 
     def _handle_server_response(self, line):
-        print("Server response: " + line)
+        # print("Server response: " + line)
         parts = line.split(':')
         action = parts[0]
         args = parts[1:]
@@ -265,7 +262,7 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
 
     def context_menu_action(self, menu, action, file):
         filename = get_local_path(file.get_uri())
-        print("Context menu: " + action + ' ' + filename)
+        # print("Context menu: " + action + ' ' + filename)
         socketConnect.sendCommand(action + ":" + filename + "\n")
 
 
