@@ -47,12 +47,15 @@ public:
     static int iconHeight();
 
 signals:
-    void buttonClickedOnItemView(const QModelIndex &index);
+    void primaryButtonClickedOnItemView(const QModelIndex &index);
+    void secondaryButtonClickedOnItemView(const QModelIndex &index);
 
 private:
     static int _margin;
     static int _iconHeight;
-    static int _buttonWidth;
+    static int _primaryButtonWidth;
+    static int _secondaryButtonWidth;
+    static int _spaceBetweenButtons;
     static int _timeWidth;
     static int _buttonHeight;
 };

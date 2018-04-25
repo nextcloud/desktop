@@ -47,7 +47,7 @@ void NotificationWidget::setActivity(const Activity &activity)
     _ui._subjectLabel->setText(activity._subject);
     _ui._messageLabel->setText(activity._message);
 
-    _ui._notifIcon->setPixmap(QPixmap(":/client/resources/bell.png"));
+    _ui._notifIcon->setPixmap(QPixmap(":/client/resources/bell.svg"));
     _ui._notifIcon->setMinimumWidth(22);
     _ui._notifIcon->setMinimumHeight(22);
     _ui._notifIcon->show();
