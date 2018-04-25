@@ -35,6 +35,7 @@ from gi.repository import GObject, Nautilus
 appname = 'ownCloud'
 
 print("Initializing "+appname+"-client-nautilus extension")
+print("Using python version {}".format(sys.version_info))
 
 def get_local_path(url):
     if url[0:7] == 'file://':
