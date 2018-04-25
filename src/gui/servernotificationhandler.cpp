@@ -17,6 +17,8 @@
 #include "capabilities.h"
 #include "networkjobs.h"
 
+#include "iconjob.h"
+
 #include <QJsonDocument>
 #include <QJsonObject>
 
@@ -28,6 +30,7 @@ const QString notificationsPath = QLatin1String("ocs/v2.php/apps/notifications/a
 const char propertyAccountStateC[] = "oc_account_state";
 const int successStatusCode = 200;
 const int notModifiedStatusCode = 304;
+QMap<int, QIcon> ServerNotificationHandler::iconCache;
 
 ServerNotificationHandler::ServerNotificationHandler(AccountState *accountState, QObject *parent)
     : QObject(parent)
@@ -73,6 +76,13 @@ void ServerNotificationHandler::slotEtagResponseHeaderReceived(const QByteArray 
     }
 }
 
+void ServerNotificationHandler::slotIconDownloaded(QByteArray iconData){
+    QPixmap pixmap;
+    pixmap.loadFromData(iconData);
+    iconCache.insert(sender()->property("activityId").toInt(), QIcon(pixmap));
+    qDebug() << "Icon cached for activity " << sender()->property("activityId").toInt();
+}
+
 void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &json, int statusCode)
 {
     if (statusCode != successStatusCode && statusCode != notModifiedStatusCode) {
@@ -101,6 +111,12 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         a._id = json.value("notification_id").toInt();
         a._subject = json.value("subject").toString();
         a._message = json.value("message").toString();
+
+        if(!json.value("icon").toString().isEmpty()){
+            IconJob *iconJob = new IconJob(QUrl(json.value("icon").toString()));
+            iconJob->setProperty("activityId", a._id);
+            connect(iconJob, &IconJob::jobFinished, this, &ServerNotificationHandler::slotIconDownloaded);
+        }
 
         QString s = json.value("link").toString();
         if (!s.isEmpty()) {

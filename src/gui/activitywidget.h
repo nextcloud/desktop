@@ -86,7 +86,7 @@ signals:
     void rowsInserted();
     void hideActivityTab(bool);
     void newNotification();
-    void sendNotificationRequest(const QString &, const QString &link, const QByteArray &verb, int row);
+    void sendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
 
 private slots:
     void slotBuildNotificationDisplay(const ActivityList &list);
@@ -97,7 +97,8 @@ private slots:
     void scheduleWidgetToRemove(NotificationWidget *widget, int milliseconds = 100);
     void slotCheckToCleanWidgets();
     void slotNotificationRequestFinished(int statusCode);
-    void slotButtonClickedOnListView(const QModelIndex &index);
+    void slotPrimaryButtonClickedOnListView(const QModelIndex &index);
+    void slotSecondaryButtonClickedOnListView(const QModelIndex &index);
 
 private:
     void showLabels();

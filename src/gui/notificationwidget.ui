@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>725</width>
-    <height>125</height>
+    <height>129</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -75,7 +75,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap>../../../../resources/bell.png</pixmap>
+          <pixmap>../../resources/bell.svg</pixmap>
          </property>
          <property name="alignment">
           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
