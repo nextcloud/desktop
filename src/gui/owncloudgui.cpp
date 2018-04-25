@@ -1041,12 +1041,6 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
         return;
     }
 
-#ifdef Q_OS_MAC
-    // For https://github.com/owncloud/client/issues/3783
-    // see also #6185, #3015
-    _settingsDialog->hide();
-#endif
-
     const auto accountState = folder->accountState();
 
     SyncJournalFileRecord fileRecord;
