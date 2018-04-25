@@ -16,6 +16,7 @@
 #define ACTIVITYDATA_H
 
 #include <QtCore>
+#include <QIcon>
 
 namespace OCC {
 /**

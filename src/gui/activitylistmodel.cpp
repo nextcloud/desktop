@@ -29,6 +29,8 @@
 #include "activitydata.h"
 #include "activitylistmodel.h"
 
+#include "servernotificationhandler.h"
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcActivity, "nextcloud.gui.activity", QtInfoMsg)
@@ -81,11 +83,13 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 //        return QIcon(QLatin1String(":/client/resources/account.png"));
 //        break;
     case ActivityItemDelegate::ActionIconRole:
-        if(a._type == Activity::NotificationType)
-            return QIcon(QLatin1String(":/client/resources/bell.png"));
-        else if(a._type == Activity::ActivityType)
-            return QIcon(QLatin1String(":/client/resources/activity.png"));
-        return QVariant();
+        if(a._type == Activity::NotificationType){
+            QIcon cachedIcon = ServerNotificationHandler::iconCache.value(a._id);
+           if(!cachedIcon.isNull())
+               return cachedIcon;
+           else QIcon(QLatin1String(":/client/resources/bell.png"));
+        }
+        return QIcon(QLatin1String(":/client/resources/activity.png"));
         break;
     case ActivityItemDelegate::ActionRole:{
         QVariant type;

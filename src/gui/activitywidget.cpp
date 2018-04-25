@@ -368,6 +368,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
                     emit guiLog(activity._subject, activity._accName);
                 }
             }
+
             _model->addToActivityList(activity);
         }
     }
