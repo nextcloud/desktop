@@ -18,6 +18,7 @@
 #include "theme.h"
 #include "common/utility.h"
 #include "common/asserts.h"
+#include "version.h"
 
 #include "creds/abstractcredentials.h"
 
@@ -52,6 +53,7 @@ static const char crashReporterC[] = "crashReporter";
 static const char optionalDesktopNoficationsC[] = "optionalDesktopNotifications";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
 static const char updateCheckIntervalC[] = "updateCheckInterval";
+static const char updateChannelC[] = "updateChannel";
 static const char geometryC[] = "geometry";
 static const char timeoutC[] = "timeout";
 static const char chunkSizeC[] = "chunkSize";
@@ -466,6 +468,28 @@ void ConfigFile::setSkipUpdateCheck(bool skip, const QString &connection)
 
     settings.setValue(QLatin1String(skipUpdateCheckC), QVariant(skip));
     settings.sync();
+}
+
+QString ConfigFile::updateChannel() const
+{
+    QString defaultUpdateChannel = QStringLiteral("stable");
+    QString suffix = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
+    if (suffix.startsWith("daily")
+        || suffix.startsWith("nightly")
+        || suffix.startsWith("alpha")
+        || suffix.startsWith("rc")
+        || suffix.startsWith("beta")) {
+        defaultUpdateChannel = QStringLiteral("beta");
+    }
+
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(updateChannelC), defaultUpdateChannel).toString();
+}
+
+void ConfigFile::setUpdateChannel(const QString &channel)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(updateChannelC), channel);
 }
 
 int ConfigFile::maxLogLines() const

@@ -92,6 +92,11 @@ OCUpdater::OCUpdater(const QUrl &url)
 {
 }
 
+void OCUpdater::setUpdateUrl(const QUrl &url)
+{
+    _updateUrl = url;
+}
+
 bool OCUpdater::performUpdate()
 {
     ConfigFile cfg;

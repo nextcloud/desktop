@@ -129,9 +129,24 @@ void GeneralSettings::slotUpdateInfo()
         connect(_ui->restartButton, &QAbstractButton::clicked, qApp, &QApplication::quit, Qt::UniqueConnection);
         _ui->updateStateLabel->setText(updater->statusString());
         _ui->restartButton->setVisible(updater->downloadState() == OCUpdater::DownloadComplete);
+
+        // Channel selection
+        _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == "beta" ? 1 : 0);
+        connect(_ui->updateChannel, &QComboBox::currentTextChanged,
+            this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
+
     } else {
         // can't have those infos from sparkle currently
         _ui->updatesGroupBox->setVisible(false);
+    }
+}
+
+void GeneralSettings::slotUpdateChannelChanged(const QString &channel)
+{
+    ConfigFile().setUpdateChannel(channel);
+    if (OCUpdater *updater = qobject_cast<OCUpdater *>(Updater::instance())) {
+        updater->setUpdateUrl(Updater::updateUrl());
+        updater->checkForUpdate();
     }
 }
 

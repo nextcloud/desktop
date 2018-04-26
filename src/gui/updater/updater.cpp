@@ -22,6 +22,7 @@
 #include "theme.h"
 #include "common/utility.h"
 #include "version.h"
+#include "configfile.h"
 
 #include "config.h"
 
@@ -37,6 +38,25 @@ Updater *Updater::instance()
         _instance = create();
     }
     return _instance;
+}
+
+QUrl Updater::updateUrl()
+{
+    QUrl updateBaseUrl(QString::fromLocal8Bit(qgetenv("OCC_UPDATE_URL")));
+    if (updateBaseUrl.isEmpty()) {
+        updateBaseUrl = QUrl(QLatin1String(APPLICATION_UPDATE_URL));
+    }
+    if (!updateBaseUrl.isValid() || updateBaseUrl.host() == ".") {
+        return QUrl();
+    }
+
+    auto url = addQueryParams(updateBaseUrl);
+
+#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
+    url.addQueryItem(QLatin1String("sparkle"), QLatin1String("true"));
+#endif
+
+    return url;
 }
 
 QUrl Updater::addQueryParams(const QUrl &url)
@@ -64,14 +84,10 @@ QUrl Updater::addQueryParams(const QUrl &url)
 
     QString suffix = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
     paramUrl.addQueryItem(QLatin1String("versionsuffix"), suffix);
-    if (suffix.startsWith("daily")
-            || suffix.startsWith("nightly")
-            || suffix.startsWith("alpha")
-            || suffix.startsWith("rc")
-            || suffix.startsWith("beta")) {
-        paramUrl.addQueryItem(QLatin1String("channel"), "beta");
-        // FIXME: Provide a checkbox in UI to enable regular versions to switch
-        // to beta channel
+
+    auto channel = ConfigFile().updateChannel();
+    if (channel != "stable") {
+        paramUrl.addQueryItem(QLatin1String("channel"), channel);
     }
 
     return paramUrl;
@@ -98,23 +114,18 @@ QString Updater::getSystemInfo()
 // To test, cmake with -DAPPLICATION_UPDATE_URL="http://127.0.0.1:8080/test.rss"
 Updater *Updater::create()
 {
-    QUrl updateBaseUrl(QString::fromLocal8Bit(qgetenv("OCC_UPDATE_URL")));
-    if (updateBaseUrl.isEmpty()) {
-        updateBaseUrl = QUrl(QLatin1String(APPLICATION_UPDATE_URL));
-    }
-    if (!updateBaseUrl.isValid() || updateBaseUrl.host() == ".") {
+    auto url = updateUrl();
+    if (url.isEmpty()) {
         qCWarning(lcUpdater) << "Not a valid updater URL, will not do update check";
         return 0;
     }
-    updateBaseUrl = addQueryParams(updateBaseUrl);
 #if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
-    updateBaseUrl.addQueryItem(QLatin1String("sparkle"), QLatin1String("true"));
-    return new SparkleUpdater(updateBaseUrl.toString());
+    return new SparkleUpdater(url.toString());
 #elif defined(Q_OS_WIN32)
     // the best we can do is notify about updates
-    return new NSISUpdater(updateBaseUrl);
+    return new NSISUpdater(url);
 #else
-    return new PassiveUpdateNotifier(QUrl(updateBaseUrl));
+    return new PassiveUpdateNotifier(url);
 #endif
 }
 

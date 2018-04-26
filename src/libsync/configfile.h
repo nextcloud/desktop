@@ -131,6 +131,9 @@ public:
     bool skipUpdateCheck(const QString &connection = QString()) const;
     void setSkipUpdateCheck(bool, const QString &);
 
+    QString updateChannel() const;
+    void setUpdateChannel(const QString &channel);
+
     void saveGeometryHeader(QHeaderView *header);
     void restoreGeometryHeader(QHeaderView *header);
 
