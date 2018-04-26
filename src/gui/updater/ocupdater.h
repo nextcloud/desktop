@@ -99,6 +99,8 @@ public:
         UpdateOnlyAvailableThroughSystem };
     explicit OCUpdater(const QUrl &url);
 
+    void setUpdateUrl(const QUrl &url);
+
     bool performUpdate();
 
     void checkForUpdate() Q_DECL_OVERRIDE;

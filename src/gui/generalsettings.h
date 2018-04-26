@@ -45,6 +45,7 @@ private slots:
     void slotToggleOptionalServerNotifications(bool);
     void slotShowInExplorerNavigationPane(bool);
     void slotUpdateInfo();
+    void slotUpdateChannelChanged(const QString &channel);
     void slotIgnoreFilesEditor();
     void loadMiscSettings();
     void slotShowLegalNotice();
