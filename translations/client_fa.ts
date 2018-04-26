@@ -1514,17 +1514,22 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>نمایش پرونده های رد شده</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="133"/>
+        <location filename="../src/gui/issueswidget.ui" line="137"/>
         <source>There were too many issues. Not all will be visible here.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="155"/>
+        <location filename="../src/gui/issueswidget.ui" line="147"/>
+        <source>There were conflicts. Check the documentation on how to resolve them.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.ui" line="180"/>
         <source>Copy the issues list to the clipboard.</source>
         <translation>کپی کردن فهرست موضوعات در کلیپ بورد.</translation>
     </message>
     <message>
-        <location filename="../src/gui/issueswidget.ui" line="158"/>
+        <location filename="../src/gui/issueswidget.ui" line="183"/>
         <source>Copy</source>
         <translation>کپی کردن</translation>
     </message>
@@ -1542,6 +1547,11 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/issueswidget.cpp" line="94"/>
         <source>Issue</source>
         <translation>موضوع</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/issueswidget.cpp" line="126"/>
+        <source>There were conflicts. &lt;a href=&quot;%1&quot;&gt;Check the documentation on how to resolve them.&lt;/a&gt;</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2714,22 +2724,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>سرور اجازه به اشتراک گذاشتن نمی دهد</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="129"/>
+        <location filename="../src/gui/sharedialog.cpp" line="130"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
         <translation>گرفتن مجوز بیشترین اشتراک ممکن از سرور...</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="199"/>
+        <location filename="../src/gui/sharedialog.cpp" line="200"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
         <translation>پرونده نمی تواند به اشتراک گذاشته شود زیرا بدون مجوز به اشتراک گذاشته شده است.</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="213"/>
+        <location filename="../src/gui/sharedialog.cpp" line="214"/>
         <source>Users and Groups</source>
         <translation>کاربران و گروه ها</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharedialog.cpp" line="220"/>
+        <location filename="../src/gui/sharedialog.cpp" line="221"/>
         <source>Public Links</source>
         <translation>پیوندهای عمومی</translation>
     </message>
@@ -3569,7 +3579,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="326"/>
+        <location filename="../src/libsync/theme.cpp" line="336"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation>&lt;p&gt;نسخه 2%. برای اطلاعات بیشتر https://%4 را مشاهده کنید.&lt;/p&gt; &lt;p&gt;برای موضوعات آشنا و کمک، لطفا &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt; را مشاهده کنید.&lt;/p&gt;&lt;p&gt;&lt;small&gt;توسط Klaas Freitag و Daniel Molkentin و Olivier Goffart و Markus Götz و Jan-Christoph Borchardt و دیگران. &lt;/small&gt;&lt;/p&gt;&lt;p&gt; Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;تحت مجوز GNU مجوز عمومی سراسری (GPL) نسخه 2.0 &lt;br/&gt; ownCloud و لوگوی ownCloud علائم تجاری ownCloud GmbH در ایالت متحده، سایر کشورها، یا هر دو را ثبت کرده اند. &lt;/p&gt;</translation>
     </message>
@@ -4144,7 +4154,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ownCloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="310"/>
+        <location filename="../src/libsync/theme.cpp" line="320"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;ساخته شده از اصلاح &lt;a href=&quot;%1&quot;&gt;2%&lt;/a&gt; Git روی 3%، 4% با استفاده از Qt 5%، 6% &lt;/small&gt;&lt;/p&gt;</translation>
     </message>
