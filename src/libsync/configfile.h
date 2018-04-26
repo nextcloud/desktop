@@ -171,6 +171,9 @@ public:
         See: https://github.com/nextcloud/client_updater_server/pull/36 */
     int updateSegment() const;
 
+    QString updateChannel() const;
+    void setUpdateChannel(const QString &channel);
+
     void saveGeometryHeader(QHeaderView *header);
     void restoreGeometryHeader(QHeaderView *header);
 

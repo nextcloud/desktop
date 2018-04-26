@@ -37,6 +37,7 @@ public:
     };
 
     static Updater *instance();
+    static QUrl updateUrl();
 
     virtual void checkForUpdate() = 0;
     virtual void backgroundCheckForUpdate() = 0;
