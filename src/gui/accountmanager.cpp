@@ -23,6 +23,8 @@
 #include <QSettings>
 #include <QDir>
 #include <QNetworkAccessManager>
+#include <QMessageBox>
+#include "clientsideencryption.h"
 
 namespace {
 static const char urlC[] = "url";
@@ -38,7 +40,7 @@ static const char serverVersionC[] = "serverVersion";
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcAccountManager, "gui.account.manager", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcAccountManager, "nextcloud.gui.account.manager", QtInfoMsg)
 
 AccountManager *AccountManager::instance()
 {
@@ -312,6 +314,9 @@ void AccountManager::deleteAccount(AccountState *account)
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->remove(account->account()->id());
 
+    // Forget E2E keys
+    account->account()->e2e()->forgetSensitiveData();
+
     emit accountRemoved(account);
 }
 
@@ -321,10 +326,26 @@ AccountPtr AccountManager::createAccount()
     acc->setSslErrorHandler(new SslDialogErrorHandler);
     connect(acc.data(), &Account::proxyAuthenticationRequired,
         ProxyAuthHandler::instance(), &ProxyAuthHandler::handleProxyAuthenticationRequired);
+
+    connect(acc.data()->e2e(), &ClientSideEncryption::mnemonicGenerated,
+             &AccountManager::displayMnemonic);
+
     return acc;
 }
 
+void AccountManager::displayMnemonic(const QString& mnemonic)
+{
+    QMessageBox msgBox;
+    msgBox.setText(tr("All 12 words together make a very strong password, "
+                      "letting only you view and make use of your encrypted files. "
+                      "Please write it down and keep it somewhere safe."));
+    msgBox.setDetailedText(mnemonic);
+    msgBox.setWindowTitle(tr("Make note of your 12 word encryption password"));
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setStandardButtons(QMessageBox::Ok);
 
+    msgBox.exec();
+}
 void AccountManager::shutdown()
 {
     auto accountsCopy = _accounts;

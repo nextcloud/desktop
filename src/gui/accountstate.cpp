@@ -26,7 +26,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcAccountState, "gui.account.state", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcAccountState, "nextcloud.gui.account.state", QtInfoMsg)
 
 AccountState::AccountState(AccountPtr account)
     : QObject()

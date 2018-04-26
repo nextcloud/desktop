@@ -409,5 +409,6 @@ std::unique_ptr<csync_file_stat_t> csync_file_stat_s::fromSyncJournalFileRecord(
     st->size = rec._fileSize;
     st->has_ignored_files = rec._serverHasIgnoredFiles;
     st->checksumHeader = rec._checksumHeader;
+    st->e2eMangledName = rec._e2eMangledName;
     return st;
 }

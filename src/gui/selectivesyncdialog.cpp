@@ -237,7 +237,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
         root->setIcon(0, Theme::instance()->applicationIcon());
         root->setData(0, Qt::UserRole, QString());
         root->setCheckState(0, Qt::Checked);
-        qint64 size = job ? job->_sizes.value(pathToRemove, -1) : -1;
+        qint64 size = job ? job->_folderInfos[pathToRemove].size : -1;
         if (size >= 0) {
             root->setText(1, Utility::octetsToString(size));
             root->setData(1, Qt::UserRole, size);
@@ -246,7 +246,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
 
     Utility::sortFilenames(list);
     foreach (QString path, list) {
-        auto size = job ? job->_sizes.value(path) : 0;
+        auto size = job ? job->_folderInfos[path].size : 0;
         path.remove(pathToRemove);
         QStringList paths = path.split('/');
         if (paths.last().isEmpty())

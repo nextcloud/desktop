@@ -21,7 +21,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcFileItem, "sync.fileitem", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcFileItem, "nextcloud.sync.fileitem", QtInfoMsg)
 
 SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QString &localFileName)
 {
@@ -35,6 +35,7 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     rec._remotePerm = _remotePerm;
     rec._serverHasIgnoredFiles = _serverHasIgnoredFiles;
     rec._checksumHeader = _checksumHeader;
+    rec._e2eMangledName = _encryptedFileName.toUtf8();
 
     // Go through csync vio just to get the inode.
     csync_file_stat_t fs;
@@ -55,7 +56,7 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
 SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRecord &rec)
 {
     SyncFileItemPtr item(new SyncFileItem);
-    item->_file = rec._path;
+    item->_file = QString::fromUtf8(rec._path);
     item->_inode = rec._inode;
     item->_modtime = rec._modtime;
     item->_type = rec._type;
@@ -65,6 +66,7 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     item->_remotePerm = rec._remotePerm;
     item->_serverHasIgnoredFiles = rec._serverHasIgnoredFiles;
     item->_checksumHeader = rec._checksumHeader;
+    item->_encryptedFileName = QString::fromUtf8(rec._e2eMangledName);
     return item;
 }
 

@@ -43,9 +43,9 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcPropagator, "sync.propagator", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcDirectory, "sync.propagator.directory", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcCleanupPolls, "sync.propagator.cleanuppolls", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropagator, "nextcloud.sync.propagator", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcDirectory, "nextcloud.sync.propagator.directory", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCleanupPolls, "nextcloud.sync.propagator.cleanuppolls", QtInfoMsg)
 
 qint64 criticalFreeSpaceLimit()
 {

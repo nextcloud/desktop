@@ -52,7 +52,7 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>
 
-Q_LOGGING_CATEGORY(lcUpdate, "sync.csync.updater", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcUpdate, "nextcloud.sync.csync.updater", QtInfoMsg)
 
 #ifdef NO_RENAME_EXTENSION
 /* Return true if the two path have the same extension. false otherwise. */
@@ -192,14 +192,38 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       return -1;
   }
 
+
+  /*
+   * When file is encrypted it's phash (path hash) will not match the local file phash,
+   * we could match the e2eMangledName but that might be slow wihout index, and it's
+   * not UNIQUE at the moment.
+   */
+  if (!base.isValid()) {
+      if(!ctx->statedb->getFileRecordByE2eMangledName(fs->path, &base)) {
+          ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
+          return -1;
+      }
+  }
+
   if(base.isValid()) { /* there is an entry in the database */
+      // When the file is loaded from the file system it misses
+      // the e2e mangled name
+      if (fs->e2eMangledName.isEmpty() && !base._e2eMangledName.isEmpty()) {
+          fs->e2eMangledName = base._e2eMangledName;
+          fs->path = base._path;
+      }
+
       /* we have an update! */
-      qCInfo(lcUpdate, "Database entry found, compare: %" PRId64 " <-> %" PRId64
+      qCInfo(lcUpdate, "Database entry found for %s, compare: %" PRId64 " <-> %" PRId64
                                           ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64
-                                          ", size: %" PRId64 " <-> %" PRId64 ", perms: %x <-> %x, ignore: %d",
+                                          ", size: %" PRId64 " <-> %" PRId64 ", perms: %x <-> %x, ignore: %d, e2e: %s",
+                base._path.constData(),
                 ((int64_t) fs->modtime), ((int64_t) base._modtime),
                 fs->etag.constData(), base._etag.constData(), (uint64_t) fs->inode, (uint64_t) base._inode,
-                (uint64_t) fs->size, (uint64_t) base._fileSize, *reinterpret_cast<short*>(&fs->remotePerm), *reinterpret_cast<short*>(&base._remotePerm), base._serverHasIgnoredFiles );
+                (uint64_t) fs->size, (uint64_t) base._fileSize,
+                *reinterpret_cast<short*>(&fs->remotePerm), *reinterpret_cast<short*>(&base._remotePerm),
+                base._serverHasIgnoredFiles,
+                base._e2eMangledName.constData());
       if (ctx->current == REMOTE_REPLICA && fs->etag != base._etag) {
           fs->instruction = CSYNC_INSTRUCTION_EVAL;
 
@@ -351,7 +375,16 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                   csync_rename_record(ctx, base._path, fs->path);
               }
 
-              qCDebug(lcUpdate, "remote rename detected based on fileid %s --> %s", base._path.constData(), fs->path.constData());
+              /* A remote rename can also mean Encryption Mangled Name.
+               * if we find one of those in the database, we ignore it.
+               */
+              if (!base._e2eMangledName.isEmpty()) {
+                  qCWarning(lcUpdate, "Encrypted file can not rename");
+                  done = true;
+                  return;
+              }
+
+              qCDebug(lcUpdate, "remote rename detected based on fileid %s --> %s", qPrintable(base._path), qPrintable(fs->path.constData()));
               fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
               done = true;
           };

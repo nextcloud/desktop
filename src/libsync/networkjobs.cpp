@@ -34,21 +34,22 @@
 #include "networkjobs.h"
 #include "account.h"
 #include "owncloudpropagator.h"
+#include "clientsideencryption.h"
 
 #include "creds/abstractcredentials.h"
 #include "creds/httpcredentials.h"
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcEtagJob, "sync.networkjob.etag", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcLsColJob, "sync.networkjob.lscol", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcCheckServerJob, "sync.networkjob.checkserver", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcPropfindJob, "sync.networkjob.propfind", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcAvatarJob, "sync.networkjob.avatar", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcMkColJob, "sync.networkjob.mkcol", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcProppatchJob, "sync.networkjob.proppatch", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcJsonApiJob, "sync.networkjob.jsonapi", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "sync.networkjob.determineauthtype", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcEtagJob, "nextcloud.sync.networkjob.etag", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcLsColJob, "nextcloud.sync.networkjob.lscol", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcCheckServerJob, "nextcloud.sync.networkjob.checkserver", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropfindJob, "nextcloud.sync.networkjob.propfind", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcAvatarJob, "nextcloud.sync.networkjob.avatar", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcMkColJob, "nextcloud.sync.networkjob.mkcol", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcProppatchJob, "nextcloud.sync.networkjob.proppatch", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcJsonApiJob, "nextcloud.sync.networkjob.jsonapi", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "nextcloud.sync.networkjob.determineauthtype", QtInfoMsg)
 const int notModifiedStatusCode = 304;
 
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
@@ -186,7 +187,7 @@ LsColXMLParser::LsColXMLParser()
 {
 }
 
-bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, qint64> *sizes, const QString &expectedPath)
+bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, ExtraFolderInfo> *fileInfo, const QString &expectedPath)
 {
     // Parse DAV response
     QXmlStreamReader reader(xml);
@@ -242,9 +243,11 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, qint64> *sizes,
             } else if (name == QLatin1String("size")) {
                 bool ok = false;
                 auto s = propertyContent.toLongLong(&ok);
-                if (ok && sizes) {
-                    sizes->insert(currentHref, s);
+                if (ok && fileInfo) {
+                    (*fileInfo)[currentHref].size = s;
                 }
+            } else if (name == QLatin1String("fileid")) {
+                (*fileInfo)[currentHref].fileId = propertyContent.toUtf8();
             }
             currentTmpProperties.insert(reader.name().toString(), propertyContent);
         }
@@ -373,7 +376,7 @@ bool LsColJob::finished()
             this, &LsColJob::finishedWithoutError);
 
         QString expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/webdav/folder"
-        if (!parser.parse(reply()->readAll(), &_sizes, expectedPath)) {
+        if (!parser.parse(reply()->readAll(), &_folderInfos, expectedPath)) {
             // XML parse error
             emit finishedWithError(reply());
         }
@@ -566,6 +569,7 @@ void PropfindJob::start()
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
     sendRequest("PROPFIND", makeDavUrl(path()), req, buf);
+
     AbstractNetworkJob::start();
 }
 
@@ -814,7 +818,8 @@ bool JsonApiJob::finished()
     int statusCode = 0;
     int httpStatusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (reply()->error() != QNetworkReply::NoError) {
-        qCWarning(lcJsonApiJob) << "Network error: " << path() << errorString() << httpStatusCode;
+        qCWarning(lcJsonApiJob) << "Network error: " << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        statusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         emit jsonReceived(QJsonDocument(), statusCode);
         return true;
     }
@@ -853,6 +858,7 @@ bool JsonApiJob::finished()
     emit jsonReceived(json, statusCode);
     return true;
 }
+
 
 DetermineAuthTypeJob::DetermineAuthTypeJob(AccountPtr account, QObject *parent)
     : QObject(parent)
@@ -939,6 +945,43 @@ bool SimpleNetworkJob::finished()
     return true;
 }
 
+
+DeleteApiJob::DeleteApiJob(AccountPtr account, const QString &path, QObject *parent)
+    : AbstractNetworkJob(account, path, parent)
+{
+
+}
+
+void DeleteApiJob::start()
+{
+    QNetworkRequest req;
+    req.setRawHeader("OCS-APIREQUEST", "true");
+    QUrl url = Utility::concatUrlPath(account()->url(), path());
+    sendRequest("DELETE", url, req);
+    AbstractNetworkJob::start();
+}
+
+bool DeleteApiJob::finished()
+{
+    qCInfo(lcJsonApiJob) << "JsonApiJob of" << reply()->request().url() << "FINISHED WITH STATUS"
+                         << reply()->error()
+                         << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
+
+    int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+
+    if (reply()->error() != QNetworkReply::NoError) {
+        qCWarning(lcJsonApiJob) << "Network error: " << path() << errorString() << httpStatus;
+        emit result(httpStatus);
+        return true;
+    }
+
+    const auto replyData = QString::fromUtf8(reply()->readAll());
+    qCInfo(lcJsonApiJob()) << "TMX Delete Job" << replyData;
+    emit result(httpStatus);
+		return true;
+}
+
 void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
     const QByteArray &numericFileId, QObject *target,
     std::function<void(const QString &url)> targetFun)
@@ -972,3 +1015,4 @@ void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
 }
 
 } // namespace OCC
+

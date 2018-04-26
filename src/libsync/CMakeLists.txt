@@ -1,7 +1,6 @@
 project(libsync)
 set(CMAKE_AUTOMOC TRUE)
 
-
 if ( APPLE )
     list(APPEND OS_SPECIFIC_LINK_LIBRARIES
          /System/Library/Frameworks/CoreServices.framework
@@ -22,6 +21,7 @@ endif()
 
 set(libsync_SRCS
     account.cpp
+    wordlist.cpp
     bandwidthmanager.cpp
     capabilities.cpp
     clientproxy.cpp
@@ -43,14 +43,19 @@ set(libsync_SRCS
     propagateuploadv1.cpp
     propagateuploadng.cpp
     propagateremotedelete.cpp
+    propagateremotedeleteencrypted.cpp
     propagateremotemove.cpp
     propagateremotemkdir.cpp
+    propagateuploadencrypted.cpp
+    propagatedownloadencrypted.cpp
     syncengine.cpp
     syncfileitem.cpp
     syncfilestatus.cpp
     syncfilestatustracker.cpp
     syncresult.cpp
     theme.cpp
+    clientsideencryption.cpp
+    clientsideencryptionjobs.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialscommon.cpp
@@ -92,6 +97,8 @@ ENDIF(NOT APPLE)
 add_library(${synclib_NAME} SHARED ${libsync_SRCS})
 target_link_libraries(${synclib_NAME}
     ocsync
+    OpenSSL::Crypto
+    OpenSSL::SSL
     ${OS_SPECIFIC_LINK_LIBRARIES}
     Qt5::Core Qt5::Network
 )

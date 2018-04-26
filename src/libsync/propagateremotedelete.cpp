@@ -13,6 +13,7 @@
  */
 
 #include "propagateremotedelete.h"
+#include "propagateremotedeleteencrypted.h"
 #include "owncloudpropagator_p.h"
 #include "account.h"
 #include "common/asserts.h"
@@ -21,8 +22,8 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcDeleteJob, "sync.networkjob.delete", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcPropagateRemoteDelete, "sync.propagator.remotedelete", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcDeleteJob, "nextcloud.sync.networkjob.delete", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropagateRemoteDelete, "nextcloud.sync.propagator.remotedelete", QtInfoMsg)
 
 DeleteJob::DeleteJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
@@ -65,11 +66,25 @@ void PropagateRemoteDelete::start()
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    qCDebug(lcPropagateRemoteDelete) << _item->_file;
+    if (!_item->_encryptedFileName.isEmpty()) {
+        auto job = new PropagateRemoteDeleteEncrypted(propagator(), _item, this);
+        connect(job, &PropagateRemoteDeleteEncrypted::finished, this, [this] (bool success) {
+            Q_UNUSED(success) // Should we skip file deletion in case of failure?
+            createDeleteJob(_item->_encryptedFileName);
+        });
+        job->start();
+    } else {
+        createDeleteJob(_item->_file);
+    }
+}
+
+void PropagateRemoteDelete::createDeleteJob(const QString &filename)
+{
+    qCInfo(lcPropagateRemoteDelete) << "Deleting file, local" << _item->_file << "remote" << filename;
 
     _job = new DeleteJob(propagator()->account(),
-        propagator()->_remoteFolder + _item->_file,
-        this);
+                         propagator()->_remoteFolder + filename,
+                         this);
     connect(_job.data(), &DeleteJob::finishedSignal, this, &PropagateRemoteDelete::slotDeleteJobFinished);
     propagator()->_activeJobList.append(this);
     _job->start();

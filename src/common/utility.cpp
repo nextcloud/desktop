@@ -58,7 +58,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcUtility, "sync.utility", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcUtility, "nextcloud.sync.utility", QtInfoMsg)
 
 bool Utility::writeRandomFile(const QString &fname, int size)
 {

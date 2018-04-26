@@ -35,11 +35,11 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcDb, "sync.database", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcDb, "nextcloud.sync.database", QtInfoMsg)
 
 #define GET_FILE_RECORD_QUERY \
         "SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize," \
-        "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum" \
+        "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum, e2eMangledName " \
         " FROM metadata" \
         "  LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
 
@@ -55,6 +55,7 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._fileSize = query.int64Value(7);
     rec._serverHasIgnoredFiles = (query.intValue(8) > 0);
     rec._checksumHeader = query.baValue(9);
+    rec._e2eMangledName = query.baValue(10);
 }
 
 static QString defaultJournalMode(const QString &dbPath)
@@ -546,6 +547,13 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("prepare _getFileRecordQuery", *_getFileRecordQuery);
     }
 
+    _getFileRecordQueryByMangledName.reset(new SqlQuery(_db));
+    if (_getFileRecordQueryByMangledName->prepare(
+            GET_FILE_RECORD_QUERY
+            " WHERE e2eMangledName=?1")) {
+        return sqlFail("prepare _getFileRecordQueryByMangledName", *_getFileRecordQueryByMangledName);
+    }
+
     _getFileRecordQueryByInode.reset(new SqlQuery(_db));
     if (_getFileRecordQueryByInode->prepare(
             GET_FILE_RECORD_QUERY
@@ -584,8 +592,8 @@ bool SyncJournalDb::checkConnect()
 
     _setFileRecordQuery.reset(new SqlQuery(_db));
     if (_setFileRecordQuery->prepare("INSERT OR REPLACE INTO metadata "
-                                     "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, contentChecksum, contentChecksumTypeId) "
-                                     "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16);")) {
+                                     "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, contentChecksum, contentChecksumTypeId, e2eMangledName) "
+                                     "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17);")) {
         return sqlFail("prepare _setFileRecordQuery", *_setFileRecordQuery);
     }
 
@@ -746,6 +754,7 @@ void SyncJournalDb::close()
     commitTransaction();
 
     _getFileRecordQuery.reset(0);
+    _getFileRecordQueryByMangledName.reset(0);
     _getFileRecordQueryByInode.reset(0);
     _getFileRecordQueryByFileId.reset(0);
     _getFilesBelowPathQuery.reset(0);
@@ -791,7 +800,7 @@ bool SyncJournalDb::updateDatabaseStructure()
 
 bool SyncJournalDb::updateMetadataTableStructure()
 {
-    QStringList columns = tableColumns("metadata");
+    const QStringList columns = tableColumns("metadata");
     bool re = true;
 
     // check if the file_id column is there and create it if not
@@ -880,6 +889,16 @@ bool SyncJournalDb::updateMetadataTableStructure()
             re = false;
         }
         commitInternal("update database structure: add contentChecksumTypeId col");
+    }
+
+    if (!columns.contains(QLatin1String("e2eMangledName"))) {
+        SqlQuery query(_db);
+        query.prepare("ALTER TABLE metadata ADD COLUMN e2eMangledName TEXT;");
+        if (!query.exec()) {
+            sqlFail("updateMetadataTableStructure: add e2eMangledName column", query);
+            re = false;
+        }
+        commitInternal("update database structure: add e2eMangledName col");
     }
 
     if (!tableColumns("uploadinfo").contains("contentChecksum")) {
@@ -1007,7 +1026,7 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
     qCInfo(lcDb) << "Updating file record for path:" << record._path << "inode:" << record._inode
                  << "modtime:" << record._modtime << "type:" << record._type
                  << "etag:" << record._etag << "fileId:" << record._fileId << "remotePerm:" << record._remotePerm.toString()
-                 << "fileSize:" << record._fileSize << "checksum:" << record._checksumHeader;
+                 << "fileSize:" << record._fileSize << "checksum:" << record._checksumHeader << "e2eMangledName:" << record._e2eMangledName;
 
     qlonglong phash = getPHash(record._path);
     if (checkConnect()) {
@@ -1040,6 +1059,7 @@ bool SyncJournalDb::setFileRecord(const SyncJournalFileRecord &_record)
         _setFileRecordQuery->bindValue(14, record._serverHasIgnoredFiles ? 1 : 0);
         _setFileRecordQuery->bindValue(15, checksum);
         _setFileRecordQuery->bindValue(16, contentChecksumTypeId);
+        _setFileRecordQuery->bindValue(17, record._e2eMangledName);
 
         if (!_setFileRecordQuery->exec()) {
             return false;
@@ -1117,6 +1137,44 @@ bool SyncJournalDb::getFileRecord(const QByteArray &filename, SyncJournalFileRec
             if (errId != SQLITE_DONE) { // only do this if the problem is different from SQLITE_DONE
                 QString err = _getFileRecordQuery->error();
                 qCWarning(lcDb) << "No journal entry found for " << filename << "Error: " << err;
+                close();
+            }
+        }
+    }
+    return true;
+}
+
+bool SyncJournalDb::getFileRecordByE2eMangledName(const QString &mangledName, SyncJournalFileRecord *rec)
+{
+    QMutexLocker locker(&_mutex);
+
+    // Reset the output var in case the caller is reusing it.
+    Q_ASSERT(rec);
+    rec->_path.clear();
+    Q_ASSERT(!rec->isValid());
+
+    if (_metadataTableIsEmpty)
+        return true; // no error, yet nothing found (rec->isValid() == false)
+
+    if (!checkConnect())
+        return false;
+
+    if (!mangledName.isEmpty()) {
+        _getFileRecordQueryByMangledName->reset_and_clear_bindings();
+        _getFileRecordQueryByMangledName->bindValue(1, mangledName);
+
+        if (!_getFileRecordQueryByMangledName->exec()) {
+            close();
+            return false;
+        }
+
+        if (_getFileRecordQueryByMangledName->next()) {
+            fillFileRecordFromGetQuery(*rec, *_getFileRecordQueryByMangledName);
+        } else {
+            int errId = _getFileRecordQueryByMangledName->errorId();
+            if (errId != SQLITE_DONE) { // only do this if the problem is different from SQLITE_DONE
+                QString err = _getFileRecordQueryByMangledName->error();
+                qCWarning(lcDb) << "No journal entry found for mangled name" << mangledName << "Error: " << err;
                 close();
             }
         }
@@ -1359,6 +1417,7 @@ bool SyncJournalDb::setFileRecordMetadata(const SyncJournalFileRecord &record)
     existing._remotePerm = record._remotePerm;
     existing._fileSize = record._fileSize;
     existing._serverHasIgnoredFiles = record._serverHasIgnoredFiles;
+    existing._e2eMangledName = record._e2eMangledName;
     return setFileRecord(existing);
 }
 

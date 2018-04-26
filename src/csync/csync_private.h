@@ -120,6 +120,17 @@ struct OCSYNC_EXPORT csync_s {
           auto it = find(key);
           return it != end() ? it->second.get() : nullptr;
       }
+      csync_file_stat_t *findFileMangledName(const ByteArrayRef &key) const {
+          auto it = begin();
+          while (it != end()) {
+              csync_file_stat_t *fs = it->second.get();
+              if (fs->e2eMangledName == key) {
+                  return fs;
+              }
+              ++it;
+          }
+          return nullptr;
+      }
   };
 
   struct {

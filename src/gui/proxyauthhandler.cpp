@@ -25,7 +25,7 @@
 
 using namespace OCC;
 
-Q_LOGGING_CATEGORY(lcProxy, "gui.credentials.proxy", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcProxy, "nextcloud.gui.credentials.proxy", QtInfoMsg)
 
 ProxyAuthHandler *ProxyAuthHandler::instance()
 {

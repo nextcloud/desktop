@@ -31,7 +31,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcActivity, "gui.activity", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcActivity, "nextcloud.gui.activity", QtInfoMsg)
 
 ActivityListModel::ActivityListModel(QWidget *parent)
     : QAbstractListModel(parent)

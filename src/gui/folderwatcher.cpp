@@ -36,7 +36,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcFolderWatcher, "gui.folderwatcher", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcFolderWatcher, "nextcloud.gui.folderwatcher", QtInfoMsg)
 
 FolderWatcher::FolderWatcher(const QString &root, Folder *folder)
     : QObject(folder)

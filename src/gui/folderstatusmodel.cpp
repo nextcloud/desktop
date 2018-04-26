@@ -28,7 +28,7 @@ Q_DECLARE_METATYPE(QPersistentModelIndex)
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcFolderStatus, "gui.folder.model", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcFolderStatus, "nextcloud.gui.folder.model", QtInfoMsg)
 
 static const char propertyParentIndexC[] = "oc_parentIndex";
 static const char propertyPermissionMap[] = "oc_permissionMap";
@@ -46,6 +46,7 @@ FolderStatusModel::FolderStatusModel(QObject *parent)
     , _accountState(0)
     , _dirty(false)
 {
+
 }
 
 FolderStatusModel::~FolderStatusModel()
@@ -163,6 +164,8 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
                 return QColor(Qt::red);
             }
             break;
+        case FileIdRole:
+            return x._fileId;
         case FolderStatusDelegate::FolderPathRole: {
             auto f = x._folder;
             if (!f)
@@ -393,6 +396,24 @@ FolderStatusModel::SubFolderInfo *FolderStatusModel::infoForIndex(const QModelIn
     }
 }
 
+/* Recursivelly traverse the file info looking for the id */
+FolderStatusModel::SubFolderInfo *FolderStatusModel::infoForFileId(const QByteArray& fileId, SubFolderInfo* info) const
+{
+  const QVector<SubFolderInfo>& infoVec = info ? info->_subs : _folders;
+  for(int i = 0, end = infoVec.size(); i < end; i++) {
+    auto *info = const_cast<SubFolderInfo *>(&infoVec[i]);
+    if (info->_fileId == fileId) {
+      return info;
+    } else if (info->_subs.size()) {
+      if (auto *subInfo = infoForFileId(fileId, info)) {
+        return subInfo;
+      }
+    }
+  }
+
+  return nullptr;
+}
+
 QModelIndex FolderStatusModel::indexForPath(Folder *f, const QString &path) const
 {
     if (!f) {
@@ -551,10 +572,19 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
         }
         path += info->_path;
     }
+
+		//TODO: This is the correct place, but this doesn't seems to be the right
+		// Way to call fetchFolderEncryptedStatus.
+		if (_accountState->account()->capabilities().clientSideEncryptionAvaliable()) {
+			_accountState->account()->e2e()->fetchFolderEncryptedStatus();
+		}
+
     LsColJob *job = new LsColJob(_accountState->account(), path, this);
     job->setProperties(QList<QByteArray>() << "resourcetype"
                                            << "http://owncloud.org/ns:size"
-                                           << "http://owncloud.org/ns:permissions");
+                                           << "http://owncloud.org/ns:permissions"
+                                           << "http://owncloud.org/ns:fileid");
+
     job->setTimeout(60 * 1000);
     connect(job, &LsColJob::directoryListingSubfolders,
         this, &FolderStatusModel::slotUpdateDirectories);
@@ -655,11 +685,13 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         newInfo._folder = parentInfo->_folder;
         newInfo._pathIdx = parentInfo->_pathIdx;
         newInfo._pathIdx << newSubs.size();
-        newInfo._size = job->_sizes.value(path);
         newInfo._isExternal = permissionMap.value(removeTrailingSlash(path)).toString().contains("M");
         newInfo._path = relativePath;
         newInfo._name = removeTrailingSlash(relativePath).split('/').last();
 
+        const auto& folderInfo = job->_folderInfos.value(path);
+        newInfo._size = folderInfo.size;
+        newInfo._fileId = folderInfo.fileId;
         if (relativePath.isEmpty())
             continue;
 

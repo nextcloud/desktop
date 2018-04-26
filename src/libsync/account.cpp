@@ -15,19 +15,21 @@
 #include "account.h"
 #include "cookiejar.h"
 #include "networkjobs.h"
+#include "configfile.h"
 #include "accessmanager.h"
 #include "creds/abstractcredentials.h"
 #include "capabilities.h"
 #include "theme.h"
-#include "common/asserts.h"
 
-#include <QSettings>
+#include "common/asserts.h"
+#include "clientsideencryption.h"
+
 #include <QLoggingCategory>
-#include <QMutex>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 #include <QSslSocket>
 #include <QNetworkCookieJar>
+
 #include <QFileInfo>
 #include <QDir>
 #include <QSslKey>
@@ -36,7 +38,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcAccount, "sync.account", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcAccount, "nextcloud.sync.account", QtInfoMsg)
 
 Account::Account(QObject *parent)
     : QObject(parent)
@@ -50,7 +52,17 @@ AccountPtr Account::create()
 {
     AccountPtr acc = AccountPtr(new Account);
     acc->setSharedThis(acc);
+
+		//TODO: This probably needs to have a better
+		// coupling, but it should work for now.
+		acc->e2e()->setAccount(acc);
     return acc;
+}
+
+ClientSideEncryption* Account::e2e()
+{
+	// Qt expects everything in the connect to be a pointer, so return a pointer.
+	return &_e2e;
 }
 
 Account::~Account()
@@ -490,6 +502,5 @@ void Account::setNonShib(bool nonShib)
         _davPath = Theme::instance()->webDavPath();
     }
 }
-
 
 } // namespace OCC

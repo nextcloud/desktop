@@ -30,7 +30,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcDiscovery, "sync.discovery", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcDiscovery, "nextcloud.sync.discovery", QtInfoMsg)
 
 /* Given a sorted list of paths ending with '/', return whether or not the given path is within one of the paths of the list*/
 static bool findPathInList(const QStringList &list, const QString &path)

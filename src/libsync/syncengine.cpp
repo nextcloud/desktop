@@ -53,7 +53,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcEngine, "sync.engine", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcEngine, "nextcloud.sync.engine", QtInfoMsg)
 
 static const int s_touchedFilesMaxAgeMs = 15 * 1000;
 bool SyncEngine::s_anySyncRunning = false;
@@ -424,6 +424,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         item->_file = fileUtf8;
     }
     item->_originalFile = item->_file;
+    item->_encryptedFileName = file->e2eMangledName;
 
     if (item->_instruction == CSYNC_INSTRUCTION_NONE
         || (item->_instruction == CSYNC_INSTRUCTION_IGNORE && instruction != CSYNC_INSTRUCTION_NONE)) {

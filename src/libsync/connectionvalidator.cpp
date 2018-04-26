@@ -14,6 +14,7 @@
 
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QJsonArray>
 #include <QLoggingCategory>
 #include <QNetworkReply>
 #include <QNetworkProxyFactory>
@@ -27,7 +28,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcConnectionValidator, "sync.connectionvalidator", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcConnectionValidator, "nextcloud.sync.connectionvalidator", QtInfoMsg)
 
 // Make sure the timeout for this job is less than how often we get called
 // This makes sure we get tried often enough without "ConnectionValidator already running"
@@ -351,6 +352,11 @@ void ConnectionValidator::slotUserFetched(const QJsonDocument &json)
 void ConnectionValidator::slotAvatarImage(const QImage &img)
 {
     _account->setAvatar(img);
+    connect(_account->e2e(), &ClientSideEncryption::initializationFinished, this, &ConnectionValidator::reportConnected);
+    _account->e2e()->initialize();
+}
+
+void ConnectionValidator::reportConnected() {
     reportResult(Connected);
 }
 #endif

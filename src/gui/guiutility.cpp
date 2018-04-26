@@ -23,7 +23,7 @@
 
 using namespace OCC;
 
-Q_LOGGING_CATEGORY(lcUtility, "gui.utility", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcUtility, "nextcloud.gui.utility", QtInfoMsg)
 
 bool Utility::openBrowser(const QUrl &url, QWidget *errorWidgetParent)
 {

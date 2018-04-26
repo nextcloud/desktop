@@ -52,6 +52,7 @@ public:
     {
     }
     void start() Q_DECL_OVERRIDE;
+    void createDeleteJob(const QString &filename);
     void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE;
 
     bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return !_item->isDirectory(); }

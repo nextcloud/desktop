@@ -37,9 +37,9 @@ namespace OCC {
 
 void PropagateUploadFileV1::doStartUpload()
 {
-    _chunkCount = std::ceil(_item->_size / double(chunkSize()));
+    _chunkCount = std::ceil(_fileToUpload._size / double(chunkSize()));
     _startChunk = 0;
-    _transferId = qrand() ^ _item->_modtime ^ (_item->_size << 16);
+    _transferId = qrand() ^ _item->_modtime ^ (_fileToUpload._size << 16);
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
 
@@ -82,12 +82,12 @@ void PropagateUploadFileV1::startNextChunk()
         // is sent last.
         return;
     }
-    quint64 fileSize = _item->_size;
+    quint64 fileSize = _fileToUpload._size;
     auto headers = PropagateUploadFileCommon::headers();
     headers["OC-Total-Length"] = QByteArray::number(fileSize);
     headers["OC-Chunk-Size"] = QByteArray::number(quint64(chunkSize()));
 
-    QString path = _item->_file;
+    QString path = _fileToUpload._file;
 
     UploadDevice *device = new UploadDevice(&propagator()->_bandwidthManager);
     qint64 chunkStart = 0;
@@ -122,7 +122,8 @@ void PropagateUploadFileV1::startNextChunk()
         headers[checkSumHeaderC] = _transmissionChecksumHeader;
     }
 
-    const QString fileName = propagator()->getFilePath(_item->_file);
+    const QString fileName = _fileToUpload._path;
+    qDebug() << "Trying to upload" << fileName;
     if (!device->prepareAndOpen(fileName, chunkStart, currentChunkSize)) {
         qCWarning(lcPropagateUpload) << "Could not prepare upload device: " << device->errorString();
 
@@ -166,7 +167,6 @@ void PropagateUploadFileV1::startNextChunk()
             }
         }
     }
-
 
     if (_currentChunk + _startChunk >= _chunkCount - 1) {
         // Don't do parallel upload of chunk if this might be the last chunk because the server cannot handle that
@@ -235,9 +235,16 @@ void PropagateUploadFileV1::slotPutFinished()
     QByteArray etag = getEtagFromReply(job->reply());
     bool finished = etag.length() > 0;
 
-    // Check if the file still exists
+    /* Check if the file still exists,
+     * but we could be operating in a temporary file, so check both if
+     * the file to upload is different than the file on disk
+     */
+    const QString fileToUploadPath = _fileToUpload._path;
     const QString fullFilePath(propagator()->getFilePath(_item->_file));
-    if (!FileSystem::fileExists(fullFilePath)) {
+    bool fileExists = fileToUploadPath == fullFilePath ? FileSystem::fileExists(fullFilePath)
+      : (FileSystem::fileExists(fileToUploadPath) && FileSystem::fileExists(fullFilePath));
+
+    if (!fileExists) {
         if (!finished) {
             abortWithError(SyncFileItem::SoftError, tr("The local file was removed during sync."));
             return;
@@ -246,7 +253,7 @@ void PropagateUploadFileV1::slotPutFinished()
         }
     }
 
-    // Check whether the file changed since discovery.
+    // Check whether the file changed since discovery. the file check here is the original and not the temprary.
     if (!FileSystem::verifyFileUnchanged(fullFilePath, _item->_size, _item->_modtime)) {
         propagator()->_anotherSyncNeeded = true;
         if (!finished) {

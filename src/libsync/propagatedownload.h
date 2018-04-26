@@ -15,11 +15,13 @@
 
 #include "owncloudpropagator.h"
 #include "networkjobs.h"
+#include "clientsideencryption.h"
 
 #include <QBuffer>
 #include <QFile>
 
 namespace OCC {
+class PropagateDownloadEncrypted;
 
 /**
  * @brief The GETFileJob class
@@ -195,6 +197,7 @@ private slots:
     void slotChecksumFail(const QString &errMsg);
 
 private:
+    void startAfterIsEncryptedIsChecked();
     void deleteExistingFolder();
 
     quint64 _resumeStart;
@@ -202,8 +205,12 @@ private:
     QPointer<GETFileJob> _job;
     QFile _tmpFile;
     bool _deleteExisting;
+    bool _isEncrypted = false;
+    EncryptedFile _encryptedInfo;
     ConflictRecord _conflictRecord;
 
     QElapsedTimer _stopwatch;
+
+    PropagateDownloadEncrypted *_downloadEncryptedHelper;
 };
 }

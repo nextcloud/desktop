@@ -194,6 +194,7 @@ struct OCSYNC_EXPORT csync_file_stat_s {
   // In the remote tree, this will have the server checksum, if available.
   // In both cases, the format is "SHA1:baff".
   QByteArray checksumHeader;
+  QByteArray e2eMangledName;
 
   CSYNC_STATUS error_status;
 
