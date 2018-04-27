@@ -23,6 +23,7 @@ namespace OCC {
 
 class SparkleUpdater : public Updater
 {
+    Q_OBJECT
 public:
     SparkleUpdater(const QString &appCastUrl);
     ~SparkleUpdater();
@@ -31,6 +32,8 @@ public:
     void checkForUpdate() override;
     void backgroundCheckForUpdate() override;
     bool handleStartup() override { return false; }
+
+    QString statusString();
 
 private:
     class Private;

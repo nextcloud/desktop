@@ -114,7 +114,7 @@ SparkleUpdater::~SparkleUpdater()
     delete d;
 }
 
-
+// FIXME: Should be changed to not instanicate the SparkleUpdater at all in this case
 bool autoUpdaterAllowed()
 {
     // See https://github.com/owncloud/client/issues/2931
@@ -141,6 +141,12 @@ void SparkleUpdater::backgroundCheckForUpdate()
     if (autoUpdaterAllowed()) {
         [d->updater checkForUpdatesInBackground];
     }
+}
+
+QString SparkleUpdater::statusString()
+{
+    // FIXME Show the real state depending on the callbacks
+    return QString();
 }
 
 } // namespace OCC
