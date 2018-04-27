@@ -25,6 +25,10 @@
 
 #include "updater/updater.h"
 #include "updater/ocupdater.h"
+#ifdef Q_OS_MAC
+// FIXME We should unify those, but Sparkle does everything behind the scene transparently
+#include "updater/sparkleupdater.h"
+#endif
 #include "ignorelisteditor.h"
 
 #include "config.h"
@@ -126,28 +130,39 @@ void GeneralSettings::loadMiscSettings()
 
 void GeneralSettings::slotUpdateInfo()
 {
-    // Note: the sparkle-updater is not an OCUpdater
-    OCUpdater *updater = qobject_cast<OCUpdater *>(Updater::instance());
     if (ConfigFile().skipUpdateCheck()) {
-        updater = 0; // don't show update info if updates are disabled
+        // updater disabled on compile
+        _ui->updatesGroupBox->setVisible(false);
+        return;
     }
 
-    if (updater) {
-        connect(updater, &OCUpdater::downloadStateChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
-        connect(_ui->restartButton, &QAbstractButton::clicked, updater, &OCUpdater::slotStartInstaller, Qt::UniqueConnection);
+    // Note: the sparkle-updater is not an OCUpdater
+    OCUpdater *ocupdater = qobject_cast<OCUpdater *>(Updater::instance());
+    if (ocupdater) {
+        connect(ocupdater, &OCUpdater::downloadStateChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
+        connect(_ui->restartButton, &QAbstractButton::clicked, ocupdater, &OCUpdater::slotStartInstaller, Qt::UniqueConnection);
         connect(_ui->restartButton, &QAbstractButton::clicked, qApp, &QApplication::quit, Qt::UniqueConnection);
-        _ui->updateStateLabel->setText(updater->statusString());
-        _ui->restartButton->setVisible(updater->downloadState() == OCUpdater::DownloadComplete);
+
+        _ui->updateStateLabel->setText(ocupdater->statusString());
+        _ui->restartButton->setVisible(ocupdater->downloadState() == OCUpdater::DownloadComplete);
 
         // Channel selection
         _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == "beta" ? 1 : 0);
         connect(_ui->updateChannel, &QComboBox::currentTextChanged,
             this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
-
-    } else {
-        // can't have those infos from sparkle currently
-        _ui->updatesGroupBox->setVisible(false);
     }
+#ifdef Q_OS_MAC
+    else if (SparkleUpdater *sparkleUpdater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
+        _ui->updateStateLabel->setText(sparkleUpdater->statusString());
+        _ui->restartButton->setVisible(false);
+
+        // Channel selection
+        _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == "beta" ? 1 : 0);
+        connect(_ui->updateChannel, &QComboBox::currentTextChanged,
+            this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
+    }
+#endif
+
 }
 
 void GeneralSettings::slotUpdateChannelChanged(const QString &channel)
