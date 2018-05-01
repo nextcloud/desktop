@@ -219,6 +219,10 @@ void WebFlowCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator
 
 void WebFlowCredentials::slotFinished(QNetworkReply *reply) {
     qCInfo(lcWebFlowCredentials()) << "request finished";
+
+    if (reply->error() == QNetworkReply::NoError) {
+        _credentialsValid = true;
+    }
 }
 
 void WebFlowCredentials::fetchFromKeychainHelper() {
