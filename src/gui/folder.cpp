@@ -546,26 +546,30 @@ void Folder::saveToSettings() const
     removeFromSettings();
 
     auto settings = _accountState->settings();
+    QString settingsGroup = QStringLiteral("Multifolders");
 
-    // The folder is saved to backwards-compatible "Folders"
-    // section only if it has the migrate flag set (i.e. was in
-    // there before) or if the folder is the only one for the
-    // given target path.
-    // This ensures that older clients will not read a configuration
-    // where two folders for different accounts point at the same
-    // local folders.
+    // True if the folder path appears in only one account
     const auto folderMap = FolderMan::instance()->map();
     const auto oneAccountOnly = std::none_of(folderMap.cbegin(), folderMap.cend(), [this](const auto *other) {
         return other != this && other->cleanPath() == this->cleanPath();
     });
 
-    bool compatible = _saveBackwardsCompatible || oneAccountOnly;
-
-    if (compatible) {
-        settings->beginGroup(QLatin1String("Folders"));
-    } else {
-        settings->beginGroup(QLatin1String("Multifolders"));
+    if (_definition.usePlaceholders) {
+        // If placeholders are enabled, save the folder to a group
+        // that will not be read by older (<2.5.0) clients.
+        settingsGroup = QStringLiteral("FoldersWithPlaceholders");
+    } else if (_saveBackwardsCompatible || oneAccountOnly) {
+        // The folder is saved to backwards-compatible "Folders"
+        // section only if it has the migrate flag set (i.e. was in
+        // there before) or if the folder is the only one for the
+        // given target path.
+        // This ensures that older clients will not read a configuration
+        // where two folders for different accounts point at the same
+        // local folders.
+        settingsGroup = QStringLiteral("Folders");
     }
+
+    settings->beginGroup(settingsGroup);
     FolderDefinition::save(*settings, _definition);
 
     settings->sync();
@@ -579,6 +583,9 @@ void Folder::removeFromSettings() const
     settings->remove(FolderMan::escapeAlias(_definition.alias));
     settings->endGroup();
     settings->beginGroup(QLatin1String("Multifolders"));
+    settings->remove(FolderMan::escapeAlias(_definition.alias));
+    settings->endGroup();
+    settings->beginGroup(QLatin1String("FoldersWithPlaceholders"));
     settings->remove(FolderMan::escapeAlias(_definition.alias));
 }
 
