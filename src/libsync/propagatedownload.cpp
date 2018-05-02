@@ -352,8 +352,8 @@ void PropagateDownloadFile::start()
         auto fn = propagator()->getFilePath(_item->_file);
         qCDebug(lcPropagateDownload) << "creating placeholder file" << fn;
         QFile file(fn);
-        file.open(QFile::ReadWrite);
-        file.write("stub");
+        file.open(QFile::ReadWrite | QFile::Truncate);
+        file.write(" ");
         file.close();
         updateMetadata(false);
         return;

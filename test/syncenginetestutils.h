@@ -1000,7 +1000,7 @@ private:
                     qWarning() << "Empty file at:" << diskChild.filePath();
                     continue;
                 }
-                char contentChar = f.read(1).at(0);
+                char contentChar = content.at(0);
                 templateFi.children.insert(diskChild.fileName(), FileInfo{diskChild.fileName(), diskChild.size(), contentChar});
             }
         }
