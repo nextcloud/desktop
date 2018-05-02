@@ -100,6 +100,12 @@ protected slots:
 private:
     void setHelp();
 
+    /**
+     * Maybe a newer version of the client was used with this config file:
+     * if so, backup, confirm with user and remove the config that can't be read.
+     */
+    bool configBackwardMigration();
+
     QPointer<ownCloudGui> _gui;
 
     Theme *_theme;

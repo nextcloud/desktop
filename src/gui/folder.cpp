@@ -42,6 +42,8 @@
 #include <QMessageBox>
 #include <QPushButton>
 
+static const char versionC[] = "version";
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFolder, "gui.folder", QtInfoMsg)
@@ -561,6 +563,8 @@ void Folder::saveToSettings() const
     }
 
     settings->beginGroup(settingsGroup);
+    // Note: Each of these groups might have a "version" tag, but that's
+    //       currently unused.
     FolderDefinition::save(*settings, _definition);
 
     settings->sync();
@@ -1125,6 +1129,7 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
     settings.setValue(QLatin1String("paused"), folder.paused);
     settings.setValue(QLatin1String("ignoreHiddenFiles"), folder.ignoreHiddenFiles);
     settings.setValue(QLatin1String("usePlaceholders"), folder.useVirtualFiles);
+    settings.setValue(QLatin1String(versionC), maxSettingsVersion());
 
     // Happens only on Windows when the explorer integration is enabled.
     if (!folder.navigationPaneClsid.isNull())

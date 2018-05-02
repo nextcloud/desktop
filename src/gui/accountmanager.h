@@ -77,6 +77,12 @@ public:
      */
     static AccountPtr createAccount();
 
+    /**
+     * Returns the list of settings keys that can't be read because
+     * they are from the future.
+     */
+    static QStringList backwardMigrationKeys();
+
 private:
     // saving and loading Account to settings
     void saveAccountHelper(Account *account, QSettings &settings, bool saveCredentials = true);

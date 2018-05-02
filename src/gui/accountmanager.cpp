@@ -33,6 +33,10 @@ static const char caCertsKeyC[] = "CaCertificates";
 static const char accountsC[] = "Accounts";
 static const char versionC[] = "version";
 static const char serverVersionC[] = "serverVersion";
+
+// The maximum versions that this client can read
+static const int maxAccountsVersion = 2;
+static const int maxAccountVersion = 1;
 }
 
 
@@ -74,6 +78,27 @@ bool AccountManager::restore()
     }
 
     return true;
+}
+
+QStringList AccountManager::backwardMigrationKeys()
+{
+    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
+    QStringList badKeys;
+
+    const int accountsVersion = settings->value(QLatin1String(versionC)).toInt();
+    if (accountsVersion <= maxAccountsVersion) {
+        foreach (const auto &accountId, settings->childGroups()) {
+            settings->beginGroup(accountId);
+            const int accountVersion = settings->value(QLatin1String(versionC), 1).toInt();
+            if (accountVersion > maxAccountVersion) {
+                badKeys.append(settings->group());
+            }
+            settings->endGroup();
+        }
+    } else {
+        badKeys.append(settings->group());
+    }
+    return badKeys;
 }
 
 bool AccountManager::restoreFromLegacySettings()
@@ -136,7 +161,7 @@ bool AccountManager::restoreFromLegacySettings()
 void AccountManager::save(bool saveCredentials)
 {
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
-    settings->setValue(QLatin1String(versionC), 2);
+    settings->setValue(QLatin1String(versionC), maxAccountsVersion);
     foreach (const auto &acc, _accounts) {
         settings->beginGroup(acc->account()->id());
         saveAccountHelper(acc->account().data(), *settings, saveCredentials);
@@ -174,6 +199,7 @@ void AccountManager::saveAccountState(AccountState *a)
 
 void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool saveCredentials)
 {
+    settings.setValue(QLatin1String(versionC), maxAccountVersion);
     settings.setValue(QLatin1String(urlC), acc->_url.toString());
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
     if (acc->_credentials) {
@@ -323,7 +349,6 @@ AccountPtr AccountManager::createAccount()
         ProxyAuthHandler::instance(), &ProxyAuthHandler::handleProxyAuthenticationRequired);
     return acc;
 }
-
 
 void AccountManager::shutdown()
 {

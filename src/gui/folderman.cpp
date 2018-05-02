@@ -39,6 +39,9 @@
 #include <QSet>
 #include <QNetworkProxy>
 
+static const char versionC[] = "version";
+static const int maxFoldersVersion = 1;
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFolderMan, "gui.folder.manager", QtInfoMsg)
@@ -269,6 +272,39 @@ int FolderMan::setupFoldersMigration()
 
     // return the number of valid folders.
     return _folderMap.size();
+}
+
+QStringList FolderMan::backwardMigrationKeys()
+{
+    QStringList badKeys;
+    auto settings = ConfigFile::settingsWithGroup(QLatin1String("Accounts"));
+
+    auto processSubgroup = [&](const QString &name) {
+        settings->beginGroup(name);
+        const int foldersVersion = settings->value(QLatin1String(versionC), 1).toInt();
+        if (foldersVersion <= maxFoldersVersion) {
+            foreach (const auto &folderAlias, settings->childGroups()) {
+                settings->beginGroup(folderAlias);
+                const int folderVersion = settings->value(QLatin1String(versionC), 1).toInt();
+                if (folderVersion > FolderDefinition::maxSettingsVersion()) {
+                    badKeys.append(settings->group());
+                }
+                settings->endGroup();
+            }
+        } else {
+            badKeys.append(settings->group());
+        }
+        settings->endGroup();
+    };
+
+    for (const auto &accountId : settings->childGroups()) {
+        settings->beginGroup(accountId);
+        processSubgroup("Folders");
+        processSubgroup("Multifolders");
+        processSubgroup("FoldersWithPlaceholders");
+        settings->endGroup();
+    }
+    return badKeys;
 }
 
 bool FolderMan::ensureJournalGone(const QString &journalDbFile)

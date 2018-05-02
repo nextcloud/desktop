@@ -68,6 +68,12 @@ public:
     int setupFolders();
     int setupFoldersMigration();
 
+    /**
+     * Returns a list of keys that can't be read because they are from
+     * future versions.
+     */
+    static QStringList backwardMigrationKeys();
+
     OCC::Folder::Map map();
 
     /** Adds a folder for an account, ensures the journal is gone and saves it in the settings.
