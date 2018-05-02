@@ -190,6 +190,11 @@ int FolderMan::setupFolders()
         setupFoldersHelper(*settings, account, false);
         settings->endGroup();
 
+        // See Folder::saveToSettings for details about why this exists.
+        settings->beginGroup(QLatin1String("FoldersWithPlaceholders"));
+        setupFoldersHelper(*settings, account, false);
+        settings->endGroup();
+
         settings->endGroup(); // <account>
     }
 
