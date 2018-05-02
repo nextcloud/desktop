@@ -107,14 +107,25 @@ Log Files
 
 Effectively debugging software requires as much relevant information as can be
 obtained.  To assist the ownCloud support personnel, please try to provide as
-many relevant logs as possible. Log output can help  with tracking down
+many relevant logs as possible. Log output can help with tracking down
 problems and, if you report a bug, log output can help to resolve an issue more
 quickly.
+
+The client log file is often the most helpful log to provide.
 
 Obtaining the Client Log File
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To obtain the client log file:
+There are several ways to produce log files. The most commonly useful is enabling
+logging to a temporary directory, described first.
+
+Note: Client log files contain file and folder names, metadata, server urls and
+other private information. Only upload them if you are comfortable sharing the
+information. Logs are often essential for tracking down a problem though, so
+please consider providing them to developers privately.
+
+Logging to a Temporary Directory
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 1. Open the ownCloud Desktop Client.
 
@@ -124,37 +135,22 @@ To obtain the client log file:
 
   .. image:: images/log_output_window.png
 
-3. Click the 'Save' button.
+3. Enable the 'Permanently save logs' checkbox.
 
-  The Save Log File window opens.
+4. Look at its tooltip and take note of the directory the logs will be saved to.
 
-  .. image:: images/save_log_file.png
+5. Navigate to this directory.
 
-4. Migrate to a location on your system where you want to save your log file.
+6. Select the logs for the timeframe in which the issue occurred.
 
-5. Name the log file and click the 'Save' button.
-
-  The log file is saved in the location specified.
-
-Alternatively, you can launch the ownCloud Log Output window using the
-``--logwindow`` command. After issuing this command, the Log Output window
-opens to show the current log. You can then follow the same procedures
-mentioned above to save the log to a file.
-
-  .. note:: You can also open a log window for an already running session, by
-     restarting the client using the following command:
-
-     * Windows: ``C:\Program Files (x86)\ownCloud\owncloud.exe --logwindow``
-     * Mac OS X: ``/Applications/owncloud.app/Contents/MacOS/owncloud --logwindow``
-     * Linux: ``owncloud --logwindow``
+Note that the choice to enable logging will be persist across client restarts.
 
 Saving Files Directly
-~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^
 
-The ownCloud client enables you to save log files directly to a predefined file
-or directory.  This is a useful option for troubleshooting sporadic issues as
-it enables you to log large amounts of data and bypasses the limited buffer
-settings associated with the log window.
+The ownCloud client allows you to save log files directly to a custom file
+or directory.  This is a useful option for easily reproducible problems, as well
+as for cases where you want logs to be saved to a different location.
 
 To save log files to a file or a directory:
 
@@ -169,6 +165,8 @@ the amount of data that accumulates over time, you can specify the
 ``--logexpire <hours>`` command. When combined with the ``--logdir`` command,
 the client automatically erases saved log data in the directory that is older
 than the specified number of hours.
+
+Adding the ``--logdebug`` flag increases the verbosity of the generated log files.
 
 As an example, to define a test where you keep log data for two days, you can
 issue the following command:
