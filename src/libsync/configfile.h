@@ -48,6 +48,13 @@ public:
     QString excludeFile(Scope scope) const;
     static QString excludeFileFromSystem(); // doesn't access config dir
 
+    /**
+     * Creates a backup of the file
+     *
+     * Returns the path of the new backup.
+     */
+    QString backup() const;
+
     bool exists();
 
     QString defaultConnection() const;
