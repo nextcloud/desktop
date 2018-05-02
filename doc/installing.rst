@@ -36,7 +36,7 @@ System Requirements
 - openSUSE Leap 42.2 & 42.3
 
 .. note::
-   For Linux distributions, we support, if technically feasible, the latest 2 versions per platform and the previous `LTS`_.
+   For Linux distributions, we support, if technically feasible, the latest 2 versions per platform and the previous Ubuntu `LTS`_.
 
 Installation Wizard
 -------------------
@@ -67,12 +67,7 @@ server, and when it is successful you'll see two buttons: one to connect to
 your ownCloud Web GUI, and one to open your local folder. It will also start 
 synchronizing your files.
 
-.. image:: images/client-4.png
-   :alt: A successful server connection, showing a button to connect to your 
-    Web GUI, and one to open your local ownCloud folder
-
-Click the Finish button, and you're all done. 
-
 .. Links
    
 .. _ownCloud download page: https://owncloud.com/download/#desktop-clients
+.. _LTS: https://wiki.ubuntu.com/LTS
