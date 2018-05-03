@@ -38,6 +38,7 @@ namespace WizardCommon {
         Page_HttpCreds,
         Page_ShibbolethCreds,
         Page_OAuthCreds,
+        Page_WebView,
         Page_AdvancedSetup,
         Page_Result
     };

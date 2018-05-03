@@ -208,6 +208,8 @@ int OwncloudSetupPage::nextId() const
         return WizardCommon::Page_OAuthCreds;
     case DetermineAuthTypeJob::Shibboleth:
         return WizardCommon::Page_ShibbolethCreds;
+    case DetermineAuthTypeJob::WebViewFlow:
+        return WizardCommon::Page_WebView;
     }
     return WizardCommon::Page_HttpCreds;
 }

@@ -26,6 +26,7 @@
 #endif
 #include "wizard/owncloudadvancedsetuppage.h"
 #include "wizard/owncloudwizardresultpage.h"
+#include "wizard/webviewpage.h"
 
 #include "QProgressIndicator.h"
 
@@ -50,6 +51,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _advancedSetupPage(new OwncloudAdvancedSetupPage)
     , _resultPage(new OwncloudWizardResultPage)
     , _credentialsPage(0)
+    , _webViewPage(new WebViewPage(this))
     , _setupLog()
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
@@ -61,6 +63,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 #endif
     setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
     setPage(WizardCommon::Page_Result, _resultPage);
+    setPage(WizardCommon::Page_WebView, _webViewPage);
 
     connect(this, &QDialog::finished, this, &OwncloudWizard::basicSetupFinished);
 
@@ -75,6 +78,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 #ifndef NO_SHIBBOLETH
     connect(_shibbolethCredsPage, &OwncloudShibbolethCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
 #endif
+    connect(_webViewPage, &WebViewPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
     connect(_advancedSetupPage, &OwncloudAdvancedSetupPage::createLocalAndRemoteFolders,
         this, &OwncloudWizard::createLocalAndRemoteFolders);
     connect(this, &QWizard::customButtonClicked, this, &OwncloudWizard::skipFolderConfiguration);
@@ -154,6 +158,10 @@ void OwncloudWizard::successfulStep()
         break;
 #endif
 
+    case WizardCommon::Page_WebView:
+        _webViewPage->setConnected();
+        break;
+
     case WizardCommon::Page_AdvancedSetup:
         _advancedSetupPage->directoriesCreated();
         break;
@@ -177,6 +185,8 @@ void OwncloudWizard::setAuthType(DetermineAuthTypeJob::AuthType type)
 #endif
         if (type == DetermineAuthTypeJob::OAuth) {
         _credentialsPage = _browserCredsPage;
+    } else if (type == DetermineAuthTypeJob::WebViewFlow) {
+        _credentialsPage = _webViewPage;
     } else { // try Basic auth even for "Unknown"
         _credentialsPage = _httpCredsPage;
     }

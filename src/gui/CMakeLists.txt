@@ -41,6 +41,7 @@ set(client_UI_SRCS
     wizard/owncloudoauthcredspage.ui
     wizard/owncloudsetupnocredspage.ui
     wizard/owncloudwizardresultpage.ui
+    wizard/webview.ui
 )
 
 set(client_SRCS
@@ -101,6 +102,8 @@ set(client_SRCS
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/oauth.cpp
+    creds/webflowcredentials.cpp
+    creds/webflowcredentialsdialog.cpp
     wizard/postfixlineedit.cpp
     wizard/abstractcredswizardpage.cpp
     wizard/owncloudadvancedsetuppage.cpp
@@ -111,6 +114,8 @@ set(client_SRCS
     wizard/owncloudwizardcommon.cpp
     wizard/owncloudwizard.cpp
     wizard/owncloudwizardresultpage.cpp
+    wizard/webviewpage.cpp
+    wizard/webview.cpp
 )
 
 IF(NOT NO_SHIBBOLETH)
@@ -287,7 +292,7 @@ else()
 endif()
 
 add_library(updater STATIC ${updater_SRCS})
-target_link_libraries(updater ${synclib_NAME} Qt5::Widgets Qt5::Network Qt5::Xml)
+target_link_libraries(updater ${synclib_NAME} Qt5::Widgets Qt5::Network Qt5::Xml Qt5::WebEngineWidgets)
 target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
