@@ -53,7 +53,7 @@
        </property>
        <property name="styleSheet">
         <string notr="true">QProgressBar::chunk {
-    background-color: rgba(229, 26, 26, 255);
+    background-color: rgba(0, 130, 201, 255);
 }</string>
        </property>
        <property name="value">
