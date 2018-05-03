@@ -287,29 +287,6 @@ void ExcludedFiles::setClientVersion(ExcludedFiles::Version version)
     _clientVersion = version;
 }
 
-void ExcludedFiles::setupPlaceholderExclude(
-    const QString &excludeFile, const QByteArray &placeholderExtension)
-{
-    if (!QFile::exists(excludeFile)) {
-        // Ensure the parent paths exist
-        QDir().mkpath(QFileInfo(excludeFile).dir().absolutePath());
-    } else {
-        // Does the exclude file contain the exclude already?
-        QFile file(excludeFile);
-        file.open(QIODevice::ReadOnly | QIODevice::Text);
-        auto data = file.readAll();
-        file.close();
-        if (data.contains("\n*" + placeholderExtension + "\n"))
-            return;
-    }
-
-    // Add it to the file
-    QFile file(excludeFile);
-    file.open(QIODevice::ReadWrite | QIODevice::Append);
-    file.write("\n#!version < 2.5.0\n*" + placeholderExtension + "\n");
-    file.close();
-}
-
 bool ExcludedFiles::reloadExcludeFiles()
 {
     _allExcludes.clear();

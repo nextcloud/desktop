@@ -173,9 +173,6 @@ Application::Application(int &argc, char **argv)
     if (!AbstractNetworkJob::httpTimeout)
         AbstractNetworkJob::httpTimeout = cfg.timeout();
 
-    ExcludedFiles::setupPlaceholderExclude(
-        cfg.excludeFile(ConfigFile::UserScope), APPLICATION_DOTPLACEHOLDER_SUFFIX);
-
     _folderManager.reset(new FolderMan);
 
     connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);

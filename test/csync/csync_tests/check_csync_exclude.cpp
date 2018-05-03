@@ -626,53 +626,6 @@ static void check_csync_exclude_expand_escapes(void **state)
     assert_true(0 == strcmp(line.constData(), "\\"));
 }
 
-static void check_placeholder_exclude(void **state)
-{
-    (void)state;
-
-    auto readFile = [](const QString &file) {
-        QFile f(file);
-        f.open(QIODevice::ReadOnly | QIODevice::Text);
-        return f.readAll();
-    };
-
-    QTemporaryDir tempDir;
-    QString path;
-    QByteArray expected = "\n#!version < 2.5.0\n*.owncloud\n";
-
-    // Case 1: No file exists yet, parent dirs are missing too
-    path = tempDir.filePath("foo/bar/exclude.lst");
-    ExcludedFiles::setupPlaceholderExclude(path, ".owncloud");
-
-    assert_true(QFile::exists(path));
-    assert_true(readFile(path) == expected);
-
-    // Case 2: Running it again
-    ExcludedFiles::setupPlaceholderExclude(path, ".owncloud");
-    assert_true(readFile(path) == expected);
-
-    // Case 3: File exists, has some data
-    {
-        QFile f(path);
-        f.open(QIODevice::WriteOnly | QIODevice::Truncate);
-        f.write("# bla\nmyexclude\n\nanotherexclude");
-        f.close();
-    }
-    ExcludedFiles::setupPlaceholderExclude(path, ".owncloud");
-    assert_true(readFile(path) == "# bla\nmyexclude\n\nanotherexclude" + expected);
-
-    // Case 4: Running it again still does nothing
-    ExcludedFiles::setupPlaceholderExclude(path, ".owncloud");
-    assert_true(readFile(path) == "# bla\nmyexclude\n\nanotherexclude" + expected);
-
-    // Case 5: Verify that reading this file doesn't actually include the exclude
-    ExcludedFiles excludes;
-    excludes.addExcludeFilePath(path);
-    excludes.reloadExcludeFiles();
-    assert_false(excludes._allExcludes.contains("*.owncloud"));
-    assert_true(excludes._allExcludes.contains("myexclude"));
-}
-
 static void check_version_directive(void **state)
 {
     (void)state;
@@ -719,7 +672,6 @@ int torture_run_tests(void)
         cmocka_unit_test_setup_teardown(T::check_csync_is_windows_reserved_word, T::setup_init, T::teardown),
         cmocka_unit_test_setup_teardown(T::check_csync_excluded_performance, T::setup_init, T::teardown),
         cmocka_unit_test(T::check_csync_exclude_expand_escapes),
-        cmocka_unit_test(T::check_placeholder_exclude),
         cmocka_unit_test(T::check_version_directive),
     };
 
