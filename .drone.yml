@@ -111,7 +111,7 @@ matrix:
         - TESTS: qt-5.8
         - TESTS: qt-5.9
         - BUILD: AppImage
-#        - BUILD: Debian
+        - BUILD: Debian
         - TESTS: documentation
 
 branches: [ master, 2.* ]
