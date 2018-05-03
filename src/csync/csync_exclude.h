@@ -132,12 +132,6 @@ public:
     auto csyncTraversalMatchFun()
         -> std::function<CSYNC_EXCLUDE_TYPE(const char *path, ItemType filetype)>;
 
-    /**
-     * Adds the exclude that skips placeholder files in older versions
-     * to the user exclude file.
-     */
-    static void setupPlaceholderExclude(const QString &excludeFile, const QByteArray &placeholderExtension);
-
 public slots:
     /**
      * Reloads the exclude patterns from the registered paths.
