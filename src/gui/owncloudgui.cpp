@@ -742,7 +742,7 @@ void ownCloudGui::setupActions()
 
 void ownCloudGui::slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode){
     if(statusCode == 200){
-        qCWarning(lcApplication) << "New navigation apps ETag Response Header received " << value;
+        qCDebug(lcApplication) << "New navigation apps ETag Response Header received " << value;
         auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC));
         account->setNavigationAppsEtagResponseHeader(value);
     }
