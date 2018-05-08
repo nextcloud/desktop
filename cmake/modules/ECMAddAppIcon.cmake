@@ -232,11 +232,11 @@ function(ecm_add_app_icon appsources)
                 set(icotool_icon_arg "")
                 if(size STREQUAL "${maxSize}")
                     # maxSize icon needs to be included as raw png
-                    set(icotool_icon_arg "-r")
+                    list(APPEND icotool_args "-r")
                 endif()
 
                 foreach(icon ${icons_at_${size}px})
-                    set(icotool_args "${icotool_args} ${icotool_icon_arg} \"${icons_at_${size}px}\"")
+                    list(APPEND icotool_args "${icons_at_${size}px}")
                 endforeach()
             endforeach()
 
@@ -245,15 +245,11 @@ function(ecm_add_app_icon appsources)
 
         # standard png2ico has no rcfile argument
         elseif(Png2Ico_FOUND AND NOT Png2Ico_HAS_RCFILE_ARGUMENT AND windows_icons_classic)
-            set(png2ico_args "\"${_outfilename}.ico\"")
+            set(png2ico_args)
+            list(APPEND png2ico_args "${_outfilename}.ico")
+            list(APPEND png2ico_args "${windows_icons_classic}")
 
-            foreach(size 16 24 32 48 64 128)
-                foreach(icon ${icons_at_${size}px})
-                    set(png2ico_args "${png2ico_args} \"${icons_at_${size}px}\"")
-                endforeach()
-            endforeach()
-
-            create_windows_icon_and_rc(Png2Ico::Png2Ico "${png2ico_args}" "${deps}")
+            create_windows_icon_and_rc(Png2Ico::Png2Ico "${png2ico_args}" "${windows_icons_classic}")
             set(${appsources} "${${appsources}};${_outfilename}.rc" PARENT_SCOPE)
 
         # png2ico from kdewin provides rcfile argument
