@@ -141,6 +141,16 @@ public:
     */
     void setNotificationsEtagResponseHeader(const QByteArray &value);
 
+    /** Saves the ETag Response header from the last Navigation Apps api
+     * request with statusCode 200.
+    */
+    QByteArray navigationAppsEtagResponseHeader() const;
+
+    /** Returns the ETag Response header from the last Navigation Apps api
+     * request with statusCode 200.
+    */
+    void setNavigationAppsEtagResponseHeader(const QByteArray &value);
+
 public slots:
     /// Triggers a ping to the server to update state and
     /// connection status and errors.
@@ -168,6 +178,7 @@ private:
     QElapsedTimer _timeSinceLastETagCheck;
     QPointer<ConnectionValidator> _connectionValidator;
     QByteArray _notificationsEtagResponseHeader;
+    QByteArray _navigationAppsEtagResponseHeader;
 
     /**
      * Starts counting when the server starts being back up after 503 or

@@ -93,7 +93,9 @@ public slots:
     void slotOpenPath(const QString &path);
     void slotAccountStateChanged();
     void slotTrayMessageIfServerUnsupported(Account *account);
-    void slotNavigationAppsFetched(const QJsonDocument &reply);
+    void slotNavigationAppsFetched(const QJsonDocument &reply, int statusCode);
+    void slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode);
+
 
     /**
      * Open a share dialog for a file or folder.
@@ -121,6 +123,7 @@ private:
     void setupActions();
     void addAccountContextMenu(AccountStatePtr accountState, QMenu *menu, bool separateMenu);
     void fetchNavigationApps(AccountStatePtr account, QMenu *accountMenu);
+    void buildNavigationAppsMenu(AccountStatePtr account, QMenu *accountMenu);
 
     QPointer<Systray> _tray;
 #if defined(Q_OS_MAC)
@@ -154,6 +157,8 @@ private:
     QAction *_actionHelp;
     QAction *_actionQuit;
     QAction *_actionCrash;
+
+    QMap<AccountStatePtr, QJsonArray> _navApps;
 
     QList<QAction *> _recentItemsActions;
     Application *_app;

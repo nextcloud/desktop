@@ -43,11 +43,12 @@ signals:
      * Result of the OCS request
      *
      * @param reply The reply
+     * @param statusCode the status code of the response
      */
-    void appsJobFinished(const QJsonDocument &reply);
+    void appsJobFinished(const QJsonDocument &reply, int statusCode);
 
 private slots:
-    void jobDone(const QJsonDocument &reply);
+    void jobDone(const QJsonDocument &reply, int statusCode);
 };
 }
 

@@ -29,6 +29,7 @@ OcsJob::OcsJob(AccountPtr account)
 {
     _passStatusCodes.append(OCS_SUCCESS_STATUS_CODE);
     _passStatusCodes.append(OCS_SUCCESS_STATUS_CODE_V2);
+    _passStatusCodes.append(OCS_NOT_MODIFIED_STATUS_CODE_V2);
     setIgnoreCredentialFailure(true);
 }
 
@@ -52,6 +53,11 @@ void OcsJob::appendPath(const QString &id)
     setPath(path() + QLatin1Char('/') + id);
 }
 
+void OcsJob::addRawHeader(const QByteArray &headerName, const QByteArray &value)
+{
+    _request.setRawHeader(headerName, value);
+}
+
 static QUrlQuery percentEncodeQueryItems(
     const QList<QPair<QString, QString>> &items)
 {
@@ -68,9 +74,8 @@ static QUrlQuery percentEncodeQueryItems(
 
 void OcsJob::start()
 {
-    QNetworkRequest req;
-    req.setRawHeader("Ocs-APIREQUEST", "true");
-    req.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
+    addRawHeader("Ocs-APIREQUEST", "true");
+    addRawHeader("Content-Type", "application/x-www-form-urlencoded");
 
     QBuffer *buffer = new QBuffer;
 
@@ -92,7 +97,7 @@ void OcsJob::start()
     }
     queryItems.addQueryItem(QLatin1String("format"), QLatin1String("json"));
     QUrl url = Utility::concatUrlPath(account()->url(), path(), queryItems);
-    sendRequest(_verb, url, req, buffer);
+    sendRequest(_verb, url, _request, buffer);
     AbstractNetworkJob::start();
 }
 
@@ -101,18 +106,24 @@ bool OcsJob::finished()
     const QByteArray replyData = reply()->readAll();
 
     QJsonParseError error;
+    QString message;
+    int statusCode = 0;
     auto json = QJsonDocument::fromJson(replyData, &error);
+
+    // when it is null we might have a 304 so get status code from reply() and gives a warning...
     if (error.error != QJsonParseError::NoError) {
+        statusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         qCWarning(lcOcs) << "Could not parse reply to"
                          << _verb
                          << Utility::concatUrlPath(account()->url(), path())
                          << _params
                          << error.errorString()
                          << ":" << replyData;
+    } else {
+        statusCode  = getJsonReturnCode(json, message);
     }
 
-    QString message;
-    const int statusCode = getJsonReturnCode(json, message);
+    //... then it checks for the statusCode
     if (!_passStatusCodes.contains(statusCode)) {
         qCWarning(lcOcs) << "Reply to"
                          << _verb
@@ -120,8 +131,13 @@ bool OcsJob::finished()
                          << _params
                          << "has unexpected status code:" << statusCode << replyData;
         emit ocsError(statusCode, message);
+
     } else {
-        emit jobFinished(json);
+        // save new ETag value
+        if(reply()->rawHeaderList().contains("ETag"))
+            emit etagResponseHeaderReceived(reply()->rawHeader("ETag"), statusCode);
+
+        emit jobFinished(json, statusCode);
     }
     return true;
 }
