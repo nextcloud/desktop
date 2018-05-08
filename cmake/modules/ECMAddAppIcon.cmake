@@ -253,7 +253,7 @@ function(ecm_add_app_icon appsources)
                 endforeach()
             endforeach()
 
-            create_windows_icon_and_rc(Png2Ico::Png2Ico "${png2ico_args}")
+            create_windows_icon_and_rc(Png2Ico::Png2Ico "${png2ico_args}" "${deps}")
             set(${appsources} "${${appsources}};${_outfilename}.rc" PARENT_SCOPE)
 
         # png2ico from kdewin provides rcfile argument
