@@ -92,7 +92,8 @@ ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
 
     connect(_model, &QAbstractItemModel::rowsInserted, this, &ActivityWidget::rowsInserted);
 
-    connect(delegate, &ActivityItemDelegate::buttonClickedOnItemView, this, &ActivityWidget::slotButtonClickedOnListView);
+    connect(delegate, &ActivityItemDelegate::primaryButtonClickedOnItemView, this, &ActivityWidget::slotPrimaryButtonClickedOnListView);
+    connect(delegate, &ActivityItemDelegate::secondaryButtonClickedOnItemView, this, &ActivityWidget::slotSecondaryButtonClickedOnListView);
     connect(this, &ActivityWidget::sendNotificationRequest, this, &ActivityWidget::slotSendNotificationRequest);
 
     connect(_ui->_activityList, &QListView::activated, this, &ActivityWidget::slotOpenFile);
@@ -106,7 +107,7 @@ ActivityWidget::~ActivityWidget()
     delete _ui;
 }
 
-void ActivityWidget::slotButtonClickedOnListView(const QModelIndex &index){
+void ActivityWidget::slotPrimaryButtonClickedOnListView(const QModelIndex &index){
     QList<QVariant> customList = index.data(ActivityItemDelegate::ActionsLinksRole).toList();
     QList<ActivityLink> actionLinks;
     foreach(QVariant customItem, customList){
@@ -132,6 +133,37 @@ void ActivityWidget::slotButtonClickedOnListView(const QModelIndex &index){
     }
 
     menu.exec(QCursor::pos());
+}
+
+void ActivityWidget::slotSecondaryButtonClickedOnListView(const QModelIndex &index){
+    QList<QVariant> customList = index.data(ActivityItemDelegate::ActionsLinksRole).toList();
+    QList<ActivityLink> actionLinks;
+    foreach(QVariant customItem, customList){
+        actionLinks << qvariant_cast<ActivityLink>(customItem);
+    }
+
+//    QMenu menu;
+//    QUrl link = qvariant_cast<QString>(index.data(ActivityItemDelegate::LinkRole));
+//    if(!link.isEmpty()){
+//        QAction *menuAction = new QAction(tr("More Information"), &menu);
+//        connect(menuAction, &QAction::triggered, this, [link] { QDesktopServices::openUrl(link); });
+//        menu.addAction(menuAction);
+//    }
+
+    foreach (ActivityLink actionLink, actionLinks) {
+        qCInfo(lcActivity) << "Notification Link: " << actionLink._verb << actionLink._link;
+        if(actionLink._verb == "DELETE"){
+//            QAction *menuAction = new QAction(actionLink._label, &menu);
+//            menuAction->setProperty("activityRow", QVariant::fromValue(index.row()));
+//            connect(menuAction, &QAction::triggered, this, [this, index, actionLink] {
+                qCInfo(lcActivity) << "Notification Link: " << actionLink._verb << actionLink._link;
+                emit sendNotificationRequest(qvariant_cast<QString>(index.data(ActivityItemDelegate::AccountRole)), actionLink._link, actionLink._verb, index.row());
+//            });
+//            menu.addAction(menuAction);
+        }
+    }
+
+    //menu.exec(QCursor::pos());
 }
 
 void ActivityWidget::slotNotificationRequestFinished(int statusCode)

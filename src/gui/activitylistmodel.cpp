@@ -45,6 +45,10 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 {
     Activity a;
 
+    // filter the get action here
+    // send only the text of the get action
+    // if there is more than one send the icon? the ...
+
     if (!index.isValid())
         return QVariant();
 
@@ -69,7 +73,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         }
         return QVariant();
         break;
-    case ActivityItemDelegate::ActionsLinksRole:{
+     case ActivityItemDelegate::ActionsLinksRole:{
         QList<QVariant> customList;
         foreach (ActivityLink customItem, a._links) {
             QVariant customVariant;

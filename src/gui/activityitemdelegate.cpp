@@ -30,7 +30,8 @@ namespace OCC {
 
 int ActivityItemDelegate::_iconHeight = 0;
 int ActivityItemDelegate::_margin = 0;
-int ActivityItemDelegate::_buttonWidth = 0;
+int ActivityItemDelegate::_primaryButtonWidth = 0;
+int ActivityItemDelegate::_secondaryButtonWidth = 0;
 int ActivityItemDelegate::_timeWidth = 0;
 int ActivityItemDelegate::_buttonHeight = 0;
 
@@ -144,16 +145,17 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         int right = timeBox.left() - rightMargin;
         int left = timeBox.left() - leftMargin;
         optionsButton.rect = option.rect;
-        optionsButton.text = "...";
-        int btnTextWidth = fm.width(optionsButton.text.toAscii());
+        optionsButton.icon = QIcon(QLatin1String(":/client/resources/close.svg"));
+        optionsButton.iconSize = QSize(16, 16);
+        int btnTextWidth = 16;
         optionsButton.rect.setLeft(left - btnTextWidth);
         optionsButton.rect.setRight(right);
         optionsButton.rect.setTop(option.rect.top() + 5);
         optionsButton.rect.setHeight(option.rect.height() - 10);
         optionsButton.features |= QStyleOptionButton::DefaultButton;
         optionsButton.state |= QStyle::State_Raised;
-        _buttonWidth = optionsButton.rect.size().width();
-        _buttonHeight = optionsButton.rect.height();
+        _secondaryButtonWidth = optionsButton.rect.size().width();
+        _buttonHeight = 16;
     }
 
     /* === start drawing === */
@@ -171,7 +173,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         painter->setPen(option.palette.color(cg, QPalette::Text));
     }
 
-    int spaceLeftForText = (option.rect.width() - (actionIconRect.width() + _buttonWidth))/4;
+    int spaceLeftForText = (option.rect.width() - (actionIconRect.width() + _primaryButtonWidth))/4;
 
     const QString elidedAction = fm.elidedText(actionText, Qt::ElideRight, spaceLeftForText);
     painter->drawText(actionTextBox, elidedAction);
@@ -200,11 +202,11 @@ bool ActivityItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
     if(qvariant_cast<Activity::Type>(index.data(ActionRole)) == Activity::Type::NotificationType){
         if (event->type() == QEvent::MouseButtonRelease){
             QMouseEvent *mouseEvent = (QMouseEvent*)event;
-            int x = option.rect.left() + option.rect.width() - _buttonWidth - _timeWidth;
+            int x = option.rect.left() + option.rect.width() - _secondaryButtonWidth - _timeWidth;
             int y = option.rect.top();
-            if (mouseEvent->x() > x && mouseEvent->x() < (x + _buttonWidth)){
+            if (mouseEvent->x() > x && mouseEvent->x() < (x + _secondaryButtonWidth)){
                 if(mouseEvent->y() > y && mouseEvent->y() < (y + _buttonHeight))
-                    emit buttonClickedOnItemView(index);
+                    emit secondaryButtonClickedOnItemView(index);
             }
         }
     }
