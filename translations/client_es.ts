@@ -806,7 +806,11 @@
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Los cambios en las carpetas sincronizadas no se han podido rastrear de forma fiable.
+
+Esto significa que el cliente de sincronización podría no subir los cambios locales de forma inmediate sino que solo escaneará en busa de cambios locales y los subirá de forma ocasional (cada dos horas, por defecto).
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1062"/>
@@ -1149,7 +1153,7 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="87"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Este problema sucede habitualmente cuando las búsquedas de inotify están agotadas. Comprueba las FAQ para más detalles.</translation>
     </message>
 </context>
 <context>
@@ -1524,7 +1528,7 @@ Los elementos cuya eliminación está permitida serán eliminados si impiden que
     <message>
         <location filename="../src/gui/issueswidget.ui" line="147"/>
         <source>There were conflicts. Check the documentation on how to resolve them.</source>
-        <translation type="unfinished"/>
+        <translation>Ha habido conflictos. Comprueba la documentaci´no sobre cómo resolverlos.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="180"/>
