@@ -32,6 +32,7 @@ int ActivityItemDelegate::_iconHeight = 0;
 int ActivityItemDelegate::_margin = 0;
 int ActivityItemDelegate::_primaryButtonWidth = 0;
 int ActivityItemDelegate::_secondaryButtonWidth = 0;
+int ActivityItemDelegate::_spaceBetweenButtons = 0;
 int ActivityItemDelegate::_timeWidth = 0;
 int ActivityItemDelegate::_buttonHeight = 0;
 
@@ -89,10 +90,15 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     int margin = fm.height() / 4;
     painter->save();
 
-    QIcon actionIcon = qvariant_cast<QIcon>(index.data(ActionIconRole));
     Activity::Type activityType = qvariant_cast<Activity::Type>(index.data(ActionRole));
+    QIcon actionIcon = qvariant_cast<QIcon>(index.data(ActionIconRole));
     QString actionText = qvariant_cast<QString>(index.data(ActionTextRole));
     QString messageText = qvariant_cast<QString>(index.data(MessageRole));
+    QList<QVariant> customList = index.data(ActionsLinksRole).toList();
+    QList<ActivityLink> actionLinks;
+    foreach(QVariant customItem, customList){
+        actionLinks << qvariant_cast<ActivityLink>(customItem);
+    }
     QString timeText = qvariant_cast<QString>(index.data(PointInTimeRole));
     QString accountRole = qvariant_cast<QString>(index.data(AccountRole));
     bool accountOnline = qvariant_cast<bool>(index.data(AccountConnectedRole));
@@ -138,24 +144,50 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         messageTextBox.setWidth(0);
     }
 
-    QStyleOptionButton optionsButton;
+    QStyleOptionButton primaryButton;
+    QStyleOptionButton secondaryButton;
     if(activityType == Activity::Type::NotificationType){
         int rightMargin = margin * 2;
         int leftMargin = margin * 4;
+        int top = option.rect.top() + 5;
+        _buttonHeight = option.rect.height() - 10;
+        int buttonWidth = _buttonHeight;
+        _spaceBetweenButtons = leftMargin;
+
+        // Secondary will be 'dismiss' or 'more'
+        secondaryButton.rect = option.rect;
+        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/close.svg"));
+        if(actionLinks.size() > 1)
+            secondaryButton.icon = QIcon(QLatin1String(":/client/resources/more.png"));
+
         int right = timeBox.left() - rightMargin;
         int left = timeBox.left() - leftMargin;
-        optionsButton.rect = option.rect;
-        optionsButton.icon = QIcon(QLatin1String(":/client/resources/close.svg"));
-        optionsButton.iconSize = QSize(16, 16);
-        int btnTextWidth = 16;
-        optionsButton.rect.setLeft(left - btnTextWidth);
-        optionsButton.rect.setRight(right);
-        optionsButton.rect.setTop(option.rect.top() + 5);
-        optionsButton.rect.setHeight(option.rect.height() - 10);
-        optionsButton.features |= QStyleOptionButton::DefaultButton;
-        optionsButton.state |= QStyle::State_Raised;
-        _secondaryButtonWidth = optionsButton.rect.size().width();
-        _buttonHeight = 16;
+
+        // 16 x 16
+        secondaryButton.iconSize = QSize(buttonWidth, _buttonHeight);
+        secondaryButton.rect.setLeft(left - buttonWidth);
+        secondaryButton.rect.setRight(right);
+        secondaryButton.rect.setTop(top);
+        secondaryButton.rect.setHeight(_buttonHeight);
+        secondaryButton.features |= QStyleOptionButton::DefaultButton;
+        secondaryButton.state |= QStyle::State_Raised;
+
+        // Primary will be more information
+        primaryButton.rect = option.rect;
+        primaryButton.text = tr("More information");
+
+        right = secondaryButton.rect.left() - rightMargin;
+        left = secondaryButton.rect.left() - leftMargin;
+
+        primaryButton.rect.setLeft(left - fm.width(primaryButton.text));
+        primaryButton.rect.setRight(right);
+        primaryButton.rect.setTop(top);
+        primaryButton.rect.setHeight(_buttonHeight);
+        primaryButton.features |= QStyleOptionButton::DefaultButton;
+        primaryButton.state |= QStyle::State_Raised;
+
+        _primaryButtonWidth = primaryButton.rect.size().width();
+        _secondaryButtonWidth = secondaryButton.rect.size().width();
     }
 
     /* === start drawing === */
@@ -183,8 +215,10 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         painter->drawText(messageTextBox, elidedMessage);
     }
 
-    if(activityType == Activity::Type::NotificationType)
-        QApplication::style()->drawControl(QStyle::CE_PushButton, &optionsButton, painter);
+    if(activityType == Activity::Type::NotificationType){
+        QApplication::style()->drawControl(QStyle::CE_PushButton, &primaryButton, painter);
+        QApplication::style()->drawControl(QStyle::CE_PushButton, &secondaryButton, painter);
+    }
 
     if (!accountOnline) {
         QPalette p = option.palette;
@@ -202,14 +236,27 @@ bool ActivityItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
     if(qvariant_cast<Activity::Type>(index.data(ActionRole)) == Activity::Type::NotificationType){
         if (event->type() == QEvent::MouseButtonRelease){
             QMouseEvent *mouseEvent = (QMouseEvent*)event;
-            int x = option.rect.left() + option.rect.width() - _secondaryButtonWidth - _timeWidth;
-            int y = option.rect.top();
-            if (mouseEvent->x() > x && mouseEvent->x() < (x + _secondaryButtonWidth)){
-                if(mouseEvent->y() > y && mouseEvent->y() < (y + _buttonHeight))
-                    emit secondaryButtonClickedOnItemView(index);
+            if(mouseEvent){
+                int mouseEventX = mouseEvent->x();
+                int mouseEventY = mouseEvent->y();
+                int buttonsWidth = _primaryButtonWidth + _spaceBetweenButtons + _secondaryButtonWidth;
+                int x = option.rect.left() + option.rect.width() - buttonsWidth - _timeWidth;
+                int y = option.rect.top();
+
+                if (mouseEventX > x && mouseEventX < x + buttonsWidth){
+                    if(mouseEventY > y && mouseEventY < y + _buttonHeight){
+                        if (mouseEventX > x && mouseEventX < x + _primaryButtonWidth)
+                            emit primaryButtonClickedOnItemView(index);
+
+                        x += _primaryButtonWidth + _spaceBetweenButtons;
+                        if (mouseEventX > x && mouseEventX < x + _secondaryButtonWidth)
+                            emit secondaryButtonClickedOnItemView(index);
+                    }
+                }
             }
         }
     }
+
     return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 

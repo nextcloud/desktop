@@ -29,8 +29,6 @@ public:
     enum datarole { ActionIconRole = Qt::UserRole + 1,
         UserIconRole,
         AccountRole,
-        ActionPrimaryLinkRole,
-        ActionSecondaryLinkRole,
         ActionsLinksRole,
         ActionTextRole,
         ActionRole,
@@ -57,6 +55,7 @@ private:
     static int _iconHeight;
     static int _primaryButtonWidth;
     static int _secondaryButtonWidth;
+    static int _spaceBetweenButtons;
     static int _timeWidth;
     static int _buttonHeight;
 };

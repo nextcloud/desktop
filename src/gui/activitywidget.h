@@ -86,7 +86,7 @@ signals:
     void rowsInserted();
     void hideActivityTab(bool);
     void newNotification();
-    void sendNotificationRequest(const QString &, const QString &link, const QByteArray &verb, int row);
+    void sendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
 
 private slots:
     void slotBuildNotificationDisplay(const ActivityList &list);

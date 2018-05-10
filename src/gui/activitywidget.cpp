@@ -38,6 +38,7 @@
 #include "theme.h"
 #include "ocsjob.h"
 #include "configfile.h"
+#include "guiutility.h"
 
 #include "ui_activitywidget.h"
 
@@ -94,7 +95,7 @@ ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
 
     connect(delegate, &ActivityItemDelegate::primaryButtonClickedOnItemView, this, &ActivityWidget::slotPrimaryButtonClickedOnListView);
     connect(delegate, &ActivityItemDelegate::secondaryButtonClickedOnItemView, this, &ActivityWidget::slotSecondaryButtonClickedOnListView);
-    connect(this, &ActivityWidget::sendNotificationRequest, this, &ActivityWidget::slotSendNotificationRequest);
+    //connect(this, &ActivityWidget::sendNotificationRequest, this, &ActivityWidget::slotSendNotificationRequest);
 
     connect(_ui->_activityList, &QListView::activated, this, &ActivityWidget::slotOpenFile);
 
@@ -108,31 +109,9 @@ ActivityWidget::~ActivityWidget()
 }
 
 void ActivityWidget::slotPrimaryButtonClickedOnListView(const QModelIndex &index){
-    QList<QVariant> customList = index.data(ActivityItemDelegate::ActionsLinksRole).toList();
-    QList<ActivityLink> actionLinks;
-    foreach(QVariant customItem, customList){
-        actionLinks << qvariant_cast<ActivityLink>(customItem);
-    }
-
-    QMenu menu;
     QUrl link = qvariant_cast<QString>(index.data(ActivityItemDelegate::LinkRole));
-    if(!link.isEmpty()){
-        QAction *menuAction = new QAction(tr("More Information"), &menu);
-        connect(menuAction, &QAction::triggered, this, [link] { QDesktopServices::openUrl(link); });
-        menu.addAction(menuAction);
-    }
-
-    foreach (ActivityLink actionLink, actionLinks) {
-        QAction *menuAction = new QAction(actionLink._label, &menu);
-        menuAction->setProperty("activityRow", QVariant::fromValue(index.row()));
-        connect(menuAction, &QAction::triggered, this, [this, index, actionLink] {
-            qCInfo(lcActivity) << "Notification Link: " << actionLink._verb << actionLink._link;
-            emit this->sendNotificationRequest(qvariant_cast<QString>(index.data(ActivityItemDelegate::AccountRole)), actionLink._link, actionLink._verb, index.row());
-        });
-        menu.addAction(menuAction);
-    }
-
-    menu.exec(QCursor::pos());
+    if(!link.isEmpty())
+        Utility::openBrowser(link, this);
 }
 
 void ActivityWidget::slotSecondaryButtonClickedOnListView(const QModelIndex &index){
@@ -142,28 +121,21 @@ void ActivityWidget::slotSecondaryButtonClickedOnListView(const QModelIndex &ind
         actionLinks << qvariant_cast<ActivityLink>(customItem);
     }
 
-//    QMenu menu;
-//    QUrl link = qvariant_cast<QString>(index.data(ActivityItemDelegate::LinkRole));
-//    if(!link.isEmpty()){
-//        QAction *menuAction = new QAction(tr("More Information"), &menu);
-//        connect(menuAction, &QAction::triggered, this, [link] { QDesktopServices::openUrl(link); });
-//        menu.addAction(menuAction);
-//    }
-
-    foreach (ActivityLink actionLink, actionLinks) {
-        qCInfo(lcActivity) << "Notification Link: " << actionLink._verb << actionLink._link;
-        if(actionLink._verb == "DELETE"){
-//            QAction *menuAction = new QAction(actionLink._label, &menu);
-//            menuAction->setProperty("activityRow", QVariant::fromValue(index.row()));
-//            connect(menuAction, &QAction::triggered, this, [this, index, actionLink] {
-                qCInfo(lcActivity) << "Notification Link: " << actionLink._verb << actionLink._link;
-                emit sendNotificationRequest(qvariant_cast<QString>(index.data(ActivityItemDelegate::AccountRole)), actionLink._link, actionLink._verb, index.row());
-//            });
-//            menu.addAction(menuAction);
+    const QString accountName = index.data(ActivityItemDelegate::AccountRole).toString();
+    if(actionLinks.size() == 1){
+        if(actionLinks.at(0)._verb == "DELETE")
+            slotSendNotificationRequest(index.data(ActivityItemDelegate::AccountRole).toString(), actionLinks.at(0)._link, actionLinks.at(0)._verb, index.row());
+    } else if(actionLinks.size() > 1){
+        QMenu menu;
+        foreach (ActivityLink actionLink, actionLinks) {
+            QAction *menuAction = new QAction(actionLink._label, &menu);
+            connect(menuAction, &QAction::triggered, this, [this, index, accountName, actionLink] {
+                this->slotSendNotificationRequest(accountName, actionLink._link, actionLink._verb, index.row());
+            });
+            menu.addAction(menuAction);
         }
+        menu.exec(QCursor::pos());
     }
-
-    //menu.exec(QCursor::pos());
 }
 
 void ActivityWidget::slotNotificationRequestFinished(int statusCode)
