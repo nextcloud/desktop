@@ -22,6 +22,8 @@
         <file>resources/account.png</file>
         <file>resources/more.svg</file>
         <file>resources/delete.png</file>
-        <file>resources/bell.png</file>
+        <file>resources/close.svg</file>
+        <file>resources/bell.svg</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>

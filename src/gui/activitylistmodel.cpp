@@ -88,12 +88,12 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 //        break;
     case ActivityItemDelegate::ActionIconRole:
         if(a._type == Activity::NotificationType){
-            QIcon cachedIcon = ServerNotificationHandler::iconCache.value(a._id);
+           QIcon cachedIcon = ServerNotificationHandler::iconCache.value(a._id);
            if(!cachedIcon.isNull())
                return cachedIcon;
-           else QIcon(QLatin1String(":/client/resources/bell.png"));
-        }
-        return QIcon(QLatin1String(":/client/resources/activity.png"));
+           else return QIcon(QLatin1String(":/client/resources/bell.svg"));
+        } else return QIcon(QLatin1String(":/client/resources/activity.png"));
+        return QVariant();
         break;
     case ActivityItemDelegate::ActionRole:{
         QVariant type;
