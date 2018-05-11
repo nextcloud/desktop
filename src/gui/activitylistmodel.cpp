@@ -210,11 +210,7 @@ void ActivityListModel::addToActivityList(Activity activity) {
 }
 
 void ActivityListModel::removeFromActivityList(int row) {
-    if(removeRow(row))
-        qDebug() << "Row removed!!" << row;
-    else
-        qDebug() << "Row not removed!!" << row;
-
+    qCInfo(lcActivity) << "Notification successfully dismissed: " << _notificationLists.at(row)._subject;
     _notificationLists.removeAt(row);
     combineActivityLists();
 }
