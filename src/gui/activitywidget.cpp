@@ -140,20 +140,15 @@ void ActivityWidget::slotSecondaryButtonClickedOnListView(const QModelIndex &ind
 
 void ActivityWidget::slotNotificationRequestFinished(int statusCode)
 {
-    int i = 0;
-    QString doneText;
-    QLocale locale;
-
-    QString timeStr = locale.toString(QTime::currentTime());
+    int row = sender()->property("activityRow").toInt();
 
     // the ocs API returns stat code 100 or 200 inside the xml if it succeeded.
     if (statusCode != OCS_SUCCESS_STATUS_CODE && statusCode != OCS_SUCCESS_STATUS_CODE_V2) {
-        qCWarning(lcActivity) << "Notification Request to Server failed, leave button visible.";
+        qCWarning(lcActivity) << "Notification Request to Server failed, leave notification visible.";
     } else {
        // to do use the model to rebuild the list or remove the item
-        qDebug() << "activity to be removed from row" << sender()->property("activityRow").toInt();
-        _model->removeFromActivityList(sender()->property("activityRow").toInt());
-        qCWarning(lcActivity) << "Notification Request to Server successed, leave button visible.";
+        qDebug() << "Notification to be removed from row" << row;
+        _model->removeFromActivityList(row);
     }
 }
 
