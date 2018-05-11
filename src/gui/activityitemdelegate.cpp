@@ -130,8 +130,6 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         int leftMargin = margin * offset;
         int top = option.rect.top() + margin - offset;
         int buttonSize = option.rect.height()/2.5;
-         _buttonHeight = buttonSize;
-        _spaceBetweenButtons = leftMargin;
 
         // Secondary will be 'Dismiss' or '...'
         secondaryButton.rect = option.rect;
@@ -162,8 +160,14 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         primaryButton.state |= QStyle::State_Raised;
 
         // save info to be able to filter mouse clicks
+        _buttonHeight = buttonSize;
+        _spaceBetweenButtons = leftMargin;
         _primaryButtonWidth = primaryButton.rect.size().width();
         _secondaryButtonWidth = secondaryButton.rect.size().width();
+    } else {
+        _spaceBetweenButtons = margin * offset;
+        _primaryButtonWidth = 0;
+        _secondaryButtonWidth = 0;
     }
 
     // draw the icon
