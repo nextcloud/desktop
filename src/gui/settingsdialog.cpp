@@ -92,6 +92,21 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroup = new QActionGroup(this);
     _actionGroup->setExclusive(true);
 
+    connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
+
+    foreach(auto ai, AccountManager::instance()->accounts()) {
+        accountAdded(ai.data());
+    }
+
+    _actionBefore = new QAction;
+    _toolBar->addAction(_actionBefore);
+
+    // Adds space
+    QWidget* spacer = new QWidget();
+    spacer->setMinimumWidth(30);
+    spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
+    _toolBar->addWidget(spacer);
+
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
     _actionGroup->addAction(generalAction);
     _toolBar->addAction(generalAction);
@@ -107,18 +122,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
-
-    // Adds space
-    QWidget* spacer = new QWidget();
-    spacer->setMinimumWidth(100);
-    spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
-    _toolBar->insertWidget(_actionBefore, spacer);
-
-    foreach (auto ai, AccountManager::instance()->accounts()) {
-        accountAdded(ai.data());
-    }
-
-    connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
 
     QTimer::singleShot(1, this, &SettingsDialog::showFirstPage);
 
@@ -200,7 +203,6 @@ void SettingsDialog::showActivityPage()
 //}
 
 void SettingsDialog::activityAdded(AccountState *s){
-    _activitySettings[s] = new ActivitySettings(s, this);
     _ui->stack->addWidget(_activitySettings[s]);
     connect(_activitySettings[s], &ActivitySettings::guiLog, _gui,
         &ownCloudGui::slotShowOptionalTrayMessage);
@@ -212,7 +214,6 @@ void SettingsDialog::activityAdded(AccountState *s){
     // all buttons must have the same size in order to keep a good layout
     QAction *action = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
     action->setProperty("account", QVariant::fromValue(s));
-    _actionGroupWidgets.insert(_toolBar->insertSeparator(_actionBefore), _activitySettings[s]);
     _toolBar->insertAction(_actionBefore, action);
     _actionGroup->addAction(action);
     _actionGroupWidgets.insert(action, _activitySettings[s]);
@@ -222,8 +223,13 @@ void SettingsDialog::activityAdded(AccountState *s){
 void SettingsDialog::accountAdded(AccountState *s)
 {
     auto height = _toolBar->sizeHint().height();
-
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
+
+    _activitySettings[s] = new ActivitySettings(s, this);
+    if(AccountManager::instance()->accounts().first().data() != s &&
+        AccountManager::instance()->accounts().size() >= 1){
+        _actionGroupWidgets.insert(_toolBar->insertSeparator(_actionBefore), _activitySettings[s]);
+    }
 
     QAction *accountAction;
     QImage avatar = s->account()->avatar();
@@ -362,9 +368,8 @@ void SettingsDialog::customizeStyle()
         QIcon icon = createColorAwareIcon(a->property("iconPath").toString());
         a->setIcon(icon);
         QToolButton *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));
-        if (btn) {
+        if (btn)
             btn->setIcon(icon);
-        }
     }
 }
 
