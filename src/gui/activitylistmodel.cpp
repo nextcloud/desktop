@@ -29,6 +29,8 @@
 #include "activitydata.h"
 #include "activitylistmodel.h"
 
+#include "theme.h"
+
 #include "servernotificationhandler.h"
 
 namespace OCC {
@@ -83,15 +85,24 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return customList;
         break;
     }
-//    case ActivityItemDelegate::UserIconRole:
-//        return QIcon(QLatin1String(":/client/resources/account.png"));
-//        break;
     case ActivityItemDelegate::ActionIconRole:
         if(a._type == Activity::NotificationType){
            QIcon cachedIcon = ServerNotificationHandler::iconCache.value(a._id);
            if(!cachedIcon.isNull())
                return cachedIcon;
            else return QIcon(QLatin1String(":/client/resources/bell.svg"));
+        } else if(a._type == Activity::ErrorType){
+               if(a._status == SyncFileItem::NormalError
+                   || a._status == SyncFileItem::FatalError
+                   || a._status == SyncFileItem::DetailError
+                   || a._status == SyncFileItem::BlacklistedError) {
+                   return Theme::instance()->syncStateIcon(SyncResult::Error);
+               } else if(a._status == SyncFileItem::SoftError
+                         || a._status == SyncFileItem::FileIgnored
+                         || a._status == SyncFileItem::Conflict
+                         || a._status == SyncFileItem::Restoration){
+                   return Theme::instance()->syncStateIcon(SyncResult::Problem);
+               }
         } else return QIcon(QLatin1String(":/client/resources/activity.png"));
         return QVariant();
         break;
@@ -204,7 +215,12 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
     combineActivityLists();
 }
 
-void ActivityListModel::addToActivityList(Activity activity) {
+void ActivityListModel::addErrorToActivityList(Activity activity) {
+    _notificationErrorsLists.prepend(activity);
+    combineActivityLists();
+}
+
+void ActivityListModel::addNotificationToActivityList(Activity activity) {
     _notificationLists.prepend(activity);
     combineActivityLists();
 }
@@ -218,6 +234,9 @@ void ActivityListModel::removeFromActivityList(int row) {
 void ActivityListModel::combineActivityLists()
 {
     ActivityList resultList;
+
+    std::sort(_notificationErrorsLists.begin(), _notificationErrorsLists.end());
+    resultList.append(_notificationErrorsLists);
 
     std::sort(_notificationLists.begin(), _notificationLists.end());
     resultList.append(_notificationLists);
