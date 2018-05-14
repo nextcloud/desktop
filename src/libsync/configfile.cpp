@@ -16,6 +16,7 @@
 
 #include "configfile.h"
 #include "theme.h"
+#include "version.h"
 #include "common/utility.h"
 #include "common/asserts.h"
 #include "version.h"
@@ -81,6 +82,7 @@ static const char logDebugC[] = "logDebug";
 static const char logExpireC[] = "logExpire";
 static const char logFlushC[] = "logFlush";
 static const char showExperimentalOptionsC[] = "showExperimentalOptions";
+static const char clientVersionC[] = "clientVersion";
 
 static const char proxyHostC[] = "Proxy/host";
 static const char proxyTypeC[] = "Proxy/type";
@@ -414,7 +416,14 @@ QString ConfigFile::excludeFileFromSystem()
 QString ConfigFile::backup() const
 {
     QString baseFile = configFile();
-    QString backupFile = QString("%1.backup_%2").arg(baseFile, QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss"));
+    auto versionString = clientVersionString();
+    if (!versionString.isEmpty())
+        versionString.prepend('_');
+    QString backupFile =
+        QString("%1.backup_%2%3")
+            .arg(baseFile)
+            .arg(QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss"))
+            .arg(versionString);
 
     // If this exact file already exists it's most likely that a backup was
     // already done. (two backup calls directly after each other, potentially
@@ -1016,6 +1025,18 @@ void ConfigFile::setCertificatePasswd(const QString &cPasswd)
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(certPasswd), cPasswd);
     settings.sync();
+}
+
+QString ConfigFile::clientVersionString() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(clientVersionC), QString()).toString();
+}
+
+void ConfigFile::setClientVersionString(const QString &version)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(clientVersionC), version);
 }
 
 Q_GLOBAL_STATIC(QString, g_configFileName)

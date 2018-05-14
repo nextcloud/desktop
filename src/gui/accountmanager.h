@@ -80,7 +80,7 @@ public:
      * Returns the list of settings keys that can't be read because
      * they are from the future.
      */
-    static QStringList backwardMigrationKeys();
+    static void backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys);
 
 private:
     // saving and loading Account to settings
@@ -97,6 +97,8 @@ private:
 
     AccountManager() = default;
     QList<AccountStatePtr> _accounts;
+    /// Account ids from settings that weren't read
+    QSet<QString> _additionalBlockedAccountIds;
 
 public slots:
     /// Saves account data, not including the credentials
