@@ -489,23 +489,11 @@ void PropagateUploadFileNG::slotUploadProgress(qint64 sent, qint64 total)
 
 void PropagateUploadFileNG::abort(PropagatorJob::AbortType abortType)
 {
-    // Prepare abort
-    prepareAbort(abortType);
-
-    // Abort all jobs (if there are any left), except final PUT
-    foreach (AbstractNetworkJob *job, _jobs) {
-        if (job->reply()) {
-            if (abortType == AbortType::Asynchronous && qobject_cast<MoveJob *>(job)){
-                // If it is async abort, dont abort
-                // MoveJob since it might result in conflict,
-                // only PUT and MKDIR jobs can be safely aborted.
-                continue;
-            }
-
-            // Abort the job
-            job->reply()->abort();
-        }
-    }
+    abortNetworkJobs(
+        abortType,
+        [this, abortType](AbstractNetworkJob *job) {
+            return abortType != AbortType::Asynchronous || !qobject_cast<MoveJob *>(job);
+        });
 }
 
 }
