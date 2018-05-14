@@ -164,6 +164,43 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         _spaceBetweenButtons = leftMargin;
         _primaryButtonWidth = primaryButton.rect.size().width();
         _secondaryButtonWidth = secondaryButton.rect.size().width();
+    } else if(activityType == Activity::Type::ErrorType){
+        int rightMargin = margin;
+        int leftMargin = margin * offset;
+        int top = option.rect.top() + margin - offset;
+        int buttonSize = option.rect.height()/2.5;
+
+        // Secondary will be 'Dismiss' or '...'
+        secondaryButton.rect = option.rect;
+        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/files.svg"));
+
+        int right = option.rect.right() - rightMargin;
+        int left = right - buttonSize;
+        secondaryButton.iconSize = QSize(buttonSize, buttonSize);
+        secondaryButton.rect.setLeft(left);
+        secondaryButton.rect.setRight(right);
+        secondaryButton.rect.setTop(top);
+        secondaryButton.rect.setHeight(_buttonHeight);
+        secondaryButton.features |= QStyleOptionButton::DefaultButton;
+        secondaryButton.state |= QStyle::State_Raised;
+
+        // Primary button will be 'More Information'
+        primaryButton.rect = option.rect;
+        primaryButton.text = tr("Open Browser");
+        right = secondaryButton.rect.left() - rightMargin;
+        left = secondaryButton.rect.left() - leftMargin;
+        primaryButton.rect.setLeft(left - fm.width(primaryButton.text));
+        primaryButton.rect.setRight(right);
+        primaryButton.rect.setTop(top);
+        primaryButton.rect.setHeight(_buttonHeight);
+        primaryButton.features |= QStyleOptionButton::DefaultButton;
+        primaryButton.state |= QStyle::State_Raised;
+
+        // save info to be able to filter mouse clicks
+        _buttonHeight = buttonSize;
+        _spaceBetweenButtons = leftMargin;
+        _primaryButtonWidth = primaryButton.rect.size().width();
+        _secondaryButtonWidth = secondaryButton.rect.size().width();
     } else {
         _spaceBetweenButtons = margin * offset;
         _primaryButtonWidth = 0;
@@ -200,7 +237,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     painter->drawText(actionTextBox, elidedAction);
 
     // draw the buttons
-    if(activityType == Activity::Type::NotificationType){
+    if(activityType == Activity::Type::NotificationType || activityType == Activity::Type::ErrorType){
         QApplication::style()->drawControl(QStyle::CE_PushButton, &primaryButton, painter);
         QApplication::style()->drawControl(QStyle::CE_PushButton, &secondaryButton, painter);
     }
@@ -235,7 +272,8 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 bool ActivityItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
     const QStyleOptionViewItem &option, const QModelIndex &index)
 {
-    if(qvariant_cast<Activity::Type>(index.data(ActionRole)) == Activity::Type::NotificationType){
+    if(qvariant_cast<Activity::Type>(index.data(ActionRole)) == Activity::Type::NotificationType
+            || qvariant_cast<Activity::Type>(index.data(ActionRole)) == Activity::Type::ErrorType){
         if (event->type() == QEvent::MouseButtonRelease){
             QMouseEvent *mouseEvent = (QMouseEvent*)event;
             if(mouseEvent){

@@ -49,7 +49,8 @@ public:
 
     enum Type {
         ActivityType,
-        NotificationType
+        NotificationType,
+        ErrorType
     };
 
     Type _type;
@@ -60,6 +61,7 @@ public:
     QUrl _link;
     QDateTime _dateTime;
     QString _accName;
+    int _status;
 
     QVector<ActivityLink> _links;
     /**

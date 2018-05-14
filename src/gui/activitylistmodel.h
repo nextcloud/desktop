@@ -47,7 +47,8 @@ public:
     void fetchMore(const QModelIndex &) Q_DECL_OVERRIDE;
 
     ActivityList activityList() { return _finalList; }
-    void addToActivityList(Activity activity);
+    void addNotificationToActivityList(Activity activity);
+    void addErrorToActivityList(Activity activity);
     void removeFromActivityList(int row);
 
 public slots:
@@ -66,6 +67,7 @@ private:
 
     ActivityList _activityLists;
     ActivityList _notificationLists;
+    ActivityList _notificationErrorsLists;
     ActivityList _finalList;
     AccountState *_accountState;
     bool _currentlyFetching = true;

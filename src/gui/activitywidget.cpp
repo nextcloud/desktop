@@ -90,10 +90,16 @@ ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
 
     connect(delegate, &ActivityItemDelegate::primaryButtonClickedOnItemView, this, &ActivityWidget::slotPrimaryButtonClickedOnListView);
     connect(delegate, &ActivityItemDelegate::secondaryButtonClickedOnItemView, this, &ActivityWidget::slotSecondaryButtonClickedOnListView);
-
     connect(_ui->_activityList, &QListView::activated, this, &ActivityWidget::slotOpenFile);
-
     connect(&_removeTimer, &QTimer::timeout, this, &ActivityWidget::slotCheckToCleanWidgets);
+
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
+        this, &ActivityWidget::slotProgressInfo);
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::itemCompleted,
+        this, &ActivityWidget::slotItemCompleted);
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::syncError,
+        this, &ActivityWidget::addError);
+
     _removeTimer.setInterval(1000);
 }
 
@@ -101,6 +107,75 @@ ActivityWidget::~ActivityWidget()
 {
     delete _ui;
 }
+
+void ActivityWidget::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
+{
+    if (progress.status() == ProgressInfo::Starting) {
+        // The sync is restarting, clean the old items
+        //cleanItems(folder);
+    }
+}
+
+void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item){
+    auto folderInstance = FolderMan::instance()->folder(folder);
+    if (!folderInstance)
+        return;
+
+    // check if we are adding it to the right account and if it is useful information (error)
+    if(folderInstance->accountState() == _accountState){
+        Activity activity;
+        activity._type = Activity::ErrorType;
+        activity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
+        activity._subject = item->_errorString;
+        qDebug() << "TOTAL " << folder;
+        activity._message = item->_originalFile;
+        activity._link = folderInstance->remotePath();
+        activity._status = item->_status;
+        activity._accName = folderInstance->accountState()->account()->displayName();
+        activity._file = item->_file;
+
+        ActivityLink al;
+        al._label = tr("Open Folder");
+        al._link = folderInstance->path();
+        al._verb = "";
+        al._isPrimary = true;
+        activity._links.append(al);
+
+        _model->addErrorToActivityList(activity);
+        // add error widget
+    }
+}
+
+void ActivityWidget::addError(const QString &folderAlias, const QString &message,
+    ErrorCategory category)
+{
+    auto folderInstance = FolderMan::instance()->folder(folderAlias);
+    if (!folderInstance)
+        return;
+
+    if(folderInstance->accountState() == _accountState){
+        Activity activity;
+        activity._type = Activity::ErrorType;
+        activity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
+        activity._subject = message;
+        activity._message = folderInstance->shortGuiLocalPath();
+        activity._link = folderInstance->shortGuiLocalPath();
+        activity._status = SyncResult::Error;
+        activity._accName = folderInstance->accountState()->account()->displayName();
+
+        if (category == ErrorCategory::InsufficientRemoteStorage) {
+            ActivityLink link;
+            link._label = tr("Retry all uploads");
+            link._link = folderInstance->path();
+            link._verb = "";
+            link._isPrimary = true;
+            activity._links.append(link);
+        }
+
+        _model->addErrorToActivityList(activity);
+    }
+}
+
 
 void ActivityWidget::slotPrimaryButtonClickedOnListView(const QModelIndex &index){
     QUrl link = qvariant_cast<QString>(index.data(ActivityItemDelegate::LinkRole));
@@ -115,20 +190,32 @@ void ActivityWidget::slotSecondaryButtonClickedOnListView(const QModelIndex &ind
         actionLinks << qvariant_cast<ActivityLink>(customItem);
     }
 
-    const QString accountName = index.data(ActivityItemDelegate::AccountRole).toString();
-    if(actionLinks.size() == 1){
-        if(actionLinks.at(0)._verb == "DELETE")
-            slotSendNotificationRequest(index.data(ActivityItemDelegate::AccountRole).toString(), actionLinks.at(0)._link, actionLinks.at(0)._verb, index.row());
-    } else if(actionLinks.size() > 1){
-        QMenu menu;
-        foreach (ActivityLink actionLink, actionLinks) {
-            QAction *menuAction = new QAction(actionLink._label, &menu);
-            connect(menuAction, &QAction::triggered, this, [this, index, accountName, actionLink] {
-                this->slotSendNotificationRequest(accountName, actionLink._link, actionLink._verb, index.row());
-            });
-            menu.addAction(menuAction);
+    if(qvariant_cast<Activity::Type>(index.data(ActivityItemDelegate::ActionRole)) == Activity::Type::NotificationType){
+        const QString accountName = index.data(ActivityItemDelegate::AccountRole).toString();
+        if(actionLinks.size() == 1){
+            if(actionLinks.at(0)._verb == "DELETE")
+                slotSendNotificationRequest(index.data(ActivityItemDelegate::AccountRole).toString(), actionLinks.at(0)._link, actionLinks.at(0)._verb, index.row());
+        } else if(actionLinks.size() > 1){
+            QMenu menu;
+            foreach (ActivityLink actionLink, actionLinks) {
+                QAction *menuAction = new QAction(actionLink._label, &menu);
+                connect(menuAction, &QAction::triggered, this, [this, index, accountName, actionLink] {
+                    this->slotSendNotificationRequest(accountName, actionLink._link, actionLink._verb, index.row());
+                });
+                menu.addAction(menuAction);
+            }
+            menu.exec(QCursor::pos());
         }
-        menu.exec(QCursor::pos());
+    }
+
+    if(qvariant_cast<Activity::Type>(index.data(ActivityItemDelegate::ActionRole)) == Activity::Type::ErrorType){
+        QString fileName = index.data(ActivityItemDelegate::PathRole).toString();
+        if (Folder *folder = FolderMan::instance()->folderForPath(actionLinks.first()._link)) {
+            QString fullPath = folder->path() + fileName;
+            if (QFile(fullPath).exists()) {
+                showInFileManager(fullPath);
+            }
+        }
     }
 }
 
@@ -319,7 +406,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
                 }
             }
 
-            _model->addToActivityList(activity);
+            _model->addNotificationToActivityList(activity);
         }
     }
 
@@ -476,11 +563,13 @@ ActivitySettings::ActivitySettings(AccountState *accountState, QWidget *parent)
     connect(_activityWidget, &ActivityWidget::rowsInserted, _progressIndicator, &QProgressIndicator::stopAnimation);
     connect(_activityWidget, &ActivityWidget::rowsInserted, this, &ActivitySettings::slotDisplayActivities);
 
-//    _protocolWidget = new ProtocolWidget(this);
+    _protocolWidget = new ProtocolWidget(this);
+    _vbox->addWidget(_protocolWidget);
 //    _protocolTabId = _tab->addTab(_protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
 //    connect(_protocolWidget, &ProtocolWidget::copyToClipboard, this, &ActivitySettings::slotCopyToClipboard);
 
-//    _issuesWidget = new IssuesWidget(this);
+    _issuesWidget = new IssuesWidget(this);
+    _vbox->addWidget(_issuesWidget);
 //    _syncIssueTabId = _tab->addTab(_issuesWidget, Theme::instance()->syncStateIcon(SyncResult::Problem), QString());
 //    slotShowIssueItemCount(0); // to display the label.
 //    connect(_issuesWidget, &IssuesWidget::issueCountUpdated,
