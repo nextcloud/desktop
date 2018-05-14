@@ -70,17 +70,12 @@ ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
     _ui->_activityList->setAlternatingRowColors(true);
     _ui->_activityList->setModel(_model);
 
-    _ui->_notifyLabel->hide();
-    _ui->_notifyScroll->hide();
-
     // Create a widget container for the notifications. The ui file defines
     // a scroll area that get a widget with a layout as children
     QWidget *w = new QWidget;
     _notificationsLayout = new QVBoxLayout;
     w->setLayout(_notificationsLayout);
     _notificationsLayout->setAlignment(Qt::AlignTop);
-    _ui->_notifyScroll->setAlignment(Qt::AlignTop);
-    _ui->_notifyScroll->setWidget(w);
 
     showLabels();
 
@@ -95,7 +90,6 @@ ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
 
     connect(delegate, &ActivityItemDelegate::primaryButtonClickedOnItemView, this, &ActivityWidget::slotPrimaryButtonClickedOnListView);
     connect(delegate, &ActivityItemDelegate::secondaryButtonClickedOnItemView, this, &ActivityWidget::slotSecondaryButtonClickedOnListView);
-    //connect(this, &ActivityWidget::sendNotificationRequest, this, &ActivityWidget::slotSendNotificationRequest);
 
     connect(_ui->_activityList, &QListView::activated, this, &ActivityWidget::slotOpenFile);
 
@@ -180,11 +174,6 @@ void ActivityWidget::slotRemoveAccount()
 void ActivityWidget::showLabels()
 {
     QString t = tr("Server Activities");
-    _ui->_headerLabel->setTextFormat(Qt::RichText);
-    _ui->_headerLabel->setText(t);
-
-    _ui->_notifyLabel->setText(tr("Action Required: Notifications"));
-
     t.clear();
     QSetIterator<QString> i(_accountsWithoutActivities);
     while (i.hasNext()) {
@@ -268,11 +257,7 @@ void ActivityWidget::checkActivityTabVisibility()
         _accountsWithoutActivities.count() != accountCount;
     bool hasNotifications = !_widgetForNotifId.isEmpty();
 
-    _ui->_headerLabel->setVisible(hasAccountsWithActivity);
     _ui->_activityList->setVisible(hasAccountsWithActivity);
-
-    _ui->_notifyLabel->setVisible(hasNotifications);
-    _ui->_notifyScroll->setVisible(hasNotifications);
 
     emit hideActivityTab(!hasAccountsWithActivity && !hasNotifications);
 }
@@ -295,10 +280,9 @@ void ActivityWidget::slotOpenFile(QModelIndex indx)
 // collected.
 void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
 {
-    QHash<QString, int> accNotified;
     QString listAccountName;
 
-    // Whether a new notification widget was added to the notificationLayout.
+    // Whether a new notification was added to the list
     bool newNotificationShown = false;
 
     foreach (auto activity, list) {
@@ -306,26 +290,6 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
             qCInfo(lcActivity) << "Activity in blacklist, skip";
             continue;
         }
-
-//        NotificationWidget *widget = 0;
-
-//        if (_widgetForNotifId.contains(activity.ident())) {
-//            widget = _widgetForNotifId[activity.ident()];
-//        } else {
-//            widget = new NotificationWidget(this);
-//            connect(widget, &NotificationWidget::sendNotificationRequest,
-//                this, &ActivityWidget::slotSendNotificationRequest);
-//            connect(widget, &NotificationWidget::requestCleanupAndBlacklist,
-//                this, &ActivityWidget::slotRequestCleanupAndBlacklist);
-
-//            _notificationsLayout->addWidget(widget);
-//// _ui->_notifyScroll->setMinimumHeight( widget->height());
-//            _ui->_notifyScroll->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
-//            _widgetForNotifId[activity.ident()] = widget;
-//            newNotificationShown = true;
-//        }
-
-//        widget->setActivity(activity);
 
         // remember the list account name for the strayCat handling below.
         listAccountName = activity._accName;
@@ -340,22 +304,9 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
         if (_guiLogTimer.elapsed() > 60 * 60 * 1000) {
             _guiLoggedNotifications.clear();
         }
+
         if (!_guiLoggedNotifications.contains(activity._id)) {
-            //QString host = activity._accName;
-            // store the name of the account that sends the notification to be
-            // able to add it to the tray notification
-            // remove the user name from the account as that is not accurate here.
-//            int indx = host.indexOf(QChar('@'));
-//            if (indx > -1) {
-//                host.remove(0, 1 + indx);
-//            }
-//            if (!host.isEmpty()) {
-//                if (accNotified.contains(host)) {
-//                    accNotified[host] = accNotified[host] + 1;
-//                } else {
-//                    accNotified[host] = 1;
-//                }
-//            }
+            newNotificationShown = true;
             _guiLoggedNotifications.insert(activity._id);
 
             // Assemble a tray notification for the NEW notification
@@ -372,45 +323,9 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
         }
     }
 
-
-    // check if there are widgets that have no corresponding activity from
-    // the server any more. Collect them in a list
-//    QList<Activity::Identifier> strayCats;
-//    foreach (auto id, _widgetForNotifId.keys()) {
-//        NotificationWidget *widget = _widgetForNotifId[id];
-
-//        bool found = false;
-//        // do not mark widgets of other accounts to delete.
-//        if (widget->activity()._accName != listAccountName) {
-//            continue;
-//        }
-
-//        foreach (auto activity, list) {
-//            if (activity.ident() == id) {
-//                // found an activity
-//                found = true;
-//                break;
-//            }
-//        }
-//        if (!found) {
-//            // the activity does not exist any more.
-//            strayCats.append(id);
-//        }
-//    }
-
-    // .. and now delete all these stray cat widgets.
-//    foreach (auto strayCatId, strayCats) {
-//        NotificationWidget *widgetToGo = _widgetForNotifId[strayCatId];
-//        scheduleWidgetToRemove(widgetToGo, 0);
-//    }
-
-    checkActivityTabVisibility();
-
-    if (newNotificationShown) {
-        // restart the gui log timer now that we show a notification
+    // restart the gui log timer now that we show a new notification
+    if(newNotificationShown)
         _guiLogTimer.start();
-        emit newNotification();
-    }
 }
 
 void ActivityWidget::slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row)
@@ -536,12 +451,6 @@ void ActivityWidget::slotCheckToCleanWidgets()
     if (_widgetsToRemove.isEmpty()) {
         _removeTimer.stop();
     }
-
-    // check to see if the whole notification pane should be hidden
-    if (_widgetForNotifId.isEmpty()) {
-        _ui->_notifyLabel->setHidden(true);
-        _ui->_notifyScroll->setHidden(true);
-    }
 }
 
 
@@ -551,19 +460,21 @@ ActivitySettings::ActivitySettings(AccountState *accountState, QWidget *parent)
     : QWidget(parent)
     , _accountState(accountState)
 {
-    QHBoxLayout *hbox = new QHBoxLayout(this);
-    setLayout(hbox);
+    _vbox = new QVBoxLayout(this);
+    setLayout(_vbox);
 
-    // create a tab widget for the three activity views
-//    _widget = new QWidget(this);
-//    hbox->addWidget(_tab);
     _activityWidget = new ActivityWidget(_accountState, this);
-    //_activityTabId = _tab->addTab(_activityWidget, Theme::instance()->applicationIcon(), tr("Server Activity"));
-    hbox->addWidget(_activityWidget);
+    _vbox->insertWidget(1, _activityWidget);
     connect(_activityWidget, &ActivityWidget::copyToClipboard, this, &ActivitySettings::slotCopyToClipboard);
-    connect(_activityWidget, &ActivityWidget::hideActivityTab, this, &ActivitySettings::setActivityTabHidden);
     connect(_activityWidget, &ActivityWidget::guiLog, this, &ActivitySettings::guiLog);
-    connect(_activityWidget, &ActivityWidget::newNotification, this, &ActivitySettings::slotShowActivityTab);
+    connect(&_notificationCheckTimer, &QTimer::timeout,
+        this, &ActivitySettings::slotRegularNotificationCheck);
+
+    // Add a progress indicator to spin if the acitivity list is updated.
+    _progressIndicator = new QProgressIndicator(this);
+    // connect a model signal to stop the animation
+    connect(_activityWidget, &ActivityWidget::rowsInserted, _progressIndicator, &QProgressIndicator::stopAnimation);
+    connect(_activityWidget, &ActivityWidget::rowsInserted, this, &ActivitySettings::slotDisplayActivities);
 
 //    _protocolWidget = new ProtocolWidget(this);
 //    _protocolTabId = _tab->addTab(_protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
@@ -576,41 +487,16 @@ ActivitySettings::ActivitySettings(AccountState *accountState, QWidget *parent)
 //        this, &ActivitySettings::slotShowIssueItemCount);
 //    connect(_issuesWidget, &IssuesWidget::copyToClipboard,
 //        this, &ActivitySettings::slotCopyToClipboard);
+}
 
-    // Add a progress indicator to spin if the acitivity list is updated.
-    _progressIndicator = new QProgressIndicator(this);
-    //_tab->setCornerWidget(_progressIndicator);
-
-    connect(&_notificationCheckTimer, &QTimer::timeout,
-        this, &ActivitySettings::slotRegularNotificationCheck);
-
-    // connect a model signal to stop the animation.
-    connect(_activityWidget, &ActivityWidget::rowsInserted, _progressIndicator, &QProgressIndicator::stopAnimation);
-
-    // We want the protocol be the default
-    //_tab->setCurrentIndex(1);
+void ActivitySettings::slotDisplayActivities(){
+   _vbox->removeWidget(_progressIndicator);
 }
 
 void ActivitySettings::setNotificationRefreshInterval(std::chrono::milliseconds interval)
 {
     qCDebug(lcActivity) << "Starting Notification refresh timer with " << interval.count() / 1000 << " sec interval";
     _notificationCheckTimer.start(interval.count());
-}
-
-void ActivitySettings::setActivityTabHidden(bool hidden)
-{
-//    if (hidden && _activityTabId > -1) {
-//        _tab->removeTab(_activityTabId);
-//        _activityTabId = -1;
-//        _protocolTabId -= 1;
-//        _syncIssueTabId -= 1;
-//    }
-
-//    if (!hidden && _activityTabId == -1) {
-//        _activityTabId = _tab->insertTab(0, _activityWidget, Theme::instance()->applicationIcon(), tr("Server Activity"));
-//        _protocolTabId += 1;
-//        _syncIssueTabId += 1;
-//    }
 }
 
 void ActivitySettings::slotShowIssueItemCount(int cnt)
@@ -623,22 +509,6 @@ void ActivitySettings::slotShowIssueItemCount(int cnt)
     //_tab->setTabText(_syncIssueTabId, cntText);
 }
 
-void ActivitySettings::slotShowActivityTab()
-{
-//    if (_activityTabId != -1) {
-//        _tab->setCurrentIndex(_activityTabId);
-//    }
-}
-
-//void ActivitySettings::slotShowIssuesTab(const QString &folderAlias)
-//{
-//    if (_syncIssueTabId == -1)
-//        return;
-//    _tab->setCurrentIndex(_syncIssueTabId);
-
-//    _issuesWidget->showFolderErrors(folderAlias);
-//}
-
 void ActivitySettings::slotCopyToClipboard()
 {
     QString text;
@@ -647,11 +517,7 @@ void ActivitySettings::slotCopyToClipboard()
     //int idx = _tab->currentIndex();
     QString message;
 
-//    if (idx == _activityTabId) {
-//        // the activity widget
-//        _activityWidget->storeActivityList(ts);
-//        message = tr("The server activity list has been copied to the clipboard.");
-//    } else if (idx == _protocolTabId) {
+//    if (idx == _protocolTabId) {
 //        // the protocol widget
 //        //_protocolWidget->storeSyncActivity(ts);
 //        message = tr("The sync activity list has been copied to the clipboard.");
@@ -686,6 +552,8 @@ void ActivitySettings::slotRefresh()
     }
     if (_accountState && _accountState->isConnected()) {
         if (isVisible() || !timer.isValid()) {
+            _vbox->insertWidget(0, _progressIndicator);
+            _vbox->setAlignment(_progressIndicator, Qt::AlignHCenter);
             _progressIndicator->startAnimation();
             _activityWidget->slotRefreshActivities();
         }
