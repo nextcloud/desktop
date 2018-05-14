@@ -91,7 +91,6 @@ signals:
     void copyToClipboard();
     void rowsInserted();
     void hideActivityTab(bool);
-    void newNotification();
     void sendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
 
 private slots:
@@ -158,10 +157,9 @@ public slots:
 
 private slots:
     void slotCopyToClipboard();
-    void setActivityTabHidden(bool hidden);
     void slotRegularNotificationCheck();
     void slotShowIssueItemCount(int cnt);
-    void slotShowActivityTab();
+    void slotDisplayActivities();
 
 signals:
     void guiLog(const QString &, const QString &);
@@ -173,6 +171,7 @@ private:
     ProtocolWidget *_protocolWidget;
     IssuesWidget *_issuesWidget;
     QProgressIndicator *_progressIndicator;
+    QVBoxLayout *_vbox;
     QTimer _notificationCheckTimer;
     QHash<AccountState *, QElapsedTimer> _timeSinceLastCheck;
 
