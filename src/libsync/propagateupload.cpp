@@ -550,19 +550,6 @@ void PropagateUploadFileCommon::slotJobDestroyed(QObject *job)
     _jobs.erase(std::remove(_jobs.begin(), _jobs.end(), job), _jobs.end());
 }
 
-void PropagateUploadFileCommon::abort(PropagatorJob::AbortType abortType)
-{
-    foreach (auto *job, _jobs) {
-        if (job->reply()) {
-            job->reply()->abort();
-        }
-    }
-
-    if (abortType == AbortType::Asynchronous) {
-        emit abortFinished();
-    }
-}
-
 // This function is used whenever there is an error occuring and jobs might be in progress
 void PropagateUploadFileCommon::abortWithError(SyncFileItem::Status status, const QString &error)
 {

@@ -248,7 +248,6 @@ public:
     void abortWithError(SyncFileItem::Status status, const QString &error);
 
 public slots:
-    void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE;
     void slotJobDestroyed(QObject *job);
 
 private slots:
