@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="443"/>
         <source>Could not make directories in trash</source>
-        <translation type="unfinished"/>
+        <translation>无法在回收站创建目录</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="457"/>
@@ -15,7 +15,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="500"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>移动到回收站无法在此平台执行</translation>
     </message>
 </context>
 <context>
@@ -107,7 +107,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="403"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation type="unfinished"/>
+        <translation>服务器返回&quot;%1 %2&quot; to &quot;%3 %4&quot; </translation>
     </message>
 </context>
 <context>
@@ -272,7 +272,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="671"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation type="unfinished"/>
+        <translation>从浏览器获取权限。&lt;a href=&apos;%1&apos;&gt;点击此按钮&lt;/a&gt;重启浏览器。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="675"/>
@@ -407,7 +407,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="133"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>请求证书</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="135"/>
