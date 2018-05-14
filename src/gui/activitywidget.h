@@ -79,6 +79,12 @@ public slots:
     void slotRemoveAccount();
     void slotAccountActivityStatus(int statusCode);
     void slotRequestCleanupAndBlacklist(const Activity &blacklistActivity);
+    //
+    void addError(const QString &folderAlias, const QString &message, ErrorCategory category);
+    void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
+    void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
+    //void slotOpenFile(QTreeWidgetItem *item, int);
+
 
 signals:
     void guiLog(const QString &, const QString &);
@@ -162,6 +168,8 @@ private:
     bool event(QEvent *e) Q_DECL_OVERRIDE;
 
     ActivityWidget *_activityWidget;
+    ProtocolWidget *_protocolWidget;
+    IssuesWidget *_issuesWidget;
     QProgressIndicator *_progressIndicator;
     QVBoxLayout *_vbox;
     QTimer _notificationCheckTimer;

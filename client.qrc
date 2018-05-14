@@ -24,6 +24,8 @@
         <file>resources/delete.png</file>
         <file>resources/close.svg</file>
         <file>resources/bell.svg</file>
+        <file>resources/link.svg</file>
+        <file>resources/files.svg</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>
