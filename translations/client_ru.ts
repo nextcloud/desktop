@@ -806,7 +806,11 @@
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно надёжно отслеживать изменения в синхронизируемых каталогах.
+
+Это означает, что клиент синхронизации возможно не сможет сразу закачать локальные изменения, и вместо этого будет периодически проверять локальные изменения и закачивать их по мере возможности (по умолчанию каждые два часа).
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1062"/>
@@ -1147,7 +1151,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="87"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Эта проблема обычно связана с механизмом оповещений inotify. Подробнее - см. FAQ.</translation>
     </message>
 </context>
 <context>
@@ -1521,7 +1525,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="147"/>
         <source>There were conflicts. Check the documentation on how to resolve them.</source>
-        <translation type="unfinished"/>
+        <translation>Имеются конфликты. См. документацию по их разрешению.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="180"/>
@@ -1551,7 +1555,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="126"/>
         <source>There were conflicts. &lt;a href=&quot;%1&quot;&gt;Check the documentation on how to resolve them.&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Имеются конфликты. &lt;a href=&quot;%1&quot;&gt;См. документацию по их разрешению.&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -2392,13 +2396,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateRemoteMove</name>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="136"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>Сервер ответил не правильным HTTP кодом. Ожидался 201, но получен &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="166"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="172"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="168"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="174"/>
         <source>Error writing metadata to the database</source>
         <translation>Ошибка записи метаданных в базу данных</translation>
     </message>

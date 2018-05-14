@@ -806,7 +806,11 @@
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>As alterações nas pastas sincronizadas não puderam ser rastreadas de maneira confiável.
+
+Isso significa que o cliente de sincronização pode não fazer envios de alterações locais imediatamente e, em vez disso, só varre as alterações locais e as carrega ocasionalmente (a cada duas horas, por padrão).
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1062"/>
@@ -1521,7 +1525,7 @@ Itens onde a eliminação é permitida serão excluídos se eles evitarem que um
     <message>
         <location filename="../src/gui/issueswidget.ui" line="147"/>
         <source>There were conflicts. Check the documentation on how to resolve them.</source>
-        <translation type="unfinished"/>
+        <translation>Houve conflitos. Verifique a documentação sobre como resolvê-los.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="180"/>
@@ -1551,7 +1555,7 @@ Itens onde a eliminação é permitida serão excluídos se eles evitarem que um
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="126"/>
         <source>There were conflicts. &lt;a href=&quot;%1&quot;&gt;Check the documentation on how to resolve them.&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Houve conflitos.&lt;a href=&quot;%1&quot;&gt;Verifique a documentação sobre como resolvê-los.&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -2389,13 +2393,13 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
 <context>
     <name>OCC::PropagateRemoteMove</name>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="136"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>Código HTTP retornado errado pelo servidor. 201 esperado, mas recebeu &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="166"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="172"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="168"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="174"/>
         <source>Error writing metadata to the database</source>
         <translation>Ocorreu um erro ao escrever metadados ao banco de dados</translation>
     </message>
@@ -3912,12 +3916,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="394"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="397"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When this option is selected, the wizard will close without synchronizing anything. You can use the &amp;quot;Add Folder Sync Connection&amp;quot; button from the account settings to choose which pair of local and remote folder you wish to synchronize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Quando esta opção é selecionada, o assistente será fechado sem sincronizar nada. Você pode usar a &amp;quot; Adicionar conexão de sincronização de pastas &amp;quot; botão das configurações da conta para escolher qual par de pasta local e remota você deseja sincronizar&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="400"/>
         <source>Manually create folder sync connections </source>
-        <translation type="unfinished"/>
+        <translation>Criar manualmente conexões de sincronização de pasta</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="430"/>
