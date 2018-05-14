@@ -72,7 +72,7 @@ public:
      * Returns a list of keys that can't be read because they are from
      * future versions.
      */
-    static QStringList backwardMigrationKeys();
+    static void backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys);
 
     OCC::Folder::Map map();
 
@@ -304,7 +304,7 @@ private:
     // restarts the application (Linux only)
     void restartApplication();
 
-    void setupFoldersHelper(QSettings &settings, AccountStatePtr account, bool backwardsCompatible);
+    void setupFoldersHelper(QSettings &settings, AccountStatePtr account, bool backwardsCompatible, const QStringList &ignoreKeys);
 
     QSet<Folder *> _disabledFolders;
     Folder::Map _folderMap;
@@ -312,6 +312,9 @@ private:
     Folder *_currentSyncFolder;
     QPointer<Folder> _lastSyncFolder;
     bool _syncEnabled;
+
+    /// Folder aliases from the settings that weren't read
+    QSet<QString> _additionalBlockedFolderAliases;
 
     /// Starts regular etag query jobs
     QTimer _etagPollTimer;

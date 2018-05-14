@@ -95,47 +95,63 @@ namespace {
 
 // ----------------------------------------------------------------------------------
 
-bool Application::configBackwardMigration()
+bool Application::configVersionMigration()
 {
-    auto accountKeys = AccountManager::backwardMigrationKeys();
-    auto folderKeys = FolderMan::backwardMigrationKeys();
+    QStringList deleteKeys, ignoreKeys;
+    AccountManager::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
+    FolderMan::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
 
-    bool containsFutureData = !accountKeys.isEmpty() || !folderKeys.isEmpty();
+    ConfigFile configFile;
 
-    // Deal with unreadable accounts
-    if (!containsFutureData)
+    // Did the client version change?
+    // (The client version is adjusted further down)
+    bool versionChanged = configFile.clientVersionString() != MIRALL_VERSION_STRING;
+
+    // We want to message the user either for destructive changes,
+    // or if we're ignoring something and the client version changed.
+    bool warningMessage = !deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged);
+
+    if (!versionChanged && !warningMessage)
         return true;
 
-    const auto backupFile = ConfigFile().backup();
+    const auto backupFile = configFile.backup();
 
-    QMessageBox box(
-        QMessageBox::Warning,
-        APPLICATION_SHORTNAME,
-        tr("Some settings were configured in newer versions of this client and "
-           "use features that are not available in this version.<br>"
-           "<br>"
-           "<b>Continuing will mean losing these settings.</b><br>"
-           "<br>"
-           "The current configuration file was already backed up to <i>%1</i>.")
-            .arg(backupFile));
-    box.addButton(tr("Quit"), QMessageBox::AcceptRole);
-    auto continueBtn = box.addButton(tr("Continue"), QMessageBox::DestructiveRole);
+    if (warningMessage) {
+        QString boldMessage;
+        if (!deleteKeys.isEmpty()) {
+            boldMessage = tr("Continuing will mean <b>deleting these settings</b>.");
+        } else {
+            boldMessage = tr("Continuing will mean <b>ignoring these settings</b>.");
+        }
 
-    box.exec();
-    if (box.clickedButton() != continueBtn) {
-        QTimer::singleShot(0, qApp, SLOT(quit()));
-        return false;
+        QMessageBox box(
+            QMessageBox::Warning,
+            APPLICATION_SHORTNAME,
+            tr("Some settings were configured in newer versions of this client and "
+               "use features that are not available in this version.<br>"
+               "<br>"
+               "%1<br>"
+               "<br>"
+               "The current configuration file was already backed up to <i>%2</i>.")
+                .arg(boldMessage, backupFile));
+        box.addButton(tr("Quit"), QMessageBox::AcceptRole);
+        auto continueBtn = box.addButton(tr("Continue"), QMessageBox::DestructiveRole);
+
+        box.exec();
+        if (box.clickedButton() != continueBtn) {
+            QTimer::singleShot(0, qApp, SLOT(quit()));
+            return false;
+        }
+
+        auto settings = ConfigFile::settingsWithGroup("foo");
+        settings->endGroup();
+
+        // Wipe confusing keys from the future, ignore the others
+        for (const auto &badKey : deleteKeys)
+            settings->remove(badKey);
     }
 
-    auto settings = ConfigFile::settingsWithGroup("foo");
-    settings->endGroup();
-
-    // Wipe the keys from the future
-    for (const auto &badKey : accountKeys)
-        settings->remove(badKey);
-    for (const auto &badKey : folderKeys)
-        settings->remove(badKey);
-
+    configFile.setClientVersionString(MIRALL_VERSION_STRING);
     return true;
 }
 
@@ -212,7 +228,7 @@ Application::Application(int &argc, char **argv)
     setupLogging();
     setupTranslations();
 
-    if (!configBackwardMigration()) {
+    if (!configVersionMigration()) {
         return;
     }
 
