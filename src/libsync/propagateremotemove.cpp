@@ -80,8 +80,6 @@ void PropagateRemoteMove::start()
 
     qCDebug(lcPropagateRemoteMove) << _item->_file << _item->_renameTarget;
 
-    Utility::sleep(10);
-
     QString targetFile(propagator()->getFilePath(_item->_renameTarget));
 
     if (_item->_file == _item->_renameTarget) {
