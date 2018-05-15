@@ -135,7 +135,7 @@ private slots:
 
 private:
     SelectiveSyncWidget *_selectiveSync;
-    QCheckBox *_placeholderCheckBox;
+    QCheckBox *_placeholderCheckBox = nullptr;
 };
 
 /**
