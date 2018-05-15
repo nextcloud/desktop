@@ -515,7 +515,7 @@ void FolderWizardSelectiveSync::initializePage()
 bool FolderWizardSelectiveSync::validatePage()
 {
     wizard()->setProperty("selectiveSyncBlackList", QVariant(_selectiveSync->createBlackList()));
-    wizard()->setProperty("usePlaceholders", QVariant(_placeholderCheckBox->isChecked()));
+    wizard()->setProperty("usePlaceholders", QVariant(_placeholderCheckBox && _placeholderCheckBox->isChecked()));
     return true;
 }
 
