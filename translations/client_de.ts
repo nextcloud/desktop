@@ -2396,13 +2396,13 @@ Dies ist ein neuer experimentaler Modus.Wenn Sie sich dafür entscheiden, diesen
 <context>
     <name>OCC::PropagateRemoteMove</name>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="136"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>Es wurde ein falscher HTTP-Status-Code vom Server gesendet. Erwartet wurde 201, aber gesendet wurde &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="168"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="174"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="166"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="172"/>
         <source>Error writing metadata to the database</source>
         <translation>Fehler beim Schreiben der Metadaten in die Datenbank</translation>
     </message>
@@ -2827,14 +2827,9 @@ Dies ist ein neuer experimentaler Modus.Wenn Sie sich dafür entscheiden, diesen
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="118"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="306"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="318"/>
         <source>P&amp;assword protect</source>
         <translation>Passwort geschützt</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="425"/>
-        <source>Password Protected</source>
-        <translation>passwortgeschützt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="97"/>
@@ -2853,7 +2848,7 @@ Dies ist ein neuer experimentaler Modus.Wenn Sie sich dafür entscheiden, diesen
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="538"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="563"/>
         <source>Delete</source>
         <translation>Löschen</translation>
     </message>
@@ -2883,38 +2878,38 @@ Dies ist ein neuer experimentaler Modus.Wenn Sie sich dafür entscheiden, diesen
         <translation>Link per Email senden (direkter download)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="531"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="556"/>
         <source>Confirm Link Share Deletion</source>
         <translation>Löschung des öffentlichen Links bestätigen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="532"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="557"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Möchte Sie wirklich den öffentlichen Link &lt;i&gt;%1 &lt;/i&gt;löschen?&lt;p&gt;Hinweis: Dies kann nicht rückgängig gemacht werden.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="539"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="564"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="63"/>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="555"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="580"/>
         <source>Public link</source>
         <translation>Öffentlicher Link</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="257"/>
         <source>Delete link share</source>
         <translation>Öffentlichen Link löschen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="470"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="495"/>
         <source>Public sh&amp;aring requires a password</source>
         <translation>Öffentliches Teilen erfordert ein P&amp;asswort</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="488"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="513"/>
         <source>Please Set Password</source>
         <translation>Bitte wählen Sie ein Passwort:</translation>
     </message>
