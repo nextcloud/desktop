@@ -484,7 +484,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
     layout->addWidget(_selectiveSync);
 
     if (ConfigFile().showExperimentalOptions()) {
-        _placeholderCheckBox = new QCheckBox(tr("Create placeholders instead of downloading files (experimental)"));
+        _placeholderCheckBox = new QCheckBox(tr("Use virtual files instead of downloading content immediately (experimental)"));
         connect(_placeholderCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::placeholderCheckboxClicked);
         layout->addWidget(_placeholderCheckBox);
     }

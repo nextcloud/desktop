@@ -427,7 +427,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>Create placeholders instead of downloading files (e&amp;xperimental)</string>
+             <string>Use virtual files instead of downloading content immediately (e&amp;xperimental)</string>
             </property>
             <property name="checkable">
              <bool>false</bool>

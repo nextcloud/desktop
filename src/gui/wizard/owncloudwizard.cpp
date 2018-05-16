@@ -259,8 +259,8 @@ void OwncloudWizard::askExperimentalPlaceholderFeature(const std::function<void(
     auto msgBox = new QMessageBox(
         QMessageBox::Warning,
         tr("Enable experimental feature?"),
-        tr("When the \"synchronize placeholders\" mode is enabled no files will be downloaded initially. "
-           "Instead, a tiny \"%1\" file will be created for each file on the server. "
+        tr("When the \"virtual files\" mode is enabled no files will be downloaded initially. "
+           "Instead, a tiny \"%1\" file will be created for each file that exists on the server. "
            "The contents can be downloaded by running these files or by using their context menu."
            "\n\n"
            "This is a new, experimental mode. If you decide to use it, please report any "
