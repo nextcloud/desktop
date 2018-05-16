@@ -281,6 +281,17 @@ protected:
      */
     void commonErrorHandling(AbstractNetworkJob *job);
 
+    /**
+     * Increases the timeout for the final MOVE/PUT for large files.
+     *
+     * This is an unfortunate workaround since the drawback is not being able to
+     * detect real disconnects in a timely manner. Shall go away when the server
+     * response starts coming quicker, or there is some sort of async api.
+     *
+     * See #6527, enterprise#2480
+     */
+    static void adjustLastJobTimeout(AbstractNetworkJob *job, quint64 fileSize);
+
     // Bases headers that need to be sent with every chunk
     QMap<QByteArray, QByteArray> headers();
 };

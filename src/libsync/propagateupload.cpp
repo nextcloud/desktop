@@ -553,6 +553,16 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
     abortWithError(status, errorString);
 }
 
+void PropagateUploadFileCommon::adjustLastJobTimeout(AbstractNetworkJob *job, quint64 fileSize)
+{
+    job->setTimeout(qBound(
+        job->timeoutMsec(),
+        // Calculate 3 minutes for each gigabyte of data
+        qint64((3 * 60 * 1000) * fileSize / 1e9),
+        // Maximum of 30 minutes
+        qint64(30 * 60 * 1000)));
+}
+
 void PropagateUploadFileCommon::slotJobDestroyed(QObject *job)
 {
     _jobs.erase(std::remove(_jobs.begin(), _jobs.end(), job), _jobs.end());
