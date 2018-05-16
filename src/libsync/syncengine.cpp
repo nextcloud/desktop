@@ -861,7 +861,7 @@ void SyncEngine::startSync()
     _csync_ctx->new_files_are_placeholders = _syncOptions._newFilesArePlaceholders;
     _csync_ctx->placeholder_suffix = _syncOptions._placeholderSuffix.toUtf8();
     if (_csync_ctx->new_files_are_placeholders && _csync_ctx->placeholder_suffix.isEmpty()) {
-        csyncError(tr("Using placeholder files, but placeholder suffix is not set"));
+        csyncError(tr("Using virtual files but placeholder suffix is not set"));
         finalize(false);
         return;
     }
