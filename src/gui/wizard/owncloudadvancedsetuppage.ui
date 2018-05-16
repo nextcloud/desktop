@@ -240,7 +240,7 @@
           <item>
            <widget class="QRadioButton" name="rSyncEverything">
             <property name="text">
-             <string>S&amp;ync everything from server</string>
+             <string>S&amp;ynchronize everything from server (recommended)</string>
             </property>
             <property name="checked">
              <bool>true</bool>
