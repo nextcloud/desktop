@@ -21,13 +21,11 @@
 #include "common/utility.h"
 #include "updater/sparkleupdater.h"
 
-// Does not work yet
 @interface DelegateObject : NSObject <SUUpdaterDelegate>
 - (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle;
 @end
 @implementation DelegateObject //(SUUpdaterDelegateInformalProtocol)
 
-// Only possible in later versions, we're not up to date here.
 - (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle
 {
     Q_UNUSED(bundle)
@@ -40,13 +38,14 @@
 {
     Q_UNUSED(updater)
     Q_UNUSED(update)
+    qCDebug(OCC::lcUpdater) << "";
 }
 
 // Sent when a valid update is not found.
-// Does not seem to get called ever.
 - (void)updaterDidNotFindUpdate:(SUUpdater *)update
 {
     Q_UNUSED(update)
+    qCDebug(OCC::lcUpdater) << "";
 }
 
 // Sent immediately before installing the specified update.
@@ -54,16 +53,21 @@
 {
     Q_UNUSED(updater)
     Q_UNUSED(update)
+    qCDebug(OCC::lcUpdater) << "";
 }
 
-// Tried implementing those methods, but they never ever seem to get called
-//- (void) updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
-//{
-//}
+- (void) updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
+{
+    Q_UNUSED(updater)
+    qCDebug(OCC::lcUpdater) << error.description;
+}
 
-//- (void)updater:(SUUpdater *)updater didFinishLoadingAppcast:(SUAppcast *)appcast
-//{
-//}
+- (void)updater:(SUUpdater *)updater didFinishLoadingAppcast:(SUAppcast *)appcast
+{
+    Q_UNUSED(updater)
+    Q_UNUSED(appcast)
+    qCDebug(OCC::lcUpdater) << "";
+}
 
 
 @end
