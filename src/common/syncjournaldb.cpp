@@ -273,6 +273,11 @@ bool SyncJournalDb::sqlFail(const QString &log, const SqlQuery &query)
 bool SyncJournalDb::checkConnect()
 {
     if (_db.isOpen()) {
+        if (!QFile::exists(_dbFile)) {
+            qCWarning(lcDb) << "Database open, but file file" + _dbFile + " does not exist";
+            close();
+            return false;
+        }
         return true;
     }
 
