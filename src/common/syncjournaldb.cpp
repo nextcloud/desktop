@@ -273,8 +273,10 @@ bool SyncJournalDb::sqlFail(const QString &log, const SqlQuery &query)
 bool SyncJournalDb::checkConnect()
 {
     if (_db.isOpen()) {
+        // Unfortunately the sqlite isOpen check can return true even when the underlying storage
+        // has become unavailable - and then some operations may cause crashes. See #6049
         if (!QFile::exists(_dbFile)) {
-            qCWarning(lcDb) << "Database open, but file file" + _dbFile + " does not exist";
+            qCWarning(lcDb) << "Database open, but file " + _dbFile + " does not exist";
             close();
             return false;
         }
