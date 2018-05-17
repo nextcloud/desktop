@@ -289,7 +289,7 @@ void ShareManager::slotLinkShareCreated(const QJsonDocument &reply)
 void ShareManager::createShare(const QString &path,
     const Share::ShareType shareType,
     const QString shareWith,
-    const Share::Permissions permissions)
+    const Share::Permissions desiredPermissions)
 {
     auto job = new OcsShareJob(_account);
     connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
@@ -305,17 +305,18 @@ void ShareManager::createShare(const QString &path,
 
             // Limit the permissions we request for a share to the ones the item
             // was shared with initially.
-            auto perm = permissions;
-            if (permissions == SharePermissionDefault) {
-                perm = existingPermissions;
-            } else if (existingPermissions != SharePermissionDefault) {
-                perm &= existingPermissions;
+            auto validPermissions = desiredPermissions;
+            if (validPermissions == SharePermissionDefault) {
+                validPermissions = existingPermissions;
+            }
+            if (existingPermissions != SharePermissionDefault) {
+                validPermissions &= existingPermissions;
             }
 
             OcsShareJob *job = new OcsShareJob(_account);
             connect(job, &OcsShareJob::shareJobFinished, this, &ShareManager::slotShareCreated);
             connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
-            job->createShare(path, shareType, shareWith, permissions);
+            job->createShare(path, shareType, shareWith, validPermissions);
         });
     job->getSharedWithMe();
 }
