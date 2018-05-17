@@ -1239,8 +1239,8 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="487"/>
-        <source>Create placeholders instead of downloading files (experimental)</source>
-        <translation>สร้าง placeholder แทนการดาวน์โหลดไฟล์ (ทดลอง)</translation>
+        <source>Use virtual files instead of downloading content immediately (experimental)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2206,12 +2206,10 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="262"/>
-        <source>When the &quot;synchronize placeholders&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file on the server. The contents can be downloaded by running these files or by using their context menu.
+        <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>เมื่อเปิดใช้งานโหมด &quot;synchronize placeholders&quot; จะไม่สามารถดาวน์โหลดไฟล์ได้โดย &quot;%1&quot; ขนาดเล็กจะถูกสร้างขึ้นสำหรับแต่ละไฟล์บนเซิร์ฟเวอร์ เนื้อหาสามารถดาวน์โหลดได้โดยใช้ไฟล์เหล่านี้หรือใช้เมนูบริบท
-
-นี่คือโหมดทดลองใหม่ หากคุณตัดสินใจที่จะใช้โปรดรายงานหากพบปัญหา</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="269"/>
@@ -3359,6 +3357,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 ไม่สามารถเปิดหรือสร้างฐานข้อมูลการประสานข้อมูลในเครื่อง ตรวจสอบว่าคุณมีสิทธิ์การเขียนในโฟลเดอร์ซิงค์</translation>
     </message>
     <message>
+        <location filename="../src/libsync/syncengine.cpp" line="857"/>
+        <source>Using virtual files but placeholder suffix is not set</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1355"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>ไม่ได้รับอนุญาต เพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์หลัก</translation>
@@ -3492,11 +3495,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/syncengine.cpp" line="728"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>ตัวอักษรไม่ถูกต้อง โปรดเปลี่ยนชื่อ &quot;%1&quot;</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="857"/>
-        <source>Using placeholder files, but placeholder suffix is not set</source>
-        <translation>กำลังใช้ไฟล์ placeholder แต่ยังไม่ได้ตั้งค่า suffix</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="869"/>
@@ -3923,11 +3921,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>สร้างการประสานข้อมูลโฟลเดอร์ด้วยตัวเอง</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="430"/>
-        <source>Create placeholders instead of downloading files (e&amp;xperimental)</source>
-        <translation>สร้างตัวยึดตำแหน่งแทนการดาวน์โหลดไฟล์ (โหมดทดลอง)</translation>
-    </message>
-    <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="150"/>
         <source>&amp;Local Folder</source>
         <translation>และโฟลเดอร์ต้นทาง</translation>
@@ -3941,6 +3934,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="193"/>
         <source>&amp;Keep local data</source>
         <translation>และเก็บข้อมูลต้นทาง</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="430"/>
+        <source>Use virtual files instead of downloading content immediately (e&amp;xperimental)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="467"/>
