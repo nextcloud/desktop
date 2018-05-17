@@ -550,9 +550,12 @@ void PropagateDownloadFile::slotGetFinished()
     GETFileJob *job = _job;
     ASSERT(job);
 
+    _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    _item->_responseTimeStamp = job->responseTimestamp();
+    _item->_requestId = job->requestId();
+
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
-        _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
         // If we sent a 'Range' header and get 416 back, we want to retry
         // without the header.
@@ -625,7 +628,6 @@ void PropagateDownloadFile::slotGetFinished()
         // so make sure we have the up-to-date time
         _item->_modtime = job->lastModified();
     }
-    _item->_responseTimeStamp = job->responseTimestamp();
 
     _tmpFile.close();
     _tmpFile.flush();

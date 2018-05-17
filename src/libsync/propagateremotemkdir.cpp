@@ -83,6 +83,8 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
 
     QNetworkReply::NetworkError err = _job->reply()->error();
     _item->_httpErrorCode = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    _item->_responseTimeStamp = _job->responseTimestamp();
+    _item->_requestId = _job->requestId();
 
     if (_item->_httpErrorCode == 405) {
         // This happens when the directory already exists. Nothing to do.
@@ -102,7 +104,6 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
         return;
     }
 
-    _item->_responseTimeStamp = _job->responseTimestamp();
     _item->_fileId = _job->reply()->rawHeader("OC-FileId");
 
     if (_item->_fileId.isEmpty()) {

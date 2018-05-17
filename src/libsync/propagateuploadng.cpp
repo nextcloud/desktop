@@ -184,6 +184,7 @@ void PropagateUploadFileNG::slotPropfindFinishedWithError()
     auto httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     auto status = classifyError(err, httpErrorCode, &propagator()->_anotherSyncNeeded);
     if (status == SyncFileItem::FatalError) {
+        _item->_requestId = job->requestId();
         propagator()->_activeJobList.removeOne(this);
         abortWithError(status, job->errorStringParsingBody());
         return;
@@ -202,6 +203,7 @@ void PropagateUploadFileNG::slotDeleteJobFinished()
         const int httpStatus = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         SyncFileItem::Status status = classifyError(err, httpStatus);
         if (status == SyncFileItem::FatalError) {
+            _item->_requestId = job->requestId();
             abortWithError(status, job->errorString());
             return;
         } else {
@@ -258,6 +260,7 @@ void PropagateUploadFileNG::slotMkColFinished(QNetworkReply::NetworkError)
     _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
     if (err != QNetworkReply::NoError || _item->_httpErrorCode != 201) {
+        _item->_requestId = job->requestId();
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
             &propagator()->_anotherSyncNeeded);
         abortWithError(status, job->errorStringParsingBody());
@@ -362,6 +365,7 @@ void PropagateUploadFileNG::slotPutFinished()
 
     if (err != QNetworkReply::NoError) {
         _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        _item->_requestId = job->requestId();
         commonErrorHandling(job);
         return;
     }
@@ -442,6 +446,8 @@ void PropagateUploadFileNG::slotMoveJobFinished()
     slotJobDestroyed(job); // remove it from the _jobs list
     QNetworkReply::NetworkError err = job->reply()->error();
     _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    _item->_responseTimeStamp = job->responseTimestamp();
+    _item->_requestId = job->requestId();
 
     if (err != QNetworkReply::NoError) {
         commonErrorHandling(job);
@@ -472,7 +478,6 @@ void PropagateUploadFileNG::slotMoveJobFinished()
         abortWithError(SyncFileItem::NormalError, tr("Missing ETag from server"));
         return;
     }
-    _item->_responseTimeStamp = job->responseTimestamp();
     finalize();
 }
 
