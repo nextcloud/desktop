@@ -2,10 +2,20 @@ ChangeLog
 =========
 
 version 2.5.0 (2018-xx-xx)
-* Local discovery: Speedup by skipping directories without changes reported by the file system watcher.
+* Local discovery: Speed up by skipping directories without changes reported by the file system watcher.
 * Windows: Add sync folders to Explorer's navigation pane (#5295)
-* Client certs: Improve error message (#6128)
+* Conflicts: Change conflict file naming scheme
+* Conflicts: Add user name to conflict file name (#6325)
+* ConnectionValidator: change the minimum server version to 7.0
+* ConnectionValidator: Warn when the server version is less than 9.1
+* Experimental option to create virtual files and download contents on demand
+* Experimental option to upload conflict files (#4557)
+* Wizard: Remove the "Skip folder config" button and instead add a radio button (#3664)
+* Sharing: Add "copy public link" to menu (#6356)
 * Protocol: Introduce context menu with "open in browser" (#6121)
+* Shell integration: Add "Open in browser" entry in the explorer menu (#5903)
+* Sync journal: Fix crash when unmounting a drive while a sync is running (#6049)
+* Client certs: Improve error message (#6128)
 * User shares: Show avatars
 * Settings: Hide selective sync buttons while disconnected (#5809)
 * Excludes: Optimize further the matching of exclude files using regular expression
@@ -14,7 +24,6 @@ version 2.5.0 (2018-xx-xx)
 * SyncEngine: Recover when the PUT reply (or chunkin's MOVE) is lost (#5106)
 * Config: Look for exclude file in a relative path.
 * Windows: Fixed MSVC build and compiler bugs
-* Upload conflict files (#4557)
 * Proxy: Hostname validation and reconnection on setting change (#6140)
 * owncloudcmd: Set proxy earlier (#6281)
 * Exclude regex: Restore old matching on Windows (#6245)
@@ -24,15 +33,12 @@ version 2.5.0 (2018-xx-xx)
 * Protocol: Correct sorting by size (#6326)
 * SocketAPI: dynamic action menu
 * Hidden option to move remote-deleted files to trash (#6265)
-* Add "Open in browser" entry in the explorer menu (#5903)
 * Tray: Change icon for unresolved conflicts (#6277)
 * FolderStatusModel: Refresh folders on Problem sync (#6337)
 * SyncJournal: Clear etag filter before sync
 * SyncEngine: Use separate state for two unicode conversions
-* Conflicts: Add user name to conflict file name (#6325)
+* Conflicts: Add documentation link to conflicts listing (#6396)
 * owncloudcmd: Do not read the proxy settings from the gui's config file
-* ConnectionValidator: change the minimum server version to 7.0
-* ConnectionValidator: Warn when the server version is less than 9.1
 * Discovery: Error if properties are missing (#6317)
 * ProgressInfo: Add information for local vs remote discovery
 * Issues tab: Invalidate issues selectively (#6226)
@@ -49,6 +55,7 @@ version 2.5.0 (2018-xx-xx)
 * Blacklisting must prevent parent etag updates (#6411)
 * FolderStatusModel: fix potential assert
 * Nautilus integration: Not a ColumnProvider
+* Nautilus integration: Fix python3 compatibility (#6406)
 * Conflicts: Change tags to be more user friendly (#6365)
 * Notify if an explicitly excluded folder is created (#6222)
 * Theme: unify ownCloudTheme and Theme classes
@@ -60,10 +67,20 @@ version 2.5.0 (2018-xx-xx)
 * LogDir: Compress log when switching files (#6442)
 * Logging: Add persistent auto-logdir option (#6442)
 * Notifications: Lower hiding timeout
-* SocketApi/Sharing: Add "copy public link" to menu (#6356)
 * Download: Use the <s:message> from the reply in the error message (#6459)
 * Notifications: Also have clickable link (#6236)
-* Experimental option to only download a placeholder (.owncloud file)
+* UI: High-DPI layout fixes
+* Network settings: Better warnings about bad configuration (#5885)
+* Share dialog: Allow opening it if the file's contents are still syncing (#4608)
+* Share dialog: Don't hide account settings when opening it (#6185)
+* Share dialog: Remove odd grey square on OSX (#5774)
+* Share dialog: Preserve the entered password when unrelated changes are done (#6512)
+* Folder watcher: Show a notification if it becomes unreliable (#6119)
+* Ignore editor: Preserve comments in the exclude list file
+* Propagation: Do not abort a sync if the server closes the connection (#6516)
+* Propagation: Increase the timeout for the last MOVE/PUT for huge files (#6527)
+* Blacklist/Log: Store the X-Request-ID (#6420)
+* Update bundled sqlite version to 3.23.1
 
 version 2.4.1 (2018-03-05)
 * Ignore files with file names that can't be encoded for the filesystem (#6287, #5676, #5719)
