@@ -118,6 +118,10 @@ public:
     bool confirmExternalStorage() const;
     void setConfirmExternalStorage(bool);
 
+    /** If we should move the files deleted on the server in the trash  */
+    bool moveToTrash() const;
+    void setMoveToTrash(bool);
+
     static bool setConfDir(const QString &value);
 
     bool optionalServerNotifications() const;

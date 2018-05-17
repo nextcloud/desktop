@@ -110,6 +110,11 @@ namespace FileSystem {
     bool OCSYNC_EXPORT remove(const QString &fileName, QString *errorString = 0);
 
     /**
+     * Move the specified file or folder to the trash. (Only implemented on linux)
+     */
+    bool OCSYNC_EXPORT moveToTrash(const QString &filename, QString *errorString);
+
+    /**
      * Replacement for QFile::open(ReadOnly) followed by a seek().
      * This version sets a more permissive sharing mode on Windows.
      *
