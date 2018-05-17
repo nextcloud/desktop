@@ -93,9 +93,8 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
     qInfo(lcAccessManager) << op << verb << newRequest.url().toString() << "has X-Request-ID" << requestId;
     newRequest.setRawHeader("X-Request-ID", requestId);
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
-    // only enable HTTP2 with Qt 5.9 because Qt 5.8.0 has too many bugs
-    // (only use one connection if the server does not support HTTP2)
+#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 4)
+    // only enable HTTP2 with Qt 5.9.4 because old Qt have too many bugs (e.g. QTBUG-64359 is fixed in >= Qt 5.9.4)
     if (newRequest.url().scheme() == "https") { // Not for "http": QTBUG-61397
         newRequest.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
     }

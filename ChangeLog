@@ -1,7 +1,22 @@
 ChangeLog
 =========
 
-version 2.4.0 (2017-12-XX)
+version 2.4.1 (2017-02-xx)
+* Ignore files with file names that can't be encoded for the filesystem (#6287, #5676, #5719)
+* Issues: Speed up insertion and add hard upper limit (#6272)
+* Notifications: Fix "Dismiss" action
+* Notifications: Fix timer invocation on macOS
+* Notifications: Immediately poll when account online
+* Protocol: Remove entries for auto resolved conflicts (#6316)
+* owncloudcmd: Set proxy before capabilities call (#6281)
+* owncloudcmd: Do not do the capability call when --nonshib is passed
+* Avatars: Use old location for servers <10 (#6279)
+* Link shares: Change default share name (#6298)
+* Nautilus integration: Work with python2 and python3
+* HTTP2: Only allow with Qt 5.9.4 (#6285)
+* Crash fixes
+
+version 2.4.0 (2017-12-21)
 * If you're using 2.4.0 alpha1, please upgrade as previous alphas/rcs had an issue with hidden files and renames!
 * OAuth2 authentication support by opening external browser (#5668)
 * Shibboleth: Change to use OAuth2 if supported (#6198)
@@ -204,7 +219,7 @@ version 2.2.2 (release 2016-06-21)
 version 2.2.1 (release 2016-06-06)
  * Fix out of memory error when too many uploads happen (#4611)
  * Fix display errors in progress display (#4803 #4856)
- * LockWatcher: Remember to upload files after they become unlocked (#4865) 
+ * LockWatcher: Remember to upload files after they become unlocked (#4865)
  * Fix overlay icons for files with umlauts (#4884)
  * Certs: Re-ask for different cert after rejection (#4898, #4911)
  * Progress: Don't count items without propagation jobs (#4856, #4910)
@@ -261,7 +276,7 @@ version 2.1 (release 2015-12-03)
  * GUI: Improved upload/download progress UI (#3403, #3569)
  * Allowed sharing with ownCloud internal users and groups from Desktop
  * Changed files starting in .* to be considered hidden on all platforms (#4023)
- * Reflect read-only permissions in filesystem (#3244)  
+ * Reflect read-only permissions in filesystem (#3244)
  * Blacklist: Clear on successful chunk upload (#3934)
  * Improved reconnecting after network change/disconnect (#4167 #3969 ...)
  * Improved performance in Windows file system discovery
@@ -335,7 +350,7 @@ version 2.0.2 (release 2015-10-21)
   * ShareDialog: Fix folder display (#3659)
   * AccountSettings: Restore from legacy only once (#3565)
   * SSL Certificate Error Dialog: show account name (#3729)
-  * Tray notification: Don't show a message about modified folder (#3613) 
+  * Tray notification: Don't show a message about modified folder (#3613)
   * PropagateLocalRemove:  remove entries from the DB even if there was an error.
   * Settings UI improvements (eg. #3713, #3721, #3619 and others)
   * Folder: Do not create the sync folder if it does not exist (#3692)
@@ -966,7 +981,7 @@ version 1.1.1 (release 2012-10-18), csync 0.60.1 required
                directory, away from the .csync dir.
   *         Renamed exclude.lst to sync-exclude.lst and moved it to
             /etc/appName()/ for more clean packaging. From the user path,
-	    still exclude.lst is read if sync-exclude.lst is not existing.
+            still exclude.lst is read if sync-exclude.lst is not existing.
   *         Placed custom.ini with customization options to /etc/appName()
 
 version 1.0.5 (release 2012-08-14), csync 0.50.8 required
@@ -986,8 +1001,8 @@ version 1.0.4 (release 2012-08-10), csync 0.50.8 required
   * [GUI] Proxy configuration dialog added.
   * [GUI] Added Translations to languages Slovenian, Polish, Catalan,
           Portuguese (Brazil), German, Greek, Spanish, Czech, Italian, Slovak,
-	  French, Russian, Japanese, Swedish, Portuguese (Portugal)
-	  all with translation rate >90%.
+          French, Russian, Japanese, Swedish, Portuguese (Portugal)
+          all with translation rate >90%.
   * [Fixes] Loading of self signed certs into Networkmanager (#oc-843)
   * [Fixes] Win32: Handle SSL dll loading correctly.
   * [Fixes] Many other small fixes and improvements.
