@@ -880,6 +880,7 @@ public:
         _account = OCC::Account::create();
         _account->setUrl(QUrl(QStringLiteral("http://admin:admin@localhost/owncloud")));
         _account->setCredentials(new FakeCredentials{_fakeQnam});
+        _account->setDavDisplayName("fakename");
 
         _journalDb.reset(new OCC::SyncJournalDb(localPath() + "._sync_test.db"));
         _syncEngine.reset(new OCC::SyncEngine(_account, localPath(), "", _journalDb.get()));

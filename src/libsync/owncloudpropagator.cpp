@@ -732,8 +732,11 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
 
     QString renameError;
     auto conflictModTime = FileSystem::getModTime(fn);
+    QString conflictUserName;
+    if (account()->capabilities().uploadConflictFiles())
+        conflictUserName = account()->davDisplayName();
     QString conflictFileName = Utility::makeConflictFileName(
-        item->_file, Utility::qDateTimeFromTime_t(conflictModTime));
+        item->_file, Utility::qDateTimeFromTime_t(conflictModTime), conflictUserName);
     QString conflictFilePath = getFilePath(conflictFileName);
 
     emit touchedFile(fn);

@@ -182,9 +182,24 @@ namespace Utility {
          with the given parent. If no parent is specified, the caller must destroy the settings */
     OCSYNC_EXPORT std::unique_ptr<QSettings> settingsWithGroup(const QString &group, QObject *parent = 0);
 
+    /** Sanitizes a string that shall become part of a filename.
+     *
+     * Filters out reserved characters like
+     * - unicode control and format characters
+     * - reserved characters: /, ?, <, >, \, :, *, |, and "
+     *
+     * Warning: This does not sanitize the whole resulting string, so
+     * - unix reserved filenames ('.', '..')
+     * - trailing periods and spaces
+     * - windows reserved filenames ('CON' etc)
+     * will pass unchanged.
+     */
+    OCSYNC_EXPORT QString sanitizeForFileName(const QString &name);
+
     /** Returns a file name based on \a fn that's suitable for a conflict.
      */
-    OCSYNC_EXPORT QString makeConflictFileName(const QString &fn, const QDateTime &dt);
+    OCSYNC_EXPORT QString makeConflictFileName(
+        const QString &fn, const QDateTime &dt, const QString &user);
 
     /** Returns whether a file name indicates a conflict file
      */
