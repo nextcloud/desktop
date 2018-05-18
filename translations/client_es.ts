@@ -95,17 +95,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="249"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="254"/>
         <source>Connection timed out</source>
         <translation>Tiempo de conexión agotado</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="251"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="256"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>Error desconocido: la respuesta de red fue eliminada</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="403"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="408"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>El servidor respondió &quot;%1 %2&quot; a &quot;%3 %4&quot;</translation>
     </message>
@@ -615,7 +615,7 @@
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1025"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1026"/>
         <source>Error writing metadata to the database</source>
         <translation>Error al escribir los metadatos en la base de datos</translation>
     </message>
@@ -2241,7 +2241,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PollJob</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="134"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="135"/>
         <source>Invalid JSON reply from the poll URL</source>
         <translation>Respuesta JSON invalida desde URL</translation>
     </message>
@@ -2249,7 +2249,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="977"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="978"/>
         <source>Error writing metadata to the database</source>
         <translation>Error al escribir los metadatos en la base de datos</translation>
     </message>
@@ -2272,32 +2272,32 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>El espacio libre en el disco es inferior a %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="599"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="602"/>
         <source>File was deleted from server</source>
         <translation>Se ha eliminado el archivo del servidor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="652"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="654"/>
         <source>The file could not be downloaded completely.</source>
         <translation>No se ha podido descargar el archivo completamente.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="659"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="661"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>El archivo descargado está vacio aunque el servidor dice que deberia haber sido %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="835"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="837"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>¡El fichero %1 no puede guardarse debido a un conflicto con el nombre de otro fichero local!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="870"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="872"/>
         <source>File has changed since discovery</source>
         <translation>El archivo ha cambiado desde que fue descubierto</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="926"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="928"/>
         <source>Error writing metadata to the database</source>
         <translation>Error al escribir los metadatos en la base de datos</translation>
     </message>
@@ -2305,12 +2305,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="234"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="235"/>
         <source>; Restoration Failed: %1</source>
         <translation>; Falló la restauración: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="301"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="302"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>Un archivo o directorio fue eliminado de una carpeta de compartida de solo lectura pero la recuperación falló: %1</translation>
     </message>
@@ -2381,12 +2381,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateRemoteMkdir</name>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="99"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="101"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>El código HTTP devuelto por el servidor es erróneo. Esperado 201, pero recibido &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="151"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="152"/>
         <source>Error writing metadata to the database</source>
         <translation>Error al escribir los metadatos en la base de datos</translation>
     </message>
@@ -2408,33 +2408,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="175"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="176"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>El archivo %1 No puede ser subido porque ya existe otro con el mismo nombre, puede haber diferencias en mayusculas o minusculas</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="282"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="283"/>
         <source>File Removed</source>
         <translation>Archivo eliminado</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="292"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="293"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>Archivo local cambió durante la sincronización. Será actualizado.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="304"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="305"/>
         <source>Local file changed during sync.</source>
         <translation>Un archivo local fue modificado durante la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="186"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="541"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="187"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="542"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>La subida %1 excede la quota de la carpeta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="611"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="622"/>
         <source>Error writing metadata to the database</source>
         <translation>Error al escribir los metadatos en la base de datos</translation>
     </message>
@@ -2442,27 +2442,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="405"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="410"/>
         <source>The local file was removed during sync.</source>
         <translation>El archivo local ha sido eliminado durante la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="416"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="421"/>
         <source>Local file changed during sync.</source>
         <translation>Un archivo local fue modificado durante la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="450"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="457"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Respuesta inesperada del servidor  (%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="457"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="464"/>
         <source>Missing File ID from server</source>
         <translation>Perdido archivo ID del servidor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="471"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="478"/>
         <source>Missing ETag from server</source>
         <translation>Perdido ETag del servidor</translation>
     </message>
@@ -2470,22 +2470,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUploadFileV1</name>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="211"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="215"/>
         <source>Poll URL missing</source>
         <translation>Falta la URL de la encuesta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="235"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="239"/>
         <source>The local file was removed during sync.</source>
         <translation>El archivo local ha sido eliminado durante la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="246"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="250"/>
         <source>Local file changed during sync.</source>
         <translation>Un archivo local fue modificado durante la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="260"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="264"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
         <translation>El servidor no reconoció la última parte. (No había una e-tag presente)</translation>
     </message>
@@ -3883,11 +3883,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Empezar con una sincronización &amp;limpia (¡Elimina la carpeta local!)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="243"/>
-        <source>S&amp;ynchronize everything from server</source>
-        <translation>Sincronizar todo desde el servidor</translation>
-    </message>
-    <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="301"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
         <translation>Preguntar si se desea sincroni&amp;zar carpetas mayores de</translation>
@@ -3933,6 +3928,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="193"/>
         <source>&amp;Keep local data</source>
         <translation>&amp;Mantener datos locales</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="243"/>
+        <source>S&amp;ynchronize everything from server (recommended)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="430"/>
