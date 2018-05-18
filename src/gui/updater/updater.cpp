@@ -120,7 +120,7 @@ Updater *Updater::create()
         return 0;
     }
 #if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
-    return new SparkleUpdater(url.toString());
+    return new SparkleUpdater(url);
 #elif defined(Q_OS_WIN32)
     // the best we can do is notify about updates
     return new NSISUpdater(url);
