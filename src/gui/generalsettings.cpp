@@ -130,7 +130,7 @@ void GeneralSettings::loadMiscSettings()
 
 void GeneralSettings::slotUpdateInfo()
 {
-    if (ConfigFile().skipUpdateCheck()) {
+    if (ConfigFile().skipUpdateCheck() || !Updater::instance()) {
         // updater disabled on compile
         _ui->updatesGroupBox->setVisible(false);
         return;
@@ -146,23 +146,18 @@ void GeneralSettings::slotUpdateInfo()
         _ui->updateStateLabel->setText(ocupdater->statusString());
         _ui->restartButton->setVisible(ocupdater->downloadState() == OCUpdater::DownloadComplete);
 
-        // Channel selection
-        _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == "beta" ? 1 : 0);
-        connect(_ui->updateChannel, &QComboBox::currentTextChanged,
-            this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
     }
 #ifdef Q_OS_MAC
     else if (SparkleUpdater *sparkleUpdater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
         _ui->updateStateLabel->setText(sparkleUpdater->statusString());
         _ui->restartButton->setVisible(false);
-
-        // Channel selection
-        _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == "beta" ? 1 : 0);
-        connect(_ui->updateChannel, &QComboBox::currentTextChanged,
-            this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
     }
 #endif
 
+    // Channel selection
+    _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == "beta" ? 1 : 0);
+    connect(_ui->updateChannel, &QComboBox::currentTextChanged,
+        this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
 }
 
 void GeneralSettings::slotUpdateChannelChanged(const QString &channel)
@@ -172,6 +167,12 @@ void GeneralSettings::slotUpdateChannelChanged(const QString &channel)
         updater->setUpdateUrl(Updater::updateUrl());
         updater->checkForUpdate();
     }
+#ifdef Q_OS_MAC
+    else if (SparkleUpdater *updater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
+        updater->setUpdateUrl(Updater::updateUrl());
+        updater->checkForUpdate();
+    }
+#endif
 }
 
 void GeneralSettings::saveMiscSettings()

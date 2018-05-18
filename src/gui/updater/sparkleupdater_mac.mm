@@ -83,7 +83,7 @@ class SparkleUpdater::Private
 };
 
 // Delete ~/Library//Preferences/com.owncloud.desktopclient.plist to re-test
-SparkleUpdater::SparkleUpdater(const QString& appCastUrl)
+SparkleUpdater::SparkleUpdater(const QUrl& appCastUrl)
     : Updater()
 {
     d = new Private;
@@ -99,9 +99,7 @@ SparkleUpdater::SparkleUpdater(const QString& appCastUrl)
     [d->updater resetUpdateCycle];
     [d->updater retain];
 
-    NSURL* url = [NSURL URLWithString:
-            [NSString stringWithUTF8String: appCastUrl.toUtf8().data()]];
-    [d->updater setFeedURL: url];
+    setUpdateUrl(appCastUrl);
 
     // Sparkle 1.8 required
     NSString *userAgent = [NSString stringWithUTF8String: Utility::userAgentString().data()];
@@ -112,6 +110,13 @@ SparkleUpdater::~SparkleUpdater()
 {
     [d->updater release];
     delete d;
+}
+
+void SparkleUpdater::setUpdateUrl(const QUrl &url)
+{
+    NSURL* nsurl = [NSURL URLWithString:
+            [NSString stringWithUTF8String: url.toString().toUtf8().data()]];
+    [d->updater setFeedURL: nsurl];
 }
 
 // FIXME: Should be changed to not instanicate the SparkleUpdater at all in this case
