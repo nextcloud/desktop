@@ -252,7 +252,7 @@ void GeneralSettings::loadMiscSettings()
 #if defined(BUILD_UPDATER)
 void GeneralSettings::slotUpdateInfo()
 {
-    if (ConfigFile().skipUpdateCheck()) {
+    if (ConfigFile().skipUpdateCheck() || !Updater::instance()) {
         // updater disabled on compile
         _ui->updatesGroupBox->setVisible(false);
         return;
@@ -278,24 +278,18 @@ void GeneralSettings::slotUpdateInfo()
                                       ocupdater->downloadState() != OCUpdater::DownloadComplete);
 
         _ui->autoCheckForUpdatesCheckBox->setChecked(ConfigFile().autoUpdateCheck());
-
-        // Channel selection
-        _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == "beta" ? 1 : 0);
-        connect(_ui->updateChannel, &QComboBox::currentTextChanged,
-            this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
     }
 #ifdef Q_OS_MAC
     else if (auto sparkleUpdater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
         _ui->updateStateLabel->setText(sparkleUpdater->statusString());
         _ui->restartButton->setVisible(false);
-
-        // Channel selection
-        _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == "beta" ? 1 : 0);
-        connect(_ui->updateChannel, &QComboBox::currentTextChanged,
-            this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
     }
 #endif
 
+    // Channel selection
+    _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == "beta" ? 1 : 0);
+    connect(_ui->updateChannel, &QComboBox::currentTextChanged,
+        this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
 }
 
 void GeneralSettings::slotUpdateChannelChanged(const QString &channel)
@@ -306,6 +300,12 @@ void GeneralSettings::slotUpdateChannelChanged(const QString &channel)
         updater->setUpdateUrl(Updater::updateUrl());
         updater->checkForUpdate();
     }
+#ifdef Q_OS_MAC
+    else if (auto *updater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
+        updater->setUpdateUrl(Updater::updateUrl());
+        updater->checkForUpdate();
+    }
+#endif
 }
 
 void GeneralSettings::slotUpdateCheckNow()
