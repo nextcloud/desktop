@@ -34,12 +34,12 @@ SyncJournalFileRecord dbRecord(FakeFolder &folder, const QString &path)
     return record;
 }
 
-class TestSyncPlaceholders : public QObject
+class TestSyncVirtualFiles : public QObject
 {
     Q_OBJECT
 
 private slots:
-    void testPlaceholderLifecycle_data()
+    void testVirtualFileLifecycle_data()
     {
         QTest::addColumn<bool>("doLocalDiscovery");
 
@@ -47,13 +47,13 @@ private slots:
         QTest::newRow("skip local discovery") << false;
     }
 
-    void testPlaceholderLifecycle()
+    void testVirtualFileLifecycle()
     {
         QFETCH(bool, doLocalDiscovery);
 
-        FakeFolder fakeFolder{FileInfo()};
+        FakeFolder fakeFolder{ FileInfo() };
         SyncOptions syncOptions;
-        syncOptions._newFilesArePlaceholders = true;
+        syncOptions._newFilesAreVirtual = true;
         fakeFolder.syncEngine().setSyncOptions(syncOptions);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
@@ -65,7 +65,7 @@ private slots:
         };
         cleanup();
 
-        // Create a placeholder for a new remote file
+        // Create a virtual file for a new remote file
         fakeFolder.remoteModifier().mkdir("A");
         fakeFolder.remoteModifier().insert("A/a1", 64);
         QVERIFY(fakeFolder.syncOnce());
@@ -73,7 +73,7 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
         QVERIFY(itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_NEW));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypePlaceholder);
+        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypeVirtualFile);
         cleanup();
 
         // Another sync doesn't actually lead to changes
@@ -81,7 +81,7 @@ private slots:
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
         QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypePlaceholder);
+        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypeVirtualFile);
         QVERIFY(completeSpy.isEmpty());
         cleanup();
 
@@ -91,7 +91,7 @@ private slots:
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
         QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypePlaceholder);
+        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypeVirtualFile);
         QVERIFY(completeSpy.isEmpty());
         cleanup();
 
@@ -102,11 +102,11 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
         QVERIFY(itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_UPDATE_METADATA));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypePlaceholder);
+        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypeVirtualFile);
         QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._fileSize, 65);
         cleanup();
 
-        // If the local placeholder file is removed, it'll just be recreated
+        // If the local virtual file file is removed, it'll just be recreated
         if (!doLocalDiscovery)
             fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, { "A" });
         fakeFolder.localModifier().remove("A/a1.owncloud");
@@ -115,7 +115,7 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
         QVERIFY(itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_NEW));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypePlaceholder);
+        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypeVirtualFile);
         QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._fileSize, 65);
         cleanup();
 
@@ -129,7 +129,7 @@ private slots:
         QVERIFY(!fakeFolder.currentRemoteState().find("A/a1"));
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1m"));
         QVERIFY(itemInstruction(completeSpy, "A/a1m.owncloud", CSYNC_INSTRUCTION_RENAME));
-        QCOMPARE(dbRecord(fakeFolder, "A/a1m.owncloud")._type, ItemTypePlaceholder);
+        QCOMPARE(dbRecord(fakeFolder, "A/a1m.owncloud")._type, ItemTypeVirtualFile);
         cleanup();
 
         // Remote remove is propagated
@@ -142,7 +142,7 @@ private slots:
         QVERIFY(!dbRecord(fakeFolder, "A/a1m.owncloud").isValid());
         cleanup();
 
-        // Edge case: Local placeholder but no db entry for some reason
+        // Edge case: Local virtual file but no db entry for some reason
         fakeFolder.remoteModifier().insert("A/a2", 64);
         fakeFolder.remoteModifier().insert("A/a3", 64);
         QVERIFY(fakeFolder.syncOnce());
@@ -163,11 +163,11 @@ private slots:
         cleanup();
     }
 
-    void testPlaceholderConflict()
+    void testVirtualFileConflict()
     {
         FakeFolder fakeFolder{ FileInfo() };
         SyncOptions syncOptions;
-        syncOptions._newFilesArePlaceholders = true;
+        syncOptions._newFilesAreVirtual = true;
         fakeFolder.syncEngine().setSyncOptions(syncOptions);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
@@ -177,7 +177,7 @@ private slots:
         };
         cleanup();
 
-        // Create a placeholder for a new remote file
+        // Create a virtual file for a new remote file
         fakeFolder.remoteModifier().mkdir("A");
         fakeFolder.remoteModifier().insert("A/a1", 64);
         fakeFolder.remoteModifier().insert("A/a2", 64);
@@ -191,8 +191,8 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("B/b2.owncloud"));
         cleanup();
 
-        // A: the correct file and a conflicting file are added, placeholders stay
-        // B: same setup, but the placeholders are deleted by the user
+        // A: the correct file and a conflicting file are added, virtual files stay
+        // B: same setup, but the virtual files are deleted by the user
         // C: user adds a *directory* locally
         fakeFolder.localModifier().insert("A/a1", 64);
         fakeFolder.localModifier().insert("A/a2", 30);
@@ -211,7 +211,7 @@ private slots:
         QVERIFY(itemInstruction(completeSpy, "B/b2", CSYNC_INSTRUCTION_CONFLICT));
         QVERIFY(itemInstruction(completeSpy, "C/c1", CSYNC_INSTRUCTION_CONFLICT));
 
-        // no placeholder files should remain
+        // no virtual file files should remain
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1.owncloud"));
         QVERIFY(!fakeFolder.currentLocalState().find("A/a2.owncloud"));
         QVERIFY(!fakeFolder.currentLocalState().find("B/b1.owncloud"));
@@ -221,7 +221,7 @@ private slots:
         // conflict files should exist
         QCOMPARE(fakeFolder.syncJournal().conflictRecordPaths().size(), 3);
 
-        // nothing should have the placeholder tag
+        // nothing should have the virtual file tag
         QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeFile);
         QCOMPARE(dbRecord(fakeFolder, "A/a2")._type, ItemTypeFile);
         QCOMPARE(dbRecord(fakeFolder, "B/b1")._type, ItemTypeFile);
@@ -238,9 +238,9 @@ private slots:
 
     void testWithNormalSync()
     {
-        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         SyncOptions syncOptions;
-        syncOptions._newFilesArePlaceholders = true;
+        syncOptions._newFilesAreVirtual = true;
         fakeFolder.syncEngine().setSyncOptions(syncOptions);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
@@ -263,22 +263,22 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         cleanup();
 
-        // New files on the remote create placeholders
+        // New files on the remote create virtual files
         fakeFolder.remoteModifier().insert("A/new");
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentLocalState().find("A/new"));
         QVERIFY(fakeFolder.currentLocalState().find("A/new.owncloud"));
         QVERIFY(fakeFolder.currentRemoteState().find("A/new"));
         QVERIFY(itemInstruction(completeSpy, "A/new.owncloud", CSYNC_INSTRUCTION_NEW));
-        QCOMPARE(dbRecord(fakeFolder, "A/new.owncloud")._type, ItemTypePlaceholder);
+        QCOMPARE(dbRecord(fakeFolder, "A/new.owncloud")._type, ItemTypeVirtualFile);
         cleanup();
     }
 
-    void testPlaceholderDownload()
+    void testVirtualFileDownload()
     {
-        FakeFolder fakeFolder{FileInfo()};
+        FakeFolder fakeFolder{ FileInfo() };
         SyncOptions syncOptions;
-        syncOptions._newFilesArePlaceholders = true;
+        syncOptions._newFilesAreVirtual = true;
         fakeFolder.syncEngine().setSyncOptions(syncOptions);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
@@ -294,11 +294,11 @@ private slots:
             journal.getFileRecord(path + ".owncloud", &record);
             if (!record.isValid())
                 return;
-            record._type = ItemTypePlaceholderDownload;
+            record._type = ItemTypeVirtualFileDownload;
             journal.setFileRecord(record);
         };
 
-        // Create a placeholder for remote files
+        // Create a virtual file for remote files
         fakeFolder.remoteModifier().mkdir("A");
         fakeFolder.remoteModifier().insert("A/a1");
         fakeFolder.remoteModifier().insert("A/a2");
@@ -354,33 +354,33 @@ private slots:
         QVERIFY(!dbRecord(fakeFolder, "A/a6.owncloud").isValid());
     }
 
-    // Check what might happen if an older sync client encounters placeholders
+    // Check what might happen if an older sync client encounters virtual files
     void testOldVersion1()
     {
         FakeFolder fakeFolder{ FileInfo() };
         SyncOptions syncOptions;
-        syncOptions._newFilesArePlaceholders = true;
+        syncOptions._newFilesAreVirtual = true;
         fakeFolder.syncEngine().setSyncOptions(syncOptions);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        // Create a placeholder
+        // Create a virtual file
         fakeFolder.remoteModifier().mkdir("A");
         fakeFolder.remoteModifier().insert("A/a1");
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
 
-        // Simulate an old client by switching the type of all ItemTypePlaceholder
+        // Simulate an old client by switching the type of all ItemTypeVirtualFile
         // entries in the db to an invalid type.
         auto &db = fakeFolder.syncJournal();
         SyncJournalFileRecord rec;
         db.getFileRecord(QByteArray("A/a1.owncloud"), &rec);
         QVERIFY(rec.isValid());
-        QCOMPARE(rec._type, ItemTypePlaceholder);
+        QCOMPARE(rec._type, ItemTypeVirtualFile);
         rec._type = static_cast<ItemType>(-1);
         db.setFileRecord(rec);
 
-        // Also switch off new files becoming placeholders
-        syncOptions._newFilesArePlaceholders = false;
+        // Also switch off new files becoming virtual files
+        syncOptions._newFilesAreVirtual = false;
         fakeFolder.syncEngine().setSyncOptions(syncOptions);
 
         // A sync that doesn't do remote discovery has no effect
@@ -390,7 +390,7 @@ private slots:
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
         QVERIFY(!fakeFolder.currentRemoteState().find("A/a1.owncloud"));
 
-        // But with a remote discovery the placeholders will be removed and
+        // But with a remote discovery the virtual files will be removed and
         // the remote files will be downloaded.
         db.forceRemoteDiscoveryNextSync();
         QVERIFY(fakeFolder.syncOnce());
@@ -410,22 +410,22 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        // Create the placeholder too
-        // In the wild, the new version would create the placeholder and the db entry
+        // Create the virtual file too
+        // In the wild, the new version would create the virtual file and the db entry
         // while the old version would download the plain file.
         fakeFolder.localModifier().insert("A/a1.owncloud");
         auto &db = fakeFolder.syncJournal();
         SyncJournalFileRecord rec;
         db.getFileRecord(QByteArray("A/a1"), &rec);
-        rec._type = ItemTypePlaceholder;
+        rec._type = ItemTypeVirtualFile;
         rec._path = "A/a1.owncloud";
         db.setFileRecord(rec);
 
         SyncOptions syncOptions;
-        syncOptions._newFilesArePlaceholders = true;
+        syncOptions._newFilesAreVirtual = true;
         fakeFolder.syncEngine().setSyncOptions(syncOptions);
 
-        // Check that a sync removes the placeholder and its db entry
+        // Check that a sync removes the virtual file and its db entry
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1.owncloud"));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -433,5 +433,5 @@ private slots:
     }
 };
 
-QTEST_GUILESS_MAIN(TestSyncPlaceholders)
-#include "testsyncplaceholders.moc"
+QTEST_GUILESS_MAIN(TestSyncVirtualFiles)
+#include "testsyncvirtualfiles.moc"

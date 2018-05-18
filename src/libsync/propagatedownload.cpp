@@ -347,10 +347,10 @@ void PropagateDownloadFile::start()
     qCDebug(lcPropagateDownload) << _item->_file << propagator()->_activeJobList.count();
     _stopwatch.start();
 
-    // For placeholder files just create the file and be done
-    if (_item->_type == ItemTypePlaceholder) {
+    // For virtual files just create the file and be done
+    if (_item->_type == ItemTypeVirtualFile) {
         auto fn = propagator()->getFilePath(_item->_file);
-        qCDebug(lcPropagateDownload) << "creating placeholder file" << fn;
+        qCDebug(lcPropagateDownload) << "creating virtual file" << fn;
         QFile file(fn);
         file.open(QFile::ReadWrite | QFile::Truncate);
         file.write(" ");
@@ -359,14 +359,14 @@ void PropagateDownloadFile::start()
         return;
     }
 
-    // If we want to download something that used to be a placeholder,
-    // wipe the placeholder and proceed with a normal download
-    if (_item->_type == ItemTypePlaceholderDownload) {
-        auto placeholder = propagator()->addPlaceholderSuffix(_item->_file);
-        auto fn = propagator()->getFilePath(placeholder);
-        qCDebug(lcPropagateDownload) << "Downloading file that used to be a placeholder" << fn;
+    // If we want to download something that used to be a virtual file,
+    // wipe the virtual file and proceed with a normal download
+    if (_item->_type == ItemTypeVirtualFileDownload) {
+        auto virtualFile = propagator()->addVirtualFileSuffix(_item->_file);
+        auto fn = propagator()->getFilePath(virtualFile);
+        qCDebug(lcPropagateDownload) << "Downloading file that used to be a virtual file" << fn;
         QFile::remove(fn);
-        propagator()->_journal->deleteFileRecord(placeholder);
+        propagator()->_journal->deleteFileRecord(virtualFile);
         _item->_type = ItemTypeFile;
     }
 

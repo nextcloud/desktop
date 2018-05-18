@@ -197,14 +197,14 @@ struct OCSYNC_EXPORT csync_s {
   bool upload_conflict_files = false;
 
   /**
-   * Whether new remote files should start out as placeholders.
+   * Whether new remote files should start out as virtual.
    */
-  bool new_files_are_placeholders = false;
+  bool new_files_are_virtual = false;
 
   /**
-   * The suffix to use for placeholder files.
+   * The suffix to use for virtual files.
    */
-  QByteArray placeholder_suffix;
+  QByteArray virtual_file_suffix;
 
   csync_s(const char *localUri, OCC::SyncJournalDb *statedb);
   ~csync_s();

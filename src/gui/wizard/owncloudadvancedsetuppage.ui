@@ -417,9 +417,9 @@
          </layout>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="lPlaceholderSync">
+         <layout class="QHBoxLayout" name="lVirtualFileSync">
           <item>
-           <widget class="QRadioButton" name="rPlaceholderSync">
+           <widget class="QRadioButton" name="rVirtualFileSync">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
               <horstretch>0</horstretch>
@@ -500,7 +500,7 @@
   <tabstop>rSelectiveSync</tabstop>
   <tabstop>bSelectiveSync</tabstop>
   <tabstop>rManualFolder</tabstop>
-  <tabstop>rPlaceholderSync</tabstop>
+  <tabstop>rVirtualFileSync</tabstop>
   <tabstop>pbSelectLocalFolder</tabstop>
   <tabstop>radioButton</tabstop>
   <tabstop>cbSyncFromScratch</tabstop>

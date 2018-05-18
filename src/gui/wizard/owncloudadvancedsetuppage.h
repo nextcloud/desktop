@@ -41,7 +41,7 @@ public:
     bool validatePage() Q_DECL_OVERRIDE;
     QString localFolder() const;
     QStringList selectiveSyncBlacklist() const;
-    bool usePlaceholderSync() const;
+    bool useVirtualFileSync() const;
     bool manualFolderConfig() const;
     bool isConfirmBigFolderChecked() const;
     void setRemoteFolder(const QString &remoteFolder);
@@ -58,7 +58,7 @@ private slots:
     void slotSelectFolder();
     void slotSyncEverythingClicked();
     void slotSelectiveSyncClicked();
-    void slotPlaceholderSyncClicked();
+    void slotVirtualFileSyncClicked();
     void slotQuotaRetrieved(const QVariantMap &result);
 
 private:

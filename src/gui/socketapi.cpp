@@ -605,18 +605,18 @@ void SocketApi::copyUrlToClipboard(const QString &link)
     QApplication::clipboard()->setText(link);
 }
 
-void SocketApi::command_DOWNLOAD_PLACEHOLDER(const QString &filesArg, SocketListener *)
+void SocketApi::command_DOWNLOAD_VIRTUAL_FILE(const QString &filesArg, SocketListener *)
 {
     QStringList files = filesArg.split(QLatin1Char('\x1e')); // Record Separator
-    auto placeholderSuffix = QStringLiteral(APPLICATION_DOTPLACEHOLDER_SUFFIX);
+    auto suffix = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
 
     for (const auto &file : files) {
-        if (!file.endsWith(placeholderSuffix))
+        if (!file.endsWith(suffix))
             continue;
         QString relativePath;
         auto folder = FolderMan::instance()->folderForPath(file, &relativePath);
         if (folder) {
-            folder->downloadPlaceholder(relativePath);
+            folder->downloadVirtualFile(relativePath);
         }
     }
 }
@@ -756,16 +756,16 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         }
     }
 
-    // Placeholder download action
+    // Virtual file download action
     if (folder) {
-        auto placeholderSuffix = QStringLiteral(APPLICATION_DOTPLACEHOLDER_SUFFIX);
-        bool hasPlaceholderFile = false;
+        auto virtualFileSuffix = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
+        bool hasVirtualFile = false;
         for (const auto &file : files) {
-            if (file.endsWith(placeholderSuffix))
-                hasPlaceholderFile = true;
+            if (file.endsWith(virtualFileSuffix))
+                hasVirtualFile = true;
         }
-        if (hasPlaceholderFile)
-            listener->sendMessage(QLatin1String("MENU_ITEM:DOWNLOAD_PLACEHOLDER::") + tr("Download file(s)", "", files.size()));
+        if (hasVirtualFile)
+            listener->sendMessage(QLatin1String("MENU_ITEM:DOWNLOAD_VIRTUAL_FILE::") + tr("Download file(s)", "", files.size()));
     }
 
     listener->sendMessage(QString("GET_MENU_ITEMS:END"));

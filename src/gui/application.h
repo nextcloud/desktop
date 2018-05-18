@@ -73,10 +73,10 @@ public slots:
     void slotownCloudWizardDone(int);
     void slotCrash();
     /**
-     * Will download a placeholder file, and open the result.
-     * The argument is the filename of the placeholder file (including the extension)
+     * Will download a virtual file, and open the result.
+     * The argument is the filename of the virtual file (including the extension)
      */
-    void openPlaceholder(const QString &filename);
+    void openVirtualFile(const QString &filename);
 
 protected:
     void parseOptions(const QStringList &);

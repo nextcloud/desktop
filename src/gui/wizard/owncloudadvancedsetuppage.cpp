@@ -60,7 +60,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
 
     connect(_ui.rSyncEverything, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSyncEverythingClicked);
     connect(_ui.rSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
-    connect(_ui.rPlaceholderSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotPlaceholderSyncClicked);
+    connect(_ui.rVirtualFileSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotVirtualFileSyncClicked);
     connect(_ui.bSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
     connect(_ui.rManualFolder, &QAbstractButton::clicked, this, [this] { setRadioChecked(_ui.rManualFolder); });
 
@@ -109,8 +109,8 @@ void OwncloudAdvancedSetupPage::initializePage()
         // If the layout were wrapped in a widget, the auto-grouping of the
         // radio buttons no longer works and there are surprising margins.
         // Just manually hide the button and remove the layout.
-        _ui.rPlaceholderSync->hide();
-        _ui.wSyncStrategy->layout()->removeItem(_ui.lPlaceholderSync);
+        _ui.rVirtualFileSync->hide();
+        _ui.wSyncStrategy->layout()->removeItem(_ui.lVirtualFileSync);
     }
 
     _checking = false;
@@ -233,9 +233,9 @@ QStringList OwncloudAdvancedSetupPage::selectiveSyncBlacklist() const
     return _selectiveSyncBlacklist;
 }
 
-bool OwncloudAdvancedSetupPage::usePlaceholderSync() const
+bool OwncloudAdvancedSetupPage::useVirtualFileSync() const
 {
-    return _ui.rPlaceholderSync->isChecked();
+    return _ui.rVirtualFileSync->isChecked();
 }
 
 bool OwncloudAdvancedSetupPage::manualFolderConfig() const
@@ -351,15 +351,15 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
     }
 }
 
-void OwncloudAdvancedSetupPage::slotPlaceholderSyncClicked()
+void OwncloudAdvancedSetupPage::slotVirtualFileSyncClicked()
 {
-    OwncloudWizard::askExperimentalPlaceholderFeature([this](bool enable) {
+    OwncloudWizard::askExperimentalVirtualFilesFeature([this](bool enable) {
         if (!enable)
             return;
 
         _ui.lSelectiveSyncSizeLabel->setText(QString());
         _selectiveSyncBlacklist.clear();
-        setRadioChecked(_ui.rPlaceholderSync);
+        setRadioChecked(_ui.rVirtualFileSync);
     });
 }
 
@@ -378,15 +378,15 @@ void OwncloudAdvancedSetupPage::slotQuotaRetrieved(const QVariantMap &result)
 void OwncloudAdvancedSetupPage::setRadioChecked(QRadioButton *radio)
 {
     // We don't want clicking the radio buttons to immediately adjust the checked state
-    // for selective sync and placeholder sync, so we keep them uncheckable until
+    // for selective sync and virtual file sync, so we keep them uncheckable until
     // they should be checked.
     radio->setCheckable(true);
     radio->setChecked(true);
 
     if (radio != _ui.rSelectiveSync)
         _ui.rSelectiveSync->setCheckable(false);
-    if (radio != _ui.rPlaceholderSync)
-        _ui.rPlaceholderSync->setCheckable(false);
+    if (radio != _ui.rVirtualFileSync)
+        _ui.rVirtualFileSync->setCheckable(false);
 }
 
 } // namespace OCC

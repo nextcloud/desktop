@@ -37,11 +37,11 @@
 <array>
     <dict>
         <key>UTTypeIdentifier</key>
-        <string>@APPLICATION_REV_DOMAIN@.placeholder</string>
+        <string>@APPLICATION_REV_DOMAIN@.VIRTUALFILE</string>
         <key>UTTypeTagSpecification</key>
         <dict>
             <key>public.filename-extension</key>
-            <string>@APPLICATION_PLACEHOLDER_SUFFIX@</string>
+            <string>@APPLICATION_VIRTUALFILE_SUFFIX@</string>
             <key>public.mime-type</key>
             <string>application/octet-stream</string>
         </dict>
@@ -56,14 +56,14 @@
 <array>
     <dict>
         <key>CFBundleTypeName</key>
-        <string>@APPLICATION_EXECUTABLE@ Download Placeholder</string>
+        <string>@APPLICATION_EXECUTABLE@ Download Virtual File</string>
         <key>CFBundleTypeRole</key>
         <string>Editor</string>
         <key>LSHandlerRank</key>
         <string>Owner</string>
         <key>LSItemContentTypes</key>
         <array>
-            <string>@APPLICATION_REV_DOMAIN@.placeholder</string>
+            <string>@APPLICATION_REV_DOMAIN@.VIRTUALFILE</string>
         </array>
     </dict>
 </array>

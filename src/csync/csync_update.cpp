@@ -187,17 +187,17 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       return -1;
   }
 
-  // The db entry might be for a placeholder, so look for that on the
+  // The db entry might be for a virtual file, so look for that on the
   // remote side. If we find one, change the current fs to look like a
-  // placeholder too, because that's what one would see if the remote
+  // virtual file too, because that's what one would see if the remote
   // db was filled from the database.
   if (ctx->current == REMOTE_REPLICA && !base.isValid() && fs->type == ItemTypeFile) {
-      auto placeholderPath = fs->path;
-      placeholderPath.append(ctx->placeholder_suffix);
-      ctx->statedb->getFileRecord(placeholderPath, &base);
-      if (base.isValid() && base._type == ItemTypePlaceholder) {
-          fs->type = ItemTypePlaceholder;
-          fs->path = placeholderPath;
+      auto virtualFilePath = fs->path;
+      virtualFilePath.append(ctx->virtual_file_suffix);
+      ctx->statedb->getFileRecord(virtualFilePath, &base);
+      if (base.isValid() && base._type == ItemTypeVirtualFile) {
+          fs->type = ItemTypeVirtualFile;
+          fs->path = virtualFilePath;
       } else {
           base = OCC::SyncJournalFileRecord();
       }
@@ -220,19 +220,19 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                 fs->checksumHeader.constData(), base._checksumHeader.constData(),
                 base._serverHasIgnoredFiles );
 
-      // If the db suggests a placeholder should be downloaded,
+      // If the db suggests a virtual file should be downloaded,
       // treat the file as new on the remote.
-      if (ctx->current == REMOTE_REPLICA && base._type == ItemTypePlaceholderDownload) {
+      if (ctx->current == REMOTE_REPLICA && base._type == ItemTypeVirtualFileDownload) {
           fs->instruction = CSYNC_INSTRUCTION_NEW;
-          fs->type = ItemTypePlaceholderDownload;
+          fs->type = ItemTypeVirtualFileDownload;
           goto out;
       }
 
-      // If what the db thinks is a placeholder is actually a file/dir,
+      // If what the db thinks is a virtual file is actually a file/dir,
       // treat it as new locally.
       if (ctx->current == LOCAL_REPLICA
-          && (base._type == ItemTypePlaceholder || base._type == ItemTypePlaceholderDownload)
-          && fs->type != ItemTypePlaceholder) {
+          && (base._type == ItemTypeVirtualFile || base._type == ItemTypeVirtualFileDownload)
+          && fs->type != ItemTypeVirtualFile) {
           fs->instruction = CSYNC_INSTRUCTION_EVAL;
           goto out;
       }
@@ -240,8 +240,8 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       if (ctx->current == REMOTE_REPLICA && fs->etag != base._etag) {
           fs->instruction = CSYNC_INSTRUCTION_EVAL;
 
-          if (fs->type == ItemTypePlaceholder) {
-              // If the local thing is a placeholder, we just update the metadata
+          if (fs->type == ItemTypeVirtualFile) {
+              // If the local thing is a virtual file, we just update the metadata
               fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
           } else if (base._type != fs->type) {
               // Preserve the EVAL flag later on if the type has changed.
@@ -365,10 +365,10 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
               if (!base.isValid())
                   return;
 
-              if (base._type == ItemTypePlaceholderDownload) {
-                  // Remote rename of a placeholder file we have locally scheduled
+              if (base._type == ItemTypeVirtualFileDownload) {
+                  // Remote rename of a virtual file we have locally scheduled
                   // for download. We just consider this NEW but mark it for download.
-                  fs->type = ItemTypePlaceholderDownload;
+                  fs->type = ItemTypeVirtualFileDownload;
                   done = true;
                   return;
               }
@@ -377,7 +377,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
               // Since we don't do the same checks again in reconcile, we can't
               // just skip the candidate, but have to give up completely.
               if (base._type != fs->type
-                  && base._type != ItemTypePlaceholder) {
+                  && base._type != ItemTypeVirtualFile) {
                   qCWarning(lcUpdate, "file types different, not a rename");
                   done = true;
                   return;
@@ -391,10 +391,10 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
 
               // Now we know there is a sane rename candidate.
 
-              // Rename of a placeholder
-              if (base._type == ItemTypePlaceholder && fs->type == ItemTypeFile) {
-                  fs->type = ItemTypePlaceholder;
-                  fs->path.append(ctx->placeholder_suffix);
+              // Rename of a virtual file
+              if (base._type == ItemTypeVirtualFile && fs->type == ItemTypeFile) {
+                  fs->type = ItemTypeVirtualFile;
+                  fs->path.append(ctx->virtual_file_suffix);
               }
 
               // Record directory renames
@@ -427,12 +427,12 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
               }
           }
 
-          // Turn new remote files into placeholders if the option is enabled.
-          if (ctx->new_files_are_placeholders
+          // Turn new remote files into virtual files if the option is enabled.
+          if (ctx->new_files_are_virtual
               && fs->instruction == CSYNC_INSTRUCTION_NEW
               && fs->type == ItemTypeFile) {
-              fs->type = ItemTypePlaceholder;
-              fs->path.append(ctx->placeholder_suffix);
+              fs->type = ItemTypeVirtualFile;
+              fs->path.append(ctx->virtual_file_suffix);
           }
 
           goto out;
@@ -741,15 +741,15 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         fullpath = QByteArray() % uri % '/' % filename;
     }
 
-    // When encountering placeholder files, read the relevant
+    // When encountering virtual files, read the relevant
     // entry from the db instead.
     if (ctx->current == LOCAL_REPLICA
         && dirent->type == ItemTypeFile
-        && filename.endsWith(ctx->placeholder_suffix)) {
+        && filename.endsWith(ctx->virtual_file_suffix)) {
         QByteArray db_uri = fullpath.mid(strlen(ctx->local.uri) + 1);
 
         if( ! fill_tree_from_db(ctx, db_uri.constData(), true) ) {
-            qCWarning(lcUpdate) << "Placeholder without db entry for" << filename;
+            qCWarning(lcUpdate) << "Virtual file without db entry for" << filename;
             QFile::remove(fullpath);
         }
 

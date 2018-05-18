@@ -507,9 +507,9 @@ void Folder::slotWatchedPathChanged(const QString &path)
     scheduleThisFolderSoon();
 }
 
-void Folder::downloadPlaceholder(const QString &_relativepath)
+void Folder::downloadVirtualFile(const QString &_relativepath)
 {
-    qCInfo(lcFolder) << "Download placeholder: " << _relativepath;
+    qCInfo(lcFolder) << "Download virtual file: " << _relativepath;
     auto relativepath = _relativepath.toUtf8();
 
     // Set in the database that we should download the file
@@ -517,7 +517,7 @@ void Folder::downloadPlaceholder(const QString &_relativepath)
     _journal.getFileRecord(relativepath, &record);
     if (!record.isValid())
         return;
-    record._type = ItemTypePlaceholderDownload;
+    record._type = ItemTypeVirtualFileDownload;
     _journal.setFileRecord(record);
 
     // Make sure we go over that file during the discovery
@@ -544,9 +544,10 @@ void Folder::saveToSettings() const
         }
     }
 
-    if (_definition.usePlaceholders) {
-        // If placeholders are enabled, save the folder to a group
+    if (_definition.useVirtualFiles) {
+        // If virtual files are enabled, save the folder to a group
         // that will not be read by older (<2.5.0) clients.
+        // The name is from when virtual files were called placeholders.
         settingsGroup = QStringLiteral("FoldersWithPlaceholders");
     } else if (_saveBackwardsCompatible || oneAccountOnly) {
         // The folder is saved to backwards-compatible "Folders"
@@ -710,8 +711,8 @@ void Folder::setSyncOptions()
     opt._newBigFolderSizeLimit = newFolderLimit.first ? newFolderLimit.second * 1000LL * 1000LL : -1; // convert from MB to B
     opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
     opt._moveFilesToTrash = cfgFile.moveToTrash();
-    opt._newFilesArePlaceholders = _definition.usePlaceholders;
-    opt._placeholderSuffix = QStringLiteral(APPLICATION_DOTPLACEHOLDER_SUFFIX);
+    opt._newFilesAreVirtual = _definition.useVirtualFiles;
+    opt._virtualFileSuffix = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
 
     QByteArray chunkSizeEnv = qgetenv("OWNCLOUD_CHUNK_SIZE");
     if (!chunkSizeEnv.isEmpty()) {
@@ -1123,7 +1124,7 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
     settings.setValue(QLatin1String("targetPath"), folder.targetPath);
     settings.setValue(QLatin1String("paused"), folder.paused);
     settings.setValue(QLatin1String("ignoreHiddenFiles"), folder.ignoreHiddenFiles);
-    settings.setValue(QLatin1String("usePlaceholders"), folder.usePlaceholders);
+    settings.setValue(QLatin1String("usePlaceholders"), folder.useVirtualFiles);
 
     // Happens only on Windows when the explorer integration is enabled.
     if (!folder.navigationPaneClsid.isNull())
@@ -1144,7 +1145,7 @@ bool FolderDefinition::load(QSettings &settings, const QString &alias,
     folder->paused = settings.value(QLatin1String("paused")).toBool();
     folder->ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), QVariant(true)).toBool();
     folder->navigationPaneClsid = settings.value(QLatin1String("navigationPaneClsid")).toUuid();
-    folder->usePlaceholders = settings.value(QLatin1String("usePlaceholders")).toBool();
+    folder->useVirtualFiles = settings.value(QLatin1String("usePlaceholders")).toBool();
     settings.endGroup();
 
     // Old settings can contain paths with native separators. In the rest of the

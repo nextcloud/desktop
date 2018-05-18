@@ -484,9 +484,9 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
     layout->addWidget(_selectiveSync);
 
     if (ConfigFile().showExperimentalOptions()) {
-        _placeholderCheckBox = new QCheckBox(tr("Use virtual files instead of downloading content immediately (experimental)"));
-        connect(_placeholderCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::placeholderCheckboxClicked);
-        layout->addWidget(_placeholderCheckBox);
+        _virtualFilesCheckBox = new QCheckBox(tr("Use virtual files instead of downloading content immediately (experimental)"));
+        connect(_virtualFilesCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::virtualFilesCheckboxClicked);
+        layout->addWidget(_virtualFilesCheckBox);
     }
 }
 
@@ -515,7 +515,7 @@ void FolderWizardSelectiveSync::initializePage()
 bool FolderWizardSelectiveSync::validatePage()
 {
     wizard()->setProperty("selectiveSyncBlackList", QVariant(_selectiveSync->createBlackList()));
-    wizard()->setProperty("usePlaceholders", QVariant(_placeholderCheckBox && _placeholderCheckBox->isChecked()));
+    wizard()->setProperty("useVirtualFiles", QVariant(_virtualFilesCheckBox && _virtualFilesCheckBox->isChecked()));
     return true;
 }
 
@@ -529,14 +529,14 @@ void FolderWizardSelectiveSync::cleanupPage()
     QWizardPage::cleanupPage();
 }
 
-void FolderWizardSelectiveSync::placeholderCheckboxClicked()
+void FolderWizardSelectiveSync::virtualFilesCheckboxClicked()
 {
     // The click has already had an effect on the box, so if it's
     // checked it was newly activated.
-    if (_placeholderCheckBox->isChecked()) {
-        OwncloudWizard::askExperimentalPlaceholderFeature([this](bool enable) {
+    if (_virtualFilesCheckBox->isChecked()) {
+        OwncloudWizard::askExperimentalVirtualFilesFeature([this](bool enable) {
             if (!enable)
-                _placeholderCheckBox->setChecked(false);
+                _virtualFilesCheckBox->setChecked(false);
         });
     }
 }

@@ -465,9 +465,9 @@ void Application::parseOptions(const QStringList &options)
             _debugMode = true;
         } else if (option == QLatin1String("--version")) {
             _versionOnly = true;
-        } else if (option.endsWith(QStringLiteral(APPLICATION_DOTPLACEHOLDER_SUFFIX))) {
-            // placeholder file, open it after the Folder were created (if the app is not terminated)
-            QTimer::singleShot(0, this, [this, option] { openPlaceholder(option); });
+        } else if (option.endsWith(QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX))) {
+            // virtual file, open it after the Folder were created (if the app is not terminated)
+            QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });
         } else {
             showHint("Unrecognized option '" + option.toStdString() + "'");
         }
@@ -633,10 +633,10 @@ void Application::showSettingsDialog()
     _gui->slotShowSettings();
 }
 
-void Application::openPlaceholder(const QString &filename)
+void Application::openVirtualFile(const QString &filename)
 {
-    QString placeholderExt = QStringLiteral(APPLICATION_DOTPLACEHOLDER_SUFFIX);
-    if (!filename.endsWith(placeholderExt)) {
+    QString virtualFileExt = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
+    if (!filename.endsWith(virtualFileExt)) {
         qWarning(lcApplication) << "Can only handle file ending in .owncloud. Unable to open" << filename;
         return;
     }
@@ -647,8 +647,8 @@ void Application::openPlaceholder(const QString &filename)
         // TODO: show a QMessageBox for errors
         return;
     }
-    folder->downloadPlaceholder(relativePath);
-    QString normalName = filename.left(filename.size() - placeholderExt.size());
+    folder->downloadVirtualFile(relativePath);
+    QString normalName = filename.left(filename.size() - virtualFileExt.size());
     auto con = QSharedPointer<QMetaObject::Connection>::create();
     *con = QObject::connect(folder, &Folder::syncFinished, [con, normalName] {
         QObject::disconnect(*con);
@@ -664,9 +664,9 @@ bool Application::event(QEvent *event)
     if (event->type() == QEvent::FileOpen) {
         QFileOpenEvent *openEvent = static_cast<QFileOpenEvent *>(event);
         qCDebug(lcApplication) << "QFileOpenEvent" << openEvent->file();
-        // placeholder file, open it after the Folder were created (if the app is not terminated)
+        // virtual file, open it after the Folder were created (if the app is not terminated)
         QString fn = openEvent->file();
-        QTimer::singleShot(0, this, [this, fn] { openPlaceholder(fn); });
+        QTimer::singleShot(0, this, [this, fn] { openVirtualFile(fn); });
     }
 #endif
     return SharedTools::QtSingleApplication::event(event);

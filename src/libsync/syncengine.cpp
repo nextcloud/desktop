@@ -614,7 +614,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
             if (remote) {
                 QString filePath = _localPath + item->_file;
 
-                if (other && other->type != ItemTypePlaceholder && other->type != ItemTypePlaceholderDownload) {
+                if (other && other->type != ItemTypeVirtualFile && other->type != ItemTypeVirtualFileDownload) {
                     // Even if the mtime is different on the server, we always want to keep the mtime from
                     // the file system in the DB, this is to avoid spurious upload on the next sync
                     item->_modtime = other->modtime;
@@ -851,10 +851,10 @@ void SyncEngine::startSync()
         return shouldDiscoverLocally(path);
     };
 
-    _csync_ctx->new_files_are_placeholders = _syncOptions._newFilesArePlaceholders;
-    _csync_ctx->placeholder_suffix = _syncOptions._placeholderSuffix.toUtf8();
-    if (_csync_ctx->new_files_are_placeholders && _csync_ctx->placeholder_suffix.isEmpty()) {
-        csyncError(tr("Using virtual files but placeholder suffix is not set"));
+    _csync_ctx->new_files_are_virtual = _syncOptions._newFilesAreVirtual;
+    _csync_ctx->virtual_file_suffix = _syncOptions._virtualFileSuffix.toUtf8();
+    if (_csync_ctx->new_files_are_virtual && _csync_ctx->virtual_file_suffix.isEmpty()) {
+        csyncError(tr("Using virtual files but suffix is not set"));
         finalize(false);
         return;
     }

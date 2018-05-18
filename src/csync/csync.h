@@ -138,8 +138,8 @@ enum ItemType {
     ItemTypeSoftLink = 1,
     ItemTypeDirectory = 2,
     ItemTypeSkip = 3,
-    ItemTypePlaceholder = 4,
-    ItemTypePlaceholderDownload = 5
+    ItemTypeVirtualFile = 4,
+    ItemTypeVirtualFileDownload = 5
 };
 
 

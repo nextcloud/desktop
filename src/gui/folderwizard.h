@@ -131,11 +131,11 @@ public:
     virtual void cleanupPage() Q_DECL_OVERRIDE;
 
 private slots:
-    void placeholderCheckboxClicked();
+    void virtualFilesCheckboxClicked();
 
 private:
     SelectiveSyncWidget *_selectiveSync;
-    QCheckBox *_placeholderCheckBox = nullptr;
+    QCheckBox *_virtualFilesCheckBox = nullptr;
 };
 
 /**

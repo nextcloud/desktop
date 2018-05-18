@@ -122,25 +122,25 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
         /* If it is ignored, other->instruction will be  IGNORE so this one will also be ignored */
     }
 
-    // If the user adds a file locally check whether a placeholder for that name exists.
+    // If the user adds a file locally check whether a virtual file for that name exists.
     // If so, go to "potential conflict" mode by switching the remote entry to be a
     // real file.
     if (!other
         && ctx->current == LOCAL_REPLICA
         && cur->instruction == CSYNC_INSTRUCTION_NEW
-        && cur->type != ItemTypePlaceholder) {
-        // Check if we have a placeholder entry in the remote tree
-        auto placeholderPath = cur->path;
-        placeholderPath.append(ctx->placeholder_suffix);
-        other = other_tree->findFile(placeholderPath);
+        && cur->type != ItemTypeVirtualFile) {
+        // Check if we have a virtual file  entry in the remote tree
+        auto virtualFilePath = cur->path;
+        virtualFilePath.append(ctx->virtual_file_suffix);
+        other = other_tree->findFile(virtualFilePath);
         if (!other) {
             /* Check the renamed path as well. */
-            other = other_tree->findFile(csync_rename_adjust_parent_path(ctx, placeholderPath));
+            other = other_tree->findFile(csync_rename_adjust_parent_path(ctx, virtualFilePath));
         }
-        if (other && other->type == ItemTypePlaceholder) {
-            qCInfo(lcReconcile) << "Found placeholder for local" << cur->path << "in remote tree";
+        if (other && other->type == ItemTypeVirtualFile) {
+            qCInfo(lcReconcile) << "Found virtual file for local" << cur->path << "in remote tree";
             other->path = cur->path;
-            other->type = ItemTypePlaceholderDownload;
+            other->type = ItemTypeVirtualFileDownload;
             other->instruction = CSYNC_INSTRUCTION_EVAL;
         } else {
             other = nullptr;
@@ -166,12 +166,12 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                 cur->instruction = CSYNC_INSTRUCTION_NEW;
                 break;
             }
-            /* If the local placeholder is gone it should be reestablished.
+            /* If the local virtual file is gone, it should be reestablished.
              * Unless the base file is seen in the local tree now. */
-            if (cur->type == ItemTypePlaceholder
+            if (cur->type == ItemTypeVirtualFile
                 && ctx->current == REMOTE_REPLICA
-                && cur->path.endsWith(ctx->placeholder_suffix)
-                && !other_tree->findFile(cur->path.left(cur->path.size() - ctx->placeholder_suffix.size()))) {
+                && cur->path.endsWith(ctx->virtual_file_suffix)
+                && !other_tree->findFile(cur->path.left(cur->path.size() - ctx->virtual_file_suffix.size()))) {
                 cur->instruction = CSYNC_INSTRUCTION_NEW;
                 break;
             }
@@ -426,13 +426,13 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                 cur->instruction = CSYNC_INSTRUCTION_NEW;
             break;
         case CSYNC_INSTRUCTION_NONE:
-            // NONE/NONE on placeholders might become a REMOVE if the base file
+            // NONE/NONE on virtual files might become a REMOVE if the base file
             // is found in the local tree.
-            if (cur->type == ItemTypePlaceholder
+            if (cur->type == ItemTypeVirtualFile
                 && other->instruction == CSYNC_INSTRUCTION_NONE
                 && ctx->current == LOCAL_REPLICA
-                && cur->path.endsWith(ctx->placeholder_suffix)
-                && ctx->local.files.findFile(cur->path.left(cur->path.size() - ctx->placeholder_suffix.size()))) {
+                && cur->path.endsWith(ctx->virtual_file_suffix)
+                && ctx->local.files.findFile(cur->path.left(cur->path.size() - ctx->virtual_file_suffix.size()))) {
                 cur->instruction = CSYNC_INSTRUCTION_REMOVE;
             }
             break;
