@@ -14,8 +14,8 @@ else ()
 endif()
 
 # Default suffix if the theme doesn't define one
-if(NOT DEFINED APPLICATION_PLACEHOLDER_SUFFIX)
-    set(APPLICATION_PLACEHOLDER_SUFFIX "${APPLICATION_SHORTNAME}_placeholder" CACHE STRING "Placeholder suffix (not including the .)")
+if(NOT DEFINED APPLICATION_VIRTUALFILE_SUFFIX)
+    set(APPLICATION_VIRTUALFILE_SUFFIX "${APPLICATION_SHORTNAME}_virtual" CACHE STRING "Virtual file suffix (not including the .)")
 endif()
 
 # need this logic to not mess with re/uninstallations via macosx.pkgproj

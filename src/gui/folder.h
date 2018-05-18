@@ -60,8 +60,8 @@ public:
     bool paused = false;
     /// whether the folder syncs hidden files
     bool ignoreHiddenFiles = false;
-    /// New files are downloaded as placeholders
-    bool usePlaceholders = false;
+    /// New files are downloaded as virtual files
+    bool useVirtualFiles = false;
     /// The CLSID where this folder appears in registry for the Explorer navigation pane entry.
     QUuid navigationPaneClsid;
 
@@ -280,10 +280,10 @@ public slots:
     void slotWatchedPathChanged(const QString &path);
 
     /**
-     * Mark a placeholder as being ready for download, and start a sync.
-     * relativePath is the patch to the placeholder file (includeing the extension)
+     * Mark a virtual file as being ready for download, and start a sync.
+     * relativePath is the patch to the file (including the extension)
      */
-    void downloadPlaceholder(const QString &relativepath);
+    void downloadVirtualFile(const QString &relativepath);
 
 private slots:
     void slotSyncStarted();

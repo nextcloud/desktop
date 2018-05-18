@@ -453,7 +453,7 @@ public:
 
     /* returns the local file path for the given tmp_file_name */
     QString getFilePath(const QString &tmp_file_name) const;
-    QString addPlaceholderSuffix(const QString &fileName) const;
+    QString addVirtualFileSuffix(const QString &fileName) const;
 
     /** Creates the job for an item.
      */

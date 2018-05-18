@@ -133,9 +133,9 @@ QStringList OwncloudWizard::selectiveSyncBlacklist() const
     return _advancedSetupPage->selectiveSyncBlacklist();
 }
 
-bool OwncloudWizard::usePlaceholderSync() const
+bool OwncloudWizard::useVirtualFileSync() const
 {
-    return _advancedSetupPage->usePlaceholderSync();
+    return _advancedSetupPage->useVirtualFileSync();
 }
 
 bool OwncloudWizard::isConfirmBigFolderChecked() const
@@ -326,7 +326,7 @@ void OwncloudWizard::bringToTop()
     ownCloudGui::raiseDialog(this);
 }
 
-void OwncloudWizard::askExperimentalPlaceholderFeature(const std::function<void(bool enable)> &callback)
+void OwncloudWizard::askExperimentalVirtualFilesFeature(const std::function<void(bool enable)> &callback)
 {
     auto msgBox = new QMessageBox(
         QMessageBox::Warning,
@@ -337,7 +337,7 @@ void OwncloudWizard::askExperimentalPlaceholderFeature(const std::function<void(
            "\n\n"
            "This is a new, experimental mode. If you decide to use it, please report any "
            "issues that come up.")
-            .arg(APPLICATION_DOTPLACEHOLDER_SUFFIX));
+            .arg(APPLICATION_DOTVIRTUALFILE_SUFFIX));
     msgBox->addButton(tr("Enable experimental mode"), QMessageBox::AcceptRole);
     msgBox->addButton(tr("Stay safe"), QMessageBox::RejectRole);
     connect(msgBox, &QMessageBox::finished, msgBox, [callback, msgBox](int result) {

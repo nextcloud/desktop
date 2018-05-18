@@ -497,7 +497,7 @@ void AccountSettings::slotFolderWizardAccepted()
         folderWizard->field(QLatin1String("sourceFolder")).toString());
     definition.targetPath = FolderDefinition::prepareTargetPath(
         folderWizard->property("targetPath").toString());
-    definition.usePlaceholders = folderWizard->property("usePlaceholders").toBool();
+    definition.useVirtualFiles = folderWizard->property("useVirtualFiles").toBool();
 
     {
         QDir dir(definition.localPath);

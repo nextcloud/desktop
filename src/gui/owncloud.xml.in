@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
   <mime-type type="application/x-@APPLICATION_EXECUTABLE@">
-    <comment>@APPLICATION_NAME@ placeholders</comment>
-    <glob pattern="*.@APPLICATION_PLACEHOLDER_SUFFIX@"/>
+    <comment>@APPLICATION_NAME@ virtual files</comment>
+    <glob pattern="*.@APPLICATION_VIRTUALFILE_SUFFIX@"/>
   </mime-type>
 </mime-info>

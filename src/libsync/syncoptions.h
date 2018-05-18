@@ -36,9 +36,9 @@ struct SyncOptions
     /** If remotely deleted files are needed to move to trash */
     bool _moveFilesToTrash = false;
 
-    /** Create a placeholder for new files instead of downloading */
-    bool _newFilesArePlaceholders = false;
-    QString _placeholderSuffix = ".owncloud";
+    /** Create a virtual file for new files instead of downloading */
+    bool _newFilesAreVirtual = false;
+    QString _virtualFileSuffix = ".owncloud";
 
     /** The initial un-adjusted chunk size in bytes for chunked uploads, both
      * for old and new chunking algorithm, which classifies the item to be chunked
