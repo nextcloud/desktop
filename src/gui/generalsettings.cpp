@@ -38,6 +38,7 @@
 #include <QNetworkProxy>
 #include <QDir>
 #include <QScopedValueRollback>
+#include <QMessageBox>
 
 namespace OCC {
 
@@ -165,17 +166,46 @@ void GeneralSettings::slotUpdateInfo()
 
 void GeneralSettings::slotUpdateChannelChanged(const QString &channel)
 {
-    ConfigFile().setUpdateChannel(channel);
-    if (OCUpdater *updater = qobject_cast<OCUpdater *>(Updater::instance())) {
-        updater->setUpdateUrl(Updater::updateUrl());
-        updater->checkForUpdate();
-    }
+    if (channel == ConfigFile().updateChannel())
+        return;
+
+    auto msgBox = new QMessageBox(
+        QMessageBox::Warning,
+        tr("Change update channel?"),
+        tr("The update channel determines which client updates will be offered "
+           "for installation. The \"stable\" channel contains only upgrades that "
+           "are considered reliable, while the versions in the \"beta\" channel "
+           "may contain newer features and bugfixes, but have not yet been tested "
+           "thoroughly."
+           "\n\n"
+           "Note that this selects only what pool upgrades are taken from, and that "
+           "there are no downgrades: So going back from the beta channel to "
+           "the stable channel usually cannot be done immediately and means waiting "
+           "for a stable version that is newer than the currently installed beta "
+           "version."),
+        QMessageBox::NoButton,
+        this);
+    msgBox->addButton(tr("Change update channel"), QMessageBox::AcceptRole);
+    msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
+    connect(msgBox, &QMessageBox::finished, msgBox, [this, channel, msgBox](int result) {
+        msgBox->deleteLater();
+        if (result == QMessageBox::AcceptRole) {
+            ConfigFile().setUpdateChannel(channel);
+            if (OCUpdater *updater = qobject_cast<OCUpdater *>(Updater::instance())) {
+                updater->setUpdateUrl(Updater::updateUrl());
+                updater->checkForUpdate();
+            }
 #ifdef Q_OS_MAC
-    else if (SparkleUpdater *updater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
-        updater->setUpdateUrl(Updater::updateUrl());
-        updater->checkForUpdate();
-    }
+            else if (SparkleUpdater *updater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
+                updater->setUpdateUrl(Updater::updateUrl());
+                updater->checkForUpdate();
+            }
 #endif
+        } else {
+            _ui->updateChannel->setCurrentText(ConfigFile().updateChannel());
+        }
+    });
+    msgBox->open();
 }
 
 void GeneralSettings::saveMiscSettings()
