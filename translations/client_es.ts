@@ -1240,7 +1240,7 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="487"/>
         <source>Use virtual files instead of downloading content immediately (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>Usar archivos virtuales, en lugar de descargarse el contenido inmediatamente (experimental)</translation>
     </message>
 </context>
 <context>
@@ -2207,7 +2207,9 @@ No se recomienda usarla.</translation>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Cuando está establecido el &quot;modo virtual&quot;, No se descargan los archivos inicialmente, en su lugar un pequeño archivo &quot;%1&quot; para cada archivo que existe en el servidor. El contenido, puede ser descargado ejecutando esos archivos, o usando el menú contextual.
+
+Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los problemas que pueda detectar..</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="269"/>
@@ -3358,7 +3360,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="857"/>
         <source>Using virtual files but placeholder suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Usando el modo virtual, pero no se ha podido usar el marcador de posición.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1355"/>
@@ -3932,12 +3934,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="243"/>
         <source>S&amp;ynchronize everything from server (recommended)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizar todo desde el servidor (recomendado)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="430"/>
         <source>Use virtual files instead of downloading content immediately (e&amp;xperimental)</source>
-        <translation type="unfinished"/>
+        <translation>Usar archivos virtuales, en lugar de descargarse el contenido inmediatamente (e&amp;xperimental)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="467"/>
