@@ -66,6 +66,7 @@ private slots:
 
     void copyPrivateLinkToClipboard(const QString &link) const;
     void emailPrivateLink(const QString &link) const;
+    void openPrivateLink(const QString &link) const;
 
 private:
     void broadcastMessage(const QString &msg, bool doWait = false);
@@ -82,6 +83,7 @@ private:
     Q_INVOKABLE void command_SHARE(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_COPY_PRIVATE_LINK(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_EMAIL_PRIVATE_LINK(const QString &localFile, SocketListener *listener);
+    Q_INVOKABLE void command_OPEN_PRIVATE_LINK(const QString &localFile, SocketListener *listener);
 
     /** Sends translated/branded strings that may be useful to the integration */
     Q_INVOKABLE void command_GET_STRINGS(const QString &argument, SocketListener *listener);
