@@ -1238,7 +1238,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="487"/>
         <source>Use virtual files instead of downloading content immediately (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>Использовать виртуальные файлы вместо немедленного скачивания содержимого (экспериментальное)</translation>
     </message>
 </context>
 <context>
@@ -2207,7 +2207,9 @@ It is not advisable to use it.</source>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Когда режим виртуальных файлов включён, никакие файлы сначала не скачиваются. Вместо этого для каждого файла, существующего на сервере, создаётся маленький файл &quot;%1&quot;. Содержимое можно скачать, запустив эти файлы, или через их контекстное меню.
+
+Это новый экспериментальный режим. Если вы решите использовать его, пожалуйста сообщайте обо всех выявляемых проблемах.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="269"/>
@@ -3358,7 +3360,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="857"/>
         <source>Using virtual files but placeholder suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Используются виртуальные файлы, но подставляемый суффикс не задан</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1355"/>
@@ -3932,12 +3934,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="243"/>
         <source>S&amp;ynchronize everything from server (recommended)</source>
-        <translation type="unfinished"/>
+        <translation>С&amp;инхронизировать с сервера всё (рекомендуется)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="430"/>
         <source>Use virtual files instead of downloading content immediately (e&amp;xperimental)</source>
-        <translation type="unfinished"/>
+        <translation>Использовать виртуальные файлы вместо немедленного скачивания содержимого (&amp;экспериментальное)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="467"/>

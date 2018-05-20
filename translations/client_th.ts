@@ -1240,7 +1240,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="487"/>
         <source>Use virtual files instead of downloading content immediately (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>ใช้ไฟล์เสมือนแทนการดาวน์โหลดเนื้อหาทันที (โหมดเบต้า)</translation>
     </message>
 </context>
 <context>
@@ -1792,7 +1792,7 @@ Log จะถูกเขียนเป็น %1</translation>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="113"/>
         <source>Closing in a few seconds...</source>
-        <translation>กำลังจะปิดในไม่กี่วินาที ...</translation>
+        <translation>กำลังจะปิดในอีกไม่กี่วินาที ...</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="147"/>
@@ -2202,14 +2202,16 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="261"/>
         <source>Enable experimental feature?</source>
-        <translation>เปิดใช้งานโหมดทดลอง?</translation>
+        <translation>เปิดใช้งานโหมดเบต้า?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="262"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>เมื่อเปิดใช้โหมด &quot;ไฟล์เสมือน&quot; จะไม่สามารถดาวน์โหลดไฟล์ได้ในทันที ไฟล์ &quot;%1&quot; ขนาดเล็กจะถูกสร้างขึ้นสำหรับแต่ละไฟล์ที่มีอยู่ในเซิร์ฟเวอร์ เนื้อหาสามารถดาวน์โหลดได้โดยใช้ไฟล์เหล่านี้หรือใช้เมนูบริบท
+
+นี่คือโหมดเบต้าหากคุณใช้งานแล้วพบปัญหาโปรดรายงานปัญหาที่เกิดขึ้น</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="269"/>
@@ -3359,7 +3361,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="857"/>
         <source>Using virtual files but placeholder suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>กำลังใช้ไฟล์เสมือนแต่ placeholder suffix ไม่ได้ถูกตั้งค่าไว้</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1355"/>
@@ -3525,7 +3527,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1340"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>ไม่อนุญาติเพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์ย่อยของโฟลเดอร์นั้น</translation>
+        <translation>ไม่อนุญาตเพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์ย่อยของโฟลเดอร์นั้น</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1387"/>
@@ -3933,12 +3935,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="243"/>
         <source>S&amp;ynchronize everything from server (recommended)</source>
-        <translation type="unfinished"/>
+        <translation>ประสานข้อมูลทุกอย่างจากเซิร์ฟเวอร์ (แนะนำ)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="430"/>
         <source>Use virtual files instead of downloading content immediately (e&amp;xperimental)</source>
-        <translation type="unfinished"/>
+        <translation>ใช้ไฟล์เสมือนแทนการดาวน์โหลดเนื้อหาทันที (โหมดเบต้า)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="467"/>
