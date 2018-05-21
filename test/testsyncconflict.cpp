@@ -125,7 +125,7 @@ private slots:
         QVERIFY(conflictMap.contains(a1FileId));
         QVERIFY(conflictMap.contains(a2FileId));
         QCOMPARE(conflictMap.size(), 2);
-        QCOMPARE(Utility::conflictFileBaseName(conflictMap[a1FileId].toUtf8()), QByteArray("A/a1"));
+        QCOMPARE(Utility::conflictFileBaseNameFromPattern(conflictMap[a1FileId].toUtf8()), QByteArray("A/a1"));
 
         // Check that the conflict file contains the username
         QVERIFY(conflictMap[a1FileId].contains(QString("(conflicted copy %1 ").arg(fakeFolder.syncEngine().account()->davDisplayName())));
@@ -384,7 +384,7 @@ private slots:
     {
         QFETCH(QString, input);
         QFETCH(QString, output);
-        QCOMPARE(Utility::conflictFileBaseName(input.toUtf8()), output.toUtf8());
+        QCOMPARE(Utility::conflictFileBaseNameFromPattern(input.toUtf8()), output.toUtf8());
     }
 
     void testLocalDirRemoteFileConflict()

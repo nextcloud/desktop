@@ -40,6 +40,8 @@ class QSettings;
 
 namespace OCC {
 
+class SyncJournal;
+
 Q_DECLARE_LOGGING_CATEGORY(lcUtility)
 
 /** \addtogroup libsync
@@ -206,14 +208,14 @@ namespace Utility {
     OCSYNC_EXPORT bool isConflictFile(const char *name);
     OCSYNC_EXPORT bool isConflictFile(const QString &name);
 
-    /** Find the base name for a conflict file name
+    /** Find the base name for a conflict file name, using name pattern only
      *
      * Will return an empty string if it's not a conflict file.
      *
      * Prefer to use the data from the conflicts table in the journal to determine
-     * a conflict's base file.
+     * a conflict's base file, see SyncJournal::conflictFileBaseName()
      */
-    OCSYNC_EXPORT QByteArray conflictFileBaseName(const QByteArray &conflictName);
+    OCSYNC_EXPORT QByteArray conflictFileBaseNameFromPattern(const QByteArray &conflictName);
 
 #ifdef Q_OS_WIN
     OCSYNC_EXPORT QVariant registryGetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName);

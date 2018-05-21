@@ -237,6 +237,13 @@ public:
     /// Return all paths of files with a conflict tag in the name and records in the db
     QByteArrayList conflictRecordPaths();
 
+    /** Find the base name for a conflict file name, using journal or name pattern
+     *
+     * The path must by sync-folder relative.
+     *
+     * Will return an empty string if it's not even a conflict file by pattern.
+     */
+    QByteArray conflictFileBaseName(const QByteArray &conflictName);
 
     /**
      * Delete any file entry. This will force the next sync to re-sync everything as if it was new,

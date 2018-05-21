@@ -18,6 +18,7 @@
 
 #include <QString>
 #include <ctime>
+#include <functional>
 
 #include <owncloudlib.h>
 // Chain in the base include and extend the namespace

@@ -603,7 +603,7 @@ bool Utility::isConflictFile(const QString &name)
     return false;
 }
 
-QByteArray Utility::conflictFileBaseName(const QByteArray &conflictName)
+QByteArray Utility::conflictFileBaseNameFromPattern(const QByteArray &conflictName)
 {
     // This function must be able to deal with conflict files for conflict files.
     // To do this, we scan backwards, for the outermost conflict marker and

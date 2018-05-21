@@ -78,6 +78,7 @@ private:
         static FileData get(const QString &localFile);
         SyncFileStatus syncFileStatus() const;
         SyncJournalFileRecord journalRecord() const;
+        FileData parentFolder() const;
 
         Folder *folder;
         QString localPath;
@@ -105,6 +106,8 @@ private:
     Q_INVOKABLE void command_EMAIL_PRIVATE_LINK(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_OPEN_PRIVATE_LINK(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_DOWNLOAD_VIRTUAL_FILE(const QString &filesArg, SocketListener *listener);
+    Q_INVOKABLE void command_DELETE_ITEM(const QString &localFile, SocketListener *listener);
+    Q_INVOKABLE void command_MOVE_ITEM(const QString &localFile, SocketListener *listener);
 
     // Fetch the private link and call targetFun
     void fetchPrivateLinkUrlHelper(const QString &localFile, const std::function<void(const QString &url)> &targetFun);
