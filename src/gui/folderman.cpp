@@ -1311,7 +1311,7 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path, const QUrl
 
         if (differentPathes && folderDirClean.startsWith(absCleanUserFolder, cs) && !cleanUserEqualsCleanFolder && !forNewDirectory) {
             return tr("The local folder %1 contains a symbolic link. "
-                      "The link target contains an already synced folder "
+                      "The link target contains an already synced folder. "
                       "Please pick another one!")
                 .arg(QDir::toNativeSeparators(path));
         }
