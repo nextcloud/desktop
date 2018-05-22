@@ -27,6 +27,8 @@ class QFile;
 
 namespace OCC {
 
+class SyncJournal;
+
 /**
  *  \addtogroup libsync
  *  @{
@@ -77,6 +79,17 @@ namespace FileSystem {
     bool verifyFileUnchanged(const QString &fileName,
         qint64 previousSize,
         time_t previousMtime);
+
+    /**
+     * Removes a directory and its contents recursively
+     *
+     * Returns true if all removes succeeded.
+     * onDeleted() is called for each deleted file or directory, including the root.
+     * errors are collected in errors.
+     */
+    bool OWNCLOUDSYNC_EXPORT removeRecursively(const QString &path,
+        const std::function<void(const QString &path, bool isDir)> &onDeleted = nullptr,
+        QStringList *errors = nullptr);
 }
 
 /** @} */
