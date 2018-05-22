@@ -17,6 +17,9 @@
 #include "common/utility.h"
 #include <QFile>
 #include <QFileInfo>
+#include <QDir>
+#include <QDirIterator>
+#include <QCoreApplication>
 
 // We use some internals of csync:
 extern "C" int c_utimes(const char *, const struct timeval *);
@@ -136,6 +139,54 @@ qint64 FileSystem::getSize(const QString &filename)
     }
 #endif
     return QFileInfo(filename).size();
+}
+
+// Code inspired from Qt5's QDir::removeRecursively
+bool FileSystem::removeRecursively(const QString &path, const std::function<void(const QString &path, bool isDir)> &onDeleted, QStringList *errors)
+{
+    bool allRemoved = true;
+    QDirIterator di(path, QDir::AllEntries | QDir::Hidden | QDir::System | QDir::NoDotAndDotDot);
+
+    while (di.hasNext()) {
+        di.next();
+        const QFileInfo &fi = di.fileInfo();
+        bool removeOk = false;
+        // The use of isSymLink here is okay:
+        // we never want to go into this branch for .lnk files
+        bool isDir = fi.isDir() && !fi.isSymLink() && !FileSystem::isJunction(fi.absoluteFilePath());
+        if (isDir) {
+            removeOk = removeRecursively(path + QLatin1Char('/') + di.fileName(), onDeleted, errors); // recursive
+        } else {
+            QString removeError;
+            removeOk = FileSystem::remove(di.filePath(), &removeError);
+            if (removeOk) {
+                if (onDeleted)
+                    onDeleted(di.filePath(), false);
+            } else {
+                if (errors) {
+                    errors->append(QCoreApplication::translate("FileSystem", "Error removing '%1': %2")
+                                       .arg(QDir::toNativeSeparators(di.filePath()), removeError));
+                }
+                qCWarning(lcFileSystem) << "Error removing " << di.filePath() << ':' << removeError;
+            }
+        }
+        if (!removeOk)
+            allRemoved = false;
+    }
+    if (allRemoved) {
+        allRemoved = QDir().rmdir(path);
+        if (allRemoved) {
+            if (onDeleted)
+                onDeleted(path, true);
+        } else {
+            if (errors) {
+                errors->append(QCoreApplication::translate("FileSystem", "Could not remove folder '%1'")
+                                   .arg(QDir::toNativeSeparators(path)));
+            }
+            qCWarning(lcFileSystem) << "Error removing folder" << path;
+        }
+    }
+    return allRemoved;
 }
 
 

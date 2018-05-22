@@ -45,7 +45,6 @@ QByteArray localFileIdFromFullId(const QByteArray &id)
 }
 
 /**
- * Code inspired from Qt5's QDir::removeRecursively
  * The code will update the database in case of error.
  * If everything goes well (no error, returns true), the caller is responsible for removing the entries
  * in the database.  But in case of error, we need to remove the entries from the database of the files
@@ -55,55 +54,34 @@ QByteArray localFileIdFromFullId(const QByteArray &id)
  */
 bool PropagateLocalRemove::removeRecursively(const QString &path)
 {
-    bool success = true;
-    QString absolute = propagator()->_localDir + _item->_file + path;
-    QDirIterator di(absolute, QDir::AllEntries | QDir::Hidden | QDir::System | QDir::NoDotAndDotDot);
+    auto folderDir = propagator()->_localDir;
+    QString absolute = folderDir + _item->_file + path;
+    QStringList errors;
+    QList<QPair<QString, bool>> deleted;
+    bool success = FileSystem::removeRecursively(
+        absolute,
+        [this, &deleted](const QString &path, bool isDir) {
+            // by prepending, a folder deletion may be followed by content deletions
+            deleted.prepend(qMakePair(path, isDir));
+        },
+        &errors);
 
-    QVector<QPair<QString, bool>> deleted;
+    if (!success) {
+        // We need to delete the entries from the database now from the deleted vector.
+        // Do it while avoiding redundant delete calls to the journal.
+        QString deletedDir;
+        foreach (const auto &it, deleted) {
+            if (!it.first.startsWith(folderDir))
+                continue;
+            if (!deletedDir.isEmpty() && it.first.startsWith(deletedDir))
+                continue;
+            if (it.second) {
+                deletedDir = it.first;
+            }
+            propagator()->_journal->deleteFileRecord(it.first.mid(folderDir.size()), it.second);
+        }
 
-    while (di.hasNext()) {
-        di.next();
-        const QFileInfo &fi = di.fileInfo();
-        bool ok;
-        // The use of isSymLink here is okay:
-        // we never want to go into this branch for .lnk files
-        bool isDir = fi.isDir() && !fi.isSymLink() && !FileSystem::isJunction(fi.absoluteFilePath());
-        if (isDir) {
-            ok = removeRecursively(path + QLatin1Char('/') + di.fileName()); // recursive
-        } else {
-            QString removeError;
-            ok = FileSystem::remove(di.filePath(), &removeError);
-            if (!ok) {
-                _error += PropagateLocalRemove::tr("Error removing '%1': %2;").arg(QDir::toNativeSeparators(di.filePath()), removeError) + " ";
-                qCWarning(lcPropagateLocalRemove) << "Error removing " << di.filePath() << ':' << removeError;
-            }
-        }
-        if (success && !ok) {
-            // We need to delete the entries from the database now from the deleted vector
-            foreach (const auto &it, deleted) {
-                propagator()->_journal->deleteFileRecord(_item->_originalFile + path + QLatin1Char('/') + it.first,
-                    it.second);
-            }
-            success = false;
-            deleted.clear();
-        }
-        if (success) {
-            deleted.append(qMakePair(di.fileName(), isDir));
-        }
-        if (!success && ok) {
-            // This succeeded, so we need to delete it from the database now because the caller won't
-            propagator()->_journal->deleteFileRecord(_item->_originalFile + path + QLatin1Char('/') + di.fileName(),
-                isDir);
-        }
-    }
-    if (success) {
-        success = QDir().rmdir(absolute);
-        if (!success) {
-            _error += PropagateLocalRemove::tr("Could not remove folder '%1'")
-                          .arg(QDir::toNativeSeparators(absolute))
-                + " ";
-            qCWarning(lcPropagateLocalRemove) << "Error removing folder" << absolute;
-        }
+        _error = errors.join(", ");
     }
     return success;
 }
