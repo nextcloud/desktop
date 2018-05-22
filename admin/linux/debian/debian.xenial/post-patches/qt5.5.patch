@@ -11,3 +11,14 @@ diff -ruN nextcloud-client-2.4.0.orig/src/CMakeLists.txt nextcloud-client-2.4.0/
  if (Qt5Core_VERSION VERSION_LESS 5.9.0)
  message(STATUS "For HTTP/2 support, compile with Qt 5.9 or higher.")
  endif()
+--- nextcloud-client-2.4.0.orig/admin/osx/CMakeLists.txt	2018-05-22 07:01:48.248646951 +0200
++++ nextcloud-client-2.4.0/admin/osx/CMakeLists.txt	2018-05-22 07:01:51.012689711 +0200
+@@ -11,7 +11,7 @@
+   set(MAC_INSTALLER_DO_CUSTOM_BACKGROUND "0")
+ endif()
+ 
+-find_package(Qt5 5.6 COMPONENTS Core REQUIRED)
++find_package(Qt5 5.5 COMPONENTS Core REQUIRED)
+ configure_file(create_mac_pkg.sh.cmake ${CMAKE_CURRENT_BINARY_DIR}/create_mac.sh)
+ configure_file(macosx.pkgproj ${CMAKE_CURRENT_BINARY_DIR}/macosx.pkgproj)
+ configure_file(pre_install.sh.cmake ${CMAKE_CURRENT_BINARY_DIR}/pre_install.sh)
