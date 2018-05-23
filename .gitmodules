@@ -6,7 +6,7 @@
 	url = git://github.com/owncloud/owncloud-client-binary.git
 [submodule "src/3rdparty/libcrashreporter-qt"]
 	path = src/3rdparty/libcrashreporter-qt
-	url = git://github.com/guruz/libcrashreporter-qt.git
+	url = git://github.com/dschmidt/libcrashreporter-qt.git
 [submodule "doc/docs-themes"]
 	path = doc/docs-themes
 	url = https://github.com/owncloud/docs-themes.git
