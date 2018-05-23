@@ -1,0 +1,204 @@
+[Desktop Entry]
+Categories=Utility;X-SuSE-SyncUtility;
+Type=Application
+Exec=@APPLICATION_EXECUTABLE@
+Name=@APPLICATION_NAME@ desktop sync client 
+Comment=@APPLICATION_NAME@ desktop synchronization client
+GenericName=Folder Sync
+Icon=@APPLICATION_EXECUTABLE@
+Keywords=@APPLICATION_NAME@;syncing;file;sharing;
+X-GNOME-Autostart-Delay=3
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+Comment[es_CL]=@APPLICATION_NAME@ Cliente de sincronización de escritorio
+Icon[es_CL]=@APPLICATION_EXECUTABLE@
+Name[es_CL]=@APPLICATION_NAME@ Cliente de sincronización de escritorio
+GenericName[es_CL]=Sincronización de carpeta

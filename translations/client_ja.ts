@@ -27,7 +27,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
         <source>Select a remote destination folder</source>
-        <translation>リモートの指定先フォルダーを選択</translation>
+        <translation>リモートの同期先フォルダーを選択</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="163"/>
         <source>Refresh</source>
-        <translation>同期</translation>
+        <translation>更新</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="177"/>
@@ -83,7 +83,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="247"/>
         <source>Unknown error: network reply was deleted</source>
-        <translation type="unfinished"/>
+        <translation>不明なエラー: ネットワーク応答が削除されました</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="390"/>

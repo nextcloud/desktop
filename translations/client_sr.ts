@@ -60,12 +60,12 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="56"/>
         <source>Lorem ipsum dolor sit amet</source>
-        <translation type="unfinished"/>
+        <translation>Lorem ipsum dolor sit amet</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="69"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
-        <translation type="unfinished"/>
+        <translation>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="89"/>
@@ -83,7 +83,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="247"/>
         <source>Unknown error: network reply was deleted</source>
-        <translation type="unfinished"/>
+        <translation>Непозната грешка: мрежни одговор је обрисан</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="390"/>
@@ -116,17 +116,17 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
         <source>Synchronize all</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизуј све</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="205"/>
         <source>Synchronize none</source>
-        <translation type="unfinished"/>
+        <translation>Ништа не синхронизуј</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="212"/>
         <source>Apply manual changes</source>
-        <translation type="unfinished"/>
+        <translation>Примени ручне измене</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="260"/>
@@ -173,17 +173,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="305"/>
         <source>Force sync now</source>
-        <translation type="unfinished"/>
+        <translation>Форсирај синхронизацију сада</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="307"/>
         <source>Restart sync</source>
-        <translation type="unfinished"/>
+        <translation>Поново покрени синхронизацију</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="316"/>
         <source>Remove folder sync connection</source>
-        <translation type="unfinished"/>
+        <translation>Уклони везу на синхронизацију фасцикле</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="387"/>
@@ -198,12 +198,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="438"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation type="unfinished"/>
+        <translation>Потврдите уклањање конекције на синхронизацију фасцикле</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="445"/>
         <source>Remove Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Уклони везу на синхронизацију фасцикле</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="527"/>
@@ -228,7 +228,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="650"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Верзија сервера %1 је стара и није подржана! Настављате на сопствену одговорност.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="652"/>
@@ -243,7 +243,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер %1 је тренутно у режиму одржавања.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="658"/>
@@ -258,12 +258,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="671"/>
         <source>Connecting to %1...</source>
-        <translation type="unfinished"/>
+        <translation>Повезујем се на %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="674"/>
         <source>No connection to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Нема конекције на %1 са %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="698"/>
@@ -273,17 +273,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="785"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Ово су фасцикле које нису синхронизоване јер су превелике:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="787"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Ово су фасцикле које нису синхронизоване зато што су на спољним складиштима:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="788"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Ово су фасцикле које нису синхронизоване зато што су превелике или су на спољним складиштима:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="834"/>
@@ -373,7 +373,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="132"/>
         <source>Maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>Режим одржавања</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="134"/>
@@ -388,7 +388,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="138"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Питам за акредитиве</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="140"/>
@@ -431,7 +431,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="574"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
-        <translation type="unfinished"/>
+        <translation>Несинхронизовано (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="606"/>
@@ -486,7 +486,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="135"/>
         <source>Action Required: Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Захтевана радња: Обавештења</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="140"/>
@@ -496,7 +496,7 @@
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="349"/>
         <source>You received %n new notification(s) from %2.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Примили сте %n ново обавештење са %2.</numerusform><numerusform>Примили сте %n нова обавештења са %2.</numerusform><numerusform>Примили сте %n нових обавештења са %2.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="356"/>
@@ -557,17 +557,17 @@
     <message>
         <location filename="../src/gui/application.cpp" line="164"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Грешка при приступању фајлу са подешавањима</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="165"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Догодила се грешка приликом учитавања фајла са подешавањима на %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="168"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Искључи Некстклауд</translation>
     </message>
 </context>
 <context>
@@ -598,7 +598,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1001"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом уписивања метаподатака у базу</translation>
     </message>
 </context>
 <context>
@@ -747,13 +747,15 @@
         <location filename="../src/gui/folder.cpp" line="888"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Додата је нова фасцикла већа од %1 MB: %2.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="891"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation type="unfinished"/>
+        <translation>Додата је фасцикла са спољног складишта.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="892"/>
@@ -800,17 +802,17 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folder.cpp" line="962"/>
         <source>Backup detected</source>
-        <translation type="unfinished"/>
+        <translation>Детектован бекап</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="965"/>
         <source>Normal Synchronisation</source>
-        <translation type="unfinished"/>
+        <translation>Нормална синхронизација</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="966"/>
         <source>Keep Local Files as Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Чувај локалне фајлове као конфликтне</translation>
     </message>
 </context>
 <context>
@@ -843,7 +845,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1268"/>
         <source>Waiting to start syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Чекам на почетак синхронизације.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1271"/>
@@ -888,12 +890,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1305"/>
         <source>No valid folder selected!</source>
-        <translation type="unfinished"/>
+        <translation>Није изабран ниједна исправна фасцикла!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1315"/>
         <source>The selected path is not a folder!</source>
-        <translation type="unfinished"/>
+        <translation>Одабрана путања није фасцикла!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1319"/>
@@ -936,7 +938,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="249"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизујем са локланом фасциклом</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="296"/>
@@ -949,12 +951,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="143"/>
         <source>You need to be connected to add a folder</source>
-        <translation type="unfinished"/>
+        <translation>Морате бити повезани да бисте додали фасциклу</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="145"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Кликните ово дугме да додате фасциклу за синхронизацију.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="154"/>
@@ -981,7 +983,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="209"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation type="unfinished"/>
+        <translation>Постоје неразрешени конфликти. Кликните за детаље.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
@@ -3969,17 +3971,17 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="310"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n година</numerusform><numerusform>%n године</numerusform><numerusform>%n година</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="311"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n месец</numerusform><numerusform>%n месеца</numerusform><numerusform>%n месеци</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="312"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n дан</numerusform><numerusform>%n дана</numerusform><numerusform>%n дана</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="313"/>
@@ -4038,7 +4040,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation type="unfinished"/>
+        <translation>Скинута серверска верзија, копирам измењени локални фајл у конфликтни фајл</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
@@ -4068,7 +4070,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Ажурирани локални метаподаци</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="53"/>
@@ -4110,7 +4112,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>ажурирам локалне метаподатке</translation>
     </message>
 </context>
 <context>
@@ -4171,7 +4173,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="33"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>Не могу да отворим веб читач</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
@@ -4181,7 +4183,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="55"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>Не могу да отворим клијента е-поште</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="56"/>
