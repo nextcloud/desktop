@@ -766,41 +766,41 @@
         <translation>Actividad de la sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="663"/>
+        <location filename="../src/gui/folder.cpp" line="664"/>
         <source>Could not read system exclude file</source>
         <translation>No se ha podido leer el archivo de exclusión del sistema</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="951"/>
+        <location filename="../src/gui/folder.cpp" line="952"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Una carpeta mayor de %1 MB ha sido añadida: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="954"/>
+        <location filename="../src/gui/folder.cpp" line="955"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Una carpeta de almacenamiento externo ha sido añadida.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="955"/>
+        <location filename="../src/gui/folder.cpp" line="956"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Por favor vaya a opciones a seleccionarlo si desea descargar esto.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1010"/>
+        <location filename="../src/gui/folder.cpp" line="1011"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>La carpeta %1 ha sido creada, pero tambien ha sido excluida de la sincronización.  Los datos que contenga, no serán sincronizados.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1013"/>
+        <location filename="../src/gui/folder.cpp" line="1014"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>El archivo %1 ha sido creado, pero tambien ha sido excluido de la sincronización. Por tanto, no será sincronizado.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1024"/>
+        <location filename="../src/gui/folder.cpp" line="1025"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -813,7 +813,7 @@ Esto significa que el cliente de sincronización podría no subir los cambios lo
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1069"/>
+        <location filename="../src/gui/folder.cpp" line="1070"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -824,7 +824,7 @@ Si decide mantener estos archivos, serán re-sincronizados con el servidor si Vd
 Si decide borrarlos, no serán visibles para Vd. a menos que sea usted el propietario.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1074"/>
+        <location filename="../src/gui/folder.cpp" line="1075"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -833,22 +833,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
 Si ha sido un accidente, y decide mantener los archivos, serán re-sincronizados con el servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1078"/>
+        <location filename="../src/gui/folder.cpp" line="1079"/>
         <source>Remove All Files?</source>
         <translation>¿Eliminar todos los archivos?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1081"/>
+        <location filename="../src/gui/folder.cpp" line="1082"/>
         <source>Remove all files</source>
         <translation>Eliminar todos los archivos</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1082"/>
+        <location filename="../src/gui/folder.cpp" line="1083"/>
         <source>Keep files</source>
         <translation>Conservar archivos</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1099"/>
+        <location filename="../src/gui/folder.cpp" line="1100"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
@@ -857,17 +857,17 @@ Esto puede deberse a que una copia de seguridad fue restaurada en el servidor.
 Si continua con la sincronización todos los archivos serán remplazados por su versión previa. ¿Desea mantener los archivos locales en su versión actual como archivos en conflicto?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1104"/>
+        <location filename="../src/gui/folder.cpp" line="1105"/>
         <source>Backup detected</source>
         <translation>Backup detectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1107"/>
+        <location filename="../src/gui/folder.cpp" line="1108"/>
         <source>Normal Synchronisation</source>
         <translation>Sincronización Normal</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1108"/>
+        <location filename="../src/gui/folder.cpp" line="1109"/>
         <source>Keep Local Files as Conflict</source>
         <translation>Mantener los archivos locales en caso de conflicto</translation>
     </message>
@@ -3358,11 +3358,6 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
         <translation>Imposible abrir o crear la BBDD local de sync. Asegurese de que tiene permisos de escritura en la carpeta de sync.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="857"/>
-        <source>Using virtual files but placeholder suffix is not set</source>
-        <translation>Usando el modo virtual, pero no se ha podido usar el marcador de posición.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1355"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>No permitido porque no tienes permiso para añadir un directorio padre</translation>
@@ -3496,6 +3491,11 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
         <location filename="../src/libsync/syncengine.cpp" line="728"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
         <translation>Caracteres inválidos, por favor renombre &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="857"/>
+        <source>Using virtual files but suffix is not set</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="869"/>
