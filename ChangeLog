@@ -1,14 +1,14 @@
 ChangeLog
 =========
 
-version 2.5.0 (2018-xx-xx)
+version 2.5.0 (2018-06-xx)
 * Local discovery: Speed up by skipping directories without changes reported by the file system watcher.
 * Windows: Add sync folders to Explorer's navigation pane (#5295)
 * Conflicts: Change conflict file naming scheme
 * Conflicts: Add user name to conflict file name (#6325)
 * ConnectionValidator: change the minimum server version to 7.0
 * ConnectionValidator: Warn when the server version is less than 9.1
-* Experimental option to create virtual files and download contents on demand
+* Experimental option to create virtual files and download contents on demand ("placeholders")
 * Experimental option to upload conflict files (#4557)
 * Wizard: Remove the "Skip folder config" button and instead add a radio button (#3664)
 * Sharing: Add "copy public link" to menu (#6356)
@@ -23,6 +23,8 @@ version 2.5.0 (2018-xx-xx)
 * Windows: Update Overlay Icon naming
 * SyncEngine: Recover when the PUT reply (or chunkin's MOVE) is lost (#5106)
 * Config: Look for exclude file in a relative path.
+* Config: Versionize settings
+* Credentials: Re-try on Linux if daemon not running  (#4274, #6522)
 * Windows: Fixed MSVC build and compiler bugs
 * Proxy: Hostname validation and reconnection on setting change (#6140)
 * owncloudcmd: Set proxy earlier (#6281)
@@ -66,6 +68,8 @@ version 2.5.0 (2018-xx-xx)
 * LogDir: Go to new file on Problem/Abort too (#6442)
 * LogDir: Compress log when switching files (#6442)
 * Logging: Add persistent auto-logdir option (#6442)
+* .owncloudsynclog: Allow 10 MB of size (#6420)
+* .owncloudsynclog: Persist X-Request-ID for correlation with server (#6420)
 * Notifications: Lower hiding timeout
 * Download: Use the <s:message> from the reply in the error message (#6459)
 * Notifications: Also have clickable link (#6236)
@@ -79,8 +83,8 @@ version 2.5.0 (2018-xx-xx)
 * Ignore editor: Preserve comments in the exclude list file
 * Propagation: Do not abort a sync if the server closes the connection (#6516)
 * Propagation: Increase the timeout for the last MOVE/PUT for huge files (#6527)
-* Blacklist/Log: Store the X-Request-ID (#6420)
 * Update bundled sqlite version to 3.23.1
+* Auto Updater: Drop down menu to switch update channels
 
 version 2.4.1 (2018-03-05)
 * Ignore files with file names that can't be encoded for the filesystem (#6287, #5676, #5719)
