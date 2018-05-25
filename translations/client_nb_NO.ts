@@ -574,17 +574,42 @@
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="189"/>
+        <location filename="../src/gui/application.cpp" line="122"/>
+        <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="124"/>
+        <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="130"/>
+        <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="137"/>
+        <source>Quit</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="138"/>
+        <source>Continue</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="253"/>
         <source>Error accessing the configuration file</source>
         <translation>Feil ved lesing av konfigurasjonsfil</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="190"/>
+        <location filename="../src/gui/application.cpp" line="254"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>En feil oppstod ved aksessering av konfigurasjonsfilen på %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="193"/>
+        <location filename="../src/gui/application.cpp" line="257"/>
         <source>Quit ownCloud</source>
         <translation>Avslutt ownCloud</translation>
     </message>
@@ -672,134 +697,134 @@
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="148"/>
+        <location filename="../src/gui/folder.cpp" line="150"/>
         <source>Local folder %1 does not exist.</source>
         <translation>Lokal mappe %1 eksisterer ikke.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="151"/>
+        <location filename="../src/gui/folder.cpp" line="153"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 skal være en mappe men er ikke det.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="154"/>
+        <location filename="../src/gui/folder.cpp" line="156"/>
         <source>%1 is not readable.</source>
         <translation>%1 kan ikke leses.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="378"/>
+        <location filename="../src/gui/folder.cpp" line="380"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 har blitt fjernet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="385"/>
+        <location filename="../src/gui/folder.cpp" line="387"/>
         <source>%1 has been downloaded.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 har blitt lastet ned.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="392"/>
+        <location filename="../src/gui/folder.cpp" line="394"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 har blitt oppdatert.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="399"/>
+        <location filename="../src/gui/folder.cpp" line="401"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 har blitt omdøpt til %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="406"/>
+        <location filename="../src/gui/folder.cpp" line="408"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 har blitt flyttet til %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="376"/>
+        <location filename="../src/gui/folder.cpp" line="378"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 og %n annen fil har blitt fjernet.</numerusform><numerusform>%1 og %n andre filer har blitt fjernet.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="383"/>
+        <location filename="../src/gui/folder.cpp" line="385"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
         <translation><numerusform>%1 og %n annen fil har blitt lastet ned.</numerusform><numerusform>%1 og %n andre filer har blitt lastet ned.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="390"/>
+        <location filename="../src/gui/folder.cpp" line="392"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 og %n annen fil har blitt oppdatert.</numerusform><numerusform>%1 og %n andre filer har blitt oppdatert.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="397"/>
+        <location filename="../src/gui/folder.cpp" line="399"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1 er blitt omdøpt til %2 og %n annen fil har blitt omdøpt.</numerusform><numerusform>%1 er blitt omdøpt til %2 og %n andre filer har blitt omdøpt.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="404"/>
+        <location filename="../src/gui/folder.cpp" line="406"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 er blitt flyttet til %2 og %n annen fil har blitt flyttet.</numerusform><numerusform>%1 er blitt flyttet til %2 og %n andre filer har blitt flyttet.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="411"/>
+        <location filename="../src/gui/folder.cpp" line="413"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 og %n andre filer har synkroniseringskonflikter.</numerusform><numerusform>%1 og %n andre filer har synkroniseringskonflikter.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="413"/>
+        <location filename="../src/gui/folder.cpp" line="415"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 har en synkroniseringskonflikt. Sjekk konflikt-filen.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="418"/>
+        <location filename="../src/gui/folder.cpp" line="420"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>%1 og %n andre filer kunne ikke synkroniseres pga. feil. Se loggen for detaljer.</numerusform><numerusform>%1 og %n andre filer kunne ikke synkroniseres pga. feil. Se loggen for detaljer.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="420"/>
+        <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 kunne ikke synkroniseres pga. en feil. Se loggen for detaljer.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="426"/>
+        <location filename="../src/gui/folder.cpp" line="428"/>
         <source>Sync Activity</source>
         <translation>Synkroniseringsaktivitet</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="664"/>
+        <location filename="../src/gui/folder.cpp" line="668"/>
         <source>Could not read system exclude file</source>
         <translation>Klarte ikke å lese systemets ekskluderingsfil</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="952"/>
+        <location filename="../src/gui/folder.cpp" line="956"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>En ny mappe større enn %1 MB er blitt lagt til: %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="955"/>
+        <location filename="../src/gui/folder.cpp" line="959"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>En mappe fra et eksternt lager er blitt lagt til.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="956"/>
+        <location filename="../src/gui/folder.cpp" line="960"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Gå til Innstillinger og velg den hvis du ønsker å laste den ned.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1011"/>
+        <location filename="../src/gui/folder.cpp" line="1015"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1014"/>
+        <location filename="../src/gui/folder.cpp" line="1018"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1025"/>
+        <location filename="../src/gui/folder.cpp" line="1029"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -808,7 +833,7 @@ This means that the synchronization client might not upload local changes immedi
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1070"/>
+        <location filename="../src/gui/folder.cpp" line="1074"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -819,7 +844,7 @@ Hvis du velger å beholde filene, vil de bli synkronisert tilbake til serveren h
 Hvis du velger å slette filene, blir de utilgjengelige for deg hvis du ikke er eieren av filen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1075"/>
+        <location filename="../src/gui/folder.cpp" line="1079"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -828,22 +853,22 @@ Er du sikker på at du ønsker å synkronisere denne handlingen med serveren?
 Hvis det var et uhell og du velger å beholde filene, vil de bli synkronisert tilbake fra serveren.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1079"/>
+        <location filename="../src/gui/folder.cpp" line="1083"/>
         <source>Remove All Files?</source>
         <translation>Fjerne alle filer?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1082"/>
+        <location filename="../src/gui/folder.cpp" line="1086"/>
         <source>Remove all files</source>
         <translation>Fjern alle filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1083"/>
+        <location filename="../src/gui/folder.cpp" line="1087"/>
         <source>Keep files</source>
         <translation>Behold filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1100"/>
+        <location filename="../src/gui/folder.cpp" line="1104"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
@@ -852,17 +877,17 @@ Dette kan være fordi en backup ble gjenopprettet på serveren.
 Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrevet av en eldre fil i en tidligere tilstand. Ønsker du å beholde dine ferskeste lokale filer som konflikt-filer?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1105"/>
+        <location filename="../src/gui/folder.cpp" line="1109"/>
         <source>Backup detected</source>
         <translation>Backup oppdaget</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1108"/>
+        <location filename="../src/gui/folder.cpp" line="1112"/>
         <source>Normal Synchronisation</source>
         <translation>Normal synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1109"/>
+        <location filename="../src/gui/folder.cpp" line="1113"/>
         <source>Keep Local Files as Conflict</source>
         <translation>Behold lokale filer som konflikt</translation>
     </message>
@@ -870,112 +895,112 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="279"/>
+        <location filename="../src/gui/folderman.cpp" line="331"/>
         <source>Could not reset folder state</source>
         <translation>Klarte ikke å tilbakestille mappetilstand</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="280"/>
+        <location filename="../src/gui/folderman.cpp" line="332"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>En gammel synkroniseringsjournal &apos;%1&apos; ble funnet men kunne ikke fjernes. Pass på at ingen applikasjoner bruker den.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1033"/>
+        <location filename="../src/gui/folderman.cpp" line="1087"/>
         <source> (backup)</source>
         <translation> (sikkerhetskopi)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1038"/>
+        <location filename="../src/gui/folderman.cpp" line="1092"/>
         <source> (backup %1)</source>
         <translation> (sikkerhetskopi %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1216"/>
+        <location filename="../src/gui/folderman.cpp" line="1270"/>
         <source>Undefined State.</source>
         <translation>Udefinert tilstand.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1219"/>
+        <location filename="../src/gui/folderman.cpp" line="1273"/>
         <source>Waiting to start syncing.</source>
         <translation>Venter på å starte synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1222"/>
+        <location filename="../src/gui/folderman.cpp" line="1276"/>
         <source>Preparing for sync.</source>
         <translation>Forbereder synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1225"/>
+        <location filename="../src/gui/folderman.cpp" line="1279"/>
         <source>Sync is running.</source>
         <translation>Synkronisering kjører.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1230"/>
+        <location filename="../src/gui/folderman.cpp" line="1284"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>Synkronisering var vellykket, uløste konflikter.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1232"/>
+        <location filename="../src/gui/folderman.cpp" line="1286"/>
         <source>Last Sync was successful.</source>
         <translation>Siste synkronisering var vellykket.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1238"/>
+        <location filename="../src/gui/folderman.cpp" line="1292"/>
         <source>Setup Error.</source>
         <translation>Feil med oppsett.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1241"/>
+        <location filename="../src/gui/folderman.cpp" line="1295"/>
         <source>User Abort.</source>
         <translation>Brukeravbrudd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1244"/>
+        <location filename="../src/gui/folderman.cpp" line="1298"/>
         <source>Sync is paused.</source>
         <translation>Synkronisering er satt på pause.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1250"/>
+        <location filename="../src/gui/folderman.cpp" line="1304"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synkronisering er satt på pause)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1258"/>
+        <location filename="../src/gui/folderman.cpp" line="1312"/>
         <source>No valid folder selected!</source>
         <translation>Ingen gyldig mappe valgt!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1268"/>
+        <location filename="../src/gui/folderman.cpp" line="1322"/>
         <source>The selected path is not a folder!</source>
         <translation>Den valgte stien er ikke en mappe!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1272"/>
+        <location filename="../src/gui/folderman.cpp" line="1326"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Du har ikke skrivetilgang til den valgte mappen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1322"/>
+        <location filename="../src/gui/folderman.cpp" line="1376"/>
         <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder Please pick another one!</source>
         <translation>Den lokale mappen %1 inneholder en symbolsk lenke. Målet for lenken inneholder en mappe som allerede er synkronisert. Velg en annen mappe!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1337"/>
+        <location filename="../src/gui/folderman.cpp" line="1391"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Det er allerede en synkronisering fra serveren til denne lokale mappen. Velg en annen mappe!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1297"/>
+        <location filename="../src/gui/folderman.cpp" line="1351"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Den lokale mappen %1 inneholder allerede en mappe brukt i en mappe-synkronisering. Velg en annen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1307"/>
+        <location filename="../src/gui/folderman.cpp" line="1361"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Den lokale mappen %1 er allerede en undermappe av en mappe brukt i en mappe-synkronisering. Velg en annen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1315"/>
+        <location filename="../src/gui/folderman.cpp" line="1369"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Den lokale mappen %1 er en symbolsk lenke. Målet for lenken er allerede en undermappe av en mappe brukt i en mappe-synkronisering. Velg en annen!</translation>
     </message>
@@ -1292,23 +1317,38 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
         <translation>For systemkurven</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="139"/>
+        <location filename="../src/gui/generalsettings.ui" line="89"/>
+        <source>&amp;Channel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="106"/>
+        <source>stable</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="111"/>
+        <source>beta</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="179"/>
         <source>Advanced</source>
         <translation>Avansert</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="171"/>
+        <location filename="../src/gui/generalsettings.ui" line="211"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Be om bekreftelse før synkronisering av mapper større enn</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="191"/>
+        <location filename="../src/gui/generalsettings.ui" line="231"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="215"/>
+        <location filename="../src/gui/generalsettings.ui" line="255"/>
         <source>Ask for confirmation before synchronizing external storages</source>
         <translation>Be om bekreftelse før synkronisering av eksterne lagre</translation>
     </message>
@@ -1328,17 +1368,17 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
         <translation>Bruk svart/&amp;hvite ikoner</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="147"/>
+        <location filename="../src/gui/generalsettings.ui" line="187"/>
         <source>Edit &amp;Ignored Files</source>
         <translation>Rediger &amp;ignorerte filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="226"/>
+        <location filename="../src/gui/generalsettings.ui" line="266"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="243"/>
+        <location filename="../src/gui/generalsettings.ui" line="283"/>
         <source>S&amp;how crash reporter</source>
         <translation>Vis &amp;krasj-rapportering</translation>
     </message>
@@ -1354,9 +1394,31 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
         <translation>Oppdateringer</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="100"/>
+        <location filename="../src/gui/generalsettings.ui" line="138"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Omstart &amp;&amp; Oppdater</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="171"/>
+        <source>Change update channel?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="172"/>
+        <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
+
+Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="185"/>
+        <source>Change update channel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="186"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1641,27 +1703,27 @@ Logs will be written to %1</source>
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="332"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="337"/>
         <source>New Version Available</source>
         <translation>Ny versjon tilgjengelig</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="338"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="343"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;En ny versjon av %1-klienten er tilgjengelig.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; er tilgjengelig for nedlasting. Installert versjon er %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="352"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="357"/>
         <source>Skip this version</source>
         <translation>Hopp over denne versjonen</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="353"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="358"/>
         <source>Skip this time</source>
         <translation>Hopp over denne gangen</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="354"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="359"/>
         <source>Get update</source>
         <translation>Hent oppdatering</translation>
     </message>
@@ -1835,59 +1897,59 @@ Logs will be written to %1</source>
 <context>
     <name>OCC::OCUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="103"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 Update Ready</source>
         <translation>Ny %1-oppdatering er klar</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="104"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
         <translation>En ny oppdatering for %1 vil bli installert. Oppdateringen
 kan be om flere rettigheter underveis.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
         <source>Downloading version %1. Please wait...</source>
         <translation>Laster ned versjon %1. Vennligst vent...</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
         <translation>Klarte ikke å laste ned oppdateringen. Klikk &lt;a href=&apos;%1&apos;&gt;her&lt;/a&gt; for å laste ned oppdateringen manuelt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
         <source>Could not check for new updates.</source>
         <translation>Klarte ikke å se etter nye oppdateringer.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
         <translation>%1 versjon %2 tilgjengelig. Start applikasjonen på nytt for å starte oppdatering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>New %1 version %2 available. Please use the system&apos;s update tool to install it.</source>
         <translation>Ny %1 versjon %2 tilgjengelig. Bruk systemets oppdateringsverktøy til å installere den.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
         <source>Checking update server...</source>
         <translation>Sjekker oppdaterings-server...</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>Oppdateringsstatus er ukjent: Sjekket ikke for nye oppdateringer.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="164"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>Ingen oppdateringer tilgjengelig. Du har den nyeste versjonen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="178"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="183"/>
         <source>Update Check</source>
         <translation>Oppdateringssjekk</translation>
     </message>
