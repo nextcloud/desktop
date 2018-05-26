@@ -591,12 +591,12 @@
     <message>
         <location filename="../src/gui/application.cpp" line="137"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Surt</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="138"/>
         <source>Continue</source>
-        <translation type="unfinished"/>
+        <translation>Continua</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="253"/>
@@ -1414,7 +1414,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="186"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancel·lar</translation>
     </message>
 </context>
 <context>
