@@ -576,17 +576,17 @@
     <message>
         <location filename="../src/gui/application.cpp" line="122"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>กำลังทำต่อหมายถึง &lt;b&gt;กำลังลบการตั้งค่าเหล่านี้&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="124"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>กำลังทำต่อหมายถึง &lt;b&gt;กำลังละเว้นการตั้งค่าเหล่านี้&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="130"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>การตั้งค่าบางอย่างได้ถูกกำหนดค่าในเวอร์ชันที่ใหม่กว่าของไคลเอ็นต์นี้และเปิดใช้คุณลักษณะที่ไม่สามารถใช้ได้ในเวอร์ชันนี้ &lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;ไฟล์การตั้งค่าปัจจุบันได้ถูกสำรองข้อมูลไปที่ &lt;i&gt;%2&lt;/i&gt; แล้ว</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="137"/>
@@ -1324,17 +1324,17 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>&amp;Channel</source>
-        <translation type="unfinished"/>
+        <translation>และช่องทาง</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>รุ่นเสถียร</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="111"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>รุ่นเบต้า</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="179"/>
@@ -1406,19 +1406,21 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="171"/>
         <source>Change update channel?</source>
-        <translation type="unfinished"/>
+        <translation>เปลี่ยนช่องทางการอัพเดท?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="172"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation type="unfinished"/>
+        <translation>กำหนดช่องทางอัพเดทการติดตั้งใดสำหรับไคลเอ็นต์ &quot;รุ่นเสถียร&quot; จะอัพเกรดที่เชื่อถือได้จาก &quot;รุ่นเบต้า&quot; อาจมีคุณลักษณะใหม่และการแก้ไขปัญหาแต่ยังไม่ได้รับการทดสอบอย่างละเอียด
+
+โปรดทราบว่าการเลือกนี้จะไม่สามารถดาวน์เกรดจากรุ่นเบต้าไปยังรุ่นเสถียรได้ ต้องรอให้รุ่นเสถียรใหม่กว่ารุ่นเบต้าก่อนถึงจะอัพเกรดเป็นรุ่นเสถียรได้</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="185"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>ตกลง</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="186"/>
