@@ -497,7 +497,7 @@ void PropagateUploadFileNG::abort(PropagatorJob::AbortType abortType)
 {
     abortNetworkJobs(
         abortType,
-        [this, abortType](AbstractNetworkJob *job) {
+        [abortType](AbstractNetworkJob *job) {
             return abortType != AbortType::Asynchronous || !qobject_cast<MoveJob *>(job);
         });
 }
