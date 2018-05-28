@@ -576,17 +576,17 @@
     <message>
         <location filename="../src/gui/application.cpp" line="122"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Fortsetzen bedeutet &lt;b&gt;das diese Einstellungen gelöscht werden&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="124"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Fortsetzen bedeutet &lt;b&gt;das diese Einstellungen ignoriert werden&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="130"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Einige Einstellungen wurden in neueren Versionen dieses Programms eingestellt und nutzen Funktionen die in dieser Version nicht verfügbar sind. &lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt; Die aktuelle Konfigurations-Datei wurde bereits an folgenden Ort gesichert: &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="137"/>
@@ -1324,17 +1324,17 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>&amp;Channel</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Channel</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>Stabil</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="111"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>Beta</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="179"/>
@@ -1406,19 +1406,20 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="171"/>
         <source>Change update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Update-Kanal verändern?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="172"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation type="unfinished"/>
+        <translation>Der Update-Kanal legt fest welche Programm-Updates zur Installation angeboten werden. Der &quot;Stabil&quot;-Kanal enthält nur Upgrades die als verlässlich betrachtet werden, während Versionen im &quot;Beta&quot;-Kanal neuer Funktionen und Fehlerbehebungen enthalten können, die bisher noch nicht komplett bzw. ausführlich genug getestet werden konnten.
+Beachten Sie, das dies nur bestimmt von welchem Bereich Sie Upgrades erhalten und das es keine Downgrade-Möglichkeiten gibt: Einen &quot;Schritt zurück&quot; vom Beta-Kanal zum Stabilen-Kanal kann normalerweise nicht unverzüglich erfolgen und bedeutet Wartezeiten auf eine Stabile-Version, die dann neuer ist als die jeweils aktuell installierte Beta-Version.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="185"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Update-Kanal ändern</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="186"/>
@@ -3558,7 +3559,7 @@ Dies ist ein neuer experimenteller Modus.Wenn du dich dafür entscheidest, diese
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="857"/>
         <source>Using virtual files but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Virtuelle Dateien werden genutzt, aber die Dateiendung ist nicht definiert.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="869"/>
