@@ -692,7 +692,7 @@ void SocketApi::command_DOWNLOAD_VIRTUAL_FILE(const QString &filesArg, SocketLis
     auto suffix = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
 
     for (const auto &file : files) {
-        if (!file.endsWith(suffix))
+        if (!file.endsWith(suffix) && !QFileInfo(file).isDir())
             continue;
         auto folder = FolderMan::instance()->folderForPath(file);
         if (folder) {
@@ -980,7 +980,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         auto virtualFileSuffix = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
         bool hasVirtualFile = false;
         for (const auto &file : files) {
-            if (file.endsWith(virtualFileSuffix))
+            if (file.endsWith(virtualFileSuffix) || (syncFolder->useVirtualFiles() && QFileInfo(file).isDir()))
                 hasVirtualFile = true;
         }
         if (hasVirtualFile)
