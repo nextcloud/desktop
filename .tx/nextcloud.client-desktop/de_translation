@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Comment[de]=@APPLICATION_NAME@ Cient zur Desktop-Sychronisation
+Comment[de]=@APPLICATION_NAME@ Client zur Desktop-Synchronisation
 Icon[de]=@APPLICATION_EXECUTABLE@
-Name[de]=@APPLICATION_NAME@ Cient zur Desktop-Sychronisation
+Name[de]=@APPLICATION_NAME@ Client zur Desktop-Synchronisation
 GenericName[de]=Synchronisationsordner
