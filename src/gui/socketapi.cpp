@@ -864,7 +864,10 @@ SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
 
     data.folderRelativePath = data.localPath.mid(data.folder->cleanPath().length() + 1);
     data.accountRelativePath = QDir(data.folder->remotePath()).filePath(data.folderRelativePath);
-
+    QString virtualFileExt = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
+    if (data.accountRelativePath.endsWith(virtualFileExt)) {
+        data.accountRelativePath.chop(virtualFileExt.size());
+    }
     return data;
 }
 
