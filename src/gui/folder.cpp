@@ -519,11 +519,16 @@ void Folder::downloadVirtualFile(const QString &_relativepath)
     _journal.getFileRecord(relativepath, &record);
     if (!record.isValid())
         return;
-    record._type = ItemTypeVirtualFileDownload;
-    _journal.setFileRecord(record);
-
-    // Make sure we go over that file during the discovery
-    _journal.avoidReadFromDbOnNextSync(relativepath);
+    if (record._type == ItemTypeVirtualFile) {
+        record._type = ItemTypeVirtualFileDownload;
+        _journal.setFileRecord(record);
+        // Make sure we go over that file during the discovery
+        _journal.avoidReadFromDbOnNextSync(relativepath);
+    } else if (record._type == ItemTypeDirectory) {
+        _journal.markVirtualFileForDownloadRecursively(relativepath);
+    } else {
+        qCWarning(lcFolder) << "Invalid existing record " << record._type << " for file " << _relativepath;
+    }
 
     // Schedule a sync (Folder man will start the sync in a few ms)
     slotScheduleThisFolder();

@@ -242,6 +242,9 @@ public:
      */
     void registerFolderWatcher();
 
+    /** new files are downloaded as virtual files */
+    bool useVirtualFiles() { return _definition.useVirtualFiles; }
+
 signals:
     void syncStateChange();
     void syncStarted();

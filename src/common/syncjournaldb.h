@@ -245,6 +245,12 @@ public:
      */
     void clearFileTable();
 
+    /**
+     * Set the 'ItemTypeVirtualFileDownload' to all the files that have the ItemTypeVirtualFile flag
+     * within the directory specified path path
+     */
+    void markVirtualFileForDownloadRecursively(const QByteArray &path);
+
 private:
     int getFileRecordCount();
     bool updateDatabaseStructure();
