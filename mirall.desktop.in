@@ -134,6 +134,9 @@ MimeType=application/x-@APPLICATION_EXECUTABLE@
 
 
 # Translations
+
+
+# Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
 GenericName[oc]=Dorsièr de Sincronizacion
 Name[oc]=@APPLICATION_NAME@ sincronizacion del client
@@ -221,7 +224,9 @@ Comment[lo]=@APPLICATION_NAME@ ການປະສານຂໍ້ມູນຄອ�
 GenericName[lo]=ໂຟນເດີຊິງ
 Name[lo]=@APPLICATION_NAME@ ຊິງຄອມພິວເຕີລູກຂ່າຍ 
 Icon[lo]=@APPLICATION_EXECUTABLE@
+Comment[mk]=@APPLICATION_NAME@ десктор клиент за синхронизација
 GenericName[mk]=Папка за синхронизација
+Name[mk]=@APPLICATION_NAME@ десктор клиент за синхронизација
 Icon[mk]=@APPLICATION_EXECUTABLE@
 Comment[hu_HU]=@APPLICATION_NAME@ asztali szinkronizációs kliens
 GenericName[hu_HU]=Mappaszinkronizálás
