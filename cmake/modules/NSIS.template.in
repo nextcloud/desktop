@@ -403,6 +403,8 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${IMAGEFORMATS_DLL_PATH}\qgif.dll"
    File "${IMAGEFORMATS_DLL_PATH}\qjpeg.dll"
    File "${IMAGEFORMATS_DLL_PATH}\qico.dll"
+   File "${IMAGEFORMATS_DLL_PATH}\qsvg.dll"
+   ; PNG is built in Qt
 
    SetOutPath "$INSTDIR\sqldrivers"
    File "${SQLITE_DLL_PATH}\qsqlite.dll"
