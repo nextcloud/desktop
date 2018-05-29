@@ -330,14 +330,14 @@ private slots:
         fakeFolder.localModifier().remove("A/a6.owncloud");
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_NEW));
-        QVERIFY(itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_REMOVE));
+        QVERIFY(itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_NONE));
         QVERIFY(itemInstruction(completeSpy, "A/a2", CSYNC_INSTRUCTION_NEW));
-        QVERIFY(itemInstruction(completeSpy, "A/a2.owncloud", CSYNC_INSTRUCTION_REMOVE));
+        QVERIFY(itemInstruction(completeSpy, "A/a2.owncloud", CSYNC_INSTRUCTION_NONE));
         QVERIFY(itemInstruction(completeSpy, "A/a3.owncloud", CSYNC_INSTRUCTION_REMOVE));
-        QVERIFY(itemInstruction(completeSpy, "A/a4.owncloud", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(itemInstruction(completeSpy, "A/a4m", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "A/a4.owncloud", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(itemInstruction(completeSpy, "A/a5", CSYNC_INSTRUCTION_CONFLICT));
-        QVERIFY(itemInstruction(completeSpy, "A/a5.owncloud", CSYNC_INSTRUCTION_REMOVE));
+        QVERIFY(itemInstruction(completeSpy, "A/a5.owncloud", CSYNC_INSTRUCTION_NONE));
         QVERIFY(itemInstruction(completeSpy, "A/a6", CSYNC_INSTRUCTION_CONFLICT));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeFile);
