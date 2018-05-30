@@ -85,7 +85,7 @@ private:
         // Relative path of the file locally, as in the DB. (May be a virtual file)
         QString folderRelativePath;
         // Path of the file on the server (In case of virtual file, it points to the actual file)
-        QString accountRelativePath;
+        QString serverRelativePath;
     };
 
     void broadcastMessage(const QString &msg, bool doWait = false);
