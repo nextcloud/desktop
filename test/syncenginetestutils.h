@@ -734,7 +734,7 @@ public:
         // finishing can come strictly after readyRead was called
         QTimer::singleShot(5, this, &FakeErrorReply::slotSetFinished);
     }
-    
+
     // make public to give tests easy interface
     using QNetworkReply::setError;
     using QNetworkReply::setAttribute;
@@ -752,6 +752,9 @@ public:
         memcpy(buf, _body.constData(), max);
         _body = _body.mid(max);
         return max;
+    }
+    qint64 bytesAvailable() const override {
+        return _body.size();
     }
 
     int _httpErrorCode;
