@@ -354,6 +354,60 @@ private slots:
         QVERIFY(!dbRecord(fakeFolder, "A/a6.owncloud").isValid());
     }
 
+    void testVirtualFileDownloadResume()
+    {
+        FakeFolder fakeFolder{ FileInfo() };
+        SyncOptions syncOptions;
+        syncOptions._newFilesAreVirtual = true;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+
+        auto cleanup = [&]() {
+            completeSpy.clear();
+            fakeFolder.syncJournal().wipeErrorBlacklist();
+        };
+        cleanup();
+
+        auto triggerDownload = [&](const QByteArray &path) {
+            auto &journal = fakeFolder.syncJournal();
+            SyncJournalFileRecord record;
+            journal.getFileRecord(path + ".owncloud", &record);
+            if (!record.isValid())
+                return;
+            record._type = ItemTypeVirtualFileDownload;
+            journal.setFileRecord(record);
+            journal.avoidReadFromDbOnNextSync(record._path);
+        };
+
+        // Create a virtual file for remote files
+        fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().insert("A/a1");
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
+        cleanup();
+
+        // Download by changing the db entry
+        triggerDownload("A/a1");
+        fakeFolder.serverErrorPaths().append("A/a1", 500);
+        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_NONE));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
+        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypeVirtualFileDownload);
+        QVERIFY(!dbRecord(fakeFolder, "A/a1").isValid());
+        cleanup();
+
+        fakeFolder.serverErrorPaths().clear();
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_NONE));
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeFile);
+        QVERIFY(!dbRecord(fakeFolder, "A/a1.owncloud").isValid());
+    }
+
     // Check what might happen if an older sync client encounters virtual files
     void testOldVersion1()
     {

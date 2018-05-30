@@ -359,17 +359,6 @@ void PropagateDownloadFile::start()
         return;
     }
 
-    // If we want to download something that used to be a virtual file,
-    // wipe the virtual file and proceed with a normal download
-    if (_item->_type == ItemTypeVirtualFileDownload) {
-        auto virtualFile = propagator()->addVirtualFileSuffix(_item->_file);
-        auto fn = propagator()->getFilePath(virtualFile);
-        qCDebug(lcPropagateDownload) << "Downloading file that used to be a virtual file" << fn;
-        QFile::remove(fn);
-        propagator()->_journal->deleteFileRecord(virtualFile);
-        _item->_type = ItemTypeFile;
-    }
-
     if (_deleteExisting) {
         deleteExistingFolder();
 
@@ -916,6 +905,17 @@ void PropagateDownloadFile::downloadFinished()
     // (the data was prepared in slotGetFinished above)
     if (_conflictRecord.isValid())
         propagator()->_journal->setConflictRecord(_conflictRecord);
+
+    // If we downloaded something that used to be a virtual file,
+    // wipe the virtual file and its db entry now that we're done.
+    if (_item->_type == ItemTypeVirtualFileDownload) {
+        auto virtualFile = propagator()->addVirtualFileSuffix(_item->_file);
+        auto fn = propagator()->getFilePath(virtualFile);
+        qCDebug(lcPropagateDownload) << "Download of previous virtual file finished" << fn;
+        QFile::remove(fn);
+        propagator()->_journal->deleteFileRecord(virtualFile);
+        _item->_type = ItemTypeFile;
+    }
 
     updateMetadata(isConflict);
 }
