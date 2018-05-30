@@ -394,7 +394,7 @@ void SocketApi::processShareRequest(const QString &localFile, SocketListener *li
             return;
         }
 
-        auto &remotePath = fileData.accountRelativePath;
+        auto &remotePath = fileData.serverRelativePath;
 
         // Can't share root folder
         if (remotePath == "/") {
@@ -489,7 +489,7 @@ void SocketApi::command_EDIT(const QString &localFile, SocketListener *listener)
     auto *job = new JsonApiJob(fileData.folder->accountState()->account(), QLatin1String("ocs/v2.php/apps/files/api/v1/directEditing/open"), this);
 
     QUrlQuery params;
-    params.addQueryItem("path", fileData.accountRelativePath);
+    params.addQueryItem("path", fileData.serverRelativePath);
     params.addQueryItem("editorId", editor->id());
     job->addQueryParams(params);
     job->usePOST();
@@ -628,7 +628,7 @@ void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFile, SocketListene
         return;
 
     AccountPtr account = fileData.folder->accountState()->account();
-    auto job = new GetOrCreatePublicLinkShare(account, fileData.accountRelativePath, [](const QString &url) { copyUrlToClipboard(url); }, this);
+    auto job = new GetOrCreatePublicLinkShare(account, fileData.serverRelativePath, [](const QString &url) { copyUrlToClipboard(url); }, this);
     job->run();
 }
 
@@ -665,7 +665,7 @@ void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFile, const std::f
 
     fetchPrivateLinkUrl(
         fileData.folder->accountState()->account(),
-        fileData.accountRelativePath,
+        fileData.serverRelativePath,
         record.numericFileId(),
         this,
         targetFun);
@@ -863,10 +863,10 @@ SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
         return data;
 
     data.folderRelativePath = data.localPath.mid(data.folder->cleanPath().length() + 1);
-    data.accountRelativePath = QDir(data.folder->remotePath()).filePath(data.folderRelativePath);
+    data.serverRelativePath = QDir(data.folder->remotePath()).filePath(data.folderRelativePath);
     QString virtualFileExt = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
-    if (data.accountRelativePath.endsWith(virtualFileExt)) {
-        data.accountRelativePath.chop(virtualFileExt.size());
+    if (data.serverRelativePath.endsWith(virtualFileExt)) {
+        data.serverRelativePath.chop(virtualFileExt.size());
     }
     return data;
 }
