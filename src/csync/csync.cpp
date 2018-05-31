@@ -244,7 +244,7 @@ int csync_s::reinitialize() {
   renames.folder_renamed_to.clear();
 
   status = CSYNC_STATUS_INIT;
-  SAFE_FREE(error_string);
+  error_string.clear();
 
   rc = 0;
   return rc;
@@ -252,7 +252,6 @@ int csync_s::reinitialize() {
 
 csync_s::~csync_s() {
   SAFE_FREE(local.uri);
-  SAFE_FREE(error_string);
 }
 
 void *csync_get_userdata(CSYNC *ctx) {
@@ -296,11 +295,6 @@ CSYNC_STATUS csync_get_status(CSYNC *ctx) {
   }
 
   return ctx->status_code;
-}
-
-const char *csync_get_status_string(CSYNC *ctx)
-{
-  return csync_vio_get_status_string(ctx);
 }
 
 void csync_request_abort(CSYNC *ctx)
