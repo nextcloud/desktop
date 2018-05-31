@@ -726,12 +726,12 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="406"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 ve diğer %n dosya sorunlar nedeniyle eşitlenemedi. Ayrıntılı bilgi almak için günlük dosyasına bakın.</numerusform><numerusform>%1 ve diğer %n dosya sorunlar nedeniyle eşitlenemedi. Ayrıntılı bilgi almak için günlük dosyasına bakın.</numerusform></translation>
+        <translation><numerusform>%1 ve diğer %n dosya sorunlar nedeniyle eşitlenemedi. Ayrıntılı bilgi almak için günlük dosyasına bakın.</numerusform><numerusform>%1 ve diğer %n dosya sorunlar nedeniyle eşitlenemedi. Ayrıntılı bilgi almak için günlük dosyasına bakabilirsiniz.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="408"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation>%1 bir sorun nedeniyle eşitlenemedi. Ayrıntılı bilgi almak için günlüğe bakın.</translation>
+        <translation>%1 bir sorun nedeniyle eşitlenemedi. Ayrıntılı bilgi almak için günlük dosyasına bakabilirsiniz.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="414"/>
@@ -2686,7 +2686,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="200"/>
         <source>Allow editing</source>
-        <translation>Düzenlemeye izin ver</translation>
+        <translation>Düzenlenebilsin</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="20"/>
@@ -3465,7 +3465,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="315"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;%1. sürümü Ayrıntılı bilgi almak için lütfen &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt; adresine bakın.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;%1. sürümü Ayrıntılı bilgi almak için &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt; adresine bakabilirsiniz.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="320"/>
@@ -3735,7 +3735,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="46"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;%2 sürümü. Ayrıntılı bilgi almak için &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt; adresine bakın&lt;/p&gt;&lt;p&gt;Bilinen sorunlar hakkında bilgi ve yardım almak için şu adrese bakın: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt ve diğer kişilerin katkısı ile sunulmaktadır.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Telif hakkı ownCloud GmbH&lt;/p&gt;&lt;p&gt;GNU Genel Kamu Lisansı (GPL) 2.0 sürümü koşulları altında lisanslanmıştır&lt;br/&gt;ownCloud ve ownCloud Logosu, Amerika ve/veya diğer ülkelerde ownCloud GmbH tarafından tescil edilmiş markalardır.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;%2 sürümü. Ayrıntılı bilgi almak için &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt; adresine bakabilirsiniz&lt;/p&gt;&lt;p&gt;Bilinen sorunlar hakkında bilgi ve yardım almak için şu adrese bakın: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt ve diğer kişilerin katkısı ile sunulmaktadır.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Telif hakkı ownCloud GmbH&lt;/p&gt;&lt;p&gt;GNU Genel Kamu Lisansı (GPL) 2.0 sürümü koşulları altında lisanslanmıştır&lt;br/&gt;ownCloud ve ownCloud Logosu, Amerika ve/veya diğer ülkelerde ownCloud GmbH tarafından tescil edilmiş markalardır.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
