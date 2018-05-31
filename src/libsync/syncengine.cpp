@@ -715,13 +715,13 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
 void SyncEngine::handleSyncError(CSYNC *ctx, const char *state)
 {
     CSYNC_STATUS err = csync_get_status(ctx);
-    const char *errMsg = csync_get_status_string(ctx);
+    QString errMsg = ctx->error_string;
     QString errStr = csyncErrorToString(err);
-    if (errMsg) {
+    if (!errMsg.isEmpty()) {
         if (!errStr.endsWith(" ")) {
             errStr.append(" ");
         }
-        errStr += QString::fromUtf8(errMsg);
+        errStr += errMsg;
     }
     // Special handling CSYNC_STATUS_INVALID_CHARACTERS
     if (err == CSYNC_STATUS_INVALID_CHARACTERS) {
