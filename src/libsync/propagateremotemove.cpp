@@ -88,24 +88,6 @@ void PropagateRemoteMove::start()
         finalize();
         return;
     }
-    if (_item->_file == QLatin1String("Shared")) {
-        // Before owncloud 7, there was no permissions system. At the time all the shared files were
-        // in a directory called "Shared" and were not supposed to be moved, otherwise bad things happened
-
-        QString versionString = propagator()->account()->serverVersion();
-        if (versionString.contains('.') && versionString.split('.')[0].toInt() < 7) {
-            QString originalFile(propagator()->getFilePath(QLatin1String("Shared")));
-            emit propagator()->touchedFile(originalFile);
-            emit propagator()->touchedFile(targetFile);
-            QString renameError;
-            if (FileSystem::rename(targetFile, originalFile, &renameError)) {
-                done(SyncFileItem::NormalError, tr("This folder must not be renamed. It is renamed back to its original name."));
-            } else {
-                done(SyncFileItem::NormalError, tr("This folder must not be renamed. Please name it back to Shared."));
-            }
-            return;
-        }
-    }
 
     QString destination = QDir::cleanPath(propagator()->account()->url().path() + QLatin1Char('/')
         + propagator()->account()->davPath() + propagator()->_remoteFolder + _item->_renameTarget);
@@ -137,11 +119,6 @@ void PropagateRemoteMove::slotMoveJobFinished()
     _item->_httpErrorCode = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
     if (err != QNetworkReply::NoError) {
-        if (checkForProblemsWithShared(_item->_httpErrorCode,
-                tr("The file was renamed but is part of a read only share. The original file was restored."))) {
-            return;
-        }
-
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
             &propagator()->_anotherSyncNeeded);
         done(status, _job->errorString());
