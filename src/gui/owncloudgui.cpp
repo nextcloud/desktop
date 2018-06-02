@@ -869,9 +869,12 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
     Q_UNUSED(folder);
 
     if (progress.status() == ProgressInfo::Discovery) {
-        if (!progress._currentDiscoveredFolder.isEmpty()) {
-            _actionStatus->setText(tr("Checking for changes in '%1'")
-                                       .arg(progress._currentDiscoveredFolder));
+        if (!progress._currentDiscoveredRemoteFolder.isEmpty()) {
+            _actionStatus->setText(tr("Checking for changes in remote '%1'")
+                                       .arg(progress._currentDiscoveredRemoteFolder));
+        } else if (!progress._currentDiscoveredLocalFolder.isEmpty()) {
+            _actionStatus->setText(tr("Checking for changes in local '%1'")
+                                       .arg(progress._currentDiscoveredLocalFolder));
         }
     } else if (progress.status() == ProgressInfo::Done) {
         QTimer::singleShot(2000, this, &ownCloudGui::slotComputeOverallSyncStatus);

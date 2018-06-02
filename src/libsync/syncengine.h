@@ -103,7 +103,7 @@ public:
     /**
      * Control whether local discovery should read from filesystem or db.
      *
-     * If style is Partial, the paths is a set of file paths relative to
+     * If style is DatabaseAndFilesystem, dirs a set of file paths relative to
      * the synced folder. All the parent directories of these paths will not
      * be read from the db and scanned on the filesystem.
      *
@@ -112,6 +112,15 @@ public:
      * sync's style.
      */
     void setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> dirs = {});
+
+    /**
+     * Returns whether the given folder-relative path should be locally discovered
+     * given the local discovery options.
+     *
+     * Example: If path is 'foo/bar' and style is DatabaseAndFilesystem and dirs contains
+     *     'foo/bar/touched_file', then the result will be true.
+     */
+    bool shouldDiscoverLocally(const QByteArray &path) const;
 
     /** Access the last sync run's local discovery style */
     LocalDiscoveryStyle lastLocalDiscoveryStyle() const { return _lastLocalDiscoveryStyle; }
@@ -301,7 +310,9 @@ private:
     QSet<QString> _uniqueErrors;
 
     /** The kind of local discovery the last sync run used */
-    LocalDiscoveryStyle _lastLocalDiscoveryStyle = LocalDiscoveryStyle::DatabaseAndFilesystem;
+    LocalDiscoveryStyle _lastLocalDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
+    LocalDiscoveryStyle _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
+    std::set<QByteArray> _localDiscoveryPaths;
 };
 }
 

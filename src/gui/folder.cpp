@@ -107,6 +107,9 @@ Folder::Folder(const FolderDefinition &definition,
     _scheduleSelfTimer.setInterval(SyncEngine::minimumFileAgeForUpload);
     connect(&_scheduleSelfTimer, &QTimer::timeout,
         this, &Folder::slotScheduleThisFolder);
+
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::folderConflicts,
+        this, &Folder::slotFolderConflicts);
 }
 
 Folder::~Folder()
@@ -962,6 +965,17 @@ void Folder::slotScheduleThisFolder()
 void Folder::slotNextSyncFullLocalDiscovery()
 {
     _timeSinceLastFullLocalDiscovery.invalidate();
+}
+
+void Folder::slotFolderConflicts(const QString &folder, const QStringList &conflictPaths)
+{
+    if (folder != _definition.alias)
+        return;
+    auto &r = _syncResult;
+
+    // If the number of conflicts is too low, adjust it upwards
+    if (conflictPaths.size() > r.numNewConflictItems() + r.numOldConflictItems())
+        r.setNumOldConflictItems(conflictPaths.size() - r.numNewConflictItems());
 }
 
 void Folder::scheduleThisFolderSoon()

@@ -272,13 +272,29 @@ bool SyncEngine::checkErrorBlacklisting(SyncFileItem &item)
     return true;
 }
 
+static bool isFileTransferInstruction(csync_instructions_e instruction)
+{
+    return instruction == CSYNC_INSTRUCTION_CONFLICT
+        || instruction == CSYNC_INSTRUCTION_NEW
+        || instruction == CSYNC_INSTRUCTION_SYNC
+        || instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
+}
+
+static bool isFileModifyingInstruction(csync_instructions_e instruction)
+{
+    return isFileTransferInstruction(instruction)
+        || instruction == CSYNC_INSTRUCTION_RENAME
+        || instruction == CSYNC_INSTRUCTION_REMOVE;
+}
+
 void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemVector &syncItems)
 {
     // Find all downloadinfo paths that we want to preserve.
     QSet<QString> download_file_paths;
     foreach (const SyncFileItemPtr &it, syncItems) {
         if (it->_direction == SyncFileItem::Down
-            && it->_type == ItemTypeFile) {
+            && it->_type == ItemTypeFile
+            && isFileTransferInstruction(it->_instruction)) {
             download_file_paths.insert(it->_file);
         }
     }
@@ -299,7 +315,8 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
     QSet<QString> upload_file_paths;
     foreach (const SyncFileItemPtr &it, syncItems) {
         if (it->_direction == SyncFileItem::Up
-            && it->_type == ItemTypeFile) {
+            && it->_type == ItemTypeFile
+            && isFileTransferInstruction(it->_instruction)) {
             upload_file_paths.insert(it->_file);
         }
     }
@@ -676,7 +693,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
         break;
     case CSYNC_INSTRUCTION_CONFLICT:
-    case CSYNC_INSTRUCTION_IGNORE:
     case CSYNC_INSTRUCTION_ERROR:
         dir = SyncFileItem::None;
         break;
@@ -704,6 +720,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
     case CSYNC_INSTRUCTION_NEW:
     case CSYNC_INSTRUCTION_EVAL:
     case CSYNC_INSTRUCTION_STAT_ERROR:
+    case CSYNC_INSTRUCTION_IGNORE:
     default:
         dir = remote ? SyncFileItem::Down : SyncFileItem::Up;
         break;
@@ -856,7 +873,11 @@ void SyncEngine::startSync()
     _excludedFiles->setExcludeConflictFiles(!_account->capabilities().uploadConflictFiles());
 
     _csync_ctx->read_remote_from_db = true;
-    _lastLocalDiscoveryStyle = _csync_ctx->local_discovery_style;
+
+    _lastLocalDiscoveryStyle = _localDiscoveryStyle;
+    _csync_ctx->should_discover_locally_fn = [this](const QByteArray &path) {
+        return shouldDiscoverLocally(path);
+    };
 
     bool ok;
     auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
@@ -929,9 +950,18 @@ void SyncEngine::startSync()
     QMetaObject::invokeMethod(discoveryJob, "start", Qt::QueuedConnection);
 }
 
-void SyncEngine::slotFolderDiscovered(bool /*local*/, const QString &folder)
+void SyncEngine::slotFolderDiscovered(bool local, const QString &folder)
 {
-    _progressInfo->_currentDiscoveredFolder = folder;
+    // Currently remote and local discovery never run in parallel
+    // Note: Currently this slot is only called occasionally! See the throttling
+    //       in DiscoveryJob::update_job_update_callback.
+    if (local) {
+        _progressInfo->_currentDiscoveredLocalFolder = folder;
+        _progressInfo->_currentDiscoveredRemoteFolder.clear();
+    } else {
+        _progressInfo->_currentDiscoveredRemoteFolder = folder;
+        _progressInfo->_currentDiscoveredLocalFolder.clear();
+    }
     emit transmissionProgress(*_progressInfo);
 }
 
@@ -968,7 +998,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         _journal->commitIfNeededAndStartNewTransaction("Post discovery");
     }
 
-    _progressInfo->_currentDiscoveredFolder.clear();
+    _progressInfo->_currentDiscoveredRemoteFolder.clear();
+    _progressInfo->_currentDiscoveredLocalFolder.clear();
     _progressInfo->_status = ProgressInfo::Reconcile;
     emit transmissionProgress(*_progressInfo);
 
@@ -1022,7 +1053,9 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     if (!invalidFilenamePattern.isEmpty()) {
         const QRegExp invalidFilenameRx(invalidFilenamePattern);
         for (auto it = syncItems.begin(); it != syncItems.end(); ++it) {
-            if ((*it)->_direction == SyncFileItem::Up && (*it)->destination().contains(invalidFilenameRx)) {
+            if ((*it)->_direction == SyncFileItem::Up
+                && isFileModifyingInstruction((*it)->_instruction)
+                && (*it)->destination().contains(invalidFilenameRx)) {
                 (*it)->_errorString = tr("File name contains at least one invalid character");
                 (*it)->_instruction = CSYNC_INSTRUCTION_IGNORE;
             }
@@ -1070,6 +1103,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     // Re-init the csync context to free memory
     _csync_ctx->reinitialize();
+    _localDiscoveryPaths.clear();
 
     // To announce the beginning of the sync
     emit aboutToPropagate(syncItems);
@@ -1211,6 +1245,8 @@ void SyncEngine::finalize(bool success)
     _temporarilyUnavailablePaths.clear();
     _renamedFolders.clear();
     _uniqueErrors.clear();
+    _localDiscoveryPaths.clear();
+    _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
 
     _clearTouchedFilesTimer.start();
 }
@@ -1248,7 +1284,8 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
     SyncFileItemPtr needle;
 
     for (SyncFileItemVector::iterator it = syncItems.begin(); it != syncItems.end(); ++it) {
-        if ((*it)->_direction != SyncFileItem::Up) {
+        if ((*it)->_direction != SyncFileItem::Up
+            || !isFileModifyingInstruction((*it)->_instruction)) {
             // Currently we only check server-side permissions
             continue;
         }
@@ -1617,8 +1654,32 @@ AccountPtr SyncEngine::account() const
 
 void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> dirs)
 {
-    _csync_ctx->local_discovery_style = style;
-    _csync_ctx->locally_touched_dirs = std::move(dirs);
+    _localDiscoveryStyle = style;
+    _localDiscoveryPaths = std::move(dirs);
+}
+
+bool SyncEngine::shouldDiscoverLocally(const QByteArray &path) const
+{
+    if (_localDiscoveryStyle == LocalDiscoveryStyle::FilesystemOnly)
+        return true;
+
+    auto it = _localDiscoveryPaths.lower_bound(path);
+    if (it == _localDiscoveryPaths.end() || !it->startsWith(path))
+        return false;
+
+    // maybe an exact match or an empty path?
+    if (it->size() == path.size() || path.isEmpty())
+        return true;
+
+    // check for a prefix + / match
+    forever {
+        if (it->size() > path.size() && it->at(path.size()) == '/')
+            return true;
+        ++it;
+        if (it == _localDiscoveryPaths.end() || !it->startsWith(path))
+            return false;
+    }
+    return false;
 }
 
 void SyncEngine::abort()
