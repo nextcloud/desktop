@@ -280,7 +280,7 @@ void GeneralSettings::slotUpdateInfo()
 
         _ui->autoCheckForUpdatesCheckBox->setChecked(ConfigFile().autoUpdateCheck());
     }
-#ifdef Q_OS_MAC
+#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
     else if (auto sparkleUpdater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
         _ui->updateStateLabel->setText(sparkleUpdater->statusString());
         _ui->restartButton->setVisible(false);
@@ -324,7 +324,7 @@ void GeneralSettings::slotUpdateChannelChanged(const QString &channel)
                 updater->setUpdateUrl(Updater::updateUrl());
                 updater->checkForUpdate();
             }
-#ifdef Q_OS_MAC
+#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
             else if (auto updater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
                 updater->setUpdateUrl(Updater::updateUrl());
                 updater->checkForUpdate();
