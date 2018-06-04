@@ -165,6 +165,9 @@ void GETFileJob::slotMetaDataChanged()
     // If the status code isn't 2xx, don't write the reply body to the file.
     // For any error: handle it when the job is finished, not here.
     if (httpStatus / 100 != 2) {
+        // Disable the buffer limit, as we don't limit the bandwidth for error messages.
+        // (We are only going to do a readAll() at the end.)
+        reply()->setReadBufferSize(0);
         _device->close();
         return;
     }
@@ -268,7 +271,7 @@ void GETFileJob::slotReadyRead()
     int bufferSize = qMin(1024 * 8ll, reply()->bytesAvailable());
     QByteArray buffer(bufferSize, Qt::Uninitialized);
 
-    while (reply()->bytesAvailable() > 0) {
+    while (reply()->bytesAvailable() > 0 && _saveBodyToFile) {
         if (_bandwidthChoked) {
             qCWarning(lcGetJob) << "Download choked";
             break;
@@ -292,7 +295,7 @@ void GETFileJob::slotReadyRead()
             return;
         }
 
-        if (_device->isOpen() && _saveBodyToFile) {
+        if (_device->isOpen()) {
             qint64 w = _device->write(buffer.constData(), r);
             if (w != r) {
                 _errorString = _device->errorString();
@@ -304,7 +307,7 @@ void GETFileJob::slotReadyRead()
         }
     }
 
-    if (reply()->isFinished() && reply()->bytesAvailable() == 0) {
+    if (reply()->isFinished() && (reply()->bytesAvailable() == 0 || !_saveBodyToFile)) {
         qCDebug(lcGetJob) << "Actually finished!";
         if (_bandwidthManager) {
             _bandwidthManager->unregisterDownloadJob(this);
@@ -357,17 +360,6 @@ void PropagateDownloadFile::start()
         file.close();
         updateMetadata(false);
         return;
-    }
-
-    // If we want to download something that used to be a virtual file,
-    // wipe the virtual file and proceed with a normal download
-    if (_item->_type == ItemTypeVirtualFileDownload) {
-        auto virtualFile = propagator()->addVirtualFileSuffix(_item->_file);
-        auto fn = propagator()->getFilePath(virtualFile);
-        qCDebug(lcPropagateDownload) << "Downloading file that used to be a virtual file" << fn;
-        QFile::remove(fn);
-        propagator()->_journal->deleteFileRecord(virtualFile);
-        _item->_type = ItemTypeFile;
     }
 
     if (_deleteExisting) {
@@ -916,6 +908,17 @@ void PropagateDownloadFile::downloadFinished()
     // (the data was prepared in slotGetFinished above)
     if (_conflictRecord.isValid())
         propagator()->_journal->setConflictRecord(_conflictRecord);
+
+    // If we downloaded something that used to be a virtual file,
+    // wipe the virtual file and its db entry now that we're done.
+    if (_item->_type == ItemTypeVirtualFileDownload) {
+        auto virtualFile = propagator()->addVirtualFileSuffix(_item->_file);
+        auto fn = propagator()->getFilePath(virtualFile);
+        qCDebug(lcPropagateDownload) << "Download of previous virtual file finished" << fn;
+        QFile::remove(fn);
+        propagator()->_journal->deleteFileRecord(virtualFile);
+        _item->_type = ItemTypeFile;
+    }
 
     updateMetadata(isConflict);
 }

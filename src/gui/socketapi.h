@@ -80,9 +80,12 @@ private:
         SyncJournalFileRecord journalRecord() const;
 
         Folder *folder;
+        // Absolute path of the file locally. (May be a virtual file)
         QString localPath;
+        // Relative path of the file locally, as in the DB. (May be a virtual file)
         QString folderRelativePath;
-        QString accountRelativePath;
+        // Path of the file on the server (In case of virtual file, it points to the actual file)
+        QString serverRelativePath;
     };
 
     void broadcastMessage(const QString &msg, bool doWait = false);

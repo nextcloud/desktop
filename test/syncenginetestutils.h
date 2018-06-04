@@ -728,6 +728,8 @@ public:
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, _httpErrorCode);
         setError(InternalServerError, "Internal Server Fake Error");
         emit metaDataChanged();
+        emit readyRead();
+        setFinished(true);
         emit finished();
     }
 
@@ -737,6 +739,9 @@ public:
         memcpy(buf, _body.constData(), max);
         _body = _body.mid(max);
         return max;
+    }
+    qint64 bytesAvailable() const override {
+        return _body.size();
     }
 
     int _httpErrorCode;

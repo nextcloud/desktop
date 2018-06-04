@@ -175,6 +175,25 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                 cur->instruction = CSYNC_INSTRUCTION_NEW;
                 break;
             }
+
+            /* If a virtual file is supposed to be downloaded, the local tree
+             * will see "foo.owncloud" NONE while the remote might see "foo".
+             * In the common case of remote NEW we don't want to trigger the REMOVE
+             * that would normally be done for foo.owncloud since the download for
+             * "foo" will take care of it.
+             * If it was removed remotely, or moved remotely, the REMOVE is what we want.
+             */
+            if (cur->type == ItemTypeVirtualFileDownload
+                && ctx->current == LOCAL_REPLICA
+                && cur->path.endsWith(ctx->virtual_file_suffix)) {
+                auto actualOther = other_tree->findFile(cur->path.left(cur->path.size() - ctx->virtual_file_suffix.size()));
+                if (actualOther
+                    && (actualOther->instruction == CSYNC_INSTRUCTION_NEW
+                        || actualOther->instruction == CSYNC_INSTRUCTION_CONFLICT)) {
+                    cur->instruction = CSYNC_INSTRUCTION_NONE;
+                    break;
+                }
+            }
             cur->instruction = CSYNC_INSTRUCTION_REMOVE;
             break;
         case CSYNC_INSTRUCTION_EVAL_RENAME: {

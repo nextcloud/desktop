@@ -382,7 +382,7 @@ void SocketApi::processShareRequest(const QString &localFile, SocketListener *li
             return;
         }
 
-        auto &remotePath = fileData.accountRelativePath;
+        auto &remotePath = fileData.serverRelativePath;
 
         // Can't share root folder
         if (remotePath == "/") {
@@ -560,7 +560,7 @@ void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFile, SocketListene
         return;
 
     AccountPtr account = fileData.folder->accountState()->account();
-    auto job = new GetOrCreatePublicLinkShare(account, fileData.accountRelativePath, [](const QString &url) { copyUrlToClipboard(url); }, this);
+    auto job = new GetOrCreatePublicLinkShare(account, fileData.serverRelativePath, [](const QString &url) { copyUrlToClipboard(url); }, this);
     job->run();
 }
 
@@ -579,7 +579,7 @@ void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFile, const std::f
 
     fetchPrivateLinkUrl(
         fileData.folder->accountState()->account(),
-        fileData.accountRelativePath,
+        fileData.serverRelativePath,
         record.numericFileId(),
         this,
         targetFun);
@@ -611,7 +611,7 @@ void SocketApi::command_DOWNLOAD_VIRTUAL_FILE(const QString &filesArg, SocketLis
     auto suffix = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
 
     for (const auto &file : files) {
-        if (!file.endsWith(suffix))
+        if (!file.endsWith(suffix) && !QFileInfo(file).isDir())
             continue;
         QString relativePath;
         auto folder = FolderMan::instance()->folderForPath(file, &relativePath);
@@ -703,8 +703,11 @@ SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
     if (!data.folder)
         return data;
 
-    data.accountRelativePath = QDir(data.folder->remotePath()).filePath(data.folderRelativePath);
-
+    data.serverRelativePath = QDir(data.folder->remotePath()).filePath(data.folderRelativePath);
+    QString virtualFileExt = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
+    if (data.serverRelativePath.endsWith(virtualFileExt)) {
+        data.serverRelativePath.chop(virtualFileExt.size());
+    }
     return data;
 }
 
@@ -761,7 +764,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         auto virtualFileSuffix = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
         bool hasVirtualFile = false;
         for (const auto &file : files) {
-            if (file.endsWith(virtualFileSuffix))
+            if (file.endsWith(virtualFileSuffix) || (folder->useVirtualFiles() && QFileInfo(file).isDir()))
                 hasVirtualFile = true;
         }
         if (hasVirtualFile)
