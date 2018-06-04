@@ -219,17 +219,6 @@ struct OCSYNC_EXPORT csync_s {
   csync_s &operator=(const csync_s &) = delete;
 };
 
-/*
- * context for the treewalk function
- */
-struct _csync_treewalk_context_s
-{
-    csync_treewalk_visit_func *user_visitor;
-    int instruction_filter;
-    void *userdata;
-};
-typedef struct _csync_treewalk_context_s _csync_treewalk_context;
-
 void set_errno_from_http_errcode( int err );
 
 /**

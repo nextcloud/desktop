@@ -108,15 +108,9 @@ static bool _csync_mtime_equal(time_t a, time_t b)
  * See doc/dev/sync-algorithm.md for an overview.
  */
 static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs) {
+  Q_ASSERT(fs);
   OCC::SyncJournalFileRecord base;
   CSYNC_EXCLUDE_TYPE excluded = CSYNC_NOT_EXCLUDED;
-
-  if (fs == NULL) {
-    errno = EINVAL;
-    ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
-    return -1;
-  }
-
   if (fs->type == ItemTypeSkip) {
       excluded =CSYNC_FILE_EXCLUDE_STAT_FAILED;
   } else {
@@ -711,10 +705,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     // Now process to have a relative path to the sync root for the local replica, or to the data root on the remote.
     dirent->path = fullpath;
     if (ctx->current == LOCAL_REPLICA) {
-        if (dirent->path.size() <= (int)strlen(ctx->local.uri)) {
-            ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
-            goto error;
-        }
+        ASSERT(dirent->path.startsWith(ctx->local.uri)); // path is relative to uri
         // "len + 1" to include the slash in-between.
         dirent->path = dirent->path.mid(strlen(ctx->local.uri) + 1);
     }

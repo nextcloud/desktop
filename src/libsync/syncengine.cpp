@@ -120,35 +120,11 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("Success.");
         break;
     case CSYNC_STATUS_STATEDB_LOAD_ERROR:
-        errStr = tr("CSync failed to load or create the journal file. "
+        errStr = tr("Failed to load or create the journal file. "
                     "Make sure you have read and write permissions in the local sync folder.");
         break;
-    case CSYNC_STATUS_STATEDB_CORRUPTED:
-        errStr = tr("CSync failed to load the journal file. The journal file is corrupted.");
-        break;
-    case CSYNC_STATUS_NO_MODULE:
-        errStr = tr("<p>The %1 plugin for csync could not be loaded.<br/>Please verify the installation!</p>").arg(qApp->applicationName());
-        break;
-    case CSYNC_STATUS_PARAM_ERROR:
-        errStr = tr("CSync fatal parameter error.");
-        break;
     case CSYNC_STATUS_UPDATE_ERROR:
-        errStr = tr("CSync processing step update failed.");
-        break;
-    case CSYNC_STATUS_RECONCILE_ERROR:
-        errStr = tr("CSync processing step reconcile failed.");
-        break;
-    case CSYNC_STATUS_PROXY_AUTH_ERROR:
-        errStr = tr("CSync could not authenticate at the proxy.");
-        break;
-    case CSYNC_STATUS_LOOKUP_ERROR:
-        errStr = tr("CSync failed to lookup proxy or server.");
-        break;
-    case CSYNC_STATUS_SERVER_AUTH_ERROR:
-        errStr = tr("CSync failed to authenticate at the %1 server.").arg(qApp->applicationName());
-        break;
-    case CSYNC_STATUS_CONNECT_ERROR:
-        errStr = tr("CSync failed to connect to the network.");
+        errStr = tr("Discovery step failed.");
         break;
     case CSYNC_STATUS_TIMEOUT:
         errStr = tr("A network connection timeout happened.");
@@ -157,16 +133,16 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("A HTTP transmission error happened.");
         break;
     case CSYNC_STATUS_PERMISSION_DENIED:
-        errStr = tr("CSync failed due to unhandled permission denied.");
+        errStr = tr("Permission denied.");
         break;
     case CSYNC_STATUS_NOT_FOUND:
-        errStr = tr("CSync failed to access") + " "; // filename gets added.
+        errStr = tr("File or directory not found:") + " "; // filename gets added.
         break;
     case CSYNC_STATUS_FILE_EXISTS:
-        errStr = tr("CSync tried to create a folder that already exists.");
+        errStr = tr("Tried to create a folder that already exists.");
         break;
     case CSYNC_STATUS_OUT_OF_SPACE:
-        errStr = tr("CSync: No space on %1 server available.").arg(qApp->applicationName());
+        errStr = tr("No space on %1 server available.").arg(qApp->applicationName());
         break;
     case CSYNC_STATUS_UNSUCCESSFUL:
         errStr = tr("CSync unspecified error.");
@@ -383,16 +359,6 @@ void SyncEngine::conflictRecordMaintenance()
             _journal->setConflictRecord(record);
         }
     }
-}
-
-int SyncEngine::treewalkLocal(csync_file_stat_t *file, csync_file_stat_t *other, void *data)
-{
-    return static_cast<SyncEngine *>(data)->treewalkFile(file, other, false);
-}
-
-int SyncEngine::treewalkRemote(csync_file_stat_t *file, csync_file_stat_t *other, void *data)
-{
-    return static_cast<SyncEngine *>(data)->treewalkFile(file, other, true);
 }
 
 /**
@@ -771,7 +737,7 @@ void SyncEngine::handleSyncError(CSYNC *ctx, const char *state)
 
     if (CSYNC_STATUS_IS_EQUAL(err, CSYNC_STATUS_ABORTED)) {
         qCInfo(lcEngine) << "Update phase was aborted by user!";
-    } else if (CSYNC_STATUS_IS_EQUAL(err, CSYNC_STATUS_SERVICE_UNAVAILABLE) || CSYNC_STATUS_IS_EQUAL(err, CSYNC_STATUS_CONNECT_ERROR)) {
+    } else if (CSYNC_STATUS_IS_EQUAL(err, CSYNC_STATUS_SERVICE_UNAVAILABLE)) {
         emit csyncUnavailable();
     } else {
         csyncError(errStr);
@@ -1019,11 +985,11 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _temporarilyUnavailablePaths.clear();
     _renamedFolders.clear();
 
-    if (csync_walk_local_tree(_csync_ctx.data(), &treewalkLocal, 0) < 0) {
+    if (csync_walk_local_tree(_csync_ctx.data(), [this](csync_file_stat_t *f, csync_file_stat_t *o) { return treewalkFile(f, o, false); } ) < 0) {
         qCWarning(lcEngine) << "Error in local treewalk.";
         walkOk = false;
     }
-    if (walkOk && csync_walk_remote_tree(_csync_ctx.data(), &treewalkRemote, 0) < 0) {
+    if (walkOk && csync_walk_remote_tree(_csync_ctx.data(), [this](csync_file_stat_t *f, csync_file_stat_t *o) { return treewalkFile(f, o, true); } ) < 0) {
         qCWarning(lcEngine) << "Error in remote treewalk.";
     }
 
