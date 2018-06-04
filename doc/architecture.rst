@@ -250,9 +250,14 @@ Some system wide file patterns that are used to exclude or ignore files are incl
 
 By default, the Nextcloud Client ignores the following files:
 
-* Files matched by one of the patterns defined in the Ignored Files Editor
-* Files containing characters that do not work on certain file systems ``(`\, /, :, ?, *, ", >, <, |`)``.
-* Files starting with ``._sync_xxxxxxx.db`` and the old format ``.csync_journal.db``,  as these files are reserved for journalling.
+* Files matched by one of the patterns defined in the Ignored Files Editor.
+* Files starting with ``._sync_*.db*``, ``.sync_*.db*``, ``.csync_journal.db*``, ``.owncloudsync.log*``,  as these files are reserved for journalling.
+* Files with a name longer than 254 characters.
+* The file ``Desktop.ini`` in the root of a synced folder.
+* Files matching the pattern ``*_conflict-*`` unless conflict file uploading is enabled.
+* Windows only: Files containing characters that do not work on typical Windows filesystems ``(`\, /, :, ?, *, ", >, <, |`)``.
+* Windows only: Files with a trailing space or dot.
+* Windows only: Filenames that are reserved on Windows.
 
 If a pattern selected using a checkbox in the `ignoredFilesEditor-label` (or if
 a line in the exclude file starts with the character ``]`` directly followed by
