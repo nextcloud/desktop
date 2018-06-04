@@ -529,12 +529,17 @@ void PropagateUploadFileCommon::slotPollFinished()
     propagator()->_activeJobList.removeOne(this);
 
     if (job->_item->_status != SyncFileItem::Success) {
-        _finished = true;
         done(job->_item->_status, job->_item->_errorString);
         return;
     }
 
     finalize();
+}
+
+void PropagateUploadFileCommon::done(SyncFileItem::Status status, const QString &errorString)
+{
+    _finished = true;
+    PropagateItemJob::done(status, errorString);
 }
 
 void PropagateUploadFileCommon::checkResettingErrors()
@@ -622,7 +627,6 @@ void PropagateUploadFileCommon::abort(PropagatorJob::AbortType abortType)
 // This function is used whenever there is an error occuring and jobs might be in progress
 void PropagateUploadFileCommon::abortWithError(SyncFileItem::Status status, const QString &error)
 {
-    _finished = true;
     abort(AbortType::Synchronous);
     done(status, error);
 }
@@ -671,9 +675,6 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
 
 void PropagateUploadFileCommon::finalize()
 {
-    qDebug() << "Finalizing the upload. Check later if this is encrypted";
-    _finished = true;
-
     // Update the quota, if known
     auto quotaIt = propagator()->_folderQuota.find(QFileInfo(_item->_file).path());
     if (quotaIt != propagator()->_folderQuota.end())

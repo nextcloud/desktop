@@ -206,12 +206,12 @@ void PropagateUploadFileV1::slotPutFinished()
 
     // The server needs some time to process the request and provide us with a poll URL
     if (_item->_httpErrorCode == 202) {
-        _finished = true;
         QString path = QString::fromUtf8(job->reply()->rawHeader("OC-Finish-Poll"));
         if (path.isEmpty()) {
             done(SyncFileItem::NormalError, tr("Poll URL missing"));
             return;
         }
+        _finished = true;
         startPollJob(path);
         return;
     }
@@ -226,19 +226,15 @@ void PropagateUploadFileV1::slotPutFinished()
     // yet, the upload can be stopped and an error can be displayed, because
     // the server hasn't registered the new file yet.
     QByteArray etag = getEtagFromReply(job->reply());
-    bool finished = etag.length() > 0;
+    _finished = etag.length() > 0;
 
     /* Check if the file still exists,
      * but we could be operating in a temporary file, so check both if
      * the file to upload is different than the file on disk
      */
-    const QString fileToUploadPath = _fileToUpload._path;
     const QString fullFilePath(propagator()->getFilePath(_item->_file));
-    bool fileExists = fileToUploadPath == fullFilePath ? FileSystem::fileExists(fullFilePath)
-      : (FileSystem::fileExists(fileToUploadPath) && FileSystem::fileExists(fullFilePath));
-
-    if (!fileExists) {
-        if (!finished) {
+    if (!FileSystem::fileExists(fullFilePath)) {
+        if (!_finished) {
             abortWithError(SyncFileItem::SoftError, tr("The local file was removed during sync."));
             return;
         } else {
@@ -249,7 +245,7 @@ void PropagateUploadFileV1::slotPutFinished()
     // Check whether the file changed since discovery. the file check here is the original and not the temprary.
     if (!FileSystem::verifyFileUnchanged(fullFilePath, _item->_size, _item->_modtime)) {
         propagator()->_anotherSyncNeeded = true;
-        if (!finished) {
+        if (!_finished) {
             abortWithError(SyncFileItem::SoftError, tr("Local file changed during sync."));
             // FIXME:  the legacy code was retrying for a few seconds.
             //         and also checking that after the last chunk, and removed the file in case of INSTRUCTION_NEW
@@ -257,14 +253,13 @@ void PropagateUploadFileV1::slotPutFinished()
         }
     }
 
-    if (!finished) {
+    if (!_finished) {
         // Proceed to next chunk.
         if (_currentChunk >= _chunkCount) {
             if (!_jobs.empty()) {
                 // just wait for the other job to finish.
                 return;
             }
-            _finished = true;
             done(SyncFileItem::NormalError, tr("The server did not acknowledge the last chunk. (No e-tag was present)"));
             return;
         }
@@ -294,9 +289,8 @@ void PropagateUploadFileV1::slotPutFinished()
         startNextChunk();
         return;
     }
-
     // the following code only happens after all chunks were uploaded.
-    _finished = true;
+
     // the file id should only be empty for new files up- or downloaded
     QByteArray fid = job->reply()->rawHeader("OC-FileID");
     if (!fid.isEmpty()) {

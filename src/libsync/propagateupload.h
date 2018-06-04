@@ -279,6 +279,8 @@ private slots:
     void slotPollFinished();
 
 protected:
+    void done(SyncFileItem::Status status, const QString &errorString = QString()) override;
+
     /**
      * Prepares the abort e.g. connects proper signals and slots
      * to the subjobs to abort asynchronously
