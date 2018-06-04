@@ -16,14 +16,14 @@ These instructions are updated to work with version |version| of the Nextcloud C
 Getting Source Code
 -------------------
 
-The :ref:`generic-build-instructions` pull the latest code directly from 
-GitHub, and work on Linux, Mac OS X, and Windows.
+The :ref:`generic-build-instructions` pull the latest code directly from
+GitHub, and work on Linux, macOS, and Windows.
 
-Mac OS X
---------
+macOS
+-----
 
 In addition to needing XCode (along with the command line tools), developing in
-the Mac OS X environment requires extra dependencies.  You can install these
+the macOS environment requires extra dependencies.  You can install these
 dependencies through MacPorts_ or Homebrew_.  These dependencies are required
 only on the build machine, because non-standard libs are deployed in the app
 bundle.
@@ -60,14 +60,14 @@ To set up your build environment for development using HomeBrew_:
    Where ``x.y`` is the current version of Qt 5 that brew has installed
    on your machine.
 8. Install qtkeychain from here:  git clone https://github.com/frankosterfeld/qtkeychain.git
-   make sure you make the same install prefix as later while building the client e.g.  -            
+   make sure you make the same install prefix as later while building the client e.g.  -
    ``DCMAKE_INSTALL_PREFIX=/Path/to/client-install``
 
 9. For compilation of the client, follow the :ref:`generic-build-instructions`.
 
 10. Install the Packages_ package creation tool.
 
-11. In the build directory, run ``admin/osx/create_mac.sh <build_dir> <install_dir>``. 
+11. In the build directory, run ``admin/osx/create_mac.sh <build_dir> <install_dir>``.
     If you have a developer signing certificate, you can specify
     its Common Name as a third parameter (use quotes) to have the package
     signed automatically.
@@ -137,7 +137,7 @@ is **currently only officially supported on openSUSE**, by using the MinGW cross
 You can set up any currently supported version of openSUSE in a virtual machine if you do not
 have it installed already.
 
-In order to make setup simple, you can use the provided Dockerfile to build your own image. 
+In order to make setup simple, you can use the provided Dockerfile to build your own image.
 
 1. Assuming you are in the root of the Nextcloud Client's source tree, you can
    build an image from this Dockerfile like this::
@@ -209,24 +209,24 @@ To build the most up-to-date version of the client:
 3. Configure the client build::
 
      cmake -DCMAKE_BUILD_TYPE="Debug" ..
-    
+
    .. note:: You must use absolute paths for the ``include`` and ``library``
             directories.
 
-   .. note:: On Mac OS X, you need to specify ``-DCMAKE_INSTALL_PREFIX=target``,
+   .. note:: On macOS, you need to specify ``-DCMAKE_INSTALL_PREFIX=target``,
             where ``target`` is a private location, i.e. in parallel to your build
             dir by specifying ``../install``.
-            
+
    .. note:: qtkeychain must be compiled with the same prefix e.g ``CMAKE_INSTALL_PREFIX=/Users/path/to/client/install/ .``
-   
+
    .. note:: Example:: ``cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/  -DNO_SHIBBOLETH=1``
-   
+
 4. Call ``make``.
 
    The Nextcloud binary will appear in the ``bin`` directory.
-   
-5. (Optional) Call ``make install`` to install the client to the   
-   ``/usr/local/bin`` directory.   
+
+5. (Optional) Call ``make install`` to install the client to the
+   ``/usr/local/bin`` directory.
 
 The following are known cmake parameters:
 

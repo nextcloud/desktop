@@ -7,7 +7,7 @@ Glossary
    Nextcloud Sync Client
    Nextcloud Client
      Name of the official Nextcloud syncing client for desktop, which runs on
-     Windows, Mac OS X and Linux. It uses the CSync sync engine for 
+     Windows, macOS and Linux. It uses the CSync sync engine for
      synchronization with the Nextcloud server.
 
    Nextcloud Server
