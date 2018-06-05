@@ -579,7 +579,9 @@
 					</dict>
 				</dict>
 				<key>INSTALLATION TYPE</key>
-				<integer>0</integer>
+                                <integer>1</integer>
+                                <key>MODE</key>
+                                <integer>1</integer>
 			</dict>
 			<key>INSTALLATION_STEPS</key>
 			<array>
@@ -699,7 +701,7 @@
 			<key>BUILD_PATH</key>
 			<dict>
 				<key>PATH</key>
-				<string>../install/.</string>
+                                <string>@CMAKE_INSTALL_PREFIX@/.</string>
 				<key>PATH_TYPE</key>
 				<integer>3</integer>
 			</dict>
