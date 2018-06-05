@@ -91,7 +91,7 @@ private slots:
     void slotNotifyNetworkError(QNetworkReply *);
     void slotNotifyServerFinished(const QString &reply, int replyCode);
     void endNotificationRequest(NotificationWidget *widget, int replyCode);
-    void scheduleWidgetToRemove(NotificationWidget *widget, int milliseconds = 4500);
+    void scheduleWidgetToRemove(NotificationWidget *widget, int milliseconds = 100);
     void slotCheckToCleanWidgets();
 
 private:
