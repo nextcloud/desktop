@@ -1068,107 +1068,107 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>มีข้อขัดแย้งที่ยังไม่ได้รับการแก้ไข คลิกเพื่อดูรายละเอียด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="884"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="885"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>กำลังตรวจหาการเปลี่ยนแปลงในรีโมต &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="888"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="889"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>กำลังตรวจหาการเปลี่ยนแปลงที่ต้นทาง &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="895"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="896"/>
         <source>Reconciling changes</source>
         <translation>คืนค่าการเปลี่ยนแปลง</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="930"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="931"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="933"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="934"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="957"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="958"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>กำลังประสานข้อมูล %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="959"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="970"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="960"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="971"/>
         <source>, </source>
         <translation>หรือ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="963"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="964"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>ดาวน์โหลด %1/วินาที</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="965"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="966"/>
         <source>u2193 %1/s</source>
         <translation>u2193 %1/วินาที</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="974"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>อัพโหลด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="975"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="976"/>
         <source>u2191 %1/s</source>
         <translation>u2191 %1/วินาที</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="981"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="982"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 ของ %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="985"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="986"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1004"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1005"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>เหลืออีก %5 ไฟล์, %1 ไฟล์จาก %2, %3 ไฟล์จาก %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1012"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1013"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 จาก %2, %3 จาก %4 ไฟล์</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1019"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1020"/>
         <source>file %1 of %2</source>
         <translation>ไฟล์ %1 จาก %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
         <source>Waiting...</source>
         <translation>กรุณารอซักครู่...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1067"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>กำลังรออีก (%n) โฟลเดอร์...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1073"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
         <source>Preparing to sync...</source>
         <translation>กำลังเตรียมพร้อมในการประสานข้อมูล</translation>
     </message>
