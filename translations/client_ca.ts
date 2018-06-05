@@ -88,7 +88,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="390"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation type="unfinished"/>
+        <translation>El servidor ha contestat &quot;%1 %2&quot; a &quot;%3 %4&quot;</translation>
     </message>
 </context>
 <context>
@@ -243,7 +243,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>El servidor %1 es troba en mode de manteniment.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="658"/>
@@ -258,7 +258,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="671"/>
         <source>Connecting to %1...</source>
-        <translation type="unfinished"/>
+        <translation>Connectant amb %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="674"/>
@@ -340,7 +340,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="614"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation>Actualment no hi ha informació disponible de l&apos;ús d&apos;emmagatzemament.</translation>
+        <translation>Actualment no hi ha informació disponible de l&apos;ús d&apos;emmagatzematge.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="680"/>
@@ -373,7 +373,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="132"/>
         <source>Maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>Mode de manteniment</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="134"/>
@@ -388,7 +388,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="138"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Preguntant les credencials</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="140"/>
@@ -681,7 +681,7 @@
         <location filename="../src/gui/folder.cpp" line="387"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
-        <translation>%1 s&apos;ha reanomenat a %2.</translation>
+        <translation>%1 s&apos;ha renomenat a %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="394"/>
@@ -706,7 +706,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="385"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>%1 s&apos;ha reanomenat a %2 i %n altre fitxer s&apos;ha reanomenat.</numerusform><numerusform>%1 s&apos;ha reanomenat a %2 i %n altres fitxers s&apos;han reanomenat.</numerusform></translation>
+        <translation><numerusform>%1 s&apos;ha reanomenat a %2 i %n altre fitxer s&apos;ha reanomenat.</numerusform><numerusform>%1 s&apos;ha renomenat a %2 i %n altres fitxers s&apos;han reanomenat.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="392"/>
@@ -1213,7 +1213,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <source>General Settings</source>
-        <translation>Arranjament general</translation>
+        <translation>Configuració general</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="40"/>
@@ -1303,7 +1303,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="157"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Prem aquí&lt;/a&gt; per sol·licitar una contrasenya d&apos;aplicació des de la interfície web.</translation>
     </message>
 </context>
 <context>
@@ -2220,7 +2220,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="219"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation>El fitxer %1 no es pot reanomenar a %2 perquè hi ha un xoc amb el nom d&apos;un fitxer local</translation>
+        <translation>El fitxer %1 no es pot renomenar a %2 perquè hi ha un xoc amb el nom d&apos;un fitxer local</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="250"/>
@@ -2265,12 +2265,12 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="104"/>
         <source>This folder must not be renamed. Please name it back to Shared.</source>
-        <translation>Aquesta carpeta no es pot reanomenar. Reanomeneu-la de nou Shared.</translation>
+        <translation>Aquesta carpeta no es pot renomenar. Torneu a deixar-la com a &apos;Shared&apos;.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="141"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation>El fitxer s&apos;ha reanomenat però és part d&apos;una compartició només de lectura. El fixter original s&apos;ha restaurat.</translation>
+        <translation>El fitxer s&apos;ha renomenat però és part d&apos;una compartició només de lectura. El fitxer original s&apos;ha restaurat.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="158"/>
@@ -2515,7 +2515,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
         <source>Settings</source>
-        <translation>Arranjament</translation>
+        <translation>Configuració</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="109"/>
@@ -3233,7 +3233,7 @@ No és aconsellada usar-la.</translation>
         <location filename="../src/libsync/syncengine.cpp" line="777"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation type="unfinished"/>
+        <translation>Només %1 disponible, necessites com a mínim %2 per començar</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="812"/>
@@ -3248,7 +3248,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1297"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>No permès perquè no tens permís per afegir fitxers a aquesta carpeta</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1600"/>
@@ -3258,7 +3258,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1607"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Espai insuficient al servidor per pujar-hi alguns fitxers.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="167"/>
@@ -3338,7 +3338,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="468"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer conté espais finals.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="471"/>
@@ -3353,7 +3353,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="489"/>
         <source>Unresolved conflict.</source>
-        <translation type="unfinished"/>
+        <translation>Conflicte no resolt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="500"/>
@@ -3399,7 +3399,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1275"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>No permès perquè no tens permís per afegir subcarpetes a aquesta carpeta</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1322"/>
@@ -3559,7 +3559,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="709"/>
         <source>Settings...</source>
-        <translation>Arranjament...</translation>
+        <translation>Configuració...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="711"/>
@@ -3599,7 +3599,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="240"/>
         <source>Disconnected from some accounts</source>
-        <translation type="unfinished"/>
+        <translation>Desconnectat d&apos;alguns comptes</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="251"/>
@@ -3625,7 +3625,7 @@ No és aconsellada usar-la.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="273"/>
         <location filename="../src/gui/owncloudgui.cpp" line="304"/>
         <source>Synchronization is paused</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha pausat la sincronització</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="306"/>
@@ -4177,7 +4177,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="33"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha pogut obrir el navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
@@ -4187,7 +4187,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="55"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha pogut obrir el gestor de correu</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="56"/>

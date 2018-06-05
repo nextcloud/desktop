@@ -113,6 +113,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
         label->setWordWrap(true);
         label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         layout()->replaceWidget(_ui->shareWidgets, label);
+        _ui->shareWidgets->hide();
         return;
     }
 

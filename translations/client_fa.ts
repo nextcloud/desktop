@@ -496,12 +496,12 @@
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="349"/>
         <source>You received %n new notification(s) from %2.</source>
-        <translation><numerusform>شما n% هشدار جدید از 2% دریافت کردید.</numerusform></translation>
+        <translation><numerusform>شما n% هشدار جدید از 2% دریافت کردید.</numerusform><numerusform>شما n% هشدار جدید از 2% دریافت کردید.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="356"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
-        <translation><numerusform>شما n% هشدار جدید از 1% و 2% دریافت کردید.</numerusform></translation>
+        <translation><numerusform>شما n% هشدار جدید از 1% و 2% دریافت کردید.</numerusform><numerusform>شما n% هشدار جدید از 1% و 2% دریافت کردید.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="358"/>
@@ -691,32 +691,32 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="364"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>1% و n% پرونده های دیگر حذف شده اند.</numerusform></translation>
+        <translation><numerusform>1% و n% پرونده های دیگر حذف شده اند.</numerusform><numerusform>1% و n% پرونده های دیگر حذف شده اند.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="371"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation><numerusform>1% و n% پرونده های دیگر دانلود شده اند.</numerusform></translation>
+        <translation><numerusform>1% و n% پرونده های دیگر دانلود شده اند.</numerusform><numerusform>1% و n% پرونده های دیگر دانلود شده اند.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="378"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform> 1% و n% پرونده های دیگر به روز رسانی شده اند.</numerusform></translation>
+        <translation><numerusform> 1% و n% پرونده های دیگر به روز رسانی شده اند.</numerusform><numerusform> 1% و n% پرونده های دیگر به روز رسانی شده اند.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="385"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>1% به 2% تغییر نام داده شده و n% پرونده های دیگر تغییر نام داده شده اند.</numerusform></translation>
+        <translation><numerusform>1% به 2% تغییر نام داده شده و n% پرونده های دیگر تغییر نام داده شده اند.</numerusform><numerusform>1% به 2% تغییر نام داده شده و n% پرونده های دیگر تغییر نام داده شده اند.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="392"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>1% به 2% منتقل شده و n% پرونده های دیگر منتقل شده اند.</numerusform></translation>
+        <translation><numerusform>1% به 2% منتقل شده و n% پرونده های دیگر منتقل شده اند.</numerusform><numerusform>1% به 2% منتقل شده و n% پرونده های دیگر منتقل شده اند.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="399"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>1% و n% سایر پرونده ها ناسازگاری همگام سازی دارند.</numerusform></translation>
+        <translation><numerusform>1% و n% سایر پرونده ها ناسازگاری همگام سازی دارند.</numerusform><numerusform>1% و n% سایر پرونده ها ناسازگاری همگام سازی دارند.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="401"/>
@@ -726,7 +726,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="406"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>1% و n% سایر پرونده ها به دلیل خطاها نمی توانند همگام سازی شوند. برای جزییات log را مشاهده کنید.</numerusform></translation>
+        <translation><numerusform>1% و n% سایر پرونده ها به دلیل خطاها نمی توانند همگام سازی شوند. برای جزییات log را مشاهده کنید.</numerusform><numerusform>1% و n% سایر پرونده ها به دلیل خطاها نمی توانند همگام سازی شوند. برای جزییات log را مشاهده کنید.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="408"/>
@@ -1085,7 +1085,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1058"/>
         <source>Waiting for %n other folder(s)...</source>
-        <translation><numerusform>در انتظار برای %n پوشه‌‎ی دیگر ...</numerusform></translation>
+        <translation><numerusform>در انتظار برای %n پوشه‌‎ی دیگر ...</numerusform><numerusform>در انتظار برای %n پوشه‌‎ی دیگر ...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1064"/>
@@ -3918,12 +3918,12 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="438"/>
         <source>%n day(s) ago</source>
-        <translation><numerusform>n% روز پیش</numerusform></translation>
+        <translation><numerusform>n% روز پیش</numerusform><numerusform>n% روز پیش</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="446"/>
         <source>%n hour(s) ago</source>
-        <translation><numerusform>n% ساعت پیش</numerusform></translation>
+        <translation><numerusform>n% ساعت پیش</numerusform><numerusform>n% ساعت پیش</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="451"/>
@@ -3938,7 +3938,7 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="456"/>
         <source>%n minute(s) ago</source>
-        <translation><numerusform>n% دقیقه پیش</numerusform></translation>
+        <translation><numerusform>n% دقیقه پیش</numerusform><numerusform>n% دقیقه پیش</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="459"/>
@@ -3977,32 +3977,32 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="310"/>
         <source>%n year(s)</source>
-        <translation><numerusform>n% سال</numerusform></translation>
+        <translation><numerusform>n% سال</numerusform><numerusform>n% سال</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="311"/>
         <source>%n month(s)</source>
-        <translation><numerusform>n% ماه</numerusform></translation>
+        <translation><numerusform>n% ماه</numerusform><numerusform>n% ماه</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="312"/>
         <source>%n day(s)</source>
-        <translation><numerusform>n% روز</numerusform></translation>
+        <translation><numerusform>n% روز</numerusform><numerusform>n% روز</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="313"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>n% ساعت</numerusform></translation>
+        <translation><numerusform>n% ساعت</numerusform><numerusform>n% ساعت</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="314"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>n% دقیقه</numerusform></translation>
+        <translation><numerusform>n% دقیقه</numerusform><numerusform>n% دقیقه</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="315"/>
         <source>%n second(s)</source>
-        <translation><numerusform>n% ثانیه</numerusform></translation>
+        <translation><numerusform>n% ثانیه</numerusform><numerusform>n% ثانیه</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="339"/>

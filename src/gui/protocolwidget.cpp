@@ -32,6 +32,8 @@
 
 #include <climits>
 
+Q_DECLARE_METATYPE(OCC::ProtocolItem::ExtraData)
+
 namespace OCC {
 
 QString ProtocolItem::timeString(QDateTime dt, QLocale::FormatType format)
@@ -43,54 +45,14 @@ QString ProtocolItem::timeString(QDateTime dt, QLocale::FormatType format)
     return loc.toString(dt, dtFormat);
 }
 
-QString ProtocolItem::folderName(const QTreeWidgetItem *item)
+ProtocolItem::ExtraData ProtocolItem::extraData(const QTreeWidgetItem *item)
 {
-    return item->data(2, Qt::UserRole).toString();
+    return item->data(0, Qt::UserRole).value<ExtraData>();
 }
 
-void ProtocolItem::setFolderName(QTreeWidgetItem *item, const QString &folderName)
+void ProtocolItem::setExtraData(QTreeWidgetItem *item, const ExtraData &data)
 {
-    item->setData(2, Qt::UserRole, folderName);
-}
-
-QString ProtocolItem::filePath(const QTreeWidgetItem *item)
-{
-    return item->toolTip(1);
-}
-
-void ProtocolItem::setFilePath(QTreeWidgetItem *item, const QString &filePath)
-{
-    item->setToolTip(1, filePath);
-}
-
-QDateTime ProtocolItem::timestamp(const QTreeWidgetItem *item)
-{
-    return item->data(0, Qt::UserRole).toDateTime();
-}
-
-void ProtocolItem::setTimestamp(QTreeWidgetItem *item, const QDateTime &timestamp)
-{
-    item->setData(0, Qt::UserRole, timestamp);
-}
-
-SyncFileItem::Status ProtocolItem::status(const QTreeWidgetItem *item)
-{
-    return static_cast<SyncFileItem::Status>(item->data(3, Qt::UserRole).toInt());
-}
-
-void ProtocolItem::setStatus(QTreeWidgetItem *item, SyncFileItem::Status status)
-{
-    item->setData(3, Qt::UserRole, status);
-}
-
-quint64 ProtocolItem::size(const QTreeWidgetItem *item)
-{
-    return item->data(4, Qt::UserRole).toULongLong();
-}
-
-void ProtocolItem::setSize(QTreeWidgetItem *item, quint64 size)
-{
-    item->setData(4, Qt::UserRole, size);
+    item->setData(0, Qt::UserRole, QVariant::fromValue(data));
 }
 
 ProtocolItem *ProtocolItem::create(const QString &folder, const SyncFileItem &item)
@@ -136,12 +98,16 @@ ProtocolItem *ProtocolItem::create(const QString &folder, const SyncFileItem &it
     twitem->setData(0, Qt::SizeHintRole, QSize(0, ActivityItemDelegate::rowHeight()));
     twitem->setIcon(0, icon);
     twitem->setToolTip(0, longTimeStr);
+    twitem->setToolTip(1, item._file);
     twitem->setToolTip(3, message);
-    setTimestamp(twitem, timestamp);
-    setFilePath(twitem, item._file); // also sets toolTip(1)
-    setFolderName(twitem, folder);
-    setStatus(twitem, item._status);
-    setSize(twitem, item._size);
+    ProtocolItem::ExtraData data;
+    data.timestamp = timestamp;
+    data.path = item._file;
+    data.folderName = folder;
+    data.status = item._status;
+    data.size = item._size;
+    data.direction = item._direction;
+    ProtocolItem::setExtraData(twitem, data);
     return twitem;
 }
 
@@ -151,13 +117,13 @@ SyncJournalFileRecord ProtocolItem::syncJournalRecord(QTreeWidgetItem *item)
     auto f = folder(item);
     if (!f)
         return rec;
-    f->journalDb()->getFileRecord(filePath(item), &rec);
+    f->journalDb()->getFileRecord(extraData(item).path, &rec);
     return rec;
 }
 
 Folder *ProtocolItem::folder(QTreeWidgetItem *item)
 {
-    return FolderMan::instance()->folder(folderName(item));
+    return FolderMan::instance()->folder(extraData(item).folderName);
 }
 
 void ProtocolItem::openContextMenu(QPoint globalPos, QTreeWidgetItem *item, QWidget *parent)
@@ -199,10 +165,10 @@ bool ProtocolItem::operator<(const QTreeWidgetItem &other) const
     if (column == 0) {
         // Items with empty "File" column are larger than others,
         // otherwise sort by time (this uses lexicographic ordering)
-        return std::forward_as_tuple(text(1).isEmpty(), timestamp(this))
-            < std::forward_as_tuple(other.text(1).isEmpty(), timestamp(&other));
+        return std::forward_as_tuple(text(1).isEmpty(), extraData(this).timestamp)
+            < std::forward_as_tuple(other.text(1).isEmpty(), extraData(&other).timestamp);
     } else if (column == 4) {
-        return size(this) < size(&other);
+        return extraData(this).size < extraData(&other).size;
     }
 
     return QTreeWidgetItem::operator<(other);

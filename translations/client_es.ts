@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;Seleccionar...</translation>
+        <translation>Seleccionar…</translation>
     </message>
 </context>
 <context>
@@ -1430,7 +1430,7 @@ Los elementos cuya eliminación está permitida serán eliminados si impiden que
     <message>
         <location filename="../src/gui/issueswidget.ui" line="133"/>
         <source>There were too many issues. Not all will be visible here.</source>
-        <translation type="unfinished"/>
+        <translation>Hubo muchas incidencias. No todas se mostrarán aquí.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="155"/>

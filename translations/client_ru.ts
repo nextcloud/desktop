@@ -4189,7 +4189,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="55"/>
         <source>Could not open email client</source>
-        <translation>Не удалось открыть почтового клиента</translation>
+        <translation>Не удалось открыть почтовый клиент</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="56"/>

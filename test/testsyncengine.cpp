@@ -605,6 +605,38 @@ private slots:
         QCOMPARE(fakeFolder.syncEngine().lastLocalDiscoveryStyle(), LocalDiscoveryStyle::FilesystemOnly);
     }
 
+    void testLocalDiscoveryDecision()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        auto &engine = fakeFolder.syncEngine();
+
+        QVERIFY(engine.shouldDiscoverLocally(""));
+        QVERIFY(engine.shouldDiscoverLocally("A"));
+        QVERIFY(engine.shouldDiscoverLocally("A/X"));
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(
+            LocalDiscoveryStyle::DatabaseAndFilesystem,
+            { "A/X", "foo bar space/touch", "foo/", "zzz" });
+
+        QVERIFY(engine.shouldDiscoverLocally(""));
+        QVERIFY(engine.shouldDiscoverLocally("A"));
+        QVERIFY(engine.shouldDiscoverLocally("A/X"));
+        QVERIFY(!engine.shouldDiscoverLocally("B"));
+        QVERIFY(!engine.shouldDiscoverLocally("A B"));
+        QVERIFY(!engine.shouldDiscoverLocally("B/X"));
+        QVERIFY(!engine.shouldDiscoverLocally("A/X/Y"));
+        QVERIFY(engine.shouldDiscoverLocally("foo bar space"));
+        QVERIFY(engine.shouldDiscoverLocally("foo"));
+        QVERIFY(!engine.shouldDiscoverLocally("foo bar"));
+        QVERIFY(!engine.shouldDiscoverLocally("foo bar/touch"));
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(
+            LocalDiscoveryStyle::DatabaseAndFilesystem,
+            {});
+
+        QVERIFY(!engine.shouldDiscoverLocally(""));
+    }
+
     void testDiscoveryHiddenFile()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
@@ -649,6 +681,7 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("A/tößt"));
         QVERIFY(fakeFolder.currentLocalState().find("A/t𠜎t"));
 
+#if !defined(Q_OS_MAC) && !defined(Q_OS_WIN)
         // Try again with a locale that can represent ö but not 𠜎 (4-byte utf8).
         QTextCodec::setCodecForLocale(QTextCodec::codecForName("ISO-8859-15"));
         QVERIFY(QTextCodec::codecForLocale()->mibEnum() == 111);
@@ -679,6 +712,7 @@ private slots:
         QVERIFY(fakeFolder.currentRemoteState().find("C/tößt"));
 
         QTextCodec::setCodecForLocale(utf8Locale);
+#endif
     }
 };
 

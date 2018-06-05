@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;Velg...</translation>
+        <translation>&amp;Velg …</translation>
     </message>
 </context>
 <context>
@@ -101,12 +101,12 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="58"/>
         <source>...</source>
-        <translation>...</translation>
+        <translation>…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="79"/>
         <source>Storage space: ...</source>
-        <translation>Lagringsplass: ...</translation>
+        <translation>Lagringsplass: …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="152"/>
@@ -258,7 +258,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="671"/>
         <source>Connecting to %1...</source>
-        <translation>Kobler til %1...</translation>
+        <translation>Kobler til %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="674"/>
@@ -534,7 +534,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse...</source>
-        <translation>Bla...</translation>
+        <translation>Bla …</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
@@ -984,7 +984,7 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="183"/>
         <source>Fetching folder list from server...</source>
-        <translation>Henter mappeliste fra server..</translation>
+        <translation>Henter mappeliste fra tjener …</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="209"/>
@@ -1079,17 +1079,17 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1056"/>
         <source>Waiting...</source>
-        <translation>Venter..</translation>
+        <translation>Venter …</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1058"/>
         <source>Waiting for %n other folder(s)...</source>
-        <translation><numerusform>Venter på %n annen mappe...</numerusform><numerusform>Venter på %n andre mappe(r)...</numerusform></translation>
+        <translation><numerusform>Venter på %n annen mappe...</numerusform><numerusform>Venter på %n andre mappe(r) …</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1064"/>
         <source>Preparing to sync...</source>
-        <translation>Forbereder synkronisering...</translation>
+        <translation>Forbereder synkronisering …</translation>
     </message>
 </context>
 <context>
@@ -1674,7 +1674,7 @@ Elementer hvor sletting er tillatt, vil bli slettet hvis de forhindrer fjerning 
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="104"/>
         <source>Closing in a few seconds...</source>
-        <translation>Lukkes om noen sekunder...</translation>
+        <translation>Lukkes om noen sekunder …</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="138"/>
@@ -1739,7 +1739,7 @@ kan be om flere rettigheter under behandlingen.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation>Laster ned versjon %1. Vennligst vent...</translation>
+        <translation>Laster ned versjon %1. Vennligst vent …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
@@ -1797,7 +1797,7 @@ kan be om flere rettigheter under behandlingen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="58"/>
         <source>Connect...</source>
-        <translation>Koble til...</translation>
+        <translation>Koble til …</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="156"/>
@@ -1940,7 +1940,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="334"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation>Prøver å koble til %1 på %2...</translation>
+        <translation>Prøver å koble til %1 på %2 …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="385"/>
@@ -2477,7 +2477,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="74"/>
         <source>Loading ...</source>
-        <translation>Laster ...</translation>
+        <translation>Laster …</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="80"/>
@@ -2795,7 +2795,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="22"/>
         <source>Share with users or groups ...</source>
-        <translation>Del med brukere eller grupper ...</translation>
+        <translation>Del med brukere eller grupper …</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="108"/>
@@ -2858,7 +2858,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="83"/>
         <source>...</source>
-        <translation>...</translation>
+        <translation>…</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="357"/>
@@ -2928,7 +2928,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="565"/>
         <source>Share...</source>
-        <translation type="unfinished"/>
+        <translation>Del …</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="567"/>
@@ -3347,7 +3347,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="471"/>
         <source>Filename is too long.</source>
-        <translation>Filnavn er for langt.</translation>
+        <translation>Filnavnet er for langt.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="480"/>
@@ -3521,7 +3521,7 @@ Det er ikke tilrådelig å bruke den.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="628"/>
         <location filename="../src/gui/owncloudgui.cpp" line="722"/>
         <source>Log in...</source>
-        <translation>Logg inn..</translation>
+        <translation>Logg inn …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="375"/>
@@ -3563,12 +3563,12 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="709"/>
         <source>Settings...</source>
-        <translation>Innstillinger...</translation>
+        <translation>Innstillinger …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="711"/>
         <source>Details...</source>
-        <translation>Detaljer...</translation>
+        <translation>Detaljer …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="717"/>
@@ -3679,12 +3679,12 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="626"/>
         <source>Log in to all accounts...</source>
-        <translation>Logg inn på alle kontoer...</translation>
+        <translation>Logg inn på alle kontoer …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="710"/>
         <source>New account...</source>
-        <translation>Ny konto...</translation>
+        <translation>Ny konto …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="728"/>
@@ -3878,7 +3878,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="102"/>
         <source>https://...</source>
-        <translation>https://...</translation>
+        <translation>https:// …</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="160"/>
@@ -4168,7 +4168,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="84"/>
         <source>Aborting...</source>
-        <translation>Avbryter...</translation>
+        <translation>Avbryter …</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="87"/>

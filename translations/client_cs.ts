@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose...</source>
-        <translation>Vy&amp;brat...</translation>
+        <translation>&amp;Zvolit…</translation>
     </message>
 </context>
 <context>
@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
         <source>Create Folder</source>
-        <translation>Vytvořit adresář</translation>
+        <translation>Vytvořit složku</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="163"/>
@@ -42,7 +42,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="177"/>
         <source>Folders</source>
-        <translation>Adresáře</translation>
+        <translation>Složky</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="110"/>
@@ -78,17 +78,17 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="245"/>
         <source>Connection timed out</source>
-        <translation>Připojení vypršelo</translation>
+        <translation>Překročen časový limit spojení</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="247"/>
         <source>Unknown error: network reply was deleted</source>
-        <translation type="unfinished"/>
+        <translation>Neznámá chyba: odpověď sítě byla smazána</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="390"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Odpověď ze serveru „%1 %2“ na „%3 %4“</translation>
     </message>
 </context>
 <context>
@@ -101,12 +101,12 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="58"/>
         <source>...</source>
-        <translation>...</translation>
+        <translation>…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="79"/>
         <source>Storage space: ...</source>
-        <translation>Prostor úložiště: ...</translation>
+        <translation>Prostor úložiště: …</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="152"/>
@@ -496,12 +496,12 @@
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="349"/>
         <source>You received %n new notification(s) from %2.</source>
-        <translation><numerusform>Dostali jste %n nové upozornění od %2.</numerusform><numerusform>Dostali jste %n nové upozornění od %2.</numerusform><numerusform>Dostali jste %n nových upozornění od %2.</numerusform></translation>
+        <translation><numerusform>Dostali jste %n nové upozornění od %2.</numerusform><numerusform>Dostali jste %n nové upozornění od %2.</numerusform><numerusform>Dostali jste %n nových upozornění od %2.</numerusform><numerusform>Dostali jste %n nových upozornění od %2.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="356"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
-        <translation><numerusform>Dostali jste %n nové upozornění od %1 a %2.</numerusform><numerusform>Dostali jste %n nové upozornění od %1 a %2.</numerusform><numerusform>Dostali jste %n nových upozornění od %1 a %2.</numerusform></translation>
+        <translation><numerusform>Dostali jste %n nové upozornění od %1 a %2.</numerusform><numerusform>Dostali jste %n nové upozornění od %1 a %2.</numerusform><numerusform>Dostali jste %n nových upozornění od %1 a %2.</numerusform><numerusform>Dostali jste %n nových upozornění od %1 a %2.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="358"/>
@@ -691,32 +691,32 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="364"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 soubor bude smazán.</numerusform><numerusform>%1 a %n další soubory budou smazány.</numerusform><numerusform>%1 a %n další soubory budou smazány.</numerusform></translation>
+        <translation><numerusform>%1 soubor bude smazán.</numerusform><numerusform>%1 a %n další soubory budou smazány.</numerusform><numerusform>%1 a %n další soubory budou smazány.</numerusform><numerusform>%1 a %n další soubory budou smazány.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="371"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation><numerusform>%1 soubor byl stažen.</numerusform><numerusform>%1 a %n další soubory byly staženy.</numerusform><numerusform>%1 a %n další soubory byly staženy.</numerusform></translation>
+        <translation><numerusform>%1 soubor byl stažen.</numerusform><numerusform>%1 a %n další soubory byly staženy.</numerusform><numerusform>%1 a %n další soubory byly staženy.</numerusform><numerusform>%1 a %n další soubory byly staženy.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="378"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>%1 soubor byl aktualizován.</numerusform><numerusform>%1 a %n další soubory byly aktualizovány.</numerusform><numerusform>%1 a %n další soubory byly aktualizovány.</numerusform></translation>
+        <translation><numerusform>%1 soubor byl aktualizován.</numerusform><numerusform>%1 a %n další soubory byly aktualizovány.</numerusform><numerusform>%1 a %n další soubory byly aktualizovány.</numerusform><numerusform>%1 a %n další soubory byly aktualizovány.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="385"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>%1 byl přejmenován na %2.</numerusform><numerusform>%1 byl přejmenován na %2 a %n další soubory byly přejmenovány.</numerusform><numerusform>%1 byl přejmenován na %2 a %n další soubory byly přejmenovány.</numerusform></translation>
+        <translation><numerusform>%1 byl přejmenován na %2.</numerusform><numerusform>%1 byl přejmenován na %2 a %n další soubory byly přejmenovány.</numerusform><numerusform>%1 byl přejmenován na %2 a %n další soubory byly přejmenovány.</numerusform><numerusform>%1 byl přejmenován na %2 a %n další soubory byly přejmenovány.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="392"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>%1 byl přesunut do %2.</numerusform><numerusform>%1 byl přesunut do %2 a %n dalších souborů bylo přesunuto.</numerusform><numerusform>%1 byl přesunut do %2 a %n dalších souborů bylo přesunuto.</numerusform></translation>
+        <translation><numerusform>%1 byl přesunut do %2.</numerusform><numerusform>%1 byl přesunut do %2 a %n dalších souborů bylo přesunuto.</numerusform><numerusform>%1 byl přesunut do %2 a %n dalších souborů bylo přesunuto.</numerusform><numerusform>%1 byl přesunut do %2 a %n dalších souborů bylo přesunuto.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="399"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 má problém se synchronizací.</numerusform><numerusform>%1 a %n dalších souborů má problém se synchronizací.</numerusform><numerusform>%1 a %n dalších souborů má problém se synchronizací.</numerusform></translation>
+        <translation><numerusform>%1 má problém se synchronizací.</numerusform><numerusform>%1 a %n dalších souborů má problém se synchronizací.</numerusform><numerusform>%1 a %n dalších souborů má problém se synchronizací.</numerusform><numerusform>%1 a %n dalších souborů má problém se synchronizací.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="401"/>
@@ -726,7 +726,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="406"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 soubor nemůže být synchronizován kvůli chybám. Shlédněte log pro detaily.</numerusform><numerusform>%1 a %n dalších souborů nemohou být synchronizovány kvůli chybám. Shlédněte log pro detaily.</numerusform><numerusform>%1 a %n dalších souborů nemohou být synchronizovány kvůli chybám. Shlédněte log pro detaily.</numerusform></translation>
+        <translation><numerusform>%1 soubor nemůže být synchronizován kvůli chybám. Shlédněte log pro detaily.</numerusform><numerusform>%1 a %n dalších souborů nemohou být synchronizovány kvůli chybám. Shlédněte log pro detaily.</numerusform><numerusform>%1 a %n dalších souborů nemohou být synchronizovány kvůli chybám. Shlédněte log pro detaily.</numerusform><numerusform>%1 a %n dalších souborů nemohou být synchronizovány kvůli chybám. Shlédněte log pro detaily.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="408"/>
@@ -1083,7 +1083,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1058"/>
         <source>Waiting for %n other folder(s)...</source>
-        <translation><numerusform>Čeká se na %n další adresář...</numerusform><numerusform>Čeká se na %n další adresáře...</numerusform><numerusform>Čeká se na %n dalších adresářů...</numerusform></translation>
+        <translation><numerusform>Čeká se na %n další adresář...</numerusform><numerusform>Čeká se na %n další adresáře...</numerusform><numerusform>Čeká se na %n dalších adresářů...</numerusform><numerusform>Čeká se na %n dalších adresářů...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1064"/>
@@ -1396,7 +1396,7 @@ Položky u kterých je povoleno smazání budou vymazány, pokud by bránily ods
     <message>
         <location filename="../src/gui/issueswidget.ui" line="20"/>
         <source>List of issues</source>
-        <translation type="unfinished"/>
+        <translation>Seznam problémů</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="34"/>
@@ -1407,7 +1407,7 @@ Položky u kterých je povoleno smazání budou vymazány, pokud by bránily ods
         <location filename="../src/gui/issueswidget.ui" line="42"/>
         <location filename="../src/gui/issueswidget.ui" line="61"/>
         <source>&lt;no filter&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;no filter&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="50"/>
@@ -1433,7 +1433,7 @@ Položky u kterých je povoleno smazání budou vymazány, pokud by bránily ods
     <message>
         <location filename="../src/gui/issueswidget.ui" line="155"/>
         <source>Copy the issues list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Zkopírovat seznam problémů do schránky.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="158"/>
@@ -1964,7 +1964,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>The server reported the following error:</source>
-        <translation type="unfinished"/>
+        <translation>Server ohlásil následující chybu:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2658,7 +2658,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="42"/>
         <source>&amp;Create new</source>
-        <translation type="unfinished"/>
+        <translation>Vytvořit nové</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="105"/>
@@ -2673,7 +2673,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="178"/>
         <source>Link properties:</source>
-        <translation type="unfinished"/>
+        <translation>Vlastnosti odkazu:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="220"/>
@@ -2709,12 +2709,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="93"/>
         <source>Link shares have been disabled</source>
-        <translation type="unfinished"/>
+        <translation>Sdílení odkazů jsou vypnuté</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="107"/>
         <source>Create public link share</source>
-        <translation type="unfinished"/>
+        <translation>Vytvořit sdílení veřejného odkazu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
@@ -2730,12 +2730,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Zkopírovat do schránky</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Copy link to clipboard (direct download)</source>
-        <translation type="unfinished"/>
+        <translation>Zkopírovat do schránky (přímé stažení)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
@@ -2745,7 +2745,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="167"/>
         <source>Send link by email (direct download)</source>
-        <translation type="unfinished"/>
+        <translation>Poslat odkaz e-mailem (přímé stažení)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
@@ -2814,7 +2814,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="237"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Zkopírovat do schránky</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="239"/>
@@ -2829,7 +2829,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Něco jsem vám nasdílel</translation>
     </message>
 </context>
 <context>
@@ -2922,22 +2922,22 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="557"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Něco jsem vám nasdílel</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="565"/>
         <source>Share...</source>
-        <translation type="unfinished"/>
+        <translation>Sdílet…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="567"/>
         <source>Copy private link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Zkopírovat soukromý odkaz do schránky</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="568"/>
         <source>Send private link by email...</source>
-        <translation type="unfinished"/>
+        <translation>Poslat soukromý odkaz e-mailem…</translation>
     </message>
 </context>
 <context>
@@ -3602,7 +3602,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="240"/>
         <source>Disconnected from some accounts</source>
-        <translation type="unfinished"/>
+        <translation>Odpojeno od některých účtů</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="251"/>
@@ -3628,12 +3628,12 @@ Nedoporučuje se jí používat.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="273"/>
         <location filename="../src/gui/owncloudgui.cpp" line="304"/>
         <source>Synchronization is paused</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizace je pozastavena</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="306"/>
         <source>Error during synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Chyba při synchronizaci</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="314"/>
@@ -3843,7 +3843,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Přepněte se do webového prohlížeče a pokračujte v něm.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
@@ -3919,12 +3919,12 @@ Nedoporučuje se jí používat.</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="438"/>
         <source>%n day(s) ago</source>
-        <translation><numerusform>před %n dnem</numerusform><numerusform>před %n dny</numerusform><numerusform>před %n dny</numerusform></translation>
+        <translation><numerusform>před %n dnem</numerusform><numerusform>před %n dny</numerusform><numerusform>před %n dny</numerusform><numerusform>před %n dny</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="446"/>
         <source>%n hour(s) ago</source>
-        <translation><numerusform>před %n hodinou</numerusform><numerusform>před %n hodinami</numerusform><numerusform>před %n hodinami</numerusform></translation>
+        <translation><numerusform>před %n hodinou</numerusform><numerusform>před %n hodinami</numerusform><numerusform>před %n hodinami</numerusform><numerusform>před %n hodinami</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="451"/>
@@ -3939,7 +3939,7 @@ Nedoporučuje se jí používat.</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="456"/>
         <source>%n minute(s) ago</source>
-        <translation><numerusform>před %n minutou</numerusform><numerusform>před %n minutami</numerusform><numerusform>před %n minutami</numerusform></translation>
+        <translation><numerusform>před %n minutou</numerusform><numerusform>před %n minutami</numerusform><numerusform>před %n minutami</numerusform><numerusform>před %n minutami</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="459"/>
@@ -3978,32 +3978,32 @@ Nedoporučuje se jí používat.</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="310"/>
         <source>%n year(s)</source>
-        <translation><numerusform>%n rok</numerusform><numerusform>%n roky</numerusform><numerusform>%n let</numerusform></translation>
+        <translation><numerusform>%n rok</numerusform><numerusform>%n roky</numerusform><numerusform>%n let</numerusform><numerusform>%n let</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="311"/>
         <source>%n month(s)</source>
-        <translation><numerusform>%n měsíc</numerusform><numerusform>%n měsíce</numerusform><numerusform>%n měsíců</numerusform></translation>
+        <translation><numerusform>%n měsíc</numerusform><numerusform>%n měsíce</numerusform><numerusform>%n měsíců</numerusform><numerusform>%n měsíců</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="312"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n den</numerusform><numerusform>%n dny</numerusform><numerusform>%n dní</numerusform></translation>
+        <translation><numerusform>%n den</numerusform><numerusform>%n dny</numerusform><numerusform>%n dní</numerusform><numerusform>%n dní</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="313"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>%n hodina</numerusform><numerusform>%n hodiny</numerusform><numerusform>%n hodin</numerusform></translation>
+        <translation><numerusform>%n hodina</numerusform><numerusform>%n hodiny</numerusform><numerusform>%n hodin</numerusform><numerusform>%n hodin</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="314"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>%n minuta</numerusform><numerusform>%n minuty</numerusform><numerusform>%n minut</numerusform></translation>
+        <translation><numerusform>%n minuta</numerusform><numerusform>%n minuty</numerusform><numerusform>%n minut</numerusform><numerusform>%n minut</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="315"/>
         <source>%n second(s)</source>
-        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform></translation>
+        <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="339"/>
@@ -4180,7 +4180,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="33"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>Nedaří se otevřít prohlížeč</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>

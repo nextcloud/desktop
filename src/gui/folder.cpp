@@ -107,6 +107,9 @@ Folder::Folder(const FolderDefinition &definition,
     _scheduleSelfTimer.setInterval(SyncEngine::minimumFileAgeForUpload);
     connect(&_scheduleSelfTimer, &QTimer::timeout,
         this, &Folder::slotScheduleThisFolder);
+
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::folderConflicts,
+        this, &Folder::slotFolderConflicts);
 }
 
 Folder::~Folder()
@@ -119,6 +122,10 @@ void Folder::checkLocalPath()
 {
     const QFileInfo fi(_definition.localPath);
     _canonicalLocalPath = fi.canonicalFilePath();
+#ifdef Q_OS_MAC
+    // Workaround QTBUG-55896  (Should be fixed in Qt 5.8)
+    _canonicalLocalPath = _canonicalLocalPath.normalized(QString::NormalizationForm_C);
+#endif
     if (_canonicalLocalPath.isEmpty()) {
         qCWarning(lcFolder) << "Broken symlink:" << _definition.localPath;
         _canonicalLocalPath = _definition.localPath;
@@ -962,6 +969,17 @@ void Folder::slotScheduleThisFolder()
 void Folder::slotNextSyncFullLocalDiscovery()
 {
     _timeSinceLastFullLocalDiscovery.invalidate();
+}
+
+void Folder::slotFolderConflicts(const QString &folder, const QStringList &conflictPaths)
+{
+    if (folder != _definition.alias)
+        return;
+    auto &r = _syncResult;
+
+    // If the number of conflicts is too low, adjust it upwards
+    if (conflictPaths.size() > r.numNewConflictItems() + r.numOldConflictItems())
+        r.setNumOldConflictItems(conflictPaths.size() - r.numNewConflictItems());
 }
 
 void Folder::scheduleThisFolderSoon()

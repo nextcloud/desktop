@@ -77,11 +77,6 @@ QStringList AccountState::connectionErrors() const
     return _connectionErrors;
 }
 
-QString AccountState::connectionStatusString(ConnectionStatus status)
-{
-    return ConnectionValidator::statusString(status);
-}
-
 AccountState::State AccountState::state() const
 {
     return _state;
@@ -258,7 +253,7 @@ void AccountState::checkConnectivity()
 void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList &errors)
 {
     if (isSignedOut()) {
-        qCWarning(lcAccountState) << "Signed out, ignoring" << connectionStatusString(status) << _account->url().toString();
+        qCWarning(lcAccountState) << "Signed out, ignoring" << status << _account->url().toString();
         return;
     }
 
@@ -281,8 +276,8 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
 
     if (_connectionStatus != status) {
         qCInfo(lcAccountState) << "AccountState connection status change: "
-                               << connectionStatusString(_connectionStatus) << "->"
-                               << connectionStatusString(status);
+                               << _connectionStatus << "->"
+                               << status;
         _connectionStatus = status;
     }
     _connectionErrors = errors;

@@ -237,6 +237,9 @@ void SettingsDialog::accountAdded(AccountState *s)
     connect(s->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
     connect(s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
 
+    // Refresh immediatly when getting online
+    connect(s, &AccountState::isConnectedChanged, this, &SettingsDialog::slotRefreshActivityAccountStateSender);
+
     slotRefreshActivity(s);
 }
 
@@ -377,6 +380,11 @@ QAction *SettingsDialog::createColorAwareAction(const QString &iconPath, const Q
     // all buttons must have the same size in order to keep a good layout
     QIcon coloredIcon = createColorAwareIcon(iconPath);
     return createActionWithIcon(coloredIcon, text, iconPath);
+}
+
+void SettingsDialog::slotRefreshActivityAccountStateSender()
+{
+    slotRefreshActivity(qobject_cast<AccountState*>(sender()));
 }
 
 void SettingsDialog::slotRefreshActivity(AccountState *accountState)

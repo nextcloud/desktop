@@ -49,6 +49,7 @@ public slots:
     void showActivityPage();
     void showIssuesList(const QString &folderAlias);
     void slotRefreshActivity(AccountState *accountState);
+    void slotRefreshActivityAccountStateSender();
 
 private slots:
     void accountAdded(AccountState *);

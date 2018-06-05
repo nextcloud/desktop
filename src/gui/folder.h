@@ -20,7 +20,6 @@
 #include "syncresult.h"
 #include "progressdispatcher.h"
 #include "common/syncjournaldb.h"
-#include "clientproxy.h"
 #include "networkjobs.h"
 
 #include <csync.h>
@@ -315,6 +314,13 @@ private slots:
     /** Ensures that the next sync performs a full local discovery. */
     void slotNextSyncFullLocalDiscovery();
 
+    /** Adjust sync result based on conflict data from IssuesWidget.
+     *
+     * This is pretty awkward, but IssuesWidget just keeps better track
+     * of conflicts across partial local discovery.
+     */
+    void slotFolderConflicts(const QString &folder, const QStringList &conflictPaths);
+
 private:
     bool reloadExcludes();
 
@@ -360,8 +366,6 @@ private:
     int _consecutiveFollowUpSyncs;
 
     SyncJournalDb _journal;
-
-    ClientProxy _clientProxy;
 
     QScopedPointer<SyncRunFileLog> _fileLog;
 

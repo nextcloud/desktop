@@ -24,6 +24,4 @@
 #cmakedefine SYSCONFDIR "@SYSCONFDIR@"
 #cmakedefine SHAREDIR "@SHAREDIR@"
 
-#cmakedefine WITH_TESTING 1
-
 #endif

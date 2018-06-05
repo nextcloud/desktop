@@ -120,35 +120,11 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("Success.");
         break;
     case CSYNC_STATUS_STATEDB_LOAD_ERROR:
-        errStr = tr("CSync failed to load or create the journal file. "
+        errStr = tr("Failed to load or create the journal file. "
                     "Make sure you have read and write permissions in the local sync folder.");
         break;
-    case CSYNC_STATUS_STATEDB_CORRUPTED:
-        errStr = tr("CSync failed to load the journal file. The journal file is corrupted.");
-        break;
-    case CSYNC_STATUS_NO_MODULE:
-        errStr = tr("<p>The %1 plugin for csync could not be loaded.<br/>Please verify the installation!</p>").arg(qApp->applicationName());
-        break;
-    case CSYNC_STATUS_PARAM_ERROR:
-        errStr = tr("CSync fatal parameter error.");
-        break;
     case CSYNC_STATUS_UPDATE_ERROR:
-        errStr = tr("CSync processing step update failed.");
-        break;
-    case CSYNC_STATUS_RECONCILE_ERROR:
-        errStr = tr("CSync processing step reconcile failed.");
-        break;
-    case CSYNC_STATUS_PROXY_AUTH_ERROR:
-        errStr = tr("CSync could not authenticate at the proxy.");
-        break;
-    case CSYNC_STATUS_LOOKUP_ERROR:
-        errStr = tr("CSync failed to lookup proxy or server.");
-        break;
-    case CSYNC_STATUS_SERVER_AUTH_ERROR:
-        errStr = tr("CSync failed to authenticate at the %1 server.").arg(qApp->applicationName());
-        break;
-    case CSYNC_STATUS_CONNECT_ERROR:
-        errStr = tr("CSync failed to connect to the network.");
+        errStr = tr("Discovery step failed.");
         break;
     case CSYNC_STATUS_TIMEOUT:
         errStr = tr("A network connection timeout happened.");
@@ -157,16 +133,16 @@ QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
         errStr = tr("A HTTP transmission error happened.");
         break;
     case CSYNC_STATUS_PERMISSION_DENIED:
-        errStr = tr("CSync failed due to unhandled permission denied.");
+        errStr = tr("Permission denied.");
         break;
     case CSYNC_STATUS_NOT_FOUND:
-        errStr = tr("CSync failed to access") + " "; // filename gets added.
+        errStr = tr("File or directory not found:") + " "; // filename gets added.
         break;
     case CSYNC_STATUS_FILE_EXISTS:
-        errStr = tr("CSync tried to create a folder that already exists.");
+        errStr = tr("Tried to create a folder that already exists.");
         break;
     case CSYNC_STATUS_OUT_OF_SPACE:
-        errStr = tr("CSync: No space on %1 server available.").arg(qApp->applicationName());
+        errStr = tr("No space on %1 server available.").arg(qApp->applicationName());
         break;
     case CSYNC_STATUS_UNSUCCESSFUL:
         errStr = tr("CSync unspecified error.");
@@ -272,13 +248,29 @@ bool SyncEngine::checkErrorBlacklisting(SyncFileItem &item)
     return true;
 }
 
+static bool isFileTransferInstruction(csync_instructions_e instruction)
+{
+    return instruction == CSYNC_INSTRUCTION_CONFLICT
+        || instruction == CSYNC_INSTRUCTION_NEW
+        || instruction == CSYNC_INSTRUCTION_SYNC
+        || instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
+}
+
+static bool isFileModifyingInstruction(csync_instructions_e instruction)
+{
+    return isFileTransferInstruction(instruction)
+        || instruction == CSYNC_INSTRUCTION_RENAME
+        || instruction == CSYNC_INSTRUCTION_REMOVE;
+}
+
 void SyncEngine::deleteStaleDownloadInfos(const SyncFileItemVector &syncItems)
 {
     // Find all downloadinfo paths that we want to preserve.
     QSet<QString> download_file_paths;
     foreach (const SyncFileItemPtr &it, syncItems) {
         if (it->_direction == SyncFileItem::Down
-            && it->_type == ItemTypeFile) {
+            && it->_type == ItemTypeFile
+            && isFileTransferInstruction(it->_instruction)) {
             download_file_paths.insert(it->_file);
         }
     }
@@ -299,7 +291,8 @@ void SyncEngine::deleteStaleUploadInfos(const SyncFileItemVector &syncItems)
     QSet<QString> upload_file_paths;
     foreach (const SyncFileItemPtr &it, syncItems) {
         if (it->_direction == SyncFileItem::Up
-            && it->_type == ItemTypeFile) {
+            && it->_type == ItemTypeFile
+            && isFileTransferInstruction(it->_instruction)) {
             upload_file_paths.insert(it->_file);
         }
     }
@@ -368,16 +361,6 @@ void SyncEngine::conflictRecordMaintenance()
     }
 }
 
-int SyncEngine::treewalkLocal(csync_file_stat_t *file, csync_file_stat_t *other, void *data)
-{
-    return static_cast<SyncEngine *>(data)->treewalkFile(file, other, false);
-}
-
-int SyncEngine::treewalkRemote(csync_file_stat_t *file, csync_file_stat_t *other, void *data)
-{
-    return static_cast<SyncEngine *>(data)->treewalkFile(file, other, true);
-}
-
 /**
  * The main function in the post-reconcile phase.
  *
@@ -393,26 +376,38 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
     if (!file)
         return -1;
 
-    QTextCodec::ConverterState utf8State;
-    static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-    ASSERT(codec);
-    QString fileUtf8 = codec->toUnicode(file->path, file->path.size(), &utf8State);
-    QString renameTarget;
-    QString key = fileUtf8;
-
     auto instruction = file->instruction;
-    if (utf8State.invalidChars > 0 || utf8State.remainingChars > 0) {
-        qCWarning(lcEngine) << "File ignored because of invalid utf-8 sequence: " << file->path;
-        instruction = CSYNC_INSTRUCTION_IGNORE;
-    } else {
-        renameTarget = codec->toUnicode(file->rename_path, file->rename_path.size(), &utf8State);
-        if (utf8State.invalidChars > 0 || utf8State.remainingChars > 0) {
+
+    // Decode utf8 path and rename_path QByteArrays to QStrings
+    QString fileUtf8;
+    QString renameTarget;
+    bool utf8DecodeError = false;
+    {
+        const auto toUnicode = [](QByteArray utf8, QString *result) {
+            static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+            ASSERT(codec);
+
+            QTextCodec::ConverterState state;
+            *result = codec->toUnicode(utf8, utf8.size(), &state);
+            return !(state.invalidChars > 0 || state.remainingChars > 0);
+        };
+
+        if (!toUnicode(file->path, &fileUtf8)) {
+            qCWarning(lcEngine) << "File ignored because of invalid utf-8 sequence: " << file->path;
+            instruction = CSYNC_INSTRUCTION_IGNORE;
+            utf8DecodeError = true;
+        }
+        if (!toUnicode(file->rename_path, &renameTarget)) {
             qCWarning(lcEngine) << "File ignored because of invalid utf-8 sequence in the rename_path: " << file->path << file->rename_path;
             instruction = CSYNC_INSTRUCTION_IGNORE;
+            utf8DecodeError = true;
         }
-        if (instruction == CSYNC_INSTRUCTION_RENAME) {
-            key = renameTarget;
-        }
+    }
+
+    // key is the handle that the SyncFileItem will have in the map.
+    QString key = fileUtf8;
+    if (instruction == CSYNC_INSTRUCTION_RENAME) {
+        key = renameTarget;
     }
 
     // Gets a default-constructed SyncFileItemPtr or the one from the first walk (=local walk)
@@ -561,7 +556,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         /* No error string */
     }
 
-    if (item->_instruction == CSYNC_INSTRUCTION_IGNORE && (utf8State.invalidChars > 0 || utf8State.remainingChars > 0)) {
+    if (item->_instruction == CSYNC_INSTRUCTION_IGNORE && utf8DecodeError) {
         item->_status = SyncFileItem::NormalError;
         //item->_instruction = CSYNC_INSTRUCTION_ERROR;
         item->_errorString = tr("Filename encoding is not valid");
@@ -664,7 +659,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
         break;
     case CSYNC_INSTRUCTION_CONFLICT:
-    case CSYNC_INSTRUCTION_IGNORE:
     case CSYNC_INSTRUCTION_ERROR:
         dir = SyncFileItem::None;
         break;
@@ -692,6 +686,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
     case CSYNC_INSTRUCTION_NEW:
     case CSYNC_INSTRUCTION_EVAL:
     case CSYNC_INSTRUCTION_STAT_ERROR:
+    case CSYNC_INSTRUCTION_IGNORE:
     default:
         dir = remote ? SyncFileItem::Down : SyncFileItem::Up;
         break;
@@ -742,7 +737,7 @@ void SyncEngine::handleSyncError(CSYNC *ctx, const char *state)
 
     if (CSYNC_STATUS_IS_EQUAL(err, CSYNC_STATUS_ABORTED)) {
         qCInfo(lcEngine) << "Update phase was aborted by user!";
-    } else if (CSYNC_STATUS_IS_EQUAL(err, CSYNC_STATUS_SERVICE_UNAVAILABLE) || CSYNC_STATUS_IS_EQUAL(err, CSYNC_STATUS_CONNECT_ERROR)) {
+    } else if (CSYNC_STATUS_IS_EQUAL(err, CSYNC_STATUS_SERVICE_UNAVAILABLE)) {
         emit csyncUnavailable();
     } else {
         csyncError(errStr);
@@ -844,7 +839,11 @@ void SyncEngine::startSync()
     _excludedFiles->setExcludeConflictFiles(!_account->capabilities().uploadConflictFiles());
 
     _csync_ctx->read_remote_from_db = true;
-    _lastLocalDiscoveryStyle = _csync_ctx->local_discovery_style;
+
+    _lastLocalDiscoveryStyle = _localDiscoveryStyle;
+    _csync_ctx->should_discover_locally_fn = [this](const QByteArray &path) {
+        return shouldDiscoverLocally(path);
+    };
 
     bool ok;
     auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
@@ -917,9 +916,18 @@ void SyncEngine::startSync()
     QMetaObject::invokeMethod(discoveryJob, "start", Qt::QueuedConnection);
 }
 
-void SyncEngine::slotFolderDiscovered(bool /*local*/, const QString &folder)
+void SyncEngine::slotFolderDiscovered(bool local, const QString &folder)
 {
-    _progressInfo->_currentDiscoveredFolder = folder;
+    // Currently remote and local discovery never run in parallel
+    // Note: Currently this slot is only called occasionally! See the throttling
+    //       in DiscoveryJob::update_job_update_callback.
+    if (local) {
+        _progressInfo->_currentDiscoveredLocalFolder = folder;
+        _progressInfo->_currentDiscoveredRemoteFolder.clear();
+    } else {
+        _progressInfo->_currentDiscoveredRemoteFolder = folder;
+        _progressInfo->_currentDiscoveredLocalFolder.clear();
+    }
     emit transmissionProgress(*_progressInfo);
 }
 
@@ -956,7 +964,8 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
         _journal->commitIfNeededAndStartNewTransaction("Post discovery");
     }
 
-    _progressInfo->_currentDiscoveredFolder.clear();
+    _progressInfo->_currentDiscoveredRemoteFolder.clear();
+    _progressInfo->_currentDiscoveredLocalFolder.clear();
     _progressInfo->_status = ProgressInfo::Reconcile;
     emit transmissionProgress(*_progressInfo);
 
@@ -976,11 +985,11 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     _temporarilyUnavailablePaths.clear();
     _renamedFolders.clear();
 
-    if (csync_walk_local_tree(_csync_ctx.data(), &treewalkLocal, 0) < 0) {
+    if (csync_walk_local_tree(_csync_ctx.data(), [this](csync_file_stat_t *f, csync_file_stat_t *o) { return treewalkFile(f, o, false); } ) < 0) {
         qCWarning(lcEngine) << "Error in local treewalk.";
         walkOk = false;
     }
-    if (walkOk && csync_walk_remote_tree(_csync_ctx.data(), &treewalkRemote, 0) < 0) {
+    if (walkOk && csync_walk_remote_tree(_csync_ctx.data(), [this](csync_file_stat_t *f, csync_file_stat_t *o) { return treewalkFile(f, o, true); } ) < 0) {
         qCWarning(lcEngine) << "Error in remote treewalk.";
     }
 
@@ -1010,7 +1019,9 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     if (!invalidFilenamePattern.isEmpty()) {
         const QRegExp invalidFilenameRx(invalidFilenamePattern);
         for (auto it = syncItems.begin(); it != syncItems.end(); ++it) {
-            if ((*it)->_direction == SyncFileItem::Up && (*it)->destination().contains(invalidFilenameRx)) {
+            if ((*it)->_direction == SyncFileItem::Up
+                && isFileModifyingInstruction((*it)->_instruction)
+                && (*it)->destination().contains(invalidFilenameRx)) {
                 (*it)->_errorString = tr("File name contains at least one invalid character");
                 (*it)->_instruction = CSYNC_INSTRUCTION_IGNORE;
             }
@@ -1058,6 +1069,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     // Re-init the csync context to free memory
     _csync_ctx->reinitialize();
+    _localDiscoveryPaths.clear();
 
     // To announce the beginning of the sync
     emit aboutToPropagate(syncItems);
@@ -1199,6 +1211,8 @@ void SyncEngine::finalize(bool success)
     _temporarilyUnavailablePaths.clear();
     _renamedFolders.clear();
     _uniqueErrors.clear();
+    _localDiscoveryPaths.clear();
+    _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
 
     _clearTouchedFilesTimer.start();
 }
@@ -1236,7 +1250,8 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
     SyncFileItemPtr needle;
 
     for (SyncFileItemVector::iterator it = syncItems.begin(); it != syncItems.end(); ++it) {
-        if ((*it)->_direction != SyncFileItem::Up) {
+        if ((*it)->_direction != SyncFileItem::Up
+            || !isFileModifyingInstruction((*it)->_instruction)) {
             // Currently we only check server-side permissions
             continue;
         }
@@ -1605,8 +1620,32 @@ AccountPtr SyncEngine::account() const
 
 void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> dirs)
 {
-    _csync_ctx->local_discovery_style = style;
-    _csync_ctx->locally_touched_dirs = std::move(dirs);
+    _localDiscoveryStyle = style;
+    _localDiscoveryPaths = std::move(dirs);
+}
+
+bool SyncEngine::shouldDiscoverLocally(const QByteArray &path) const
+{
+    if (_localDiscoveryStyle == LocalDiscoveryStyle::FilesystemOnly)
+        return true;
+
+    auto it = _localDiscoveryPaths.lower_bound(path);
+    if (it == _localDiscoveryPaths.end() || !it->startsWith(path))
+        return false;
+
+    // maybe an exact match or an empty path?
+    if (it->size() == path.size() || path.isEmpty())
+        return true;
+
+    // check for a prefix + / match
+    forever {
+        if (it->size() > path.size() && it->at(path.size()) == '/')
+            return true;
+        ++it;
+        if (it == _localDiscoveryPaths.end() || !it->startsWith(path))
+            return false;
+    }
+    return false;
 }
 
 void SyncEngine::abort()

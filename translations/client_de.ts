@@ -213,7 +213,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="528"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>Die Synchronisation läuft gerade.&lt;br/&gt;Wollen Sie sie beenden?</translation>
+        <translation>Die Synchronisation läuft gerade.&lt;br/&gt;Wollen Sie diese beenden?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="617"/>
@@ -273,7 +273,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="785"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation>Einige Verzeichnisse konnten nicht synchronisiert werden, da sie zu groß sind:</translation>
+        <translation>Einige Verzeichnisse konnten nicht synchronisiert werden, da diese zu groß sind:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="787"/>
@@ -778,7 +778,7 @@ Wenn Sie sich zum Löschen der Dateien entscheiden, sind diese nicht mehr verfü
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Alle Dateien im lokalen Synchronisationsordner &apos;%1&apos; wurden gelöscht. Diese Löschung wird mit Ihrem Server synchronisiert, wodurch die Dateien nicht mehr verfügbar sind, es sei denn, sie werden wiederhergestellt.
+        <translation>Alle Dateien im lokalen Synchronisationsordner &apos;%1&apos; wurden gelöscht. Diese Löschung wird mit Ihrem Server synchronisiert, wodurch die Dateien nicht mehr verfügbar sind, es sei denn, diese werden wiederhergestellt.
 Sind Sie sich sicher, dass Sie diese Aktion mit Ihrem Server synchronisieren möchten?
 Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheiden, werden diese wieder vom Server synchronisiert.</translation>
     </message>
@@ -804,7 +804,7 @@ This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
         <translation>Dieser Sync-Vorgang des Synchronisationsordners &apos;%1&apos; würde Dateien auf ein früheres Änderungsdatum zurücksetzen.
 Der Grund dafür ist möglicherweise, dass auf dem Server ein Backup eingespielt wurde.
-Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älteren Versionen überschrieben. Möchten Sie die neueren lokalen Dateien als Konflikt-Dateien behalten?</translation>
+Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älteren Versionen überschrieben. Möchtest du die neueren lokalen Dateien als Konflikt-Dateien behalten?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="962"/>
@@ -832,7 +832,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/folderman.cpp" line="312"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Ein altes Synchronisations-Journal &apos;%1&apos; wurde gefunden, konnte jedoch nicht entfernt werden. Bitte stellen Sie sicher, dass keine Anwendung es verwendet.</translation>
+        <translation>Ein altes Synchronisations-Journal &apos;%1&apos; wurde gefunden, konnte jedoch nicht entfernt werden. Bitte stelle sicher, dass keine Anwendung es verwendet.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1054"/>
@@ -912,27 +912,27 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/folderman.cpp" line="1369"/>
         <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder Please pick another one!</source>
-        <translation>Der lokale Ordner %1 beinhaltet einen symbolischer Link. Das Ziel des Links beinhaltet bereits einen synchronisierten Ordner. Bitte wählen Sie einen anderen lokalen Ordner aus!</translation>
+        <translation>Der lokale Ordner %1 beinhaltet einen symbolischer Link. Das Ziel des Links beinhaltet bereits einen synchronisierten Ordner. Bitte wähle einen anderen lokalen Ordner aus!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1384"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation>Es exisitiert bereits eine Synchronisation vom Server zu diesem lokalen Ordner. Bitte wählen Sie ein anderes lokales Verzeichnis!</translation>
+        <translation>Es existiert bereits eine Synchronisation vom Server zu diesem lokalen Ordner. Bitte wähle ein anderes lokales Verzeichnis!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1344"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Der lokale Ordner %1 liegt innerhalb eines synchronisierten Ordners. Bitte wählen Sie einen anderen aus!</translation>
+        <translation>Der lokale Ordner %1 liegt innerhalb eines synchronisierten Ordners. Bitte wähle einen anderen aus!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1354"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Der lokale Ordner %1 liegt in einem Ordner, der bereits synchronisiert wird. Bitte wählen Sie einen anderen aus!</translation>
+        <translation>Der lokale Ordner %1 liegt in einem Ordner, der bereits synchronisiert wird. Bitte wähle einen anderen aus!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1362"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Der lokale Ordner %1 ist ein symbolischer Link. Das Ziel des Links liegt in einem Ordner, der schon synchronisiert wird. Bitte wählen Sie einen anderen aus!</translation>
+        <translation>Der lokale Ordner %1 ist ein symbolischer Link. Das Ziel des Links liegt in einem Ordner, der schon synchronisiert wird. Bitte wähle einen anderen aus!</translation>
     </message>
 </context>
 <context>
@@ -963,7 +963,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="145"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation>Wählen Sie diese Schaltfläche, um einen zu synchronisierenden Ordner hinzuzufügen.</translation>
+        <translation>Wähle diese Schaltfläche, um einen zu synchronisierenden Ordner hinzuzufügen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="154"/>
@@ -1134,7 +1134,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="182"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation>Geben Sie den Namen des neuen, unter &apos;%1&apos; zu erstellenden Ordners ein: </translation>
+        <translation>Gib den Namen des neuen, unter &apos;%1&apos; zu erstellenden Ordners ein: </translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="212"/>
@@ -1149,7 +1149,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="225"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>Die Erstellung des Ordners auf %1 ist fehlgeschlagen. Bitte prüfen Sie dies manuell.</translation>
+        <translation>Die Erstellung des Ordners auf %1 ist fehlgeschlagen. Bitte prüfe dies manuell.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="234"/>
@@ -1159,7 +1159,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="315"/>
         <source>Choose this to sync the entire account</source>
-        <translation>Wählen Sie dies, um das gesamte Konto zu synchronisieren</translation>
+        <translation>Wähle dies, um das gesamte Konto zu synchronisieren</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="445"/>
@@ -1308,7 +1308,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="157"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Klicken Sie hier&lt;/a&gt; um ein App-Passwort von dem Web-Interface zu erhalten.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Klicke hier&lt;/a&gt; um ein App-Passwort von dem Web-Interface zu erhalten.</translation>
     </message>
 </context>
 <context>
@@ -1360,7 +1360,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>Dateien oder Ordner, die diesem Muster entsprechen, werden nicht synchronisiert.
 
-Objekte, bei denen Löschen erlaubt ist, werden gelöscht, wenn sie die Löschung eines Ordners verhindern würden. Das ist für Metadaten nützlich.</translation>
+Objekte, bei denen Löschen erlaubt ist, werden gelöscht, wenn diese die Löschung eines Ordners verhindern würden. Das ist für Metadaten nützlich.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="117"/>
@@ -1720,7 +1720,7 @@ Objekte, bei denen Löschen erlaubt ist, werden gelöscht, wenn sie die Löschun
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="131"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Falscher Benutzer&lt;/h1&gt;&lt;p&gt;Sieh aben sich mit dem Benutzer &lt;em&gt;%1&lt;/em&gt; angemeldet, sollten sich jedoch mit dem Benutzer &lt;em&gt;%2&lt;/em&gt; anmelden. &lt;br&gt;Bitte melden Sie sich in einem anderen Tab von %3 ab und &lt;a href=&apos;%4&apos;&gt;klicken Sie hier&lt;/a&gt; um sich als %2&lt;/p&gt; anzumelden</translation>
+        <translation>&lt;h1&gt;Falscher Benutzer&lt;/h1&gt;&lt;p&gt;Sie haben sich mit dem Benutzer &lt;em&gt;%1&lt;/em&gt; angemeldet, sollten sich jedoch mit dem Benutzer &lt;em&gt;%2&lt;/em&gt; anmelden. &lt;br&gt;Bitte melde dich in einem anderen Tab von %3 ab und &lt;a href=&apos;%4&apos;&gt;klicke hier&lt;/a&gt; um sich als %2&lt;/p&gt; anzumelden</translation>
     </message>
 </context>
 <context>
@@ -1734,7 +1734,7 @@ Objekte, bei denen Löschen erlaubt ist, werden gelöscht, wenn sie die Löschun
         <location filename="../src/gui/updater/ocupdater.cpp" line="104"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>Ein neues Update für %1 wird installiert. Während des Updatevorganges werden Sie eventuell gefragt zusätzliche Rechte im Rahmen des Updatevorganges zu gewähren.</translation>
+        <translation>Ein neues Update für %1 wird installiert. Während des Updatevorganges wirst du eventuell gefragt zusätzliche Rechte im Rahmen des Updatevorganges zu gewähren.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
@@ -1744,7 +1744,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Aktualisierung kann nicht herunter geladen werden. Bitte klicken Sie &lt;a href=&apos;%1&apos;&gt;hier&lt;/a&gt; um die Aktualisierung manuell herunter zu laden.</translation>
+        <translation>Aktualisierung kann nicht herunter geladen werden. Bitte klicke &lt;a href=&apos;%1&apos;&gt;hier&lt;/a&gt; um die Aktualisierung manuell herunter zu laden.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
@@ -1759,7 +1759,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 available. Please use the system&apos;s update tool to install it.</source>
-        <translation>Neue %1-Version %2 verfügbar. Bitte nutzen Sie das System-Updatetool zur Installation.</translation>
+        <translation>Neue %1-Version %2 verfügbar. Bitte nutze das System-Updatetool zur Installation.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
@@ -1812,7 +1812,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="164"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Achtung:&lt;/strong&gt; Der lokale Ordner ist nicht leer. Bitte wählen Sie eine entsprechende Lösung!&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Achtung:&lt;/strong&gt; Der lokale Ordner ist nicht leer. Bitte wähle eine entsprechende Lösung!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="285"/>
@@ -1836,7 +1836,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Verbindung mit der angegebenen sicheren Serveradresse fehlgeschlagen. Wie möchten Sie fortfahren?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Verbindung mit der angegebenen sicheren Serveradresse fehlgeschlagen. Wie möchtest du fortfahren?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
@@ -1856,7 +1856,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="34"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sichere Verbindung zur Server-Adresse &lt;em&gt;%1&lt;/em&gt; fehlgeschlagen. Wie wollen Sie fortfahren?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sichere Verbindung zur Server-Adresse &lt;em&gt;%1&lt;/em&gt; fehlgeschlagen. Wie willst du fortfahren?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -1874,7 +1874,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="60"/>
         <source>Enter user credentials</source>
-        <translation>Geben Sie die Benutzer-Anmeldeinformationen ein</translation>
+        <translation>Geben Sie Ihre Benutzer-Anmeldeinformationen ein</translation>
     </message>
 </context>
 <context>
@@ -1906,13 +1906,13 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="129"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation>Diese URL ist NICHT sicher, das sie nicht verschlüsselt ist.
+        <translation>Diese URL ist NICHT sicher, da diese nicht verschlüsselt ist.
 Es ist nicht ratsam, diese zu benutzen.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="133"/>
         <source>This url is secure. You can use it.</source>
-        <translation>Diese URL ist sicher. Sie können Sie benutzen.</translation>
+        <translation>Diese URL ist sicher. Sie können sie benutzen.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="172"/>
@@ -2756,7 +2756,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="521"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Möchte Sie wirklich den öffentlichen Link &lt;i&gt;%1 &lt;/i&gt;löschen?&lt;p&gt;Hinweis: Dies kann nicht rückgängig gemacht werden.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Möchten Sie wirklich den öffentlichen Link &lt;i&gt;%1 &lt;/i&gt;löschen?&lt;p&gt;Hinweis: Dies kann nicht rückgängig gemacht werden.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="528"/>
@@ -2800,7 +2800,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="108"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can direct people to this shared file or folder &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;by giving them a private link&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sie können Leute direkt zu dieser Freigabe leiten&lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;, wenn Sie Ihnen einen privaten Link&lt;/span&gt;&lt;/a&gt;gibst.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sie können Leute direkt zu dieser Freigabe leiten&lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;, wenn Sie Ihnen einen privaten Link&lt;/span&gt;&lt;/a&gt;geben.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="186"/>
@@ -3221,7 +3221,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="474"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>Datei wird ignoriert, weil sie versteckt ist.</translation>
+        <translation>Datei wird ignoriert, weil diese versteckt ist.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="477"/>
@@ -3844,7 +3844,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation>Bitte wechseln Sie zum Fortfahren in deinen Browser.</translation>
+        <translation>Bitte wechseln Sie zum Fortfahren in Ihren Browser.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>

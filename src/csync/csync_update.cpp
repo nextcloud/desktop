@@ -108,15 +108,9 @@ static bool _csync_mtime_equal(time_t a, time_t b)
  * See doc/dev/sync-algorithm.md for an overview.
  */
 static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs) {
+  Q_ASSERT(fs);
   OCC::SyncJournalFileRecord base;
   CSYNC_EXCLUDE_TYPE excluded = CSYNC_NOT_EXCLUDED;
-
-  if (fs == NULL) {
-    errno = EINVAL;
-    ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
-    return -1;
-  }
-
   if (fs->type == ItemTypeSkip) {
       excluded =CSYNC_FILE_EXCLUDE_STAT_FAILED;
   } else {
@@ -602,23 +596,12 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   bool do_read_from_db = (ctx->current == REMOTE_REPLICA && ctx->remote.read_from_db);
   const char *db_uri = uri;
 
-  if (ctx->current == LOCAL_REPLICA
-      && ctx->local_discovery_style == LocalDiscoveryStyle::DatabaseAndFilesystem) {
+  if (ctx->current == LOCAL_REPLICA && ctx->should_discover_locally_fn) {
       const char *local_uri = uri + strlen(ctx->local.uri);
       if (*local_uri == '/')
           ++local_uri;
       db_uri = local_uri;
-      do_read_from_db = true;
-
-      // Minor bug: local_uri doesn't have a trailing /. Example: Assume it's "d/foo"
-      // and we want to check whether we should read from the db. Assume "d/foo a" is
-      // in locally_touched_dirs. Then this check will say no, don't read from the db!
-      // (because "d/foo" < "d/foo a" < "d/foo/bar")
-      // C++14: Could skip the conversion to QByteArray here.
-      auto it = ctx->locally_touched_dirs.lower_bound(QByteArray(local_uri));
-      if (it != ctx->locally_touched_dirs.end() && it->startsWith(local_uri)) {
-          do_read_from_db = false;
-      }
+      do_read_from_db = !ctx->should_discover_locally_fn(QByteArray(local_uri));
   }
 
   if (!depth) {
@@ -722,10 +705,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     // Now process to have a relative path to the sync root for the local replica, or to the data root on the remote.
     dirent->path = fullpath;
     if (ctx->current == LOCAL_REPLICA) {
-        if (dirent->path.size() <= (int)strlen(ctx->local.uri)) {
-            ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
-            goto error;
-        }
+        ASSERT(dirent->path.startsWith(ctx->local.uri)); // path is relative to uri
         // "len + 1" to include the slash in-between.
         dirent->path = dirent->path.mid(strlen(ctx->local.uri) + 1);
     }

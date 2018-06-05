@@ -25,6 +25,7 @@
 #include "quotainfo.h"
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
+#include "folderstatusmodel.h"
 
 class QModelIndex;
 class QNetworkReply;
@@ -55,7 +56,7 @@ public:
     explicit AccountSettings(AccountState *accountState, QWidget *parent = 0);
     ~AccountSettings();
     QSize sizeHint() const Q_DECL_OVERRIDE { return ownCloudGui::settingsDialogSize(); }
-
+    bool canEncryptOrDecrypt(const FolderStatusModel::SubFolderInfo* folderInfo);
 
 signals:
     void folderChanged();
@@ -85,8 +86,8 @@ protected slots:
     void slotOpenAccountWizard();
     void slotAccountAdded(AccountState *);
     void refreshSelectiveSyncStatus();
-    void slotMarkSubfolderEncrpted(const QByteArray& fileId);
-    void slotMarkSubfolderDecrypted(const QByteArray& fileId);
+    void slotMarkSubfolderEncrpted(const FolderStatusModel::SubFolderInfo* folderInfo);
+    void slotMarkSubfolderDecrypted(const FolderStatusModel::SubFolderInfo* folderInfo);
     void slotSubfolderContextMenuRequested(const QModelIndex& idx, const QPoint& point);
     void slotCustomContextMenuRequested(const QPoint &);
     void slotFolderListClicked(const QModelIndex &indx);

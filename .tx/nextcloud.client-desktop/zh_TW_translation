@@ -1,0 +1,204 @@
+[Desktop Entry]
+Categories=Utility;X-SuSE-SyncUtility;
+Type=Application
+Exec=@APPLICATION_EXECUTABLE@
+Name=@APPLICATION_NAME@ desktop sync client 
+Comment=@APPLICATION_NAME@ desktop synchronization client
+GenericName=Folder Sync
+Icon=@APPLICATION_EXECUTABLE@
+Keywords=@APPLICATION_NAME@;syncing;file;sharing;
+X-GNOME-Autostart-Delay=3
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+Comment[zh_TW]=@APPLICATION_NAME@ 桌面同步客戶端
+Icon[zh_TW]=@APPLICATION_EXECUTABLE@
+Name[zh_TW]=@APPLICATION_NAME@ 桌面同步客戶端
+GenericName[zh_TW]=資料夾同步

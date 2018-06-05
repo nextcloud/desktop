@@ -18,6 +18,7 @@
 #include "issueswidget.h"
 #include "configfile.h"
 #include "syncresult.h"
+#include "syncengine.h"
 #include "logger.h"
 #include "theme.h"
 #include "folderman.h"
@@ -44,6 +45,11 @@ namespace OCC {
  * to avoid performance issues around sorting this many issues.
  */
 static const int maxIssueCount = 50000;
+
+static QPair<QString, QString> pathsWithIssuesKey(const ProtocolItem::ExtraData &data)
+{
+    return qMakePair(data.folderName, data.path);
+}
 
 IssuesWidget::IssuesWidget(QWidget *parent)
     : QWidget(parent)
@@ -145,7 +151,14 @@ void IssuesWidget::hideEvent(QHideEvent *ev)
     QWidget::hideEvent(ev);
 }
 
-void IssuesWidget::cleanItems(const QString &folder)
+static bool persistsUntilLocalDiscovery(QTreeWidgetItem *item)
+{
+    const auto data = ProtocolItem::extraData(item);
+    return data.status == SyncFileItem::Conflict
+        || (data.status == SyncFileItem::FileIgnored && data.direction == SyncFileItem::Up);
+}
+
+void IssuesWidget::cleanItems(const std::function<bool(QTreeWidgetItem *)> &shouldDelete)
 {
     _ui->_treeWidget->setSortingEnabled(false);
 
@@ -154,8 +167,8 @@ void IssuesWidget::cleanItems(const QString &folder)
     int itemCnt = _ui->_treeWidget->topLevelItemCount();
     for (int cnt = itemCnt - 1; cnt >= 0; cnt--) {
         QTreeWidgetItem *item = _ui->_treeWidget->topLevelItem(cnt);
-        QString itemFolder = ProtocolItem::folderName(item);
-        if (itemFolder == folder) {
+        if (shouldDelete(item)) {
+            _pathsWithIssues.remove(pathsWithIssuesKey(ProtocolItem::extraData(item)));
             delete item;
         }
     }
@@ -190,7 +203,21 @@ void IssuesWidget::addItem(QTreeWidgetItem *item)
         }
     }
 
+    // Wipe any existing message for the same folder and path
+    auto newData = ProtocolItem::extraData(item);
+    if (_pathsWithIssues.contains(pathsWithIssuesKey(newData))) {
+        for (int i = 0; i < count; ++i) {
+            auto otherItem = _ui->_treeWidget->topLevelItem(i);
+            auto otherData = ProtocolItem::extraData(otherItem);
+            if (otherData.path == newData.path && otherData.folderName == newData.folderName) {
+                delete otherItem;
+                break;
+            }
+        }
+    }
+
     _ui->_treeWidget->insertTopLevelItem(insertLoc, item);
+    _pathsWithIssues.insert(pathsWithIssuesKey(newData));
     item->setHidden(!shouldBeVisible(item, currentAccountFilter(), currentFolderFilter()));
     emit issueCountUpdated(_ui->_treeWidget->topLevelItemCount());
 }
@@ -209,9 +236,47 @@ void IssuesWidget::slotOpenFile(QTreeWidgetItem *item, int)
 
 void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
 {
-    if (progress.status() == ProgressInfo::Starting) {
-        // The sync is restarting, clean the old items
-        cleanItems(folder);
+    if (progress.status() == ProgressInfo::Reconcile) {
+        // Wipe all non-persistent entries - as well as the persistent ones
+        // in cases where a local discovery was done.
+        auto f = FolderMan::instance()->folder(folder);
+        if (!f)
+            return;
+        const auto &engine = f->syncEngine();
+        const auto style = engine.lastLocalDiscoveryStyle();
+        cleanItems([&](QTreeWidgetItem *item) {
+            if (ProtocolItem::extraData(item).folderName != folder)
+                return false;
+            if (style == LocalDiscoveryStyle::FilesystemOnly)
+                return true;
+            if (!persistsUntilLocalDiscovery(item))
+                return true;
+
+            // Definitely wipe the entry if the file no longer exists
+            if (!QFileInfo(f->path() + ProtocolItem::extraData(item).path).exists())
+                return true;
+
+            auto path = QFileInfo(ProtocolItem::extraData(item).path).dir().path().toUtf8();
+            if (path == ".")
+                path.clear();
+
+            return engine.shouldDiscoverLocally(path);
+        });
+    }
+    if (progress.status() == ProgressInfo::Done) {
+        // We keep track very well of pending conflicts.
+        // Inform other components about them.
+        QStringList conflicts;
+        auto tree = _ui->_treeWidget;
+        for (int i = 0; i < tree->topLevelItemCount(); ++i) {
+            auto item = tree->topLevelItem(i);
+            auto data = ProtocolItem::extraData(item);
+            if (data.folderName == folder
+                && data.status == SyncFileItem::Conflict) {
+                conflicts.append(data.path);
+            }
+        }
+        emit ProgressDispatcher::instance()->folderConflicts(folder, conflicts);
     }
 }
 
@@ -285,13 +350,14 @@ bool IssuesWidget::shouldBeVisible(QTreeWidgetItem *item, AccountState *filterAc
     const QString &filterFolderAlias) const
 {
     bool visible = true;
-    auto status = ProtocolItem::status(item);
+    auto data = ProtocolItem::extraData(item);
+    auto status = data.status;
     visible &= (_ui->showIgnores->isChecked() || status != SyncFileItem::FileIgnored);
     visible &= (_ui->showWarnings->isChecked()
         || (status != SyncFileItem::SoftError
                && status != SyncFileItem::Restoration));
 
-    auto folderalias = ProtocolItem::folderName(item);
+    const auto &folderalias = data.folderName;
     if (filterAccount) {
         auto folder = FolderMan::instance()->folder(folderalias);
         visible &= folder && folder->accountState() == filterAccount;
@@ -415,12 +481,14 @@ void IssuesWidget::addError(const QString &folderAlias, const QString &message,
 
     QTreeWidgetItem *twitem = new ProtocolItem(columns);
     twitem->setData(0, Qt::SizeHintRole, QSize(0, ActivityItemDelegate::rowHeight()));
-    twitem->setData(0, Qt::UserRole, timestamp);
     twitem->setIcon(0, icon);
     twitem->setToolTip(0, longTimeStr);
-    twitem->setData(2, Qt::UserRole, folderAlias);
     twitem->setToolTip(3, message);
-    twitem->setData(3, Qt::UserRole, SyncFileItem::NormalError);
+    ProtocolItem::ExtraData data;
+    data.timestamp = timestamp;
+    data.folderName = folderAlias;
+    data.status = SyncFileItem::NormalError;
+    ProtocolItem::setExtraData(twitem, data);
 
     addItem(twitem);
     addErrorWidget(twitem, message, category);
@@ -440,7 +508,7 @@ void IssuesWidget::addErrorWidget(QTreeWidgetItem *item, const QString &message,
 
         auto button = new QPushButton("Retry all uploads", widget);
         button->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Expanding);
-        auto folderAlias = ProtocolItem::folderName(item);
+        auto folderAlias = ProtocolItem::extraData(item).folderName;
         connect(button, &QPushButton::clicked,
             this, [this, folderAlias]() { retryInsufficentRemoteStorageErrors(folderAlias); });
         layout->addWidget(button);

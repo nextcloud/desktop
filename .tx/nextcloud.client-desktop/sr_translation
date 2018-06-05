@@ -1,0 +1,204 @@
+[Desktop Entry]
+Categories=Utility;X-SuSE-SyncUtility;
+Type=Application
+Exec=@APPLICATION_EXECUTABLE@
+Name=@APPLICATION_NAME@ desktop sync client 
+Comment=@APPLICATION_NAME@ desktop synchronization client
+GenericName=Folder Sync
+Icon=@APPLICATION_EXECUTABLE@
+Keywords=@APPLICATION_NAME@;syncing;file;sharing;
+X-GNOME-Autostart-Delay=3
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+Comment[sr]=@APPLICATION_NAME@ десктоп клијент за синхронизацију
+Icon[sr]=@APPLICATION_EXECUTABLE@
+Name[sr]=@APPLICATION_NAME@ десктоп клијент за синхронизацију
+GenericName[sr]=Синхронизација фасцикли
