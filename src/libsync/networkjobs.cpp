@@ -896,6 +896,8 @@ void DetermineAuthTypeJob::start()
             get->setFollowRedirects(false);
         }
 #else
+        Q_UNUSED(this)
+        Q_UNUSED(get)
         Q_UNUSED(target)
 #endif
     });
