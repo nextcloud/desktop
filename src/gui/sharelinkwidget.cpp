@@ -197,20 +197,23 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
     const QString versionString = _account->serverVersion();
     qCInfo(lcSharing) << versionString << "Fetched" << shares.count() << "shares";
 
-    // Preserve the previous selection
-    QString selectedShareId;
-    if (auto share = selectedShare()) {
-        selectedShareId = share->getId();
-    }
-    // ...except if selection should move to a new share
+    // Select the share that was previously selected,
+    // except if an explicit override was asked for
+    QString reselectShareId = _selectedShareId;
     if (!_newShareOverrideSelectionId.isEmpty()) {
-        selectedShareId = _newShareOverrideSelectionId;
+        reselectShareId = _newShareOverrideSelectionId;
         _newShareOverrideSelectionId.clear();
     }
 
     auto table = _ui->linkShares;
+
+    // Wipe the table without updating the ui elements, we
+    // might want their state untouched if the same share ends
+    // up being selected
+    disconnect(table, &QTableWidget::itemSelectionChanged, this, &ShareLinkWidget::slotShareSelectionChanged);
     table->clearContents();
     table->setRowCount(0);
+    connect(table, &QTableWidget::itemSelectionChanged, this, &ShareLinkWidget::slotShareSelectionChanged);
 
     auto deleteIcon = QIcon::fromTheme(QLatin1String("user-trash"),
         QIcon(QLatin1String(":/client/resources/delete.png")));
@@ -256,14 +259,20 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         table->setCellWidget(row, 2, deleteButton);
 
         // Reestablish the previous selection
-        if (selectedShareId == share->getId()) {
+        if (reselectShareId == share->getId()) {
             table->selectRow(row);
         }
     }
 
-    // Select the first share by default
-    if (!selectedShare() && table->rowCount() != 0) {
-        table->selectRow(0);
+    if (!selectedShare()) {
+        if (table->rowCount() != 0) {
+            // Select the first share by default
+            table->selectRow(0);
+        } else {
+            // explicitly note the deselection,
+            // since this was not triggered on table clear above
+            slotShareSelectionChanged();
+        }
     }
 
     if (!_namesSupported) {
@@ -283,6 +292,7 @@ void ShareLinkWidget::slotShareSelectionChanged()
 
     auto share = selectedShare();
     if (!share) {
+        _selectedShareId.clear();
         _ui->shareProperties->setEnabled(false);
         _ui->radio_readOnly->setChecked(false);
         _ui->radio_readWrite->setChecked(false);
@@ -291,6 +301,8 @@ void ShareLinkWidget::slotShareSelectionChanged()
         _ui->checkBox_password->setChecked(false);
         return;
     }
+    bool selectionUnchanged = _selectedShareId == share->getId();
+    _selectedShareId = share->getId();
 
     _ui->shareProperties->setEnabled(true);
 
@@ -304,17 +316,17 @@ void ShareLinkWidget::slotShareSelectionChanged()
 
     // Password state
     _ui->checkBox_password->setText(tr("P&assword protect"));
-    if (share->isPasswordSet()) {
-        _ui->checkBox_password->setChecked(true);
-        _ui->lineEdit_password->setEnabled(true);
-        _ui->lineEdit_password->setPlaceholderText("********");
+    if (!selectionUnchanged) {
+        if (share->isPasswordSet()) {
+            _ui->checkBox_password->setChecked(true);
+            _ui->lineEdit_password->setPlaceholderText("********");
+            _ui->lineEdit_password->setEnabled(true);
+        } else {
+            _ui->checkBox_password->setChecked(false);
+            _ui->lineEdit_password->setPlaceholderText(QString());
+            _ui->lineEdit_password->setEnabled(false);
+        }
         _ui->lineEdit_password->setText(QString());
-        _ui->lineEdit_password->setEnabled(true);
-        _ui->pushButton_setPassword->setEnabled(false);
-    } else {
-        _ui->checkBox_password->setChecked(false);
-        _ui->lineEdit_password->setPlaceholderText(QString());
-        _ui->lineEdit_password->setEnabled(false);
         _ui->pushButton_setPassword->setEnabled(false);
     }
 
@@ -420,14 +432,27 @@ void ShareLinkWidget::setPassword(const QString &password)
 
 void ShareLinkWidget::slotPasswordSet()
 {
+    auto share = selectedShare();
+    if (sender() != share.data())
+        return;
+
     _pi_password->stopAnimation();
+    _ui->checkBox_password->setEnabled(true);
     _ui->lineEdit_password->setText(QString());
-    _ui->lineEdit_password->setPlaceholderText(tr("Password Protected"));
+    if (share->isPasswordSet()) {
+        _ui->lineEdit_password->setPlaceholderText("********");
+        _ui->lineEdit_password->setEnabled(true);
+    } else {
+        _ui->lineEdit_password->setPlaceholderText(QString());
+        _ui->lineEdit_password->setEnabled(false);
+    }
 
     /*
      * When setting/deleting a password from a share the old share is
      * deleted and a new one is created. So we need to refetch the shares
      * at this point.
+     *
+     * NOTE: I don't see this happening with oC > 10
      */
     getShares();
 }
