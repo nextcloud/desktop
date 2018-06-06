@@ -533,10 +533,10 @@ ActivitySettings::ActivitySettings(QWidget *parent)
     _tab->setCurrentIndex(1);
 }
 
-void ActivitySettings::setNotificationRefreshInterval(quint64 interval)
+void ActivitySettings::setNotificationRefreshInterval(std::chrono::milliseconds interval)
 {
-    qCDebug(lcActivity) << "Starting Notification refresh timer with " << interval / 1000 << " sec interval";
-    _notificationCheckTimer.start(interval);
+    qCDebug(lcActivity) << "Starting Notification refresh timer with " << interval.count() / 1000 << " sec interval";
+    _notificationCheckTimer.start(interval.count());
 }
 
 void ActivitySettings::setActivityTabHidden(bool hidden)
