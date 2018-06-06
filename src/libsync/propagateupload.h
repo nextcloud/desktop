@@ -120,8 +120,7 @@ public:
     virtual bool finished() Q_DECL_OVERRIDE
     {
         qCInfo(lcPutJob) << "PUT of" << reply()->request().url().toString() << "FINISHED WITH STATUS"
-                         << reply()->error()
-                         << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString())
+                         << replyStatusString()
                          << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
                          << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
 
