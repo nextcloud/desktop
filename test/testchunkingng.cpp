@@ -389,6 +389,10 @@ private slots:
         int responseDelay = AbstractNetworkJob::httpTimeout * 1000 * 1000; // much bigger than http timeout (so a timeout will occur)
         // This will perform the operation on the server, but the reply will not come to the client
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData) -> QNetworkReply * {
+            if (!chunking) {
+                Q_ASSERT(!request.url().path().contains("/uploads/")
+                    && "Should not touch uploads endpoint when not chunking");
+            }
             if (!chunking && op == QNetworkAccessManager::PutOperation) {
                 checksumHeader = request.rawHeader("OC-Checksum");
                 return new DelayedReply<FakePutReply>(responseDelay, fakeFolder.remoteModifier(), op, request, outgoingData->readAll(), &fakeFolder.syncEngine());

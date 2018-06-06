@@ -83,7 +83,7 @@ void PropagateUploadFileNG::doStartUpload()
     propagator()->_activeJobList.append(this);
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
-    if (progressInfo._valid && progressInfo._modtime == _item->_modtime) {
+    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime) {
         _transferId = progressInfo._transferid;
         auto url = chunkUrl();
         auto job = new LsColJob(propagator()->account(), url, this);
@@ -98,7 +98,7 @@ void PropagateUploadFileNG::doStartUpload()
             this, &PropagateUploadFileNG::slotPropfindIterate);
         job->start();
         return;
-    } else if (progressInfo._valid) {
+    } else if (progressInfo._valid && progressInfo.isChunked()) {
         // The upload info is stale. remove the stale chunks on the server
         _transferId = progressInfo._transferid;
         // Fire and forget. Any error will be ignored.
