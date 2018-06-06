@@ -381,7 +381,7 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
     _ui->permissionToolButton->setMenu(menu);
     _ui->permissionToolButton->setPopupMode(QToolButton::InstantPopup);
 
-    QIcon icon(QLatin1String(":/client/resources/more.png"));
+    QIcon icon(QLatin1String(":/client/resources/more.svg"));
     _ui->permissionToolButton->setIcon(icon);
 
     // If there's only a single entry in the detailed permission menu, hide it
