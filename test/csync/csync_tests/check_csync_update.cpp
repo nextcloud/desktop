@@ -325,16 +325,6 @@ static void check_csync_detect_update_db_new(void **state)
     csync_set_status(csync, 0xFFFF);
 }
 
-static void check_csync_detect_update_null(void **state)
-{
-    CSYNC *csync = (CSYNC*)*state;
-    std::unique_ptr<csync_file_stat_t> fs;
-    int rc;
-
-    rc = _csync_detect_update(csync, NULL);
-    assert_int_equal(rc, -1);
-}
-
 static void check_csync_ftw(void **state)
 {
     CSYNC *csync = (CSYNC*)*state;
@@ -370,7 +360,6 @@ int torture_run_tests(void)
         cmocka_unit_test_setup_teardown(check_csync_detect_update_db_eval, setup, teardown),
         cmocka_unit_test_setup_teardown(check_csync_detect_update_db_rename, setup, teardown),
         cmocka_unit_test_setup_teardown(check_csync_detect_update_db_new, setup, teardown_rm),
-        cmocka_unit_test_setup_teardown(check_csync_detect_update_null, setup, teardown_rm),
 
         cmocka_unit_test_setup_teardown(check_csync_ftw, setup_ftw, teardown_rm),
         cmocka_unit_test_setup_teardown(check_csync_ftw_empty_uri, setup_ftw, teardown_rm),

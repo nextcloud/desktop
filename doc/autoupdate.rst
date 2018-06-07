@@ -2,18 +2,18 @@
 The Automatic Updater
 =====================
 
-The Automatic Updater ensures that you always have the 
+The Automatic Updater ensures that you always have the
 latest features and bug fixes for your Nextcloud synchronization client.
 
-The Automatic Updater updates only on Mac OS X and Windows computers; Linux 
-users only need to use their normal package managers. However, on Linux systems 
-the Updater will check for updates and notify you when a new version is 
+The Automatic Updater updates only on macOS and Windows computers; Linux
+users only need to use their normal package managers. However, on Linux systems
+the Updater will check for updates and notify you when a new version is
 available.
 
 Basic Workflow
 --------------
 
-The following sections describe how to use the Automatic Updater on different 
+The following sections describe how to use the Automatic Updater on different
 operating systems.
 
 Windows
@@ -29,20 +29,20 @@ itself. Should the silent update fail, the client offers a manual download.
 
 .. note:: Administrative privileges are required to perform the update.
 
-Mac OS X
-^^^^^^^^
+macOS
+^^^^^
 
 If a new update is available, the Nextcloud client initializes a pop-up dialog
 to alert you of the update and requesting that you update to the latest
 version. Due to their use of the Sparkle frameworks, this is the default
-process for Mac OS X applications.
+process for macOS applications.
 
 Linux
 ^^^^^
 
 Linux distributions provide their own update tools, so Nextcloud clients that use
-the Linux operating system do not perform any updates on their own. The client 
-will inform you (``Settings -> General -> Updates``) when an update is 
+the Linux operating system do not perform any updates on their own. The client
+will inform you (``Settings -> General -> Updates``) when an update is
 available.
 
 Preventing Automatic Updates
@@ -57,14 +57,14 @@ auto-update mechanism for different operating systems.
 Preventing Automatic Updates in Windows Environments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Users may disable automatic updates by adding this line to the [General] 
+Users may disable automatic updates by adding this line to the [General]
 section of their ``nextcloud.cfg`` files::
 
  skipUpdateCheck=true
 
-Windows administrators have more options for preventing automatic updates in 
-Windows environments by using one of two methods. The first method allows users 
-to override the automatic update check mechanism, whereas the second method 
+Windows administrators have more options for preventing automatic updates in
+Windows environments by using one of two methods. The first method allows users
+to override the automatic update check mechanism, whereas the second method
 prevents any manual overrides.
 
 To prevent automatic updates, but allow manual overrides:
@@ -82,7 +82,7 @@ To manually override this key, use the same value in ``HKEY_CURRENT_USER``.
 
 To prevent automatic updates and disallow manual overrides:
 
-.. note:: This is the preferred method of controlling the updater behavior using 
+.. note:: This is the preferred method of controlling the updater behavior using
    Group Policies.
 
 1. Edit this Registry key:
@@ -96,10 +96,10 @@ To prevent automatic updates and disallow manual overrides:
 .. note:: branded clients have different key names
 
 
-Preventing Automatic Updates in Mac OS X Environments
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Preventing Automatic Updates in macOS Environments
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can disable the automatic update mechanism, in the Mac OS X operating system,
+You can disable the automatic update mechanism, in the macOS operating system,
 by copying the file
 ``nextcloud.app/Contents/Resources/deny_autoupdate_com.nextcloud.desktopclient.plist``
 to ``/Library/Preferences/com.nextcloud.desktopclient.plist``.

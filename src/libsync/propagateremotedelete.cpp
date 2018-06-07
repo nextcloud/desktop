@@ -54,8 +54,7 @@ void DeleteJob::start()
 bool DeleteJob::finished()
 {
     qCInfo(lcDeleteJob) << "DELETE of" << reply()->request().url() << "FINISHED WITH STATUS"
-                        << reply()->error()
-                        << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
+                       << replyStatusString();
 
     emit finishedSignal();
     return true;
@@ -111,11 +110,6 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
     _item->_httpErrorCode = httpStatus;
 
     if (err != QNetworkReply::NoError && err != QNetworkReply::ContentNotFoundError) {
-        if (checkForProblemsWithShared(_item->_httpErrorCode,
-                tr("The file has been removed from a read only share. It was restored."))) {
-            return;
-        }
-
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
             &propagator()->_anotherSyncNeeded);
         done(status, _job->errorString());

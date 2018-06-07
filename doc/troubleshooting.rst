@@ -4,7 +4,7 @@ Appendix C: Troubleshooting
 The following two general issues can result in failed synchronization:
 
 - The server setup is incorrect.
-- The client contains a bug. 
+- The client contains a bug.
 
 When reporting bugs, it is helpful if you first determine what part of the
 system is causing the issue.
@@ -16,7 +16,7 @@ Identifying Basic Functionality Problems
   The first step in troubleshooting synchronization issues is to verify that
   you can log on to the Nextcloud web application. To verify connectivity to the
   Nextcloud server try logging in via your Web browser.
-  
+
   If you are not prompted for your username and password, or if a red warning
   box appears on the page, your server setup requires modification. Please verify
   that your server installation is working correctly.
@@ -30,7 +30,7 @@ Identifying Basic Functionality Problems
   Verify that you can log on to Nextcloud's WebDAV server. To verify connectivity
   with the Nextcloud WebDAV server:
 
-  - Open a browser window and enter the address to the Nextcloud WebDAV server. 
+  - Open a browser window and enter the address to the Nextcloud WebDAV server.
 
   For example, if your Nextcloud instance is installed at
   ``http://yourserver.com/nextcloud``, your WebDAV server address is
@@ -40,29 +40,29 @@ Identifying Basic Functionality Problems
   correct credentials, authentication fails, please ensure that your
   authentication backend is configured properly.
 
-:Use a WebDAV command line tool to test:  
+:Use a WebDAV command line tool to test:
   A more sophisticated test method for troubleshooting synchronization issues
   is to use a WebDAV command line client and log into the Nextcloud WebDAV server.
   One such command line client -- called ``cadaver`` -- is available for Linux
   distributions. You can use this application to further verify that the WebDAV
-  server is running properly using PROPFIND calls.  
+  server is running properly using PROPFIND calls.
 
   As an example, after installing the ``cadaver`` app, you can issue the
   ``propget`` command to obtain various properties pertaining to the current
   directory and also verify WebDAV server connection.
-  
+
 "CSync unknown error"
 ---------------------
 
 If you see this error message stop your client, delete the
 ``._sync_xxxxxxx.db`` file, and then restart your client.
 There is a  hidden ``._sync_xxxxxxx.db`` file inside the folder of every account
-configured on your client. 
+configured on your client.
 
 .. NOTE::
    Please note that this will also erase some of your settings about which
    files to download.
-   
+
 See https://github.com/owncloud/client/issues/5226 for more discussion of this
 issue.
 
@@ -145,7 +145,7 @@ mentioned above to save the log to a file.
      restarting the client using the following command:
 
      * Windows: ``C:\Program Files (x86)\Nextcloud\nextcloud.exe --logwindow``
-     * Mac OS X: ``/Applications/nextcloud.app/Contents/MacOS/nextcloud --logwindow``
+     * macOS: ``/Applications/nextcloud.app/Contents/MacOS/nextcloud --logwindow``
      * Linux: ``nextcloud --logwindow``
 
 Saving Files Directly
@@ -184,7 +184,7 @@ The Nextcloud server also maintains an Nextcloud specific log file. This log fil
 must be enabled through the Nextcloud Administration page. On that page, you can
 adjust the log level. We recommend that when setting the log file level that
 you set it to a verbose level like ``Debug`` or ``Info``.
-  
+
 You can view the server log file using the web interface or you can open it
 directly from the file system in the Nextcloud server data directory.
 
@@ -202,21 +202,21 @@ Nextcloud-related problems. For Apache on Linux, the error logs are typically
 located in the ``/var/log/apache2`` directory. Some helpful files include the
 following:
 
-- ``error_log`` -- Maintains errors associated with PHP code. 
+- ``error_log`` -- Maintains errors associated with PHP code.
 - ``access_log`` -- Typically records all requests handled by the server; very
   useful as a debugging tool because the log line contains information specific
   to each request and its result.
-  
+
 You can find more information about Apache logging at
 ``http://httpd.apache.org/docs/current/logs.html``.
 
 Core Dumps
 ----------
 
-On Mac OS X and Linux systems, and in the unlikely event the client software
+On macOS and Linux systems, and in the unlikely event the client software
 crashes, the client is able to write a core dump file.  Obtaining a core dump
 file can assist Nextcloud Customer Support tremendously in the debugging
-process. 
+process.
 
 To enable the writing of core dump files, you must define the
 ``OWNCLOUD_CORE_DUMP`` environment variable on the system.
@@ -228,7 +228,7 @@ OWNCLOUD_CORE_DUMP=1 nextcloud
 ```
 
 This command starts the client with core dumping enabled and saves the files in
-the current working directory.  
+the current working directory.
 
 .. note:: Core dump files can be fairly large.  Before enabling core dumps on
    your system, ensure that you have enough disk space to accommodate these files.

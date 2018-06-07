@@ -19,6 +19,7 @@
 #include <QDateTime>
 #include <QLocale>
 #include <QAbstractListModel>
+#include <chrono>
 
 #include "progressdispatcher.h"
 #include "owncloudgui.h"
@@ -91,7 +92,7 @@ private slots:
     void slotNotifyNetworkError(QNetworkReply *);
     void slotNotifyServerFinished(const QString &reply, int replyCode);
     void endNotificationRequest(NotificationWidget *widget, int replyCode);
-    void scheduleWidgetToRemove(NotificationWidget *widget, int milliseconds = 4500);
+    void scheduleWidgetToRemove(NotificationWidget *widget, int milliseconds = 100);
     void slotCheckToCleanWidgets();
 
 private:
@@ -137,7 +138,7 @@ public slots:
     void slotRefresh(AccountState *ptr);
     void slotRemoveAccount(AccountState *ptr);
 
-    void setNotificationRefreshInterval(quint64 interval);
+    void setNotificationRefreshInterval(std::chrono::milliseconds interval);
 
     void slotShowIssuesTab(const QString &folderAlias);
 

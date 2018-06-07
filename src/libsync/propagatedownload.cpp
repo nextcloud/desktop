@@ -313,8 +313,7 @@ void GETFileJob::slotReadyRead()
         }
         if (!_hasEmittedFinishedSignal) {
             qCInfo(lcGetJob) << "GET of" << reply()->request().url().toString() << "FINISHED WITH STATUS"
-                             << reply()->error()
-                             << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString())
+                             << replyStatusString()
                              << reply()->rawHeader("Content-Range") << reply()->rawHeader("Content-Length");
 
             emit finishedSignal();

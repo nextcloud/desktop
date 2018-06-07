@@ -173,6 +173,8 @@ protected:
     // GET requests that don't set up any HTTP body or other flags.
     bool _followRedirects;
 
+    QString replyStatusString();
+
 private slots:
     void slotFinished();
     void slotTimeout();

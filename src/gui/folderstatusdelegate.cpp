@@ -38,7 +38,7 @@ namespace OCC {
 FolderStatusDelegate::FolderStatusDelegate()
     : QStyledItemDelegate()
 {
-    m_moreIcon = QIcon(QLatin1String(":/client/resources/more.png"));
+    m_moreIcon = QIcon(QLatin1String(":/client/resources/more.svg"));
 }
 
 QString FolderStatusDelegate::addFolderText()
@@ -336,7 +336,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     {
         QStyleOptionToolButton btnOpt;
-        //btnOpt.text = QLatin1String("...");
         btnOpt.state = option.state;
         btnOpt.state &= ~(QStyle::State_Selected | QStyle::State_HasFocus);
         btnOpt.state |= QStyle::State_Raised;
@@ -344,7 +343,8 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         btnOpt.subControls = QStyle::SC_ToolButton;
         btnOpt.rect = optionsButtonVisualRect;
         btnOpt.icon = m_moreIcon;
-        btnOpt.iconSize = btnOpt.rect.size();
+        int e = QApplication::style()->pixelMetric(QStyle::PM_ButtonIconSize);
+        btnOpt.iconSize = QSize(e,e);
         QApplication::style()->drawComplexControl(QStyle::CC_ToolButton, &btnOpt, painter);
     }
 }
@@ -364,10 +364,9 @@ QRect FolderStatusDelegate::optionsButtonRect(QRect within, Qt::LayoutDirection 
     within.setHeight(FolderStatusDelegate::rootFolderHeightWithoutErrors(fm, aliasFm));
 
     QStyleOptionToolButton opt;
-    opt.text = QLatin1String("...");
-    QSize textSize = fm.size(Qt::TextShowMnemonic, opt.text);
-    opt.rect.setSize(textSize);
-    QSize size = QApplication::style()->sizeFromContents(QStyle::CT_ToolButton, &opt, textSize).expandedTo(QApplication::globalStrut());
+    int e = QApplication::style()->pixelMetric(QStyle::PM_ButtonIconSize);
+    opt.rect.setSize(QSize(e,e));
+    QSize size = QApplication::style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.rect.size()).expandedTo(QApplication::globalStrut());
 
     int margin = QApplication::style()->pixelMetric(QStyle::PM_DefaultLayoutSpacing);
     QRect r(QPoint(within.right() - size.width() - margin,

@@ -66,11 +66,13 @@ protected slots:
     void search(const QString &);
     void slotSave();
     void slotClearLog();
+    void togglePermanentLogging(bool enabled);
 
 private:
     LogWidget *_logWidget;
     QLineEdit *_findTermEdit;
     QCheckBox *_logDebugCheckBox;
+    QCheckBox *_permanentLogging;
     QPushButton *_saveBtn;
     QPushButton *_clearBtn;
     QLabel *_statusLabel;

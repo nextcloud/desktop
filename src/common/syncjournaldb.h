@@ -114,6 +114,12 @@ public:
         int _errorCount;
         bool _valid;
         QByteArray _contentChecksum;
+        /**
+         * Returns true if this entry refers to a chunked upload that can be continued.
+         * (As opposed to a small file transfer which is stored in the db so we can detect the case
+         * when the upload succeeded, but the connection was dropped before we got the answer)
+         */
+        bool isChunked() const { return _transferid != 0; }
     };
 
     struct PollInfo

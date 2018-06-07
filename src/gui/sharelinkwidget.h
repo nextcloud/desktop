@@ -122,6 +122,11 @@ private:
     bool _expiryRequired;
     bool _namesSupported;
 
+    // For maintaining the selection and temporary ui state
+    // when getShares() finishes, but the selection didn't
+    // change.
+    QString _selectedShareId;
+
     // When a new share is created, we want to select it
     // the next time getShares() finishes. This stores its id.
     QString _newShareOverrideSelectionId;

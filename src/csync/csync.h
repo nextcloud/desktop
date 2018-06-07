@@ -40,6 +40,7 @@
 #include <stdint.h>
 #include <sys/types.h>
 #include <config_csync.h>
+#include <functional>
 #include <memory>
 #include <QByteArray>
 #include "common/remotepermissions.h"
@@ -64,40 +65,17 @@ enum csync_status_codes_e {
   CSYNC_STATUS_ERROR      = 1024, /* don't use this code,
                                      */
   CSYNC_STATUS_UNSUCCESSFUL,       /* Unspecific problem happend */
-  CSYNC_STATUS_NO_LOCK,            /* OBSOLETE  does not happen anymore */
   CSYNC_STATUS_STATEDB_LOAD_ERROR, /* Statedb can not be loaded. */
-  CSYNC_STATUS_STATEDB_CORRUPTED,  /* Statedb is corrupted */
-  CSYNC_STATUS_NO_MODULE,          /* URL passed to csync does not start with owncloud:// or ownclouds:// */
-  CSYNC_STATUS_TIMESKEW,           /* OBSOLETE */
-  CSYNC_STATUS_FILESYSTEM_UNKNOWN, /* UNUSED */
-  CSYNC_STATUS_TREE_ERROR,         /* csync trees could not be created */
-  CSYNC_STATUS_PARAM_ERROR,        /* parameter is zero where not expected */
   CSYNC_STATUS_UPDATE_ERROR,       /* general update or discovery error */
-  CSYNC_STATUS_RECONCILE_ERROR,    /* general reconcile error */
-  CSYNC_STATUS_PROPAGATE_ERROR,    /* OBSOLETE */
-  CSYNC_STATUS_REMOTE_ACCESS_ERROR, /* UNUSED */
-  CSYNC_STATUS_REMOTE_CREATE_ERROR, /* UNUSED */
-  CSYNC_STATUS_REMOTE_STAT_ERROR,  /* UNUSED */
-  CSYNC_STATUS_LOCAL_CREATE_ERROR, /* UNUSED */
-  CSYNC_STATUS_LOCAL_STAT_ERROR,   /* UNUSED */
-  CSYNC_STATUS_PROXY_ERROR,        /* UNUSED */
-  CSYNC_STATUS_LOOKUP_ERROR,       /* Neon fails to find proxy. Almost OBSOLETE */
-  CSYNC_STATUS_SERVER_AUTH_ERROR,  /* UNUSED */
-  CSYNC_STATUS_PROXY_AUTH_ERROR,   /* UNUSED */
-  CSYNC_STATUS_CONNECT_ERROR,      /* neon driven connection failed */
   CSYNC_STATUS_TIMEOUT,            /* UNUSED */
   CSYNC_STATUS_HTTP_ERROR,         /* UNUSED */
   CSYNC_STATUS_PERMISSION_DENIED,  /*  */
   CSYNC_STATUS_NOT_FOUND,
   CSYNC_STATUS_FILE_EXISTS,
   CSYNC_STATUS_OUT_OF_SPACE,
-  CSYNC_STATUS_QUOTA_EXCEEDED, /* UNUSED */
   CSYNC_STATUS_SERVICE_UNAVAILABLE,
   CSYNC_STATUS_STORAGE_UNAVAILABLE,
   CSYNC_STATUS_FILE_SIZE_ERROR,
-  CSYNC_STATUS_CONTEXT_LOST,
-  CSYNC_STATUS_MERGE_FILETREE_ERROR,
-  CSYNC_STATUS_CSYNC_STATUS_ERROR,
   CSYNC_STATUS_OPENDIR_ERROR,
   CSYNC_STATUS_READDIR_ERROR,
   CSYNC_STATUS_OPEN_ERROR,
@@ -306,29 +284,27 @@ CSYNC_STATUS OCSYNC_EXPORT csync_get_status(CSYNC *ctx);
 /* Used for special modes or debugging */
 int OCSYNC_EXPORT csync_set_status(CSYNC *ctx, int status);
 
-typedef int csync_treewalk_visit_func(csync_file_stat_t *cur, csync_file_stat_t *other, void*);
+using csync_treewalk_visit_func = std::function<int(csync_file_stat_t *cur, csync_file_stat_t *other)>;
 
 /**
  * @brief Walk the local file tree and call a visitor function for each file.
  *
  * @param ctx           The csync context.
  * @param visitor       A callback function to handle the file info.
- * @param filter        A filter, built from or'ed csync_instructions_e
  *
  * @return              0 on success, less than 0 if an error occurred.
  */
-int OCSYNC_EXPORT csync_walk_local_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int filter);
+int OCSYNC_EXPORT csync_walk_local_tree(CSYNC *ctx, const csync_treewalk_visit_func &visitor);
 
 /**
  * @brief Walk the remote file tree and call a visitor function for each file.
  *
  * @param ctx           The csync context.
  * @param visitor       A callback function to handle the file info.
- * @param filter        A filter, built from and'ed csync_instructions_e
  *
  * @return              0 on success, less than 0 if an error occurred.
  */
-int OCSYNC_EXPORT csync_walk_remote_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int filter);
+int OCSYNC_EXPORT csync_walk_remote_tree(CSYNC *ctx, const csync_treewalk_visit_func &visitor);
 
 /**
  * @brief Get the csync status string.

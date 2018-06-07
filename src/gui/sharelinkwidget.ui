@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>394</width>
-    <height>534</height>
+    <width>441</width>
+    <height>568</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -94,7 +94,7 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <item row="7" column="0">
+      <item row="6" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_expire">
         <property name="leftMargin">
          <number>0</number>
@@ -115,7 +115,7 @@
         </item>
        </layout>
       </item>
-      <item row="5" column="0">
+      <item row="4" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <property name="leftMargin">
          <number>20</number>
@@ -142,7 +142,7 @@
         </item>
        </layout>
       </item>
-      <item row="4" column="0">
+      <item row="3" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_password">
         <item>
          <widget class="QCheckBox" name="checkBox_password">
@@ -173,13 +173,6 @@
        </layout>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Link properties:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
        <widget class="QWidget" name="widget_editing" native="true">
         <layout class="QGridLayout" name="layout_editing">
          <property name="leftMargin">
@@ -203,7 +196,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Users can view and download contents.</string>
+            <string>Recipients can view or download contents.</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -252,14 +245,14 @@
          <item row="0" column="0">
           <widget class="QRadioButton" name="radio_readOnly">
            <property name="text">
-            <string>Read only</string>
+            <string>Download / View</string>
            </property>
           </widget>
          </item>
          <item row="3" column="0">
           <widget class="QRadioButton" name="radio_readWrite">
            <property name="text">
-            <string>Read &amp;&amp; Write</string>
+            <string>Download / View / Upload</string>
            </property>
           </widget>
          </item>
@@ -272,7 +265,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>Users can view, download, edit and upload contents.</string>
+            <string>Recipients can view, download, edit, delete and upload contents.</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>

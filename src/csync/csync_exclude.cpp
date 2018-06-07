@@ -217,8 +217,8 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const char *path, bool excludeC
     }
 #endif
 
-    /* We create a desktop.ini on Windows for the sidebar icon, make sure we don't sync them. */
-    if (blen == 11) {
+    /* We create a Desktop.ini on Windows for the sidebar icon, make sure we don't sync it. */
+    if (blen == 11 && path == bname) {
         rc = csync_fnmatch("Desktop.ini", bname, 0);
         if (rc == 0) {
             match = CSYNC_FILE_SILENTLY_EXCLUDED;

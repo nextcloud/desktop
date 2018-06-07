@@ -91,6 +91,8 @@ private:
     bool _isRootPath;
     // If this directory is an external storage (The first item has 'M' in its permission)
     bool _isExternalStorage;
+    // If set, the discovery will finish with an error
+    QString _error;
     QPointer<LsColJob> _lsColJob;
 
 public:

@@ -43,6 +43,8 @@ class OWNCLOUDSYNC_EXPORT Logger : public QObject
     Q_OBJECT
 public:
     bool isNoop() const;
+    bool isLoggingToFile() const;
+
     void log(Log log);
     void doLog(const QString &log);
 
@@ -65,6 +67,22 @@ public:
     bool logDebug() const { return _logDebug; }
     void setLogDebug(bool debug);
 
+    /** Returns where the automatic logdir would be */
+    QString temporaryFolderLogDirPath() const;
+
+    /** Sets up default dir log setup.
+     *
+     * logdir: a temporary folder
+     * logexpire: 4 hours
+     * logdebug: true
+     *
+     * Used in conjunction with ConfigFile::automaticLogDir
+     */
+    void setupTemporaryFolderLogDir();
+
+    /** For switching off via logwindow */
+    void disableTemporaryFolderLogDir();
+
 signals:
     void logWindowLog(const QString &);
 
@@ -86,8 +104,9 @@ private:
     int _logExpire;
     bool _logDebug;
     QScopedPointer<QTextStream> _logstream;
-    QMutex _mutex;
+    mutable QMutex _mutex;
     QString _logDirectory;
+    bool _temporaryFolderLogDir = false;
 };
 
 } // namespace OCC

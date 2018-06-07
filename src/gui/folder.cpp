@@ -107,6 +107,9 @@ Folder::Folder(const FolderDefinition &definition,
     _scheduleSelfTimer.setInterval(SyncEngine::minimumFileAgeForUpload);
     connect(&_scheduleSelfTimer, &QTimer::timeout,
         this, &Folder::slotScheduleThisFolder);
+
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::folderConflicts,
+        this, &Folder::slotFolderConflicts);
 }
 
 Folder::~Folder()
@@ -119,6 +122,10 @@ void Folder::checkLocalPath()
 {
     const QFileInfo fi(_definition.localPath);
     _canonicalLocalPath = fi.canonicalFilePath();
+#ifdef Q_OS_MAC
+    // Workaround QTBUG-55896  (Should be fixed in Qt 5.8)
+    _canonicalLocalPath = _canonicalLocalPath.normalized(QString::NormalizationForm_C);
+#endif
     if (_canonicalLocalPath.isEmpty()) {
         qCWarning(lcFolder) << "Broken symlink:" << _definition.localPath;
         _canonicalLocalPath = _definition.localPath;
@@ -628,18 +635,17 @@ void Folder::startSync(const QStringList &pathList)
     setDirtyNetworkLimits();
     setSyncOptions();
 
-    static qint64 fullLocalDiscoveryInterval = []() {
+    static std::chrono::milliseconds fullLocalDiscoveryInterval = []() {
         auto interval = ConfigFile().fullLocalDiscoveryInterval();
         QByteArray env = qgetenv("OWNCLOUD_FULL_LOCAL_DISCOVERY_INTERVAL");
         if (!env.isEmpty()) {
-            interval = env.toLongLong();
+            interval = std::chrono::milliseconds(env.toLongLong());
         }
         return interval;
     }();
-    if (_folderWatcher && _folderWatcher->isReliable()
-        && _timeSinceLastFullLocalDiscovery.isValid()
-        && (fullLocalDiscoveryInterval < 0
-               || _timeSinceLastFullLocalDiscovery.elapsed() < fullLocalDiscoveryInterval)) {
+    if (_folderWatcher && _folderWatcher->isReliable() && _timeSinceLastFullLocalDiscovery.isValid()
+        && (fullLocalDiscoveryInterval.count() < 0
+               || _timeSinceLastFullLocalDiscovery.hasExpired(fullLocalDiscoveryInterval.count()))) {
         qCInfo(lcFolder) << "Allowing local discovery to read from the database";
         _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, _localDiscoveryPaths);
 
@@ -703,7 +709,7 @@ void Folder::setSyncOptions()
 
     QByteArray targetChunkUploadDurationEnv = qgetenv("OWNCLOUD_TARGET_CHUNK_UPLOAD_DURATION");
     if (!targetChunkUploadDurationEnv.isEmpty()) {
-        opt._targetChunkUploadDuration = targetChunkUploadDurationEnv.toUInt();
+        opt._targetChunkUploadDuration = std::chrono::milliseconds(targetChunkUploadDurationEnv.toUInt());
     } else {
         opt._targetChunkUploadDuration = cfgFile.targetChunkUploadDuration();
     }
@@ -825,7 +831,7 @@ void Folder::slotSyncFinished(bool success)
     // all come in.
     QTimer::singleShot(200, this, &Folder::slotEmitFinishedDelayed);
 
-    _lastSyncDuration = _timeSinceLastSyncStart.elapsed();
+    _lastSyncDuration = std::chrono::milliseconds(_timeSinceLastSyncStart.elapsed());
     _timeSinceLastSyncDone.start();
 
     // Increment the follow-up sync counter if necessary.
@@ -962,6 +968,17 @@ void Folder::slotScheduleThisFolder()
 void Folder::slotNextSyncFullLocalDiscovery()
 {
     _timeSinceLastFullLocalDiscovery.invalidate();
+}
+
+void Folder::slotFolderConflicts(const QString &folder, const QStringList &conflictPaths)
+{
+    if (folder != _definition.alias)
+        return;
+    auto &r = _syncResult;
+
+    // If the number of conflicts is too low, adjust it upwards
+    if (conflictPaths.size() > r.numNewConflictItems() + r.numOldConflictItems())
+        r.setNumOldConflictItems(conflictPaths.size() - r.numNewConflictItems());
 }
 
 void Folder::scheduleThisFolderSoon()

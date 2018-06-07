@@ -207,7 +207,7 @@ void LinkShare::setPassword(const QString &password)
 
 void LinkShare::slotPasswordSet(const QJsonDocument &, const QVariant &value)
 {
-    _passwordSet = value.toString() == "";
+    _passwordSet = value.toString() != "";
     emit passwordSet();
 }
 

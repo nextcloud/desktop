@@ -300,10 +300,8 @@ void DiscoverySingleDirectoryJob::abort()
     }
 }
 
-static std::unique_ptr<csync_file_stat_t> propertyMapToFileStat(const QMap<QString, QString> &map)
+static void propertyMapToFileStat(const QMap<QString, QString> &map, csync_file_stat_t *file_stat)
 {
-    std::unique_ptr<csync_file_stat_t> file_stat(new csync_file_stat_t);
-
     for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
         QString property = it.key();
         QString value = it.value();
@@ -316,10 +314,13 @@ static std::unique_ptr<csync_file_stat_t> propertyMapToFileStat(const QMap<QStri
         } else if (property == "getlastmodified") {
             file_stat->modtime = oc_httpdate_parse(value.toUtf8());
         } else if (property == "getcontentlength") {
+            // See #4573, sometimes negative size values are returned
             bool ok = false;
             qlonglong ll = value.toLongLong(&ok);
             if (ok && ll >= 0) {
                 file_stat->size = ll;
+            } else {
+                file_stat->size = 0;
             }
         } else if (property == "getetag") {
             file_stat->etag = Utility::normalizeEtag(value.toUtf8());
@@ -346,7 +347,6 @@ static std::unique_ptr<csync_file_stat_t> propertyMapToFileStat(const QMap<QStri
             }
         }
     }
-    return file_stat;
 }
 
 void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, const QMap<QString, QString> &map)
@@ -374,12 +374,26 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
             file = file.remove(0, 1);
         }
 
-
-        std::unique_ptr<csync_file_stat_t> file_stat(propertyMapToFileStat(map));
+        std::unique_ptr<csync_file_stat_t> file_stat(new csync_file_stat_t);
         file_stat->path = file.toUtf8();
-        if (file_stat->etag.isEmpty()) {
-            qCCritical(lcDiscovery) << "etag of" << file_stat->path << "is" << file_stat->etag << "This must not happen.";
+        file_stat->size = -1;
+        file_stat->modtime = -1;
+        propertyMapToFileStat(map, file_stat.get());
+        if (file_stat->type == ItemTypeDirectory)
+            file_stat->size = 0;
+        if (file_stat->type == ItemTypeSkip
+            || file_stat->size == -1
+            || file_stat->modtime == -1
+            || file_stat->remotePerm.isNull()
+            || file_stat->etag.isEmpty()
+            || file_stat->file_id.isEmpty()) {
+            _error = tr("The server file discovery reply is missing data.");
+            qCWarning(lcDiscovery)
+                << "Missing properties:" << file << file_stat->type << file_stat->size
+                << file_stat->modtime << file_stat->remotePerm.toString()
+                << file_stat->etag << file_stat->file_id;
         }
+
         if (_isExternalStorage && file_stat->remotePerm.hasPermission(RemotePermissions::IsMounted)) {
             /* All the entries in a external storage have 'M' in their permission. However, for all
                purposes in the desktop client, we only need to know about the mount points.
@@ -412,6 +426,10 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
         // This is a sanity check, if we haven't _ignoredFirst then it means we never received any directoryListingIteratedSlot
         // which means somehow the server XML was bogus
         emit finishedWithError(ERRNO_WRONG_CONTENT, QLatin1String("Server error: PROPFIND reply is not XML formatted!"));
+        deleteLater();
+        return;
+    } else if (!_error.isEmpty()) {
+        emit finishedWithError(ERRNO_WRONG_CONTENT, _error);
         deleteLater();
         return;
     }
@@ -470,8 +488,7 @@ void DiscoveryMainThread::doOpendirSlot(const QString &subPath, DiscoveryDirecto
         fullPath.chop(1);
     }
 
-    // emit _discoveryJob->folderDiscovered(false, subPath);
-    _discoveryJob->update_job_update_callback(false, subPath.toUtf8(), _discoveryJob);
+    _discoveryJob->update_job_update_callback(/*local=*/false, subPath.toUtf8(), _discoveryJob);
 
     // Result gets written in there
     _currentDiscoveryDirectoryResult = r;

@@ -21,6 +21,8 @@
 #include <QList>
 #include <QPair>
 
+class QJsonDocument;
+
 namespace OCC {
 
 /**

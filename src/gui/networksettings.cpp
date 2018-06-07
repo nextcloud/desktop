@@ -217,4 +217,16 @@ void NetworkSettings::checkEmptyProxyHost()
     }
 }
 
+void NetworkSettings::showEvent(QShowEvent *event)
+{
+    if (!event->spontaneous()
+        && _ui->manualProxyRadioButton->isChecked()
+        && _ui->hostLineEdit->text().isEmpty()) {
+        _ui->noProxyRadioButton->setChecked(true);
+        checkEmptyProxyHost();
+    }
+
+    QWidget::showEvent(event);
+}
+
 } // namespace OCC

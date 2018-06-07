@@ -203,7 +203,10 @@ void ownCloudGui::slotSyncStateChange(Folder *folder)
 
     qCInfo(lcApplication) << "Sync state changed for folder " << folder->remoteUrl().toString() << ": " << result.statusString();
 
-    if (result.status() == SyncResult::Success || result.status() == SyncResult::Error) {
+    if (result.status() == SyncResult::Success
+        || result.status() == SyncResult::Problem
+        || result.status() == SyncResult::SyncAbortRequested
+        || result.status() == SyncResult::Error) {
         Logger::instance()->enterNextLogFile();
     }
 
@@ -869,9 +872,12 @@ void ownCloudGui::slotUpdateProgress(const QString &folder, const ProgressInfo &
     Q_UNUSED(folder);
 
     if (progress.status() == ProgressInfo::Discovery) {
-        if (!progress._currentDiscoveredFolder.isEmpty()) {
-            _actionStatus->setText(tr("Checking for changes in '%1'")
-                                       .arg(progress._currentDiscoveredFolder));
+        if (!progress._currentDiscoveredRemoteFolder.isEmpty()) {
+            _actionStatus->setText(tr("Checking for changes in remote '%1'")
+                                       .arg(progress._currentDiscoveredRemoteFolder));
+        } else if (!progress._currentDiscoveredLocalFolder.isEmpty()) {
+            _actionStatus->setText(tr("Checking for changes in local '%1'")
+                                       .arg(progress._currentDiscoveredLocalFolder));
         }
     } else if (progress.status() == ProgressInfo::Done) {
         QTimer::singleShot(2000, this, &ownCloudGui::slotComputeOverallSyncStatus);
@@ -1115,7 +1121,7 @@ void ownCloudGui::raiseDialog(QWidget *raiseWidget)
 }
 
 
-void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &localPath)
+void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage)
 {
     const auto folder = FolderMan::instance()->folderForPath(localPath);
     if (!folder) {
@@ -1159,7 +1165,7 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
         w = _shareDialogs[localPath];
     } else {
         qCInfo(lcApplication) << "Opening share dialog" << sharePath << localPath << maxSharingPermissions;
-        w = new ShareDialog(accountState, sharePath, localPath, maxSharingPermissions, fileRecord.numericFileId());
+        w = new ShareDialog(accountState, sharePath, localPath, maxSharingPermissions, fileRecord.numericFileId(), startPage);
         w->setAttribute(Qt::WA_DeleteOnClose, true);
 
         _shareDialogs[localPath] = w;
