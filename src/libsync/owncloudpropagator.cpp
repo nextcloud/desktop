@@ -517,8 +517,7 @@ bool OwncloudPropagator::localFileNameClash(const QString &relFile)
             re = false;
             qCWarning(lcPropagator) << "No valid fileinfo";
         } else {
-            // Need to normalize to composited form because of
-            // https://bugreports.qt-project.org/browse/QTBUG-39622
+            // Need to normalize to composited form because of QTBUG-39622/QTBUG-55896
             const QString cName = fileInfo.canonicalFilePath().normalized(QString::NormalizationForm_C);
             bool equal = (file == cName);
             re = (!equal && !cName.endsWith(relFile, Qt::CaseSensitive));
@@ -835,10 +834,13 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
     ASSERT(i >= 0);
     _runningJobs.remove(i);
 
+    // Any sub job error will cause the whole composite to fail. This is important
+    // for knowing whether to update the etag in PropagateDirectory, for example.
     if (status == SyncFileItem::FatalError
         || status == SyncFileItem::NormalError
         || status == SyncFileItem::SoftError
-        || status == SyncFileItem::DetailError) {
+        || status == SyncFileItem::DetailError
+        || status == SyncFileItem::BlacklistedError) {
         _hasError = status;
     }
 

@@ -67,8 +67,7 @@ void MoveJob::start()
 bool MoveJob::finished()
 {
     qCInfo(lcMoveJob) << "MOVE of" << reply()->request().url() << "FINISHED WITH STATUS"
-                      << reply()->error()
-                      << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
+                      << replyStatusString();
 
     emit finishedSignal();
     return true;

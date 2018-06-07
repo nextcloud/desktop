@@ -67,13 +67,18 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
 
 static QString defaultJournalMode(const QString &dbPath)
 {
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN)
     // See #2693: Some exFAT file systems seem unable to cope with the
     // WAL journaling mode. They work fine with DELETE.
     QString fileSystem = FileSystem::fileSystemForPath(dbPath);
     qCInfo(lcDb) << "Detected filesystem" << fileSystem << "for" << dbPath;
     if (fileSystem.contains("FAT")) {
         qCInfo(lcDb) << "Filesystem contains FAT - using DELETE journal mode";
+        return "DELETE";
+    }
+#elif defined(Q_OS_MAC)
+    if (dbPath.startsWith("/Volumes/")) {
+        qCInfo(lcDb) << "Mounted sync dir, do not use WAL for" << dbPath;
         return "DELETE";
     }
 #else
@@ -273,6 +278,13 @@ bool SyncJournalDb::sqlFail(const QString &log, const SqlQuery &query)
 bool SyncJournalDb::checkConnect()
 {
     if (_db.isOpen()) {
+        // Unfortunately the sqlite isOpen check can return true even when the underlying storage
+        // has become unavailable - and then some operations may cause crashes. See #6049
+        if (!QFile::exists(_dbFile)) {
+            qCWarning(lcDb) << "Database open, but file " + _dbFile + " does not exist";
+            close();
+            return false;
+        }
         return true;
     }
 
@@ -1886,6 +1898,8 @@ void SyncJournalDb::setSelectiveSyncList(SyncJournalDb::SelectiveSyncListType ty
         return;
     }
 
+    startTransaction();
+
     //first, delete all entries of this type
     SqlQuery delQuery("DELETE FROM selectivesync WHERE type == ?1", _db);
     delQuery.bindValue(1, int(type));
@@ -1902,6 +1916,8 @@ void SyncJournalDb::setSelectiveSyncList(SyncJournalDb::SelectiveSyncListType ty
             qCWarning(lcDb) << "SQL error when inserting into selective sync" << type << path << delQuery.error();
         }
     }
+
+    commitInternal("setSelectiveSyncList");
 }
 
 void SyncJournalDb::avoidRenamesOnNextSync(const QByteArray &path)

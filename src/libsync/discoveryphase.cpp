@@ -429,7 +429,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
         deleteLater();
         return;
     } else if (!_error.isEmpty()) {
-        emit finishedWithError(ERRNO_ERROR_STRING, _error);
+        emit finishedWithError(ERRNO_WRONG_CONTENT, _error);
         deleteLater();
         return;
     }

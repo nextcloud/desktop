@@ -126,12 +126,7 @@ int csync_update(CSYNC *ctx) {
 }
 
 int csync_reconcile(CSYNC *ctx) {
-  int rc = -1;
-
-  if (ctx == NULL) {
-    errno = EBADF;
-    return -1;
-  }
+  Q_ASSERT(ctx);
   ctx->status_code = CSYNC_STATUS_OK;
 
   /* Reconciliation for local replica */
@@ -140,53 +135,30 @@ int csync_reconcile(CSYNC *ctx) {
 
   ctx->current = LOCAL_REPLICA;
 
-  rc = csync_reconcile_updates(ctx);
+  csync_reconcile_updates(ctx);
 
   qCInfo(lcCSync) << "Reconciliation for local replica took " << timer.elapsed() / 1000.
                   << "seconds visiting " << ctx->local.files.size() << " files.";
-
-  if (rc < 0) {
-      if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
-          ctx->status_code = csync_errno_to_status( errno, CSYNC_STATUS_RECONCILE_ERROR );
-      }
-      return rc;
-  }
 
   /* Reconciliation for remote replica */
   timer.restart();
 
   ctx->current = REMOTE_REPLICA;
 
-  rc = csync_reconcile_updates(ctx);
+  csync_reconcile_updates(ctx);
 
   qCInfo(lcCSync) << "Reconciliation for remote replica took " << timer.elapsed() / 1000.
                   << "seconds visiting " << ctx->remote.files.size() << " files.";
 
-  if (rc < 0) {
-      if (!CSYNC_STATUS_IS_OK(ctx->status_code)) {
-          ctx->status_code = csync_errno_to_status(errno,  CSYNC_STATUS_RECONCILE_ERROR );
-      }
-      return rc;
-  }
-
   ctx->status |= CSYNC_STATUS_RECONCILE;
-
-  rc = 0;
-  return rc;
+  return 0;
 }
 
 /*
  * local visitor which calls the user visitor with repacked stat info.
  */
-static int _csync_treewalk_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
-    int rc = 0;
-    csync_treewalk_visit_func *visitor   = NULL;
-    _csync_treewalk_context *twctx = NULL;
+static int _csync_treewalk_visitor(csync_file_stat_t *cur, CSYNC * ctx, const csync_treewalk_visit_func &visitor) {
     csync_s::FileMap *other_tree = nullptr;
-
-    if (ctx == NULL) {
-      return -1;
-    }
 
     /* we need the opposite tree! */
     switch (ctx->current) {
@@ -220,80 +192,41 @@ static int _csync_treewalk_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
 
     ctx->status_code = CSYNC_STATUS_OK;
 
-    twctx = (_csync_treewalk_context*) ctx->callbacks.userdata;
-    if (twctx == NULL) {
-      ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
-      return -1;
-    }
-
-    if (twctx->instruction_filter > 0 &&
-        !(twctx->instruction_filter & cur->instruction) ) {
-        return 0;
-    }
-
-    visitor = (csync_treewalk_visit_func*)(twctx->user_visitor);
-    if (visitor != NULL) {
-      rc = (*visitor)(cur, other, twctx->userdata);
-
-      return rc;
-    }
-    ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
-    return -1;
+    Q_ASSERT(visitor);
+    return visitor(cur, other);
 }
 
 /*
  * treewalk function, called from its wrappers below.
- *
- * it encapsulates the user visitor function, the filter and the userdata
- * into a treewalk_context structure and calls the rb treewalk function,
- * which calls the local _csync_treewalk_visitor in this module.
- * The user visitor is called from there.
  */
-static int _csync_walk_tree(CSYNC *ctx, csync_s::FileMap *tree, csync_treewalk_visit_func *visitor, int filter)
+static int _csync_walk_tree(CSYNC *ctx, csync_s::FileMap &tree, const csync_treewalk_visit_func &visitor)
 {
-    _csync_treewalk_context tw_ctx;
-    int rc = 0;
-
-    tw_ctx.userdata = ctx->callbacks.userdata;
-    tw_ctx.user_visitor = visitor;
-    tw_ctx.instruction_filter = filter;
-
-    ctx->callbacks.userdata = &tw_ctx;
-
-    for (auto &pair : *tree) {
-        if (_csync_treewalk_visitor(pair.second.get(), ctx) < 0) {
-          rc = -1;
-          break;
+    for (auto &pair : tree) {
+        if (_csync_treewalk_visitor(pair.second.get(), ctx, visitor) < 0) {
+            return -1;
         }
     }
-
-    if( rc < 0 ) {
-      if( ctx->status_code == CSYNC_STATUS_OK )
-          ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_TREE_ERROR);
-    }
-    ctx->callbacks.userdata = tw_ctx.userdata;
-
-    return rc;
+    return 0;
 }
 
 /*
  * wrapper function for treewalk on the remote tree
  */
-int csync_walk_remote_tree(CSYNC *ctx,  csync_treewalk_visit_func *visitor, int filter)
+int csync_walk_remote_tree(CSYNC *ctx, const csync_treewalk_visit_func &visitor)
 {
     ctx->status_code = CSYNC_STATUS_OK;
     ctx->current = REMOTE_REPLICA;
-    return _csync_walk_tree(ctx, &ctx->remote.files, visitor, filter);
+    return _csync_walk_tree(ctx, ctx->remote.files, visitor);
 }
 
 /*
  * wrapper function for treewalk on the local tree
  */
-int csync_walk_local_tree(CSYNC *ctx, csync_treewalk_visit_func *visitor, int filter)
+int csync_walk_local_tree(CSYNC *ctx, const csync_treewalk_visit_func &visitor)
 {
     ctx->status_code = CSYNC_STATUS_OK;
     ctx->current = LOCAL_REPLICA;
-    return _csync_walk_tree(ctx, &ctx->local.files, visitor, filter);
+    return _csync_walk_tree(ctx, ctx->local.files, visitor);
 }
 
 int csync_s::reinitialize() {

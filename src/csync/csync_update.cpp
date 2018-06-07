@@ -108,15 +108,9 @@ static bool _csync_mtime_equal(time_t a, time_t b)
  * See doc/dev/sync-algorithm.md for an overview.
  */
 static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs) {
+  Q_ASSERT(fs);
   OCC::SyncJournalFileRecord base;
   CSYNC_EXCLUDE_TYPE excluded = CSYNC_NOT_EXCLUDED;
-
-  if (fs == NULL) {
-    errno = EINVAL;
-    ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
-    return -1;
-  }
-
   if (fs->type == ItemTypeSkip) {
       excluded =CSYNC_FILE_EXCLUDE_STAT_FAILED;
   } else {
@@ -216,14 +210,12 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       /* we have an update! */
       qCInfo(lcUpdate, "Database entry found for %s, compare: %" PRId64 " <-> %" PRId64
                                           ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64
-                                          ", size: %" PRId64 " <-> %" PRId64 ", perms: %x <-> %x, ignore: %d, e2e: %s",
-                base._path.constData(),
-                ((int64_t) fs->modtime), ((int64_t) base._modtime),
+                                          ", size: %" PRId64 " <-> %" PRId64 ", perms: %x <-> %x"
+                                          ", checksum: %s <-> %s , ignore: %d,  e2e: %s",
+                base._path.constData(), ((int64_t) fs->modtime), ((int64_t) base._modtime),
                 fs->etag.constData(), base._etag.constData(), (uint64_t) fs->inode, (uint64_t) base._inode,
-                (uint64_t) fs->size, (uint64_t) base._fileSize,
-                *reinterpret_cast<short*>(&fs->remotePerm), *reinterpret_cast<short*>(&base._remotePerm),
-                base._serverHasIgnoredFiles,
-                base._e2eMangledName.constData());
+                (uint64_t) fs->size, (uint64_t) base._fileSize, *reinterpret_cast<short*>(&fs->remotePerm), *reinterpret_cast<short*>(&base._remotePerm),
+                fs->checksumHeader.constData(), base._checksumHeader.constData(), base._serverHasIgnoredFiles, base._e2eMangledName.constData());
       if (ctx->current == REMOTE_REPLICA && fs->etag != base._etag) {
           fs->instruction = CSYNC_INSTRUCTION_EVAL;
 
@@ -711,10 +703,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     // Now process to have a relative path to the sync root for the local replica, or to the data root on the remote.
     dirent->path = fullpath;
     if (ctx->current == LOCAL_REPLICA) {
-        if (dirent->path.size() <= (int)strlen(ctx->local.uri)) {
-            ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
-            goto error;
-        }
+        ASSERT(dirent->path.startsWith(ctx->local.uri)); // path is relative to uri
         // "len + 1" to include the slash in-between.
         dirent->path = dirent->path.mid(strlen(ctx->local.uri) + 1);
     }

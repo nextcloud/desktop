@@ -34,6 +34,7 @@
 #include "tooltipupdater.h"
 #include "filesystem.h"
 #include "clientsideencryptionjobs.h"
+#include "syncresult.h"
 
 #include <math.h>
 
@@ -335,9 +336,36 @@ void AccountSettings::slotUnlockFolderSuccess(const QByteArray& fileId)
 {
     qCInfo(lcAccountSettings()) << "Unlocking success!";
 }
-void AccountSettings::slotMarkSubfolderEncrpted(const QByteArray& fileId)
+
+bool AccountSettings::canEncryptOrDecrypt (const FolderStatusModel::SubFolderInfo* info) {
+    if (info->_folder->syncResult().status() != SyncResult::Status::Success) {
+        QMessageBox msgBox;
+        msgBox.setText("Please wait for the folder to sync before trying to encrypt it.");
+        msgBox.exec();
+        return false;
+    }
+
+    // for some reason the actual folder in disk is info->_folder->path + info->_path.
+    QDir folderPath(info->_folder->path() + info->_path);
+    folderPath.setFilter( QDir::AllEntries | QDir::NoDotAndDotDot );
+
+    if (folderPath.count() != 0) {
+        QMessageBox msgBox;
+        msgBox.setText("You cannot encyrpt a folder with contents, please remove the files \n"
+                       "Wait for the new sync, then encrypt it.");
+        msgBox.exec();
+        return false;
+    }
+    return true;
+}
+
+void AccountSettings::slotMarkSubfolderEncrpted(const FolderStatusModel::SubFolderInfo* folderInfo)
 {
-    auto job = new OCC::SetEncryptionFlagApiJob(accountsState()->account(),  fileId);
+    if (!canEncryptOrDecrypt(folderInfo)) {
+        return;
+    }
+
+    auto job = new OCC::SetEncryptionFlagApiJob(accountsState()->account(),  folderInfo->_fileId);
     connect(job, &OCC::SetEncryptionFlagApiJob::success, this, &AccountSettings::slotEncryptionFlagSuccess);
     connect(job, &OCC::SetEncryptionFlagApiJob::error, this, &AccountSettings::slotEncryptionFlagError);
     job->start();
@@ -349,11 +377,17 @@ void AccountSettings::slotMarkSubfolderEncrpted(const QByteArray& fileId)
 // 2 - Delete Metadata,
 // 3 - Unlock Folder,
 // 4 - Mark as Decrypted.
-void AccountSettings::slotMarkSubfolderDecrypted(const QByteArray& fileId)
+
+
+void AccountSettings::slotMarkSubfolderDecrypted(const FolderStatusModel::SubFolderInfo* folderInfo)
 {
+    if (!canEncryptOrDecrypt(folderInfo)) {
+        return;
+    }
+
   qDebug() << "Starting to mark as decrypted";
   qDebug() << "Locking the folder";
-  auto lockJob = new LockEncryptFolderApiJob(accountsState()->account(), fileId);
+  auto lockJob = new LockEncryptFolderApiJob(accountsState()->account(), folderInfo->_fileId);
   connect(lockJob, &LockEncryptFolderApiJob::success,
           this, &AccountSettings::slotLockForDecryptionSuccess);
   connect(lockJob, &LockEncryptFolderApiJob::error,
@@ -444,13 +478,15 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
     auto acc = _accountState->account();
 
     if (acc->capabilities().clientSideEncryptionAvaliable()) {
+        // Verify if the folder is empty before attempting to encrypt.
+
         bool isEncrypted = acc->e2e()->isFolderEncrypted(info->_path);
         ac = menu.addAction( isEncrypted ? tr("Decrypt") : tr("Encrypt"));
 
         if (not isEncrypted) {
-            connect(ac, &QAction::triggered, [this, &info] { slotMarkSubfolderEncrpted(info->_fileId); });
+            connect(ac, &QAction::triggered, [this, &info] { slotMarkSubfolderEncrpted(info); });
         } else {
-            connect(ac, &QAction::triggered, [this, &info] { slotMarkSubfolderDecrypted(info->_fileId); });
+            connect(ac, &QAction::triggered, [this, &info] { slotMarkSubfolderDecrypted(info); });
         }
     }
     menu.exec(QCursor::pos());

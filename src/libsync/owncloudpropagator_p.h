@@ -64,6 +64,12 @@ inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
 {
     Q_ASSERT(nerror != QNetworkReply::NoError); // we should only be called when there is an error
 
+    if (nerror == QNetworkReply::RemoteHostClosedError) {
+        // Sometimes server bugs lead to a connection close on certain files,
+        // that shouldn't bring the rest of the syncing to a halt.
+        return SyncFileItem::NormalError;
+    }
+
     if (nerror > QNetworkReply::NoError && nerror <= QNetworkReply::UnknownProxyError) {
         // network error or proxy error -> fatal
         return SyncFileItem::FatalError;

@@ -17,6 +17,7 @@
 
 #include "accountstate.h"
 #include "sharepermissions.h"
+#include "owncloudgui.h"
 
 #include <QPointer>
 #include <QString>
@@ -44,6 +45,7 @@ public:
         const QString &localPath,
         SharePermissions maxSharingPermissions,
         const QByteArray &numericFileId,
+        ShareDialogStartPage startPage,
         QWidget *parent = 0);
     ~ShareDialog();
 
@@ -64,6 +66,7 @@ private:
     SharePermissions _maxSharingPermissions;
     QByteArray _numericFileId;
     QString _privateLinkUrl;
+    ShareDialogStartPage _startPage;
 
     ShareLinkWidget *_linkWidget;
     ShareUserGroupWidget *_userGroupWidget;

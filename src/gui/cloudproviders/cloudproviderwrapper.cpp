@@ -120,8 +120,8 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
 
     // Build status details text
     QString msg;
-    if (!progress._currentDiscoveredFolder.isEmpty()) {
-        msg =  tr("Checking for changes in '%1'").arg(progress._currentDiscoveredFolder);
+    if (!progress._currentDiscoveredRemoteFolder.isEmpty()) {
+        msg =  tr("Checking for changes in '%1'").arg(progress._currentDiscoveredRemoteFolder);
     } else if (progress.totalSize() == 0) {
         quint64 currentFile = progress.currentFile();
         quint64 totalFileCount = qMax(progress.totalFiles(), currentFile);

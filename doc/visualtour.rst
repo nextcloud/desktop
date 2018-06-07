@@ -8,7 +8,7 @@ Icon
 
 The Nextcloud Client remains in the background and is visible
 as an icon in the system tray (Windows, KDE), status bar
-(MAC OS X), or notification area (Ubuntu).
+(macOS), or notification area (Ubuntu).
 
 .. image:: images/icon.png
 
@@ -17,7 +17,7 @@ Menu
 
 .. image:: images/menu.png
 
-A right click on the icon (left click on Ubuntu and Mac OS X)
+A right click on the icon (left click on Ubuntu and macOS)
 provides the following menu:
 
 * ``Open Nextcloud in browser``: Opens the Nextcloud web interface
@@ -124,7 +124,7 @@ The tab provides several useful options:
 * ``Show Desktop Nofications``: When checked, bubble notifications when
   a set of sync operations has been performed are provided.
 * ``Use Monochrome Icons``:  Use less obtrusive icons. Especially useful
-  on Mac OS X.
+  on macOS.
 * ``About``: provides information about authors as well as build conditions.
   This information is valuable when submitting a support request.
 
@@ -179,11 +179,11 @@ The Ignored Files Editor
 .. index:: ignored files, exclude files, pattern
 
 Nextcloud Client has the ability to exclude files from the sync process.
-The ignored files editor allows editing of custom patterns for files or 
-directories that should be excluded from the sync process. 
+The ignored files editor allows editing of custom patterns for files or
+directories that should be excluded from the sync process.
 
-There is a system wide list of default ignore patterns. These global defaults 
-cannot be directly modified within the editor. Hovering with the mouse will 
+There is a system wide list of default ignore patterns. These global defaults
+cannot be directly modified within the editor. Hovering with the mouse will
 reveal the location of the global exclude definition file.
 
 .. image:: images/ignored_files_editor.png
@@ -206,9 +206,9 @@ which are matched by this pattern are fleeting metadata which the client will
    correctness by the editor, but might fail to load correctly.
 
 In addition to this list, Nextcloud Client always excludes files with
-characters that cannot be synced to other file systems. 
+characters that cannot be synced to other file systems.
 
-With version 1.5.0 it also ignores files that caused individual errors 
+With version 1.5.0 it also ignores files that caused individual errors
 while syncing for a three times. These are listed in the activity view.
 There also is a button to retry the sync for another three times.
 
