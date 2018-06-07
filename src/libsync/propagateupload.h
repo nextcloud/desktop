@@ -211,7 +211,6 @@ protected:
     QVector<AbstractNetworkJob *> _jobs; /// network jobs that are currently in transit
     bool _finished BITFIELD(1); /// Tells that all the jobs have been finished
     bool _deleteExisting BITFIELD(1);
-    quint64 _abortCount; /// Keep track of number of aborted items
 
     /* This is a minified version of the SyncFileItem,
      * that holds only the specifics about the file that's
@@ -233,7 +232,6 @@ public:
         : PropagateItemJob(propagator, item)
         , _finished(false)
         , _deleteExisting(false)
-        , _abortCount(0)
         , _uploadEncryptedHelper(0)
         , _uploadingEncrypted(false)
     {
@@ -270,21 +268,21 @@ public:
     void abortWithError(SyncFileItem::Status status, const QString &error);
 
 public slots:
-    void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE;
     void slotJobDestroyed(QObject *job);
 
 private slots:
-    void slotReplyAbortFinished();
     void slotPollFinished();
 
 protected:
     void done(SyncFileItem::Status status, const QString &errorString = QString()) override;
 
     /**
-     * Prepares the abort e.g. connects proper signals and slots
-     * to the subjobs to abort asynchronously
+     * Aborts all running network jobs, except for the ones that mayAbortJob
+     * returns false on and, for async aborts, emits abortFinished when done.
      */
-    void prepareAbort(PropagatorJob::AbortType abortType);
+    void abortNetworkJobs(
+        AbortType abortType,
+        const std::function<bool(AbstractNetworkJob *job)> &mayAbortJob);
 
     /**
      * Checks whether the current error is one that should reset the whole
