@@ -1,3 +1,10 @@
+#include <openssl/rsa.h>
+#include <openssl/evp.h>
+#include <openssl/pem.h>
+#include <openssl/err.h>
+#include <openssl/engine.h>
+
+
 #include "clientsideencryption.h"
 #include "account.h"
 #include "capabilities.h"
@@ -5,12 +12,6 @@
 #include "clientsideencryptionjobs.h"
 #include "theme.h"
 #include "creds/abstractcredentials.h"
-
-#include <openssl/rsa.h>
-#include <openssl/evp.h>
-#include <openssl/pem.h>
-#include <openssl/err.h>
-#include <openssl/engine.h>
 
 #include <map>
 

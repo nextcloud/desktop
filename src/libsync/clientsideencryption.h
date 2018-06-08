@@ -10,7 +10,6 @@
 #include <QVector>
 #include <QMap>
 
-#include <openssl/rsa.h>
 #include <openssl/evp.h>
 
 #include "accountfwd.h"
