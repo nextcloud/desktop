@@ -92,7 +92,7 @@ bool GetFolderEncryptStatusJob::finished()
                         currFile.clear();
                     currEncryptedStatus = -1;
                 }
-                if (not currFile.isEmpty() && reader.name() == QLatin1String("is-encrypted")) {
+                if (!currFile.isEmpty() && reader.name() == QLatin1String("is-encrypted")) {
                   currEncryptedStatus = (bool) reader.readElementText(QXmlStreamReader::SkipChildElements).toInt();
                 }
             }
