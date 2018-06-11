@@ -170,6 +170,9 @@
     </ClCompile>
     <ClCompile Include="StringUtil.cpp" />
   </ItemGroup>
+    <ItemGroup>
+    <ResourceCompile Include="OCUtil.rc" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
