@@ -376,10 +376,8 @@ void SocketApi::processShareRequest(const QString &localFile, SocketListener *li
         const QString message = QLatin1String("SHARE:NOP:") + QDir::toNativeSeparators(localFile);
         listener->sendMessage(message);
     } else {
-        SyncFileStatus fileStatus = fileData.syncFileStatus();
-
-        // Verify the file is on the server (to our knowledge of course)
-        if (fileStatus.tag() != SyncFileStatus::StatusUpToDate) {
+        // If the file doesn't have a journal record, it might not be uploaded yet
+        if (!fileData.journalRecord().isValid()) {
             const QString message = QLatin1String("SHARE:NOTSYNCED:") + QDir::toNativeSeparators(localFile);
             listener->sendMessage(message);
             return;
@@ -452,55 +450,6 @@ void SocketApi::command_MANAGE_PUBLIC_LINKS(const QString &localFile, SocketList
 void SocketApi::command_VERSION(const QString &, SocketListener *listener)
 {
     listener->sendMessage(QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
-}
-
-void SocketApi::command_SHARE_STATUS(const QString &localFile, SocketListener *listener)
-{
-    auto fileData = FileData::get(localFile);
-    if (!fileData.folder) {
-        const QString message = QLatin1String("SHARE_STATUS:NOP:") + QDir::toNativeSeparators(localFile);
-        listener->sendMessage(message);
-        return;
-    }
-
-    SyncFileStatus fileStatus = fileData.syncFileStatus();
-
-    // Verify the file is on the server (to our knowledge of course)
-    if (fileStatus.tag() != SyncFileStatus::StatusUpToDate) {
-        const QString message = QLatin1String("SHARE_STATUS:NOTSYNCED:") + QDir::toNativeSeparators(localFile);
-        listener->sendMessage(message);
-        return;
-    }
-
-    const Capabilities capabilities = fileData.folder->accountState()->account()->capabilities();
-
-    if (!capabilities.shareAPI()) {
-        const QString message = QLatin1String("SHARE_STATUS:DISABLED:") + QDir::toNativeSeparators(localFile);
-        listener->sendMessage(message);
-    } else {
-        auto theme = Theme::instance();
-        QString available;
-
-        if (theme->userGroupSharing()) {
-            available = "USER,GROUP";
-        }
-
-        if (theme->linkSharing() && capabilities.sharePublicLink()) {
-            if (available.isEmpty()) {
-                available = "LINK";
-            } else {
-                available += ",LINK";
-            }
-        }
-
-        if (available.isEmpty()) {
-            const QString message = QLatin1String("SHARE_STATUS:DISABLED") + ":" + QDir::toNativeSeparators(localFile);
-            listener->sendMessage(message);
-        } else {
-            const QString message = QLatin1String("SHARE_STATUS:") + available + ":" + QDir::toNativeSeparators(localFile);
-            listener->sendMessage(message);
-        }
-    }
 }
 
 void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketListener *listener)
