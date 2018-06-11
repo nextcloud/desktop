@@ -695,9 +695,6 @@ void AccountSettings::slotAccountStateChanged()
             if (ui->_folderList->isExpanded(_model->index(i)))
                 ui->_folderList->setExpanded(_model->index(i), false);
         }
-    } else if (_model->isDirty()) {
-        // If we connect and have pending changes, show the list.
-        doExpand();
     }
 
     // Disabling expansion of folders might require hiding the selective
@@ -756,8 +753,6 @@ AccountSettings::~AccountSettings()
 
 void AccountSettings::refreshSelectiveSyncStatus()
 {
-    bool shouldBeVisible = _model->isDirty() && _accountState->isConnected();
-
     QString msg;
     int cnt = 0;
     foreach (Folder *folder, FolderMan::instance()->map().values()) {
@@ -788,10 +783,20 @@ void AccountSettings::refreshSelectiveSyncStatus()
         }
     }
 
+    // Some selective sync ui (either normal editing or big folder) will show
+    // if this variable ends up true.
+    bool shouldBeVisible = false;
+
     if (msg.isEmpty()) {
+        // Show the ui if the model is dirty only
+        shouldBeVisible = _model->isDirty() && _accountState->isConnected();
+
         ui->selectiveSyncButtons->setVisible(true);
         ui->bigFolderUi->setVisible(false);
     } else {
+        // There's a reason the big folder ui should be shown
+        shouldBeVisible = _accountState->isConnected();
+
         ConfigFile cfg;
         QString info = !cfg.confirmExternalStorage()
             ? tr("There are folders that were not synchronized because they are too big: ")
@@ -802,7 +807,6 @@ void AccountSettings::refreshSelectiveSyncStatus()
         ui->selectiveSyncNotification->setText(info + msg);
         ui->selectiveSyncButtons->setVisible(false);
         ui->bigFolderUi->setVisible(true);
-        shouldBeVisible = true;
     }
 
     ui->selectiveSyncApply->setEnabled(_model->isDirty() || !msg.isEmpty());
@@ -812,6 +816,7 @@ void AccountSettings::refreshSelectiveSyncStatus()
         if (shouldBeVisible) {
             ui->selectiveSyncStatus->setMaximumHeight(0);
             ui->selectiveSyncStatus->setVisible(true);
+            doExpand();
         }
         auto anim = new QPropertyAnimation(ui->selectiveSyncStatus, "maximumHeight", ui->selectiveSyncStatus);
         anim->setEndValue(shouldBeVisible ? hint.height() : 0);
