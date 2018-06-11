@@ -289,7 +289,7 @@ private slots:
         // There is a conflict file with our version
         auto &stateAChildren = localState.find("A")->children;
         auto it = std::find_if(stateAChildren.cbegin(), stateAChildren.cend(), [&](const FileInfo &fi) {
-            return fi.name.startsWith("a0_conflict");
+            return fi.name.startsWith("a0 (conflicted copy");
         });
         QVERIFY(it != stateAChildren.cend());
         QCOMPARE(it->contentChar, 'B');
