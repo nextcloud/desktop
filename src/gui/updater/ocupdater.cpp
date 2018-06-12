@@ -192,8 +192,13 @@ void OCUpdater::slotStartInstaller()
     settings.setValue(autoUpdateAttemptedC, true);
     settings.sync();
     qCInfo(lcUpdater) << "Running updater" << updateFile;
-    QProcess::startDetached(updateFile, QStringList() << "/S"
-                                                      << "/launch");
+
+    if(updateFile.endsWith(".exe")) {
+        QProcess::startDetached(updateFile, QStringList() << "/S"
+                                                        << "/launch");
+    } else {
+        QDesktopServices::openUrl(QUrl("file:///" + updateFile, QUrl::TolerantMode));
+    }
 }
 
 void OCUpdater::checkForUpdate()
