@@ -57,6 +57,10 @@ QUrl Updater::updateUrl()
     urlQuery.addQueryItem(QLatin1String("sparkle"), QLatin1String("true"));
 #endif
 
+#if defined(Q_OS_WIN)
+    urlQuery.addQueryItem(QLatin1String("msi"), QLatin1String("true"));
+#endif
+
     updateBaseUrl.setQuery(urlQuery);
 
     return updateBaseUrl;
