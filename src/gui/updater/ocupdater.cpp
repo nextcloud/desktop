@@ -202,9 +202,15 @@ void OCUpdater::slotStartInstaller()
         // manually here. We wrap the msiexec and client invocation in a powershell
         // script because owncloud.exe will be shut down for installation.
         // | Out-Null forces powershell to wait for msiexec to finish.
-        QString command = QString("&{msiexec /norestart /passive /i '%1' | Out-Null ; &'%2'}")
-            .arg(QDir::toNativeSeparators(updateFile))
-            .arg(QDir::toNativeSeparators(QCoreApplication::applicationFilePath()));
+        auto preparePathForPowershell = [](QString path) {
+            path.replace("'", "''");
+
+            return QDir::toNativeSeparators(path);
+        };
+
+        QString command = QString("&{msiexec /norestart /passive /i '%1'| Out-Null ; &'%2'}")
+            .arg(preparePathForPowershell(updateFile))
+            .arg(preparePathForPowershell(QCoreApplication::applicationFilePath()));
 
         QProcess::startDetached("powershell.exe", QStringList{"-Command", command});
     }
