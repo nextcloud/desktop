@@ -184,6 +184,81 @@ void OCUpdater::setDownloadState(DownloadState state)
     }
 }
 
+namespace {
+#if defined(Q_OS_WIN)
+// Following functions are taken from https://github.com/qt/qtbase/blob/5.8/src/corelib/io/qprocess_win.cpp
+// to make use of this fix https://github.com/qt/qtbase/commit/bec2fc19fd18768b16925597871c77a61e716abd
+// for QTBUG-53833: Without this we get an ugly powershell window on update. In 2.5/master we use Qt 5.10
+// which obviously already has the fix.
+static QString qt_create_commandline(const QString &program, const QStringList &arguments)
+{
+    QString args;
+    if (!program.isEmpty()) {
+        QString programName = program;
+        if (!programName.startsWith(QLatin1Char('\"')) && !programName.endsWith(QLatin1Char('\"')) && programName.contains(QLatin1Char(' ')))
+            programName = QLatin1Char('\"') + programName + QLatin1Char('\"');
+        programName.replace(QLatin1Char('/'), QLatin1Char('\\'));
+
+        // add the prgram as the first arg ... it works better
+        args = programName + QLatin1Char(' ');
+    }
+
+    for (int i=0; i<arguments.size(); ++i) {
+        QString tmp = arguments.at(i);
+        // Quotes are escaped and their preceding backslashes are doubled.
+        tmp.replace(QRegExp(QLatin1String("(\\\\*)\"")), QLatin1String("\\1\\1\\\""));
+        if (tmp.isEmpty() || tmp.contains(QLatin1Char(' ')) || tmp.contains(QLatin1Char('\t'))) {
+            // The argument must not end with a \ since this would be interpreted
+            // as escaping the quote -- rather put the \ behind the quote: e.g.
+            // rather use "foo"\ than "foo\"
+            int i = tmp.length();
+            while (i > 0 && tmp.at(i - 1) == QLatin1Char('\\'))
+                --i;
+            tmp.insert(i, QLatin1Char('"'));
+            tmp.prepend(QLatin1Char('"'));
+        }
+        args += QLatin1Char(' ') + tmp;
+    }
+    return args;
+}
+
+bool startDetached(const QString &program, const QStringList &arguments, const QString &workingDir = QString(), qint64 *pid = 0)
+{
+    // static const DWORD errorElevationRequired = 740;
+
+    QString args = qt_create_commandline(program, arguments);
+    bool success = false;
+    PROCESS_INFORMATION pinfo;
+
+    DWORD dwCreationFlags = (GetConsoleWindow() ? 0 : CREATE_NO_WINDOW);
+    dwCreationFlags |= CREATE_UNICODE_ENVIRONMENT;
+    STARTUPINFOW startupInfo = { sizeof( STARTUPINFO ), 0, 0, 0,
+                                 (ulong)CW_USEDEFAULT, (ulong)CW_USEDEFAULT,
+                                 (ulong)CW_USEDEFAULT, (ulong)CW_USEDEFAULT,
+                                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+                               };
+    success = CreateProcess(0, (wchar_t*)args.utf16(),
+                            0, 0, FALSE, dwCreationFlags, 0,
+                            workingDir.isEmpty() ? 0 : (wchar_t*)workingDir.utf16(),
+                            &startupInfo, &pinfo);
+
+    // if (success) {
+        CloseHandle(pinfo.hThread);
+        CloseHandle(pinfo.hProcess);
+        if (pid)
+            *pid = pinfo.dwProcessId;
+    // } else if (GetLastError() == errorElevationRequired) {
+    //     success = startDetachedUacPrompt(program, arguments, workingDir, pid);
+    // }
+
+    return success;
+}
+#else
+bool startDetached(const QString &, const QStringList &, const QString & = QString(), qint64 * = 0)
+{
+}
+#endif
+}
 void OCUpdater::slotStartInstaller()
 {
     ConfigFile cfg;
@@ -212,7 +287,7 @@ void OCUpdater::slotStartInstaller()
             .arg(preparePathForPowershell(updateFile))
             .arg(preparePathForPowershell(QCoreApplication::applicationFilePath()));
 
-        QProcess::startDetached("powershell.exe", QStringList{"-Command", command});
+        startDetached("powershell.exe", QStringList{"-Command", command});
     }
 }
 
