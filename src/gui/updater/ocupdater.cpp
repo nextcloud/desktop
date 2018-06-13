@@ -325,7 +325,7 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
             showDialog(info);
         }
         if (!url.isEmpty()) {
-            _targetFile = cfg.configPath() + url.mid(url.lastIndexOf('/'));
+            _targetFile = cfg.configPath() + url.mid(url.lastIndexOf('/')+1);
             if (QFile(_targetFile).exists()) {
                 setDownloadState(DownloadComplete);
             } else {
