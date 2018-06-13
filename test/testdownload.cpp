@@ -112,7 +112,10 @@ private slots:
             return nullptr;
         });
 
+        bool timedOut = false;
+        QTimer::singleShot(10000, &fakeFolder.syncEngine(), [&]() { timedOut = true; fakeFolder.syncEngine().abort(); });
         QVERIFY(!fakeFolder.syncOnce());  // Fail because A/broken
+        QVERIFY(!timedOut);
         QCOMPARE(getItem(completeSpy, "A/broken")->_status, SyncFileItem::NormalError);
         QVERIFY(getItem(completeSpy, "A/broken")->_errorString.contains(serverMessage));
     }

@@ -147,6 +147,7 @@ void GETFileJob::newReplyHook(QNetworkReply *reply)
 
     connect(reply, &QNetworkReply::metaDataChanged, this, &GETFileJob::slotMetaDataChanged);
     connect(reply, &QIODevice::readyRead, this, &GETFileJob::slotReadyRead);
+    connect(reply, &QNetworkReply::finished, this, &GETFileJob::slotReadyRead);
     connect(reply, &QNetworkReply::downloadProgress, this, &GETFileJob::downloadProgress);
 }
 
