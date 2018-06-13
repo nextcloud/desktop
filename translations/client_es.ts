@@ -576,17 +576,17 @@
     <message>
         <location filename="../src/gui/application.cpp" line="122"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Continuar significa que &lt;b&gt;borrará estas opciones:&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="124"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Continuar significa que &lt;b&gt;ignorará estas opciones:&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="130"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Algunas opciones han sido configuradas con nuevas versiones del cliente y por ello algunas opciones, no están disponibles en esta versión.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;El archivo de configuración debe ser respaldado en&lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="137"/>
@@ -1068,107 +1068,107 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
         <translation>Hay conflictos sin resolver. Haz click para mas detalles.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="884"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="885"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Buscando cambios en &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="888"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="889"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>ChBuscando cambios en local &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="895"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="896"/>
         <source>Reconciling changes</source>
         <translation>Reconciliando cambios</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="930"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="931"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="933"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="934"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="957"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="958"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>Sincronizando %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="959"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="970"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="960"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="971"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="963"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="964"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>descargando: %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="965"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="966"/>
         <source>u2193 %1/s</source>
         <translation>u2193 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="974"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>cargar %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="975"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="976"/>
         <source>u2191 %1/s</source>
         <translation>u2191 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="981"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="982"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 de %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="985"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="986"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1004"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1005"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%5 restantes, %1 de %2, archivo %3 de %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1012"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1013"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 de %2, archivo %3 de %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1019"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1020"/>
         <source>file %1 of %2</source>
         <translation>archivo %1 de %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1065"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
         <source>Waiting...</source>
         <translation>Esperando...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1067"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>Esperando por %n carpeta...</numerusform><numerusform>Esperando por %n otras carpetas...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1073"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
         <source>Preparing to sync...</source>
         <translation>Preparando para sincronizar...</translation>
     </message>
@@ -1324,17 +1324,17 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>&amp;Channel</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Canal</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>Estable</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="111"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>beta</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="179"/>
@@ -1406,19 +1406,21 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="171"/>
         <source>Change update channel?</source>
-        <translation type="unfinished"/>
+        <translation>¿Cambiar canal de actualizaciones?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="172"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation type="unfinished"/>
+        <translation>El canal de actualizaciones determina que actualizaciones son necesarias y ofrecidas para su instalación en el cliente. El canal &quot;Estable&quot; contiene actualizaciones consideradas estables, mientras que el canal &quot;beta&quot; contiene parches y funcionalidad nueva que podria ser inestable.
+
+Nota: esto solo selecciona el canal deseado y no permite vueltas atras. Por lo que volver atras desde el canal beta al canal estable, puede ser que tarde un cierto tiempo dado que los parches y nueva funcionalidades, deben acabar siendo trasladadas al canal &quot;estable&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="185"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Cambiar canal de actualizaciones</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="186"/>
@@ -3557,7 +3559,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="857"/>
         <source>Using virtual files but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>En uso archivos virtuales, pero sin el sufijo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="869"/>

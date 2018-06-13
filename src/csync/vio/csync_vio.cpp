@@ -90,9 +90,3 @@ std::unique_ptr<csync_file_stat_t> csync_vio_readdir(CSYNC *ctx, csync_vio_handl
   return NULL;
 }
 
-char *csync_vio_get_status_string(CSYNC *ctx) {
-  if(ctx->error_string) {
-    return ctx->error_string;
-  }
-  return 0;
-}

@@ -677,7 +677,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
           ctx->status_code = CSYNC_STATUS_ABORTED;
           goto error;
       }
-      int asp = 0;
       /* permission denied */
       ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_OPENDIR_ERROR);
       if (errno == EACCES) {
@@ -686,8 +685,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
               return 0;
           }
       } else if(errno == ENOENT) {
-          asp = asprintf( &ctx->error_string, "%s", uri);
-          ASSERT(asp >= 0);
+          ctx->error_string = QString::fromUtf8(uri);
       }
       // 403 Forbidden can be sent by the server if the file firewall is active.
       // A file or directory should be ignored and sync must continue. See #3490
@@ -718,7 +716,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     /* Conversion error */
     if (dirent->path.isEmpty() && !dirent->original_path.isEmpty()) {
         ctx->status_code = CSYNC_STATUS_INVALID_CHARACTERS;
-        ctx->error_string = c_strdup(dirent->original_path);
+        ctx->error_string = QString::fromUtf8(dirent->original_path);
         dirent->original_path.clear();
         goto error;
     }

@@ -180,7 +180,10 @@ struct OCSYNC_EXPORT csync_s {
   /* csync error code */
   enum csync_status_codes_e status_code = CSYNC_STATUS_OK;
 
-  char *error_string = nullptr;
+  /* Some additional string information which is added to the error message corresponding to the error code in errno.
+   * Usually a filename
+   */
+  QString error_string;
 
   int status = CSYNC_STATUS_INIT;
   volatile bool abort = false;

@@ -308,15 +308,6 @@ int OCSYNC_EXPORT csync_walk_local_tree(CSYNC *ctx, const csync_treewalk_visit_f
 int OCSYNC_EXPORT csync_walk_remote_tree(CSYNC *ctx, const csync_treewalk_visit_func &visitor);
 
 /**
- * @brief Get the csync status string.
- *
- * @param ctx            The csync context.
- *
- * @return               A const pointer to a string with more precise status info.
- */
-const char OCSYNC_EXPORT *csync_get_status_string(CSYNC *ctx);
-
-/**
  * @brief Aborts the current sync run as soon as possible. Can be called from another thread.
  *
  * @param ctx           The csync context.
