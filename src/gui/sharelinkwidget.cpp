@@ -539,7 +539,7 @@ void ShareLinkWidget::emailShareLink(const QUrl &url)
 {
     QString fileName = _sharePath.mid(_sharePath.lastIndexOf('/') + 1);
     Utility::openEmailComposer(
-        QString("I shared %1 with you").arg(fileName),
+        tr("I shared %1 with you").arg(fileName),
         url.toString(),
         this);
 }
