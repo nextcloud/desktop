@@ -155,7 +155,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="247"/>
         <location filename="../src/gui/accountsettings.cpp" line="450"/>
-        <location filename="../src/gui/accountsettings.cpp" line="854"/>
+        <location filename="../src/gui/accountsettings.cpp" line="859"/>
         <source>Cancel</source>
         <translation>منصرف شدن</translation>
     </message>
@@ -285,37 +285,37 @@
         <translation>اتصال به 1% در 2% وجود ندارد.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="710"/>
+        <location filename="../src/gui/accountsettings.cpp" line="707"/>
         <source>Log in</source>
         <translation>ورود</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="797"/>
+        <location filename="../src/gui/accountsettings.cpp" line="802"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>پوشه‌هایی وجود دارند که همگام سازی نشده اند زیرا آن ها بسیار بزرگ هستند:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="799"/>
+        <location filename="../src/gui/accountsettings.cpp" line="804"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>پوشه‌هایی وجود دارند که همگام سازی نشده اند زیرا آن ها مخازن خارجی هستند:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="800"/>
+        <location filename="../src/gui/accountsettings.cpp" line="805"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>پوشه‌هایی وجود دارند که همگام سازی نشده اند زیرا آن ها بسیار بزرگ یا مخازن خارجی هستند:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="846"/>
+        <location filename="../src/gui/accountsettings.cpp" line="851"/>
         <source>Confirm Account Removal</source>
         <translation>تائید حذف حساب‌کاربری</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="847"/>
+        <location filename="../src/gui/accountsettings.cpp" line="852"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;آیا شما واقعا می خواهید اتصال به حساب &lt;i&gt;1%&lt;/i&gt;را  حذف کنید؟&lt;/p&gt; &lt;p&gt;&lt;b&gt;توجه:&lt;/b&gt; این هیچ فایلی را حذف نخواهد کرد.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="853"/>
+        <location filename="../src/gui/accountsettings.cpp" line="858"/>
         <source>Remove connection</source>
         <translation>حذف ارتباط</translation>
     </message>
@@ -327,7 +327,7 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="199"/>
-        <location filename="../src/gui/accountsettings.cpp" line="712"/>
+        <location filename="../src/gui/accountsettings.cpp" line="709"/>
         <source>Log out</source>
         <translation>خروج</translation>
     </message>
@@ -1280,22 +1280,22 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="186"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>E-Tag از سرور دریافت نشده است، لطفا پروکسی/دروازه را بررسی نمایید</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="193"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="194"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>ما برای بازخوانی E-Tag متفاوتی دریافت کردیم. بار بعدی دوباره امتحان کنید.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="220"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="221"/>
         <source>Server returned wrong content-range</source>
         <translation>سرور محدوده محتوای اشتباهی برگرداند.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="332"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="333"/>
         <source>Connection Timeout</source>
         <translation>تایم اوت اتصال</translation>
     </message>
@@ -2312,47 +2312,47 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="423"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="424"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>پرونده 1% بخاطر یک پرونده محلی به نام برخورد دانلود نمی شود!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="473"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="474"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>دانلود فضای دیسک محلی آزاد تحت محدودیت را کاهش می دهد</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="477"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="478"/>
         <source>Free space on disk is less than %1</source>
         <translation>فضای خالی دیسک کمتر از %1 است</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="594"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="595"/>
         <source>File was deleted from server</source>
         <translation>فایل از روی سرور حذف شد</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="646"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="647"/>
         <source>The file could not be downloaded completely.</source>
         <translation>فایل به طور کامل قابل دانلود نیست.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="653"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="654"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>پرونده دانلود شده خالی است با وجود اینکه سرور اعلام کرده است این باید 1% باشد.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="829"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="830"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>پرونده 1% بخاطر یک پرونده محلی به نام برخورد ذخیره نمی شود!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="864"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="865"/>
         <source>File has changed since discovery</source>
         <translation>پرونده از زمان کشف تغییر کرده است.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="931"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="932"/>
         <source>Error writing metadata to the database</source>
         <translation>خطا در نوشتن متادیتا در پایگاه داده</translation>
     </message>
@@ -2929,6 +2929,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
         <source>Send link by email (direct download)</source>
         <translation>لینک را با پست الکترونیکی ارسال کنید (دانلود مستقیم)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="542"/>
+        <source>I shared %1 with you</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="556"/>
