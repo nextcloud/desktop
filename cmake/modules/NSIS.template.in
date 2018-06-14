@@ -389,7 +389,8 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${BUILD_PATH}\bin\${APPLICATION_EXECUTABLE}"
    File "${BUILD_PATH}\bin\${APPLICATION_CMD_EXECUTABLE}"
    File "${BUILD_PATH}\bin\lib${APPLICATION_SHORTNAME}sync.dll"
-   File "${BUILD_PATH}\bin\libocsync.dll"
+   ; Yes, with @ ... ${APPLICATION_EXECUTABLE} contains the .exe extension, @APPLICATION_EXECUTABLE@ does not.
+   File "${BUILD_PATH}\bin\libocsync_@APPLICATION_EXECUTABLE@.dll"
 
    File "${BUILD_PATH}\src\gui\client*.qm"
    ; Make sure only to copy qt, not qt_help, etc
