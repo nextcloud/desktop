@@ -3641,9 +3641,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="336"/>
-        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;نسخه 2%. برای اطلاعات بیشتر https://%4 را مشاهده کنید.&lt;/p&gt; &lt;p&gt;برای موضوعات آشنا و کمک، لطفا &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt; را مشاهده کنید.&lt;/p&gt;&lt;p&gt;&lt;small&gt;توسط Klaas Freitag و Daniel Molkentin و Olivier Goffart و Markus Götz و Jan-Christoph Borchardt و دیگران. &lt;/small&gt;&lt;/p&gt;&lt;p&gt; Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;تحت مجوز GNU مجوز عمومی سراسری (GPL) نسخه 2.0 &lt;br/&gt; ownCloud و لوگوی ownCloud علائم تجاری ownCloud GmbH در ایالت متحده، سایر کشورها، یا هر دو را ثبت کرده اند. &lt;/p&gt;</translation>
+        <location filename="../src/libsync/theme.cpp" line="341"/>
+        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="348"/>
+        <source>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="349"/>
+        <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
+        <translation>&lt;p&gt; توسط 1% توزیع شده و تحت مجوز GNU مجوز عمومی سراسری (GPL) نسخه 2.0 است. &lt;br/&gt; 2% و لوگوی 2% علائم تجاری 1% در ایالات متحده، سایر کشورها، یا هر دو را ثبت نام کرده اند. &lt;/p&gt;</translation>
     </message>
 </context>
 <context>
