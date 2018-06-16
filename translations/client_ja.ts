@@ -3173,7 +3173,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="143"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation>CSyncはプロキシもしくはサーバーの参照に失敗しました。</translation>
+        <translation>CSyncはプロキシまたはサーバーの参照に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="146"/>
