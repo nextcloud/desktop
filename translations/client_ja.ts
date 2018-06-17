@@ -496,17 +496,17 @@
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="349"/>
         <source>You received %n new notification(s) from %2.</source>
-        <translation><numerusform>%2 から %n の新しい通知がありました。</numerusform></translation>
+        <translation><numerusform>%2 から %n 個の新しい通知があります。</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="356"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
-        <translation><numerusform>%1 と %2 から %n の新しい通知がありました。</numerusform></translation>
+        <translation><numerusform>%1 と %2 から %n 個の新しい通知があります。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="358"/>
         <source>You received new notifications from %1, %2 and other accounts.</source>
-        <translation>%1 と %2 、その他アカウントから新しい通知がありました。</translation>
+        <translation>%1 と %2 と他のアカウントから新しい通知がありました。</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="362"/>
@@ -778,8 +778,8 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>ローカルの同期フォルダー &apos;％1&apos; 内に存在するすべてのファイルが削除されました。これらの削除はサーバーと同期され、復元されない限りファイルは使用できなくなります。
-これらのアクションをサーバーと同期してもよろしいですか？
+        <translation>ローカル同期フォルダー &apos;%1&apos; にあるすべてのファイルが削除されました。これらの削除されたものはサーバーと同期され、復元されない限りファイルは使用できなくなります。
+本当にこれらのアクションをサーバーと同期して良いですか？
 「ファイルを残す」を選択した場合、ファイルはサーバーから再同期されます。</translation>
     </message>
     <message>
@@ -1790,7 +1790,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="49"/>
         <source>Setup local folder options</source>
-        <translation>ローカルフォルダーのオプションを設定</translation>
+        <translation>ローカルフォルダーのオプションのセットアップ</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="58"/>
@@ -1898,7 +1898,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="51"/>
         <source>Setup %1 server</source>
-        <translation>%1 サーバーを設定</translation>
+        <translation>%1 サーバーのセットアップ</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="129"/>
@@ -3805,7 +3805,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="243"/>
         <source>S&amp;ync everything from server</source>
-        <translation>サーバーからすべてのファイルを同期(&amp;Y)</translation>
+        <translation>サーバーからすべてのファイルを同期する(&amp;Y)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="395"/>
@@ -4188,7 +4188,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="55"/>
         <source>Could not open email client</source>
-        <translation>電子メールクライアントを開くことができませんでした</translation>
+        <translation>メールクライアントを開けません</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="56"/>
