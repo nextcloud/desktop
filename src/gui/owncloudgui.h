@@ -128,7 +128,7 @@ private:
     // and aboutToHide. Unfortunately aboutToHide isn't reliable everywhere
     // so this only gets used with _workaroundManualVisibility (when the tray's
     // isVisible() is unreliable)
-    bool _contextMenuVisibleManual;
+    bool _contextMenuVisibleManual = false;
 
     QMenu *_recentActionsMenu;
     QVector<QMenu *> _accountMenus;
