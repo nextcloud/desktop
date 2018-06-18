@@ -51,7 +51,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
 
     registerField(QLatin1String("OCSyncFromScratch"), _ui.cbSyncFromScratch);
 
-    _ui.resultLayout->addWidget(_progressIndi);
+    _ui.errorScrollContents->layout()->addWidget(_progressIndi);
     stopSpinner();
     setupCustomization();
 
@@ -104,6 +104,11 @@ bool OwncloudAdvancedSetupPage::isComplete() const
 void OwncloudAdvancedSetupPage::initializePage()
 {
     WizardCommon::initErrorLabel(_ui.errorLabel);
+
+    auto labelSizeHint = _ui.errorLabel->minimumSizeHint();
+    _ui.errorScroll->setMinimumSize(
+        labelSizeHint.width(),
+        qMax<int>(1.3 * labelSizeHint.height(), _progressIndi->height()));
 
     if (!ConfigFile().showExperimentalOptions()) {
         // If the layout were wrapped in a widget, the auto-grouping of the
@@ -181,8 +186,6 @@ void OwncloudAdvancedSetupPage::updateStatus()
     }
 
     _ui.syncModeLabel->setText(t);
-    _ui.syncModeLabel->setFixedHeight(_ui.syncModeLabel->sizeHint().height());
-    wizard()->resize(wizard()->sizeHint());
     setErrorString(errorStr);
     emit completeChanged();
 }
@@ -195,14 +198,12 @@ bool OwncloudAdvancedSetupPage::dataChanged()
 
 void OwncloudAdvancedSetupPage::startSpinner()
 {
-    _ui.resultLayout->setEnabled(true);
     _progressIndi->setVisible(true);
     _progressIndi->startAnimation();
 }
 
 void OwncloudAdvancedSetupPage::stopSpinner()
 {
-    _ui.resultLayout->setEnabled(false);
     _progressIndi->setVisible(false);
     _progressIndi->stopAnimation();
 }
