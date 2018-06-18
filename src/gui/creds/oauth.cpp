@@ -22,6 +22,7 @@
 #include <QJsonDocument>
 #include "theme.h"
 #include "networkjobs.h"
+#include "creds/httpcredentials.h"
 
 namespace OCC {
 
@@ -85,6 +86,8 @@ void OAuth::start()
                 QString basicAuth = QString("%1:%2").arg(
                     Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret());
                 req.setRawHeader("Authorization", "Basic " + basicAuth.toUtf8().toBase64());
+                // We just added the Authorization header, don't let HttpCredentialsAccessManager tamper with it
+                req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
 
                 auto requestBody = new QBuffer;
                 QUrlQuery arguments(QString(
