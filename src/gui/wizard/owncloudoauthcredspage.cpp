@@ -125,6 +125,8 @@ void OwncloudOAuthCredsPage::slotOpenBrowser()
     if (_ui.errorLabel)
         _ui.errorLabel->hide();
 
+    qobject_cast<OwncloudWizard *>(wizard())->account()->clearCookieJar(); // #6574
+
     if (_asyncAuth)
         _asyncAuth->openBrowser();
 }
