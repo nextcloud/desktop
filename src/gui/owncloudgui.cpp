@@ -567,11 +567,11 @@ void ownCloudGui::setupContextMenu()
     applyEnvVariable(&_workaroundShowAndHideTray, envForceWorkaroundShowAndHideTray());
     applyEnvVariable(&_workaroundManualVisibility, envForceWorkaroundManualVisibility());
 
-    qCDebug(lcApplication) << "Tray menu workarounds: "
-                           << "noabouttoshow: " << _workaroundNoAboutToShowUpdate
-                           << "fakedoubleclick: " << _workaroundFakeDoubleClick
-                           << "showhide: " << _workaroundShowAndHideTray
-                           << "manualvisibility: " << _workaroundManualVisibility;
+    qCInfo(lcApplication) << "Tray menu workarounds:"
+                          << "noabouttoshow:" << _workaroundNoAboutToShowUpdate
+                          << "fakedoubleclick:" << _workaroundFakeDoubleClick
+                          << "showhide:" << _workaroundShowAndHideTray
+                          << "manualvisibility:" << _workaroundManualVisibility;
 
 
     connect(&_delayedTrayUpdateTimer, &QTimer::timeout, this, &ownCloudGui::updateContextMenu);
