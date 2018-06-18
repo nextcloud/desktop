@@ -533,30 +533,6 @@ void ownCloudGui::setupContextMenu()
         return;
     }
 
-    bool qdbusmenuWorkarounds = false;
-
-// Enables workarounds for bugs introduced in Qt 5.5.0
-// In particular QTBUG-47863 #3672 (tray menu fails to update and
-// becomes unresponsive) and QTBUG-48068 #3722 (click signal is
-// emitted several times)
-// The Qt version check intentionally uses 5.0.0 (where platformMenu()
-// was introduced) instead of 5.5.0 to avoid issues where the Qt
-// version used to build is different from the one used at runtime.
-// If we build with 5.6.1 or newer, we can skip this because the
-// bugs should be fixed there.
-#ifdef Q_OS_LINUX
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)) && (QT_VERSION < QT_VERSION_CHECK(5, 6, 0))
-    if (qVersion() == QByteArray("5.5.0")) {
-        QObject *platformMenu = reinterpret_cast<QObject *>(_tray->contextMenu()->platformMenu());
-        if (platformMenu
-            && platformMenu->metaObject()->className() == QLatin1String("QDBusPlatformMenu")) {
-            qdbusmenuWorkarounds = true;
-            qCWarning(lcApplication) << "Enabled QDBusPlatformMenu workaround";
-        }
-    }
-#endif
-#endif
-
     auto applyEnvVariable = [](bool *sw, const QByteArray &value) {
         if (value == "1")
             *sw = true;
@@ -564,6 +540,8 @@ void ownCloudGui::setupContextMenu()
             *sw = false;
     };
 
+    // This is an old compound flag that people might still depend on
+    bool qdbusmenuWorkarounds = false;
     applyEnvVariable(&qdbusmenuWorkarounds, envForceQDBusTrayWorkaround());
     if (qdbusmenuWorkarounds) {
         _workaroundFakeDoubleClick = true;
