@@ -229,6 +229,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     _actionGroup->addAction(accountAction);
     _actionGroupWidgets.insert(accountAction, accountSettings);
     _actionForAccount.insert(s->account().data(), accountAction);
+    accountAction->trigger();
 
     connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotFoldersChanged);
     connect(accountSettings, &AccountSettings::openFolderAlias,
