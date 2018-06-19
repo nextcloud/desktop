@@ -148,12 +148,13 @@ void GeneralSettings::slotUpdateInfo()
 
     // Channel selection
     _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == "beta" ? 1 : 0);
-    connect(_ui->updateChannel, &QComboBox::currentTextChanged,
+    connect(_ui->updateChannel, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
         this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
 }
 
-void GeneralSettings::slotUpdateChannelChanged(const QString &channel)
+void GeneralSettings::slotUpdateChannelChanged(int index)
 {
+    QString channel = index == 0 ? QStringLiteral("stable") : QStringLiteral("beta");
     if (channel == ConfigFile().updateChannel())
         return;
 

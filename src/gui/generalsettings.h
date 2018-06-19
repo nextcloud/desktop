@@ -44,7 +44,7 @@ private slots:
     void slotToggleLaunchOnStartup(bool);
     void slotToggleOptionalDesktopNotifications(bool);
     void slotUpdateInfo();
-    void slotUpdateChannelChanged(const QString &channel);
+    void slotUpdateChannelChanged(int index);
     void slotIgnoreFilesEditor();
     void loadMiscSettings();
 
