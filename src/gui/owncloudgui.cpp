@@ -41,11 +41,15 @@
 #include <QDesktopServices>
 #include <QDir>
 #include <QMessageBox>
+
 #include <QSignalMapper>
 #ifdef WITH_LIBCLOUDPROVIDERS
 #include <QtDBus/QDBusConnection>
 #include <QtDBus/QDBusInterface>
 #endif
+
+#include <QDialog>
+#include <QHBoxLayout>
 
 #if defined(Q_OS_X11)
 #include <QX11Info>
@@ -508,6 +512,10 @@ void ownCloudGui::setupContextMenu()
     // The tray menu is surprisingly problematic. Being able to switch to
     // a minimal version of it is a useful workaround and testing tool.
     if (minimalTrayMenu()) {
+        if (! Theme::instance()->about().isEmpty()) {
+            _contextMenu->addSeparator();
+            _contextMenu->addAction(_actionAbout);
+        }
         _contextMenu->addAction(_actionQuit);
         return;
     }
@@ -665,6 +673,12 @@ void ownCloudGui::updateContextMenu()
         QAction *action = _contextMenu->addAction(text);
         connect(action, &QAction::triggered, this, &ownCloudGui::slotPauseAllFolders);
     }
+
+    if (! Theme::instance()->about().isEmpty()) {
+        _contextMenu->addSeparator();
+        _contextMenu->addAction(_actionAbout);
+    }
+
     _contextMenu->addAction(_actionQuit);
 
     if (_qdbusmenuWorkaround) {
@@ -749,6 +763,8 @@ void ownCloudGui::setupActions()
     QObject::connect(_actionNewAccountWizard, &QAction::triggered, this, &ownCloudGui::slotNewAccountWizard);
     _actionHelp = new QAction(tr("Help"), this);
     QObject::connect(_actionHelp, &QAction::triggered, this, &ownCloudGui::slotHelp);
+    _actionAbout = new QAction(tr("About %1").arg(Theme::instance()->appNameGUI()), this);
+    QObject::connect(_actionAbout, &QAction::triggered, this, &ownCloudGui::slotAbout);
     _actionQuit = new QAction(tr("Quit %1").arg(Theme::instance()->appNameGUI()), this);
     QObject::connect(_actionQuit, SIGNAL(triggered(bool)), _app, SLOT(quit()));
 
@@ -1189,6 +1205,29 @@ void ownCloudGui::slotRemoveDestroyedShareDialogs()
             it.remove();
         }
     }
+}
+
+void ownCloudGui::slotAbout()
+{
+    QString title = tr("About %1").arg(Theme::instance()->appNameGUI());
+    QString about = Theme::instance()->about();
+    QMessageBox *msgBox = new QMessageBox(this->_settingsDialog);
+#ifdef Q_OS_MAC
+    // From Qt doc: "On macOS, the window title is ignored (as required by the macOS Guidelines)."
+    msgBox->setText(title);
+#else
+    msgBox->setWindowTitle(title);
+#endif
+    msgBox->setAttribute(Qt::WA_DeleteOnClose, true);
+    msgBox->setTextFormat(Qt::RichText);
+    msgBox->setTextInteractionFlags(Qt::TextBrowserInteraction);
+    msgBox->setInformativeText("<qt>"+about+"</qt>");
+    msgBox->setStandardButtons(QMessageBox::Ok);
+    QIcon appIcon = Theme::instance()->applicationIcon();
+    // Assume icon is always small enough to fit an about dialog?
+    qDebug() << appIcon.availableSizes().last();
+    msgBox->setIconPixmap(appIcon.pixmap(appIcon.availableSizes().last()));
+    msgBox->show();
 }
 
 
