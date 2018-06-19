@@ -228,7 +228,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="650"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation>サーバーバージョン %1 は古くサポートされていません！自己責任で進んでください。</translation>
+        <translation>サーバーバージョン %1 は古く、サポートされていません！自己責任で進めてください。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="652"/>
