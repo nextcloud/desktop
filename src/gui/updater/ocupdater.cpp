@@ -184,7 +184,6 @@ void OCUpdater::setDownloadState(DownloadState state)
     }
 }
 
-namespace {
 #if defined(Q_OS_WIN)
 // Following functions are taken from https://github.com/qt/qtbase/blob/5.8/src/corelib/io/qprocess_win.cpp
 // to make use of this fix https://github.com/qt/qtbase/commit/bec2fc19fd18768b16925597871c77a61e716abd
@@ -258,7 +257,7 @@ bool startDetached(const QString &, const QStringList &, const QString & = QStri
 {
 }
 #endif
-}
+
 void OCUpdater::slotStartInstaller()
 {
     ConfigFile cfg;
