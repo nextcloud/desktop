@@ -101,6 +101,18 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
     // accountAdded means the wizard was finished and the wizard might change some options.
     connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
+
+    // Only our standard brandings currently support beta channel
+    Theme *theme = Theme::instance();
+    if (theme->appName() != QLatin1String("ownCloud") && theme->appName() != QLatin1String("testpilotcloud") ) {
+#ifdef Q_OS_MAC
+        // Because we don't have any statusString from the SparkleUpdater anyway we can hide the whole thing
+        _ui->updatesGroupBox->hide();
+#else
+        _ui->updateChannelLabel->hide();
+        _ui->updateChannel->hide();
+#endif
+    }
 }
 
 GeneralSettings::~GeneralSettings()
