@@ -255,7 +255,7 @@ bool startDetached(const QString &program, const QStringList &arguments, const Q
 #else
 bool startDetached(const QString &program, const QStringList &arguments, const QString &workingDir = QString(), qint64 *pid = 0)
 {
-    QProcess::startDetached(program, arguments, workingDir, pid);
+    return QProcess::startDetached(program, arguments, workingDir, pid);
 }
 #endif
 
