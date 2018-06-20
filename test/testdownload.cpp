@@ -121,6 +121,30 @@ private slots:
         QCOMPARE(getItem(completeSpy, "A/broken")->_status, SyncFileItem::NormalError);
         QVERIFY(getItem(completeSpy, "A/broken")->_errorString.contains(serverMessage));
     }
+
+    void serverMaintenence() {
+        // Server in maintenance must abort the sync.
+
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.remoteModifier().insert("A/broken");
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::GetOperation) {
+                return new FakeErrorReply(op, request, this, 503,
+                    "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                    "<d:error xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\">\n"
+                    "<s:exception>Sabre\\DAV\\Exception\\ServiceUnavailable</s:exception>\n"
+                    "<s:message>System in maintenance mode.</s:message>\n"
+                    "</d:error>");
+            }
+            return nullptr;
+        });
+
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted);
+        QVERIFY(!fakeFolder.syncOnce()); // Fail because A/broken
+        // FatalError means the sync was aborted, which is what we want
+        QCOMPARE(getItem(completeSpy, "A/broken")->_status, SyncFileItem::FatalError);
+        QVERIFY(getItem(completeSpy, "A/broken")->_errorString.contains("System in maintenance mode"));
+    }
 };
 
 QTEST_GUILESS_MAIN(TestDownload)

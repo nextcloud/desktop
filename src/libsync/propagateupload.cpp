@@ -524,7 +524,7 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
     checkResettingErrors();
 
     SyncFileItem::Status status = classifyError(job->reply()->error(), _item->_httpErrorCode,
-        &propagator()->_anotherSyncNeeded);
+        &propagator()->_anotherSyncNeeded, replyContent);
 
     // Insufficient remote storage.
     if (_item->_httpErrorCode == 507) {

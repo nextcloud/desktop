@@ -239,8 +239,8 @@ private slots:
         fakeFolder.remoteModifier().insert("Y/Z/d7");
         fakeFolder.remoteModifier().insert("Y/Z/d8");
         fakeFolder.remoteModifier().insert("Y/Z/d9");
-        fakeFolder.serverErrorPaths().append("Y/Z/d2", 503); // 503 is a fatal error
-        fakeFolder.serverErrorPaths().append("Y/Z/d3", 503); // 503 is a fatal error
+        fakeFolder.serverErrorPaths().append("Y/Z/d2", 503);
+        fakeFolder.serverErrorPaths().append("Y/Z/d3", 503);
         QVERIFY(!fakeFolder.syncOnce());
         QCoreApplication::processEvents(); // should not crash
 
@@ -251,12 +251,12 @@ private slots:
             QVERIFY(!seen.contains(item->_file)); // signal only sent once per item
             seen.insert(item->_file);
             if (item->_file == "Y/Z/d2") {
-                QVERIFY(item->_status == SyncFileItem::FatalError);
-            } else if(item->_file == "Y/Z/d3") {
+                QVERIFY(item->_status == SyncFileItem::NormalError);
+            } else if (item->_file == "Y/Z/d3") {
                 QVERIFY(item->_status != SyncFileItem::Success);
+            } else if (!item->isDirectory()) {
+                QVERIFY(item->_status == SyncFileItem::Success);
             }
-            // We do not know about the other files - maybe the sync was aborted,
-            // maybe they finished before the error caused the abort.
         }
     }
 

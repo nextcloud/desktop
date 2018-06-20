@@ -59,8 +59,7 @@ inline QByteArray getEtagFromReply(QNetworkReply *reply)
  * Given an error from the network, map to a SyncFileItem::Status error
  */
 inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
-    int httpCode,
-    bool *anotherSyncNeeded = NULL)
+    int httpCode, bool *anotherSyncNeeded = nullptr, const QByteArray &errorBody = QByteArray())
 {
     Q_ASSERT(nerror != QNetworkReply::NoError); // we should only be called when there is an error
 
@@ -76,9 +75,10 @@ inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
     }
 
     if (httpCode == 503) {
-        // "Service unavailable"
-        // Happens for maintenance mode and other temporary outages
-        return SyncFileItem::FatalError;
+        // When the server is in maintenance mode, we want to exit the sync immediatly
+        // so that we do not flood the server with many requests
+        return errorBody.contains(R"(>Sabre\DAV\Exception\ServiceUnavailable<)") ?
+            SyncFileItem::FatalError : SyncFileItem::NormalError;
     }
 
     if (httpCode == 412) {

@@ -697,13 +697,16 @@ void PropagateDownloadFile::slotGetFinished()
             propagator()->_journal->avoidReadFromDbOnNextSync(_item->_file);
         }
 
+        QByteArray errorBody;
+        QString errorString = _item->_httpErrorCode >= 400 ? job->errorStringParsingBody(&errorBody)
+                                                           : job->errorString();
         SyncFileItem::Status status = job->errorStatus();
         if (status == SyncFileItem::NoStatus) {
             status = classifyError(err, _item->_httpErrorCode,
-                &propagator()->_anotherSyncNeeded);
+                &propagator()->_anotherSyncNeeded, errorBody);
         }
 
-        done(status,_item->_httpErrorCode >= 400 ? job->errorStringParsingBody() : job->errorString());
+        done(status, errorString);
         return;
     }
 
