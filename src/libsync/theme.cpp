@@ -370,7 +370,7 @@ QIcon Theme::syncStateIcon(SyncResult::Status status, bool sysTray, bool sysTray
     switch (status) {
     case SyncResult::Undefined:
         // this can happen if no sync connections are configured.
-        statusIcon = QLatin1String("state-information");
+        statusIcon = QLatin1String("state-warning");
         break;
     case SyncResult::NotYetStarted:
     case SyncResult::SyncRunning:
@@ -385,7 +385,7 @@ QIcon Theme::syncStateIcon(SyncResult::Status status, bool sysTray, bool sysTray
         statusIcon = QLatin1String("state-ok");
         break;
     case SyncResult::Problem:
-        statusIcon = QLatin1String("state-information");
+        statusIcon = QLatin1String("state-warning");
         break;
     case SyncResult::Error:
     case SyncResult::SetupError:
