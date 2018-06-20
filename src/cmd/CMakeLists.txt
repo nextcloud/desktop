@@ -20,7 +20,7 @@ if(NOT BUILD_LIBRARIES_ONLY)
     set_target_properties(${cmd_NAME} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY} )
 
-    target_link_libraries(${cmd_NAME} ocsync_${APPLICATION_EXECUTABLE} ${synclib_NAME} Qt5::Core Qt5::Network)
+    target_link_libraries(${cmd_NAME} "${csync_NAME}" "${synclib_NAME}" Qt5::Core Qt5::Network)
 
     # Need tokenizer for netrc parser
     target_include_directories(${cmd_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer)
