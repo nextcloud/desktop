@@ -57,5 +57,65 @@
         <file>theme/black/state-sync-64.png</file>
         <file>theme/black/state-sync-128.png</file>
         <file>theme/black/state-sync-256.png</file>
+        <file>theme/colored/state-error.svg</file>
+        <file>theme/colored/state-error-16.png</file>
+        <file>theme/colored/state-offline.svg</file>
+        <file>theme/colored/state-offline-16.png</file>
+        <file>theme/colored/state-offline-32.png</file>
+        <file>theme/colored/state-offline-64.png</file>
+        <file>theme/colored/state-offline-128.png</file>
+        <file>theme/colored/state-offline-256.png</file>
+        <file>theme/colored/state-ok.svg</file>
+        <file>theme/colored/state-ok-16.png</file>
+        <file>theme/colored/state-pause.svg</file>
+        <file>theme/colored/state-pause-16.png</file>
+        <file>theme/colored/state-sync.svg</file>
+        <file>theme/colored/state-sync-16.png</file>
+        <file>theme/colored/state-warning.svg</file>
+        <file>theme/colored/state-warning-16.png</file>
+        <file>theme/colored/state-warning-32.png</file>
+        <file>theme/colored/state-warning-64.png</file>
+        <file>theme/colored/state-warning-128.png</file>
+        <file>theme/colored/state-warning-256.png</file>
+        <file>theme/black/state-error.svg</file>
+        <file>theme/black/state-error-16.png</file>
+        <file>theme/black/state-offline.svg</file>
+        <file>theme/black/state-offline-16.png</file>
+        <file>theme/black/state-offline-32.png</file>
+        <file>theme/black/state-offline-64.png</file>
+        <file>theme/black/state-offline-128.png</file>
+        <file>theme/black/state-offline-256.png</file>
+        <file>theme/black/state-ok.svg</file>
+        <file>theme/black/state-ok-16.png</file>
+        <file>theme/black/state-pause.svg</file>
+        <file>theme/black/state-pause-16.png</file>
+        <file>theme/black/state-sync.svg</file>
+        <file>theme/black/state-sync-16.png</file>
+        <file>theme/black/state-warning.svg</file>
+        <file>theme/black/state-warning-16.png</file>
+        <file>theme/black/state-warning-32.png</file>
+        <file>theme/black/state-warning-64.png</file>
+        <file>theme/black/state-warning-128.png</file>
+        <file>theme/black/state-warning-256.png</file>
+        <file>theme/white/state-error.svg</file>
+        <file>theme/white/state-error-16.png</file>
+        <file>theme/white/state-offline.svg</file>
+        <file>theme/white/state-offline-16.png</file>
+        <file>theme/white/state-offline-32.png</file>
+        <file>theme/white/state-offline-64.png</file>
+        <file>theme/white/state-offline-128.png</file>
+        <file>theme/white/state-offline-256.png</file>
+        <file>theme/white/state-ok.svg</file>
+        <file>theme/white/state-ok-16.png</file>
+        <file>theme/white/state-pause.svg</file>
+        <file>theme/white/state-pause-16.png</file>
+        <file>theme/white/state-sync.svg</file>
+        <file>theme/white/state-sync-16.png</file>
+        <file>theme/white/state-warning.svg</file>
+        <file>theme/white/state-warning-16.png</file>
+        <file>theme/white/state-warning-32.png</file>
+        <file>theme/white/state-warning-64.png</file>
+        <file>theme/white/state-warning-128.png</file>
+        <file>theme/white/state-warning-256.png</file>
     </qresource>
 </RCC>
