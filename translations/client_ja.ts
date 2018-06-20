@@ -3671,12 +3671,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="618"/>
         <source>Log out of all accounts</source>
-        <translation>全てのアカウントからログアウト</translation>
+        <translation>すべてのアカウントからログアウト</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="626"/>
         <source>Log in to all accounts...</source>
-        <translation>全てのアカウントにログイン</translation>
+        <translation>すべてのアカウントにログイン</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="710"/>

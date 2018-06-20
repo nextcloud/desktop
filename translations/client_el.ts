@@ -1715,7 +1715,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="125"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Σφάλμα εισόδου&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="131"/>
@@ -2512,7 +2512,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/servernotificationhandler.cpp" line="103"/>
         <source>Dismiss</source>
-        <translation>Απόρριψη</translation>
+        <translation>Αποδέσμευση</translation>
     </message>
 </context>
 <context>
@@ -3850,7 +3850,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occured while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Παρουσιάστηκε σφάλμα κατά τη σύνδεση. Παρακαλούμε δοκιμάστε ξανά.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
