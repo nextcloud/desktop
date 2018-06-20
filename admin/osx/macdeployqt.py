@@ -22,6 +22,7 @@ import subprocess
 import commands
 import sys
 from glob import glob
+from distutils.version import LooseVersion
 
 def QueryQMake(attrib):
     return subprocess.check_output([qmake_path, '-query', attrib]).rstrip('\n')
@@ -92,6 +93,8 @@ commands.append(['mkdir', '-p', resources_dir])
 plugins_dir = os.path.join(bundle_dir, 'Contents', 'PlugIns')
 binaries = [i for i in glob(os.path.join(bundle_dir, 'Contents', 'MacOS', "*")) if is_exe(i)];
 
+qt_version = QueryQMake('QT_VERSION')
+print "Using Qt", qt_version
 
 fixed_libraries = []
 fixed_frameworks = []
