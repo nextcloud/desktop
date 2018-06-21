@@ -1404,12 +1404,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>และเริ่มต้นใหม่ &amp;&amp; อัพเดท</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="172"/>
+        <location filename="../src/gui/generalsettings.cpp" line="184"/>
         <source>Change update channel?</source>
         <translation>เปลี่ยนช่องทางการอัพเดท?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="173"/>
+        <location filename="../src/gui/generalsettings.cpp" line="185"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -1418,12 +1418,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 โปรดทราบว่าการเลือกนี้จะไม่สามารถดาวน์เกรดจากรุ่นเบต้าไปยังรุ่นเสถียรได้ ต้องรอให้รุ่นเสถียรใหม่กว่ารุ่นเบต้าก่อนถึงจะอัพเกรดเป็นรุ่นเสถียรได้</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="186"/>
+        <location filename="../src/gui/generalsettings.cpp" line="198"/>
         <source>Change update channel</source>
         <translation>ตกลง</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="187"/>
+        <location filename="../src/gui/generalsettings.cpp" line="199"/>
         <source>Cancel</source>
         <translation>ยกเลิก</translation>
     </message>

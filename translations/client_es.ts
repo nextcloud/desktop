@@ -1404,12 +1404,12 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
         <translation>&amp;Reiniciar &amp;&amp; Actualizar</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="172"/>
+        <location filename="../src/gui/generalsettings.cpp" line="184"/>
         <source>Change update channel?</source>
         <translation>¿Cambiar canal de actualizaciones?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="173"/>
+        <location filename="../src/gui/generalsettings.cpp" line="185"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -1418,12 +1418,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Nota: esto solo selecciona el canal deseado y no permite vueltas atras. Por lo que volver atras desde el canal beta al canal estable, puede ser que tarde un cierto tiempo dado que los parches y nueva funcionalidades, deben acabar siendo trasladadas al canal &quot;estable&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="186"/>
+        <location filename="../src/gui/generalsettings.cpp" line="198"/>
         <source>Change update channel</source>
         <translation>Cambiar canal de actualizaciones</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="187"/>
+        <location filename="../src/gui/generalsettings.cpp" line="199"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
