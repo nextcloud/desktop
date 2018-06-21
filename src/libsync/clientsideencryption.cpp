@@ -809,6 +809,10 @@ void ClientSideEncryption::forgetSensitiveData()
     startDeleteJob(user + e2e_mnemonic);
 }
 
+void ClientSideEncryption::slotRequestMnemonic() {
+    emit showMnemonic(_mnemonic);
+}
+
 bool ClientSideEncryption::hasPrivateKey() const
 {
     return !_privateKey.isNull();
