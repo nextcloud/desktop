@@ -60,10 +60,12 @@ public slots:
     void startSpinner();
     void stopSpinner();
     void slotCertificateAccepted();
+    void nextSlide();
 
 protected slots:
     void slotUrlChanged(const QString &);
     void slotUrlEditFinished();
+    void slotLogin();
     void slotGotoProviderList();
 
     void setupCustomization();
@@ -88,6 +90,10 @@ private:
     QString _remoteFolder;
     AddCertificateDialog *addCertDial;
     OwncloudWizard *_ocWizard;
+
+    QList<QPair<QString, QString>> _slideshow;
+    int _currentSlide;
+
 };
 
 } // namespace OCC

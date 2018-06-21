@@ -30,8 +30,13 @@ WebViewPage::WebViewPage(QWidget *parent)
 }
 
 void WebViewPage::initializePage() {
-    auto url = _ocWizard->ocUrl();
-    url += "/index.php/login/flow";
+    QString url;
+    if (_ocWizard->registration()) {
+        url = "https://nextcloud.com/register";
+    } else {
+        url = _ocWizard->ocUrl();
+        url += "/index.php/login/flow";
+    }
     qCInfo(lcWizardWebiewPage()) << "Url to auth at: " << url;
     _webView->setUrl(QUrl(url));
 }
