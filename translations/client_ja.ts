@@ -973,7 +973,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="180"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation>サーバーからフォルダーのリスト取得時にエラー</translation>
+        <translation>サーバーからフォルダーリスト取得中にエラーが発生しました。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="231"/>
@@ -2474,7 +2474,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="74"/>
         <source>Loading ...</source>
-        <translation>読込中 ...</translation>
+        <translation>読み込み中...</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="80"/>
@@ -3208,7 +3208,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="188"/>
         <source>Error while reading folder.</source>
-        <translation>フォルダーの読み込みエラー</translation>
+        <translation>フォルダーの読み込み中にエラーが発生しました。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="264"/>
@@ -3846,7 +3846,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occured while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>接続中にエラーが発生しました。もう一度試してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
