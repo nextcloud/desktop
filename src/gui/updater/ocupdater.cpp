@@ -228,6 +228,7 @@ void OCUpdater::slotVersionInfoArrived()
     reply->deleteLater();
     if (reply->error() != QNetworkReply::NoError) {
         qCWarning(lcUpdater) << "Failed to reach version check url: " << reply->errorString();
+        setDownloadState(OCUpdater::Unknown);
         return;
     }
 
@@ -239,6 +240,7 @@ void OCUpdater::slotVersionInfoArrived()
         versionInfoArrived(_updateInfo);
     } else {
         qCWarning(lcUpdater) << "Could not parse update information.";
+        setDownloadState(OCUpdater::Unknown);
     }
 }
 
