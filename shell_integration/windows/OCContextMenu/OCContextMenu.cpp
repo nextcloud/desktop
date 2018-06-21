@@ -162,7 +162,7 @@ IFACEMETHODIMP OCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
 
         MENUITEMINFO mii = { sizeof(mii) };
         mii.fMask = MIIM_ID | MIIM_FTYPE | MIIM_STRING | MIIM_STATE;
-        mii.wID = indexSubMenu;
+        mii.wID = idCmdFirst + indexSubMenu;
         mii.fType = MFT_STRING;
         mii.dwTypeData = &item.title[0];
         mii.fState = disabled ? MFS_DISABLED : MFS_ENABLED;
@@ -192,7 +192,7 @@ IFACEMETHODIMP OCContextMenu::InvokeCommand(LPCMINVOKECOMMANDINFO pici)
         // check the identifier offset.
 
         auto offset = LOWORD(pici->lpVerb);
-        if (offset < m_info.menuItems.size())
+        if (offset >= m_info.menuItems.size())
             return E_FAIL;
 
         command = m_info.menuItems[offset].command;
