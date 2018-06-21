@@ -33,6 +33,7 @@
 #include "wizard/owncloudconnectionmethoddialog.h"
 #include "theme.h"
 #include "account.h"
+#include "config.h"
 
 namespace OCC {
 
@@ -71,10 +72,12 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     slotUrlChanged(QLatin1String("")); // don't jitter UI
     connect(_ui.leUrl, &QLineEdit::textChanged, this, &OwncloudSetupPage::slotUrlChanged);
     connect(_ui.leUrl, &QLineEdit::editingFinished, this, &OwncloudSetupPage::slotUrlEditFinished);
-    connect(_ui.loginButton, &QPushButton::clicked, this, &OwncloudSetupPage::slotLogin);
-    connect(_ui.createAccountButton, &QPushButton::clicked, this, &OwncloudSetupPage::slotGotoProviderList);
 
     addCertDial = new AddCertificateDialog(this);
+
+#ifdef WITH_PROVIDERS
+    connect(_ui.loginButton, &QPushButton::clicked, this, &OwncloudSetupPage::slotLogin);
+    connect(_ui.createAccountButton, &QPushButton::clicked, this, &OwncloudSetupPage::slotGotoProviderList);
 
     _ui.login->hide();
     _slideshow.append(qMakePair(QString("nextcloud"), tr("Keep your data secure and under your control")));
@@ -89,9 +92,18 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(nextSlide()));
     timer->start(2500);
+#else
+    _ui.createAccountButton->hide();
+    _ui.slideImage->hide();
+    _ui.slideLabel->hide();
+    _ui.loginButton->hide();
+    _ui.hostButton->hide();
+#endif
     setStyleSheet(QString("background-color:%1; color:%2 QLabel { color:%2; } QSpacerItem { color: red; }").arg(theme->wizardHeaderBackgroundColor().name(), theme->wizardHeaderTitleColor().name()));
+
 }
 
+#ifdef WITH_PROVIDERS
 void OwncloudSetupPage::nextSlide()
 {
     if (_currentSlide < _slideshow.length()-1) {
@@ -103,7 +115,7 @@ void OwncloudSetupPage::nextSlide()
     _ui.slideImage->setPixmap(pixmap.scaled(QSize(_ui.slideImage->size().height(), _ui.slideImage->size().height()), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     _ui.slideLabel->setText(_slideshow.at(_currentSlide).second);
 }
-
+#endif
 
 void OwncloudSetupPage::setServerUrl(const QString &newUrl)
 {
@@ -133,8 +145,10 @@ void OwncloudSetupPage::setupCustomization()
     WizardCommon::setupCustomMedia(variant, _ui.bottomLabel);
 }
 
+#ifdef WITH_PROVIDERS
 void OwncloudSetupPage::slotLogin()
 {
+    _ocWizard->setRegistration(false);
     _ui.login->setMaximumHeight(0);
     QPropertyAnimation *animation = new QPropertyAnimation(_ui.login, "maximumHeight");
     animation->setDuration(0);
@@ -146,13 +160,13 @@ void OwncloudSetupPage::slotLogin()
 }
 void OwncloudSetupPage::slotGotoProviderList()
 {
-    // todo set _ocWizard->registation so we have the url in webview.cpp
     _ocWizard->setRegistration(true);
     _ocWizard->setAuthType(DetermineAuthTypeJob::AuthType::WebViewFlow);
     _authTypeKnown = true;
     _checking = false;
     emit completeChanged();
 }
+#endif
 
 // slot hit from textChanged of the url entry field.
 void OwncloudSetupPage::slotUrlChanged(const QString &url)
