@@ -166,6 +166,7 @@ void SettingsDialogMac::accountAdded(AccountState *s)
     connect(s, &AccountState::isConnectedChanged, this, &SettingsDialogMac::slotRefreshActivityAccountStateSender);
 
     slotRefreshActivity(s);
+    setCurrentPanelIndex(0);
 }
 
 void SettingsDialogMac::accountRemoved(AccountState *s)

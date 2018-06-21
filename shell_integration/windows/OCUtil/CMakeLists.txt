@@ -5,6 +5,7 @@ add_library(OCUtil SHARED
     RemotePathChecker.cpp
     stdafx.cpp
     StringUtil.cpp
+    OCUtil.rc
 )
 
 target_include_directories(OCUtil

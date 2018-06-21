@@ -155,7 +155,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="247"/>
         <location filename="../src/gui/accountsettings.cpp" line="450"/>
-        <location filename="../src/gui/accountsettings.cpp" line="854"/>
+        <location filename="../src/gui/accountsettings.cpp" line="859"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
@@ -285,37 +285,37 @@
         <translation>%2 の %1 への接続がありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="710"/>
+        <location filename="../src/gui/accountsettings.cpp" line="707"/>
         <source>Log in</source>
         <translation>ログイン</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="797"/>
+        <location filename="../src/gui/accountsettings.cpp" line="802"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>大きすぎるため同期されなかったフォルダーがあります:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="799"/>
+        <location filename="../src/gui/accountsettings.cpp" line="804"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>外部ストレージにあるため同期されなかったフォルダーがあります:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="800"/>
+        <location filename="../src/gui/accountsettings.cpp" line="805"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>大きすぎたか、外部ストレージにあるため同期されなかったフォルダーがあります:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="846"/>
+        <location filename="../src/gui/accountsettings.cpp" line="851"/>
         <source>Confirm Account Removal</source>
         <translation>アカウント削除確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="847"/>
+        <location filename="../src/gui/accountsettings.cpp" line="852"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt; アカウント &lt;i&gt;%1&lt;/i&gt; を本当に削除しますか?&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意:&lt;/b&gt; これによりファイルが一切削除されることはありません。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="853"/>
+        <location filename="../src/gui/accountsettings.cpp" line="858"/>
         <source>Remove connection</source>
         <translation>接続削除</translation>
     </message>
@@ -327,7 +327,7 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="199"/>
-        <location filename="../src/gui/accountsettings.cpp" line="712"/>
+        <location filename="../src/gui/accountsettings.cpp" line="709"/>
         <source>Log out</source>
         <translation>ログアウト</translation>
     </message>
@@ -1278,22 +1278,22 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="186"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>サーバーからE-Tagを受信できません。プロキシ/ゲートウェイを確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="193"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="194"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>同期再開時に違う E-Tagを受信しました。次回リトライします。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="220"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="221"/>
         <source>Server returned wrong content-range</source>
         <translation>サーバーが間違ったcontent-rangeを返しました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="332"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="333"/>
         <source>Connection Timeout</source>
         <translation>接続タイムアウト</translation>
     </message>
@@ -1398,24 +1398,24 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>再起動してアップデート(&amp;R)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="171"/>
+        <location filename="../src/gui/generalsettings.cpp" line="184"/>
         <source>Change update channel?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="172"/>
+        <location filename="../src/gui/generalsettings.cpp" line="185"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="185"/>
+        <location filename="../src/gui/generalsettings.cpp" line="198"/>
         <source>Change update channel</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="186"/>
+        <location filename="../src/gui/generalsettings.cpp" line="199"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
@@ -1862,32 +1862,32 @@ Logs will be written to %1</source>
 <context>
     <name>OCC::OAuth</name>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="112"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="115"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
         <translation>サーバからエラーが返されました: &lt;em&gt;%1&lt;/em&gt; </translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="115"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="118"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="121"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="124"/>
         <source>The reply from the server did not contain all expected fields</source>
         <translation>サーバからの返答にあるべきフィールドがありません</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="125"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="128"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
         <translation>&lt;h1&gt;ログインエラー&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt; </translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/oauth.cpp" line="131"/>
+        <location filename="../src/gui/creds/oauth.cpp" line="134"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation>&lt;h1&gt;ユーザの誤りです&lt;/h1&gt;&lt;p&gt;&lt;em&gt;%1&lt;/em&gt;としてログインされましたがｍ、&lt;em&gt;%2&lt;/em&gt;でなければいけません。&lt;br&gt;別のタブで %3 からログアウトし、&lt;a href=&apos;%4&apos;&gt;ここをクリック&lt;/a&gt;して %2 としてログインしてください&lt;/p&gt; </translation>
     </message>
@@ -2310,47 +2310,47 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="423"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="424"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>ファイル %1 はローカルファイル名が衝突しているためダウンロードできません！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="473"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="474"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="477"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="478"/>
         <source>Free space on disk is less than %1</source>
         <translation>ディスク空き容量が %1 よりも少なくなっています</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="594"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="595"/>
         <source>File was deleted from server</source>
         <translation>ファイルはサーバーから削除されました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="646"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="647"/>
         <source>The file could not be downloaded completely.</source>
         <translation>このファイルのダウンロードは完了しませんでした</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="653"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="654"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>サーバーが通知しているファイルは %1 であるべきですが、ダウンロードファイルは空でした。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="829"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="830"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>%1 はローカルファイル名が衝突しているため保存できません！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="864"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="865"/>
         <source>File has changed since discovery</source>
         <translation>ファイルは発見以降に変更されました</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="931"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="932"/>
         <source>Error writing metadata to the database</source>
         <translation>メタデータのデータベースへの書き込みに失敗</translation>
     </message>
@@ -2736,7 +2736,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="154"/>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="221"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="222"/>
         <source>Account</source>
         <translation>アカウント</translation>
     </message>
@@ -2926,6 +2926,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
         <source>Send link by email (direct download)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="542"/>
+        <source>I shared %1 with you</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3635,9 +3640,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="336"/>
-        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
+        <location filename="../src/libsync/theme.cpp" line="341"/>
+        <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="348"/>
+        <source>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="349"/>
+        <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;%1 が配布し、 GNU General Public License (GPL) バージョン2.0 の下でライセンスされています。&lt;br/&gt;%2 及び %2 のロゴはアメリカ合衆国またはその他の国、あるいはその両方における %1 の登録商標です。&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3661,243 +3676,243 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="270"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="265"/>
         <source>Please sign in</source>
         <translation>サインインしてください</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="316"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="311"/>
         <source>Folder %1: %2</source>
         <translation>フォルダー %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="334"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="329"/>
         <source>There are no sync folders configured.</source>
         <translation>同期するフォルダーがありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="343"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="338"/>
         <source>Open in browser</source>
         <translation>ブラウザーで開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="392"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="649"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="743"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="387"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="692"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>Log in...</source>
         <translation>ログイン...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="396"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="641"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="745"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="391"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="684"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="783"/>
         <source>Log out</source>
         <translation>ログアウト</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="465"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="486"/>
         <source>Recent Changes</source>
         <translation>最近変更されたファイル</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="370"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="365"/>
         <source>Managed Folders:</source>
         <translation>管理フォルダー:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="373"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="368"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>フォルダー ’%1’ を開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="345"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="340"/>
         <source>Open %1 in browser</source>
         <translation>%1をブラウザーで開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="728"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="766"/>
         <source>Unknown status</source>
         <translation>不明な状態</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="730"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="768"/>
         <source>Settings...</source>
         <translation>設定...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="732"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="770"/>
         <source>Details...</source>
         <translation>詳細...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="738"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="776"/>
         <source>Help</source>
         <translation>ヘルプ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="740"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="778"/>
         <source>Quit %1</source>
         <translation>%1 を終了</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="251"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="246"/>
         <source>Disconnected from %1</source>
         <translation>%1 から切断されました</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="201"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="196"/>
         <source>Unsupported Server Version</source>
         <translation>サポートされていないサーバーバージョン</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="202"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="197"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>%1 アカウントのサーバーのバージョン %2 は古く、未サポートです。この未サポートのサーバーバージョンとこのクライアントでの組み合わせは、未テストで潜在的な危険があります。ご利用は自己責任でお願いいたします。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="241"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="236"/>
         <source>Disconnected</source>
         <translation>切断しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="243"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="238"/>
         <source>Disconnected from some accounts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="254"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="249"/>
         <source>Disconnected from accounts:</source>
         <translation>アカウントから切断:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="256"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="251"/>
         <source>Account %1: %2</source>
         <translation>アカウント %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="271"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="266"/>
         <source>Signed out</source>
         <translation>サインアウト</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="275"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="270"/>
         <source>Account synchronization is disabled</source>
         <translation>アカウントの同期は無効になっています</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="276"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="329"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="271"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="324"/>
         <source>Synchronization is paused</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="324"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="319"/>
         <source>Unresolved conflicts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="326"/>
         <source>Error during synchronization</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="335"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="330"/>
         <source>No sync folders configured</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="381"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="376"/>
         <source>Unpause all folders</source>
         <translation>すべてのフォルダーの同期を再開</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="386"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="381"/>
         <source>Pause all folders</source>
         <translation>すべてのフォルダーの同期を一時停止</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="620"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="663"/>
         <source>Unpause all synchronization</source>
         <translation>すべての同期を再開</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="622"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="665"/>
         <source>Unpause synchronization</source>
         <translation>同期を再開</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="630"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="673"/>
         <source>Pause all synchronization</source>
         <translation>すべての同期を一時停止</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="632"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="675"/>
         <source>Pause synchronization</source>
         <translation>同期を一時停止</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="639"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="682"/>
         <source>Log out of all accounts</source>
         <translation>全てのアカウントからログアウト</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="647"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="690"/>
         <source>Log in to all accounts...</source>
         <translation>全てのアカウントにログイン</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="731"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="769"/>
         <source>New account...</source>
         <translation>新規アカウント...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="749"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="787"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
         <translation>クラッシュしました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="765"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="803"/>
         <source>No items synced recently</source>
         <translation>最近同期されたアイテムはありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="787"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="825"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="790"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="828"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="805"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="843"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>同期中 %2 中 %1 (残り %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="810"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="848"/>
         <source>Syncing %1 of %2</source>
         <translation>%2 の %1 を同期しています</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="819"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="857"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>同期中 %1 (残り %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="822"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="860"/>
         <source>Syncing %1</source>
         <translation>同期中 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="840"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="878"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="326"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="321"/>
         <source>Up to date</source>
         <translation>最新です</translation>
     </message>

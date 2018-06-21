@@ -389,7 +389,7 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${BUILD_PATH}\bin\${APPLICATION_EXECUTABLE}"
    File "${BUILD_PATH}\bin\${APPLICATION_CMD_EXECUTABLE}"
    File "${BUILD_PATH}\bin\lib${APPLICATION_SHORTNAME}sync.dll"
-   File "${BUILD_PATH}\bin\libocsync.dll"
+   File "${BUILD_PATH}\bin\lib${APPLICATION_SHORTNAME}_csync.dll"
 
    File "${BUILD_PATH}\src\gui\client*.qm"
    ; Make sure only to copy qt, not qt_help, etc

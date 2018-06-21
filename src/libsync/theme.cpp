@@ -332,18 +332,24 @@ QString Theme::gitSHA1() const
 
 QString Theme::about() const
 {
+    QString vendor = APPLICATION_VENDOR;
+    // Ideally, the vendor should be "ownCloud GmbH", but it cannot be changed without
+    // changing the location of the settings and other registery keys.
+    if (vendor == "ownCloud") vendor = QLatin1String("ownCloud GmbH");
+
     QString devString;
     devString = tr("<p>Version %2. For more information visit <a href=\"%3\">https://%4</a></p>"
                        "<p>For known issues and help, please visit: <a href=\"https://central.owncloud.org/c/desktop-client\">https://central.owncloud.org</a></p>"
                        "<p><small>By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, "
-                       " Jan-Christoph Borchardt, and others.</small></p>"
-                       "<p>Copyright ownCloud GmbH</p>"
-                       "<p>Licensed under the GNU General Public License (GPL) Version 2.0<br/>"
-                       "ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH "
-                       "in the United States, other countries, or both.</p>")
+                       " Jan-Christoph Borchardt, and others.</small></p>")
                     .arg(Utility::escape(MIRALL_VERSION_STRING),
                         Utility::escape("https://" MIRALL_STRINGIFY(APPLICATION_DOMAIN)),
                         Utility::escape(MIRALL_STRINGIFY(APPLICATION_DOMAIN)));
+    devString += tr("<p>Copyright ownCloud GmbH</p>");
+    devString += tr("<p>Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.<br/>"
+                    "%2 and the %2 logo are registered trademarks of %1 in the "
+                    "United States, other countries, or both.</p>")
+               .arg(Utility::escape(vendor), Utility::escape(APPLICATION_NAME));
 
     devString += gitSHA1();
     return devString;
