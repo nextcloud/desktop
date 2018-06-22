@@ -87,6 +87,9 @@ public:
 
     void forgetSensitiveData();
 
+public slots:
+    void slotRequestMnemonic();
+
 private slots:
     void folderEncryptedStatusFetched(const QMap<QString, bool> &values);
     void folderEncryptedStatusError(int error);
@@ -98,6 +101,7 @@ private slots:
 signals:
     void initializationFinished();
     void mnemonicGenerated(const QString& mnemonic);
+    void showMnemonic(const QString& mnemonic);
 
 private:
     void getPrivateKeyFromServer();

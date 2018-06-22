@@ -115,6 +115,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     , _wasDisabledBefore(false)
     , _accountState(accountState)
     , _quotaInfo(accountState)
+    , _menuShown(false)
 {
     ui->setupUi(this);
 
@@ -189,12 +190,19 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     connect(&_quotaInfo, &QuotaInfo::quotaUpdated,
         this, &AccountSettings::slotUpdateQuota);
+
+    // Connect E2E stuff
+    connect(this, &AccountSettings::requesetMnemonic, _accountState->account()->e2e(), &ClientSideEncryption::slotRequestMnemonic);
+    connect(_accountState->account()->e2e(), &ClientSideEncryption::showMnemonic, this, &AccountSettings::slotShowMnemonic);
 }
 
 
 void AccountSettings::createAccountToolbox()
 {
     QMenu *menu = new QMenu();
+
+    connect(menu, &QMenu::aboutToShow, this, &AccountSettings::slotMenuBeforeShow);
+
     _addAccountAction = new QAction(tr("Add new"), this);
     menu->addAction(_addAccountAction);
     connect(_addAccountAction, &QAction::triggered, this, &AccountSettings::slotOpenAccountWizard);
@@ -213,6 +221,24 @@ void AccountSettings::createAccountToolbox()
 
     slotAccountAdded(_accountState);
 }
+
+void AccountSettings::slotMenuBeforeShow() {
+    if (_menuShown) {
+        return;
+    }
+
+    auto menu = ui->_accountToolbox->menu();
+
+    // We can't check this during the initial creation as there is no account yet then
+    if (_accountState->account()->capabilities().clientSideEncryptionAvaliable()) {
+        QAction *mnemonic = new QAction(tr("Show E2E mnemonic"), this);
+        connect(mnemonic, &QAction::triggered, this, &AccountSettings::requesetMnemonic);
+        menu->addAction(mnemonic);
+    }
+
+    _menuShown = true;
+}
+
 
 QString AccountSettings::selectedFolderAlias() const
 {
@@ -255,6 +281,13 @@ void AccountSettings::slotToggleSignInState()
 void AccountSettings::doExpand()
 {
     ui->_folderList->expandToDepth(0);
+}
+
+void AccountSettings::slotShowMnemonic(const QString &mnemonic) {
+    QMessageBox msgBox;
+    msgBox.setText(tr("Your end to end encryption mnemonic is:"));
+    msgBox.setInformativeText(mnemonic);
+    msgBox.exec();
 }
 
 void AccountSettings::slotEncryptionFlagSuccess(const QByteArray& fileId)

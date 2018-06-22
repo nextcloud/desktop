@@ -62,6 +62,7 @@ signals:
     void folderChanged();
     void openFolderAlias(const QString &);
     void showIssuesList(const QString &folderAlias);
+    void requesetMnemonic();
 
 public slots:
     void slotOpenOC();
@@ -94,15 +95,19 @@ protected slots:
     void doExpand();
     void slotLinkActivated(const QString &link);
 
+    void slotMenuBeforeShow();
+
     // Encryption Related Stuff.
+    void slotShowMnemonic(const QString &mnemonic);
+
     void slotEncryptionFlagSuccess(const QByteArray &folderId);
     void slotEncryptionFlagError(const QByteArray &folderId, int httpReturnCode);
     void slotLockForEncryptionSuccess(const QByteArray& folderId, const QByteArray& token);
     void slotLockForEncryptionError(const QByteArray &folderId, int httpReturnCode);
     void slotUnlockFolderSuccess(const QByteArray& folderId);
     void slotUnlockFolderError(const QByteArray& folderId, int httpReturnCode);
-		void slotUploadMetadataSuccess(const QByteArray& folderId);
-		void slotUpdateMetadataError(const QByteArray& folderId, int httpReturnCode);
+    void slotUploadMetadataSuccess(const QByteArray& folderId);
+    void slotUpdateMetadataError(const QByteArray& folderId, int httpReturnCode);
 
     // Remove Encryotion Bit.
     void slotLockForDecryptionSuccess(const QByteArray& folderId, const QByteArray& token);
@@ -132,6 +137,8 @@ private:
     QuotaInfo _quotaInfo;
     QAction *_toggleSignInOutAction;
     QAction *_addAccountAction;
+
+    bool _menuShown;
 };
 
 } // namespace OCC
