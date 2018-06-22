@@ -511,12 +511,13 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
         // Verify if the folder is empty before attempting to encrypt.
 
         bool isEncrypted = acc->e2e()->isFolderEncrypted(info->_path);
-        ac = menu.addAction( isEncrypted ? tr("Decrypt") : tr("Encrypt"));
 
         if (!isEncrypted) {
+            ac = menu.addAction(tr("Encrypt"));
             connect(ac, &QAction::triggered, [this, &info] { slotMarkSubfolderEncrpted(info); });
         } else {
-            connect(ac, &QAction::triggered, [this, &info] { slotMarkSubfolderDecrypted(info); });
+            // Ingore decrypting for now since it only works with an empty folder
+            // connect(ac, &QAction::triggered, [this, &info] { slotMarkSubfolderDecrypted(info); });
         }
     }
     menu.exec(QCursor::pos());
