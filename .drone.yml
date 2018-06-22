@@ -25,8 +25,11 @@ pipeline:
               source /opt/qt57/bin/qt57-env.sh &&
               mkdir build &&
               cd build &&
-              cmake -D NO_SHIBBOLETH=1 ../ &&
-              make"
+              cmake -D NO_SHIBBOLETH=1 -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1  ../ &&
+              make &&
+              useradd -m -s /bin/bash test &&
+              chown -R test:test . &&
+              su -c 'ctest --output-on-failure' test"
         when:
             matrix:
                 TESTS: qt-5.7
@@ -50,8 +53,11 @@ pipeline:
               source /opt/qt58/bin/qt58-env.sh &&
               mkdir build &&
               cd build &&
-              cmake -D NO_SHIBBOLETH=1 ../ &&
-              make"
+              cmake -D NO_SHIBBOLETH=1 -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 ../ &&
+              make &&
+              useradd -m -s /bin/bash test &&
+              chown -R test:test . &&
+              su -c 'ctest --output-on-failure' test"
         when:
             matrix:
                 TESTS: qt-5.8
@@ -75,8 +81,11 @@ pipeline:
               source /opt/qt59/bin/qt59-env.sh &&
               mkdir build &&
               cd build &&
-              cmake -D NO_SHIBBOLETH=1 ../ &&
-              make"
+              cmake -D NO_SHIBBOLETH=1 -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 ../ &&
+              make &&
+              useradd -m -s /bin/bash test &&
+              chown -R test:test . &&
+              su -c 'ctest --output-on-failure' test"
         when:
             matrix:
                 TESTS: qt-5.9
@@ -104,8 +113,11 @@ pipeline:
               source /opt/qt510/bin/qt510-env.sh &&
               mkdir build &&
               cd build &&
-              cmake -D NO_SHIBBOLETH=1 ../ &&
-              make"
+              cmake -D NO_SHIBBOLETH=1 -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 ../ &&
+              make &&
+              useradd -m -s /bin/bash test &&
+              chown -R test:test . &&
+              su -c 'ctest --output-on-failure' test"
         when:
             matrix:
                 TESTS: qt-5.10
@@ -133,8 +145,11 @@ pipeline:
               source /opt/qt511/bin/qt511-env.sh &&
               mkdir build &&
               cd build &&
-              cmake -D NO_SHIBBOLETH=1 ../ &&
-              make"
+              cmake -D NO_SHIBBOLETH=1 -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 ../ &&
+              make &&
+              useradd -m -s /bin/bash test &&
+              chown -R test:test . &&
+              su -c 'ctest --output-on-failure' test"
         when:
             matrix:
                 TESTS: qt-5.11
@@ -163,8 +178,11 @@ pipeline:
               source /opt/qt511/bin/qt511-env.sh &&
               mkdir build &&
               cd build &&
-              cmake -D NO_SHIBBOLETH=1 ../ &&
-              make"
+              cmake -D NO_SHIBBOLETH=1 -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 ../ &&
+              make &&
+              useradd -m -s /bin/bash test &&
+              chown -R test:test . &&
+              su -c 'ctest --output-on-failure' test"
         when:
             matrix:
                 TESTS: qt-5.11-clang
