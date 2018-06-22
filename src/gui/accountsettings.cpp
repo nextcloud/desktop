@@ -284,10 +284,7 @@ void AccountSettings::doExpand()
 }
 
 void AccountSettings::slotShowMnemonic(const QString &mnemonic) {
-    QMessageBox msgBox;
-    msgBox.setText(tr("Your end to end encryption mnemonic is:"));
-    msgBox.setInformativeText(mnemonic);
-    msgBox.exec();
+    AccountManager::instance()->displayMnemonic(mnemonic);
 }
 
 void AccountSettings::slotEncryptionFlagSuccess(const QByteArray& fileId)
