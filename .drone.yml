@@ -2,6 +2,7 @@ clone:
   git:
     image: plugins/git
     tags: true
+    depth: 1
 
 pipeline:
     qt-5.7:
