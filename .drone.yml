@@ -5,7 +5,7 @@ clone:
 
 pipeline:
     qt-5.7:
-        image: nextcloudci/client-5.7:client-5.7-2
+        image: nextcloudci/client-5.7:client-5.7-3
         commands:
             # Install QtKeyChain
             - /bin/bash -c "
@@ -30,7 +30,7 @@ pipeline:
             matrix:
                 TESTS: qt-5.7
     qt-5.8:
-        image: nextcloudci/client-5.8:client-5.8-2
+        image: nextcloudci/client-5.8:client-5.8-3
         commands:
             # Install QtKeyChain
             - /bin/bash -c "
@@ -55,7 +55,7 @@ pipeline:
             matrix:
                 TESTS: qt-5.8
     qt-5.9:
-        image: nextcloudci/client-5.9:client-5.9-3
+        image: nextcloudci/client-5.9:client-5.9-4
         commands:
             # Install QtKeyChain
             - /bin/bash -c "
@@ -80,7 +80,7 @@ pipeline:
             matrix:
                 TESTS: qt-5.9
     AppImage-5.9:
-        image: nextcloudci/client-appimage-ci:client-appimage-ci-9
+        image: nextcloudci/client-appimage-ci:client-appimage-ci-15
         commands:
             - /bin/bash -c "./admin/linux/build-appimage.sh"
         when:
