@@ -213,7 +213,7 @@ function(ecm_add_app_icon appsources)
         endfunction()
 
         if (IcoTool_FOUND)
-            set(icotool_args "-c -o \"${_outfilename}.ico\"")
+            list(APPEND icotool_args "-c" "-o" "${_outfilename}.ico")
 
             # According to https://stackoverflow.com/a/40851713/2886832
             # Windows always chooses the first icon above 255px, all other ones will be ignored
