@@ -104,7 +104,7 @@ void PollJob::start()
     QUrl finalUrl = QUrl::fromUserInput(accountUrl.scheme() + QLatin1String("://") + accountUrl.authority()
         + (path().startsWith('/') ? QLatin1String("") : QLatin1String("/")) + path());
     sendRequest("GET", finalUrl);
-    connect(reply(), &QNetworkReply::downloadProgress, this, &AbstractNetworkJob::resetTimeout);
+    connect(reply(), &QNetworkReply::downloadProgress, this, &AbstractNetworkJob::resetTimeout, Qt::UniqueConnection);
     AbstractNetworkJob::start();
 }
 
@@ -129,14 +129,14 @@ bool PollJob::finished()
             emit finishedSignal();
             return true;
         }
-        start();
+        QTimer::singleShot(8 * 1000, this, &PollJob::start);
         return false;
     }
 
     QByteArray jsonData = reply()->readAll().trimmed();
-    qCInfo(lcPollJob) << ">" << jsonData << "<" << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     QJsonParseError jsonParseError;
-    QJsonObject status = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+    QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
+    qCInfo(lcPollJob) << ">" << jsonData << "<" << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << json << jsonParseError.errorString();
     if (jsonParseError.error != QJsonParseError::NoError) {
         _item->_errorString = tr("Invalid JSON reply from the poll URL");
         _item->_status = SyncFileItem::NormalError;
@@ -144,16 +144,23 @@ bool PollJob::finished()
         return true;
     }
 
-    if (status["unfinished"].toBool()) {
-        start();
+    auto status = json["status"].toString();
+    if (status == QLatin1String("init") || status == QLatin1String("started")) {
+        QTimer::singleShot(5 * 1000, this, &PollJob::start);
         return false;
     }
 
-    _item->_errorString = status["error"].toString();
-    _item->_status = _item->_errorString.isEmpty() ? SyncFileItem::Success : SyncFileItem::NormalError;
-    _item->_fileId = status["fileid"].toString().toUtf8();
-    _item->_etag = status["etag"].toString().toUtf8();
     _item->_responseTimeStamp = responseTimestamp();
+    _item->_httpErrorCode = json["errorCode"].toInt();
+
+    if (status == QLatin1String("finished")) {
+        _item->_status = SyncFileItem::Success;
+        _item->_fileId = json["fileId"].toString().toUtf8();
+        _item->_etag = parseEtag(json["ETag"].toString().toUtf8());
+    } else { // error
+        _item->_status = classifyError(QNetworkReply::UnknownContentError, _item->_httpErrorCode);
+        _item->_errorString = json["errorMessage"].toString();
+    }
 
     SyncJournalDb::PollInfo info;
     info._file = _item->_file;
@@ -705,9 +712,10 @@ void PropagateUploadFileCommon::abortWithError(SyncFileItem::Status status, cons
 QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
 {
     QMap<QByteArray, QByteArray> headers;
-    headers[QByteArrayLiteral("OC-Async")] = QByteArrayLiteral("1");
     headers[QByteArrayLiteral("Content-Type")] = QByteArrayLiteral("application/octet-stream");
     headers[QByteArrayLiteral("X-OC-Mtime")] = QByteArray::number(qint64(_item->_modtime));
+    if (qEnvironmentVariableIntValue("OWNCLOUD_LAZYOPS"))
+        headers[QByteArrayLiteral("OC-LazyOps")] = QByteArrayLiteral("true");
 
     if (_item->_file.contains(QLatin1String(".sys.admin#recall#"))) {
         // This is a file recall triggered by the admin.  Note: the

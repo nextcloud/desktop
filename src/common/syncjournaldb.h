@@ -111,9 +111,9 @@ public:
 
     struct PollInfo
     {
-        QString _file;
-        QString _url;
-        qint64 _modtime;
+        QString _file; // The relative path of a file
+        QString _url; // the poll url. (This pollinfo is invalid if _url is empty)
+        qint64 _modtime; // The modtime of the file being uploaded
     };
 
     DownloadInfo getDownloadInfo(const QString &file);

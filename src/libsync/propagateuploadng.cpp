@@ -459,6 +459,18 @@ void PropagateUploadFileNG::slotMoveJobFinished()
         commonErrorHandling(job);
         return;
     }
+
+    if (_item->_httpErrorCode == 202) {
+        QString path = QString::fromUtf8(job->reply()->rawHeader("OC-JobStatus-Location"));
+        if (path.isEmpty()) {
+            done(SyncFileItem::NormalError, tr("Poll URL missing"));
+            return;
+        }
+        _finished = true;
+        startPollJob(path);
+        return;
+    }
+
     if (_item->_httpErrorCode != 201 && _item->_httpErrorCode != 204) {
         abortWithError(SyncFileItem::NormalError, tr("Unexpected return code from server (%1)").arg(_item->_httpErrorCode));
         return;

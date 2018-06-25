@@ -1005,13 +1005,12 @@ void CleanupPollsJob::start()
 
     auto info = _pollInfos.first();
     _pollInfos.pop_front();
-    SyncJournalFileRecord record;
-    if (_journal->getFileRecord(info._file, &record) && record.isValid()) {
-        SyncFileItemPtr item = SyncFileItem::fromSyncJournalFileRecord(record);
-        auto *job = new PollJob(_account, info._url, item, _journal, _localPath, this);
-        connect(job, &PollJob::finishedSignal, this, &CleanupPollsJob::slotPollFinished);
-        job->start();
-    }
+    SyncFileItemPtr item(new SyncFileItem);
+    item->_file = info._file;
+    item->_modtime = info._modtime;
+    auto *job = new PollJob(_account, info._url, item, _journal, _localPath, this);
+    connect(job, &PollJob::finishedSignal, this, &CleanupPollsJob::slotPollFinished);
+    job->start();
 }
 
 void CleanupPollsJob::slotPollFinished()
@@ -1033,7 +1032,7 @@ void CleanupPollsJob::slotPollFinished()
             deleteLater();
             return;
         }
-        // TODO: Is syncfilestatustracker notified somehow?
+        _journal->setUploadInfo(job->_item->_file, SyncJournalDb::UploadInfo());
     }
     // Continue with the next entry, or finish
     start();

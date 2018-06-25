@@ -211,7 +211,7 @@ void PropagateUploadFileV1::slotPutFinished()
 
     // The server needs some time to process the request and provide us with a poll URL
     if (_item->_httpErrorCode == 202) {
-        QString path = QString::fromUtf8(job->reply()->rawHeader("OC-Finish-Poll"));
+        QString path = QString::fromUtf8(job->reply()->rawHeader("OC-JobStatus-Location"));
         if (path.isEmpty()) {
             done(SyncFileItem::NormalError, tr("Poll URL missing"));
             return;
