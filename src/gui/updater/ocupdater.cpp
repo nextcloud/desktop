@@ -208,9 +208,11 @@ void OCUpdater::slotStartInstaller()
             return QDir::toNativeSeparators(path);
         };
 
-        QString command = QString("&{msiexec /norestart /passive /i '%1'| Out-Null ; &'%2'}")
-            .arg(preparePathForPowershell(updateFile))
-            .arg(preparePathForPowershell(QCoreApplication::applicationFilePath()));
+        auto msiLogFile = cfg.configPath() + "msi.log";
+        QString command = QString("&{msiexec /norestart /passive /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
+             .arg(preparePathForPowershell(updateFile))
+             .arg(preparePathForPowershell(msiLogFile))
+             .arg(preparePathForPowershell(QCoreApplication::applicationFilePath()));
 
         QProcess::startDetached("powershell.exe", QStringList{"-Command", command});
     }
