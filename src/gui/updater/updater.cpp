@@ -126,9 +126,10 @@ Updater *Updater::create()
 #if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
     return new SparkleUpdater(url);
 #elif defined(Q_OS_WIN32)
-    // the best we can do is notify about updates
+    // Also for MSI
     return new NSISUpdater(url);
 #else
+    // the best we can do is notify about updates
     return new PassiveUpdateNotifier(url);
 #endif
 }
