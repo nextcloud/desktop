@@ -45,7 +45,7 @@ inline QString getFilePathFromUrl(const QUrl &url) {
 
 
 inline QString generateEtag() {
-    return QString::number(QDateTime::currentDateTimeUtc().toMSecsSinceEpoch(), 16);
+    return QString::number(QDateTime::currentDateTimeUtc().toMSecsSinceEpoch(), 16) + QByteArray::number(qrand(), 16);
 }
 inline QByteArray generateFileId() {
     return QByteArray::number(qrand(), 16);
@@ -266,7 +266,7 @@ public:
             auto file = it->find(std::move(pathComponents).subComponents(), invalidateEtags);
             if (file && invalidateEtags) {
                 // Update parents on the way back
-                etag = file->etag;
+                etag = generateEtag();
             }
             return file;
         }
@@ -336,7 +336,6 @@ public:
     QMap<QString, FileInfo> children;
     QString parentPath;
 
-private:
     FileInfo *findInvalidatingEtags(PathComponents pathComponents) {
         return find(std::move(pathComponents), true);
     }
@@ -459,24 +458,25 @@ public:
         setUrl(request.url());
         setOperation(op);
         open(QIODevice::ReadOnly);
+        fileInfo = perform(remoteRootFileInfo, request, putPayload);
+        QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
+    }
 
+    static FileInfo *perform(FileInfo &remoteRootFileInfo, const QNetworkRequest &request, const QByteArray &putPayload)
+    {
         QString fileName = getFilePathFromUrl(request.url());
         Q_ASSERT(!fileName.isEmpty());
-        if ((fileInfo = remoteRootFileInfo.find(fileName))) {
+        FileInfo *fileInfo = remoteRootFileInfo.find(fileName);
+        if (fileInfo) {
             fileInfo->size = putPayload.size();
             fileInfo->contentChar = putPayload.at(0);
         } else {
             // Assume that the file is filled with the same character
             fileInfo = remoteRootFileInfo.create(fileName, putPayload.size(), putPayload.at(0));
         }
-
-        if (!fileInfo) {
-            abort();
-            return;
-        }
         fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
         remoteRootFileInfo.find(fileName, /*invalidate_etags=*/true);
-        QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
+        return fileInfo;
     }
 
     Q_INVOKABLE virtual void respond()
@@ -744,7 +744,16 @@ public:
         setUrl(request.url());
         setOperation(op);
         open(QIODevice::ReadOnly);
+        fileInfo = perform(uploadsFileInfo, remoteRootFileInfo, request);
+        if (!fileInfo) {
+            QTimer::singleShot(0, this, &FakeChunkMoveReply::respondPreconditionFailed);
+        } else {
+            QTimer::singleShot(0, this, &FakeChunkMoveReply::respond);
+        }
+    }
 
+    static FileInfo *perform(FileInfo &uploadsFileInfo, FileInfo &remoteRootFileInfo, const QNetworkRequest &request)
+    {
         QString source = getFilePathFromUrl(request.url());
         bool zsync = false;
         Q_ASSERT(!source.isEmpty());
@@ -783,7 +792,7 @@ public:
             ++count;
             prev = chunkName.toLongLong() + x.size;
         }
-        QCOMPARE(sourceFolder->children.count(), count); // There should not be holes or extra files
+        Q_ASSERT(sourceFolder->children.count() == count); // There should not be holes or extra files
 
         // For zsync, get the size from the header, and allow no-chunk uploads (shrinking files)
         if (zsync) {
@@ -795,13 +804,12 @@ public:
         }
 
         // NOTE: This does not actually assemble the file data from the chunks!
-
-        if ((fileInfo = remoteRootFileInfo.find(fileName))) {
-            QVERIFY(request.hasRawHeader("If")); // The client should put this header
+        FileInfo *fileInfo = remoteRootFileInfo.find(fileName);
+        if (fileInfo) {
+            Q_ASSERT(request.hasRawHeader("If")); // The client should put this header
             if (request.rawHeader("If") != QByteArray("<" + request.rawHeader("Destination") +
                                                 "> ([\"" + fileInfo->etag.toLatin1() + "\"])")) {
-                QMetaObject::invokeMethod(this, "respondPreconditionFailed", Qt::QueuedConnection);
-                return;
+                return nullptr;
             }
             fileInfo->size = size;
             fileInfo->contentChar = payload;
@@ -810,15 +818,10 @@ public:
             // Assume that the file is filled with the same character
             fileInfo = remoteRootFileInfo.create(fileName, size, payload);
         }
-
-        if (!fileInfo) {
-            abort();
-            return;
-        }
         fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
         remoteRootFileInfo.find(fileName, /*invalidate_etags=*/true);
 
-        QTimer::singleShot(0, this, &FakeChunkMoveReply::respond);
+        return fileInfo;
     }
 
     Q_INVOKABLE virtual void respond()
@@ -939,6 +942,48 @@ public:
     void abort() override {}
     qint64 readData(char *, qint64) override { return 0; }
 };
+
+class FakePayloadReply : public QNetworkReply
+{
+    Q_OBJECT
+public:
+    FakePayloadReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request,
+        const QByteArray &body, QObject *parent)
+        : QNetworkReply{ parent }
+        , _body(body)
+    {
+        setRequest(request);
+        setUrl(request.url());
+        setOperation(op);
+        open(QIODevice::ReadOnly);
+        QTimer::singleShot(10, this, &FakePayloadReply::respond);
+    }
+
+    void respond()
+    {
+        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
+        setHeader(QNetworkRequest::ContentLengthHeader, _body.size());
+        emit metaDataChanged();
+        emit readyRead();
+        setFinished(true);
+        emit finished();
+    }
+
+    void abort() override {}
+    qint64 readData(char *buf, qint64 max) override
+    {
+        max = qMin<qint64>(max, _body.size());
+        memcpy(buf, _body.constData(), max);
+        _body = _body.mid(max);
+        return max;
+    }
+    qint64 bytesAvailable() const override
+    {
+        return _body.size();
+    }
+    QByteArray _body;
+};
+
 
 class FakeErrorReply : public QNetworkReply
 {
