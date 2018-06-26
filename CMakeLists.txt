@@ -183,7 +183,7 @@ if(BUILD_CLIENT)
     endif()
     find_package(Sphinx)
     find_package(PdfLatex)
-    find_package(OpenSSL REQUIRED VERSION 1.0)
+    find_package(OpenSSL REQUIRED VERSION 1.1)
 
    find_package(ZLIB REQUIRED)
    find_package(GLib2)
