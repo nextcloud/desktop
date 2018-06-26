@@ -5,8 +5,8 @@ set -xe
 mkdir /app
 mkdir /build
 
-#Set Qt-5.9
-export QT_BASE_DIR=/opt/qt59
+#Set Qt-5.11
+export QT_BASE_DIR=/opt/qt511
 export QTDIR=$QT_BASE_DIR
 export PATH=$QT_BASE_DIR/bin:$PATH
 export LD_LIBRARY_PATH=$QT_BASE_DIR/lib/x86_64-linux-gnu:$QT_BASE_DIR/lib:$LD_LIBRARY_PATH
