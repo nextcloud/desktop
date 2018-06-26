@@ -71,6 +71,8 @@ cp ./usr/share/icons/hicolor/512x512/apps/Nextcloud.png . # Workaround for linux
 
 
 # Because distros need to get their shit together
+cp -R /lib/x86_64-linux-gnu/libssl.so* ./usr/lib/
+cp -R /lib/x86_64-linux-gnu/libcrypto.so* ./usr/lib/
 cp -P /usr/local/lib/libssl.so* ./usr/lib/
 cp -P /usr/local/lib/libcrypto.so* ./usr/lib/
 
