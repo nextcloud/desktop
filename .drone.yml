@@ -138,6 +138,36 @@ pipeline:
             matrix:
                 TESTS: qt-5.11
 
+    qt-5.11-clang:
+        image: nextcloudci/client-5.11:client-5.11-2
+        commands:
+            # Install QtKeyChain
+            - /bin/bash -c "
+              export CC=clang-6.0 &&
+              export CXX=clang++-6.0 &&
+              source /opt/qt511/bin/qt511-env.sh &&
+              cd /tmp &&
+              git clone https://github.com/frankosterfeld/qtkeychain.git &&
+              cd qtkeychain &&
+              git checkout v0.8.0 &&
+              mkdir build &&
+              cd build &&
+              cmake ../ &&
+              make &&
+              make install"
+            # Build client
+            - /bin/bash -c "
+              export CC=clang-6.0 &&
+              export CXX=clang++-6.0 &&
+              source /opt/qt511/bin/qt511-env.sh &&
+              mkdir build &&
+              cd build &&
+              cmake -D NO_SHIBBOLETH=1 ../ &&
+              make"
+        when:
+            matrix:
+                TESTS: qt-5.11-clang
+
     AppImage-5.9:
         image: nextcloudci/client-appimage-ci:client-appimage-ci-15
         commands:
@@ -171,6 +201,7 @@ matrix:
         - TESTS: qt-5.9
         - TESTS: qt-5.10
         - TESTS: qt-5.11
+        - TESTS: qt-5.11-clang
         - BUILD: AppImage
         - BUILD: Debian
         - TESTS: documentation
