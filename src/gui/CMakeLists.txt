@@ -264,9 +264,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
             string(REPLACE "-${APPLICATION_ICON_NAME}-icon.png" "" _res ${_res})
             install(FILES ${_file} RENAME ${APPLICATION_ICON_NAME}.png DESTINATION ${DATADIR}/icons/hicolor/${_res}x${_res}/apps)
         endforeach(_file)
-    endif(NOT WIN32)
-
-    install(FILES ${client_I18N} DESTINATION ${SHAREDIR}/${APPLICATION_EXECUTABLE}/i18n)
+        install(FILES ${client_I18N} DESTINATION ${SHAREDIR}/${APPLICATION_EXECUTABLE}/i18n)
+    else()
+        install(FILES ${client_I18N} DESTINATION i18n)
+    endif()
 
     # we may not add MACOSX_BUNDLE here, if not building one
 
