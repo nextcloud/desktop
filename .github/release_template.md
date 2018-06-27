@@ -29,6 +29,7 @@ Some weeks before the release:
 For first Alpha/Beta of a Major or Minor release:
 * [ ] branch off master to new version branch (e.g. master -> 2.1, when releasing 2.1)
 * [ ] Adjust `VERSION.cmake` in master and count up (e.g. 2.2)
+* [ ] Add branch to branches.only section in appveyor.yml, so PRs to that branch will be built by AppVeyor
 * [ ] Adjust translation jobs for [client](https://ci.owncloud.org/view/translation-sync/job/translation-sync-client/) and [NSIS](https://ci.owncloud.org/view/translation-sync/job/translation-sync-client-nsis/) to point to the release branch (e.g. 2.1).
 * [ ] Make sure there is a job for the docs of the new master branch and the current release branch on rotor e.g. http://doc.owncloud.org/desktop/1.X/ exists
 
