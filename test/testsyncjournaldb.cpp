@@ -209,7 +209,7 @@ private slots:
     {
         auto invalidEtag = QByteArray("_invalid_");
         auto initialEtag = QByteArray("etag");
-        auto makeEntry = [&](const QByteArray &path, int type) {
+        auto makeEntry = [&](const QByteArray &path, ItemType type) {
             SyncJournalFileRecord record;
             record._path = path;
             record._type = type;
@@ -222,19 +222,19 @@ private slots:
             return record._etag;
         };
 
-        makeEntry("foodir", 2);
-        makeEntry("otherdir", 2);
-        makeEntry("foo%", 2); // wildcards don't apply
-        makeEntry("foodi_", 2); // wildcards don't apply
-        makeEntry("foodir/file", 0);
-        makeEntry("foodir/subdir", 2);
-        makeEntry("foodir/subdir/file", 0);
-        makeEntry("foodir/otherdir", 2);
-        makeEntry("fo", 2); // prefix, but does not match
-        makeEntry("foodir/sub", 2); // prefix, but does not match
-        makeEntry("foodir/subdir/subsubdir", 2);
-        makeEntry("foodir/subdir/subsubdir/file", 0);
-        makeEntry("foodir/subdir/otherdir", 2);
+        makeEntry("foodir", ItemTypeDirectory);
+        makeEntry("otherdir", ItemTypeDirectory);
+        makeEntry("foo%", ItemTypeDirectory); // wildcards don't apply
+        makeEntry("foodi_", ItemTypeDirectory); // wildcards don't apply
+        makeEntry("foodir/file", ItemTypeFile);
+        makeEntry("foodir/subdir", ItemTypeDirectory);
+        makeEntry("foodir/subdir/file", ItemTypeFile);
+        makeEntry("foodir/otherdir", ItemTypeDirectory);
+        makeEntry("fo", ItemTypeDirectory); // prefix, but does not match
+        makeEntry("foodir/sub", ItemTypeDirectory); // prefix, but does not match
+        makeEntry("foodir/subdir/subsubdir", ItemTypeDirectory);
+        makeEntry("foodir/subdir/subsubdir/file", ItemTypeFile);
+        makeEntry("foodir/subdir/otherdir", ItemTypeDirectory);
 
         _db.avoidReadFromDbOnNextSync(QByteArray("foodir/subdir"));
 
@@ -258,15 +258,15 @@ private slots:
         // Indirect effects: setFileRecord() calls filter etags
         initialEtag = "etag2";
 
-        makeEntry("foodir", 2);
+        makeEntry("foodir", ItemTypeDirectory);
         QCOMPARE(getEtag("foodir"), invalidEtag);
-        makeEntry("foodir/subdir", 2);
+        makeEntry("foodir/subdir", ItemTypeDirectory);
         QCOMPARE(getEtag("foodir/subdir"), invalidEtag);
-        makeEntry("foodir/subdir/subsubdir", 2);
+        makeEntry("foodir/subdir/subsubdir", ItemTypeDirectory);
         QCOMPARE(getEtag("foodir/subdir/subsubdir"), initialEtag);
-        makeEntry("fo", 2);
+        makeEntry("fo", ItemTypeDirectory);
         QCOMPARE(getEtag("fo"), initialEtag);
-        makeEntry("foodir/sub", 2);
+        makeEntry("foodir/sub", ItemTypeDirectory);
         QCOMPARE(getEtag("foodir/sub"), initialEtag);
     }
 
