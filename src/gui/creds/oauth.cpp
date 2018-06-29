@@ -153,7 +153,6 @@ void OAuth::start()
             });
         }
     });
-    QTimer::singleShot(5 * 60 * 1000, this, [this] { result(Error); });
 }
 
 QUrl OAuth::authorisationLink() const
