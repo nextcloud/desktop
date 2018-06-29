@@ -651,7 +651,7 @@ void AccountSettings::slotAccountStateChanged()
         if (state == AccountState::Connected) {
             QStringList errors;
             if (account->serverVersionUnsupported()) {
-                errors << tr("The server version %1 is old and unsupported! Proceed at your own risk.").arg(account->serverVersion());
+                errors << tr("The server version %1 is unsupported! Proceed at your own risk.").arg(account->serverVersion());
             }
             showConnectionLabel(tr("Connected to %1.").arg(serverWithUser), errors);
         } else if (state == AccountState::ServiceUnavailable) {
