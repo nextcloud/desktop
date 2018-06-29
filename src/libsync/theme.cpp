@@ -335,11 +335,7 @@ QString Theme::about() const
                     "Copyright 2017-2018 Nextcloud GmbH<br />"
                     "Copyright 2012-2018 ownCloud GmbH</p>");
 
-    devString += tr("<p>Licensed under the GNU General Public License (GPL) Version 2.0.<br/>"
-                    "%2 and the %2 Logo are registered trademarks of %1 in the "
-                    "European Union, other countries, or both.</p>")
-              .arg(APPLICATION_VENDOR)
-              .arg(APPLICATION_NAME);
+    devString += tr("<p>Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.</p>");
 
     devString += gitSHA1();
 
