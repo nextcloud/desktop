@@ -43,7 +43,7 @@ void PropagateUploadFileV1::doStartUpload()
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
 
-    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime
+    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime && progressInfo._size == qint64(_item->_size)
         && (progressInfo._contentChecksum == _item->_checksumHeader || progressInfo._contentChecksum.isEmpty() || _item->_checksumHeader.isEmpty())) {
         _startChunk = progressInfo._chunk;
         _transferId = progressInfo._transferid;
@@ -59,6 +59,7 @@ void PropagateUploadFileV1::doStartUpload()
         pi._modtime = _item->_modtime;
         pi._errorCount = 0;
         pi._contentChecksum = _item->_checksumHeader;
+        pi._size = _item->_size;
         propagator()->_journal->setUploadInfo(_item->_file, pi);
         propagator()->_journal->commit("Upload info");
     }
@@ -285,6 +286,7 @@ void PropagateUploadFileV1::slotPutFinished()
         pi._modtime = _item->_modtime;
         pi._errorCount = 0; // successful chunk upload resets
         pi._contentChecksum = _item->_checksumHeader;
+        pi._size = _item->_size;
         propagator()->_journal->setUploadInfo(_item->_file, pi);
         propagator()->_journal->commit("Upload info");
         startNextChunk();

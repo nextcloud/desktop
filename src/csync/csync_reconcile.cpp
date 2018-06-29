@@ -370,7 +370,8 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                             auto remoteNode = ctx->current == REMOTE_REPLICA ? cur : other;
                             auto localNode = ctx->current == REMOTE_REPLICA ? other : cur;
                             remoteNode->instruction = CSYNC_INSTRUCTION_NONE;
-                            localNode->instruction = up._modtime == localNode->modtime ? CSYNC_INSTRUCTION_UPDATE_METADATA : CSYNC_INSTRUCTION_SYNC;
+                            localNode->instruction = up._modtime == localNode->modtime && up._size == localNode->size ?
+                                CSYNC_INSTRUCTION_UPDATE_METADATA : CSYNC_INSTRUCTION_SYNC;
 
                             // Update the etag and other server metadata in the journal already
                             // (We can't use a typical CSYNC_INSTRUCTION_UPDATE_METADATA because
