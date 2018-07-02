@@ -2,47 +2,47 @@
 
 ## Introduction
 
-The Nextcloud Desktop Client is a tool to synchronize files from Nextcloud Server
+The Nextcloud Desktop Client :computer: is a tool to synchronize files from Nextcloud Server
 with your computer.
 
-## Contributing
+## Contributing :tada: :blue_heart:
 
-### How to compile the desktop client
+### How to compile the desktop client :hammer: :wrench:
 
 - Instructions for compiling the client on Linux, Windows and mac OS can be found at:
 [Wiki/How to compile the desktop client](https://github.com/nextcloud/desktop/wiki/How-to-compile-the-desktop-client).
 
 ### Where to find binaries to download
 
-#### Daily builds
+#### Daily builds :high_brightness:
 
 - Daily builds based on the latest master are available for Linux, Mac, and Windows
 [in the desktop/daily folder of our download server](https://download.nextcloud.com/desktop/daily).
 For more info: [Wiki/Daily Builds](https://github.com/nextcloud/desktop/wiki/Daily-Builds).
 
-#### Releases
+#### Releases :rocket:
 
 - Refer to the [download page https://nextcloud.com/install/#install-clients](https://nextcloud.com/install/#install-clients)
 
-### Reporting issues
+### Reporting issues :bomb:
 
 - If you find any bugs or have any suggestion for improvement, please
 file an issue at https://github.com/nextcloud/client/issues. Do not
 contact the authors directly by mail, as this increases the chance
-of your report being lost.
+of your report being lost. :boom:
 
-### Pull requests
+### Pull requests :smiley:
 
 - If you created a patch, please submit a [Pull
 Request](https://github.com/nextcloud/client/pulls).
 
-## Contact us
+## Contact us :speech_balloon:
 
 If you want to contact us, e.g. before starting a more complex feature, for questions
 you can join us at
 [#nextcloud-client](irc://irc.freenode.net/#nextcloud-client).
 
-## Source code
+## Source code :octocat:
 
 The Nextcloud Desktop Client is developed in Git. Since Git makes it easy to
 fork and improve the source code and to adapt it to your need, many copies
