@@ -94,7 +94,7 @@ static chrono::milliseconds millisecondsValue(const QSettings &setting, const ch
     chrono::milliseconds defaultValue)
 {
     return chrono::milliseconds(setting.value(QLatin1String(key), qlonglong(defaultValue.count())).toLongLong());
-};
+}
 
 ConfigFile::ConfigFile()
 {
