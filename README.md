@@ -5,7 +5,7 @@ with your computer.
 
 ## :blue_heart: :tada: Contributing
 
-### :hammer: :wrench: How to compile the desktop client
+### :hammer_and_wrench: How to compile the desktop client
 
 - Instructions for compiling the client on Linux, Windows and mac OS can be found at:
 [Wiki/How to compile the desktop client](https://github.com/nextcloud/desktop/wiki/How-to-compile-the-desktop-client).
