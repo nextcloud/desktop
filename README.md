@@ -40,6 +40,10 @@ If you want to contact us, e.g. before starting a more complex feature, for ques
 you can join us at
 [#nextcloud-client](irc://irc.freenode.net/#nextcloud-client).
 
+## :v: Code of conduct :relieved:
+
+The Nextcloud community has core values that are shared between all members during conferences, hackweeks and on all interactions in online platforms including (Github)[https://github.com/nextcloud] and (Forums)[https://help.nextcloud.com]. If you contribute, participate or interact with this community, please respect (our shared values)[https://nextcloud.com/code-of-conduct/].
+
 ## :memo: Source code
 
 The Nextcloud Desktop Client is developed in Git. Since Git makes it easy to
