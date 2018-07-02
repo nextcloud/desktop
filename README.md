@@ -1,48 +1,46 @@
 # Nextcloud Desktop Client
 
-## Introduction
-
-The Nextcloud Desktop Client :computer: is a tool to synchronize files from Nextcloud Server
+The :computer: Nextcloud Desktop Client is a tool to synchronize files from Nextcloud Server
 with your computer.
 
-## Contributing :tada: :blue_heart:
+## :blue_heart: Contributing :tada: :dancer:
 
-### How to compile the desktop client :hammer: :wrench:
+### :hammer: How to compile the desktop client :wrench:
 
 - Instructions for compiling the client on Linux, Windows and mac OS can be found at:
 [Wiki/How to compile the desktop client](https://github.com/nextcloud/desktop/wiki/How-to-compile-the-desktop-client).
 
-### Where to find binaries to download
+### :mag_right: Where to find binaries to download :inbox_tray:
 
-#### Daily builds :high_brightness:
+#### :high_brightness: Daily builds
 
-- Daily builds based on the latest master are available for Linux, Mac, and Windows
+- Daily builds based on the latest master are available for Linux :penguin:, Mac, and Windows
 [in the desktop/daily folder of our download server](https://download.nextcloud.com/desktop/daily).
 For more info: [Wiki/Daily Builds](https://github.com/nextcloud/desktop/wiki/Daily-Builds).
 
-#### Releases :rocket:
+#### :rocket: Releases
 
 - Refer to the [download page https://nextcloud.com/install/#install-clients](https://nextcloud.com/install/#install-clients)
 
-### Reporting issues :bomb:
+### :bomb: Reporting issues
 
 - If you find any bugs or have any suggestion for improvement, please
 file an issue at https://github.com/nextcloud/client/issues. Do not
 contact the authors directly by mail, as this increases the chance
 of your report being lost. :boom:
 
-### Pull requests :smiley:
+### :smiley: Pull requests :trophy:
 
-- If you created a patch, please submit a [Pull
+- If you created a patch :heart_eyes:, please submit a [Pull
 Request](https://github.com/nextcloud/client/pulls).
 
-## Contact us :speech_balloon:
+## :satellite: Contact us :speech_balloon:
 
 If you want to contact us, e.g. before starting a more complex feature, for questions
 you can join us at
 [#nextcloud-client](irc://irc.freenode.net/#nextcloud-client).
 
-## Source code :octocat:
+## :memo: Source code
 
 The Nextcloud Desktop Client is developed in Git. Since Git makes it easy to
 fork and improve the source code and to adapt it to your need, many copies
@@ -50,7 +48,7 @@ can be found on the Internet, in particular on GitHub. However, the
 authoritative repository maintained by the developers is located at
 https://github.com/nextcloud/desktop.
 
-## License
+## :scroll: License
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
