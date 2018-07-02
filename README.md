@@ -17,9 +17,16 @@ The Nextcloud Desktop Client is developed in Git. Since Git makes it easy to
 fork and improve the source code and to adapt it to your need, many copies
 can be found on the Internet, in particular on GitHub. However, the
 authoritative repository maintained by the developers is located at
-https://github.com/nextcloud/client.
+https://github.com/nextcloud/desktop.
+
+Instructions for compiling it can be found at
+[Wiki/How to compile the desktop client](https://github.com/nextcloud/desktop/wiki/How-to-compile-the-desktop-client).
 
 ## Reporting issues and contributing
+
+If you would like to help testing: the daily builds based on the latest master are available
+[in the desktop/daily folder of our download server](https://download.nextcloud.com/desktop/daily).
+For more info: [Wiki/Daily-Builds](https://github.com/nextcloud/desktop/wiki/Daily-Builds).
 
 If you find any bugs or have any suggestion for improvement, please
 file an issue at https://github.com/nextcloud/client/issues. Do not
@@ -31,7 +38,7 @@ Request](https://github.com/nextcloud/client/pulls).
 
 If you want to contact us, e.g. before starting a more complex feature,
 you can join us at
-[#nextcloud-dev](irc://irc.freenode.net/#nextcloud-dev).
+[#nextcloud-client](irc://irc.freenode.net/#nextcloud-client).
 
 ## License
 
