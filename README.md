@@ -3,14 +3,14 @@
 The :computer: Nextcloud Desktop Client is a tool to synchronize files from Nextcloud Server
 with your computer.
 
-## :blue_heart: Contributing :tada: :dancer:
+## :blue_heart: :tada: Contributing
 
-### :hammer: How to compile the desktop client :wrench:
+### :hammer: :wrench: How to compile the desktop client
 
 - Instructions for compiling the client on Linux, Windows and mac OS can be found at:
 [Wiki/How to compile the desktop client](https://github.com/nextcloud/desktop/wiki/How-to-compile-the-desktop-client).
 
-### :mag_right: Where to find binaries to download :inbox_tray:
+### :inbox_tray: Where to find binaries to download
 
 #### :high_brightness: Daily builds
 
@@ -29,20 +29,20 @@ file an issue at https://github.com/nextcloud/client/issues. Do not
 contact the authors directly by mail, as this increases the chance
 of your report being lost. :boom:
 
-### :smiley: Pull requests :trophy:
+### :smiley: :trophy: Pull requests
 
 - If you created a patch :heart_eyes:, please submit a [Pull
 Request](https://github.com/nextcloud/client/pulls).
 
-## :satellite: Contact us :speech_balloon:
+## :satellite: Contact us
 
-If you want to contact us, e.g. before starting a more complex feature, for questions
+If you want to contact us, e.g. before starting a more complex feature, for questions :question:
 you can join us at
 [#nextcloud-client](irc://irc.freenode.net/#nextcloud-client).
 
-## :v: Code of conduct :relieved:
+## :v: Code of conduct
 
-The Nextcloud community has core values that are shared between all members during conferences, hackweeks and on all interactions in online platforms including [Github](https://github.com/nextcloud) and [Forums](https://help.nextcloud.com). If you contribute, participate or interact with this community, please respect [our shared values](https://nextcloud.com/code-of-conduct/).
+The Nextcloud community has core values that are shared between all members during conferences, hackweeks and on all interactions in online platforms including [Github](https://github.com/nextcloud) and [Forums](https://help.nextcloud.com). If you contribute, participate or interact with this community, please respect [our shared values](https://nextcloud.com/code-of-conduct/). :relieved:
 
 ## :memo: Source code
 
