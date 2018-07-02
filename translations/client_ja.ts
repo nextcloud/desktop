@@ -446,7 +446,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="613"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
-        <translation>同期されていないアイテムのリストがクリップボードにコピーされました。</translation>
+        <translation>同期されていないアイテムのリストをクリップボードにコピーしました。</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="618"/>
@@ -4075,7 +4075,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Updated local metadata</source>
-        <translation>ローカルメタデータが更新されました</translation>
+        <translation>ローカルメタデータを更新しました</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="53"/>
