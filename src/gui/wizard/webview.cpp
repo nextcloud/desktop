@@ -54,7 +54,6 @@ WebView::WebView(QWidget *parent)
 
     _webview->setPage(_page);
     _ui.verticalLayout->addWidget(_webview);
-    _webview->show();
 
     connect(_webview, &QWebEngineView::loadProgress, _ui.progressBar, &QProgressBar::setValue);
     connect(_schemeHandler, &WebViewPageUrlSchemeHandler::urlCatched, this, &WebView::urlCatched);
