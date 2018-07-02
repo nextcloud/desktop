@@ -304,6 +304,8 @@ void AccountSettings::slotEncryptionFlagSuccess(const QByteArray& fileId)
 
 void AccountSettings::slotEncryptionFlagError(const QByteArray& fileId, int httpErrorCode)
 {
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpErrorCode);
     qDebug() << "Error on the encryption flag";
 }
 
@@ -344,6 +346,8 @@ void AccountSettings::slotUploadMetadataSuccess(const QByteArray& folderId)
 
 void AccountSettings::slotUpdateMetadataError(const QByteArray& folderId, int httpReturnCode)
 {
+    Q_UNUSED(httpReturnCode);
+
 	const auto token = accountsState()->account()->e2e()->tokenForFolder(folderId);
 	auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), folderId, token);
 	connect(unlockJob, &UnlockEncryptFolderApiJob::success,
@@ -355,15 +359,23 @@ void AccountSettings::slotUpdateMetadataError(const QByteArray& folderId, int ht
 
 void AccountSettings::slotLockForEncryptionError(const QByteArray& fileId, int httpErrorCode)
 {
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpErrorCode);
+
     qCInfo(lcAccountSettings()) << "Locking error" << httpErrorCode;
 }
 
 void AccountSettings::slotUnlockFolderError(const QByteArray& fileId, int httpErrorCode)
 {
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpErrorCode);
+
     qCInfo(lcAccountSettings()) << "Unlocking error!";
 }
 void AccountSettings::slotUnlockFolderSuccess(const QByteArray& fileId)
 {
+    Q_UNUSED(fileId);
+
     qCInfo(lcAccountSettings()) << "Unlocking success!";
 }
 
@@ -475,27 +487,41 @@ void AccountSettings::slotDecryptionFlagSuccess(const QByteArray& fileId)
     }
 }
 
-void AccountSettings::slotDecryptionFlagError(const QByteArray& fileID, int httpReturnCode)
+void AccountSettings::slotDecryptionFlagError(const QByteArray& fileId, int httpReturnCode)
 {
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpReturnCode);
+
     qDebug() << "Error Setting the Decryption Flag";
 }
 
 void AccountSettings::slotUnlockForDecryptionError(const QByteArray& fileId, int httpReturnCode)
 {
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpReturnCode);
+
     qDebug() << "Error unlocking folder after decryption";
 }
 
 void AccountSettings::slotDeleteMetadataError(const QByteArray& fileId, int httpReturnCode)
 {
-  qDebug() << "Error deleting the metadata";
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpReturnCode);
+
+    qDebug() << "Error deleting the metadata";
 }
 void AccountSettings::slotLockForDecryptionError(const QByteArray& fileId, int httpReturnCode)
 {
-  qDebug() << "Error Locking for decryption";
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpReturnCode);
+
+    qDebug() << "Error Locking for decryption";
 }
 
 void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index, const QPoint& pos)
 {
+    Q_UNUSED(pos);
+
     QMenu menu;
     auto ac = menu.addAction(tr("Open folder"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotOpenCurrentLocalSubFolder);

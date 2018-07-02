@@ -102,6 +102,8 @@ void WebFlowCredentials::askFromUser() {
 }
 
 void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user, const QString &pass, const QString &host) {
+    Q_UNUSED(host);
+
     if (_user != user) {
         qCInfo(lcWebFlowCredentials()) << "Authed with the wrong user!";
 
