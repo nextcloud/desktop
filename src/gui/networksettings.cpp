@@ -164,6 +164,9 @@ void NetworkSettings::saveProxySettings()
         cfgFile.setProxyType(QNetworkProxy::DefaultProxy);
     } else if (_ui->manualProxyRadioButton->isChecked()) {
         int type = _ui->typeComboBox->itemData(_ui->typeComboBox->currentIndex()).toInt();
+        QString host = _ui->hostLineEdit->text();
+        if (host.isEmpty())
+            type = QNetworkProxy::NoProxy;
         bool needsAuth = _ui->authRequiredcheckBox->isChecked();
         QString user = _ui->userLineEdit->text();
         QString pass = _ui->passwordLineEdit->text();
@@ -224,6 +227,7 @@ void NetworkSettings::showEvent(QShowEvent *event)
         && _ui->hostLineEdit->text().isEmpty()) {
         _ui->noProxyRadioButton->setChecked(true);
         checkEmptyProxyHost();
+        saveProxySettings();
     }
 
     QWidget::showEvent(event);
