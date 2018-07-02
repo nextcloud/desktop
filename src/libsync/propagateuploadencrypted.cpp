@@ -151,7 +151,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
       encryptedFile.metadataKey = 1;
       encryptedFile.originalFilename = fileName;
 
-      static thread_local QMimeDatabase mdb;
+      QMimeDatabase mdb;
       encryptedFile.mimetype = mdb.mimeTypeForFile(info).name().toLocal8Bit();
   }
 

@@ -222,13 +222,13 @@ public:
     /// Store a new or updated record in the database
     void setConflictRecord(const ConflictRecord &record);
 
-    /// Retrieve a conflict record by path of the _conflict- file
+    /// Retrieve a conflict record by path of the file with the conflict tag
     ConflictRecord conflictRecord(const QByteArray &path);
 
-    /// Delete a conflict record by path of the _conflict- file
+    /// Delete a conflict record by path of the file with the conflict tag
     void deleteConflictRecord(const QByteArray &path);
 
-    /// Return all paths of _conflict- files with records in the db
+    /// Return all paths of files with a conflict tag in the name and records in the db
     QByteArrayList conflictRecordPaths();
 
 

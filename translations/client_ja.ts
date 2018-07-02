@@ -228,7 +228,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="650"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation>サーバーバージョン %1 は古くサポートされていません！自己責任で進んでください。</translation>
+        <translation>サーバーバージョン %1 は古く、サポートされていません！自己責任で進めてください。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="652"/>
@@ -446,7 +446,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="613"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
-        <translation>同期されていないアイテムのリストがクリップボードにコピーされました。</translation>
+        <translation>同期されていないアイテムのリストをクリップボードにコピーしました。</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="618"/>
@@ -496,17 +496,17 @@
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="349"/>
         <source>You received %n new notification(s) from %2.</source>
-        <translation><numerusform>%2 から %n の新しい通知がありました。</numerusform></translation>
+        <translation><numerusform>%2 から %n 個の新しい通知があります。</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="356"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
-        <translation><numerusform>%1 と %2 から %n の新しい通知がありました。</numerusform></translation>
+        <translation><numerusform>%1 と %2 から %n 個の新しい通知があります。</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="358"/>
         <source>You received new notifications from %1, %2 and other accounts.</source>
-        <translation>%1 と %2 、その他アカウントから新しい通知がありました。</translation>
+        <translation>%1 と %2 と他のアカウントから新しい通知がありました。</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="362"/>
@@ -778,8 +778,8 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>ローカルの同期フォルダー &apos;％1&apos; 内に存在するすべてのファイルが削除されました。これらの削除はサーバーと同期され、復元されない限りファイルは使用できなくなります。
-これらのアクションをサーバーと同期してもよろしいですか？
+        <translation>ローカル同期フォルダー &apos;%1&apos; にあるすべてのファイルが削除されました。これらの削除されたものはサーバーと同期され、復元されない限りファイルは使用できなくなります。
+本当にこれらのアクションをサーバーと同期して良いですか？
 「ファイルを残す」を選択した場合、ファイルはサーバーから再同期されます。</translation>
     </message>
     <message>
@@ -973,7 +973,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="180"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation>サーバーからフォルダーのリスト取得時にエラー</translation>
+        <translation>サーバーからフォルダーリスト取得中にエラーが発生しました。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="231"/>
@@ -1790,7 +1790,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="49"/>
         <source>Setup local folder options</source>
-        <translation>ローカルフォルダーのオプションを設定</translation>
+        <translation>ローカルフォルダーのオプションのセットアップ</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="58"/>
@@ -1898,7 +1898,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="51"/>
         <source>Setup %1 server</source>
-        <translation>%1 サーバーを設定</translation>
+        <translation>%1 サーバーのセットアップ</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="129"/>
@@ -2311,7 +2311,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagateupload.cpp" line="186"/>
         <location filename="../src/libsync/propagateupload.cpp" line="549"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>%1 をアップロードするとフォルダーのクォータを超えます</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="622"/>
@@ -2474,7 +2474,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="74"/>
         <source>Loading ...</source>
-        <translation>読込中 ...</translation>
+        <translation>読み込み中...</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="80"/>
@@ -2792,7 +2792,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="22"/>
         <source>Share with users or groups ...</source>
-        <translation>ユーザーもしくはグループと共有 ...</translation>
+        <translation>ユーザーまたはグループと共有 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="108"/>
@@ -3173,7 +3173,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="143"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation>CSyncはプロキシもしくはサーバーの参照に失敗しました。</translation>
+        <translation>CSyncはプロキシまたはサーバーの参照に失敗しました。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="146"/>
@@ -3208,7 +3208,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="188"/>
         <source>Error while reading folder.</source>
-        <translation>フォルダーの読み込みエラー</translation>
+        <translation>フォルダーの読み込み中にエラーが発生しました。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="264"/>
@@ -3671,12 +3671,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="618"/>
         <source>Log out of all accounts</source>
-        <translation>全てのアカウントからログアウト</translation>
+        <translation>すべてのアカウントからログアウト</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="626"/>
         <source>Log in to all accounts...</source>
-        <translation>全てのアカウントにログイン</translation>
+        <translation>すべてのアカウントにログイン</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="710"/>
@@ -3805,7 +3805,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="243"/>
         <source>S&amp;ync everything from server</source>
-        <translation>サーバーからすべてのファイルを同期(&amp;Y)</translation>
+        <translation>サーバーからすべてのファイルを同期する(&amp;Y)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="395"/>
@@ -3846,7 +3846,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occured while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>接続中にエラーが発生しました。もう一度試してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
@@ -4075,7 +4075,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Updated local metadata</source>
-        <translation>ローカルメタデータが更新されました</translation>
+        <translation>ローカルメタデータを更新しました</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="53"/>
@@ -4188,7 +4188,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="55"/>
         <source>Could not open email client</source>
-        <translation>電子メールクライアントを開くことができませんでした</translation>
+        <translation>メールクライアントを開けません</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="56"/>

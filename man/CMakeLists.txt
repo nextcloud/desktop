@@ -7,7 +7,7 @@ if(SPHINX_FOUND)
     set(SPHINX_MAN_DIR      "${CMAKE_CURRENT_BINARY_DIR}/man1")
     install(DIRECTORY ${SPHINX_MAN_DIR} DESTINATION ${CMAKE_INSTALL_MANDIR} OPTIONAL)
     add_custom_target( doc-man  ${SPHINX_EXECUTABLE}
-       -c ${CMAKE_SOURCE_DIR}/doc -b man
+       -c ${CMAKE_BINARY_DIR}/doc -b man
        -d ${SPHINX_CACHE_DIR}/man
        ${CMAKE_CURRENT_SOURCE_DIR}
        ${SPHINX_MAN_DIR} )

@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Comment[de_DE]=@APPLICATION_NAME@ Client zur Desktop-Synchronisation
-Icon[de_DE]=@APPLICATION_EXECUTABLE@
-Name[de_DE]=@APPLICATION_NAME@ Client zur Desktop-Synchronisation
-GenericName[de_DE]=Synchronisationsordner
+Comment[ja_JP]=@APPLICATION_NAME@ デスクトップ同期クライアント
+Icon[ja_JP]=@APPLICATION_EXECUTABLE@
+Name[ja_JP]=@APPLICATION_NAME@ デスクトップ同期クライアント
+GenericName[ja_JP]=フォルダーを同期する

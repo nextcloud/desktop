@@ -109,7 +109,7 @@ private slots:
         connect( &parser, SIGNAL(finishedWithoutError()),
                  this, SLOT(slotFinishedSuccessfully()) );
 
-        QHash <QString, qint64> sizes;
+        QHash <QString, ExtraFolderInfo> sizes;
         QVERIFY(parser.parse( testXml, &sizes, "/oc/remote.php/webdav/sharefolder" ));
 
         QVERIFY(_success);
@@ -183,7 +183,7 @@ private slots:
         connect( &parser, SIGNAL(finishedWithoutError()),
                  this, SLOT(slotFinishedSuccessfully()) );
 
-        QHash <QString, qint64> sizes;
+        QHash <QString, ExtraFolderInfo> sizes;
         QVERIFY(false == parser.parse( testXml, &sizes, "/oc/remote.php/webdav/sharefolder" )); // verify false
 
         QVERIFY(!_success);
@@ -206,7 +206,7 @@ private slots:
         connect( &parser, SIGNAL(finishedWithoutError()),
                  this, SLOT(slotFinishedSuccessfully()) );
 
-        QHash <QString, qint64> sizes;
+        QHash <QString, ExtraFolderInfo> sizes;
         QVERIFY(false == parser.parse( testXml, &sizes, "/oc/remote.php/webdav/sharefolder" )); // verify false
 
         QVERIFY(!_success);
@@ -228,7 +228,7 @@ private slots:
         connect( &parser, SIGNAL(finishedWithoutError()),
                  this, SLOT(slotFinishedSuccessfully()) );
 
-        QHash <QString, qint64> sizes;
+        QHash <QString, ExtraFolderInfo> sizes;
         QVERIFY(false == parser.parse( testXml, &sizes, "/oc/remote.php/webdav/sharefolder" )); // verify false
 
         QVERIFY(!_success);
@@ -267,7 +267,7 @@ private slots:
         connect( &parser, SIGNAL(finishedWithoutError()),
                  this, SLOT(slotFinishedSuccessfully()) );
 
-        QHash <QString, qint64> sizes;
+        QHash <QString, ExtraFolderInfo> sizes;
         QVERIFY(!parser.parse( testXml, &sizes, "/oc/remote.php/webdav/sharefolder" ));
         QVERIFY(!_success);
     }
@@ -332,7 +332,7 @@ private slots:
         connect( &parser, SIGNAL(finishedWithoutError()),
                  this, SLOT(slotFinishedSuccessfully()) );
 
-        QHash <QString, qint64> sizes;
+        QHash <QString, ExtraFolderInfo> sizes;
         QVERIFY(false == parser.parse( testXml, &sizes, "/oc/remote.php/webdav/sharefolder" ));
         QVERIFY(!_success);
     }
@@ -397,7 +397,7 @@ private slots:
         connect( &parser, SIGNAL(finishedWithoutError()),
                  this, SLOT(slotFinishedSuccessfully()) );
 
-        QHash <QString, qint64> sizes;
+        QHash <QString, ExtraFolderInfo> sizes;
         QVERIFY(false == parser.parse( testXml, &sizes, "/oc/remote.php/webdav/sharefolder" ));
         QVERIFY(!_success);
     }
@@ -461,7 +461,7 @@ private slots:
         connect( &parser, SIGNAL(finishedWithoutError()),
                  this, SLOT(slotFinishedSuccessfully()) );
 
-        QHash <QString, qint64> sizes;
+        QHash <QString, ExtraFolderInfo> sizes;
         QVERIFY(parser.parse( testXml, &sizes, QString::fromUtf8("/ä") ));
         QVERIFY(_success);
 

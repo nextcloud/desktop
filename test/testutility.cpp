@@ -116,11 +116,11 @@ private slots:
             }
             // pass the binary name owncloud to the next call. This brakes branding,
             // but branding is not supposed to work with this.
-            QString ver = versionOfInstalledBinary(OWNCLOUD_BIN_PATH+QLatin1String("/owncloud"));
-	    qDebug() << "Version of installed ownCloud Binary: " << ver;
+            QString ver = versionOfInstalledBinary(OWNCLOUD_BIN_PATH+QLatin1String("/nextcloud"));
+	    qDebug() << "Version of installed Nextcloud: " << ver;
 	    QVERIFY( !ver.isEmpty());
 
-	    QRegExp rx( "ownCloud version \\d+\\.\\d+\\.\\d+.*" );
+	    QRegExp rx( "Nextcloud version \\d+\\.\\d+\\.\\d+.*" );
             QVERIFY( rx.exactMatch(ver));
 	} else {
 	    QVERIFY( versionOfInstalledBinary().isEmpty());
@@ -133,13 +133,13 @@ private slots:
         QDateTime d1 = QDateTime::fromString("2015-01-24T09:20:30+01:00", Qt::ISODate);
         QDateTime d2 = QDateTime::fromString("2015-01-23T09:20:30+01:00", Qt::ISODate);
         QString s = timeAgoInWords(d2, d1);
-        QCOMPARE(s, QLatin1String("1 day(s) ago"));
+        QCOMPARE(s, QLatin1String("1 day ago"));
 
         // Different timezones
         QDateTime earlyTS = QDateTime::fromString("2015-01-24T09:20:30+01:00", Qt::ISODate);
         QDateTime laterTS = QDateTime::fromString("2015-01-24T09:20:30-01:00", Qt::ISODate);
         s = timeAgoInWords(earlyTS, laterTS);
-        QCOMPARE(s, QLatin1String("2 hour(s) ago"));
+        QCOMPARE(s, QLatin1String("2 hours ago"));
 
         // 'Now' in whatever timezone
         earlyTS = QDateTime::currentDateTime();

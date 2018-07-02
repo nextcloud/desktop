@@ -83,7 +83,7 @@ namespace {
             return devTrPath;
         }
 #if defined(Q_OS_WIN)
-        return QApplication::applicationDirPath();
+        return QApplication::applicationDirPath() + QLatin1String("/i18n/");
 #elif defined(Q_OS_MAC)
         return QApplication::applicationDirPath() + QLatin1String("/../Resources/Translations"); // path defaults to app dir.
 #elif defined(Q_OS_UNIX)

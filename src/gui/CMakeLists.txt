@@ -35,6 +35,7 @@ set(client_UI_SRCS
     addcertificatedialog.ui
     proxyauthdialog.ui
     notificationwidget.ui
+    mnemonicdialog.ui
     wizard/owncloudadvancedsetuppage.ui
     wizard/owncloudconnectionmethoddialog.ui
     wizard/owncloudhttpcredspage.ui
@@ -263,9 +264,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
             string(REPLACE "-${APPLICATION_ICON_NAME}-icon.png" "" _res ${_res})
             install(FILES ${_file} RENAME ${APPLICATION_ICON_NAME}.png DESTINATION ${DATADIR}/icons/hicolor/${_res}x${_res}/apps)
         endforeach(_file)
-    endif(NOT WIN32)
-
-    install(FILES ${client_I18N} DESTINATION ${SHAREDIR}/${APPLICATION_EXECUTABLE}/i18n)
+        install(FILES ${client_I18N} DESTINATION ${SHAREDIR}/${APPLICATION_EXECUTABLE}/i18n)
+    else()
+        install(FILES ${client_I18N} DESTINATION i18n)
+    endif()
 
     # we may not add MACOSX_BUNDLE here, if not building one
 
@@ -378,6 +380,7 @@ if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
    install(CODE "
     message(STATUS \"Deploying (Qt) dependencies and fixing library paths...\")
     execute_process(COMMAND \"${CMAKE_SOURCE_DIR}/admin/osx/macdeployqt.py\" ${CMAKE_INSTALL_PREFIX}/${OWNCLOUD_OSX_BUNDLE} ${QT_QMAKE_EXECUTABLE})
+    execute_process(COMMAND \"${CMAKE_SOURCE_DIR}/admin/osx/macdeployqt.py\" ${CMAKE_INSTALL_PREFIX}/${OWNCLOUD_OSX_BUNDLE}/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app ${QT_QMAKE_EXECUTABLE})
     " COMPONENT RUNTIME)
 endif()
 

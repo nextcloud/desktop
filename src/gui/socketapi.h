@@ -95,7 +95,6 @@ private:
 
     Q_INVOKABLE void command_VERSION(const QString &argument, SocketListener *listener);
 
-    Q_INVOKABLE void command_SHARE_STATUS(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString &argument, SocketListener *listener);
 
     // The context menu actions
