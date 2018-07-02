@@ -9,7 +9,7 @@ with your computer.
 
 ### How to compile the desktop client
 
-Instructions for compiling the client on Linux, Windows and mac OS can be found at:
+- Instructions for compiling the client on Linux, Windows and mac OS can be found at:
 [Wiki/How to compile the desktop client](https://github.com/nextcloud/desktop/wiki/How-to-compile-the-desktop-client).
 
 ### Where to find binaries to download
@@ -18,7 +18,7 @@ Instructions for compiling the client on Linux, Windows and mac OS can be found 
 
 - Daily builds based on the latest master are available for Linux, Mac, and Windows
 [in the desktop/daily folder of our download server](https://download.nextcloud.com/desktop/daily).
-For more info: [Wiki/Daily-Builds](https://github.com/nextcloud/desktop/wiki/Daily-Builds).
+For more info: [Wiki/Daily Builds](https://github.com/nextcloud/desktop/wiki/Daily-Builds).
 
 #### Releases
 
@@ -26,20 +26,21 @@ For more info: [Wiki/Daily-Builds](https://github.com/nextcloud/desktop/wiki/Dai
 
 ### Reporting issues
 
-If you find any bugs or have any suggestion for improvement, please
+- If you find any bugs or have any suggestion for improvement, please
 file an issue at https://github.com/nextcloud/client/issues. Do not
 contact the authors directly by mail, as this increases the chance
 of your report being lost.
 
 ### Pull requests
 
-If you created a patch, please submit a [Pull
+- If you created a patch, please submit a [Pull
 Request](https://github.com/nextcloud/client/pulls).
 
 ## Contact us
 
-If you want to contact us, e.g. before starting a more complex feature, for questions, etc
-you can join us at [#nextcloud-client](irc://irc.freenode.net/#nextcloud-client).
+If you want to contact us, e.g. before starting a more complex feature, for questions
+you can join us at
+[#nextcloud-client](irc://irc.freenode.net/#nextcloud-client).
 
 ## Source code
 
