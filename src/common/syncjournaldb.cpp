@@ -977,14 +977,19 @@ bool SyncJournalDb::getFileRecordByE2eMangledName(const QString &mangledName, Sy
     rec->_path.clear();
     Q_ASSERT(!rec->isValid());
 
-    if (_metadataTableIsEmpty)
+    if (_metadataTableIsEmpty) {
         return true; // no error, yet nothing found (rec->isValid() == false)
+    }
 
-    if (!checkConnect())
+    if (!checkConnect()) {
         return false;
+    }
 
     if (!mangledName.isEmpty()) {
-        _getFileRecordQueryByMangledName.reset_and_clear_bindings();
+        if (!_getFileRecordQueryByMangledName.initOrReset(QByteArrayLiteral(GET_FILE_RECORD_QUERY " WHERE e2eMangledName=?1"), _db)) {
+            return false;
+        }
+
         _getFileRecordQueryByMangledName.bindValue(1, mangledName);
 
         if (!_getFileRecordQueryByMangledName.exec()) {
