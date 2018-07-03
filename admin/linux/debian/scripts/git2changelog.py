@@ -18,6 +18,27 @@ def processVersionTag(tag):
     else:
         return None
 
+def getCommitVersion(commit):
+    major=None
+    minor=None
+    patch=None
+    for line in subprocess.check_output(["git", "show",
+                                         commit + ":VERSION.cmake"]).splitlines():
+        m = re.match("set\( MIRALL_VERSION_([A-Z]+) +([0-9])+ *\)", line)
+        if m is not None:
+            kind=m.group(1)
+            version=m.group(2)
+            if kind=="MAJOR":
+                major=version
+            elif kind=="MINOR":
+                minor=version
+            elif kind=="PATCH":
+                patch=version
+    if major and minor and patch:
+        return major + "." + minor + "." + patch
+    else:
+        return None
+
 def collectEntries(baseCommit, baseVersion, kind):
     scriptdir = os.path.dirname(__file__)
     configPath = os.path.join(scriptdir, "git2changelog.cfg")
@@ -47,6 +68,7 @@ def collectEntries(baseCommit, baseVersion, kind):
 
 
     lastVersionTag = None
+    lastCMAKEVersion = None
     for line in output.splitlines():
         (commit, name, email, date, revdate, subject) = line.split("\t")
         revdate = datetime.datetime.utcfromtimestamp(long(revdate)).strftime("%Y%m%d.%H%M%S")
@@ -57,6 +79,17 @@ def collectEntries(baseCommit, baseVersion, kind):
                 newVersionOrigTag = lastVersionTag
                 (baseVersion, kind) = result
 
+
+        version=getCommitVersion(commit)
+        if version and version!=lastCMAKEVersion:
+            tag = "v" + version
+            if tag!=newVersionOrigTag:
+                result = processVersionTag(tag)
+                if result:
+                    lastVersionTag = tag
+                    lastCMAKEVersion = version
+                    (baseVersion, kind) = result
+
         for tag in subprocess.check_output(["git", "tag",
                                             "--points-at",
                                             commit]).splitlines():
@@ -65,6 +98,7 @@ def collectEntries(baseCommit, baseVersion, kind):
                 if result:
                     lastVersionTag = tag
                     (baseVersion, kind) = result
+
 
         entries.append((commit, name, email, date, revdate, subject,
                         baseVersion, kind))
