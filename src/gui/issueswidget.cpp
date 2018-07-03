@@ -120,6 +120,11 @@ IssuesWidget::IssuesWidget(QWidget *parent)
     _ui->_tooManyIssuesWarning->hide();
     connect(this, &IssuesWidget::issueCountUpdated, this,
         [this](int count) { _ui->_tooManyIssuesWarning->setVisible(count >= maxIssueCount); });
+
+    _ui->_conflictHelp->hide();
+    _ui->_conflictHelp->setText(
+        tr("There were conflicts. <a href=\"%1\">Check the documentation on how to resolve them.</a>")
+            .arg(Theme::instance()->conflictHelpUrl()));
 }
 
 IssuesWidget::~IssuesWidget()
@@ -277,6 +282,8 @@ void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &p
             }
         }
         emit ProgressDispatcher::instance()->folderConflicts(folder, conflicts);
+
+        _ui->_conflictHelp->setHidden(Theme::instance()->conflictHelpUrl().isEmpty() || conflicts.isEmpty());
     }
 }
 

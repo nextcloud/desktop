@@ -10,6 +10,7 @@ Nextcloud Desktop Client Manual
    installing
    visualtour
    navigating
+   conflicts
    advancedusage
    autoupdate
    building 
@@ -17,4 +18,4 @@ Nextcloud Desktop Client Manual
    troubleshooting
    faq
    glossary
-   
+
