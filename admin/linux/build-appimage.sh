@@ -29,6 +29,16 @@ cmake -D CMAKE_INSTALL_PREFIX=/usr ../
 make -j4
 make DESTDIR=/app install 
 
+# libcloudproviders
+cd /build
+git clone https://gitlab.gnome.org/World/libcloudproviders.git
+cd libcloudproviders
+git checkout 0.2.5
+meson build
+cd build
+ninja all
+DESTDIR=/app ninja install
+
 #Build client
 cd /build
 mkdir build-client
