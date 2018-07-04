@@ -245,18 +245,20 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     // draw the message
     // change pen color for the message
     if(!messageText.isEmpty()){
-        painter->setPen(p.color(QPalette::Disabled, QPalette::Text));
+        painter->setPen(p.color(QPalette::Inactive, QPalette::Text));
 
         // check if line is selected
         if (option.state & QStyle::State_Selected)
             painter->setPen(option.palette.color(cg, QPalette::HighlightedText));
 
+
+        qDebug() << "Message text: " << messageText;
         const QString elidedMessage = fm.elidedText(messageText, Qt::ElideRight, spaceLeftForText);
         painter->drawText(messageTextBox, elidedMessage);
     }
 
     // change pen color for the time
-    painter->setPen(p.color(QPalette::Disabled, QPalette::Highlight));
+    painter->setPen(p.color(QPalette::Disabled, QPalette::Text));
 
     // check if line is selected
     if (option.state & QStyle::State_Selected)
