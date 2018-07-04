@@ -248,7 +248,7 @@ private:
     void commitInternal(const QString &context, bool startTrans = true);
     void startTransaction();
     void commitTransaction();
-    QStringList tableColumns(const QString &table);
+    QVector<QByteArray> tableColumns(const QByteArray &table);
     bool checkConnect();
 
     // Same as forceRemoteDiscoveryNextSync but without acquiring the lock
@@ -265,36 +265,35 @@ private:
     int _transaction;
     bool _metadataTableIsEmpty;
 
-    // NOTE! when adding a query, don't forget to reset it in SyncJournalDb::close
-    QScopedPointer<SqlQuery> _getFileRecordQuery;
-    QScopedPointer<SqlQuery> _getFileRecordQueryByMangledName;
-    QScopedPointer<SqlQuery> _getFileRecordQueryByInode;
-    QScopedPointer<SqlQuery> _getFileRecordQueryByFileId;
-    QScopedPointer<SqlQuery> _getFilesBelowPathQuery;
-    QScopedPointer<SqlQuery> _getAllFilesQuery;
-    QScopedPointer<SqlQuery> _setFileRecordQuery;
-    QScopedPointer<SqlQuery> _setFileRecordChecksumQuery;
-    QScopedPointer<SqlQuery> _setFileRecordLocalMetadataQuery;
-    QScopedPointer<SqlQuery> _getDownloadInfoQuery;
-    QScopedPointer<SqlQuery> _setDownloadInfoQuery;
-    QScopedPointer<SqlQuery> _deleteDownloadInfoQuery;
-    QScopedPointer<SqlQuery> _getUploadInfoQuery;
-    QScopedPointer<SqlQuery> _setUploadInfoQuery;
-    QScopedPointer<SqlQuery> _deleteUploadInfoQuery;
-    QScopedPointer<SqlQuery> _deleteFileRecordPhash;
-    QScopedPointer<SqlQuery> _deleteFileRecordRecursively;
-    QScopedPointer<SqlQuery> _getErrorBlacklistQuery;
-    QScopedPointer<SqlQuery> _setErrorBlacklistQuery;
-    QScopedPointer<SqlQuery> _getSelectiveSyncListQuery;
-    QScopedPointer<SqlQuery> _getChecksumTypeIdQuery;
-    QScopedPointer<SqlQuery> _getChecksumTypeQuery;
-    QScopedPointer<SqlQuery> _insertChecksumTypeQuery;
-    QScopedPointer<SqlQuery> _getDataFingerprintQuery;
-    QScopedPointer<SqlQuery> _setDataFingerprintQuery1;
-    QScopedPointer<SqlQuery> _setDataFingerprintQuery2;
-    QScopedPointer<SqlQuery> _getConflictRecordQuery;
-    QScopedPointer<SqlQuery> _setConflictRecordQuery;
-    QScopedPointer<SqlQuery> _deleteConflictRecordQuery;
+    SqlQuery _getFileRecordQuery;
+    SqlQuery _getFileRecordQueryByMangledName;
+    SqlQuery _getFileRecordQueryByInode;
+    SqlQuery _getFileRecordQueryByFileId;
+    SqlQuery _getFilesBelowPathQuery;
+    SqlQuery _getAllFilesQuery;
+    SqlQuery _setFileRecordQuery;
+    SqlQuery _setFileRecordChecksumQuery;
+    SqlQuery _setFileRecordLocalMetadataQuery;
+    SqlQuery _getDownloadInfoQuery;
+    SqlQuery _setDownloadInfoQuery;
+    SqlQuery _deleteDownloadInfoQuery;
+    SqlQuery _getUploadInfoQuery;
+    SqlQuery _setUploadInfoQuery;
+    SqlQuery _deleteUploadInfoQuery;
+    SqlQuery _deleteFileRecordPhash;
+    SqlQuery _deleteFileRecordRecursively;
+    SqlQuery _getErrorBlacklistQuery;
+    SqlQuery _setErrorBlacklistQuery;
+    SqlQuery _getSelectiveSyncListQuery;
+    SqlQuery _getChecksumTypeIdQuery;
+    SqlQuery _getChecksumTypeQuery;
+    SqlQuery _insertChecksumTypeQuery;
+    SqlQuery _getDataFingerprintQuery;
+    SqlQuery _setDataFingerprintQuery1;
+    SqlQuery _setDataFingerprintQuery2;
+    SqlQuery _getConflictRecordQuery;
+    SqlQuery _setConflictRecordQuery;
+    SqlQuery _deleteConflictRecordQuery;
 
     /* This is the list of paths we called avoidReadFromDbOnNextSync on.
      * It means that they should not be written to the DB in any case since doing
@@ -309,7 +308,7 @@ private:
      * Typically WAL initially, but may be set to other modes via environment
      * variable, for specific filesystems, or when WAL fails in a particular way.
      */
-    QString _journalMode;
+    QByteArray _journalMode;
 };
 
 bool OCSYNC_EXPORT
