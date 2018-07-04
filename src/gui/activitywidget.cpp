@@ -118,6 +118,7 @@ void ActivityWidget::slotProgressInfo(const QString &folder, const ProgressInfo 
 
 void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item){
     auto folderInstance = FolderMan::instance()->folder(folder);
+
     if (!folderInstance)
         return;
 
@@ -127,16 +128,18 @@ void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItem
         activity._type = Activity::ErrorType;
         activity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
         activity._subject = item->_errorString;
-        qDebug() << "TOTAL " << folder;
         activity._message = item->_originalFile;
-        activity._link = folderInstance->remotePath();
+        // TODO: use the full path to the file
+        activity._link = folderInstance->accountState()->account()->url();
         activity._status = item->_status;
         activity._accName = folderInstance->accountState()->account()->displayName();
         activity._file = item->_file;
 
         ActivityLink al;
+        QFileInfo file(item->_file);
         al._label = tr("Open Folder");
-        al._link = folderInstance->path();
+        al._link = QString("%1/%2").arg(folderInstance->cleanPath(), file.path());
+        qDebug() << "FULLPATH:" << al._link;
         al._verb = "";
         al._isPrimary = true;
         activity._links.append(al);
@@ -179,6 +182,7 @@ void ActivityWidget::addError(const QString &folderAlias, const QString &message
 
 void ActivityWidget::slotPrimaryButtonClickedOnListView(const QModelIndex &index){
     QUrl link = qvariant_cast<QString>(index.data(ActivityItemDelegate::LinkRole));
+    qDebug() << "Tyring to open link: " << link;
     if(!link.isEmpty())
         Utility::openBrowser(link, this);
 }
@@ -209,11 +213,11 @@ void ActivityWidget::slotSecondaryButtonClickedOnListView(const QModelIndex &ind
     }
 
     if(qvariant_cast<Activity::Type>(index.data(ActivityItemDelegate::ActionRole)) == Activity::Type::ErrorType){
-        QString fileName = index.data(ActivityItemDelegate::PathRole).toString();
-        if (Folder *folder = FolderMan::instance()->folderForPath(actionLinks.first()._link)) {
-            QString fullPath = folder->path() + fileName;
-            if (QFile(fullPath).exists()) {
-                showInFileManager(fullPath);
+       QString fileName = index.data(ActivityItemDelegate::PathRole).toString();
+        // check if this is actually a folder
+        if (FolderMan::instance()->folderForPath(actionLinks.first()._link)) {
+            if (QFile(actionLinks.first()._link).exists()) {
+                showInFileManager(actionLinks.first()._link);
             }
         }
     }
@@ -354,7 +358,7 @@ void ActivityWidget::slotOpenFile(QModelIndex indx)
     qCDebug(lcActivity) << indx.isValid() << indx.data(ActivityItemDelegate::PathRole).toString() << QFile::exists(indx.data(ActivityItemDelegate::PathRole).toString());
     if (indx.isValid()) {
         QString fullPath = indx.data(ActivityItemDelegate::PathRole).toString();
-
+        // TO DO: use full path to file
         if (QFile::exists(fullPath)) {
             showInFileManager(fullPath);
         }
