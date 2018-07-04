@@ -194,6 +194,10 @@ static int _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) {
                     if( !cur->file_id.isEmpty() ) {
                         other->file_id = cur->file_id;
                     }
+                    if (ctx->current == LOCAL_REPLICA) {
+                        // Keep the local mtime.
+                        other->modtime = cur->modtime;
+                    }
                     other->inode = cur->inode;
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                     // We have consumed 'other': exit this loop to not consume another one.

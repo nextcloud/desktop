@@ -576,6 +576,51 @@ private slots:
             //QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         }
     }
+
+    // https://github.com/owncloud/client/issues/6629#issuecomment-402450691
+    // When a file is moved and the server mtime was not in sync, the local mtime should be kept
+    void testMoveAndMTimeChange()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        int nPUT = 0;
+        int nDELETE = 0;
+        int nGET = 0;
+        int nMOVE = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &req) {
+            if (op == QNetworkAccessManager::PutOperation)
+                ++nPUT;
+            if (op == QNetworkAccessManager::DeleteOperation)
+                ++nDELETE;
+            if (op == QNetworkAccessManager::GetOperation)
+                ++nGET;
+            if (req.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE")
+                ++nMOVE;
+            return nullptr;
+        });
+
+        // Changing the mtime on the server (without invalidating the etag)
+        fakeFolder.remoteModifier().find("A/a1")->lastModified = QDateTime::currentDateTimeUtc().addSecs(-50000);
+        fakeFolder.remoteModifier().find("A/a2")->lastModified = QDateTime::currentDateTimeUtc().addSecs(-40000);
+
+        // Move a few files
+        fakeFolder.remoteModifier().rename("A/a1", "A/a1_server_renamed");
+        fakeFolder.localModifier().rename("A/a2", "A/a2_local_renamed");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 0);
+        QCOMPARE(nPUT, 0);
+        QCOMPARE(nMOVE, 1);
+        QCOMPARE(nDELETE, 0);
+
+        // Another sync should do nothing
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 0);
+        QCOMPARE(nPUT, 0);
+        QCOMPARE(nMOVE, 1);
+        QCOMPARE(nDELETE, 0);
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncMove)
