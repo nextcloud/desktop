@@ -32,10 +32,13 @@ make -j4
 make DESTDIR=/app install 
 
 # libcloudproviders
+meson --version
+ninja --version
 cd /build
 git clone https://gitlab.gnome.org/World/libcloudproviders.git
 cd libcloudproviders
 git checkout 0.2.5
+mkdir build
 meson build
 cd build
 ninja all
