@@ -120,6 +120,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return a._message;
         break;
     case ActivityItemDelegate::LinkRole:
+        qDebug() << "Link Role!" << a._link;
         return a._link;
         break;
     case ActivityItemDelegate::AccountRole:
