@@ -5,6 +5,8 @@ set -xe
 mkdir /app
 mkdir /build
 
+apt-get update && apt-get install -y ninja-build meson
+
 #Set Qt-5.11
 export QT_BASE_DIR=/opt/qt511
 export QTDIR=$QT_BASE_DIR
