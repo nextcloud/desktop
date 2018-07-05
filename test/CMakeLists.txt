@@ -43,7 +43,6 @@ nextcloud_add_test(ChecksumValidator "")
 nextcloud_add_test(ClientSideEncryption "")
 nextcloud_add_test(ExcludedFiles "")
 
-nextcloud_add_test(FileSystem "")
 nextcloud_add_test(Utility "")
 nextcloud_add_test(SyncEngine "syncenginetestutils.h")
 nextcloud_add_test(SyncVirtualFiles "syncenginetestutils.h")
