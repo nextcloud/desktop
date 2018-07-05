@@ -19,6 +19,7 @@
 #pragma once
 
 #include "ocsynclib.h"
+#include "config.h"
 
 #include <QObject>
 #include <QByteArray>
@@ -61,6 +62,12 @@ OCSYNC_EXPORT bool uploadChecksumEnabled();
 /// Checks OWNCLOUD_CONTENT_CHECKSUM_TYPE (default: SHA1)
 OCSYNC_EXPORT QByteArray contentChecksumType();
 
+// Exported functions for the tests.
+QByteArray OCSYNC_EXPORT calcMd5(const QString &fileName);
+QByteArray OCSYNC_EXPORT calcSha1(const QString &fileName);
+#ifdef ZLIB_FOUND
+QByteArray OCSYNC_EXPORT calcAdler32(const QString &fileName);
+#endif
 
 /**
  * Computes the checksum of a file.
