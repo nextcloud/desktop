@@ -136,10 +136,8 @@ void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItem
         activity._file = item->_file;
 
         ActivityLink al;
-        QFileInfo file(item->_file);
         al._label = tr("Open Folder");
-        al._link = QString("%1/%2").arg(folderInstance->cleanPath(), file.path());
-        qDebug() << "FULLPATH:" << al._link;
+        al._link = QString("%1/%2").arg(folderInstance->cleanPath(), item->_file);
         al._verb = "";
         al._isPrimary = true;
         activity._links.append(al);
@@ -567,13 +565,13 @@ ActivitySettings::ActivitySettings(AccountState *accountState, QWidget *parent)
     connect(_activityWidget, &ActivityWidget::rowsInserted, _progressIndicator, &QProgressIndicator::stopAnimation);
     connect(_activityWidget, &ActivityWidget::rowsInserted, this, &ActivitySettings::slotDisplayActivities);
 
-    _protocolWidget = new ProtocolWidget(this);
-    _vbox->addWidget(_protocolWidget);
+    //_protocolWidget = new ProtocolWidget(this);
+    //_vbox->addWidget(_protocolWidget);
 //    _protocolTabId = _tab->addTab(_protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
 //    connect(_protocolWidget, &ProtocolWidget::copyToClipboard, this, &ActivitySettings::slotCopyToClipboard);
 
-    _issuesWidget = new IssuesWidget(this);
-    _vbox->addWidget(_issuesWidget);
+//    _issuesWidget = new IssuesWidget(this);
+//    _vbox->addWidget(_issuesWidget);
 //    _syncIssueTabId = _tab->addTab(_issuesWidget, Theme::instance()->syncStateIcon(SyncResult::Problem), QString());
 //    slotShowIssueItemCount(0); // to display the label.
 //    connect(_issuesWidget, &IssuesWidget::issueCountUpdated,

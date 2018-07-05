@@ -192,14 +192,6 @@ void SettingsDialog::showActivityPage()
     }
 }
 
-//void SettingsDialog::showIssuesList(const QString &folderAlias)
-//{
-//    if (!_activityAction)
-//        return;
-//    _activityAction->trigger();
-//    _activitySettings->slotShowIssuesTab(folderAlias);
-//}
-
 void SettingsDialog::activityAdded(AccountState *s){
     _ui->stack->addWidget(_activitySettings[s]);
     connect(_activitySettings[s], &ActivitySettings::guiLog, _gui,
@@ -255,12 +247,11 @@ void SettingsDialog::accountAdded(AccountState *s)
     connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotFoldersChanged);
     connect(accountSettings, &AccountSettings::openFolderAlias,
         _gui, &ownCloudGui::slotFolderOpenAction);
-    //connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
     connect(s->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
     connect(s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
 
-    // Refresh immediatly when getting online
-    //connect(s, &AccountState::isConnectedChanged, this, &SettingsDialog::slotRefreshActivityAccountStateSender);
+    // Refresh immediatly when getting online (?)
+    connect(s, &AccountState::isConnectedChanged, this, &SettingsDialog::slotRefreshActivityAccountStateSender);
 
     //slotRefreshActivity(s);
 
