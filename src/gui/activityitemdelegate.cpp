@@ -133,7 +133,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         // Secondary will be 'Dismiss' or '...'
         secondaryButton.rect = option.rect;
-        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/close.svg"));
+        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/dialog-close.png"));
         if(customList.size() > 1)
             secondaryButton.icon = QIcon(QLatin1String(":/client/resources/more.png"));
 
@@ -144,7 +144,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         secondaryButton.rect.setRight(right);
         secondaryButton.rect.setTop(top);
         secondaryButton.rect.setHeight(_buttonHeight);
-        secondaryButton.features |= QStyleOptionButton::DefaultButton;
+        secondaryButton.features |= QStyleOptionButton::Flat;
         secondaryButton.state |= QStyle::State_Raised;
 
         // Primary button will be 'More Information'
@@ -172,7 +172,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         // Secondary will be 'Dismiss' or '...'
         secondaryButton.rect = option.rect;
-        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/files.svg"));
+        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/folder-grey.png"));
 
         int right = option.rect.right() - rightMargin;
         int left = right - buttonSize;
@@ -181,7 +181,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         secondaryButton.rect.setRight(right);
         secondaryButton.rect.setTop(top);
         secondaryButton.rect.setHeight(_buttonHeight);
-        secondaryButton.features |= QStyleOptionButton::DefaultButton;
+        secondaryButton.features |= QStyleOptionButton::Flat;
         secondaryButton.state |= QStyle::State_Raised;
 
         // Primary button will be 'More Information'
