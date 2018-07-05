@@ -14,6 +14,7 @@ version 2.4.2 (2018-06-xx)
 * macdeployqt: Adjust minimum version based on our Qt (#5932)
 * macOS: Unload the Finder extension on exit (#5382, #3819)
 * Upload: Adjust timeout for final job based on file size (#6527)
+* Sync: When detecting a local move, keep the local mtime (#6629)
 * Credentials: Retry fetching from the keychain in case the keychain is still starting (#4274, #6522)
 * OAuth2: Try to refresh the token even if the credentials weren't ready (#6522)
 
