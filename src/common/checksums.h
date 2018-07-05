@@ -33,6 +33,8 @@ namespace OCC {
  */
 static const char checkSumMD5C[] = "MD5";
 static const char checkSumSHA1C[] = "SHA1";
+static const char checkSumSHA2C[] = "SHA256";
+static const char checkSumSHA3C[] = "SHA3-256";
 static const char checkSumAdlerC[] = "Adler32";
 
 class SyncJournalDb;
