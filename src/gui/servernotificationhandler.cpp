@@ -80,7 +80,6 @@ void ServerNotificationHandler::slotIconDownloaded(QByteArray iconData){
     QPixmap pixmap;
     pixmap.loadFromData(iconData);
     iconCache.insert(sender()->property("activityId").toInt(), QIcon(pixmap));
-    qDebug() << "Icon cached for activity " << sender()->property("activityId").toInt();
 }
 
 void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &json, int statusCode)
