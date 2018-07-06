@@ -39,7 +39,7 @@
 #include "ocsjob.h"
 #include "configfile.h"
 #include "guiutility.h"
-
+#include "socketapi.h"
 #include "ui_activitywidget.h"
 
 #include <climits>
@@ -130,6 +130,7 @@ void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItem
         activity._subject = item->_errorString;
         activity._message = item->_originalFile;
         // TODO: use the full path to the file
+        // folderInstance->accountState()->account()->deprecatedPrivateLinkUrl(item->_fileId).toString();
         activity._link = folderInstance->accountState()->account()->url();
         activity._status = item->_status;
         activity._accName = folderInstance->accountState()->account()->displayName();
@@ -211,7 +212,6 @@ void ActivityWidget::slotSecondaryButtonClickedOnListView(const QModelIndex &ind
     }
 
     if(qvariant_cast<Activity::Type>(index.data(ActivityItemDelegate::ActionRole)) == Activity::Type::ErrorType){
-       QString fileName = index.data(ActivityItemDelegate::PathRole).toString();
         // check if this is actually a folder
         if (FolderMan::instance()->folderForPath(actionLinks.first()._link)) {
             if (QFile(actionLinks.first()._link).exists()) {
