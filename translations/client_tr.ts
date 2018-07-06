@@ -2656,12 +2656,12 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="35"/>
         <source>Enter a name to create a new public link...</source>
-        <translation>Yeni herkese açık bağlantı için bir ad yazın...</translation>
+        <translation>Eklenecek herkese açık bağlantının adını yazın...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="42"/>
         <source>&amp;Create new</source>
-        <translation>&amp;Yeni ekle</translation>
+        <translation>&amp;Ekle</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="105"/>
