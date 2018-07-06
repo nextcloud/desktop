@@ -120,7 +120,6 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return a._message;
         break;
     case ActivityItemDelegate::LinkRole:
-        qDebug() << "Link Role!" << a._link;
         return a._link;
         break;
     case ActivityItemDelegate::AccountRole:
@@ -151,14 +150,11 @@ bool ActivityListModel::canFetchMore(const QModelIndex &) const
     if (_activityLists.count() == 0)
         return true;
 
-    //for (auto i = _activityLists.begin(); i != _activityLists.end(); ++i) {
-    //foreach(Activity activity, _activityLists){
-        if (_accountState && _accountState->isConnected()) {
-            if (_activityLists.count() == 0 && !_currentlyFetching) {
-                return true;
-            }
+    if (_accountState && _accountState->isConnected()) {
+        if (_activityLists.count() == 0 && !_currentlyFetching) {
+            return true;
         }
-    //}
+    }
 
     return false;
 }
