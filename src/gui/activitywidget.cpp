@@ -29,8 +29,6 @@
 #include "accountstate.h"
 #include "accountmanager.h"
 #include "activityitemdelegate.h"
-#include "protocolwidget.h"
-#include "issueswidget.h"
 #include "QProgressIndicator.h"
 #include "notificationwidget.h"
 #include "notificationconfirmjob.h"
@@ -39,7 +37,7 @@
 #include "ocsjob.h"
 #include "configfile.h"
 #include "guiutility.h"
-
+#include "socketapi.h"
 #include "ui_activitywidget.h"
 
 #include <climits>
@@ -109,6 +107,7 @@ ActivityWidget::~ActivityWidget()
     delete _ui;
 }
 
+// TODO
 void ActivityWidget::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
 {
     if (progress.status() == ProgressInfo::Starting) {
@@ -123,14 +122,20 @@ void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItem
     if (!folderInstance)
         return;
 
-    // check if we are adding it to the right account and if it is useful information (error)
+    // check if we are adding it to the right account and if it is useful information (protocol errors)
     if(folderInstance->accountState() == _accountState){
+        QString pathToFile = QString("%1/%2").arg(folderInstance->cleanPath(), item->_file);
+        qCWarning(lcActivity) << "Item " << pathToFile << " retrieved resulted in " << item->_errorString;
+
         Activity activity;
         activity._type = Activity::ErrorType;
         activity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
         activity._subject = item->_errorString;
         activity._message = item->_originalFile;
-        // TODO: use the full path to the file
+
+        // TODO: maybe use the full path to access the file in the browser
+        // folderInstance->accountState()->account()->deprecatedPrivateLinkUrl(item->_fileId).toString();
+
         activity._link = folderInstance->accountState()->account()->url();
         activity._status = item->_status;
         activity._accName = folderInstance->accountState()->account()->displayName();
@@ -143,8 +148,8 @@ void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItem
         al._isPrimary = true;
         activity._links.append(al);
 
+        // add 'protocol error' to activity list
         _model->addErrorToActivityList(activity);
-        // add error widget
     }
 }
 
@@ -156,6 +161,8 @@ void ActivityWidget::addError(const QString &folderAlias, const QString &message
         return;
 
     if(folderInstance->accountState() == _accountState){
+        qCWarning(lcActivity) << "Item " << folderInstance->shortGuiLocalPath() << " retrieved resulted in " << message;
+
         Activity activity;
         activity._type = Activity::ErrorType;
         activity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
@@ -174,6 +181,7 @@ void ActivityWidget::addError(const QString &folderAlias, const QString &message
             activity._links.append(link);
         }
 
+        // add 'other errors' to activity list
         _model->addErrorToActivityList(activity);
     }
 }
@@ -181,9 +189,10 @@ void ActivityWidget::addError(const QString &folderAlias, const QString &message
 
 void ActivityWidget::slotPrimaryButtonClickedOnListView(const QModelIndex &index){
     QUrl link = qvariant_cast<QString>(index.data(ActivityItemDelegate::LinkRole));
-    qDebug() << "Tyring to open link: " << link;
-    if(!link.isEmpty())
+    if(!link.isEmpty()){
+        qCWarning(lcActivity) << "Opening" << link.toString() <<  "in browser for Notification/Activity" << qvariant_cast<QString>(index.data(ActivityItemDelegate::ActionTextRole));
         Utility::openBrowser(link, this);
+     }
 }
 
 void ActivityWidget::slotSecondaryButtonClickedOnListView(const QModelIndex &index){
@@ -196,10 +205,13 @@ void ActivityWidget::slotSecondaryButtonClickedOnListView(const QModelIndex &ind
     if(qvariant_cast<Activity::Type>(index.data(ActivityItemDelegate::ActionRole)) == Activity::Type::NotificationType){
         const QString accountName = index.data(ActivityItemDelegate::AccountRole).toString();
         if(actionLinks.size() == 1){
-            if(actionLinks.at(0)._verb == "DELETE")
+            if(actionLinks.at(0)._verb == "DELETE"){
+                qCWarning(lcActivity) << "Dismissing Notification/Activity" << qvariant_cast<QString>(index.data(ActivityItemDelegate::ActionTextRole));
                 slotSendNotificationRequest(index.data(ActivityItemDelegate::AccountRole).toString(), actionLinks.at(0)._link, actionLinks.at(0)._verb, index.row());
+            }
         } else if(actionLinks.size() > 1){
             QMenu menu;
+            qCWarning(lcActivity) << "Displaying menu for Notification/Activity" << qvariant_cast<QString>(index.data(ActivityItemDelegate::ActionTextRole));
             foreach (ActivityLink actionLink, actionLinks) {
                 QAction *menuAction = new QAction(actionLink._label, &menu);
                 connect(menuAction, &QAction::triggered, this, [this, index, accountName, actionLink] {
@@ -212,10 +224,10 @@ void ActivityWidget::slotSecondaryButtonClickedOnListView(const QModelIndex &ind
     }
 
     if(qvariant_cast<Activity::Type>(index.data(ActivityItemDelegate::ActionRole)) == Activity::Type::ErrorType){
-       QString fileName = index.data(ActivityItemDelegate::PathRole).toString();
-        // check if this is actually a folder
+        // check if this is actually a folder that we can open
         if (FolderMan::instance()->folderForPath(actionLinks.first()._link)) {
             if (QFile(actionLinks.first()._link).exists()) {
+                qCWarning(lcActivity) << "Opening path" << actionLinks.first()._link << "in the file manager for Notification/Activity" << qvariant_cast<QString>(index.data(ActivityItemDelegate::ActionTextRole));
                 showInFileManager(actionLinks.first()._link);
             }
         }
@@ -231,8 +243,8 @@ void ActivityWidget::slotNotificationRequestFinished(int statusCode)
         qCWarning(lcActivity) << "Notification Request to Server failed, leave notification visible.";
     } else {
        // to do use the model to rebuild the list or remove the item
-        qDebug() << "Notification to be removed from row" << row;
-        _model->removeFromActivityList(row);
+        qCWarning(lcActivity) << "Notification Request to Server successed, rebuilding list.";
+       _model->removeFromActivityList(row);
     }
 }
 
@@ -358,7 +370,7 @@ void ActivityWidget::slotOpenFile(QModelIndex indx)
     qCDebug(lcActivity) << indx.isValid() << indx.data(ActivityItemDelegate::PathRole).toString() << QFile::exists(indx.data(ActivityItemDelegate::PathRole).toString());
     if (indx.isValid()) {
         QString fullPath = indx.data(ActivityItemDelegate::PathRole).toString();
-        // TO DO: use full path to file
+        // TODO: use full path to file
         if (QFile::exists(fullPath)) {
             showInFileManager(fullPath);
         }
@@ -422,7 +434,6 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
 void ActivityWidget::slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row)
 {
     qCInfo(lcActivity) << "Server Notification Request " << verb << link << "on account" << accountName;
-    NotificationWidget *theSender = qobject_cast<NotificationWidget *>(sender());
 
     const QStringList validVerbs = QStringList() << "GET"
                                                  << "PUT"
@@ -436,8 +447,6 @@ void ActivityWidget::slotSendNotificationRequest(const QString &accountName, con
             QUrl l(link);
             job->setLinkAndVerb(l, verb);
             job->setProperty("activityRow", QVariant::fromValue(row));
-            // save the activity to be hidden or the QModelIndex
-            //job->setProperty();
             connect(job, &AbstractNetworkJob::networkError,
                 this, &ActivityWidget::slotNotifyNetworkError);
             connect(job, &NotificationConfirmJob::jobFinished,
@@ -566,20 +575,6 @@ ActivitySettings::ActivitySettings(AccountState *accountState, QWidget *parent)
     // connect a model signal to stop the animation
     connect(_activityWidget, &ActivityWidget::rowsInserted, _progressIndicator, &QProgressIndicator::stopAnimation);
     connect(_activityWidget, &ActivityWidget::rowsInserted, this, &ActivitySettings::slotDisplayActivities);
-
-    //_protocolWidget = new ProtocolWidget(this);
-    //_vbox->addWidget(_protocolWidget);
-//    _protocolTabId = _tab->addTab(_protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
-//    connect(_protocolWidget, &ProtocolWidget::copyToClipboard, this, &ActivitySettings::slotCopyToClipboard);
-
-//    _issuesWidget = new IssuesWidget(this);
-//    _vbox->addWidget(_issuesWidget);
-//    _syncIssueTabId = _tab->addTab(_issuesWidget, Theme::instance()->syncStateIcon(SyncResult::Problem), QString());
-//    slotShowIssueItemCount(0); // to display the label.
-//    connect(_issuesWidget, &IssuesWidget::issueCountUpdated,
-//        this, &ActivitySettings::slotShowIssueItemCount);
-//    connect(_issuesWidget, &IssuesWidget::copyToClipboard,
-//        this, &ActivitySettings::slotCopyToClipboard);
 }
 
 void ActivitySettings::slotDisplayActivities(){
@@ -599,26 +594,15 @@ void ActivitySettings::slotShowIssueItemCount(int cnt)
         //: %1 is the number of not synced files.
         cntText = tr("Not Synced (%1)").arg(cnt);
     }
-    //_tab->setTabText(_syncIssueTabId, cntText);
 }
 
+// TODO
 void ActivitySettings::slotCopyToClipboard()
 {
     QString text;
     QTextStream ts(&text);
 
-    //int idx = _tab->currentIndex();
     QString message;
-
-//    if (idx == _protocolTabId) {
-//        // the protocol widget
-//        //_protocolWidget->storeSyncActivity(ts);
-//        message = tr("The sync activity list has been copied to the clipboard.");
-//    } else if (idx == _syncIssueTabId) {
-//        // issues Widget
-//        message = tr("The list of unsynced items has been copied to the clipboard.");
-//        //_issuesWidget->storeSyncIssues(ts);
-//    }
 
     QApplication::clipboard()->setText(text);
 

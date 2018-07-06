@@ -28,12 +28,8 @@ IconJob::IconJob(const QUrl &url, QObject *parent) :
 
 void IconJob::finished(QNetworkReply *reply)
 {
-    if (reply->error() != QNetworkReply::NoError) {
-        qDebug() << reply->url() << " - " << reply->errorString();
+    if (reply->error() != QNetworkReply::NoError)
         return;
-    }
-
-    qDebug() << "Icon job finished for " << reply->url();
 
     reply->deleteLater();
     emit jobFinished(reply->readAll());

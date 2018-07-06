@@ -25,7 +25,6 @@
 #include "owncloudgui.h"
 #include "activitywidget.h"
 #include "accountmanager.h"
-#include "protocolwidget.h"
 
 #include <QLabel>
 #include <QStandardItemModel>
@@ -400,8 +399,6 @@ public:
         btn->setDefaultAction(this);
         btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-        //         btn->setMinimumWidth(qMax<int>(parent->sizeHint().height() * buttonSizeRatio,
-        //                                        btn->sizeHint().width()));
         return btn;
     }
 };
@@ -430,10 +427,8 @@ void SettingsDialog::slotRefreshActivityAccountStateSender()
 
 void SettingsDialog::slotRefreshActivity(AccountState *accountState)
 {
-    if (accountState->isConnected()) {
-        qDebug() << "!! Fetching activities and notifications for" << accountState->account()->displayName();
+    if (accountState->isConnected())
         _activitySettings[accountState]->slotRefresh();
-    }
 }
 
 } // namespace OCC
