@@ -251,8 +251,6 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         if (option.state & QStyle::State_Selected)
             painter->setPen(option.palette.color(cg, QPalette::HighlightedText));
 
-
-        qDebug() << "Message text: " << messageText;
         const QString elidedMessage = fm.elidedText(messageText, Qt::ElideRight, spaceLeftForText);
         painter->drawText(messageTextBox, elidedMessage);
     }

@@ -108,6 +108,7 @@ ActivityWidget::~ActivityWidget()
     delete _ui;
 }
 
+// TODO
 void ActivityWidget::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
 {
     if (progress.status() == ProgressInfo::Starting) {
@@ -143,8 +144,9 @@ void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItem
         al._isPrimary = true;
         activity._links.append(al);
 
+        // add to widget
         _model->addErrorToActivityList(activity);
-        // add error widget
+
     }
 }
 
@@ -181,7 +183,6 @@ void ActivityWidget::addError(const QString &folderAlias, const QString &message
 
 void ActivityWidget::slotPrimaryButtonClickedOnListView(const QModelIndex &index){
     QUrl link = qvariant_cast<QString>(index.data(ActivityItemDelegate::LinkRole));
-    qDebug() << "Tyring to open link: " << link;
     if(!link.isEmpty())
         Utility::openBrowser(link, this);
 }
@@ -230,7 +231,6 @@ void ActivityWidget::slotNotificationRequestFinished(int statusCode)
         qCWarning(lcActivity) << "Notification Request to Server failed, leave notification visible.";
     } else {
        // to do use the model to rebuild the list or remove the item
-        qDebug() << "Notification to be removed from row" << row;
         _model->removeFromActivityList(row);
     }
 }
@@ -564,20 +564,6 @@ ActivitySettings::ActivitySettings(AccountState *accountState, QWidget *parent)
     // connect a model signal to stop the animation
     connect(_activityWidget, &ActivityWidget::rowsInserted, _progressIndicator, &QProgressIndicator::stopAnimation);
     connect(_activityWidget, &ActivityWidget::rowsInserted, this, &ActivitySettings::slotDisplayActivities);
-
-    //_protocolWidget = new ProtocolWidget(this);
-    //_vbox->addWidget(_protocolWidget);
-//    _protocolTabId = _tab->addTab(_protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
-//    connect(_protocolWidget, &ProtocolWidget::copyToClipboard, this, &ActivitySettings::slotCopyToClipboard);
-
-//    _issuesWidget = new IssuesWidget(this);
-//    _vbox->addWidget(_issuesWidget);
-//    _syncIssueTabId = _tab->addTab(_issuesWidget, Theme::instance()->syncStateIcon(SyncResult::Problem), QString());
-//    slotShowIssueItemCount(0); // to display the label.
-//    connect(_issuesWidget, &IssuesWidget::issueCountUpdated,
-//        this, &ActivitySettings::slotShowIssueItemCount);
-//    connect(_issuesWidget, &IssuesWidget::copyToClipboard,
-//        this, &ActivitySettings::slotCopyToClipboard);
 }
 
 void ActivitySettings::slotDisplayActivities(){
@@ -597,26 +583,15 @@ void ActivitySettings::slotShowIssueItemCount(int cnt)
         //: %1 is the number of not synced files.
         cntText = tr("Not Synced (%1)").arg(cnt);
     }
-    //_tab->setTabText(_syncIssueTabId, cntText);
 }
 
+// TODO
 void ActivitySettings::slotCopyToClipboard()
 {
     QString text;
     QTextStream ts(&text);
 
-    //int idx = _tab->currentIndex();
     QString message;
-
-//    if (idx == _protocolTabId) {
-//        // the protocol widget
-//        //_protocolWidget->storeSyncActivity(ts);
-//        message = tr("The sync activity list has been copied to the clipboard.");
-//    } else if (idx == _syncIssueTabId) {
-//        // issues Widget
-//        message = tr("The list of unsynced items has been copied to the clipboard.");
-//        //_issuesWidget->storeSyncIssues(ts);
-//    }
 
     QApplication::clipboard()->setText(text);
 
