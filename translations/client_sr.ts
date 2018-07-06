@@ -88,7 +88,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="390"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Сервер је одговорио &quot;%1 %2&quot; на &quot;%3 %4&quot;</translation>
     </message>
 </context>
 <context>
