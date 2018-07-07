@@ -16,8 +16,6 @@
 #ifndef SyncLogDialog_H
 #define SyncLogDialog_H
 
-#include "protocolwidget.h"
-
 #include <QDialog>
 
 namespace OCC {

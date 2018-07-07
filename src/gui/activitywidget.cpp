@@ -29,8 +29,6 @@
 #include "accountstate.h"
 #include "accountmanager.h"
 #include "activityitemdelegate.h"
-#include "protocolwidget.h"
-#include "issueswidget.h"
 #include "QProgressIndicator.h"
 #include "notificationwidget.h"
 #include "notificationconfirmjob.h"
@@ -144,7 +142,7 @@ void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItem
 
         ActivityLink al;
         al._label = tr("Open Folder");
-        al._link = ;
+        al._link = QString("%1/%2").arg(folderInstance->cleanPath(), item->_file);
         al._verb = "";
         al._isPrimary = true;
         activity._links.append(al);
