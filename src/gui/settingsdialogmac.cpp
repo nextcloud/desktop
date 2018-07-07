@@ -71,7 +71,6 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     // dialog from minimize is broken in MacPreferencesWindow
     setWindowFlags(Qt::Window | Qt::WindowTitleHint | Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint | Qt::WindowMaximizeButtonHint);
 
-
     // Emulate dialog behavior: Escape means close
     QAction *closeDialogAction = new QAction(this);
     closeDialogAction->setShortcut(QKeySequence(Qt::Key_Escape));
@@ -97,9 +96,13 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &SettingsDialogMac::accountRemoved);
 
+    _actionsIdx = -1;
     foreach (auto ai, AccountManager::instance()->accounts()) {
         accountAdded(ai.data());
     }
+
+    _actionBefore = new QAction;
+    addAction(_actionBefore);
 
     QIcon generalIcon = MacStandardIcon::icon(MacStandardIcon::PreferencesGeneral);
     GeneralSettings *generalSettings = new GeneralSettings;
@@ -131,41 +134,42 @@ void SettingsDialogMac::showActivityPage()
     setCurrentPanelIndex(preferencePanelCount() - 1 - 2);
 }
 
-void SettingsDialogMac::showIssuesList(const QString &folderAlias)
-{
-    // Count backwards (0-based) from the last panel (multiple accounts can be on the left)
-    setCurrentPanelIndex(preferencePanelCount() - 1 - 2);
-    //_activitySettings->slotShowIssuesTab(folderAlias);
-}
-
-
 void SettingsDialogMac::accountAdded(AccountState *s)
 {
-    QIcon activityIcon(QLatin1String(":/client/resources/activity.png"));
-    _activitySettings[s] = new ActivitySettings(s, this);
-    addPreferencesPanel(activityIcon, tr("Activity"), _activitySettings[s]);
-    connect(_activitySettings[s], SIGNAL(guiLog(QString, QString)), _gui,
-        SLOT(slotShowOptionalTrayMessage(QString, QString)));
-
-    ConfigFile cfg;
-    _activitySettings[s]->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
-
     QIcon accountIcon = MacStandardIcon::icon(MacStandardIcon::UserAccounts);
     auto accountSettings = new AccountSettings(s, this);
-
     QString displayName = Theme::instance()->multiAccount() ? SettingsDialogCommon::shortDisplayNameForSettings(s->account().data(), 0) : tr("Account");
 
-    insertPreferencesPanel(0, accountIcon, displayName, accountSettings);
+    // if this is not the first account, then before we continue to add more accounts we add a separator
+    if(AccountManager::instance()->accounts().first().data() != s &&
+        AccountManager::instance()->accounts().size() >= 1){
+        // in front of the action before
+        ++_actionsIdx;
+        _separators.insert(_actionsIdx, insertSeparator(_actionsIdx));
+    }
+
+    // this adds the panel - nothing to add here just to fix the order
+    insertPreferencesPanel(++_actionsIdx, accountIcon, displayName, accountSettings);
 
     connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotFoldersChanged);
     connect(accountSettings, &AccountSettings::openFolderAlias, _gui, &ownCloudGui::slotFolderOpenAction);
-    connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialogMac::showIssuesList);
 
     connect(s->account().data(), &Account::accountChangedAvatar, this, &SettingsDialogMac::slotAccountAvatarChanged);
     connect(s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialogMac::slotAccountDisplayNameChanged);
 
     // Refresh immediatly when getting online
     connect(s, &AccountState::isConnectedChanged, this, &SettingsDialogMac::slotRefreshActivityAccountStateSender);
+
+    // Add activity panel
+    QIcon activityIcon(QLatin1String(":/client/resources/activity.png"));
+    _activitySettings[s] = new ActivitySettings(s, this);
+    insertPreferencesPanel(++_actionsIdx, activityIcon, tr("Activity"), _activitySettings[s]);
+
+    connect(_activitySettings[s], SIGNAL(guiLog(QString, QString)), _gui,
+        SLOT(slotShowOptionalTrayMessage(QString, QString)));
+
+    ConfigFile cfg;
+    _activitySettings[s]->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
 
     slotRefreshActivity(s);
 }
@@ -176,10 +180,22 @@ void SettingsDialogMac::accountRemoved(AccountState *s)
     foreach (auto p, list) {
         if (p->accountsState() == s) {
             removePreferencesPanel(p);
+            int idx = indexForPanel(_activitySettings[s]);
+            removePreferencesPanel(_activitySettings[s]);
+            _activitySettings[s]->slotRemoveAccount();
+            _activitySettings.remove(s);
+
+            // remove separator if there is any
+            ++idx;
+            if(idx < _separators.size()){
+              if(_separators.at(idx) != nullptr){
+                _separators.at(idx)->setVisible(false);
+                removeSeparator(_separators.at(idx));
+                //_separators.removeAt(idx++);
+               }
+            }
         }
     }
-
-    _activitySettings[s]->slotRemoveAccount();
 }
 
 void SettingsDialogMac::slotRefreshActivityAccountStateSender()
@@ -228,3 +244,4 @@ void SettingsDialogMac::slotAccountDisplayNameChanged()
 }
 
 }
+

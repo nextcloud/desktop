@@ -46,7 +46,6 @@ public:
 
 public slots:
     void showActivityPage();
-    void showIssuesList(const QString &folderAlias);
     void slotRefreshActivity(AccountState *accountState);
     void slotRefreshActivityAccountStateSender();
 
@@ -59,6 +58,10 @@ private slots:
 private:
     void closeEvent(QCloseEvent *event);
 
+    QAction *_actionBefore;
+    int _actionsIdx;
+    QList<QAction*> _separators;
+
     QMap<AccountState *, ActivitySettings *> _activitySettings;
     ownCloudGui *_gui;
 
@@ -67,3 +70,4 @@ private:
 }
 
 #endif // SETTINGSDIALOGMAC_H
+;
