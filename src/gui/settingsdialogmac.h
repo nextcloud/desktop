@@ -26,7 +26,6 @@ class QListWidgetItem;
 namespace OCC {
 
 class AccountSettings;
-class ProtocolWidget;
 class Application;
 class FolderMan;
 class ownCloudGui;
@@ -60,8 +59,7 @@ private slots:
 private:
     void closeEvent(QCloseEvent *event);
 
-    ProtocolWidget *_protocolWidget;
-    ActivitySettings *_activitySettings;
+    QMap<AccountState *, ActivitySettings *> _activitySettings;
     ownCloudGui *_gui;
 
     int _protocolIdx;
