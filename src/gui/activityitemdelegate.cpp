@@ -131,7 +131,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         int top = option.rect.top() + margin - offset;
         int buttonSize = option.rect.height()/2.5;
 
-        // Secondary will be 'Dismiss' or '...'
+        // Secondary will be 'Dismiss' or '...' multiple options button
         secondaryButton.rect = option.rect;
         secondaryButton.icon = QIcon(QLatin1String(":/client/resources/dialog-close.png"));
         if(customList.size() > 1)
@@ -170,7 +170,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         int top = option.rect.top() + margin - offset;
         int buttonSize = option.rect.height()/2.5;
 
-        // Secondary will be 'Dismiss' or '...'
+        // Secondary will be 'open file manager' with the folder icon
         secondaryButton.rect = option.rect;
         secondaryButton.icon = QIcon(QLatin1String(":/client/resources/folder-grey.png"));
 
@@ -184,7 +184,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         secondaryButton.features |= QStyleOptionButton::Flat;
         secondaryButton.state |= QStyle::State_Raised;
 
-        // Primary button will be 'More Information'
+        // Primary button will be 'open browser'
         primaryButton.rect = option.rect;
         primaryButton.text = tr("Open Browser");
         right = secondaryButton.rect.left() - rightMargin;
@@ -283,11 +283,15 @@ bool ActivityItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
                 int x = option.rect.left() + option.rect.width() - buttonsWidth - _timeWidth;
                 int y = option.rect.top();
 
+                // clickable area for ...
                 if (mouseEventX > x && mouseEventX < x + buttonsWidth){
                     if(mouseEventY > y && mouseEventY < y + _buttonHeight){
+
+                        // ...primary button ('more information' on notifications or 'open browser' on errors)
                         if (mouseEventX > x && mouseEventX < x + _primaryButtonWidth)
                             emit primaryButtonClickedOnItemView(index);
 
+                        // ...secondary button ('dismiss' on notifications or 'open file manager' on errors)
                         x += _primaryButtonWidth + _spaceBetweenButtons;
                         if (mouseEventX > x && mouseEventX < x + _secondaryButtonWidth)
                             emit secondaryButtonClickedOnItemView(index);
