@@ -99,7 +99,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionBefore = new QAction;
     _toolBar->addAction(_actionBefore);
 
-    // Adds space
+    // Adds space between users + activities and general + network actions
     QWidget* spacer = new QWidget();
     spacer->setMinimumWidth(10);
     spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
@@ -215,6 +215,8 @@ void SettingsDialog::accountAdded(AccountState *s)
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
 
     _activitySettings[s] = new ActivitySettings(s, this);
+
+    // if this is not the first account, then before we continue to add more accounts we add a separator
     if(AccountManager::instance()->accounts().first().data() != s &&
         AccountManager::instance()->accounts().size() >= 1){
         _actionGroupWidgets.insert(_toolBar->insertSeparator(_actionBefore), _activitySettings[s]);
@@ -314,6 +316,7 @@ void SettingsDialog::accountRemoved(AccountState *s)
     if(_activitySettings.contains(s)){
         _activitySettings[s]->slotRemoveAccount();
         _activitySettings[s]->hide();
+
         // get the settings widget and the separator
         foreach(QAction *action, _actionGroupWidgets.keys(_activitySettings[s])){
             _actionGroupWidgets.remove(action);

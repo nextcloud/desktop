@@ -122,79 +122,62 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     timeBox.setHeight(actionTextBox.height());
     timeBox.setBottom(timeBox.top() + fm.height());
 
-    // buttons
-    QStyleOptionButton primaryButton;
+    // buttons - default values
+    int rightMargin = margin;
+    int leftMargin = margin * offset;
+    int top = option.rect.top() + margin;
+    int buttonSize = option.rect.height()/2;
+    int right = option.rect.right() - rightMargin;
+    int left = right - buttonSize;
+
     QStyleOptionButton secondaryButton;
+    secondaryButton.rect = option.rect;
+    secondaryButton.features |= QStyleOptionButton::Flat;
+    secondaryButton.state |= QStyle::State_None;
+    secondaryButton.rect.setLeft(left);
+    secondaryButton.rect.setRight(right);
+    secondaryButton.rect.setTop(top + margin);
+    secondaryButton.rect.setHeight(iconSize);
+
+    QStyleOptionButton primaryButton;
+    primaryButton.rect = option.rect;
+    primaryButton.features |= QStyleOptionButton::DefaultButton;
+    primaryButton.state |= QStyle::State_Raised;
+    primaryButton.rect.setTop(top);
+    primaryButton.rect.setHeight(buttonSize);
+
+    right = secondaryButton.rect.left() - rightMargin;
+    left = secondaryButton.rect.left() - leftMargin;
+
+    primaryButton.rect.setRight(right);
+
     if(activityType == Activity::Type::NotificationType){
-        int rightMargin = margin;
-        int leftMargin = margin * offset;
-        int top = option.rect.top() + margin - offset;
-        int buttonSize = option.rect.height()/2.5;
 
         // Secondary will be 'Dismiss' or '...' multiple options button
-        secondaryButton.rect = option.rect;
         secondaryButton.icon = QIcon(QLatin1String(":/client/resources/dialog-close.png"));
         if(customList.size() > 1)
-            secondaryButton.icon = QIcon(QLatin1String(":/client/resources/more.png"));
-
-        int right = option.rect.right() - rightMargin;
-        int left = right - buttonSize;
-        secondaryButton.iconSize = QSize(buttonSize, buttonSize);
-        secondaryButton.rect.setLeft(left);
-        secondaryButton.rect.setRight(right);
-        secondaryButton.rect.setTop(top);
-        secondaryButton.rect.setHeight(_buttonHeight);
-        secondaryButton.features |= QStyleOptionButton::Flat;
-        secondaryButton.state |= QStyle::State_Raised;
+            secondaryButton.icon = QIcon(QLatin1String(":/client/resources/more.svg"));
+        secondaryButton.iconSize = QSize(iconSize, iconSize);
 
         // Primary button will be 'More Information'
-        primaryButton.rect = option.rect;
         primaryButton.text = tr("More information");
-        right = secondaryButton.rect.left() - rightMargin;
-        left = secondaryButton.rect.left() - leftMargin;
-        primaryButton.rect.setLeft(left - fm.width(primaryButton.text));
-        primaryButton.rect.setRight(right);
-        primaryButton.rect.setTop(top);
-        primaryButton.rect.setHeight(_buttonHeight);
-        primaryButton.features |= QStyleOptionButton::DefaultButton;
-        primaryButton.state |= QStyle::State_Raised;
+        primaryButton.rect.setLeft(left - margin * 2 - fm.width(primaryButton.text));
 
         // save info to be able to filter mouse clicks
         _buttonHeight = buttonSize;
         _spaceBetweenButtons = leftMargin;
         _primaryButtonWidth = primaryButton.rect.size().width();
         _secondaryButtonWidth = secondaryButton.rect.size().width();
+
     } else if(activityType == Activity::Type::ErrorType){
-        int rightMargin = margin;
-        int leftMargin = margin * offset;
-        int top = option.rect.top() + margin - offset;
-        int buttonSize = option.rect.height()/2.5;
 
         // Secondary will be 'open file manager' with the folder icon
-        secondaryButton.rect = option.rect;
         secondaryButton.icon = QIcon(QLatin1String(":/client/resources/folder-grey.png"));
-
-        int right = option.rect.right() - rightMargin;
-        int left = right - buttonSize;
-        secondaryButton.iconSize = QSize(buttonSize, buttonSize);
-        secondaryButton.rect.setLeft(left);
-        secondaryButton.rect.setRight(right);
-        secondaryButton.rect.setTop(top);
-        secondaryButton.rect.setHeight(_buttonHeight);
-        secondaryButton.features |= QStyleOptionButton::Flat;
-        secondaryButton.state |= QStyle::State_Raised;
+        secondaryButton.iconSize = QSize(iconSize, iconSize);
 
         // Primary button will be 'open browser'
-        primaryButton.rect = option.rect;
         primaryButton.text = tr("Open Browser");
-        right = secondaryButton.rect.left() - rightMargin;
-        left = secondaryButton.rect.left() - leftMargin;
-        primaryButton.rect.setLeft(left - fm.width(primaryButton.text));
-        primaryButton.rect.setRight(right);
-        primaryButton.rect.setTop(top);
-        primaryButton.rect.setHeight(_buttonHeight);
-        primaryButton.features |= QStyleOptionButton::DefaultButton;
-        primaryButton.state |= QStyle::State_Raised;
+        primaryButton.rect.setLeft(left - margin * 2 - fm.width(primaryButton.text));
 
         // save info to be able to filter mouse clicks
         _buttonHeight = buttonSize;
