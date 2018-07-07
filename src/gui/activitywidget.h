@@ -36,8 +36,6 @@ namespace OCC {
 
 class Account;
 class AccountStatusPtr;
-class ProtocolWidget;
-class IssuesWidget;
 class JsonApiJob;
 class NotificationWidget;
 class ActivityListModel;
@@ -168,8 +166,6 @@ private:
     bool event(QEvent *e) Q_DECL_OVERRIDE;
 
     ActivityWidget *_activityWidget;
-    ProtocolWidget *_protocolWidget;
-    IssuesWidget *_issuesWidget;
     QProgressIndicator *_progressIndicator;
     QVBoxLayout *_vbox;
     QTimer _notificationCheckTimer;

@@ -25,7 +25,6 @@
 #include "owncloudgui.h"
 #include "activitywidget.h"
 #include "accountmanager.h"
-#include "protocolwidget.h"
 
 #include <QLabel>
 #include <QStandardItemModel>
