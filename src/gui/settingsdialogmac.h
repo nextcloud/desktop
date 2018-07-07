@@ -26,7 +26,6 @@ class QListWidgetItem;
 namespace OCC {
 
 class AccountSettings;
-class ProtocolWidget;
 class Application;
 class FolderMan;
 class ownCloudGui;
@@ -47,7 +46,6 @@ public:
 
 public slots:
     void showActivityPage();
-    void showIssuesList(const QString &folderAlias);
     void slotRefreshActivity(AccountState *accountState);
     void slotRefreshActivityAccountStateSender();
 
@@ -60,8 +58,11 @@ private slots:
 private:
     void closeEvent(QCloseEvent *event);
 
-    ProtocolWidget *_protocolWidget;
-    ActivitySettings *_activitySettings;
+    QAction *_actionBefore;
+    int _actionsIdx;
+    QMap<AccountState *, QAction *> _separators;
+
+    QMap<AccountState *, ActivitySettings *> _activitySettings;
     ownCloudGui *_gui;
 
     int _protocolIdx;
@@ -69,3 +70,4 @@ private:
 }
 
 #endif // SETTINGSDIALOGMAC_H
+;
