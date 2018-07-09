@@ -60,7 +60,7 @@ private:
 
     QAction *_actionBefore;
     int _actionsIdx;
-    QList<QAction*> _separators;
+    QMap<AccountState *, QAction *> _separators;
 
     QMap<AccountState *, ActivitySettings *> _activitySettings;
     ownCloudGui *_gui;
