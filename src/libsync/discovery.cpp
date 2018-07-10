@@ -24,6 +24,8 @@
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcDisco, "sync.discovery", QtInfoMsg)
+
 static RemoteInfo remoteInfoFromCSync(const csync_file_stat_t &x)
 {
     RemoteInfo ri;
@@ -151,15 +153,24 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory)
     auto excluded = _excludes->csyncTraversalMatchFun()(path.toUtf8(), isDirectory ? ItemTypeDirectory : ItemTypeFile);
     if (excluded == CSYNC_NOT_EXCLUDED /* FIXME && item->_type != ItemTypeSoftLink */) {
         return false;
+    } else if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED || excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
+        return true;
     }
 
     auto item = SyncFileItemPtr::create();
     item->_file = path;
     item->_instruction = CSYNC_INSTRUCTION_IGNORE;
 
-    /*if( fs->type == ItemTypeSoftLink ) {
+#if 0
+    FIXME: soft links
+    if( fs->type == ItemTypeSoftLink ) {
         fs->error_status = CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK; /* Symbolic links are ignored. */
+#endif
     switch (excluded) {
+    case CSYNC_NOT_EXCLUDED:
+    case CSYNC_FILE_SILENTLY_EXCLUDED:
+    case CSYNC_FILE_EXCLUDE_AND_REMOVE:
+        qFatal("These were handled earlier");
     case CSYNC_FILE_EXCLUDE_LIST:
         item->_errorString = tr("File is listed on the ignore list.");
         break;
@@ -273,7 +284,7 @@ void ProcessDirectoryJob::processFile(const QString &path,
             // TODO! rename;
             item->_size = localEntry.size;
             item->_modtime = localEntry.modtime;
-            item->_type = serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+            item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
             _childModified = true;
         } else {
             item->_instruction = CSYNC_INSTRUCTION_SYNC;
@@ -289,9 +300,11 @@ void ProcessDirectoryJob::processFile(const QString &path,
         item->_direction = SyncFileItem::Up;
     }
 
-    qDebug() << "Discovered" << item->_file << item->_instruction << item->_direction;
+    qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->isDirectory();
 
     if (item->isDirectory()) {
+        if (recurseQueryServer != ParentNotChanged && !serverEntry.isValid())
+            recurseQueryServer = ParentDontExist;
         auto job = new ProcessDirectoryJob(item, recurseQueryServer, localEntry.isValid() ? NormalQuery : ParentDontExist,
             _propagator, _excludes, this);
         connect(job, &ProcessDirectoryJob::itemDiscovered, this, &ProcessDirectoryJob::itemDiscovered);
