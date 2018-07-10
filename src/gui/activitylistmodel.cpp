@@ -217,11 +217,13 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
 }
 
 void ActivityListModel::addErrorToActivityList(Activity activity) {
+    qCInfo(lcActivity) << "Error successfully added to the notification list: " << activity._subject;
     _notificationErrorsLists.prepend(activity);
     combineActivityLists();
 }
 
 void ActivityListModel::addNotificationToActivityList(Activity activity) {
+    qCInfo(lcActivity) << "Notification successfully added to the notification list: " << activity._subject;
     _notificationLists.prepend(activity);
     combineActivityLists();
 }
