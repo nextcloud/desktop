@@ -59,7 +59,8 @@ private:
     static int _spaceBetweenButtons;
     static int _timeWidth;
     static int _buttonHeight;
-    static QString _remote_share;
+    static const QString _remote_share;
+    static const QString _call;
 };
 
 } // namespace OCC
