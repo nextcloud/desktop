@@ -29,6 +29,7 @@ public:
     enum datarole { ActionIconRole = Qt::UserRole + 1,
         UserIconRole,
         AccountRole,
+        ObjectTypeRole,
         ActionsLinksRole,
         ActionTextRole,
         ActionRole,
@@ -58,6 +59,7 @@ private:
     static int _spaceBetweenButtons;
     static int _timeWidth;
     static int _buttonHeight;
+    static QString _remote_share;
 };
 
 } // namespace OCC
