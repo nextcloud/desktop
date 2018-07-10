@@ -60,7 +60,7 @@ static bool findPathInList(const QStringList &list, const QString &path)
     return pathSlash.startsWith(*it);
 }
 
-bool DiscoveryJob::isInSelectiveSyncBlackList(const QByteArray &path) const
+bool DiscoveryPhase::isInSelectiveSyncBlackList(const QString &path) const
 {
     if (_selectiveSyncBlackList.isEmpty()) {
         // If there is no black list, everything is allowed
@@ -68,10 +68,11 @@ bool DiscoveryJob::isInSelectiveSyncBlackList(const QByteArray &path) const
     }
 
     // Block if it is in the black list
-    if (findPathInList(_selectiveSyncBlackList, QString::fromUtf8(path))) {
+    if (findPathInList(_selectiveSyncBlackList, path)) {
         return true;
     }
 
+    /** FIXME
     // Also try to adjust the path if there was renames
     if (csync_rename_count(_csync_ctx)) {
         QByteArray adjusted = csync_rename_adjust_parent_path_source(_csync_ctx, path);
@@ -79,16 +80,12 @@ bool DiscoveryJob::isInSelectiveSyncBlackList(const QByteArray &path) const
             return findPathInList(_selectiveSyncBlackList, QString::fromUtf8(adjusted));
         }
     }
+    */
 
     return false;
 }
 
-int DiscoveryJob::isInSelectiveSyncBlackListCallback(void *data, const QByteArray &path)
-{
-    return static_cast<DiscoveryJob *>(data)->isInSelectiveSyncBlackList(path);
-}
-
-bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString &path, RemotePermissions remotePerm)
+bool DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePermissions remotePerm)
 {
     if (_syncOptions._confirmExternalStorage
         && remotePerm.hasPermission(RemotePermissions::IsMounted)) {
@@ -121,11 +118,12 @@ bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString &path, RemotePermis
     // Go in the main thread to do a PROPFIND to know the size of this folder
     qint64 result = -1;
 
+    /* FIXME TOTO
     {
         QMutexLocker locker(&_vioMutex);
         emit doGetSizeSignal(path, &result);
         _vioWaitCondition.wait(&_vioMutex);
-    }
+    }*/
 
     if (result >= limit) {
         // we tell the UI there is a new folder
@@ -146,12 +144,7 @@ bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString &path, RemotePermis
     }
 }
 
-int DiscoveryJob::checkSelectiveSyncNewFolderCallback(void *data, const QByteArray &path, RemotePermissions remotePerm)
-{
-    return static_cast<DiscoveryJob *>(data)->checkSelectiveSyncNewFolder(QString::fromUtf8(path), remotePerm);
-}
-
-
+/* FIXME  (used to be called every time we were doing a propfind)
 void DiscoveryJob::update_job_update_callback(bool local,
     const char *dirUrl,
     void *userdata)
@@ -174,7 +167,7 @@ void DiscoveryJob::update_job_update_callback(bool local,
             emit updateJob->folderDiscovered(local, path);
         }
     }
-}
+}*/
 
 // Only use for error cases! It will always set an error errno
 int get_errno_from_http_errcode(int err, const QString &reason)
@@ -462,98 +455,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
     deleteLater();
 }
 
-void DiscoveryMainThread::setupHooks(DiscoveryJob *discoveryJob, const QString &pathPrefix)
-{
-    _discoveryJob = discoveryJob;
-    _pathPrefix = pathPrefix;
-
-    connect(discoveryJob, &DiscoveryJob::doOpendirSignal,
-        this, &DiscoveryMainThread::doOpendirSlot,
-        Qt::QueuedConnection);
-    connect(discoveryJob, &DiscoveryJob::doGetSizeSignal,
-        this, &DiscoveryMainThread::doGetSizeSlot,
-        Qt::QueuedConnection);
-}
-
-// Coming from owncloud_opendir -> DiscoveryJob::vio_opendir_hook -> doOpendirSignal
-void DiscoveryMainThread::doOpendirSlot(const QString &subPath, DiscoveryDirectoryResult *r)
-{
-    QString fullPath = _pathPrefix;
-    if (!_pathPrefix.endsWith('/')) {
-        fullPath += '/';
-    }
-    fullPath += subPath;
-    // remove trailing slash
-    while (fullPath.endsWith('/')) {
-        fullPath.chop(1);
-    }
-
-    _discoveryJob->update_job_update_callback(/*local=*/false, subPath.toUtf8(), _discoveryJob);
-
-    // Result gets written in there
-    _currentDiscoveryDirectoryResult = r;
-    _currentDiscoveryDirectoryResult->path = fullPath;
-
-    // Schedule the DiscoverySingleDirectoryJob
-    _singleDirJob = new DiscoverySingleDirectoryJob(_account, fullPath, this);
-    QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::finishedWithResult,
-        this, &DiscoveryMainThread::singleDirectoryJobResultSlot);
-    QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::finishedWithError,
-        this, &DiscoveryMainThread::singleDirectoryJobFinishedWithErrorSlot);
-    QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::firstDirectoryPermissions,
-        this, &DiscoveryMainThread::singleDirectoryJobFirstDirectoryPermissionsSlot);
-    QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::etagConcatenation,
-        this, &DiscoveryMainThread::etagConcatenation);
-    QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::etag,
-        this, &DiscoveryMainThread::etag);
-
-    if (!_firstFolderProcessed) {
-        _singleDirJob->setIsRootPath();
-    }
-
-    _singleDirJob->start();
-}
-
-
-void DiscoveryMainThread::singleDirectoryJobResultSlot()
-{
-    if (!_currentDiscoveryDirectoryResult) {
-        return; // possibly aborted
-    }
-
-    _currentDiscoveryDirectoryResult->list = _singleDirJob->takeResults();
-    _currentDiscoveryDirectoryResult->code = 0;
-
-    qCDebug(lcDiscovery) << "Have" << _currentDiscoveryDirectoryResult->list.size() << "results for " << _currentDiscoveryDirectoryResult->path;
-
-    _currentDiscoveryDirectoryResult = 0; // the sync thread owns it now
-
-    if (!_firstFolderProcessed) {
-        _firstFolderProcessed = true;
-        _dataFingerprint = _singleDirJob->_dataFingerprint;
-    }
-
-    _discoveryJob->_vioMutex.lock();
-    _discoveryJob->_vioWaitCondition.wakeAll();
-    _discoveryJob->_vioMutex.unlock();
-}
-
-void DiscoveryMainThread::singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, const QString &msg)
-{
-    if (!_currentDiscoveryDirectoryResult) {
-        return; // possibly aborted
-    }
-    qCDebug(lcDiscovery) << csyncErrnoCode << msg;
-
-    _currentDiscoveryDirectoryResult->code = csyncErrnoCode;
-    _currentDiscoveryDirectoryResult->msg = msg;
-    _currentDiscoveryDirectoryResult = 0; // the sync thread owns it now
-
-    _discoveryJob->_vioMutex.lock();
-    _discoveryJob->_vioWaitCondition.wakeAll();
-    _discoveryJob->_vioMutex.unlock();
-}
-
+/*
 void DiscoveryMainThread::singleDirectoryJobFirstDirectoryPermissionsSlot(RemotePermissions p)
 {
     // Should be thread safe since the sync thread is blocked
@@ -614,115 +516,5 @@ void DiscoveryMainThread::slotGetSizeResult(const QVariantMap &map)
     _discoveryJob->_vioWaitCondition.wakeAll();
 }
 
-
-// called from SyncEngine
-void DiscoveryMainThread::abort()
-{
-    if (_singleDirJob) {
-        disconnect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::finishedWithError, this, nullptr);
-        disconnect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::firstDirectoryPermissions, this, nullptr);
-        disconnect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::finishedWithResult, this, nullptr);
-        _singleDirJob->abort();
-    }
-    if (_currentDiscoveryDirectoryResult) {
-        if (_discoveryJob->_vioMutex.tryLock()) {
-            _currentDiscoveryDirectoryResult->msg = tr("Aborted by the user"); // Actually also created somewhere else by sync engine
-            _currentDiscoveryDirectoryResult->code = EIO;
-            _currentDiscoveryDirectoryResult = 0;
-            _discoveryJob->_vioWaitCondition.wakeAll();
-            _discoveryJob->_vioMutex.unlock();
-        }
-    }
-    if (_currentGetSizeResult) {
-        _currentGetSizeResult = 0;
-        QMutexLocker locker(&_discoveryJob->_vioMutex);
-        _discoveryJob->_vioWaitCondition.wakeAll();
-    }
-}
-
-csync_vio_handle_t *DiscoveryJob::remote_vio_opendir_hook(const char *url,
-    void *userdata)
-{
-    DiscoveryJob *discoveryJob = static_cast<DiscoveryJob *>(userdata);
-    if (discoveryJob) {
-        qCDebug(lcDiscovery) << discoveryJob << url << "Calling into main thread...";
-
-        QScopedPointer<DiscoveryDirectoryResult> directoryResult(new DiscoveryDirectoryResult());
-        directoryResult->code = EIO;
-
-        discoveryJob->_vioMutex.lock();
-        const QString qurl = QString::fromUtf8(url);
-        emit discoveryJob->doOpendirSignal(qurl, directoryResult.data());
-        discoveryJob->_vioWaitCondition.wait(&discoveryJob->_vioMutex, ULONG_MAX); // FIXME timeout?
-        discoveryJob->_vioMutex.unlock();
-
-        qCDebug(lcDiscovery) << discoveryJob << url << "...Returned from main thread";
-
-        // Upon awakening from the _vioWaitCondition, iterator should be a valid iterator.
-        if (directoryResult->code != 0) {
-            qCDebug(lcDiscovery) << directoryResult->code << "when opening" << url << "msg=" << directoryResult->msg;
-            errno = directoryResult->code;
-            // save the error string to the context
-            discoveryJob->_csync_ctx->error_string = directoryResult->msg;
-            return NULL;
-        }
-
-        return directoryResult.take();
-    }
-    return NULL;
-}
-
-
-std::unique_ptr<csync_file_stat_t> DiscoveryJob::remote_vio_readdir_hook(csync_vio_handle_t *dhandle,
-    void *userdata)
-{
-    DiscoveryJob *discoveryJob = static_cast<DiscoveryJob *>(userdata);
-    if (discoveryJob) {
-        DiscoveryDirectoryResult *directoryResult = static_cast<DiscoveryDirectoryResult *>(dhandle);
-        if (!directoryResult->list.empty()) {
-            auto file_stat = std::move(directoryResult->list.front());
-            directoryResult->list.pop_front();
-            return file_stat;
-        }
-    }
-    return NULL;
-}
-
-void DiscoveryJob::remote_vio_closedir_hook(csync_vio_handle_t *dhandle, void *userdata)
-{
-    DiscoveryJob *discoveryJob = static_cast<DiscoveryJob *>(userdata);
-    if (discoveryJob) {
-        DiscoveryDirectoryResult *directoryResult = static_cast<DiscoveryDirectoryResult *>(dhandle);
-        QString path = directoryResult->path;
-        qCDebug(lcDiscovery) << discoveryJob << path;
-        // just deletes the struct and the iterator, the data itself is owned by the SyncEngine/DiscoveryMainThread
-        delete directoryResult;
-    }
-}
-
-void DiscoveryJob::start()
-{
-    _selectiveSyncBlackList.sort();
-    _selectiveSyncWhiteList.sort();
-    _csync_ctx->callbacks.update_callback_userdata = this;
-    _csync_ctx->callbacks.update_callback = update_job_update_callback;
-    _csync_ctx->callbacks.checkSelectiveSyncBlackListHook = isInSelectiveSyncBlackListCallback;
-    _csync_ctx->callbacks.checkSelectiveSyncNewFolderHook = checkSelectiveSyncNewFolderCallback;
-
-    _csync_ctx->callbacks.remote_opendir_hook = remote_vio_opendir_hook;
-    _csync_ctx->callbacks.remote_readdir_hook = remote_vio_readdir_hook;
-    _csync_ctx->callbacks.remote_closedir_hook = remote_vio_closedir_hook;
-    _csync_ctx->callbacks.vio_userdata = this;
-
-    _lastUpdateProgressCallbackCall.invalidate();
-    int ret = csync_update(_csync_ctx);
-
-    _csync_ctx->callbacks.checkSelectiveSyncNewFolderHook = 0;
-    _csync_ctx->callbacks.checkSelectiveSyncBlackListHook = 0;
-    _csync_ctx->callbacks.update_callback = 0;
-    _csync_ctx->callbacks.update_callback_userdata = 0;
-
-    emit finished(ret);
-    deleteLater();
-}
+*/
 }

@@ -47,6 +47,7 @@ namespace OCC {
 class SyncJournalFileRecord;
 class SyncJournalDb;
 class OwncloudPropagator;
+class ProcessDirectoryJob;
 
 enum AnotherSyncNeeded {
     NoFollowUpSync,
@@ -236,7 +237,7 @@ private:
     QString _remotePath;
     QString _remoteRootEtag;
     SyncJournalDb *_journal;
-    QPointer<DiscoveryMainThread> _discoveryMainThread;
+    QPointer<ProcessDirectoryJob> _discoveryJob;
     QSharedPointer<OwncloudPropagator> _propagator;
 
     // After a sync, only the syncdb entries whose filenames appear in this

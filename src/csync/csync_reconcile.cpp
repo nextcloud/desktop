@@ -316,7 +316,6 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
             break;
         }
     } else {
-        bool is_conflict = true;
         /*
      * file found on the other replica
      */
@@ -340,74 +339,7 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
             /* file on other replica is changed or new */
             case CSYNC_INSTRUCTION_NEW:
             case CSYNC_INSTRUCTION_EVAL:
-                if (other->type == ItemTypeDirectory &&
-                        cur->type == ItemTypeDirectory) {
-                    // Folders of the same path are always considered equals
-                    is_conflict = false;
-                } else {
-                    // If the size or mtime is different, it's definitely a conflict.
-                    is_conflict = ((other->size != cur->size) || (other->modtime != cur->modtime));
-
-                    // It could be a conflict even if size and mtime match!
-                    //
-                    // In older client versions we always treated these cases as a
-                    // non-conflict. This behavior is preserved in case the server
-                    // doesn't provide a content checksum.
-                    //
-                    // When it does have one, however, we do create a job, but the job
-                    // will compare hashes and avoid the download if possible.
-                    QByteArray remoteChecksumHeader =
-                        (ctx->current == REMOTE_REPLICA ? cur->checksumHeader : other->checksumHeader);
-                    if (!remoteChecksumHeader.isEmpty()) {
-                        is_conflict = true;
-
-                        // Do we have an UploadInfo for this?
-                        // Maybe the Upload was completed, but the connection was broken just before
-                        // we recieved the etag (Issue #5106)
-                        auto up = ctx->statedb->getUploadInfo(cur->path);
-                        if (up._valid && up._contentChecksum == remoteChecksumHeader) {
-                            // Solve the conflict into an upload, or nothing
-                            auto remoteNode = ctx->current == REMOTE_REPLICA ? cur : other;
-                            auto localNode = ctx->current == REMOTE_REPLICA ? other : cur;
-                            remoteNode->instruction = CSYNC_INSTRUCTION_NONE;
-                            localNode->instruction = up._modtime == localNode->modtime ? CSYNC_INSTRUCTION_UPDATE_METADATA : CSYNC_INSTRUCTION_SYNC;
-
-                            // Update the etag and other server metadata in the journal already
-                            // (We can't use a typical CSYNC_INSTRUCTION_UPDATE_METADATA because
-                            // we must not store the size/modtime from the file system)
-                            OCC::SyncJournalFileRecord rec;
-                            if (ctx->statedb->getFileRecord(remoteNode->path, &rec)) {
-                                rec._path = remoteNode->path;
-                                rec._etag = remoteNode->etag;
-                                rec._fileId = remoteNode->file_id;
-                                rec._modtime = remoteNode->modtime;
-                                rec._type = remoteNode->type;
-                                rec._fileSize = remoteNode->size;
-                                rec._remotePerm = remoteNode->remotePerm;
-                                rec._checksumHeader = remoteNode->checksumHeader;
-                                ctx->statedb->setFileRecordMetadata(rec);
-                            }
-                            break;
-                        }
-                    }
-
-                    // SO: If there is no checksum, we can have !is_conflict here
-                    // even though the files have different content! This is an
-                    // intentional tradeoff. Downloading and comparing files would
-                    // be technically correct in this situation but leads to too
-                    // much waste.
-                    // In particular this kind of NEW/NEW situation with identical
-                    // sizes and mtimes pops up when the local database is lost for
-                    // whatever reason.
-                }
-                if (ctx->current == REMOTE_REPLICA) {
-                    // If the files are considered equal, only update the DB with the etag from remote
-                    cur->instruction = is_conflict ? CSYNC_INSTRUCTION_CONFLICT : CSYNC_INSTRUCTION_UPDATE_METADATA;
-                    other->instruction = CSYNC_INSTRUCTION_NONE;
-                } else {
-                    cur->instruction = CSYNC_INSTRUCTION_NONE;
-                    other->instruction = is_conflict ? CSYNC_INSTRUCTION_CONFLICT : CSYNC_INSTRUCTION_UPDATE_METADATA;
-                }
+                // PORTED
 
                 break;
                 /* file on the other replica has not been modified */

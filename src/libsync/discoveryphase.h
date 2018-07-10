@@ -26,9 +26,12 @@
 #include <deque>
 #include "syncoptions.h"
 
+class ExcludedFiles;
+
 namespace OCC {
 
 class Account;
+class SyncJournalDb;
 
 /**
  * The Discovery Phase was once called "update" phase in csync terms.
@@ -99,110 +102,25 @@ public:
     QByteArray _dataFingerprint;
 };
 
-// Lives in main thread. Deleted by the SyncEngine
-class DiscoveryJob;
-class DiscoveryMainThread : public QObject
+class DiscoveryPhase : public QObject
 {
     Q_OBJECT
-
-    QPointer<DiscoveryJob> _discoveryJob;
-    QPointer<DiscoverySingleDirectoryJob> _singleDirJob;
-    QString _pathPrefix; // remote path
+public:
+    QString _localDir; // absolute path to the local directory. ends with '/'
+    QString _remoteFolder; // remote folder, ends with '/'
+    SyncJournalDb *_statedb;
     AccountPtr _account;
-    DiscoveryDirectoryResult *_currentDiscoveryDirectoryResult;
-    qint64 *_currentGetSizeResult;
-    bool _firstFolderProcessed;
-
-public:
-    DiscoveryMainThread(AccountPtr account)
-        : QObject()
-        , _account(account)
-        , _currentDiscoveryDirectoryResult(0)
-        , _currentGetSizeResult(0)
-        , _firstFolderProcessed(false)
-    {
-    }
-    void abort();
-
-    QByteArray _dataFingerprint;
-
-
-public slots:
-    // From DiscoveryJob:
-    void doOpendirSlot(const QString &url, DiscoveryDirectoryResult *);
-    void doGetSizeSlot(const QString &path, qint64 *result);
-
-    // From Job:
-    void singleDirectoryJobResultSlot();
-    void singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, const QString &msg);
-    void singleDirectoryJobFirstDirectoryPermissionsSlot(RemotePermissions);
-
-    void slotGetSizeFinishedWithError();
-    void slotGetSizeResult(const QVariantMap &);
-signals:
-    void etag(const QString &);
-    void etagConcatenation(const QString &);
-
-public:
-    void setupHooks(DiscoveryJob *discoveryJob, const QString &pathPrefix);
-};
-
-/**
- * @brief The DiscoveryJob class
- *
- * Lives in the other thread, deletes itself in !start()
- *
- * @ingroup libsync
- */
-class DiscoveryJob : public QObject
-{
-    Q_OBJECT
-    friend class DiscoveryMainThread;
-    CSYNC *_csync_ctx;
-    QElapsedTimer _lastUpdateProgressCallbackCall;
-
-    /**
-     * return true if the given path should be ignored,
-     * false if the path should be synced
-     */
-    bool isInSelectiveSyncBlackList(const QByteArray &path) const;
-    static int isInSelectiveSyncBlackListCallback(void *, const QByteArray &);
-    bool checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp);
-    static int checkSelectiveSyncNewFolderCallback(void *data, const QByteArray &path, RemotePermissions rm);
-
-    // Just for progress
-    static void update_job_update_callback(bool local,
-        const char *dirname,
-        void *userdata);
-
-    // For using QNAM to get the directory listings
-    static csync_vio_handle_t *remote_vio_opendir_hook(const char *url,
-        void *userdata);
-    static std::unique_ptr<csync_file_stat_t> remote_vio_readdir_hook(csync_vio_handle_t *dhandle,
-        void *userdata);
-    static void remote_vio_closedir_hook(csync_vio_handle_t *dhandle,
-        void *userdata);
-    QMutex _vioMutex;
-    QWaitCondition _vioWaitCondition;
-
-
-public:
-    explicit DiscoveryJob(CSYNC *ctx, QObject *parent = 0)
-        : QObject(parent)
-        , _csync_ctx(ctx)
-    {
-    }
+    SyncOptions _syncOptions;
     QStringList _selectiveSyncBlackList;
     QStringList _selectiveSyncWhiteList;
-    SyncOptions _syncOptions;
-    Q_INVOKABLE void start();
+    ExcludedFiles *_excludes;
+
+    bool isInSelectiveSyncBlackList(const QString &path) const;
+    bool checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp);
+
 signals:
     void finished(int result);
     void folderDiscovered(bool local, QString folderUrl);
-
-    // After the discovery job has been woken up again (_vioWaitCondition)
-    void doOpendirSignal(QString url, DiscoveryDirectoryResult *);
-    void doGetSizeSignal(const QString &path, qint64 *result);
 
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);

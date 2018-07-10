@@ -750,6 +750,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         }
     }
 
+#if 0
     // Now process to have a relative path to the sync root for the local replica, or to the data root on the remote.
     dirent->path = fullpath;
     if (ctx->current == LOCAL_REPLICA) {
@@ -774,6 +775,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       goto error;
     }
 
+PORTED
     if (recurse && rc == 0
         && (!ctx->current_fs || ctx->current_fs->instruction != CSYNC_INSTRUCTION_IGNORE)) {
       rc = csync_ftw(ctx, fullpath, fn, depth - 1);
@@ -804,6 +806,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
 
     ctx->current_fs = previous_fs;
     ctx->remote.read_from_db = read_from_db;
+#endif
   }
 
   csync_vio_closedir(ctx, dh);
