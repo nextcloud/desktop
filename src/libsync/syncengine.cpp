@@ -811,6 +811,7 @@ void SyncEngine::startSync()
         invalidFilenamePattern = "[\\\\:?*\"<>|]";
     }
     ddata->_invalidFilenamePattern = invalidFilenamePattern;
+    ddata->_ignoreHiddenFiles = ignoreHiddenFiles();
 
     connect(ddata.data(), &DiscoveryPhase::folderDiscovered, this, &SyncEngine::slotFolderDiscovered);
     connect(ddata.data(), &DiscoveryPhase::newBigFolder, this, &SyncEngine::newBigFolder);

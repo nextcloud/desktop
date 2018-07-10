@@ -740,15 +740,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         continue;
     }
 
-    /* if the filename starts with a . we consider it a hidden file
-     * For windows, the hidden state is also discovered within the vio
-     * local stat function.
-     */
-    if( filename[0] == '.' ) {
-        if (filename != ".sys.admin#recall#") { /* recall file shall not be ignored (#4420) */
-            dirent->is_hidden = true;
-        }
-    }
 
 #if 0
     // Now process to have a relative path to the sync root for the local replica, or to the data root on the remote.

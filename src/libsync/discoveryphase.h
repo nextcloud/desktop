@@ -115,6 +115,7 @@ public:
     QStringList _selectiveSyncWhiteList;
     ExcludedFiles *_excludes;
     QString _invalidFilenamePattern; // FIXME: maybe move in ExcludedFiles
+    bool _ignoreHiddenFiles = false;
 
     bool isInSelectiveSyncBlackList(const QString &path) const;
     bool checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp);
