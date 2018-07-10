@@ -381,28 +381,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t * /*file*/, csync_file_stat_t * /
     // Decode utf8 path and rename_path QByteArrays to QStrings
     QString fileUtf8;
     QString renameTarget;
-    bool utf8DecodeError = false;
-    {
-        const auto toUnicode = [](QByteArray utf8, QString *result) {
-            static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-            ASSERT(codec);
 
-            QTextCodec::ConverterState state;
-            *result = codec->toUnicode(utf8, utf8.size(), &state);
-            return !(state.invalidChars > 0 || state.remainingChars > 0);
-        };
-
-        if (!toUnicode(file->path, &fileUtf8)) {
-            qCWarning(lcEngine) << "File ignored because of invalid utf-8 sequence: " << file->path;
-            instruction = CSYNC_INSTRUCTION_IGNORE;
-            utf8DecodeError = true;
-        }
-        if (!toUnicode(file->rename_path, &renameTarget)) {
-            qCWarning(lcEngine) << "File ignored because of invalid utf-8 sequence in the rename_path: " << file->path << file->rename_path;
-            instruction = CSYNC_INSTRUCTION_IGNORE;
-            utf8DecodeError = true;
-        }
-    }
 
     // key is the handle that the SyncFileItem will have in the map.
     QString key = fileUtf8;
@@ -506,11 +485,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t * /*file*/, csync_file_stat_t * /
     }
 
 
-    if (item->_instruction == CSYNC_INSTRUCTION_IGNORE && utf8DecodeError) {
-        item->_status = SyncFileItem::NormalError;
-        //item->_instruction = CSYNC_INSTRUCTION_ERROR;
-        item->_errorString = tr("Filename encoding is not valid");
-    }
 
     bool isDirectory = file->type == ItemTypeDirectory;
 

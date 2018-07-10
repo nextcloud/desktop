@@ -19,9 +19,11 @@
 #include <algorithm>
 #include <set>
 #include <QDirIterator>
+#include <QTextCodec>
 #include "vio/csync_vio_local.h"
 #include "common/checksums.h"
 #include "csync_exclude.h"
+
 
 namespace OCC {
 
@@ -97,7 +99,20 @@ void ProcessDirectoryJob::start()
         }
         while (auto dirent = csync_vio_local_readdir(dh)) {
             LocalInfo i;
-            i.name = QString::fromUtf8(dirent->path); // FIXME! conversion errors
+            static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+            ASSERT(codec);
+            QTextCodec::ConverterState state;
+            i.name = codec->toUnicode(dirent->path, dirent->path.size(), &state);
+            if (state.invalidChars > 0 || state.remainingChars > 0) {
+                _childIgnored = true;
+                auto item = SyncFileItemPtr::create();
+                item->_file = _currentFolder + i.name;
+                item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+                item->_status = SyncFileItem::NormalError;
+                item->_errorString = tr("Filename encoding is not valid");
+                emit itemDiscovered(item);
+                continue;
+            }
             i.modtime = dirent->modtime;
             i.size = dirent->size;
             i.inode = dirent->inode;
@@ -192,6 +207,20 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, 
     }
     if (excluded == CSYNC_NOT_EXCLUDED && _discoveryData->_ignoreHiddenFiles && isHidden) {
         excluded = CSYNC_FILE_EXCLUDE_HIDDEN;
+    }
+
+    auto localCodec = QTextCodec::codecForLocale();
+    if (localCodec->mibEnum() != 106) {
+        // If the locale codec is not UTF-8, we must check that the filename from the server can
+        // be encoded in the local file system.
+        //
+        // We cannot use QTextCodec::canEncode() since that can incorrectly return true, see
+        // https://bugreports.qt.io/browse/QTBUG-6925.
+        QTextEncoder encoder(localCodec, QTextCodec::ConvertInvalidToNull);
+        if (encoder.fromUnicode(path).contains('\0')) {
+            qCWarning(lcDisco) << "Cannot encode " << path << " to local encoding " << localCodec->name();
+            excluded = CSYNC_FILE_EXCLUDE_CANNOT_ENCODE;
+        }
     }
 
     if (excluded == CSYNC_NOT_EXCLUDED /* FIXME && item->_type != ItemTypeSoftLink */) {
