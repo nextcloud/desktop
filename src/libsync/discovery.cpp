@@ -171,6 +171,17 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory)
 {
     // FIXME! call directly, without char* conversion
     auto excluded = _discoveryData->_excludes->csyncTraversalMatchFun()(path.toUtf8(), isDirectory ? ItemTypeDirectory : ItemTypeFile);
+
+    // FIXME: move to ExcludedFiles 's regexp ?
+    bool isInvalidPattern = false;
+    if (excluded == CSYNC_NOT_EXCLUDED && !_discoveryData->_invalidFilenamePattern.isEmpty()) {
+        const QRegExp invalidFilenameRx(_discoveryData->_invalidFilenamePattern);
+        if (path.contains(invalidFilenameRx)) {
+            excluded = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+            isInvalidPattern = true;
+        }
+    }
+
     if (excluded == CSYNC_NOT_EXCLUDED /* FIXME && item->_type != ItemTypeSoftLink */) {
         return false;
     } else if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED || excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
@@ -208,6 +219,9 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory)
             if (invalid) {
                 item->_errorString = tr("File names containing the character '%1' are not supported on this file system.")
                                          .arg(QLatin1Char(invalid));
+            }
+            if (isInvalidPattern) {
+                item->_errorString = tr("File name contains at least one invalid character");
             } else {
                 item->_errorString = tr("The file name is a reserved name on this file system.");
             }

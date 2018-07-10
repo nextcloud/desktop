@@ -858,17 +858,30 @@ void SyncEngine::slotStartDiscovery()
     ddata->_account = _account;
     ddata->_excludes = _excludedFiles.data();
     ddata->_statedb = _journal;
-    ddata->_selectiveSyncBlackList = selectiveSyncBlackList;
-    ddata->_selectiveSyncWhiteList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);
     ddata->_localDir = _localPath;
     ddata->_remoteFolder = _remotePath;
     ddata->_syncOptions = _syncOptions;
+    ddata->_selectiveSyncBlackList = selectiveSyncBlackList;
+    ddata->_selectiveSyncWhiteList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);
     if (!ok) {
         qCWarning(lcEngine) << "Unable to read selective sync list, aborting.";
         csyncError(tr("Unable to read from the sync journal."));
         finalize(false);
         return;
     }
+
+    // Check for invalid character in old server version
+    QString invalidFilenamePattern = _account->capabilities().invalidFilenameRegex();
+    if (invalidFilenamePattern.isNull()
+        && _account->serverVersionInt() < Account::makeServerVersion(8, 1, 0)) {
+        // Server versions older than 8.1 don't support some characters in filenames.
+        // If the capability is not set, default to a pattern that avoids uploading
+        // files with names that contain these.
+        // It's important to respect the capability also for older servers -- the
+        // version check doesn't make sense for custom servers.
+        invalidFilenamePattern = "[\\\\:?*\"<>|]";
+    }
+    ddata->_invalidFilenamePattern = invalidFilenamePattern;
 
     connect(ddata.data(), &DiscoveryPhase::folderDiscovered, this, &SyncEngine::slotFolderDiscovered);
     connect(ddata.data(), &DiscoveryPhase::newBigFolder, this, &SyncEngine::newBigFolder);
@@ -1035,29 +1048,6 @@ void SyncEngine::slotDiscoveryJobFinished(int /*discoveryResult*/)
     // Adjust the paths for the renames.
     for (const auto &syncItem : qAsConst(syncItems)) {
         syncItem->_file = adjustRenamedPath(syncItem->_file);
-    }
-
-    // Check for invalid character in old server version
-    QString invalidFilenamePattern = _account->capabilities().invalidFilenameRegex();
-    if (invalidFilenamePattern.isNull()
-        && _account->serverVersionInt() < Account::makeServerVersion(8, 1, 0)) {
-        // Server versions older than 8.1 don't support some characters in filenames.
-        // If the capability is not set, default to a pattern that avoids uploading
-        // files with names that contain these.
-        // It's important to respect the capability also for older servers -- the
-        // version check doesn't make sense for custom servers.
-        invalidFilenamePattern = R"([\:?*"<>|])";
-    }
-    if (!invalidFilenamePattern.isEmpty()) {
-        const QRegExp invalidFilenameRx(invalidFilenamePattern);
-        for (const auto &syncItem : qAsConst(syncItems)) {
-            if (syncItem->_direction == SyncFileItem::Up
-                && isFileModifyingInstruction(syncItem->_instruction)
-                && syncItem->destination().contains(invalidFilenameRx)) {
-                syncItem->_errorString = tr("File name contains at least one invalid character");
-                syncItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
-            }
-        }
     }
 
     ConfigFile cfgFile;
