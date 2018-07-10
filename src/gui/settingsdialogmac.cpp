@@ -101,9 +101,6 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
         accountAdded(ai.data());
     }
 
-    //_actionBefore = new QAction;
-    //addAction(_actionBefore);
-
     QIcon generalIcon = MacStandardIcon::icon(MacStandardIcon::PreferencesGeneral);
     GeneralSettings *generalSettings = new GeneralSettings;
     addPreferencesPanel(generalIcon, tr("General"), generalSettings);
