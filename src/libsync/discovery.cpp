@@ -102,6 +102,7 @@ void ProcessDirectoryJob::start()
             i.size = dirent->size;
             i.inode = dirent->inode;
             i.isDirectory = dirent->type == ItemTypeDirectory;
+            i.isHidden = dirent->is_hidden;
             if (dirent->type != ItemTypeDirectory && dirent->type != ItemTypeFile)
                 qFatal("FIXME:  NEED TO CARE ABOUT THE OTHER STUFF ");
             _localEntries.push_back(i);
@@ -150,7 +151,15 @@ void ProcessDirectoryJob::process()
 
     for (const auto &f : entriesNames) {
         QString path = _currentFolder + f;
-        if (handleExcluded(path, (localEntriesHash.value(f).isDirectory || serverEntriesHash.value(f).isDirectory)))
+        auto localEntry = localEntriesHash.value(f);
+        auto serverEntry = serverEntriesHash.value(f);
+
+        // If the filename starts with a . we consider it a hidden file
+        // For windows, the hidden state is also discovered within the vio
+        // local stat function.
+        // Recall file shall not be ignored (#4420)
+        bool isHidden = localEntry.isHidden || (f[0] == '.' && f != QLatin1String(".sys.admin#recall#"));
+        if (handleExcluded(path, localEntry.isDirectory || serverEntry.isDirectory, isHidden))
             continue;
 
         SyncJournalFileRecord record;
@@ -158,16 +167,16 @@ void ProcessDirectoryJob::process()
             qFatal("TODO: DB ERROR HANDLING");
         }
         if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path)) {
-            processBlacklisted(path, localEntriesHash.value(f), record);
+            processBlacklisted(path, localEntry, record);
             continue;
         }
-        processFile(path, localEntriesHash.value(f), serverEntriesHash.value(f), record);
+        processFile(path, localEntry, serverEntry, record);
     }
 
     progress();
 }
 
-bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory)
+bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, bool isHidden)
 {
     // FIXME! call directly, without char* conversion
     auto excluded = _discoveryData->_excludes->csyncTraversalMatchFun()(path.toUtf8(), isDirectory ? ItemTypeDirectory : ItemTypeFile);
@@ -180,6 +189,9 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory)
             excluded = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
             isInvalidPattern = true;
         }
+    }
+    if (excluded == CSYNC_NOT_EXCLUDED && _discoveryData->_ignoreHiddenFiles && isHidden) {
+        excluded = CSYNC_FILE_EXCLUDE_HIDDEN;
     }
 
     if (excluded == CSYNC_NOT_EXCLUDED /* FIXME && item->_type != ItemTypeSoftLink */) {

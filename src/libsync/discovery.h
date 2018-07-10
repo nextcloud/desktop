@@ -89,6 +89,7 @@ struct LocalInfo
     int64_t size = 0;
     uint64_t inode = 0;
     bool isDirectory = false;
+    bool isHidden = false;
     bool isValid() const { return !name.isNull(); }
 };
 
@@ -129,7 +130,7 @@ public:
 private:
     void process();
     // return true if the file is excluded
-    bool handleExcluded(const QString &path, bool isDirectory);
+    bool handleExcluded(const QString &path, bool isDirectory, bool isHidden);
     void processFile(const QString &, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
     void processBlacklisted(const QString &path, const LocalInfo &, const SyncJournalFileRecord &);
     void subJobFinished();
