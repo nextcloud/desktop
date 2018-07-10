@@ -95,8 +95,8 @@ ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
     connect(_ui->_activityList, &QListView::activated, this, &ActivityWidget::slotOpenFile);
     connect(&_removeTimer, &QTimer::timeout, this, &ActivityWidget::slotCheckToCleanWidgets);
 
-    connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
-        this, &ActivityWidget::slotProgressInfo);
+//    connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
+//        this, &ActivityWidget::slotProgressInfo);
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::itemCompleted,
         this, &ActivityWidget::slotItemCompleted);
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::syncError,
@@ -111,13 +111,13 @@ ActivityWidget::~ActivityWidget()
 }
 
 // TODO
-void ActivityWidget::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
-{
-    if (progress.status() == ProgressInfo::Starting) {
-        // The sync is restarting, clean the old items
-        //cleanItems(folder);
-    }
-}
+//void ActivityWidget::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
+//{
+//    if (progress.status() == ProgressInfo::Starting) {
+//        // The sync is restarting, clean the old items
+//        //cleanItems(folder);
+//    }
+//}
 
 void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item){
     auto folderInstance = FolderMan::instance()->folder(folder);
@@ -323,37 +323,32 @@ void ActivityWidget::storeActivityList(QTextStream &ts)
         QString message = activity._message.isEmpty()? "Message!" : activity._message;
         ts << right
            // account name
-           << qSetFieldWidth(30)
+           << qSetFieldWidth(activity._accName.length())
            << activity._accName
            // separator
-           << qSetFieldWidth(0) << ","
+           << qSetFieldWidth(2) << " - "
 
            // date and time
-           << qSetFieldWidth(34)
+           << qSetFieldWidth(activity._dateTime.toString().length())
            << activity._dateTime.toString()
            // separator
-           << qSetFieldWidth(0) << ","
+           << qSetFieldWidth(2) << " - "
 
-           // file
-           << qSetFieldWidth(30)
+           // fileq
+           << qSetFieldWidth(activity._file.length())
            << activity._file
            // separator
-           << qSetFieldWidth(0) << ","
+           << qSetFieldWidth(2) << " - "
 
            // subject
-           << qSetFieldWidth(100)
+           << qSetFieldWidth(activity._subject.length())
            << activity._subject
            // separator
-           << qSetFieldWidth(0) << ","
+           << qSetFieldWidth(2) << " - "
 
           // message
-          << qSetFieldWidth(55)
-          << message
-          // separator
-          << qSetFieldWidth(0) << ","
-
-          //
-          << qSetFieldWidth(0)
+          << qSetFieldWidth(activity._message.length())
+          << activity._message
           << endl;
     }
 }
@@ -578,6 +573,7 @@ ActivitySettings::ActivitySettings(AccountState *accountState, QWidget *parent)
 
     // Add a progress indicator to spin if the acitivity list is updated.
     _progressIndicator = new QProgressIndicator(this);
+
     // connect a model signal to stop the animation
     connect(_activityWidget, &ActivityWidget::rowsInserted, _progressIndicator, &QProgressIndicator::stopAnimation);
     connect(_activityWidget, &ActivityWidget::rowsInserted, this, &ActivitySettings::slotDisplayActivities);
@@ -593,22 +589,15 @@ void ActivitySettings::setNotificationRefreshInterval(std::chrono::milliseconds 
     _notificationCheckTimer.start(interval.count());
 }
 
-void ActivitySettings::slotShowIssueItemCount(int cnt)
-{
-    QString cntText = tr("Not Synced");
-    if (cnt) {
-        //: %1 is the number of not synced files.
-        cntText = tr("Not Synced (%1)").arg(cnt);
-    }
-}
-
-// TODO
 void ActivitySettings::slotCopyToClipboard()
 {
     QString text;
     QTextStream ts(&text);
 
     QString message;
+
+    _activityWidget->storeActivityList(ts);
+    message = tr("The server activity and notifications list has been copied to the clipboard.");
 
     QApplication::clipboard()->setText(text);
 
