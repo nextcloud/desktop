@@ -35,6 +35,7 @@ int ActivityItemDelegate::_secondaryButtonWidth = 0;
 int ActivityItemDelegate::_spaceBetweenButtons = 0;
 int ActivityItemDelegate::_timeWidth = 0;
 int ActivityItemDelegate::_buttonHeight = 0;
+QString ActivityItemDelegate::_remote_share("remote_share");
 
 int ActivityItemDelegate::iconHeight()
 {
@@ -85,6 +86,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     // get the data
     Activity::Type activityType = qvariant_cast<Activity::Type>(index.data(ActionRole));
     QIcon actionIcon = qvariant_cast<QIcon>(index.data(ActionIconRole));
+    QString objectType = qvariant_cast<QString>(index.data(ObjectTypeRole));
     QString actionText = qvariant_cast<QString>(index.data(ActionTextRole));
     QString messageText = qvariant_cast<QString>(index.data(MessageRole));
     QList<QVariant> customList = index.data(ActionsLinksRole).toList();
@@ -159,8 +161,10 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
             secondaryButton.icon = QIcon(QLatin1String(":/client/resources/more.svg"));
         secondaryButton.iconSize = QSize(iconSize, iconSize);
 
-        // Primary button will be 'More Information'
+        // Primary button will be 'More Information' or 'Accept'
         primaryButton.text = tr("More information");
+        if(objectType == _remote_share) primaryButton.text = tr("Accept");
+
         primaryButton.rect.setLeft(left - margin * 2 - fm.width(primaryButton.text));
 
         // save info to be able to filter mouse clicks
@@ -270,14 +274,16 @@ bool ActivityItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
                 if (mouseEventX > x && mouseEventX < x + buttonsWidth){
                     if(mouseEventY > y && mouseEventY < y + _buttonHeight){
 
-                        // ...primary button ('more information' on notifications or 'open browser' on errors)
-                        if (mouseEventX > x && mouseEventX < x + _primaryButtonWidth)
+                        // ...primary button ('more information' or 'accept' on notifications or 'open browser' on errors)
+                        if (mouseEventX > x && mouseEventX < x + _primaryButtonWidth){
                             emit primaryButtonClickedOnItemView(index);
 
                         // ...secondary button ('dismiss' on notifications or 'open file manager' on errors)
-                        x += _primaryButtonWidth + _spaceBetweenButtons;
-                        if (mouseEventX > x && mouseEventX < x + _secondaryButtonWidth)
-                            emit secondaryButtonClickedOnItemView(index);
+                        } else  {
+                            x += _primaryButtonWidth + _spaceBetweenButtons;
+                            if (mouseEventX > x && mouseEventX < x + _secondaryButtonWidth)
+                                emit secondaryButtonClickedOnItemView(index);
+                        }
                     }
                 }
             }
