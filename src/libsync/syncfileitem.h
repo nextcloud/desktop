@@ -35,12 +35,14 @@ typedef QSharedPointer<SyncFileItem> SyncFileItemPtr;
  */
 class SyncFileItem
 {
+    Q_GADGET
 public:
     enum Direction {
         None = 0,
         Up,
         Down
     };
+    Q_ENUM(Direction)
 
     enum Status { // stored in 4 bits
         NoStatus,
@@ -81,6 +83,7 @@ public:
          */
         BlacklistedError
     };
+    Q_ENUM(Status)
 
     SyncJournalFileRecord toSyncJournalFileRecordWithInode(const QString &localFileName);
 

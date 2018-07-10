@@ -168,6 +168,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
     }
   }
 
+#if 0 // PORTED
   if (excluded > CSYNC_NOT_EXCLUDED || fs->type == ItemTypeSoftLink) {
       fs->instruction = CSYNC_INSTRUCTION_IGNORE;
       if (ctx->current_fs) {
@@ -176,6 +177,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
 
       goto out;
   }
+#endif
 
   /* Update detection: Check if a database entry exists.
    * If not, the file is either new or has been renamed. To see if it is
@@ -441,6 +443,8 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
 
 out:
 
+#if 0
+PORTED
   /* Set the ignored error string. */
   if (fs->instruction == CSYNC_INSTRUCTION_IGNORE) {
       if( fs->type == ItemTypeSoftLink ) {
@@ -471,6 +475,7 @@ out:
       && fs->type != ItemTypeDirectory) {
     fs->child_modified = true;
   }
+#endif
 
   // If conflict files are uploaded, they won't be marked as IGNORE / CSYNC_FILE_EXCLUDE_CONFLICT
   // but we still want them marked!

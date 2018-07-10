@@ -25,6 +25,7 @@ set(libsync_SRCS
     bandwidthmanager.cpp
     capabilities.cpp
     cookiejar.cpp
+    discovery.cpp
     discoveryphase.cpp
     filesystem.cpp
     logger.cpp

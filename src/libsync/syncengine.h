@@ -226,7 +226,7 @@ private:
     static bool s_anySyncRunning; //true when one sync is running somewhere (for debugging)
 
     // Must only be acessed during update and reconcile
-    QMap<QString, SyncFileItemPtr> _syncItemMap;
+    QVector<SyncFileItemPtr> _syncItems;
 
     AccountPtr _account;
     QScopedPointer<CSYNC> _csync_ctx;
@@ -253,7 +253,6 @@ private:
     // while the remote says storage not available.
     QSet<QString> _temporarilyUnavailablePaths;
 
-    QThread _thread;
 
     QScopedPointer<ProgressInfo> _progressInfo;
 
