@@ -124,29 +124,22 @@ void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItem
 
     // check if we are adding it to the right account and if it is useful information (protocol errors)
     if(folderInstance->accountState() == _accountState){
-        QString pathToFile = QString("%1/%2").arg(folderInstance->cleanPath(), item->_file);
-        qCWarning(lcActivity) << "Item " << pathToFile << " retrieved resulted in " << item->_errorString;
+        qCWarning(lcActivity) << "Item " << item->_file << " retrieved resulted in " << item->_errorString;
 
         Activity activity;
         activity._type = Activity::ErrorType;
         activity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
         activity._subject = item->_errorString;
         activity._message = item->_originalFile;
-
-        // TODO: maybe use the full path to access the file in the browser
-        // folderInstance->accountState()->account()->deprecatedPrivateLinkUrl(item->_fileId).toString();
-
         activity._link = folderInstance->accountState()->account()->url();
         activity._status = item->_status;
         activity._accName = folderInstance->accountState()->account()->displayName();
-        activity._file = item->_file;
 
-        ActivityLink al;
-        al._label = tr("Open Folder");
-        al._link = QString("%1/%2").arg(folderInstance->cleanPath(), item->_file);
-        al._verb = "";
-        al._isPrimary = true;
-        activity._links.append(al);
+        // TODO: the added '/' is needed so FolderMan::instance()->findFileInLocalFolders can find it
+        // why the local path in this case does not start with a '/'?
+        // _file in other cases (when they exist in remote) starts with '/'
+        // findFileInLocalFolders removes the remotePath before checking if the file exists (?)
+        activity._file = folderInstance->remotePath() + item->_file;
 
         // add 'protocol error' to activity list
         _model->addErrorToActivityList(activity);
@@ -189,18 +182,34 @@ void ActivityWidget::addError(const QString &folderAlias, const QString &message
 
 void ActivityWidget::slotPrimaryButtonClickedOnListView(const QModelIndex &index){
     QUrl link = qvariant_cast<QString>(index.data(ActivityItemDelegate::LinkRole));
+    QString objectType = index.data(ActivityItemDelegate::ObjectTypeRole).toString();
     if(!link.isEmpty()){
         qCWarning(lcActivity) << "Opening" << link.toString() <<  "in browser for Notification/Activity" << qvariant_cast<QString>(index.data(ActivityItemDelegate::ActionTextRole));
         Utility::openBrowser(link, this);
-     }
+    } else if(objectType == "remote_share"){
+        QVariant customItem = index.data(ActivityItemDelegate::ActionsLinksRole).toList().first();
+        ActivityLink actionLink = qvariant_cast<ActivityLink>(customItem);
+        if(actionLink._label == "Accept"){
+            qCWarning(lcActivity) << objectType <<  "action" << actionLink._label << "for" << qvariant_cast<QString>(index.data(ActivityItemDelegate::ActionTextRole));
+            const QString accountName = index.data(ActivityItemDelegate::AccountRole).toString();
+            slotSendNotificationRequest(accountName, actionLink._link, actionLink._verb, index.row());
+        } else {
+            qCWarning(lcActivity) << "Failed: " << objectType <<  "action" << actionLink._label << "for" << qvariant_cast<QString>(index.data(ActivityItemDelegate::ActionTextRole));
+        }
+    }
 }
 
 void ActivityWidget::slotSecondaryButtonClickedOnListView(const QModelIndex &index){
     QList<QVariant> customList = index.data(ActivityItemDelegate::ActionsLinksRole).toList();
+    QString objectType = index.data(ActivityItemDelegate::ObjectTypeRole).toString();
+
     QList<ActivityLink> actionLinks;
     foreach(QVariant customItem, customList){
         actionLinks << qvariant_cast<ActivityLink>(customItem);
     }
+
+    if(objectType == "remote_share" && actionLinks.first()._label == "Accept")
+        actionLinks.removeFirst();
 
     if(qvariant_cast<Activity::Type>(index.data(ActivityItemDelegate::ActionRole)) == Activity::Type::NotificationType){
         const QString accountName = index.data(ActivityItemDelegate::AccountRole).toString();
@@ -223,15 +232,8 @@ void ActivityWidget::slotSecondaryButtonClickedOnListView(const QModelIndex &ind
         }
     }
 
-    if(qvariant_cast<Activity::Type>(index.data(ActivityItemDelegate::ActionRole)) == Activity::Type::ErrorType){
-        // check if this is actually a folder that we can open
-        if (FolderMan::instance()->folderForPath(actionLinks.first()._link)) {
-            if (QFile(actionLinks.first()._link).exists()) {
-                qCWarning(lcActivity) << "Opening path" << actionLinks.first()._link << "in the file manager for Notification/Activity" << qvariant_cast<QString>(index.data(ActivityItemDelegate::ActionTextRole));
-                showInFileManager(actionLinks.first()._link);
-            }
-        }
-    }
+    if(qvariant_cast<Activity::Type>(index.data(ActivityItemDelegate::ActionRole)) == Activity::Type::ErrorType)
+        slotOpenFile(index);
 }
 
 void ActivityWidget::slotNotificationRequestFinished(int statusCode)
@@ -370,9 +372,10 @@ void ActivityWidget::slotOpenFile(QModelIndex indx)
     qCDebug(lcActivity) << indx.isValid() << indx.data(ActivityItemDelegate::PathRole).toString() << QFile::exists(indx.data(ActivityItemDelegate::PathRole).toString());
     if (indx.isValid()) {
         QString fullPath = indx.data(ActivityItemDelegate::PathRole).toString();
-        // TODO: use full path to file
-        if (QFile::exists(fullPath)) {
-            showInFileManager(fullPath);
+        if(!fullPath.isEmpty()){
+            if (QFile::exists(fullPath)) {
+                showInFileManager(fullPath);
+            }
         }
     }
 }
