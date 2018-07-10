@@ -132,6 +132,22 @@ void ProcessDirectoryJob::process()
         localEntriesHash[e.name] = std::move(e);
     }
     _localEntries.clear();
+
+    if (_queryServer == ParentNotChanged) {
+        // fetch all the name from the DB
+        auto pathU8 = _currentFolder.toUtf8();
+        pathU8.chop(1);
+        // FIXME cache, and do that better (a query that do not get stuff recursively)
+        if (!_discoveryData->_statedb->getFilesBelowPath(pathU8, [&](const SyncJournalFileRecord &rec) {
+                if (rec._path.indexOf("/", pathU8.size() + 1) > 0)
+                    return;
+                entriesNames.insert(QString::fromUtf8(rec._path.mid(pathU8.size() + 1)));
+            })) {
+            qFatal("TODO: DB ERROR HANDLING");
+        }
+    }
+
+
     for (const auto &f : entriesNames) {
         QString path = _currentFolder + f;
         if (handleExcluded(path, (localEntriesHash.value(f).isDirectory || serverEntriesHash.value(f).isDirectory)))
@@ -240,6 +256,13 @@ void ProcessDirectoryJob::processFile(const QString &path,
     const LocalInfo &localEntry, const RemoteInfo &serverEntry,
     const SyncJournalFileRecord &dbEntry)
 {
+    qCInfo(lcDisco).nospace() << "Processing " << path
+                              << " | valid: " << dbEntry.isValid() << "/" << localEntry.isValid() << "/" << serverEntry.isValid()
+                              << " | mtime: " << dbEntry._modtime << "/" << localEntry.modtime << "/" << serverEntry.modtime
+                              << " | size: " << dbEntry._fileSize << "/" << localEntry.size << "/" << serverEntry.size
+                              << " | etag: " << dbEntry._etag << "//" << serverEntry.etag
+                              << " | checksum: " << dbEntry._checksumHeader << "//" << serverEntry.checksumHeader;
+
     auto item = SyncFileItem::fromSyncJournalFileRecord(dbEntry);
     item->_file = path;
 
@@ -249,6 +272,7 @@ void ProcessDirectoryJob::processFile(const QString &path,
         item->_fileId = serverEntry.fileId;
         item->_remotePerm = serverEntry.remotePerm;
         item->_type = serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+        item->_etag = serverEntry.etag;
         item->_previousSize = localEntry.size;
         item->_previousModtime = localEntry.modtime;
         if (!dbEntry.isValid()) {
@@ -341,6 +365,7 @@ void ProcessDirectoryJob::processFile(const QString &path,
                     item->_instruction = isConflict ? CSYNC_INSTRUCTION_CONFLICT : CSYNC_INSTRUCTION_UPDATE_METADATA;
                 }
             }
+            item->_direction = item->_instruction == CSYNC_INSTRUCTION_CONFLICT ? SyncFileItem::None : SyncFileItem::Down;
         } else if (!dbEntry.isValid()) {
             item->_instruction = CSYNC_INSTRUCTION_NEW;
             item->_direction = SyncFileItem::Up;
@@ -356,8 +381,8 @@ void ProcessDirectoryJob::processFile(const QString &path,
             item->_checksumHeader.clear();
             item->_size = localEntry.size;
             item->_modtime = localEntry.modtime;
-            item->_previousSize = serverEntry.size;
-            item->_previousModtime = serverEntry.modtime;
+            item->_previousSize = dbEntry._fileSize;
+            item->_previousModtime = dbEntry._modtime;
             _childModified = true;
 
             // Checksum comparison at this stage is only enabled for .eml files,
