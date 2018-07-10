@@ -27,7 +27,7 @@
 #include "propagatedownload.h"
 #include "common/asserts.h"
 #include "configfile.h"
-
+#include "discovery.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -99,15 +99,11 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
     _clearTouchedFilesTimer.setSingleShot(true);
     _clearTouchedFilesTimer.setInterval(30 * 1000);
     connect(&_clearTouchedFilesTimer, &QTimer::timeout, this, &SyncEngine::slotClearTouchedFiles);
-
-    _thread.setObjectName("SyncEngine_Thread");
 }
 
 SyncEngine::~SyncEngine()
 {
     abort();
-    _thread.quit();
-    _thread.wait();
     _excludedFiles.reset();
 }
 
@@ -380,8 +376,9 @@ void SyncEngine::conflictRecordMaintenance()
  *
  * See doc/dev/sync-algorithm.md for an overview.
  */
-int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, bool remote)
+int SyncEngine::treewalkFile(csync_file_stat_t * /*file*/, csync_file_stat_t * /*other*/, bool /*remote*/)
 {
+#if 0 // FIXME adapt
     if (!file)
         return -1;
 
@@ -483,67 +480,19 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         _seenFiles.insert(renameTarget);
     }
 
+
+#if 0
+PORTED
     switch (file->error_status) {
-    case CSYNC_STATUS_OK:
-        break;
+
     case CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK:
         item->_errorString = tr("Symbolic links are not supported in syncing.");
         break;
-    case CSYNC_STATUS_INDIVIDUAL_IGNORE_LIST:
-        item->_errorString = tr("File is listed on the ignore list.");
-        break;
-    case CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS:
-        if (item->_file.endsWith('.')) {
-            item->_errorString = tr("File names ending with a period are not supported on this file system.");
-        } else {
-            char invalid = '\0';
-            foreach (char x, QByteArray("\\:?*\"<>|")) {
-                if (item->_file.contains(x)) {
-                    invalid = x;
-                    break;
-                }
-            }
-            if (invalid) {
-                item->_errorString = tr("File names containing the character '%1' are not supported on this file system.")
-                                         .arg(QLatin1Char(invalid));
-            } else {
-                item->_errorString = tr("The file name is a reserved name on this file system.");
-            }
-        }
-        break;
-    case CSYNC_STATUS_INDIVIDUAL_TRAILING_SPACE:
-        item->_errorString = tr("Filename contains trailing spaces.");
-        break;
-    case CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME:
-        item->_errorString = tr("Filename is too long.");
-        break;
-    case CSYNC_STATUS_INDIVIDUAL_EXCLUDE_HIDDEN:
-        item->_errorString = tr("File/Folder is ignored because it's hidden.");
-        break;
-    case CSYNC_STATUS_INDIVIDUAL_TOO_DEEP:
+
+   case CSYNC_STATUS_INDIVIDUAL_TOO_DEEP:
         item->_errorString = tr("Folder hierarchy is too deep");
         break;
-    case CSYNC_STATUS_INDIVIDUAL_CANNOT_ENCODE:
-        item->_errorString = tr("The filename cannot be encoded on your file system.");
-        break;
-    case CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE:
-        item->_status = SyncFileItem::Conflict;
-        if (account()->capabilities().uploadConflictFiles()) {
-            // For uploaded conflict files, files with no action performed on them should
-            // be displayed: but we mustn't overwrite the instruction if something happens
-            // to the file!
-            if (remote && item->_instruction == CSYNC_INSTRUCTION_NONE) {
-                item->_errorString = tr("Unresolved conflict.");
-                item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-            }
-        } else {
-            item->_errorString = tr("Conflict: Server version downloaded, local copy renamed and not uploaded.");
-        }
-        break;
-    case CSYNC_STATUS_INDIVIDUAL_STAT_FAILED:
-        item->_errorString = tr("Stat failed.");
-        break;
-    case CSYNC_STATUS_SERVICE_UNAVAILABLE:
+   case CSYNC_STATUS_SERVICE_UNAVAILABLE:
         item->_errorString = QLatin1String("Server temporarily unavailable.");
         break;
     case CSYNC_STATUS_STORAGE_UNAVAILABLE:
@@ -560,10 +509,9 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         item->_errorString = QLatin1String("Directory not accessible on client, permission denied.");
         item->_status = SyncFileItem::SoftError;
         break;
-    default:
-        ASSERT(false, "Non handled error-status");
-        /* No error string */
+
     }
+#endif
 
     if (item->_instruction == CSYNC_INSTRUCTION_IGNORE && utf8DecodeError) {
         item->_status = SyncFileItem::NormalError;
@@ -710,14 +658,13 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
 
     _needsUpdate = true;
 
-    if (other) {
-        item->_previousModtime = other->modtime;
-        item->_previousSize = other->size;
-    }
+
 
     slotNewItem(item);
     _syncItemMap.insert(key, item);
     return re;
+#endif
+    return 0;
 }
 
 void SyncEngine::handleSyncError(CSYNC *ctx, const char *state)
@@ -817,7 +764,7 @@ void SyncEngine::startSync()
         qCWarning(lcEngine) << "Could not determine free space available at" << _localPath;
     }
 
-    _syncItemMap.clear();
+    _syncItems.clear();
     _needsUpdate = false;
 
     csync_resume(_csync_ctx.data());
@@ -956,11 +903,31 @@ void SyncEngine::slotStartDiscovery()
     _progressInfo->_status = ProgressInfo::Discovery;
     emit transmissionProgress(*_progressInfo);
 
-    // Usually the discovery runs in the background: We want to avoid
-    // stealing too much time from other processes that the user might
-    // be interacting with at the time.
-    _thread.start(QThread::LowPriority);
+    _propagator = QSharedPointer<OwncloudPropagator>(
+        new OwncloudPropagator(_account, _localPath, _remotePath, _journal));
+    _propagator->setSyncOptions(_syncOptions);
+    connect(_propagator.data(), &OwncloudPropagator::itemCompleted,
+        this, &SyncEngine::slotItemCompleted);
+    connect(_propagator.data(), &OwncloudPropagator::progress,
+        this, &SyncEngine::slotProgress);
+    connect(_propagator.data(), &OwncloudPropagator::finished, this, &SyncEngine::slotFinished, Qt::QueuedConnection);
+    connect(_propagator.data(), &OwncloudPropagator::seenLockedFile, this, &SyncEngine::seenLockedFile);
+    connect(_propagator.data(), &OwncloudPropagator::touchedFile, this, &SyncEngine::slotAddTouchedFile);
+    connect(_propagator.data(), &OwncloudPropagator::insufficientLocalStorage, this, &SyncEngine::slotInsufficientLocalStorage);
+    connect(_propagator.data(), &OwncloudPropagator::insufficientRemoteStorage, this, &SyncEngine::slotInsufficientRemoteStorage);
+    connect(_propagator.data(), &OwncloudPropagator::newItem, this, &SyncEngine::slotNewItem);
 
+
+    auto djob = new ProcessDirectoryJob(SyncFileItemPtr(), ProcessDirectoryJob::NormalQuery, ProcessDirectoryJob::NormalQuery,
+        _propagator.data(), _excludedFiles.data(), this);
+    connect(djob, &ProcessDirectoryJob::finished, this, [this] { slotDiscoveryJobFinished(0); sender()->deleteLater(); });
+    connect(djob, &ProcessDirectoryJob::itemDiscovered, this, [this](const auto &item) {
+        _syncItems.append(item);
+        slotNewItem(item);
+    });
+    djob->start();
+
+    /*
     _discoveryMainThread = new DiscoveryMainThread(account());
     _discoveryMainThread->setParent(this);
     connect(this, &SyncEngine::finished, _discoveryMainThread.data(), &QObject::deleteLater);
@@ -972,7 +939,8 @@ void SyncEngine::slotStartDiscovery()
         connect(_discoveryMainThread.data(), &DiscoveryMainThread::etagConcatenation, this, &SyncEngine::slotRootEtagReceived);
     }
 
-    auto *discoveryJob = new DiscoveryJob(_csync_ctx.data());
+
+    auto *discoveryJob = new Disco(_csync_ctx.data());
     discoveryJob->_selectiveSyncBlackList = selectiveSyncBlackList;
     discoveryJob->_selectiveSyncWhiteList =
         _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);
@@ -985,7 +953,7 @@ void SyncEngine::slotStartDiscovery()
     }
 
     discoveryJob->_syncOptions = _syncOptions;
-    discoveryJob->moveToThread(&_thread);
+
     connect(discoveryJob, &DiscoveryJob::finished, this, &SyncEngine::slotDiscoveryJobFinished);
     connect(discoveryJob, &DiscoveryJob::folderDiscovered,
         this, &SyncEngine::slotFolderDiscovered);
@@ -999,7 +967,7 @@ void SyncEngine::slotStartDiscovery()
     _discoveryMainThread->setupHooks(discoveryJob, _remotePath);
 
     // Starts the update in a seperate thread
-    QMetaObject::invokeMethod(discoveryJob, "start", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(discoveryJob, "start", Qt::QueuedConnection);*/
 }
 
 void SyncEngine::slotFolderDiscovered(bool local, const QString &folder)
@@ -1031,8 +999,8 @@ void SyncEngine::slotNewItem(const SyncFileItemPtr &item)
     _progressInfo->adjustTotalsForFile(*item);
 }
 
-void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
-{
+void SyncEngine::slotDiscoveryJobFinished(int /*discoveryResult*/)
+{ /*
     if (discoveryResult < 0) {
         handleSyncError(_csync_ctx.data(), "csync_update");
         return;
@@ -1155,19 +1123,19 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
             restoreOldFiles(syncItems);
         }
     }
-
+*/
     // Sort items per destination
-    std::sort(syncItems.begin(), syncItems.end());
+    std::sort(_syncItems.begin(), _syncItems.end());
 
     // make sure everything is allowed
-    checkForPermission(syncItems);
+    // TODO checkForPermission(_syncItems);
 
     // Re-init the csync context to free memory
     _csync_ctx->reinitialize();
     _localDiscoveryPaths.clear();
 
     // To announce the beginning of the sync
-    emit aboutToPropagate(syncItems);
+    emit aboutToPropagate(_syncItems);
 
     // it's important to do this before ProgressInfo::start(), to announce start of new sync
     _progressInfo->_status = ProgressInfo::Propagation;
@@ -1189,33 +1157,21 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     // do a database commit
     _journal->commit("post treewalk");
 
-    _propagator = QSharedPointer<OwncloudPropagator>(
-        new OwncloudPropagator(_account, _localPath, _remotePath, _journal));
-    _propagator->setSyncOptions(_syncOptions);
-    connect(_propagator.data(), &OwncloudPropagator::itemCompleted,
-        this, &SyncEngine::slotItemCompleted);
-    connect(_propagator.data(), &OwncloudPropagator::progress,
-        this, &SyncEngine::slotProgress);
-    connect(_propagator.data(), &OwncloudPropagator::finished, this, &SyncEngine::slotFinished, Qt::QueuedConnection);
-    connect(_propagator.data(), &OwncloudPropagator::seenLockedFile, this, &SyncEngine::seenLockedFile);
-    connect(_propagator.data(), &OwncloudPropagator::touchedFile, this, &SyncEngine::slotAddTouchedFile);
-    connect(_propagator.data(), &OwncloudPropagator::insufficientLocalStorage, this, &SyncEngine::slotInsufficientLocalStorage);
-    connect(_propagator.data(), &OwncloudPropagator::insufficientRemoteStorage, this, &SyncEngine::slotInsufficientRemoteStorage);
-    connect(_propagator.data(), &OwncloudPropagator::newItem, this, &SyncEngine::slotNewItem);
 
     // apply the network limits to the propagator
     setNetworkLimits(_uploadLimit, _downloadLimit);
 
-    deleteStaleDownloadInfos(syncItems);
-    deleteStaleUploadInfos(syncItems);
-    deleteStaleErrorBlacklistEntries(syncItems);
+    deleteStaleDownloadInfos(_syncItems);
+    deleteStaleUploadInfos(_syncItems);
+    deleteStaleErrorBlacklistEntries(_syncItems);
     _journal->commit("post stale entry removal");
 
     // Emit the started signal only after the propagator has been set up.
     if (_needsUpdate)
         emit(started());
 
-    _propagator->start(syncItems);
+    _propagator->start(_syncItems);
+    _syncItems.clear();
 
     qCInfo(lcEngine) << "#### Post-Reconcile end #################################################### " << _stopWatch.addLapTime(QLatin1String("Post-Reconcile Finished")) << "ms";
 }
@@ -1263,6 +1219,8 @@ void SyncEngine::slotFinished(bool success)
         _anotherSyncNeeded = ImmediateFollowUp;
     }
 
+#if 0
+    FIXME
     if (success) {
         _journal->setDataFingerprint(_discoveryMainThread->_dataFingerprint);
     }
@@ -1270,6 +1228,7 @@ void SyncEngine::slotFinished(bool success)
     if (!_journal->postSyncCleanup(_seenFiles, _temporarilyUnavailablePaths)) {
         qCDebug(lcEngine) << "Cleaning of synced ";
     }
+#endif
 
     conflictRecordMaintenance();
 
@@ -1287,9 +1246,6 @@ void SyncEngine::slotFinished(bool success)
 
 void SyncEngine::finalize(bool success)
 {
-    _thread.quit();
-    _thread.wait();
-
     _csync_ctx->reinitialize();
     _journal->close();
 
