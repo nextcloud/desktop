@@ -256,26 +256,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
               (!_csync_mtime_equal(fs->modtime, base._modtime)
                // zero size in statedb can happen during migration
                || (base._fileSize != 0 && fs->size != base._fileSize))) {
-
-          // Checksum comparison at this stage is only enabled for .eml files,
-          // check #4754 #4755
-          bool isEmlFile = csync_fnmatch("*.eml", fs->path, FNM_CASEFOLD) == 0;
-          if (isEmlFile && fs->size == base._fileSize && !base._checksumHeader.isEmpty()) {
-              if (ctx->callbacks.checksum_hook) {
-                  fs->checksumHeader = ctx->callbacks.checksum_hook(
-                      _rel_to_abs(ctx, fs->path), base._checksumHeader,
-                      ctx->callbacks.checksum_userdata);
-              }
-              bool checksumIdentical = false;
-              if (!fs->checksumHeader.isEmpty()) {
-                  checksumIdentical = fs->checksumHeader == base._checksumHeader;
-              }
-              if (checksumIdentical) {
-                  qCDebug(lcUpdate, "NOTE: Checksums are identical, file did not actually change: %s", fs->path.constData());
-                  fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-                  goto out;
-              }
-          }
+          // PORTED: EML
 
           // Preserve the EVAL flag later on if the type has changed.
           if (base._type != fs->type) {

@@ -21,6 +21,7 @@
 #include <set>
 #include <QDirIterator>
 #include "vio/csync_vio_local.h"
+#include "common/checksums.h"
 
 namespace OCC {
 
@@ -282,6 +283,7 @@ void ProcessDirectoryJob::processFile(const QString &path,
             item->_instruction = CSYNC_INSTRUCTION_NEW;
             item->_direction = SyncFileItem::Up;
             // TODO! rename;
+            item->_checksumHeader.clear();
             item->_size = localEntry.size;
             item->_modtime = localEntry.modtime;
             item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
@@ -289,11 +291,30 @@ void ProcessDirectoryJob::processFile(const QString &path,
         } else {
             item->_instruction = CSYNC_INSTRUCTION_SYNC;
             item->_direction = SyncFileItem::Up;
+            item->_checksumHeader.clear();
             item->_size = localEntry.size;
             item->_modtime = localEntry.modtime;
             item->_previousSize = serverEntry.size;
             item->_previousModtime = serverEntry.modtime;
             _childModified = true;
+
+            // Checksum comparison at this stage is only enabled for .eml files,
+            // check #4754 #4755
+            bool isEmlFile = path.endsWith(QLatin1String(".eml"), Qt::CaseInsensitive);
+            if (isEmlFile && dbEntry._fileSize == localEntry.size && !dbEntry._checksumHeader.isEmpty()) {
+                QByteArray type = parseChecksumHeaderType(dbEntry._checksumHeader);
+                if (!type.isEmpty()) {
+                    // TODO: compute async?
+                    QByteArray checksum = ComputeChecksum::computeNow(_propagator->_localDir + path, type);
+                    if (!checksum.isEmpty()) {
+                        item->_checksumHeader = makeChecksumHeader(type, checksum);
+                        if (item->_checksumHeader == dbEntry._checksumHeader) {
+                            qCDebug(lcDisco) << "NOTE: Checksums are identical, file did not actually change: " << path;
+                            item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+                        }
+                    }
+                }
+            }
         }
     } else if (!serverModified) {
         item->_instruction = CSYNC_INSTRUCTION_REMOVE;
@@ -311,7 +332,8 @@ void ProcessDirectoryJob::processFile(const QString &path,
         connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
         _queuedJobs.push_back(job);
     } else {
-        emit itemDiscovered(item);
+        if (item->_instruction != CSYNC_INSTRUCTION_NONE)
+            emit itemDiscovered(item);
     }
 }
 
