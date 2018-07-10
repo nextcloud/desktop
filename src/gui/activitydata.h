@@ -55,6 +55,7 @@ public:
 
     Type _type;
     qlonglong _id;
+    QString _object_type;
     QString _subject;
     QString _message;
     QString _file;

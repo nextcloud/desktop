@@ -108,6 +108,10 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         a._type = Activity::NotificationType;
         a._accName = ai->account()->displayName();
         a._id = json.value("notification_id").toInt();
+
+        //need to know, specially for remote_share
+        a._object_type = json.value("object_type").toString();
+
         a._subject = json.value("subject").toString();
         a._message = json.value("message").toString();
 
@@ -117,15 +121,14 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
             connect(iconJob, &IconJob::jobFinished, this, &ServerNotificationHandler::slotIconDownloaded);
         }
 
-        QString s = json.value("link").toString();
-        if (!s.isEmpty()) {
-            QUrl link(s);
+        QUrl link(json.value("link").toString());
+        if (!link.isEmpty()) {
             if(link.host().isEmpty()){
                 link.setScheme(ai->account()->url().scheme());
                 link.setHost(ai->account()->url().host());
             }
-            a._link = link;
         }
+        a._link = link;
         a._dateTime = QDateTime::fromString(json.value("datetime").toString(), Qt::ISODate);
 
         auto actions = json.value("actions").toArray();

@@ -106,6 +106,9 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         } else return QIcon(QLatin1String(":/client/resources/activity.png"));
         return QVariant();
         break;
+    case ActivityItemDelegate::ObjectTypeRole:
+        return a._object_type;
+        break;
     case ActivityItemDelegate::ActionRole:{
         QVariant type;
         type.setValue(a._type);
@@ -164,7 +167,7 @@ void ActivityListModel::startFetchJob()
     if (!_accountState->isConnected()) {
         return;
     }
-    JsonApiJob *job = new JsonApiJob(_accountState->account(), QLatin1String("ocs/v1.php/cloud/activity"), this);
+    JsonApiJob *job = new JsonApiJob(_accountState->account(), QLatin1String("ocs/v2.php/cloud/activity"), this);
     QObject::connect(job, &JsonApiJob::jsonReceived,
         this, &ActivityListModel::slotActivitiesReceived);
     job->setProperty("AccountStatePtr", QVariant::fromValue<QPointer<AccountState>>(_accountState));
@@ -197,6 +200,7 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
         a._type = Activity::ActivityType;
         a._accName = ast->account()->displayName();
         a._id = json.value("id").toInt();
+        a._object_type = "";
         a._subject = json.value("subject").toString();
         a._message = json.value("message").toString();
         a._file = json.value("file").toString();
