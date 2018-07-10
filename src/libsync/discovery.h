@@ -23,7 +23,6 @@ class ExcludedFiles;
 
 namespace OCC {
 class SyncJournalDb;
-class OwncloudPropagator;
 
 enum ErrorTag { Error };
 
@@ -70,7 +69,6 @@ public:
     }
 };
 
-
 struct RemoteInfo
 {
     QString name;
@@ -113,25 +111,27 @@ class ProcessDirectoryJob : public QObject
 public:
     enum QueryMode { NormalQuery,
         ParentDontExist,
-        ParentNotChanged };
+        ParentNotChanged,
+        InBlackList };
     explicit ProcessDirectoryJob(const SyncFileItemPtr &dirItem, QueryMode queryServer, QueryMode queryLocal,
-        OwncloudPropagator *propagator, ExcludedFiles *excludes, QObject *parent)
+        const QSharedPointer<const DiscoveryPhase> &data, QObject *parent)
         : QObject(parent)
         , _dirItem(dirItem)
         , _queryServer(queryServer)
         , _queryLocal(queryLocal)
-        , _propagator(propagator)
-        , _excludes(excludes)
+        , _discoveryData(data)
         , _currentFolder(dirItem ? dirItem->_file : QString())
     {
     }
     void start();
+    void abort();
 
 private:
     void process();
     // return true if the file is excluded
     bool handleExcluded(const QString &path, bool isDirectory);
     void processFile(const QString &, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
+    void processBlacklisted(const QString &path, const LocalInfo &, const SyncJournalFileRecord &);
     void subJobFinished();
     void progress();
 
@@ -146,11 +146,10 @@ private:
     SyncFileItemPtr _dirItem;
     QueryMode _queryServer;
     QueryMode _queryLocal;
-    OwncloudPropagator *_propagator; // FIXME: remove this. We need that for the account and local/remote path only.
-    ExcludedFiles *_excludes; // FIXME: Move also in the replacement of the propagator
+    QSharedPointer<const DiscoveryPhase> _discoveryData;
     QString _currentFolder;
-    bool _childModified = false;
-    bool _childIgnored = false;
+    bool _childModified = false; // the directory contains modified item what would prevent deletion
+    bool _childIgnored = false; // The directory contains ignored item that would prevent deletion
 
 signals:
     void itemDiscovered(const SyncFileItemPtr &item);
