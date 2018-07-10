@@ -251,10 +251,8 @@ void SettingsDialog::accountAdded(AccountState *s)
     connect(s->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
     connect(s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
 
-    // Refresh immediatly when getting online (?)
+    // Refresh immediatly when getting online
     connect(s, &AccountState::isConnectedChanged, this, &SettingsDialog::slotRefreshActivityAccountStateSender);
-
-    //slotRefreshActivity(s);
 
     activityAdded(s);
     slotRefreshActivity(s);
