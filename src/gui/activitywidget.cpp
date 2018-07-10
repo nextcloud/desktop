@@ -48,6 +48,9 @@
 
 namespace OCC {
 
+const QString ActivityWidget::_accept(tr("Accept"));
+const QString ActivityWidget::_remote_share("remote_share");
+
 ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::ActivityWidget)
@@ -185,10 +188,10 @@ void ActivityWidget::slotPrimaryButtonClickedOnListView(const QModelIndex &index
     if(!link.isEmpty()){
         qCWarning(lcActivity) << "Opening" << link.toString() <<  "in browser for Notification/Activity" << qvariant_cast<QString>(index.data(ActivityItemDelegate::ActionTextRole));
         Utility::openBrowser(link, this);
-    } else if(objectType == "remote_share"){
+    } else if(objectType == _remote_share){
         QVariant customItem = index.data(ActivityItemDelegate::ActionsLinksRole).toList().first();
         ActivityLink actionLink = qvariant_cast<ActivityLink>(customItem);
-        if(actionLink._label == "Accept"){
+        if(actionLink._label == _accept){
             qCWarning(lcActivity) << objectType <<  "action" << actionLink._label << "for" << qvariant_cast<QString>(index.data(ActivityItemDelegate::ActionTextRole));
             const QString accountName = index.data(ActivityItemDelegate::AccountRole).toString();
             slotSendNotificationRequest(accountName, actionLink._link, actionLink._verb, index.row());
@@ -207,7 +210,7 @@ void ActivityWidget::slotSecondaryButtonClickedOnListView(const QModelIndex &ind
         actionLinks << qvariant_cast<ActivityLink>(customItem);
     }
 
-    if(objectType == "remote_share" && actionLinks.first()._label == "Accept")
+    if(objectType == _remote_share && actionLinks.first()._label == _accept)
         actionLinks.removeFirst();
 
     if(qvariant_cast<Activity::Type>(index.data(ActivityItemDelegate::ActionRole)) == Activity::Type::NotificationType){

@@ -35,7 +35,8 @@ int ActivityItemDelegate::_secondaryButtonWidth = 0;
 int ActivityItemDelegate::_spaceBetweenButtons = 0;
 int ActivityItemDelegate::_timeWidth = 0;
 int ActivityItemDelegate::_buttonHeight = 0;
-QString ActivityItemDelegate::_remote_share("remote_share");
+const QString ActivityItemDelegate::_remote_share("remote_share");
+const QString ActivityItemDelegate::_call("call");
 
 int ActivityItemDelegate::iconHeight()
 {
@@ -164,6 +165,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         // Primary button will be 'More Information' or 'Accept'
         primaryButton.text = tr("More information");
         if(objectType == _remote_share) primaryButton.text = tr("Accept");
+        if(objectType == _call) primaryButton.text = tr("Join");
 
         primaryButton.rect.setLeft(left - margin * 2 - fm.width(primaryButton.text));
 
