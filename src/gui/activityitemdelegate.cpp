@@ -171,9 +171,9 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         // save info to be able to filter mouse clicks
         _buttonHeight = buttonSize;
-        _spaceBetweenButtons = leftMargin;
         _primaryButtonWidth = primaryButton.rect.size().width();
         _secondaryButtonWidth = secondaryButton.rect.size().width();
+        _spaceBetweenButtons = secondaryButton.rect.left() - primaryButton.rect.right();
 
     } else if(activityType == Activity::Type::ErrorType){
 
@@ -187,11 +187,12 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
         // save info to be able to filter mouse clicks
         _buttonHeight = buttonSize;
-        _spaceBetweenButtons = leftMargin;
         _primaryButtonWidth = primaryButton.rect.size().width();
         _secondaryButtonWidth = secondaryButton.rect.size().width();
+        _spaceBetweenButtons = secondaryButton.rect.left() - primaryButton.rect.right();
+
     } else {
-        _spaceBetweenButtons = margin * offset;
+        _spaceBetweenButtons = leftMargin;
         _primaryButtonWidth = 0;
         _secondaryButtonWidth = 0;
     }
