@@ -38,7 +38,7 @@ Request](https://github.com/nextcloud/client/pulls).
 
 If you want to contact us, e.g. before starting a more complex feature, for questions :question:
 you can join us at
-[#nextcloud-client](irc://irc.freenode.net/#nextcloud-client).
+[#nextcloud-client](https://webchat.freenode.net/?channels=nextcloud-client).
 
 ## :v: Code of conduct
 
