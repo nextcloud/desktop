@@ -18,6 +18,7 @@
 #include "folderstatusmodel.h"
 #include "folderman.h"
 #include "accountstate.h"
+#include "activitydata.h"
 #include <theme.h>
 #include <account.h>
 
@@ -29,6 +30,13 @@ namespace OCC {
 
 int ActivityItemDelegate::_iconHeight = 0;
 int ActivityItemDelegate::_margin = 0;
+int ActivityItemDelegate::_primaryButtonWidth = 0;
+int ActivityItemDelegate::_secondaryButtonWidth = 0;
+int ActivityItemDelegate::_spaceBetweenButtons = 0;
+int ActivityItemDelegate::_timeWidth = 0;
+int ActivityItemDelegate::_buttonHeight = 0;
+const QString ActivityItemDelegate::_remote_share("remote_share");
+const QString ActivityItemDelegate::_call("call");
 
 int ActivityItemDelegate::iconHeight()
 {
@@ -51,9 +59,9 @@ int ActivityItemDelegate::rowHeight()
         QFont f = opt.font;
         QFontMetrics fm(f);
 
-        _margin = fm.height() / 4;
+        _margin = fm.height() / 2;
     }
-    return iconHeight() + 2 * _margin;
+    return iconHeight() + 5 * _margin;
 }
 
 QSize ActivityItemDelegate::sizeHint(const QStyleOptionViewItem &option,
@@ -68,95 +76,222 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     const QModelIndex &index) const
 {
     QStyledItemDelegate::paint(painter, option, index);
-
     QFont font = option.font;
-
     QFontMetrics fm(font);
-    int margin = fm.height() / 4;
-
+    int margin = fm.height() / 2.5;
     painter->save();
+    int iconSize = 16;
+    int iconOffset = qRound(fm.height() / 4.0 * 7.0);
+    int offset = 4;
 
+    // get the data
+    Activity::Type activityType = qvariant_cast<Activity::Type>(index.data(ActionRole));
     QIcon actionIcon = qvariant_cast<QIcon>(index.data(ActionIconRole));
-    QIcon userIcon = qvariant_cast<QIcon>(index.data(UserIconRole));
+    QString objectType = qvariant_cast<QString>(index.data(ObjectTypeRole));
     QString actionText = qvariant_cast<QString>(index.data(ActionTextRole));
-    QString pathText = qvariant_cast<QString>(index.data(PathRole));
-
-    QString remoteLink = qvariant_cast<QString>(index.data(LinkRole));
+    QString messageText = qvariant_cast<QString>(index.data(MessageRole));
+    QList<QVariant> customList = index.data(ActionsLinksRole).toList();
     QString timeText = qvariant_cast<QString>(index.data(PointInTimeRole));
-    QString accountRole = qvariant_cast<QString>(index.data(AccountRole));
     bool accountOnline = qvariant_cast<bool>(index.data(AccountConnectedRole));
 
+    // activity/notification icons
     QRect actionIconRect = option.rect;
-    QRect userIconRect = option.rect;
+    actionIconRect.setLeft(option.rect.left() + iconOffset/3);
+    actionIconRect.setRight(option.rect.left() + iconOffset);
+    actionIconRect.setTop(option.rect.top() + qRound((option.rect.height() - 16)/3.0));
 
-    int iconHeight = qRound(fm.height() / 5.0 * 8.0);
-    int iconWidth = iconHeight;
+    // subject text rect
+    QRect actionTextBox = actionIconRect;
+    int actionTextBoxWidth = fm.width(actionText);
+    actionTextBox.setTop(option.rect.top() + margin + offset/2);
+    actionTextBox.setHeight(fm.height());
+    actionTextBox.setLeft(actionIconRect.right() + margin);
+    actionTextBox.setRight(actionTextBox.left() + actionTextBoxWidth + margin);
 
-    actionIconRect.setLeft(option.rect.left() + margin);
-    actionIconRect.setWidth(iconWidth);
-    actionIconRect.setHeight(iconHeight);
-    actionIconRect.setTop(actionIconRect.top() + margin);
-    userIconRect.setLeft(actionIconRect.right() + margin);
-    userIconRect.setWidth(iconWidth);
-    userIconRect.setHeight(iconHeight);
-    userIconRect.setTop(actionIconRect.top());
+    // message text rect
+    QRect messageTextBox = actionTextBox;
+    messageTextBox.setTop(option.rect.top() + fm.height() + margin);
+    messageTextBox.setHeight(actionTextBox.height());
+    messageTextBox.setBottom(messageTextBox.top() + fm.height());
+    if(messageText.isEmpty()){
+        messageTextBox.setHeight(0);
+        messageTextBox.setBottom(messageTextBox.top());
+    }
 
-    int textTopOffset = qRound((iconHeight - fm.height()) / 2.0);
-    // time rect
-    QRect timeBox;
-    int timeBoxWidth = fm.boundingRect(QLatin1String("4 hour(s) ago on longlongdomain.org")).width(); // FIXME.
-    timeBox.setTop(actionIconRect.top() + textTopOffset);
-    timeBox.setLeft(option.rect.right() - timeBoxWidth - margin);
-    timeBox.setWidth(timeBoxWidth);
-    timeBox.setHeight(fm.height());
+    // time box rect
+    QRect timeBox = messageTextBox;
+    QString timeStr = tr("%1").arg(timeText);
+    timeBox.setTop(option.rect.top() + fm.height() + fm.height() + margin + offset/2);
+    timeBox.setHeight(actionTextBox.height());
+    timeBox.setBottom(timeBox.top() + fm.height());
 
-    QRect actionTextBox = timeBox;
-    actionTextBox.setLeft(userIconRect.right() + margin);
-    actionTextBox.setRight(timeBox.left() - margin);
+    // buttons - default values
+    int rightMargin = margin;
+    int leftMargin = margin * offset;
+    int top = option.rect.top() + margin;
+    int buttonSize = option.rect.height()/2;
+    int right = option.rect.right() - rightMargin;
+    int left = right - buttonSize;
 
-    /* === start drawing === */
-    QPixmap pm = actionIcon.pixmap(iconWidth, iconHeight, QIcon::Normal);
+    QStyleOptionButton secondaryButton;
+    secondaryButton.rect = option.rect;
+    secondaryButton.features |= QStyleOptionButton::Flat;
+    secondaryButton.state |= QStyle::State_None;
+    secondaryButton.rect.setLeft(left);
+    secondaryButton.rect.setRight(right);
+    secondaryButton.rect.setTop(top + margin);
+    secondaryButton.rect.setHeight(iconSize);
+
+    QStyleOptionButton primaryButton;
+    primaryButton.rect = option.rect;
+    primaryButton.features |= QStyleOptionButton::DefaultButton;
+    primaryButton.state |= QStyle::State_Raised;
+    primaryButton.rect.setTop(top);
+    primaryButton.rect.setHeight(buttonSize);
+
+    right = secondaryButton.rect.left() - rightMargin;
+    left = secondaryButton.rect.left() - leftMargin;
+
+    primaryButton.rect.setRight(right);
+
+    if(activityType == Activity::Type::NotificationType){
+
+        // Secondary will be 'Dismiss' or '...' multiple options button
+        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/dialog-close.png"));
+        if(customList.size() > 1)
+            secondaryButton.icon = QIcon(QLatin1String(":/client/resources/more.svg"));
+        secondaryButton.iconSize = QSize(iconSize, iconSize);
+
+        // Primary button will be 'More Information' or 'Accept'
+        primaryButton.text = tr("More information");
+        if(objectType == _remote_share) primaryButton.text = tr("Accept");
+        if(objectType == _call) primaryButton.text = tr("Join");
+
+        primaryButton.rect.setLeft(left - margin * 2 - fm.width(primaryButton.text));
+
+        // save info to be able to filter mouse clicks
+        _buttonHeight = buttonSize;
+        _spaceBetweenButtons = leftMargin;
+        _primaryButtonWidth = primaryButton.rect.size().width();
+        _secondaryButtonWidth = secondaryButton.rect.size().width();
+
+    } else if(activityType == Activity::Type::ErrorType){
+
+        // Secondary will be 'open file manager' with the folder icon
+        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/folder-grey.png"));
+        secondaryButton.iconSize = QSize(iconSize, iconSize);
+
+        // Primary button will be 'open browser'
+        primaryButton.text = tr("Open Browser");
+        primaryButton.rect.setLeft(left - margin * 2 - fm.width(primaryButton.text));
+
+        // save info to be able to filter mouse clicks
+        _buttonHeight = buttonSize;
+        _spaceBetweenButtons = leftMargin;
+        _primaryButtonWidth = primaryButton.rect.size().width();
+        _secondaryButtonWidth = secondaryButton.rect.size().width();
+    } else {
+        _spaceBetweenButtons = margin * offset;
+        _primaryButtonWidth = 0;
+        _secondaryButtonWidth = 0;
+    }
+
+    // draw the icon
+    QPixmap pm = actionIcon.pixmap(iconSize, iconSize, QIcon::Normal);
     painter->drawPixmap(QPoint(actionIconRect.left(), actionIconRect.top()), pm);
 
-    pm = userIcon.pixmap(iconWidth, iconHeight, QIcon::Normal);
-    painter->drawPixmap(QPoint(userIconRect.left(), userIconRect.top()), pm);
+    // change pen color if use is not online
+    QPalette p = option.palette;
+    if(!accountOnline)
+        painter->setPen(p.color(QPalette::Disabled, QPalette::Text));
 
+    // change pen color if the line is selected
     QPalette::ColorGroup cg = option.state & QStyle::State_Enabled
         ? QPalette::Normal
         : QPalette::Disabled;
     if (cg == QPalette::Normal && !(option.state & QStyle::State_Active))
         cg = QPalette::Inactive;
-    if (option.state & QStyle::State_Selected) {
-        painter->setPen(option.palette.color(cg, QPalette::HighlightedText));
-    } else {
-        painter->setPen(option.palette.color(cg, QPalette::Text));
-    }
 
-    const QString elidedAction = fm.elidedText(actionText, Qt::ElideRight, actionTextBox.width());
+    if (option.state & QStyle::State_Selected)
+        painter->setPen(option.palette.color(cg, QPalette::HighlightedText));
+    else
+        painter->setPen(option.palette.color(cg, QPalette::Text));
+
+    // calculate space for text - use the max possible before using the elipses
+    int spaceLeftForText = option.rect.width() - (actionIconRect.width() + margin) -
+                             (_primaryButtonWidth + _secondaryButtonWidth + _spaceBetweenButtons);
+
+    // draw the subject
+    const QString elidedAction = fm.elidedText(actionText, Qt::ElideRight, spaceLeftForText);
     painter->drawText(actionTextBox, elidedAction);
 
-    int atPos = accountRole.indexOf(QLatin1Char('@'));
-    if (atPos > -1) {
-        accountRole.remove(0, atPos + 1);
+    // draw the buttons
+    if(activityType == Activity::Type::NotificationType || activityType == Activity::Type::ErrorType){
+        QApplication::style()->drawControl(QStyle::CE_PushButton, &primaryButton, painter);
+        QApplication::style()->drawControl(QStyle::CE_PushButton, &secondaryButton, painter);
     }
 
-    QString timeStr;
-    if (accountOnline) {
-        timeStr = tr("%1 on %2").arg(timeText, accountRole);
-    } else {
-        timeStr = tr("%1 on %2 (disconnected)").arg(timeText, accountRole);
-        QPalette p = option.palette;
-        painter->setPen(p.color(QPalette::Disabled, QPalette::Text));
-    }
-    const QString elidedTime = fm.elidedText(timeStr, Qt::ElideRight, timeBox.width());
+    // draw the message
+    // change pen color for the message
+    if(!messageText.isEmpty()){
+        painter->setPen(p.color(QPalette::Inactive, QPalette::Text));
 
+        // check if line is selected
+        if (option.state & QStyle::State_Selected)
+            painter->setPen(option.palette.color(cg, QPalette::HighlightedText));
+
+        const QString elidedMessage = fm.elidedText(messageText, Qt::ElideRight, spaceLeftForText);
+        painter->drawText(messageTextBox, elidedMessage);
+    }
+
+    // change pen color for the time
+    painter->setPen(p.color(QPalette::Disabled, QPalette::Text));
+
+    // check if line is selected
+    if (option.state & QStyle::State_Selected)
+        painter->setPen(option.palette.color(cg, QPalette::HighlightedText));
+
+    // draw the time
+    const QString elidedTime = fm.elidedText(timeStr, Qt::ElideRight, spaceLeftForText);
     painter->drawText(timeBox, elidedTime);
+
     painter->restore();
 }
 
 bool ActivityItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
     const QStyleOptionViewItem &option, const QModelIndex &index)
 {
+    if(qvariant_cast<Activity::Type>(index.data(ActionRole)) == Activity::Type::NotificationType
+            || qvariant_cast<Activity::Type>(index.data(ActionRole)) == Activity::Type::ErrorType){
+        if (event->type() == QEvent::MouseButtonRelease){
+            QMouseEvent *mouseEvent = (QMouseEvent*)event;
+            if(mouseEvent){
+                int mouseEventX = mouseEvent->x();
+                int mouseEventY = mouseEvent->y();
+                int buttonsWidth = _primaryButtonWidth + _spaceBetweenButtons + _secondaryButtonWidth;
+                int x = option.rect.left() + option.rect.width() - buttonsWidth - _timeWidth;
+                int y = option.rect.top();
+
+                // clickable area for ...
+                if (mouseEventX > x && mouseEventX < x + buttonsWidth){
+                    if(mouseEventY > y && mouseEventY < y + _buttonHeight){
+
+                        // ...primary button ('more information' or 'accept' on notifications or 'open browser' on errors)
+                        if (mouseEventX > x && mouseEventX < x + _primaryButtonWidth){
+                            emit primaryButtonClickedOnItemView(index);
+
+                        // ...secondary button ('dismiss' on notifications or 'open file manager' on errors)
+                        } else  {
+                            x += _primaryButtonWidth + _spaceBetweenButtons;
+                            if (mouseEventX > x && mouseEventX < x + _secondaryButtonWidth)
+                                emit secondaryButtonClickedOnItemView(index);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 

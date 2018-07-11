@@ -25,6 +25,7 @@
 #include "owncloudgui.h"
 #include "account.h"
 #include "activitydata.h"
+#include "accountmanager.h"
 
 #include "ui_activitywidget.h"
 
@@ -35,8 +36,6 @@ namespace OCC {
 
 class Account;
 class AccountStatusPtr;
-class ProtocolWidget;
-class IssuesWidget;
 class JsonApiJob;
 class NotificationWidget;
 class ActivityListModel;
@@ -58,7 +57,7 @@ class ActivityWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ActivityWidget(QWidget *parent = 0);
+    explicit ActivityWidget(AccountState *accountState, QWidget *parent = 0);
     ~ActivityWidget();
     QSize sizeHint() const Q_DECL_OVERRIDE { return ownCloudGui::settingsDialogSize(); }
     void storeActivityList(QTextStream &ts);
@@ -73,27 +72,33 @@ public:
 
 public slots:
     void slotOpenFile(QModelIndex indx);
-    void slotRefreshActivities(AccountState *ptr);
-    void slotRefreshNotifications(AccountState *ptr);
-    void slotRemoveAccount(AccountState *ptr);
-    void slotAccountActivityStatus(AccountState *ast, int statusCode);
+    void slotRefreshActivities();
+    void slotRefreshNotifications();
+    void slotRemoveAccount();
+    void slotAccountActivityStatus(int statusCode);
     void slotRequestCleanupAndBlacklist(const Activity &blacklistActivity);
+    void addError(const QString &folderAlias, const QString &message, ErrorCategory category);
+    //void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
+    void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
 
 signals:
     void guiLog(const QString &, const QString &);
     void copyToClipboard();
     void rowsInserted();
     void hideActivityTab(bool);
-    void newNotification();
+    void sendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
 
 private slots:
     void slotBuildNotificationDisplay(const ActivityList &list);
-    void slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb);
+    void slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
     void slotNotifyNetworkError(QNetworkReply *);
     void slotNotifyServerFinished(const QString &reply, int replyCode);
     void endNotificationRequest(NotificationWidget *widget, int replyCode);
     void scheduleWidgetToRemove(NotificationWidget *widget, int milliseconds = 100);
     void slotCheckToCleanWidgets();
+    void slotNotificationRequestFinished(int statusCode);
+    void slotPrimaryButtonClickedOnListView(const QModelIndex &index);
+    void slotSecondaryButtonClickedOnListView(const QModelIndex &index);
 
 private:
     void showLabels();
@@ -116,6 +121,10 @@ private:
 
     ActivityListModel *_model;
     QVBoxLayout *_notificationsLayout;
+
+    AccountState *_accountState;
+    static const QString _accept;
+    static const QString _remote_share;
 };
 
 
@@ -130,24 +139,20 @@ class ActivitySettings : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ActivitySettings(QWidget *parent = 0);
+    explicit ActivitySettings(AccountState *accountState, QWidget *parent = 0);
+
     ~ActivitySettings();
     QSize sizeHint() const Q_DECL_OVERRIDE { return ownCloudGui::settingsDialogSize(); }
 
 public slots:
-    void slotRefresh(AccountState *ptr);
-    void slotRemoveAccount(AccountState *ptr);
-
+    void slotRefresh();
+    void slotRemoveAccount();
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
-
-    void slotShowIssuesTab(const QString &folderAlias);
 
 private slots:
     void slotCopyToClipboard();
-    void setActivityTabHidden(bool hidden);
     void slotRegularNotificationCheck();
-    void slotShowIssueItemCount(int cnt);
-    void slotShowActivityTab();
+    void slotDisplayActivities();
 
 signals:
     void guiLog(const QString &, const QString &);
@@ -155,17 +160,13 @@ signals:
 private:
     bool event(QEvent *e) Q_DECL_OVERRIDE;
 
-    QTabWidget *_tab;
-    int _activityTabId;
-    int _protocolTabId;
-    int _syncIssueTabId;
-
     ActivityWidget *_activityWidget;
-    ProtocolWidget *_protocolWidget;
-    IssuesWidget *_issuesWidget;
     QProgressIndicator *_progressIndicator;
+    QVBoxLayout *_vbox;
     QTimer _notificationCheckTimer;
     QHash<AccountState *, QElapsedTimer> _timeSinceLastCheck;
+
+    AccountState *_accountState;
 };
 }
 #endif // ActivityWIDGET_H

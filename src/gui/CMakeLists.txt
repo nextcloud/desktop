@@ -22,8 +22,6 @@ set(client_UI_SRCS
     generalsettings.ui
     ignorelisteditor.ui
     networksettings.ui
-    protocolwidget.ui
-    issueswidget.ui
     activitywidget.ui
     synclogdialog.ui
     settingsdialog.ui
@@ -70,8 +68,6 @@ set(client_SRCS
     openfilemanager.cpp
     owncloudgui.cpp
     owncloudsetupwizard.cpp
-    protocolwidget.cpp
-    issueswidget.cpp
     activitydata.cpp
     activitylistmodel.cpp
     activitywidget.cpp
@@ -102,6 +98,7 @@ set(client_SRCS
     servernotificationhandler.cpp
     guiutility.cpp
     elidedlabel.cpp
+    iconjob.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/oauth.cpp

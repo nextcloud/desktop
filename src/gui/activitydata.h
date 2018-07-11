@@ -16,6 +16,7 @@
 #define ACTIVITYDATA_H
 
 #include <QtCore>
+#include <QIcon>
 
 namespace OCC {
 /**
@@ -48,17 +49,20 @@ public:
 
     enum Type {
         ActivityType,
-        NotificationType
+        NotificationType,
+        ErrorType
     };
 
     Type _type;
     qlonglong _id;
+    QString _object_type;
     QString _subject;
     QString _message;
     QString _file;
     QUrl _link;
     QDateTime _dateTime;
     QString _accName;
+    int _status;
 
     QVector<ActivityLink> _links;
     /**
@@ -84,5 +88,8 @@ bool operator<(const Activity &rhs, const Activity &lhs);
 
 typedef QList<Activity> ActivityList;
 }
+
+Q_DECLARE_METATYPE(OCC::Activity::Type)
+Q_DECLARE_METATYPE(OCC::ActivityLink)
 
 #endif // ACTIVITYDATA_H

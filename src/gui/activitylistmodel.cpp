@@ -29,18 +29,27 @@
 #include "activitydata.h"
 #include "activitylistmodel.h"
 
+#include "theme.h"
+
+#include "servernotificationhandler.h"
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcActivity, "nextcloud.gui.activity", QtInfoMsg)
 
-ActivityListModel::ActivityListModel(QWidget *parent)
+ActivityListModel::ActivityListModel(AccountState *accountState, QWidget *parent)
     : QAbstractListModel(parent)
+    , _accountState(accountState)
 {
 }
 
 QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 {
     Activity a;
+
+    // filter the get action here
+    // send only the text of the get action
+    // if there is more than one send the icon? the ...
 
     if (!index.isValid())
         return QVariant();
@@ -66,15 +75,52 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         }
         return QVariant();
         break;
+     case ActivityItemDelegate::ActionsLinksRole:{
+        QList<QVariant> customList;
+        foreach (ActivityLink customItem, a._links) {
+            QVariant customVariant;
+            customVariant.setValue(customItem);
+            customList << customVariant;
+        }
+        return customList;
+        break;
+    }
     case ActivityItemDelegate::ActionIconRole:
-        return QVariant(); // FIXME once the action can be quantified, display on Icon
+        if(a._type == Activity::NotificationType){
+           QIcon cachedIcon = ServerNotificationHandler::iconCache.value(a._id);
+           if(!cachedIcon.isNull())
+               return cachedIcon;
+           else return QIcon(QLatin1String(":/client/resources/bell.svg"));
+        } else if(a._type == Activity::ErrorType){
+               if(a._status == SyncFileItem::NormalError
+                   || a._status == SyncFileItem::FatalError
+                   || a._status == SyncFileItem::DetailError
+                   || a._status == SyncFileItem::BlacklistedError) {
+                   return Theme::instance()->syncStateIcon(SyncResult::Error);
+               } else if(a._status == SyncFileItem::SoftError
+                         || a._status == SyncFileItem::FileIgnored
+                         || a._status == SyncFileItem::Conflict
+                         || a._status == SyncFileItem::Restoration){
+                   return Theme::instance()->syncStateIcon(SyncResult::Problem);
+               }
+        } else return QIcon(QLatin1String(":/client/resources/activity.png"));
+        return QVariant();
         break;
-    case ActivityItemDelegate::UserIconRole:
-        return QIcon(QLatin1String(":/client/resources/account.png"));
+    case ActivityItemDelegate::ObjectTypeRole:
+        return a._object_type;
         break;
+    case ActivityItemDelegate::ActionRole:{
+        QVariant type;
+        type.setValue(a._type);
+        return type;
+        break;
+    }
     case Qt::ToolTipRole:
     case ActivityItemDelegate::ActionTextRole:
         return a._subject;
+        break;
+    case ActivityItemDelegate::MessageRole:
+        return a._message;
         break;
     case ActivityItemDelegate::LinkRole:
         return a._link;
@@ -107,36 +153,32 @@ bool ActivityListModel::canFetchMore(const QModelIndex &) const
     if (_activityLists.count() == 0)
         return true;
 
-    for (auto i = _activityLists.begin(); i != _activityLists.end(); ++i) {
-        AccountState *ast = i.key();
-        if (ast && ast->isConnected()) {
-            ActivityList activities = i.value();
-            if (activities.count() == 0 && !_currentlyFetching.contains(ast)) {
-                return true;
-            }
+    if (_accountState && _accountState->isConnected()) {
+        if (_activityLists.count() == 0 && !_currentlyFetching) {
+            return true;
         }
     }
 
     return false;
 }
 
-void ActivityListModel::startFetchJob(AccountState *s)
+void ActivityListModel::startFetchJob()
 {
-    if (!s->isConnected()) {
+    if (!_accountState->isConnected()) {
         return;
     }
-    JsonApiJob *job = new JsonApiJob(s->account(), QLatin1String("ocs/v1.php/cloud/activity"), this);
+    JsonApiJob *job = new JsonApiJob(_accountState->account(), QLatin1String("ocs/v2.php/cloud/activity"), this);
     QObject::connect(job, &JsonApiJob::jsonReceived,
         this, &ActivityListModel::slotActivitiesReceived);
-    job->setProperty("AccountStatePtr", QVariant::fromValue<QPointer<AccountState>>(s));
+    job->setProperty("AccountStatePtr", QVariant::fromValue<QPointer<AccountState>>(_accountState));
 
     QUrlQuery params;
     params.addQueryItem(QLatin1String("page"), QLatin1String("0"));
     params.addQueryItem(QLatin1String("pagesize"), QLatin1String("100"));
     job->addQueryParams(params);
 
-    _currentlyFetching.insert(s);
-    qCInfo(lcActivity) << "Start fetching activities for " << s->account()->displayName();
+    _currentlyFetching = true;
+    qCInfo(lcActivity) << "Start fetching activities for " << _accountState->account()->displayName();
     job->start();
 }
 
@@ -149,7 +191,7 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
     if (!ast)
         return;
 
-    _currentlyFetching.remove(ast);
+    _currentlyFetching = 0;
 
     foreach (auto activ, activities) {
         auto json = activ.toObject();
@@ -158,6 +200,7 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
         a._type = Activity::ActivityType;
         a._accName = ast->account()->displayName();
         a._id = json.value("id").toInt();
+        a._object_type = "";
         a._subject = json.value("subject").toString();
         a._message = json.value("message").toString();
         a._file = json.value("file").toString();
@@ -166,23 +209,43 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
         list.append(a);
     }
 
-    _activityLists[ast] = list;
+    _activityLists = list;
 
-    emit activityJobStatusCode(ast, statusCode);
+    emit activityJobStatusCode(statusCode);
 
     combineActivityLists();
 }
 
+void ActivityListModel::addErrorToActivityList(Activity activity) {
+    qCInfo(lcActivity) << "Error successfully added to the notification list: " << activity._subject;
+    _notificationErrorsLists.prepend(activity);
+    combineActivityLists();
+}
+
+void ActivityListModel::addNotificationToActivityList(Activity activity) {
+    qCInfo(lcActivity) << "Notification successfully added to the notification list: " << activity._subject;
+    _notificationLists.prepend(activity);
+    combineActivityLists();
+}
+
+void ActivityListModel::removeFromActivityList(int row) {
+    qCInfo(lcActivity) << "Notification successfully dismissed: " << _notificationLists.at(row)._subject;
+    _notificationLists.removeAt(row);
+    combineActivityLists();
+}
 
 void ActivityListModel::combineActivityLists()
 {
     ActivityList resultList;
 
-    foreach (ActivityList list, _activityLists.values()) {
-        resultList.append(list);
-    }
+    std::sort(_notificationErrorsLists.begin(), _notificationErrorsLists.end());
+    resultList.append(_notificationErrorsLists);
 
-    std::sort(resultList.begin(), resultList.end());
+    std::sort(_notificationLists.begin(), _notificationLists.end());
+    resultList.append(_notificationLists);
+
+    std::sort(_activityLists.begin(), _activityLists.end());
+    resultList.append(_activityLists);
 
     beginResetModel();
     _finalList.clear();
@@ -195,42 +258,22 @@ void ActivityListModel::combineActivityLists()
 
 void ActivityListModel::fetchMore(const QModelIndex &)
 {
-    QList<AccountStatePtr> accounts = AccountManager::instance()->accounts();
-
-    foreach (const AccountStatePtr &asp, accounts) {
-        if (!_activityLists.contains(asp.data()) && asp->isConnected()) {
-            _activityLists[asp.data()] = ActivityList();
-            startFetchJob(asp.data());
-        }
+    if (_accountState->isConnected()) {
+        _activityLists = ActivityList();
+        startFetchJob();
     }
 }
 
-void ActivityListModel::slotRefreshActivity(AccountState *ast)
+void ActivityListModel::slotRefreshActivity()
 {
-    if (ast && _activityLists.contains(ast)) {
-        _activityLists.remove(ast);
-    }
-    startFetchJob(ast);
+    _activityLists.clear();
+    startFetchJob();
 }
 
-void ActivityListModel::slotRemoveAccount(AccountState *ast)
+void ActivityListModel::slotRemoveAccount()
 {
-    if (_activityLists.contains(ast)) {
-        int i = 0;
-        const QString accountToRemove = ast->account()->displayName();
-
-        QMutableListIterator<Activity> it(_finalList);
-
-        while (it.hasNext()) {
-            Activity activity = it.next();
-            if (activity._accName == accountToRemove) {
-                beginRemoveRows(QModelIndex(), i, i + 1);
-                it.remove();
-                endRemoveRows();
-            }
-        }
-        _activityLists.remove(ast);
-        _currentlyFetching.remove(ast);
-    }
+    _finalList.clear();
+    _activityLists.clear();
+    _currentlyFetching = false;
 }
 }

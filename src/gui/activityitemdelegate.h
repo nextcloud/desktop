@@ -29,7 +29,11 @@ public:
     enum datarole { ActionIconRole = Qt::UserRole + 1,
         UserIconRole,
         AccountRole,
+        ObjectTypeRole,
+        ActionsLinksRole,
         ActionTextRole,
+        ActionRole,
+        MessageRole,
         PathRole,
         LinkRole,
         PointInTimeRole,
@@ -43,9 +47,20 @@ public:
     static int rowHeight();
     static int iconHeight();
 
+signals:
+    void primaryButtonClickedOnItemView(const QModelIndex &index);
+    void secondaryButtonClickedOnItemView(const QModelIndex &index);
+
 private:
     static int _margin;
     static int _iconHeight;
+    static int _primaryButtonWidth;
+    static int _secondaryButtonWidth;
+    static int _spaceBetweenButtons;
+    static int _timeWidth;
+    static int _buttonHeight;
+    static const QString _remote_share;
+    static const QString _call;
 };
 
 } // namespace OCC

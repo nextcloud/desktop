@@ -1,6 +1,5 @@
 /*
- * Copyright (C) by Roeland Jago Douma <roeland@famdouma.nl>
- * Copyright (C) 2015 by Klaas Freitag <freitag@owncloud.com>
+ * Copyright (C) by Camila Ayres <hello@camila.codes>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -13,36 +12,36 @@
  * for more details.
  */
 
-#ifndef SyncLogDialog_H
-#define SyncLogDialog_H
+#ifndef ICONJOB_H
+#define ICONJOB_H
 
-#include <QDialog>
+#include <QObject>
+#include <QByteArray>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 
 namespace OCC {
 
-
-namespace Ui {
-    class SyncLogDialog;
-}
-
-
 /**
- * @brief The SyncLogDialog class
+ * @brief Job to fetch a icon
  * @ingroup gui
  */
-class SyncLogDialog : public QDialog
+class IconJob : public QObject
 {
     Q_OBJECT
-
 public:
-    explicit SyncLogDialog(QWidget *parent = 0);
-    ~SyncLogDialog();
+    explicit IconJob(const QUrl &url, QObject *parent = 0);
+
+signals:
+    void jobFinished(QByteArray iconData);
 
 private slots:
+    void finished(QNetworkReply *reply);
 
 private:
-    Ui::SyncLogDialog *_ui;
+    QNetworkAccessManager _accessManager;
 };
 }
 
-#endif // SyncLogDialog_H
+#endif // ICONJOB_H
