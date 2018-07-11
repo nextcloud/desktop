@@ -757,15 +757,15 @@ void SyncEngine::startSync()
     _progressInfo->_status = ProgressInfo::Discovery;
     emit transmissionProgress(*_progressInfo);
 
-    auto ddata = QSharedPointer<DiscoveryPhase>::create();
-    ddata->_account = _account;
-    ddata->_excludes = _excludedFiles.data();
-    ddata->_statedb = _journal;
-    ddata->_localDir = _localPath;
-    ddata->_remoteFolder = _remotePath;
-    ddata->_syncOptions = _syncOptions;
-    ddata->_selectiveSyncBlackList = selectiveSyncBlackList;
-    ddata->_selectiveSyncWhiteList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);
+    _discoveryPhase.reset(new DiscoveryPhase);
+    _discoveryPhase->_account = _account;
+    _discoveryPhase->_excludes = _excludedFiles.data();
+    _discoveryPhase->_statedb = _journal;
+    _discoveryPhase->_localDir = _localPath;
+    _discoveryPhase->_remoteFolder = _remotePath;
+    _discoveryPhase->_syncOptions = _syncOptions;
+    _discoveryPhase->_selectiveSyncBlackList = selectiveSyncBlackList;
+    _discoveryPhase->_selectiveSyncWhiteList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);
     if (!ok) {
         qCWarning(lcEngine) << "Unable to read selective sync list, aborting.";
         csyncError(tr("Unable to read from the sync journal."));
@@ -784,66 +784,80 @@ void SyncEngine::startSync()
         // version check doesn't make sense for custom servers.
         invalidFilenamePattern = "[\\\\:?*\"<>|]";
     }
-    ddata->_invalidFilenamePattern = invalidFilenamePattern;
-    ddata->_ignoreHiddenFiles = ignoreHiddenFiles();
+    _discoveryPhase->_invalidFilenamePattern = invalidFilenamePattern;
+    _discoveryPhase->_ignoreHiddenFiles = ignoreHiddenFiles();
 
-    connect(ddata.data(), &DiscoveryPhase::folderDiscovered, this, &SyncEngine::slotFolderDiscovered);
-    connect(ddata.data(), &DiscoveryPhase::newBigFolder, this, &SyncEngine::newBigFolder);
+    connect(_discoveryPhase.data(), &DiscoveryPhase::folderDiscovered, this, &SyncEngine::slotFolderDiscovered);
+    connect(_discoveryPhase.data(), &DiscoveryPhase::newBigFolder, this, &SyncEngine::newBigFolder);
+
 
     _discoveryJob = new ProcessDirectoryJob(SyncFileItemPtr(), ProcessDirectoryJob::NormalQuery, ProcessDirectoryJob::NormalQuery,
-        ddata, this);
-    connect(_discoveryJob.data(), &ProcessDirectoryJob::finished, this, [this] { slotDiscoveryJobFinished(0); sender()->deleteLater(); });
-    connect(_discoveryJob.data(), &ProcessDirectoryJob::itemDiscovered, this, [this](const auto &item) {
-        if (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA && !item->isDirectory()) {
-            // For directories, metadata-only updates will be done after all their files are propagated.
-
-            // Update the database now already:  New remote fileid or Etag or RemotePerm
-            // Or for files that were detected as "resolved conflict".
-            // Or a local inode/mtime change
-
-            // In case of "resolved conflict": there should have been a conflict because they
-            // both were new, or both had their local mtime or remote etag modified, but the
-            // size and mtime is the same on the server.  This typically happens when the
-            // database is removed. Nothing will be done for those files, but we still need
-            // to update the database.
-
-            // This metadata update *could* be a propagation job of its own, but since it's
-            // quick to do and we don't want to create a potentially large number of
-            // mini-jobs later on, we just update metadata right now.
-
-            if (item->_direction == SyncFileItem::Down) {
-                QString filePath = _localPath + item->_file;
-
-                // If the 'W' remote permission changed, update the local filesystem
-                SyncJournalFileRecord prev;
-                if (_journal->getFileRecord(item->_file, &prev)
-                    && prev.isValid()
-                    && prev._remotePerm.hasPermission(RemotePermissions::CanWrite) != item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
-                    const bool isReadOnly = !item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite);
-                    FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
-                }
-
-                _journal->setFileRecordMetadata(item->toSyncJournalFileRecordWithInode(filePath));
-
-                // This might have changed the shared flag, so we must notify SyncFileStatusTracker for example
-                emit itemCompleted(item);
+        _discoveryPhase.data(), this);
+    // FIXME! this sucks
+    auto runQueuedJob = [this](ProcessDirectoryJob *job, const auto &runQueuedJob) -> void {
+        connect(job, &ProcessDirectoryJob::finished, this, [this, runQueuedJob] {
+            sender()->deleteLater();
+            if (!_discoveryPhase->_queuedDeletedDirectories.isEmpty()) {
+                auto job = qobject_cast<ProcessDirectoryJob *>(_discoveryPhase->_queuedDeletedDirectories.take(_discoveryPhase->_queuedDeletedDirectories.firstKey()).data());
+                ASSERT(job);
+                runQueuedJob(job, runQueuedJob);
             } else {
-                // The local tree is walked first and doesn't have all the info from the server.
-                // Update only outdated data from the disk.
-                // FIXME!  I think this is no longer the case so a setFileRecordMetadata should work
-                _journal->updateLocalMetadata(item->_file, item->_modtime, item->_size, item->_inode);
+                slotDiscoveryJobFinished(0);
             }
-            _hasNoneFiles = true;
-            return;
-        } else if (item->_instruction == CSYNC_INSTRUCTION_NONE) {
-            _hasNoneFiles = true;
-            return;
-        }
+        });
+        connect(job, &ProcessDirectoryJob::itemDiscovered, this, [this](const auto &item) {
+            if (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA && !item->isDirectory()) {
+                // For directories, metadata-only updates will be done after all their files are propagated.
 
-        _syncItems.append(item);
-        slotNewItem(item);
-    });
-    _discoveryJob->start();
+                // Update the database now already:  New remote fileid or Etag or RemotePerm
+                // Or for files that were detected as "resolved conflict".
+                // Or a local inode/mtime change
+
+                // In case of "resolved conflict": there should have been a conflict because they
+                // both were new, or both had their local mtime or remote etag modified, but the
+                // size and mtime is the same on the server.  This typically happens when the
+                // database is removed. Nothing will be done for those files, but we still need
+                // to update the database.
+
+                // This metadata update *could* be a propagation job of its own, but since it's
+                // quick to do and we don't want to create a potentially large number of
+                // mini-jobs later on, we just update metadata right now.
+
+                if (item->_direction == SyncFileItem::Down) {
+                    QString filePath = _localPath + item->_file;
+
+                    // If the 'W' remote permission changed, update the local filesystem
+                    SyncJournalFileRecord prev;
+                    if (_journal->getFileRecord(item->_file, &prev)
+                        && prev.isValid()
+                        && prev._remotePerm.hasPermission(RemotePermissions::CanWrite) != item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
+                        const bool isReadOnly = !item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite);
+                        FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
+                    }
+
+                    _journal->setFileRecordMetadata(item->toSyncJournalFileRecordWithInode(filePath));
+
+                    // This might have changed the shared flag, so we must notify SyncFileStatusTracker for example
+                    emit itemCompleted(item);
+                } else {
+                    // The local tree is walked first and doesn't have all the info from the server.
+                    // Update only outdated data from the disk.
+                    // FIXME!  I think this is no longer the case so a setFileRecordMetadata should work
+                    _journal->updateLocalMetadata(item->_file, item->_modtime, item->_size, item->_inode);
+                }
+                _hasNoneFiles = true;
+                return;
+            } else if (item->_instruction == CSYNC_INSTRUCTION_NONE) {
+                _hasNoneFiles = true;
+                return;
+            }
+
+            _syncItems.append(item);
+            slotNewItem(item);
+        });
+        job->start();
+    };
+    runQueuedJob(_discoveryJob.data(), runQueuedJob);
 
     /*
      * FIXME

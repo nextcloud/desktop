@@ -115,24 +115,43 @@ public:
         ParentNotChanged,
         InBlackList };
     explicit ProcessDirectoryJob(const SyncFileItemPtr &dirItem, QueryMode queryServer, QueryMode queryLocal,
-        const QSharedPointer<const DiscoveryPhase> &data, QObject *parent)
+        DiscoveryPhase *data, QObject *parent)
         : QObject(parent)
         , _dirItem(dirItem)
         , _queryServer(queryServer)
         , _queryLocal(queryLocal)
         , _discoveryData(data)
-        , _currentFolder(dirItem ? dirItem->_file : QString())
+
     {
     }
     void start();
     void abort();
 
 private:
+    struct PathTuple
+    {
+        QString _original; // Path as in the DB
+        QString _target; // Path that will be the result after the sync
+        QString _server; // Path on the server
+        QString _local; // Path locally
+        PathTuple addName(const QString &name) const
+        {
+            PathTuple result;
+            result._original = _original.isEmpty() ? name : _original + QLatin1Char('/') + name;
+            auto buildString = [&](const QString &other) {
+                return other == _original ? result._original : other.isEmpty() ? name : other + QLatin1Char('/') + name;
+            };
+            result._target = buildString(_target);
+            result._server = buildString(_server);
+            result._local = buildString(_local);
+            return result;
+        }
+    };
     void process();
     // return true if the file is excluded
     bool handleExcluded(const QString &path, bool isDirectory, bool isHidden);
-    void processFile(const QString &, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
-    void processBlacklisted(const QString &path, const LocalInfo &, const SyncJournalFileRecord &);
+    void processFile(PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &dbEntry);
+    void processBlacklisted(const PathTuple &, const LocalInfo &, const SyncJournalFileRecord &dbEntry);
     void subJobFinished();
     void progress();
 
@@ -147,8 +166,9 @@ private:
     SyncFileItemPtr _dirItem;
     QueryMode _queryServer;
     QueryMode _queryLocal;
-    QSharedPointer<const DiscoveryPhase> _discoveryData;
-    QString _currentFolder;
+    DiscoveryPhase *_discoveryData;
+
+    PathTuple _currentFolder;
     bool _childModified = false; // the directory contains modified item what would prevent deletion
     bool _childIgnored = false; // The directory contains ignored item that would prevent deletion
 

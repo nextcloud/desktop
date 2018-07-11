@@ -19,12 +19,14 @@
 #include <QStringList>
 #include <csync.h>
 #include <QMap>
+#include <QSet>
 #include "networkjobs.h"
 #include <QMutex>
 #include <QWaitCondition>
 #include <QLinkedList>
 #include <deque>
 #include "syncoptions.h"
+#include "syncfileitem.h"
 
 class ExcludedFiles;
 
@@ -119,6 +121,10 @@ public:
 
     bool isInSelectiveSyncBlackList(const QString &path) const;
     bool checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp);
+
+    QMap<QString, SyncFileItemPtr> _deletedItem;
+    QMap<QString, QPointer<QObject>> _queuedDeletedDirectories;
+    QSet<QString> _renamedItems;
 
 signals:
     void finished(int result);

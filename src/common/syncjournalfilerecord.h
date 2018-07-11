@@ -56,7 +56,7 @@ public:
 
     QByteArray _path;
     quint64 _inode;
-    qint64 _modtime;
+    qint64 _modtime = 0;
     ItemType _type;
     QByteArray _etag;
     QByteArray _fileId;

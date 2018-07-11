@@ -63,7 +63,7 @@ DiscoverServerJob::DiscoverServerJob(const AccountPtr &account, const QString &p
 void ProcessDirectoryJob::start()
 {
     if (_queryServer == NormalQuery) {
-        _serverJob = new DiscoverServerJob(_discoveryData->_account, _discoveryData->_remoteFolder + _currentFolder, this);
+        _serverJob = new DiscoverServerJob(_discoveryData->_account, _discoveryData->_remoteFolder + _currentFolder._server, this);
         connect(_serverJob.data(), &DiscoverServerJob::finished, this, [this](const auto &results) {
             if (results) {
                 _serverEntries = *results;
@@ -80,9 +80,6 @@ void ProcessDirectoryJob::start()
         _hasServerEntries = true;
     }
 
-    if (!_currentFolder.isEmpty() && _currentFolder.back() != '/')
-        _currentFolder += '/';
-
     if (_queryLocal == NormalQuery) {
         /*QDirIterator dirIt(_propagator->_localDir + _currentFolder);
         while (dirIt.hasNext()) {
@@ -91,9 +88,9 @@ void ProcessDirectoryJob::start()
             i.name = dirIt.fileName();
 
         }*/
-        auto dh = csync_vio_local_opendir((_discoveryData->_localDir + _currentFolder).toUtf8());
+        auto dh = csync_vio_local_opendir((_discoveryData->_localDir + _currentFolder._local).toUtf8());
         if (!dh) {
-            qDebug() << "COULD NOT OPEN" << (_discoveryData->_localDir + _currentFolder).toUtf8();
+            qDebug() << "COULD NOT OPEN" << (_discoveryData->_localDir + _currentFolder._local);
             qFatal("TODO: ERROR HANDLING");
             // should be the same as in csync_update;
         }
@@ -106,7 +103,7 @@ void ProcessDirectoryJob::start()
             if (state.invalidChars > 0 || state.remainingChars > 0) {
                 _childIgnored = true;
                 auto item = SyncFileItemPtr::create();
-                item->_file = _currentFolder + i.name;
+                item->_file = _currentFolder._target + i.name;
                 item->_instruction = CSYNC_INSTRUCTION_IGNORE;
                 item->_status = SyncFileItem::NormalError;
                 item->_errorString = tr("Filename encoding is not valid");
@@ -151,8 +148,7 @@ void ProcessDirectoryJob::process()
 
     if (_queryServer == ParentNotChanged) {
         // fetch all the name from the DB
-        auto pathU8 = _currentFolder.toUtf8();
-        pathU8.chop(1);
+        auto pathU8 = _currentFolder._original.toUtf8();
         // FIXME cache, and do that better (a query that do not get stuff recursively)
         if (!_discoveryData->_statedb->getFilesBelowPath(pathU8, [&](const SyncJournalFileRecord &rec) {
                 if (rec._path.indexOf("/", pathU8.size() + 1) > 0)
@@ -163,9 +159,8 @@ void ProcessDirectoryJob::process()
         }
     }
 
-
     for (const auto &f : entriesNames) {
-        QString path = _currentFolder + f;
+        auto path = _currentFolder.addName(f);
         auto localEntry = localEntriesHash.value(f);
         auto serverEntry = serverEntriesHash.value(f);
 
@@ -174,18 +169,18 @@ void ProcessDirectoryJob::process()
         // local stat function.
         // Recall file shall not be ignored (#4420)
         bool isHidden = localEntry.isHidden || (f[0] == '.' && f != QLatin1String(".sys.admin#recall#"));
-        if (handleExcluded(path, localEntry.isDirectory || serverEntry.isDirectory, isHidden))
+        if (handleExcluded(path._target, localEntry.isDirectory || serverEntry.isDirectory, isHidden))
             continue;
 
         SyncJournalFileRecord record;
-        if (!_discoveryData->_statedb->getFileRecord(path, &record)) {
+        if (!_discoveryData->_statedb->getFileRecord(path._original, &record)) {
             qFatal("TODO: DB ERROR HANDLING");
         }
-        if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path)) {
+        if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._server)) {
             processBlacklisted(path, localEntry, record);
             continue;
         }
-        processFile(path, localEntry, serverEntry, record);
+        processFile(std::move(path), localEntry, serverEntry, record);
     }
 
     progress();
@@ -297,7 +292,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, 
         }
 #endif
         break;
-    case CSYNC_FILE_EXCLUDE_CANNOT_ENCODE:
+    case CSYNC_FILE_EXCLUDE_CANNOT_ENCODE: // FIXME!
         item->_errorString = tr("The filename cannot be encoded on your file system.");
         break;
     }
@@ -307,20 +302,24 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, 
     return true;
 }
 
-void ProcessDirectoryJob::processFile(const QString &path,
+void ProcessDirectoryJob::processFile(PathTuple path,
     const LocalInfo &localEntry, const RemoteInfo &serverEntry,
     const SyncJournalFileRecord &dbEntry)
 {
-    qCInfo(lcDisco).nospace() << "Processing " << path
+    qCInfo(lcDisco).nospace() << "Processing " << path._original
                               << " | valid: " << dbEntry.isValid() << "/" << localEntry.isValid() << "/" << serverEntry.isValid()
                               << " | mtime: " << dbEntry._modtime << "/" << localEntry.modtime << "/" << serverEntry.modtime
                               << " | size: " << dbEntry._fileSize << "/" << localEntry.size << "/" << serverEntry.size
                               << " | etag: " << dbEntry._etag << "//" << serverEntry.etag
                               << " | checksum: " << dbEntry._checksumHeader << "//" << serverEntry.checksumHeader;
 
-    auto item = SyncFileItem::fromSyncJournalFileRecord(dbEntry);
-    item->_file = path;
+    if (_discoveryData->_renamedItems.contains(path._original)) {
+        qCDebug(lcDisco) << "Ignoring renamed";
+        return; // Ignore this.
+    }
 
+    auto item = SyncFileItem::fromSyncJournalFileRecord(dbEntry);
+    item->_file = path._target;
     auto recurseQueryServer = _queryServer;
     if (_queryServer == NormalQuery && serverEntry.isValid()) {
         item->_checksumHeader = serverEntry.checksumHeader;
@@ -330,12 +329,114 @@ void ProcessDirectoryJob::processFile(const QString &path,
         item->_etag = serverEntry.etag;
         item->_previousSize = localEntry.size;
         item->_previousModtime = localEntry.modtime;
-        if (!dbEntry.isValid()) {
+        if (!dbEntry.isValid()) { // New file?
             item->_instruction = CSYNC_INSTRUCTION_NEW;
-            // TODO! rename;
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
             item->_size = serverEntry.size;
+
+            if (!localEntry.isValid()) {
+                // Check for renames (if there is a file with the same file id)
+                bool done = false;
+                auto renameCandidateProcessing = [&](const OCC::SyncJournalFileRecord &base) {
+                    if (done)
+                        return;
+                    if (!base.isValid())
+                        return;
+
+                    if (base._type == ItemTypeVirtualFileDownload) {
+                        // Remote rename of a virtual file we have locally scheduled
+                        // for download. We just consider this NEW but mark it for download.
+                        item->_type = ItemTypeVirtualFileDownload;
+                        done = true;
+                        return;
+                    }
+
+                    // Some things prohibit rename detection entirely.
+                    // Since we don't do the same checks again in reconcile, we can't
+                    // just skip the candidate, but have to give up completely.
+                    if (base._type != item->_type && base._type != ItemTypeVirtualFile) {
+                        qCDebug(lcDisco, "file types different, not a rename");
+                        done = true;
+                        return;
+                    }
+                    if (!serverEntry.isDirectory && base._etag != serverEntry.etag) {
+                        /* File with different etag, don't do a rename, but download the file again */
+                        qCInfo(lcDisco, "file etag different, not a rename");
+                        done = true;
+                        return;
+                    }
+
+                    // Now we know there is a sane rename candidate.
+                    QString originalPath = QString::fromUtf8(base._path);
+
+                    // Rename of a virtual file
+                    if (base._type == ItemTypeVirtualFile && item->_type == ItemTypeFile) {
+                        item->_type = ItemTypeVirtualFile;
+                        item->_file.append(_discoveryData->_syncOptions._virtualFileSuffix);
+                        qFatal("FIXME rename virtual file"); // Need to be tested, i'm not sure about it now
+                    }
+
+                    if (_discoveryData->_renamedItems.contains(originalPath)) {
+                        qCInfo(lcDisco, "folder already has a rename entry, skipping");
+                        return;
+                    }
+
+                    else if (item->_type == ItemTypeFile) {
+                        csync_file_stat_t buf;
+                        if (csync_vio_local_stat((_discoveryData->_localDir + path._local).toUtf8(), &buf)) {
+                            qFatal("FIXME! ERROR HANDLING");
+                            return;
+                        }
+                        if (buf.modtime != base._modtime || buf.size != base._fileSize) {
+                            // File has changed locally, not a rename.
+                            return;
+                        }
+                    }
+
+
+                    auto it = _discoveryData->_deletedItem.find(originalPath);
+                    if (it != _discoveryData->_deletedItem.end()) {
+                        if ((*it)->_instruction != CSYNC_INSTRUCTION_REMOVE)
+                            return;
+                        (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
+                    }
+                    delete _discoveryData->_queuedDeletedDirectories.take(originalPath);
+                    _discoveryData->_renamedItems.insert(originalPath);
+
+                    item->_modtime = base._modtime;
+                    item->_inode = base._inode;
+                    item->_instruction = CSYNC_INSTRUCTION_RENAME;
+                    item->_direction = SyncFileItem::Down;
+                    item->_renameTarget = path._target;
+                    item->_file = originalPath;
+                    item->_originalFile = originalPath;
+                    path._original = originalPath;
+                    path._local = originalPath;
+                    done = true;
+
+                    qCInfo(lcDisco) << "Rename detected (down) " << item->_file << " -> " << item->_renameTarget;
+
+                    // FIXME!  chech that the server version of origialPath is gone!
+                };
+                if (!_discoveryData->_statedb->getFileRecordsByFileId(serverEntry.fileId, renameCandidateProcessing)) {
+                    qFatal("TODO: Handle DB ERROR");
+                }
+            }
+
+            if (item->_instruction == CSYNC_INSTRUCTION_NEW && item->isDirectory()) {
+                if (_discoveryData->checkSelectiveSyncNewFolder(path._server, serverEntry.remotePerm)) {
+                    return;
+                }
+            }
+
+            // Turn new remote files into virtual files if the option is enabled.
+            if (item->_instruction == CSYNC_INSTRUCTION_NEW
+                && _discoveryData->_syncOptions._newFilesAreVirtual
+                && item->_type == ItemTypeFile) {
+                item->_type = ItemTypeVirtualFile;
+                item->_file.append(_discoveryData->_syncOptions._virtualFileSuffix);
+            }
         } else if (dbEntry._etag != serverEntry.etag) {
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
@@ -352,7 +453,7 @@ void ProcessDirectoryJob::processFile(const QString &path,
             recurseQueryServer = ParentNotChanged;
         }
     }
-    bool serverModified = item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC;
+    bool serverModified = item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC || item->_instruction == CSYNC_INSTRUCTION_RENAME;
     _childModified |= serverModified;
     if (localEntry.isValid()) {
         item->_inode = localEntry.inode;
@@ -382,7 +483,7 @@ void ProcessDirectoryJob::processFile(const QString &path,
                     // Do we have an UploadInfo for this?
                     // Maybe the Upload was completed, but the connection was broken just before
                     // we recieved the etag (Issue #5106)
-                    auto up = _discoveryData->_statedb->getUploadInfo(path);
+                    auto up = _discoveryData->_statedb->getUploadInfo(path._original);
                     if (up._valid && up._contentChecksum == remoteChecksumHeader) {
                         // Solve the conflict into an upload, or nothing
                         item->_instruction = up._modtime == localEntry.modtime ? CSYNC_INSTRUCTION_UPDATE_METADATA : CSYNC_INSTRUCTION_SYNC;
@@ -391,8 +492,8 @@ void ProcessDirectoryJob::processFile(const QString &path,
                         // (We can't use a typical CSYNC_INSTRUCTION_UPDATE_METADATA because
                         // we must not store the size/modtime from the file system)
                         OCC::SyncJournalFileRecord rec;
-                        if (_discoveryData->_statedb->getFileRecord(path, &rec)) {
-                            rec._path = path.toUtf8();
+                        if (_discoveryData->_statedb->getFileRecord(path._original, &rec)) {
+                            rec._path = path._original.toUtf8();
                             rec._etag = serverEntry.etag;
                             rec._fileId = serverEntry.fileId;
                             rec._modtime = serverEntry.modtime;
@@ -442,22 +543,26 @@ void ProcessDirectoryJob::processFile(const QString &path,
 
             // Checksum comparison at this stage is only enabled for .eml files,
             // check #4754 #4755
-            bool isEmlFile = path.endsWith(QLatin1String(".eml"), Qt::CaseInsensitive);
+            bool isEmlFile = path._original.endsWith(QLatin1String(".eml"), Qt::CaseInsensitive);
             if (isEmlFile && dbEntry._fileSize == localEntry.size && !dbEntry._checksumHeader.isEmpty()) {
                 QByteArray type = parseChecksumHeaderType(dbEntry._checksumHeader);
                 if (!type.isEmpty()) {
                     // TODO: compute async?
-                    QByteArray checksum = ComputeChecksum::computeNow(_discoveryData->_localDir + path, type);
+                    QByteArray checksum = ComputeChecksum::computeNow(_discoveryData->_localDir + path._local, type);
                     if (!checksum.isEmpty()) {
                         item->_checksumHeader = makeChecksumHeader(type, checksum);
                         if (item->_checksumHeader == dbEntry._checksumHeader) {
-                            qCDebug(lcDisco) << "NOTE: Checksums are identical, file did not actually change: " << path;
+                            qCInfo(lcDisco) << "NOTE: Checksums are identical, file did not actually change: " << path._local;
                             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                         }
                     }
                 }
             }
         }
+    } else if (_queryServer != ParentNotChanged && !serverEntry.isValid()) {
+        // Not locally, not on the server. The entry is stale!
+        qCInfo(lcDisco) << "Stale DB entry";
+        return;
     } else if (!serverModified) {
         if (!dbEntry._serverHasIgnoredFiles) {
             item->_instruction = CSYNC_INSTRUCTION_REMOVE;
@@ -474,24 +579,34 @@ void ProcessDirectoryJob::processFile(const QString &path,
 
         if (recurseQueryServer != ParentNotChanged && !serverEntry.isValid())
             recurseQueryServer = ParentDontExist;
-        auto job = new ProcessDirectoryJob(item, recurseQueryServer, localEntry.isValid() ? NormalQuery : ParentDontExist,
+        auto job = new ProcessDirectoryJob(item, recurseQueryServer,
+            localEntry.isValid() || item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist,
             _discoveryData, this);
-        connect(job, &ProcessDirectoryJob::itemDiscovered, this, &ProcessDirectoryJob::itemDiscovered);
-        connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
-        _queuedJobs.push_back(job);
+        job->_currentFolder = path;
+        if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+            job->setParent(_discoveryData);
+            _discoveryData->_queuedDeletedDirectories[path._original] = job;
+        } else {
+            connect(job, &ProcessDirectoryJob::itemDiscovered, this, &ProcessDirectoryJob::itemDiscovered);
+            connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
+            _queuedJobs.push_back(job);
+        }
     } else {
+        if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+            _discoveryData->_deletedItem[path._original] = item;
+        }
         emit itemDiscovered(item);
     }
 }
 
-void ProcessDirectoryJob::processBlacklisted(const QString &path, const OCC::LocalInfo &localEntry,
+void ProcessDirectoryJob::processBlacklisted(const PathTuple &path, const OCC::LocalInfo &localEntry,
     const SyncJournalFileRecord &dbEntry)
 {
     if (!localEntry.isValid())
         return;
 
     auto item = SyncFileItem::fromSyncJournalFileRecord(dbEntry);
-    item->_file = path;
+    item->_file = path._target;
     item->_inode = localEntry.inode;
     if (dbEntry.isValid() && ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) || (localEntry.isDirectory && dbEntry._type == ItemTypeDirectory))) {
         item->_instruction = CSYNC_INSTRUCTION_REMOVE;
@@ -507,6 +622,7 @@ void ProcessDirectoryJob::processBlacklisted(const QString &path, const OCC::Loc
 
     if (item->isDirectory() && item->_instruction != CSYNC_INSTRUCTION_IGNORE) {
         auto job = new ProcessDirectoryJob(item, InBlackList, NormalQuery, _discoveryData, this);
+        job->_currentFolder = path;
         connect(job, &ProcessDirectoryJob::itemDiscovered, this, &ProcessDirectoryJob::itemDiscovered);
         connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
         _queuedJobs.push_back(job);

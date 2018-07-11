@@ -238,6 +238,7 @@ private:
     QString _remoteRootEtag;
     SyncJournalDb *_journal;
     QPointer<ProcessDirectoryJob> _discoveryJob;
+    QScopedPointer<DiscoveryPhase> _discoveryPhase;
     QSharedPointer<OwncloudPropagator> _propagator;
 
     // After a sync, only the syncdb entries whose filenames appear in this
