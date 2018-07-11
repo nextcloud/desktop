@@ -91,7 +91,6 @@ ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
 
     connect(delegate, &ActivityItemDelegate::primaryButtonClickedOnItemView, this, &ActivityWidget::slotPrimaryButtonClickedOnListView);
     connect(delegate, &ActivityItemDelegate::secondaryButtonClickedOnItemView, this, &ActivityWidget::slotSecondaryButtonClickedOnListView);
-
     connect(_ui->_activityList, &QListView::activated, this, &ActivityWidget::slotOpenFile);
     connect(&_removeTimer, &QTimer::timeout, this, &ActivityWidget::slotCheckToCleanWidgets);
 
@@ -320,7 +319,6 @@ void ActivityWidget::storeActivityList(QTextStream &ts)
     ActivityList activities = _model->activityList();
 
     foreach (Activity activity, activities) {
-        QString message = activity._message.isEmpty()? "Message!" : activity._message;
         ts << right
            // account name
            << qSetFieldWidth(activity._accName.length())
