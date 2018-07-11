@@ -320,6 +320,21 @@ void ProcessDirectoryJob::processFile(PathTuple path,
 
     auto item = SyncFileItem::fromSyncJournalFileRecord(dbEntry);
     item->_file = path._target;
+    item->_originalFile = path._original;
+
+    auto computeLocalChecksum = [&](const QByteArray &type, const QString &path) {
+        if (!type.isEmpty()) {
+            // TODO: compute async?
+            QByteArray checksum = ComputeChecksum::computeNow(_discoveryData->_localDir + path, type);
+            if (!checksum.isEmpty()) {
+                item->_checksumHeader = makeChecksumHeader(type, checksum);
+                return true;
+            }
+        }
+        return false;
+    };
+
+
     auto recurseQueryServer = _queryServer;
     if (_queryServer == NormalQuery && serverEntry.isValid()) {
         item->_checksumHeader = serverEntry.checksumHeader;
@@ -522,7 +537,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                 }
             }
             item->_direction = item->_instruction == CSYNC_INSTRUCTION_CONFLICT ? SyncFileItem::None : SyncFileItem::Down;
-        } else if (!dbEntry.isValid()) {
+        } else if (!dbEntry.isValid()) { // New local file
             item->_instruction = CSYNC_INSTRUCTION_NEW;
             item->_direction = SyncFileItem::Up;
             // TODO! rename;
@@ -531,6 +546,56 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             item->_modtime = localEntry.modtime;
             item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
             _childModified = true;
+
+            // Check if it is a rename
+            OCC::SyncJournalFileRecord base;
+            if (!_discoveryData->_statedb->getFileRecordByInode(localEntry.inode, &base)) {
+                qFatal("TODO: handle DB Errors");
+            }
+            bool isRename = base.isValid() && base._type == item->_type
+                && ((base._modtime == localEntry.modtime && base._fileSize == localEntry.size) || item->_type == ItemTypeDirectory);
+
+            if (isRename) {
+                //  The old file must have been deleted.
+                isRename = !QFile::exists(_discoveryData->_localDir + base._path);
+            }
+
+            // Verify the checksum where possible
+            if (isRename && !base._checksumHeader.isEmpty() && item->_type == ItemTypeFile) {
+                if (computeLocalChecksum(parseChecksumHeaderType(base._checksumHeader), path._original)) {
+                    qCInfo(lcDisco) << "checking checksum of potential rename " << path._original << item->_checksumHeader << base._checksumHeader;
+                    isRename = item->_checksumHeader == base._checksumHeader;
+                }
+            }
+            if (isRename) {
+                auto originalPath = QString::fromUtf8(base._path);
+                auto it = _discoveryData->_deletedItem.find(originalPath);
+                if (it != _discoveryData->_deletedItem.end()) {
+                    if ((*it)->_instruction != CSYNC_INSTRUCTION_REMOVE)
+                        isRename = false;
+                    else
+                        (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
+                }
+                if (_discoveryData->_renamedItems.contains(originalPath))
+                    isRename = false;
+                if (isRename) {
+                    delete _discoveryData->_queuedDeletedDirectories.take(originalPath);
+                    _discoveryData->_renamedItems.insert(originalPath);
+
+                    item->_modtime = base._modtime;
+                    item->_inode = base._inode;
+                    item->_instruction = CSYNC_INSTRUCTION_RENAME;
+                    item->_direction = SyncFileItem::Up;
+                    item->_renameTarget = path._target;
+                    item->_file = originalPath;
+                    item->_originalFile = originalPath;
+                    item->_fileId = base._fileId;
+                    item->_etag = base._etag;
+                    path._original = originalPath;
+                    path._server = originalPath;
+                    qCInfo(lcDisco) << "Rename detected (up) " << item->_file << " -> " << item->_renameTarget;
+                }
+            }
         } else {
             item->_instruction = CSYNC_INSTRUCTION_SYNC;
             item->_direction = SyncFileItem::Up;
@@ -545,17 +610,9 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             // check #4754 #4755
             bool isEmlFile = path._original.endsWith(QLatin1String(".eml"), Qt::CaseInsensitive);
             if (isEmlFile && dbEntry._fileSize == localEntry.size && !dbEntry._checksumHeader.isEmpty()) {
-                QByteArray type = parseChecksumHeaderType(dbEntry._checksumHeader);
-                if (!type.isEmpty()) {
-                    // TODO: compute async?
-                    QByteArray checksum = ComputeChecksum::computeNow(_discoveryData->_localDir + path._local, type);
-                    if (!checksum.isEmpty()) {
-                        item->_checksumHeader = makeChecksumHeader(type, checksum);
-                        if (item->_checksumHeader == dbEntry._checksumHeader) {
-                            qCInfo(lcDisco) << "NOTE: Checksums are identical, file did not actually change: " << path._local;
-                            item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-                        }
-                    }
+                if (computeLocalChecksum(parseChecksumHeaderType(dbEntry._checksumHeader), path._local) && item->_checksumHeader == dbEntry._checksumHeader) {
+                    qCInfo(lcDisco) << "NOTE: Checksums are identical, file did not actually change: " << path._local;
+                    item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                 }
             }
         }

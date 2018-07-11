@@ -280,47 +280,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
   } else {
       /* check if it's a file and has been renamed */
       if (ctx->current == LOCAL_REPLICA) {
-          qCDebug(lcUpdate, "Checking for rename based on inode # %" PRId64 "", (uint64_t) fs->inode);
-
-          OCC::SyncJournalFileRecord base;
-          if(!ctx->statedb->getFileRecordByInode(fs->inode, &base)) {
-              ctx->status_code = CSYNC_STATUS_UNSUCCESSFUL;
-              return -1;
-          }
-
-          // Default to NEW unless we're sure it's a rename.
-          fs->instruction = CSYNC_INSTRUCTION_NEW;
-
-          bool isRename =
-              base.isValid() && base._type == fs->type
-                  && ((base._modtime == fs->modtime && base._fileSize == fs->size) || fs->type == ItemTypeDirectory)
-#ifdef NO_RENAME_EXTENSION
-                  && _csync_sameextension(base._path, fs->path)
-#endif
-              ;
-
-
-          // Verify the checksum where possible
-          if (isRename && !base._checksumHeader.isEmpty() && ctx->callbacks.checksum_hook
-              && fs->type == ItemTypeFile) {
-                  fs->checksumHeader = ctx->callbacks.checksum_hook(
-                      _rel_to_abs(ctx, fs->path), base._checksumHeader,
-                      ctx->callbacks.checksum_userdata);
-              if (!fs->checksumHeader.isEmpty()) {
-                  qCDebug(lcUpdate, "checking checksum of potential rename %s %s <-> %s", fs->path.constData(), fs->checksumHeader.constData(), base._checksumHeader.constData());
-                  isRename = fs->checksumHeader == base._checksumHeader;
-              }
-          }
-
-          if (isRename) {
-              qCDebug(lcUpdate, "pot rename detected based on inode # %" PRId64 "", (uint64_t) fs->inode);
-              /* inode found so the file has been renamed */
-              fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
-              if (fs->type == ItemTypeDirectory) {
-                  csync_rename_record(ctx, base._path, fs->path);
-              }
-          }
-          goto out;
+          /* ... PORTED */
 
       } else { /*... PORTED ... */
       }
