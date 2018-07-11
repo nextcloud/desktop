@@ -1865,7 +1865,7 @@ pode solicitar por privilégios adicionais durante o processo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="49"/>
         <source>&amp;Email</source>
-        <translation>&amp;Email</translation>
+        <translation>&amp;E-mail</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="59"/>
@@ -2742,12 +2742,12 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
         <source>Send link by email</source>
-        <translation>Enviar link por email</translation>
+        <translation>Enviar link por e-mail</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="167"/>
         <source>Send link by email (direct download)</source>
-        <translation>Enviar link por email (download direto)</translation>
+        <translation>Enviar link por e-mail (download direto)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
@@ -2821,7 +2821,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="239"/>
         <source>Send link by email</source>
-        <translation>Enviar link por email</translation>
+        <translation>Enviar link por e-mail</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="249"/>
@@ -2939,7 +2939,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="568"/>
         <source>Send private link by email...</source>
-        <translation>Enviar o link privado por email...</translation>
+        <translation>Enviar o link privado por e-mail...</translation>
     </message>
 </context>
 <context>
@@ -4192,12 +4192,12 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="55"/>
         <source>Could not open email client</source>
-        <translation>Não foi possível abrir o cliente de email</translation>
+        <translation>Não foi possível abrir o cliente de e-mail</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="56"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation>Ocorreu um erro ao iniciar o cliente de email para criar uma nova mensagem. Talvez nenhum cliente de email padrão esteja configurado?</translation>
+        <translation>Ocorreu um erro ao iniciar o cliente de e-mail para criar uma nova mensagem. Talvez nenhum cliente de e-mail padrão esteja configurado?</translation>
     </message>
 </context>
 </TS>
