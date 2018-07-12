@@ -21,6 +21,7 @@
 #include <QString>
 #include <QMetaType>
 #include "ocsynclib.h"
+#include <QDebug>
 
 namespace OCC {
 
@@ -83,6 +84,11 @@ public:
     friend bool operator!=(RemotePermissions a, RemotePermissions b)
     {
         return !(a == b);
+    }
+
+    friend QDebug operator<<(QDebug &dbg, RemotePermissions p)
+    {
+        return dbg << p.toString().constData();
     }
 };
 

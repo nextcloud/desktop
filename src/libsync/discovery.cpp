@@ -62,6 +62,8 @@ DiscoverServerJob::DiscoverServerJob(const AccountPtr &account, const QString &p
 
 void ProcessDirectoryJob::start()
 {
+    qCInfo(lcDisco) << "STARTING" << _currentFolder._server << _queryServer << _currentFolder._local << _queryLocal;
+
     if (_queryServer == NormalQuery) {
         _serverJob = new DiscoverServerJob(_discoveryData->_account, _discoveryData->_remoteFolder + _currentFolder._server, this);
         connect(_serverJob.data(), &DiscoverServerJob::finished, this, [this](const auto &results) {
@@ -176,7 +178,7 @@ void ProcessDirectoryJob::process()
         if (!_discoveryData->_statedb->getFileRecord(path._original, &record)) {
             qFatal("TODO: DB ERROR HANDLING");
         }
-        if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._server)) {
+        if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original)) {
             processBlacklisted(path, localEntry, record);
             continue;
         }
@@ -306,12 +308,16 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     const LocalInfo &localEntry, const RemoteInfo &serverEntry,
     const SyncJournalFileRecord &dbEntry)
 {
+    const char *hasServer = serverEntry.isValid() ? "true" : _queryServer == ParentNotChanged ? "db" : "false";
     qCInfo(lcDisco).nospace() << "Processing " << path._original
-                              << " | valid: " << dbEntry.isValid() << "/" << localEntry.isValid() << "/" << serverEntry.isValid()
+                              << " | valid: " << dbEntry.isValid() << "/" << localEntry.isValid() << "/" << hasServer
                               << " | mtime: " << dbEntry._modtime << "/" << localEntry.modtime << "/" << serverEntry.modtime
                               << " | size: " << dbEntry._fileSize << "/" << localEntry.size << "/" << serverEntry.size
                               << " | etag: " << dbEntry._etag << "//" << serverEntry.etag
-                              << " | checksum: " << dbEntry._checksumHeader << "//" << serverEntry.checksumHeader;
+                              << " | checksum: " << dbEntry._checksumHeader << "//" << serverEntry.checksumHeader
+                              << " | perm: " << dbEntry._remotePerm << "//" << serverEntry.remotePerm
+                              << " | fileid: " << dbEntry._fileId << "//" << serverEntry.fileId
+                              << " | inode: " << dbEntry._inode << "/" << localEntry.inode << "/";
 
     if (_discoveryData->_renamedItems.contains(path._original)) {
         qCDebug(lcDisco) << "Ignoring renamed";
@@ -334,8 +340,10 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         return false;
     };
 
-
     auto recurseQueryServer = _queryServer;
+    if (recurseQueryServer != ParentNotChanged && !serverEntry.isValid())
+        recurseQueryServer = ParentDontExist;
+
     if (_queryServer == NormalQuery && serverEntry.isValid()) {
         item->_checksumHeader = serverEntry.checksumHeader;
         item->_fileId = serverEntry.fileId;
@@ -371,7 +379,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                     // Since we don't do the same checks again in reconcile, we can't
                     // just skip the candidate, but have to give up completely.
                     if (base._type != item->_type && base._type != ItemTypeVirtualFile) {
-                        qCDebug(lcDisco, "file types different, not a rename");
+                        qCInfo(lcDisco, "file types different, not a rename");
                         done = true;
                         return;
                     }
@@ -399,16 +407,15 @@ void ProcessDirectoryJob::processFile(PathTuple path,
 
                     else if (item->_type == ItemTypeFile) {
                         csync_file_stat_t buf;
-                        if (csync_vio_local_stat((_discoveryData->_localDir + path._local).toUtf8(), &buf)) {
-                            qFatal("FIXME! ERROR HANDLING");
+                        if (csync_vio_local_stat((_discoveryData->_localDir + originalPath).toUtf8(), &buf)) {
+                            qCInfo(lcDisco) << "Local file does not exist anymore." << originalPath;
                             return;
                         }
                         if (buf.modtime != base._modtime || buf.size != base._fileSize) {
-                            // File has changed locally, not a rename.
+                            qCInfo(lcDisco) << "File has changed locally, not a rename." << originalPath;
                             return;
                         }
                     }
-
 
                     auto it = _discoveryData->_deletedItem.find(originalPath);
                     if (it != _discoveryData->_deletedItem.end()) {
@@ -432,7 +439,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
 
                     qCInfo(lcDisco) << "Rename detected (down) " << item->_file << " -> " << item->_renameTarget;
 
-                    // FIXME!  chech that the server version of origialPath is gone!
+                    // FIXME!  check that the server version of origialPath is gone!
                 };
                 if (!_discoveryData->_statedb->getFileRecordsByFileId(serverEntry.fileId, renameCandidateProcessing)) {
                     qFatal("TODO: Handle DB ERROR");
@@ -540,7 +547,6 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         } else if (!dbEntry.isValid()) { // New local file
             item->_instruction = CSYNC_INSTRUCTION_NEW;
             item->_direction = SyncFileItem::Up;
-            // TODO! rename;
             item->_checksumHeader.clear();
             item->_size = localEntry.size;
             item->_modtime = localEntry.modtime;
@@ -570,11 +576,17 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             if (isRename) {
                 auto originalPath = QString::fromUtf8(base._path);
                 auto it = _discoveryData->_deletedItem.find(originalPath);
+                QByteArray oldEtag;
                 if (it != _discoveryData->_deletedItem.end()) {
                     if ((*it)->_instruction != CSYNC_INSTRUCTION_REMOVE)
                         isRename = false;
                     else
                         (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
+                    oldEtag = (*it)->_etag;
+                    if (!item->isDirectory() && oldEtag != base._etag)
+                        isRename = false;
+                } else {
+                    // FIXME!  We should do a server query to find out if the original path still exist and has the same etag
                 }
                 if (_discoveryData->_renamedItems.contains(originalPath))
                     isRename = false;
@@ -590,9 +602,11 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                     item->_file = originalPath;
                     item->_originalFile = originalPath;
                     item->_fileId = base._fileId;
+                    item->_remotePerm = base._remotePerm;
                     item->_etag = base._etag;
                     path._original = originalPath;
                     path._server = originalPath;
+                    recurseQueryServer = oldEtag == base._etag ? ParentNotChanged : NormalQuery;
                     qCInfo(lcDisco) << "Rename detected (up) " << item->_file << " -> " << item->_renameTarget;
                 }
             }
@@ -627,15 +641,21 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         }
     }
 
+    if (path._original != path._target && (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA || item->_instruction == CSYNC_INSTRUCTION_NONE)) {
+        ASSERT(_dirItem && _dirItem->_instruction == CSYNC_INSTRUCTION_RENAME);
+        // This is because otherwise subitems are not updated!  (ideally renaming a directory could
+        // update the database for all items!  See PropagateDirectory::slotSubJobsFinished)
+        item->_instruction = CSYNC_INSTRUCTION_RENAME;
+        item->_renameTarget = path._target;
+        item->_direction = _dirItem->_direction;
+    }
+
     qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->isDirectory();
 
     if (item->isDirectory()) {
         if (item->_instruction == CSYNC_INSTRUCTION_SYNC) {
             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
         }
-
-        if (recurseQueryServer != ParentNotChanged && !serverEntry.isValid())
-            recurseQueryServer = ParentDontExist;
         auto job = new ProcessDirectoryJob(item, recurseQueryServer,
             localEntry.isValid() || item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist,
             _discoveryData, this);
