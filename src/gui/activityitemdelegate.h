@@ -15,6 +15,9 @@
 
 #pragma once
 #include <QStyledItemDelegate>
+#include <QMouseEvent>
+
+class QMouseEvent;
 
 namespace OCC {
 
