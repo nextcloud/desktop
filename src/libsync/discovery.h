@@ -110,10 +110,13 @@ class ProcessDirectoryJob : public QObject
 {
     Q_OBJECT
 public:
-    enum QueryMode { NormalQuery,
+    enum QueryMode {
+        NormalQuery,
         ParentDontExist,
         ParentNotChanged,
-        InBlackList };
+        InBlackList
+    };
+    Q_ENUM(QueryMode)
     explicit ProcessDirectoryJob(const SyncFileItemPtr &dirItem, QueryMode queryServer, QueryMode queryLocal,
         DiscoveryPhase *data, QObject *parent)
         : QObject(parent)
