@@ -72,7 +72,9 @@ namespace {
         "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
         "                         (to be used with --logdir)\n"
         "  --logflush           : flush the log file after every write.\n"
-        "  --logdebug           : also output debug-level messages in the log (equivalent to setting the env var QT_LOGGING_RULES=\"qt.*=true;*.debug=true\").\n"
+        "  --logdebug           : also output debug-level messages in the log\n"
+        "                         (equivalent to setting the env var\n"
+        "                          QT_LOGGING_RULES=\"qt.*=true;*.debug=true\").\n"
         "  --confdir <dirname>  : Use the given configuration folder.\n";
 
     QString applicationTrPath()
