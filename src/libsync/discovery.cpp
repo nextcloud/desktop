@@ -65,8 +65,8 @@ void ProcessDirectoryJob::start()
     qCInfo(lcDisco) << "STARTING" << _currentFolder._server << _queryServer << _currentFolder._local << _queryLocal;
 
     if (_queryServer == NormalQuery) {
-        _serverJob = new DiscoverServerJob(_discoveryData->_account, _discoveryData->_remoteFolder + _currentFolder._server, this);
-        connect(_serverJob.data(), &DiscoverServerJob::finished, this, [this](const auto &results) {
+        auto serverJob = new DiscoverServerJob(_discoveryData->_account, _discoveryData->_remoteFolder + _currentFolder._server, this);
+        connect(serverJob, &DiscoverServerJob::finished, this, [this](const auto &results) {
             if (results) {
                 _serverEntries = *results;
                 _hasServerEntries = true;
@@ -77,7 +77,7 @@ void ProcessDirectoryJob::start()
                 qFatal("TODO: ERROR HANDLING");
             }
         });
-        _serverJob->start();
+        serverJob->start();
     } else {
         _hasServerEntries = true;
     }
@@ -358,6 +358,20 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             item->_modtime = serverEntry.modtime;
             item->_size = serverEntry.size;
 
+            auto postProcessNew = [item, this, path, serverEntry] {
+                if (item->isDirectory()) {
+                    if (_discoveryData->checkSelectiveSyncNewFolder(path._server, serverEntry.remotePerm)) {
+                        return;
+                    }
+                }
+
+                // Turn new remote files into virtual files if the option is enabled.
+                if (_discoveryData->_syncOptions._newFilesAreVirtual && item->_type == ItemTypeFile) {
+                    item->_type = ItemTypeVirtualFile;
+                    item->_file.append(_discoveryData->_syncOptions._virtualFileSuffix);
+                }
+            };
+
             if (!localEntry.isValid()) {
                 // Check for renames (if there is a file with the same file id)
                 bool done = false;
@@ -417,48 +431,111 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                         }
                     }
 
+                    bool wasDeletedOnServer = false;
                     auto it = _discoveryData->_deletedItem.find(originalPath);
                     if (it != _discoveryData->_deletedItem.end()) {
-                        if ((*it)->_instruction != CSYNC_INSTRUCTION_REMOVE)
-                            return;
+                        ASSERT((*it)->_instruction == CSYNC_INSTRUCTION_REMOVE);
                         (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
+                        wasDeletedOnServer = true;
                     }
-                    delete _discoveryData->_queuedDeletedDirectories.take(originalPath);
-                    _discoveryData->_renamedItems.insert(originalPath);
+                    auto otherJob = _discoveryData->_queuedDeletedDirectories.take(originalPath);
+                    if (otherJob) {
+                        delete otherJob;
+                        wasDeletedOnServer = true;
+                    }
 
-                    item->_modtime = base._modtime;
-                    item->_inode = base._inode;
-                    item->_instruction = CSYNC_INSTRUCTION_RENAME;
-                    item->_direction = SyncFileItem::Down;
-                    item->_renameTarget = path._target;
-                    item->_file = originalPath;
-                    item->_originalFile = originalPath;
-                    path._original = originalPath;
-                    path._local = originalPath;
-                    done = true;
+                    auto postProcessRename = [this, item, base, originalPath](PathTuple &path) {
+                        _discoveryData->_renamedItems.insert(originalPath);
+                        item->_modtime = base._modtime;
+                        item->_inode = base._inode;
+                        item->_instruction = CSYNC_INSTRUCTION_RENAME;
+                        item->_direction = SyncFileItem::Down;
+                        item->_renameTarget = path._target;
+                        item->_file = originalPath;
+                        item->_originalFile = originalPath;
+                        path._original = originalPath;
+                        path._local = originalPath;
+                        qCInfo(lcDisco) << "Rename detected (down) " << item->_file << " -> " << item->_renameTarget;
+                    };
 
-                    qCInfo(lcDisco) << "Rename detected (down) " << item->_file << " -> " << item->_renameTarget;
+                    if (wasDeletedOnServer) {
+                        postProcessRename(path);
+                        done = true;
+                    } else {
+                        // we need to make a request to the server to know that the original file is deleted on the server
+                        _pendingAsyncJobs++;
+                        auto job = new PropfindJob(_discoveryData->_account, originalPath, this);
+                        auto considerNew = [=] {
+                            // The original file still exist, consider it is new.
+                            postProcessNew();
+                            qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->isDirectory();
+                            if (item->isDirectory()) {
+                                auto job = new ProcessDirectoryJob(item, recurseQueryServer, ParentDontExist, _discoveryData, this);
+                                job->_currentFolder = path;
+                                connect(job, &ProcessDirectoryJob::itemDiscovered, this, &ProcessDirectoryJob::itemDiscovered);
+                                connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
+                                _queuedJobs.push_back(job);
+                            } else {
+                                emit itemDiscovered(item);
+                            }
 
-                    // FIXME!  check that the server version of origialPath is gone!
+                            _pendingAsyncJobs--;
+                            progress();
+                        };
+                        connect(job, &PropfindJob::result, this, considerNew);
+                        connect(job, &PropfindJob::finishedWithError, this, [=](QNetworkReply *reply) mutable {
+                            if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 404) {
+                                qDebug() << reply->request().url() << reply->error() << reply->errorString();
+                                qFatal("TODO: Handle error");
+                            }
+                            if (_discoveryData->_renamedItems.contains(originalPath)) {
+                                // Somehow another item claimed this original path, consider as if it existed
+                                considerNew();
+                                return;
+                            }
+
+                            // In case the deleted item was discovered in parallel
+                            auto it = _discoveryData->_deletedItem.find(originalPath);
+                            if (it != _discoveryData->_deletedItem.end()) {
+                                ASSERT((*it)->_instruction == CSYNC_INSTRUCTION_REMOVE);
+                                (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
+                            }
+                            delete _discoveryData->_queuedDeletedDirectories.take(originalPath);
+
+                            // Normal use case: this is a rename.
+                            postProcessRename(path);
+
+                            qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->isDirectory();
+
+                            if (item->isDirectory()) {
+                                auto job = new ProcessDirectoryJob(item, recurseQueryServer, NormalQuery, _discoveryData, this);
+                                job->_currentFolder = path;
+                                connect(job, &ProcessDirectoryJob::itemDiscovered, this, &ProcessDirectoryJob::itemDiscovered);
+                                connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
+                                _queuedJobs.push_back(job);
+                            } else {
+                                emit itemDiscovered(item);
+                            }
+                            _pendingAsyncJobs--;
+                            progress();
+                        });
+                        job->start();
+                        done = true; // Ideally, if the origin still exist on the server, we should continue searching...  but that'd be difficult
+                        item = nullptr;
+                    }
                 };
                 if (!_discoveryData->_statedb->getFileRecordsByFileId(serverEntry.fileId, renameCandidateProcessing)) {
                     qFatal("TODO: Handle DB ERROR");
                 }
-            }
-
-            if (item->_instruction == CSYNC_INSTRUCTION_NEW && item->isDirectory()) {
-                if (_discoveryData->checkSelectiveSyncNewFolder(path._server, serverEntry.remotePerm)) {
-                    return;
+                if (!item) {
+                    return; // We wend async
                 }
             }
 
-            // Turn new remote files into virtual files if the option is enabled.
-            if (item->_instruction == CSYNC_INSTRUCTION_NEW
-                && _discoveryData->_syncOptions._newFilesAreVirtual
-                && item->_type == ItemTypeFile) {
-                item->_type = ItemTypeVirtualFile;
-                item->_file.append(_discoveryData->_syncOptions._virtualFileSuffix);
+            if (item->_instruction == CSYNC_INSTRUCTION_NEW) {
+                postProcessNew();
             }
+
         } else if (dbEntry._etag != serverEntry.etag) {
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
@@ -728,6 +805,10 @@ void ProcessDirectoryJob::subJobFinished()
 
 void ProcessDirectoryJob::progress()
 {
+    int maxRunning = 3; // FIXME
+    if (_pendingAsyncJobs + _runningJobs.size() > maxRunning)
+        return;
+
     if (!_queuedJobs.empty()) {
         auto f = _queuedJobs.front();
         _queuedJobs.pop_front();
@@ -735,7 +816,7 @@ void ProcessDirectoryJob::progress()
         f->start();
         return;
     }
-    if (_runningJobs.empty()) {
+    if (_runningJobs.empty() && _pendingAsyncJobs == 0) {
         if (_dirItem) {
             if (_childModified && _dirItem->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 // re-create directory that has modified contents
