@@ -470,6 +470,11 @@ private slots:
         {
             resetCounters();
             local.setContents("AM/a2m", 'C');
+            // We must change the modtime for it is likely that it did not change between sync.
+            // (Previous version of the client (<=2.5) would not need this because it was always doing
+            // checksum comparison for all renames. But newer version no longer does it if the file is
+            // renamed because the parent folder is renamed)
+            local.setModTime("AM/a2m", QDateTime::currentDateTimeUtc().addDays(3));
             local.rename("AM", "A2");
             remote.setContents("BM/b2m", 'C');
             remote.rename("BM", "B2");
