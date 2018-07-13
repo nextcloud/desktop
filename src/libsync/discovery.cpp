@@ -55,8 +55,8 @@ DiscoverServerJob::DiscoverServerJob(const AccountPtr &account, const QString &p
     });
 
     connect(this, &DiscoverySingleDirectoryJob::finishedWithError, this,
-        [this](int, const QString &msg) {
-            emit this->finished({ Error, msg });
+        [this](int code, const QString &msg) {
+            emit this->finished({ code, msg });
         });
 }
 
@@ -352,7 +352,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         item->_etag = serverEntry.etag;
         item->_previousSize = localEntry.size;
         item->_previousModtime = localEntry.modtime;
-        if (!dbEntry.isValid()) { // New file?
+        if (!dbEntry.isValid()) { // New file on the server
             item->_instruction = CSYNC_INSTRUCTION_NEW;
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
@@ -419,7 +419,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                         return;
                     }
 
-                    else if (item->_type == ItemTypeFile) {
+                    if (item->_type == ItemTypeFile) {
                         csync_file_stat_t buf;
                         if (csync_vio_local_stat((_discoveryData->_localDir + originalPath).toUtf8(), &buf)) {
                             qCInfo(lcDisco) << "Local file does not exist anymore." << originalPath;
@@ -427,6 +427,11 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                         }
                         if (buf.modtime != base._modtime || buf.size != base._fileSize) {
                             qCInfo(lcDisco) << "File has changed locally, not a rename." << originalPath;
+                            return;
+                        }
+                    } else {
+                        if (!QFile::exists(_discoveryData->_localDir + originalPath)) {
+                            qCInfo(lcDisco) << "Local directory does not exist anymore." << originalPath;
                             return;
                         }
                     }
@@ -464,51 +469,33 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                     } else {
                         // we need to make a request to the server to know that the original file is deleted on the server
                         _pendingAsyncJobs++;
-                        auto job = new PropfindJob(_discoveryData->_account, originalPath, this);
-                        auto considerNew = [=] {
-                            // The original file still exist, consider it is new.
-                            postProcessNew();
-                            qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->isDirectory();
-                            if (item->isDirectory()) {
-                                auto job = new ProcessDirectoryJob(item, recurseQueryServer, ParentDontExist, _discoveryData, this);
-                                job->_currentFolder = path;
-                                connect(job, &ProcessDirectoryJob::itemDiscovered, this, &ProcessDirectoryJob::itemDiscovered);
-                                connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
-                                _queuedJobs.push_back(job);
-                            } else {
-                                emit itemDiscovered(item);
-                            }
-
-                            _pendingAsyncJobs--;
-                            progress();
-                        };
-                        connect(job, &PropfindJob::result, this, considerNew);
-                        connect(job, &PropfindJob::finishedWithError, this, [=](QNetworkReply *reply) mutable {
-                            if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 404) {
-                                qDebug() << reply->request().url() << reply->error() << reply->errorString();
-                                qFatal("TODO: Handle error");
-                            }
-                            if (_discoveryData->_renamedItems.contains(originalPath)) {
+                        auto job = new RequestEtagJob(_discoveryData->_account, originalPath, this);
+                        connect(job, &RequestEtagJob::finishedWithResult, this, [=](const Result<QString> &etag) mutable {
+                            if (etag.errorCode() != 404 ||
                                 // Somehow another item claimed this original path, consider as if it existed
-                                considerNew();
-                                return;
-                            }
+                                _discoveryData->_renamedItems.contains(originalPath)) {
+                                // If the file exist or if there is another error, consider it is a new file.
+                                postProcessNew();
+                            } else {
+                                // The file do not exist, it is a rename
 
-                            // In case the deleted item was discovered in parallel
-                            auto it = _discoveryData->_deletedItem.find(originalPath);
-                            if (it != _discoveryData->_deletedItem.end()) {
-                                ASSERT((*it)->_instruction == CSYNC_INSTRUCTION_REMOVE);
-                                (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
-                            }
-                            delete _discoveryData->_queuedDeletedDirectories.take(originalPath);
+                                // In case the deleted item was discovered in parallel
+                                auto it = _discoveryData->_deletedItem.find(originalPath);
+                                if (it != _discoveryData->_deletedItem.end()) {
+                                    ASSERT((*it)->_instruction == CSYNC_INSTRUCTION_REMOVE);
+                                    (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
+                                }
+                                delete _discoveryData->_queuedDeletedDirectories.take(originalPath);
 
-                            // Normal use case: this is a rename.
-                            postProcessRename(path);
+                                postProcessRename(path);
+                            }
 
                             qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->isDirectory();
 
                             if (item->isDirectory()) {
-                                auto job = new ProcessDirectoryJob(item, recurseQueryServer, NormalQuery, _discoveryData, this);
+                                auto job = new ProcessDirectoryJob(item, recurseQueryServer,
+                                    item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist,
+                                    _discoveryData, this);
                                 job->_currentFolder = path;
                                 connect(job, &ProcessDirectoryJob::itemDiscovered, this, &ProcessDirectoryJob::itemDiscovered);
                                 connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
@@ -542,6 +529,9 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             item->_size = serverEntry.size;
             if (serverEntry.isDirectory && dbEntry._type == ItemTypeDirectory) {
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+            } else if (!localEntry.isValid()) {
+                // Deleted locally, changed on server
+                item->_instruction = CSYNC_INSTRUCTION_NEW;
             } else {
                 item->_instruction = CSYNC_INSTRUCTION_SYNC;
             }
@@ -650,25 +640,28 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                     isRename = item->_checksumHeader == base._checksumHeader;
                 }
             }
+            auto originalPath = QString::fromUtf8(base._path);
+            if (isRename && _discoveryData->_renamedItems.contains(originalPath))
+                isRename = false;
             if (isRename) {
-                auto originalPath = QString::fromUtf8(base._path);
-                auto it = _discoveryData->_deletedItem.find(originalPath);
                 QByteArray oldEtag;
+                auto it = _discoveryData->_deletedItem.find(originalPath);
                 if (it != _discoveryData->_deletedItem.end()) {
                     if ((*it)->_instruction != CSYNC_INSTRUCTION_REMOVE)
                         isRename = false;
                     else
                         (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
                     oldEtag = (*it)->_etag;
-                    if (!item->isDirectory() && oldEtag != base._etag)
+                    if (!item->isDirectory() && oldEtag != base._etag) {
                         isRename = false;
-                } else {
-                    // FIXME!  We should do a server query to find out if the original path still exist and has the same etag
+                    }
                 }
-                if (_discoveryData->_renamedItems.contains(originalPath))
-                    isRename = false;
-                if (isRename) {
+                if (auto deleteJob = static_cast<ProcessDirectoryJob *>(_discoveryData->_queuedDeletedDirectories.value(originalPath).data())) {
+                    oldEtag = deleteJob->_dirItem->_etag;
                     delete _discoveryData->_queuedDeletedDirectories.take(originalPath);
+                }
+
+                auto processRename = [item, originalPath, base, this](PathTuple &path) {
                     _discoveryData->_renamedItems.insert(originalPath);
 
                     item->_modtime = base._modtime;
@@ -683,12 +676,55 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                     item->_etag = base._etag;
                     path._original = originalPath;
                     path._server = originalPath;
-                    recurseQueryServer = oldEtag == base._etag ? ParentNotChanged : NormalQuery;
                     qCInfo(lcDisco) << "Rename detected (up) " << item->_file << " -> " << item->_renameTarget;
+                };
+                if (isRename && !oldEtag.isEmpty()) {
+                    recurseQueryServer = oldEtag == base._etag ? ParentNotChanged : NormalQuery;
+                    processRename(path);
+                } else if (isRename) {
+                    // We must query the server to know if the etag has not changed
+                    _pendingAsyncJobs++;
+                    auto job = new RequestEtagJob(_discoveryData->_account, originalPath, this);
+                    connect(job, &RequestEtagJob::finishedWithResult, this, [=](const Result<QString> &etag) mutable {
+                        if (!etag || (*etag != base._etag && !item->isDirectory()) || _discoveryData->_renamedItems.contains(originalPath)) {
+                            qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
+                            // Can't be a rename, leave it as a new.
+                        } else {
+                            // In case the deleted item was discovered in parallel
+                            auto it = _discoveryData->_deletedItem.find(originalPath);
+                            if (it != _discoveryData->_deletedItem.end()) {
+                                ASSERT((*it)->_instruction == CSYNC_INSTRUCTION_REMOVE);
+                                (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
+                            }
+                            delete _discoveryData->_queuedDeletedDirectories.take(originalPath);
+
+                            processRename(path);
+                            recurseQueryServer = *etag == base._etag ? ParentNotChanged : NormalQuery;
+                        }
+
+                        qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->isDirectory();
+                        if (item->isDirectory()) {
+                            auto job = new ProcessDirectoryJob(item, recurseQueryServer, NormalQuery, _discoveryData, this);
+                            job->_currentFolder = path;
+                            connect(job, &ProcessDirectoryJob::itemDiscovered, this, &ProcessDirectoryJob::itemDiscovered);
+                            connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
+                            _queuedJobs.push_back(job);
+                        } else {
+                            emit itemDiscovered(item);
+                        }
+                        _pendingAsyncJobs--;
+                        progress();
+                    });
+                    job->start();
+                    return;
                 }
             }
         } else {
             item->_instruction = CSYNC_INSTRUCTION_SYNC;
+            if (_queryServer != ParentNotChanged && !serverEntry.isValid()) {
+                // Special case! deleted on server, modified on client, the instruction is then NEW
+                item->_instruction = CSYNC_INSTRUCTION_NEW;
+            }
             item->_direction = SyncFileItem::Up;
             item->_checksumHeader.clear();
             item->_size = localEntry.size;

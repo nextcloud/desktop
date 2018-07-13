@@ -92,7 +92,8 @@ bool RequestEtagJob::finished()
     qCInfo(lcEtagJob) << "Request Etag of" << reply()->request().url() << "FINISHED WITH STATUS"
                       <<  replyStatusString();
 
-    if (reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 207) {
+    auto httpCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (httpCode == 207) {
         // Parse DAV response
         QXmlStreamReader reader(reply());
         reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration("d", "DAV:"));
@@ -107,6 +108,9 @@ bool RequestEtagJob::finished()
             }
         }
         emit etagRetreived(etag);
+        emit finishedWithResult(etag);
+    } else {
+        emit finishedWithResult({ httpCode, errorString() });
     }
     return true;
 }

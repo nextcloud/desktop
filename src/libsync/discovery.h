@@ -24,51 +24,6 @@ class ExcludedFiles;
 namespace OCC {
 class SyncJournalDb;
 
-enum ErrorTag { Error };
-
-template <typename T>
-class Result
-{
-    union {
-        T _result;
-        QString _errorString;
-    };
-    bool _isError;
-
-public:
-    Result(T value)
-        : _result(std::move(value))
-        , _isError(false){};
-    Result(ErrorTag, QString str)
-        : _errorString(std::move(str))
-        , _isError(true)
-    {
-    }
-    ~Result()
-    {
-        if (_isError)
-            _errorString.~QString();
-        else
-            _result.~T();
-    }
-    explicit operator bool() const { return !_isError; }
-    const T &operator*() const &
-    {
-        ASSERT(!_isError);
-        return _result;
-    }
-    T operator*() &&
-    {
-        ASSERT(!_isError);
-        return std::move(_result);
-    }
-    QString errorMessage() const
-    {
-        ASSERT(_isError);
-        return _errorString;
-    }
-};
-
 struct RemoteInfo
 {
     QString name;

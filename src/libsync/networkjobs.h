@@ -304,6 +304,7 @@ public:
 
 signals:
     void etagRetreived(const QString &etag);
+    void finishedWithResult(const Result<QString> &etag);
 
 private slots:
     virtual bool finished() Q_DECL_OVERRIDE;

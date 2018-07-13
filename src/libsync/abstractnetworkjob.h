@@ -24,12 +24,70 @@
 #include <QDateTime>
 #include <QTimer>
 #include "accountfwd.h"
+#include "common/asserts.h"
 
 class QUrl;
 
 namespace OCC {
 
 class AbstractSslErrorHandler;
+
+
+/**
+ * A Result of type T, or an Error that contains a code and a string
+ **/
+template <typename T>
+class Result
+{
+    struct Error
+    {
+        QString string;
+        int code;
+    };
+    union {
+        T _result;
+        Error _error;
+    };
+    bool _isError;
+
+public:
+    Result(T value)
+        : _result(std::move(value))
+        , _isError(false){};
+    Result(int code, QString str)
+        : _error({ std::move(str), code })
+        , _isError(true)
+    {
+    }
+    ~Result()
+    {
+        if (_isError)
+            _error.~Error();
+        else
+            _result.~T();
+    }
+    explicit operator bool() const { return !_isError; }
+    const T &operator*() const &
+    {
+        ASSERT(!_isError);
+        return _result;
+    }
+    T operator*() &&
+    {
+        ASSERT(!_isError);
+        return std::move(_result);
+    }
+    QString errorMessage() const
+    {
+        ASSERT(_isError);
+        return _error.string;
+    }
+    int errorCode() const
+    {
+        return _isError ? _error.code : 0;
+    }
+};
+
 
 /**
  * @brief The AbstractNetworkJob class
