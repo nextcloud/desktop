@@ -162,8 +162,8 @@ private:
     QVector<LocalInfo> _localEntries;
     bool _hasServerEntries = false;
     bool _hasLocalEntries = false;
+    int _pendingAsyncJobs = 0;
     QPointer<DiscoverServerJob> _serverJob;
-    //QScopedPointer<DiscoverLocalJob> _localJob;
     std::deque<ProcessDirectoryJob *> _queuedJobs;
     QVector<ProcessDirectoryJob *> _runningJobs;
     SyncFileItemPtr _dirItem;
