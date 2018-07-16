@@ -48,14 +48,13 @@
 
 namespace OCC {
 
-const QString ActivityWidget::_accept(tr("Accept"));
-const QString ActivityWidget::_remote_share("remote_share");
-
 ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::ActivityWidget)
     , _notificationRequestsRunning(0)
     , _accountState(accountState)
+    , _accept(tr("Accept"))
+    , _remote_share("remote_share")
 {
     _ui->setupUi(this);
 

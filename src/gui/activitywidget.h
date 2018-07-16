@@ -123,8 +123,8 @@ private:
     QVBoxLayout *_notificationsLayout;
 
     AccountState *_accountState;
-    static const QString _accept;
-    static const QString _remote_share;
+    const QString _accept;
+    const QString _remote_share;
 };
 
 
