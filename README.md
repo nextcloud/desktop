@@ -7,8 +7,38 @@ with your computer.
 
 ### :hammer_and_wrench: How to compile the desktop client
 
-- Instructions for compiling the client on Linux, Windows and mac OS can be found at:
-[Wiki/How to compile the desktop client](https://github.com/nextcloud/desktop/wiki/How-to-compile-the-desktop-client).
+#### :memo: Step by step instructions
+
+##### Clone the repo and create build directory
+```
+$ git clone git@github.com:nextcloud/desktop.git
+$ cd desktop
+$ mkdir build
+```
+##### Compile and install
+
+##### Linux
+
+```
+$ cmake .. -DCMAKE_INSTALL_PREFIX=path-to-install-folder/ -DCMAKE_BUILD_TYPE=Debug -DNO_SHIBBOLETH=1
+$ make install
+```
+
+##### Windows
+
+```
+$ cmake -G "Visual Studio 15 2017 Win64" .. -DCMAKE_INSTALL_PREFIX=path-to-install-folder/ -DCMAKE_BUILD_TYPE=Debug -DNO_SHIBBOLETH=1
+$ cmake --build . --config Debug --target install
+```
+
+##### Mac OS
+
+```
+$ cmake .. -DCMAKE_INSTALL_PREFIX=path-to-install-folder/ -DCMAKE_BUILD_TYPE=Debug -DNO_SHIBBOLETH=1
+$ make install
+```
+
+More detailed instructions can be found at the [Desktop Client Wiki](https://github.com/nextcloud/desktop/wiki).
 
 ### :inbox_tray: Where to find binaries to download
 
