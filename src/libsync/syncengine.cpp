@@ -558,10 +558,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t * /*file*/, csync_file_stat_t * /
         item->_status = SyncFileItem::SoftError;
         _temporarilyUnavailablePaths.insert(item->_file);
         break;
-    case CSYNC_STATUS_PERMISSION_DENIED:
-        item->_errorString = QLatin1String("Directory not accessible on client, permission denied.");
-        item->_status = SyncFileItem::SoftError;
-        break;
 
     }
 
@@ -920,7 +916,10 @@ void SyncEngine::slotStartDiscovery()
 
     connect(_discoveryPhase.data(), &DiscoveryPhase::folderDiscovered, this, &SyncEngine::slotFolderDiscovered);
     connect(_discoveryPhase.data(), &DiscoveryPhase::newBigFolder, this, &SyncEngine::newBigFolder);
-
+    connect(_discoveryPhase.data(), &DiscoveryPhase::fatalError, this, [this](const QString &errorString) {
+        csyncError(errorString);
+        finalize(false);
+    });
 
     _discoveryJob = new ProcessDirectoryJob(SyncFileItemPtr(), ProcessDirectoryJob::NormalQuery, ProcessDirectoryJob::NormalQuery,
         _discoveryPhase.data(), this);
