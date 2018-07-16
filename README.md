@@ -3,12 +3,48 @@
 The :computer: Nextcloud Desktop Client is a tool to synchronize files from Nextcloud Server
 with your computer.
 
+<p align="center">
+    <img src="https://nextcloud.com/wp-content/themes/next/assets/img/clients/desktop/macsettings.png?x16328" alt="Desktop Client on Mac OS]">
+</p>
+
 ## :blue_heart: :tada: Contributing
 
 ### :hammer_and_wrench: How to compile the desktop client
 
-- Instructions for compiling the client on Linux, Windows and mac OS can be found at:
-[Wiki/How to compile the desktop client](https://github.com/nextcloud/desktop/wiki/How-to-compile-the-desktop-client).
+:building_construction: [System requirements](https://github.com/nextcloud/desktop/wiki/System-requirements-for-compiling-the-desktop-client) includes OpenSSL 1.1.x, QtKeychain, Qt 5.x.x and zlib.
+
+#### :memo: Step by step instructions
+
+##### Clone the repo and create build directory
+```
+$ git clone git@github.com:nextcloud/desktop.git
+$ cd desktop
+$ mkdir build
+```
+##### Compile and install
+
+##### Linux
+
+```
+$ cmake .. -DCMAKE_INSTALL_PREFIX=path-to-install-folder/ -DCMAKE_BUILD_TYPE=Debug -DNO_SHIBBOLETH=1
+$ make install
+```
+
+##### Windows
+
+```
+$ cmake -G "Visual Studio 15 2017 Win64" .. -DCMAKE_INSTALL_PREFIX=path-to-install-folder/ -DCMAKE_BUILD_TYPE=Debug -DNO_SHIBBOLETH=1
+$ cmake --build . --config Debug --target install
+```
+
+##### Mac OS
+
+```
+$ cmake .. -DCMAKE_INSTALL_PREFIX=path-to-install-folder/ -DCMAKE_BUILD_TYPE=Debug -DNO_SHIBBOLETH=1
+$ make install
+```
+
+More detailed instructions can be found at the [Desktop Client Wiki](https://github.com/nextcloud/desktop/wiki).
 
 ### :inbox_tray: Where to find binaries to download
 
