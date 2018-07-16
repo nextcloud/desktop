@@ -110,7 +110,8 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         a._id = json.value("notification_id").toInt();
 
         //need to know, specially for remote_share
-        a._object_type = json.value("object_type").toString();
+        a._objectType = json.value("object_type").toString();
+        a._status = 0;
 
         a._subject = json.value("subject").toString();
         a._message = json.value("message").toString();

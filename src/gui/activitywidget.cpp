@@ -128,12 +128,12 @@ void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItem
         qCWarning(lcActivity) << "Item " << item->_file << " retrieved resulted in " << item->_errorString;
 
         Activity activity;
-        activity._type = Activity::ErrorType;
+        activity._type = Activity::SyncFileItemType;
+        activity._status = item->_status;
         activity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
         activity._subject = item->_errorString;
         activity._message = item->_originalFile;
         activity._link = folderInstance->accountState()->account()->url();
-        activity._status = item->_status;
         activity._accName = folderInstance->accountState()->account()->displayName();
 
         // TODO: the added '/' is needed so FolderMan::instance()->findFileInLocalFolders can find it
@@ -158,12 +158,12 @@ void ActivityWidget::addError(const QString &folderAlias, const QString &message
         qCWarning(lcActivity) << "Item " << folderInstance->shortGuiLocalPath() << " retrieved resulted in " << message;
 
         Activity activity;
-        activity._type = Activity::ErrorType;
+        activity._type = Activity::SyncResultType;
+        activity._status = SyncResult::Error;
         activity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
         activity._subject = message;
         activity._message = folderInstance->shortGuiLocalPath();
         activity._link = folderInstance->shortGuiLocalPath();
-        activity._status = SyncResult::Error;
         activity._accName = folderInstance->accountState()->account()->displayName();
 
         if (category == ErrorCategory::InsufficientRemoteStorage) {
@@ -233,7 +233,8 @@ void ActivityWidget::slotSecondaryButtonClickedOnListView(const QModelIndex &ind
         }
     }
 
-    if(qvariant_cast<Activity::Type>(index.data(ActivityItemDelegate::ActionRole)) == Activity::Type::ErrorType)
+    Activity::Type activityType = qvariant_cast<Activity::Type>(index.data(ActivityItemDelegate::ActionRole));
+    if(activityType == Activity::Type::SyncFileItemType || activityType == Activity::Type::SyncResultType)
         slotOpenFile(index);
 }
 

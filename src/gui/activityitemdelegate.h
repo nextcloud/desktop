@@ -40,7 +40,8 @@ public:
         PathRole,
         LinkRole,
         PointInTimeRole,
-        AccountConnectedRole };
+        AccountConnectedRole,
+        SyncFileStatusRole };
 
     void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const Q_DECL_OVERRIDE;
     QSize sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const Q_DECL_OVERRIDE;

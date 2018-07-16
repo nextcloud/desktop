@@ -91,7 +91,9 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
            if(!cachedIcon.isNull())
                return cachedIcon;
            else return QIcon(QLatin1String(":/client/resources/bell.svg"));
-        } else if(a._type == Activity::ErrorType){
+        } else if(a._type == Activity::SyncResultType){
+            return Theme::instance()->syncStateIcon(SyncResult::Error);
+        } else if(a._type == Activity::SyncFileItemType){
                if(a._status == SyncFileItem::NormalError
                    || a._status == SyncFileItem::FatalError
                    || a._status == SyncFileItem::DetailError
@@ -107,7 +109,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return QVariant();
         break;
     case ActivityItemDelegate::ObjectTypeRole:
-        return a._object_type;
+        return a._objectType;
         break;
     case ActivityItemDelegate::ActionRole:{
         QVariant type;
@@ -200,7 +202,8 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
         a._type = Activity::ActivityType;
         a._accName = ast->account()->displayName();
         a._id = json.value("id").toInt();
-        a._object_type = "";
+        a._objectType = "";
+        a._status = 0;
         a._subject = json.value("subject").toString();
         a._message = json.value("message").toString();
         a._file = json.value("file").toString();

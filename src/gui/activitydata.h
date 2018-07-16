@@ -50,18 +50,21 @@ public:
     enum Type {
         ActivityType,
         NotificationType,
-        ErrorType
+        SyncResultType,
+        SyncFileItemType
     };
 
     Type _type;
     qlonglong _id;
-    QString _object_type;
+    QString _objectType;
     QString _subject;
     QString _message;
     QString _file;
     QUrl _link;
     QDateTime _dateTime;
     QString _accName;
+
+    // Stores information about the error
     int _status;
 
     QVector<ActivityLink> _links;

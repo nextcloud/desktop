@@ -175,7 +175,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         _secondaryButtonWidth = secondaryButton.rect.size().width();
         _spaceBetweenButtons = secondaryButton.rect.left() - primaryButton.rect.right();
 
-    } else if(activityType == Activity::Type::ErrorType){
+    } else if(activityType == Activity::SyncResultType){
 
         // Secondary will be 'open file manager' with the folder icon
         secondaryButton.icon = QIcon(QLatin1String(":/client/resources/folder-grey.png"));
@@ -188,6 +188,18 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         // save info to be able to filter mouse clicks
         _buttonHeight = buttonSize;
         _primaryButtonWidth = primaryButton.rect.size().width();
+        _secondaryButtonWidth = secondaryButton.rect.size().width();
+        _spaceBetweenButtons = secondaryButton.rect.left() - primaryButton.rect.right();
+
+    } else if(activityType == Activity::SyncFileItemType){
+
+        // Secondary will be 'open file manager' with the folder icon
+        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/folder-grey.png"));
+        secondaryButton.iconSize = QSize(iconSize, iconSize);
+
+        // No primary button on this case
+        // Whatever error we have at this case it is local, there is no point on opening the browser
+        _primaryButtonWidth = 0;
         _secondaryButtonWidth = secondaryButton.rect.size().width();
         _spaceBetweenButtons = secondaryButton.rect.left() - primaryButton.rect.right();
 
@@ -227,10 +239,12 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     painter->drawText(actionTextBox, elidedAction);
 
     // draw the buttons
-    if(activityType == Activity::Type::NotificationType || activityType == Activity::Type::ErrorType){
+    if(activityType == Activity::Type::NotificationType || activityType == Activity::Type::SyncResultType)
         QApplication::style()->drawControl(QStyle::CE_PushButton, &primaryButton, painter);
+
+    // Since they are errors on local syncing, there is nothing to do in the server
+    if(activityType != Activity::Type::ActivityType)
         QApplication::style()->drawControl(QStyle::CE_PushButton, &secondaryButton, painter);
-    }
 
     // draw the message
     // change pen color for the message
@@ -262,8 +276,8 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 bool ActivityItemDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
     const QStyleOptionViewItem &option, const QModelIndex &index)
 {
-    if(qvariant_cast<Activity::Type>(index.data(ActionRole)) == Activity::Type::NotificationType
-            || qvariant_cast<Activity::Type>(index.data(ActionRole)) == Activity::Type::ErrorType){
+    Activity::Type activityType = qvariant_cast<Activity::Type>(index.data(ActionRole));
+    if(activityType != Activity::Type::ActivityType){
         if (event->type() == QEvent::MouseButtonRelease){
             QMouseEvent *mouseEvent = (QMouseEvent*)event;
             if(mouseEvent){
