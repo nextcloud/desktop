@@ -360,6 +360,80 @@ void SyncEngine::conflictRecordMaintenance()
     }
 }
 
+
+void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
+{
+    if (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA && !item->isDirectory()) {
+        // For directories, metadata-only updates will be done after all their files are propagated.
+
+        // Update the database now already:  New remote fileid or Etag or RemotePerm
+        // Or for files that were detected as "resolved conflict".
+        // Or a local inode/mtime change
+
+        // In case of "resolved conflict": there should have been a conflict because they
+        // both were new, or both had their local mtime or remote etag modified, but the
+        // size and mtime is the same on the server.  This typically happens when the
+        // database is removed. Nothing will be done for those files, but we still need
+        // to update the database.
+
+        // This metadata update *could* be a propagation job of its own, but since it's
+        // quick to do and we don't want to create a potentially large number of
+        // mini-jobs later on, we just update metadata right now.
+
+        if (item->_direction == SyncFileItem::Down) {
+            QString filePath = _localPath + item->_file;
+
+            // If the 'W' remote permission changed, update the local filesystem
+            SyncJournalFileRecord prev;
+            if (_journal->getFileRecord(item->_file, &prev)
+                && prev.isValid()
+                && prev._remotePerm.hasPermission(RemotePermissions::CanWrite) != item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
+                const bool isReadOnly = !item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite);
+                FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
+            }
+
+            _journal->setFileRecordMetadata(item->toSyncJournalFileRecordWithInode(filePath));
+
+            // This might have changed the shared flag, so we must notify SyncFileStatusTracker for example
+            emit itemCompleted(item);
+        } else {
+            // The local tree is walked first and doesn't have all the info from the server.
+            // Update only outdated data from the disk.
+            // FIXME!  I think this is no longer the case so a setFileRecordMetadata should work
+            _journal->updateLocalMetadata(item->_file, item->_modtime, item->_size, item->_inode);
+        }
+        _hasNoneFiles = true;
+        return;
+    } else if (item->_instruction == CSYNC_INSTRUCTION_NONE) {
+        _hasNoneFiles = true;
+        return;
+    } else if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+        _hasRemoveFile = true;
+    } else if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE
+        || item->_instruction == CSYNC_INSTRUCTION_SYNC) {
+        if (item->_direction == SyncFileItem::Up) {
+            // An upload of an existing file means that the file was left unchanged on the server
+            // This counts as a NONE for detecting if all the files on the server were changed
+            _hasNoneFiles = true;
+        } else if (!item->isDirectory()) {
+            auto difftime = std::difftime(item->_modtime, item->_previousModtime);
+            if (difftime < -3600 * 2) {
+                // We are going back on time
+                // We only increment if the difference is more than two hours to avoid clock skew
+                // issues or DST changes. (We simply ignore files that goes in the past less than
+                // two hours for the backup detection heuristics.)
+                _backInTimeFiles++;
+                qCWarning(lcEngine) << item->_file << "has a timestamp earlier than the local file";
+            } else if (difftime > 0) {
+                _hasForwardInTimeFiles = true;
+            }
+        }
+    }
+    _syncItems.append(item);
+    slotNewItem(item);
+}
+
+
 /**
  * The main function in the post-reconcile phase.
  *
@@ -528,33 +602,12 @@ int SyncEngine::treewalkFile(csync_file_stat_t * /*file*/, csync_file_stat_t * /
             _renamedFolders.insert(item->_file, item->_renameTarget);
         break;
     case CSYNC_INSTRUCTION_REMOVE:
-        _hasRemoveFile = true;
+
         dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
         break;
     case CSYNC_INSTRUCTION_CONFLICT:
     case CSYNC_INSTRUCTION_ERROR:
         dir = SyncFileItem::None;
-        break;
-    case CSYNC_INSTRUCTION_TYPE_CHANGE:
-    case CSYNC_INSTRUCTION_SYNC:
-        if (!remote) {
-            // An upload of an existing file means that the file was left unchanged on the server
-            // This counts as a NONE for detecting if all the files on the server were changed
-            _hasNoneFiles = true;
-        } else if (!isDirectory) {
-            auto difftime = std::difftime(file->modtime, other ? other->modtime : 0);
-            if (difftime < -3600 * 2) {
-                // We are going back on time
-                // We only increment if the difference is more than two hours to avoid clock skew
-                // issues or DST changes. (We simply ignore files that goes in the past less than
-                // two hours for the backup detection heuristics.)
-                _backInTimeFiles++;
-                qCWarning(lcEngine) << file->path << "has a timestamp earlier than the local file";
-            } else if (difftime > 0) {
-                _hasForwardInTimeFiles = true;
-            }
-        }
-        dir = remote ? SyncFileItem::Down : SyncFileItem::Up;
         break;
     case CSYNC_INSTRUCTION_NEW:
     case CSYNC_INSTRUCTION_EVAL:
@@ -647,6 +700,13 @@ void SyncEngine::startSync()
     _syncRunning = true;
     _anotherSyncNeeded = NoFollowUpSync;
     _clearTouchedFilesTimer.stop();
+
+    _hasNoneFiles = false;
+    _hasRemoveFile = false;
+    _hasForwardInTimeFiles = false;
+    _backInTimeFiles = 0;
+    _seenFiles.clear();
+    _temporarilyUnavailablePaths.clear();
 
     _progressInfo->reset();
 
@@ -802,59 +862,10 @@ void SyncEngine::startSync()
                 ASSERT(job);
                 runQueuedJob(job, runQueuedJob);
             } else {
-                slotDiscoveryJobFinished(0);
+                slotDiscoveryJobFinished();
             }
         });
-        connect(job, &ProcessDirectoryJob::itemDiscovered, this, [this](const auto &item) {
-            if (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA && !item->isDirectory()) {
-                // For directories, metadata-only updates will be done after all their files are propagated.
-
-                // Update the database now already:  New remote fileid or Etag or RemotePerm
-                // Or for files that were detected as "resolved conflict".
-                // Or a local inode/mtime change
-
-                // In case of "resolved conflict": there should have been a conflict because they
-                // both were new, or both had their local mtime or remote etag modified, but the
-                // size and mtime is the same on the server.  This typically happens when the
-                // database is removed. Nothing will be done for those files, but we still need
-                // to update the database.
-
-                // This metadata update *could* be a propagation job of its own, but since it's
-                // quick to do and we don't want to create a potentially large number of
-                // mini-jobs later on, we just update metadata right now.
-
-                if (item->_direction == SyncFileItem::Down) {
-                    QString filePath = _localPath + item->_file;
-
-                    // If the 'W' remote permission changed, update the local filesystem
-                    SyncJournalFileRecord prev;
-                    if (_journal->getFileRecord(item->_file, &prev)
-                        && prev.isValid()
-                        && prev._remotePerm.hasPermission(RemotePermissions::CanWrite) != item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
-                        const bool isReadOnly = !item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite);
-                        FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
-                    }
-
-                    _journal->setFileRecordMetadata(item->toSyncJournalFileRecordWithInode(filePath));
-
-                    // This might have changed the shared flag, so we must notify SyncFileStatusTracker for example
-                    emit itemCompleted(item);
-                } else {
-                    // The local tree is walked first and doesn't have all the info from the server.
-                    // Update only outdated data from the disk.
-                    // FIXME!  I think this is no longer the case so a setFileRecordMetadata should work
-                    _journal->updateLocalMetadata(item->_file, item->_modtime, item->_size, item->_inode);
-                }
-                _hasNoneFiles = true;
-                return;
-            } else if (item->_instruction == CSYNC_INSTRUCTION_NONE) {
-                _hasNoneFiles = true;
-                return;
-            }
-
-            _syncItems.append(item);
-            slotNewItem(item);
-        });
+        connect(job, &ProcessDirectoryJob::itemDiscovered, this, &SyncEngine::slotItemDiscovered);
         job->start();
     };
     runQueuedJob(_discoveryJob.data(), runQueuedJob);
@@ -899,12 +910,8 @@ void SyncEngine::slotNewItem(const SyncFileItemPtr &item)
     _progressInfo->adjustTotalsForFile(*item);
 }
 
-void SyncEngine::slotDiscoveryJobFinished(int /*discoveryResult*/)
-{ /*
-    if (discoveryResult < 0) {
-        handleSyncError(_csync_ctx.data(), "csync_update");
-        return;
-    }
+void SyncEngine::slotDiscoveryJobFinished()
+{
     qCInfo(lcEngine) << "#### Discovery end #################################################### " << _stopWatch.addLapTime(QLatin1String("Discovery Finished")) << "ms";
 
     // Sanity check
@@ -923,35 +930,9 @@ void SyncEngine::slotDiscoveryJobFinished(int /*discoveryResult*/)
     _progressInfo->_status = ProgressInfo::Reconcile;
     emit transmissionProgress(*_progressInfo);
 
-    if (csync_reconcile(_csync_ctx.data()) < 0) {
-        handleSyncError(_csync_ctx.data(), "csync_reconcile");
-        return;
-    }
+    //    qCInfo(lcEngine) << "Permissions of the root folder: " << _csync_ctx->remote.root_perms.toString();
 
-    qCInfo(lcEngine) << "#### Reconcile end #################################################### " << _stopWatch.addLapTime(QLatin1String("Reconcile Finished")) << "ms";
-
-    _hasNoneFiles = false;
-    _hasRemoveFile = false;
-    _hasForwardInTimeFiles = false;
-    _backInTimeFiles = 0;
-    bool walkOk = true;
-    _seenFiles.clear();
-    _temporarilyUnavailablePaths.clear();
-    _renamedFolders.clear();
-
-    if (csync_walk_local_tree(_csync_ctx.data(), [this](csync_file_stat_t *f, csync_file_stat_t *o) { return treewalkFile(f, o, false); } ) < 0) {
-        qCWarning(lcEngine) << "Error in local treewalk.";
-        walkOk = false;
-    }
-    if (walkOk && csync_walk_remote_tree(_csync_ctx.data(), [this](csync_file_stat_t *f, csync_file_stat_t *o) { return treewalkFile(f, o, true); } ) < 0) {
-        qCWarning(lcEngine) << "Error in remote treewalk.";
-    }
-
-    qCInfo(lcEngine) << "Permissions of the root folder: " << _csync_ctx->remote.root_perms.toString();
-
-    // The map was used for merging trees, convert it to a list:
-    SyncFileItemVector syncItems = _syncItemMap.values().toVector();
-    _syncItemMap.clear(); // free memory
+    /*
 
     // Adjust the paths for the renames.
     for (SyncFileItemVector::iterator it = syncItems.begin();
@@ -1141,7 +1122,6 @@ void SyncEngine::finalize(bool success)
     _propagator.clear();
     _seenFiles.clear();
     _temporarilyUnavailablePaths.clear();
-    _renamedFolders.clear();
     _uniqueErrors.clear();
     _localDiscoveryPaths.clear();
     _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
@@ -1155,19 +1135,6 @@ void SyncEngine::slotProgress(const SyncFileItem &item, quint64 current)
     emit transmissionProgress(*_progressInfo);
 }
 
-
-/* Given a path on the remote, give the path as it is when the rename is done */
-QString SyncEngine::adjustRenamedPath(const QString &original)
-{
-    int slashPos = original.size();
-    while ((slashPos = original.lastIndexOf('/', slashPos - 1)) > 0) {
-        QHash<QString, QString>::const_iterator it = _renamedFolders.constFind(original.left(slashPos));
-        if (it != _renamedFolders.constEnd()) {
-            return *it + original.mid(slashPos);
-        }
-    }
-    return original;
-}
 
 /**
  *

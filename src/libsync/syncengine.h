@@ -173,6 +173,9 @@ private slots:
     void slotFolderDiscovered(bool local, const QString &folder);
     void slotRootEtagReceived(const QString &);
 
+    /** When the discovery phase discovers an item */
+    void slotItemDiscovered(const SyncFileItemPtr &item);
+
     /** Called when a SyncFileItem gets accepted for a sync.
      *
      * Mostly done in initial creation inside treewalkFile but
@@ -184,7 +187,7 @@ private slots:
     void slotItemCompleted(const SyncFileItemPtr &item);
     void slotFinished(bool success);
     void slotProgress(const SyncFileItem &item, quint64 curent);
-    void slotDiscoveryJobFinished(int updateResult);
+    void slotDiscoveryJobFinished();
     void slotCleanPollsJobAborted(const QString &error);
 
     /** Records that a file was touched by a job. */
@@ -202,8 +205,6 @@ private slots:
 private:
     void handleSyncError(CSYNC *ctx, const char *state);
     void csyncError(const QString &message);
-
-    QString journalDbFilePath() const;
 
     int treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, bool);
     bool checkErrorBlacklisting(SyncFileItem &item);
@@ -261,10 +262,6 @@ private:
     QScopedPointer<ExcludedFiles> _excludedFiles;
     QScopedPointer<SyncFileStatusTracker> _syncFileStatusTracker;
     Utility::StopWatch _stopWatch;
-
-    // maps the origin and the target of the folders that have been renamed
-    QHash<QString, QString> _renamedFolders;
-    QString adjustRenamedPath(const QString &original);
 
     /**
      * check if we are allowed to propagate everything, and if we are not, adjust the instructions

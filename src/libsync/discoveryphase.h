@@ -124,7 +124,8 @@ public:
 
     QMap<QString, SyncFileItemPtr> _deletedItem;
     QMap<QString, QPointer<QObject>> _queuedDeletedDirectories;
-    QSet<QString> _renamedItems;
+    QMap<QString, QString> _renamedItems; // map source -> destinations
+    QString adjustRenamedPath(const QString &original) const;
 
 signals:
     void finished(int result);

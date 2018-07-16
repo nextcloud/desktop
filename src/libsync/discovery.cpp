@@ -450,16 +450,17 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                     }
 
                     auto postProcessRename = [this, item, base, originalPath](PathTuple &path) {
-                        _discoveryData->_renamedItems.insert(originalPath);
+                        auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath);
+                        _discoveryData->_renamedItems.insert(originalPath, path._target);
                         item->_modtime = base._modtime;
                         item->_inode = base._inode;
                         item->_instruction = CSYNC_INSTRUCTION_RENAME;
                         item->_direction = SyncFileItem::Down;
                         item->_renameTarget = path._target;
-                        item->_file = originalPath;
+                        item->_file = adjustedOriginalPath;
                         item->_originalFile = originalPath;
                         path._original = originalPath;
-                        path._local = originalPath;
+                        path._local = adjustedOriginalPath;
                         qCInfo(lcDisco) << "Rename detected (down) " << item->_file << " -> " << item->_renameTarget;
                     };
 
@@ -662,20 +663,20 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                 }
 
                 auto processRename = [item, originalPath, base, this](PathTuple &path) {
-                    _discoveryData->_renamedItems.insert(originalPath);
-
+                    auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath);
+                    _discoveryData->_renamedItems.insert(originalPath, path._target);
                     item->_modtime = base._modtime;
                     item->_inode = base._inode;
                     item->_instruction = CSYNC_INSTRUCTION_RENAME;
                     item->_direction = SyncFileItem::Up;
                     item->_renameTarget = path._target;
-                    item->_file = originalPath;
+                    item->_file = adjustedOriginalPath;
                     item->_originalFile = originalPath;
                     item->_fileId = base._fileId;
                     item->_remotePerm = base._remotePerm;
                     item->_etag = base._etag;
                     path._original = originalPath;
-                    path._server = originalPath;
+                    path._server = adjustedOriginalPath;
                     qCInfo(lcDisco) << "Rename detected (up) " << item->_file << " -> " << item->_renameTarget;
                 };
                 if (isRename && !oldEtag.isEmpty()) {
