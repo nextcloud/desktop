@@ -214,8 +214,8 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
         # and we definitely don't want to show them for IGNORED.
         shareable = False
         state = entry['state']
-        state_ok = state.startswith('OK')
-        state_sync = state.startswith('SYNC')
+        state_ok = state and state.startswith('OK')
+        state_sync = state and state.startswith('SYNC')
         if state_ok:
             shareable = True
         elif state_sync and isDir:
