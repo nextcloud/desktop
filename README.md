@@ -3,9 +3,15 @@
 The :computer: Nextcloud Desktop Client is a tool to synchronize files from Nextcloud Server
 with your computer.
 
+<p align="center">
+    <img src="https://nextcloud.com/wp-content/themes/next/assets/img/clients/desktop/macsettings.png?x16328" alt="Desktop Client on Mac OS]">
+</p>
+
 ## :blue_heart: :tada: Contributing
 
 ### :hammer_and_wrench: How to compile the desktop client
+
+:building_construction: [System requirements](https://github.com/nextcloud/desktop/wiki/System-requirements-for-compiling-the-desktop-client) includes OpenSSL 1.1.x, QtKeychain, Qt 5.x.x and zlib.
 
 #### :memo: Step by step instructions
 
