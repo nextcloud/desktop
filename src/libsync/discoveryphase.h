@@ -128,7 +128,7 @@ public:
     QString adjustRenamedPath(const QString &original) const;
 
 signals:
-    void finished(int result);
+    void fatalError(const QString &errorString);
     void folderDiscovered(bool local, QString folderUrl);
 
     // A new folder was discovered and was not synced because of the confirmation feature

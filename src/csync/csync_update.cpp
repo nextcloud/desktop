@@ -529,17 +529,10 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       }
       /* permission denied */
       ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_OPENDIR_ERROR);
-      if (errno == EACCES) {
-          qCWarning(lcUpdate, "Permission denied.");
-          if (mark_current_item_ignored(ctx, previous_fs, CSYNC_STATUS_PERMISSION_DENIED)) {
-              return 0;
-          }
-      } else if(errno == ENOENT) {
-          ctx->error_string = QString::fromUtf8(uri);
-      }
+
       // 403 Forbidden can be sent by the server if the file firewall is active.
       // A file or directory should be ignored and sync must continue. See #3490
-      else if(errno == ERRNO_FORBIDDEN) {
+      if (errno == ERRNO_FORBIDDEN) {
           qCWarning(lcUpdate, "Directory access Forbidden (File Firewall?)");
           if( mark_current_item_ignored(ctx, previous_fs, CSYNC_STATUS_FORBIDDEN) ) {
               return 0;

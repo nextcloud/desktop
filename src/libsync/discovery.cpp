@@ -64,8 +64,9 @@ void ProcessDirectoryJob::start()
 {
     qCInfo(lcDisco) << "STARTING" << _currentFolder._server << _queryServer << _currentFolder._local << _queryLocal;
 
+    DiscoverServerJob *serverJob = nullptr;
     if (_queryServer == NormalQuery) {
-        auto serverJob = new DiscoverServerJob(_discoveryData->_account, _discoveryData->_remoteFolder + _currentFolder._server, this);
+        serverJob = new DiscoverServerJob(_discoveryData->_account, _discoveryData->_remoteFolder + _currentFolder._server, this);
         connect(serverJob, &DiscoverServerJob::finished, this, [this](const auto &results) {
             if (results) {
                 _serverEntries = *results;
@@ -92,9 +93,36 @@ void ProcessDirectoryJob::start()
         }*/
         auto dh = csync_vio_local_opendir((_discoveryData->_localDir + _currentFolder._local).toUtf8());
         if (!dh) {
-            qDebug() << "COULD NOT OPEN" << (_discoveryData->_localDir + _currentFolder._local);
-            qFatal("TODO: ERROR HANDLING");
-            // should be the same as in csync_update;
+            qCInfo(lcDisco) << "Error while opening directory" << (_discoveryData->_localDir + _currentFolder._local) << errno;
+            serverJob->abort();
+            QString errorString = tr("Error while opening directory %1").arg(_discoveryData->_localDir + _currentFolder._local);
+            if (errno == EACCES) {
+                errorString = tr("Directory not accessible on client, permission denied");
+                if (_dirItem) {
+                    _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
+                    _dirItem->_errorString = errorString;
+                    emit finished();
+                    return;
+                }
+            } else if (errno == ENOENT) {
+                errorString = tr("Directory not found: %1").arg(_discoveryData->_localDir + _currentFolder._local);
+                if (_dirItem) {
+                    _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
+                    _dirItem->_errorString = errorString;
+                    emit finished();
+                    return;
+                }
+            } else if (errno == ENOTDIR) {
+                // Not a directory..
+                // Just consider it is empty
+                _hasLocalEntries = true;
+                if (_hasServerEntries)
+                    process();
+                return;
+            }
+            emit _discoveryData->fatalError(errorString);
+            emit finished();
+            return;
         }
         while (auto dirent = csync_vio_local_readdir(dh)) {
             LocalInfo i;
@@ -425,12 +453,12 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                             qCInfo(lcDisco) << "Local file does not exist anymore." << originalPath;
                             return;
                         }
-                        if (buf.modtime != base._modtime || buf.size != base._fileSize) {
+                        if (buf.modtime != base._modtime || buf.size != base._fileSize || buf.type != ItemTypeFile) {
                             qCInfo(lcDisco) << "File has changed locally, not a rename." << originalPath;
                             return;
                         }
                     } else {
-                        if (!QFile::exists(_discoveryData->_localDir + originalPath)) {
+                        if (!QFileInfo(_discoveryData->_localDir + originalPath).isDir()) {
                             qCInfo(lcDisco) << "Local directory does not exist anymore." << originalPath;
                             return;
                         }
