@@ -138,11 +138,9 @@ public:
      *
      * Note that different accounts are allowed to sync to the same folder.
      *
-     * \a forNewDirectory is internal and is used for recursion.
-     *
      * @returns an empty string if it is allowed, or an error if it is not allowed
      */
-    QString checkPathValidityForNewFolder(const QString &path, const QUrl &serverUrl = QUrl(), bool forNewDirectory = false) const;
+    QString checkPathValidityForNewFolder(const QString &path, const QUrl &serverUrl = QUrl()) const;
 
     /**
      * Attempts to find a non-existing, acceptable path for creating a new sync folder.
