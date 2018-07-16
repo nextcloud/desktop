@@ -144,6 +144,19 @@ bool DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
     }
 }
 
+/* Given a path on the remote, give the path as it is when the rename is done */
+QString DiscoveryPhase::adjustRenamedPath(const QString &original) const
+{
+    int slashPos = original.size();
+    while ((slashPos = original.lastIndexOf('/', slashPos - 1)) > 0) {
+        auto it = _renamedItems.constFind(original.left(slashPos));
+        if (it != _renamedItems.constEnd()) {
+            return *it + original.mid(slashPos);
+        }
+    }
+    return original;
+}
+
 /* FIXME  (used to be called every time we were doing a propfind)
 void DiscoveryJob::update_job_update_callback(bool local,
     const char *dirUrl,
