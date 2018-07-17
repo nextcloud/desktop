@@ -47,9 +47,11 @@ public:
     void fetchMore(const QModelIndex &) Q_DECL_OVERRIDE;
 
     ActivityList activityList() { return _finalList; }
+    ActivityList errorsList() { return _notificationErrorsLists; }
     void addNotificationToActivityList(Activity activity);
     void addErrorToActivityList(Activity activity);
-    void removeFromActivityList(int row);
+    void removeActivityFromActivityList(int row);
+    void removeActivityFromActivityList(Activity activity);
 
 public slots:
     void slotRefreshActivity();

@@ -56,19 +56,20 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
 
     a = _finalList.at(index.row());
     AccountStatePtr ast = AccountManager::instance()->account(a._accName);
-    if (!ast)
+    if (!ast && _accountState != ast.data())
         return QVariant();
     QStringList list;
 
     switch (role) {
     case ActivityItemDelegate::PathRole:
         if(!a._file.isEmpty()){
-            list = FolderMan::instance()->findFileInLocalFolders(a._file, ast->account());
+            auto folder = FolderMan::instance()->folder(a._folder);
+            list = FolderMan::instance()->findFileInLocalFolders(folder->remotePath() + a._file, ast->account());
             if (list.count() > 0) {
                 return QVariant(list.at(0));
             }
             // File does not exist anymore? Let's try to open its path
-            list = FolderMan::instance()->findFileInLocalFolders(QFileInfo(a._file).path(), ast->account());
+            list = FolderMan::instance()->findFileInLocalFolders(QFileInfo(folder->remotePath() + a._file).path(), ast->account());
             if (list.count() > 0) {
                 return QVariant(list.at(0));
             }
@@ -172,7 +173,6 @@ void ActivityListModel::startFetchJob()
     JsonApiJob *job = new JsonApiJob(_accountState->account(), QLatin1String("ocs/v2.php/cloud/activity"), this);
     QObject::connect(job, &JsonApiJob::jsonReceived,
         this, &ActivityListModel::slotActivitiesReceived);
-    job->setProperty("AccountStatePtr", QVariant::fromValue<QPointer<AccountState>>(_accountState));
 
     QUrlQuery params;
     params.addQueryItem(QLatin1String("page"), QLatin1String("0"));
@@ -189,7 +189,7 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
     auto activities = json.object().value("ocs").toObject().value("data").toArray();
 
     ActivityList list;
-    auto ast = qvariant_cast<QPointer<AccountState>>(sender()->property("AccountStatePtr"));
+    auto ast = _accountState;
     if (!ast)
         return;
 
@@ -202,8 +202,6 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
         a._type = Activity::ActivityType;
         a._accName = ast->account()->displayName();
         a._id = json.value("id").toInt();
-        a._objectType = "";
-        a._status = 0;
         a._subject = json.value("subject").toString();
         a._message = json.value("message").toString();
         a._file = json.value("file").toString();
@@ -231,11 +229,34 @@ void ActivityListModel::addNotificationToActivityList(Activity activity) {
     combineActivityLists();
 }
 
-void ActivityListModel::removeFromActivityList(int row) {
-    qCInfo(lcActivity) << "Notification successfully dismissed: " << _notificationLists.at(row)._subject;
-    _notificationLists.removeAt(row);
-    combineActivityLists();
+void ActivityListModel::removeActivityFromActivityList(int row) {
+    Activity activity =  _finalList.at(row);
+    removeActivityFromActivityList(activity);
 }
+
+void ActivityListModel::removeActivityFromActivityList(Activity activity) {
+    qCInfo(lcActivity) << "Activity/Notification/Error successfully dismissed: " << activity._subject;
+    qCInfo(lcActivity) << "Trying to remove Activity/Notification/Error from view... ";
+
+    int index = -1;
+    if(activity._type == Activity::ActivityType){
+        index = _activityLists.indexOf(activity);
+        if(index != -1) _activityLists.removeAt(index);
+    } else if(activity._type == Activity::NotificationType){
+        index = _notificationLists.indexOf(activity);
+        if(index != -1) _notificationLists.removeAt(index);
+    } else {
+        index = _notificationErrorsLists.indexOf(activity);
+        if(index != -1) _notificationErrorsLists.removeAt(index);
+    }
+
+    if(index != -1){
+        qCInfo(lcActivity) << "Activity/Notification/Error successfully removed from the list.";
+        qCInfo(lcActivity) << "Updating Activity/Notification/Error view.";
+        combineActivityLists();
+    }
+}
+
 
 void ActivityListModel::combineActivityLists()
 {
