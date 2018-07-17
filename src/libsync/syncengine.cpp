@@ -854,7 +854,9 @@ void SyncEngine::startSync()
         _discoveryPhase.data(), this);
     // FIXME! this sucks
     auto runQueuedJob = [this](ProcessDirectoryJob *job, const auto &runQueuedJob) -> void {
-        connect(job, &ProcessDirectoryJob::finished, this, [this, runQueuedJob] {
+        connect(job, &ProcessDirectoryJob::finished, this, [this, job, runQueuedJob] {
+            if (job->_dirItem)
+                job->itemDiscovered(job->_dirItem);
             sender()->deleteLater();
             if (!_discoveryPhase->_queuedDeletedDirectories.isEmpty()) {
                 auto job = qobject_cast<ProcessDirectoryJob *>(_discoveryPhase->_queuedDeletedDirectories.take(_discoveryPhase->_queuedDeletedDirectories.firstKey()).data());
@@ -931,18 +933,10 @@ void SyncEngine::slotDiscoveryJobFinished()
 
     //    qCInfo(lcEngine) << "Permissions of the root folder: " << _csync_ctx->remote.root_perms.toString();
 
-    /*
-
-    // Adjust the paths for the renames.
-    for (SyncFileItemVector::iterator it = syncItems.begin();
-         it != syncItems.end(); ++it) {
-        (*it)->_file = adjustRenamedPath((*it)->_file);
-    }
-
     if (!_hasNoneFiles && _hasRemoveFile) {
         qCInfo(lcEngine) << "All the files are going to be changed, asking the user";
         bool cancel = false;
-        emit aboutToRemoveAllFiles(syncItems.first()->_direction, &cancel);
+        emit aboutToRemoveAllFiles(_syncItems.first()->_direction, &cancel);
         if (cancel) {
             qCInfo(lcEngine) << "User aborted sync";
             finalize(false);
@@ -950,6 +944,7 @@ void SyncEngine::slotDiscoveryJobFinished()
         }
     }
 
+    /*
     auto databaseFingerprint = _journal->dataFingerprint();
     // If databaseFingerprint is null, this means that there was no information in the database
     // (for example, upgrading from a previous version, or first sync)
