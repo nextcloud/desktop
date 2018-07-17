@@ -78,7 +78,7 @@ public slots:
     void slotAccountActivityStatus(int statusCode);
     void slotRequestCleanupAndBlacklist(const Activity &blacklistActivity);
     void addError(const QString &folderAlias, const QString &message, ErrorCategory category);
-    //void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
+    void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
 
 signals:

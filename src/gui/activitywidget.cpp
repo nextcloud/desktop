@@ -39,6 +39,7 @@
 #include "guiutility.h"
 #include "socketapi.h"
 #include "ui_activitywidget.h"
+#include "syncengine.h"
 
 #include <climits>
 
@@ -93,8 +94,8 @@ ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
     connect(_ui->_activityList, &QListView::activated, this, &ActivityWidget::slotOpenFile);
     connect(&_removeTimer, &QTimer::timeout, this, &ActivityWidget::slotCheckToCleanWidgets);
 
-//    connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
-//        this, &ActivityWidget::slotProgressInfo);
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
+        this, &ActivityWidget::slotProgressInfo);
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::itemCompleted,
         this, &ActivityWidget::slotItemCompleted);
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::syncError,
@@ -108,14 +109,68 @@ ActivityWidget::~ActivityWidget()
     delete _ui;
 }
 
-// TODO
-//void ActivityWidget::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
-//{
-//    if (progress.status() == ProgressInfo::Starting) {
-//        // The sync is restarting, clean the old items
-//        //cleanItems(folder);
-//    }
-//}
+void ActivityWidget::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
+{
+
+    if (progress.status() == ProgressInfo::Done
+            || progress.status() == ProgressInfo::Reconcile) {
+        // Wipe all non-persistent entries - as well as the persistent ones
+        // in cases where a local discovery was done.
+        auto f = FolderMan::instance()->folder(folder);
+        if (!f)
+            return;
+        const auto &engine = f->syncEngine();
+        const auto style = engine.lastLocalDiscoveryStyle();
+        foreach (Activity activity, _model->errorsList()) {
+            if (activity._folder != folder){
+                continue;
+            }
+
+            if (style == LocalDiscoveryStyle::FilesystemOnly){
+                _model->removeActivityFromActivityList(activity);
+                continue;
+            }
+
+            if(activity._status == SyncFileItem::Conflict && !QFileInfo(f->path() + activity._file).exists()){
+                _model->removeActivityFromActivityList(activity);
+                continue;
+            }
+
+
+            if(activity._status == SyncFileItem::FileIgnored && !QFileInfo(f->path() + activity._file).exists()){
+                _model->removeActivityFromActivityList(activity);
+                continue;
+            }
+
+            if(!QFileInfo(f->path() + activity._file).exists()){
+                _model->removeActivityFromActivityList(activity);
+                continue;
+            }
+
+            auto path = QFileInfo(activity._file).dir().path().toUtf8();
+            if (path == ".")
+                path.clear();
+
+            if(engine.shouldDiscoverLocally(path))
+                _model->removeActivityFromActivityList(activity);
+        }
+
+    }
+
+    if (progress.status() == ProgressInfo::Done) {
+        // We keep track very well of pending conflicts.
+        // Inform other components about them.
+        QStringList conflicts;
+        foreach (Activity activity, _model->errorsList()) {
+            if (activity._folder == folder
+                && activity._status == SyncFileItem::Conflict) {
+                conflicts.append(activity._file);
+            }
+        }
+
+        emit ProgressDispatcher::instance()->folderConflicts(folder, conflicts);
+    }
+}
 
 void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item){
     auto folderInstance = FolderMan::instance()->folder(folder);
@@ -135,12 +190,8 @@ void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItem
         activity._message = item->_originalFile;
         activity._link = folderInstance->accountState()->account()->url();
         activity._accName = folderInstance->accountState()->account()->displayName();
-
-        // TODO: the added '/' is needed so FolderMan::instance()->findFileInLocalFolders can find it
-        // why the local path in this case does not start with a '/'?
-        // _file in other cases (when they exist in remote) starts with '/'
-        // findFileInLocalFolders removes the remotePath before checking if the file exists (?)
-        activity._file = folderInstance->remotePath() + item->_file;
+        activity._file = item->_file;
+        activity._folder = folder;
 
         // add 'protocol error' to activity list
         _model->addErrorToActivityList(activity);
@@ -248,7 +299,7 @@ void ActivityWidget::slotNotificationRequestFinished(int statusCode)
     } else {
        // to do use the model to rebuild the list or remove the item
         qCWarning(lcActivity) << "Notification Request to Server successed, rebuilding list.";
-       _model->removeFromActivityList(row);
+       _model->removeActivityFromActivityList(row);
     }
 }
 
