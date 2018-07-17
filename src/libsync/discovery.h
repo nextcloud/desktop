@@ -85,6 +85,8 @@ public:
     void start();
     void abort();
 
+    SyncFileItemPtr _dirItem;
+
 private:
     struct PathTuple
     {
@@ -121,7 +123,6 @@ private:
     QPointer<DiscoverServerJob> _serverJob;
     std::deque<ProcessDirectoryJob *> _queuedJobs;
     QVector<ProcessDirectoryJob *> _runningJobs;
-    SyncFileItemPtr _dirItem;
     QueryMode _queryServer;
     QueryMode _queryLocal;
     DiscoveryPhase *_discoveryData;
