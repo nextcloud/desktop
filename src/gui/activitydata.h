@@ -59,6 +59,7 @@ public:
     QString _objectType;
     QString _subject;
     QString _message;
+    QString _folder;
     QString _file;
     QUrl _link;
     QDateTime _dateTime;
