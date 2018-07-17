@@ -165,14 +165,21 @@ void ProcessDirectoryJob::process()
     std::set<QString> entriesNames; // sorted
     QHash<QString, RemoteInfo> serverEntriesHash;
     QHash<QString, LocalInfo> localEntriesHash;
+    QHash<QString, SyncJournalFileRecord> dbEntriesHash;
     for (auto &e : _serverEntries) {
         entriesNames.insert(e.name);
         serverEntriesHash[e.name] = std::move(e);
     }
     _serverEntries.clear();
     for (auto &e : _localEntries) {
-        entriesNames.insert(e.name);
-        localEntriesHash[e.name] = std::move(e);
+        // Remove the virtual file suffix
+        auto name = e.name;
+        if (e.name.endsWith(_discoveryData->_syncOptions._virtualFileSuffix)) {
+            e.isVirtualFile = true;
+            name = e.name.left(e.name.size() - _discoveryData->_syncOptions._virtualFileSuffix.size());
+        }
+        entriesNames.insert(name);
+        localEntriesHash[name] = std::move(e);
     }
     _localEntries.clear();
 
@@ -183,16 +190,29 @@ void ProcessDirectoryJob::process()
         if (!_discoveryData->_statedb->getFilesBelowPath(pathU8, [&](const SyncJournalFileRecord &rec) {
                 if (rec._path.indexOf("/", pathU8.size() + 1) > 0)
                     return;
-                entriesNames.insert(QString::fromUtf8(rec._path.mid(pathU8.size() + 1)));
+                auto name = QString::fromUtf8(rec._path.mid(pathU8.size() + 1));
+                if (rec._type == ItemTypeVirtualFile || rec._type == ItemTypeVirtualFileDownload) {
+                    name.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
+                }
+                entriesNames.insert(name);
+                dbEntriesHash[name] = rec;
             })) {
             qFatal("TODO: DB ERROR HANDLING");
         }
     }
 
     for (const auto &f : entriesNames) {
-        auto path = _currentFolder.addName(f);
         auto localEntry = localEntriesHash.value(f);
         auto serverEntry = serverEntriesHash.value(f);
+        PathTuple path;
+
+        if ((localEntry.isValid() && localEntry.isVirtualFile)) {
+            Q_ASSERT(localEntry.name.endsWith(_discoveryData->_syncOptions._virtualFileSuffix));
+            path = _currentFolder.addName(localEntry.name);
+            path._server.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
+        } else {
+            path = _currentFolder.addName(f);
+        }
 
         // If the filename starts with a . we consider it a hidden file
         // For windows, the hidden state is also discovered within the vio
@@ -202,8 +222,8 @@ void ProcessDirectoryJob::process()
         if (handleExcluded(path._target, localEntry.isDirectory || serverEntry.isDirectory, isHidden))
             continue;
 
-        SyncJournalFileRecord record;
-        if (!_discoveryData->_statedb->getFileRecord(path._original, &record)) {
+        SyncJournalFileRecord record = dbEntriesHash[f];
+        if (_queryServer != ParentNotChanged && !_discoveryData->_statedb->getFileRecord(path._original, &record)) {
             qFatal("TODO: DB ERROR HANDLING");
         }
         if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original)) {
@@ -380,7 +400,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         item->_etag = serverEntry.etag;
         item->_previousSize = localEntry.size;
         item->_previousModtime = localEntry.modtime;
-        if (!dbEntry.isValid()) { // New file on the server
+        if (!dbEntry.isValid() && !localEntry.isVirtualFile) { // New file on the server
             item->_instruction = CSYNC_INSTRUCTION_NEW;
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
@@ -392,7 +412,6 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                         return;
                     }
                 }
-
                 // Turn new remote files into virtual files if the option is enabled.
                 if (_discoveryData->_syncOptions._newFilesAreVirtual && item->_type == ItemTypeFile) {
                     item->_type = ItemTypeVirtualFile;
@@ -437,9 +456,8 @@ void ProcessDirectoryJob::processFile(PathTuple path,
 
                     // Rename of a virtual file
                     if (base._type == ItemTypeVirtualFile && item->_type == ItemTypeFile) {
-                        item->_type = ItemTypeVirtualFile;
-                        item->_file.append(_discoveryData->_syncOptions._virtualFileSuffix);
-                        qFatal("FIXME rename virtual file"); // Need to be tested, i'm not sure about it now
+                        // Ignore if the base is a virtual files
+                        return;
                     }
 
                     if (_discoveryData->_renamedItems.contains(originalPath)) {
@@ -544,14 +562,18 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                     qFatal("TODO: Handle DB ERROR");
                 }
                 if (!item) {
-                    return; // We wend async
+                    return; // We went async
                 }
             }
 
             if (item->_instruction == CSYNC_INSTRUCTION_NEW) {
                 postProcessNew();
             }
-
+        } else if (dbEntry._type == ItemTypeVirtualFileDownload) {
+            item->_direction = SyncFileItem::Down;
+            item->_instruction = CSYNC_INSTRUCTION_NEW;
+            item->_file = _currentFolder._target + QLatin1Char('/') + serverEntry.name;
+            item->_type = ItemTypeVirtualFileDownload;
         } else if (dbEntry._etag != serverEntry.etag) {
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
@@ -572,10 +594,26 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         }
     }
     bool serverModified = item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC || item->_instruction == CSYNC_INSTRUCTION_RENAME;
+    if ((dbEntry.isValid() && dbEntry._type == ItemTypeVirtualFile) || (localEntry.isValid() && localEntry.isVirtualFile)) {
+        // Do not download virtual files
+        if (serverModified || dbEntry._type != ItemTypeVirtualFile)
+            item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+        serverModified = false;
+        item->_type = ItemTypeVirtualFile;
+    }
     _childModified |= serverModified;
     if (localEntry.isValid()) {
         item->_inode = localEntry.inode;
-        if (dbEntry.isValid() && ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) || (localEntry.isDirectory && dbEntry._type == ItemTypeDirectory))) {
+        if (localEntry.isVirtualFile) {
+            item->_type = ItemTypeVirtualFile;
+            if (_queryServer != ParentNotChanged && !serverEntry.isValid()) {
+                item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+                item->_direction = SyncFileItem::Down;
+            } else if (dbEntry._inode != localEntry.inode) {
+                item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+                item->_direction = SyncFileItem::Down; // Does not matter
+            }
+        } else if (dbEntry.isValid() && ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) || (localEntry.isDirectory && dbEntry._type == ItemTypeDirectory))) {
             if (_queryServer != ParentNotChanged && !serverEntry.isValid()) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
@@ -776,6 +814,12 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         // Not locally, not on the server. The entry is stale!
         qCInfo(lcDisco) << "Stale DB entry";
         return;
+    } else if (dbEntry._type == ItemTypeVirtualFile) {
+        // If the virtual file is removed, recreate it.
+        item->_instruction = CSYNC_INSTRUCTION_NEW;
+        item->_direction = SyncFileItem::Down;
+        item->_type = ItemTypeVirtualFile;
+        item->_file.append(_discoveryData->_syncOptions._virtualFileSuffix);
     } else if (!serverModified) {
         if (!dbEntry._serverHasIgnoredFiles) {
             item->_instruction = CSYNC_INSTRUCTION_REMOVE;
@@ -792,7 +836,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         item->_direction = _dirItem->_direction;
     }
 
-    qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->isDirectory();
+    qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->_type;
 
     if (item->isDirectory()) {
         if (item->_instruction == CSYNC_INSTRUCTION_SYNC) {
