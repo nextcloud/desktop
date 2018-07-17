@@ -45,6 +45,7 @@ struct LocalInfo
     uint64_t inode = 0;
     bool isDirectory = false;
     bool isHidden = false;
+    bool isVirtualFile = false;
     bool isValid() const { return !name.isNull(); }
 };
 
@@ -99,6 +100,7 @@ private:
             PathTuple result;
             result._original = _original.isEmpty() ? name : _original + QLatin1Char('/') + name;
             auto buildString = [&](const QString &other) {
+                // Optimize by trying to keep all string implicitly shared if they are the same (common case)
                 return other == _original ? result._original : other.isEmpty() ? name : other + QLatin1Char('/') + name;
             };
             result._target = buildString(_target);
