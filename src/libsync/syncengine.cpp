@@ -363,6 +363,11 @@ void SyncEngine::conflictRecordMaintenance()
 
 void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 {
+    _seenFiles.insert(item->_file);
+    if (!item->_renameTarget.isEmpty()) {
+        // Yes, this records both the rename renameTarget and the original so we keep both in case of a rename
+        _seenFiles.insert(item->_renameTarget);
+    }
     if (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA && !item->isDirectory()) {
         // For directories, metadata-only updates will be done after all their files are propagated.
 
@@ -519,14 +524,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t * /*file*/, csync_file_stat_t * /
         item->_serverHasIgnoredFiles = file->has_ignored_files;
     }
 
-    // record the seen files to be able to clean the journal later
-    _seenFiles.insert(item->_file);
-    if (!renameTarget.isEmpty()) {
-        // Yes, this records both the rename renameTarget and the original so we keep both in case of a rename
-        _seenFiles.insert(renameTarget);
-    }
-
-
 
 
     switch (file->error_status) {
@@ -572,18 +569,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t * /*file*/, csync_file_stat_t * /
     int re = 0;
     switch (file->instruction) {
     case CSYNC_INSTRUCTION_NONE: {
-        // Any files that are instruction NONE?
-        if (!isDirectory && (!other || other->instruction == CSYNC_INSTRUCTION_NONE || other->instruction == CSYNC_INSTRUCTION_UPDATE_METADATA)) {
-            _hasNoneFiles = true;
-        }
-        // Put none-instruction conflict files into the syncfileitem list
-        if (account()->capabilities().uploadConflictFiles()
-            && file->error_status == CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE
-            && item->_instruction == CSYNC_INSTRUCTION_IGNORE) {
-            break;
-        }
-        // No syncing or update to be done.
-        return re;
+       ... ported ....
     }
     case CSYNC_INSTRUCTION_UPDATE_METADATA:
         dir = SyncFileItem::None;

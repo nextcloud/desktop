@@ -94,7 +94,9 @@ void ProcessDirectoryJob::start()
         auto dh = csync_vio_local_opendir((_discoveryData->_localDir + _currentFolder._local).toUtf8());
         if (!dh) {
             qCInfo(lcDisco) << "Error while opening directory" << (_discoveryData->_localDir + _currentFolder._local) << errno;
-            serverJob->abort();
+            if (serverJob) {
+                serverJob->abort();
+            }
             QString errorString = tr("Error while opening directory %1").arg(_discoveryData->_localDir + _currentFolder._local);
             if (errno == EACCES) {
                 errorString = tr("Directory not accessible on client, permission denied");
@@ -326,9 +328,9 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, 
         item->_errorString = tr("Stat failed.");
         break;
     case CSYNC_FILE_EXCLUDE_CONFLICT:
-        qFatal("TODO: conflicts");
-#if 0
+        item->_errorString = tr("Conflict: Server version downloaded, local copy renamed and not uploaded.");
         item->_status = SyncFileItem::Conflict;
+#if 0 // TODO: port this
         if (_propagator->account()->capabilities().uploadConflictFiles()) {
             // For uploaded conflict files, files with no action performed on them should
             // be displayed: but we mustn't overwrite the instruction if something happens
@@ -337,9 +339,6 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, 
                 item->_errorString = tr("Unresolved conflict.");
                 item->_instruction = CSYNC_INSTRUCTION_IGNORE;
             }
-        } else {
-            item->_errorString = tr("Conflict: Server version downloaded, local copy renamed and not uploaded.");
-        }
 #endif
         break;
     case CSYNC_FILE_EXCLUDE_CANNOT_ENCODE: // FIXME!
@@ -569,6 +568,13 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             if (item->_instruction == CSYNC_INSTRUCTION_NEW) {
                 postProcessNew();
             }
+        } else if (serverEntry.isDirectory != (dbEntry._type == ItemTypeDirectory)) {
+            // If the type of the entity changed, it's like NEW, but
+            // needs to delete the other entity first.
+            item->_instruction = CSYNC_INSTRUCTION_TYPE_CHANGE;
+            item->_direction = SyncFileItem::Down;
+            item->_modtime = serverEntry.modtime;
+            item->_size = serverEntry.size;
         } else if (dbEntry._type == ItemTypeVirtualFileDownload) {
             item->_direction = SyncFileItem::Down;
             item->_instruction = CSYNC_INSTRUCTION_NEW;
@@ -593,7 +599,8 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             recurseQueryServer = ParentNotChanged;
         }
     }
-    bool serverModified = item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC || item->_instruction == CSYNC_INSTRUCTION_RENAME;
+    bool serverModified = item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC
+        || item->_instruction == CSYNC_INSTRUCTION_RENAME || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
     if ((dbEntry.isValid() && dbEntry._type == ItemTypeVirtualFile) || (localEntry.isValid() && localEntry.isVirtualFile)) {
         // Do not download virtual files
         if (serverModified || dbEntry._type != ItemTypeVirtualFile)
@@ -601,9 +608,12 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         serverModified = false;
         item->_type = ItemTypeVirtualFile;
     }
-    _childModified |= serverModified;
+    if (!_dirItem || _dirItem->_direction == SyncFileItem::Up) {
+        _childModified |= serverModified;
+    }
     if (localEntry.isValid()) {
         item->_inode = localEntry.inode;
+        bool typeChange = dbEntry.isValid() && localEntry.isDirectory != (dbEntry._type == ItemTypeDirectory);
         if (localEntry.isVirtualFile) {
             item->_type = ItemTypeVirtualFile;
             if (_queryServer != ParentNotChanged && !serverEntry.isValid()) {
@@ -613,7 +623,8 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                 item->_direction = SyncFileItem::Down; // Does not matter
             }
-        } else if (dbEntry.isValid() && ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) || (localEntry.isDirectory && dbEntry._type == ItemTypeDirectory))) {
+        } else if (dbEntry.isValid() && !typeChange && ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) || (localEntry.isDirectory && dbEntry._type == ItemTypeDirectory))) {
+            // Local file unchanged.
             if (_queryServer != ParentNotChanged && !serverEntry.isValid()) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
@@ -678,6 +689,16 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                 }
             }
             item->_direction = item->_instruction == CSYNC_INSTRUCTION_CONFLICT ? SyncFileItem::None : SyncFileItem::Down;
+        } else if (typeChange) {
+            item->_instruction = CSYNC_INSTRUCTION_TYPE_CHANGE;
+            item->_direction = SyncFileItem::Up;
+            item->_checksumHeader.clear();
+            item->_size = localEntry.size;
+            item->_modtime = localEntry.modtime;
+            item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+            if (!_dirItem || _dirItem->_direction == SyncFileItem::Down) {
+                _childModified = true;
+            }
         } else if (!dbEntry.isValid()) { // New local file
             item->_instruction = CSYNC_INSTRUCTION_NEW;
             item->_direction = SyncFileItem::Up;
@@ -685,8 +706,9 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             item->_size = localEntry.size;
             item->_modtime = localEntry.modtime;
             item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
-            _childModified = true;
-
+            if (!_dirItem || _dirItem->_direction == SyncFileItem::Down) {
+                _childModified = true;
+            }
             // Check if it is a rename
             OCC::SyncJournalFileRecord base;
             if (!_discoveryData->_statedb->getFileRecordByInode(localEntry.inode, &base)) {
@@ -798,7 +820,9 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             item->_modtime = localEntry.modtime;
             item->_previousSize = dbEntry._fileSize;
             item->_previousModtime = dbEntry._modtime;
-            _childModified = true;
+            if (!_dirItem || _dirItem->_direction == SyncFileItem::Down) {
+                _childModified = true;
+            }
 
             // Checksum comparison at this stage is only enabled for .eml files,
             // check #4754 #4755
@@ -838,12 +862,12 @@ void ProcessDirectoryJob::processFile(PathTuple path,
 
     qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->_type;
 
-    if (item->isDirectory()) {
+    if (item->isDirectory() || localEntry.isDirectory || serverEntry.isDirectory) {
         if (item->_instruction == CSYNC_INSTRUCTION_SYNC) {
             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
         }
         auto job = new ProcessDirectoryJob(item, recurseQueryServer,
-            localEntry.isValid() || item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist,
+            localEntry.isDirectory || item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist,
             _discoveryData, this);
         job->_currentFolder = path;
         if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
@@ -930,6 +954,13 @@ void ProcessDirectoryJob::progress()
             if (_childModified && _dirItem->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 // re-create directory that has modified contents
                 _dirItem->_instruction = CSYNC_INSTRUCTION_NEW;
+            }
+            if (_childModified && _dirItem->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
+                if (_dirItem->_direction == SyncFileItem::Up) {
+                    _dirItem->_type = ItemTypeDirectory;
+                    _dirItem->_direction = SyncFileItem::Down;
+                }
+                _dirItem->_instruction = CSYNC_INSTRUCTION_CONFLICT;
             }
             if (_childIgnored && _dirItem->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 // Do not remove a directory that has ignored files
