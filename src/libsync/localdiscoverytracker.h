@@ -57,7 +57,7 @@ public:
      * This should be a full relative file path, example:
      *   foo/bar/file.txt
      */
-    void addTouchedPath(const QByteArray &relativePath);
+    void addTouchedPath(const QString &relativePath);
 
     /** Call when a sync run starts that rediscovers all local files */
     void startSyncFullDiscovery();
@@ -66,7 +66,7 @@ public:
     void startSyncPartialDiscovery();
 
     /** Access list of files that shall be locally rediscovered. */
-    const std::set<QByteArray> &localDiscoveryPaths() const;
+    const std::set<QString> &localDiscoveryPaths() const;
 
 public slots:
     /**
@@ -87,7 +87,7 @@ private:
      * Mostly a collection of files the filewatchers have reported as touched.
      * Also includes files that have had errors in the last sync run.
      */
-    std::set<QByteArray> _localDiscoveryPaths;
+    std::set<QString> _localDiscoveryPaths;
 
     /**
      * The paths that the current sync run used for local discovery.
@@ -95,7 +95,7 @@ private:
      * For failing syncs, this list will be merged into _localDiscoveryPaths
      * again when the sync is done to make sure everything is retried.
      */
-    std::set<QByteArray> _previousLocalDiscoveryPaths;
+    std::set<QString> _previousLocalDiscoveryPaths;
 };
 
 } // namespace OCC

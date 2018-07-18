@@ -756,9 +756,6 @@ void SyncEngine::startSync()
     _csync_ctx->read_remote_from_db = true;
 
     _lastLocalDiscoveryStyle = _localDiscoveryStyle;
-    _csync_ctx->should_discover_locally_fn = [this](const QByteArray &path) {
-        return shouldDiscoverLocally(path);
-    };
 
     _csync_ctx->new_files_are_virtual = _syncOptions._newFilesAreVirtual;
     _csync_ctx->virtual_file_suffix = _syncOptions._virtualFileSuffix.toUtf8();
@@ -804,6 +801,7 @@ void SyncEngine::startSync()
     _discoveryPhase->_syncOptions = _syncOptions;
     _discoveryPhase->_selectiveSyncBlackList = selectiveSyncBlackList;
     _discoveryPhase->_selectiveSyncWhiteList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);
+    _discoveryPhase->_shouldDiscoverLocaly = [this](const QString &s) { return shouldDiscoverLocally(s); };
     if (!ok) {
         qCWarning(lcEngine) << "Unable to read selective sync list, aborting.";
         csyncError(tr("Unable to read from the sync journal."));
@@ -1442,13 +1440,13 @@ AccountPtr SyncEngine::account() const
     return _account;
 }
 
-void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> paths)
+void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QString> paths)
 {
     _localDiscoveryStyle = style;
     _localDiscoveryPaths = std::move(paths);
 }
 
-bool SyncEngine::shouldDiscoverLocally(const QByteArray &path) const
+bool SyncEngine::shouldDiscoverLocally(const QString &path) const
 {
     if (_localDiscoveryStyle == LocalDiscoveryStyle::FilesystemOnly)
         return true;

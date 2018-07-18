@@ -84,6 +84,13 @@ void ProcessDirectoryJob::start()
     }
 
     if (_queryLocal == NormalQuery) {
+        if (!_discoveryData->_shouldDiscoverLocaly(_currentFolder._local)
+            && (_currentFolder._local == _currentFolder._original || !_discoveryData->_shouldDiscoverLocaly(_currentFolder._original))) {
+            _queryLocal = ParentNotChanged;
+        }
+    }
+
+    if (_queryLocal == NormalQuery) {
         /*QDirIterator dirIt(_propagator->_localDir + _currentFolder);
         while (dirIt.hasNext()) {
             auto x = dirIt.next();
@@ -187,14 +194,14 @@ void ProcessDirectoryJob::process()
     }
     _localEntries.clear();
 
-    if (_queryServer == ParentNotChanged) {
+    if (_queryServer == ParentNotChanged || _queryLocal == ParentNotChanged) {
         // fetch all the name from the DB
         auto pathU8 = _currentFolder._original.toUtf8();
         // FIXME cache, and do that better (a query that do not get stuff recursively)
         if (!_discoveryData->_statedb->getFilesBelowPath(pathU8, [&](const SyncJournalFileRecord &rec) {
                 if (rec._path.indexOf("/", pathU8.size() + 1) > 0)
                     return;
-                auto name = QString::fromUtf8(rec._path.mid(pathU8.size() + 1));
+                auto name = pathU8.isEmpty() ? rec._path : QString::fromUtf8(rec._path.mid(pathU8.size() + 1));
                 if (rec._type == ItemTypeVirtualFile || rec._type == ItemTypeVirtualFileDownload) {
                     name.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
                 }
@@ -205,14 +212,20 @@ void ProcessDirectoryJob::process()
         }
     }
 
+
     for (const auto &f : entriesNames) {
         auto localEntry = localEntriesHash.value(f);
         auto serverEntry = serverEntriesHash.value(f);
+        SyncJournalFileRecord record = dbEntriesHash.value(f);
         PathTuple path;
 
         if ((localEntry.isValid() && localEntry.isVirtualFile)) {
             Q_ASSERT(localEntry.name.endsWith(_discoveryData->_syncOptions._virtualFileSuffix));
             path = _currentFolder.addName(localEntry.name);
+            path._server.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
+        } else if (_queryLocal == ParentNotChanged && record.isValid() && record._type == ItemTypeVirtualFile) {
+            QString name = f + _discoveryData->_syncOptions._virtualFileSuffix;
+            path = _currentFolder.addName(name);
             path._server.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
         } else {
             path = _currentFolder.addName(f);
@@ -226,8 +239,7 @@ void ProcessDirectoryJob::process()
         if (handleExcluded(path._target, localEntry.isDirectory || serverEntry.isDirectory, isHidden))
             continue;
 
-        SyncJournalFileRecord record = dbEntriesHash[f];
-        if (_queryServer != ParentNotChanged && !_discoveryData->_statedb->getFileRecord(path._original, &record)) {
+        if (_queryServer != ParentNotChanged && _queryLocal != ParentNotChanged && !_discoveryData->_statedb->getFileRecord(path._original, &record)) {
             qFatal("TODO: DB ERROR HANDLING");
         }
         if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original)) {
@@ -358,8 +370,9 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     const SyncJournalFileRecord &dbEntry)
 {
     const char *hasServer = serverEntry.isValid() ? "true" : _queryServer == ParentNotChanged ? "db" : "false";
+    const char *hasLocal = localEntry.isValid() ? "true" : _queryLocal == ParentNotChanged ? "db" : "false";
     qCInfo(lcDisco).nospace() << "Processing " << path._original
-                              << " | valid: " << dbEntry.isValid() << "/" << localEntry.isValid() << "/" << hasServer
+                              << " | valid: " << dbEntry.isValid() << "/" << hasLocal << "/" << hasServer
                               << " | mtime: " << dbEntry._modtime << "/" << localEntry.modtime << "/" << serverEntry.modtime
                               << " | size: " << dbEntry._fileSize << "/" << localEntry.size << "/" << serverEntry.size
                               << " | etag: " << dbEntry._etag << "//" << serverEntry.etag
@@ -588,7 +601,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             item->_size = serverEntry.size;
             if (serverEntry.isDirectory && dbEntry._type == ItemTypeDirectory) {
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-            } else if (!localEntry.isValid()) {
+            } else if (!localEntry.isValid() && _queryLocal != ParentNotChanged) {
                 // Deleted locally, changed on server
                 item->_instruction = CSYNC_INSTRUCTION_NEW;
             } else {
@@ -850,6 +863,12 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                 }
             }
         }
+    } else if (_queryLocal == ParentNotChanged && dbEntry.isValid()) {
+        if (_queryServer != ParentNotChanged && !serverEntry.isValid()) {
+            // Not modified locally (ParentNotChanged), bit not on the server:  Removed on the server.
+            item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+            item->_direction = SyncFileItem::Down;
+        }
     } else if (_queryServer != ParentNotChanged && !serverEntry.isValid()) {
         // Not locally, not on the server. The entry is stale!
         qCInfo(lcDisco) << "Stale DB entry";
@@ -878,12 +897,15 @@ void ProcessDirectoryJob::processFile(PathTuple path,
 
     qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->_type;
 
-    if (item->isDirectory() || localEntry.isDirectory || serverEntry.isDirectory) {
-        if (item->_instruction == CSYNC_INSTRUCTION_SYNC) {
-            item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-        }
+    if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_SYNC)
+        item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+
+    bool recurse = item->isDirectory() || localEntry.isDirectory || serverEntry.isDirectory;
+    if (_queryLocal != NormalQuery && _queryServer != NormalQuery)
+        recurse = false;
+    if (recurse) {
         auto job = new ProcessDirectoryJob(item, recurseQueryServer,
-            localEntry.isDirectory || item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist,
+            _queryLocal == ParentNotChanged ? ParentNotChanged : localEntry.isDirectory || item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist,
             _discoveryData, this);
         job->_currentFolder = path;
         if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {

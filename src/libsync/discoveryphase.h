@@ -118,6 +118,7 @@ public:
     ExcludedFiles *_excludes;
     QString _invalidFilenamePattern; // FIXME: maybe move in ExcludedFiles
     bool _ignoreHiddenFiles = false;
+    std::function<bool(const QString &)> _shouldDiscoverLocaly;
 
     bool isInSelectiveSyncBlackList(const QString &path) const;
     bool checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp);

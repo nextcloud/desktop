@@ -113,7 +113,7 @@ public:
      * revert afterwards. Use _lastLocalDiscoveryStyle to discover the last
      * sync's style.
      */
-    void setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> paths = {});
+    void setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QString> paths = {});
 
     /**
      * Returns whether the given folder-relative path should be locally discovered
@@ -122,7 +122,7 @@ public:
      * Example: If path is 'foo/bar' and style is DatabaseAndFilesystem and dirs contains
      *     'foo/bar/touched_file', then the result will be true.
      */
-    bool shouldDiscoverLocally(const QByteArray &path) const;
+    bool shouldDiscoverLocally(const QString &path) const;
 
     /** Access the last sync run's local discovery style */
     LocalDiscoveryStyle lastLocalDiscoveryStyle() const { return _lastLocalDiscoveryStyle; }
@@ -309,7 +309,7 @@ private:
     /** The kind of local discovery the last sync run used */
     LocalDiscoveryStyle _lastLocalDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
     LocalDiscoveryStyle _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
-    std::set<QByteArray> _localDiscoveryPaths;
+    std::set<QString> _localDiscoveryPaths;
 };
 }
 

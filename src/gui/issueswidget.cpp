@@ -261,7 +261,7 @@ void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &p
             if (!QFileInfo(f->path() + ProtocolItem::extraData(item).path).exists())
                 return true;
 
-            auto path = QFileInfo(ProtocolItem::extraData(item).path).dir().path().toUtf8();
+            auto path = QFileInfo(ProtocolItem::extraData(item).path).dir().path();
             if (path == ".")
                 path.clear();
 
