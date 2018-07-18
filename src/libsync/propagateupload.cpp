@@ -418,6 +418,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
     }
 
     quint64 fileSize = FileSystem::getSize(fullFilePath);
+    _item->_size = fileSize;
     _fileToUpload._size = fileSize;
 
     // But skip the file if the mtime is too close to 'now'!
