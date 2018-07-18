@@ -660,6 +660,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                     if (up._valid && up._contentChecksum == remoteChecksumHeader) {
                         // Solve the conflict into an upload, or nothing
                         item->_instruction = up._modtime == localEntry.modtime ? CSYNC_INSTRUCTION_UPDATE_METADATA : CSYNC_INSTRUCTION_SYNC;
+                        item->_direction = SyncFileItem::Up;
 
                         // Update the etag and other server metadata in the journal already
                         // (We can't use a typical CSYNC_INSTRUCTION_UPDATE_METADATA because
@@ -678,6 +679,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                         }
                     } else {
                         item->_instruction = CSYNC_INSTRUCTION_CONFLICT;
+                        item->_direction = SyncFileItem::None;
                     }
                 } else {
                     // If the size or mtime is different, it's definitely a conflict.
@@ -692,9 +694,9 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                     // sizes and mtimes pops up when the local database is lost for
                     // whatever reason.
                     item->_instruction = isConflict ? CSYNC_INSTRUCTION_CONFLICT : CSYNC_INSTRUCTION_UPDATE_METADATA;
+                    item->_direction = isConflict ? SyncFileItem::None : SyncFileItem::Down;
                 }
             }
-            item->_direction = item->_instruction == CSYNC_INSTRUCTION_CONFLICT ? SyncFileItem::None : SyncFileItem::Down;
             if (dbEntry._type == ItemTypeVirtualFile)
                 item->_type = ItemTypeVirtualFileDownload;
             if (item->_file.endsWith(_discoveryData->_syncOptions._virtualFileSuffix)) {
