@@ -1306,25 +1306,45 @@ QString FolderMan::trayTooltipStatusString(
     return folderMessage;
 }
 
-QString FolderMan::checkPathValidityForNewFolder(const QString &path, const QUrl &serverUrl, bool forNewDirectory) const
+static QString checkPathValidityRecursive(const QString &path)
 {
     if (path.isEmpty()) {
-        return tr("No valid folder selected!");
+        return FolderMan::tr("No valid folder selected!");
     }
 
     QFileInfo selFile(path);
 
     if (!selFile.exists()) {
-        return checkPathValidityForNewFolder(selFile.dir().path(), serverUrl, true);
+        return checkPathValidityRecursive(selFile.dir().path());
     }
 
     if (!selFile.isDir()) {
-        return tr("The selected path is not a folder!");
+        return FolderMan::tr("The selected path is not a folder!");
     }
 
     if (!selFile.isWritable()) {
-        return tr("You have no permission to write to the selected folder!");
+        return FolderMan::tr("You have no permission to write to the selected folder!");
     }
+    return QString();
+}
+
+// QFileInfo::canonicalPath returns an empty string if the file does not exist.
+// This function also works with files that does not exist and resolve the symlinks in the
+// parent directories.
+static QString canonicalPath(const QString &path)
+{
+    QFileInfo selFile(path);
+    if (!selFile.exists()) {
+        return canonicalPath(selFile.dir().path()) + '/' + selFile.fileName();
+    }
+    return selFile.canonicalFilePath();
+}
+
+QString FolderMan::checkPathValidityForNewFolder(const QString &path, const QUrl &serverUrl) const
+{
+    QString recursiveValidity = checkPathValidityRecursive(path);
+    if (!recursiveValidity.isEmpty())
+        return recursiveValidity;
 
     // check if the local directory isn't used yet in another ownCloud sync
     Qt::CaseSensitivity cs = Qt::CaseSensitive;
@@ -1332,49 +1352,20 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path, const QUrl
         cs = Qt::CaseInsensitive;
     }
 
+    const QString userDir = QDir::cleanPath(canonicalPath(path)) + '/';
     for (auto i = _folderMap.constBegin(); i != _folderMap.constEnd(); ++i) {
         Folder *f = static_cast<Folder *>(i.value());
-        QString folderDir = QDir(f->path()).canonicalPath();
-        if (folderDir.isEmpty()) {
-            continue;
-        }
-        if (!folderDir.endsWith(QLatin1Char('/'), cs))
-            folderDir.append(QLatin1Char('/'));
+        QString folderDir = QDir::cleanPath(canonicalPath(f->path())) + '/';
 
-        const QString folderDirClean = QDir::cleanPath(folderDir) + '/';
-        const QString userDirClean = QDir::cleanPath(path) + '/';
-
-        // folderDir follows sym links, path not.
-        bool differentPathes = !Utility::fileNamesEqual(QDir::cleanPath(folderDir), QDir::cleanPath(path));
-
-        if (!forNewDirectory && differentPathes && folderDirClean.startsWith(userDirClean, cs)) {
+        bool differentPaths = QString::compare(folderDir, userDir, cs) != 0;
+        if (differentPaths && folderDir.startsWith(userDir, cs)) {
             return tr("The local folder %1 already contains a folder used in a folder sync connection. "
                       "Please pick another one!")
                 .arg(QDir::toNativeSeparators(path));
         }
 
-        // QDir::cleanPath keeps links
-        // canonicalPath() remove symlinks and uses the symlink targets.
-        QString absCleanUserFolder = QDir::cleanPath(QDir(path).canonicalPath()) + '/';
-
-        if ((forNewDirectory || differentPathes) && userDirClean.startsWith(folderDirClean, cs)) {
+        if (differentPaths && userDir.startsWith(folderDir, cs)) {
             return tr("The local folder %1 is already contained in a folder used in a folder sync connection. "
-                      "Please pick another one!")
-                .arg(QDir::toNativeSeparators(path));
-        }
-
-        // both follow symlinks.
-        bool cleanUserEqualsCleanFolder = Utility::fileNamesEqual(absCleanUserFolder, folderDirClean);
-        if (differentPathes && absCleanUserFolder.startsWith(folderDirClean, cs) && !cleanUserEqualsCleanFolder) {
-            return tr("The local folder %1 is a symbolic link. "
-                      "The link target is already contained in a folder used in a folder sync connection. "
-                      "Please pick another one!")
-                .arg(QDir::toNativeSeparators(path));
-        }
-
-        if (differentPathes && folderDirClean.startsWith(absCleanUserFolder, cs) && !cleanUserEqualsCleanFolder && !forNewDirectory) {
-            return tr("The local folder %1 contains a symbolic link. "
-                      "The link target contains an already synced folder "
                       "Please pick another one!")
                 .arg(QDir::toNativeSeparators(path));
         }
@@ -1382,7 +1373,7 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path, const QUrl
         // if both pathes are equal, the server url needs to be different
         // otherwise it would mean that a new connection from the same local folder
         // to the same account is added which is not wanted. The account must differ.
-        if (serverUrl.isValid() && Utility::fileNamesEqual(absCleanUserFolder, folderDir)) {
+        if (serverUrl.isValid() && !differentPaths) {
             QUrl folderUrl = f->accountState()->account()->url();
             QString user = f->accountState()->account()->credentials()->user();
             folderUrl.setUserName(user);
