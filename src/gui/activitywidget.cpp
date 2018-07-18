@@ -106,50 +106,51 @@ ActivityWidget::~ActivityWidget()
 void ActivityWidget::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
 {
 
-    if (progress.status() == ProgressInfo::Done
-            || progress.status() == ProgressInfo::Reconcile) {
-        // Wipe all non-persistent entries - as well as the persistent ones
-        // in cases where a local discovery was done.
-        auto f = FolderMan::instance()->folder(folder);
-        if (!f)
-            return;
-        const auto &engine = f->syncEngine();
-        const auto style = engine.lastLocalDiscoveryStyle();
-        foreach (Activity activity, _model->errorsList()) {
-            if (activity._folder != folder){
-                continue;
-            }
+// TODO: this is really not working
+//    if (progress.status() == ProgressInfo::Done
+//            || progress.status() == ProgressInfo::Reconcile) {
+//        // Wipe all non-persistent entries - as well as the persistent ones
+//        // in cases where a local discovery was done.
+//        auto f = FolderMan::instance()->folder(folder);
+//        if (!f)
+//            return;
+//        const auto &engine = f->syncEngine();
+//        const auto style = engine.lastLocalDiscoveryStyle();
+//        foreach (Activity activity, _model->errorsList()) {
+//            if (activity._folder != folder){
+//                continue;
+//            }
 
-            if (style == LocalDiscoveryStyle::FilesystemOnly){
-                _model->removeActivityFromActivityList(activity);
-                continue;
-            }
+//            if (style == LocalDiscoveryStyle::FilesystemOnly){
+//                _model->removeActivityFromActivityList(activity);
+//                continue;
+//            }
 
-            if(activity._status == SyncFileItem::Conflict && !QFileInfo(f->path() + activity._file).exists()){
-                _model->removeActivityFromActivityList(activity);
-                continue;
-            }
+//            if(activity._status == SyncFileItem::Conflict && !QFileInfo(f->path() + activity._file).exists()){
+//                _model->removeActivityFromActivityList(activity);
+//                continue;
+//            }
 
 
-            if(activity._status == SyncFileItem::FileIgnored && !QFileInfo(f->path() + activity._file).exists()){
-                _model->removeActivityFromActivityList(activity);
-                continue;
-            }
+//            if(activity._status == SyncFileItem::FileIgnored && !QFileInfo(f->path() + activity._file).exists()){
+//                _model->removeActivityFromActivityList(activity);
+//                continue;
+//            }
 
-            if(!QFileInfo(f->path() + activity._file).exists()){
-                _model->removeActivityFromActivityList(activity);
-                continue;
-            }
+//            if(!QFileInfo(f->path() + activity._file).exists()){
+//                _model->removeActivityFromActivityList(activity);
+//                continue;
+//            }
 
-            auto path = QFileInfo(activity._file).dir().path().toUtf8();
-            if (path == ".")
-                path.clear();
+//            auto path = QFileInfo(activity._file).dir().path().toUtf8();
+//            if (path == ".")
+//                path.clear();
 
-            if(engine.shouldDiscoverLocally(path))
-                _model->removeActivityFromActivityList(activity);
-        }
+//            if(engine.shouldDiscoverLocally(path))
+//                _model->removeActivityFromActivityList(activity);
+//        }
 
-    }
+//    }
 
     if (progress.status() == ProgressInfo::Done) {
         // We keep track very well of pending conflicts.
