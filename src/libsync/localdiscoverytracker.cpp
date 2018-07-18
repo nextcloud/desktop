@@ -26,7 +26,7 @@ LocalDiscoveryTracker::LocalDiscoveryTracker()
 {
 }
 
-void LocalDiscoveryTracker::addTouchedPath(const QByteArray &relativePath)
+void LocalDiscoveryTracker::addTouchedPath(const QString &relativePath)
 {
     qCDebug(lcLocalDiscoveryTracker) << "inserted touched" << relativePath;
     _localDiscoveryPaths.insert(relativePath);
@@ -42,7 +42,7 @@ void LocalDiscoveryTracker::startSyncFullDiscovery()
 void LocalDiscoveryTracker::startSyncPartialDiscovery()
 {
     if (lcLocalDiscoveryTracker().isDebugEnabled()) {
-        QByteArrayList paths;
+        QStringList paths;
         for (auto &path : _localDiscoveryPaths)
             paths.append(path);
         qCDebug(lcLocalDiscoveryTracker) << "partial discovery with paths: " << paths;
@@ -52,7 +52,7 @@ void LocalDiscoveryTracker::startSyncPartialDiscovery()
     _localDiscoveryPaths.clear();
 }
 
-const std::set<QByteArray> &LocalDiscoveryTracker::localDiscoveryPaths() const
+const std::set<QString> &LocalDiscoveryTracker::localDiscoveryPaths() const
 {
     return _localDiscoveryPaths;
 }
