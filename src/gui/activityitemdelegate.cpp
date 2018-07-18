@@ -157,7 +157,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     if(activityType == Activity::Type::NotificationType){
 
         // Secondary will be 'Dismiss' or '...' multiple options button
-        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/dialog-close.png"));
+        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/close.svg"));
         if(customList.size() > 1)
             secondaryButton.icon = QIcon(QLatin1String(":/client/resources/more.svg"));
         secondaryButton.iconSize = QSize(iconSize, iconSize);
@@ -178,7 +178,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     } else if(activityType == Activity::SyncResultType){
 
         // Secondary will be 'open file manager' with the folder icon
-        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/folder-grey.png"));
+        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/folder.svg"));
         secondaryButton.iconSize = QSize(iconSize, iconSize);
 
         // Primary button will be 'open browser'
@@ -194,7 +194,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     } else if(activityType == Activity::SyncFileItemType){
 
         // Secondary will be 'open file manager' with the folder icon
-        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/folder-grey.png"));
+        secondaryButton.icon = QIcon(QLatin1String(":/client/resources/folder.svg"));
         secondaryButton.iconSize = QSize(iconSize, iconSize);
 
         // No primary button on this case
