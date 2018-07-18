@@ -120,8 +120,6 @@ private:
     int _notificationRequestsRunning;
 
     ActivityListModel *_model;
-    QVBoxLayout *_notificationsLayout;
-
     AccountState *_accountState;
     const QString _accept;
     const QString _remote_share;

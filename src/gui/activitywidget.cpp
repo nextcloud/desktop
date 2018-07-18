@@ -68,15 +68,9 @@ ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
     ActivityItemDelegate *delegate = new ActivityItemDelegate;
     delegate->setParent(this);
     _ui->_activityList->setItemDelegate(delegate);
+    _ui->_activityList->setBackgroundRole(QPalette::Background);
     _ui->_activityList->setAlternatingRowColors(false);
     _ui->_activityList->setModel(_model);
-
-    // Create a widget container for the notifications. The ui file defines
-    // a scroll area that get a widget with a layout as children
-    QWidget *w = new QWidget;
-    _notificationsLayout = new QVBoxLayout;
-    w->setLayout(_notificationsLayout);
-    _notificationsLayout->setAlignment(Qt::AlignTop);
 
     showLabels();
 
@@ -614,6 +608,13 @@ ActivitySettings::ActivitySettings(AccountState *accountState, QWidget *parent)
     setLayout(_vbox);
 
     _activityWidget = new ActivityWidget(_accountState, this);
+
+    // set background white
+    QPalette palette;
+    palette.setColor(QPalette::Background, Qt::white);
+    _activityWidget->setAutoFillBackground(true);
+    _activityWidget->setPalette(palette);
+
     _vbox->insertWidget(1, _activityWidget);
     connect(_activityWidget, &ActivityWidget::copyToClipboard, this, &ActivitySettings::slotCopyToClipboard);
     connect(_activityWidget, &ActivityWidget::guiLog, this, &ActivitySettings::guiLog);
