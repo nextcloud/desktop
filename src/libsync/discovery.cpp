@@ -179,6 +179,8 @@ void ProcessDirectoryJob::process()
         if (e.name.endsWith(_discoveryData->_syncOptions._virtualFileSuffix)) {
             e.isVirtualFile = true;
             name = e.name.left(e.name.size() - _discoveryData->_syncOptions._virtualFileSuffix.size());
+            if (localEntriesHash.contains(name))
+                continue; // If there is both a virtual file and a real file, we must keep the real file
         }
         entriesNames.insert(name);
         localEntriesHash[name] = std::move(e);
@@ -598,10 +600,16 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         } else {
             recurseQueryServer = ParentNotChanged;
         }
+    } else if (_queryServer == ParentNotChanged && dbEntry._type == ItemTypeVirtualFileDownload) {
+        item->_direction = SyncFileItem::Down;
+        item->_instruction = CSYNC_INSTRUCTION_NEW;
+        Q_ASSERT(item->_file.endsWith(_discoveryData->_syncOptions._virtualFileSuffix));
+        item->_file.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
+        item->_type = ItemTypeVirtualFileDownload;
     }
     bool serverModified = item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC
         || item->_instruction == CSYNC_INSTRUCTION_RENAME || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
-    if ((dbEntry.isValid() && dbEntry._type == ItemTypeVirtualFile) || (localEntry.isValid() && localEntry.isVirtualFile)) {
+    if ((dbEntry.isValid() && dbEntry._type == ItemTypeVirtualFile) || (localEntry.isValid() && localEntry.isVirtualFile && item->_type != ItemTypeVirtualFileDownload)) {
         // Do not download virtual files
         if (serverModified || dbEntry._type != ItemTypeVirtualFile)
             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
@@ -615,13 +623,11 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         item->_inode = localEntry.inode;
         bool typeChange = dbEntry.isValid() && localEntry.isDirectory != (dbEntry._type == ItemTypeDirectory);
         if (localEntry.isVirtualFile) {
-            item->_type = ItemTypeVirtualFile;
+            if (item->_type != ItemTypeVirtualFileDownload)
+                item->_type = ItemTypeVirtualFile;
             if (_queryServer != ParentNotChanged && !serverEntry.isValid()) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
-            } else if (dbEntry._inode != localEntry.inode) {
-                item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-                item->_direction = SyncFileItem::Down; // Does not matter
             }
         } else if (dbEntry.isValid() && !typeChange && ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) || (localEntry.isDirectory && dbEntry._type == ItemTypeDirectory))) {
             // Local file unchanged.
@@ -632,7 +638,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                 item->_direction = SyncFileItem::Down; // Does not matter
             }
-        } else if (serverModified) {
+        } else if (serverModified || dbEntry._type == ItemTypeVirtualFile) {
             if (serverEntry.isDirectory && localEntry.isDirectory) {
                 // Folders of the same path are always considered equals
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
@@ -689,6 +695,14 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                 }
             }
             item->_direction = item->_instruction == CSYNC_INSTRUCTION_CONFLICT ? SyncFileItem::None : SyncFileItem::Down;
+            if (dbEntry._type == ItemTypeVirtualFile)
+                item->_type = ItemTypeVirtualFileDownload;
+            if (item->_file.endsWith(_discoveryData->_syncOptions._virtualFileSuffix)) {
+                item->_file.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
+                item->_type = ItemTypeVirtualFileDownload;
+            }
+            item->_previousSize = localEntry.size;
+            item->_previousModtime = localEntry.modtime;
         } else if (typeChange) {
             item->_instruction = CSYNC_INSTRUCTION_TYPE_CHANGE;
             item->_direction = SyncFileItem::Up;
