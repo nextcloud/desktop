@@ -434,6 +434,11 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             }
         }
     }
+
+    // check for blacklisting of this item.
+    // if the item is on blacklist, the instruction was set to ERROR
+    checkErrorBlacklisting(*item);
+    _needsUpdate = true;
     _syncItems.append(item);
     slotNewItem(item);
 }
@@ -599,15 +604,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t * /*file*/, csync_file_stat_t * /
         dir = remote ? SyncFileItem::Down : SyncFileItem::Up;
         break;
     }
-
-    item->_direction = dir;
-    if (instruction != CSYNC_INSTRUCTION_NONE) {
-        // check for blacklisting of this item.
-        // if the item is on blacklist, the instruction was set to ERROR
-        checkErrorBlacklisting(*item);
-    }
-
-    _needsUpdate = true;
 
 
 
