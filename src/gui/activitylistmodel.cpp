@@ -93,18 +93,18 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                return cachedIcon;
            else return QIcon(QLatin1String(":/client/resources/bell.svg"));
         } else if(a._type == Activity::SyncResultType){
-            return Theme::instance()->syncStateIcon(SyncResult::Error);
+            return QIcon(QLatin1String(":/client/resources/state-error.svg"));
         } else if(a._type == Activity::SyncFileItemType){
                if(a._status == SyncFileItem::NormalError
                    || a._status == SyncFileItem::FatalError
                    || a._status == SyncFileItem::DetailError
                    || a._status == SyncFileItem::BlacklistedError) {
-                   return Theme::instance()->syncStateIcon(SyncResult::Error);
+                   return QIcon(QLatin1String(":/client/resources/state-error.svg"));
                } else if(a._status == SyncFileItem::SoftError
                          || a._status == SyncFileItem::FileIgnored
                          || a._status == SyncFileItem::Conflict
                          || a._status == SyncFileItem::Restoration){
-                   return Theme::instance()->syncStateIcon(SyncResult::Problem);
+                   return QIcon(QLatin1String(":/client/resources/state-warning.svg"));
                }
         } else return QIcon(QLatin1String(":/client/resources/activity.png"));
         return QVariant();

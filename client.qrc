@@ -27,6 +27,9 @@
         <file>resources/link.svg</file>
         <file>resources/files.svg</file>
         <file>resources/folder-grey.png</file>
+        <file>resources/state-error.svg</file>
+        <file>resources/state-warning.svg</file>
+        <file>resources/folder.svg</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>
