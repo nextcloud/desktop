@@ -68,7 +68,7 @@ ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
     ActivityItemDelegate *delegate = new ActivityItemDelegate;
     delegate->setParent(this);
     _ui->_activityList->setItemDelegate(delegate);
-    _ui->_activityList->setAlternatingRowColors(true);
+    _ui->_activityList->setAlternatingRowColors(false);
     _ui->_activityList->setModel(_model);
 
     // Create a widget container for the notifications. The ui file defines

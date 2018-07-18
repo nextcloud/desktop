@@ -50,6 +50,15 @@
      <property name="lineWidth">
       <number>0</number>
      </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="showDropIndicator" stdset="0">
+      <bool>false</bool>
+     </property>
+     <property name="defaultDropAction">
+      <enum>Qt::IgnoreAction</enum>
+     </property>
      <property name="resizeMode">
       <enum>QListView::Adjust</enum>
      </property>
