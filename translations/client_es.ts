@@ -769,7 +769,7 @@ These deletes will be synchronized to your local sync folder, making such files 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>Todos los archivos en la carpeta %1 serán borrados en el servidor.
-Estos borrados serán sincronizados en su carpeta local sync, haciendo imposible su recuperación a menos que disponga de archivos de respaldo.
+Esto será sincronizado en su carpeta local, haciendo imposible su recuperación a menos que disponga de archivos de respaldo.
 Si decide mantener estos archivos, serán re-sincronizados con el servidor si dispone de permisos para ello.
 Si decide borrarlos, no serán visibles para usted a menos que sea el propietario.</translation>
     </message>
@@ -1544,7 +1544,7 @@ Los elementos cuya eliminación está permitida serán eliminados si impiden que
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="352"/>
         <source>Skip this version</source>
-        <translation>Saltarse esta versión</translation>
+        <translation>Omitir esta versión</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="353"/>
@@ -1846,7 +1846,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation>Reintentar no cifrado sobre HTTP (inseguro)</translation>
+        <translation>Reintentar sin cifrado sobre HTTP (inseguro)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
@@ -1906,13 +1906,13 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="129"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation>Esta URL NO ES SEGURA; pues no está cifrada.
+        <translation>Esta URL NO ES SEGURA ya que no está cifrada.
 No se recomienda usarla.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="133"/>
         <source>This url is secure. You can use it.</source>
-        <translation>Esta url es segura. Puede utilizarla.</translation>
+        <translation>Esta URL es segura. Puede utilizarla.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="172"/>
@@ -1950,7 +1950,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
         <source>There was an invalid response to an authenticated webdav request</source>
-        <translation>Ha habido una respuesta no válida a una solicitud autenticada de webdav</translation>
+        <translation>Ha habido una respuesta no válida a una solicitud autenticada de WebDAV</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
