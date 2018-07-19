@@ -1,16 +1,22 @@
 ChangeLog
 =========
 
-version 2.5.0 (2018-06-xx)
+version 2.5.0 (2018-08-xx)
 * Local discovery: Speed up by skipping directories without changes reported by the file system watcher.
 * Windows: Add sync folders to Explorer's navigation pane (#5295)
 * Conflicts: Change conflict file naming scheme
 * Conflicts: Add user name to conflict file name (#6325)
+* Conflicts: Better comparison when connection broke (#6626)
 * ConnectionValidator: change the minimum server version to 7.0
 * ConnectionValidator: Warn when the server version is less than 9.1
+* OAuth2: Remove the timeout (#6612)
 * Experimental option to create virtual files and download contents on demand ("placeholders")
 * Experimental option to upload conflict files (#4557)
 * Wizard: Remove the "Skip folder config" button and instead add a radio button (#3664)
+* Wizard: Fix for back button in OAuth2 (#6574)
+* Wizard: add a context menu to copy the OAuth2 link (enterprise
+* Wizard: Put errors into a scroll area (#6546)
+* Wizard: show a message when the URL is invalid
 * Sharing: Add "copy public link" to menu (#6356)
 * Protocol: Introduce context menu with "open in browser" (#6121)
 * Shell integration: Add "Open in browser" entry in the explorer menu (#5903)
@@ -18,6 +24,8 @@ version 2.5.0 (2018-06-xx)
 * Client certs: Improve error message (#6128)
 * User shares: Show avatars
 * Settings: Hide selective sync buttons while disconnected (#5809)
+* Settings: Show account page when account created
+* Settings: Move "About" to a dialog (#6075)
 * Excludes: Optimize further the matching of exclude files using regular expression
 * Don't use Qt deprecated API now that we required Qt 5.6
 * Windows: Update Overlay Icon naming
@@ -32,6 +40,8 @@ version 2.5.0 (2018-06-xx)
 * Build system: Modernize the CMakeLists.txt files
 * Use standard png2ico
 * Sync: Deal with file/folder conflicts (#6312)
+* Sync: When detecting a local move, keep the local mtime (#6629)
+* Sync: Better error handling for local directory parsing (#6610)
 * Protocol: Correct sorting by size (#6326)
 * SocketAPI: dynamic action menu
 * Hidden option to move remote-deleted files to trash (#6265)
@@ -53,11 +63,13 @@ version 2.5.0 (2018-06-xx)
 * SslButton: Add HTTP/2 info (#3146)
 * propagateuploadv1: Fixed an assert with ownCloud 5
 * Folder: normalize the local path. (#4424)
+* Folder: Fix checking if the folder can be used as sync folder (#6654)
 * SslButton: Improve speed (especially on macOS) (#6031)
 * Blacklisting must prevent parent etag updates (#6411)
 * FolderStatusModel: fix potential assert
 * Nautilus integration: Not a ColumnProvider
 * Nautilus integration: Fix python3 compatibility (#6406)
+* Nautilus: Guard against None state (#6643)
 * Conflicts: Change tags to be more user friendly (#6365)
 * Notify if an explicitly excluded folder is created (#6222)
 * Theme: unify ownCloudTheme and Theme classes
@@ -71,7 +83,7 @@ version 2.5.0 (2018-06-xx)
 * .owncloudsynclog: Allow 10 MB of size (#6420)
 * .owncloudsynclog: Persist X-Request-ID for correlation with server (#6420)
 * Notifications: Lower hiding timeout
-* Download: Use the <s:message> from the reply in the error message (#6459)
+* Download: Use the <s:message> from the reply in the error message (#6459, #6459)
 * Notifications: Also have clickable link (#6236)
 * UI: High-DPI layout fixes
 * Network settings: Better warnings about bad configuration (#5885)
@@ -83,8 +95,12 @@ version 2.5.0 (2018-06-xx)
 * Ignore editor: Preserve comments in the exclude list file
 * Propagation: Do not abort a sync if the server closes the connection (#6516)
 * Propagation: Increase the timeout for the last MOVE/PUT for huge files (#6527)
-* Update bundled sqlite version to 3.23.1
-* Auto Updater: Drop down menu to switch update channels
+* Updater: Support EXE->MSI upgrade (different code than 2.4)
+* Valgrind: Refactorings to avoid errors
+* Crash fixes (#6562 and more)
+* Windows: Fix missing company name in our DLLs
+* Linux: More tray workarounds (#6545)
+* libocsync: Rename to ${APPLICATION_EXECUTABLE}_csync
 
 version 2.4.1 (2018-03-05)
 * Ignore files with file names that can't be encoded for the filesystem (#6287, #5676, #5719)
