@@ -17,6 +17,7 @@ version 2.5.0 (2018-08-xx)
 * Share dialog: Don't hide account settings when opening it (#6185)
 * Share dialog: Remove odd grey square on OSX (#5774)
 * Share dialog: Preserve the entered password when unrelated changes are done (#6512)
+* Share dialog: Fix Re-shares not not showing up (#6666)
 * Sharing: Add "copy public link" to menu (#6356)
 * Share link: Update permission wording (#6192)
 * User shares: Show avatars
