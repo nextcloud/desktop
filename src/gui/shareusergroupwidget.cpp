@@ -66,7 +66,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     setObjectName("SharingDialogUG"); // required as group for saveGeometry call
 
     _ui->setupUi(this);
-    _ui->scrollArea->setVisible(false);
+    //_ui->scrollArea->setVisible(false);
 
     //Is this a file or folder?
     _isFile = QFileInfo(localPath).isFile();
@@ -243,7 +243,10 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         }
 
         if (!layout->isEmpty()) {
+            _ui->scrollArea->setVisible(true);
             layout->addStretch(1);
+        } else {
+            _ui->scrollArea->setVisible(false);
         }
 
         minimumSize.rwidth() += layout->spacing();
