@@ -32,9 +32,6 @@ add_cmocka_test(check_csync_misc csync_tests/check_csync_misc.cpp ${TEST_TARGET_
 add_cmocka_test(check_vio vio_tests/check_vio.cpp ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_vio_ext vio_tests/check_vio_ext.cpp ${TEST_TARGET_LIBRARIES})
 
-# sync
-add_cmocka_test(check_csync_update csync_tests/check_csync_update.cpp ${TEST_TARGET_LIBRARIES})
-
 # encoding
 add_cmocka_test(check_encoding_functions encoding_tests/check_encoding.cpp ${TEST_TARGET_LIBRARIES})
 
