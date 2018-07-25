@@ -280,12 +280,10 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         int slash = file.lastIndexOf('/');
         result.name = file.mid(slash + 1);
         result.size = -1;
-        result.modtime = -1;
         propertyMapToFileStat(map, result);
         if (result.isDirectory)
             result.size = 0;
         if (result.size == -1
-            || result.modtime == -1
             || result.remotePerm.isNull()
             || result.etag.isEmpty()
             || result.fileId.isEmpty()) {
