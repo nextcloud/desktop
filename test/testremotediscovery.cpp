@@ -106,7 +106,7 @@ private slots:
         QScopedValueRollback<int> setHttpTimeout(AbstractNetworkJob::httpTimeout, errorKind == Timeout ? 1 : 10000);
 
         QSignalSpy errorSpy(&fakeFolder.syncEngine(), &SyncEngine::syncError);
-        QCOMPARE(fakeFolder.syncOnce(), false);
+        QCOMPARE(fakeFolder.syncOnce(), syncSucceeds);
         qDebug() << "errorSpy=" << errorSpy;
 
         // The folder B should not have been sync'ed (and in particular not removed)

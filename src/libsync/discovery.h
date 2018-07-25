@@ -24,44 +24,6 @@ class ExcludedFiles;
 namespace OCC {
 class SyncJournalDb;
 
-struct RemoteInfo
-{
-    QString name;
-    QByteArray etag;
-    QByteArray fileId;
-    QByteArray checksumHeader;
-    OCC::RemotePermissions remotePerm;
-    time_t modtime = 0;
-    int64_t size = 0;
-    bool isDirectory = false;
-    bool isValid() const { return !name.isNull(); }
-};
-
-struct LocalInfo
-{
-    QString name;
-    time_t modtime = 0;
-    int64_t size = 0;
-    uint64_t inode = 0;
-    bool isDirectory = false;
-    bool isHidden = false;
-    bool isVirtualFile = false;
-    bool isValid() const { return !name.isNull(); }
-};
-
-/**
- * Do the propfind on the server.
- * TODO: merge with DiscoverySingleDirectoryJob
- */
-class DiscoverServerJob : public DiscoverySingleDirectoryJob
-{
-    Q_OBJECT
-public:
-    explicit DiscoverServerJob(const AccountPtr &account, const QString &path, QObject *parent = 0);
-signals:
-    void finished(const Result<QVector<RemoteInfo>> &result);
-};
-
 class ProcessDirectoryJob : public QObject
 {
     Q_OBJECT
@@ -122,7 +84,7 @@ private:
     bool _hasServerEntries = false;
     bool _hasLocalEntries = false;
     int _pendingAsyncJobs = 0;
-    QPointer<DiscoverServerJob> _serverJob;
+    QPointer<DiscoverySingleDirectoryJob> _serverJob;
     std::deque<ProcessDirectoryJob *> _queuedJobs;
     QVector<ProcessDirectoryJob *> _runningJobs;
     QueryMode _queryServer;
