@@ -672,7 +672,8 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                     auto up = _discoveryData->_statedb->getUploadInfo(path._original);
                     if (up._valid && up._contentChecksum == remoteChecksumHeader) {
                         // Solve the conflict into an upload, or nothing
-                        item->_instruction = up._modtime == localEntry.modtime ? CSYNC_INSTRUCTION_UPDATE_METADATA : CSYNC_INSTRUCTION_SYNC;
+                        item->_instruction = up._modtime == localEntry.modtime && up._size == localEntry.size
+                            ? CSYNC_INSTRUCTION_UPDATE_METADATA : CSYNC_INSTRUCTION_SYNC;
                         item->_direction = SyncFileItem::Up;
 
                         // Update the etag and other server metadata in the journal already
