@@ -3,6 +3,7 @@ version: '{build}-{branch}'
 branches:
   only:
     - master
+    - 2.5
 
 clone_depth: 50
 

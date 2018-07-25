@@ -108,7 +108,7 @@ public:
         }
         int _chunk;
         int _transferid;
-        quint64 _size; //currently unused
+        qint64 _size;
         qint64 _modtime;
         int _errorCount;
         bool _valid;

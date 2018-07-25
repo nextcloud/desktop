@@ -62,9 +62,6 @@ namespace WizardCommon {
 
         errorLabel->setStyleSheet(style);
         errorLabel->setWordWrap(true);
-        auto sizePolicy = errorLabel->sizePolicy();
-        sizePolicy.setRetainSizeWhenHidden(true);
-        errorLabel->setSizePolicy(sizePolicy);
         errorLabel->setVisible(false);
     }
 

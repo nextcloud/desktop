@@ -240,7 +240,9 @@ To build the most up-to-date version of the client:
 
 3. Configure the client build::
 
-     cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/  -DNO_SHIBBOLETH=1 ..``
+     cmake -DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/  -DNO_SHIBBOLETH=1 ..``
+
+.. note:: For Linux builds (using qt5 libraries via build-dep) a typical setting is ``-DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1/`` - version number may vary.
 
 .. note:: You must use absolute paths for the ``include`` and ``library``
          directories.

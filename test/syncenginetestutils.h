@@ -289,6 +289,7 @@ public:
     QString name;
     bool isDir = true;
     bool isShared = false;
+    OCC::RemotePermissions permissions; // When uset, defaults to everything
     QDateTime lastModified = QDateTime::currentDateTime().addDays(-7);
     QString etag = generateEtag();
     QByteArray fileId = generateFileId();
@@ -362,7 +363,9 @@ public:
             xml.writeTextElement(davUri, QStringLiteral("getlastmodified"), stringDate);
             xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.size));
             xml.writeTextElement(davUri, QStringLiteral("getetag"), fileInfo.etag);
-            xml.writeTextElement(ocUri, QStringLiteral("permissions"), fileInfo.isShared ? QStringLiteral("SRDNVCKW") : QStringLiteral("RDNVCKW"));
+            xml.writeTextElement(ocUri, QStringLiteral("permissions"), !fileInfo.permissions.isNull()
+                ? QString(fileInfo.permissions.toString())
+                : fileInfo.isShared ? QStringLiteral("SRDNVCKW") : QStringLiteral("RDNVCKW"));
             xml.writeTextElement(ocUri, QStringLiteral("id"), fileInfo.fileId);
             xml.writeTextElement(ocUri, QStringLiteral("checksums"), fileInfo.checksums);
             buffer.write(fileInfo.extraDavProperties);
@@ -446,6 +449,7 @@ public:
         emit uploadProgress(fileInfo->size, fileInfo->size);
         setRawHeader("OC-ETag", fileInfo->etag.toLatin1());
         setRawHeader("ETag", fileInfo->etag.toLatin1());
+        setRawHeader("OC-FileID", fileInfo->fileId);
         setRawHeader("X-OC-MTime", "accepted"); // Prevents Q_ASSERT(!_runningNow) since we'll call PropagateItemJob::done twice in that case.
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
         emit metaDataChanged();
@@ -769,7 +773,14 @@ public:
         open(QIODevice::ReadOnly);
     }
 
-    void abort() override {}
+    void abort() override {
+        // Follow more or less the implementation of QNetworkReplyImpl::abort
+        close();
+        setError(OperationCanceledError, tr("Operation canceled"));
+        emit error(OperationCanceledError);
+        setFinished(true);
+        emit finished();
+    }
     qint64 readData(char *, qint64) override { return 0; }
 };
 

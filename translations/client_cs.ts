@@ -979,29 +979,19 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
         <translation>Nemáte oprávnění pro zápis do zvoleného adresáře!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1376"/>
-        <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder Please pick another one!</source>
-        <translation>Místní složka %1 obsahuje symbolický odkaz. Cílový odkaz obsahuje již synchronizované složky. Vyberte si prosím jinou!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1391"/>
+        <location filename="../src/gui/folderman.cpp" line="1382"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Ze serveru se do tohoto umístění již synchronizuje. Prosím zvolte jinou místní složku!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1351"/>
+        <location filename="../src/gui/folderman.cpp" line="1362"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Místní adresář %1 již obsahuje podadresář použitý pro synchronizaci odesílání. Zvolte prosím jiný!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1361"/>
+        <location filename="../src/gui/folderman.cpp" line="1368"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Místní adresář %1 je již obsažen ve adresáři použitém pro synchronizaci. Vyberte prosím jiný!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1369"/>
-        <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Místní adresář %1 je symbolickým obsahem. Cíl odkazu je již obsažen v adresáři použitém pro synchronizaci. Vyberte prosím jiný!</translation>
     </message>
 </context>
 <context>
@@ -1178,12 +1168,12 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="568"/>
+        <location filename="../src/gui/folderwizard.cpp" line="570"/>
         <source>Add Folder Sync Connection</source>
         <translation>Přidat synchronizaci adresáře</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="570"/>
+        <location filename="../src/gui/folderwizard.cpp" line="572"/>
         <source>Add Sync Connection</source>
         <translation>Přidat synchronizační připojení</translation>
     </message>
@@ -1196,12 +1186,12 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
         <translation>Kliknutím zvolíte místní adresář k synchronizaci.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="73"/>
+        <location filename="../src/gui/folderwizard.cpp" line="75"/>
         <source>Enter the path to the local folder.</source>
         <translation>Zadejte cestu k místnímu adresáři.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="134"/>
+        <location filename="../src/gui/folderwizard.cpp" line="136"/>
         <source>Select the source folder</source>
         <translation>Zvolte zdrojový adresář</translation>
     </message>
@@ -1209,47 +1199,47 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="182"/>
+        <location filename="../src/gui/folderwizard.cpp" line="184"/>
         <source>Create Remote Folder</source>
         <translation>Vytvořit vzdálený adresář</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="183"/>
+        <location filename="../src/gui/folderwizard.cpp" line="185"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
         <translation>Zadejte název nově vytvářeného adresáře níže &apos;%1&apos;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="213"/>
+        <location filename="../src/gui/folderwizard.cpp" line="215"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Adresář byl úspěšně vytvořen na %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="224"/>
+        <location filename="../src/gui/folderwizard.cpp" line="226"/>
         <source>Authentication failed accessing %1</source>
         <translation>Ověření selhalo při připojení %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="226"/>
+        <location filename="../src/gui/folderwizard.cpp" line="228"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Na %1 selhalo vytvoření adresáře. Zkontrolujte to prosím ručně.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="235"/>
+        <location filename="../src/gui/folderwizard.cpp" line="237"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>Chyba při vypsání adresáře. Chyba: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="316"/>
+        <location filename="../src/gui/folderwizard.cpp" line="318"/>
         <source>Choose this to sync the entire account</source>
         <translation>Zvolte toto k provedení synchronizace celého účtu</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="446"/>
+        <location filename="../src/gui/folderwizard.cpp" line="448"/>
         <source>This folder is already being synced.</source>
         <translation>Tento adresář je již synchronizován.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="448"/>
+        <location filename="../src/gui/folderwizard.cpp" line="450"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Již synchronizujete adresář &lt;i&gt;%1&lt;/i&gt;, který je adresáři &lt;i&gt;%2&lt;/i&gt; nadřazený.</translation>
     </message>
@@ -1257,7 +1247,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="487"/>
+        <location filename="../src/gui/folderwizard.cpp" line="489"/>
         <source>Use virtual files instead of downloading content immediately (experimental)</source>
         <translation type="unfinished"/>
     </message>
@@ -1316,38 +1306,38 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
         <translation>Pro systémovou lištu</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="89"/>
+        <location filename="../src/gui/generalsettings.ui" line="67"/>
         <source>&amp;Channel</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="106"/>
+        <location filename="../src/gui/generalsettings.ui" line="84"/>
         <source>stable</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="111"/>
+        <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>beta</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="179"/>
+        <location filename="../src/gui/generalsettings.ui" line="157"/>
         <source>Advanced</source>
         <translation>Pokročilé</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="211"/>
+        <location filename="../src/gui/generalsettings.ui" line="189"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Zeptat se před synchronizací složek větších než</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="231"/>
+        <location filename="../src/gui/generalsettings.ui" line="209"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="255"/>
+        <location filename="../src/gui/generalsettings.ui" line="233"/>
         <source>Ask for confirmation before synchronizing external storages</source>
         <translation>Zeptat se na potvrzení před synchronizací externích úlošišť</translation>
     </message>
@@ -1367,55 +1357,49 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
         <translation>Používat čer&amp;nobílé ikony</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="187"/>
+        <location filename="../src/gui/generalsettings.ui" line="165"/>
         <source>Edit &amp;Ignored Files</source>
         <translation>Upravit &amp;ignorované soubory</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="266"/>
+        <location filename="../src/gui/generalsettings.ui" line="244"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="283"/>
+        <location filename="../src/gui/generalsettings.ui" line="261"/>
         <source>S&amp;how crash reporter</source>
         <translation>Z&amp;obrazit hlášení o pádech</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="53"/>
-        <location filename="../src/gui/generalsettings.ui" line="65"/>
-        <source>About</source>
-        <translation>O aplikaci</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Updates</source>
         <translation>Aktualizace</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="138"/>
+        <location filename="../src/gui/generalsettings.ui" line="116"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Restart &amp;&amp; aktualizace</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="184"/>
+        <location filename="../src/gui/generalsettings.cpp" line="173"/>
         <source>Change update channel?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="185"/>
+        <location filename="../src/gui/generalsettings.cpp" line="174"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="198"/>
+        <location filename="../src/gui/generalsettings.cpp" line="187"/>
         <source>Change update channel</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="199"/>
+        <location filename="../src/gui/generalsettings.cpp" line="188"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
@@ -1701,27 +1685,27 @@ Logs will be written to %1</source>
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="337"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="359"/>
         <source>New Version Available</source>
         <translation>Je dostupná nová verze</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="343"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="365"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Je k dispozici nová verze klienta %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; je k dispozici ke stažení. Momentálně je nainstalována verze %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="357"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="379"/>
         <source>Skip this version</source>
         <translation>Přeskoč tuto verzi</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="358"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="380"/>
         <source>Skip this time</source>
         <translation>Tentokrát přeskočit</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="359"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="381"/>
         <source>Get update</source>
         <translation>Získat aktualizaci</translation>
     </message>
@@ -1970,28 +1954,28 @@ můžete být požádáni o dodatečná oprávnění.</translation>
         <translation>Připojit...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="167"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="172"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
         <translation>%1 adresář &apos;%2&apos; je synchronizován do místního adresáře &apos;%3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="170"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="175"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>Synchronizovat adresář &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="175"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="180"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Varování:&lt;/strong&gt; Místní adresář není prázdný. Zvolte další postup!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="306"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="307"/>
         <source>Local Sync Folder</source>
         <translation>Místní synchronizovaný adresář</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="342"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="375"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="343"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="376"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
@@ -2050,14 +2034,19 @@ můžete být požádáni o dodatečná oprávnění.</translation>
 <context>
     <name>OCC::OwncloudOAuthCredsPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="43"/>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="45"/>
         <source>Connect to %1</source>
         <translation>Připojit k %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="44"/>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
         <translation>Přihlášení v prohlížeči</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="57"/>
+        <source>Copy link to clipboard</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2090,7 +2079,12 @@ Nedoporučuje se jí používat.</translation>
         <translation>&amp;Následující &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="339"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="227"/>
+        <source>Invalid URL</source>
+        <translation>Neplatná URL</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="346"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation type="unfinished"/>
     </message>
@@ -2497,27 +2491,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="410"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="412"/>
         <source>The local file was removed during sync.</source>
         <translation>Místní soubor byl odstraněn během synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="421"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="423"/>
         <source>Local file changed during sync.</source>
         <translation>Místní soubor byl změněn během synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="457"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="459"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Neočekávaný návratový kód ze serveru (%1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="464"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="466"/>
         <source>Missing File ID from server</source>
         <translation>Chybějící souborové ID ze serveru</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="478"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="480"/>
         <source>Missing ETag from server</source>
         <translation>Chybějící ETag ze serveru</translation>
     </message>
@@ -2525,22 +2519,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUploadFileV1</name>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="215"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="216"/>
         <source>Poll URL missing</source>
         <translation>Chybí adresa URL</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="239"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="240"/>
         <source>The local file was removed during sync.</source>
         <translation>Místní soubor byl odstraněn během synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="250"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="251"/>
         <source>Local file changed during sync.</source>
         <translation>Místní soubor byl změněn během synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="264"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="265"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
         <translation>Server nepotvrdil poslední část dat. (Nebyl nalezen e-tag)</translation>
     </message>
@@ -3678,243 +3672,249 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="265"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="267"/>
         <source>Please sign in</source>
         <translation>Přihlašte se prosím</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="311"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="313"/>
         <source>Folder %1: %2</source>
         <translation>Adresář %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="329"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
         <source>There are no sync folders configured.</source>
         <translation>Nejsou nastaveny žádné adresáře pro synchronizaci.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="338"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="340"/>
         <source>Open in browser</source>
         <translation>Otevřít v prohlížeči</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="387"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="692"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="781"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="389"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="698"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="795"/>
         <source>Log in...</source>
         <translation>Přihlásit...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="391"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="684"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="783"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="393"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="690"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="797"/>
         <source>Log out</source>
         <translation>Odhlásit se</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="486"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="488"/>
         <source>Recent Changes</source>
         <translation>Poslední změny</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="365"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="367"/>
         <source>Managed Folders:</source>
         <translation>Spravované adresáře:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="368"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="370"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Otevřít adresář &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="340"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="342"/>
         <source>Open %1 in browser</source>
         <translation>Otevřít %1 v prohlížeči</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="766"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="778"/>
         <source>Unknown status</source>
         <translation>Neznámý stav</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="768"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="780"/>
         <source>Settings...</source>
         <translation>Nastavení...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="770"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>Details...</source>
         <translation>Podrobnosti...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="776"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="788"/>
         <source>Help</source>
         <translation>Nápověda</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="778"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="792"/>
         <source>Quit %1</source>
         <translation>Ukončit %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="246"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="248"/>
         <source>Disconnected from %1</source>
         <translation>Odpojeno od %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="196"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="198"/>
         <source>Unsupported Server Version</source>
         <translation>Nepodporovaná verze serveru</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="197"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="199"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>Server na účtu %1 používá starou a nepodporovanou verzi %2. Používání tohoto klienta s nepodporovanými verzemi serveru není testováno a může být nebezpečné. Pokračujte na vlastní riziko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="236"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="238"/>
         <source>Disconnected</source>
         <translation>Odpojeno</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="238"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="240"/>
         <source>Disconnected from some accounts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="249"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="251"/>
         <source>Disconnected from accounts:</source>
         <translation>Odpojeno od účtů:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="251"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="253"/>
         <source>Account %1: %2</source>
         <translation>Účet %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="266"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="268"/>
         <source>Signed out</source>
         <translation>Odhlášeno</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="270"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="272"/>
         <source>Account synchronization is disabled</source>
         <translation>Synchronizace účtu je vypnuta</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="271"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="324"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="273"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="326"/>
         <source>Synchronization is paused</source>
         <translation>Synchronizace je pozastavena</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="319"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="321"/>
         <source>Unresolved conflicts</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="326"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="328"/>
         <source>Error during synchronization</source>
         <translation>Chyba při synchronizaci</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="330"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="332"/>
         <source>No sync folders configured</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="376"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="378"/>
         <source>Unpause all folders</source>
         <translation>Spustit všechny adresáře</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="381"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="383"/>
         <source>Pause all folders</source>
         <translation>Pozastavit všechny adresáře</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="663"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="669"/>
         <source>Unpause all synchronization</source>
         <translation>Spustit veškerou synchronizaci</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="665"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="671"/>
         <source>Unpause synchronization</source>
         <translation>Spustit synchronizaci</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="673"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="679"/>
         <source>Pause all synchronization</source>
         <translation>Pozastavit veškerou synchronizaci</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="675"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="681"/>
         <source>Pause synchronization</source>
         <translation>Pozastavit synchronizaci</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="682"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="688"/>
         <source>Log out of all accounts</source>
         <translation>Odhlásit ze všech účtů</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="690"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="696"/>
         <source>Log in to all accounts...</source>
         <translation>Přihlásit ke všem účtům...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="769"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>New account...</source>
         <translation>Nový účet...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="787"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="790"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="1150"/>
+        <source>About %1</source>
+        <translation>O %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="801"/>
         <source>Crash now</source>
         <comment>Only shows in debug mode to allow testing the crash handler</comment>
         <translation>Selhání</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="803"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="817"/>
         <source>No items synced recently</source>
         <translation>Žádné položky nebyly nedávno synchronizovány</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="825"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="839"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="828"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="842"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="843"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="857"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Synchronizuji %1 ze %2 (zbývá %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="848"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="862"/>
         <source>Syncing %1 of %2</source>
         <translation>Synchronizace %1 z %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="857"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="871"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Synchronizuji %1 (zbývá %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="860"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="874"/>
         <source>Syncing %1</source>
         <translation>Synchronizuji %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="878"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="892"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="321"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="323"/>
         <source>Up to date</source>
         <translation>Aktuální</translation>
     </message>
@@ -3932,8 +3932,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="134"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="253"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="361"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="460"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="486"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="515"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="526"/>
         <source>TextLabel</source>
         <translation>Textový štítek</translation>
     </message>
@@ -4010,7 +4010,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="467"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="460"/>
         <source>Status message</source>
         <translation>Stavová zpráva</translation>
     </message>

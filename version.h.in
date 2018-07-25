@@ -21,8 +21,8 @@
 
 #cmakedefine GIT_SHA1 "@GIT_SHA1@"
 
-#define MIRALL_STRINGIFY(s) MIRALL_TOSTRING(s)
-#define MIRALL_TOSTRING(s) #s
+#define MIRALL_STRINGIFY(...) MIRALL_TOSTRING(__VA_ARGS__)
+#define MIRALL_TOSTRING(...)  "" #__VA_ARGS__
 
 /* MIRALL version */
 #define MIRALL_VERSION_MAJOR @MIRALL_VERSION_MAJOR@

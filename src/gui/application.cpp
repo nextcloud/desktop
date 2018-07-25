@@ -72,7 +72,7 @@ namespace {
         "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
         "                         (to be used with --logdir)\n"
         "  --logflush           : flush the log file after every write.\n"
-        "  --logdebug           : also output debug-level messages in the log (equivalent to setting the env var QT_LOGGING_RULES=\"qt.*=true;*.debug=true\").\n"
+        "  --logdebug           : also output debug-level messages in the log.\n"
         "  --confdir <dirname>  : Use the given configuration folder.\n";
 
     QString applicationTrPath()
@@ -540,20 +540,12 @@ void Application::parseOptions(const QStringList &options)
 
 // Helpers for displaying messages. Note that there is no console on Windows.
 #ifdef Q_OS_WIN
-// Format as <pre> HTML
-static inline void toHtml(QString &t)
+static void displayHelpText(const QString &t) // No console on Windows.
 {
-    t.replace(QLatin1Char('&'), QLatin1String("&amp;"));
-    t.replace(QLatin1Char('<'), QLatin1String("&lt;"));
-    t.replace(QLatin1Char('>'), QLatin1String("&gt;"));
-    t.insert(0, QLatin1String("<html><pre>"));
-    t.append(QLatin1String("</pre></html>"));
-}
-
-static void displayHelpText(QString t) // No console on Windows.
-{
-    toHtml(t);
-    QMessageBox::information(0, Theme::instance()->appNameGUI(), t);
+    QString spaces(80, ' '); // Add a line of non-wrapped space to make the messagebox wide enough.
+    QString text = QLatin1String("<qt><pre style='white-space:pre-wrap'>")
+        + t.toHtmlEscaped() + QLatin1String("</pre><pre>") + spaces + QLatin1String("</pre></qt>");
+    QMessageBox::information(0, Theme::instance()->appNameGUI(), text);
 }
 
 #else

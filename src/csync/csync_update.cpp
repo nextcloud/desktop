@@ -126,12 +126,12 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
        * This code should probably be in csync_exclude, but it does not have the fs parameter.
        * Keep it here for now */
       if (ctx->ignore_hidden_files && (fs->is_hidden)) {
-          qCDebug(lcUpdate, "file excluded because it is a hidden file: %s", fs->path.constData());
+          qCInfo(lcUpdate, "file excluded because it is a hidden file: %s", fs->path.constData());
           excluded = CSYNC_FILE_EXCLUDE_HIDDEN;
       }
   } else {
       /* File is ignored because it's matched by a user- or system exclude pattern. */
-      qCDebug(lcUpdate, "%s excluded  (%d)", fs->path.constData(), excluded);
+      qCInfo(lcUpdate, "%s excluded  (%d)", fs->path.constData(), excluded);
       if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
           return 1;
       }
@@ -149,7 +149,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
 
   if (fs->type == ItemTypeFile ) {
     if (fs->modtime == 0) {
-      qCDebug(lcUpdate, "file: %s - mtime is zero!", fs->path.constData());
+      qCInfo(lcUpdate, "file: %s - mtime is zero!", fs->path.constData());
     }
   }
 
@@ -261,7 +261,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
            * The metadata comparison ensure that we fetch all the file id or permission when
            * upgrading owncloud
            */
-          qCDebug(lcUpdate, "Reading from database: %s", fs->path.constData());
+          qCInfo(lcUpdate, "Reading from database: %s", fs->path.constData());
           ctx->remote.read_from_db = true;
       }
       /* If it was remembered in the db that the remote dir has ignored files, store
@@ -272,7 +272,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       }
       if (metadata_differ) {
           /* file id or permissions has changed. Which means we need to update them in the DB. */
-          qCDebug(lcUpdate, "Need to update metadata for: %s", fs->path.constData());
+          qCInfo(lcUpdate, "Need to update metadata for: %s", fs->path.constData());
           fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
       } else {
           fs->instruction = CSYNC_INSTRUCTION_NONE;
@@ -283,6 +283,8 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
           /* ... PORTED */
 
       } else { /*... PORTED ... */
+          qCInfo(lcUpdate, "Checking for rename based on fileid %s", fs->file_id.constData());
+
       }
   }
 
@@ -375,11 +377,11 @@ int csync_walker(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs) {
       }
       break;
   case ItemTypeSoftLink:
-    qCDebug(lcUpdate, "symlink: %s - not supported", fs->path.constData());
+    qCInfo(lcUpdate, "symlink: %s - not supported", fs->path.constData());
     break;
   default:
+    qCInfo(lcUpdate, "item: %s - item type %d not iterated", fs->path.constData(), fs->type);
     return 0;
-    break;
   }
 
   rc = _csync_detect_update(ctx, std::move(fs));
@@ -402,7 +404,7 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri, bool singleFile = fal
              * their correct etags again and we don't run into this case.
              */
             if (rec._etag == "_invalid_") {
-                qCDebug(lcUpdate, "%s selective sync excluded", rec._path.constData());
+                qCInfo(lcUpdate, "%s selective sync excluded", rec._path.constData());
                 skipbase = rec._path;
                 skipbase += '/';
                 return;
@@ -555,7 +557,21 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       goto error;
   }
 
-  while ((dirent = csync_vio_readdir(ctx, dh))) {
+  while (true) {
+    // Get the next item in the directory
+    errno = 0;
+    dirent = csync_vio_readdir(ctx, dh);
+    if (!dirent) {
+        if (errno != 0) {
+            // Note: Windows vio converts any error into EACCES
+            qCWarning(lcUpdate, "readdir failed for file in %s - errno %d", uri, errno);
+            goto error;
+        }
+
+        // Normal case: End of items in directory
+        break;
+    }
+
     /* Conversion error */
     if (dirent->path.isEmpty() && !dirent->original_path.isEmpty()) {
         ctx->status_code = CSYNC_STATUS_INVALID_CHARACTERS;
@@ -658,7 +674,7 @@ PORTED
   }
 
   csync_vio_closedir(ctx, dh);
-  qCDebug(lcUpdate, " <= Closing walk for %s with read_from_db %d", uri, read_from_db);
+  qCInfo(lcUpdate, " <= Closing walk for %s with read_from_db %d", uri, read_from_db);
 
   return rc;
 

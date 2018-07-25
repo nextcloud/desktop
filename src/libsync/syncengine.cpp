@@ -1340,14 +1340,6 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
 
 RemotePermissions SyncEngine::getPermissions(const QString &file) const
 {
-    static bool isTest = qEnvironmentVariableIntValue("OWNCLOUD_TEST_PERMISSIONS");
-    if (isTest) {
-        QRegExp rx("_PERM_([^_]*)_[^/]*$");
-        if (rx.indexIn(file) != -1) {
-            return RemotePermissions(rx.cap(1));
-        }
-    }
-
     // Fetch from the csync context while we still have it.
     ASSERT(_csync_ctx->status != CSYNC_STATUS_INIT);
 
