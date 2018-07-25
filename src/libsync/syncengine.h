@@ -79,8 +79,8 @@ public:
 
     SyncOptions syncOptions() const { return _syncOptions; }
     void setSyncOptions(const SyncOptions &options) { _syncOptions = options; }
-    bool ignoreHiddenFiles() const { return _csync_ctx->ignore_hidden_files; }
-    void setIgnoreHiddenFiles(bool ignore) { _csync_ctx->ignore_hidden_files = ignore; }
+    bool ignoreHiddenFiles() const { return _ignore_hidden_files; }
+    void setIgnoreHiddenFiles(bool ignore) { _ignore_hidden_files = ignore; }
 
     ExcludedFiles &excludedFiles() { return *_excludedFiles; }
     Utility::StopWatch &stopWatch() { return _stopWatch; }
@@ -203,7 +203,6 @@ private slots:
     void slotInsufficientRemoteStorage();
 
 private:
-    void handleSyncError(CSYNC *ctx, const char *state);
     void csyncError(const QString &message);
 
     int treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, bool);
@@ -231,7 +230,6 @@ private:
     QVector<SyncFileItemPtr> _syncItems;
 
     AccountPtr _account;
-    QScopedPointer<CSYNC> _csync_ctx;
     bool _needsUpdate;
     bool _syncRunning;
     QString _localPath;
@@ -286,6 +284,9 @@ private:
 
     // number of files which goes back in time from the server
     int _backInTimeFiles;
+
+    // If ignored files should be ignored
+    bool _ignore_hidden_files;
 
 
     int _uploadLimit;

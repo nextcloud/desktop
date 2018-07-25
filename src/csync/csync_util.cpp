@@ -32,7 +32,6 @@
 
 #include "common/c_jhash.h"
 #include "csync_util.h"
-#include "vio/csync_vio.h"
 
 Q_LOGGING_CATEGORY(lcCSyncUtils, "sync.csync.utils", QtInfoMsg)
 

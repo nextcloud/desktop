@@ -88,10 +88,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
     // Everything in the SyncEngine expects a trailing slash for the localPath.
     ASSERT(localPath.endsWith(QLatin1Char('/')));
 
-    _csync_ctx.reset(new CSYNC(localPath.toUtf8().data(), journal));
-
     _excludedFiles.reset(new ExcludedFiles);
-    _csync_ctx->exclude_traversal_fn = _excludedFiles->csyncTraversalMatchFun();
 
     _syncFileStatusTracker.reset(new SyncFileStatusTracker(this));
 
@@ -614,45 +611,10 @@ int SyncEngine::treewalkFile(csync_file_stat_t * /*file*/, csync_file_stat_t * /
     return 0;
 }
 
-void SyncEngine::handleSyncError(CSYNC *ctx, const char *state)
-{
-    CSYNC_STATUS err = csync_get_status(ctx);
-    QString errMsg = ctx->error_string;
-    QString errStr = csyncErrorToString(err);
-    if (!errMsg.isEmpty()) {
-        if (!errStr.endsWith(" ")) {
-            errStr.append(" ");
-        }
-        errStr += errMsg;
-    }
-    // Special handling CSYNC_STATUS_INVALID_CHARACTERS
-    if (err == CSYNC_STATUS_INVALID_CHARACTERS) {
-        errStr = tr("Invalid characters, please rename \"%1\"").arg(errMsg);
-    }
-
-    // if there is csyncs url modifier in the error message, replace it.
-    if (errStr.contains("ownclouds://"))
-        errStr.replace("ownclouds://", "https://");
-    if (errStr.contains("owncloud://"))
-        errStr.replace("owncloud://", "http://");
-
-    qCWarning(lcEngine) << "ERROR during " << state << ": " << errStr;
-
-    if (CSYNC_STATUS_IS_EQUAL(err, CSYNC_STATUS_ABORTED)) {
-        qCInfo(lcEngine) << "Update phase was aborted by user!";
-    } else if (CSYNC_STATUS_IS_EQUAL(err, CSYNC_STATUS_SERVICE_UNAVAILABLE)) {
-        emit csyncUnavailable();
-    } else {
-        csyncError(errStr);
-    }
-    finalize(false);
-}
-
 void SyncEngine::csyncError(const QString &message)
 {
     emit syncError(message, ErrorCategory::Normal);
 }
-
 
 void SyncEngine::startSync()
 {
@@ -721,8 +683,6 @@ void SyncEngine::startSync()
     _syncItems.clear();
     _needsUpdate = false;
 
-    csync_resume(_csync_ctx.data());
-
     if (!_journal->exists()) {
         qCInfo(lcEngine) << "New sync (no sync journal exists)";
     } else {
@@ -750,16 +710,11 @@ void SyncEngine::startSync()
     // undo the filter to allow this sync to retrieve and store the correct etags.
     _journal->clearEtagStorageFilter();
 
-    _csync_ctx->upload_conflict_files = _account->capabilities().uploadConflictFiles();
     _excludedFiles->setExcludeConflictFiles(!_account->capabilities().uploadConflictFiles());
-
-    _csync_ctx->read_remote_from_db = true;
 
     _lastLocalDiscoveryStyle = _localDiscoveryStyle;
 
-    _csync_ctx->new_files_are_virtual = _syncOptions._newFilesAreVirtual;
-    _csync_ctx->virtual_file_suffix = _syncOptions._virtualFileSuffix.toUtf8();
-    if (_csync_ctx->new_files_are_virtual && _csync_ctx->virtual_file_suffix.isEmpty()) {
+    if (_syncOptions._newFilesAreVirtual && _syncOptions._virtualFileSuffix.isEmpty()) {
         csyncError(tr("Using virtual files but suffix is not set"));
         finalize(false);
         return;
@@ -776,11 +731,6 @@ void SyncEngine::startSync()
         finalize(false);
         return;
     }
-    csync_set_userdata(_csync_ctx.data(), this);
-
-    // Set up checksumming hook
-    _csync_ctx->callbacks.checksum_hook = &CSyncChecksumHook::hook;
-    _csync_ctx->callbacks.checksum_userdata = &_checksum_hook;
 
     _stopWatch.start();
     _progressInfo->_status = ProgressInfo::Starting;
@@ -953,8 +903,6 @@ void SyncEngine::slotDiscoveryJobFinished()
     // make sure everything is allowed
     // TODO checkForPermission(_syncItems);
 
-    // Re-init the csync context to free memory
-    _csync_ctx->reinitialize();
     _localDiscoveryPaths.clear();
 
     // To announce the beginning of the sync
@@ -1082,7 +1030,6 @@ void SyncEngine::slotFinished(bool success)
 
 void SyncEngine::finalize(bool success)
 {
-    _csync_ctx->reinitialize();
     _journal->close();
 
     qCInfo(lcEngine) << "CSync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished")) << "ms";
@@ -1182,16 +1129,15 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
                 (*it)->_instruction = CSYNC_INSTRUCTION_CONFLICT;
                 (*it)->_direction = SyncFileItem::Down;
                 (*it)->_isRestoration = true;
-                // Take the things to write to the db from the "other" node (i.e: info from server).
+                /*// Take the things to write to the db from the "other" node (i.e: info from server).
                 // Do a lookup into the csync remote tree to get the metadata we need to restore.
-                ASSERT(_csync_ctx->status != CSYNC_STATUS_INIT);
                 auto csyncIt = _csync_ctx->remote.files.find((*it)->_file.toUtf8());
                 if (csyncIt != _csync_ctx->remote.files.end()) {
                     (*it)->_modtime = csyncIt->second->modtime;
                     (*it)->_size = csyncIt->second->size;
                     (*it)->_fileId = csyncIt->second->file_id;
                     (*it)->_etag = csyncIt->second->etag;
-                }
+                }*/
                 (*it)->_errorString = tr("Not allowed to upload this file because it is read-only on the server, restoring");
                 continue;
             }
@@ -1340,16 +1286,7 @@ void SyncEngine::checkForPermission(SyncFileItemVector &syncItems)
 
 RemotePermissions SyncEngine::getPermissions(const QString &file) const
 {
-    // Fetch from the csync context while we still have it.
-    ASSERT(_csync_ctx->status != CSYNC_STATUS_INIT);
-
-    if (file == QLatin1String(""))
-        return _csync_ctx->remote.root_perms;
-
-    auto it = _csync_ctx->remote.files.find(file.toUtf8());
-    if (it != _csync_ctx->remote.files.end()) {
-        return it->second->remotePerm;
-    }
+    qFatal("FIXME");
     return RemotePermissions();
 }
 
@@ -1466,9 +1403,6 @@ void SyncEngine::abort()
 {
     if (_propagator)
         qCInfo(lcEngine) << "Aborting sync";
-
-    // Sets a flag for the update phase
-    csync_request_abort(_csync_ctx.data());
 
     // Aborts the discovery phase job
     if (_discoveryJob) {
