@@ -75,12 +75,15 @@ private:
     // return true if the file is excluded
     bool handleExcluded(const QString &path, bool isDirectory, bool isHidden);
     void processFile(PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &dbEntry);
+    // Return false if there is an error and that a directory must not be recursively be taken
+    bool checkPremission(const SyncFileItemPtr &item);
     void processBlacklisted(const PathTuple &, const LocalInfo &, const SyncJournalFileRecord &dbEntry);
     void subJobFinished();
     void progress();
 
     QVector<RemoteInfo> _serverEntries;
     QVector<LocalInfo> _localEntries;
+    RemotePermissions _rootPermissions;
     bool _hasServerEntries = false;
     bool _hasLocalEntries = false;
     int _pendingAsyncJobs = 0;
