@@ -61,6 +61,7 @@ private:
     void showSharingUi();
 
     Ui::ShareDialog *_ui;
+
     QPointer<AccountState> _accountState;
     QString _sharePath;
     QString _localPath;

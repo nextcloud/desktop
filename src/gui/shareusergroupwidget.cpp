@@ -34,7 +34,6 @@
 #include <QFileInfo>
 #include <QAbstractProxyModel>
 #include <QCompleter>
-#include <qscrollarea.h>
 #include <qlayout.h>
 #include <QPropertyAnimation>
 #include <QMenu>
@@ -44,6 +43,7 @@
 #include <QCryptographicHash>
 #include <QColor>
 #include <QPainter>
+#include <QListWidget>
 
 namespace OCC {
 
@@ -113,16 +113,10 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
 
     // adds permissions
     QMenu *menu = new QMenu(this);
-    QAction *canShare = new QAction(tr("can share"));
-    canShare->setCheckable(true);
-    canShare->setEnabled(true);
-    canShare->setData(QVariant(SharePermissionShare));
     QAction *canEdit = new QAction(tr("can edit"));
     canEdit->setCheckable(true);
     canEdit->setEnabled(true);
     canEdit->setData(QVariant(SharePermissionUpdate));
-
-    menu->addAction(canShare);
     menu->addAction(canEdit);
     /*
      * Files can't have create or delete permissions
@@ -139,9 +133,12 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
         menu->addAction(canCreate);
         menu->addAction(canDelete);
     }
-    _ui->permissionToolButton->setDefaultAction(canShare);
+
+    //_ui->permissionToolButton->setDefaultAction(canEdit);
     _ui->permissionToolButton->setMenu(menu);
     _ui->permissionToolButton->setPopupMode(QToolButton::InstantPopup);
+
+    _parentScrollArea = parentWidget()->findChild<QScrollArea*>("scrollArea");
 }
 
 ShareUserGroupWidget::~ShareUserGroupWidget()
@@ -200,7 +197,7 @@ void ShareUserGroupWidget::searchForSharees()
     QSharedPointer<Sharee> currentUser(new Sharee(_account->credentials()->user(), "", Sharee::Type::User));
     blacklist << currentUser;
 
-    foreach (auto sw, _ui->scrollArea->findChildren<ShareUserLine *>()) {
+    foreach (auto sw, _parentScrollArea->findChildren<ShareUserLine *>()) {
         blacklist << sw->share()->getShareWith();
     }
     _ui->errorLabel->hide();
@@ -215,7 +212,7 @@ void ShareUserGroupWidget::getShares()
 void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
 {
     //if(shares.size() > 0){
-        QScrollArea *scrollArea = _ui->scrollArea;
+        QScrollArea *scrollArea = _parentScrollArea;
 
         auto newViewPort = new QWidget(scrollArea);
         auto layout = new QVBoxLayout(newViewPort);
@@ -228,7 +225,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
                 continue;
             }
 
-            ShareUserLine *s = new ShareUserLine(share, _maxSharingPermissions, _isFile, _ui->scrollArea);
+            ShareUserLine *s = new ShareUserLine(share, _maxSharingPermissions, _isFile, _parentScrollArea);
             connect(s, &ShareUserLine::resizeRequested, this, &ShareUserGroupWidget::slotAdjustScrollWidgetSize);
             connect(s, &ShareUserLine::visualDeletionDone, this, &ShareUserGroupWidget::getShares);
             s->setBackgroundRole(layout->count() % 2 == 0 ? QPalette::Base : QPalette::AlternateBase);
@@ -243,10 +240,10 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         }
 
         if (!layout->isEmpty()) {
-            _ui->scrollArea->setVisible(true);
+            _parentScrollArea->setVisible(true);
             layout->addStretch(1);
         } else {
-            _ui->scrollArea->setVisible(false);
+            _parentScrollArea->setVisible(false);
         }
 
         minimumSize.rwidth() += layout->spacing();
@@ -264,7 +261,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
 
 void ShareUserGroupWidget::slotAdjustScrollWidgetSize()
 {
-    QScrollArea *scrollArea = _ui->scrollArea;
+    QScrollArea *scrollArea = _parentScrollArea;
     if (scrollArea->findChildren<ShareUserLine *>().count() <= 3 &&
             scrollArea->findChildren<ShareUserLine *>().count() > 0) {
         auto minimumSize = scrollArea->widget()->sizeHint();
@@ -308,14 +305,14 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex &index)
     // model proxying the _completerModel
     auto sharee = qvariant_cast<QSharedPointer<Sharee>>(index.data(Qt::UserRole));
     if (sharee.isNull()) {
-        _ui->scrollArea->setVisible(false);
+        _parentScrollArea->setVisible(false);
         return;
     }
 
     /*
      * Add spinner to the bottom of the widget list
      */
-    auto viewPort = _ui->scrollArea->widget();
+    auto viewPort = _parentScrollArea->widget();
     auto layout = qobject_cast<QVBoxLayout *>(viewPort->layout());
 //    auto indicator = new QProgressIndicator(viewPort);
 //    indicator->startAnimation();
@@ -353,9 +350,9 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex &index)
     _ui->shareeLineEdit->setText(QString());
 
     if(layout->isEmpty())
-        _ui->scrollArea->setVisible(false);
+        _parentScrollArea->setVisible(false);
     else
-        _ui->scrollArea->setVisible(true);
+        _parentScrollArea->setVisible(true);
 }
 
 void ShareUserGroupWidget::slotCompleterHighlighted(const QModelIndex &index)
@@ -370,7 +367,7 @@ void ShareUserGroupWidget::displayError(int code, const QString &message)
     _pi_sharee.stopAnimation();
 
     // Also remove the spinner in the widget list, if any
-    foreach (auto pi, _ui->scrollArea->findChildren<QProgressIndicator *>()) {
+    foreach (auto pi, _parentScrollArea->findChildren<QProgressIndicator *>()) {
         delete pi;
     }
 
@@ -409,10 +406,19 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
 {
     _ui->setupUi(this);
 
-    _ui->sharedWith->setText(share->getShareWith()->format());
+    QString sharedWithText(share->getShareWith()->format());
+    QFontMetrics metrics(_ui->sharedWith->font());
+    QString elidedText = metrics.elidedText(sharedWithText, Qt::ElideRight, _ui->sharedWith->width());
+    _ui->sharedWith->setText(elidedText);
 
     // Create detailed permissions menu
     QMenu *menu = new QMenu(this);
+    _permissionShare = new QAction(tr("share"));
+    _permissionShare->setCheckable(true);
+    _permissionShare->setEnabled(true);
+    _permissionShare->setData(QVariant(SharePermissionShare));
+    menu->addAction(_permissionShare);
+
     _permissionCreate = new QAction(tr("create"), this);
     _permissionCreate->setCheckable(true);
     _permissionCreate->setEnabled(maxSharingPermissions & SharePermissionCreate);
@@ -445,14 +451,14 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
     // Set the permissions checkboxes
     displayPermissions();
 
-    _ui->permissionShare->setEnabled(maxSharingPermissions & SharePermissionShare);
+    _permissionShare->setEnabled(maxSharingPermissions & SharePermissionShare);
     _ui->permissionsEdit->setEnabled(maxSharingPermissions
         & (SharePermissionCreate | SharePermissionUpdate | SharePermissionDelete));
 
     connect(_permissionUpdate, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
     connect(_permissionCreate, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
     connect(_permissionDelete, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
-    connect(_ui->permissionShare, &QAbstractButton::clicked, this, &ShareUserLine::slotPermissionsChanged);
+    connect(_permissionShare, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
     connect(_ui->permissionsEdit, &QAbstractButton::clicked, this, &ShareUserLine::slotEditPermissionsChanged);
 
     /*
@@ -462,7 +468,7 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
      */
     if (share->getShareType() == Share::TypeRemote
         && share->account()->serverVersionInt() < Account::makeServerVersion(9, 1, 0)) {
-        _ui->permissionShare->setVisible(false);
+        _permissionShare->setVisible(false);
         _ui->permissionToolButton->setVisible(false);
     }
 
@@ -473,7 +479,7 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
         QIcon(QLatin1String(":/client/resources/delete.png"))));
 
     if (!share->account()->capabilities().shareResharing()) {
-        _ui->permissionShare->hide();
+        _permissionShare->setVisible(false);
     }
 
     loadAvatar();
@@ -560,7 +566,7 @@ void ShareUserLine::slotEditPermissionsChanged()
 
     Share::Permissions permissions = SharePermissionRead;
 
-    if (_ui->permissionShare->checkState() == Qt::Checked) {
+    if (_permissionShare->isChecked()) {
         permissions |= SharePermissionShare;
     }
 
@@ -600,7 +606,7 @@ void ShareUserLine::slotPermissionsChanged()
         permissions |= SharePermissionDelete;
     }
 
-    if (_ui->permissionShare->checkState() == Qt::Checked) {
+    if (_permissionShare->isChecked()) {
         permissions |= SharePermissionShare;
     }
 
@@ -672,9 +678,9 @@ void ShareUserLine::displayPermissions()
         _ui->permissionsEdit->setCheckState(Qt::Unchecked);
     }
 
-    _ui->permissionShare->setCheckState(Qt::Unchecked);
+    _permissionShare->setChecked(Qt::Unchecked);
     if (_share->getPermissions() & SharePermissionShare) {
-        _ui->permissionShare->setCheckState(Qt::Checked);
+        _permissionShare->setChecked(Qt::Checked);;
     }
 }
 }

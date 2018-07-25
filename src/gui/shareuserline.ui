@@ -9,20 +9,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>330</width>
-    <height>40</height>
+    <width>340</width>
+    <height>45</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
-    <width>330</width>
-    <height>40</height>
+    <width>340</width>
+    <height>45</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -37,7 +37,7 @@
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout" stretch="1,1,1,0,0,0,0">
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,3,2,2,2">
    <property name="spacing">
     <number>3</number>
    </property>
@@ -84,19 +84,25 @@
    <item>
     <widget class="QLabel" name="sharedWith">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="minimumSize">
+      <size>
+       <width>100</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="text">
-      <string/>
+      <string>User name</string>
      </property>
      <property name="textFormat">
       <enum>Qt::PlainText</enum>
      </property>
      <property name="wordWrap">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -106,7 +112,7 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="sizeType">
-      <enum>QSizePolicy::Maximum</enum>
+      <enum>QSizePolicy::Expanding</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -115,25 +121,6 @@
       </size>
      </property>
     </spacer>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="permissionShare">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>can share</string>
-     </property>
-    </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="permissionsEdit">

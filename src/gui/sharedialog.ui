@@ -31,25 +31,7 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0">
-   <property name="spacing">
-    <number>10</number>
-   </property>
-   <property name="sizeConstraint">
-    <enum>QLayout::SetFixedSize</enum>
-   </property>
-   <property name="leftMargin">
-    <number>10</number>
-   </property>
-   <property name="topMargin">
-    <number>10</number>
-   </property>
-   <property name="rightMargin">
-    <number>10</number>
-   </property>
-   <property name="bottomMargin">
-    <number>10</number>
-   </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QGridLayout" name="gridLayout" rowstretch="0,0" columnstretch="0,1" columnminimumwidth="0,0">
      <property name="sizeConstraint">
@@ -170,6 +152,97 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>360</width>
+       <height>45</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="sizeAdjustPolicy">
+      <enum>QAbstractScrollArea::AdjustToContentsOnFirstShow</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>false</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>340</width>
+        <height>45</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>340</width>
+        <height>45</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <layout class="QVBoxLayout" name="scrollAreaVerticalLayout">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="sizeConstraint">
+        <enum>QLayout::SetFixedSize</enum>
+       </property>
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+      </layout>
+     </widget>
+    </widget>
    </item>
   </layout>
  </widget>
