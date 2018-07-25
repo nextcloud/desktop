@@ -210,11 +210,7 @@ private slots:
         //new directory should be uploaded
         fakeFolder.localModifier().rename("readonlyDirectory_PERM_M_/subdir_PERM_CK_", "normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_");
         applyPermissionsFromName(fakeFolder.remoteModifier());
-        fakeFolder.syncOnce();
-        if (fakeFolder.syncEngine().isAnotherSyncNeeded() ==  ImmediateFollowUp) {
-            QVERIFY(fakeFolder.syncOnce());
-        }
-        assertCsyncJournalOk(fakeFolder.syncJournal());
+        QVERIFY(fakeFolder.syncOnce());
         currentLocalState = fakeFolder.currentLocalState();
 
         // old name restored
@@ -226,12 +222,14 @@ private slots:
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
+
         //######################################################################
         qInfo( "rename a directory in a read only folder and move a directory to a read-only" );
 
         // do a sync to update the database
         applyPermissionsFromName(fakeFolder.remoteModifier());
         QVERIFY(fakeFolder.syncOnce());
+        assertCsyncJournalOk(fakeFolder.syncJournal());
 
         //1. rename a directory in a read only folder
         //Missing directory should be restored
@@ -243,10 +241,6 @@ private slots:
 
         // error: can't upload to readonly!
         QVERIFY(!fakeFolder.syncOnce());
-        if (fakeFolder.syncEngine().isAnotherSyncNeeded() ==  ImmediateFollowUp) {
-            QVERIFY(!fakeFolder.syncOnce());
-        }
-        assertCsyncJournalOk(fakeFolder.syncJournal());
         currentLocalState = fakeFolder.currentLocalState();
 
         //1.

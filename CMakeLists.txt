@@ -123,16 +123,6 @@ if(OWNCLOUD_5XX_NO_BLACKLIST)
     add_definitions(-DOWNCLOUD_5XX_NO_BLACKLIST=1)
 endif()
 
-# When this option is enabled, a rename that is not allowed will be renamed back
-# do the original as a restoration step.  Withut this option, the restoration will
-# re-download the file instead.
-# The default is off because we don't want to rename the files back behind the user's back
-# Added for IL issue #550
-option(OWNCLOUD_RESTORE_RENAME "OWNCLOUD_RESTORE_RENAME" OFF)
-if(OWNCLOUD_RESTORE_RENAME)
-    add_definitions(-DOWNCLOUD_RESTORE_RENAME=1)
-endif()
-
 # Disable shibboleth.
 # So the client can be built without QtWebKit
 option(NO_SHIBBOLETH "Build without Shibboleth support. Allow to build the client without QtWebKit" OFF)

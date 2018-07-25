@@ -35,7 +35,8 @@ void ProcessDirectoryJob::start()
 
     DiscoverySingleDirectoryJob *serverJob = nullptr;
     if (_queryServer == NormalQuery) {
-        serverJob = new DiscoverySingleDirectoryJob(_discoveryData->_account, _discoveryData->_remoteFolder + _currentFolder._server, this);
+        serverJob = new DiscoverySingleDirectoryJob(_discoveryData->_account,
+            _discoveryData->_remoteFolder + _currentFolder._server, this);
         connect(serverJob, &DiscoverySingleDirectoryJob::finished, this, [this](const auto &results) {
             if (results) {
                 _serverEntries = *results;
@@ -71,6 +72,8 @@ void ProcessDirectoryJob::start()
                 emit finished();
             }
         });
+        connect(serverJob, &DiscoverySingleDirectoryJob::firstDirectoryPermissions, this,
+            [this](const RemotePermissions &perms) { _rootPermissions = perms; });
         serverJob->start();
     } else {
         _hasServerEntries = true;
@@ -546,7 +549,6 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                             }
 
                             qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->isDirectory();
-
                             if (item->isDirectory()) {
                                 auto job = new ProcessDirectoryJob(item, recurseQueryServer,
                                     item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist,
@@ -733,40 +735,78 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             if (!_dirItem || _dirItem->_direction == SyncFileItem::Down) {
                 _childModified = true;
             }
-            // Check if it is a rename
+            // Check if it is a move
             OCC::SyncJournalFileRecord base;
             if (!_discoveryData->_statedb->getFileRecordByInode(localEntry.inode, &base)) {
                 qFatal("TODO: handle DB Errors");
             }
-            bool isRename = base.isValid() && base._type == item->_type
+            bool isMove = base.isValid() && base._type == item->_type
                 && ((base._modtime == localEntry.modtime && base._fileSize == localEntry.size) || item->_type == ItemTypeDirectory);
 
-            if (isRename) {
+            if (isMove) {
                 //  The old file must have been deleted.
-                isRename = !QFile::exists(_discoveryData->_localDir + base._path);
+                isMove = !QFile::exists(_discoveryData->_localDir + base._path);
             }
 
             // Verify the checksum where possible
-            if (isRename && !base._checksumHeader.isEmpty() && item->_type == ItemTypeFile) {
+            if (isMove && !base._checksumHeader.isEmpty() && item->_type == ItemTypeFile) {
                 if (computeLocalChecksum(parseChecksumHeaderType(base._checksumHeader), path._original)) {
                     qCInfo(lcDisco) << "checking checksum of potential rename " << path._original << item->_checksumHeader << base._checksumHeader;
-                    isRename = item->_checksumHeader == base._checksumHeader;
+                    isMove = item->_checksumHeader == base._checksumHeader;
                 }
             }
             auto originalPath = QString::fromUtf8(base._path);
-            if (isRename && _discoveryData->_renamedItems.contains(originalPath))
-                isRename = false;
-            if (isRename) {
+            if (isMove && _discoveryData->_renamedItems.contains(originalPath))
+                isMove = false;
+
+            //Check local permission if we are allowed to put move the file here
+            if (isMove) {
+                auto destPerms = !_rootPermissions.isNull() ? _rootPermissions
+                                                            : _dirItem ? _dirItem->_remotePerm : _rootPermissions;
+                auto filePerms = base._remotePerm; // Technicly we should use the one from the server, but we'll assume it is the same
+                //true when it is just a rename in the same directory. (not a move)
+                bool isRename = originalPath.startsWith(_currentFolder._original)
+                    && originalPath.lastIndexOf('/') == _currentFolder._original.size();
+                // Check if we are allowed to move to the destination.
+                bool destinationOK = true;
+                if (isRename || destPerms.isNull()) {
+                    // no need to check for the destination dir permission
+                    destinationOK = true;
+                } else if (item->isDirectory() && !destPerms.hasPermission(RemotePermissions::CanAddSubDirectories)) {
+                    destinationOK = false;
+                } else if (!item->isDirectory() && !destPerms.hasPermission(RemotePermissions::CanAddFile)) {
+                    destinationOK = false;
+                }
+
+                // check if we are allowed to move from the source
+                bool sourceOK = true;
+                if (!filePerms.isNull()
+                    && ((isRename && !filePerms.hasPermission(RemotePermissions::CanRename))
+                           || (!isRename && !filePerms.hasPermission(RemotePermissions::CanMove)))) {
+                    // We are not allowed to move or rename this file
+                    sourceOK = false;
+                }
+                if (!sourceOK || !destinationOK) {
+                    qCInfo(lcDisco) << "Not a move because permission does not allow it." << sourceOK << destinationOK;
+                    if (!sourceOK) {
+                        // This is the behavior that we had in the client <= 2.5.
+                        _discoveryData->_statedb->avoidRenamesOnNextSync(base._path);
+                    }
+                    isMove = false;
+                }
+            }
+
+            if (isMove) {
                 QByteArray oldEtag;
                 auto it = _discoveryData->_deletedItem.find(originalPath);
                 if (it != _discoveryData->_deletedItem.end()) {
                     if ((*it)->_instruction != CSYNC_INSTRUCTION_REMOVE)
-                        isRename = false;
+                        isMove = false;
                     else
                         (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
                     oldEtag = (*it)->_etag;
                     if (!item->isDirectory() && oldEtag != base._etag) {
-                        isRename = false;
+                        isMove = false;
                     }
                 }
                 if (auto deleteJob = static_cast<ProcessDirectoryJob *>(_discoveryData->_queuedDeletedDirectories.value(originalPath).data())) {
@@ -791,10 +831,10 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                     path._server = adjustedOriginalPath;
                     qCInfo(lcDisco) << "Rename detected (up) " << item->_file << " -> " << item->_renameTarget;
                 };
-                if (isRename && !oldEtag.isEmpty()) {
+                if (isMove && !oldEtag.isEmpty()) {
                     recurseQueryServer = oldEtag == base._etag ? ParentNotChanged : NormalQuery;
                     processRename(path);
-                } else if (isRename) {
+                } else if (isMove) {
                     // We must query the server to know if the etag has not changed
                     _pendingAsyncJobs++;
                     auto job = new RequestEtagJob(_discoveryData->_account, originalPath, this);
@@ -816,7 +856,8 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                         }
 
                         qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->isDirectory();
-                        if (item->isDirectory()) {
+                        bool recurse = checkPremission(item);
+                        if (recurse && item->isDirectory()) {
                             auto job = new ProcessDirectoryJob(item, recurseQueryServer, NormalQuery, _discoveryData, this);
                             job->_currentFolder = path;
                             connect(job, &ProcessDirectoryJob::itemDiscovered, this, &ProcessDirectoryJob::itemDiscovered);
@@ -875,7 +916,14 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         item->_type = ItemTypeVirtualFile;
         item->_file.append(_discoveryData->_syncOptions._virtualFileSuffix);
     } else if (!serverModified) {
-        if (!dbEntry._serverHasIgnoredFiles) {
+        // Removed locally: also remove on the server.
+        if (_dirItem && _dirItem->_isRestoration && _dirItem->_instruction == CSYNC_INSTRUCTION_NEW) {
+            // Also restore everything
+            item->_instruction = CSYNC_INSTRUCTION_NEW;
+            item->_direction = SyncFileItem::Down;
+            item->_isRestoration = true;
+            item->_errorString = tr("Not allowed to remove, restoring");
+        } else if (!dbEntry._serverHasIgnoredFiles) {
             item->_instruction = CSYNC_INSTRUCTION_REMOVE;
             item->_direction = SyncFileItem::Up;
         }
@@ -895,8 +943,11 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_SYNC)
         item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
 
+
     bool recurse = item->isDirectory() || localEntry.isDirectory || serverEntry.isDirectory;
-    if (_queryLocal != NormalQuery && _queryServer != NormalQuery)
+    if (!checkPremission(item))
+        recurse = false;
+    if (_queryLocal != NormalQuery && _queryServer != NormalQuery && !item->_isRestoration)
         recurse = false;
     if (recurse) {
         auto job = new ProcessDirectoryJob(item, recurseQueryServer,
@@ -951,6 +1002,77 @@ void ProcessDirectoryJob::processBlacklisted(const PathTuple &path, const OCC::L
     }
 }
 
+bool ProcessDirectoryJob::checkPremission(const OCC::SyncFileItemPtr &item)
+{
+    if (item->_direction != SyncFileItem::Up) {
+        // Currently we only check server-side permissions
+        return true;
+    }
+
+    switch (item->_instruction) {
+    case CSYNC_INSTRUCTION_TYPE_CHANGE:
+    case CSYNC_INSTRUCTION_NEW: {
+        const auto perms = !_rootPermissions.isNull() ? _rootPermissions
+                                                      : _dirItem ? _dirItem->_remotePerm : _rootPermissions;
+        if (perms.isNull()) {
+            // No permissions set
+            return true;
+        } else if (item->isDirectory() && !perms.hasPermission(RemotePermissions::CanAddSubDirectories)) {
+            qCWarning(lcDisco) << "checkForPermission: ERROR" << item->_file;
+            item->_instruction = CSYNC_INSTRUCTION_ERROR;
+            item->_status = SyncFileItem::NormalError;
+            item->_errorString = tr("Not allowed because you don't have permission to add subfolders to that folder");
+            return false;
+        } else if (!item->isDirectory() && !perms.hasPermission(RemotePermissions::CanAddFile)) {
+            qCWarning(lcDisco) << "checkForPermission: ERROR" << item->_file;
+            item->_instruction = CSYNC_INSTRUCTION_ERROR;
+            item->_status = SyncFileItem::NormalError;
+            item->_errorString = tr("Not allowed because you don't have permission to add files in that folder");
+            return false;
+        }
+        break;
+    }
+    case CSYNC_INSTRUCTION_SYNC: {
+        const auto perms = item->_remotePerm;
+        if (perms.isNull()) {
+            // No permissions set
+            return true;
+        }
+        if (!perms.hasPermission(RemotePermissions::CanWrite)) {
+            qCWarning(lcDisco) << "checkForPermission: RESTORING" << item->_file;
+            item->_instruction = CSYNC_INSTRUCTION_CONFLICT;
+            item->_errorString = tr("Not allowed to upload this file because it is read-only on the server, restoring");
+            item->_direction = SyncFileItem::Down;
+            item->_isRestoration = true;
+            // Take the things to write to the db from the "other" node (i.e: info from server).
+            // Do a lookup into the csync remote tree to get the metadata we need to restore.
+            qSwap(item->_size, item->_previousSize);
+            qSwap(item->_modtime, item->_previousModtime);
+            return false;
+        }
+        break;
+    }
+    case CSYNC_INSTRUCTION_REMOVE: {
+        const auto perms = item->_remotePerm;
+        if (perms.isNull()) {
+            // No permissions set
+            return true;
+        }
+        if (!perms.hasPermission(RemotePermissions::CanDelete)) {
+            qCWarning(lcDisco) << "checkForPermission: RESTORING" << item->_file;
+            item->_instruction = CSYNC_INSTRUCTION_NEW;
+            item->_direction = SyncFileItem::Down;
+            item->_isRestoration = true;
+            item->_errorString = tr("Not allowed to remove, restoring");
+            return true; // (we need to recurse to restore sub items)
+        }
+        break;
+    }
+    default:
+        break;
+    }
+    return true;
+}
 
 void ProcessDirectoryJob::subJobFinished()
 {
