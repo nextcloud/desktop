@@ -35,23 +35,32 @@ namespace OCC {
 class Account;
 class SyncJournalDb;
 
-/**
- * The Discovery Phase was once called "update" phase in csync terms.
- * Its goal is to look at the files in one of the remote and check compared to the db
- * if the files are new, or changed.
- */
 
-struct DiscoveryDirectoryResult
+struct RemoteInfo
 {
-    QString path;
-    QString msg;
-    int code;
-    std::deque<std::unique_ptr<csync_file_stat_t>> list;
-    DiscoveryDirectoryResult()
-        : code(EIO)
-    {
-    }
+    QString name;
+    QByteArray etag;
+    QByteArray fileId;
+    QByteArray checksumHeader;
+    OCC::RemotePermissions remotePerm;
+    time_t modtime = 0;
+    int64_t size = 0;
+    bool isDirectory = false;
+    bool isValid() const { return !name.isNull(); }
 };
+
+struct LocalInfo
+{
+    QString name;
+    time_t modtime = 0;
+    int64_t size = 0;
+    uint64_t inode = 0;
+    bool isDirectory = false;
+    bool isHidden = false;
+    bool isVirtualFile = false;
+    bool isValid() const { return !name.isNull(); }
+};
+
 
 /**
  * @brief The DiscoverySingleDirectoryJob class
@@ -69,22 +78,20 @@ public:
     void setIsRootPath() { _isRootPath = true; }
     void start();
     void abort();
-    std::deque<std::unique_ptr<csync_file_stat_t>> &&takeResults() { return std::move(_results); }
 
     // This is not actually a network job, it is just a job
 signals:
     void firstDirectoryPermissions(RemotePermissions);
     void etagConcatenation(const QString &);
     void etag(const QString &);
-    void finishedWithResult();
-    void finishedWithError(int csyncErrnoCode, const QString &msg);
+    void finished(const Result<QVector<RemoteInfo>> &result);
 private slots:
     void directoryListingIteratedSlot(QString, const QMap<QString, QString> &);
     void lsJobFinishedWithoutErrorSlot();
     void lsJobFinishedWithErrorSlot(QNetworkReply *);
 
 private:
-    std::deque<std::unique_ptr<csync_file_stat_t>> _results;
+    QVector<RemoteInfo> _results;
     QString _subPath;
     QString _etagConcatenation;
     QString _firstEtag;

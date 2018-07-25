@@ -182,80 +182,6 @@ void DiscoveryJob::update_job_update_callback(bool local,
     }
 }*/
 
-// Only use for error cases! It will always set an error errno
-int get_errno_from_http_errcode(int err, const QString &reason)
-{
-    int new_errno = EIO;
-
-    switch (err) {
-    case 401: /* Unauthorized */
-    case 402: /* Payment Required */
-    case 407: /* Proxy Authentication Required */
-    case 405:
-        new_errno = EPERM;
-        break;
-    case 301: /* Moved Permanently */
-    case 303: /* See Other */
-    case 404: /* Not Found */
-    case 410: /* Gone */
-        new_errno = ENOENT;
-        break;
-    case 408: /* Request Timeout */
-    case 504: /* Gateway Timeout */
-        new_errno = EAGAIN;
-        break;
-    case 423: /* Locked */
-        new_errno = EACCES;
-        break;
-    case 403: /* Forbidden */
-        new_errno = ERRNO_FORBIDDEN;
-        break;
-    case 400: /* Bad Request */
-    case 409: /* Conflict */
-    case 411: /* Length Required */
-    case 412: /* Precondition Failed */
-    case 414: /* Request-URI Too Long */
-    case 415: /* Unsupported Media Type */
-    case 424: /* Failed Dependency */
-    case 501: /* Not Implemented */
-        new_errno = EINVAL;
-        break;
-    case 507: /* Insufficient Storage */
-        new_errno = ENOSPC;
-        break;
-    case 206: /* Partial Content */
-    case 300: /* Multiple Choices */
-    case 302: /* Found */
-    case 305: /* Use Proxy */
-    case 306: /* (Unused) */
-    case 307: /* Temporary Redirect */
-    case 406: /* Not Acceptable */
-    case 416: /* Requested Range Not Satisfiable */
-    case 417: /* Expectation Failed */
-    case 422: /* Unprocessable Entity */
-    case 500: /* Internal Server Error */
-    case 502: /* Bad Gateway */
-    case 505: /* HTTP Version Not Supported */
-        new_errno = EIO;
-        break;
-    case 503: /* Service Unavailable */
-        // https://github.com/owncloud/core/pull/26145/files
-        if (reason == "Storage not available" || reason == "Storage is temporarily not available") {
-            new_errno = ERRNO_STORAGE_UNAVAILABLE;
-        } else {
-            new_errno = ERRNO_SERVICE_UNAVAILABLE;
-        }
-        break;
-    case 413: /* Request Entity too Large */
-        new_errno = EFBIG;
-        break;
-    default:
-        new_errno = EIO;
-    }
-    return new_errno;
-}
-
-
 DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent)
     : QObject(parent)
     , _subPath(path)
@@ -306,50 +232,48 @@ void DiscoverySingleDirectoryJob::abort()
     }
 }
 
-static void propertyMapToFileStat(const QMap<QString, QString> &map, csync_file_stat_t *file_stat)
+static void propertyMapToFileStat(const QMap<QString, QString> &map, RemoteInfo &result)
 {
     for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
         QString property = it.key();
         QString value = it.value();
         if (property == "resourcetype") {
-            if (value.contains("collection")) {
-                file_stat->type = ItemTypeDirectory;
-            } else {
-                file_stat->type = ItemTypeFile;
-            }
+            result.isDirectory = value.contains("collection");
         } else if (property == "getlastmodified") {
-            file_stat->modtime = oc_httpdate_parse(value.toUtf8());
+            result.modtime = oc_httpdate_parse(value.toUtf8());
         } else if (property == "getcontentlength") {
             // See #4573, sometimes negative size values are returned
             bool ok = false;
             qlonglong ll = value.toLongLong(&ok);
             if (ok && ll >= 0) {
-                file_stat->size = ll;
+                result.size = ll;
             } else {
-                file_stat->size = 0;
+                result.size = 0;
             }
         } else if (property == "getetag") {
-            file_stat->etag = Utility::normalizeEtag(value.toUtf8());
+            result.etag = Utility::normalizeEtag(value.toUtf8());
         } else if (property == "id") {
-            file_stat->file_id = value.toUtf8();
+            result.fileId = value.toUtf8();
         } else if (property == "downloadURL") {
-            file_stat->directDownloadUrl = value.toUtf8();
+            qFatal("FIXME: downloadURL and dDC");
+            //file_stat->directDownloadUrl = value.toUtf8();
         } else if (property == "dDC") {
-            file_stat->directDownloadCookies = value.toUtf8();
+            qFatal("FIXME: downloadURL and dDC");
+           // file_stat->directDownloadCookies = value.toUtf8();
         } else if (property == "permissions") {
-            file_stat->remotePerm = RemotePermissions(value);
+            result.remotePerm = RemotePermissions(value);
         } else if (property == "checksums") {
-            file_stat->checksumHeader = findBestChecksum(value.toUtf8());
+            result.checksumHeader = findBestChecksum(value.toUtf8());
         } else if (property == "share-types" && !value.isEmpty()) {
             // Since QMap is sorted, "share-types" is always after "permissions".
-            if (file_stat->remotePerm.isNull()) {
+            if (result.remotePerm.isNull()) {
                 qWarning() << "Server returned a share type, but no permissions?";
             } else {
                 // S means shared with me.
                 // But for our purpose, we want to know if the file is shared. It does not matter
                 // if we are the owner or not.
                 // Piggy back on the persmission field
-                file_stat->remotePerm.setPermission(RemotePermissions::IsShared);
+                result.remotePerm.setPermission(RemotePermissions::IsShared);
             }
         }
     }
@@ -369,43 +293,33 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
             _dataFingerprint = map.value("data-fingerprint").toUtf8();
         }
     } else {
-        // Remove <webDAV-Url>/folder/ from <webDAV-Url>/folder/subfile.txt
-        file.remove(0, _lsColJob->reply()->request().url().path().length());
-        // remove trailing slash
-        while (file.endsWith('/')) {
-            file.chop(1);
-        }
-        // remove leading slash
-        while (file.startsWith('/')) {
-            file = file.remove(0, 1);
-        }
 
-        std::unique_ptr<csync_file_stat_t> file_stat(new csync_file_stat_t);
-        file_stat->path = file.toUtf8();
-        file_stat->size = -1;
-        file_stat->modtime = -1;
-        propertyMapToFileStat(map, file_stat.get());
-        if (file_stat->type == ItemTypeDirectory)
-            file_stat->size = 0;
-        if (file_stat->type == ItemTypeSkip
-            || file_stat->size == -1
-            || file_stat->modtime == -1
-            || file_stat->remotePerm.isNull()
-            || file_stat->etag.isEmpty()
-            || file_stat->file_id.isEmpty()) {
+        RemoteInfo result;
+        int slash = file.lastIndexOf('/');
+        result.name = file.mid(slash + 1);
+        result.size = -1;
+        result.modtime = -1;
+        propertyMapToFileStat(map, result);
+        if (result.isDirectory)
+            result.size = 0;
+        if (result.size == -1
+            || result.modtime == -1
+            || result.remotePerm.isNull()
+            || result.etag.isEmpty()
+            || result.fileId.isEmpty()) {
             _error = tr("The server file discovery reply is missing data.");
             qCWarning(lcDiscovery)
-                << "Missing properties:" << file << file_stat->type << file_stat->size
-                << file_stat->modtime << file_stat->remotePerm.toString()
-                << file_stat->etag << file_stat->file_id;
+                << "Missing properties:" << file << result.isDirectory << result.size
+                << result.modtime << result.remotePerm.toString()
+                << result.etag << result.fileId;
         }
 
-        if (_isExternalStorage && file_stat->remotePerm.hasPermission(RemotePermissions::IsMounted)) {
+        if (_isExternalStorage && result.remotePerm.hasPermission(RemotePermissions::IsMounted)) {
             /* All the entries in a external storage have 'M' in their permission. However, for all
                purposes in the desktop client, we only need to know about the mount points.
                So replace the 'M' by a 'm' for every sub entries in an external storage */
-            file_stat->remotePerm.unsetPermission(RemotePermissions::IsMounted);
-            file_stat->remotePerm.setPermission(RemotePermissions::IsMountedSub);
+            result.remotePerm.unsetPermission(RemotePermissions::IsMounted);
+            result.remotePerm.setPermission(RemotePermissions::IsMountedSub);
         }
 
         QStringRef fileRef(&file);
@@ -413,7 +327,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         if (slashPos > -1) {
             fileRef = file.midRef(slashPos + 1);
         }
-        _results.push_back(std::move(file_stat));
+        _results.push_back(std::move(result));
     }
 
     //This works in concerto with the RequestEtagJob and the Folder object to check if the remote folder changed.
@@ -431,17 +345,17 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
     if (!_ignoredFirst) {
         // This is a sanity check, if we haven't _ignoredFirst then it means we never received any directoryListingIteratedSlot
         // which means somehow the server XML was bogus
-        emit finishedWithError(ERRNO_WRONG_CONTENT, QLatin1String("Server error: PROPFIND reply is not XML formatted!"));
+        emit finished({ERRNO_WRONG_CONTENT, tr("Server error: PROPFIND reply is not XML formatted!")});
         deleteLater();
         return;
     } else if (!_error.isEmpty()) {
-        emit finishedWithError(ERRNO_WRONG_CONTENT, _error);
+        emit finished({ERRNO_WRONG_CONTENT, _error});
         deleteLater();
         return;
     }
     emit etag(_firstEtag);
     emit etagConcatenation(_etagConcatenation);
-    emit finishedWithResult();
+    emit finished(_results);
     deleteLater();
 }
 
@@ -451,20 +365,12 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
     int httpCode = r->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     QString httpReason = r->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
     QString msg = r->errorString();
-    int errnoCode = EIO; // Something went wrong
     qCWarning(lcDiscovery) << "LSCOL job error" << r->errorString() << httpCode << r->error();
-    if (httpCode != 0 && httpCode != 207) {
-        errnoCode = get_errno_from_http_errcode(httpCode, httpReason);
-    } else if (r->error() != QNetworkReply::NoError) {
-        errnoCode = EIO;
-    } else if (!contentType.contains("application/xml; charset=utf-8")) {
-        msg = QLatin1String("Server error: PROPFIND reply is not XML formatted!");
-        errnoCode = ERRNO_WRONG_CONTENT;
-    } else {
-        // Default keep at EIO, see above
+    if (httpCode == 0 && r->error() == QNetworkReply::NoError
+        && !contentType.contains("application/xml; charset=utf-8")) {
+        msg = tr("Server error: PROPFIND reply is not XML formatted!");
     }
-
-    emit finishedWithError(errnoCode == 0 ? EIO : errnoCode, msg);
+    emit finished({httpCode, msg});
     deleteLater();
 }
 

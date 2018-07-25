@@ -523,39 +523,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       return 0;
   }
 
-  if ((dh = csync_vio_opendir(ctx, uri)) == NULL) {
-      if (ctx->abort) {
-          qCDebug(lcUpdate, "Aborted!");
-          ctx->status_code = CSYNC_STATUS_ABORTED;
-          goto error;
-      }
-      /* permission denied */
-      ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_OPENDIR_ERROR);
-
-      // 403 Forbidden can be sent by the server if the file firewall is active.
-      // A file or directory should be ignored and sync must continue. See #3490
-      if (errno == ERRNO_FORBIDDEN) {
-          qCWarning(lcUpdate, "Directory access Forbidden (File Firewall?)");
-          if( mark_current_item_ignored(ctx, previous_fs, CSYNC_STATUS_FORBIDDEN) ) {
-              return 0;
-          }
-          /* if current_fs is not defined here, better throw an error */
-      }
-      // The server usually replies with the custom "503 Storage not available"
-      // if some path is temporarily unavailable. But in some cases a standard 503
-      // is returned too. Thus we can't distinguish the two and will treat any
-      // 503 as request to ignore the folder. See #3113 #2884.
-      else if(errno == ERRNO_STORAGE_UNAVAILABLE || errno == ERRNO_SERVICE_UNAVAILABLE) {
-          qCWarning(lcUpdate, "Storage was not available!");
-          if( mark_current_item_ignored(ctx, previous_fs, CSYNC_STATUS_STORAGE_UNAVAILABLE ) ) {
-              return 0;
-          }
-          /* if current_fs is not defined here, better throw an error */
-      } else {
-          qCWarning(lcUpdate, "opendir failed for %s - errno %d", uri, errno);
-      }
-      goto error;
-  }
 
   while (true) {
     // Get the next item in the directory
