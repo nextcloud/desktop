@@ -33,7 +33,6 @@
 #include "c_string.h"
 #include "c_utf8.h"
 #include "csync_util.h"
-#include "csync_vio.h"
 
 #include "vio/csync_vio_local.h"
 

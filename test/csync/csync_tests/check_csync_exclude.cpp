@@ -38,25 +38,15 @@ class ExcludedFilesTest
 {
 public:
 
-static int setup(void **state) {
-    CSYNC *csync = nullptr;
-
-    csync = new CSYNC("/tmp/check_csync1", new OCC::SyncJournalDb(""));
+static int setup(void **) {
     excludedFiles = new ExcludedFiles;
     excludedFiles->setWildcardsMatchSlash(false);
-    csync->exclude_traversal_fn = excludedFiles->csyncTraversalMatchFun();
-
-    *state = csync;
     return 0;
 }
 
-static int setup_init(void **state) {
-    CSYNC *csync = nullptr;
-
-    csync = new CSYNC("/tmp/check_csync1", new OCC::SyncJournalDb(""));
+static int setup_init(void **) {
     excludedFiles = new ExcludedFiles;
     excludedFiles->setWildcardsMatchSlash(false);
-    csync->exclude_traversal_fn = excludedFiles->csyncTraversalMatchFun();
 
     excludedFiles->addExcludeFilePath(EXCLUDE_LIST_FILE);
     assert_true(excludedFiles->reloadExcludeFiles());
@@ -69,26 +59,18 @@ static int setup_init(void **state) {
     excludedFiles->addManualExclude("latex/*/*.tex.tmp");
 
     assert_true(excludedFiles->reloadExcludeFiles());
-
-    *state = csync;
     return 0;
 }
 
-static int teardown(void **state) {
-    auto *csync = (CSYNC*)*state;
+static int teardown(void **) {
     int rc = 0;
 
-    auto statedb = csync->statedb;
-    delete csync;
-    delete statedb;
     delete excludedFiles;
 
     rc = system("rm -rf /tmp/check_csync1");
     assert_int_equal(rc, 0);
     rc = system("rm -rf /tmp/check_csync2");
     assert_int_equal(rc, 0);
-
-    *state = nullptr;
 
     return 0;
 }

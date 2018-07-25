@@ -35,13 +35,6 @@ set(csync_SRCS
   csync_util.cpp
   csync_misc.cpp
 
-  csync_update.cpp
-  csync_reconcile.cpp
-
-  csync_rename.cpp
-
-  vio/csync_vio.cpp
-
   std/c_alloc.c
   std/c_string.c
   std/c_time.c

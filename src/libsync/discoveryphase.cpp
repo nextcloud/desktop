@@ -19,7 +19,6 @@
 #include "common/checksums.h"
 
 #include <csync_private.h>
-#include <csync_rename.h>
 #include <csync_exclude.h>
 
 #include <QLoggingCategory>
