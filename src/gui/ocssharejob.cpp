@@ -25,6 +25,7 @@ OcsShareJob::OcsShareJob(AccountPtr account)
     : OcsJob(account)
 {
     setPath("ocs/v1.php/apps/files_sharing/api/v1/shares");
+    addParam(QString::fromLatin1("reshares"), QString::fromLatin1("true"));
     connect(this, &OcsJob::jobFinished, this, &OcsShareJob::jobDone);
 }
 

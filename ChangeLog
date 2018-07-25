@@ -1,27 +1,47 @@
 ChangeLog
 =========
 
-version 2.5.0 (2018-06-xx)
+version 2.5.0 (2018-08-xx)
 * Local discovery: Speed up by skipping directories without changes reported by the file system watcher.
 * Windows: Add sync folders to Explorer's navigation pane (#5295)
-* Conflicts: Change conflict file naming scheme
-* Conflicts: Add user name to conflict file name (#6325)
-* ConnectionValidator: change the minimum server version to 7.0
-* ConnectionValidator: Warn when the server version is less than 9.1
 * Experimental option to create virtual files and download contents on demand ("placeholders")
 * Experimental option to upload conflict files (#4557)
-* Wizard: Remove the "Skip folder config" button and instead add a radio button (#3664)
+* Conflicts: Change conflict file naming scheme
+* Conflicts: Add user name to conflict file name (#6325)
+* Conflicts: Better comparison when connection broke (#6626)
+* Conflicts: Deal with file/folder conflicts (#6312)
+* Conflicts: Change tray icon for unresolved conflicts (#6277)
+* Conflicts: Add documentation link to conflicts listing (#6396)
+* Conflicts: Change tags to be more user friendly (#6365)
+* Share dialog: Allow opening it if the file's contents are still syncing (#4608)
+* Share dialog: Don't hide account settings when opening it (#6185)
+* Share dialog: Remove odd grey square on OSX (#5774)
+* Share dialog: Preserve the entered password when unrelated changes are done (#6512)
+* Share dialog: Fix Re-shares not not showing up (#6666)
 * Sharing: Add "copy public link" to menu (#6356)
+* Share link: Update permission wording (#6192)
+* User shares: Show avatars
+* OAuth2: Remove the timeout (#6612)
+* Wizard: Remove the "Skip folder config" button and instead add a radio button (#3664)
+* Wizard: Fix for back button in OAuth2 (#6574)
+* Wizard: add a context menu to copy the OAuth2 link (enterprise
+* Wizard: Put errors into a scroll area (#6546)
+* Wizard: show a message when the URL is invalid
 * Protocol: Introduce context menu with "open in browser" (#6121)
+* Protocol: Correct sorting by size (#6326)
+* Issues tab: Invalidate issues selectively (#6226)
+* Issues tab: Don't allow two issues for the same file/folder
+* Issues tab: addItem performance improvement
+* Notifications: Lower hiding timeout
+* Notifications: Also have clickable link (#6236)
 * Shell integration: Add "Open in browser" entry in the explorer menu (#5903)
 * Sync journal: Fix crash when unmounting a drive while a sync is running (#6049)
 * Client certs: Improve error message (#6128)
-* User shares: Show avatars
 * Settings: Hide selective sync buttons while disconnected (#5809)
+* Settings: Show account page when account created
+* Settings: Move "About" to a dialog (#6075)
 * Excludes: Optimize further the matching of exclude files using regular expression
-* Don't use Qt deprecated API now that we required Qt 5.6
 * Windows: Update Overlay Icon naming
-* SyncEngine: Recover when the PUT reply (or chunkin's MOVE) is lost (#5106)
 * Config: Look for exclude file in a relative path.
 * Config: Versionize settings
 * Credentials: Re-try on Linux if daemon not running  (#4274, #6522)
@@ -31,60 +51,57 @@ version 2.5.0 (2018-06-xx)
 * Exclude regex: Restore old matching on Windows (#6245)
 * Build system: Modernize the CMakeLists.txt files
 * Use standard png2ico
-* Sync: Deal with file/folder conflicts (#6312)
-* Protocol: Correct sorting by size (#6326)
+* Sync: When detecting a local move, keep the local mtime (#6629)
+* Sync: Better error handling for local directory parsing (#6610)
+* Sync: Error if properties are missing (#6317)
+* Sync: Recover when the PUT reply (or chunkin's MOVE) is lost (#5106)
+* Sync: Do not abort a sync if the server closes the connection (#6516)
+* Sync: Increase the timeout for the last MOVE/PUT for huge files (#6527)
+* propagateuploadv1: Fixed an assert with ownCloud 5
+* Download: Use the <s:message> from the reply in the error message (#6459, #6459)
 * SocketAPI: dynamic action menu
 * Hidden option to move remote-deleted files to trash (#6265)
-* Tray: Change icon for unresolved conflicts (#6277)
 * FolderStatusModel: Refresh folders on Problem sync (#6337)
 * SyncJournal: Clear etag filter before sync
 * SyncEngine: Use separate state for two unicode conversions
-* Conflicts: Add documentation link to conflicts listing (#6396)
 * owncloudcmd: Do not read the proxy settings from the gui's config file
-* Discovery: Error if properties are missing (#6317)
 * ProgressInfo: Add information for local vs remote discovery
-* Issues tab: Invalidate issues selectively (#6226)
 * SyncResult: Make sure the number of conflicts is correct (#6226)
-* IssuesWidget: Don't allow two issues for the same file/folder
-* IssuesWidget: addItem performance improvement
 * Remove the "CSync" wording from the error messages
 * Apply branding to crashreporter resources file
-* Dolphin plugin: fall back if $XDG_RUNTIME_DIR is empty
 * SslButton: Add HTTP/2 info (#3146)
-* propagateuploadv1: Fixed an assert with ownCloud 5
-* Folder: normalize the local path. (#4424)
 * SslButton: Improve speed (especially on macOS) (#6031)
+* Folder: normalize the local path. (#4424)
+* Folder: Fix checking if the folder can be used as sync folder (#6654)
 * Blacklisting must prevent parent etag updates (#6411)
 * FolderStatusModel: fix potential assert
 * Nautilus integration: Not a ColumnProvider
 * Nautilus integration: Fix python3 compatibility (#6406)
-* Conflicts: Change tags to be more user friendly (#6365)
+* Nautilus: Guard against None state (#6643)
+* Dolphin plugin: fall back if $XDG_RUNTIME_DIR is empty
 * Notify if an explicitly excluded folder is created (#6222)
 * Theme: unify ownCloudTheme and Theme classes
-* Share link: Update permission wording (#6192)
 * SyncJournalDb::setSelectiveSyncList: Always use a transaction (#6431)
 * Folders: Use "Problem" icon for unresolved conflicts (#6277)
 * macOS: Unload the Finder extension on exit (#5382, #3819)
-* LogDir: Go to new file on Problem/Abort too (#6442)
-* LogDir: Compress log when switching files (#6442)
+* Logging: Go to new file on Problem/Abort too (#6442)
+* Logging: Compress log when switching files (#6442)
 * Logging: Add persistent auto-logdir option (#6442)
-* .owncloudsynclog: Allow 10 MB of size (#6420)
-* .owncloudsynclog: Persist X-Request-ID for correlation with server (#6420)
-* Notifications: Lower hiding timeout
-* Download: Use the <s:message> from the reply in the error message (#6459)
-* Notifications: Also have clickable link (#6236)
+* Logging: .owncloudsynclog: Allow 10 MB of size (#6420)
+* Logging: .owncloudsynclog: Persist X-Request-ID for correlation with server (#6420)
 * UI: High-DPI layout fixes
 * Network settings: Better warnings about bad configuration (#5885)
-* Share dialog: Allow opening it if the file's contents are still syncing (#4608)
-* Share dialog: Don't hide account settings when opening it (#6185)
-* Share dialog: Remove odd grey square on OSX (#5774)
-* Share dialog: Preserve the entered password when unrelated changes are done (#6512)
 * Folder watcher: Show a notification if it becomes unreliable (#6119)
 * Ignore editor: Preserve comments in the exclude list file
-* Propagation: Do not abort a sync if the server closes the connection (#6516)
-* Propagation: Increase the timeout for the last MOVE/PUT for huge files (#6527)
-* Update bundled sqlite version to 3.23.1
-* Auto Updater: Drop down menu to switch update channels
+* Updater: Support EXE->MSI upgrade (different code than 2.4)
+* ConnectionValidator: change the minimum server version to 7.0
+* ConnectionValidator: Warn when the server version is less than 9.1
+* Valgrind: Refactorings to avoid errors
+* Crash fixes (#6562 and more)
+* Windows: Fix missing company name in our DLLs
+* Linux: More tray workarounds (#6545)
+* libocsync: Rename to ${APPLICATION_EXECUTABLE}_csync
+* Don't use Qt deprecated API now that we required Qt 5.6
 
 version 2.4.2 (2018-07-18)
 * Linux: Tray workarounds (#6545)

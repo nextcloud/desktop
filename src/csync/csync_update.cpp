@@ -714,7 +714,21 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       goto error;
   }
 
-  while ((dirent = csync_vio_readdir(ctx, dh))) {
+  while (true) {
+    // Get the next item in the directory
+    errno = 0;
+    dirent = csync_vio_readdir(ctx, dh);
+    if (!dirent) {
+        if (errno != 0) {
+            // Note: Windows vio converts any error into EACCES
+            qCWarning(lcUpdate, "readdir failed for file in %s - errno %d", uri, errno);
+            goto error;
+        }
+
+        // Normal case: End of items in directory
+        break;
+    }
+
     /* Conversion error */
     if (dirent->path.isEmpty() && !dirent->original_path.isEmpty()) {
         ctx->status_code = CSYNC_STATUS_INVALID_CHARACTERS;
