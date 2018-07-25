@@ -773,7 +773,14 @@ public:
         open(QIODevice::ReadOnly);
     }
 
-    void abort() override {}
+    void abort() override {
+        // Follow more or less the implementation of QNetworkReplyImpl::abort
+        close();
+        setError(OperationCanceledError, tr("Operation canceled"));
+        emit error(OperationCanceledError);
+        setFinished(true);
+        emit finished();
+    }
     qint64 readData(char *, qint64) override { return 0; }
 };
 
