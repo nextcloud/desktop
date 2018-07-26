@@ -21,7 +21,7 @@
 #include "discoveryphase.h"
 #include "creds/abstractcredentials.h"
 #include "syncfilestatus.h"
-#include "csync_private.h"
+#include "csync_exclude.h"
 #include "filesystem.h"
 #include "propagateremotedelete.h"
 #include "propagatedownload.h"
@@ -101,71 +101,6 @@ SyncEngine::~SyncEngine()
 {
     abort();
     _excludedFiles.reset();
-}
-
-//Convert an error code from csync to a user readable string.
-// Keep that function thread safe as it can be called from the sync thread or the main thread
-QString SyncEngine::csyncErrorToString(CSYNC_STATUS err)
-{
-    QString errStr;
-
-    switch (err) {
-    case CSYNC_STATUS_OK:
-        errStr = tr("Success.");
-        break;
-    case CSYNC_STATUS_STATEDB_LOAD_ERROR:
-        errStr = tr("Failed to load or create the journal file. "
-                    "Make sure you have read and write permissions in the local sync folder.");
-        break;
-    case CSYNC_STATUS_UPDATE_ERROR:
-        errStr = tr("Discovery step failed.");
-        break;
-    case CSYNC_STATUS_TIMEOUT:
-        errStr = tr("A network connection timeout happened.");
-        break;
-    case CSYNC_STATUS_HTTP_ERROR:
-        errStr = tr("A HTTP transmission error happened.");
-        break;
-    case CSYNC_STATUS_PERMISSION_DENIED:
-        errStr = tr("Permission denied.");
-        break;
-    case CSYNC_STATUS_NOT_FOUND:
-        errStr = tr("File or directory not found:") + " "; // filename gets added.
-        break;
-    case CSYNC_STATUS_FILE_EXISTS:
-        errStr = tr("Tried to create a folder that already exists.");
-        break;
-    case CSYNC_STATUS_OUT_OF_SPACE:
-        errStr = tr("No space on %1 server available.").arg(qApp->applicationName());
-        break;
-    case CSYNC_STATUS_UNSUCCESSFUL:
-        errStr = tr("CSync unspecified error.");
-        break;
-    case CSYNC_STATUS_ABORTED:
-        errStr = tr("Aborted by the user");
-        break;
-    case CSYNC_STATUS_SERVICE_UNAVAILABLE:
-        errStr = tr("The service is temporarily unavailable");
-        break;
-    case CSYNC_STATUS_STORAGE_UNAVAILABLE:
-        errStr = tr("The mounted folder is temporarily not available on the server");
-        break;
-    case CSYNC_STATUS_FORBIDDEN:
-        errStr = tr("Access is forbidden");
-        break;
-    case CSYNC_STATUS_OPENDIR_ERROR:
-        errStr = tr("An error occurred while opening a folder");
-        break;
-    case CSYNC_STATUS_READDIR_ERROR:
-        errStr = tr("Error while reading folder.");
-        break;
-    case CSYNC_STATUS_INVALID_CHARACTERS:
-    // Handled in callee
-    default:
-        errStr = tr("An internal error number %1 occurred.").arg((int)err);
-    }
-
-    return errStr;
 }
 
 /**
@@ -433,182 +368,6 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
     slotNewItem(item);
 }
 
-
-/**
- * The main function in the post-reconcile phase.
- *
- * Called on each entry in the local and remote trees by
- * csync_walk_local_tree()/csync_walk_remote_tree().
- *
- * It merges the two csync file trees into a single map of SyncFileItems.
- *
- * See doc/dev/sync-algorithm.md for an overview.
- */
-int SyncEngine::treewalkFile(csync_file_stat_t * /*file*/, csync_file_stat_t * /*other*/, bool /*remote*/)
-{
-#if 0 // FIXME adapt
-    if (!file)
-        return -1;
-
-    auto instruction = file->instruction;
-
-    // Decode utf8 path and rename_path QByteArrays to QStrings
-    QString fileUtf8;
-    QString renameTarget;
-
-
-    // key is the handle that the SyncFileItem will have in the map.
-    QString key = fileUtf8;
-    if (instruction == CSYNC_INSTRUCTION_RENAME) {
-        key = renameTarget;
-    }
-
-    // Gets a default-constructed SyncFileItemPtr or the one from the first walk (=local walk)
-    SyncFileItemPtr item = _syncItemMap.value(key);
-    if (!item)
-        item = SyncFileItemPtr(new SyncFileItem);
-
-    if (item->_file.isEmpty() || instruction == CSYNC_INSTRUCTION_RENAME) {
-        item->_file = fileUtf8;
-    }
-    item->_originalFile = item->_file;
-
-    if (item->_instruction == CSYNC_INSTRUCTION_NONE
-        || (item->_instruction == CSYNC_INSTRUCTION_IGNORE && instruction != CSYNC_INSTRUCTION_NONE)) {
-        // Take values from side (local/remote) where instruction is not _NONE
-        item->_instruction = instruction;
-        item->_modtime = file->modtime;
-        item->_size = file->size;
-        item->_checksumHeader = file->checksumHeader;
-        item->_type = file->type;
-    } else {
-        if (instruction != CSYNC_INSTRUCTION_NONE) {
-            qCWarning(lcEngine) << "ERROR: Instruction" << item->_instruction << "vs" << instruction << "for" << fileUtf8;
-            ASSERT(false);
-            // Set instruction to NONE for safety.
-            file->instruction = item->_instruction = instruction = CSYNC_INSTRUCTION_NONE;
-            return -1; // should lead to treewalk error
-        }
-    }
-
-    if (!file->file_id.isEmpty()) {
-        item->_fileId = file->file_id;
-    }
-    if (!file->directDownloadUrl.isEmpty()) {
-        item->_directDownloadUrl = QString::fromUtf8(file->directDownloadUrl);
-    }
-    if (!file->directDownloadCookies.isEmpty()) {
-        item->_directDownloadCookies = QString::fromUtf8(file->directDownloadCookies);
-    }
-    if (!file->remotePerm.isNull()) {
-        item->_remotePerm = file->remotePerm;
-    }
-
-    /* The flag "serverHasIgnoredFiles" is true if item in question is a directory
-     * that has children which are ignored in sync, either because the files are
-     * matched by an ignore pattern, or because they are hidden.
-     *
-     * Only the information about the server side ignored files is stored to the
-     * database and thus written to the item here. For the local repository its
-     * generated by the walk through the real file tree by discovery phase.
-     *
-     * It needs to go to the sync journal becasue the stat information about remote
-     * files are often read from database rather than being pulled from remote.
-     */
-    if (remote) {
-        item->_serverHasIgnoredFiles = file->has_ignored_files;
-    }
-
-
-
-    switch (file->error_status) {
-
-    case CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK:
-        item->_errorString = tr("Symbolic links are not supported in syncing.");
-        break;
-
-   case CSYNC_STATUS_INDIVIDUAL_TOO_DEEP:
-        item->_errorString = tr("Folder hierarchy is too deep");
-        break;
-   case CSYNC_STATUS_SERVICE_UNAVAILABLE:
-        item->_errorString = QLatin1String("Server temporarily unavailable.");
-        break;
-    case CSYNC_STATUS_STORAGE_UNAVAILABLE:
-        item->_errorString = QLatin1String("Directory temporarily not available on server.");
-        item->_status = SyncFileItem::SoftError;
-        _temporarilyUnavailablePaths.insert(item->_file);
-        break;
-    case CSYNC_STATUS_FORBIDDEN:
-        item->_errorString = QLatin1String("Access forbidden.");
-        item->_status = SyncFileItem::SoftError;
-        _temporarilyUnavailablePaths.insert(item->_file);
-        break;
-
-    }
-
-
-
-    bool isDirectory = file->type == ItemTypeDirectory;
-
-    if (!file->etag.isEmpty()) {
-        item->_etag = file->etag;
-    }
-
-
-    if (!item->_inode) {
-        item->_inode = file->inode;
-    }
-
-    SyncFileItem::Direction dir = SyncFileItem::None;
-
-    int re = 0;
-    switch (file->instruction) {
-    case CSYNC_INSTRUCTION_NONE: {
-       ... ported ....
-    }
-    case CSYNC_INSTRUCTION_UPDATE_METADATA:
-        dir = SyncFileItem::None;
-
-        ... ported ...
-
-        break;
-    case CSYNC_INSTRUCTION_RENAME:
-        dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
-        item->_renameTarget = renameTarget;
-        if (isDirectory)
-            _renamedFolders.insert(item->_file, item->_renameTarget);
-        break;
-    case CSYNC_INSTRUCTION_REMOVE:
-
-        dir = !remote ? SyncFileItem::Down : SyncFileItem::Up;
-        break;
-    case CSYNC_INSTRUCTION_CONFLICT:
-    case CSYNC_INSTRUCTION_ERROR:
-        dir = SyncFileItem::None;
-        break;
-    case CSYNC_INSTRUCTION_NEW:
-    case CSYNC_INSTRUCTION_EVAL:
-    case CSYNC_INSTRUCTION_STAT_ERROR:
-    case CSYNC_INSTRUCTION_IGNORE:
-    default:
-        dir = remote ? SyncFileItem::Down : SyncFileItem::Up;
-        break;
-    }
-
-
-
-    slotNewItem(item);
-    _syncItemMap.insert(key, item);
-    return re;
-#endif
-    return 0;
-}
-
-void SyncEngine::csyncError(const QString &message)
-{
-    emit syncError(message, ErrorCategory::Normal);
-}
-
 void SyncEngine::startSync()
 {
     if (_journal->exists()) {
@@ -646,7 +405,7 @@ void SyncEngine::startSync()
     if (!QDir(_localPath).exists()) {
         _anotherSyncNeeded = DelayedFollowUp;
         // No _tr, it should only occur in non-mirall
-        csyncError("Unable to find local sync folder.");
+        syncError("Unable to find local sync folder.");
         finalize(false);
         return;
     }
@@ -659,11 +418,11 @@ void SyncEngine::startSync()
             qCWarning(lcEngine()) << "Too little space available at" << _localPath << ". Have"
                                   << freeBytes << "bytes and require at least" << minFree << "bytes";
             _anotherSyncNeeded = DelayedFollowUp;
-            csyncError(tr("Only %1 are available, need at least %2 to start",
+            syncError(tr("Only %1 are available, need at least %2 to start",
                 "Placeholders are postfixed with file sizes using Utility::octetsToString()")
-                           .arg(
-                               Utility::octetsToString(freeBytes),
-                               Utility::octetsToString(minFree)));
+                          .arg(
+                              Utility::octetsToString(freeBytes),
+                              Utility::octetsToString(minFree)));
             finalize(false);
             return;
         } else {
@@ -692,7 +451,7 @@ void SyncEngine::startSync()
     // This creates the DB if it does not exist yet.
     if (!_journal->isConnected()) {
         qCWarning(lcEngine) << "No way to create a sync journal!";
-        csyncError(tr("Unable to open or create the local sync database. Make sure you have write access in the sync folder."));
+        syncError(tr("Unable to open or create the local sync database. Make sure you have write access in the sync folder."));
         finalize(false);
         return;
         // database creation error!
@@ -708,7 +467,7 @@ void SyncEngine::startSync()
     _lastLocalDiscoveryStyle = _localDiscoveryStyle;
 
     if (_syncOptions._newFilesAreVirtual && _syncOptions._virtualFileSuffix.isEmpty()) {
-        csyncError(tr("Using virtual files but suffix is not set"));
+        syncError(tr("Using virtual files but suffix is not set"));
         finalize(false);
         return;
     }
@@ -720,7 +479,7 @@ void SyncEngine::startSync()
         qCInfo(lcEngine) << (usingSelectiveSync ? "Using Selective Sync" : "NOT Using Selective Sync");
     } else {
         qCWarning(lcEngine) << "Could not retrieve selective sync list from DB";
-        csyncError(tr("Unable to read the blacklist from the local database"));
+        syncError(tr("Unable to read the blacklist from the local database"));
         finalize(false);
         return;
     }
@@ -747,7 +506,7 @@ void SyncEngine::startSync()
     _discoveryPhase->_shouldDiscoverLocaly = [this](const QString &s) { return shouldDiscoverLocally(s); };
     if (!ok) {
         qCWarning(lcEngine) << "Unable to read selective sync list, aborting.";
-        csyncError(tr("Unable to read from the sync journal."));
+        syncError(tr("Unable to read from the sync journal."));
         finalize(false);
         return;
     }
@@ -769,7 +528,7 @@ void SyncEngine::startSync()
     connect(_discoveryPhase.data(), &DiscoveryPhase::folderDiscovered, this, &SyncEngine::slotFolderDiscovered);
     connect(_discoveryPhase.data(), &DiscoveryPhase::newBigFolder, this, &SyncEngine::newBigFolder);
     connect(_discoveryPhase.data(), &DiscoveryPhase::fatalError, this, [this](const QString &errorString) {
-        csyncError(errorString);
+        syncError(errorString);
         finalize(false);
     });
 
@@ -841,7 +600,7 @@ void SyncEngine::slotDiscoveryJobFinished()
     // Sanity check
     if (!_journal->isConnected()) {
         qCWarning(lcEngine) << "Bailing out, DB failure";
-        csyncError(tr("Cannot open the sync journal"));
+        syncError(tr("Cannot open the sync journal"));
         finalize(false);
         return;
     } else {
@@ -955,7 +714,7 @@ void SyncEngine::slotDiscoveryJobFinished()
 
 void SyncEngine::slotCleanPollsJobAborted(const QString &error)
 {
-    csyncError(error);
+    syncError(error);
     finalize(false);
 }
 
@@ -983,7 +742,7 @@ void SyncEngine::slotItemCompleted(const SyncFileItemPtr &item)
     _progressInfo->setProgressComplete(*item);
 
     if (item->_status == SyncFileItem::FatalError) {
-        csyncError(item->_errorString);
+        syncError(item->_errorString);
     }
 
     emit transmissionProgress(*_progressInfo);
@@ -1025,7 +784,7 @@ void SyncEngine::finalize(bool success)
 {
     _journal->close();
 
-    qCInfo(lcEngine) << "CSync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished")) << "ms";
+    qCInfo(lcEngine) << "Sync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished")) << "ms";
     _stopWatch.stop();
 
     s_anySyncRunning = false;

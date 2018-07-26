@@ -33,6 +33,8 @@
 #include "syncengine.h"
 #include "common/syncjournaldb.h"
 #include "config.h"
+#include "csync_exclude.h"
+
 
 #include "cmd.h"
 

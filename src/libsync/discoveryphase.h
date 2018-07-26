@@ -32,6 +32,12 @@ class ExcludedFiles;
 
 namespace OCC {
 
+enum class LocalDiscoveryStyle {
+    FilesystemOnly, //< read all local data from the filesystem
+    DatabaseAndFilesystem, //< read from the db, except for listed paths
+};
+
+
 class Account;
 class SyncJournalDb;
 

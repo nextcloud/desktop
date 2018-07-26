@@ -25,7 +25,7 @@
 #define _GNU_SOURCE
 #endif
 
-#include "csync_private.h"
+#include "csync.h"
 
 
 #include "common/syncjournalfilerecord.h"

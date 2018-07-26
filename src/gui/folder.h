@@ -22,8 +22,6 @@
 #include "common/syncjournaldb.h"
 #include "networkjobs.h"
 
-#include <csync.h>
-
 #include <QObject>
 #include <QStringList>
 #include <QUuid>
@@ -305,8 +303,6 @@ private slots:
      */
     void slotSyncError(const QString &message, ErrorCategory category = ErrorCategory::Normal);
 
-    void slotCsyncUnavailable();
-
     void slotTransmissionProgress(const ProgressInfo &pi);
     void slotItemCompleted(const SyncFileItemPtr &);
 
@@ -369,7 +365,6 @@ private:
 
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;
-    bool _csyncUnavail;
     QPointer<RequestEtagJob> _requestEtagJob;
     QString _lastEtag;
     QElapsedTimer _timeSinceLastSyncDone;

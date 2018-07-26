@@ -31,6 +31,7 @@
 #include "theme.h"
 #include "filesystem.h"
 #include "localdiscoverytracker.h"
+#include "csync_exclude.h"
 
 #include "creds/abstractcredentials.h"
 
@@ -54,7 +55,6 @@ Folder::Folder(const FolderDefinition &definition,
     : QObject(parent)
     , _accountState(accountState)
     , _definition(definition)
-    , _csyncUnavail(false)
     , _lastSyncDuration(0)
     , _consecutiveFailingSyncs(0)
     , _consecutiveFollowUpSyncs(0)
@@ -89,7 +89,6 @@ Folder::Folder(const FolderDefinition &definition,
 
     connect(_engine.data(), &SyncEngine::started, this, &Folder::slotSyncStarted, Qt::QueuedConnection);
     connect(_engine.data(), &SyncEngine::finished, this, &Folder::slotSyncFinished, Qt::QueuedConnection);
-    connect(_engine.data(), &SyncEngine::csyncUnavailable, this, &Folder::slotCsyncUnavailable, Qt::QueuedConnection);
 
     //direct connection so the message box is blocking the sync.
     connect(_engine.data(), &SyncEngine::aboutToRemoveAllFiles,
@@ -658,7 +657,6 @@ void Folder::startSync(const QStringList &pathList)
         qCCritical(lcFolder) << "ERROR csync is still running and new sync requested.";
         return;
     }
-    _csyncUnavail = false;
 
     _timeSinceLastSyncStart.start();
     _syncResult.setStatus(SyncResult::SyncPrepare);
@@ -794,11 +792,6 @@ void Folder::slotSyncStarted()
     emit syncStateChange();
 }
 
-void Folder::slotCsyncUnavailable()
-{
-    _csyncUnavail = true;
-}
-
 void Folder::slotSyncFinished(bool success)
 {
     qCInfo(lcFolder) << "Client version" << qPrintable(Theme::instance()->version())
@@ -819,9 +812,6 @@ void Folder::slotSyncFinished(bool success)
 
     if (syncError) {
         _syncResult.setStatus(SyncResult::Error);
-    } else if (_csyncUnavail) {
-        _syncResult.setStatus(SyncResult::Error);
-        qCWarning(lcFolder) << "csync not available.";
     } else if (_syncResult.foundFilesNotSynced()) {
         _syncResult.setStatus(SyncResult::Problem);
     } else if (_definition.paused) {

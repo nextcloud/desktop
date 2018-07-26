@@ -18,7 +18,6 @@
 #include "common/asserts.h"
 #include "common/checksums.h"
 
-#include <csync_private.h>
 #include <csync_exclude.h>
 
 #include <QLoggingCategory>
@@ -344,11 +343,11 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
     if (!_ignoredFirst) {
         // This is a sanity check, if we haven't _ignoredFirst then it means we never received any directoryListingIteratedSlot
         // which means somehow the server XML was bogus
-        emit finished({ERRNO_WRONG_CONTENT, tr("Server error: PROPFIND reply is not XML formatted!")});
+        emit finished({ 0, tr("Server error: PROPFIND reply is not XML formatted!") });
         deleteLater();
         return;
     } else if (!_error.isEmpty()) {
-        emit finished({ERRNO_WRONG_CONTENT, _error});
+        emit finished({ 0, _error });
         deleteLater();
         return;
     }

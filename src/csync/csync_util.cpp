@@ -33,6 +33,8 @@
 #include "common/c_jhash.h"
 #include "csync_util.h"
 
+#include <QtCore/QLoggingCategory>
+
 Q_LOGGING_CATEGORY(lcCSyncUtils, "sync.csync.utils", QtInfoMsg)
 
 

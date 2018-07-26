@@ -18,6 +18,7 @@
 #include "common/syncjournaldb.h"
 #include "common/syncjournalfilerecord.h"
 #include "common/asserts.h"
+#include "csync_exclude.h"
 
 #include <QLoggingCategory>
 

@@ -34,6 +34,8 @@
 
 #include "vio/csync_vio_local.h"
 
+#include <QtCore/QLoggingCategory>
+
 Q_LOGGING_CATEGORY(lcCSyncVIOLocal, "sync.csync.vio_local", QtInfoMsg)
 
 /*

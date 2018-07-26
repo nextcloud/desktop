@@ -28,7 +28,6 @@
 #include "c_private.h"
 #include "c_utf8.h"
 
-#include "csync_private.h"
 #include "csync_exclude.h"
 #include "csync_misc.h"
 
