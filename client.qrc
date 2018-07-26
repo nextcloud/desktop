@@ -30,6 +30,11 @@
         <file>resources/state-error.svg</file>
         <file>resources/state-warning.svg</file>
         <file>resources/folder.svg</file>
+        <file>resources/network.svg</file>
+        <file>resources/settings.svg</file>
+        <file>resources/public-white.svg</file>
+        <file>resources/public.svg</file>
+        <file>resources/confirm.svg</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>

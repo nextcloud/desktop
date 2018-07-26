@@ -29,7 +29,7 @@ namespace OCC {
  * @brief The OcsShareJob class
  * @ingroup gui
  *
- * Handle talking to the OCS Share API. 
+ * Handle talking to the OCS Share API.
  * For creation, deletion and modification of shares.
  */
 class OcsShareJob : public OcsJob
@@ -71,7 +71,7 @@ public:
 
     /**
      * Set the share to be public upload
-     * 
+     *
      * @param publicUpload Set or remove public upload
      */
     void setPublicUpload(const QString &shareId, bool publicUpload);
@@ -93,11 +93,9 @@ public:
      * Create a new link share
      *
      * @param path The path of the file/folder to share
-     * @param name The name of the link share, empty name auto-generates one
      * @param password Optionally a password for the share
      */
-    void createLinkShare(const QString &path,
-        const QString &name,
+    void createLinkShare(const QString &path, const QString &name,
         const QString &password);
 
     /**

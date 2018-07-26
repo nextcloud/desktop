@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>56</height>
+    <height>54</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="minimumSize">
    <size>
     <width>350</width>
-    <height>54</height>
+    <height>52</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -73,39 +73,14 @@
      <item>
       <widget class="QLineEdit" name="shareeLineEdit">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+        <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
        <property name="minimumSize">
         <size>
-         <width>220</width>
-         <height>0</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="placeholderText">
-        <string>Share with users or groups ...</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QToolButton" name="permissionToolButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>130</width>
+         <width>250</width>
          <height>26</height>
         </size>
        </property>
@@ -115,8 +90,42 @@
          <height>16777215</height>
         </size>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <property name="placeholderText">
+        <string>Share with users or groups ...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="permissionToolButton">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>98</width>
+         <height>26</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
        <property name="text">
-        <string>...</string>
+        <string>can edit</string>
+       </property>
+       <property name="popupMode">
+        <enum>QToolButton::MenuButtonPopup</enum>
        </property>
        <property name="toolButtonStyle">
         <enum>Qt::ToolButtonTextOnly</enum>
@@ -139,7 +148,7 @@
      <property name="minimumSize">
       <size>
        <width>350</width>
-       <height>0</height>
+       <height>26</height>
       </size>
      </property>
      <property name="maximumSize">
@@ -198,7 +207,7 @@
       <bool>true</bool>
      </property>
      <property name="margin">
-      <number>5</number>
+      <number>0</number>
      </property>
      <property name="indent">
       <number>0</number>

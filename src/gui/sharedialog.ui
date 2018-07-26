@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>380</width>
-    <height>150</height>
+    <width>370</width>
+    <height>100</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
-    <width>380</width>
-    <height>150</height>
+    <width>370</width>
+    <height>100</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -32,8 +32,26 @@
    <string>Dialog</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>10</number>
+   </property>
+   <property name="sizeConstraint">
+    <enum>QLayout::SetFixedSize</enum>
+   </property>
+   <property name="leftMargin">
+    <number>10</number>
+   </property>
+   <property name="topMargin">
+    <number>10</number>
+   </property>
+   <property name="rightMargin">
+    <number>10</number>
+   </property>
+   <property name="bottomMargin">
+    <number>10</number>
+   </property>
    <item>
-    <layout class="QGridLayout" name="gridLayout" rowstretch="0,0" columnstretch="0,1" columnminimumwidth="0,0">
+    <layout class="QGridLayout" name="gridLayout" rowstretch="0,0" columnstretch="0,0">
      <property name="sizeConstraint">
       <enum>QLayout::SetFixedSize</enum>
      </property>
@@ -163,7 +181,7 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>360</width>
+       <width>350</width>
        <height>45</height>
       </size>
      </property>
@@ -192,7 +210,7 @@
       <bool>false</bool>
      </property>
      <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
      </property>
      <widget class="QWidget" name="scrollAreaWidgetContents">
       <property name="geometry">

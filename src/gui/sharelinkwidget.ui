@@ -7,18 +7,18 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>238</height>
+    <height>124</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
-    <width>340</width>
+    <width>350</width>
     <height>0</height>
    </size>
   </property>
@@ -33,7 +33,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>5</number>
+    <number>6</number>
    </property>
    <property name="sizeConstraint">
     <enum>QLayout::SetFixedSize</enum>
@@ -51,34 +51,12 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QLineEdit" name="nameLineEdit">
+    <widget class="QWidget" name="shareLinkWidget" native="true">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>350</width>
-       <height>26</height>
-      </size>
-     </property>
-     <property name="placeholderText">
-      <string>Enter a name to create a new public link...</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QPushButton" name="createShareButton">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -89,114 +67,10 @@
        <height>0</height>
       </size>
      </property>
-     <property name="maximumSize">
-      <size>
-       <width>350</width>
-       <height>26</height>
-      </size>
-     </property>
-     <property name="text">
-      <string>&amp;Create new</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QTableWidget" name="linkShares">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>80</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>350</width>
-       <height>80</height>
-      </size>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="lineWidth">
-      <number>0</number>
-     </property>
-     <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAsNeeded</enum>
-     </property>
-     <property name="sizeAdjustPolicy">
-      <enum>QAbstractScrollArea::AdjustIgnored</enum>
-     </property>
-     <property name="autoScrollMargin">
-      <number>10</number>
-     </property>
-     <property name="editTriggers">
-      <set>QAbstractItemView::NoEditTriggers</set>
-     </property>
-     <property name="selectionMode">
-      <enum>QAbstractItemView::SingleSelection</enum>
-     </property>
-     <property name="selectionBehavior">
-      <enum>QAbstractItemView::SelectRows</enum>
-     </property>
-     <property name="showGrid">
-      <bool>false</bool>
-     </property>
-     <property name="gridStyle">
-      <enum>Qt::NoPen</enum>
-     </property>
-     <property name="columnCount">
-      <number>3</number>
-     </property>
-     <attribute name="horizontalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="horizontalHeaderDefaultSectionSize">
-      <number>80</number>
-     </attribute>
-     <attribute name="horizontalHeaderMinimumSectionSize">
-      <number>40</number>
-     </attribute>
-     <attribute name="verticalHeaderVisible">
-      <bool>false</bool>
-     </attribute>
-     <attribute name="verticalHeaderDefaultSectionSize">
-      <number>30</number>
-     </attribute>
-     <attribute name="verticalHeaderMinimumSectionSize">
-      <number>20</number>
-     </attribute>
-     <column/>
-     <column/>
-     <column/>
-    </widget>
-   </item>
-   <item>
-    <widget class="QWidget" name="shareProperties" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>350</width>
-       <height>16777215</height>
-      </size>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,0,0,0,0">
+     <layout class="QHBoxLayout" name="shareLinkLayout">
+      <property name="spacing">
+       <number>3</number>
+      </property>
       <property name="sizeConstraint">
        <enum>QLayout::SetFixedSize</enum>
       </property>
@@ -212,99 +86,174 @@
       <property name="bottomMargin">
        <number>0</number>
       </property>
-      <property name="horizontalSpacing">
+      <item>
+       <widget class="QPushButton" name="createShareButton">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>240</width>
+          <height>26</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>350</width>
+          <height>26</height>
+         </size>
+        </property>
+        <property name="layoutDirection">
+         <enum>Qt::LeftToRight</enum>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">text-align: left</string>
+        </property>
+        <property name="text">
+         <string>&amp;Share link</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../../client.qrc">
+          <normaloff>:/client/resources/public.svg</normaloff>:/client/resources/public.svg</iconset>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="enableShareLink">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>26</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Enable</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QToolButton" name="shareLinkToolButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>26</width>
+          <height>26</height>
+         </size>
+        </property>
+        <property name="contextMenuPolicy">
+         <enum>Qt::ActionsContextMenu</enum>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../client.qrc">
+          <normaloff>:/client/resources/more.png</normaloff>:/client/resources/more.png</iconset>
+        </property>
+        <property name="popupMode">
+         <enum>QToolButton::InstantPopup</enum>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonIconOnly</enum>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="passwordShareProperty" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>300</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <layout class="QHBoxLayout" name="passwordHorizontalLayout">
+      <property name="spacing">
        <number>0</number>
       </property>
-      <property name="verticalSpacing">
-       <number>5</number>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
       </property>
-      <item row="0" column="4">
-       <widget class="QPushButton" name="pushButton_setPassword">
+      <property name="leftMargin">
+       <number>18</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="label">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
         <property name="minimumSize">
          <size>
-          <width>100</width>
+          <width>162</width>
           <height>0</height>
          </size>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
         <property name="text">
-         <string>Save</string>
+         <string>Password:</string>
+        </property>
+        <property name="indent">
+         <number>0</number>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
-       <widget class="QCheckBox" name="checkBox_expire">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>130</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>&amp;Expiration date</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="checkBox_password">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>130</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>&amp;Password</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
+      <item>
        <widget class="QLineEdit" name="lineEdit_password">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
+         <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
         <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>0</height>
+          <width>120</width>
+          <height>26</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -321,18 +270,114 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="4">
-       <widget class="QDateEdit" name="calendar">
+      <item>
+       <widget class="QPushButton" name="confirmPassword">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
         <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>0</height>
+          <width>18</width>
+          <height>26</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../client.qrc">
+          <normaloff>:/client/resources/confirm.svg</normaloff>:/client/resources/confirm.svg</iconset>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="expirationShareProperty" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>300</width>
+       <height>0</height>
+      </size>
+     </property>
+     <layout class="QHBoxLayout" name="expirationShareLayout" stretch="0,0,0">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="sizeConstraint">
+       <enum>QLayout::SetFixedSize</enum>
+      </property>
+      <property name="leftMargin">
+       <number>18</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="expirationLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>162</width>
+          <height>26</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Expiration date:</string>
+        </property>
+        <property name="indent">
+         <number>0</number>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDateEdit" name="calendar">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>120</width>
+          <height>26</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -346,13 +391,45 @@
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="confirmExpirationDate">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>18</width>
+          <height>26</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>18</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../client.qrc">
+          <normaloff>:/client/resources/confirm.svg</normaloff>:/client/resources/confirm.svg</iconset>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
    <item>
     <widget class="QLabel" name="errorLabel">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -429,6 +506,8 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="../../client.qrc"/>
+ </resources>
  <connections/>
 </ui>
