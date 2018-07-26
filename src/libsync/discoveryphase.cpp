@@ -253,11 +253,9 @@ static void propertyMapToFileStat(const QMap<QString, QString> &map, RemoteInfo 
         } else if (property == "id") {
             result.fileId = value.toUtf8();
         } else if (property == "downloadURL") {
-            qFatal("FIXME: downloadURL and dDC");
-            //file_stat->directDownloadUrl = value.toUtf8();
+            result.directDownloadUrl = value;
         } else if (property == "dDC") {
-            qFatal("FIXME: downloadURL and dDC");
-           // file_stat->directDownloadCookies = value.toUtf8();
+            result.directDownloadCookies = value;
         } else if (property == "permissions") {
             result.remotePerm = RemotePermissions(value);
         } else if (property == "checksums") {
