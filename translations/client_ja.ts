@@ -599,17 +599,17 @@
         <translation>続ける</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="253"/>
+        <location filename="../src/gui/application.cpp" line="255"/>
         <source>Error accessing the configuration file</source>
         <translation>設定ファイルのアクセスでエラーが発生しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="254"/>
+        <location filename="../src/gui/application.cpp" line="256"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>設定ファイルの %1 行目にアクセスしている時にエラーが発生しました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="257"/>
+        <location filename="../src/gui/application.cpp" line="259"/>
         <source>Quit ownCloud</source>
         <translation>ownCloudを終了</translation>
     </message>
@@ -681,7 +681,7 @@
 <context>
     <name>OCC::DiscoveryMainThread</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="629"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="627"/>
         <source>Aborted by the user</source>
         <translation>ユーザーによって中止されました</translation>
     </message>
@@ -689,7 +689,7 @@
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="390"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="388"/>
         <source>The server file discovery reply is missing data.</source>
         <translation type="unfinished"/>
     </message>
@@ -3418,12 +3418,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>そのフォルダーにファイルを追加する権限がありません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1695"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1687"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1702"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1694"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation type="unfinished"/>
     </message>
