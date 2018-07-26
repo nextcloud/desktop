@@ -1001,6 +1001,23 @@ private:
     }
 };
 
+/* Return the FileInfo for a conflict file for the specified relative filename */
+inline const FileInfo *findConflict(FileInfo &dir, const QString &filename)
+{
+    QFileInfo info(filename);
+    const FileInfo *parentDir = dir.find(info.path());
+    if (!parentDir)
+        return nullptr;
+    QString start = info.baseName() + " (conflicted copy";
+    for (const auto &item : parentDir->children) {
+        if (item.name.startsWith(start)) {
+            return &item;
+        }
+    }
+    return nullptr;
+}
+
+
 // QTest::toString overloads
 namespace OCC {
     inline char *toString(const SyncFileStatus &s) {
