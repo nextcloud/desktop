@@ -13,8 +13,7 @@
  * for more details.
  */
 
-#ifndef CSYNCTHREAD_H
-#define CSYNCTHREAD_H
+#pragma once
 
 #include <cstdint>
 
@@ -26,11 +25,6 @@
 #include <QStringList>
 #include <QSharedPointer>
 #include <set>
-
-#include <csync.h>
-
-// when do we go away with this private/public separation?
-#include <csync_private.h>
 
 #include "syncfileitem.h"
 #include "progressdispatcher.h"
@@ -66,8 +60,6 @@ public:
     SyncEngine(AccountPtr account, const QString &localPath,
         const QString &remotePath, SyncJournalDb *journal);
     ~SyncEngine();
-
-    static QString csyncErrorToString(CSYNC_STATUS);
 
     Q_INVOKABLE void startSync();
     void setNetworkLimits(int upload, int download);
@@ -130,8 +122,6 @@ public:
     auto getPropagator() { return _propagator; } // for the test
 
 signals:
-    void csyncUnavailable();
-
     // During update, before reconcile
     void rootEtag(QString);
 
@@ -144,7 +134,7 @@ signals:
     void transmissionProgress(const ProgressInfo &progress);
 
     /// We've produced a new sync error of a type.
-    void syncError(const QString &message, ErrorCategory category);
+    void syncError(const QString &message, ErrorCategory category = ErrorCategory::Normal);
 
     void finished(bool success);
     void started();
@@ -208,9 +198,6 @@ private slots:
     void slotInsufficientRemoteStorage();
 
 private:
-    void csyncError(const QString &message);
-
-    int treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, bool);
     bool checkErrorBlacklisting(SyncFileItem &item);
 
     // Cleans up unnecessary downloadinfo entries in the journal as well
@@ -298,9 +285,6 @@ private:
     int _downloadLimit;
     SyncOptions _syncOptions;
 
-    /// Hook for computing checksums from csync_update
-    CSyncChecksumHook _checksum_hook;
-
     AnotherSyncNeeded _anotherSyncNeeded;
 
     /** Stores the time since a job touched a file. */
@@ -319,4 +303,3 @@ private:
 };
 }
 
-#endif // CSYNCTHREAD_H

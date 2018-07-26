@@ -38,14 +38,4 @@
 
 int csync_fnmatch(const char *pattern, const char *name, int flags);
 
-/**
- * @brief csync_errno_to_status - errno to csync status code
- *
- * This function tries to convert the value of the current set errno
- * to a csync status code.
- *
- * @return the corresponding csync error code.
- */
-CSYNC_STATUS csync_errno_to_status(int error, CSYNC_STATUS default_status);
-
 #endif /* _CSYNC_MISC_H */

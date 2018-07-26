@@ -24,7 +24,7 @@
 
 #include <cstdint>
 
-#include "csync_private.h"
+#include "csync.h"
 
 const char OCSYNC_EXPORT *csync_instruction_str(enum csync_instructions_e instr);
 
