@@ -411,6 +411,8 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         item->_etag = serverEntry.etag;
         item->_previousSize = localEntry.size;
         item->_previousModtime = localEntry.modtime;
+        item->_directDownloadUrl = serverEntry.directDownloadUrl;
+        item->_directDownloadCookies = serverEntry.directDownloadCookies;
         if (!dbEntry.isValid() && !localEntry.isVirtualFile) { // New file on the server
             item->_instruction = CSYNC_INSTRUCTION_NEW;
             item->_direction = SyncFileItem::Down;

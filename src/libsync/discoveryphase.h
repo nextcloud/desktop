@@ -52,6 +52,9 @@ struct RemoteInfo
     int64_t size = 0;
     bool isDirectory = false;
     bool isValid() const { return !name.isNull(); }
+
+    QString directDownloadUrl;
+    QString directDownloadCookies;
 };
 
 struct LocalInfo
