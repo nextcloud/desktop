@@ -56,7 +56,7 @@ repositories`_ to see all the Linux client repos.
 2. Install the dependencies using the following commands for your specific Linux 
 distribution. Make sure the repositories for source packages are enabled.
   
-   * Debian/Ubuntu: ``apt-get update; apt-get build-dep owncloud-client``
+   * Debian/Ubuntu: ``apt update; apt build-dep owncloud-client``
    * openSUSE/SLES: ``zypper ref; zypper si -d owncloud-client``
    * Fedora/CentOS/RHEL: ``yum install yum-utils; yum-builddep owncloud-client``
 
@@ -64,14 +64,11 @@ distribution. Make sure the repositories for source packages are enabled.
 
 Linux with system dependencies
 ------------------------------
+1. Build sources from e.g. a github checkout with dependencies provided by your linux distribution. While this allows more freedom for development, it does not exactly represent what we ship as packages. See above for how to recreate packages from source.
 
-```
-cd ~/src/github/owncloud/client/
-rm -rf build; mkdir -p build; cd build
-sudo apt install qtdeclarative5-dev libinotifytools-dev qt5keychain-dev libqt5webkit5-dev python-sphinx libsqlite3-dev
-cmake ..
-make
-```
+  * Debian/Ubuntu: ``apt install qtdeclarative5-dev libinotifytools-dev qt5keychain-dev libqt5webkit5-dev python-sphinx libsqlite3-dev``
+
+2. Follow the :ref:`generic-build-instructions`, starting with step 1.
 
 macOS
 -----
@@ -256,7 +253,7 @@ To build the most up-to-date version of the client:
 
      cmake -DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/  -DNO_SHIBBOLETH=1 ..
 
-.. note:: For Linux builds (using qt5 libraries via build-dep) a typical setting is ``-DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1/`` - version number may vary.
+.. note:: For Linux builds (using QT5 libraries via build-dep) a typical setting is ``-DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1/`` - version number may vary. For Linux builds using system dependencies -DCMAKE_PREFIX_PATH is not needed.
 
 .. note:: You must use absolute paths for the ``include`` and ``library``
          directories.
