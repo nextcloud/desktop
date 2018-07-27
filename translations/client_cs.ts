@@ -253,7 +253,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="667"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Získávání autorizace z prohlížeče. &lt;a href=&apos;%1&apos;&gt;Klikněte zde&lt;/a&gt; pro opětovné otevření prohlížeče.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="671"/>
@@ -388,7 +388,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="138"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Získávání pověření</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="140"/>
@@ -988,7 +988,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="209"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation type="unfinished"/>
+        <translation>Existují nevyřešené konflikty. Klikněte pro detaily.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
@@ -998,7 +998,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="884"/>
         <source>Reconciling changes</source>
-        <translation type="unfinished"/>
+        <translation>Slučování změn</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
@@ -1428,7 +1428,7 @@ Položky u kterých je povoleno smazání budou vymazány, pokud by bránily ods
     <message>
         <location filename="../src/gui/issueswidget.ui" line="133"/>
         <source>There were too many issues. Not all will be visible here.</source>
-        <translation type="unfinished"/>
+        <translation>Bylo příliš mnoho problémů. Ne všechny budou viditelné zde.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="155"/>
@@ -1476,7 +1476,7 @@ Položky u kterých je povoleno smazání budou vymazány, pokud by bránily ods
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
         <source>&amp;Capture debug messages</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Zachytávat ladící zprávy</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
@@ -1708,12 +1708,12 @@ Položky u kterých je povoleno smazání budou vymazány, pokud by bránily ods
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>Odpověď ze serveru neobsahovala všechna očekávaná pole</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="125"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Chyba přihlášení&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="131"/>
@@ -2126,7 +2126,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="459"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation type="unfinished"/>
+        <translation>Stahování by snížilo místo na místním disku pod nastavený limit</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
@@ -2313,7 +2313,7 @@ Nedoporučuje se jí používat.</translation>
         <location filename="../src/libsync/propagateupload.cpp" line="186"/>
         <location filename="../src/libsync/propagateupload.cpp" line="549"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>Nahrání %1 překročuje kvótu nastavenou pro složku</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="622"/>
@@ -2750,7 +2750,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
         <source>Confirm Link Share Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Potvrzování mazání sdílení</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="521"/>
@@ -2771,7 +2771,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
         <source>Delete link share</source>
-        <translation type="unfinished"/>
+        <translation>Smazat sdílení odkazem</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="459"/>
@@ -2804,7 +2804,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="186"/>
         <source>The item is not shared with any users or groups</source>
-        <translation type="unfinished"/>
+        <translation>Položka není sdílena s žádným uživatelem nebo skupinami</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="235"/>
@@ -3215,7 +3215,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="264"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (přeskočeno kvůli předchozí chybě, další pokus za %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="474"/>
@@ -3261,7 +3261,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1607"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>Na serveru není pro některá nahrání dostatek místa.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="167"/>
@@ -3351,7 +3351,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="480"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>Jméno nebůže být na vašem souborovém systému zakódováno.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="489"/>
@@ -3853,7 +3853,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Znovu otevřít prohlížeč</translation>
     </message>
 </context>
 <context>
