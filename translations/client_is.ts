@@ -65,7 +65,8 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="69"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
-        <translation>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </translation>
+        <translation>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy 
+eirmod temporm </translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="89"/>
@@ -111,7 +112,8 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="152"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>Ómerktar möppur verða &lt;b&gt;fjarlægðar&lt;/b&gt; úr skráakerfi tölvunnar þinnar og því ekki samstilltar lengur við þessa tölvu</translation>
+        <translation>Ómerktar möppur verða &lt;b&gt;fjarlægðar&lt;/b&gt; úr skráakerfi tölvunnar þinnar og 
+því ekki samstilltar lengur við þessa tölvu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
@@ -228,7 +230,8 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="650"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation>Þjónninn er af útgáfu %1 sem er úrelt og ekki lengur studd! Ef þú heldur áfram er það á þína eigin ábyrgð.</translation>
+        <translation>Þjónninn er af útgáfu %1 sem er úrelt og ekki lengur studd! Ef þú heldur 
+áfram er það á þína eigin ábyrgð.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="652"/>
@@ -283,7 +286,8 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="788"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Það eru möppur sem ekki eru samstilltar því þær eru of stórar eða eru ytri gagnageymslur: </translation>
+        <translation>Það eru möppur sem ekki eru samstilltar því þær eru of stórar eða eru ytri 
+gagnageymslur: </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="834"/>
@@ -293,7 +297,8 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="835"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Viltu í alvörunni fjarlægja tenginguna við aðganginn &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Athugið:&lt;/b&gt; Þetta mun &lt;b&gt;ekki&lt;/b&gt; eyða neinum skrám.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Viltu í alvörunni fjarlægja tenginguna við aðganginn 
+&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Athugið:&lt;/b&gt; Þetta mun &lt;b&gt;ekki&lt;/b&gt; eyða neinum skrám.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="841"/>
@@ -325,12 +330,14 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="439"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Viltu í alvörunni hætta að samstilla möppuna &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Athugið:&lt;/b&gt; Þetta mun &lt;b&gt;ekki&lt;/b&gt; eyða neinum skrám.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Viltu í alvörunni hætta að samstilla möppuna 
+&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Athugið:&lt;/b&gt; Þetta mun &lt;b&gt;ekki&lt;/b&gt; eyða neinum skrám.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="604"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>%1 (%3%) af %2 í notkun. Sumar möppur, þar með taldar netmöppur tengdar í skráakerfið eða sameignarmöppur, gætu verið með önnur takmörk.</translation>
+        <translation>%1 (%3%) af %2 í notkun. Sumar möppur, þar með taldar netmöppur tengdar í 
+skráakerfið eða sameignarmöppur, gætu verið með önnur takmörk.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="605"/>
@@ -496,7 +503,7 @@
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="349"/>
         <source>You received %n new notification(s) from %2.</source>
-        <translation><numerusform>Þér barst %n ný tilkynning frá %2.</numerusform><numerusform>Þér bárust %n nýjar tilkynningar frá %2.</numerusform></translation>
+        <translation><numerusform>Þér bárust %n nýjar tilkynningar frá %2.</numerusform><numerusform>Þér bárust %n nýjar tilkynningar frá %2.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="356"/>
@@ -701,7 +708,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="378"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>%1 og %n skrá til viðbótar hafa verið uppfærðar.</numerusform><numerusform>%1 og %n skrár til viðbótar hafa verið uppfærðar.</numerusform></translation>
+        <translation><numerusform>%1 og %n skrár til viðbótar hafa verið uppfærðar.</numerusform><numerusform>%1 og %n skrár til viðbótar hafa verið uppfærðar.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="385"/>
@@ -711,7 +718,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="392"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>%1 var færð í %2 og %n skrá til viðbótar var líka færð.</numerusform><numerusform>%1 var færð í %2 og %n skrár til viðbótar voru líka færðar.</numerusform></translation>
+        <translation><numerusform>%1 var færð í %2 og %n skrár til viðbótar voru líka færðar.</numerusform><numerusform>%1 var færð í %2 og %n skrár til viðbótar voru líka færðar.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="399"/>
@@ -726,12 +733,14 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="406"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 og %n skrá til viðbótar var ekki hægt að samstilla vegna villu sem kom upp. Skoðaðu annálinn fyrir nánari upplýsingar.</numerusform><numerusform>%1 og %n skrár til viðbótar var ekki hægt að samstilla vegna villu sem kom upp. Skoðaðu annálinn fyrir nánari upplýsingar.</numerusform></translation>
+        <translation><numerusform>%1 og %n skrá til viðbótar var ekki hægt að samstilla vegna villu sem kom 
+upp. Skoðaðu annálinn fyrir nánari upplýsingar.</numerusform><numerusform>%1 og %n skrár til viðbótar var ekki hægt að samstilla vegna villu sem kom upp. Skoðaðu annálinn fyrir nánari upplýsingar.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="408"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation>%1 var ekki hægt að samstilla vegna villu sem kom upp Skoðaðu annálinn fyrir nánari upplýsingar.</translation>
+        <translation>%1 var ekki hægt að samstilla vegna villu sem kom upp Skoðaðu annálinn fyrir 
+nánari upplýsingar.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="414"/>
@@ -825,7 +834,8 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="312"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Gömul atvikaskrá samstillingar &apos;%1&apos; fannst, en var ekki hægt að fjarlægja. Vertu viss um að ekkert annað forrit sé ekki að nota hana.</translation>
+        <translation>Gömul atvikaskrá samstillingar &apos;%1&apos; fannst, en var ekki hægt að fjarlægja. 
+Vertu viss um að ekkert annað forrit sé ekki að nota hana.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1054"/>
@@ -973,7 +983,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="231"/>
         <source>Signed out</source>
-        <translation>Skráður út</translation>
+        <translation>Skráð(ur) út</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="183"/>
@@ -1446,7 +1456,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="84"/>
         <source>Issue</source>
-        <translation>Villutilkynning</translation>
+        <translation>Vandamál</translation>
     </message>
 </context>
 <context>
@@ -1469,7 +1479,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
         <source>&amp;Capture debug messages</source>
-        <translation>Grípa aflúsunarmeldingar</translation>
+        <translation>&amp;Grípa aflúsunarmeldingar</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
@@ -1530,7 +1540,8 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="338"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ný útgáfa %1 forritsins er tiltæk.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; er tiltæk til niðurhals. Uppsetta útgáfan er %3.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Ný útgáfa %1 forritsins er tiltæk.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; er tiltæk til 
+niðurhals. Uppsetta útgáfan er %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="352"/>
@@ -1803,7 +1814,8 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="164"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Aðvörun:&lt;/strong&gt; Staðværa mappan er ekki tóm. Veldu aðgerð til að leysa málið!&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Aðvörun:&lt;/strong&gt; Staðværa mappan er ekki tóm. Veldu 
+aðgerð til að leysa málið!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="285"/>
@@ -1897,7 +1909,8 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="129"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation>Þessi tenging er EKKI örugg því hún er ekki dulrituð. Ekki er mælt með því að hún sé notuð.
+        <translation>Þessi tenging er EKKI örugg því hún er ekki dulrituð. 
+Ekki er mælt með því að hún sé notuð.
 .</translation>
     </message>
     <message>
@@ -1916,7 +1929,8 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="250"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;Tókst að tengjast við %1: %2 útgáfa %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;Tókst að tengjast við %1: %2 útgáfa %3 
+(%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="280"/>
@@ -2351,7 +2365,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="205"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Slóð á skoðanakönnun vantar</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="228"/>
@@ -2742,12 +2756,13 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
         <source>Confirm Link Share Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Staðfestu eyðingu tengils á sameign</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="521"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ertu viss um að þú viljir eyða opinbera tenglinum á sameignina &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Athugaðu: Þessi aðgerð er óafturkræf.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Ertu viss um að þú viljir eyða opinbera tenglinum á sameignina &lt;i&gt;%1&lt;/i&gt;?&lt;
+/p&gt;&lt;p&gt;Athugaðu: Þessi aðgerð er óafturkræf.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="528"/>
@@ -2900,7 +2915,8 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation>Setan þín er útrunnin. Þú verður að skrá þig aftur inn til að geta haldið áfram að nota þetta forrit.</translation>
+        <translation>Setan þín er útrunnin. Þú verður að skrá þig aftur inn til að geta haldið 
+áfram að nota þetta forrit.</translation>
     </message>
 </context>
 <context>
@@ -3162,22 +3178,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="140"/>
         <source>CSync could not authenticate at the proxy.</source>
-        <translation type="unfinished"/>
+        <translation>CSync gat ekki auðkennt á milliþjóninum.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="143"/>
         <source>CSync failed to lookup proxy or server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync mistókst að fletta upp milliþjóni eða vefþjóni.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="146"/>
         <source>CSync failed to authenticate at the %1 server.</source>
-        <translation type="unfinished"/>
+        <translation>CSync mistókst að auðkenna á %1 þjóninum.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="149"/>
         <source>CSync failed to connect to the network.</source>
-        <translation type="unfinished"/>
+        <translation>CSync mistókst að tengjast netkerfinu.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="152"/>
@@ -3258,12 +3274,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="167"/>
         <source>CSync: No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>CSync: Ekkert pláss er tiltækt á %1 þjóninum.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="170"/>
         <source>CSync unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>Óskilgreind villa í CSync.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="173"/>
@@ -3273,7 +3289,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="161"/>
         <source>CSync failed to access</source>
-        <translation type="unfinished"/>
+        <translation>CSync mistókst að fá aðgang</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="121"/>
@@ -3288,7 +3304,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="164"/>
         <source>CSync tried to create a folder that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>CSync reyndi að búa til möppu sem þegar er til staðar.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="176"/>
@@ -3308,7 +3324,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="443"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Tákntengi eru ekki studd í samstillingu.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="446"/>
@@ -3410,17 +3426,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1371"/>
         <source>Local files and share folder removed.</source>
-        <translation type="unfinished"/>
+        <translation>Staðbundnar skrár og mappa sameignar fjarlægðar.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1425"/>
         <source>Move not allowed, item restored</source>
-        <translation type="unfinished"/>
+        <translation>Tilfærsla ekki leyfð, atriði endurheimt</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1436"/>
         <source>Move not allowed because %1 is read-only</source>
-        <translation type="unfinished"/>
+        <translation>Tilfærsla ekki leyfð því %1 er skrifvarið</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1436"/>
@@ -3438,7 +3454,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation type="unfinished"/>
+        <translation>Annáll samstillingar</translation>
     </message>
 </context>
 <context>
@@ -3454,7 +3470,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="315"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Útgáfa %1. Til að vita meira ættirðu að skoða &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;pÚtgáfa %1. Til að vita meira ættirðu að skoða &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="320"/>
@@ -3464,7 +3480,9 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="321"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Dreift af %1 og gefið út með almenna GNU General Public License (GPL) útgáfu 2.0.&lt;br/&gt;%2 og %2 merkið eru skráð vörumerki %1 í Bandaríkjunum, öðrum ríkjum, eða bæði.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Dreift af %1 og gefið út með almenna GNU General Public License (GPL) 
+útgáfu 2.0.&lt;br/&gt;%2 og %2 merkið eru skráð vörumerki %1 í Bandaríkjunum, 
+öðrum ríkjum, eða bæði.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3724,7 +3742,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="46"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Útgáfa %2. Til að skoða nánari upplýsingar ættirðu að heimsækja &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Til að fá hjálp og skoða þekkt vandamál, farðu á: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Skrifað af Klaas Freitag, 
+        <translation>&lt;pÚtgáfa %2. Til að skoða nánari upplýsingar ættirðu að heimsækja &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Til að fá hjálp og skoða þekkt vandamál, farðu á: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Skrifað af Klaas Freitag, 
 Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, auk 
 annarra.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Höfundarréttur ownCloud GmbH&lt;/p&gt;&lt;p&gt;Gefið út með almenna GNU General Public License (GPL) útgáfu 2.0.&lt;br/&gt;ownCloud og ownCloud merkið eru skráð vörumerki ownCloud GmbH í Bandaríkjunum, öðrum ríkjum, eða bæði.&lt;/p&gt;</translation>
     </message>
@@ -3837,7 +3855,7 @@ annarra.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Höfundarréttur ownCloud GmbH&lt;/p&gt
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Skiptu yfir í vafrann þinn til að halda áfram.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
@@ -3977,7 +3995,7 @@ annarra.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Höfundarréttur ownCloud GmbH&lt;/p&gt
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="311"/>
         <source>%n month(s)</source>
-        <translation><numerusform>%n mánuður</numerusform><numerusform>%n mánuðir</numerusform></translation>
+        <translation><numerusform>%n mánuðir</numerusform><numerusform>%n mánuðir</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="312"/>
@@ -3997,7 +4015,7 @@ annarra.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Höfundarréttur ownCloud GmbH&lt;/p&gt
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="315"/>
         <source>%n second(s)</source>
-        <translation><numerusform>%n sekúnda</numerusform><numerusform>%n sekúndur</numerusform></translation>
+        <translation><numerusform>%n sekúndur</numerusform><numerusform>%n sekúndur</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="339"/>
@@ -4015,7 +4033,10 @@ annarra.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Höfundarréttur ownCloud GmbH&lt;/p&gt
     <message>
         <location filename="../src/gui/main.cpp" line="39"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation>%1 krefst nothæfs kerfisbakka (system tray). Ef þú ert að keyra XFCE, farðu þá eftir &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;þessum leiðbeiningum&lt;/a&gt;. Annars ættirðu að setja upp eitthvað kerfisbakkaforrit á borð við &apos;trayer&apos; og reyna síðan aftur.</translation>
+        <translation>%1 krefst nothæfs kerfisbakka (system tray). Ef þú ert að keyra XFCE, farðu 
+þá eftir &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;þessum 
+leiðbeiningum&lt;/a&gt;. Annars ættirðu að setja upp eitthvað kerfisbakkaforrit á 
+borð við &apos;trayer&apos; og reyna síðan aftur.</translation>
     </message>
 </context>
 <context>
@@ -4023,7 +4044,8 @@ annarra.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Höfundarréttur ownCloud GmbH&lt;/p&gt
     <message>
         <location filename="../src/libsync/theme.cpp" line="299"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Byggt með Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; á %3, %4 með Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;Byggt með Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; á %3, %4 með Qt %5, 
+%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -4179,7 +4201,8 @@ annarra.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Höfundarréttur ownCloud GmbH&lt;/p&gt
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation>Villa átti sér stað við ræsingu á vafranum þegar opna átti slóðina %1. Er hugsanlegt að ekki sé búið að stilla neinn vafra sem sjálfgefinn?</translation>
+        <translation>Villa átti sér stað við ræsingu á vafranum þegar opna átti slóðina %1. Er 
+hugsanlegt að ekki sé búið að stilla neinn vafra sem sjálfgefinn?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="55"/>
@@ -4189,7 +4212,9 @@ annarra.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Höfundarréttur ownCloud GmbH&lt;/p&gt
     <message>
         <location filename="../src/gui/guiutility.cpp" line="56"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation>Villa átti sér stað við ræsingu á póstforritinu þegar útbúa átti ný skilaboð. Er hugsanlegt að ekki sé búið að stilla neitt tölvupóstforrit sem sjálfgefið?</translation>
+        <translation>Villa átti sér stað við ræsingu á póstforritinu þegar útbúa átti ný 
+skilaboð. Er hugsanlegt að ekki sé búið að stilla neitt tölvupóstforrit sem 
+sjálfgefið?</translation>
     </message>
 </context>
 </TS>
