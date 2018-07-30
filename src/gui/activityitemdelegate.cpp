@@ -110,9 +110,11 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     // message text rect
     QRect messageTextBox = actionTextBox;
+    int messageTextWidth = fm.width(messageText);
     messageTextBox.setTop(option.rect.top() + fm.height() + margin);
-    messageTextBox.setHeight(actionTextBox.height());
+    messageTextBox.setHeight(fm.height());
     messageTextBox.setBottom(messageTextBox.top() + fm.height());
+    messageTextBox.setRight(messageTextBox.left() + messageTextWidth + margin);
     if(messageText.isEmpty()){
         messageTextBox.setHeight(0);
         messageTextBox.setBottom(messageTextBox.top());
@@ -121,9 +123,13 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     // time box rect
     QRect timeBox = messageTextBox;
     QString timeStr = tr("%1").arg(timeText);
-    timeBox.setTop(option.rect.top() + fm.height() + fm.height() + margin + offset/2);
-    timeBox.setHeight(actionTextBox.height());
+    int timeTextWidth = fm.width(timeStr);
+    int timeTop = option.rect.top() + fm.height() + fm.height() + margin + offset/2;
+    if(messageText.isEmpty()) timeTop = option.rect.top() + fm.height() + margin;
+    timeBox.setTop(timeTop);
+    timeBox.setHeight(fm.height());
     timeBox.setBottom(timeBox.top() + fm.height());
+    timeBox.setRight(timeBox.left() + timeTextWidth + margin);
 
     // buttons - default values
     int rightMargin = margin;
@@ -231,7 +237,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         painter->setPen(option.palette.color(cg, QPalette::Text));
 
     // calculate space for text - use the max possible before using the elipses
-    int spaceLeftForText = option.rect.width() - (actionIconRect.width() + margin) -
+    int spaceLeftForText = option.rect.width() - (actionIconRect.width() + margin + rightMargin + leftMargin) -
                              (_primaryButtonWidth + _secondaryButtonWidth + _spaceBetweenButtons);
 
     // draw the subject
