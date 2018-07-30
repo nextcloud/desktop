@@ -108,6 +108,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                          || a._status == SyncFileItem::Restoration){
                    return QIcon(QLatin1String(":/client/resources/state-warning.svg"));
                }
+               return QIcon(QLatin1String(":/client/resources/activity.png"));
         } else return QIcon(QLatin1String(":/client/resources/activity.png"));
         return QVariant();
         break;
