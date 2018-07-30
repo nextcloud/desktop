@@ -111,7 +111,9 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     // message text rect
     QRect messageTextBox = actionTextBox;
     int messageTextWidth = fm.width(messageText);
-    messageTextBox.setTop(option.rect.top() + fm.height() + margin);
+    int messageTextTop = option.rect.top() + fm.height() + margin;
+    if(actionText.isEmpty()) messageTextTop = option.rect.top() + margin + offset/2;
+    messageTextBox.setTop(messageTextTop);
     messageTextBox.setHeight(fm.height());
     messageTextBox.setBottom(messageTextBox.top() + fm.height());
     messageTextBox.setRight(messageTextBox.left() + messageTextWidth + margin);
@@ -125,7 +127,8 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     QString timeStr = tr("%1").arg(timeText);
     int timeTextWidth = fm.width(timeStr);
     int timeTop = option.rect.top() + fm.height() + fm.height() + margin + offset/2;
-    if(messageText.isEmpty()) timeTop = option.rect.top() + fm.height() + margin;
+    if(messageText.isEmpty() || actionText.isEmpty())
+        timeTop = option.rect.top() + fm.height() + margin;
     timeBox.setTop(timeTop);
     timeBox.setHeight(fm.height());
     timeBox.setBottom(timeBox.top() + fm.height());
