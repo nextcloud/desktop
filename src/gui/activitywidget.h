@@ -104,8 +104,6 @@ private:
     void showLabels();
     QString timeString(QDateTime dt, QLocale::FormatType format) const;
     Ui::ActivityWidget *_ui;
-    QPushButton *_copyBtn;
-
     QSet<QString> _accountsWithoutActivities;
     QMap<Activity::Identifier, NotificationWidget *> _widgetForNotifId;
     QElapsedTimer _guiLogTimer;
