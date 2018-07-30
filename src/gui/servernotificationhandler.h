@@ -27,20 +27,23 @@ class ServerNotificationHandler : public QObject
 {
     Q_OBJECT
 public:
-    explicit ServerNotificationHandler(QObject *parent = 0);
+    explicit ServerNotificationHandler(AccountState *accountState, QObject *parent = 0);
+    static QMap<int, QIcon> iconCache;
 
 signals:
     void newNotificationList(ActivityList);
 
 public slots:
-    void slotFetchNotifications(AccountState *ptr);
+    void slotFetchNotifications();
 
 private slots:
     void slotNotificationsReceived(const QJsonDocument &json, int statusCode);
     void slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode);
+    void slotIconDownloaded(QByteArray iconData);
 
 private:
     QPointer<JsonApiJob> _notificationJob;
+    AccountState *_accountState;
 };
 }
 

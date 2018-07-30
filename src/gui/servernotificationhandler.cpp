@@ -17,6 +17,8 @@
 #include "capabilities.h"
 #include "networkjobs.h"
 
+#include "iconjob.h"
+
 #include <QJsonDocument>
 #include <QJsonObject>
 
@@ -28,37 +30,41 @@ const QString notificationsPath = QLatin1String("ocs/v2.php/apps/notifications/a
 const char propertyAccountStateC[] = "oc_account_state";
 const int successStatusCode = 200;
 const int notModifiedStatusCode = 304;
+QMap<int, QIcon> ServerNotificationHandler::iconCache;
 
-ServerNotificationHandler::ServerNotificationHandler(QObject *parent)
+ServerNotificationHandler::ServerNotificationHandler(AccountState *accountState, QObject *parent)
     : QObject(parent)
+    , _accountState(accountState)
 {
 }
 
-void ServerNotificationHandler::slotFetchNotifications(AccountState *ptr)
+void ServerNotificationHandler::slotFetchNotifications()
 {
     // check connectivity and credentials
-    if (!(ptr && ptr->isConnected() && ptr->account() && ptr->account()->credentials() && ptr->account()->credentials()->ready())) {
+    if (!(_accountState && _accountState->isConnected() &&
+          _accountState->account() && _accountState->account()->credentials() &&
+          _accountState->account()->credentials()->ready())) {
         deleteLater();
         return;
     }
     // check if the account has notifications enabled. If the capabilities are
     // not yet valid, its assumed that notifications are available.
-    if (ptr->account()->capabilities().isValid()) {
-        if (!ptr->account()->capabilities().notificationsAvailable()) {
-            qCInfo(lcServerNotification) << "Account" << ptr->account()->displayName() << "does not have notifications enabled.";
+    if (_accountState->account()->capabilities().isValid()) {
+        if (!_accountState->account()->capabilities().notificationsAvailable()) {
+            qCInfo(lcServerNotification) << "Account" << _accountState->account()->displayName() << "does not have notifications enabled.";
             deleteLater();
             return;
         }
     }
 
     // if the previous notification job has finished, start next.
-    _notificationJob = new JsonApiJob(ptr->account(), notificationsPath, this);
+    _notificationJob = new JsonApiJob(_accountState->account(), notificationsPath, this);
     QObject::connect(_notificationJob.data(), &JsonApiJob::jsonReceived,
         this, &ServerNotificationHandler::slotNotificationsReceived);
     QObject::connect(_notificationJob.data(), &JsonApiJob::etagResponseHeaderReceived,
         this, &ServerNotificationHandler::slotEtagResponseHeaderReceived);
-    _notificationJob->setProperty(propertyAccountStateC, QVariant::fromValue<AccountState *>(ptr));
-    _notificationJob->addRawHeader("If-None-Match", ptr->notificationsEtagResponseHeader());
+    _notificationJob->setProperty(propertyAccountStateC, QVariant::fromValue<AccountState *>(_accountState));
+    _notificationJob->addRawHeader("If-None-Match", _accountState->notificationsEtagResponseHeader());
     _notificationJob->start();
 }
 
@@ -68,6 +74,12 @@ void ServerNotificationHandler::slotEtagResponseHeaderReceived(const QByteArray 
         AccountState *account = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));
         account->setNotificationsEtagResponseHeader(value);
     }
+}
+
+void ServerNotificationHandler::slotIconDownloaded(QByteArray iconData){
+    QPixmap pixmap;
+    pixmap.loadFromData(iconData);
+    iconCache.insert(sender()->property("activityId").toInt(), QIcon(pixmap));
 }
 
 void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &json, int statusCode)
@@ -96,18 +108,28 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         a._type = Activity::NotificationType;
         a._accName = ai->account()->displayName();
         a._id = json.value("notification_id").toInt();
+
+        //need to know, specially for remote_share
+        a._objectType = json.value("object_type").toString();
+        a._status = 0;
+
         a._subject = json.value("subject").toString();
         a._message = json.value("message").toString();
 
-        QString s = json.value("link").toString();
-        if (!s.isEmpty()) {
-            QUrl link(s);
+        if(!json.value("icon").toString().isEmpty()){
+            IconJob *iconJob = new IconJob(QUrl(json.value("icon").toString()));
+            iconJob->setProperty("activityId", a._id);
+            connect(iconJob, &IconJob::jobFinished, this, &ServerNotificationHandler::slotIconDownloaded);
+        }
+
+        QUrl link(json.value("link").toString());
+        if (!link.isEmpty()) {
             if(link.host().isEmpty()){
                 link.setScheme(ai->account()->url().scheme());
                 link.setHost(ai->account()->url().host());
             }
-            a._link = link;
         }
+        a._link = link;
         a._dateTime = QDateTime::fromString(json.value("datetime").toString(), Qt::ISODate);
 
         auto actions = json.value("actions").toArray();
