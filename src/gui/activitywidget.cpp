@@ -211,6 +211,8 @@ void ActivityWidget::addError(const QString &folderAlias, const QString &message
         activity._message = folderInstance->shortGuiLocalPath();
         activity._link = folderInstance->shortGuiLocalPath();
         activity._accName = folderInstance->accountState()->account()->displayName();
+        activity._folder = folderAlias;
+
 
         if (category == ErrorCategory::InsufficientRemoteStorage) {
             ActivityLink link;

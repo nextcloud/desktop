@@ -64,12 +64,14 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case ActivityItemDelegate::PathRole:
         if(!a._file.isEmpty()){
             auto folder = FolderMan::instance()->folder(a._folder);
-            list = FolderMan::instance()->findFileInLocalFolders(folder->remotePath() + a._file, ast->account());
+            QString relPath(a._file);
+            if(folder) relPath.prepend(folder->remotePath());
+            list = FolderMan::instance()->findFileInLocalFolders(relPath, ast->account());
             if (list.count() > 0) {
                 return QVariant(list.at(0));
             }
             // File does not exist anymore? Let's try to open its path
-            list = FolderMan::instance()->findFileInLocalFolders(QFileInfo(folder->remotePath() + a._file).path(), ast->account());
+            list = FolderMan::instance()->findFileInLocalFolders(QFileInfo(relPath).path(), ast->account());
             if (list.count() > 0) {
                 return QVariant(list.at(0));
             }
