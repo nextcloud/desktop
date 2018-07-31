@@ -26,6 +26,8 @@
 
 #include "ui_owncloudsetupnocredspage.h"
 
+#include "config.h"
+
 class QLabel;
 class QVariant;
 class QProgressIndicator;
@@ -60,10 +62,17 @@ public slots:
     void startSpinner();
     void stopSpinner();
     void slotCertificateAccepted();
+#ifdef WITH_PROVIDERS
+    void nextSlide();
+#endif
 
 protected slots:
     void slotUrlChanged(const QString &);
     void slotUrlEditFinished();
+#ifdef WITH_PROVIDERS
+    void slotLogin();
+    void slotGotoProviderList();
+#endif
 
     void setupCustomization();
 
@@ -87,6 +96,10 @@ private:
     QString _remoteFolder;
     AddCertificateDialog *addCertDial;
     OwncloudWizard *_ocWizard;
+
+    QList<QPair<QString, QString>> _slideshow;
+    int _currentSlide;
+
 };
 
 } // namespace OCC

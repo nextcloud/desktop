@@ -22,6 +22,9 @@
 #include <QSsl>
 #include <QSslCertificate>
 #include <QNetworkAccessManager>
+#include <QPropertyAnimation>
+#include <QGraphicsPixmapItem>
+#include <QtSvg/QSvgRenderer>
 
 #include "QProgressIndicator.h"
 
@@ -30,6 +33,7 @@
 #include "wizard/owncloudconnectionmethoddialog.h"
 #include "theme.h"
 #include "account.h"
+#include "config.h"
 
 namespace OCC {
 
@@ -70,10 +74,52 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     connect(_ui.leUrl, &QLineEdit::editingFinished, this, &OwncloudSetupPage::slotUrlEditFinished);
 
     addCertDial = new AddCertificateDialog(this);
+
+#ifdef WITH_PROVIDERS
+    connect(_ui.loginButton, &QPushButton::clicked, this, &OwncloudSetupPage::slotLogin);
+    connect(_ui.createAccountButton, &QPushButton::clicked, this, &OwncloudSetupPage::slotGotoProviderList);
+
+    _ui.login->hide();
+    _slideshow.append(qMakePair(QString("nextcloud"), tr("Keep your data secure and under your control")));
+    _slideshow.append(qMakePair(QString("files"), tr("Secure collaboration & file exchange")));
+    _slideshow.append(qMakePair(QString("groupware"), tr("Easy-to-use web mail, calendaring & contacts")));
+    _slideshow.append(qMakePair(QString("talk"), tr("Screensharing, online meetings & web conferences")));
+
+    _ui.slideLabel->setStyleSheet(QString("color:%1;").arg(theme->wizardHeaderBackgroundColor().name()));
+    _currentSlide = -1;
+    nextSlide();
+
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(nextSlide()));
+    timer->start(2500);
+#else
+    _ui.createAccountButton->hide();
+    _ui.slideImage->hide();
+    _ui.slideLabel->hide();
+    _ui.loginButton->hide();
+    _ui.hostButton->hide();
+#endif
+    setStyleSheet(QString("background-color:%1; color:%2 QLabel { color:%2; } QSpacerItem { color: red; }").arg(theme->wizardHeaderBackgroundColor().name(), theme->wizardHeaderTitleColor().name()));
+
 }
+
+#ifdef WITH_PROVIDERS
+void OwncloudSetupPage::nextSlide()
+{
+    if (_currentSlide < _slideshow.length()-1) {
+        _currentSlide++;
+    } else {
+        _currentSlide = 0;
+    }
+    QPixmap pixmap = QIcon(Theme::hidpiFileName(":/client/theme/colored/wizard-" + _slideshow.at(_currentSlide).first + ".svg")).pixmap(QSize(1024, 1024));
+    _ui.slideImage->setPixmap(pixmap.scaled(QSize(_ui.slideImage->size().height(), _ui.slideImage->size().height()), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    _ui.slideLabel->setText(_slideshow.at(_currentSlide).second);
+}
+#endif
 
 void OwncloudSetupPage::setServerUrl(const QString &newUrl)
 {
+    _ocWizard->setRegistration(false);
     _oCUrl = newUrl;
     if (_oCUrl.isEmpty()) {
         _ui.leUrl->clear();
@@ -98,6 +144,29 @@ void OwncloudSetupPage::setupCustomization()
     variant = theme->customMedia(Theme::oCSetupBottom);
     WizardCommon::setupCustomMedia(variant, _ui.bottomLabel);
 }
+
+#ifdef WITH_PROVIDERS
+void OwncloudSetupPage::slotLogin()
+{
+    _ocWizard->setRegistration(false);
+    _ui.login->setMaximumHeight(0);
+    QPropertyAnimation *animation = new QPropertyAnimation(_ui.login, "maximumHeight");
+    animation->setDuration(0);
+    animation->setStartValue(500);
+    animation->setEndValue(500);
+    _ui.login->show();
+    wizard()->resize(wizard()->sizeHint());
+    animation->start();
+}
+void OwncloudSetupPage::slotGotoProviderList()
+{
+    _ocWizard->setRegistration(true);
+    _ocWizard->setAuthType(DetermineAuthTypeJob::AuthType::WebViewFlow);
+    _authTypeKnown = true;
+    _checking = false;
+    emit completeChanged();
+}
+#endif
 
 // slot hit from textChanged of the url entry field.
 void OwncloudSetupPage::slotUrlChanged(const QString &url)
@@ -173,6 +242,7 @@ void OwncloudSetupPage::initializePage()
         validatePage();
         setVisible(false);
     }
+    wizard()->resize(wizard()->sizeHint());
 }
 
 bool OwncloudSetupPage::urlHasChanged()
@@ -289,11 +359,13 @@ void OwncloudSetupPage::setErrorString(const QString &err, bool retryHTTPonly)
     _checking = false;
     emit completeChanged();
     stopSpinner();
+    wizard()->resize(wizard()->sizeHint());
 }
 
 void OwncloudSetupPage::startSpinner()
 {
     _ui.resultLayout->setEnabled(true);
+    _ui.urlLabel->setVisible(false);
     _progressIndi->setVisible(true);
     _progressIndi->startAnimation();
 }
@@ -301,6 +373,7 @@ void OwncloudSetupPage::startSpinner()
 void OwncloudSetupPage::stopSpinner()
 {
     _ui.resultLayout->setEnabled(false);
+    _ui.urlLabel->setVisible(true);
     _progressIndi->setVisible(false);
     _progressIndi->stopAnimation();
 }
