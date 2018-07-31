@@ -818,23 +818,22 @@ void ownCloudGui::buildNavigationAppsMenu(AccountStatePtr account, QMenu *accoun
 
 void ownCloudGui::slotNavigationAppsFetched(const QJsonDocument &reply, int statusCode)
 {
-    auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC));
-    auto accountMenu = qvariant_cast<QMenu*>(sender()->property(propertyMenuC));
-
-    if (statusCode == 304) {
-        qCWarning(lcApplication) << "Status code " << statusCode << " Not Modified - No new navigation apps.";
-    } else {
-        if(!reply.isEmpty()){
-            auto element = reply.object().value("ocs").toObject().value("data");
-            auto navLinks = element.toArray();
-            if(account){
+    if(auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))){
+        if (statusCode == 304) {
+            qCWarning(lcApplication) << "Status code " << statusCode << " Not Modified - No new navigation apps.";
+        } else {
+            if(!reply.isEmpty()){
+                auto element = reply.object().value("ocs").toObject().value("data");
+                auto navLinks = element.toArray();
                 _navApps.insert(account, navLinks);
             }
-         }
-    }
+        }
 
-    if(accountMenu)
-        buildNavigationAppsMenu(account, accountMenu);
+        if(QObject *accountMenuObj = qvariant_cast<QObject*>(sender()->property(propertyMenuC))){
+            if(QMenu *accountMenu = dynamic_cast<QMenu*>(accountMenuObj))
+                buildNavigationAppsMenu(account, accountMenu);
+        }
+    }
 }
 
 void ownCloudGui::slotOcsError(int statusCode, const QString &message)
