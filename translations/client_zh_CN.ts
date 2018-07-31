@@ -88,7 +88,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="390"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation type="unfinished"/>
+        <translation>服务器向 &quot;%3 %4&quot; 返回了 &quot;%1 %2&quot;</translation>
     </message>
 </context>
 <context>
@@ -243,7 +243,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>服务器 %1 目前处于维护模式。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="658"/>
@@ -253,7 +253,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="667"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation type="unfinished"/>
+        <translation>正在从浏览器获得授权。 &lt;a href=&apos;%1&apos;&gt;点击此处&lt;/a&gt; 重新打开浏览器。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="671"/>
@@ -990,7 +990,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="209"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation type="unfinished"/>
+        <translation>存在未解决的冲突。点击查看细节。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
@@ -1425,7 +1425,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
         <source>Show ignored files</source>
-        <translation type="unfinished"/>
+        <translation>显示已忽略的文件</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="133"/>
@@ -1965,7 +1965,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>The server reported the following error:</source>
-        <translation type="unfinished"/>
+        <translation>服务器报告了以下错误：</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2654,7 +2654,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="35"/>
         <source>Enter a name to create a new public link...</source>
-        <translation type="unfinished"/>
+        <translation>输入一个名称来创建新的公共链接…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="42"/>
@@ -2746,7 +2746,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="167"/>
         <source>Send link by email (direct download)</source>
-        <translation type="unfinished"/>
+        <translation>通过邮件发送链接（直接下载）</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
@@ -2805,7 +2805,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="186"/>
         <source>The item is not shared with any users or groups</source>
-        <translation type="unfinished"/>
+        <translation>本条目没有被任何用户或组分享</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="235"/>
@@ -2830,7 +2830,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>我向您分享了一些东西</translation>
     </message>
 </context>
 <context>
@@ -2923,7 +2923,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="557"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>我向您分享了一些东西</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="565"/>
@@ -2933,12 +2933,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="567"/>
         <source>Copy private link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>复制私人链接到剪贴板</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="568"/>
         <source>Send private link by email...</source>
-        <translation type="unfinished"/>
+        <translation>通过邮件发送私人链接...</translation>
     </message>
 </context>
 <context>
@@ -3231,7 +3231,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="493"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>发生冲突：服务器版本的文件已经下载，本地版本的文件已经改名且没有上传。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="777"/>
@@ -3242,7 +3242,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="812"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>无法打开或创建本地同步数据库。请确保您在同步文件夹下有写入权限。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1290"/>
@@ -3257,12 +3257,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1600"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation type="unfinished"/>
+        <translation>硬盘剩余容量过低：下载后将会导致剩余容量低于 %1 的文件将会被跳过。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1607"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>对于某些上传文件来说，服务器端的可用空间不足。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="167"/>
@@ -3352,12 +3352,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="480"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>文件名在您的文件系统中不可编码。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="489"/>
         <source>Unresolved conflict.</source>
-        <translation type="unfinished"/>
+        <translation>未解决的冲突。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="500"/>
@@ -3603,7 +3603,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="240"/>
         <source>Disconnected from some accounts</source>
-        <translation type="unfinished"/>
+        <translation>已从某些账户断开</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="251"/>
@@ -3629,17 +3629,17 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/owncloudgui.cpp" line="273"/>
         <location filename="../src/gui/owncloudgui.cpp" line="304"/>
         <source>Synchronization is paused</source>
-        <translation type="unfinished"/>
+        <translation>同步已暂停</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="306"/>
         <source>Error during synchronization</source>
-        <translation type="unfinished"/>
+        <translation>同步过程中发生错误</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>No sync folders configured</source>
-        <translation type="unfinished"/>
+        <translation>没有配置同步目录</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
@@ -3844,12 +3844,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>请切换到您的浏览器继续。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occured while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>连接过程中发生了错误。请重试。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
@@ -4181,12 +4181,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="33"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>无法打开浏览器</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation type="unfinished"/>
+        <translation>在打开浏览器浏览网址 %1 时发生了错误。可能是没有配置默认浏览器？</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="55"/>
