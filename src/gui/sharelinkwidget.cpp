@@ -175,28 +175,26 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         permissionsGroup->setExclusive(true);
 
         if(_isFile){
-            checked = perm.testFlag(SharePermissionRead) &&
-                    perm.testFlag(SharePermissionUpdate) &&
-                    perm.testFlag(SharePermissionDelete);
+            checked = perm & (SharePermissionRead & SharePermissionUpdate);
             _allowEditingLinkAction = permissionsGroup->addAction(tr("Allow Editing"));
             _allowEditingLinkAction->setCheckable(true);
             _allowEditingLinkAction->setChecked(checked);
 
         } else {
-            checked = perm.testFlag(SharePermissionRead);
+            checked = perm & SharePermissionRead;
             _readOnlyLinkAction = permissionsGroup->addAction(tr("Read only"));
             _readOnlyLinkAction->setCheckable(true);
             _readOnlyLinkAction->setChecked(checked);
 
-            checked = perm.testFlag(SharePermissionRead) &&
-                    perm.testFlag(SharePermissionCreate) &&
-                    perm.testFlag(SharePermissionUpdate) &&
-                    perm.testFlag(SharePermissionDelete);
+            checked = perm & (SharePermissionRead &
+                              SharePermissionCreate &
+                              SharePermissionUpdate &
+                              SharePermissionDelete);
             _allowUploadEditingLinkAction = permissionsGroup->addAction(tr("Allow Upload && Editing"));
             _allowUploadEditingLinkAction->setCheckable(true);
             _allowUploadEditingLinkAction->setChecked(checked);
 
-            checked = perm.testFlag(SharePermissionCreate);
+            checked = perm & SharePermissionCreate;
             _allowUploadLinkAction = permissionsGroup->addAction(tr("File Drop (Upload Only)"));
             _allowUploadLinkAction->setCheckable(true);
             _allowUploadLinkAction->setChecked(checked);
@@ -509,7 +507,7 @@ void ShareLinkWidget::slotLinkContextMenuActionTriggered(QAction *action)
         _linkShare->setPermissions(perm);
 
     } else if (action == _allowEditingLinkAction && state) {
-        perm |= SharePermissionDelete | SharePermissionUpdate;
+        perm |= SharePermissionUpdate;
         _linkShare->setPermissions(perm);
 
     } else if (action == _allowUploadEditingLinkAction && state) {
