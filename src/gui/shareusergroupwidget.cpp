@@ -12,9 +12,9 @@
  * for more details.
  */
 
-#include "shareusergroupwidget.h"
 #include "ui_shareusergroupwidget.h"
 #include "ui_shareuserline.h"
+#include "shareusergroupwidget.h"
 #include "account.h"
 #include "folderman.h"
 #include "folder.h"

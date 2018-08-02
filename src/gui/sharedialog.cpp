@@ -12,11 +12,11 @@
  * for more details.
  */
 
+#include "ui_sharedialog.h"
 #include "sharedialog.h"
 #include "sharee.h"
 #include "sharelinkwidget.h"
 #include "shareusergroupwidget.h"
-#include "ui_sharedialog.h"
 
 #include "account.h"
 #include "accountstate.h"

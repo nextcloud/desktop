@@ -13,8 +13,8 @@
  * for more details.
  */
 
-#include "sharelinkwidget.h"
 #include "ui_sharelinkwidget.h"
+#include "sharelinkwidget.h"
 #include "account.h"
 #include "capabilities.h"
 
