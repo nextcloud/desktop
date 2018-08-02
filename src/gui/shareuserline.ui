@@ -175,7 +175,7 @@
      </property>
      <property name="icon">
       <iconset resource="../../client.qrc">
-       <normaloff>:/client/resources/more.png</normaloff>:/client/resources/more.png</iconset>
+       <normaloff>:/client/resources/more.svg</normaloff>:/client/resources/more.svg</iconset>
      </property>
     </widget>
    </item>
