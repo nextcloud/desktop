@@ -20,6 +20,7 @@ set(client_UI_SRCS
     folderwizardsourcepage.ui
     folderwizardtargetpage.ui
     generalsettings.ui
+    legalnotice.ui
     ignorelisteditor.ui
     networksettings.ui
     activitywidget.ui
@@ -56,6 +57,7 @@ set(client_SRCS
     folderwatcher.cpp
     folderwizard.cpp
     generalsettings.cpp
+    legalnotice.cpp
     ignorelisteditor.cpp
     lockwatcher.cpp
     logbrowser.cpp

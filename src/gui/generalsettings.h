@@ -47,6 +47,7 @@ private slots:
     void slotUpdateInfo();
     void slotIgnoreFilesEditor();
     void loadMiscSettings();
+    void slotShowLegalNotice();
 
 private:
     Ui::GeneralSettings *_ui;
