@@ -386,19 +386,16 @@ void ShareLinkWidget::setPassword(const QString &password)
 
 void ShareLinkWidget::slotPasswordSet()
 {
-    auto share = selectedShare();
-    if (sender() != share.data())
+    if (!_linkShare)
         return;
 
     _pi_password->stopAnimation();
-    _ui->checkBox_password->setEnabled(true);
     _ui->lineEdit_password->setText(QString());
-    if (share->isPasswordSet()) {
+    if (_linkShare->isPasswordSet()) {
         _ui->lineEdit_password->setPlaceholderText("********");
         _ui->lineEdit_password->setEnabled(true);
     } else {
         _ui->lineEdit_password->setPlaceholderText(QString());
-        _ui->lineEdit_password->setEnabled(false);
     }
 
     /*
