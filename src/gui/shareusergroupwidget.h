@@ -24,6 +24,7 @@
 #include <QList>
 #include <QVector>
 #include <QTimer>
+#include <qscrollarea.h>
 
 class QAction;
 class QCompleter;
@@ -61,6 +62,9 @@ public:
         QWidget *parent = 0);
     ~ShareUserGroupWidget();
 
+signals:
+    void togglePublicLinkShare(bool);
+
 public slots:
     void getShares();
 
@@ -85,6 +89,7 @@ private slots:
 
 private:
     Ui::ShareUserGroupWidget *_ui;
+    QScrollArea *_parentScrollArea;
     AccountPtr _account;
     QString _sharePath;
     QString _localPath;
@@ -141,8 +146,10 @@ private:
     QSharedPointer<Share> _share;
     bool _isFile;
 
+    // _permissionEdit is a checkbox
+    QAction *_permissionReshare;
     QAction *_permissionCreate;
-    QAction *_permissionUpdate;
+    QAction *_permissionChange;
     QAction *_permissionDelete;
 };
 }
