@@ -80,7 +80,7 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>250</width>
+         <width>330</width>
          <height>26</height>
         </size>
        </property>
@@ -99,7 +99,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QToolButton" name="permissionToolButton">
+      <widget class="QPushButton" name="confirmShare">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -108,30 +108,22 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>98</width>
-         <height>26</height>
+         <width>20</width>
+         <height>0</height>
         </size>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="layoutDirection">
-        <enum>Qt::LeftToRight</enum>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(255, 255, 255);</string>
        </property>
        <property name="text">
-        <string>can edit</string>
+        <string/>
        </property>
-       <property name="popupMode">
-        <enum>QToolButton::MenuButtonPopup</enum>
+       <property name="icon">
+        <iconset resource="../../client.qrc">
+         <normaloff>:/client/resources/confirm.svg</normaloff>:/client/resources/confirm.svg</iconset>
        </property>
-       <property name="toolButtonStyle">
-        <enum>Qt::ToolButtonTextOnly</enum>
-       </property>
-       <property name="arrowType">
-        <enum>Qt::DownArrow</enum>
+       <property name="flat">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -217,6 +209,8 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="../../client.qrc"/>
+ </resources>
  <connections/>
 </ui>

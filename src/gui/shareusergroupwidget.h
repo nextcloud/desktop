@@ -146,9 +146,10 @@ private:
     QSharedPointer<Share> _share;
     bool _isFile;
 
-    QAction *_permissionShare;
+    // _permissionEdit is a checkbox
+    QAction *_permissionReshare;
     QAction *_permissionCreate;
-    QAction *_permissionUpdate;
+    QAction *_permissionChange;
     QAction *_permissionDelete;
 };
 }
