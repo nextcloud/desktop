@@ -55,30 +55,25 @@ public:
         QWidget *parent = 0);
     ~ShareLinkWidget();
     void getShares();
+    void toggleButton(bool show);
 
 private slots:
     void slotSharesFetched(const QList<QSharedPointer<Share>> &shares);
-    void slotShareSelectionChanged();
+    //void slotShareSelectionChanged();
 
-    void slotShareNameEntered();
-    void slotDeleteShareClicked();
-    void slotCheckBoxPasswordClicked();
-    void slotCheckBoxExpireClicked();
-    void slotPasswordReturnPressed();
-    void slotPermissionsClicked();
+    void slotCreateorDeleteShareLink(bool checked);
+    void slotCreatePassword();
+
     void slotExpireDateChanged(const QDate &date);
-    void slotPasswordChanged(const QString &newText);
-    void slotNameEdited(QTableWidgetItem *item);
 
     void slotContextMenuButtonClicked();
     void slotLinkContextMenuActionTriggered(QAction *action);
 
     void slotDeleteShareFetched();
-    void slotCreateShareFetched(const QSharedPointer<LinkShare> &share);
+    void slotCreateShareFetched();
     void slotCreateShareRequiresPassword(const QString &message);
     void slotPasswordSet();
-    void slotExpireSet();
-    void slotPermissionsSet();
+    //void slotExpireSet();
 
     void slotServerError(int code, const QString &message);
     void slotPasswordSetError(int code, const QString &message);
@@ -86,23 +81,24 @@ private slots:
 private:
     void displayError(const QString &errMsg);
 
+    void togglePasswordOptions(bool enable);
     void setPassword(const QString &password);
+
+    void toggleExpireDateOptions(bool enable);
     void setExpireDate(const QDate &date);
 
     void copyShareLink(const QUrl &url);
-    void emailShareLink(const QUrl &url);
-    void openShareLink(const QUrl &url);
 
     /** Confirm with the user and then delete the share */
-    void confirmAndDeleteShare(const QSharedPointer<LinkShare> &share);
+    void confirmAndDeleteShare();
 
     /** Retrieve a share's name, accounting for _namesSupported */
-    QString shareName(const LinkShare &share) const;
+    QString shareName() const;
 
     /**
      * Retrieve the selected share, returning 0 if none.
      */
-    QSharedPointer<LinkShare> selectedShare() const;
+    //QSharedPointer<LinkShare> selectedShare() const;
 
     Ui::ShareLinkWidget *_ui;
     AccountPtr _account;
@@ -116,28 +112,22 @@ private:
     QProgressIndicator *_pi_editing;
 
     ShareManager *_manager;
+    QSharedPointer<LinkShare> _linkShare;
 
     bool _isFile;
     bool _passwordRequired;
     bool _expiryRequired;
     bool _namesSupported;
 
-    // For maintaining the selection and temporary ui state
-    // when getShares() finishes, but the selection didn't
-    // change.
-    QString _selectedShareId;
-
-    // When a new share is created, we want to select it
-    // the next time getShares() finishes. This stores its id.
-    QString _newShareOverrideSelectionId;
-
-    QMenu *_linkContextMenu = nullptr;
-    QAction *_deleteLinkAction = nullptr;
-    QAction *_openLinkAction = nullptr;
-    QAction *_copyLinkAction = nullptr;
-    QAction *_copyDirectLinkAction = nullptr;
-    QAction *_emailLinkAction = nullptr;
-    QAction *_emailDirectLinkAction = nullptr;
+    QMenu *_linkContextMenu;
+    QAction *_copyLinkAction;
+    QAction *_readOnlyLinkAction;
+    QAction *_allowEditingLinkAction;
+    QAction *_allowUploadEditingLinkAction;
+    QAction *_allowUploadLinkAction;
+    QAction *_passwordProtectLinkAction;
+    QAction *_expirationDateLinkAction;
+    QAction *_unshareLinkAction;
 };
 }
 
