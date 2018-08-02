@@ -69,9 +69,11 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     _pi_password = new QProgressIndicator();
     _pi_date = new QProgressIndicator();
     _pi_editing = new QProgressIndicator();
-    _ui->verticalLayout->addWidget(_pi_create, Qt::AlignCenter);
-    _ui->verticalLayout->addWidget(_pi_password, Qt::AlignCenter);
-    _ui->verticalLayout->addWidget(_pi_editing, Qt::AlignCenter);
+
+// TODO: where to loading should show up?
+//    _ui->verticalLayout->addWidget(_pi_create, Qt::AlignCenter);
+//    _ui->verticalLayout->addWidget(_pi_password, Qt::AlignCenter);
+//    _ui->verticalLayout->addWidget(_pi_editing, Qt::AlignCenter);
 
     connect(_ui->enableShareLink, &QCheckBox::toggled, this, &ShareLinkWidget::slotCreateorDeleteShareLink);
     connect(_ui->lineEdit_password, &QLineEdit::returnPressed, this, &ShareLinkWidget::slotCreatePassword);
@@ -471,6 +473,7 @@ void ShareLinkWidget::confirmAndDeleteShare()
     connect(messageBox, &QMessageBox::finished, this,
         [messageBox, yesButton, this]() {
         if (messageBox->clickedButton() == yesButton){
+            // TODO: dlete is not hapenning correctly
             this->_linkShare->deleteShare();
             this->_ui->enableShareLink->setChecked(false);
             this->_ui->shareLinkToolButton->setEnabled(false);

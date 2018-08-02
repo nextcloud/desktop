@@ -87,7 +87,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     connect(_manager, &ShareManager::shareCreated, this, &ShareUserGroupWidget::getShares);
     connect(_manager, &ShareManager::serverError, this, &ShareUserGroupWidget::displayError);
     connect(_ui->shareeLineEdit, &QLineEdit::returnPressed, this, &ShareUserGroupWidget::slotLineEditReturn);
-    //connect(_ui->privateLinkText, &QLabel::linkActivated, this, &ShareUserGroupWidget::slotPrivateLinkShare);
+    //TODO connect(_ui->privateLinkText, &QLabel::linkActivated, this, &ShareUserGroupWidget::slotPrivateLinkShare);
 
     // By making the next two QueuedConnections we can override
     // the strings the completer sets on the line edit.
@@ -104,11 +104,11 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     _completionTimer.setSingleShot(true);
     _completionTimer.setInterval(600);
 
-    //setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Expanding);
     _ui->errorLabel->hide();
 
+    // TODO Progress Indicator where should it go?
     // Setup the sharee search progress indicator
-    _ui->shareeHorizontalLayout->addWidget(&_pi_sharee);
+    //_ui->shareeHorizontalLayout->addWidget(&_pi_sharee);
 
     _parentScrollArea = parentWidget()->findChild<QScrollArea*>("scrollArea");
 }
@@ -190,7 +190,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     int x = 0;
 
     foreach (const auto &share, shares) {
-        // We don't handle link shares
+        // We don't handle link shares, only TypeUser or TypeGroup
         if (share->getShareType() == Share::TypeLink) {
             continue;
         }
@@ -277,6 +277,8 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex &index)
      */
     auto viewPort = _parentScrollArea->widget();
     auto layout = qobject_cast<QVBoxLayout *>(viewPort->layout());
+
+// TODO Progress Indicator where should it go?
 //    auto indicator = new QProgressIndicator(viewPort);
 //    indicator->startAnimation();
 //    if (layout->count() == 1) {
@@ -374,8 +376,8 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
 
     // adds permissions
     // can edit permission
-    bool enabled = maxSharingPermissions & (SharePermissionRead | SharePermissionUpdate);
-    if(!_isFile) enabled = enabled & (SharePermissionCreate | SharePermissionDelete);
+    bool enabled = maxSharingPermissions & (SharePermissionRead & SharePermissionUpdate);
+    if(!_isFile) enabled = enabled & (SharePermissionCreate & SharePermissionDelete);
     _ui->permissionsEdit->setEnabled(enabled);
     connect(_ui->permissionsEdit, &QAbstractButton::clicked, this, &ShareUserLine::slotEditPermissionsChanged);
 

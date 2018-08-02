@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>124</height>
+    <height>126</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="minimumSize">
    <size>
     <width>350</width>
-    <height>0</height>
+    <height>110</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -33,7 +33,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>6</number>
+    <number>10</number>
    </property>
    <property name="sizeConstraint">
     <enum>QLayout::SetFixedSize</enum>
@@ -99,7 +99,7 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>240</width>
+          <width>242</width>
           <height>26</height>
          </size>
         </property>
@@ -137,7 +137,7 @@
        <widget class="QCheckBox" name="enableShareLink">
         <property name="minimumSize">
          <size>
-          <width>0</width>
+          <width>82</width>
           <height>26</height>
          </size>
         </property>
@@ -496,7 +496,7 @@
       <bool>true</bool>
      </property>
      <property name="margin">
-      <number>5</number>
+      <number>0</number>
      </property>
      <property name="indent">
       <number>0</number>

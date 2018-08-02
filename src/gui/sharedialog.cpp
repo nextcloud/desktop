@@ -101,6 +101,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     this->setWindowTitle(tr("%1 Sharing").arg(Theme::instance()->appNameGUI()));
 
     if (!accountState->account()->capabilities().shareAPI()) {
+        // TODO do we want to display it?
         //auto label = new QLabel(tr("The server does not allow sharing"));
         //label->setWordWrap(true);
         //label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -114,6 +115,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
         job->start();
     }
 
+//TODO Progress Indicator where should it go?
 //    _progressIndicator = new QProgressIndicator(this);
 //    _progressIndicator->startAnimation();
 //    _progressIndicator->setToolTip(tr("Retrieving maximum possible sharing permissions from server..."));
