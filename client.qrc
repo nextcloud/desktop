@@ -35,6 +35,7 @@
         <file>resources/public-white.svg</file>
         <file>resources/public.svg</file>
         <file>resources/confirm.svg</file>
+        <file>resources/copy.svg</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>
