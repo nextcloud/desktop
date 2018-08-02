@@ -1392,7 +1392,9 @@ Hvis synkroniseringen fortsetter som normalt, vil alle filene dine bli overskrev
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation type="unfinished"/>
+        <translation>Oppdateringskanalen bestemmer hvilke klientoppdateringer som skal tilbys for installasjon. Den &quot;stabile&quot; kanalen inneholder bare oppgraderinger som betraktes som pålitelige, mens versjonene i &quot;beta&quot; -kanalen kan inneholde nyere funksjoner og feilrettinger, men har ennå ikke blitt testet grundig.
+
+Vær oppmerksom på at dette bare velger hvor oppgraderinger kommer ifra, og at nedgraderinger ikke er mulig. Så å gå tilbake fra beta-kanalen til den stabile kanalen, kan ikke gjøres umiddelbart og betyr å vente på en stabil versjon som er nyere enn den nåværende installerte betaen versjon.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="187"/>
@@ -2265,12 +2267,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="269"/>
         <source>Enable experimental mode</source>
-        <translation type="unfinished"/>
+        <translation>Aktiver eksperimentelt modus</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="270"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Hold deg trygg</translation>
     </message>
 </context>
 <context>
