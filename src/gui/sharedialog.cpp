@@ -210,7 +210,7 @@ void ShareDialog::showSharingUi()
         _linkWidget->getShares();
 
         if (_startPage == ShareDialogStartPage::PublicLinks)
-            _ui->shareWidgets->setCurrentWidget(_linkWidget);
+            _ui->verticalLayout->insertWidget(3, _linkWidget);
     }
 }
 
