@@ -1,0 +1,10 @@
+"welcome_text" = "FUSE for macOS entfernen?";
+"welcome_message" = "Falls FUSE for macOS mit Hilfe eines Paket Managers (z.B. Homebrew, MacPorts) installiert wurde, folgen Sie bitte den Anweisungen des Paket Managers, um FUSE for macOS zu entfernen.\n\nEs wird empfohlen den Mac nach Abschluss der Deinstallation neu zu starten. Möchten Sie fortfahren?";
+"welcome_no" = "Nein";
+"welcome_yes" = "Ja";
+
+"uninstaller_successful_text" = "Deinstallation erfolgreich";
+"uninstaller_successful_message" = "FUSE for macOS wurde erfolgreich entfernt.";
+
+"uninstaller_failed_text" = "Deinstallation fehlgeschlagen";
+"uninstaller_failed_message" = "Bei der Deinstallation von FUSE for macOS ist ein unbekannter Fehler aufgetreten.";

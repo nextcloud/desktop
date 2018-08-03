@@ -141,12 +141,18 @@ IF( APPLE )
     list(REMOVE_ITEM client_SRCS settingsdialog.cpp)
     list(APPEND client_SRCS socketapisocket_mac.mm)
     list(APPEND client_SRCS systray.mm)
+    list(APPEND client_SRCS LoopbackFS.cpp)
+    list(APPEND client_SRCS fileManager.mm)
+    list(APPEND client_SRCS LoopbackController.cpp)
 
     if(SPARKLE_FOUND)
        # Define this, we need to check in updater.cpp
        add_definitions( -DHAVE_SPARKLE )
        list(APPEND updater_SRCS updater/sparkleupdater_mac.mm)
    endif()
+   
+   add_definitions( -D_DARWIN_USE_64_BIT_INODE )
+   add_definitions( -D_FILE_OFFSET_BITS=64 )
 ENDIF()
 
 IF( NOT WIN32 AND NOT APPLE )

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>childItems</key>
+		<array>
+			<dict>
+				<key>childItems</key>
+				<array/>
+				<key>choiceDescription</key>
+				<string>Installs the FUSE for macOS core components, including the FUSE kernel extension, the shared library libosxfuse and OSXFUSE.framework.</string>
+				<key>choiceIdentifier</key>
+				<string>com.github.osxfuse.pkg.Core</string>
+				<key>choiceIsEnabled</key>
+				<false/>
+				<key>choiceIsSelected</key>
+				<integer>1</integer>
+				<key>choiceIsVisible</key>
+				<true/>
+				<key>choiceSizeInKilobytes</key>
+				<integer>4540</integer>
+				<key>choiceTitle</key>
+				<string>FUSE for macOS Core Components</string>
+				<key>pathsOfActivePackagesInChoice</key>
+				<array>
+					<string>file://localhost/Users/JesusDeloya/clarodrive-desktop/admin/osx/fuse/FUSE%20for%20macOS%203.8.1.pkg#Core.pkg</string>
+				</array>
+			</dict>
+			<dict>
+				<key>childItems</key>
+				<array/>
+				<key>choiceDescription</key>
+				<string>Installs the FUSE for macOS Preference Pane which is used to download and install updates or remove FUSE for macOS.</string>
+				<key>choiceIdentifier</key>
+				<string>com.github.osxfuse.pkg.PrefPane</string>
+				<key>choiceIsEnabled</key>
+				<true/>
+				<key>choiceIsSelected</key>
+				<integer>1</integer>
+				<key>choiceIsVisible</key>
+				<true/>
+				<key>choiceSizeInKilobytes</key>
+				<integer>2669</integer>
+				<key>choiceTitle</key>
+				<string>FUSE for macOS Preference Pane</string>
+				<key>pathsOfActivePackagesInChoice</key>
+				<array>
+					<string>file://localhost/Users/JesusDeloya/clarodrive-desktop/admin/osx/fuse/FUSE%20for%20macOS%203.8.1.pkg#PrefPane.pkg</string>
+				</array>
+			</dict>
+			<dict>
+				<key>childItems</key>
+				<array/>
+				<key>choiceDescription</key>
+				<string>Installs the compatibility layer for legacy MacFUSE file systems, that have not been ported to FUSE for macOS.</string>
+				<key>choiceIdentifier</key>
+				<string>com.github.osxfuse.pkg.MacFUSE</string>
+				<key>choiceIsEnabled</key>
+				<true/>
+				<key>choiceIsSelected</key>
+				<integer>0</integer>
+				<key>choiceIsVisible</key>
+				<true/>
+				<key>choiceSizeInKilobytes</key>
+				<integer>1743</integer>
+				<key>choiceTitle</key>
+				<string>MacFUSE Compatibility Layer</string>
+				<key>pathsOfActivePackagesInChoice</key>
+				<array>
+					<string>file://localhost/Users/JesusDeloya/clarodrive-desktop/admin/osx/fuse/FUSE%20for%20macOS%203.8.1.pkg#MacFUSE.pkg</string>
+				</array>
+			</dict>
+		</array>
+		<key>choiceIdentifier</key>
+		<string>__ROOT_CHOICE_IDENT_FUSEformacOS</string>
+		<key>choiceIsEnabled</key>
+		<true/>
+		<key>choiceIsSelected</key>
+		<integer>1</integer>
+		<key>choiceIsVisible</key>
+		<true/>
+		<key>choiceSizeInKilobytes</key>
+		<integer>0</integer>
+		<key>choiceTitle</key>
+		<string>FUSE for macOS</string>
+		<key>pathsOfActivePackagesInChoice</key>
+		<array/>
+	</dict>
+</array>
+</plist>

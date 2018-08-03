@@ -296,6 +296,11 @@ void Application::slotAccountStateAdded(AccountState *accountState)
         _folderManager.data(), &FolderMan::slotServerVersionChanged);
 
     _gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
+    
+    // Mount the virtual FileSystem.
+    #if defined(Q_OS_MAC)
+    cont = new LoopbackController("/Users/JesusDeloya/Pruebas_fuse", "/Volumes/loop", accountState, this);
+    #endif
 }
 
 void Application::slotCleanup()
