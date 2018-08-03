@@ -31,6 +31,9 @@
 #include "progressdispatcher.h"
 #include "clientproxy.h"
 #include "folderman.h"
+#if defined(Q_OS_MAC)
+#include "LoopbackController.h"
+#endif
 
 class QMessageBox;
 class QSystemTrayIcon;
@@ -100,6 +103,9 @@ private:
     QPointer<ownCloudGui> _gui;
 
     Theme *_theme;
+    #if defined(Q_OS_MAC)
+        LoopbackController *cont;
+    #endif
 
     bool _helpOnly;
     bool _versionOnly;

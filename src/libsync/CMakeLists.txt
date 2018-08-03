@@ -19,6 +19,11 @@ if(SPARKLE_FOUND AND NOT BUILD_LIBRARIES_ONLY)
     list (APPEND OS_SPECIFIC_LINK_LIBRARIES ${SPARKLE_LIBRARY})
 endif()
 
+if(FUSE_FOUND AND NOT BUILD_LIBRARIES_ONLY)
+    message("Adding FUSE Library")
+    list (APPEND OS_SPECIFIC_LINK_LIBRARIES ${FUSE_LIBRARIES})
+endif()
+
 set(libsync_SRCS
     account.cpp
     wordlist.cpp
