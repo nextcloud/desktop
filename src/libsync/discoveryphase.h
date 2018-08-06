@@ -67,6 +67,7 @@ struct LocalInfo
     bool isDirectory = false;
     bool isHidden = false;
     bool isVirtualFile = false;
+    bool isSymLink = false;
     bool isValid() const { return !name.isNull(); }
 };
 

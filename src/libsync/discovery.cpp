@@ -125,6 +125,8 @@ void ProcessDirectoryJob::start()
         }
         errno = 0;
         while (auto dirent = csync_vio_local_readdir(dh)) {
+            if (dirent->type == ItemTypeSkip)
+                continue;
             LocalInfo i;
             static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
             ASSERT(codec);
@@ -145,8 +147,7 @@ void ProcessDirectoryJob::start()
             i.inode = dirent->inode;
             i.isDirectory = dirent->type == ItemTypeDirectory;
             i.isHidden = dirent->is_hidden;
-            if (dirent->type != ItemTypeDirectory && dirent->type != ItemTypeFile)
-                qFatal("FIXME:  NEED TO CARE ABOUT THE OTHER STUFF ");
+            i.isSymLink = dirent->type == ItemTypeSoftLink;
             _localEntries.push_back(i);
         }
         if (errno != 0) {
@@ -234,7 +235,7 @@ void ProcessDirectoryJob::process()
         // local stat function.
         // Recall file shall not be ignored (#4420)
         bool isHidden = localEntry.isHidden || (f[0] == '.' && f != QLatin1String(".sys.admin#recall#"));
-        if (handleExcluded(path._target, localEntry.isDirectory || serverEntry.isDirectory, isHidden))
+        if (handleExcluded(path._target, localEntry.isDirectory || serverEntry.isDirectory, isHidden, localEntry.isSymLink))
             continue;
 
         if (_queryServer != ParentNotChanged && _queryLocal != ParentNotChanged && !_discoveryData->_statedb->getFileRecord(path._original, &record)) {
@@ -251,7 +252,7 @@ void ProcessDirectoryJob::process()
     progress();
 }
 
-bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, bool isHidden)
+bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, bool isHidden, bool isSymlink)
 {
     // FIXME! call directly, without char* conversion
     auto excluded = _discoveryData->_excludes->csyncTraversalMatchFun()(path.toUtf8(), isDirectory ? ItemTypeDirectory : ItemTypeFile);
@@ -283,7 +284,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, 
         }
     }
 
-    if (excluded == CSYNC_NOT_EXCLUDED /* FIXME && item->_type != ItemTypeSoftLink */) {
+    if (excluded == CSYNC_NOT_EXCLUDED && !isSymlink) {
         return false;
     } else if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED || excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
         return true;
@@ -293,70 +294,70 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, 
     item->_file = path;
     item->_instruction = CSYNC_INSTRUCTION_IGNORE;
 
-#if 0
-    FIXME: soft links
-    if( fs->type == ItemTypeSoftLink ) {
-        fs->error_status = CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK; /* Symbolic links are ignored. */
-#endif
-    switch (excluded) {
-    case CSYNC_NOT_EXCLUDED:
-    case CSYNC_FILE_SILENTLY_EXCLUDED:
-    case CSYNC_FILE_EXCLUDE_AND_REMOVE:
-        qFatal("These were handled earlier");
-    case CSYNC_FILE_EXCLUDE_LIST:
-        item->_errorString = tr("File is listed on the ignore list.");
-        break;
-    case CSYNC_FILE_EXCLUDE_INVALID_CHAR:
-        if (item->_file.endsWith('.')) {
-            item->_errorString = tr("File names ending with a period are not supported on this file system.");
-        } else {
-            char invalid = '\0';
-            foreach (char x, QByteArray("\\:?*\"<>|")) {
-                if (item->_file.contains(x)) {
-                    invalid = x;
-                    break;
+    if (isSymlink) {
+        /* Symbolic links are ignored. */
+        item->_errorString = tr("Symbolic links are not supported in syncing.");
+    } else {
+        switch (excluded) {
+        case CSYNC_NOT_EXCLUDED:
+        case CSYNC_FILE_SILENTLY_EXCLUDED:
+        case CSYNC_FILE_EXCLUDE_AND_REMOVE:
+            qFatal("These were handled earlier");
+        case CSYNC_FILE_EXCLUDE_LIST:
+            item->_errorString = tr("File is listed on the ignore list.");
+            break;
+        case CSYNC_FILE_EXCLUDE_INVALID_CHAR:
+            if (item->_file.endsWith('.')) {
+                item->_errorString = tr("File names ending with a period are not supported on this file system.");
+            } else {
+                char invalid = '\0';
+                foreach (char x, QByteArray("\\:?*\"<>|")) {
+                    if (item->_file.contains(x)) {
+                        invalid = x;
+                        break;
+                    }
+                }
+                if (invalid) {
+                    item->_errorString = tr("File names containing the character '%1' are not supported on this file system.")
+                                             .arg(QLatin1Char(invalid));
+                }
+                if (isInvalidPattern) {
+                    item->_errorString = tr("File name contains at least one invalid character");
+                } else {
+                    item->_errorString = tr("The file name is a reserved name on this file system.");
                 }
             }
-            if (invalid) {
-                item->_errorString = tr("File names containing the character '%1' are not supported on this file system.")
-                                         .arg(QLatin1Char(invalid));
-            }
-            if (isInvalidPattern) {
-                item->_errorString = tr("File name contains at least one invalid character");
-            } else {
-                item->_errorString = tr("The file name is a reserved name on this file system.");
-            }
-        }
-        break;
-    case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
-        item->_errorString = tr("Filename contains trailing spaces.");
-        break;
-    case CSYNC_FILE_EXCLUDE_LONG_FILENAME:
-        item->_errorString = tr("Filename is too long.");
-        break;
-    case CSYNC_FILE_EXCLUDE_HIDDEN:
-        item->_errorString = tr("File/Folder is ignored because it's hidden.");
-        break;
-    case CSYNC_FILE_EXCLUDE_STAT_FAILED:
-        item->_errorString = tr("Stat failed.");
-        break;
-    case CSYNC_FILE_EXCLUDE_CONFLICT:
-        item->_errorString = tr("Conflict: Server version downloaded, local copy renamed and not uploaded.");
-        item->_status = SyncFileItem::Conflict;
+            break;
+        case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
+            item->_errorString = tr("Filename contains trailing spaces.");
+            break;
+        case CSYNC_FILE_EXCLUDE_LONG_FILENAME:
+            item->_errorString = tr("Filename is too long.");
+            break;
+        case CSYNC_FILE_EXCLUDE_HIDDEN:
+            item->_errorString = tr("File/Folder is ignored because it's hidden.");
+            break;
+        case CSYNC_FILE_EXCLUDE_STAT_FAILED:
+            item->_errorString = tr("Stat failed.");
+            break;
+        case CSYNC_FILE_EXCLUDE_CONFLICT:
+            item->_errorString = tr("Conflict: Server version downloaded, local copy renamed and not uploaded.");
+            item->_status = SyncFileItem::Conflict;
 #if 0 // TODO: port this
-        if (_propagator->account()->capabilities().uploadConflictFiles()) {
-            // For uploaded conflict files, files with no action performed on them should
-            // be displayed: but we mustn't overwrite the instruction if something happens
-            // to the file!
-            if (remote && item->_instruction == CSYNC_INSTRUCTION_NONE) {
-                item->_errorString = tr("Unresolved conflict.");
-                item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-            }
+            if (_propagator->account()->capabilities().uploadConflictFiles()) {
+                // For uploaded conflict files, files with no action performed on them should
+                // be displayed: but we mustn't overwrite the instruction if something happens
+                // to the file!
+                if (remote && item->_instruction == CSYNC_INSTRUCTION_NONE) {
+                    item->_errorString = tr("Unresolved conflict.");
+                    item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+                }
 #endif
         break;
-    case CSYNC_FILE_EXCLUDE_CANNOT_ENCODE: // FIXME!
-        item->_errorString = tr("The filename cannot be encoded on your file system.");
-        break;
+        case CSYNC_FILE_EXCLUDE_CANNOT_ENCODE: // FIXME!
+            item->_errorString = tr("The filename cannot be encoded on your file system.");
+            break;
+        }
     }
 
     _childIgnored = true;
