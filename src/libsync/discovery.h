@@ -73,7 +73,7 @@ private:
     };
     void process();
     // return true if the file is excluded
-    bool handleExcluded(const QString &path, bool isDirectory, bool isHidden);
+    bool handleExcluded(const QString &path, bool isDirectory, bool isHidden, bool isSymlink);
     void processFile(PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &dbEntry);
     // Return false if there is an error and that a directory must not be recursively be taken
     bool checkPremission(const SyncFileItemPtr &item);
