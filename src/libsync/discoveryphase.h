@@ -40,6 +40,7 @@ enum class LocalDiscoveryStyle {
 
 class Account;
 class SyncJournalDb;
+class ProcessDirectoryJob;
 
 
 struct RemoteInfo
@@ -141,13 +142,16 @@ public:
     bool checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp);
 
     QMap<QString, SyncFileItemPtr> _deletedItem;
-    QMap<QString, QPointer<QObject>> _queuedDeletedDirectories;
+    QMap<QString, ProcessDirectoryJob *> _queuedDeletedDirectories;
     QMap<QString, QString> _renamedItems; // map source -> destinations
     QString adjustRenamedPath(const QString &original) const;
 
+    void startJob(ProcessDirectoryJob *);
+
 signals:
     void fatalError(const QString &errorString);
-    void folderDiscovered(bool local, QString folderUrl);
+    void itemDiscovered(const SyncFileItemPtr &item);
+    void finished();
 
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);

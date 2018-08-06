@@ -223,7 +223,6 @@ private:
     QString _remotePath;
     QString _remoteRootEtag;
     SyncJournalDb *_journal;
-    QPointer<ProcessDirectoryJob> _discoveryJob;
     QScopedPointer<DiscoveryPhase> _discoveryPhase;
     QSharedPointer<OwncloudPropagator> _propagator;
 

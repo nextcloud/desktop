@@ -46,7 +46,6 @@ public:
     {
     }
     void start();
-    void abort();
 
     SyncFileItemPtr _dirItem;
 
@@ -102,7 +101,6 @@ private:
     bool _childIgnored = false; // The directory contains ignored item that would prevent deletion
 
 signals:
-    void itemDiscovered(const SyncFileItemPtr &item);
     void finished();
 };
 }

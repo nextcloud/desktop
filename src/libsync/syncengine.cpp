@@ -533,33 +533,17 @@ void SyncEngine::startSync()
     _discoveryPhase->_invalidFilenamePattern = invalidFilenamePattern;
     _discoveryPhase->_ignoreHiddenFiles = ignoreHiddenFiles();
 
-    connect(_discoveryPhase.data(), &DiscoveryPhase::folderDiscovered, this, &SyncEngine::slotFolderDiscovered);
+    connect(_discoveryPhase.data(), &DiscoveryPhase::itemDiscovered, this, &SyncEngine::slotItemDiscovered);
     connect(_discoveryPhase.data(), &DiscoveryPhase::newBigFolder, this, &SyncEngine::newBigFolder);
     connect(_discoveryPhase.data(), &DiscoveryPhase::fatalError, this, [this](const QString &errorString) {
         syncError(errorString);
         finalize(false);
     });
+    connect(_discoveryPhase.data(), &DiscoveryPhase::finished, this, &SyncEngine::slotDiscoveryJobFinished);
 
-    _discoveryJob = new ProcessDirectoryJob(SyncFileItemPtr(), ProcessDirectoryJob::NormalQuery, ProcessDirectoryJob::NormalQuery,
-        _discoveryPhase.data(), this);
-    // FIXME! this sucks
-    auto runQueuedJob = [this](ProcessDirectoryJob *job, const auto &runQueuedJob) -> void {
-        connect(job, &ProcessDirectoryJob::finished, this, [this, job, runQueuedJob] {
-            if (job->_dirItem)
-                job->itemDiscovered(job->_dirItem);
-            sender()->deleteLater();
-            if (!_discoveryPhase->_queuedDeletedDirectories.isEmpty()) {
-                auto job = qobject_cast<ProcessDirectoryJob *>(_discoveryPhase->_queuedDeletedDirectories.take(_discoveryPhase->_queuedDeletedDirectories.firstKey()).data());
-                ASSERT(job);
-                runQueuedJob(job, runQueuedJob);
-            } else {
-                slotDiscoveryJobFinished();
-            }
-        });
-        connect(job, &ProcessDirectoryJob::itemDiscovered, this, &SyncEngine::slotItemDiscovered);
-        job->start();
-    };
-    runQueuedJob(_discoveryJob.data(), runQueuedJob);
+    auto discoveryJob = new ProcessDirectoryJob(SyncFileItemPtr(), ProcessDirectoryJob::NormalQuery, ProcessDirectoryJob::NormalQuery,
+        _discoveryPhase.data(), _discoveryPhase.data());
+    _discoveryPhase->startJob(discoveryJob);
 
     /*
      * FIXME
@@ -929,8 +913,9 @@ void SyncEngine::abort()
         qCInfo(lcEngine) << "Aborting sync";
 
     // Aborts the discovery phase job
-    if (_discoveryJob) {
-        _discoveryJob->abort();
+    if (_discoveryPhase) {
+        // Should take care to delete all children jobs
+        _discoveryPhase.take()->deleteLater();
     }
     // For the propagator
     if (_propagator) {
