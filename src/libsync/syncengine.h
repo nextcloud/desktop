@@ -278,7 +278,7 @@ private:
     int _backInTimeFiles;
 
     // If ignored files should be ignored
-    bool _ignore_hidden_files;
+    bool _ignore_hidden_files = false;
 
 
     int _uploadLimit;
