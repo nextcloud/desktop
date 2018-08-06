@@ -59,6 +59,7 @@ private slots:
     void testResume()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
         auto size = 30 * 1000 * 1000;
         fakeFolder.remoteModifier().insert("A/a0", size);
@@ -93,6 +94,7 @@ private slots:
         // This test's main goal is to test that the error string from the server is shown in the UI
 
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
         auto size = 3'500'000;
         fakeFolder.remoteModifier().insert("A/broken", size);
