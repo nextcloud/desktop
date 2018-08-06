@@ -336,6 +336,14 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
         return;
     } else if (item->_instruction == CSYNC_INSTRUCTION_NONE) {
         _hasNoneFiles = true;
+        if (_account->capabilities().uploadConflictFiles() && Utility::isConflictFile(item->_file)) {
+            // For uploaded conflict files, files with no action performed on them should
+            // be displayed: but we mustn't overwrite the instruction if something happens
+            // to the file!
+            item->_errorString = tr("Unresolved conflict.");
+            item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+            item->_status = SyncFileItem::Conflict;
+        }
         return;
     } else if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
         _hasRemoveFile = true;
@@ -651,9 +659,6 @@ void SyncEngine::slotDiscoveryJobFinished()
 */
     // Sort items per destination
     std::sort(_syncItems.begin(), _syncItems.end());
-
-    // make sure everything is allowed
-    // TODO checkForPermission(_syncItems);
 
     _localDiscoveryPaths.clear();
 

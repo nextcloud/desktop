@@ -195,7 +195,7 @@ void ProcessDirectoryJob::process()
     if (_queryServer == ParentNotChanged || _queryLocal == ParentNotChanged) {
         // fetch all the name from the DB
         auto pathU8 = _currentFolder._original.toUtf8();
-        // FIXME cache, and do that better (a query that do not get stuff recursively)
+        // FIXME do that better (a query that do not get stuff recursively ?)
         if (!_discoveryData->_statedb->getFilesBelowPath(pathU8, [&](const SyncJournalFileRecord &rec) {
                 if (rec._path.indexOf("/", pathU8.size() + 1) > 0)
                     return;
@@ -343,18 +343,8 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, 
         case CSYNC_FILE_EXCLUDE_CONFLICT:
             item->_errorString = tr("Conflict: Server version downloaded, local copy renamed and not uploaded.");
             item->_status = SyncFileItem::Conflict;
-#if 0 // TODO: port this
-            if (_propagator->account()->capabilities().uploadConflictFiles()) {
-                // For uploaded conflict files, files with no action performed on them should
-                // be displayed: but we mustn't overwrite the instruction if something happens
-                // to the file!
-                if (remote && item->_instruction == CSYNC_INSTRUCTION_NONE) {
-                    item->_errorString = tr("Unresolved conflict.");
-                    item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-                }
-#endif
         break;
-        case CSYNC_FILE_EXCLUDE_CANNOT_ENCODE: // FIXME!
+        case CSYNC_FILE_EXCLUDE_CANNOT_ENCODE:
             item->_errorString = tr("The filename cannot be encoded on your file system.");
             break;
         }
