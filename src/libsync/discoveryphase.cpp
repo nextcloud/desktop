@@ -162,30 +162,6 @@ void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
     job->start();
 }
 
-/* FIXME  (used to be called every time we were doing a propfind)
-void DiscoveryJob::update_job_update_callback(bool local,
-    const char *dirUrl,
-    void *userdata)
-{
-    auto *updateJob = static_cast<DiscoveryJob *>(userdata);
-    if (updateJob) {
-        // Don't wanna overload the UI
-        if (!updateJob->_lastUpdateProgressCallbackCall.isValid()
-         || updateJob->_lastUpdateProgressCallbackCall.elapsed() >= 200) {
-            updateJob->_lastUpdateProgressCallbackCall.start();
-        } else {
-            return;
-        }
-
-        QByteArray pPath(dirUrl);
-        int indx = pPath.lastIndexOf('/');
-        if (indx > -1) {
-            const QString path = QUrl::fromPercentEncoding(pPath.mid(indx + 1));
-            emit updateJob->folderDiscovered(local, path);
-        }
-    }
-}*/
-
 DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent)
     : QObject(parent)
     , _subPath(path)
