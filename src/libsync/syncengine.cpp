@@ -374,6 +374,10 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
     _needsUpdate = true;
     _syncItems.append(item);
     slotNewItem(item);
+
+    if (item->isDirectory()) {
+        slotFolderDiscovered(item->_etag.isEmpty(), item->_file);
+    }
 }
 
 void SyncEngine::startSync()
@@ -558,9 +562,15 @@ void SyncEngine::startSync()
 
 void SyncEngine::slotFolderDiscovered(bool local, const QString &folder)
 {
-    // Currently remote and local discovery never run in parallel
-    // Note: Currently this slot is only called occasionally! See the throttling
-    //       in DiscoveryJob::update_job_update_callback.
+    // Don't wanna overload the UI
+    if (!_lastUpdateProgressCallbackCall.isValid()) {
+        _lastUpdateProgressCallbackCall.start(); // first call
+    } else if (_lastUpdateProgressCallbackCall.elapsed() < 200) {
+        return;
+    } else {
+        _lastUpdateProgressCallbackCall.start();
+    }
+
     if (local) {
         _progressInfo->_currentDiscoveredLocalFolder = folder;
         _progressInfo->_currentDiscoveredRemoteFolder.clear();

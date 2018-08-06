@@ -284,6 +284,8 @@ private:
     /** Stores the time since a job touched a file. */
     QMultiMap<QElapsedTimer, QString> _touchedFiles;
 
+    QElapsedTimer _lastUpdateProgressCallbackCall;
+
     /** For clearing the _touchedFiles variable after sync finished */
     QTimer _clearTouchedFilesTimer;
 
