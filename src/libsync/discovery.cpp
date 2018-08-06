@@ -205,7 +205,8 @@ void ProcessDirectoryJob::process()
                 entriesNames.insert(name);
                 dbEntriesHash[name] = rec;
             })) {
-            qFatal("TODO: DB ERROR HANDLING");
+            dbError();
+            return;
         }
     }
 
@@ -237,7 +238,8 @@ void ProcessDirectoryJob::process()
             continue;
 
         if (_queryServer != ParentNotChanged && _queryLocal != ParentNotChanged && !_discoveryData->_statedb->getFileRecord(path._original, &record)) {
-            qFatal("TODO: DB ERROR HANDLING");
+            dbError();
+            return;
         }
         if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original)) {
             processBlacklisted(path, localEntry, record);
@@ -571,7 +573,8 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                     }
                 };
                 if (!_discoveryData->_statedb->getFileRecordsByFileId(serverEntry.fileId, renameCandidateProcessing)) {
-                    qFatal("TODO: Handle DB ERROR");
+                    dbError();
+                    return;
                 }
                 if (!item) {
                     return; // We went async
@@ -740,7 +743,8 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             // Check if it is a move
             OCC::SyncJournalFileRecord base;
             if (!_discoveryData->_statedb->getFileRecordByInode(localEntry.inode, &base)) {
-                qFatal("TODO: handle DB Errors");
+                dbError();
+                return;
             }
             bool isMove = base.isValid() && base._type == item->_type
                 && ((base._modtime == localEntry.modtime && base._fileSize == localEntry.size) || item->_type == ItemTypeDirectory);
@@ -1131,5 +1135,11 @@ void ProcessDirectoryJob::abort()
 {
     // This should delete all the sub jobs, and so abort everything
     deleteLater();
+}
+
+void ProcessDirectoryJob::dbError()
+{
+    _discoveryData->fatalError(tr("Error while reading the database"));
+    emit finished();
 }
 }

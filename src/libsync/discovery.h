@@ -81,6 +81,9 @@ private:
     void subJobFinished();
     void progress();
 
+    /** An DB operation failed */
+    void dbError();
+
     QVector<RemoteInfo> _serverEntries;
     QVector<LocalInfo> _localEntries;
     RemotePermissions _rootPermissions;
