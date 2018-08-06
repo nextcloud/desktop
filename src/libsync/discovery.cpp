@@ -139,7 +139,7 @@ void ProcessDirectoryJob::start()
                 item->_instruction = CSYNC_INSTRUCTION_IGNORE;
                 item->_status = SyncFileItem::NormalError;
                 item->_errorString = tr("Filename encoding is not valid");
-                emit itemDiscovered(item);
+                emit _discoveryData->itemDiscovered(item);
                 continue;
             }
             i.modtime = dirent->modtime;
@@ -351,7 +351,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, 
     }
 
     _childIgnored = true;
-    emit itemDiscovered(item);
+    emit _discoveryData->itemDiscovered(item);
     return true;
 }
 
@@ -558,11 +558,10 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                                     item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist,
                                     _discoveryData, this);
                                 job->_currentFolder = path;
-                                connect(job, &ProcessDirectoryJob::itemDiscovered, this, &ProcessDirectoryJob::itemDiscovered);
                                 connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
                                 _queuedJobs.push_back(job);
                             } else {
-                                emit itemDiscovered(item);
+                                emit _discoveryData->itemDiscovered(item);
                             }
                             _pendingAsyncJobs--;
                             progress();
@@ -815,7 +814,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                         isMove = false;
                     }
                 }
-                if (auto deleteJob = static_cast<ProcessDirectoryJob *>(_discoveryData->_queuedDeletedDirectories.value(originalPath).data())) {
+                if (auto deleteJob = _discoveryData->_queuedDeletedDirectories.value(originalPath)) {
                     oldEtag = deleteJob->_dirItem->_etag;
                     delete _discoveryData->_queuedDeletedDirectories.take(originalPath);
                 }
@@ -866,11 +865,10 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                         if (recurse && item->isDirectory()) {
                             auto job = new ProcessDirectoryJob(item, recurseQueryServer, NormalQuery, _discoveryData, this);
                             job->_currentFolder = path;
-                            connect(job, &ProcessDirectoryJob::itemDiscovered, this, &ProcessDirectoryJob::itemDiscovered);
                             connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
                             _queuedJobs.push_back(job);
                         } else {
-                            emit itemDiscovered(item);
+                            emit _discoveryData->itemDiscovered(item);
                         }
                         _pendingAsyncJobs--;
                         progress();
@@ -964,7 +962,6 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             job->setParent(_discoveryData);
             _discoveryData->_queuedDeletedDirectories[path._original] = job;
         } else {
-            connect(job, &ProcessDirectoryJob::itemDiscovered, this, &ProcessDirectoryJob::itemDiscovered);
             connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
             _queuedJobs.push_back(job);
         }
@@ -972,7 +969,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
             _discoveryData->_deletedItem[path._original] = item;
         }
-        emit itemDiscovered(item);
+        emit _discoveryData->itemDiscovered(item);
     }
 }
 
@@ -1000,11 +997,10 @@ void ProcessDirectoryJob::processBlacklisted(const PathTuple &path, const OCC::L
     if (item->isDirectory() && item->_instruction != CSYNC_INSTRUCTION_IGNORE) {
         auto job = new ProcessDirectoryJob(item, InBlackList, NormalQuery, _discoveryData, this);
         job->_currentFolder = path;
-        connect(job, &ProcessDirectoryJob::itemDiscovered, this, &ProcessDirectoryJob::itemDiscovered);
         connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
         _queuedJobs.push_back(job);
     } else {
-        emit itemDiscovered(item);
+        emit _discoveryData->itemDiscovered(item);
     }
 }
 
@@ -1089,7 +1085,7 @@ void ProcessDirectoryJob::subJobFinished()
     _childModified |= job->_childModified;
 
     if (job->_dirItem)
-        emit itemDiscovered(job->_dirItem);
+        emit _discoveryData->itemDiscovered(job->_dirItem);
 
     int count = _runningJobs.removeAll(job);
     ASSERT(count == 1);
@@ -1130,11 +1126,6 @@ void ProcessDirectoryJob::progress()
         }
         emit finished();
     }
-}
-void ProcessDirectoryJob::abort()
-{
-    // This should delete all the sub jobs, and so abort everything
-    deleteLater();
 }
 
 void ProcessDirectoryJob::dbError()

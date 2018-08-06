@@ -13,6 +13,7 @@
  */
 
 #include "discoveryphase.h"
+#include "discovery.h"
 
 #include "account.h"
 #include "common/asserts.h"
@@ -143,6 +144,22 @@ QString DiscoveryPhase::adjustRenamedPath(const QString &original) const
         }
     }
     return original;
+}
+
+void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
+{
+    connect(job, &ProcessDirectoryJob::finished, this, [this, job] {
+        if (job->_dirItem)
+            emit itemDiscovered(job->_dirItem);
+        job->deleteLater();
+        if (!_queuedDeletedDirectories.isEmpty()) {
+            auto nextJob = _queuedDeletedDirectories.take(_queuedDeletedDirectories.firstKey());
+            startJob(nextJob);
+        } else {
+            emit finished();
+        }
+    });
+    job->start();
 }
 
 /* FIXME  (used to be called every time we were doing a propfind)
