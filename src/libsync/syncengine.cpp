@@ -1250,6 +1250,14 @@ QString SyncEngine::adjustRenamedPath(const QString &original)
     while ((slashPos = original.lastIndexOf('/', slashPos - 1)) > 0) {
         QHash<QString, QString>::const_iterator it = _renamedFolders.constFind(original.left(slashPos));
         if (it != _renamedFolders.constEnd()) {
+            // This is a band-aid fix for a specific problem:
+            // See issue #6694: "hierarchy inversion" and discussion in PR #6695.
+            // There's a larger unfixed issue here, see testInvertFolderHierarchy().
+            auto original_it = _renamedFolders.constFind(original);
+            if (original_it != _renamedFolders.constEnd() && it->startsWith(*original_it)) {
+                return original;
+            }
+
             return *it + original.mid(slashPos);
         }
     }
