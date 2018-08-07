@@ -379,11 +379,12 @@ bool HttpCredentials::refreshAccessToken()
         QJsonParseError jsonParseError;
         QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
         QString accessToken = json["access_token"].toString();
-        if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError || json.isEmpty()) {
-            // Network error maybe?
+        if (jsonParseError.error != QJsonParseError::NoError || json.isEmpty()) {
+            // Invalid or empty JSON: Network error maybe?
             qCWarning(lcHttpCredentials) << "Error while refreshing the token" << reply->errorString() << jsonData << jsonParseError.errorString();
         } else if (accessToken.isEmpty()) {
-            // The token is no longer valid.
+            // If the json was valid, but the reply did not contain an access token, the token
+            // is considered expired. (Usually the HTTP reply code is 400)
             qCDebug(lcHttpCredentials) << "Expired refresh token. Logging out";
             _refreshToken.clear();
         } else {
