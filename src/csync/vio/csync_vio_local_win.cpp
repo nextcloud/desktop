@@ -181,7 +181,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
       }
     } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DEVICE
                 || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE
-                || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_TEMPORARY) {
+              ) {
         file_stat->type = CSYNC_FTW_TYPE_SKIP;
     } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
         file_stat->type = CSYNC_FTW_TYPE_DIR;
