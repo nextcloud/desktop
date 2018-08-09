@@ -1,7 +1,13 @@
 ChangeLog
 =========
 
-version 2.4.2 (2018-06-xx)
+version 2.4.3 (2018-08-xx)
+* Windows: Don't ignore files with FILE_ATTRIBUTE_TEMPORARY (#6696, #6610)
+* OAuth2: Fix infinite loop when the refresh token is expired
+* Windows MSI: Fix crash in the auto updater
+* Nautilus: Guard against None state (#6643)
+
+version 2.4.2 (2018-07-18)
 * Linux: Tray workarounds (#6545)
 * Fix nautilus/nemo shell issues (#6393, #6406)
 * Updater: Add update channel feature (#6259)
