@@ -37,14 +37,6 @@ Q_SIGNALS:
     void urlCatched(QString user, QString pass, QString host);
 };
 
-class WebEngineView : public QWebEngineView {
-    Q_OBJECT
-public:
-    WebEngineView(QWidget* parent = 0);
-    bool acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame);
-};
-
-
 class WebEnginePage : public QWebEnginePage {
 public:
     WebEnginePage(QWebEngineProfile *profile, QObject* parent = nullptr);
@@ -65,7 +57,7 @@ WebView::WebView(QWidget *parent)
 {
     _ui.setupUi(this);
 
-    _webview = new WebEngineView(this);
+    _webview = new QWebEngineView(this);
     _profile = new QWebEngineProfile(this);
     _page = new WebEnginePage(_profile);
     _interceptor = new WebViewPageUrlRequestInterceptor(this);
@@ -163,21 +155,6 @@ bool ExternalWebEnginePage::acceptNavigationRequest(const QUrl &url, QWebEngineP
 {
     QDesktopServices::openUrl(url);
     return false;
-}
-
-
-WebEngineView::WebEngineView(QWidget* parent) : QWebEngineView (parent) {
-
-}
-
-bool WebEngineView::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)
-{
-    if (type == QWebEnginePage::NavigationTypeLinkClicked)
-    {
-        QDesktopServices::openUrl(url);
-        return false;
-    }
-    return true;
 }
 
 }
