@@ -6,6 +6,7 @@
 #include <QWebEngineUrlRequestJob>
 #include <QWebEngineUrlSchemeHandler>
 #include <QWebEngineView>
+#include <QDesktopServices>
 #include <QProgressBar>
 #include <QLoggingCategory>
 #include <QLocale>
@@ -36,6 +37,27 @@ Q_SIGNALS:
     void urlCatched(QString user, QString pass, QString host);
 };
 
+class WebEngineView : public QWebEngineView {
+    Q_OBJECT
+public:
+    WebEngineView(QWidget* parent = 0);
+    bool acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame);
+};
+
+
+class WebEnginePage : public QWebEnginePage {
+public:
+    WebEnginePage(QWebEngineProfile *profile, QObject* parent = nullptr);
+    QWebEnginePage * createWindow(QWebEnginePage::WebWindowType type) override;
+};
+
+// We need a separate class here, since we cannot simply return the same WebEnginePage object
+// this leads to a strage segfault somewhere deep inside of the QWebEngine code
+class ExternalWebEnginePage : public QWebEnginePage {
+public:
+    ExternalWebEnginePage(QWebEngineProfile *profile, QObject* parent = nullptr);
+    bool acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame) override;
+};
 
 WebView::WebView(QWidget *parent)
     : QWidget(parent),
@@ -43,13 +65,15 @@ WebView::WebView(QWidget *parent)
 {
     _ui.setupUi(this);
 
-    _webview = new QWebEngineView(this);
+    _webview = new WebEngineView(this);
     _profile = new QWebEngineProfile(this);
-    _page = new QWebEnginePage(_profile);
+    _page = new WebEnginePage(_profile);
     _interceptor = new WebViewPageUrlRequestInterceptor(this);
     _schemeHandler = new WebViewPageUrlSchemeHandler(this);
 
-    _profile->setHttpUserAgent(Utility::userAgentString());
+    const QString userAgent(Utility::userAgentString());
+    _profile->setHttpUserAgent(userAgent);
+    QWebEngineProfile::defaultProfile()->setHttpUserAgent(userAgent);
     _profile->setRequestInterceptor(_interceptor);
     _profile->installUrlSchemeHandler("nc", _schemeHandler);
 
@@ -118,6 +142,42 @@ void WebViewPageUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *reques
     qCInfo(lcWizardWebiew()) << "Got user: " << user << ", server: " << server;
 
     emit urlCatched(user, password, server);
+}
+
+
+WebEnginePage::WebEnginePage(QWebEngineProfile *profile, QObject* parent) : QWebEnginePage(profile, parent) {
+
+}
+
+QWebEnginePage * WebEnginePage::createWindow(QWebEnginePage::WebWindowType type) {
+    ExternalWebEnginePage *view = new ExternalWebEnginePage(this->profile());
+    return view;
+}
+
+ExternalWebEnginePage::ExternalWebEnginePage(QWebEngineProfile *profile, QObject* parent) : QWebEnginePage(profile, parent) {
+
+}
+
+
+bool ExternalWebEnginePage::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)
+{
+    QDesktopServices::openUrl(url);
+    return false;
+}
+
+
+WebEngineView::WebEngineView(QWidget* parent) : QWebEngineView (parent) {
+
+}
+
+bool WebEngineView::acceptNavigationRequest(const QUrl &url, QWebEnginePage::NavigationType type, bool isMainFrame)
+{
+    if (type == QWebEnginePage::NavigationTypeLinkClicked)
+    {
+        QDesktopServices::openUrl(url);
+        return false;
+    }
+    return true;
 }
 
 }
