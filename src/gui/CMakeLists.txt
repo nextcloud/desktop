@@ -33,7 +33,6 @@ set(client_UI_SRCS
     sslerrordialog.ui
     addcertificatedialog.ui
     proxyauthdialog.ui
-    notificationwidget.ui
     mnemonicdialog.ui
     wizard/owncloudadvancedsetuppage.ui
     wizard/owncloudconnectionmethoddialog.ui
@@ -95,7 +94,6 @@ set(client_SRCS
     proxyauthdialog.cpp
     synclogdialog.cpp
     tooltipupdater.cpp
-    notificationwidget.cpp
     notificationconfirmjob.cpp
     servernotificationhandler.cpp
     guiutility.cpp
