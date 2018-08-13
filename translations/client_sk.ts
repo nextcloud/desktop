@@ -753,7 +753,8 @@
         <location filename="../src/gui/folder.cpp" line="891"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation type="unfinished"/>
+        <translation>Bol pridaný priečinok z externého úložiska.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="892"/>
@@ -1255,7 +1256,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="147"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Editovať &amp;ignorované súbory</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="232"/>
@@ -1387,7 +1388,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="20"/>
         <source>List of issues</source>
-        <translation type="unfinished"/>
+        <translation>Zoznam problémov</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="34"/>
@@ -1409,7 +1410,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="73"/>
         <source>Show warnings</source>
-        <translation type="unfinished"/>
+        <translation>Zobraziť varovania</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
@@ -1955,7 +1956,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>The server reported the following error:</source>
-        <translation type="unfinished"/>
+        <translation>Server nahlásil nasledovnú chybu:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -4171,7 +4172,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="33"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa otvoriť prehliadač</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>

@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="14"/>
         <source>Form</source>
-        <translation>窗体</translation>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="33"/>
@@ -22,7 +22,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="14"/>
         <source>Form</source>
-        <translation>窗体</translation>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
@@ -55,7 +55,7 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="20"/>
         <source>Form</source>
-        <translation>窗体</translation>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="56"/>
@@ -96,7 +96,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="14"/>
         <source>Form</source>
-        <translation>窗体</translation>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="58"/>
@@ -388,7 +388,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="138"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>凭证</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="140"/>
@@ -1000,7 +1000,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="884"/>
         <source>Reconciling changes</source>
-        <translation type="unfinished"/>
+        <translation>状态发生变化</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
@@ -1398,7 +1398,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="20"/>
         <source>List of issues</source>
-        <translation type="unfinished"/>
+        <translation>问题列表</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="34"/>
@@ -1430,12 +1430,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="133"/>
         <source>There were too many issues. Not all will be visible here.</source>
-        <translation type="unfinished"/>
+        <translation>问题太多了。不是所有的都能在这里看到。</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="155"/>
         <source>Copy the issues list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>将问题列表复制到剪贴板。</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="158"/>
@@ -1455,7 +1455,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="84"/>
         <source>Issue</source>
-        <translation type="unfinished"/>
+        <translation>问题</translation>
     </message>
 </context>
 <context>
@@ -1478,7 +1478,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
         <source>&amp;Capture debug messages</source>
-        <translation type="unfinished"/>
+        <translation>抓取调试消息</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
@@ -1696,7 +1696,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="112"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>服务器返回错误:&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
@@ -1711,12 +1711,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>服务器没有回复预期的字段</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="125"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;登录错误&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="131"/>
@@ -2314,7 +2314,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagateupload.cpp" line="186"/>
         <location filename="../src/libsync/propagateupload.cpp" line="549"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>上传 %1 超过文件夹的限额</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="622"/>
@@ -2659,7 +2659,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="42"/>
         <source>&amp;Create new</source>
-        <translation type="unfinished"/>
+        <translation>&amp;创建新的</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="105"/>
@@ -2751,7 +2751,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
         <source>Confirm Link Share Deletion</source>
-        <translation type="unfinished"/>
+        <translation>确认删除共享链接</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="521"/>
@@ -2772,7 +2772,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
         <source>Delete link share</source>
-        <translation type="unfinished"/>
+        <translation>删除共享链接</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="459"/>
@@ -3216,7 +3216,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="264"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (由于先前的错误而跳过，在%2中再次尝试 )</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="474"/>
@@ -3226,7 +3226,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="477"/>
         <source>Folder hierarchy is too deep</source>
-        <translation type="unfinished"/>
+        <translation>文件夹等级制度太深</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="493"/>
