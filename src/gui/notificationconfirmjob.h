@@ -25,8 +25,6 @@
 
 namespace OCC {
 
-class NotificationWidget;
-
 /**
  * @brief The NotificationConfirmJob class
  * @ingroup gui
@@ -54,20 +52,6 @@ public:
      */
     void start() Q_DECL_OVERRIDE;
 
-    /**
-     * @brief setWidget stores the associated widget to be able to use
-     *        it when the job has finished
-     * @param widget pointer to the notification widget to store
-     */
-    void setWidget(NotificationWidget *widget);
-
-    /**
-     * @brief widget - get the associated notification widget as stored
-     *        with setWidget method.
-     * @return widget pointer to the notification widget
-     */
-    NotificationWidget *widget();
-
 signals:
 
     /**
@@ -83,7 +67,6 @@ private slots:
 private:
     QByteArray _verb;
     QUrl _link;
-    NotificationWidget *_widget;
 };
 }
 
