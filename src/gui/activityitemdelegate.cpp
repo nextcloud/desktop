@@ -60,6 +60,10 @@ int ActivityItemDelegate::rowHeight()
         QFontMetrics fm(f);
 
         _margin = fm.height() / 2;
+
+#if defined(Q_OS_WIN)
+        _margin += 5;
+#endif
     }
     return iconHeight() + 5 * _margin;
 }
