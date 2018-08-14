@@ -671,10 +671,11 @@ void PropagateDownloadFile::slotGetFinished()
     // the database yet!)
     if (job->reply()->rawHeader("OC-Conflict") == "1") {
         _conflictRecord.path = _item->_file.toUtf8();
+        _conflictRecord.basePath = job->reply()->rawHeader("OC-ConflictBasePath");
         _conflictRecord.baseFileId = job->reply()->rawHeader("OC-ConflictBaseFileId");
-        _conflictRecord.baseEtag = _job->reply()->rawHeader("OC-ConflictBaseEtag");
+        _conflictRecord.baseEtag = job->reply()->rawHeader("OC-ConflictBaseEtag");
 
-        auto mtimeHeader = _job->reply()->rawHeader("OC-ConflictBaseMtime");
+        auto mtimeHeader = job->reply()->rawHeader("OC-ConflictBaseMtime");
         if (!mtimeHeader.isEmpty())
             _conflictRecord.baseModtime = mtimeHeader.toLongLong();
 

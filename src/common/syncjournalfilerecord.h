@@ -144,6 +144,14 @@ public:
      */
     QByteArray baseEtag;
 
+    /**
+     * The path of the original file
+     *
+     * maybe be empty if not available
+     */
+    QByteArray basePath;
+
+
     bool isValid() const { return !path.isEmpty(); }
 };
 }
