@@ -96,7 +96,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
         accountAdded(ai.data());
     }
 
-    _actionBefore = new QAction;
+    _actionBefore = new QAction(this);
     _toolBar->addAction(_actionBefore);
 
     // Adds space between users + activities and general + network actions
