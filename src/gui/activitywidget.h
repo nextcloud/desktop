@@ -81,7 +81,6 @@ public slots:
 
 signals:
     void guiLog(const QString &, const QString &);
-    void copyToClipboard();
     void rowsInserted();
     void hideActivityTab(bool);
     void sendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
@@ -140,7 +139,6 @@ public slots:
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
 
 private slots:
-    void slotCopyToClipboard();
     void slotRegularNotificationCheck();
     void slotDisplayActivities();
 

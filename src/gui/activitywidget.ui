@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>693</width>
+    <width>652</width>
     <height>556</height>
    </rect>
   </property>
@@ -77,8 +77,11 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetDefaultConstraint</enum>
+   </property>
+   <item>
     <widget class="QListView" name="_activityList">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -92,18 +95,18 @@
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
+           <red>252</red>
+           <green>252</green>
+           <blue>252</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="Window">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
+           <red>252</red>
+           <green>252</green>
+           <blue>252</blue>
           </color>
          </brush>
         </colorrole>
@@ -112,18 +115,18 @@
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
+           <red>252</red>
+           <green>252</green>
+           <blue>252</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="Window">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
+           <red>252</red>
+           <green>252</green>
+           <blue>252</blue>
           </color>
          </brush>
         </colorrole>
@@ -132,18 +135,18 @@
         <colorrole role="Base">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
+           <red>252</red>
+           <green>252</green>
+           <blue>252</blue>
           </color>
          </brush>
         </colorrole>
         <colorrole role="Window">
          <brush brushstyle="SolidPattern">
           <color alpha="255">
-           <red>255</red>
-           <green>255</green>
-           <blue>255</blue>
+           <red>252</red>
+           <green>252</green>
+           <blue>252</blue>
           </color>
          </brush>
         </colorrole>
@@ -151,13 +154,13 @@
       </palette>
      </property>
      <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
+      <enum>QFrame::StyledPanel</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
+      <enum>QFrame::Sunken</enum>
      </property>
      <property name="lineWidth">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="sizeAdjustPolicy">
       <enum>QAbstractScrollArea::AdjustToContents</enum>
@@ -185,7 +188,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="QLabel" name="_bottomLabel">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
@@ -198,28 +201,6 @@
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QPushButton" name="_copyButton">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>120</width>
-       <height>30</height>
-      </size>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">margin-left:40px;</string>
-     </property>
-     <property name="text">
-      <string>Copy</string>
      </property>
     </widget>
    </item>
