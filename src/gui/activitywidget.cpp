@@ -67,7 +67,6 @@ ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
     ActivityItemDelegate *delegate = new ActivityItemDelegate;
     delegate->setParent(this);
     _ui->_activityList->setItemDelegate(delegate);
-    _ui->_activityList->setBackgroundRole(QPalette::Background);
     _ui->_activityList->setAlternatingRowColors(true);
     _ui->_activityList->setModel(_model);
 
@@ -75,9 +74,6 @@ ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
 
     connect(_model, &ActivityListModel::activityJobStatusCode,
         this, &ActivityWidget::slotAccountActivityStatus);
-
-    _ui->_copyButton->setToolTip(tr("Copy the activity list to the clipboard."));
-    connect(_ui->_copyButton, &QPushButton::click, this, &ActivityWidget::copyToClipboard);
 
     connect(_model, &QAbstractItemModel::rowsInserted, this, &ActivityWidget::rowsInserted);
 
@@ -324,14 +320,17 @@ void ActivityWidget::slotRemoveAccount()
 
 void ActivityWidget::showLabels()
 {
-    QString t = tr("Server Activities");
-    t.clear();
+    _ui->_bottomLabel->hide(); // hide whatever was there before
+    QString t("");
     QSetIterator<QString> i(_accountsWithoutActivities);
     while (i.hasNext()) {
         t.append(tr("<br/>Account %1 does not have activities enabled.").arg(i.next()));
     }
-    _ui->_bottomLabel->setTextFormat(Qt::RichText);
-    _ui->_bottomLabel->setText(t);
+    if(!t.isEmpty()){
+        _ui->_bottomLabel->setTextFormat(Qt::RichText);
+        _ui->_bottomLabel->setText(t);
+        _ui->_bottomLabel->show();
+    }
 }
 
 void ActivityWidget::slotAccountActivityStatus(int statusCode)
@@ -546,14 +545,7 @@ ActivitySettings::ActivitySettings(AccountState *accountState, QWidget *parent)
 
     _activityWidget = new ActivityWidget(_accountState, this);
 
-    // set background white
-    QPalette palette;
-    palette.setColor(QPalette::Background, Qt::white);
-    _activityWidget->setAutoFillBackground(true);
-    _activityWidget->setPalette(palette);
-
     _vbox->insertWidget(1, _activityWidget);
-    connect(_activityWidget, &ActivityWidget::copyToClipboard, this, &ActivitySettings::slotCopyToClipboard);
     connect(_activityWidget, &ActivityWidget::guiLog, this, &ActivitySettings::guiLog);
     connect(&_notificationCheckTimer, &QTimer::timeout,
         this, &ActivitySettings::slotRegularNotificationCheck);
@@ -574,21 +566,6 @@ void ActivitySettings::setNotificationRefreshInterval(std::chrono::milliseconds 
 {
     qCDebug(lcActivity) << "Starting Notification refresh timer with " << interval.count() / 1000 << " sec interval";
     _notificationCheckTimer.start(interval.count());
-}
-
-void ActivitySettings::slotCopyToClipboard()
-{
-    QString text;
-    QTextStream ts(&text);
-
-    QString message;
-
-    _activityWidget->storeActivityList(ts);
-    message = tr("The server activity and notifications list has been copied to the clipboard.");
-
-    QApplication::clipboard()->setText(text);
-
-    emit guiLog(tr("Copied to clipboard"), message);
 }
 
 void ActivitySettings::slotRemoveAccount()
