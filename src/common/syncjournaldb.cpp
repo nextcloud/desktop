@@ -717,6 +717,15 @@ bool SyncJournalDb::updateMetadataTableStructure()
         commitInternal("update database structure: add contentChecksum col for uploadinfo");
     }
 
+    if (!tableColumns("conflicts").contains("basePath")) {
+        SqlQuery query(_db);
+        query.prepare("ALTER TABLE conflicts ADD COLUMN basePath TEXT;");
+        if (!query.exec()) {
+            sqlFail("updateMetadataTableStructure: add basePath column", query);
+            re = false;
+        }
+    }
+
 
     return re;
 }
@@ -1895,13 +1904,14 @@ void SyncJournalDb::setConflictRecord(const ConflictRecord &record)
     auto &query = _setConflictRecordQuery;
     ASSERT(query.initOrReset(QByteArrayLiteral(
                           "INSERT OR REPLACE INTO conflicts "
-                          "(path, baseFileId, baseModtime, baseEtag) "
-                          "VALUES (?1, ?2, ?3, ?4);"),
+                          "(path, baseFileId, baseModtime, baseEtag, basePath) "
+                          "VALUES (?1, ?2, ?3, ?4, ?5);"),
         _db));
     query.bindValue(1, record.path);
     query.bindValue(2, record.baseFileId);
     query.bindValue(3, record.baseModtime);
     query.bindValue(4, record.baseEtag);
+    query.bindValue(5, record.basePath);
     ASSERT(query.exec());
 }
 
@@ -1913,7 +1923,7 @@ ConflictRecord SyncJournalDb::conflictRecord(const QByteArray &path)
     if (!checkConnect())
         return entry;
     auto &query = _getConflictRecordQuery;
-    ASSERT(query.initOrReset(QByteArrayLiteral("SELECT baseFileId, baseModtime, baseEtag FROM conflicts WHERE path=?1;"), _db));
+    ASSERT(query.initOrReset(QByteArrayLiteral("SELECT baseFileId, baseModtime, baseEtag, basePath FROM conflicts WHERE path=?1;"), _db));
     query.bindValue(1, path);
     ASSERT(query.exec());
     if (!query.next())
@@ -1923,6 +1933,7 @@ ConflictRecord SyncJournalDb::conflictRecord(const QByteArray &path)
     entry.baseFileId = query.baValue(0);
     entry.baseModtime = query.int64Value(1);
     entry.baseEtag = query.baValue(2);
+    entry.basePath = query.baValue(3);
     return entry;
 }
 

@@ -350,9 +350,10 @@ void SyncEngine::conflictRecordMaintenance()
         if (!conflictRecordPaths.contains(bapath)) {
             ConflictRecord record;
             record.path = bapath;
+            auto basePath = Utility::conflictFileBaseName(bapath);
+            record.basePath = basePath;
 
             // Determine fileid of target file
-            auto basePath = Utility::conflictFileBaseName(bapath);
             SyncJournalFileRecord baseRecord;
             if (_journal->getFileRecord(basePath, &baseRecord) && baseRecord.isValid()) {
                 record.baseFileId = baseRecord._fileId;

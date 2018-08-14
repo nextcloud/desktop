@@ -599,6 +599,8 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
     auto conflictRecord = propagator()->_journal->conflictRecord(_item->_file.toUtf8());
     if (conflictRecord.isValid()) {
         headers["OC-Conflict"] = "1";
+        if (!conflictRecord.basePath.isEmpty())
+            headers["OC-ConflictBasePath"] = conflictRecord.basePath;
         if (!conflictRecord.baseFileId.isEmpty())
             headers["OC-ConflictBaseFileId"] = conflictRecord.baseFileId;
         if (conflictRecord.baseModtime != -1)
