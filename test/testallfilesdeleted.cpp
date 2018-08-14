@@ -152,6 +152,38 @@ private slots:
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
     }
 
+    void testResetServer()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+
+        int aboutToRemoveAllFilesCalled = 0;
+        QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::aboutToRemoveAllFiles,
+            [&](SyncFileItem::Direction dir, bool *cancel) {
+                QCOMPARE(aboutToRemoveAllFilesCalled, 0);
+                aboutToRemoveAllFilesCalled++;
+                QCOMPARE(dir, SyncFileItem::Down);
+                *cancel = false;
+            });
+
+        // Some small changes
+        fakeFolder.localModifier().mkdir("Q");
+        fakeFolder.localModifier().insert("Q/q1");
+        fakeFolder.localModifier().appendByte("B/b1");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(aboutToRemoveAllFilesCalled, 0);
+
+        // Do some change localy
+        fakeFolder.localModifier().appendByte("A/a1");
+
+        // reset the server.
+        fakeFolder.remoteModifier() = FileInfo::A12_B12_C12_S12();
+
+        // Now, aboutToRemoveAllFiles with down as a direction
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(aboutToRemoveAllFilesCalled, 1);
+
+    }
+
     void testDataFingetPrint_data()
     {
         QTest::addColumn<bool>("hasInitialFingerPrint");

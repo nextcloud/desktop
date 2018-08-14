@@ -1045,7 +1045,13 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     if (!_hasNoneFiles && _hasRemoveFile) {
         qCInfo(lcEngine) << "All the files are going to be changed, asking the user";
         bool cancel = false;
-        emit aboutToRemoveAllFiles(syncItems.first()->_direction, &cancel);
+        int side = 0; // > 0 means more deleted on the server.  < 0 means more deleted on the client
+        foreach (const auto &it,  syncItems) {
+            if (it->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+                side += it->_direction == SyncFileItem::Down ? 1 : -1;
+            }
+        }
+        emit aboutToRemoveAllFiles(side >= 0 ? SyncFileItem::Down : SyncFileItem::Up, &cancel);
         if (cancel) {
             qCInfo(lcEngine) << "User aborted sync";
             finalize(false);
