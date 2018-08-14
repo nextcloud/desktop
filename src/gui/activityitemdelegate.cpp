@@ -232,16 +232,11 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         painter->setPen(p.color(QPalette::Disabled, QPalette::Text));
 
     // change pen color if the line is selected
-    QPalette::ColorGroup cg = option.state & QStyle::State_Enabled
-        ? QPalette::Normal
-        : QPalette::Disabled;
-    if (cg == QPalette::Normal && !(option.state & QStyle::State_Active))
-        cg = QPalette::Inactive;
+    QPalette::ColorGroup cg = option.state & (QStyle::State_Enabled | QStyle::State_Active)
+            ? QPalette::Normal
+            : QPalette::Inactive;
 
-    if (option.state & QStyle::State_Selected)
-        painter->setPen(option.palette.color(cg, QPalette::HighlightedText));
-    else
-        painter->setPen(option.palette.color(cg, QPalette::Text));
+    painter->setPen(option.palette.color(cg, QPalette::Text));
 
     // calculate space for text - use the max possible before using the elipses
     int spaceLeftForText = option.rect.width() - (actionIconRect.width() + margin + rightMargin + leftMargin) -
@@ -262,12 +257,6 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     // draw the message
     // change pen color for the message
     if(!messageText.isEmpty()){
-        painter->setPen(p.color(QPalette::Inactive, QPalette::Text));
-
-        // check if line is selected
-        if (option.state & QStyle::State_Selected)
-            painter->setPen(option.palette.color(cg, QPalette::HighlightedText));
-
         const QString elidedMessage = fm.elidedText(messageText, Qt::ElideRight, spaceLeftForText);
         painter->drawText(messageTextBox, elidedMessage);
     }
