@@ -239,7 +239,7 @@ static void propertyMapToFileStat(const QMap<QString, QString> &map, RemoteInfo 
         } else if (property == "dDC") {
             result.directDownloadCookies = value;
         } else if (property == "permissions") {
-            result.remotePerm = RemotePermissions(value);
+            result.remotePerm = RemotePermissions::fromServerString(value);
         } else if (property == "checksums") {
             result.checksumHeader = findBestChecksum(value.toUtf8());
         } else if (property == "share-types" && !value.isEmpty()) {
@@ -263,7 +263,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         // The first entry is for the folder itself, we should process it differently.
         _ignoredFirst = true;
         if (map.contains("permissions")) {
-            RemotePermissions perm(map.value("permissions"));
+            auto perm = RemotePermissions::fromServerString(map.value("permissions"));
             emit firstDirectoryPermissions(perm);
             _isExternalStorage = perm.hasPermission(RemotePermissions::IsMounted);
         }

@@ -16,7 +16,7 @@ static void applyPermissionsFromName(FileInfo &info) {
     static QRegularExpression rx("_PERM_([^_]*)_[^/]*$");
     auto m = rx.match(info.name);
     if (m.hasMatch()) {
-        info.permissions = RemotePermissions(m.captured(1));
+        info.permissions = RemotePermissions::fromServerString(m.captured(1));
     }
 
     for (FileInfo &sub : info.children)
