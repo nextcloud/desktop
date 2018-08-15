@@ -58,7 +58,7 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._type = static_cast<ItemType>(query.intValue(3));
     rec._etag = query.baValue(4);
     rec._fileId = query.baValue(5);
-    rec._remotePerm = RemotePermissions(query.baValue(6).constData());
+    rec._remotePerm = RemotePermissions::fromDbValue(query.baValue(6));
     rec._fileSize = query.int64Value(7);
     rec._serverHasIgnoredFiles = (query.intValue(8) > 0);
     rec._checksumHeader = query.baValue(9);
