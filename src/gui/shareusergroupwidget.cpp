@@ -383,7 +383,7 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
 
     // create menu with checkable permissions
     QMenu *menu = new QMenu(this);
-    _permissionReshare= new QAction(tr("Can reshare"));
+    _permissionReshare= new QAction(tr("Can reshare"), this);
     _permissionReshare->setCheckable(true);
     _permissionReshare->setEnabled(maxSharingPermissions & SharePermissionShare);
     menu->addAction(_permissionReshare);
@@ -393,19 +393,19 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
      * Files can't have create or delete permissions
      */
     if (!_isFile) {
-        _permissionCreate = new QAction(tr("Can create"));
+        _permissionCreate = new QAction(tr("Can create"), this);
         _permissionCreate->setCheckable(true);
         _permissionCreate->setEnabled(maxSharingPermissions & SharePermissionCreate);
         menu->addAction(_permissionCreate);
         connect(_permissionCreate, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
 
-        _permissionChange = new QAction(tr("Can change"));
+        _permissionChange = new QAction(tr("Can change"), this);
         _permissionChange->setCheckable(true);
         _permissionChange->setEnabled(maxSharingPermissions & SharePermissionUpdate);
         menu->addAction(_permissionChange);
         connect(_permissionChange, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
 
-        _permissionDelete = new QAction(tr("Can delete"));
+        _permissionDelete = new QAction(tr("Can delete"), this);
         _permissionDelete->setCheckable(true);
         _permissionDelete->setEnabled(maxSharingPermissions & SharePermissionDelete);
         menu->addAction(_permissionDelete);
