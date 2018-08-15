@@ -84,7 +84,7 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     connect(_model, &ActivityListModel::activityJobStatusCode,
         this, &ActivityWidget::slotAccountActivityStatus);
 
-    connect(AccountManager::instance(), &AccountManager::accountRemoved, this, [this] (const auto &ast) {
+    connect(AccountManager::instance(), &AccountManager::accountRemoved, this, [this](AccountState *ast) {
         if (_accountsWithoutActivities.remove(ast->account()->displayName()))
             showLabels();
     });
