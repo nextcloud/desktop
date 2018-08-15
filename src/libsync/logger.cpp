@@ -26,7 +26,10 @@
 #include <zlib.h>
 #endif
 
-#include <io.h>
+#ifdef Q_OS_WIN
+#include <io.h> // for stdout
+#endif
+
 namespace OCC {
 
 static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, const QString &message)

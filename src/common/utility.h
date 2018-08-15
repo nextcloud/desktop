@@ -230,6 +230,12 @@ namespace Utility {
     OCSYNC_EXPORT bool registryDeleteKeyTree(HKEY hRootKey, const QString &subKey);
     OCSYNC_EXPORT bool registryDeleteKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName);
     OCSYNC_EXPORT bool registryWalkSubKeys(HKEY hRootKey, const QString &subKey, const std::function<void(HKEY, const QString &)> &callback);
+
+    // Possibly refactor to share code with UnixTimevalToFileTime in c_time.c
+    OCSYNC_EXPORT void UnixTimeToFiletime(time_t t, FILETIME *filetime);
+    OCSYNC_EXPORT void FiletimeToLargeIntegerFiletime(FILETIME *filetime, LARGE_INTEGER *hundredNSecs);
+    OCSYNC_EXPORT void UnixTimeToLargeIntegerFiletime(time_t t, LARGE_INTEGER *hundredNSecs);
+
 #endif
 }
 /** @} */ // \addtogroup

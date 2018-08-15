@@ -3,6 +3,11 @@ set(CMAKE_CXX_STANDARD 14)
 
 project(client)
 
+if(UNIT_TESTING)
+    include(CTest)
+    enable_testing()
+endif()
+
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 include("${CMAKE_CURRENT_LIST_DIR}/THEME.cmake")
@@ -16,6 +21,9 @@ include(Warnings)
 
 # For config.h
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
+#include_directories(BEFORE
+#    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.17134.0/um"
+#    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.17134.0/shared")
 # Allows includes based on src/ like #include "common/utility.h" or #include "csync/csync.h"
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/src
@@ -166,8 +174,9 @@ if( WIN32 )
 add_definitions( -D__USE_MINGW_ANSI_STDIO=1 )
 add_definitions( -DNOMINMAX )
 # Get APIs from from Vista onwards.
-add_definitions( -D_WIN32_WINNT=0x0600)
-add_definitions( -DWINVER=0x0600)
+add_definitions(-D_WIN32_WINNT=0x0600)
+add_definitions(-DWINVER=0x0600)
+add_definitions(-DNTDDI_VERSION=0x0A000003)
 endif( WIN32 )
 
 if (APPLE)
@@ -195,8 +204,6 @@ if(BUILD_SHELL_INTEGRATION)
 endif()
 
 if(UNIT_TESTING)
-    include(CTest)
-    enable_testing()
     add_subdirectory(test)
 endif(UNIT_TESTING)
 

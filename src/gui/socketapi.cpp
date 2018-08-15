@@ -608,52 +608,51 @@ void SocketApi::copyUrlToClipboard(const QString &link)
 void SocketApi::command_DOWNLOAD_VIRTUAL_FILE(const QString &filesArg, SocketListener *)
 {
     QStringList files = filesArg.split(QLatin1Char('\x1e')); // Record Separator
-    auto suffix = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
 
     for (const auto &file : files) {
-        if (!file.endsWith(suffix) && !QFileInfo(file).isDir())
+        auto data = FileData::get(file);
+        auto record = data.journalRecord();
+        if (!record.isValid())
             continue;
-        QString relativePath;
-        auto folder = FolderMan::instance()->folderForPath(file, &relativePath);
-        if (folder) {
-            folder->downloadVirtualFile(relativePath);
-        }
+        if (record._type != ItemTypeVirtualFile && !QFileInfo(file).isDir())
+            continue;
+        if (data.folder)
+            data.folder->downloadVirtualFile(data.folderRelativePath);
     }
 }
 
-/* Go over all the files ans replace them by a virtual file */
+/* Go over all the files and replace them by a virtual file */
 void SocketApi::command_REPLACE_VIRTUAL_FILE(const QString &filesArg, SocketListener *)
 {
     QStringList files = filesArg.split(QLatin1Char('\x1e')); // Record Separator
-    auto suffix = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
 
+    QSet<Folder *> toSync;
     for (const auto &file : files) {
-        QString relativePath;
-        auto folder = FolderMan::instance()->folderForPath(file, &relativePath);
-        if (!folder)
+        auto data = FileData::get(file);
+        if (!data.folder)
             continue;
-        if (file.endsWith(suffix))
-            continue;
+        auto journal = data.folder->journalDb();
+        auto markForDehydration = [&](SyncJournalFileRecord rec) {
+            if (rec._type != ItemTypeFile)
+                return;
+            rec._type = ItemTypeVirtualFileDehydration;
+            journal->setFileRecord(rec);
+            toSync.insert(data.folder);
+        };
+
         QFileInfo fi(file);
         if (fi.isDir()) {
-            folder->journalDb()->getFilesBelowPath(relativePath.toUtf8(), [&](const SyncJournalFileRecord &rec) {
-                if (rec._type != ItemTypeFile || rec._path.endsWith(APPLICATION_DOTVIRTUALFILE_SUFFIX))
-                    return;
-                QString file = folder->path() + '/' + QString::fromUtf8(rec._path);
-                if (!FileSystem::rename(file, file + suffix)) {
-                    qCWarning(lcSocketApi) << "Unable to rename " << file;
-                }
-            });
+            journal->getFilesBelowPath(data.folderRelativePath.toUtf8(), markForDehydration);
             continue;
         }
-        SyncJournalFileRecord record;
-        if (!folder->journalDb()->getFileRecord(relativePath, &record) || !record.isValid())
+        auto record = data.journalRecord();
+        if (!record.isValid() || record._type != ItemTypeFile)
             continue;
-        if (!FileSystem::rename(file, file + suffix)) {
-            qCWarning(lcSocketApi) << "Unable to rename " << file;
-        }
-        FolderMan::instance()->scheduleFolder(folder);
+        markForDehydration(record);
     }
+
+    for (const auto folder : toSync)
+        FolderMan::instance()->scheduleFolder(folder);
 }
 
 void SocketApi::emailPrivateLink(const QString &link)
@@ -796,18 +795,18 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
 
     // Virtual file download action
     if (folder) {
-        auto virtualFileSuffix = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
         bool hasVirtualFile = false;
         bool hasNormalFiles = false;
         bool hasDir = false;
         for (const auto &file : files) {
             if (QFileInfo(file).isDir()) {
                 hasDir = true;
-            } else if (file.endsWith(virtualFileSuffix)) {
-                hasVirtualFile = true;
-            } else if (!hasNormalFiles) {
-                bool isOnTheServer = FileData::get(file).journalRecord().isValid();
-                hasNormalFiles = isOnTheServer;
+            } else if (!hasVirtualFile || !hasNormalFiles) {
+                auto record = FileData::get(file).journalRecord();
+                if (record.isValid()) {
+                    hasVirtualFile |= record._type == ItemTypeVirtualFile;
+                    hasNormalFiles |= record._type == ItemTypeFile;
+                }
             }
         }
         if (hasVirtualFile || (hasDir && folder->useVirtualFiles()))

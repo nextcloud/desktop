@@ -32,7 +32,8 @@
 #include "filesystem.h"
 #include "localdiscoverytracker.h"
 #include "csync_exclude.h"
-
+#include "common/vfs.h"
+#include "plugin.h"
 #include "creds/abstractcredentials.h"
 
 #include <QTimer>
@@ -42,6 +43,7 @@
 
 #include <QMessageBox>
 #include <QPushButton>
+#include <QApplication>
 
 static const char versionC[] = "version";
 
@@ -115,10 +117,53 @@ Folder::Folder(const FolderDefinition &definition,
         _localDiscoveryTracker.data(), &LocalDiscoveryTracker::slotSyncFinished);
     connect(_engine.data(), &SyncEngine::itemCompleted,
         _localDiscoveryTracker.data(), &LocalDiscoveryTracker::slotItemCompleted);
+
+    // TODO cfapi: Move to function. Is this platform-universal?
+    PluginLoader pluginLoader;
+    if (_definition.virtualFilesMode == Vfs::WindowsCfApi) {
+        _vfs = pluginLoader.create<Vfs>("vfs", "win", this);
+    }
+    if (_definition.virtualFilesMode == Vfs::WithSuffix) {
+        _vfs = pluginLoader.create<Vfs>("vfs", "suffix", this);
+
+        // Attempt to switch to winvfs mode?
+        if (_vfs && _definition.upgradeVfsMode) {
+            if (auto winvfs = pluginLoader.create<Vfs>("vfs", "win", this)) {
+                // Set "suffix" vfs options and wipe the existing suffix files
+                SyncEngine::wipeVirtualFiles(path(), _journal, _vfs);
+
+                // Then switch to winvfs mode
+                _vfs = winvfs;
+                _definition.virtualFilesMode = Vfs::WindowsCfApi;
+                saveToSettings();
+            }
+        }
+    }
+    if (!_vfs) {
+        // ### error handling; possibly earlier than in the ctor
+        qFatal("Could not load any vfs plugin.");
+    }
+
+    VfsSetupParams vfsParams;
+    vfsParams.filesystemPath = path();
+    vfsParams.remotePath = remotePath();
+    vfsParams.account = _accountState->account();
+    vfsParams.journal = &_journal;
+    vfsParams.providerName = Theme::instance()->appNameGUI();
+    vfsParams.providerVersion = Theme::instance()->version();
+
+    connect(_vfs, &OCC::Vfs::beginHydrating, this, &Folder::slotHydrationStarts);
+    connect(_vfs, &OCC::Vfs::doneHydrating, this, &Folder::slotHydrationDone);
+
+    _vfs->registerFolder(vfsParams); // Do this always?
+    _vfs->start(vfsParams);
 }
 
 Folder::~Folder()
 {
+    // TODO cfapi: unregister on wipe()? There should probably be a wipeForRemoval() where this cleanup is appropriate
+    _vfs->stop();
+
     // Reset then engine first as it will abort and try to access members of the Folder
     _engine.reset();
 }
@@ -218,12 +263,12 @@ QString Folder::cleanPath() const
 
 bool Folder::isBusy() const
 {
-    return _engine->isSyncRunning();
+    return isSyncRunning();
 }
 
 bool Folder::isSyncRunning() const
 {
-    return _engine->isSyncRunning();
+    return _engine->isSyncRunning() || _vfs->isHydrating();
 }
 
 QString Folder::remotePath() const
@@ -538,7 +583,8 @@ void Folder::downloadVirtualFile(const QString &_relativepath)
 
 void Folder::setUseVirtualFiles(bool enabled)
 {
-    _definition.useVirtualFiles = enabled;
+    // ### must wipe virtual files, unload old plugin, load new one?
+    //_definition.useVirtualFiles = enabled;
     if (enabled)
         _saveInFoldersWithPlaceholders = true;
     saveToSettings();
@@ -561,7 +607,7 @@ void Folder::saveToSettings() const
         }
     }
 
-    if (_definition.useVirtualFiles || _saveInFoldersWithPlaceholders) {
+    if (useVirtualFiles() || _saveInFoldersWithPlaceholders) {
         // If virtual files are enabled or even were enabled at some point,
         // save the folder to a group that will not be read by older (<2.5.0) clients.
         // The name is from when virtual files were called placeholders.
@@ -729,8 +775,7 @@ void Folder::setSyncOptions()
     opt._newBigFolderSizeLimit = newFolderLimit.first ? newFolderLimit.second * 1000LL * 1000LL : -1; // convert from MB to B
     opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
     opt._moveFilesToTrash = cfgFile.moveToTrash();
-    opt._newFilesAreVirtual = _definition.useVirtualFiles;
-    opt._virtualFileSuffix = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
+    opt._vfs = _vfs;
 
     QByteArray chunkSizeEnv = qgetenv("OWNCLOUD_CHUNK_SIZE");
     if (!chunkSizeEnv.isEmpty()) {
@@ -1048,6 +1093,30 @@ void Folder::slotWatcherUnreliable(const QString &message)
     Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), fullMessage);
 }
 
+void Folder::slotHydrationStarts()
+{
+    // Abort any running full sync run and reschedule
+    if (_engine->isSyncRunning()) {
+        slotTerminateSync();
+        scheduleThisFolderSoon();
+        // TODO: This sets the sync state to AbortRequested on done, we don't want that
+    }
+
+    // Let everyone know we're syncing
+    _syncResult.reset();
+    _syncResult.setStatus(SyncResult::SyncRunning);
+    emit syncStarted();
+    emit syncStateChange();
+}
+
+void Folder::slotHydrationDone()
+{
+    // emit signal to update ui and reschedule normal syncs if necessary
+    _syncResult.setStatus(SyncResult::Success);
+    emit syncFinished(_syncResult);
+    emit syncStateChange();
+}
+
 void Folder::scheduleThisFolderSoon()
 {
     if (!_scheduleSelfTimer.isActive()) {
@@ -1075,6 +1144,11 @@ void Folder::registerFolderWatcher()
     connect(_folderWatcher.data(), &FolderWatcher::becameUnreliable,
         this, &Folder::slotWatcherUnreliable);
     _folderWatcher->init(path());
+}
+
+bool Folder::useVirtualFiles() const
+{
+    return _definition.virtualFilesMode != Vfs::Off;
 }
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, bool *cancel)
@@ -1118,8 +1192,10 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
     settings.setValue(QLatin1String("targetPath"), folder.targetPath);
     settings.setValue(QLatin1String("paused"), folder.paused);
     settings.setValue(QLatin1String("ignoreHiddenFiles"), folder.ignoreHiddenFiles);
-    settings.setValue(QLatin1String("usePlaceholders"), folder.useVirtualFiles);
     settings.setValue(QLatin1String(versionC), maxSettingsVersion());
+
+    settings.setValue(QStringLiteral("virtualFilesMode"), Vfs::modeToString(folder.virtualFilesMode));
+    settings.remove(QLatin1String("usePlaceholders")); // deprecated key
 
     // Happens only on Windows when the explorer integration is enabled.
     if (!folder.navigationPaneClsid.isNull())
@@ -1140,7 +1216,18 @@ bool FolderDefinition::load(QSettings &settings, const QString &alias,
     folder->paused = settings.value(QLatin1String("paused")).toBool();
     folder->ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), QVariant(true)).toBool();
     folder->navigationPaneClsid = settings.value(QLatin1String("navigationPaneClsid")).toUuid();
-    folder->useVirtualFiles = settings.value(QLatin1String("usePlaceholders")).toBool();
+
+    folder->virtualFilesMode = Vfs::Off;
+    QString vfsModeString = settings.value(QStringLiteral("virtualFilesMode")).toString();
+    if (!vfsModeString.isEmpty()) {
+        if (!Vfs::modeFromString(vfsModeString, &folder->virtualFilesMode)) {
+            qCWarning(lcFolder) << "Unknown virtualFilesMode:" << vfsModeString << "assuming 'off'";
+        }
+    } else if (settings.value(QLatin1String("usePlaceholders")).toBool()) {
+        folder->virtualFilesMode = Vfs::WithSuffix;
+        folder->upgradeVfsMode = true;
+    }
+
     settings.endGroup();
 
     // Old settings can contain paths with native separators. In the rest of the

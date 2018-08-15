@@ -21,6 +21,7 @@
 #include "progressdispatcher.h"
 #include "common/syncjournaldb.h"
 #include "networkjobs.h"
+#include "syncoptions.h"
 
 #include <QObject>
 #include <QStringList>
@@ -33,6 +34,7 @@ class QSettings;
 
 namespace OCC {
 
+class Vfs;
 class SyncEngine;
 class AccountState;
 class SyncRunFileLog;
@@ -64,10 +66,14 @@ public:
     bool paused;
     /// whether the folder syncs hidden files
     bool ignoreHiddenFiles;
-    /// New files are downloaded as virtual files
-    bool useVirtualFiles = false;
+    /// Which virtual files setting the folder uses
+    Vfs::Mode virtualFilesMode = Vfs::Off;
     /// The CLSID where this folder appears in registry for the Explorer navigation pane entry.
     QUuid navigationPaneClsid;
+
+    /// Whether this suffix-vfs should be migrated to a better
+    /// vfs plugin if possible
+    bool upgradeVfsMode = false;
 
     /// Saves the folder definition, creating a new settings group.
     static void save(QSettings &settings, const FolderDefinition &folder);
@@ -179,7 +185,7 @@ public:
     SyncResult syncResult() const;
 
     /**
-      * This is called if the sync folder definition is removed. Do cleanups here.
+      * This is called when the sync folder definition is removed. Do cleanups here.
       */
     virtual void wipe();
 
@@ -246,8 +252,8 @@ public:
      */
     void registerFolderWatcher();
 
-    /** new files are downloaded as virtual files */
-    bool useVirtualFiles() { return _definition.useVirtualFiles; }
+    /** virtual files of some kind are enabled */
+    bool useVirtualFiles() const;
     void setUseVirtualFiles(bool enabled);
 
 signals:
@@ -342,7 +348,19 @@ private slots:
     /** Warn users about an unreliable folder watcher */
     void slotWatcherUnreliable(const QString &message);
 
+    /** Aborts any running sync and blocks it until hydration is finished.
+     *
+     * Hydration circumvents the regular SyncEngine and both mustn't be running
+     * at the same time.
+     */
+    void slotHydrationStarts();
+
+    /** Unblocks normal sync operation */
+    void slotHydrationDone();
+
 private:
+    void connectSyncRoot();
+
     bool reloadExcludes();
 
     void showSyncResultPopup();
@@ -421,6 +439,11 @@ private:
      * Keeps track of locally dirty files so we can skip local discovery sometimes.
      */
     QScopedPointer<LocalDiscoveryTracker> _localDiscoveryTracker;
+
+    /**
+     * The vfs mode instance (created by plugin) to use. Null means no vfs.
+     */
+    Vfs *_vfs = nullptr;
 };
 }
 

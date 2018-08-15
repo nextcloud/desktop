@@ -29,9 +29,6 @@
 #ifdef Q_OS_MAC
 #include <CoreServices/CoreServices.h>
 #endif
-#ifdef Q_OS_WIN
-#include <shlobj.h>
-#endif
 
 #include <QMessageBox>
 #include <QtCore>
@@ -975,7 +972,6 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
     }
 
     _navigationPaneHelper.scheduleUpdateCloudStorageRegistry();
-
     return folder;
 }
 

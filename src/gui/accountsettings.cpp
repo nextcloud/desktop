@@ -416,7 +416,11 @@ void AccountSettings::slotFolderWizardAccepted()
         folderWizard->field(QLatin1String("sourceFolder")).toString());
     definition.targetPath = FolderDefinition::prepareTargetPath(
         folderWizard->property("targetPath").toString());
-    definition.useVirtualFiles = folderWizard->property("useVirtualFiles").toBool();
+
+    if (folderWizard->property("useVirtualFiles").toBool()) {
+        // ### Determine which vfs is available?
+        definition.virtualFilesMode = Vfs::WindowsCfApi;
+    }
 
     {
         QDir dir(definition.localPath);

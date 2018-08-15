@@ -138,5 +138,15 @@ qint64 FileSystem::getSize(const QString &filename)
     return QFileInfo(filename).size();
 }
 
+bool FileSystem::getInode(const QString &filename, quint64 *inode)
+{
+    csync_file_stat_t fs;
+    if (csync_vio_local_stat(filename.toUtf8().constData(), &fs) == 0) {
+        *inode = fs.inode;
+        return true;
+    }
+    return false;
+}
+
 
 } // namespace OCC

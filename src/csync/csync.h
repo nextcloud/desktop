@@ -139,7 +139,8 @@ enum ItemType {
     ItemTypeDirectory = 2,
     ItemTypeSkip = 3,
     ItemTypeVirtualFile = 4,
-    ItemTypeVirtualFileDownload = 5
+    ItemTypeVirtualFileDownload = 5,
+    ItemTypeVirtualFileDehydration = 6,
 };
 
 

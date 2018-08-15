@@ -31,6 +31,7 @@ set(libsync_SRCS
     networkjobs.cpp
     owncloudpropagator.cpp
     owncloudtheme.cpp
+    plugin.cpp
     progressdispatcher.cpp
     propagatorjobs.cpp
     propagatecommonzsync.cpp
@@ -167,3 +168,4 @@ else()
 endif()
 
 
+add_subdirectory(vfs)

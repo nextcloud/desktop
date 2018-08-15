@@ -27,6 +27,7 @@
 #include "propagatedownload.h"
 #include "common/asserts.h"
 #include "discovery.h"
+#include "common/vfs.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -326,6 +327,8 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             rec._serverHasIgnoredFiles |= prev._serverHasIgnoredFiles;
             _journal->setFileRecord(rec);
 
+            // ### Update vfs metadata with Vfs::updateMetadata()
+
             // This might have changed the shared flag, so we must notify SyncFileStatusTracker for example
             emit itemCompleted(item);
         } else {
@@ -463,10 +466,12 @@ void SyncEngine::startSync()
 
     _lastLocalDiscoveryStyle = _localDiscoveryStyle;
 
-    if (_syncOptions._newFilesAreVirtual && _syncOptions._virtualFileSuffix.isEmpty()) {
-        syncError(tr("Using virtual files but suffix is not set"));
-        finalize(false);
-        return;
+    if (_syncOptions._vfs && _syncOptions._vfs->mode() == Vfs::WithSuffix) {
+        if (_syncOptions._vfs->fileSuffix().isEmpty()) {
+            syncError(tr("Using virtual files with suffix, but suffix is not set"));
+            finalize(false);
+            return;
+        }
     }
 
     bool ok;
@@ -920,6 +925,30 @@ bool SyncEngine::shouldDiscoverLocally(const QString &path) const
             return false;
     }
     return false;
+}
+
+void SyncEngine::wipeVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs *vfs)
+{
+    qCInfo(lcEngine) << "Wiping virtual files inside" << localPath;
+    journal.getFilesBelowPath(QByteArray(), [&](const SyncJournalFileRecord &rec) {
+        if (rec._type != ItemTypeVirtualFile && rec._type != ItemTypeVirtualFileDownload)
+            return;
+
+        qCDebug(lcEngine) << "Removing db record for" << rec._path;
+        journal.deleteFileRecord(rec._path);
+
+        // If the local file is a dehydrated placeholder, wipe it too.
+        // Otherwise leave it to allow the next sync to have a new-new conflict.
+        QString localFile = localPath + rec._path;
+        if (QFile::exists(localFile) && vfs && vfs->isDehydratedPlaceholder(localFile)) {
+            qCDebug(lcEngine) << "Removing local dehydrated placeholder" << rec._path;
+            QFile::remove(localFile);
+        }
+    });
+
+    journal.forceRemoteDiscoveryNextSync();
+
+    // Postcondition: No ItemTypeVirtualFile / ItemTypeVirtualFileDownload left in the db
 }
 
 void SyncEngine::abort()

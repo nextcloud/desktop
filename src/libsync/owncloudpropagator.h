@@ -451,7 +451,6 @@ public:
     bool hasCaseClashAccessibilityProblem(const QString &relfile);
 
     QString getFilePath(const QString &tmp_file_name) const;
-    QString addVirtualFileSuffix(const QString &fileName) const;
 
     /** Creates the job for an item.
      */
