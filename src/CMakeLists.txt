@@ -84,3 +84,4 @@ if(KRAZY2_EXECUTABLE)
                        ${PROJECT_SOURCE_DIR}/src/cmd/*.cpp
 )
 endif()
+

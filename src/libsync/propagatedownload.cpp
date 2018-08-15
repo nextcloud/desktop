@@ -26,6 +26,7 @@
 #include "common/asserts.h"
 #include "clientsideencryptionjobs.h"
 #include "propagatedownloadencrypted.h"
+#include "common/vfs.h"
 
 #include <QLoggingCategory>
 #include <QNetworkAccessManager>
@@ -68,13 +69,15 @@ QString OWNCLOUDSYNC_EXPORT createDownloadTmpFileName(const QString &previous)
 }
 
 // DOES NOT take ownership of the device.
-GETFileJob::GETFileJob(AccountPtr account, const QString &path, QFile *device,
+GETFileJob::GETFileJob(AccountPtr account, const QString &path, QIODevice *device,
     const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
     quint64 resumeStart, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
     , _device(device)
     , _headers(headers)
     , _expectedEtagForResume(expectedEtagForResume)
+    , _expectedContentLength(-1)
+    , _contentLength(0)
     , _resumeStart(resumeStart)
     , _errorStatus(SyncFileItem::NoStatus)
     , _bandwidthLimited(false)
@@ -86,7 +89,7 @@ GETFileJob::GETFileJob(AccountPtr account, const QString &path, QFile *device,
 {
 }
 
-GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, QFile *device,
+GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
     const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
     quint64 resumeStart, QObject *parent)
 
@@ -94,6 +97,8 @@ GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, QFile *device,
     , _device(device)
     , _headers(headers)
     , _expectedEtagForResume(expectedEtagForResume)
+    , _expectedContentLength(-1)
+    , _contentLength(0)
     , _resumeStart(resumeStart)
     , _errorStatus(SyncFileItem::NoStatus)
     , _directDownloadUrl(url)
@@ -196,6 +201,16 @@ void GETFileJob::slotMetaDataChanged()
         qCWarning(lcGetJob) << "We received a different E-Tag for resuming!"
                             << _expectedEtagForResume << "vs" << _etag;
         _errorString = tr("We received a different E-Tag for resuming. Retrying next time.");
+        _errorStatus = SyncFileItem::NormalError;
+        reply()->abort();
+        return;
+    }
+
+    _contentLength = reply()->header(QNetworkRequest::ContentLengthHeader).toLongLong();
+    if (_expectedContentLength != -1 && _contentLength != _expectedContentLength) {
+        qCWarning(lcGetJob) << "We received a different content length than expected!"
+                            << _expectedContentLength << "vs" << _contentLength;
+        _errorString = tr("We received an unexpected download Content-Length.");
         _errorStatus = SyncFileItem::NormalError;
         reply()->abort();
         return;
@@ -399,17 +414,30 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
 {
     _stopwatch.start();
 
+    auto &syncOptions = propagator()->syncOptions();
+    auto vfs = syncOptions._vfs;
+
     // For virtual files just create the file and be done
+    if (_item->_type == ItemTypeVirtualFileDehydration) {
+        _item->_type = ItemTypeVirtualFile;
+        // TODO: Could dehydrate without wiping the file entirely
+        auto fn = propagator()->getFilePath(_item->_file);
+        qCDebug(lcPropagateDownload) << "dehydration: wiping base file" << fn;
+        QFile::remove(fn);
+        propagator()->_journal->deleteFileRecord(_item->_file);
+
+        if (vfs && vfs->mode() == Vfs::WithSuffix) {
+            // Normally new suffix-virtual files already have the suffix included in the path
+            // but for dehydrations that isn't the case. Adjust it here.
+            _item->_file.append(vfs->fileSuffix());
+        }
+    }
     if (_item->_type == ItemTypeVirtualFile) {
         auto fn = propagator()->getFilePath(_item->_file);
         qCDebug(lcPropagateDownload) << "creating virtual file" << fn;
 
-        // NOTE: Other places might depend on contents of placeholder files (like csync_update)
-        QFile file(fn);
-        file.open(QFile::ReadWrite | QFile::Truncate);
-        file.write(" ");
-        file.close();
-        FileSystem::setModTime(fn, _item->_modtime);
+        ASSERT(vfs);
+        vfs->createPlaceholder(propagator()->_localDir, _item);
         updateMetadata(false);
         return;
     }
@@ -623,7 +651,7 @@ void PropagateDownloadFile::slotGetFinished()
 
         // Don't keep the temporary file if it is empty or we
         // used a bad range header or the file's not on the server anymore.
-        if (_tmpFile.size() == 0 || badRangeHeader || fileNotFound) {
+        if (_tmpFile.exists() && (_tmpFile.size() == 0 || badRangeHeader || fileNotFound)) {
             _tmpFile.close();
             FileSystem::remove(_tmpFile.fileName());
             propagator()->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
@@ -957,6 +985,12 @@ void PropagateDownloadFile::downloadFinished()
         done(SyncFileItem::SoftError, error);
         return;
     }
+
+    // Make the file a hydrated placeholder if possible
+    if (auto vfs = propagator()->syncOptions()._vfs) {
+        vfs->convertToPlaceholder(fn, _item);
+    }
+
     FileSystem::setFileHidden(fn, false);
 
     // Maybe we downloaded a newer version of the file than we thought we would...
@@ -968,15 +1002,20 @@ void PropagateDownloadFile::downloadFinished()
     if (_conflictRecord.isValid())
         propagator()->_journal->setConflictRecord(_conflictRecord);
 
-    // If we downloaded something that used to be a virtual file,
-    // wipe the virtual file and its db entry now that we're done.
     if (_item->_type == ItemTypeVirtualFileDownload) {
-        auto virtualFile = propagator()->addVirtualFileSuffix(_item->_file);
-        auto fn = propagator()->getFilePath(virtualFile);
-        qCDebug(lcPropagateDownload) << "Download of previous virtual file finished" << fn;
-        QFile::remove(fn);
-        propagator()->_journal->deleteFileRecord(virtualFile);
+        // A downloaded virtual file becomes normal
         _item->_type = ItemTypeFile;
+
+        // If the virtual file used to have a different name and db
+        // entry, wipe both now.
+        auto vfs = propagator()->syncOptions()._vfs;
+        if (vfs && vfs->mode() == Vfs::WithSuffix) {
+            QString virtualFile = _item->_file + vfs->fileSuffix();
+            auto fn = propagator()->getFilePath(virtualFile);
+            qCDebug(lcPropagateDownload) << "Download of previous virtual file finished" << fn;
+            QFile::remove(fn);
+            propagator()->_journal->deleteFileRecord(virtualFile);
+        }
     }
 
     updateMetadata(isConflict);

@@ -21,7 +21,12 @@ macro(nextcloud_add_test test_class additional_cpp)
 
     add_definitions(-DOWNCLOUD_TEST)
     add_definitions(-DOWNCLOUD_BIN_PATH="${CMAKE_BINARY_DIR}/bin")
-    add_test(NAME ${OWNCLOUD_TEST_CLASS}Test COMMAND ${OWNCLOUD_TEST_CLASS}Test)
+    message(STATUS "Add test: ${OWNCLOUD_TEST_CLASS}Test")
+    add_test(NAME ${OWNCLOUD_TEST_CLASS}Test
+        COMMAND ${OWNCLOUD_TEST_CLASS}Test
+        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+
+    target_include_directories(${OWNCLOUD_TEST_CLASS}Test PRIVATE "${CMAKE_SOURCE_DIR}/test/")
 endmacro()
 
 macro(nextcloud_add_benchmark test_class additional_cpp)

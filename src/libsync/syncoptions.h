@@ -17,7 +17,7 @@
 #include "owncloudlib.h"
 #include <QString>
 #include <chrono>
-
+#include "common/vfs.h"
 
 namespace OCC {
 
@@ -37,8 +37,7 @@ struct SyncOptions
     bool _moveFilesToTrash = false;
 
     /** Create a virtual file for new files instead of downloading */
-    bool _newFilesAreVirtual = false;
-    QString _virtualFileSuffix = ".owncloud";
+    Vfs *_vfs = nullptr;
 
     /** The initial un-adjusted chunk size in bytes for chunked uploads, both
      * for old and new chunking algorithm, which classifies the item to be chunked

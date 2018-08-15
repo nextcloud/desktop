@@ -931,6 +931,7 @@ public:
         syncOnce();
     }
 
+    OCC::AccountPtr account() const { return _account; }
     OCC::SyncEngine &syncEngine() const { return *_syncEngine; }
     OCC::SyncJournalDb &syncJournal() const { return *_journalDb; }
 

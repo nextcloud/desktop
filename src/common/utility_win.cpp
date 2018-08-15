@@ -314,4 +314,24 @@ DWORD Utility::convertSizeToDWORD(size_t &convertVar)
     return static_cast<DWORD>(convertVar);
 }
 
+void Utility::UnixTimeToFiletime(time_t t, FILETIME *filetime)
+{
+    LONGLONG ll = Int32x32To64(t, 10000000) + 116444736000000000;
+    filetime->dwLowDateTime = (DWORD) ll;
+    filetime->dwHighDateTime = ll >>32;
+}
+
+void Utility::FiletimeToLargeIntegerFiletime(FILETIME *filetime, LARGE_INTEGER *hundredNSecs)
+{
+    hundredNSecs->LowPart = filetime->dwLowDateTime;
+    hundredNSecs->HighPart = filetime->dwHighDateTime;
+}
+
+void Utility::UnixTimeToLargeIntegerFiletime(time_t t, LARGE_INTEGER *hundredNSecs)
+{
+    LONGLONG ll = Int32x32To64(t, 10000000) + 116444736000000000;
+    hundredNSecs->LowPart = (DWORD) ll;
+    hundredNSecs->HighPart = ll >>32;
+}
+
 } // namespace OCC

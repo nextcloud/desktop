@@ -137,7 +137,8 @@ enum ItemType {
     ItemTypeDirectory = 2,
     ItemTypeSkip = 3,
     ItemTypeVirtualFile = 4,
-    ItemTypeVirtualFileDownload = 5
+    ItemTypeVirtualFileDownload = 5,
+    ItemTypeVirtualFileDehydration = 6,
 };
 
 
@@ -146,7 +147,9 @@ enum ItemType {
 // currently specified at https://github.com/owncloud/core/issues/8322 are 9 to 10
 #define REMOTE_PERM_BUF_SIZE 15
 
-struct OCSYNC_EXPORT csync_file_stat_t {
+typedef struct csync_file_stat_s csync_file_stat_t;
+
+struct OCSYNC_EXPORT csync_file_stat_s {
   time_t modtime = 0;
   int64_t size = 0;
   uint64_t inode = 0;
@@ -177,7 +180,7 @@ struct OCSYNC_EXPORT csync_file_stat_t {
 
   enum csync_instructions_e instruction = CSYNC_INSTRUCTION_NONE; /* u32 */
 
-  csync_file_stat_t()
+  csync_file_stat_s()
     : type(ItemTypeSkip)
     , child_modified(false)
     , has_ignored_files(false)
