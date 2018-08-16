@@ -355,6 +355,8 @@ void PropagateDownloadFile::start()
     if (_item->_type == ItemTypeVirtualFile) {
         auto fn = propagator()->getFilePath(_item->_file);
         qCDebug(lcPropagateDownload) << "creating virtual file" << fn;
+
+        // NOTE: Other places might depend on contents of placeholder files (like csync_update)
         QFile file(fn);
         file.open(QFile::ReadWrite | QFile::Truncate);
         file.write(" ");

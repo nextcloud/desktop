@@ -584,6 +584,42 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void testRenameToVirtual()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        SyncOptions syncOptions;
+        syncOptions._newFilesAreVirtual = true;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+
+        auto cleanup = [&]() {
+            completeSpy.clear();
+        };
+        cleanup();
+
+        // If a file is renamed to <name>.owncloud, it becomes virtual
+        fakeFolder.localModifier().rename("A/a1", "A/a1.owncloud");
+        // If a file is renamed to <random>.owncloud, the file sticks around (to preserve user data)
+        fakeFolder.localModifier().rename("A/a2", "A/rand.owncloud");
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
+        QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
+        QVERIFY(itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_NEW));
+        QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypeVirtualFile);
+
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a2"));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a2.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/rand.owncloud"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("A/a2"));
+        QVERIFY(itemInstruction(completeSpy, "A/a2", CSYNC_INSTRUCTION_REMOVE));
+        QVERIFY(!dbRecord(fakeFolder, "A/rand.owncloud").isValid());
+
+        cleanup();
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncVirtualFiles)
