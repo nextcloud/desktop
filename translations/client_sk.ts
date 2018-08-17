@@ -3401,22 +3401,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1360"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1368"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1367"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1375"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1692"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1700"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1699"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1707"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation type="unfinished"/>
     </message>
@@ -3561,49 +3561,49 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Názov súboru obsahuje nevhodný znak</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1286"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1326"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1294"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1334"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorované podľa nastavenia &quot;vybrať čo synchronizovať&quot;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1345"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1353"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Nie je dovolené, lebo nemáte oprávnenie pridávať podpriečinky do tohto priečinka</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1392"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1400"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Nie je dovolené tento súbor nahrať, pretože je na serveri iba na čítanie. Obnovuje sa.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1408"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1427"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1416"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1435"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Nie je dovolené odstrániť. Obnovuje sa.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1441"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1449"/>
         <source>Local files and share folder removed.</source>
         <translation>Lokálne súbory a zdieľaný priečinok boli odstránené.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1495"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1503"/>
         <source>Move not allowed, item restored</source>
         <translation>Presunutie nie je dovolené. Položka obnovená.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1506"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1514"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>Presunutie nie je dovolené, pretože %1 je na serveri iba na čítanie</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1506"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1514"/>
         <source>the destination</source>
         <translation>cieľ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1506"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1514"/>
         <source>the source</source>
         <translation>zdroj</translation>
     </message>

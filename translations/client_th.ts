@@ -3421,22 +3421,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 ไม่สามารถเปิดหรือสร้างฐานข้อมูลการประสานข้อมูลในเครื่อง ตรวจสอบว่าคุณมีสิทธิ์การเขียนในโฟลเดอร์ซิงค์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1360"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1368"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
         <translation>ไม่ได้รับอนุญาต เพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์หลัก</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1367"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1375"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>ไม่ได้รับอนุญาต เพราะคุณไม่มีสิทธิ์ที่จะเพิ่มไฟล์ในโฟลเดอร์นั้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1692"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1700"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>พื้นที่จัดเก็บเหลือน้อย: การดาวน์โหลดจะช่วยลดพื้นที่ว่างด้านล่าง %1 ที่ถูกข้ามไป</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1699"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1707"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>มีพื้นที่ว่างไม่เพียงพอบนเซิร์ฟเวอร์สำหรับการอัพโหลดบางรายการ</translation>
     </message>
@@ -3581,49 +3581,49 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>มีชื่อแฟ้มอย่างน้อยหนึ่งตัวอักษรที่ไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1286"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1326"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1294"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1334"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>ถูกละเว้นเพราะ &quot;ข้อมูลที่เลือกประสาน&quot; ติดบัญชีดำ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1345"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1353"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>ไม่อนุญาตเพราะคุณไม่มีสิทธิ์ที่จะเพิ่มโฟลเดอร์ย่อยของโฟลเดอร์นั้น</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1392"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1400"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>ไม่อนุญาตให้อัพโหลดไฟล์นี้เพราะมันจะอ่านได้เพียงอย่างเดียวบนเซิร์ฟเวอร์ กำลังฟื้นฟู</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1408"/>
-        <location filename="../src/libsync/syncengine.cpp" line="1427"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1416"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1435"/>
         <source>Not allowed to remove, restoring</source>
         <translation>ไม่อนุญาตให้ลบเพราะกำลังฟื้นฟู</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1441"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1449"/>
         <source>Local files and share folder removed.</source>
         <translation>ไฟล์ต้นทางและโฟลเดอร์ที่แชร์ถูกลบออก</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1495"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1503"/>
         <source>Move not allowed, item restored</source>
         <translation>ไม่ได้รับอนุญาตให้ย้าย เพราะกำลังกู้คืนรายการ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1506"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1514"/>
         <source>Move not allowed because %1 is read-only</source>
         <translation>ไม่อนุญาตให้ย้ายเพราะ %1 จะอ่านได้เพียงอย่างเดียว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1506"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1514"/>
         <source>the destination</source>
         <translation>ปลายทาง</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1506"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1514"/>
         <source>the source</source>
         <translation>แหล่งที่มา</translation>
     </message>
