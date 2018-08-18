@@ -68,9 +68,12 @@ private slots:
         // Create a virtual file for a new remote file
         fakeFolder.remoteModifier().mkdir("A");
         fakeFolder.remoteModifier().insert("A/a1", 64);
+        auto someDate = QDateTime(QDate(1984, 07, 30), QTime(1,3,2));
+        fakeFolder.remoteModifier().setModTime("A/a1", someDate);
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
         QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1.owncloud").lastModified(), someDate);
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
         QVERIFY(itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_NEW));
         QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypeVirtualFile);
@@ -80,6 +83,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
         QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1.owncloud").lastModified(), someDate);
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
         QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypeVirtualFile);
         QVERIFY(completeSpy.isEmpty());
@@ -90,6 +94,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
         QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1.owncloud").lastModified(), someDate);
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
         QCOMPARE(dbRecord(fakeFolder, "A/a1.owncloud")._type, ItemTypeVirtualFile);
         QVERIFY(completeSpy.isEmpty());
