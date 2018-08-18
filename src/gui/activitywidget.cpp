@@ -296,7 +296,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
             // store the name of the account that sends the notification to be
             // able to add it to the tray notification
             // remove the user name from the account as that is not accurate here.
-            int indx = host.indexOf(QChar('@'));
+            int indx = host.lastIndexOf(QChar('@'));
             if (indx > -1) {
                 host.remove(0, 1 + indx);
             }
