@@ -402,6 +402,7 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
         file.open(QFile::ReadWrite | QFile::Truncate);
         file.write(" ");
         file.close();
+        FileSystem::setModTime(fn, _item->_modtime);
         updateMetadata(false);
         return;
     }
