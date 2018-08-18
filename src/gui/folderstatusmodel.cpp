@@ -210,6 +210,10 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             : QStringList();
     case FolderStatusDelegate::FolderErrorMsg:
         return f->syncResult().errorStrings();
+    case FolderStatusDelegate::FolderInfoMsg:
+        return f->useVirtualFiles()
+            ? QStringList(tr("New files are being created as virtual files."))
+            : QStringList();
     case FolderStatusDelegate::SyncRunning:
         return f->syncResult().status() == SyncResult::SyncRunning;
     case FolderStatusDelegate::HeaderRole:
