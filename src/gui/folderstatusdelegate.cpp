@@ -79,16 +79,13 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
     int h = rootFolderHeightWithoutErrors(fm, aliasFm);
     // this already includes the bottom margin
 
-    // add some space to show an conflict indicator.
+    // add some space for the message boxes.
     int margin = fm.height() / 4;
-    if (!qvariant_cast<QStringList>(index.data(FolderConflictMsg)).isEmpty()) {
-        QStringList msgs = qvariant_cast<QStringList>(index.data(FolderConflictMsg));
-        h += margin + 2 * margin + msgs.count() * fm.height();
-    }
-    // add some space to show an error condition.
-    if (!qvariant_cast<QStringList>(index.data(FolderErrorMsg)).isEmpty()) {
-        QStringList errMsgs = qvariant_cast<QStringList>(index.data(FolderErrorMsg));
-        h += margin + 2 * margin + errMsgs.count() * fm.height();
+    for (auto role : {FolderConflictMsg, FolderErrorMsg, FolderInfoMsg}) {
+        auto msgs = qvariant_cast<QStringList>(index.data(role));
+        if (!msgs.isEmpty()) {
+            h += margin + 2 * margin + msgs.count() * fm.height();
+        }
     }
 
     return {0, h};
@@ -162,6 +159,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     auto remotePath = qvariant_cast<QString>(index.data(FolderSecondPathRole));
     auto conflictTexts = qvariant_cast<QStringList>(index.data(FolderConflictMsg));
     auto errorTexts = qvariant_cast<QStringList>(index.data(FolderErrorMsg));
+    auto infoTexts = qvariant_cast<QStringList>(index.data(FolderInfoMsg));
 
     auto overallPercent = qvariant_cast<int>(index.data(SyncProgressOverallPercent));
     auto overallString = qvariant_cast<QString>(index.data(SyncProgressOverallString));
@@ -307,6 +305,8 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         drawTextBox(conflictTexts, QColor(0xba, 0xba, 0x4d));
     if (!errorTexts.isEmpty())
         drawTextBox(errorTexts, QColor(0xbb, 0x4d, 0x4d));
+    if (!infoTexts.isEmpty())
+        drawTextBox(infoTexts, QColor(0x4d, 0xba, 0x4d));
 
     // Sync File Progress Bar: Show it if syncFile is not empty.
     if (showProgess) {
