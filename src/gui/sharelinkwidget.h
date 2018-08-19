@@ -61,7 +61,7 @@ private slots:
     void slotSharesFetched(const QList<QSharedPointer<Share>> &shares);
     //void slotShareSelectionChanged();
 
-    void slotCreateorDeleteShareLink(bool checked);
+    void slotCreateOrDeleteShareLink(bool checked);
     void slotCreatePassword();
 
     void slotExpireDateChanged(const QDate &date);

@@ -75,7 +75,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
 //    _ui->verticalLayout->addWidget(_pi_password, Qt::AlignCenter);
 //    _ui->verticalLayout->addWidget(_pi_editing, Qt::AlignCenter);
 
-    connect(_ui->enableShareLink, &QCheckBox::toggled, this, &ShareLinkWidget::slotCreateorDeleteShareLink);
+    connect(_ui->enableShareLink, &QCheckBox::toggled, this, &ShareLinkWidget::slotCreateOrDeleteShareLink);
     connect(_ui->lineEdit_password, &QLineEdit::returnPressed, this, &ShareLinkWidget::slotCreatePassword);
     connect(_ui->confirmPassword, &QAbstractButton::clicked, this, &ShareLinkWidget::slotCreatePassword);
     connect(_ui->confirmExpirationDate, &QAbstractButton::clicked, this, &ShareLinkWidget::slotCreatePassword);
@@ -354,7 +354,7 @@ void ShareLinkWidget::slotCreatePassword()
     }
 }
 
-void ShareLinkWidget::slotCreateorDeleteShareLink(bool checked)
+void ShareLinkWidget::slotCreateOrDeleteShareLink(bool checked)
 {
     if (!_manager) {
         qCWarning(lcSharing) << "No share manager set.";
@@ -371,8 +371,6 @@ void ShareLinkWidget::slotCreateorDeleteShareLink(bool checked)
         }
         confirmAndDeleteShare();
     }
-
-    _ui->shareLinkToolButton->setEnabled(checked);
 }
 
 void ShareLinkWidget::setPassword(const QString &password)
@@ -410,6 +408,9 @@ void ShareLinkWidget::slotPasswordSet()
 
 void ShareLinkWidget::slotDeleteShareFetched()
 {
+    _linkShare.clear();
+    _ui->enableShareLink->setChecked(false);
+    _ui->shareLinkToolButton->setEnabled(false);
     getShares();
 }
 
@@ -469,12 +470,8 @@ void ShareLinkWidget::confirmAndDeleteShare()
 
     connect(messageBox, &QMessageBox::finished, this,
         [messageBox, yesButton, this]() {
-        if (messageBox->clickedButton() == yesButton){
-            // TODO: dlete is not hapenning correctly
+        if (messageBox->clickedButton() == yesButton)
             this->_linkShare->deleteShare();
-            this->_ui->enableShareLink->setChecked(false);
-            this->_ui->shareLinkToolButton->setEnabled(false);
-        }
     });
     messageBox->open();
 }
@@ -525,7 +522,7 @@ void ShareLinkWidget::slotLinkContextMenuActionTriggered(QAction *action)
         toggleExpireDateOptions(state);
 
     } else if (action == _unshareLinkAction) {
-        confirmAndDeleteShare();
+        slotCreateOrDeleteShareLink(state);
     }
 }
 
