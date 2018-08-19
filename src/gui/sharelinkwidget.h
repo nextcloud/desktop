@@ -65,6 +65,7 @@ private slots:
     void slotCreatePassword();
 
     void slotExpireDateChanged(const QDate &date);
+    void slotSetExpireDate();
 
     void slotContextMenuButtonClicked();
     void slotLinkContextMenuActionTriggered(QAction *action);
@@ -72,8 +73,9 @@ private slots:
     void slotDeleteShareFetched();
     void slotCreateShareFetched();
     void slotCreateShareRequiresPassword(const QString &message);
+
     void slotPasswordSet();
-    //void slotExpireSet();
+    void slotExpireDateSet();
 
     void slotServerError(int code, const QString &message);
     void slotPasswordSetError(int code, const QString &message);
@@ -95,10 +97,7 @@ private:
     /** Retrieve a share's name, accounting for _namesSupported */
     QString shareName() const;
 
-    /**
-     * Retrieve the selected share, returning 0 if none.
-     */
-    //QSharedPointer<LinkShare> selectedShare() const;
+    void toggleAnimation(bool start);
 
     Ui::ShareLinkWidget *_ui;
     AccountPtr _account;
@@ -106,10 +105,7 @@ private:
     QString _localPath;
     QString _shareUrl;
 
-    QProgressIndicator *_pi_create;
-    QProgressIndicator *_pi_password;
-    QProgressIndicator *_pi_date;
-    QProgressIndicator *_pi_editing;
+    QProgressIndicator *_pi_indicator;
 
     ShareManager *_manager;
     QSharedPointer<LinkShare> _linkShare;
