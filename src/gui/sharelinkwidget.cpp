@@ -58,6 +58,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     , _unshareLinkAction(nullptr)
 {
     _ui->setupUi(this);
+    _ui->shareLinkToolButton->hide();
 
     //Is this a file or folder?
     QFileInfo fi(localPath);
@@ -265,6 +266,9 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         _ui->shareLinkToolButton->setEnabled(true);
         _ui->enableShareLink->setEnabled(true);
         _ui->enableShareLink->setChecked(true);
+
+        // show sharing options
+        _ui->shareLinkToolButton->show();
     }
 }
 
@@ -411,6 +415,7 @@ void ShareLinkWidget::slotDeleteShareFetched()
     _linkShare.clear();
     _ui->enableShareLink->setChecked(false);
     _ui->shareLinkToolButton->setEnabled(false);
+    _ui->shareLinkToolButton->hide();
     getShares();
 }
 
