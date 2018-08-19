@@ -1308,7 +1308,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="157"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Klicke hier&lt;/a&gt; um ein App-Passwort von dem Web-Interface zu erhalten.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Klicke hier&lt;/a&gt; um ein App-Passwort vom Web-Interface zu erhalten.</translation>
     </message>
 </context>
 <context>
