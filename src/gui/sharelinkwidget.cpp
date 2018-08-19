@@ -173,12 +173,15 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         SharePermissions perm = _linkShare->getPermissions();
         QActionGroup *permissionsGroup = new QActionGroup(this);
 
+        // Prepare sharing menu
+        _linkContextMenu = new QMenu(this);
+
         // radio button style
         permissionsGroup->setExclusive(true);
 
         if(_isFile){
             checked = perm & (SharePermissionRead & SharePermissionUpdate);
-            _allowEditingLinkAction = permissionsGroup->addAction(tr("Allow Editing"));
+            _allowEditingLinkAction = _linkContextMenu->addAction(tr("Allow Editing"));
             _allowEditingLinkAction->setCheckable(true);
             _allowEditingLinkAction->setChecked(checked);
 
@@ -201,9 +204,6 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
             _allowUploadLinkAction->setCheckable(true);
             _allowUploadLinkAction->setChecked(checked);
         }
-
-        // Prepare sharing menu
-        _linkContextMenu = new QMenu(this);
 
         // Add copy action (icon only)
         _copyLinkAction = _linkContextMenu->addAction(QIcon(":/client/resources/copy.svg"),
