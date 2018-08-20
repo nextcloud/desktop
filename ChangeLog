@@ -35,6 +35,7 @@ version 2.5.0 (2018-08-xx)
 * Issues tab: Don't allow two issues for the same file/folder
 * Issues tab: addItem performance improvement
 * Activities: Remove the text that a server does not support activities when the account is removed (#6679)
+* Activities: Handle the fact that the username can contain a '@' (#6728)
 * Notifications: Lower hiding timeout
 * Notifications: Also have clickable link (#6236)
 * Shell integration: Add "Open in browser" entry in the explorer menu (#5903)
