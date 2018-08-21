@@ -233,7 +233,7 @@ class MenuExtension_ownCloud(GObject.GObject, Nautilus.MenuProvider):
     def ask_for_menu_items(self, files):
         record_separator = '\x1e'
         filesstring = record_separator.join(files)
-        socketConnect.sendCommand('GET_MENU_ITEMS:{}\n'.format(filesstring))
+        socketConnect.sendCommand(u'GET_MENU_ITEMS:{}\n'.format(filesstring))
 
         done = False
         start = time.time()

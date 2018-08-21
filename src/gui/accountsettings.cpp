@@ -96,7 +96,7 @@ protected:
             auto pos = folderList->mapFromGlobal(QCursor::pos());
             auto index = folderList->indexAt(pos);
             if (model->classify(index) == FolderStatusModel::RootFolder
-                && (FolderStatusDelegate::errorsListRect(folderList->visualRect(index)).contains(pos)
+                && (FolderStatusDelegate::errorsListRect(folderList->visualRect(index), index).contains(pos)
                     || FolderStatusDelegate::optionsButtonRect(folderList->visualRect(index),folderList->layoutDirection()).contains(pos))) {
                 shape = Qt::PointingHandCursor;
             }
@@ -340,7 +340,7 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
             slotCustomContextMenuRequested(pos);
             return;
         }
-        if (FolderStatusDelegate::errorsListRect(tv->visualRect(indx)).contains(pos)) {
+        if (FolderStatusDelegate::errorsListRect(tv->visualRect(indx), indx).contains(pos)) {
             emit showIssuesList(_model->data(indx, FolderStatusDelegate::FolderAliasRole).toString());
             return;
         }

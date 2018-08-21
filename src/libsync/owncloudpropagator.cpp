@@ -695,6 +695,7 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
     ConflictRecord conflictRecord;
     conflictRecord.path = conflictFileName.toUtf8();
     conflictRecord.baseModtime = item->_previousModtime;
+    conflictRecord.basePath = item->_file.toUtf8();
 
     SyncJournalFileRecord baseRecord;
     if (_journal->getFileRecord(item->_originalFile, &baseRecord) && baseRecord.isValid()) {

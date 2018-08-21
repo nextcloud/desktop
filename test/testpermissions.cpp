@@ -16,25 +16,11 @@ static void applyPermissionsFromName(FileInfo &info) {
     static QRegularExpression rx("_PERM_([^_]*)_[^/]*$");
     auto m = rx.match(info.name);
     if (m.hasMatch()) {
-        info.permissions = RemotePermissions(m.captured(1));
+        info.permissions = RemotePermissions::fromServerString(m.captured(1));
     }
 
     for (FileInfo &sub : info.children)
         applyPermissionsFromName(sub);
-}
-
-const FileInfo *findConflict(FileInfo &dir, const QString &filename)
-{
-    QFileInfo info(filename);
-    const FileInfo *parentDir = dir.find(info.path());
-    if (!parentDir) return nullptr;
-    QString start = info.baseName() + " (conflicted copy";
-    for (const auto &item : parentDir->children) {
-        if (item.name.startsWith(start)) {
-            return &item;
-        }
-    }
-    return nullptr;
 }
 
 // Check if the expected rows in the DB are non-empty. Note that in some cases they might be, then we cannot use this function

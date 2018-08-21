@@ -33,6 +33,9 @@ packages.
 Linux
 -----
 
+For the published desktop clients we link against qt5 dependencies from our ouwn repositories, os that we can have the same versions on all distributions. This chapter shows you how to build the client yourself with this setup.
+If you want to use the qt5 dependencies from your system, see the next chapter.
+
 You may wish to use source packages for your Linux distribution, as these give 
 you the exact sources from which the binary packages are built. These are 
 hosted on the `ownCloud repository from OBS`_. Go to the `Index of 
@@ -41,23 +44,31 @@ repositories`_ to see all the Linux client repos.
 1. The source RPMs for CentOS, RHEL, Fedora, SLES, and openSUSE are at the `bottom of the page for each distribution 
    <https://software.opensuse.org/download/package?project=isv:ownCloud:desktop&
    package=owncloud-client>`
-   the sources for DEB and Ubuntu based distributions are at e.g. http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Ubuntu_16.04/
+   the sources for DEB and Ubuntu based distributions are at e.g. http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Ubuntu_18.04/
    
    To get the .deb source packages add the source 
-   repo for your Debian or Ubuntu version, like this example for Debian 8 
+   repo for your Debian or Ubuntu version, like this example for Debian 9 
    (run as root)::
  
     echo 'deb-src 
-    http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Debian_8.0/ /' >> /etc/apt/sources.list.d/owncloud-client.list
+    http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Debian_9.0/ /' >> /etc/apt/sources.list.d/owncloud-client.list
 
 2. Install the dependencies using the following commands for your specific Linux 
 distribution. Make sure the repositories for source packages are enabled.
   
-   * Debian/Ubuntu: ``apt-get update; apt-get build-dep owncloud-client``
+   * Debian/Ubuntu: ``apt update; apt build-dep owncloud-client``
    * openSUSE/SLES: ``zypper ref; zypper si -d owncloud-client``
    * Fedora/CentOS/RHEL: ``yum install yum-utils; yum-builddep owncloud-client``
 
 3. Follow the :ref:`generic-build-instructions`, starting with step 2.
+
+Linux with system dependencies
+------------------------------
+1. Build sources from e.g. a github checkout with dependencies provided by your linux distribution. While this allows more freedom for development, it does not exactly represent what we ship as packages. See above for how to recreate packages from source.
+
+  * Debian/Ubuntu: ``apt install qtdeclarative5-dev libinotifytools-dev qt5keychain-dev libqt5webkit5-dev python-sphinx libsqlite3-dev``
+
+2. Follow the :ref:`generic-build-instructions`, starting with step 1.
 
 macOS
 -----
@@ -240,9 +251,9 @@ To build the most up-to-date version of the client:
 
 3. Configure the client build::
 
-     cmake -DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/  -DNO_SHIBBOLETH=1 ..``
+     cmake -DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/  -DNO_SHIBBOLETH=1 ..
 
-.. note:: For Linux builds (using qt5 libraries via build-dep) a typical setting is ``-DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1/`` - version number may vary.
+.. note:: For Linux builds (using QT5 libraries via build-dep) a typical setting is ``-DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1/`` - version number may vary. For Linux builds using system dependencies -DCMAKE_PREFIX_PATH is not needed.
 
 .. note:: You must use absolute paths for the ``include`` and ``library``
          directories.

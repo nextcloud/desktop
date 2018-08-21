@@ -27,11 +27,15 @@ version 2.5.0 (2018-08-xx)
 * Wizard: add a context menu to copy the OAuth2 link (enterprise
 * Wizard: Put errors into a scroll area (#6546)
 * Wizard: show a message when the URL is invalid
+* Wizard: pre-select the right radio button (#6685)
+* Selective Sync: Do not abort applying selective sync if one folder has an error (#6675)
 * Protocol: Introduce context menu with "open in browser" (#6121)
 * Protocol: Correct sorting by size (#6326)
 * Issues tab: Invalidate issues selectively (#6226)
 * Issues tab: Don't allow two issues for the same file/folder
 * Issues tab: addItem performance improvement
+* Activities: Remove the text that a server does not support activities when the account is removed (#6679)
+* Activities: Handle the fact that the username can contain a '@' (#6728)
 * Notifications: Lower hiding timeout
 * Notifications: Also have clickable link (#6236)
 * Shell integration: Add "Open in browser" entry in the explorer menu (#5903)
@@ -42,8 +46,10 @@ version 2.5.0 (2018-08-xx)
 * Settings: Move "About" to a dialog (#6075)
 * Excludes: Optimize further the matching of exclude files using regular expression
 * Windows: Update Overlay Icon naming
+* Windows: Release handle/fd when file open fails (#6699)
 * Config: Look for exclude file in a relative path.
 * Config: Versionize settings
+* Settings: Fix rename migration issue on old macOS
 * Credentials: Re-try on Linux if daemon not running  (#4274, #6522)
 * Windows: Fixed MSVC build and compiler bugs
 * Proxy: Hostname validation and reconnection on setting change (#6140)
@@ -57,6 +63,10 @@ version 2.5.0 (2018-08-xx)
 * Sync: Recover when the PUT reply (or chunkin's MOVE) is lost (#5106)
 * Sync: Do not abort a sync if the server closes the connection (#6516)
 * Sync: Increase the timeout for the last MOVE/PUT for huge files (#6527)
+* Sync: Fix renames making hierarchy inversion (#6694)
+* Sync: RemotePermissions: Fix empty vs null (#4608)
+* Sync: Fix the "direction" of the "all file delted" message when the server is reset (#6317)
+* Data-Fingerprint: Fix backup detection when fingerprint is empty
 * propagateuploadv1: Fixed an assert with ownCloud 5
 * Download: Use the <s:message> from the reply in the error message (#6459, #6459)
 * SocketAPI: dynamic action menu
@@ -76,7 +86,7 @@ version 2.5.0 (2018-08-xx)
 * Blacklisting must prevent parent etag updates (#6411)
 * FolderStatusModel: fix potential assert
 * Nautilus integration: Not a ColumnProvider
-* Nautilus integration: Fix python3 compatibility (#6406)
+* Nautilus integration: Fix python3 compatibility (#6406, #6643)
 * Nautilus: Guard against None state (#6643)
 * Dolphin plugin: fall back if $XDG_RUNTIME_DIR is empty
 * Notify if an explicitly excluded folder is created (#6222)
@@ -102,6 +112,12 @@ version 2.5.0 (2018-08-xx)
 * Linux: More tray workarounds (#6545)
 * libocsync: Rename to ${APPLICATION_EXECUTABLE}_csync
 * Don't use Qt deprecated API now that we required Qt 5.6
+
+version 2.4.3 (2018-08-13)
+* Windows: Don't ignore files with FILE_ATTRIBUTE_TEMPORARY (#6696, #6610)
+* OAuth2: Fix infinite loop when the refresh token is expired
+* Windows MSI: Fix crash in the auto updater
+* Nautilus: Guard against None state (#6643)
 
 version 2.4.2 (2018-07-18)
 * Linux: Tray workarounds (#6545)

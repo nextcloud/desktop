@@ -186,7 +186,8 @@ Application::Application(int &argc, char **argv)
     setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
     auto confDir = ConfigFile().configPath();
-    if (!QFileInfo(confDir).exists()) {
+    if (confDir.endsWith('/')) confDir.chop(1);  // macOS 10.11.x does not like trailing slash for rename/move.
+    if (!QFileInfo(confDir).isDir()) {
         // Migrate from version <= 2.4
         setApplicationName(_theme->appNameGUI());
 #ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
@@ -197,6 +198,7 @@ Application::Application(int &argc, char **argv)
         // We need to use the deprecated QDesktopServices::storageLocation because of its Qt4
         // behavior of adding "data" to the path
         QString oldDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+        if (oldDir.endsWith('/')) oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
         QT_WARNING_POP
         setApplicationName(_theme->appName());
         if (QFileInfo(oldDir).isDir()) {

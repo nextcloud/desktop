@@ -58,7 +58,7 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._type = static_cast<ItemType>(query.intValue(3));
     rec._etag = query.baValue(4);
     rec._fileId = query.baValue(5);
-    rec._remotePerm = RemotePermissions(query.baValue(6).constData());
+    rec._remotePerm = RemotePermissions::fromDbValue(query.baValue(6));
     rec._fileSize = query.int64Value(7);
     rec._serverHasIgnoredFiles = (query.intValue(8) > 0);
     rec._checksumHeader = query.baValue(9);
@@ -715,6 +715,15 @@ bool SyncJournalDb::updateMetadataTableStructure()
             re = false;
         }
         commitInternal("update database structure: add contentChecksum col for uploadinfo");
+    }
+
+    if (!tableColumns("conflicts").contains("basePath")) {
+        SqlQuery query(_db);
+        query.prepare("ALTER TABLE conflicts ADD COLUMN basePath TEXT;");
+        if (!query.exec()) {
+            sqlFail("updateMetadataTableStructure: add basePath column", query);
+            re = false;
+        }
     }
 
 
@@ -1895,13 +1904,14 @@ void SyncJournalDb::setConflictRecord(const ConflictRecord &record)
     auto &query = _setConflictRecordQuery;
     ASSERT(query.initOrReset(QByteArrayLiteral(
                           "INSERT OR REPLACE INTO conflicts "
-                          "(path, baseFileId, baseModtime, baseEtag) "
-                          "VALUES (?1, ?2, ?3, ?4);"),
+                          "(path, baseFileId, baseModtime, baseEtag, basePath) "
+                          "VALUES (?1, ?2, ?3, ?4, ?5);"),
         _db));
     query.bindValue(1, record.path);
     query.bindValue(2, record.baseFileId);
     query.bindValue(3, record.baseModtime);
     query.bindValue(4, record.baseEtag);
+    query.bindValue(5, record.basePath);
     ASSERT(query.exec());
 }
 
@@ -1913,7 +1923,7 @@ ConflictRecord SyncJournalDb::conflictRecord(const QByteArray &path)
     if (!checkConnect())
         return entry;
     auto &query = _getConflictRecordQuery;
-    ASSERT(query.initOrReset(QByteArrayLiteral("SELECT baseFileId, baseModtime, baseEtag FROM conflicts WHERE path=?1;"), _db));
+    ASSERT(query.initOrReset(QByteArrayLiteral("SELECT baseFileId, baseModtime, baseEtag, basePath FROM conflicts WHERE path=?1;"), _db));
     query.bindValue(1, path);
     ASSERT(query.exec());
     if (!query.next())
@@ -1923,6 +1933,7 @@ ConflictRecord SyncJournalDb::conflictRecord(const QByteArray &path)
     entry.baseFileId = query.baValue(0);
     entry.baseModtime = query.int64Value(1);
     entry.baseEtag = query.baValue(2);
+    entry.basePath = query.baValue(3);
     return entry;
 }
 

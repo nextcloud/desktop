@@ -626,6 +626,42 @@ private slots:
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    // Test for https://github.com/owncloud/client/issues/6694
+    void testInvertFolderHierarchy()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        fakeFolder.remoteModifier().mkdir("A/Empty");
+        fakeFolder.remoteModifier().mkdir("A/Empty/Foo");
+        fakeFolder.remoteModifier().mkdir("C/AllEmpty");
+        fakeFolder.remoteModifier().mkdir("C/AllEmpty/Bar");
+        QVERIFY(fakeFolder.syncOnce());
+
+        // "Empty" is after "A", alphabetically
+        fakeFolder.localModifier().rename("A/Empty", "Empty");
+        fakeFolder.localModifier().rename("A", "Empty/A");
+
+        // "AllEmpty" is before "C", alphabetically
+        fakeFolder.localModifier().rename("C/AllEmpty", "AllEmpty");
+        fakeFolder.localModifier().rename("C", "AllEmpty/C");
+
+        auto expectedState = fakeFolder.currentLocalState();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), expectedState);
+        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+
+        /* FIXME - likely addressed by ogoffart's sync code refactor
+        // Now, the revert, but "crossed"
+        fakeFolder.localModifier().rename("Empty/A", "A");
+        fakeFolder.localModifier().rename("AllEmpty/C", "C");
+        fakeFolder.localModifier().rename("Empty", "C/Empty");
+        fakeFolder.localModifier().rename("AllEmpty", "A/AllEmpty");
+        expectedState = fakeFolder.currentLocalState();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), expectedState);
+        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+        */
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncMove)

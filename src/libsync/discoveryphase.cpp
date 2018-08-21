@@ -239,7 +239,7 @@ static void propertyMapToFileStat(const QMap<QString, QString> &map, RemoteInfo 
         } else if (property == "dDC") {
             result.directDownloadCookies = value;
         } else if (property == "permissions") {
-            result.remotePerm = RemotePermissions(value);
+            result.remotePerm = RemotePermissions::fromServerString(value);
         } else if (property == "checksums") {
             result.checksumHeader = findBestChecksum(value.toUtf8());
         } else if (property == "share-types" && !value.isEmpty()) {
@@ -263,12 +263,16 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         // The first entry is for the folder itself, we should process it differently.
         _ignoredFirst = true;
         if (map.contains("permissions")) {
-            RemotePermissions perm(map.value("permissions"));
+            auto perm = RemotePermissions::fromServerString(map.value("permissions"));
             emit firstDirectoryPermissions(perm);
             _isExternalStorage = perm.hasPermission(RemotePermissions::IsMounted);
         }
         if (map.contains("data-fingerprint")) {
             _dataFingerprint = map.value("data-fingerprint").toUtf8();
+            if (_dataFingerprint.isEmpty()) {
+                // Placeholder that means that the server supports the feature even if it did not set one.
+                _dataFingerprint = "[empty]";
+            }
         }
     } else {
 
@@ -276,12 +280,10 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         int slash = file.lastIndexOf('/');
         result.name = file.mid(slash + 1);
         result.size = -1;
-        result.modtime = -1;
         propertyMapToFileStat(map, result);
         if (result.isDirectory)
             result.size = 0;
         if (result.size == -1
-            || result.modtime == -1
             || result.remotePerm.isNull()
             || result.etag.isEmpty()
             || result.fileId.isEmpty()) {
