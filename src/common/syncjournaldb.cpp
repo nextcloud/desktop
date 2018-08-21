@@ -1911,7 +1911,7 @@ void SyncJournalDb::setConflictRecord(const ConflictRecord &record)
     query.bindValue(2, record.baseFileId);
     query.bindValue(3, record.baseModtime);
     query.bindValue(4, record.baseEtag);
-    query.bindValue(5, record.basePath);
+    query.bindValue(5, record.initialBasePath);
     ASSERT(query.exec());
 }
 
@@ -1933,7 +1933,7 @@ ConflictRecord SyncJournalDb::conflictRecord(const QByteArray &path)
     entry.baseFileId = query.baValue(0);
     entry.baseModtime = query.int64Value(1);
     entry.baseEtag = query.baValue(2);
-    entry.basePath = query.baValue(3);
+    entry.initialBasePath = query.baValue(3);
     return entry;
 }
 

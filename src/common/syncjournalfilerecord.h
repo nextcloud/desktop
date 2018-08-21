@@ -147,11 +147,14 @@ public:
     QByteArray baseEtag;
 
     /**
-     * The path of the original file
+     * The path of the original file at the time the conflict was created
+     *
+     * Note that in nearly all cases one should query the db by baseFileId and
+     * thus retrieve the *current* base path instead!
      *
      * maybe be empty if not available
      */
-    QByteArray basePath;
+    QByteArray initialBasePath;
 
 
     bool isValid() const { return !path.isEmpty(); }

@@ -351,7 +351,7 @@ void SyncEngine::conflictRecordMaintenance()
             ConflictRecord record;
             record.path = bapath;
             auto basePath = Utility::conflictFileBaseName(bapath);
-            record.basePath = basePath;
+            record.initialBasePath = basePath;
 
             // Determine fileid of target file
             SyncJournalFileRecord baseRecord;
