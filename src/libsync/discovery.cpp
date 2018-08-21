@@ -627,8 +627,32 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         item->_inode = localEntry.inode;
         bool typeChange = dbEntry.isValid() && localEntry.isDirectory != (dbEntry._type == ItemTypeDirectory);
         if (localEntry.isVirtualFile) {
-            if (item->_type != ItemTypeVirtualFileDownload)
+            if (!dbEntry.isValid()) {
+                // Remove the spurious file if it looks like a placeholder file
+                // (we know placeholder files contain " ")
+                if (localEntry.size <= 1) {
+                    QString filename = _discoveryData->_localDir + _currentFolder._local + localEntry.name;
+                    QFile::remove(filename);
+                    qCWarning(lcDisco) << "Wiping virtual file without db entry for" << filename;
+                } else {
+                    qCWarning(lcDisco) << "Virtual file without db entry for" <<  _currentFolder._local << localEntry.name
+                                        << "but looks odd, keeping";
+                }
+            } else if (dbEntry._type == ItemTypeFile) {
+                // If we find what looks to be a spurious "abc.owncloud" the base file "abc"
+                // might have been renamed to that. Make sure that the base file is not
+                // deleted from the server.
+                if (dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) {
+                    qCInfo(lcDisco) << "Base file was renamed to virtual file:" << item->_file;
+                    Q_ASSERT(item->_file.endsWith(_discoveryData->_syncOptions._virtualFileSuffix));
+                    item->_direction = SyncFileItem::Down;
+                    item->_instruction = CSYNC_INSTRUCTION_NEW;
+                    item->_type = ItemTypeVirtualFile;
+                }
+            } else if (item->_type != ItemTypeVirtualFileDownload) {
                 item->_type = ItemTypeVirtualFile;
+            }
+
             if (_queryServer != ParentNotChanged && !serverEntry.isValid()) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
