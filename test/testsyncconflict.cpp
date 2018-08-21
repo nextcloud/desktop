@@ -225,7 +225,7 @@ private slots:
         auto conflictRecord = fakeFolder.syncJournal().conflictRecord("A/a1 (conflicted copy 1234)");
         QVERIFY(conflictRecord.isValid());
         QCOMPARE(conflictRecord.baseFileId, fakeFolder.remoteModifier().find("A/a1")->fileId);
-        QCOMPARE(conflictRecord.basePath, "A/a1");
+        QCOMPARE(conflictRecord.basePath, QByteArray("A/a1"));
 
         // Now with server headers
         QObject parent;
