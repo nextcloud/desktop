@@ -58,7 +58,6 @@
 namespace OCC {
 
 const char propertyAccountC[] = "oc_account";
-const char propertyMenuC[] = "oc_account_menu";
 
 ownCloudGui::ownCloudGui(Application *parent)
     : QObject(parent)
@@ -617,11 +616,11 @@ void ownCloudGui::updateContextMenu()
             _contextMenu->addMenu(accountMenu);
 
             addAccountContextMenu(account, accountMenu, true);
-            fetchNavigationApps(account, accountMenu);
+            fetchNavigationApps(account);
         }
     } else if (accountList.count() == 1) {
         addAccountContextMenu(accountList.first(), _contextMenu.data(), false);
-        fetchNavigationApps(accountList.first(), _contextMenu.data());
+        fetchNavigationApps(accountList.first());
     }
 
     _contextMenu->addSeparator();
@@ -769,10 +768,9 @@ void ownCloudGui::slotEtagResponseHeaderReceived(const QByteArray &value, int st
     }
 }
 
-void ownCloudGui::fetchNavigationApps(AccountStatePtr account, QMenu *accountMenu){
+void ownCloudGui::fetchNavigationApps(AccountStatePtr account){
     OcsNavigationAppsJob *job = new OcsNavigationAppsJob(account->account());
     job->setProperty(propertyAccountC, QVariant::fromValue(account));
-    job->setProperty(propertyMenuC, QVariant::fromValue(accountMenu));
     job->addRawHeader("If-None-Match", account->navigationAppsEtagResponseHeader());
     connect(job, &OcsNavigationAppsJob::appsJobFinished, this, &ownCloudGui::slotNavigationAppsFetched);
     connect(job, &OcsNavigationAppsJob::etagResponseHeaderReceived, this, &ownCloudGui::slotEtagResponseHeaderReceived);
@@ -829,9 +827,18 @@ void ownCloudGui::slotNavigationAppsFetched(const QJsonDocument &reply, int stat
             }
         }
 
-        if(QObject *accountMenuObj = qvariant_cast<QObject*>(sender()->property(propertyMenuC))){
-            if(QMenu *accountMenu = dynamic_cast<QMenu*>(accountMenuObj))
-                buildNavigationAppsMenu(account, accountMenu);
+        // TODO see pull #523
+        auto accountList = AccountManager::instance()->accounts();
+        if(accountList.size() > 1){
+            // the list of apps will be displayed under the account that it belongs to
+            foreach (QMenu *accountMenu, _accountMenus) {
+                if(accountMenu->title() == account->account()->displayName()){
+                    buildNavigationAppsMenu(account, accountMenu);
+                    break;
+                }
+            }
+        } else if(accountList.size() == 1){
+            buildNavigationAppsMenu(account, _contextMenu.data());
         }
     }
 }
