@@ -8,7 +8,31 @@ GenericName=Folder Sync
 Icon=@APPLICATION_EXECUTABLE@
 Keywords=@APPLICATION_NAME@;syncing;file;sharing;
 X-GNOME-Autostart-Delay=3
-MimeType=application/x-@APPLICATION_EXECUTABLE@;
+MimeType=application/vnd.@APPLICATION_EXECUTABLE@;
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
 
 # Translations
 

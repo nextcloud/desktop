@@ -350,9 +350,10 @@ void SyncEngine::conflictRecordMaintenance()
         if (!conflictRecordPaths.contains(bapath)) {
             ConflictRecord record;
             record.path = bapath;
+            auto basePath = Utility::conflictFileBaseName(bapath);
+            record.basePath = basePath;
 
             // Determine fileid of target file
-            auto basePath = Utility::conflictFileBaseName(bapath);
             SyncJournalFileRecord baseRecord;
             if (_journal->getFileRecord(basePath, &baseRecord) && baseRecord.isValid()) {
                 record.baseFileId = baseRecord._fileId;
@@ -1045,7 +1046,13 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     if (!_hasNoneFiles && _hasRemoveFile) {
         qCInfo(lcEngine) << "All the files are going to be changed, asking the user";
         bool cancel = false;
-        emit aboutToRemoveAllFiles(syncItems.first()->_direction, &cancel);
+        int side = 0; // > 0 means more deleted on the server.  < 0 means more deleted on the client
+        foreach (const auto &it,  syncItems) {
+            if (it->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+                side += it->_direction == SyncFileItem::Down ? 1 : -1;
+            }
+        }
+        emit aboutToRemoveAllFiles(side >= 0 ? SyncFileItem::Down : SyncFileItem::Up, &cancel);
         if (cancel) {
             qCInfo(lcEngine) << "User aborted sync";
             finalize(false);
@@ -1054,10 +1061,9 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     }
 
     auto databaseFingerprint = _journal->dataFingerprint();
-    // If databaseFingerprint is null, this means that there was no information in the database
-    // (for example, upgrading from a previous version, or first sync)
-    // Note that an empty ("") fingerprint is valid and means it was empty on the server before.
-    if (!databaseFingerprint.isNull()
+    // If databaseFingerprint is empty, this means that there was no information in the database
+    // (for example, upgrading from a previous version, or first sync, or server not supporting fingerprint)
+    if (!databaseFingerprint.isEmpty()
         && _discoveryMainThread->_dataFingerprint != databaseFingerprint) {
         qCInfo(lcEngine) << "data fingerprint changed, assume restore from backup" << databaseFingerprint << _discoveryMainThread->_dataFingerprint;
         restoreOldFiles(syncItems);
@@ -1245,6 +1251,14 @@ QString SyncEngine::adjustRenamedPath(const QString &original)
     while ((slashPos = original.lastIndexOf('/', slashPos - 1)) > 0) {
         QHash<QString, QString>::const_iterator it = _renamedFolders.constFind(original.left(slashPos));
         if (it != _renamedFolders.constEnd()) {
+            // This is a band-aid fix for a specific problem:
+            // See issue #6694: "hierarchy inversion" and discussion in PR #6695.
+            // There's a larger unfixed issue here, see testInvertFolderHierarchy().
+            auto original_it = _renamedFolders.constFind(original);
+            if (original_it != _renamedFolders.constEnd() && it->startsWith(*original_it)) {
+                return original;
+            }
+
             return *it + original.mid(slashPos);
         }
     }

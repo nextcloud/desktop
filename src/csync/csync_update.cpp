@@ -763,8 +763,39 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         QByteArray db_uri = fullpath.mid(strlen(ctx->local.uri) + 1);
 
         if( ! fill_tree_from_db(ctx, db_uri.constData(), true) ) {
-            qCWarning(lcUpdate) << "Virtual file without db entry for" << filename;
-            QFile::remove(fullpath);
+            // If we find what looks to be a spurious "abc.owncloud" the base file "abc"
+            // might have been renamed to that. Make sure that the base file is not
+            // deleted from the server.
+            OCC::SyncJournalFileRecord record;
+            QByteArray base_uri = db_uri;
+            base_uri.chop(ctx->virtual_file_suffix.size());
+            ctx->statedb->getFileRecord(base_uri, &record);
+            if (record.isValid()
+                && record._inode == dirent->inode
+                && record._fileSize == dirent->size
+                && record._modtime == dirent->modtime) {
+                qCInfo(lcUpdate) << "Base file was renamed to virtual file:" << filename;
+
+                // Let sync recreate the placeholder file to ensure it has the right size.
+                // WARNING: Side effect on database during update phase:
+                // Makes local/remote discovery order dependent!
+                ctx->statedb->deleteFileRecord(base_uri);
+                record._path = db_uri;
+                record._type = ItemTypeVirtualFile;
+                ctx->statedb->setFileRecord(record);
+
+                QFile::remove(fullpath);
+            } else {
+                // Remove the spurious file if it looks like a placeholder file
+                // (we know placeholder files contain " ")
+                if (dirent->size <= 1) {
+                    QFile::remove(fullpath);
+                    qCWarning(lcUpdate) << "Wiping virtual file without db entry for" << filename;
+                } else {
+                    qCWarning(lcUpdate) << "Virtual file without db entry for" << filename
+                                        << "but looks odd, keeping";
+                }
+            }
         }
 
         continue;
