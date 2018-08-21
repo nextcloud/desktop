@@ -148,6 +148,8 @@ public:
 
     void startJob(ProcessDirectoryJob *);
 
+    QByteArray _dataFingerprint;
+
 signals:
     void fatalError(const QString &errorString);
     void itemDiscovered(const SyncFileItemPtr &item);

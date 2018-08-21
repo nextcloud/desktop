@@ -635,28 +635,15 @@ void SyncEngine::slotDiscoveryJobFinished()
         }
     }
 
-    /*
     auto databaseFingerprint = _journal->dataFingerprint();
     // If databaseFingerprint is empty, this means that there was no information in the database
     // (for example, upgrading from a previous version, or first sync, or server not supporting fingerprint)
-    if (!databaseFingerprint.isEmpty()
-        && _discoveryMainThread->_dataFingerprint != databaseFingerprint) {
-        qCInfo(lcEngine) << "data fingerprint changed, assume restore from backup" << databaseFingerprint << _discoveryMainThread->_dataFingerprint;
-        restoreOldFiles(syncItems);
-    } else if (!_hasForwardInTimeFiles && _backInTimeFiles >= 2
-        && _account->serverVersionInt() < Account::makeServerVersion(9, 1, 0)) {
-        // The server before ownCloud 9.1 did not have the data-fingerprint property. So in that
-        // case we use heuristics to detect restored backup.  This is disabled with newer version
-        // because this causes troubles to the user and is not as reliable as the data-fingerprint.
-        qCInfo(lcEngine) << "All the changes are bringing files in the past, asking the user";
-        // this typically happen when a backup is restored on the server
-        bool restore = false;
-        emit aboutToRestoreBackup(&restore);
-        if (restore) {
-            restoreOldFiles(syncItems);
-        }
+    if (!databaseFingerprint.isEmpty() && _discoveryPhase
+        && _discoveryPhase->_dataFingerprint != databaseFingerprint) {
+        qCInfo(lcEngine) << "data fingerprint changed, assume restore from backup" << databaseFingerprint << _discoveryPhase->_dataFingerprint;
+        restoreOldFiles(_syncItems);
     }
-*/
+
     // Sort items per destination
     std::sort(_syncItems.begin(), _syncItems.end());
 
@@ -760,16 +747,13 @@ void SyncEngine::slotFinished(bool success)
         _anotherSyncNeeded = ImmediateFollowUp;
     }
 
-#if 0
-    FIXME
-    if (success) {
-        _journal->setDataFingerprint(_discoveryMainThread->_dataFingerprint);
+    if (success && _discoveryPhase) {
+        _journal->setDataFingerprint(_discoveryPhase->_dataFingerprint);
     }
 
-    if (!_journal->postSyncCleanup(_seenFiles, _temporarilyUnavailablePaths)) {
+    if (success && !_journal->postSyncCleanup(_seenFiles, _temporarilyUnavailablePaths)) {
         qCDebug(lcEngine) << "Cleaning of synced ";
     }
-#endif
 
     conflictRecordMaintenance();
 
