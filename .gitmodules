@@ -1,6 +1,6 @@
 [submodule "src/3rdparty/qtmacgoodies"]
 	path = src/3rdparty/qtmacgoodies
-	url = https://github.com/guruz/qtmacgoodies.git
+	url = https://github.com/camilasan/qtmacgoodies.git
 [submodule "binary"]
 	path = binary
 	url = git://github.com/owncloud/owncloud-client-binary.git

@@ -127,7 +127,7 @@ private:
     void setPauseOnAllFoldersHelper(bool pause);
     void setupActions();
     void addAccountContextMenu(AccountStatePtr accountState, QMenu *menu, bool separateMenu);
-    void fetchNavigationApps(AccountStatePtr account, QMenu *accountMenu);
+    void fetchNavigationApps(AccountStatePtr account);
     void buildNavigationAppsMenu(AccountStatePtr account, QMenu *accountMenu);
 
     QPointer<Systray> _tray;
