@@ -375,13 +375,22 @@ QRect FolderStatusDelegate::optionsButtonRect(QRect within, Qt::LayoutDirection 
     return QStyle::visualRect(direction, within, r);
 }
 
-QRect FolderStatusDelegate::errorsListRect(QRect within)
+QRect FolderStatusDelegate::errorsListRect(QRect within, const QModelIndex &index)
 {
     QFont font = QFont();
     QFont aliasFont = makeAliasFont(font);
     QFontMetrics fm(font);
     QFontMetrics aliasFm(aliasFont);
     within.setTop(within.top() + FolderStatusDelegate::rootFolderHeightWithoutErrors(fm, aliasFm));
+    int margin = fm.height() / 4;
+    int h = 0;
+    for (auto role : {FolderConflictMsg, FolderErrorMsg}) {
+        auto msgs = qvariant_cast<QStringList>(index.data(role));
+        if (!msgs.isEmpty()) {
+            h += margin + 2 * margin + msgs.count() * fm.height();
+        }
+    }
+    within.setHeight(h);
     return within;
 }
 

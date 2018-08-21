@@ -58,7 +58,7 @@ public:
      * return the position of the option button within the item
      */
     static QRect optionsButtonRect(QRect within, Qt::LayoutDirection direction);
-    static QRect errorsListRect(QRect within);
+    static QRect errorsListRect(QRect within, const QModelIndex &);
     static int rootFolderHeightWithoutErrors(const QFontMetrics &fm, const QFontMetrics &aliasFm);
 
 private:
