@@ -37,10 +37,12 @@ void ProcessDirectoryJob::start()
     if (_queryServer == NormalQuery) {
         serverJob = new DiscoverySingleDirectoryJob(_discoveryData->_account,
             _discoveryData->_remoteFolder + _currentFolder._server, this);
-        connect(serverJob, &DiscoverySingleDirectoryJob::finished, this, [this](const auto &results) {
+        connect(serverJob, &DiscoverySingleDirectoryJob::finished, this, [this, serverJob](const auto &results) {
             if (results) {
                 _serverEntries = *results;
                 _hasServerEntries = true;
+                if (!serverJob->_dataFingerprint.isEmpty() && _discoveryData->_dataFingerprint.isEmpty())
+                    _discoveryData->_dataFingerprint = serverJob->_dataFingerprint;
                 if (_hasLocalEntries)
                     process();
             } else {
