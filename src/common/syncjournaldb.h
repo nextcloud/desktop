@@ -211,6 +211,67 @@ public:
     QByteArray dataFingerprint();
 
 
+		enum SyncMode {
+			SYNCMODE_NONE = '\0',
+			SYNCMODE_ON_DEMAND = 'O',
+			SYNCMODE_ALWAYS = 'S',
+		};
+
+		/**
+		* Retrieves the sync mode of the provided path
+		*
+		* @path File path
+		* @return integer representing the download mode in case of success, -1 on failure. If multiple paths match the @path parameter, the first result will be returned
+		*/
+		SyncMode getSyncMode(QString const & path);
+
+		/**
+		* Retrieves the sync mode of the provided path
+		*
+		* @return the list of paths in the
+		*/
+		QList<QString> getSyncModePaths();
+
+		/**
+		* Sets or registers the sync mode
+		*
+		* @path File path
+		* @mode New download mode
+		* @return Number of modified records on success. -1 on failure.
+		*/
+		int setSyncMode(QString const & path, SyncMode mode);
+
+		/**
+		* Deletes syncmode register matching the provided path
+		*
+		* @path File path
+		* @return Number of affected records on success. -1 on failure.
+		*/
+		int deleteSyncMode(QString const & path);
+
+
+		/**
+		* @brief  Retrieves the last access local datetime of the given path
+		* @path File path
+		* @return On success, QDateTime representing the last access time. On failure, an invalid QDateTime object with null date and time.
+		*/
+		QDateTime getLastAccess(QString const & path);
+
+		/**
+		* @brief  Sets the last access time to the current local time in format yyyy-MM-dd HH:mm:ss
+		* @path File path
+		* @return Number of modified records on success. -1 on failure.
+		*/
+		int updateLastAccess(QString const & path);
+
+
+		/**
+		* @brief  Returns the difference in seconds between the current datetime and the record lastAccessDateTime
+		* @path File path
+		* @return Seconds since last accesson success. -1 on failure.
+		*/
+		qint64 secondsSinceLastAccess(QString const & path);
+
     // Conflict record functions
 
     /// Store a new or updated record in the database
@@ -289,6 +350,13 @@ private:
     SqlQuery _setConflictRecordQuery;
     SqlQuery _deleteConflictRecordQuery;
 
+		QScopedPointer<SqlQuery> _getSyncModeQuery;
+		QScopedPointer<SqlQuery> _setSyncModeQuery;
+		QScopedPointer<SqlQuery> _deleteSyncModeQuery;
+		QScopedPointer<SqlQuery> _getSyncModePathsQuery;
+		QScopedPointer<SqlQuery> _getLastAccessQuery;
+		QScopedPointer<SqlQuery> _setLastAccessQuery;
+
     /* Storing etags to these folders, or their parent folders, is filtered out.
      *
      * When avoidReadFromDbOnNextSync() is called some etags to _invalid_ in the
@@ -299,6 +367,9 @@ private:
      *
      * The list is cleared on close() (end of sync run) and explicitly with
      * clearEtagStorageFilter() (start of sync run).
+	 * This is the list of paths we called avoidReadFromDbOnNextSync on.
+     * It means that they should not be written to the DB in any case since doing
+     * that would write the etag and would void the purpose of avoidReadFromDbOnNextSync
      *
      * The contained paths have a trailing /.
      */
