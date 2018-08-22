@@ -488,6 +488,17 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("Create table version", createQuery);
     }
 
+		// table for streaming information
+		SqlQuery createStreamingSql(_db);
+		createStreamingSql.prepare(
+			"CREATE TABLE IF NOT EXISTS syncmode ("
+			"path TEXT PRIMARY KEY,"
+			"mode TEXT DEFAULT ('O'),"
+			"lastaccess TEXT DEFAULT ('') )"
+		);
+		if (!createStreamingSql.exec())
+			return sqlFail("create streaming table", createQuery);
+
     bool forceRemoteDiscovery = false;
 
     SqlQuery versionQuery("SELECT major, minor, patch FROM version;", _db);
@@ -578,6 +589,30 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("prepare _getErrorBlacklistQuery", _getErrorBlacklistQuery);
     }
 
+		// Sync mode
+		_getSyncModeQuery.reset(new SqlQuery(_db));
+		if (_getSyncModeQuery->prepare("SELECT mode FROM syncmode WHERE path=?1;"))
+			return sqlFail("prepare _getSyncModeQuery", *_getSyncModeQuery);
+		_setSyncModeQuery.reset(new SqlQuery(_db));
+		if (_setSyncModeQuery->prepare("INSERT OR REPLACE INTO syncmode (path, mode)  VALUES (?1, ?2);"))
+			return sqlFail("prepare _setSyncModeQuery", *_getSyncModeQuery);
+		_deleteSyncModeQuery.reset(new SqlQuery(_db));
+		if (_deleteSyncModeQuery->prepare("DELETE FROM syncmode WHERE path=?1;"))
+			return sqlFail("prepare _deleteSyncModeQuery", *_deleteSyncModeQuery);
+		_getSyncModePathsQuery.reset(new SqlQuery(_db));
+		if (_getSyncModePathsQuery->prepare("SELECT path from syncmode"))
+			return sqlFail("prepare _getSyncModePathsQuery", *_getSyncModePathsQuery);
+
+
+
+		// Last access time
+		_getLastAccessQuery.reset(new SqlQuery(_db));
+		if (_getLastAccessQuery->prepare("SELECT lastaccess FROM syncmode WHERE path=?1;"))
+			return sqlFail("prepare _getLastAccessQuery", *_getLastAccessQuery);
+
+		_setLastAccessQuery.reset(new SqlQuery(_db));
+		if (_setLastAccessQuery->prepare("UPDATE syncmode SET lastaccess=?1 WHERE path=?2;"))
+			return sqlFail("prepare _setLastAccessQuery", *_getLastAccessQuery);
     // don't start a new transaction now
     commitInternal(QString("checkConnect End"), false);
 
@@ -600,6 +635,13 @@ void SyncJournalDb::close()
     qCInfo(lcDb) << "Closing DB" << _dbFile;
 
     commitTransaction();
+
+		_getSyncModeQuery.reset(0);
+		_setSyncModeQuery.reset(0);
+		_getLastAccessQuery.reset(0);
+		_setLastAccessQuery.reset(0);
+		_deleteSyncModeQuery.reset(0);
+		_getSyncModePathsQuery.reset(0);
 
     _db.close();
     _avoidReadFromDbOnNextSyncFilter.clear();
@@ -2063,5 +2105,143 @@ bool operator==(const SyncJournalDb::UploadInfo &lhs,
         && lhs._transferid == rhs._transferid
         && lhs._contentChecksum == rhs._contentChecksum;
 }
+
+	SyncJournalDb::SyncMode SyncJournalDb::getSyncMode(QString const & path)
+	{
+		QMutexLocker locker(&_mutex);
+		if (!checkConnect())
+			return SYNCMODE_NONE;
+		_getSyncModeQuery->reset_and_clear_bindings();
+		_getSyncModeQuery->bindValue(1, path);
+		if (!_getSyncModeQuery->exec()) {
+			qWarning() << "Error SQL statement getSyncMode: "
+				<< _getSyncModeQuery->lastQuery() << " :"
+				<< _getSyncModeQuery->error();
+			return SYNCMODE_NONE;
+		}
+		if (!_getSyncModeQuery->next())
+			return SYNCMODE_NONE;
+		QString modeStr = _getSyncModeQuery->stringValue(0);
+		if (modeStr.isEmpty())
+			return SYNCMODE_NONE;
+		return static_cast<SyncMode>(modeStr.begin()->toAscii());
+	}
+
+	int SyncJournalDb::setSyncMode(QString const & path, SyncMode mode)
+	{
+		QMutexLocker locker(&_mutex);
+		if (!checkConnect())
+			return -1;
+		QString modeStr(static_cast<char>(mode));
+		_setSyncModeQuery->reset_and_clear_bindings();
+		_setSyncModeQuery->bindValue(1, path);
+		_setSyncModeQuery->bindValue(2, modeStr);
+		if (!_setSyncModeQuery->exec()) {
+			qWarning() << "Error SQL statement setSyncMode: "
+				<< _setSyncModeQuery->lastQuery() << " :"
+				<< _setSyncModeQuery->error();
+			return -1;
+		}
+		return _setSyncModeQuery->numRowsAffected();
+	}
+
+	int SyncJournalDb::deleteSyncMode(QString const & path)
+	{
+		QMutexLocker locker(&_mutex);
+		if (!checkConnect())
+			return -1;
+		_deleteSyncModeQuery->reset_and_clear_bindings();
+		_deleteSyncModeQuery->bindValue(1, path);
+		if (!_deleteSyncModeQuery->exec()) {
+			qWarning() << "Error SQL statement setSyncMode: "
+				<< _deleteSyncModeQuery->lastQuery() << " :"
+				<< _deleteSyncModeQuery->error();
+			return -1;
+		}
+		return _deleteSyncModeQuery->numRowsAffected();
+	}
+
+	QDateTime SyncJournalDb::getLastAccess(QString const & path)
+	{
+		QMutexLocker locker(&_mutex);
+		if (!checkConnect())
+			return QDateTime{};
+		_getLastAccessQuery->reset_and_clear_bindings();
+		_getLastAccessQuery->bindValue(1, path);
+		if (!_getLastAccessQuery->exec()) {
+			qWarning() << "Error SQL statement getSyncMode: "
+				<< _getLastAccessQuery->lastQuery() << " :"
+				<< _getLastAccessQuery->error();
+			return QDateTime{};
+		}
+		if (!_getLastAccessQuery->next())
+			return QDateTime{};
+
+		QString dateString = _getLastAccessQuery->stringValue(0);
+		QString format = "yyyy-MM-dd HH:mm:ss";
+		QDateTime lastAccessDateTime = QDateTime::fromString(dateString, format);
+
+		if (lastAccessDateTime.isNull())
+			qWarning() << "getLastAccess: "
+			"Invalid date returned from journal DB";
+
+		return lastAccessDateTime;
+	}
+
+	int SyncJournalDb::updateLastAccess(QString const & path)
+	{
+		QMutexLocker locker(&_mutex);
+		if (!checkConnect())
+			return -1;
+
+		QString format = "yyyy-MM-dd HH:mm:ss";
+		QString currentDateTime = QDateTime::currentDateTime().toString(format);
+
+		_setLastAccessQuery->reset_and_clear_bindings();
+		_setLastAccessQuery->bindValue(1, currentDateTime);
+		_setLastAccessQuery->bindValue(2, path);
+		if (!_setLastAccessQuery->exec()) {
+			qWarning() << "Error SQL statement setSyncMode: "
+				<< _setLastAccessQuery->lastQuery() << " :"
+				<< _setLastAccessQuery->error();
+			return -1;
+		}
+		return _setLastAccessQuery->numRowsAffected();
+	}
+
+	qint64 SyncJournalDb::secondsSinceLastAccess(QString const & path)
+	{
+		QDateTime lastAccess = getLastAccess(path);
+		if (lastAccess.isNull())
+			return -1;
+		qint64 seconds = lastAccess.secsTo(QDateTime::currentDateTime());
+		// secsTo() might return negative values if the lastAccess datetime is after currentDateTime 
+		if (seconds < 0)
+			return -1;
+		return seconds;
+	}
+
+	QList<QString> SyncJournalDb::getSyncModePaths()
+	{
+		QMutexLocker locker(&_mutex);
+		if (!checkConnect())
+			return QList<QString> {};
+		QString path;
+		_getSyncModePathsQuery->reset_and_clear_bindings();
+		if (!_getSyncModePathsQuery->exec()) {
+			qWarning() << "Error SQL statement getSyncModePaths: "
+				<< _getSyncModePathsQuery->lastQuery() << " :"
+				<< _getSyncModePathsQuery->error();
+			return QList<QString>{};
+		}
+
+		QList<QString> list;
+		while (_getSyncModePathsQuery->next())
+			list.append(_getSyncModePathsQuery->stringValue(0));
+
+		return list;
+	}
+
+
 
 } // namespace OCC
