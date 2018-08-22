@@ -938,7 +938,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="46"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Přidat synchronizaci adresáře</translation>
+        <translation>Přidat spojení synchronizace složky</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="249"/>
@@ -956,12 +956,12 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="143"/>
         <source>You need to be connected to add a folder</source>
-        <translation>Pro přidání adresáře musíte být připojeni</translation>
+        <translation>Pro přidání složky je třeba, abyste byli připojení</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="145"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation>Stisknutím tlačítka přidáte adresář k synchronizaci.</translation>
+        <translation>Stisknutím tlačítka přidáte složku k synchronizaci.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="154"/>
@@ -973,7 +973,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="180"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation>Chyba při načítání seznamu adresářů ze serveru.</translation>
+        <translation>Chyba při načítání seznamu složek ze serveru.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="231"/>
@@ -983,17 +983,17 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="183"/>
         <source>Fetching folder list from server...</source>
-        <translation>Načítání seznamu adresářů ze serveru...</translation>
+        <translation>Načítání seznamu složek ze serveru…</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="209"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation>Existují nevyřešené konflikty. Klikněte pro detaily.</translation>
+        <translation>Existují nevyřešené konflikty. Klikněte pro podrobnosti.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="878"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation>Kontrola změn v &apos;%1&apos;</translation>
+        <translation>Zjišťování případných změn v „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="884"/>
@@ -1004,19 +1004,19 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
         <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
-        <translation>, &apos;%1&apos;</translation>
+        <translation>, „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="922"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
-        <translation>&apos;%1&apos;</translation>
+        <translation>„%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="946"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation>Synchronizuji %1</translation>
+        <translation>Synchronizuje se %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="948"/>
@@ -1088,7 +1088,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1064"/>
         <source>Preparing to sync...</source>
-        <translation>Synchronizace se připravuje...</translation>
+        <translation>Příprava na synchronizaci…</translation>
     </message>
 </context>
 <context>
@@ -1119,7 +1119,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="133"/>
         <source>Select the source folder</source>
-        <translation>Zvolte zdrojový adresář</translation>
+        <translation>Zvolte zdrojovou složku</translation>
     </message>
 </context>
 <context>
@@ -1127,7 +1127,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="181"/>
         <source>Create Remote Folder</source>
-        <translation>Vytvořit vzdálený adresář</translation>
+        <translation>Vytvořit složku na protějšku</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="182"/>
@@ -1137,7 +1137,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="212"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>Adresář byl úspěšně vytvořen na %1.</translation>
+        <translation>Složka byl úspěšně vytvořena na %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="223"/>
@@ -1147,12 +1147,12 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="225"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>Na %1 selhalo vytvoření adresáře. Zkontrolujte to prosím ručně.</translation>
+        <translation>Na %1 se nepodařilo vytvořit složku. Zkontrolujte to ručně.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="234"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation>Chyba při vypsání adresáře. Chyba: %1</translation>
+        <translation>Chyba při vypsání složky. Chyba: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="315"/>
@@ -1162,7 +1162,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="445"/>
         <source>This folder is already being synced.</source>
-        <translation>Tento adresář je již synchronizován.</translation>
+        <translation>Tato složka už je synchronizována.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="447"/>
@@ -1291,12 +1291,12 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="100"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Vložte prosím %1 heslo:&lt;br&gt;&lt;br&gt;Uživatel: %2&lt;br&gt;Účet: %3&lt;br&gt;</translation>
+        <translation>Zadejte heslo %1:&lt;br&gt;&lt;br&gt;Uživatel: %2&lt;br&gt;Účet: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation>Čtení z klíčenky selhalo s chybou: &apos;%1&apos;</translation>
+        <translation>Čtení z klíčenky se nezdařilo s chybou: „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
@@ -1413,12 +1413,12 @@ Položky u kterých je povoleno smazání budou vymazány, pokud by bránily ods
         <location filename="../src/gui/issueswidget.ui" line="50"/>
         <location filename="../src/gui/issueswidget.cpp" line="83"/>
         <source>Folder</source>
-        <translation>Adresář</translation>
+        <translation>Složka</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="73"/>
         <source>Show warnings</source>
-        <translation>Ukázat varování</translation>
+        <translation>Zobrazit varování</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
@@ -1693,7 +1693,7 @@ Položky u kterých je povoleno smazání budou vymazány, pokud by bránily ods
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="112"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Od serveru vrácena chyba: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
@@ -1703,7 +1703,7 @@ Položky u kterých je povoleno smazání budou vymazány, pokud by bránily ods
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Nedaří se vyhodnotit JSON data vrácená serverem:&lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>

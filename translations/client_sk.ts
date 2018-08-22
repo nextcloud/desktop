@@ -446,7 +446,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="613"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Zoznam nezosynchronizovaných položiek bol skopírovaný do schránky.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="618"/>
@@ -747,7 +747,8 @@
         <location filename="../src/gui/folder.cpp" line="888"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Bol pridaný nový priečinok väčší ako %1 MB: %2.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="891"/>
@@ -1425,7 +1426,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="155"/>
         <source>Copy the issues list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Skopírovať zoznam problémov do schránky.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="158"/>
@@ -3217,7 +3218,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="477"/>
         <source>Folder hierarchy is too deep</source>
-        <translation type="unfinished"/>
+        <translation>Hierarchia priečinkov je príliš hlboká</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="493"/>
@@ -3620,7 +3621,7 @@ Nie je vhodné ju používať.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="273"/>
         <location filename="../src/gui/owncloudgui.cpp" line="304"/>
         <source>Synchronization is paused</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizácia je pozastavená</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="306"/>
@@ -3696,7 +3697,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="786"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizuje sa %1 z %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="795"/>
