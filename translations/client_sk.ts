@@ -178,7 +178,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="307"/>
         <source>Restart sync</source>
-        <translation type="unfinished"/>
+        <translation>Reštartovať synchronizáciu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="316"/>
@@ -278,12 +278,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="787"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Niektoré priečinky neboli synchronizované, pretože sú na externom úložisku</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="788"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Niektoré priečinky neboli synchronizované, pretože sú príliš veľké alebo sú na externom úložisku</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="834"/>
@@ -557,7 +557,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="164"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri prístupe ku konfiguračnému súboru</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="165"/>
