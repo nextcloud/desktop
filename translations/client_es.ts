@@ -197,7 +197,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="307"/>
         <source>Restart sync</source>
-        <translation>Reiniciar sync</translation>
+        <translation>Reiniciar sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="316"/>
@@ -247,7 +247,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="654"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation>La versión del servidor %1 es antigua, ¡y no está soportada! Si continúas, lo haces bajo tu propio riesgo.</translation>
+        <translation>La versión del servidor %1 es antigua, ¡y no está soportada! Si continúa, lo hace bajo su propio riesgo.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
@@ -548,7 +548,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation>Certificate &amp; Key (pkcs12) :</translation>
+        <translation>Certificado &amp; Clave (pkcs12) :</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
@@ -586,7 +586,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="130"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Algunas opciones han sido configuradas con nuevas versiones del cliente y por ello algunas opciones, no están disponibles en esta versión.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;El archivo de configuración debe ser respaldado en&lt;i&gt;%2&lt;/i&gt;.</translation>
+        <translation>Algunas opciones han sido configuradas con nuevas versiones del cliente y por ello algunas opciones no están disponibles en esta versión.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;El archivo de configuración debe ser respaldado en&lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="137"/>
@@ -611,7 +611,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="259"/>
         <source>Quit ownCloud</source>
-        <translation>Salir de OwnCloud</translation>
+        <translation>Salir de ownCloud</translation>
     </message>
 </context>
 <context>
@@ -773,7 +773,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="415"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation>Conflicto al sincronizar %1. Por favor compruebe el archivo!</translation>
+        <translation>Conflicto al sincronizar %1. ¡Por favor, compruebe el archivo!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="420"/>
@@ -1060,7 +1060,7 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
         <source>New files are being created as virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Los archivos nuevos se crean como archivos virtuales.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="889"/>
@@ -1070,7 +1070,7 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="893"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>ChBuscando cambios en local &apos;%1&apos;</translation>
+        <translation>Buscando cambios en local &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="900"/>
@@ -1324,7 +1324,7 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="84"/>
         <source>stable</source>
-        <translation>Estable</translation>
+        <translation>estable</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
@@ -2100,7 +2100,7 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="346"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation>No puedo cargar el certificado. ¿Quizás contraseña incorrecta?</translation>
+        <translation>No se pudo cargar el certificado. ¿Quizás contraseña incorrecta?</translation>
     </message>
 </context>
 <context>
@@ -2270,9 +2270,9 @@ No se recomienda usarla.</translation>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>Cuando está establecido el &quot;modo virtual&quot;, No se descargan los archivos inicialmente, en su lugar un pequeño archivo &quot;%1&quot; para cada archivo que existe en el servidor. El contenido, puede ser descargado ejecutando esos archivos, o usando el menú contextual.
+        <translation>Cuando está activado el &quot;modo virtual&quot;, no se descargan los archivos inicialmente, en su lugar se crea un pequeño archivo &quot;%1&quot; para cada archivo que existe en el servidor. El contenido puede ser descargado ejecutando esos archivos, o usando el menú contextual.
 
-Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los problemas que pueda detectar..</translation>
+Este es un nuevo modo experimental. Si decide usarlo, por favor informe de los problemas que detecte.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="269"/>
@@ -2308,7 +2308,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="135"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation>Respuesta JSON invalida desde URL</translation>
+        <translation>Respuesta JSON inválida desde URL</translation>
     </message>
 </context>
 <context>
@@ -2329,7 +2329,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="477"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation>La descarga reducirá el espacio libre local por debajo del limite.</translation>
+        <translation>La descarga reducirá el espacio libre local por debajo del límite.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="481"/>
@@ -2354,7 +2354,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="834"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation>¡El fichero %1 no puede guardarse debido a un conflicto con el nombre de otro fichero local!</translation>
+        <translation>¡El archivo %1 no puede guardarse debido a un conflicto con el nombre de otro archivo local!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="869"/>
@@ -2475,7 +2475,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="176"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation>El archivo %1 No puede ser subido porque ya existe otro con el mismo nombre, puede haber diferencias en mayusculas o minusculas</translation>
+        <translation>El archivo %1 no puede ser subido porque ya existe otro con el mismo nombre, puede haber diferencias en mayúsculas o minúsculas</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="283"/>
@@ -2524,7 +2524,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="466"/>
         <source>Missing File ID from server</source>
-        <translation>Perdido archivo ID del servidor</translation>
+        <translation>Perdido ID del archivo en el servidor</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="480"/>
@@ -2643,7 +2643,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="74"/>
         <source>TextLabel</source>
-        <translation>Etiqueta de texto</translation>
+        <translation>EtiquetaDeTexto</translation>
     </message>
 </context>
 <context>
@@ -2758,7 +2758,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/gui/sharedialog.ui" line="60"/>
         <source>TextLabel</source>
-        <translation>Etiqueta de texto</translation>
+        <translation>EtiquetaDeTexto</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="28"/>
@@ -3164,7 +3164,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message numerus="yes">
         <location filename="../src/gui/socketapi.cpp" line="771"/>
         <source>Download file(s)</source>
-        <translation><numerusform>Descargar archivoº</numerusform><numerusform>Descargar archivos</numerusform></translation>
+        <translation><numerusform>Descargar archivoº</numerusform><numerusform>Descargar archivo(s)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -3280,7 +3280,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
         <location filename="../src/gui/sslbutton.cpp" line="177"/>
         <source>This connection is NOT secure as it is not encrypted.
 </source>
-        <translation>Esta conexión NO ES SEGURA, pues no está cifrada.
+        <translation>Esta conexión NO es segura, pues no está cifrada.
 </translation>
     </message>
 </context>
@@ -3304,7 +3304,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="132"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation>No puedo conectar de forma segura a  &lt;i&gt;%1&lt;/i&gt;:</translation>
+        <translation>No se puede conectar de forma segura a  &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
@@ -3412,7 +3412,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="533"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation>Conflicto: Versión del servidor descargada, La copia local ha sido renombrada pero no se ha podido subir.</translation>
+        <translation>Conflicto: versión del servidor descargada, la copia local ha sido renombrada pero no se ha podido subir.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="799"/>
@@ -3423,22 +3423,22 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="834"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Imposible abrir o crear la BBDD local de sync. Asegurese de que tiene permisos de escritura en la carpeta de sync.</translation>
+        <translation>Imposible abrir o crear la base de datos local de sincronización. Asegúrese de que tiene permisos de escritura en la carpeta de sincronización.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1369"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
-        <translation>No permitido porque no tienes permiso para añadir un directorio padre</translation>
+        <translation>No permitido porque no tiene permiso para añadir un directorio padre</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1376"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>No permitido porque no tienes permiso para añadir archivos a ese directorio</translation>
+        <translation>No permitido porque no tiene permiso para añadir archivos a ese directorio</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1701"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation>Poco espacio libre en disco: La descarga lo reducirá por debajo del %1, deberia abortar.</translation>
+        <translation>Poco espacio libre en disco: La descarga lo reducirá por debajo del %1, debería abortar.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1708"/>
@@ -3458,7 +3458,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="123"/>
         <source>Failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation>Fallo al crear o cargar el archivo de sesión. Asegurese de que tiene permisos de lectura/Escitura en la carpeta local a sincronizar</translation>
+        <translation>Fallo al crear o cargar el archivo de sesión. Asegúrese de que tiene permisos de lectura/escritura en la carpeta local a sincronizar</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="127"/>
@@ -3538,7 +3538,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="520"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation>El nombre de archivo no se puede codificar en tu sistema de archivos.</translation>
+        <translation>El nombre de archivo no se puede codificar en su sistema de archivos.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="529"/>
@@ -3583,7 +3583,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1040"/>
         <source>File name contains at least one invalid character</source>
-        <translation>Nombre de archivo contiene al menos un caracter no válido</translation>
+        <translation>El nombre de archivo contiene al menos un carácter no válido</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1295"/>
@@ -3594,7 +3594,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1354"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>No permitido porque no tienes permiso para añadir subdirectorios a ese directorio</translation>
+        <translation>No permitido porque no tiene permiso para añadir subdirectorios a ese directorio</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1401"/>
@@ -3654,7 +3654,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/libsync/theme.cpp" line="341"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Version %2. para más información , visite &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Para fallos conocidos y ayuda, visite: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Versión %2. para más información, visite &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Para fallos conocidos y ayuda, visite: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Por Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, y otros.&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="348"/>
@@ -3779,7 +3779,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="199"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>El servidor en la cuenta %1 usa una versión antigua y no soportada %2. Usando este cliente con las versiones de servidor no soportadas no está probado y es potencialmente peligroso. Procede bajo tu propio riesgo.</translation>
+        <translation>El servidor en la cuenta %1 usa una versión antigua y no soportada %2. Usando este cliente con las versiones de servidor no soportadas no está probado y es potencialmente peligroso. Proceda bajo su propio riesgo.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="238"/>
@@ -3951,7 +3951,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="515"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="526"/>
         <source>TextLabel</source>
-        <translation>Etiqueta de texto</translation>
+        <translation>EtiquetaDeTexto</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="91"/>
@@ -4199,12 +4199,12 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="311"/>
         <source>%n month(s)</source>
-        <translation><numerusform>%n Mes</numerusform><numerusform>%n Mese(s)</numerusform></translation>
+        <translation><numerusform>%n Mes</numerusform><numerusform>%n mes(es)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="312"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n dia</numerusform><numerusform>%n dia(s)</numerusform></translation>
+        <translation><numerusform>%n dia</numerusform><numerusform>%n día(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="313"/>
@@ -4237,7 +4237,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/gui/main.cpp" line="39"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation>% 1 requiere una bandeja del sistema de trabajo. Si está ejecutando XFCE, por favor siga &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt; estas instrucciones &lt;/ a&gt;. De lo contrario, instale una aplicación de la bandeja del sistema, tales como &apos;trayer&apos; y vuelva a intentarlo.</translation>
+        <translation>% 1 requiere una bandeja del sistema de trabajo. Si está ejecutando XFCE, por favor siga &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt; estas instrucciones&lt;/a&gt;. De lo contrario, instale una aplicación de la bandeja del sistema, como &apos;trayer&apos;, y vuelva a intentarlo.</translation>
     </message>
 </context>
 <context>
@@ -4401,7 +4401,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/gui/guiutility.cpp" line="35"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation>Ha ocurrido un error al lanzar el navegador para ir a la URL: %1 , ¿podria ser que no tenga ningún navegador por defecto?.</translation>
+        <translation>Ocurrió un error al lanzar el navegador para ir a la URL: %1 , ¿podría ser que no haya ningún navegador configurado como predeterminado?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="58"/>
@@ -4411,7 +4411,7 @@ Este es un nuevo modo experimental, Si decide usarlo, por favor reporte los prob
     <message>
         <location filename="../src/gui/guiutility.cpp" line="59"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation>Ocurrió un error al lanzar el cliente de correo electrónico para crear un nuevo mensaje. ¿Puede ser que no haya ningún cliente de correo electrónico configurado?</translation>
+        <translation>Ocurrió un error al lanzar el cliente de correo electrónico para crear un nuevo mensaje. ¿Podría ser que no haya ningún cliente de correo electrónico configurado como predeterminado?</translation>
     </message>
 </context>
 </TS>
