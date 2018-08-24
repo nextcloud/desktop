@@ -9,7 +9,8 @@
 - [ ] zlib: https://github.com/maxirmx/Dist_zlib
 - [ ] qtkeychain: https://github.com/frankosterfeld/qtkeychain
 - [ ] Visual Studio
-- [ ] Git bash (it comes with the Github tool or maybe Visual Studio(?))
+- [ ] Git bash (it comes with Git)
+- [ ] png2ico: http://www.winterdrache.de/freeware/png2ico/
 
 
 ## CMake options
@@ -31,13 +32,14 @@ cmake --build . --config Release --target install
 ## DLL's
 - To put all dependencies together: http://doc.qt.io/qt-5/windows-deployment.html
 
-### Missing dll's even after running windeployqt
-- [ ] Qt5CoreD.dll (C:\Qt\Qt5.9.5\5.9.5\msvc2017_64\bin)
+### Missing dll's and files even after running windeployqt
+- [ ] Qt5CoreD.dll (C:\Qt\Qt5.11.1\msvc2017_64\bin)
 - [ ] MSVCP140D.dll (C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\14.14.26405\debug_nonredist\x64\Microsoft.VC141.DebugCRT)
 - [ ] VCRUNTIME140D.dll (C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Redist\MSVC\14.14.26405\debug_nonredist\x64\Microsoft.VC141.DebugCRT)
 - [ ] ocsync.dll (nc install path/bin/nextcloud)
 - [ ] libcrypto-1_1-x86.dll (C:\OpenSSL-Win64\bin)
 - [ ] ucrtbased.dll (C:\Windows/System32)
+- [ ] C:\qt5keychain\bin\qt5keychain.dll needs to be copied to C:\Qt\5.11.1\msvc2017_64\bin
 - [ ] MSVCR120.dll (C:\OpenSSL-Win64\bin)
 - [ ] sync-exclude.lst (C:\Users\IEUser\Desktop\nc\install\config\Nextcloud)
 - [ ] had to fetch the extra dll's from https://indy.fulgan.com/SSL/openssl-1.0.1h-x64_86-win64.zip (libeay32.dll and ssleay32.dll)
@@ -55,6 +57,18 @@ cmake --build . --config Release --target install
 ## Git submodules
 - shell_integration
 
+## SSH Agent
+We are floowing this instruction:
+- https://help.github.com/articles/working-with-ssh-key-passphrases/#platform-windows (see .bashrc file in the repo)
+- There is also a ~/.ssh/config file with:
+```
+Host download.nextcloud.com
+  ForwardAgent yes
+```
+
+### Task Scheduler
+- We are using it to schedule the build - the task is exported to the xml DailyBuilds_v01.xml.
+
 ## ENV VARS TO SET
 - [ ] OPENSSL_PATH (openssl path installation)
 - [ ] P12_KEY_PASSWORD (certificate key password used to sign the installer)
@@ -62,6 +76,14 @@ cmake --build . --config Release --target install
 - [ ] QT_PATH (qt installation path)
 - [ ] SFTP_SERVER (server url)
 - [ ] SFTP_USER (server user)
-- [ ] SSH_SESSION (session settings + private key saved with Putty)
 - [ ] VCINSTALLDIR (Visual Code installation path)
+- [ ] Png2ico_EXECUTABLE (png2ico installation path)
+
+## To create the installer
+
+Run: 
+```
+./build.bat 
+```
+```build.bat``` will call ```nextcloud.nsi``` that in the end will call ```upload.bat``` after signing the installer.
 
