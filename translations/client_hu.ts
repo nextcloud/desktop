@@ -273,17 +273,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="785"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Az alábbi mappák nem lettek szinkronizálva, mert túl nagyok:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="787"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Az alábbi mappák nem lettek szinkronizálva, mert külső tárolóra mutatnak:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="788"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Az alábbi mappák nem lettek szinkronizálva, mert túl nagyok, vagy külső tárolóra mutatnak:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="834"/>
@@ -373,7 +373,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="132"/>
         <source>Maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>Karbantartó üzemmód</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="134"/>
@@ -388,7 +388,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="138"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Hitelesítési adatok</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="140"/>
@@ -446,7 +446,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="613"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>A nem szinkronizált elemek listája a vágólapra került.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="618"/>
@@ -529,7 +529,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation type="unfinished"/>
+        <translation>Tanúsítvány és kulcs (pkcs12):</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
@@ -557,17 +557,17 @@
     <message>
         <location filename="../src/gui/application.cpp" line="164"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Hiba a konfigurációs állomány elérésében</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="165"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Hiba törént az alábbi konfigurációs állomány elérésekor: %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="168"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Kilépés az ownCloudból</translation>
     </message>
 </context>
 <context>
@@ -598,7 +598,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1001"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Hiba történt a metaadatok adatbázisba írásakor</translation>
     </message>
 </context>
 <context>
@@ -741,24 +741,26 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="640"/>
         <source>Could not read system exclude file</source>
-        <translation type="unfinished"/>
+        <translation>Nem lehetett beolvasni a rendszer kizárási fájlját</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="888"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Egy %1 MB méretet meghaladó mappa hozzá lett adva: %2.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="891"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation type="unfinished"/>
+        <translation>Egy mappa egy külső tárolóból hozzá lett adva.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="892"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Kérlek, a beállításoknál válaszd ki, ha le szeretnéd tölteni.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="927"/>
@@ -766,7 +768,10 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Az összes fájl a szinkronizálási mappában - %1 - törölve lett a kiszolgálón.
+Ezek a törlések szinkronizálódni fognak a helyi mappádban, elérhetetlenné téve ezeket a fájlokat kivéve ha van jogosultságod a visszaállításhoz.
+Ha úgy döntesz, hogy megtartod a fájlokat, azok újra lesznek szinkronizálva a szerverrel, ha van rá jogosultságod.
+Ha úgy döntesz, hogy letörlöd a fájlokat, elérhetetlenné válnak számodra, kivéve ha te vagy a tulajdonos.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="932"/>
