@@ -98,52 +98,49 @@ ActivityWidget::~ActivityWidget()
 
 void ActivityWidget::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
 {
+    if (progress.status() == ProgressInfo::Reconcile) {
+        // Wipe all non-persistent entries - as well as the persistent ones
+        // in cases where a local discovery was done.
+        auto f = FolderMan::instance()->folder(folder);
+        if (!f)
+            return;
+        const auto &engine = f->syncEngine();
+        const auto style = engine.lastLocalDiscoveryStyle();
+        foreach (Activity activity, _model->errorsList()) {
+            if (activity._folder != folder){
+                continue;
+            }
 
-// TODO: this is really not working
-//    if (progress.status() == ProgressInfo::Done
-//            || progress.status() == ProgressInfo::Reconcile) {
-//        // Wipe all non-persistent entries - as well as the persistent ones
-//        // in cases where a local discovery was done.
-//        auto f = FolderMan::instance()->folder(folder);
-//        if (!f)
-//            return;
-//        const auto &engine = f->syncEngine();
-//        const auto style = engine.lastLocalDiscoveryStyle();
-//        foreach (Activity activity, _model->errorsList()) {
-//            if (activity._folder != folder){
-//                continue;
-//            }
+            if (style == LocalDiscoveryStyle::FilesystemOnly){
+                _model->removeActivityFromActivityList(activity);
+                continue;
+            }
 
-//            if (style == LocalDiscoveryStyle::FilesystemOnly){
-//                _model->removeActivityFromActivityList(activity);
-//                continue;
-//            }
-
-//            if(activity._status == SyncFileItem::Conflict && !QFileInfo(f->path() + activity._file).exists()){
-//                _model->removeActivityFromActivityList(activity);
-//                continue;
-//            }
+            if(activity._status == SyncFileItem::Conflict && !QFileInfo(f->path() + activity._file).exists()){
+                _model->removeActivityFromActivityList(activity);
+                continue;
+            }
 
 
-//            if(activity._status == SyncFileItem::FileIgnored && !QFileInfo(f->path() + activity._file).exists()){
-//                _model->removeActivityFromActivityList(activity);
-//                continue;
-//            }
+            if(activity._status == SyncFileItem::FileIgnored && !QFileInfo(f->path() + activity._file).exists()){
+                _model->removeActivityFromActivityList(activity);
+                continue;
+            }
 
-//            if(!QFileInfo(f->path() + activity._file).exists()){
-//                _model->removeActivityFromActivityList(activity);
-//                continue;
-//            }
+            if(!QFileInfo(f->path() + activity._file).exists()){
+                _model->removeActivityFromActivityList(activity);
+                continue;
+            }
 
-//            auto path = QFileInfo(activity._file).dir().path().toUtf8();
-//            if (path == ".")
-//                path.clear();
+            auto path = QFileInfo(activity._file).dir().path().toUtf8();
+            if (path == ".")
+                path.clear();
 
-//            if(engine.shouldDiscoverLocally(path))
-//                _model->removeActivityFromActivityList(activity);
-//        }
+            if(engine.shouldDiscoverLocally(path))
+                _model->removeActivityFromActivityList(activity);
+        }
 
-//    }
+    }
 
     if (progress.status() == ProgressInfo::Done) {
         // We keep track very well of pending conflicts.
@@ -171,18 +168,26 @@ void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItem
         qCWarning(lcActivity) << "Item " << item->_file << " retrieved resulted in " << item->_errorString;
 
         Activity activity;
-        activity._type = Activity::SyncFileItemType;
+        activity._type = Activity::SyncFileItemType; //client activity
         activity._status = item->_status;
         activity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
-        activity._subject = item->_errorString;
         activity._message = item->_originalFile;
         activity._link = folderInstance->accountState()->account()->url();
         activity._accName = folderInstance->accountState()->account()->displayName();
         activity._file = item->_file;
         activity._folder = folder;
 
-        // add 'protocol error' to activity list
-        _model->addErrorToActivityList(activity);
+        if(item->_status == SyncFileItem::NoStatus || item->_status == SyncFileItem::Success){
+            qCWarning(lcActivity) << "Item " << item->_file << " retrieved successfully.";
+            activity._message.prepend(tr("Synced "));
+            _model->addSyncFileItemToActivityList(activity);
+        } else {
+            qCWarning(lcActivity) << "Item " << item->_file << " retrieved resulted in error " << item->_errorString;
+            activity._subject = item->_errorString;
+
+            // add 'protocol error' to activity list
+            _model->addErrorToActivityList(activity);
+        }
     }
 }
 

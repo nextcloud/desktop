@@ -108,9 +108,9 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                          || a._status == SyncFileItem::Restoration){
                    return QIcon(QLatin1String(":/client/resources/state-warning.svg"));
                }
-               return QIcon(QLatin1String(":/client/resources/activity.png"));
-        } else return QIcon(QLatin1String(":/client/resources/activity.png"));
-        return QVariant();
+               return QIcon(QLatin1String(":/client/resources/state-sync.svg"));
+        }
+        return QIcon(QLatin1String(":/client/resources/activity.png"));
         break;
     case ActivityItemDelegate::ObjectTypeRole:
         return a._objectType;
@@ -237,6 +237,12 @@ void ActivityListModel::removeActivityFromActivityList(int row) {
     removeActivityFromActivityList(activity);
 }
 
+void ActivityListModel::addSyncFileItemToActivityList(Activity activity) {
+    qCInfo(lcActivity) << "Successfully added to the activity list: " << activity._subject;
+    _syncFileItemLists.prepend(activity);
+    combineActivityLists();
+}
+
 void ActivityListModel::removeActivityFromActivityList(Activity activity) {
     qCInfo(lcActivity) << "Activity/Notification/Error successfully dismissed: " << activity._subject;
     qCInfo(lcActivity) << "Trying to remove Activity/Notification/Error from view... ";
@@ -270,6 +276,9 @@ void ActivityListModel::combineActivityLists()
 
     std::sort(_notificationLists.begin(), _notificationLists.end());
     resultList.append(_notificationLists);
+
+    std::sort(_syncFileItemLists.begin(), _syncFileItemLists.end());
+    resultList.append(_syncFileItemLists);
 
     std::sort(_activityLists.begin(), _activityLists.end());
     resultList.append(_activityLists);
