@@ -50,6 +50,7 @@ public:
     ActivityList errorsList() { return _notificationErrorsLists; }
     void addNotificationToActivityList(Activity activity);
     void addErrorToActivityList(Activity activity);
+    void addSyncFileItemToActivityList(Activity activity);
     void removeActivityFromActivityList(int row);
     void removeActivityFromActivityList(Activity activity);
 
@@ -68,6 +69,7 @@ private:
     void combineActivityLists();
 
     ActivityList _activityLists;
+    ActivityList _syncFileItemLists;
     ActivityList _notificationLists;
     ActivityList _notificationErrorsLists;
     ActivityList _finalList;
