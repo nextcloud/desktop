@@ -15,7 +15,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>Le déplacement dans la corbeille n&apos;est pas implémenté sur cette plateforme</translation>
     </message>
 </context>
 <context>
@@ -102,7 +102,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="256"/>
         <source>Unknown error: network reply was deleted</source>
-        <translation>Erreur inconnue : La réponse du réseau a été supprimé</translation>
+        <translation>Erreur inconnue : La réponse du réseau a été supprimée</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="408"/>
@@ -302,7 +302,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="805"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Certains dossiers n&apos;ont pas été synchronisés par qu&apos;ils sont localisés sur un stockage externe ou qu&apos;ils sont de taille trop importante :</translation>
+        <translation>Certains dossiers n&apos;ont pas été synchronisés parce qu&apos;ils sont localisés sur un stockage externe ou qu&apos;ils sont de taille trop importante :</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="851"/>
@@ -312,7 +312,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="852"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Êtes-vous certain de vouloir retirer &lt;i&gt;%1&lt;/i&gt; des comptes synchronisés avec le serveur ?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Remarque :&lt;/b&gt; cela ne supprimera pas votre compte sur le serveur et aucun fichier ne sera supprimé ni localement ni en ligne.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Êtes-vous certain de vouloir retirer &lt;i&gt;%1&lt;/i&gt; des comptes synchronisés avec le serveur ?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Remarque :&lt;/b&gt; cela ne supprimera pas votre compte sur le serveur, et aucun fichier ne sera supprimé ni localement ni en ligne.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="858"/>
@@ -392,7 +392,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="127"/>
         <source>Maintenance mode</source>
-        <translation>mode maintenance</translation>
+        <translation>Mode maintenance</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="129"/>
@@ -576,17 +576,17 @@
     <message>
         <location filename="../src/gui/application.cpp" line="122"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>En continuant vous allez &lt;b&gt;effacer ces paramètres&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="124"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>En continuant vous allez &lt;b&gt;ignorer ces paramètres&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="130"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Certains paramètres ont été configurés dans des versions plus récentes de ce logiciel client et utilisent des fonctionnalités non disponibles dans cette version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;Le fichier de configuration actuel a été d&apos;ores et déjà sauvegardé en tant que &lt;i&gt;%2&lt;/i&gt;. </translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="137"/>
@@ -818,12 +818,12 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="1020"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>Le dossier %1 a été créé mais avait été exclu de la synchronisation auparavant. Les données à l&apos;intérieur ne seront pas synchronisées.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1023"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 a été créé mais avait été exclu de la synchronisation auparavant. Il ne sera pas synchronisé.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1034"/>
@@ -832,7 +832,11 @@
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Les changements dans les dossiers synchronisés ne peuvent être suivis de façon fiable.
+
+Cela veut dire que le client de synchronisation ne peut pas téléverser les changements locaux dans l&apos;immédiat et qu&apos;à la place il recherchera les changements locaux et les téléversera occasionnellement (toutes les deux heures par défaut).
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1079"/>
@@ -840,18 +844,18 @@ This means that the synchronization client might not upload local changes immedi
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Tous les fichiers contenus dans le dossier synchronisé &apos;%1&apos; dossier ont été supprimés du serveur.
+        <translation>Tous les fichiers contenus dans le dossier synchronisé &apos;%1&apos; ont été supprimés du serveur.
 Ces suppressions seront synchronisées sur vos dossiers locaux synchronisés, rendant ces fichiers inaccessibles, à moins que vous n&apos;ayez le droit de les restaurer.
 Si vous décidez de conserver ces fichiers, ils seront synchronisés à nouveau avec le serveur si vous en avez le droit.
-Si vous décidez de supprimer ces fichiers, ils vous seront inaccessibles, sauf si vous en êtes le propriétaire.</translation>
+Si vous décidez de supprimer ces fichiers, ils vous seront inaccessibles, sauf si vous en êtes le/la propriétaire.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1084"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Tous les fichiers contenus dans le dossier synchronisé &apos;%1&apos; ont été supprimés. Ces suppressions seront synchronisées avec votre serveur, rendant ces fichiers inaccessibles sauf s&apos;ils sont restaures.
-Êtes-vous sûr de vouloir synchroniser ces actions avec le serveur ?
+        <translation>Tous les fichiers contenus dans le dossier synchronisé &apos;%1&apos; ont été supprimés. Ces suppressions seront synchronisées avec votre serveur, rendant ces fichiers inaccessibles sauf s&apos;ils sont restaurés.
+Êtes-vous sûr·e de vouloir synchroniser ces actions avec le serveur ?
 S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserver vos fichiers, ils seront synchronisés à nouveau depuis le serveur.</translation>
     </message>
     <message>
@@ -939,7 +943,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/folderman.cpp" line="1284"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation réussie, conflits non résolus.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1286"/>
@@ -1057,17 +1061,17 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
         <source>New files are being created as virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Les nouveaux fichiers vont être créés en tant que fichiers virtuels.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="889"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Vérification des changements distants &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="893"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Vérification des changements locaux &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="900"/>
@@ -1170,7 +1174,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="87"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Ce problème survient généralement lorsque les contrôleurs inotify sont saturés. Consulter la FAQ pour plus de détails.</translation>
     </message>
 </context>
 <context>
@@ -1257,7 +1261,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="489"/>
         <source>Use virtual files instead of downloading content immediately (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>Utiliser des fichiers virtuels au lieu de télécharger le contenu immédiatement (expérimental)</translation>
     </message>
 </context>
 <context>
@@ -1316,7 +1320,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/generalsettings.ui" line="67"/>
         <source>&amp;Channel</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Canal</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="84"/>
@@ -1326,7 +1330,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>bêta</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="157"/>
@@ -1372,7 +1376,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/generalsettings.ui" line="244"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation type="unfinished"/>
+        <translation>Montrer les répertoires synchronisés dans le panneau de navigation de l&apos;&amp;Explorateur de fichiers</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="261"/>
@@ -1392,24 +1396,26 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="173"/>
         <source>Change update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Changer le canal de mise à jour ?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="174"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation type="unfinished"/>
+        <translation>Le canal de mise à jour détermine quelles mises à jour du client seront proposées pour être installées. Le canal « stable » contient uniquement des mises à niveau considérées comme étant fiables, tandis que les versions dans le canal « bêta » peuvent contenir de nouvelles fonctionnalités et des corrections de bugs, mais qui n&apos;ont pas encore été testées suffisamment.
+
+Veuillez noter que cela sélectionne seulement la zone de mises à jour, et qu&apos;il n&apos;y a pas de retour à des versions antérieures : par conséquent retourner du canal bêta au canal stable ne peut s&apos;effectuer de façon instantanée et nécessite d&apos;attendre une version stable plus récente que la version bêta installée.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="187"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Changer le canal de mise à jour</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="188"/>
         <source>Cancel</source>
-        <translation>Anuler</translation>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
@@ -1417,14 +1423,16 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/socketapi.cpp" line="519"/>
         <source>Sharing error</source>
-        <translation>erreur de partage</translation>
+        <translation>Erreur de partage</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="520"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de récupérer ou de créer le lien de partage public. Erreur :
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -1569,7 +1577,7 @@ L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la supp
     <message>
         <location filename="../src/gui/issueswidget.ui" line="137"/>
         <source>There were too many issues. Not all will be visible here.</source>
-        <translation>De trop nombreuses questions se posent. Toutes n&apos;apparaissent pas ici.</translation>
+        <translation>Il y a eu trop de problèmes. Tous n&apos;apparaissent pas ici.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="147"/>
@@ -1604,7 +1612,7 @@ L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la supp
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="126"/>
         <source>There were conflicts. &lt;a href=&quot;%1&quot;&gt;Check the documentation on how to resolve them.&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Il y a eu des conflits. &lt;a href=&quot;%1&quot;&gt;Consultez la documentation pour pouvoir les résoudre.&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -1632,14 +1640,16 @@ L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la supp
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
         <source>Permanently save logs</source>
-        <translation type="unfinished"/>
+        <translation>Enregistrer les fichiers de log de façon permanente</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="103"/>
         <source>When this option is enabled and no other logging is configured, logs will be written to a temporary folder and expire after a few hours. This setting persists across client restarts.
 
 Logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Lorsque cette option est activée et qu&apos;aucun autre système de log est configuré, les fichiers de logs sont écrits dans un dossier temporaire qui expire après quelques heures. Ce paramètre persiste après redémarrage du client.
+
+Les fichiers de log seront écrits dans %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="115"/>
@@ -2094,7 +2104,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="346"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de charger le certificat. Peut-être un mauvais mot de passe ?</translation>
     </message>
 </context>
 <context>
@@ -2264,7 +2274,9 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Lorsque le mode « fichiers virtuels » est activé, aucun fichier ne sera téléchargé par défaut. À la place, un petit fichier « %1 » sera créé pour chaque fichier qui existe sur le serveur. Le contenu peut être téléchargé en exécutant ces fichiers ou en utilisant le menu contextuel.
+
+Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;utiliser, merci de bien vouloir remonter toute erreur qui surviendrait.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="269"/>
@@ -2274,7 +2286,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="270"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Rester sauf</translation>
     </message>
 </context>
 <context>
@@ -2858,7 +2870,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="199"/>
         <source>Recipients can view or download contents.</source>
-        <translation type="unfinished"/>
+        <translation>Les bénéficiaires peuvent voir ou télécharger le contenu.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="248"/>
@@ -2873,7 +2885,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="268"/>
         <source>Recipients can view, download, edit, delete and upload contents.</source>
-        <translation type="unfinished"/>
+        <translation>Les bénéficiaires peuvent voir, télécharger, modifier, supprimer et téléverser le contenu.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="20"/>
@@ -2935,7 +2947,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="542"/>
         <source>I shared %1 with you</source>
-        <translation type="unfinished"/>
+        <translation>J&apos;ai partagé %1 avec vous</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="556"/>
@@ -3141,7 +3153,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
         <source>Resharing this file is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Le repartage de ce fichier n&apos;est pas permis</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="681"/>
@@ -3890,12 +3902,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="839"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Vérification des changements distants &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="842"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Vérification des changements locaux &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="857"/>
