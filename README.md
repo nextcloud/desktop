@@ -69,6 +69,8 @@ of your report being lost. :boom:
 
 - If you created a patch :heart_eyes:, please submit a [Pull
 Request](https://github.com/nextcloud/client/pulls).
+- How to create a pull request? This guide will help you get started: [Opening a pull request](https://opensource.guide/how-to-contribute/#opening-a-pull-request) :heart:
+
 
 ## :satellite: Contact us
 
