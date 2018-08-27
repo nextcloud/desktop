@@ -30,9 +30,9 @@ class ProcessDirectoryJob : public QObject
 public:
     enum QueryMode {
         NormalQuery,
-        ParentDontExist,
-        ParentNotChanged,
-        InBlackList
+        ParentDontExist, // Do not query this folder because it does not exist
+        ParentNotChanged, // No need to query this folder because it has not changed from what is in the DB
+        InBlackList // Do not query this folder because it is in th blacklist (remote entries only)
     };
     Q_ENUM(QueryMode)
     explicit ProcessDirectoryJob(const SyncFileItemPtr &dirItem, QueryMode queryServer, QueryMode queryLocal,
@@ -75,7 +75,7 @@ private:
     bool handleExcluded(const QString &path, bool isDirectory, bool isHidden, bool isSymlink);
     void processFile(PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &dbEntry);
     // Return false if there is an error and that a directory must not be recursively be taken
-    bool checkPremission(const SyncFileItemPtr &item);
+    bool checkPermissions(const SyncFileItemPtr &item);
     void processBlacklisted(const PathTuple &, const LocalInfo &, const SyncJournalFileRecord &dbEntry);
     void subJobFinished();
     void progress();
