@@ -161,6 +161,7 @@ void ProcessDirectoryJob::start()
         csync_vio_local_closedir(dh);
     }
     _hasLocalEntries = true;
+    // Process is being called when both local and server entries are fetched.
     if (_hasServerEntries)
         process();
 }
@@ -397,6 +398,8 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     auto recurseQueryServer = _queryServer;
     if (recurseQueryServer != ParentNotChanged && !serverEntry.isValid())
         recurseQueryServer = ParentDontExist;
+
+    bool noServerEntry = _queryServer != ParentNotChanged && !serverEntry.isValid();
 
     if (_queryServer == NormalQuery && serverEntry.isValid()) {
         item->_checksumHeader = serverEntry.checksumHeader;
@@ -664,13 +667,13 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                 item->_type = ItemTypeVirtualFile;
             }
 
-            if (_queryServer != ParentNotChanged && !serverEntry.isValid()) {
+            if (noServerEntry) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
             }
         } else if (dbEntry.isValid() && !typeChange && ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) || (localEntry.isDirectory && dbEntry._type == ItemTypeDirectory))) {
             // Local file unchanged.
-            if (_queryServer != ParentNotChanged && !serverEntry.isValid()) {
+            if (noServerEntry) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
             } else if (!serverModified && dbEntry._inode != localEntry.inode) {
@@ -887,7 +890,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                         }
 
                         qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->isDirectory();
-                        bool recurse = checkPremission(item);
+                        bool recurse = checkPermissions(item);
                         if (recurse && item->isDirectory()) {
                             auto job = new ProcessDirectoryJob(item, recurseQueryServer, NormalQuery, _discoveryData, this);
                             job->_currentFolder = path;
@@ -905,7 +908,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             }
         } else {
             item->_instruction = CSYNC_INSTRUCTION_SYNC;
-            if (_queryServer != ParentNotChanged && !serverEntry.isValid()) {
+            if (noServerEntry) {
                 // Special case! deleted on server, modified on client, the instruction is then NEW
                 item->_instruction = CSYNC_INSTRUCTION_NEW;
             }
@@ -930,12 +933,12 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             }
         }
     } else if (_queryLocal == ParentNotChanged && dbEntry.isValid()) {
-        if (_queryServer != ParentNotChanged && !serverEntry.isValid()) {
+        if (noServerEntry) {
             // Not modified locally (ParentNotChanged), bit not on the server:  Removed on the server.
             item->_instruction = CSYNC_INSTRUCTION_REMOVE;
             item->_direction = SyncFileItem::Down;
         }
-    } else if (_queryServer != ParentNotChanged && !serverEntry.isValid()) {
+    } else if (noServerEntry) {
         // Not locally, not on the server. The entry is stale!
         qCInfo(lcDisco) << "Stale DB entry";
         return;
@@ -975,7 +978,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
 
 
     bool recurse = item->isDirectory() || localEntry.isDirectory || serverEntry.isDirectory;
-    if (!checkPremission(item))
+    if (!checkPermissions(item))
         recurse = false;
     if (_queryLocal != NormalQuery && _queryServer != NormalQuery && !item->_isRestoration)
         recurse = false;
@@ -1030,7 +1033,7 @@ void ProcessDirectoryJob::processBlacklisted(const PathTuple &path, const OCC::L
     }
 }
 
-bool ProcessDirectoryJob::checkPremission(const OCC::SyncFileItemPtr &item)
+bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
 {
     if (item->_direction != SyncFileItem::Up) {
         // Currently we only check server-side permissions
