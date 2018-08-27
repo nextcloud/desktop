@@ -4191,12 +4191,12 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="55"/>
         <source>Could not open email client</source>
-        <translation>Klarte ikke å åpne epost-klient</translation>
+        <translation>Klarte ikke å åpne e-post klient</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="56"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation>Det oppstod en feil ved oppstart av epost-klienten for å lage en ny melding. Kanskje ingen standard epost-klient er konfigurert?</translation>
+        <translation>Det oppstod en feil ved oppstart av e-post klienten for å lage en ny melding. Kanskje ingen standard e-post klient er konfigurert?</translation>
     </message>
 </context>
 </TS>
