@@ -168,7 +168,8 @@ function(ecm_add_app_icon appsources)
                       ${icons_at_32px}
                       ${icons_at_48px}
                       ${icons_at_64px}
-                      ${icons_at_128px})
+                      ${icons_at_128px}
+                      ${icons_at_256px})
     if (NOT windows_icons)
         message(AUTHOR_WARNING "No icons suitable for use on Windows provided")
     endif()
