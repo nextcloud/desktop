@@ -244,6 +244,7 @@ public:
 
     /** new files are downloaded as virtual files */
     bool useVirtualFiles() { return _definition.useVirtualFiles; }
+    void setUseVirtualFiles(bool enabled);
 
 signals:
     void syncStateChange();
