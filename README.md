@@ -17,11 +17,17 @@ with your computer.
 
 ##### Clone the repo and create build directory
 ```
-$ git clone git@github.com:nextcloud/desktop.git
+$ git clone https://github.com/nextcloud/desktop.git
 $ cd desktop
 $ mkdir build
+$ cd build
 ```
 ##### Compile and install
+
+For development reasons it is better to install the client on user space
+instead on the global system. For example you could use in the next
+instructions `path-to-install-folder/` as `~/.local/` in a linux system. If
+you want to install system wide you could use `/usr/local` or `/opt/nextcloud/`.
 
 ##### Linux
 
@@ -101,5 +107,3 @@ https://github.com/nextcloud/desktop.
     WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
     or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
     for more details.
-
-
