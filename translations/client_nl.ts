@@ -272,7 +272,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="671"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Probeert autorisatie te krijgen van de browser. 1 Klik hier 1 om de browser opnieuw te openen.</translation>
+        <translation>Probeert autorisatie te krijgen van de browser. &lt;a href=&apos;%1&apos;&gt; Klik hier &lt;/a&gt; om de browser opnieuw te openen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="675"/>
