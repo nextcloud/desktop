@@ -765,7 +765,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="927"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>ไฟล์ทั้งหมดในโฟลเดอร์ &apos;%1&apos; ที่ประสานข้อมูลเอาไว้ในเซิฟเวอร์จะถูกลบด้วย
@@ -933,7 +933,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1362"/>
         <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>โฟลเดอร์ต้นทาง %1 เป็นการเชื่อมโยงสัญลักษณ์ 
+        <translation>โฟลเดอร์ต้นทาง %1 เป็นการเชื่อมโยงสัญลักษณ์
 เป้าหมายของลิงค์มีเนื้อหาที่ถูกใช้ไปแล้วในโฟลเดอร์ที่ประสานข้อมูล กรุณาเลือกอีกอันหนึ่ง!</translation>
     </message>
 </context>
@@ -3644,7 +3644,7 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
-        <source>Unpause all folders</source>
+        <source>Resume all folders</source>
         <translation>ทำโฟลเดอร์ทั้งหมดต่อ</translation>
     </message>
     <message>
@@ -3654,12 +3654,12 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
-        <source>Unpause all synchronization</source>
+        <source>Resume all synchronization</source>
         <translation>ประสานข้อมูลทั้งหมดต่อ</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
-        <source>Unpause synchronization</source>
+        <source>Resume synchronization</source>
         <translation>ประสานข้อมูลต่อ</translation>
     </message>
     <message>

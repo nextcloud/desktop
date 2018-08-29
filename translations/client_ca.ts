@@ -3639,7 +3639,7 @@ No és aconsellada usar-la.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
-        <source>Unpause all folders</source>
+        <source>Resume all folders</source>
         <translation>Reprén totes les carpetes</translation>
     </message>
     <message>
@@ -3649,12 +3649,12 @@ No és aconsellada usar-la.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
-        <source>Unpause all synchronization</source>
+        <source>Resume all synchronization</source>
         <translation>Reprèn totes les sincronitzacions</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
-        <source>Unpause synchronization</source>
+        <source>Resume synchronization</source>
         <translation>Reprèn la sincronització</translation>
     </message>
     <message>

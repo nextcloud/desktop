@@ -765,11 +765,11 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="927"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>Все фйлы в синхронизируемом каталоге &apos;%1&apos; были удалены на сервере.
-Эти удаления будут переданы в ваш локальный синхронизируемый каталог, так что файлы станут недоступны, если только у вас нет права на восстановление. 
+Эти удаления будут переданы в ваш локальный синхронизируемый каталог, так что файлы станут недоступны, если только у вас нет права на восстановление.
 Если вы решите сохранить эти файлы, то они будут повторно синхронизированы с сервером, при наличии у вас прав на это.
 Если вы решили удалить файлы, они станут вам недоступны, крмое случая, когда вы сам владелец.</translation>
     </message>
@@ -3641,7 +3641,7 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
-        <source>Unpause all folders</source>
+        <source>Resume all folders</source>
         <translation>Снять с паузы все папки</translation>
     </message>
     <message>
@@ -3651,12 +3651,12 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
-        <source>Unpause all synchronization</source>
+        <source>Resume all synchronization</source>
         <translation>Возобновить все синхронизации</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
-        <source>Unpause synchronization</source>
+        <source>Resume synchronization</source>
         <translation>Возобновить синхронизацию</translation>
     </message>
     <message>

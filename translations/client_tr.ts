@@ -765,7 +765,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="927"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>&apos;%1&apos; eşitleme klasöründeki tüm dosyalar sunucudan silindi.
@@ -3645,7 +3645,7 @@ Kullanmanız önerilmez.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
-        <source>Unpause all folders</source>
+        <source>Resume all folders</source>
         <translation>Tüm klasörleri sürdür</translation>
     </message>
     <message>
@@ -3655,12 +3655,12 @@ Kullanmanız önerilmez.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
-        <source>Unpause all synchronization</source>
+        <source>Resume all synchronization</source>
         <translation>Tüm eşitlemeleri sürdür</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
-        <source>Unpause synchronization</source>
+        <source>Resume synchronization</source>
         <translation>Eşitlemeyi sürdür</translation>
     </message>
     <message>
