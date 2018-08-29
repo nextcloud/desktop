@@ -10,3 +10,6 @@ DEB_SHLIBDEPS_INCLUDE=$(CURDIR)/$(DEB_BUILDDIR)/csync/src
 
 DEB_SRCDIR=.
 DEB_CMAKE_EXTRA_FLAGS = -DCMAKE_SKIP_RPATH=OFF -DCMAKE_SKIP_BUILD_RPATH=ON -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
+
+common-install-impl::
+	for i in `find $(DEB_DESTDIR)/usr/share/icons -name Nextcloud.png`; do dname=`dirname $$i`; ln -sf Nextcloud.png "$${dname}/nextcloud.png"; done
