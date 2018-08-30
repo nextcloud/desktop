@@ -765,7 +765,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="927"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>Todos los archivos en la carpeta de sincronizacion &apos;%1&apos; fueron borrados en el servidor.
@@ -804,7 +804,7 @@ This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
         <translation>Esta sincronización restablecerá los archivos a un tiempo anterior en la carpeta de sincronización &apos;%1&apos;
 Esto puede ser porque un respaldo fue restaurado en el servidor.
-Continuar con la sincronización como normal causará que todos tus archivos sean sobreescritos por un archivo más antiguo en un estado anterior. 
+Continuar con la sincronización como normal causará que todos tus archivos sean sobreescritos por un archivo más antiguo en un estado anterior.
 ¿Quieres mantener tu copia local más reciente como archivos en conflicto?</translation>
     </message>
     <message>
@@ -3645,7 +3645,7 @@ No es recomendable usarlo. </translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
-        <source>Unpause all folders</source>
+        <source>Resume all folders</source>
         <translation>Despasuar todas las carpetas</translation>
     </message>
     <message>
@@ -3655,12 +3655,12 @@ No es recomendable usarlo. </translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
-        <source>Unpause all synchronization</source>
+        <source>Resume all synchronization</source>
         <translation>Despausar toda la sincronización</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
-        <source>Unpause synchronization</source>
+        <source>Resume synchronization</source>
         <translation>Despausar la sincronización</translation>
     </message>
     <message>
