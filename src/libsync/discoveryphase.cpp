@@ -76,7 +76,7 @@ bool DiscoveryPhase::isInSelectiveSyncBlackList(const QString &path) const
 
 bool DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePermissions remotePerm)
 {
-    if (_syncOptions._confirmExternalStorage
+    if (_syncOptions._confirmExternalStorage && !_syncOptions._newFilesAreVirtual
         && remotePerm.hasPermission(RemotePermissions::IsMounted)) {
         // external storage.
 
@@ -99,7 +99,7 @@ bool DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
     }
 
     auto limit = _syncOptions._newBigFolderSizeLimit;
-    if (limit < 0) {
+    if (limit < 0 || _syncOptions._newFilesAreVirtual) {
         // no limit, everything is allowed;
         return false;
     }
