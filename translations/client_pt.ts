@@ -765,11 +765,11 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="927"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>Todos os ficheiros na pasta sincronizada &apos;%1&apos; foram apagados do servidor.
-Estas deleções irão ser sincronizadas para a sua pasta local de sincronização, fazendo com que os ficheiros fiquem indisponíveis, a não ser que tenha permissões para restaurar os mesmos . 
+Estas deleções irão ser sincronizadas para a sua pasta local de sincronização, fazendo com que os ficheiros fiquem indisponíveis, a não ser que tenha permissões para restaurar os mesmos .
 Se decidir manter os ficheiros, eles serão sincronizados novamento para o servidor se tiver permissões para tal.
 Se decidir apagar os ficheiros, eles ficaram indisponíveis para si, a não ser que seja o seu proprietário.</translation>
     </message>
@@ -1358,7 +1358,7 @@ Continuando a sincronização fará com que todos os seus ficheiros sejam substi
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Os ficheiros ou pastas que correspondam a um padrão não serão sincronizadas. 
+        <translation>Os ficheiros ou pastas que correspondam a um padrão não serão sincronizadas.
 
 Os itens onde é permitido a eliminação serão eliminados se estes impedirem a remoção de uma diretoria. Isto é útil para os metadados.</translation>
     </message>
@@ -1734,7 +1734,7 @@ Os itens onde é permitido a eliminação serão eliminados se estes impedirem a
         <location filename="../src/gui/updater/ocupdater.cpp" line="104"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>Está prestes a ser instalada uma nova atualização para %1. O atualizador 
+        <translation>Está prestes a ser instalada uma nova atualização para %1. O atualizador
 poderá pedir por privilégios adicionais durante o processo.</translation>
     </message>
     <message>
@@ -3644,7 +3644,7 @@ Não é aconselhada a sua utilização.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
-        <source>Unpause all folders</source>
+        <source>Resume all folders</source>
         <translation>Continuar todas as pastas</translation>
     </message>
     <message>
@@ -3654,12 +3654,12 @@ Não é aconselhada a sua utilização.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
-        <source>Unpause all synchronization</source>
+        <source>Resume all synchronization</source>
         <translation>Continuar toda a sincronização</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
-        <source>Unpause synchronization</source>
+        <source>Resume synchronization</source>
         <translation>Continuar sincronização</translation>
     </message>
     <message>

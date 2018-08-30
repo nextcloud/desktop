@@ -100,13 +100,12 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     _ui.hostButton->hide();
 #endif
     setStyleSheet(QString("background-color:%1; color:%2 QLabel { color:%2; } QSpacerItem { color: red; }").arg(theme->wizardHeaderBackgroundColor().name(), theme->wizardHeaderTitleColor().name()));
-
 }
 
 #ifdef WITH_PROVIDERS
 void OwncloudSetupPage::nextSlide()
 {
-    if (_currentSlide < _slideshow.length()-1) {
+    if (_currentSlide < _slideshow.length() - 1) {
         _currentSlide++;
     } else {
         _currentSlide = 0;
@@ -155,6 +154,7 @@ void OwncloudSetupPage::slotLogin()
     animation->setStartValue(500);
     animation->setEndValue(500);
     _ui.login->show();
+    _ui.loginButton->hide();
     wizard()->resize(wizard()->sizeHint());
     animation->start();
 }
