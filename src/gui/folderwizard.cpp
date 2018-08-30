@@ -494,7 +494,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
     _selectiveSync = new SelectiveSyncWidget(account, this);
     layout->addWidget(_selectiveSync);
 
-    if (ConfigFile().showExperimentalOptions()) {
+    if (Theme::instance()->showVirtualFilesOption()) {
         _virtualFilesCheckBox = new QCheckBox(tr("Use virtual files instead of downloading content immediately (experimental)"));
         connect(_virtualFilesCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::virtualFilesCheckboxClicked);
         connect(_virtualFilesCheckBox, &QCheckBox::stateChanged, this, [this](int state) {

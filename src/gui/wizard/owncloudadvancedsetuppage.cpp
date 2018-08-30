@@ -102,7 +102,7 @@ void OwncloudAdvancedSetupPage::initializePage()
 {
     WizardCommon::initErrorLabel(_ui.errorLabel);
 
-    if (!ConfigFile().showExperimentalOptions()) {
+    if (!Theme::instance()->showVirtualFilesOption()) {
         // If the layout were wrapped in a widget, the auto-grouping of the
         // radio buttons no longer works and there are surprising margins.
         // Just manually hide the button and remove the layout.

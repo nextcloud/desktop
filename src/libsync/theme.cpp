@@ -16,6 +16,7 @@
 #include "config.h"
 #include "common/utility.h"
 #include "version.h"
+#include "configfile.h"
 
 #include <QtCore>
 #ifndef TOKEN_AUTH_ONLY
@@ -729,6 +730,11 @@ QPixmap Theme::createColorAwarePixmap(const QString &name, const QPalette &palet
 QPixmap Theme::createColorAwarePixmap(const QString &name)
 {
     return createColorAwarePixmap(name, QGuiApplication::palette());
+}
+
+bool Theme::showVirtualFilesOption() const
+{
+    return ConfigFile().showExperimentalOptions();
 }
 
 } // end namespace client
