@@ -348,6 +348,15 @@ public:
      */
     virtual QString versionSwitchOutput() const;
 
+
+    /**
+     * @brief Whether to show the option to create folders using "virtual files".
+     *
+     * By default, the options are not shown unless experimental options are
+     * manually enabled in the configuration file.
+     */
+    virtual bool showVirtualFilesOption() const;
+
 protected:
 #ifndef TOKEN_AUTH_ONLY
     QIcon themeIcon(const QString &name, bool sysTray = false, bool sysTrayMenuVisible = false) const;

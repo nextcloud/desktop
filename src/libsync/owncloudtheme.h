@@ -36,6 +36,9 @@ public:
     QPixmap wizardHeaderLogo() const Q_DECL_OVERRIDE;
 #endif
 
+    // For owncloud-brandings *do* show the virtual files option.
+    bool showVirtualFilesOption() const override { return true; }
+
 private:
 };
 }
