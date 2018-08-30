@@ -121,7 +121,6 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return type;
         break;
     }
-    case Qt::ToolTipRole:
     case ActivityItemDelegate::ActionTextRole:
         return a._subject;
         break;
