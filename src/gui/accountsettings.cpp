@@ -403,6 +403,9 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     bool folderPaused = _model->data(index, FolderStatusDelegate::FolderSyncPaused).toBool();
     bool folderConnected = _model->data(index, FolderStatusDelegate::FolderAccountConnected).toBool();
     auto folderMan = FolderMan::instance();
+    QPointer<Folder> folder = folderMan->folder(alias);
+    if (!folder)
+        return;
 
     auto *menu = new QMenu(tv);
 
@@ -414,7 +417,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     ac = menu->addAction(tr("Edit Ignored Files"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotEditCurrentIgnoredFiles);
 
-    if (!_ui->_folderList->isExpanded(index)) {
+    if (!_ui->_folderList->isExpanded(index) && !folder->useVirtualFiles()) {
         ac = menu->addAction(tr("Choose what to sync"));
         ac->setEnabled(folderConnected);
         connect(ac, &QAction::triggered, this, &AccountSettings::doExpand);
