@@ -54,6 +54,9 @@
 
 #include <QStandardPaths>
 
+#ifdef Q_OS_MAC
+#include <CoreFoundation/CoreFoundation.h>
+#endif
 
 // This is the version that is returned when the client asks for the VERSION.
 // The first number should be changed if there is an incompatible change that breaks old clients.
@@ -192,8 +195,19 @@ SocketApi::SocketApi(QObject *parent)
         // Example for official signed packages: "9B5WD74GWJ." "com.owncloud.desktopclient" ".socketApi"
         socketPath = SOCKETAPI_TEAM_IDENTIFIER_PREFIX APPLICATION_REV_DOMAIN ".socketApi";
 #ifdef Q_OS_MAC
+        int ret = 0;
+        CFURLRef url = (CFURLRef)CFAutorelease((CFURLRef)CFBundleCopyBundleURL(CFBundleGetMainBundle()));
+        QString bundlePath = QUrl::fromCFURL(url).path();
+        QString cmd;
+
         // Tell Finder to use the Extension (checking it from System Preferences -> Extensions)
-        system("pluginkit -e use -i  " APPLICATION_REV_DOMAIN ".FinderSyncExt &");
+        cmd = QString("pluginkit -v -e use -i " APPLICATION_REV_DOMAIN ".FinderSyncExt");
+        ret = system(cmd.toLocal8Bit());
+
+        // Add it again. This was needed for Mojave to trigger a load.
+        cmd = QString("pluginkit -v -a ") + bundlePath + "Contents/PlugIns/FinderSyncExt.appex/";
+        ret = system(cmd.toLocal8Bit());
+
 #endif
     } else if (Utility::isLinux() || Utility::isBSD()) {
         QString runtimeDir;
@@ -232,11 +246,6 @@ SocketApi::~SocketApi()
     // All remaining sockets will be destroyed with _localServer, their parent
     ASSERT(_listeners.isEmpty() || _listeners.first().socket->parent() == &_localServer);
     _listeners.clear();
-
-#ifdef Q_OS_MAC
-    // Unload the extension (uncheck from System Preferences -> Extensions)
-    system("pluginkit -e ignore -i  " APPLICATION_REV_DOMAIN ".FinderSyncExt &");
-#endif
 }
 
 void SocketApi::slotNewConnection()
