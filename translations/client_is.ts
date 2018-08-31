@@ -65,7 +65,7 @@
     <message>
         <location filename="../src/gui/notificationwidget.ui" line="69"/>
         <source>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod temporm </source>
-        <translation>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
+        <translation>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy 
 eirmod temporm </translation>
     </message>
     <message>
@@ -112,7 +112,7 @@ eirmod temporm </translation>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="152"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>Ómerktar möppur verða &lt;b&gt;fjarlægðar&lt;/b&gt; úr skráakerfi tölvunnar þinnar og
+        <translation>Ómerktar möppur verða &lt;b&gt;fjarlægðar&lt;/b&gt; úr skráakerfi tölvunnar þinnar og 
 því ekki samstilltar lengur við þessa tölvu</translation>
     </message>
     <message>
@@ -230,7 +230,7 @@ eirmod temporm </translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="650"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation>Þjónninn er af útgáfu %1 sem er úrelt og ekki lengur studd! Ef þú heldur
+        <translation>Þjónninn er af útgáfu %1 sem er úrelt og ekki lengur studd! Ef þú heldur 
 áfram er það á þína eigin ábyrgð.</translation>
     </message>
     <message>
@@ -286,7 +286,7 @@ eirmod temporm </translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="788"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Það eru möppur sem ekki eru samstilltar því þær eru of stórar eða eru ytri
+        <translation>Það eru möppur sem ekki eru samstilltar því þær eru of stórar eða eru ytri 
 gagnageymslur: </translation>
     </message>
     <message>
@@ -297,7 +297,7 @@ gagnageymslur: </translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="835"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Viltu í alvörunni fjarlægja tenginguna við aðganginn
+        <translation>&lt;p&gt;Viltu í alvörunni fjarlægja tenginguna við aðganginn 
 &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Athugið:&lt;/b&gt; Þetta mun &lt;b&gt;ekki&lt;/b&gt; eyða neinum skrám.&lt;/p&gt;</translation>
     </message>
     <message>
@@ -330,13 +330,13 @@ gagnageymslur: </translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="439"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Viltu í alvörunni hætta að samstilla möppuna
+        <translation>&lt;p&gt;Viltu í alvörunni hætta að samstilla möppuna 
 &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Athugið:&lt;/b&gt; Þetta mun &lt;b&gt;ekki&lt;/b&gt; eyða neinum skrám.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="604"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>%1 (%3%) af %2 í notkun. Sumar möppur, þar með taldar netmöppur tengdar í
+        <translation>%1 (%3%) af %2 í notkun. Sumar möppur, þar með taldar netmöppur tengdar í 
 skráakerfið eða sameignarmöppur, gætu verið með önnur takmörk.</translation>
     </message>
     <message>
@@ -733,13 +733,13 @@ skráakerfið eða sameignarmöppur, gætu verið með önnur takmörk.</transla
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="406"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 og %n skrá til viðbótar var ekki hægt að samstilla vegna villu sem kom
+        <translation><numerusform>%1 og %n skrá til viðbótar var ekki hægt að samstilla vegna villu sem kom 
 upp. Skoðaðu annálinn fyrir nánari upplýsingar.</numerusform><numerusform>%1 og %n skrár til viðbótar var ekki hægt að samstilla vegna villu sem kom upp. Skoðaðu annálinn fyrir nánari upplýsingar.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="408"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation>%1 var ekki hægt að samstilla vegna villu sem kom upp Skoðaðu annálinn fyrir
+        <translation>%1 var ekki hægt að samstilla vegna villu sem kom upp Skoðaðu annálinn fyrir 
 nánari upplýsingar.</translation>
     </message>
     <message>
@@ -834,7 +834,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="312"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Gömul atvikaskrá samstillingar &apos;%1&apos; fannst, en var ekki hægt að fjarlægja.
+        <translation>Gömul atvikaskrá samstillingar &apos;%1&apos; fannst, en var ekki hægt að fjarlægja. 
 Vertu viss um að ekkert annað forrit sé ekki að nota hana.</translation>
     </message>
     <message>
@@ -1540,7 +1540,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="338"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ný útgáfa %1 forritsins er tiltæk.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; er tiltæk til
+        <translation>&lt;p&gt;Ný útgáfa %1 forritsins er tiltæk.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; er tiltæk til 
 niðurhals. Uppsetta útgáfan er %3.&lt;/p&gt;</translation>
     </message>
     <message>
@@ -1814,7 +1814,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="164"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Aðvörun:&lt;/strong&gt; Staðværa mappan er ekki tóm. Veldu
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Aðvörun:&lt;/strong&gt; Staðværa mappan er ekki tóm. Veldu 
 aðgerð til að leysa málið!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
@@ -1909,7 +1909,7 @@ aðgerð til að leysa málið!&lt;/small&gt;&lt;/p&gt;</translation>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="129"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation>Þessi tenging er EKKI örugg því hún er ekki dulrituð.
+        <translation>Þessi tenging er EKKI örugg því hún er ekki dulrituð. 
 Ekki er mælt með því að hún sé notuð.
 .</translation>
     </message>
@@ -1929,7 +1929,7 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="250"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;Tókst að tengjast við %1: %2 útgáfa %3
+        <translation>&lt;font color=&quot;green&quot;&gt;Tókst að tengjast við %1: %2 útgáfa %3 
 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
@@ -2915,7 +2915,7 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation>Setan þín er útrunnin. Þú verður að skrá þig aftur inn til að geta haldið
+        <translation>Setan þín er útrunnin. Þú verður að skrá þig aftur inn til að geta haldið 
 áfram að nota þetta forrit.</translation>
     </message>
 </context>
@@ -3480,8 +3480,8 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/libsync/theme.cpp" line="321"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Dreift af %1 og gefið út með almenna GNU General Public License (GPL)
-útgáfu 2.0.&lt;br/&gt;%2 og %2 merkið eru skráð vörumerki %1 í Bandaríkjunum,
+        <translation>&lt;p&gt;Dreift af %1 og gefið út með almenna GNU General Public License (GPL) 
+útgáfu 2.0.&lt;br/&gt;%2 og %2 merkið eru skráð vörumerki %1 í Bandaríkjunum, 
 öðrum ríkjum, eða bæði.&lt;/p&gt;</translation>
     </message>
 </context>
@@ -3653,7 +3653,7 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
         <source>Resume all folders</source>
-        <translation>Taka allar möppur úr bið</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -3663,12 +3663,12 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
         <source>Resume all synchronization</source>
-        <translation>Taka allar samstillingar úr bið</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
         <source>Resume synchronization</source>
-        <translation>Taka samstillingu úr bið</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="609"/>
@@ -3742,8 +3742,8 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="46"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;pÚtgáfa %2. Til að skoða nánari upplýsingar ættirðu að heimsækja &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Til að fá hjálp og skoða þekkt vandamál, farðu á: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Skrifað af Klaas Freitag,
-Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, auk
+        <translation>&lt;pÚtgáfa %2. Til að skoða nánari upplýsingar ættirðu að heimsækja &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Til að fá hjálp og skoða þekkt vandamál, farðu á: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Skrifað af Klaas Freitag, 
+Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, auk 
 annarra.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Höfundarréttur ownCloud GmbH&lt;/p&gt;&lt;p&gt;Gefið út með almenna GNU General Public License (GPL) útgáfu 2.0.&lt;br/&gt;ownCloud og ownCloud merkið eru skráð vörumerki ownCloud GmbH í Bandaríkjunum, öðrum ríkjum, eða bæði.&lt;/p&gt;</translation>
     </message>
 </context>
@@ -4033,9 +4033,9 @@ annarra.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Höfundarréttur ownCloud GmbH&lt;/p&gt
     <message>
         <location filename="../src/gui/main.cpp" line="39"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation>%1 krefst nothæfs kerfisbakka (system tray). Ef þú ert að keyra XFCE, farðu
-þá eftir &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;þessum
-leiðbeiningum&lt;/a&gt;. Annars ættirðu að setja upp eitthvað kerfisbakkaforrit á
+        <translation>%1 krefst nothæfs kerfisbakka (system tray). Ef þú ert að keyra XFCE, farðu 
+þá eftir &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;þessum 
+leiðbeiningum&lt;/a&gt;. Annars ættirðu að setja upp eitthvað kerfisbakkaforrit á 
 borð við &apos;trayer&apos; og reyna síðan aftur.</translation>
     </message>
 </context>
@@ -4044,7 +4044,7 @@ borð við &apos;trayer&apos; og reyna síðan aftur.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="299"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Byggt með Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; á %3, %4 með Qt %5,
+        <translation>&lt;p&gt;&lt;small&gt;Byggt með Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; á %3, %4 með Qt %5, 
 %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
@@ -4201,7 +4201,7 @@ borð við &apos;trayer&apos; og reyna síðan aftur.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation>Villa átti sér stað við ræsingu á vafranum þegar opna átti slóðina %1. Er
+        <translation>Villa átti sér stað við ræsingu á vafranum þegar opna átti slóðina %1. Er 
 hugsanlegt að ekki sé búið að stilla neinn vafra sem sjálfgefinn?</translation>
     </message>
     <message>
@@ -4212,8 +4212,8 @@ hugsanlegt að ekki sé búið að stilla neinn vafra sem sjálfgefinn?</transla
     <message>
         <location filename="../src/gui/guiutility.cpp" line="56"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation>Villa átti sér stað við ræsingu á póstforritinu þegar útbúa átti ný
-skilaboð. Er hugsanlegt að ekki sé búið að stilla neitt tölvupóstforrit sem
+        <translation>Villa átti sér stað við ræsingu á póstforritinu þegar útbúa átti ný 
+skilaboð. Er hugsanlegt að ekki sé búið að stilla neitt tölvupóstforrit sem 
 sjálfgefið?</translation>
     </message>
 </context>

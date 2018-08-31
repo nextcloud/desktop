@@ -768,10 +768,7 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Все фйлы в синхронизируемом каталоге &apos;%1&apos; были удалены на сервере.
-Эти удаления будут переданы в ваш локальный синхронизируемый каталог, так что файлы станут недоступны, если только у вас нет права на восстановление.
-Если вы решите сохранить эти файлы, то они будут повторно синхронизированы с сервером, при наличии у вас прав на это.
-Если вы решили удалить файлы, они станут вам недоступны, крмое случая, когда вы сам владелец.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="932"/>
@@ -3642,7 +3639,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
         <source>Resume all folders</source>
-        <translation>Снять с паузы все папки</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -3652,12 +3649,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
         <source>Resume all synchronization</source>
-        <translation>Возобновить все синхронизации</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
         <source>Resume synchronization</source>
-        <translation>Возобновить синхронизацию</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="609"/>

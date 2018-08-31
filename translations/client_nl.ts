@@ -768,17 +768,14 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Alle bestanden in de syncmap &apos;%1&apos; werden verwijderd van de server.
-Deze verwijderingen worden gesynchroniseerd naar uw lokale syncmap, waardoor deze bestanden niet meer beschikbaar zijn, tenzij u het recht hebt om ze te herstellen.
-Als u de bestanden wilt behouden, worden ze opnieuw gesynchroniseerd met de server als u die autorisatie hebt.
-Als u de bestanden wilt verwijderen, worden ze niet beschikbaar, tenzij u de eigenaar bent.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="932"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Alle bestanden in de lokale syncmap &apos;%1&apos; werden verwijderd van de server. Deze verwijderingen worden gesynchroniseerd naar uw server, Weet u zeker dat ik deze acties wilt synchroniseren met de server?
+        <translation>Alle bestanden in de lokale syncmap &apos;%1&apos; werden verwijderd van de server. Deze verwijderingen worden gesynchroniseerd naar uw server, Weet u zeker dat ik deze acties wilt synchroniseren met de server? 
 Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw gesynchroniseerd met de server.</translation>
     </message>
     <message>
@@ -3649,7 +3646,7 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
         <source>Resume all folders</source>
-        <translation>Hervat alle mappen</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -3659,12 +3656,12 @@ We adviseren deze site niet te gebruiken.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
         <source>Resume all synchronization</source>
-        <translation>Hervat alle synchronisatie</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
         <source>Resume synchronization</source>
-        <translation>Hervat synchronisatie</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="609"/>

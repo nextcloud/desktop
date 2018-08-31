@@ -768,10 +768,7 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Az összes fájl a szinkronizálási mappában - %1 - törölve lett a kiszolgálón.
-Ezek a törlések szinkronizálódni fognak a helyi mappádban, elérhetetlenné téve ezeket a fájlokat kivéve ha van jogosultságod a visszaállításhoz.
-Ha úgy döntesz, hogy megtartod a fájlokat, azok újra lesznek szinkronizálva a szerverrel, ha van rá jogosultságod.
-Ha úgy döntesz, hogy letörlöd a fájlokat, elérhetetlenné válnak számodra, kivéve ha te vagy a tulajdonos.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="932"/>
