@@ -245,11 +245,6 @@
         <translation>%1 avec le compte &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="654"/>
-        <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation>La version %1 du serveur est ancienne et n&apos;est pas prise en charge. Continuez à vos risques et périls.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>Connected to %1.</source>
         <translation>Connecté au serveur %1.</translation>
@@ -360,6 +355,11 @@
         <location filename="../src/gui/accountsettings.cpp" line="618"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Actuellement aucune information d&apos;utilisation de stockage n&apos;est disponible.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="654"/>
+        <source>The server version %1 is unsupported! Proceed at your own risk.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="684"/>
@@ -3129,46 +3129,51 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="627"/>
+        <location filename="../src/gui/socketapi.cpp" line="662"/>
         <source>I shared something with you</source>
         <translation>J&apos;ai partagé quelque chose avec vous</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="640"/>
-        <location filename="../src/gui/socketapi.cpp" line="670"/>
+        <location filename="../src/gui/socketapi.cpp" line="675"/>
+        <location filename="../src/gui/socketapi.cpp" line="705"/>
         <source>Share...</source>
         <translation>partager</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="642"/>
-        <location filename="../src/gui/socketapi.cpp" line="687"/>
+        <location filename="../src/gui/socketapi.cpp" line="677"/>
+        <location filename="../src/gui/socketapi.cpp" line="722"/>
         <source>Copy private link to clipboard</source>
         <translation>Copier le lien privé vers le presse-papier</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="643"/>
+        <location filename="../src/gui/socketapi.cpp" line="678"/>
         <source>Send private link by email...</source>
         <translation>Envoyer le lien privé par courriel...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="668"/>
+        <location filename="../src/gui/socketapi.cpp" line="703"/>
         <source>Resharing this file is not allowed</source>
         <translation>Le repartage de ce fichier n&apos;est pas permis</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="681"/>
-        <location filename="../src/gui/socketapi.cpp" line="683"/>
+        <location filename="../src/gui/socketapi.cpp" line="716"/>
+        <location filename="../src/gui/socketapi.cpp" line="718"/>
         <source>Copy public link to clipboard</source>
         <translation>Copier le lien public dans le presse-papier</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="758"/>
+        <location filename="../src/gui/socketapi.cpp" line="793"/>
         <source>Open in browser</source>
         <translation>Ouvrir dans le navigateur web</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi.cpp" line="771"/>
+        <location filename="../src/gui/socketapi.cpp" line="814"/>
         <source>Download file(s)</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/socketapi.cpp" line="817"/>
+        <source>Replace file(s) by virtual file</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
 </context>
@@ -3747,6 +3752,11 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Ouvrir %1 dans le navigateur</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="199"/>
+        <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="778"/>
         <source>Unknown status</source>
         <translation>Statut inconnu</translation>
@@ -3780,11 +3790,6 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <location filename="../src/gui/owncloudgui.cpp" line="198"/>
         <source>Unsupported Server Version</source>
         <translation>Version du Serveur non prise en charge</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="199"/>
-        <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>Le serveur sur le compte %1 fonctionne avec une version ancienne et non-supportée %2. Utiliser ce client avec des versions non-supportées du serveur n&apos;est pas testé et est potentiellement dangereux. Procédez à vos risques et périls.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="238"/>

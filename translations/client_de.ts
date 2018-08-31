@@ -245,11 +245,6 @@
         <translation>%1 als &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="654"/>
-        <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation>Die Serververision %1 ist alt und nicht unterstützt! Fortfahren auf eigenes Risiko.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>Connected to %1.</source>
         <translation>Verbunden mit %1.</translation>
@@ -360,6 +355,11 @@
         <location filename="../src/gui/accountsettings.cpp" line="618"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Derzeit sind keine Speichernutzungsinformationen verfügbar.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="654"/>
+        <source>The server version %1 is unsupported! Proceed at your own risk.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="684"/>
@@ -3123,47 +3123,52 @@ Dies ist ein neuer experimenteller Modus.Wenn du dich dafür entscheidest, diese
         <translation>Teilen über das Kontextmenü</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="627"/>
+        <location filename="../src/gui/socketapi.cpp" line="662"/>
         <source>I shared something with you</source>
         <translation>Ich habe etwas mit Ihnen geteilt</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="640"/>
-        <location filename="../src/gui/socketapi.cpp" line="670"/>
+        <location filename="../src/gui/socketapi.cpp" line="675"/>
+        <location filename="../src/gui/socketapi.cpp" line="705"/>
         <source>Share...</source>
         <translation>Teilen…</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="642"/>
-        <location filename="../src/gui/socketapi.cpp" line="687"/>
+        <location filename="../src/gui/socketapi.cpp" line="677"/>
+        <location filename="../src/gui/socketapi.cpp" line="722"/>
         <source>Copy private link to clipboard</source>
         <translation>Privater Link in die Zwischenablage kopiert</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="643"/>
+        <location filename="../src/gui/socketapi.cpp" line="678"/>
         <source>Send private link by email...</source>
         <translation>Sende privaten Link per Email...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="668"/>
+        <location filename="../src/gui/socketapi.cpp" line="703"/>
         <source>Resharing this file is not allowed</source>
         <translation>Weiter-Teilen dieser Datei ist nicht erlaubt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="681"/>
-        <location filename="../src/gui/socketapi.cpp" line="683"/>
+        <location filename="../src/gui/socketapi.cpp" line="716"/>
+        <location filename="../src/gui/socketapi.cpp" line="718"/>
         <source>Copy public link to clipboard</source>
         <translation>Öffentlichen Link in die Zwischenablage kopieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="758"/>
+        <location filename="../src/gui/socketapi.cpp" line="793"/>
         <source>Open in browser</source>
         <translation>Im Browser öffnen</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi.cpp" line="771"/>
+        <location filename="../src/gui/socketapi.cpp" line="814"/>
         <source>Download file(s)</source>
         <translation><numerusform>Datei herunterladen</numerusform><numerusform>Dateien herunterladen</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/socketapi.cpp" line="817"/>
+        <source>Replace file(s) by virtual file</source>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
@@ -3742,6 +3747,11 @@ Dies ist ein neuer experimenteller Modus.Wenn du dich dafür entscheidest, diese
         <translation>%1 im Browser öffnen</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="199"/>
+        <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="778"/>
         <source>Unknown status</source>
         <translation>Unbekannter Status</translation>
@@ -3775,11 +3785,6 @@ Dies ist ein neuer experimenteller Modus.Wenn du dich dafür entscheidest, diese
         <location filename="../src/gui/owncloudgui.cpp" line="198"/>
         <source>Unsupported Server Version</source>
         <translation>nicht unterstütze Server Version</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="199"/>
-        <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>Der Server mit Konto %1 läuft mit einer alten und nicht unterstützten Version %2. Die Verwendung dieses Clienten mit der nicht unterstützten Serverversion ist ungetestet und möglicherweiße gefährich. Fortfahren auf eigenes Risiko.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="238"/>

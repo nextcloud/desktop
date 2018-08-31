@@ -245,11 +245,6 @@
         <translation>%1, &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="654"/>
-        <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation>服务器版本 %1 很旧且不支持，继续操作将自行承担风险。</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>Connected to %1.</source>
         <translation>连接到 %1。</translation>
@@ -360,6 +355,11 @@
         <location filename="../src/gui/accountsettings.cpp" line="618"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>目前没有储存使用量信息可用。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="654"/>
+        <source>The server version %1 is unsupported! Proceed at your own risk.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="684"/>
@@ -3114,47 +3114,52 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>上下文菜单分享</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="627"/>
+        <location filename="../src/gui/socketapi.cpp" line="662"/>
         <source>I shared something with you</source>
         <translation>我给你分享了一些东西</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="640"/>
-        <location filename="../src/gui/socketapi.cpp" line="670"/>
+        <location filename="../src/gui/socketapi.cpp" line="675"/>
+        <location filename="../src/gui/socketapi.cpp" line="705"/>
         <source>Share...</source>
         <translation>分享到...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="642"/>
-        <location filename="../src/gui/socketapi.cpp" line="687"/>
+        <location filename="../src/gui/socketapi.cpp" line="677"/>
+        <location filename="../src/gui/socketapi.cpp" line="722"/>
         <source>Copy private link to clipboard</source>
         <translation>将私有链接复制到剪切板</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="643"/>
+        <location filename="../src/gui/socketapi.cpp" line="678"/>
         <source>Send private link by email...</source>
         <translation>通过email发送私有链接</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="668"/>
+        <location filename="../src/gui/socketapi.cpp" line="703"/>
         <source>Resharing this file is not allowed</source>
         <translation>再次分享这个文件是不被允许的</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="681"/>
-        <location filename="../src/gui/socketapi.cpp" line="683"/>
+        <location filename="../src/gui/socketapi.cpp" line="716"/>
+        <location filename="../src/gui/socketapi.cpp" line="718"/>
         <source>Copy public link to clipboard</source>
         <translation>复制公共链接到剪切板</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="758"/>
+        <location filename="../src/gui/socketapi.cpp" line="793"/>
         <source>Open in browser</source>
         <translation>在浏览器中打开</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi.cpp" line="771"/>
+        <location filename="../src/gui/socketapi.cpp" line="814"/>
         <source>Download file(s)</source>
         <translation><numerusform>下载文件</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/socketapi.cpp" line="817"/>
+        <source>Replace file(s) by virtual file</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
@@ -3732,6 +3737,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>在浏览器中打开%1</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="199"/>
+        <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="778"/>
         <source>Unknown status</source>
         <translation>未知状态</translation>
@@ -3765,11 +3775,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/owncloudgui.cpp" line="198"/>
         <source>Unsupported Server Version</source>
         <translation>不支持的服务器版本</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="199"/>
-        <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>账户 %1 的服务器运行着一个古老而不受支持的版本 %2。使用该客户端未支持的服务器版本未经测试并且可能存在潜在危险。继续操作需要自行承担风险。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="238"/>

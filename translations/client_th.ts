@@ -245,11 +245,6 @@
         <translation>%1 เช่น &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="654"/>
-        <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation>เซิร์ฟเวอร์เวอร์ชัน %1 เป็นรุ่นเก่าและไม่ได้รับการสนับสนุน! ดำเนินการความเสี่ยงด้วยคุณเอง</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>Connected to %1.</source>
         <translation>เชื่อมต่อกับ %1</translation>
@@ -360,6 +355,11 @@
         <location filename="../src/gui/accountsettings.cpp" line="618"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>ขณะนี้ไม่มีพื้นที่จัดเก็บข้อมูลที่ใช้งานได้</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="654"/>
+        <source>The server version %1 is unsupported! Proceed at your own risk.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="684"/>
@@ -3125,47 +3125,52 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>แชร์เมนูบริบท</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="627"/>
+        <location filename="../src/gui/socketapi.cpp" line="662"/>
         <source>I shared something with you</source>
         <translation>ฉันแชร์บางอย่างกับคุณ</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="640"/>
-        <location filename="../src/gui/socketapi.cpp" line="670"/>
+        <location filename="../src/gui/socketapi.cpp" line="675"/>
+        <location filename="../src/gui/socketapi.cpp" line="705"/>
         <source>Share...</source>
         <translation>แชร์...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="642"/>
-        <location filename="../src/gui/socketapi.cpp" line="687"/>
+        <location filename="../src/gui/socketapi.cpp" line="677"/>
+        <location filename="../src/gui/socketapi.cpp" line="722"/>
         <source>Copy private link to clipboard</source>
         <translation>คัดลอกลิงก์ส่วนตัวไปยังคลิปบอร์ด</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="643"/>
+        <location filename="../src/gui/socketapi.cpp" line="678"/>
         <source>Send private link by email...</source>
         <translation>ส่งลิงก์ส่วนตัวทางอีเมล...</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="668"/>
+        <location filename="../src/gui/socketapi.cpp" line="703"/>
         <source>Resharing this file is not allowed</source>
         <translation>การแชร์ไฟล์นี้ต่อไม่ได้รับอนุญาต</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="681"/>
-        <location filename="../src/gui/socketapi.cpp" line="683"/>
+        <location filename="../src/gui/socketapi.cpp" line="716"/>
+        <location filename="../src/gui/socketapi.cpp" line="718"/>
         <source>Copy public link to clipboard</source>
         <translation>คัดลอกลิงก์สาธารณะไปยังคลิปบอร์ด</translation>
     </message>
     <message>
-        <location filename="../src/gui/socketapi.cpp" line="758"/>
+        <location filename="../src/gui/socketapi.cpp" line="793"/>
         <source>Open in browser</source>
         <translation>เปิดในเบราว์เซอร์</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/socketapi.cpp" line="771"/>
+        <location filename="../src/gui/socketapi.cpp" line="814"/>
         <source>Download file(s)</source>
         <translation><numerusform>ดาวน์โหลดไฟล์แล้ว</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/socketapi.cpp" line="817"/>
+        <source>Replace file(s) by virtual file</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
@@ -3742,6 +3747,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>เปิด %1 ในเบราว์เซอร์</translation>
     </message>
     <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="199"/>
+        <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="778"/>
         <source>Unknown status</source>
         <translation>สถานะที่ไม่รู้จัก</translation>
@@ -3775,11 +3785,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/owncloudgui.cpp" line="198"/>
         <source>Unsupported Server Version</source>
         <translation>ไม่สนับสนุนรุ่นของ Server</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="199"/>
-        <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation>เซิฟเวอร์บนบัญชี %1 ได้ใช้งานในรุ่นเก่าและเป็นรุ่นที่ไม่ได้รับการสนับสนุนแล้ว %2 หากใช้งานต่อไปอาจเป็นอันตราย ดำเนินการที่มีความเสี่ยงด้วยตัวคุณเอง</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="238"/>
