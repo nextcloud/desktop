@@ -141,7 +141,7 @@ void ProtocolItem::openContextMenu(QPoint globalPos, QTreeWidgetItem *item, QWid
         // "Open in Browser" action
         auto openInBrowser = menu->addAction(ProtocolWidget::tr("Open in browser"));
         QObject::connect(openInBrowser, &QAction::triggered, parent, [parent, account, rec]() {
-            fetchPrivateLinkUrl(account, rec._path, rec.numericFileId(), parent,
+            fetchPrivateLinkUrl(account, rec._path, rec.legacyDeriveNumericFileId(), parent,
                 [parent](const QString &url) {
                     Utility::openBrowser(url, parent);
                 });
