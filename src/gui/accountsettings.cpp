@@ -320,7 +320,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     ac = menu->addAction(tr("Remove folder sync connection"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotRemoveCurrentFolder);
 
-    if (ConfigFile().showExperimentalOptions() || folder->useVirtualFiles()) {
+    if (Theme::instance()->showVirtualFilesOption() || folder->useVirtualFiles()) {
         ac = menu->addAction(tr("Create virtual files for new files (Experimental)"));
         ac->setCheckable(true);
         ac->setChecked(folder->useVirtualFiles());
