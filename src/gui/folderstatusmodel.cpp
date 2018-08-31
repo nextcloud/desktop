@@ -856,6 +856,8 @@ void FolderStatusModel::slotApplySelectiveSync()
             foreach (const auto &it, changes) {
                 folder->journalDb()->avoidReadFromDbOnNextSync(it);
             }
+            // Also make sure we see the local file that had been ignored before
+            folder->slotNextSyncFullLocalDiscovery();
             FolderMan::instance()->scheduleFolder(folder);
         }
     }
@@ -1169,6 +1171,8 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         foreach (const auto &it, undecidedList) {
             folder->journalDb()->avoidReadFromDbOnNextSync(it);
         }
+        // Also make sure we see the local file that had been ignored before
+        folder->slotNextSyncFullLocalDiscovery();
         FolderMan::instance()->scheduleFolder(folder);
     }
 

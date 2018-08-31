@@ -73,7 +73,7 @@ protected slots:
     void slotAddFolder();
     void slotEnableCurrentFolder();
     void slotScheduleCurrentFolder();
-    void slotScheduleCurrentFolderForceRemoteDiscovery();
+    void slotScheduleCurrentFolderForceFullDiscovery();
     void slotForceSyncCurrentFolder();
     void slotRemoveCurrentFolder();
     void slotOpenCurrentFolder(); // sync folder

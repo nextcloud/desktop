@@ -162,7 +162,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     QAction *syncNowWithRemoteDiscovery = new QAction(this);
     syncNowWithRemoteDiscovery->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F6));
-    connect(syncNowWithRemoteDiscovery, &QAction::triggered, this, &AccountSettings::slotScheduleCurrentFolderForceRemoteDiscovery);
+    connect(syncNowWithRemoteDiscovery, &QAction::triggered, this, &AccountSettings::slotScheduleCurrentFolderForceFullDiscovery);
     addAction(syncNowWithRemoteDiscovery);
 
 
@@ -566,10 +566,11 @@ void AccountSettings::slotScheduleCurrentFolder()
     }
 }
 
-void AccountSettings::slotScheduleCurrentFolderForceRemoteDiscovery()
+void AccountSettings::slotScheduleCurrentFolderForceFullDiscovery()
 {
     FolderMan *folderMan = FolderMan::instance();
     if (auto folder = folderMan->folder(selectedFolderAlias())) {
+        folder->slotNextSyncFullLocalDiscovery();
         folder->journalDb()->forceRemoteDiscoveryNextSync();
         folderMan->scheduleFolder(folder);
     }

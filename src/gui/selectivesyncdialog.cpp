@@ -492,6 +492,8 @@ void SelectiveSyncDialog::accept()
         foreach (const auto &it, changes) {
             _folder->journalDb()->avoidReadFromDbOnNextSync(it);
         }
+        // Also make sure we see the local file that had been ignored before
+        _folder->slotNextSyncFullLocalDiscovery();
 
         folderMan->scheduleFolder(_folder);
     }
