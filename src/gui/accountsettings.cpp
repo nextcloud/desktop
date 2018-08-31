@@ -335,6 +335,16 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
             OwncloudWizard::askExperimentalVirtualFilesFeature([folder, this](bool enable) {
                 if (enable && folder)
                     folder->setUseVirtualFiles(enable);
+
+                // Also wipe selective sync settings
+                bool ok = false;
+                auto oldBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+                folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
+                for (const auto &entry : oldBlacklist) {
+                    folder->journalDb()->avoidReadFromDbOnNextSync(entry);
+                }
+                FolderMan::instance()->scheduleFolder(folder);
+
                 // Make sure the size is recomputed as the virtual file indicator changes
                 ui->_folderList->doItemsLayout();
             });
