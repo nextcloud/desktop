@@ -154,8 +154,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="247"/>
-        <location filename="../src/gui/accountsettings.cpp" line="450"/>
-        <location filename="../src/gui/accountsettings.cpp" line="859"/>
+        <location filename="../src/gui/accountsettings.cpp" line="453"/>
+        <location filename="../src/gui/accountsettings.cpp" line="863"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -185,184 +185,184 @@
         <translation>Cuenta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="299"/>
+        <location filename="../src/gui/accountsettings.cpp" line="302"/>
         <source>Choose what to sync</source>
         <translation>Elija qué sincronizar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="305"/>
+        <location filename="../src/gui/accountsettings.cpp" line="308"/>
         <source>Force sync now</source>
         <translation>Forzar la sincronización ahora</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="307"/>
+        <location filename="../src/gui/accountsettings.cpp" line="310"/>
         <source>Restart sync</source>
         <translation>Reiniciar sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="316"/>
+        <location filename="../src/gui/accountsettings.cpp" line="319"/>
         <source>Remove folder sync connection</source>
         <translation>Eliminar la sincronización de carpetas conectadas</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="388"/>
+        <location filename="../src/gui/accountsettings.cpp" line="391"/>
         <source>Folder creation failed</source>
         <translation>Hubo un fallo al crear la carpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="389"/>
+        <location filename="../src/gui/accountsettings.cpp" line="392"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;No se pudo crear la carpeta local &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="442"/>
+        <location filename="../src/gui/accountsettings.cpp" line="445"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Confirme la sincronización para la eliminación de la carpeta conectada</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="449"/>
+        <location filename="../src/gui/accountsettings.cpp" line="452"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Eliminar carpeta de sincronización conectada</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="531"/>
+        <location filename="../src/gui/accountsettings.cpp" line="534"/>
         <source>Sync Running</source>
         <translation>Sincronización en curso</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="532"/>
+        <location filename="../src/gui/accountsettings.cpp" line="535"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>La sincronización está en curso.&lt;br/&gt;¿Desea interrumpirla?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="621"/>
+        <location filename="../src/gui/accountsettings.cpp" line="625"/>
         <source>%1 in use</source>
         <translation>%1 en uso</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="648"/>
+        <location filename="../src/gui/accountsettings.cpp" line="652"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 como &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="656"/>
+        <location filename="../src/gui/accountsettings.cpp" line="660"/>
         <source>Connected to %1.</source>
         <translation>Conectado a %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="658"/>
+        <location filename="../src/gui/accountsettings.cpp" line="662"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Servidor %1 no está disponible temporalmente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="660"/>
+        <location filename="../src/gui/accountsettings.cpp" line="664"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>El servidor %1 está actualmente en modo mantenimiento.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="662"/>
+        <location filename="../src/gui/accountsettings.cpp" line="666"/>
         <source>Signed out from %1.</source>
         <translation>Cerró sesión desde %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="671"/>
+        <location filename="../src/gui/accountsettings.cpp" line="675"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
         <translation>Obteniendo autorización desde el navegador. &lt;a href=&apos;%1&apos;&gt;Haga click aqui&lt;/a&gt; para re-abrir el navegador .</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="675"/>
+        <location filename="../src/gui/accountsettings.cpp" line="679"/>
         <source>Connecting to %1...</source>
         <translation>Conectando a %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="678"/>
+        <location filename="../src/gui/accountsettings.cpp" line="682"/>
         <source>No connection to %1 at %2.</source>
         <translation>Sin conexión a %1 en %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="707"/>
+        <location filename="../src/gui/accountsettings.cpp" line="711"/>
         <source>Log in</source>
         <translation>Iniciar sesión</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="802"/>
+        <location filename="../src/gui/accountsettings.cpp" line="806"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Hay carpetas que no fueron sincronizadas porque son demasiado grandes:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="804"/>
+        <location filename="../src/gui/accountsettings.cpp" line="808"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Hay carpetas que no fueron sincronizadas porque residen en almacenamiento externo:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="805"/>
+        <location filename="../src/gui/accountsettings.cpp" line="809"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Hay carpetas que no fueron sincronizadas porque son demasiado grandes o residen en almacenamiento externo:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="851"/>
+        <location filename="../src/gui/accountsettings.cpp" line="855"/>
         <source>Confirm Account Removal</source>
         <translation>Confirmar eliminación de cuenta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="852"/>
+        <location filename="../src/gui/accountsettings.cpp" line="856"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;¿De verdad quiere eliminar la conexión a la cuenta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Esto &lt;b&gt;no&lt;/b&gt; eliminará los archivos.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="858"/>
+        <location filename="../src/gui/accountsettings.cpp" line="862"/>
         <source>Remove connection</source>
         <translation>Eliminar conexión</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="269"/>
-        <location filename="../src/gui/accountsettings.cpp" line="295"/>
+        <location filename="../src/gui/accountsettings.cpp" line="298"/>
         <source>Open folder</source>
         <translation>Abrir carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="199"/>
-        <location filename="../src/gui/accountsettings.cpp" line="709"/>
+        <location filename="../src/gui/accountsettings.cpp" line="713"/>
         <source>Log out</source>
         <translation>Cerrar sesión</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="313"/>
+        <location filename="../src/gui/accountsettings.cpp" line="316"/>
         <source>Resume sync</source>
         <translation>Continuar sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="313"/>
+        <location filename="../src/gui/accountsettings.cpp" line="316"/>
         <source>Pause sync</source>
         <translation>Pausar sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="443"/>
+        <location filename="../src/gui/accountsettings.cpp" line="446"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;¿De verdad quiere dejar de sincronizar la carpeta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; Esto &lt;b&gt;no&lt;/b&gt; elminará los archivo.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="608"/>
+        <location filename="../src/gui/accountsettings.cpp" line="612"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) de %2 en uso. Algunas carpetas, como carpetas de red o compartidas, podrían tener límites diferentes.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="609"/>
+        <location filename="../src/gui/accountsettings.cpp" line="613"/>
         <source>%1 of %2 in use</source>
         <translation>%1 de %2 en uso</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="618"/>
+        <location filename="../src/gui/accountsettings.cpp" line="622"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Actualmente no hay información disponible sobre el uso de almacenamiento.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="654"/>
+        <location filename="../src/gui/accountsettings.cpp" line="658"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>¡La versión del servidor %1 no es compatible! Continúa bajo tu responsabilidad.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="684"/>
+        <location filename="../src/gui/accountsettings.cpp" line="688"/>
         <source>No %1 connection configured.</source>
         <translation>No hay ninguna conexión de %1 configurada.</translation>
     </message>
@@ -1063,107 +1063,107 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
         <translation>Los archivos nuevos se crean como archivos virtuales.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="889"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="900"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Buscando cambios en &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="893"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="904"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Buscando cambios en local &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="900"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="911"/>
         <source>Reconciling changes</source>
         <translation>Reconciliando cambios</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="935"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="946"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="938"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="949"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="962"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>Sincronizando %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="964"/>
         <location filename="../src/gui/folderstatusmodel.cpp" line="975"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="986"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="968"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="979"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>descargando: %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="970"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="981"/>
         <source>u2193 %1/s</source>
         <translation>u2193 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="978"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="989"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>cargar %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="980"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="991"/>
         <source>u2191 %1/s</source>
         <translation>u2191 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="986"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="997"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 de %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="990"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1001"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1009"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1020"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%5 restantes, %1 de %2, archivo %3 de %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1017"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1028"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 de %2, archivo %3 de %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1024"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1035"/>
         <source>file %1 of %2</source>
         <translation>archivo %1 de %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1070"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1081"/>
         <source>Waiting...</source>
         <translation>Esperando...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1072"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1083"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>Esperando por %n carpeta...</numerusform><numerusform>Esperando por %n otras carpetas...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1078"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1089"/>
         <source>Preparing to sync...</source>
         <translation>Preparando para sincronizar...</translation>
     </message>
@@ -1519,12 +1519,12 @@ Los elementos cuya eliminación está permitida serán eliminados si impiden que
         <translation>No se pueden guardar cambios en &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="150"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="151"/>
         <source>Add Ignore Pattern</source>
         <translation>Añadir patrón para ignorar</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="151"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="152"/>
         <source>Add a new ignore pattern:</source>
         <translation>Añadir nuevo patrón para ignorar:</translation>
     </message>
@@ -3169,7 +3169,7 @@ Este es un nuevo modo experimental. Si decide usarlo, por favor informe de los p
     <message numerus="yes">
         <location filename="../src/gui/socketapi.cpp" line="817"/>
         <source>Replace file(s) by virtual file</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Reemplazar archivo por archivo virtual</numerusform><numerusform>Reemplazar archivos por archivo virtual</numerusform></translation>
     </message>
 </context>
 <context>
@@ -3657,17 +3657,17 @@ Este es un nuevo modo experimental. Si decide usarlo, por favor informe de los p
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="341"/>
+        <location filename="../src/libsync/theme.cpp" line="342"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Versión %2. para más información, visite &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Para fallos conocidos y ayuda, visite: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Por Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, y otros.&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="348"/>
+        <location filename="../src/libsync/theme.cpp" line="349"/>
         <source>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</source>
         <translation>&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="349"/>
+        <location filename="../src/libsync/theme.cpp" line="350"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Distribuido por %1 y bajo la licencia GNU General Public License (GPL) versión 2.0.&lt;br/&gt;%2 y el logotipo de %2 son marcas registradas de %1 en los Estados Unidos y otros países, o ambos.&lt;/p&gt;</translation>
     </message>
@@ -3749,7 +3749,7 @@ Este es un nuevo modo experimental. Si decide usarlo, por favor informe de los p
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="199"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>El servidor de la cuenta %1 ejecuta una versión %2 no compatible. Este cliente con versiones del servidor no compatibles es potencialmente peligroso. Continúa bajo tu responsabilidad.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="778"/>
@@ -4248,7 +4248,7 @@ Este es un nuevo modo experimental. Si decide usarlo, por favor informe de los p
 <context>
     <name>ownCloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="320"/>
+        <location filename="../src/libsync/theme.cpp" line="321"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Revisión Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; en %3, %4 compilada usando Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -4346,52 +4346,52 @@ Este es un nuevo modo experimental. Si decide usarlo, por favor informe de los p
 <context>
     <name>theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="62"/>
+        <location filename="../src/libsync/theme.cpp" line="63"/>
         <source>Status undefined</source>
         <translation>Estado indefinido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="65"/>
+        <location filename="../src/libsync/theme.cpp" line="66"/>
         <source>Waiting to start sync</source>
         <translation>Esperando para comenzar la sincronización</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="68"/>
+        <location filename="../src/libsync/theme.cpp" line="69"/>
         <source>Sync is running</source>
         <translation>Sincronizado en proceso</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="71"/>
+        <location filename="../src/libsync/theme.cpp" line="72"/>
         <source>Sync Success</source>
         <translation>Sincronizado con éxito</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="74"/>
+        <location filename="../src/libsync/theme.cpp" line="75"/>
         <source>Sync Success, some files were ignored.</source>
         <translation>Sincronizado con éxito, algunos archivos han sido ignorados.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="77"/>
+        <location filename="../src/libsync/theme.cpp" line="78"/>
         <source>Sync Error</source>
         <translation>Error de sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="80"/>
+        <location filename="../src/libsync/theme.cpp" line="81"/>
         <source>Setup Error</source>
         <translation>Error en la instalación</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="83"/>
+        <location filename="../src/libsync/theme.cpp" line="84"/>
         <source>Preparing to sync</source>
         <translation>Preparando para sincronizar</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="86"/>
+        <location filename="../src/libsync/theme.cpp" line="87"/>
         <source>Aborting...</source>
         <translation>Cancelando...</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="89"/>
+        <location filename="../src/libsync/theme.cpp" line="90"/>
         <source>Sync is paused</source>
         <translation>La sincronización está en pausa.</translation>
     </message>
