@@ -1372,8 +1372,10 @@ QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const Q
 bool FolderMan::ignoreHiddenFiles() const
 {
     if (_folderMap.empty()) {
-        return true;
+        // Currently no folders in the manager -> return default
+        return false;
     }
+    // Since the hiddenFiles settings is the same for all folders, just return the settings of the first folder
     return _folderMap.begin().value()->ignoreHiddenFiles();
 }
 
