@@ -768,7 +768,10 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; eşitleme klasöründeki tüm dosyalar sunucudan silindi.
+Silinen dosyalar eşitleme sırasında yerel eşitleme klasörünüzden de silinecek ve bu dosyaları geri yüklemeyeceksiniz.
+Dosyaları korumayı seçerseniz, yeterli izinlerinizin olması durumunda dosyalar sunucu ile yeniden eşitlenecek.
+Dosyaları silmeyi seçerseniz, dosyaların sahibi değilseniz daha sonra göremeyeceksiniz.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="932"/>
@@ -3643,7 +3646,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
         <source>Resume all folders</source>
-        <translation type="unfinished"/>
+        <translation>Tüm klasörleri sürdür</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -3653,12 +3656,12 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
         <source>Resume all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Tüm eşitlemeleri sürdür</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
         <source>Resume synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Eşitlemeyi sürdür</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="609"/>
