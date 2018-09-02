@@ -61,22 +61,11 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="hostButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="font">
-        <font>
-         <underline>true</underline>
-        </font>
-       </property>
+      <widget class="QLabel" name="installLink">
        <property name="text">
-        <string>Host your own server</string>
+        <string>&lt;a href=&quot;https://docs.nextcloud.com/server/13/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Host your own server&lt;/span&gt;&lt;/a&gt;</string>
        </property>
-       <property name="flat">
+       <property name="openExternalLinks">
         <bool>true</bool>
        </property>
       </widget>
