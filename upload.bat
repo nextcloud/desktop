@@ -1,8 +1,10 @@
 @echo off
 cls
 
-set EXEFILE=%1
+set PATHTOEXEFILE=%1
+set EXEFILENAME=%~nx1
 
 echo "* Upload installer."
-start "NSIS" /B /wait pscp -sftp -load %SSH_SESSION_NAME% %EXEFILE% %SFTP_USER%@%SFTP_SERVER%:/var/www/html/desktop/daily/Windows
+start "NSIS" /B /wait scp -i %USERPROFILE%\.ssh\id_rsa %PATHTOEXEFILE% %SFTP_USER%@%SFTP_SERVER%:/var/www/html/desktop/daily/Windows/%EXEFILENAME% > last_daily_upload.log 2>&1
 
+exit
