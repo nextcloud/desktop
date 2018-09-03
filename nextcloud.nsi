@@ -79,14 +79,14 @@ Var NoAutomaticUpdates
 ;-----------------------------------------------------------------------------
 ; Installer build timestamp.
 ;-----------------------------------------------------------------------------
-!define /date BUILD_TIME "Built from Git revision ${GIT_REVISION} on %Y/%m/%d at %I:%M %p"
+!define /date BUILD_TIME "${MIRALL_VERSION_SUFFIX} Built from Git revision ${GIT_REVISION} on %Y/%m/%d at %I:%M %p"
 !define /date BUILD_TIME_FILENAME "%Y%m%d"
 
 ;-----------------------------------------------------------------------------
 ; Initial installer setup and definitions.
 ;-----------------------------------------------------------------------------
 
-!define INSTALLER_FILENAME "${APPLICATION_NAME}-${VERSION}-${BUILD_TYPE}-${BUILD_TIME_FILENAME}.exe"
+!define INSTALLER_FILENAME "${APPLICATION_NAME}-${VERSION}-${MIRALL_VERSION_SUFFIX}-${BUILD_TIME_FILENAME}.exe"
 Name "Nextcloud"
 BrandingText "${APPLICATION_NAME} ${VERSION} - ${BUILD_TIME}"
 OutFile "${PROJECT_PATH}\client-building\daily\${INSTALLER_FILENAME}"
@@ -419,13 +419,15 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
     File "${EXTRA_PATH}\ssleay32.dll"
     File "${EXTRA_PATH}\qt.conf"
 
+    File "${QT_DLL_PATH}\Qt5Core.dll"
     File "${QT_DLL_PATH}\Qt5Cored.dll"
 
     File "${VCREDISTPATH}\debug_nonredist\x64\Microsoft.VC141.DebugCRT\msvcp140d.dll"
     File "${VCREDISTPATH}\debug_nonredist\x64\Microsoft.VC141.DebugCRT\vcruntime140d.dll"
 
 ; translations TODO put the translations under the folder translations
-    File /r "${INSTALL_PATH}\share\nextcloud\*"
+   SetOutPath "$INSTDIR\i18n"
+    File /r "${INSTALL_PATH}\i18n\*"
 
 ; to be executed after the installer is created
    !finalize '"${SIGNTOOL}" sign /debug /v /n "${APPLICATION_VENDOR}" /tr http://tsa.swisssign.net /td sha256 /fd sha256 /f "${P12_KEY}" /p "${P12_KEY_PASSWORD}" "%1"'
