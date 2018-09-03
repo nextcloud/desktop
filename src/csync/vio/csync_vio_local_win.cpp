@@ -31,8 +31,6 @@
 #include "c_lib.h"
 #include "c_utf8.h"
 #include "csync_util.h"
-#include "csync_vio.h"
-
 #include "vio/csync_vio_local.h"
 
 Q_LOGGING_CATEGORY(lcCSyncVIOLocal, "sync.csync.vio_local", QtInfoMsg)
