@@ -107,7 +107,7 @@ private slots:
                     conflictMap[baseFileId] = conflictFile;
                     [&] {
                         QVERIFY(!baseFileId.isEmpty());
-                        QCOMPARE(request.rawHeader("OC-ConflictBasePath"), Utility::conflictFileBaseName(conflictFile.toUtf8()));
+                        QCOMPARE(request.rawHeader("OC-ConflictInitialBasePath"), Utility::conflictFileBaseName(conflictFile.toUtf8()));
                     }();
                 }
             }
@@ -157,7 +157,7 @@ private slots:
                     conflictMap[baseFileId] = conflictFile;
                     [&] {
                         QVERIFY(!baseFileId.isEmpty());
-                        QCOMPARE(request.rawHeader("OC-ConflictBasePath"), Utility::conflictFileBaseName(conflictFile.toUtf8()));
+                        QCOMPARE(request.rawHeader("OC-ConflictInitialBasePath"), Utility::conflictFileBaseName(conflictFile.toUtf8()));
                     }();
                 }
             }
@@ -173,7 +173,7 @@ private slots:
         ConflictRecord conflictRecord;
         conflictRecord.path = conflictName.toUtf8();
         conflictRecord.baseFileId = a1FileId;
-        conflictRecord.basePath = "A/a1";
+        conflictRecord.initialBasePath = "A/a1";
         fakeFolder.syncJournal().setConflictRecord(conflictRecord);
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -225,7 +225,7 @@ private slots:
         auto conflictRecord = fakeFolder.syncJournal().conflictRecord("A/a1 (conflicted copy 1234)");
         QVERIFY(conflictRecord.isValid());
         QCOMPARE(conflictRecord.baseFileId, fakeFolder.remoteModifier().find("A/a1")->fileId);
-        QCOMPARE(conflictRecord.basePath, QByteArray("A/a1"));
+        QCOMPARE(conflictRecord.initialBasePath, QByteArray("A/a1"));
 
         // Now with server headers
         QObject parent;
@@ -237,7 +237,7 @@ private slots:
                 reply->setRawHeader("OC-ConflictBaseFileId", a2FileId);
                 reply->setRawHeader("OC-ConflictBaseMtime", "1234");
                 reply->setRawHeader("OC-ConflictBaseEtag", "etag");
-                reply->setRawHeader("OC-ConflictBasePath", "A/original");
+                reply->setRawHeader("OC-ConflictInitialBasePath", "A/original");
                 return reply;
             }
             return nullptr;
@@ -250,7 +250,7 @@ private slots:
         QCOMPARE(conflictRecord.baseFileId, a2FileId);
         QCOMPARE(conflictRecord.baseModtime, 1234);
         QCOMPARE(conflictRecord.baseEtag, QByteArray("etag"));
-        QCOMPARE(conflictRecord.basePath, QByteArray("A/original"));
+        QCOMPARE(conflictRecord.initialBasePath, QByteArray("A/original"));
     }
 
     // Check that conflict records are removed when the file is gone

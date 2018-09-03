@@ -667,7 +667,7 @@ void PropagateDownloadFile::slotGetFinished()
     // the database yet!)
     if (job->reply()->rawHeader("OC-Conflict") == "1") {
         _conflictRecord.path = _item->_file.toUtf8();
-        _conflictRecord.basePath = job->reply()->rawHeader("OC-ConflictBasePath");
+        _conflictRecord.initialBasePath = job->reply()->rawHeader("OC-ConflictInitialBasePath");
         _conflictRecord.baseFileId = job->reply()->rawHeader("OC-ConflictBaseFileId");
         _conflictRecord.baseEtag = job->reply()->rawHeader("OC-ConflictBaseEtag");
 

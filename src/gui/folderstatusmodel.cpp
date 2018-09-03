@@ -362,6 +362,8 @@ int FolderStatusModel::rowCount(const QModelIndex &parent) const
     auto info = infoForIndex(parent);
     if (!info)
         return 0;
+    if (info->_folder && info->_folder->useVirtualFiles())
+        return 0;
     if (info->hasLabel())
         return 1;
     return info->_subs.count();
@@ -517,6 +519,9 @@ bool FolderStatusModel::hasChildren(const QModelIndex &parent) const
     if (!info)
         return false;
 
+    if (info->_folder && info->_folder->useVirtualFiles())
+        return false;
+
     if (!info->_fetched)
         return true;
 
@@ -540,6 +545,10 @@ bool FolderStatusModel::canFetchMore(const QModelIndex &parent) const
         return false;
     if (info->_hasError) {
         // Keep showing the error to the user, it will be hidden when the account reconnects
+        return false;
+    }
+    if (info->_folder && info->_folder->useVirtualFiles()) {
+        // Selective sync is hidden in that case
         return false;
     }
     return true;
@@ -847,6 +856,8 @@ void FolderStatusModel::slotApplySelectiveSync()
             foreach (const auto &it, changes) {
                 folder->journalDb()->avoidReadFromDbOnNextSync(it);
             }
+            // Also make sure we see the local file that had been ignored before
+            folder->slotNextSyncFullLocalDiscovery();
             FolderMan::instance()->scheduleFolder(folder);
         }
     }
@@ -1160,6 +1171,8 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         foreach (const auto &it, undecidedList) {
             folder->journalDb()->avoidReadFromDbOnNextSync(it);
         }
+        // Also make sure we see the local file that had been ignored before
+        folder->slotNextSyncFullLocalDiscovery();
         FolderMan::instance()->scheduleFolder(folder);
     }
 
