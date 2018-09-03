@@ -570,6 +570,7 @@ void AccountSettings::slotScheduleCurrentFolderForceFullDiscovery()
 {
     FolderMan *folderMan = FolderMan::instance();
     if (auto folder = folderMan->folder(selectedFolderAlias())) {
+        folder->slotWipeErrorBlacklist();
         folder->slotNextSyncFullLocalDiscovery();
         folder->journalDb()->forceRemoteDiscoveryNextSync();
         folderMan->scheduleFolder(folder);
@@ -585,6 +586,8 @@ void AccountSettings::slotForceSyncCurrentFolder()
             folderMan->terminateSyncProcess();
             folderMan->scheduleFolder(current);
         }
+
+        selectedFolder->slotWipeErrorBlacklist(); // issue #6757
 
         // Insert the selected folder at the front of the queue
         folderMan->scheduleFolderNext(selectedFolder);
