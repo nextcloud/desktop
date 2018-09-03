@@ -771,7 +771,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <translation>&apos;%1&apos; eşitleme klasöründeki tüm dosyalar sunucudan silindi.
 Silinen dosyalar eşitleme sırasında yerel eşitleme klasörünüzden de silinecek ve bu dosyaları geri yüklemeyeceksiniz.
 Dosyaları korumayı seçerseniz, yeterli izinlerinizin olması durumunda dosyalar sunucu ile yeniden eşitlenecek.
-Dosyaları silmeyi seçerseniz, dosyaların sahibi değilseniz göremeyeceksiniz.</translation>
+Dosyaları silmeyi seçerseniz, dosyaların sahibi değilseniz daha sonra göremeyeceksiniz.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="932"/>

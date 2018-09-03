@@ -3644,7 +3644,7 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
         <source>Resume all folders</source>
-        <translation>Setze alle Ordner fort</translation>
+        <translation>Alle Ordner fortsetzen</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -3654,12 +3654,12 @@ Es ist nicht ratsam, diese zu benutzen.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
         <source>Resume all synchronization</source>
-        <translation>Setze gesamte Synchronisation fort</translation>
+        <translation>Alle Synchronisierungen fortsetzen</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
         <source>Resume synchronization</source>
-        <translation>Setze Synchronisation fort</translation>
+        <translation>Synchronisation fortsetzen</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="609"/>

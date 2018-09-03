@@ -3645,12 +3645,12 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
         <source>Resume all synchronization</source>
-        <translation>Palauta kaikki synkronointi</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
         <source>Resume synchronization</source>
-        <translation>Palauta synkronointi</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="609"/>

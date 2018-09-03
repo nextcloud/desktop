@@ -767,9 +767,7 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Všechny soubory v synchronizované složce &apos;%1&apos; byly na serveru smazány.
-Tyto soubory budou smazány i ve vaší místní synchronizované složce a nebudou tedy dostupné, pokud nemáte právo obnovovat. Rozhodnete-li se soubory ponechat, budou opět synchronizovány se serverem, pokud k tomu máte práva.
-Rozhodnete-li se soubory smazat, budou vám nedostupné, nejste-li jejich vlastníkem.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="932"/>
@@ -3643,7 +3641,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
         <source>Resume all folders</source>
-        <translation>Spustit všechny adresáře</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -3653,12 +3651,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
         <source>Resume all synchronization</source>
-        <translation>Spustit veškerou synchronizaci</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
         <source>Resume synchronization</source>
-        <translation>Spustit synchronizaci</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="609"/>

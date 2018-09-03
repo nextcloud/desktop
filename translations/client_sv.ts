@@ -3640,7 +3640,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
         <source>Resume all folders</source>
-        <translation>Sluta pausa alla mappar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -3650,12 +3650,12 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
         <source>Resume all synchronization</source>
-        <translation>Sluta pausa all synkroinisering</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
         <source>Resume synchronization</source>
-        <translation>Sluta pausa synkronisering</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="609"/>

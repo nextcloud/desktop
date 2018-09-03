@@ -769,10 +769,7 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Tous les fichiers contenus dans le dossier synchronisé &apos;%1&apos; ont été supprimés du serveur.
-Ces suppressions seront synchronisées sur vos dossiers locaux synchronisés, rendant ces fichiers inaccessibles, à moins que vous n&apos;ayez le droit de les restaurer.
-Si vous décidez de conserver ces fichiers, ils seront synchronisés à nouveau avec le serveur si vous en avez le droit.
-Si vous décidez de supprimer ces fichiers, ils vous seront inaccessibles, sauf si vous en êtes le propriétaire.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="932"/>
@@ -1735,7 +1732,7 @@ L&apos;option &quot;Autoriser suppression&quot; permet de ne pas bloquer la supp
         <location filename="../src/gui/updater/ocupdater.cpp" line="104"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>Une mise à jour de %1 est sur le point d&apos;être installée.
+        <translation>Une mise à jour de %1 est sur le point d&apos;être installée. 
 L&apos;assistant de mise à jour peut vous demandez des autorisations supplémentaires afin de procéder à l&apos;installation.</translation>
     </message>
     <message>
@@ -3647,7 +3644,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
         <source>Resume all folders</source>
-        <translation>Relancer tous les dossiers </translation>
+        <translation>Reprendre tous les dossiers</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -3657,12 +3654,12 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
         <source>Resume all synchronization</source>
-        <translation>Relancer toutes les synchronisations</translation>
+        <translation>Reprendre toutes les synchronisations</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
         <source>Resume synchronization</source>
-        <translation>Relancer la synchronisation</translation>
+        <translation>Reprendre la synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="609"/>
