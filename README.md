@@ -78,6 +78,11 @@ Host download.nextcloud.com
 - [ ] SFTP_USER (server user)
 - [ ] VCINSTALLDIR (Visual Code installation path)
 - [ ] Png2ico_EXECUTABLE (png2ico installation path)
+- [ ] QTKEYCHAIN_LIBRARY (path-to-qt5keychain-folder/lib/qt5keychain.lib)
+- [ ] QTKEYCHAIN_INCLUDE_DIR (path-to-qt5keychain-folder/include/qt5keychain)
+- [ ] OPENSSL_ROOT_DIR (path-to-openssl-folder) 
+- [ ] OPENSSL_INCLUDE_DIR (path-to-openssl-folder/include)
+- [ ] OPENSSL_LIBRARIES (path-to-openssl-folder/lib)
 
 ## To create the installer
 
