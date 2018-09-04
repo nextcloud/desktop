@@ -359,7 +359,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="658"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Версия сервера %1 не поддерживается! Продолжайте на свой страх и риск.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="688"/>
@@ -1058,7 +1058,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
         <source>New files are being created as virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Новые файлы были созданы, как виртуальные файлы.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="900"/>
@@ -3169,7 +3169,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message numerus="yes">
         <location filename="../src/gui/socketapi.cpp" line="817"/>
         <source>Replace file(s) by virtual file</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Заменить файл виртуальным файлом</numerusform><numerusform>Заменить файлы виртуальным файлом</numerusform><numerusform>Заменить файлы виртуальным файлом</numerusform><numerusform>Заменить файл(ы) виртуальным файлом</numerusform></translation>
     </message>
 </context>
 <context>
@@ -3749,7 +3749,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="199"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Учётная запись сервера %1 работает с неподдерживаемой версией %2. Использование клиента с неподдерживаемой версией сервера не тестировалось и потенциально опасно. Продолжайте на свой страх и риск.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="778"/>

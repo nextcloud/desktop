@@ -359,7 +359,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="658"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>เซิร์ฟไม่สนับสนุนเวอร์เวอร์ชัน %1 นี่เป็นความเสี่ยงของคุณเอง</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="688"/>
@@ -3170,7 +3170,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message numerus="yes">
         <location filename="../src/gui/socketapi.cpp" line="817"/>
         <source>Replace file(s) by virtual file</source>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>แทนที่ไฟล์โดยไฟล์เสมือน</numerusform></translation>
     </message>
 </context>
 <context>
@@ -3749,7 +3749,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="199"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>เซิร์ฟเวอร์ในบัญชี %1 ไม่รองรับการทำงานกับ %2 ซึ่งอาจเป็นอันตราย ดำเนินการตามความเสี่ยงของคุณเอง</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="778"/>
