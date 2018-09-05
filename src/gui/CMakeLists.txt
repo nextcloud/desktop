@@ -272,7 +272,7 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
 else()
     # set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
-    set(MACOSX_BUNDLE_ICON_FILE "ownCloud.icns")
+    set(MACOSX_BUNDLE_ICON_FILE "${APPLICATION_ICON_NAME}.icns")
 
     # we must add MACOSX_BUNDLE only if building a bundle
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp ${final_src})
