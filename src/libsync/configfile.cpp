@@ -747,6 +747,70 @@ void ConfigFile::setAutomaticLogDir(bool enabled)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(automaticLogDirC), enabled);
+
+void ConfigFile::setDefaultFileStreamMirrorPath(QString path)
+{
+	QSettings settings(configFile(), QSettings::IniFormat);
+	settings.setValue(QLatin1String(defaultFileStreamMirrorPathC), path);
+}
+
+QString ConfigFile::defaultFileStreamMirrorPath()
+{
+	QSettings settings(configFile(), QSettings::IniFormat);
+	QString defaultString;
+	return settings.value(QLatin1String(defaultFileStreamMirrorPathC), defaultString).toString();
+}
+
+void ConfigFile::setDefaultFileStreamSyncPath(QString path)
+{
+	QSettings settings(configFile(), QSettings::IniFormat);
+	settings.setValue(QLatin1String(defaultFileStreamSyncPathC), path);
+}
+
+QString ConfigFile::defaultFileStreamSyncPath()
+{
+	QSettings settings(configFile(), QSettings::IniFormat);
+	QString defaultString;
+	return settings.value(QLatin1String(defaultFileStreamSyncPathC), defaultString).toString();
+}
+
+void ConfigFile::setDefaultFileStreamLetterDrive(QString path)
+{
+	QSettings settings(configFile(), QSettings::IniFormat);
+	settings.setValue(QLatin1String(defaultFileStreamLetterDriveC), path);
+}
+
+QString ConfigFile::defaultFileStreamLetterDrive()
+{
+	QSettings settings(configFile(), QSettings::IniFormat);
+	QString defaultString;
+	return settings.value(QLatin1String(defaultFileStreamLetterDriveC), defaultString).toString();
+}
+
+void ConfigFile::createAuxiliarDirectories()
+{
+	/*
+	QDir pathDir3(defaultFileStreamSyncPath());
+	while (!pathDir3.exists())
+	{
+		qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " !pathDir3.exists() 2-2 " << defaultFileStreamSyncPath();
+		pathDir3.mkdir(defaultFileStreamSyncPath());
+		Sleep(100);
+	}
+
+	QString PathforScreenShots = defaultFileStreamLetterDrive();
+	PathforScreenShots.append(":/Mi unidad/ScreenShots");
+	QDir pathDir4(PathforScreenShots);
+	while (!pathDir4.exists())
+	{
+		qDebug() << "\n dbg_dokan " << Q_FUNC_INFO << " !pathDir4.exists() 4-0 " << PathforScreenShots;
+		pathDir4.mkdir(PathforScreenShots);
+		Sleep(100);
+	}
+	*/
+
+
+}
 }
 
 QString ConfigFile::certificatePath() const

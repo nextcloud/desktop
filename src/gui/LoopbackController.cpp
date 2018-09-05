@@ -1,24 +1,18 @@
-// ================================================================
-// Copyright (C) 2007 Google Inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-// ================================================================
-//
-//  LoopbackController.m
-//  LoopbackFS
-//
-//  Created by ted on 12/27/07.
-//
+/*
+ * Copyright (C) 2018 by AMCO
+ * Copyright (C) 2018 by Jesús Deloya <jdeloya_ext@amco.mx>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
+
 #include <QMessageBox>
 #include <QApplication>
 
@@ -36,6 +30,7 @@ void LoopbackController::mountFailed(QVariantMap userInfo)
     
     QMessageBox alert;
     alert.setText(userInfo.contains("localizedDescription")?userInfo.value("localizedDescription").toString() : "Unknown error");
+    alert.exec();
 }
 
 void LoopbackController::didMount(QVariantMap userInfo)
@@ -54,21 +49,25 @@ void LoopbackController::didUnmount(QVariantMap userInfo) {
     QApplication::quit();
 }
 
+void LoopbackController::unmount()
+{
+    fs_->unmount();
+}
+
 void LoopbackController::slotquotaUpdated(qint64 total, qint64 used)
 {
     fs_->setTotalQuota(total);
     fs_->setUsedQuota(used);
 }
 
-LoopbackController::LoopbackController(QString rootPath, QString mountPath, OCC::AccountState *accountState, QObject *parent):QObject(parent)
+LoopbackController::LoopbackController(QString rootPath, QString mountPath, OCC::AccountState *accountState, QObject *parent):QObject(parent), fs_(new LoopbackFS(rootPath, false, accountState, this))
 {
-    fs_ = new LoopbackFS(rootPath, false, this);
     qi_ = new OCC::QuotaInfo(accountState, this);
     
     connect(qi_, &OCC::QuotaInfo::quotaUpdated, this, &LoopbackController::slotquotaUpdated);
-    connect(fs_, &LoopbackFS::FuseFileSystemDidMount, this, didMount);
-    connect(fs_, &LoopbackFS::FuseFileSystemMountFailed, this, mountFailed);
-    connect(fs_, &LoopbackFS::FuseFileSystemDidUnmount, this, didUnmount);
+    connect(fs_.data(), &LoopbackFS::FuseFileSystemDidMount, this, didMount);
+    connect(fs_.data(), &LoopbackFS::FuseFileSystemMountFailed, this, mountFailed);
+    connect(fs_.data(), &LoopbackFS::FuseFileSystemDidUnmount, this, didUnmount);
     
     qi_->setActive(true);
     
@@ -89,8 +88,7 @@ LoopbackController::LoopbackController(QString rootPath, QString mountPath, OCC:
     fs_->mountAtPath(mountPath, options);
 }
 
-LoopbackController::~LoopbackController()
+/*LoopbackController::~LoopbackController()
 {
-    fs_->unmount();
-    fs_->deleteLater();
-}
+    //fs_->unmount();
+}*/

@@ -172,6 +172,29 @@ void GeneralSettings::slotToggleOptionalServerNotifications(bool enable)
 {
     ConfigFile cfgFile;
     cfgFile.setOptionalServerNotifications(enable);
+
+	QString m_defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
+	QString m_defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
+	QString m_defaultFileStreamLetterDrive = cfgFile.defaultFileStreamLetterDrive();
+
+
+	if (m_defaultFileStreamSyncPath.isEmpty() || m_defaultFileStreamSyncPath.compare(QString("")) == 0)
+	{
+	cfgFile.setDefaultFileStreamSyncPath(QString("X:/Mi unidad"));
+	m_defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
+	}
+
+	if (m_defaultFileStreamMirrorPath.isEmpty() || m_defaultFileStreamMirrorPath.compare(QString("")) == 0)
+	{
+		cfgFile.setDefaultFileStreamMirrorPath(wwr);
+		m_defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
+	}
+
+	if (m_defaultFileStreamLetterDrive.isEmpty() || m_defaultFileStreamLetterDrive.compare(QString("")) == 0)
+	{
+		cfgFile.setDefaultFileStreamLetterDrive(QString("x"));
+		m_defaultFileStreamLetterDrive = cfgFile.defaultFileStreamLetterDrive();
+	}
 }
 
 void GeneralSettings::slotShowInExplorerNavigationPane(bool checked)

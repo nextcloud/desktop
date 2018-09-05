@@ -167,11 +167,55 @@ IFACEMETHODIMP OCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
         mii.dwTypeData = &item.title[0];
         mii.fState = disabled ? MFS_DISABLED : MFS_ENABLED;
 
+        
         if (!InsertMenuItem(hSubmenu, indexSubMenu, true, &mii))
             return HRESULT_FROM_WIN32(GetLastError());
         indexSubMenu++;
     }
 
+        // Setup the "Online" item
+        MENUITEMINFO menuInfoDriveOnline {0};
+        menuInfoDriveOnline.cbSize = sizeof (MENUITEMINFO);
+        menuInfoDriveOnline.fMask = MIIM_STRING;
+        menuInfoDriveOnline.dwTypeData = &info.streamOnlineItemTitle[0];
+        menuInfoDriveOnline.fMask |= MIIM_ID;
+        menuInfoDriveOnline.wID = idCmdFirst + IDM_DRIVEMENU_ONLINE;
+        menuInfoDriveOnline.fMask |= MIIM_STATE;
+        menuInfoDriveOnline.fState = MFS_ENABLED;
+		if (checkOnlineItem)
+			menuInfoDriveOnline.fState |= MFS_CHECKED;
+        // Insert it into the submenu
+        if(!InsertMenuItem(hDriveSubMenu, 
+            0, // At position zero
+            TRUE, //  indicates the existing item by using its zero-based position. (For example, the first item in the menu has a position of 0.) 
+            &menuInfoDriveOnline
+            ))
+		{
+			return HRESULT_FROM_WIN32(GetLastError());
+		}
+
+
+        // Setup the "Online" item
+        MENUITEMINFO menuInfoDriveOffline {0};
+        menuInfoDriveOffline.cbSize = sizeof (MENUITEMINFO);
+        menuInfoDriveOffline.fMask = MIIM_STRING;
+        menuInfoDriveOffline.dwTypeData = &info.streamOfflineItemTitle[0];
+        menuInfoDriveOffline.fMask |= MIIM_ID;
+        menuInfoDriveOffline.wID = idCmdFirst + IDM_DRIVEMENU_OFFLINE;
+        menuInfoDriveOffline.fMask |= MIIM_STATE;
+        menuInfoDriveOffline.fState = MFS_ENABLED;
+		if (checkOfflineItem)
+			menuInfoDriveOffline.fState |= MFS_CHECKED;
+        // Insert it into the submenu
+        if (!InsertMenuItem(hDriveSubMenu, 
+            1, // At position one
+            TRUE, //  indicates the existing item by using its zero-based position. (For example, the first item in the menu has a position of 0.) 
+            &menuInfoDriveOffline
+            ))
+            return HRESULT_FROM_WIN32(GetLastError());
+
+    indexMenu++;
+    InsertSeperator(hMenu, indexMenu);
     // Return an HRESULT value with the severity set to SEVERITY_SUCCESS. 
     // Set the code value to the offset of the largest command identifier 
     // that was assigned, plus one (1).
@@ -190,12 +234,22 @@ IFACEMETHODIMP OCContextMenu::InvokeCommand(LPCMINVOKECOMMANDINFO pici)
     } else {
         // If the command cannot be identified through the verb string, then
         // check the identifier offset.
-
+        if (LOWORD(pici->lpVerb) == IDM_DRIVEMENU_ONLINE)
+        {
+            OnDriveMenuOnline(pici->hwnd);
+        }
+        else if (LOWORD(pici->lpVerb) == IDM_DRIVEMENU_OFFLINE)
+        {
+            OnDriveMenuOffline(pici->hwnd);
+        }
+        else
+        {
         auto offset = LOWORD(pici->lpVerb);
         if (offset >= m_info.menuItems.size())
             return E_FAIL;
 
         command = m_info.menuItems[offset].command;
+        }
     }
 
     OCClientInterface::SendRequest(command.data(), m_selectedFiles);
@@ -210,6 +264,16 @@ IFACEMETHODIMP OCContextMenu::GetCommandString(UINT_PTR idCommand,
             m_info.menuItems[idCommand].command.data());
     }
     return E_INVALIDARG;
+}
+
+void OCContextMenu::OnDriveMenuOffline(HWND hWnd)
+{
+    OCClientInterface::SetDownloadMode(std::wstring(m_szSelectedFile), false);
+}
+
+void OCContextMenu::OnDriveMenuOnline(HWND hWnd)
+{
+    OCClientInterface::SetDownloadMode(std::wstring(m_szSelectedFile), true);
 }
 
 #pragma endregion

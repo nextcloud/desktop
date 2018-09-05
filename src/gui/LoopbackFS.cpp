@@ -1,6 +1,21 @@
+/*
+ * Copyright (C) 2018 by AMCO
+ * Copyright (C) 2018 by Jesús Deloya <jdeloya_ext@amco.mx>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
+
 #include "LoopbackFS.h"
-//#include "GMFinderInfo.h"
 #include "fileManager.h"
+#include "discoveryphase.h"
 
 #include <sys/param.h>
 #include <sys/mount.h>
@@ -50,8 +65,11 @@ public:
     void setHandle (struct fuse *handle) { handle_ = handle; }
     QString mountPath () { return mountPath_; }
     void setMountPath (QString mountPath) { mountPath_ = mountPath;}
-    LoopbackFS::GMUserFileSystemStatus status () { return status_; }
-    void setStatus (LoopbackFS::GMUserFileSystemStatus status) { status_ = status; }
+    LoopbackFS::GMUserFileSystemStatus status ()
+    {
+        return this->status_;
+    }
+    void setStatus (LoopbackFS::GMUserFileSystemStatus status) { this->status_ = status; }
     bool isThreadSafe () { return isThreadSafe_; }
     bool supportsAllocate () { return supportsAllocate_; };
     void setSupportsAllocate (bool val) { supportsAllocate_ = val; }
@@ -70,11 +88,15 @@ public:
     
 };
 
-LoopbackFS::LoopbackFS(QString rootPath, bool isThreadSafe, QObject *parent):QObject(parent), internal_(new InternalLoopBack(parent, isThreadSafe))
+LoopbackFS::LoopbackFS(QString rootPath, bool isThreadSafe, OCC::AccountState *accountState, QObject *parent):QObject(parent), internal_(new InternalLoopBack(parent, isThreadSafe)), accountState_(accountState)
 {
     rootPath_ = rootPath;
     totalQuota_ = (2LL * 1024 * 1024 * 1024);
     usedQuota_ = 0;
+    _remotefileListJob = new OCC::DiscoveryFolderFileList(accountState_->account());
+    _remotefileListJob->setParent(this);
+    connect(this, &LoopbackFS::startRemoteFileListJob, _remotefileListJob, &OCC::DiscoveryFolderFileList::doGetFolderContent);
+    connect(_remotefileListJob, &OCC::DiscoveryFolderFileList::gotDataSignal, this, &LoopbackFS::folderFileListFinish);
 }
 
 bool LoopbackFS::enableAllocate() {
@@ -138,7 +160,7 @@ void LoopbackFS::mountAtPath(QString mountPath, QStringList options, bool should
 }
 
 void LoopbackFS::unmount() {
-    if (internal_->status() == GMUserFileSystem_MOUNTED) {
+    if (internal_.data() != nullptr && internal_->status() == GMUserFileSystem_MOUNTED) {
         QStringList args;
         args << "-v" << internal_->mountPath();
         QProcess *defaultsProcess = new QProcess();
@@ -536,9 +558,60 @@ QString LoopbackFS::destinationOfSymbolicLinkAtPath(QString path, QVariantMap &e
 
 #pragma mark Directory Contents
 
+void LoopbackFS::folderFileListFinish(OCC::DiscoveryDirectoryResult *dr)
+{
+    if(dr)
+    {
+        QString ruta = dr->path;
+        _fileListMap.insert(dr->path, dr);
+    }
+    else
+        qDebug() << "Error al obtener los resultados, viene nulo";
+}
+
 QStringList *LoopbackFS::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
 {
+   // _remotefileListJob->start(path);
+    emit startRemoteFileListJob(path);
+    
+    while (!_fileListMap.contains(path))
+    {
+        qDebug() << Q_FUNC_INFO << "looking for " << path << "in: " << _fileListMap.keys();
+    }
+    
+    if(_fileListMap.value(path)->code != 0)
+    {
+        errorWithPosixCode(_fileListMap.value(path)->code);
+        return nullptr;
+    }
+    
     FileManager fm;
+    foreach(auto r, _fileListMap.value(path)->list)
+    {
+        QString completePath = rootPath_ + (path.endsWith("/")?path:(path+"/")) + QString::fromLatin1(r->name);
+        QFileInfo fi(completePath);
+        if (!fi.exists())
+        {
+            if(r->type == CSYNC_VIO_FILE_TYPE_DIRECTORY)
+            {
+                unsigned long perm = 16877 & ALLPERMS;
+                QVariantMap attribs;
+                attribs.insert(FileManager::FMFilePosixPermissions, (long long)perm);
+                fm.createDirectory(completePath, attribs, error);
+            }
+            else if (r->type == CSYNC_VIO_FILE_TYPE_REGULAR)
+            {
+                QVariant fd;
+                unsigned long perm = ALLPERMS;
+                QVariantMap attribs;
+                attribs.insert(FileManager::FMFilePosixPermissions, (long long)perm);
+                fm.createFileAtPath(completePath, attribs, fd, error);
+                close(fd.toInt());
+            }
+        }
+        qDebug() << Q_FUNC_INFO << "results: " << r->name << r->type;
+    }
+    
     return new QStringList (fm.contentsOfDirectoryAtPath(rootPath_ + path, error));
 }
 
@@ -659,14 +732,14 @@ QVariantMap LoopbackFS::attributesOfFileSystemForPath(QString path, QVariantMap 
     {
         if(error.empty())
             error = errorWithCode(ENODEV);
-        qDebug() << " Error: " << error.values();
+  //      qDebug() << " Error: " << error.values();
         attributes.clear();
         return attributes;
     }
     
     for(auto attrib : customAttribs.keys())
     {
-        qDebug() << "Key: " <<attrib << "Value: " << customAttribs.value(attrib) << "\n";
+ //       qDebug() << "Key: " <<attrib << "Value: " << customAttribs.value(attrib) << "\n";
         attributes.insert(attrib, customAttribs.value(attrib));
     }
     
@@ -710,7 +783,7 @@ QVariantMap LoopbackFS::defaultAttributesOfItemAtPath(QString path, QVariant use
     // Set up default item attributes.
     QVariantMap attributes;
     bool isReadOnly = internal_->isReadOnly();
-    qDebug() << "Path: " << rootPath_ + path;
+   // qDebug() << "Path: " << rootPath_ + path;
     attributes.insert(FileManager::FMFilePosixPermissions, (isReadOnly ? 0555 : 0775));
     attributes.insert(FileManager::FMFileReferenceCount, (long long)1L);
     if (path == "/")
@@ -732,9 +805,9 @@ QVariantMap LoopbackFS::defaultAttributesOfItemAtPath(QString path, QVariant use
     {
         for(auto attrib : customAttribs->keys())
         {
-            if (path == "/") {
+  /*          if (path == "/") {
                 qDebug() << "Key: " <<attrib << "Value: " << customAttribs->value(attrib) << "\n";
-            }
+            }*/
             attributes.insert(attrib, customAttribs->value(attrib));// addEntriesFromDictionary:customAttribs];
         }
         
@@ -747,7 +820,7 @@ QVariantMap LoopbackFS::defaultAttributesOfItemAtPath(QString path, QVariant use
     }
     
     // If they don't supply a size and it is a file then we try to compute it.
-    qDebug() << attributes << "Si llego al final\n";
+   // qDebug() << attributes << "Si llego al final\n";
     return attributes;
 }
 
@@ -851,7 +924,7 @@ if (enable) {                                                         \
 } while (0)
 
 #define MAYBE_USE_ERROR(var, error)                                       \
-qDebug() << error;                                               \
+//qDebug() << error;                                               \
 if (!error.empty() && error.value("domain").toString() == FileManager::FMPOSIXErrorDomain) {            \
 int code = error.value("code").toInt();                                            \
 if (code != 0) {                                                      \
@@ -883,7 +956,7 @@ static void fusefm_destroy(void* private_data)
     try
     {
         fs->fuseDestroy();
-        fs->deleteLater();
+      //  fs->deleteLater();
     }
     catch (QException exception) { }
 }
@@ -903,7 +976,7 @@ static int fusefm_mkdir(const char* path, mode_t mode)
         else
             if (!error.isEmpty())
                 ret = -error.value("code").toInt();
-        qDebug() << "fusefm_mkdir" << attribs.keys() << attribs.values();
+       // qDebug() << "fusefm_mkdir" << attribs.keys() << attribs.values();
     }
     catch (QException exception) { }
     return ret;
@@ -1222,7 +1295,7 @@ static int fusefm_fgetattr(const char *path, struct stat *stbuf,
             ret = 0;
         else {
             MAYBE_USE_ERROR(ret, error);
-            qDebug() << error;
+           // qDebug() << error;
         }
     }
     catch (QException exception) { }
@@ -1480,10 +1553,10 @@ static struct fuse_operations fusefm_oper = {
     .removexattr = fusefm_removexattr,
 };
 
-LoopbackFS::~LoopbackFS()
+/*LoopbackFS::~LoopbackFS()
 {
     internal_->deleteLater();
-}
+}*/
 
 #pragma mark Internal Mount
 
@@ -1574,7 +1647,7 @@ void LoopbackFS::mount(QVariantMap args)
     if (!isThreadSafe)
         arguments.append("-s");
     if (shouldForeground)
-        arguments.append("-f"); // Forground rather than daemonize.
+        arguments.append("-f"); // Foreground rather than daemonize.
     for (int i = 0; i < options.length(); ++i)
     {
         QString option = options.at(i);
@@ -1593,7 +1666,7 @@ void LoopbackFS::mount(QVariantMap args)
     }
     ret = fuse_main(argc, (char **)argv, &fusefm_oper, this);
     
-    if (internal_ && internal_->status() == GMUserFileSystem_MOUNTING) {
+    if (internal_.data()!=nullptr && internal_->status() == GMUserFileSystem_MOUNTING) {
         // If we returned from fuse_main while we still think we are
         // mounting then an error must have occurred during mount.
         QString description = QString("Internal FUSE error (rc=%1) while attempting to mount the file system. "
@@ -1602,7 +1675,7 @@ void LoopbackFS::mount(QVariantMap args)
         QVariantMap userData = errorWithCode(errno);
         userData.insert("localizedDescription", QVariant(userData.value("localizedDescription").toString() + description));
         emit FuseFileSystemMountFailed(userData);
-    } else if (internal_)
+    } else if (internal_.data()!=nullptr)
         internal_->setStatus(GMUserFileSystem_NOT_MOUNTED);
 }
 

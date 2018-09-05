@@ -36,13 +36,14 @@ class LoopbackController: public QObject
     Q_OBJECT
 public:
     explicit LoopbackController(QString rootPath, QString mountPath, OCC::AccountState *accountState, QObject *parent);
-    ~LoopbackController();
+    //~LoopbackController();
     
 public slots:
     void slotquotaUpdated(qint64 total, qint64 used);
+    void unmount();
     
 private:
-    LoopbackFS* fs_;
+    QScopedPointer<LoopbackFS> fs_;
     OCC::QuotaInfo* qi_;
 private slots:
     static void mountFailed (QVariantMap userInfo);

@@ -22,6 +22,10 @@
 
 #include <QTimer>
 
+#if defined(Q_OS_WIN)
+	#include "vfs_windows.h"
+#endif
+
 namespace OCC {
 
 namespace {
@@ -114,6 +118,17 @@ void QuotaInfo::slotUpdateLastQuota(const QVariantMap &result)
     _lastQuotaUsedBytes = result["quota-used-bytes"].toDouble();
     // negative value of the available quota have special meaning (#3940)
     _lastQuotaTotalBytes = avail >= 0 ? _lastQuotaUsedBytes + avail : avail;
+
+#if defined(Q_OS_WIN)
+	Vfs_windows *m_Vfs_windows = NULL;
+	m_Vfs_windows = Vfs_windows::instance();
+	if (m_Vfs_windows)
+	{
+		m_Vfs_windows->DsetTotalNumberOfBytes((unsigned long long)_lastQuotaTotalBytes);
+		m_Vfs_windows->DsetTotalNumberOfFreeBytes((unsigned long long)_lastQuotaUsedBytes);
+	}
+#endif
+
     emit quotaUpdated(_lastQuotaTotalBytes, _lastQuotaUsedBytes);
     _jobRestartTimer.start(defaultIntervalT);
     _lastQuotaRecieved = QDateTime::currentDateTime();

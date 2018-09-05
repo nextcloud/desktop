@@ -47,6 +47,14 @@ private:
 
 	// The name of the selected files (separated by '\x1e')
 	std::wstring m_selectedFiles;
+
+	/// @brief changes the 
+	/// @param hWnd
+	void OnDriveMenuOnline(HWND hWnd);
+
+	/// @brief 
+	/// @param hWnd
+	void OnDriveMenuOffline(HWND hWnd);
 	OCClientInterface::ContextMenuInfo m_info;
 };
 	

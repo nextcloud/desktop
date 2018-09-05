@@ -3,6 +3,7 @@
 #define FUSE_USE_VERSION 26
 #include<QObject>
 #include<QStringList>
+#include "accountstate.h"
 
 #include <fuse.h>
 #include <fuse/fuse_lowlevel.h>
@@ -37,8 +38,13 @@ const QString kGMUserFileSystemWeblocURLKey = "kGMUserFileSystemWeblocURLKey";
 
 static const double kNanoSecondsPerSecond = 1000000000.0;
 
-class InternalLoopBack;
+namespace OCC
+{
+    struct DiscoveryDirectoryResult;
+    class DiscoveryFolderFileList;
+}
 
+class InternalLoopBack;
 /*!
  * class
  * discussion This class controls the life cycle of a user space file system.
@@ -54,16 +60,20 @@ class InternalLoopBack;
  * LoopbackController* and the userInfo will always contain at least the
  * mountPath.<br>
  *
- */
+ */                   
 class LoopbackFS : public QObject
 {
     Q_OBJECT
     
 private:
-    InternalLoopBack* internal_;
+    QPointer<InternalLoopBack> internal_;
     QString rootPath_;
     qint64 usedQuota_;
     qint64 totalQuota_;
+    QMap<QString, OCC::DiscoveryDirectoryResult*> _fileListMap;
+    QPointer<OCC::DiscoveryFolderFileList> _remotefileListJob;
+    
+    QPointer<OCC::AccountState> accountState_;
 #pragma mark Fuse operations.
     void mount(QVariantMap args);
     void waitUntilMounted (int fileDescriptor);
@@ -114,7 +124,7 @@ public:
      * param isThreadSafe Is the file system thread safe?
      * result A LoopbackController instance.
      */
-    explicit LoopbackFS(QString rootPath, bool isThreadSafe, QObject *parent=0);
+    explicit LoopbackFS(QString rootPath, bool isThreadSafe, OCC::AccountState *accountState, QObject *parent=0);
     
     // The file system for the current thread. Valid only during a FUSE callback.
     static LoopbackFS* currentFS() {
@@ -499,7 +509,7 @@ public:
      */
     bool removeExtendedAttribute(QString name, QString path, QVariantMap &error);
     
-    ~LoopbackFS();
+    //~LoopbackFS();
     
     bool enableAllocate();
     bool enableCaseSensitiveNames();
@@ -518,12 +528,15 @@ public:
     
     qint64 totalQuota() { return totalQuota_; }
     qint64 usedQuota() { return usedQuota_; }
-
+    
+public slots:
+    void folderFileListFinish(OCC::DiscoveryDirectoryResult *dr);
     
 signals:
     void FuseFileSystemDidMount(QVariantMap userInfo);
     void FuseFileSystemMountFailed(QVariantMap error);
     void FuseFileSystemDidUnmount(QVariantMap userInfo);
+    void startRemoteFileListJob(QString path);
     
 };
 

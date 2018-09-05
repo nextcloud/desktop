@@ -104,6 +104,7 @@ target_link_libraries(${synclib_NAME}
     OpenSSL::SSL
     ${OS_SPECIFIC_LINK_LIBRARIES}
     Qt5::Core Qt5::Network
+    $ENV{DOKAN_LIB}
 )
 
 if (NOT TOKEN_AUTH_ONLY)

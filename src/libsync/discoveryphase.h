@@ -36,6 +36,29 @@ class Account;
  * if the files are new, or changed.
  */
 
+
+/**
+ * @brief The FileStatPointer class
+ * @ingroup libsync
+ */
+class FileStatPointer {
+public:
+    FileStatPointer(csync_vio_file_stat_t *stat)
+        : _stat(stat)
+    { }
+    FileStatPointer(const FileStatPointer &other)
+        : _stat(csync_vio_file_stat_copy(other._stat))
+    { }
+    ~FileStatPointer() {
+        csync_vio_file_stat_destroy(_stat);
+    }
+    FileStatPointer &operator=(const FileStatPointer &other) {
+        csync_vio_file_stat_destroy(_stat);
+        _stat = csync_vio_file_stat_copy(other._stat);
+        return *this;
+    }
+    inline csync_vio_file_stat_t *data() const { return _stat; }
+    inline csync_vio_file_stat_t *operator->() const { return _stat; }
 struct DiscoveryDirectoryResult
 {
     QString path;
@@ -207,4 +230,27 @@ signals:
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);
 };
+    
+class OWNCLOUDSYNC_EXPORT DiscoveryFolderFileList : public QObject {
+    Q_OBJECT
+    
+    QString _pathPrefix; // remote path
+    AccountPtr _account;
+    DiscoveryDirectoryResult *_DiscoveryFolderFileListResult;
+    bool _firstFolderProcessed;
+    
+public:
+    DiscoveryFolderFileList(AccountPtr account) : QObject(), _account(account), _firstFolderProcessed(false)
+    { }
+    QByteArray _dataFingerprint;
+    
+public slots:
+    // From Job:
+    void singleDirectoryJobResultSlot(const QList<FileStatPointer> &);
+    void singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, const QString &msg);
+    void doGetFolderContent(const QString &subPath);
+signals:
+    void gotDataSignal(DiscoveryDirectoryResult *dr);
+};
+
 }

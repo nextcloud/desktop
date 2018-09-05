@@ -71,6 +71,17 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstri
             } else if (StringUtil::begins_with(response, wstring(L"GET_MENU_ITEMS:END"))) {
                 break; // Stop once we completely received the last sent request
             }
+            else if (StringUtil::begins_with(response, wstring(L"STREAM_SUBMENU_TITLE:"))) {
+                info.streamSubMenuTitle = response.substr(21);
+            }
+            else if (StringUtil::begins_with(response, wstring(L"STREAM_OFFLINE_ITEM_TITLE:"))) {
+                info.streamOfflineItemTitle = response.substr(26);
+            }
+            else if (StringUtil::begins_with(response, wstring(L"STREAM_ONLINE_ITEM_TITLE:"))) {
+                info.streamOnlineItemTitle = response.substr(25);
+                break; // Stop once we received the last sent request
+            }
+
         }
         else {
             Sleep(50);
@@ -97,4 +108,69 @@ void OCClientInterface::SendRequest(const wchar_t *verb, const std::wstring &pat
     {
         socket.SendMsg(msg);
     }
+}
+
+void OCClientInterface::SetDownloadMode(const std::wstring &path, bool online)
+{
+    auto pipename = CommunicationSocket::DefaultPipePath();
+
+    CommunicationSocket socket;
+    if (!WaitNamedPipe(pipename.data(), PIPE_TIMEOUT)) {
+        return;
+    }
+    if (!socket.Connect(pipename)) {
+        return;
+    }
+
+    wchar_t msg[SOCK_BUFFER] = { 0 };
+    if (SUCCEEDED(StringCchPrintf(msg, 
+            SOCK_BUFFER, 
+            L"SET_DOWNLOAD_MODE:%s|%d\n", 
+            path.c_str(),
+            online)
+            )
+        )
+    {
+        socket.SendMsg(msg);
+    }
+}
+
+std::wstring OCClientInterface::GetDownloadMode(const std::wstring &path)
+{
+    CommunicationSocket socket;
+    auto pipename = CommunicationSocket::DefaultPipePath();
+
+    if (!WaitNamedPipe(pipename.data(), PIPE_TIMEOUT))
+        return L"";
+    if (!socket.Connect(pipename))
+        return L"";
+
+    wchar_t msg[SOCK_BUFFER] = { 0 };
+    if (!SUCCEEDED(
+            StringCchPrintf(msg, 
+                SOCK_BUFFER, 
+                L"GET_DOWNLOAD_MODE:%s\n", 
+                path.c_str())
+            )
+        )
+        return L"";
+    
+    socket.SendMsg(msg);
+    std::wstring response;
+
+    int sleptCount = 0;
+    while (sleptCount < 5)
+        if (socket.ReadLine(&response))
+        {
+            if (StringUtil::begins_with(response, wstring(L"GET_DOWNLOAD_MODE:"))) {
+                wstring downloadMode = response.substr(18);
+                return downloadMode;
+            }
+        }
+        else 
+        {
+            Sleep(50);
+            ++sleptCount;
+        }
+    return L"";
 }

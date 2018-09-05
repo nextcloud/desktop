@@ -725,4 +725,67 @@ void DiscoveryJob::start()
     emit finished(ret);
     deleteLater();
 }
+    void DiscoveryFolderFileList::doGetFolderContent(const QString &subPath)
+    {
+		qDebug() << Q_FUNC_INFO << "Sub path: " << subPath;
+
+        QString fullPath = _pathPrefix;
+        fullPath += subPath;
+        // remove trailing slash
+        while (fullPath.endsWith('/')) {
+            fullPath.chop(1);
+        }
+        
+        // Result gets written in there
+        _DiscoveryFolderFileListResult = new DiscoveryDirectoryResult();
+        _DiscoveryFolderFileListResult->path = subPath;
+        
+        // Schedule the DiscoverySingleDirectoryJob
+        qDebug() << Q_FUNC_INFO << "Full path: " << fullPath;
+        QPointer<DiscoverySingleDirectoryJob> _singleDirJob = new DiscoverySingleDirectoryJob(_account, fullPath, this);
+
+        QObject::connect(_singleDirJob, SIGNAL(finishedWithResult(const QList<FileStatPointer> &)),
+                         this, SLOT(singleDirectoryJobResultSlot(const QList<FileStatPointer> &)));
+        QObject::connect(_singleDirJob, SIGNAL(finishedWithError(int,QString)),
+                         this, SLOT(singleDirectoryJobFinishedWithErrorSlot(int,QString)));
+        
+        if (fullPath.isEmpty()) {
+            _singleDirJob->setIsRootPath();
+        }
+        
+        _singleDirJob->start("DiscoveryFolderFileList");
+    }
+    
+    void DiscoveryFolderFileList::singleDirectoryJobResultSlot(const QList<FileStatPointer> & result)
+    {
+        qDebug() << Q_FUNC_INFO << "QHave" << result.count() << "results for " << _DiscoveryFolderFileListResult->path;
+        
+        _DiscoveryFolderFileListResult->list = result;
+        _DiscoveryFolderFileListResult->code = 0;
+        _DiscoveryFolderFileListResult->listIndex = 0;
+        
+        if (!_firstFolderProcessed) {
+            _firstFolderProcessed = true;
+        }
+        
+        
+        foreach(auto r, result)
+        {
+            qDebug() << Q_FUNC_INFO << "results: " << r->name << r->type;
+        }
+        
+        emit gotDataSignal(_DiscoveryFolderFileListResult);
+    }
+    
+    void DiscoveryFolderFileList::singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, const QString &msg)
+    {
+        qDebug() << Q_FUNC_INFO << csyncErrnoCode << msg;
+        
+        _DiscoveryFolderFileListResult->code = csyncErrnoCode;
+        _DiscoveryFolderFileListResult->msg = msg;
+        //_DiscoveryFolderFileListResult = 0; // the sync thread owns it now
+        
+        emit gotDataSignal(_DiscoveryFolderFileListResult);
+    }
+    
 }
