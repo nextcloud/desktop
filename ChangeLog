@@ -1,10 +1,10 @@
 ChangeLog
 =========
 
-version 2.5.0 (2018-08-xx)
+version 2.5.0 (2018-09-xx)
 * Local discovery: Speed up by skipping directories without changes reported by the file system watcher.
+* Experimental option to create virtual files (e.g. my_document.txt.owncloud) and download contents on demand ("placeholders")
 * Windows: Add sync folders to Explorer's navigation pane (#5295)
-* Experimental option to create virtual files and download contents on demand ("placeholders")
 * Experimental option to upload conflict files (#4557)
 * Conflicts: Change conflict file naming scheme
 * Conflicts: Add user name to conflict file name (#6325)
@@ -20,6 +20,7 @@ version 2.5.0 (2018-08-xx)
 * Share dialog: Fix Re-shares not not showing up (#6666)
 * Sharing: Add "copy public link" to menu (#6356)
 * Share link: Update permission wording (#6192)
+* Private links: improve legacy fileid derivation (#6745)
 * User shares: Show avatars
 * OAuth2: Remove the timeout (#6612)
 * Wizard: Remove the "Skip folder config" button and instead add a radio button (#3664)
@@ -104,11 +105,13 @@ version 2.5.0 (2018-08-xx)
 * Folder watcher: Show a notification if it becomes unreliable (#6119)
 * Ignore editor: Preserve comments in the exclude list file
 * Updater: Support EXE->MSI upgrade (different code than 2.4)
+* Updater: Remove unused installers before copying new ones into the appdata dir (#6690)
 * ConnectionValidator: change the minimum server version to 7.0
-* ConnectionValidator: Warn when the server version is less than 9.1
+* ConnectionValidator: Warn when the server version is less than 10.0
 * Valgrind: Refactorings to avoid errors
 * Crash fixes (#6562 and more)
 * Windows: Fix missing company name in our DLLs
+* Windows: Appveyor/craft changes
 * Linux: More tray workarounds (#6545)
 * libocsync: Rename to ${APPLICATION_EXECUTABLE}_csync
 * Don't use Qt deprecated API now that we required Qt 5.6
