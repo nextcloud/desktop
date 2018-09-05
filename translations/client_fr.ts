@@ -769,7 +769,10 @@
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Tous les fichiers contenus dans le dossier synchronisé &apos;%1&apos; ont été supprimés du serveur.
+Ces suppressions seront synchronisées sur vos dossiers locaux synchronisés, rendant ces fichiers inaccessibles, à moins que vous n&apos;ayez le droit de les restaurer.
+Si vous décidez de conserver ces fichiers, ils seront synchronisés à nouveau avec le serveur si vous en avez le droit.
+Si vous décidez de supprimer ces fichiers, ils vous seront inaccessibles, sauf si vous en êtes le propriétaire.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="932"/>
@@ -3844,7 +3847,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation>Merci de basculer vers votre navigateur pour poursuivre.</translation>
+        <translation>Merci de basculer vers votre navigateur pour terminer.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
