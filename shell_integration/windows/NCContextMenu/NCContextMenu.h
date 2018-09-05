@@ -42,6 +42,10 @@ protected:
 	~NCContextMenu();
 
 private:
+
+	// The name of the selected file.
+	wchar_t m_szSelectedFile[MAX_PATH];
+
 	// Reference count of component.
 	long m_cRef;
 

@@ -560,13 +560,11 @@ void SocketApi::command_SET_DOWNLOAD_MODE(const QString& argument, SocketListene
 		}
 #endif
 
-	/*
 	//< Show paths SyncMode table.
 	QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
 		QString item;
 		foreach(item, list)
 			qDebug() << Q_FUNC_INFO << " :::BD " << item;
-	*/
 }
 
 void SocketApi::command_GET_DOWNLOAD_MODE(const QString& localFile, SocketListener* listener)
