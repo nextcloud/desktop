@@ -13,7 +13,7 @@ endif()
 
 find_package(Qt5 5.12 COMPONENTS Core REQUIRED)
 configure_file(create_mac.sh.cmake ${CMAKE_CURRENT_BINARY_DIR}/create_mac.sh)
-configure_file(macosx.pkgproj.pkgproj.cmake ${CMAKE_CURRENT_BINARY_DIR}/macosx.pkgproj)
+configure_file(macosx.pkgproj.cmake ${CMAKE_CURRENT_BINARY_DIR}/macosx.pkgproj)
 configure_file(pre_install.sh.cmake ${CMAKE_CURRENT_BINARY_DIR}/pre_install.sh)
 configure_file(post_install.sh.cmake ${CMAKE_CURRENT_BINARY_DIR}/post_install.sh)
 configure_file(fuse/FUSE\ for\ macOS\ 3.8.1.pkg ${CMAKE_CURRENT_BINARY_DIR}/fuse/FUSE\ for\ macOS\ 3.8.1.pkg COPYONLY)

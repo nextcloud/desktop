@@ -76,6 +76,7 @@ public slots:
     // TODO: this should not be public
     void slotownCloudWizardDone(int);
     void slotCrash();
+	void slotDeleteOnlineFiles();
 
 protected:
     void parseOptions(const QStringList &);
@@ -104,7 +105,7 @@ private:
 
     Theme *_theme;
     #if defined(Q_OS_MAC)
-        LoopbackController *cont;
+        QPointer<LoopbackController> lbcont;
     #endif
 
     bool _helpOnly;
@@ -127,6 +128,7 @@ private:
 
     QNetworkConfigurationManager _networkConfigurationManager;
     QTimer _checkConnectionTimer;
+	QTimer *_cronDeleteOnlineFiles; //< Variable for cron delete online files task
 
 #if defined(WITH_CRASHREPORTER)
     QScopedPointer<CrashReporter::Handler> _crashHandler;
