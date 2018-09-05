@@ -28,6 +28,7 @@
 #include "accountmanager.h"
 #include "common/syncjournalfilerecord.h"
 #include "creds/abstractcredentials.h"
+#include "quotainfo.h"
 #ifdef WITH_LIBCLOUDPROVIDERS
 #include "cloudproviders/cloudprovidermanager.h"
 #endif
@@ -101,6 +102,13 @@ ownCloudGui::ownCloudGui(Application *parent)
         this, [=](const QString &sharePath, const QString &localPath) {
                 slotShowShareDialog(sharePath, localPath, ShareDialogStartPage::UsersAndGroups);
             });
+
+    /* use a signal mapper to map the open requests to the alias names */
+    connect(_folderOpenActionMapper, SIGNAL(mapped(QString)),
+            this, SLOT(slotFolderOpenAction(QString)));
+
+    connect(_recentItemsMapper, SIGNAL(mapped(QString)),
+            this, SLOT(slotOpenPath(QString)));
 
     ProgressDispatcher *pd = ProgressDispatcher::instance();
     connect(pd, &ProgressDispatcher::progressInfo, this,
@@ -714,4 +722,31 @@ void ownCloudGui::slotRemoveDestroyedShareDialogs()
 }
 
 
+QuotaAction::QuotaAction(QAction* action, AccountStatePtr accountState) :
+    QObject(action),
+    _accountState(accountState),
+    _action(action)
+{
+    _quotaInfo = new QuotaInfo(_accountState.data(), this);
+
+    connect(_quotaInfo, SIGNAL(quotaUpdated(qint64,qint64)),
+            this, SLOT(slotUpdateQuota(qint64,qint64)));
+    _quotaInfo->setActive(true);
+}
+
+void QuotaAction::slotUpdateQuota(qint64 total, qint64 used) {
+    if( total > 0 ) {
+        QString totalStr = Utility::octetsToString(total);
+        QString usedStr = Utility::octetsToString(used);
+        _action->setText(tr("%1 of %2 in use").arg(usedStr, totalStr));
+    } else {
+        /* -1 means not computed; -2 means unknown; -3 means unlimited  (#3940)*/
+        if (total == 0 || total == -1) {
+            _action->setText("Quota not available");
+        } else {
+            QString usedStr = Utility::octetsToString(used);
+            _action->setText(tr("%1 in use").arg(usedStr));
+        }
+    }
+}
 } // end namespace

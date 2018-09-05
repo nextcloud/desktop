@@ -48,6 +48,14 @@ private:
 	// The name of the selected files (separated by '\x1e')
 	std::wstring m_selectedFiles;
 	NCClientInterface::ContextMenuInfo m_info;
+
+	/// @brief changes the 
+	/// @param hWnd
+	void OnDriveMenuOnline(HWND hWnd);
+
+	/// @brief 
+	/// @param hWnd
+	void OnDriveMenuOffline(HWND hWnd);
 };
 	
 #endif //NCCONTEXTMENU_H

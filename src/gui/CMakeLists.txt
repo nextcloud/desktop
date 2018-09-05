@@ -166,6 +166,11 @@ IF( APPLE )
    add_definitions( -D_FILE_OFFSET_BITS=64 )
 ENDIF()
 
+IF( WIN32 )
+    list(APPEND client_SRCS vfs_windows.cpp)
+ENDIF()
+
+
 IF( NOT WIN32 AND NOT APPLE )
 set(client_SRCS ${client_SRCS} folderwatcher_linux.cpp)
 ENDIF()

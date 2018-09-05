@@ -50,10 +50,16 @@ public:
         {
             std::wstring command, flags, title;
         };
+        std::wstring streamSubMenuTitle;
+        std::wstring streamOfflineItemTitle;
+        std::wstring streamOnlineItemTitle;
         std::vector<MenuItem> menuItems;
     };
     static ContextMenuInfo FetchInfo(const std::wstring &files);
     static void SendRequest(const wchar_t *verb, const std::wstring &path);
+
+    static void SetDownloadMode(const std::wstring &path, bool online);
+    static std::wstring GetDownloadMode(const std::wstring &path);
 };
 
 #endif //ABSTRACTSOCKETHANDLER_H

@@ -83,6 +83,16 @@ public:
     bool monoIcons() const;
     void setMonoIcons(bool);
 
+// Configuration paths for virtual FileSystem.
+	void setDefaultFileStreamSyncPath(QString);
+	QString defaultFileStreamSyncPath();
+	void setDefaultFileStreamMirrorPath(QString);
+	QString defaultFileStreamMirrorPath();
+	void setDefaultFileStreamLetterDrive(QString);
+	QString defaultFileStreamLetterDrive();
+// Configuration paths on virtual FileSystem.
+	void createAuxiliarDirectories();
+
     bool promptDeleteFiles() const;
     void setPromptDeleteFiles(bool promptDeleteFiles);
 
