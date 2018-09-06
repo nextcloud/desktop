@@ -5,6 +5,7 @@ version 2.5.0 (2018-09-xx)
 * Local discovery: Speed up by skipping directories without changes reported by the file system watcher.
 * Experimental option to create virtual files (e.g. my_document.txt.owncloud) and download contents on demand ("placeholders")
 * Windows: Add sync folders to Explorer's navigation pane (#5295)
+* Config: Client configuration in roaming profile on Windows, XDG conform on Linux (#684, #2245)
 * Experimental option to upload conflict files (#4557)
 * Conflicts: Change conflict file naming scheme
 * Conflicts: Add user name to conflict file name (#6325)
@@ -45,6 +46,7 @@ version 2.5.0 (2018-09-xx)
 * Settings: Hide selective sync buttons while disconnected (#5809)
 * Settings: Show account page when account created
 * Settings: Move "About" to a dialog (#6075)
+* Settings: Force sync should wipe the blacklist (#6757)
 * Excludes: Optimize further the matching of exclude files using regular expression
 * Windows: Update Overlay Icon naming
 * Windows: Release handle/fd when file open fails (#6699)
