@@ -23,6 +23,14 @@
 #include <StringUtil.h>
 
 extern long g_cDllRef;
+enum {
+	IDM_FIRST = 0,
+	IDM_SHARE = IDM_FIRST,
+	IDM_DRIVEMENU,
+	IDM_DRIVEMENU_OFFLINE,
+	IDM_DRIVEMENU_ONLINE,
+	IDM_LAST
+};
 
 OCContextMenu::OCContextMenu(void) 
     : m_cRef(1)
@@ -173,13 +181,25 @@ IFACEMETHODIMP OCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
         indexSubMenu++;
     }
 
+	// Query the download mode 
+	std::wstring downloadMode = OCClientInterface::GetDownloadMode(m_szSelectedFile);
+	bool checkOnlineItem = downloadMode == L"ONLINE";
+	bool checkOfflineItem = downloadMode == L"OFFLINE";
+
+    // Insert the drive online|offline submenu
+	{
+		// Create the submenu
+		HMENU hDriveSubMenu = CreateMenu();
+		if (!hDriveSubMenu)
+			return HRESULT_FROM_WIN32(GetLastError()); 
+
         // Setup the "Online" item
         MENUITEMINFO menuInfoDriveOnline {0};
         menuInfoDriveOnline.cbSize = sizeof (MENUITEMINFO);
         menuInfoDriveOnline.fMask = MIIM_STRING;
-        menuInfoDriveOnline.dwTypeData = &info.streamOnlineItemTitle[0];
+        menuInfoDriveOnline.dwTypeData = &m_info.streamOnlineItemTitle[0];
         menuInfoDriveOnline.fMask |= MIIM_ID;
-        menuInfoDriveOnline.wID = idCmdFirst + IDM_DRIVEMENU_ONLINE;
+        menuInfoDriveOnline.wID = idCmdFirst + IDM_DRIVEMENU_ONLINE; // qué demionios hace esta linea
         menuInfoDriveOnline.fMask |= MIIM_STATE;
         menuInfoDriveOnline.fState = MFS_ENABLED;
 		if (checkOnlineItem)
@@ -199,7 +219,7 @@ IFACEMETHODIMP OCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
         MENUITEMINFO menuInfoDriveOffline {0};
         menuInfoDriveOffline.cbSize = sizeof (MENUITEMINFO);
         menuInfoDriveOffline.fMask = MIIM_STRING;
-        menuInfoDriveOffline.dwTypeData = &info.streamOfflineItemTitle[0];
+        menuInfoDriveOffline.dwTypeData = &m_info.streamOfflineItemTitle[0];
         menuInfoDriveOffline.fMask |= MIIM_ID;
         menuInfoDriveOffline.wID = idCmdFirst + IDM_DRIVEMENU_OFFLINE;
         menuInfoDriveOffline.fMask |= MIIM_STATE;
@@ -213,6 +233,25 @@ IFACEMETHODIMP OCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
             &menuInfoDriveOffline
             ))
             return HRESULT_FROM_WIN32(GetLastError());
+
+        // Insert the submenu below the "share" item
+        MENUITEMINFO hDriveSubMenuInfo;
+        hDriveSubMenuInfo.cbSize = sizeof (MENUITEMINFO);
+        hDriveSubMenuInfo.fMask = MIIM_SUBMENU | MIIM_STATE | MIIM_STRING;
+        hDriveSubMenuInfo.fState = MFS_ENABLED;
+        // TODO: obtener el texto del cliente/gui
+        hDriveSubMenuInfo.dwTypeData = &m_info.streamSubMenuTitle[0];
+        hDriveSubMenuInfo.hSubMenu = hDriveSubMenu;
+
+        // Insert the subitem into the 
+        if (!InsertMenuItem(hMenu,
+            indexMenu++,
+            TRUE,
+            &hDriveSubMenuInfo
+            ))
+            return HRESULT_FROM_WIN32(GetLastError());
+
+    }
 
     indexMenu++;
     InsertSeperator(hMenu, indexMenu);
