@@ -41,6 +41,8 @@ class WebEnginePage : public QWebEnginePage {
 public:
     WebEnginePage(QWebEngineProfile *profile, QObject* parent = nullptr);
     QWebEnginePage * createWindow(QWebEnginePage::WebWindowType type) override;
+protected:
+    bool certificateError(const QWebEngineCertificateError &certificateError) override;
 };
 
 // We need a separate class here, since we cannot simply return the same WebEnginePage object
@@ -145,7 +147,12 @@ QWebEnginePage * WebEnginePage::createWindow(QWebEnginePage::WebWindowType type)
     ExternalWebEnginePage *view = new ExternalWebEnginePage(this->profile());
     return view;
 }
-
+    
+bool WebEnginePage::certificateError(const QWebEngineCertificateError &certificateError) {
+    //handle webview certificate errors here 
+return true;
+}
+    
 ExternalWebEnginePage::ExternalWebEnginePage(QWebEngineProfile *profile, QObject* parent) : QWebEnginePage(profile, parent) {
 
 }
