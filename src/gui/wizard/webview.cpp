@@ -150,7 +150,7 @@ QWebEnginePage * WebEnginePage::createWindow(QWebEnginePage::WebWindowType type)
     
 bool WebEnginePage::certificateError(const QWebEngineCertificateError &certificateError) {
     //handle webview certificate errors here 
-return true;
+    return true;
 }
     
 ExternalWebEnginePage::ExternalWebEnginePage(QWebEngineProfile *profile, QObject* parent) : QWebEnginePage(profile, parent) {
