@@ -4,18 +4,18 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Could not make directories in trash</source>
-        <translation>V smeteh ni mogoče ustvarjati imenikov</translation>
+        <translation>V smeteh ni mogoče ustvarjati map</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="459"/>
         <location filename="../src/common/filesystembase.cpp" line="465"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation>Premik &apos;%1&apos; v &apos;%2&apos; ni mogoč</translation>
+        <translation>Premikanje »%1« v »%2« ni mogoče.</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation>Na tej platformi premik v smeti ni implementiran</translation>
+        <translation>Premikanje v smeti v tem okolju ni podprto</translation>
     </message>
 </context>
 <context>
@@ -267,7 +267,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="678"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Pridobivam pooblastilo brskalnika. &lt;a href=&apos;%1&apos;&gt;Kliknite&lt;/a&gt; za ponovno odprtje brskalnika.</translation>
+        <translation>Poteka pridobivanje overitve brskalnika. &lt;a href=&apos;%1&apos;&gt;Kliknite&lt;/a&gt; za ponovno odpiranje brskalnika.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="682"/>
@@ -1315,7 +1315,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="67"/>
         <source>&amp;Channel</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Kanal</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="84"/>
@@ -1335,7 +1335,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="189"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation>Vprašaj za potrditev pred usklajevanjem map, večjih kot</translation>
+        <translation>Vprašaj za potrditev pred usklajevanjem map, večjih od</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="209"/>
@@ -1841,7 +1841,7 @@ Logs will be written to %1</source>
         <location filename="../src/gui/notificationwidget.cpp" line="147"/>
         <source>%1 request failed at %2</source>
         <extracomment>The second parameter is a time, such as 'failed at 09:58pm'</extracomment>
-        <translation>%1 zahteva spodletela na %2</translation>
+        <translation>%1 – spodletelo ob %2</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="153"/>
@@ -2268,7 +2268,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="269"/>
         <source>Enable experimental mode</source>
-        <translation type="unfinished"/>
+        <translation>Omogoči preizkusni način</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="270"/>
@@ -3660,7 +3660,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/theme.cpp" line="350"/>
         <source>&lt;p&gt;Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%2 and the %2 logo are registered trademarks of %1 in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Programski paket objavlja %1 pod pogoji Splošnega javnega dovoljenja GNU (GNU General Public License - GPL), različice 2.0.&lt;br&gt;%2 in logotip %2 sta blagovni znamki %1 v Združenih državah, drugih državah ali oboje.&lt;/p&gt;</translation>
+        <translation>Programski paket objavlja %1 pod pogoji Splošnega javnega dovoljenja GNU (GNU General Public License &lt;p&gt;– GPL), različice 2.0.&lt;br&gt;%2 in logotip %2 sta blagovni znamki %1 v Združenih državah, drugih državah ali oboje.</translation>
     </message>
 </context>
 <context>
@@ -3967,7 +3967,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="301"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation>Vprašaj za potrditev pred usklajevan&amp;jem map, večjih kot</translation>
+        <translation>Vprašaj za potrditev pred usklajevan&amp;jem map, večjih od</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="318"/>
