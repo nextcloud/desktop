@@ -373,7 +373,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="132"/>
         <source>Maintenance mode</source>
-        <translation>režim údržby</translation>
+        <translation>Režim údržby</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="134"/>
@@ -383,7 +383,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="136"/>
         <source>Configuration error</source>
-        <translation>Chyba konfigurace</translation>
+        <translation>Chyba nastavení</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="138"/>
@@ -534,12 +534,12 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
         <source>Browse...</source>
-        <translation>Procházet...</translation>
+        <translation>Procházet…</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password :</source>
-        <translation>Heslo certifikátu :</translation>
+        <translation>Heslo certifikátu:</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
