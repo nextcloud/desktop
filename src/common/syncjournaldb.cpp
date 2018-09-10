@@ -2124,7 +2124,7 @@ bool operator==(const SyncJournalDb::UploadInfo &lhs,
 		QString modeStr = _getSyncModeQuery->stringValue(0);
 		if (modeStr.isEmpty())
 			return SYNCMODE_NONE;
-		return static_cast<SyncMode>(modeStr.begin()->toAscii());
+		return static_cast<SyncMode>(modeStr.begin()->toLatin1());
 	}
 
 	int SyncJournalDb::setSyncMode(QString const & path, SyncMode mode)
