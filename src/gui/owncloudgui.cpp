@@ -415,7 +415,7 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
     menu->addSeparator();
     if (separateMenu) {
         if (onePaused) {
-            QAction *enable = menu->addAction(tr("Unpause all folders"));
+            QAction *enable = menu->addAction(tr("Resume all folders"));
             enable->setProperty(propertyAccountC, QVariant::fromValue(accountState));
             connect(enable, &QAction::triggered, this, &ownCloudGui::slotUnpauseAllFolders);
         }
@@ -648,9 +648,9 @@ void ownCloudGui::updateContextMenu()
     if (atLeastOnePaused) {
         QString text;
         if (accountList.count() > 1) {
-            text = tr("Unpause all synchronization");
+            text = tr("Resume all synchronization");
         } else {
-            text = tr("Unpause synchronization");
+            text = tr("Resume synchronization");
         }
         QAction *action = _contextMenu->addAction(text);
         connect(action, &QAction::triggered, this, &ownCloudGui::slotUnpauseAllFolders);

@@ -415,7 +415,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="515"/>
         <location filename="../src/gui/activitywidget.cpp" line="563"/>
         <source>Server Activity</source>
-        <translation>Действия Сервера</translation>
+        <translation>События на сервере</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="522"/>
@@ -436,7 +436,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="606"/>
         <source>The server activity list has been copied to the clipboard.</source>
-        <translation>Список активности сервера скопирован в буфер обмена.</translation>
+        <translation>Список событий на сервере скопирован в буфер обмена.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="610"/>
@@ -471,7 +471,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="131"/>
         <source>Server Activities</source>
-        <translation>Действия Сервера</translation>
+        <translation>События на сервере</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="87"/>
@@ -765,22 +765,22 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="927"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Все фйлы в синхронизируемом каталоге &apos;%1&apos; были удалены на сервере.
-Эти удаления будут переданы в ваш локальный синхронизируемый каталог, так что файлы станут недоступны, если только у вас нет права на восстановление. 
-Если вы решите сохранить эти файлы, то они будут повторно синхронизированы с сервером, при наличии у вас прав на это.
-Если вы решили удалить файлы, они станут вам недоступны, крмое случая, когда вы сам владелец.</translation>
+        <translation>На сервере удалены все файлы из синхронизируемого каталога «%1».
+При синхронизации будет выполнено удаление локальной копии файлов, что сделает их недоступными при отсутствии прав на восстановление удалённых файлов.
+При выборе «Сохранить файлы» и наличии соответствующих прав доступа, файлы будут повторно переданы на сервер.
+При выборе «Удалить файлы»,  файлы станут недоступны, кроме случая, когда вы являетесь их владельцем.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="932"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Все файлы в локальном синхронизируемом каталоге &apos;%1&apos; были удалены. Эти удаления будут отправлены на ваш сервер, сделав таким образом файлы совсем недоступными, если только не восстанавливать их из резервной копии.
-Вы уверены, что хотите засинхронизировать сервер со всеми этими изменениями?
-Если это произошло случайно и вы решите сохранить файлы, они будут перезакачаны с сервера.</translation>
+        <translation>Все файлы в локальном синхронизируемом каталоге «%1» удалены. Информация об удалении будет отправлена на сервер, таким образом сделав файлы недоступными, если только не восстанавливать их из резервной копии.
+Действительно выполнить синхронизировать с этими изменениями?
+Если это произошло случайно, и вы решите сохранить файлы, они будут повторно скачаны с сервера.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="936"/>
@@ -1639,7 +1639,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/networksettings.cpp" line="34"/>
         <source>Hostname of proxy server</source>
-        <translation>Адрес прокси сервера</translation>
+        <translation>Адрес прокси-сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="35"/>
@@ -2055,7 +2055,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="585"/>
         <source>Folder rename failed</source>
-        <translation>Ошибка переименования каталога</translation>
+        <translation>Ошибка переименования папки</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="586"/>
@@ -2091,12 +2091,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="40"/>
         <source>Open Local Folder</source>
-        <translation>Открыть локальный каталог</translation>
+        <translation>Открыть локальную папку</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="48"/>
         <source>Open %1 in Browser</source>
-        <translation>Открыть %1 в Браузере</translation>
+        <translation>Открыть «%1» в браузере</translation>
     </message>
 </context>
 <context>
@@ -2120,7 +2120,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="409"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>Файл %1 не может быть загружен из-за локального конфликта имен!</translation>
+        <translation>Файл «%1» не может быть загружен из-за локального конфликта имён!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="459"/>
@@ -2135,7 +2135,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="577"/>
         <source>File was deleted from server</source>
-        <translation>Файл был удален с сервера</translation>
+        <translation>Файл удалён с сервера</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="630"/>
@@ -2150,7 +2150,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="798"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation>Файл %1 не может быть сохранён из-за локального конфликта имен!</translation>
+        <translation>Файл «%1» не может быть сохранён из-за локального конфликта имён!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="846"/>
@@ -2181,7 +2181,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="158"/>
         <source>could not delete file %1, error: %2</source>
-        <translation>не удалось удалить файл %1, ошибка: %2</translation>
+        <translation>не удалось удалить файл «%1», ошибка: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="166"/>
@@ -2191,7 +2191,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="172"/>
         <source>could not create folder %1</source>
-        <translation>не удается создать папку %1</translation>
+        <translation>не удалось создать папку «%1»</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="184"/>
@@ -2204,17 +2204,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="76"/>
         <source>Error removing &apos;%1&apos;: %2;</source>
-        <translation>Ошибка при удалении &apos;%1&apos;: %2; </translation>
+        <translation>Ошибка удаления «%1»: %2; </translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="101"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation>Не удается удалить папку &apos;%1&apos;</translation>
+        <translation>Не удалось удалить папку «%1»</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="120"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation>Не удается удалить %1 из-за локального конфликта имен</translation>
+        <translation>Не удалось удалить «%1» из-за локального конфликта имён</translation>
     </message>
 </context>
 <context>
@@ -2222,7 +2222,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="219"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation>Файл %1 не может быть переименован в %2 из-за локального конфликта имен</translation>
+        <translation>Файл «%1» не может быть переименован в «%2» из-за локального конфликта имён</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="250"/>
@@ -2698,7 +2698,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="414"/>
         <source>Password Protected</source>
-        <translation>Защищено Паролем</translation>
+        <translation>Защищено паролем</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="96"/>
@@ -3641,8 +3641,8 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
-        <source>Unpause all folders</source>
-        <translation>Снять с паузы все папки</translation>
+        <source>Resume all folders</source>
+        <translation>Возобновить синхронизацию всех папок</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -3651,12 +3651,12 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
-        <source>Unpause all synchronization</source>
+        <source>Resume all synchronization</source>
         <translation>Возобновить все синхронизации</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
-        <source>Unpause synchronization</source>
+        <source>Resume synchronization</source>
         <translation>Возобновить синхронизацию</translation>
     </message>
     <message>
