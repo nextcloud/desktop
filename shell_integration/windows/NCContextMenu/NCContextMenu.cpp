@@ -295,14 +295,14 @@ IFACEMETHODIMP NCContextMenu::InvokeCommand(LPCMINVOKECOMMANDINFO pici)
             OnDriveMenuOnline(pici->hwnd);
         } else if (LOWORD(pici->lpVerb) == IDM_DRIVEMENU_OFFLINE) {
             OnDriveMenuOffline(pici->hwnd);
-        } else {
+		} else {
 
-        auto offset = LOWORD(pici->lpVerb);
-        if (offset >= m_info.menuItems.size())
-            return E_FAIL;
+			auto offset = LOWORD(pici->lpVerb);
+			if (offset >= m_info.menuItems.size())
+				return E_FAIL;
 
-        command = m_info.menuItems[offset].command;
-
+			command = m_info.menuItems[offset].command;
+		}
     } else {
         return E_FAIL;
     }

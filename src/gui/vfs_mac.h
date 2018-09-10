@@ -44,7 +44,7 @@ namespace OCC
     class DiscoveryFolderFileList;
 }
 
-class InternalLoopBack;
+class InternalVfsMac;
 /*!
  * class
  * discussion This class controls the life cycle of a user space file system.
@@ -61,12 +61,12 @@ class InternalLoopBack;
  * mountPath.<br>
  *
  */                   
-class LoopbackFS : public QObject
+class VfsMac : public QObject
 {
     Q_OBJECT
     
 private:
-    QPointer<InternalLoopBack> internal_;
+    QPointer<InternalVfsMac> internal_;
     QString rootPath_;
     qint64 usedQuota_;
     qint64 totalQuota_;
@@ -124,13 +124,13 @@ public:
      * param isThreadSafe Is the file system thread safe?
      * result A LoopbackController instance.
      */
-    explicit LoopbackFS(QString rootPath, bool isThreadSafe, OCC::AccountState *accountState, QObject *parent=0);
+    explicit VfsMac(QString rootPath, bool isThreadSafe, OCC::AccountState *accountState, QObject *parent=0);
     
     // The file system for the current thread. Valid only during a FUSE callback.
-    static LoopbackFS* currentFS() {
+    static VfsMac* currentFS() {
         struct fuse_context* context = fuse_get_context();
         Q_ASSERT(context);
-        return (LoopbackFS *)context->private_data;
+        return (VfsMac *)context->private_data;
     }
     
     // Convenience method to creates an autoreleased NSError in the
@@ -509,7 +509,7 @@ public:
      */
     bool removeExtendedAttribute(QString name, QString path, QVariantMap &error);
     
-    //~LoopbackFS();
+    //~VfsMac();
     
     bool enableAllocate();
     bool enableCaseSensitiveNames();

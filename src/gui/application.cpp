@@ -14,7 +14,6 @@
  * for more details.
  */
 
-#include "quotainfo.h"
 #include "application.h"
 
 #include <iostream>
@@ -293,8 +292,8 @@ Application::~Application()
         this, &Application::slotAccountStateRemoved);
     AccountManager::instance()->shutdown();
 #if defined(Q_OS_MAC)
-    if(lbcont)
-        lbcont->unmount();
+    if(cont)
+        cont->unmount();
 #endif
 }
 
@@ -315,8 +314,8 @@ void Application::slotAccountStateRemoved(AccountState *accountState)
             _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
     }
 #if defined(Q_OS_MAC)
-    if(lbcont)
-        lbcont->unmount();
+    if(cont)
+        cont->unmount();
 #endif
     if (_folderManager) {
         disconnect(accountState, &AccountState::stateChanged,
@@ -348,7 +347,7 @@ void Application::slotAccountStateAdded(AccountState *accountState)
     
     // Mount the virtual FileSystem.
     #if defined(Q_OS_MAC)
-    lbcont = new LoopbackController("/Users/deloyajj/Pruebas_fuse", "/Volumes/loop", accountState, this);
+    cont = new VfsMacController("/Users/JesusDeloya/Pruebas_fuse", "/Volumes/loop", accountState, this);
     #endif
 
 
@@ -755,12 +754,12 @@ bool removeDirs(const QString & dirName)
 
 void Application::slotDeleteOnlineFiles()
 {
-	qDebug() << Q_FUNC_INFO << " 01: " << SyncJournalDb::instance()->databaseFilePath();
+	//qDebug() << Q_FUNC_INFO << " 01: " << SyncJournalDb::instance()->databaseFilePath();
 
 	//< Get paths SyncMode table.
-	QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
+	//QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
 	
-	if ( ! list.empty() )
+	/*if ( ! list.empty() )
 	{
 		qDebug() << Q_FUNC_INFO << " 02";
 
@@ -769,12 +768,12 @@ void Application::slotDeleteOnlineFiles()
 		{
 			qDebug() << Q_FUNC_INFO << " 03";
 
-			qint64 m_secondsSinceLastAccess = SyncJournalDb::instance()->secondsSinceLastAccess(item);
-			SyncJournalDb::SyncMode mode = SyncJournalDb::instance()->getSyncMode(item);
+			//qint64 m_secondsSinceLastAccess = SyncJournalDb::instance()->secondsSinceLastAccess(item);
+			//SyncJournalDb::SyncMode mode = SyncJournalDb::instance()->getSyncMode(item);
 
 			qDebug() << Q_FUNC_INFO << " 04";
 
-			SyncJournalDb::SyncModeDownload down = SyncJournalDb::instance()->getSyncModeDownload(item);
+			//SyncJournalDb::SyncModeDownload down = SyncJournalDb::instance()->getSyncModeDownload(item);
 
 			qDebug() << Q_FUNC_INFO << " 05";
 
@@ -815,10 +814,10 @@ void Application::slotDeleteOnlineFiles()
 					if (file2.open(QIODevice::ReadWrite))
 						file2.close();
 				}
-			SyncJournalDb::instance()->deleteSyncMode(item);
+			//SyncJournalDb::instance()->deleteSyncMode(item);
 			}
 		}
-	}
+	}*/
 }
 
 bool Application::giveHelp()
