@@ -24,6 +24,7 @@
 
 #include <zlib.h>
 
+#include <io.h>
 namespace OCC {
 
 QtMessageHandler s_originalMessageHandler = nullptr;
@@ -160,7 +161,7 @@ void Logger::setLogFile(const QString &name)
 
     bool openSucceeded = false;
     if (name == QLatin1String("-")) {
-        openSucceeded = _logFile.open(1, QIODevice::WriteOnly);
+        openSucceeded = _logFile.open(stdout, QIODevice::WriteOnly);
     } else {
         _logFile.setFileName(name);
         openSucceeded = _logFile.open(QIODevice::WriteOnly);
