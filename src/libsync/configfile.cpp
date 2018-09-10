@@ -50,7 +50,12 @@ namespace OCC {
 
 namespace chrono = std::chrono;
 
-Q_LOGGING_CATEGORY(lcConfigFile, "sync.configfile", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcConfigFile, "sync.configfile", QtInfoMsg);
+
+
+static const char defaultFileStreamSyncPathC[]			= "fileStreamSyncPathDefault";
+static const char defaultFileStreamMirrorPathC[]		= "fileStreamMirrorPathDefault";
+static const char defaultFileStreamLetterDriveC[]		= "fileStreamPathDefaultLetterDrive";
 
 //static const char caCertsKeyC[] = "CaCertificates"; only used from account.cpp
 static const char remotePollIntervalC[] = "remotePollInterval";
@@ -851,6 +856,7 @@ void ConfigFile::setAutomaticLogDir(bool enabled)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(automaticLogDirC), enabled);
+}
 
 void ConfigFile::setDefaultFileStreamMirrorPath(QString path)
 {
@@ -912,9 +918,6 @@ void ConfigFile::createAuxiliarDirectories()
 		Sleep(100);
 	}
 	*/
-
-
-}
 }
 
 QString ConfigFile::certificatePath() const
