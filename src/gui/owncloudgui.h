@@ -20,6 +20,7 @@
 #include "progressdispatcher.h"
 
 #include <QObject>
+#include <QSignalMapper>
 #include <QPointer>
 #include <QAction>
 #include <QMenu>
@@ -167,6 +168,10 @@ private:
     QMap<AccountStatePtr, QJsonArray> _navApps;
 
     QList<QAction *> _recentItemsActions;
+    
+    QSignalMapper *_folderOpenActionMapper;
+    QSignalMapper *_recentItemsMapper;
+    
     Application *_app;
 };
 
