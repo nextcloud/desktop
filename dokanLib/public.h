@@ -25,7 +25,7 @@ with this program. If not, see <http://www.gnu.org/licenses/>.
 #ifndef DOKAN_MAJOR_API_VERSION
 #define DOKAN_MAJOR_API_VERSION L"1"
 /*#include <minwindef.h> */
-#include "C:/Program Files (x86)/Windows Kits/8.1/Include/shared/minwindef.h"
+#include "minwindef.h"
 #endif
 
 #define DOKAN_DRIVER_VERSION 0x0000190

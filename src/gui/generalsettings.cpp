@@ -239,6 +239,7 @@ void GeneralSettings::slotToggleOptionalServerNotifications(bool enable)
     ConfigFile cfgFile;
     cfgFile.setOptionalServerNotifications(enable);
 
+#ifdef Q_OS_WIN
 	QString m_defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
 	QString m_defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
 	QString m_defaultFileStreamLetterDrive = cfgFile.defaultFileStreamLetterDrive();
@@ -252,7 +253,7 @@ void GeneralSettings::slotToggleOptionalServerNotifications(bool enable)
 
 	if (m_defaultFileStreamMirrorPath.isEmpty() || m_defaultFileStreamMirrorPath.compare(QString("")) == 0)
 	{
-		cfgFile.setDefaultFileStreamMirrorPath(wwr);
+		cfgFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles");
 		m_defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
 	}
 
@@ -261,6 +262,7 @@ void GeneralSettings::slotToggleOptionalServerNotifications(bool enable)
 		cfgFile.setDefaultFileStreamLetterDrive(QString("x"));
 		m_defaultFileStreamLetterDrive = cfgFile.defaultFileStreamLetterDrive();
 	}
+#endif
 }
 
 void GeneralSettings::slotShowInExplorerNavigationPane(bool checked)
