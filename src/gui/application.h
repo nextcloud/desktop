@@ -32,7 +32,7 @@
 #include "clientproxy.h"
 #include "folderman.h"
 #if defined(Q_OS_MAC)
-#include "LoopbackController.h"
+#include "vfs_maccontroller.h"
 #endif
 
 class QMessageBox;
@@ -102,7 +102,7 @@ private:
 
     Theme *_theme;
     #if defined(Q_OS_MAC)
-        QPointer<LoopbackController> lbcont;
+        VfsMacController *cont;
     #endif
 
     bool _helpOnly;

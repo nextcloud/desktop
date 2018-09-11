@@ -141,9 +141,9 @@ IF( APPLE )
     list(REMOVE_ITEM client_SRCS settingsdialog.cpp)
     list(APPEND client_SRCS socketapisocket_mac.mm)
     list(APPEND client_SRCS systray.mm)
-    list(APPEND client_SRCS LoopbackFS.cpp)
+    list(APPEND client_SRCS vfs_mac.cpp)
     list(APPEND client_SRCS fileManager.mm)
-    list(APPEND client_SRCS LoopbackController.cpp)
+    list(APPEND client_SRCS vfs_maccontroller.cpp)
 
     if(SPARKLE_FOUND)
        # Define this, we need to check in updater.cpp

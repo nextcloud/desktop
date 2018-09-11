@@ -14,8 +14,8 @@
 // limitations under the License.
 // ================================================================
 //
-//  LoopbackController.h
-//  LoopbackFS
+//  VfsMacController.h
+//  
 //
 //  Created by ted on 12/27/07.
 //
@@ -29,13 +29,13 @@
 #include "quotainfo.h"
 #include "accountstate.h"
 
-class LoopbackFS;
+class VfsMac;
 
-class LoopbackController: public QObject
+class VfsMacController: public QObject
 {
     Q_OBJECT
 public:
-    explicit LoopbackController(QString rootPath, QString mountPath, OCC::AccountState *accountState, QObject *parent);
+    explicit VfsMacController(QString rootPath, QString mountPath, OCC::AccountState *accountState, QObject *parent);
     //~LoopbackController();
     
 public slots:
@@ -43,7 +43,7 @@ public slots:
     void unmount();
     
 private:
-    QScopedPointer<LoopbackFS> fs_;
+    QScopedPointer<VfsMac> fs_;
     OCC::QuotaInfo* qi_;
 private slots:
     static void mountFailed (QVariantMap userInfo);

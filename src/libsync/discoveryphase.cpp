@@ -770,10 +770,10 @@ void DiscoveryJob::start()
             _firstFolderProcessed = true;
         }
         
-        
-        /*foreach(auto r, _DiscoveryFolderFileListResult->list)
+        /*for(unsigned long i=0; i <_DiscoveryFolderFileListResult->list.size(); i++)
+        //foreach(auto r, _DiscoveryFolderFileListResult->list)
         {
-            qDebug() << Q_FUNC_INFO << "results: " << r->name << r->type;
+            qDebug() << Q_FUNC_INFO << "results: " << _DiscoveryFolderFileListResult->list.at(i)->path << _DiscoveryFolderFileListResult->list.at(i)->type;
         }*/
         
         emit gotDataSignal(_DiscoveryFolderFileListResult);

@@ -16,13 +16,13 @@
 #include <QMessageBox>
 #include <QApplication>
 
-#include "LoopbackController.h"
-#include "LoopbackFS.h"
+#include "vfs_maccontroller.h"
+#include "vfs_mac.h"
 
 #include <AvailabilityMacros.h>
 
 
-void LoopbackController::mountFailed(QVariantMap userInfo)
+void VfsMacController::mountFailed(QVariantMap userInfo)
 {
     qDebug() << "Got mountFailed notification.";
     
@@ -33,7 +33,7 @@ void LoopbackController::mountFailed(QVariantMap userInfo)
     alert.exec();
 }
 
-void LoopbackController::didMount(QVariantMap userInfo)
+void VfsMacController::didMount(QVariantMap userInfo)
 {
     qDebug() << "Got didMount notification.";
     
@@ -43,31 +43,31 @@ void LoopbackController::didMount(QVariantMap userInfo)
     alert.exec();
 }
 
-void LoopbackController::didUnmount(QVariantMap userInfo) {
+void VfsMacController::didUnmount(QVariantMap userInfo) {
     qDebug() << "Got didUnmount notification.";
     
     QApplication::quit();
 }
 
-void LoopbackController::unmount()
+void VfsMacController::unmount()
 {
     fs_->unmount();
 }
 
-void LoopbackController::slotquotaUpdated(qint64 total, qint64 used)
+void VfsMacController::slotquotaUpdated(qint64 total, qint64 used)
 {
     fs_->setTotalQuota(total);
     fs_->setUsedQuota(used);
 }
 
-LoopbackController::LoopbackController(QString rootPath, QString mountPath, OCC::AccountState *accountState, QObject *parent):QObject(parent), fs_(new LoopbackFS(rootPath, false, accountState, this))
+VfsMacController::VfsMacController(QString rootPath, QString mountPath, OCC::AccountState *accountState, QObject *parent):QObject(parent), fs_(new VfsMac(rootPath, false, accountState, this))
 {
     qi_ = new OCC::QuotaInfo(accountState, this);
     
-    connect(qi_, &OCC::QuotaInfo::quotaUpdated, this, &LoopbackController::slotquotaUpdated);
-    connect(fs_.data(), &LoopbackFS::FuseFileSystemDidMount, this, didMount);
-    connect(fs_.data(), &LoopbackFS::FuseFileSystemMountFailed, this, mountFailed);
-    connect(fs_.data(), &LoopbackFS::FuseFileSystemDidUnmount, this, didUnmount);
+    connect(qi_, &OCC::QuotaInfo::quotaUpdated, this, &VfsMacController::slotquotaUpdated);
+    connect(fs_.data(), &VfsMac::FuseFileSystemDidMount, this, didMount);
+    connect(fs_.data(), &VfsMac::FuseFileSystemMountFailed, this, mountFailed);
+    connect(fs_.data(), &VfsMac::FuseFileSystemDidUnmount, this, didUnmount);
     
     qi_->setActive(true);
     
@@ -80,15 +80,15 @@ LoopbackController::LoopbackController(QString rootPath, QString mountPath, OCC:
     
     // Do not use the 'native_xattr' mount-time option unless the underlying
     // file system supports native extended attributes. Typically, the user
-    // would be mounting an HFS+ directory through LoopbackFS, so we do want
+    // would be mounting an HFS+ directory through VfsMac, so we do want
     // this option in that case.
     options.append("native_xattr");
     
-    options.append("volname=LoopbackFS");
+    options.append("volname=VfsMac");
     fs_->mountAtPath(mountPath, options);
 }
 
-/*LoopbackController::~LoopbackController()
+/*VfsMacController::~VfsMacController()
 {
     //fs_->unmount();
 }*/
