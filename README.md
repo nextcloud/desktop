@@ -10,7 +10,7 @@
 - [ ] qtkeychain: https://github.com/frankosterfeld/qtkeychain
 - [ ] Visual Studio
 - [ ] Git bash (it comes with Git)
-- [ ] png2ico: http://www.winterdrache.de/freeware/png2ico/
+- [ ] Png2Icon - you need to use this version: https://github.com/hiiamok/png2ImageMagickICO
 
 
 ## CMake options
