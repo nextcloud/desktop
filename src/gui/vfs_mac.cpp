@@ -13,7 +13,7 @@
  * for more details.
  */
 
-#include "LoopbackFS.h"
+#include "vfs_mac.h"
 #include "fileManager.h"
 #include "discoveryphase.h"
 
@@ -32,12 +32,12 @@
 
 #include <sys/ioctl.h>
 
-class InternalLoopBack : public QObject
+class InternalVfsMac : public QObject
 {
 private:
     struct fuse* handle_;
     QString mountPath_;
-    LoopbackFS::GMUserFileSystemStatus status_;
+    VfsMac::GMUserFileSystemStatus status_;
     bool shouldCheckForResource_;     // Try to handle FinderInfo/Resource Forks?
     bool isThreadSafe_;               // Is the delegate thread-safe?
     bool supportsAllocate_;           // Delegate supports preallocation of files?
@@ -48,10 +48,10 @@ private:
     bool isReadOnly_;                 // Is this mounted read-only?
     
 public:
-    explicit InternalLoopBack(QObject *parent = 0, bool isThreadSafe=false)
+    explicit InternalVfsMac(QObject *parent = 0, bool isThreadSafe=false)
                     : QObject(parent)
     {
-        status_ = LoopbackFS::GMUserFileSystem_NOT_MOUNTED;
+        status_ = VfsMac::GMUserFileSystem_NOT_MOUNTED;
         isThreadSafe_ = isThreadSafe;
         supportsAllocate_ = false;
         supportsCaseSensitiveNames_ = true;
@@ -65,11 +65,11 @@ public:
     void setHandle (struct fuse *handle) { handle_ = handle; }
     QString mountPath () { return mountPath_; }
     void setMountPath (QString mountPath) { mountPath_ = mountPath;}
-    LoopbackFS::GMUserFileSystemStatus status ()
+    VfsMac::GMUserFileSystemStatus status ()
     {
         return this->status_;
     }
-    void setStatus (LoopbackFS::GMUserFileSystemStatus status) { this->status_ = status; }
+    void setStatus (VfsMac::GMUserFileSystemStatus status) { this->status_ = status; }
     bool isThreadSafe () { return isThreadSafe_; }
     bool supportsAllocate () { return supportsAllocate_; };
     void setSupportsAllocate (bool val) { supportsAllocate_ = val; }
@@ -84,38 +84,38 @@ public:
     bool shouldCheckForResource () { return shouldCheckForResource_; }
     bool isReadOnly () { return isReadOnly_; }
     void setIsReadOnly (bool val) { isReadOnly_ = val; }
-    ~InternalLoopBack() {  }
+    ~InternalVfsMac() {  }
     
 };
 
-LoopbackFS::LoopbackFS(QString rootPath, bool isThreadSafe, OCC::AccountState *accountState, QObject *parent):QObject(parent), internal_(new InternalLoopBack(parent, isThreadSafe)), accountState_(accountState)
+VfsMac::VfsMac(QString rootPath, bool isThreadSafe, OCC::AccountState *accountState, QObject *parent):QObject(parent), internal_(new InternalVfsMac(parent, isThreadSafe)), accountState_(accountState)
 {
     rootPath_ = rootPath;
     totalQuota_ = (2LL * 1024 * 1024 * 1024);
     usedQuota_ = 0;
     _remotefileListJob = new OCC::DiscoveryFolderFileList(accountState_->account());
     _remotefileListJob->setParent(this);
-    connect(this, &LoopbackFS::startRemoteFileListJob, _remotefileListJob, &OCC::DiscoveryFolderFileList::doGetFolderContent);
-    connect(_remotefileListJob, &OCC::DiscoveryFolderFileList::gotDataSignal, this, &LoopbackFS::folderFileListFinish);
+    connect(this, &VfsMac::startRemoteFileListJob, _remotefileListJob, &OCC::DiscoveryFolderFileList::doGetFolderContent);
+    connect(_remotefileListJob, &OCC::DiscoveryFolderFileList::gotDataSignal, this, &VfsMac::folderFileListFinish);
 }
 
-bool LoopbackFS::enableAllocate() {
+bool VfsMac::enableAllocate() {
     return internal_->supportsAllocate();
 }
-bool LoopbackFS::enableCaseSensitiveNames() {
+bool VfsMac::enableCaseSensitiveNames() {
     return internal_->supportsCaseSensitiveNames();
 }
-bool LoopbackFS::enableExchangeData() {
+bool VfsMac::enableExchangeData() {
     return internal_->supportsExchangeData();
 }
-bool LoopbackFS::enableExtendedTimes() {
+bool VfsMac::enableExtendedTimes() {
     return internal_->supportsExtendedTimes();
 }
-bool LoopbackFS::enableSetVolumeName() {
+bool VfsMac::enableSetVolumeName() {
     return internal_->supportsSetVolumeName();
 }
 
-QVariantMap LoopbackFS::currentContext()
+QVariantMap VfsMac::currentContext()
 {
     struct fuse_context* context = fuse_get_context();
     QVariantMap dict;
@@ -130,12 +130,12 @@ QVariantMap LoopbackFS::currentContext()
     return dict;
 }
 
-void LoopbackFS::mountAtPath(QString mountPath, QStringList options)
+void VfsMac::mountAtPath(QString mountPath, QStringList options)
 {
     this->mountAtPath(mountPath, options, true, true);
 }
 
-void LoopbackFS::mountAtPath(QString mountPath, QStringList options, bool shouldForeground, bool detachNewThread)
+void VfsMac::mountAtPath(QString mountPath, QStringList options, bool shouldForeground, bool detachNewThread)
 {
     internal_->setMountPath(mountPath);
     QStringList optionCopy;
@@ -152,14 +152,14 @@ void LoopbackFS::mountAtPath(QString mountPath, QStringList options, bool should
     args.insert("options", optionCopy);
     args.insert("shouldForeground", shouldForeground);
     if (detachNewThread) {
-        std::thread t(&LoopbackFS::mount, this, args);
+        std::thread t(&VfsMac::mount, this, args);
         t.detach();
     } else {
         this->mount(args);
     }
 }
 
-void LoopbackFS::unmount() {
+void VfsMac::unmount() {
     if (internal_.data() != nullptr && internal_->status() == GMUserFileSystem_MOUNTED) {
         QStringList args;
         args << "-v" << internal_->mountPath();
@@ -171,7 +171,7 @@ void LoopbackFS::unmount() {
     }
 }
 
-bool LoopbackFS::invalidateItemAtPath(QString path, QVariantMap &error)
+bool VfsMac::invalidateItemAtPath(QString path, QVariantMap &error)
 {
     int ret = -ENOTCONN;
     
@@ -189,14 +189,14 @@ bool LoopbackFS::invalidateItemAtPath(QString path, QVariantMap &error)
     }
     if (ret != 0)
     {
-        error = LoopbackFS::errorWithCode(ret);
+        error = VfsMac::errorWithCode(ret);
         return false;
     }
     return true;
 }
 
 
-QVariantMap LoopbackFS::errorWithCode(int code)
+QVariantMap VfsMac::errorWithCode(int code)
 {
     QVariantMap error;
     error.insert("code", code);
@@ -204,7 +204,7 @@ QVariantMap LoopbackFS::errorWithCode(int code)
     return error;
 }
 
-QVariantMap LoopbackFS::errorWithPosixCode(int code)
+QVariantMap VfsMac::errorWithPosixCode(int code)
 {
     QVariantMap error;
     error.insert("code", code);
@@ -217,7 +217,7 @@ QVariantMap LoopbackFS::errorWithPosixCode(int code)
 static const int kMaxWaitForMountTries = 50;
 static const int kWaitForMountUSleepInterval = 100000;  // 100 ms
 
-void LoopbackFS::waitUntilMounted (int fileDescriptor)
+void VfsMac::waitUntilMounted (int fileDescriptor)
 {
     for (int i = 0; i < kMaxWaitForMountTries; ++i) {
         u_int32_t handShakeComplete = 0;
@@ -237,7 +237,7 @@ void LoopbackFS::waitUntilMounted (int fileDescriptor)
     }
 }
 
-void LoopbackFS::fuseInit()
+void VfsMac::fuseInit()
 {
     struct fuse_context* context = fuse_get_context();
     
@@ -273,11 +273,11 @@ void LoopbackFS::fuseInit()
     struct fuse_chan* chan = fuse_session_next_chan(se, NULL);
     int fd = fuse_chan_fd(chan);
     
-    std::thread t(&LoopbackFS::waitUntilMounted, this, fd);
+    std::thread t(&VfsMac::waitUntilMounted, this, fd);
     t.detach();
 }
 
-void LoopbackFS::fuseDestroy()
+void VfsMac::fuseDestroy()
 {
     internal_->setStatus(GMUserFileSystem_UNMOUNTING);
     
@@ -289,7 +289,7 @@ void LoopbackFS::fuseDestroy()
 
 #pragma mark Internal Stat Operations
 
-bool LoopbackFS::fillStatfsBuffer(struct statfs *stbuf, QString path, QVariantMap &error)
+bool VfsMac::fillStatfsBuffer(struct statfs *stbuf, QString path, QVariantMap &error)
 {
     QVariantMap attributes = this->attributesOfFileSystemForPath(path, error);
     if (attributes.isEmpty()) {
@@ -324,7 +324,7 @@ bool LoopbackFS::fillStatfsBuffer(struct statfs *stbuf, QString path, QVariantMa
     return true;
 }
 
-bool LoopbackFS::fillStatBuffer(struct stat *stbuf, QString path, QVariant userData, QVariantMap &error)
+bool VfsMac::fillStatBuffer(struct stat *stbuf, QString path, QVariant userData, QVariantMap &error)
 {
     QVariantMap attributes = this->defaultAttributesOfItemAtPath(path, userData, error);
     if (attributes.empty()) {
@@ -389,7 +389,7 @@ bool LoopbackFS::fillStatBuffer(struct stat *stbuf, QString path, QVariant userD
     {
         QDateTime mdate = attributes.value(FileManager::FMFileModificationDate).toDateTime();
         if (mdate.isValid()) {
-            const double seconds_dp = mdate.toSecsSinceEpoch();
+            const double seconds_dp = mdate.toMSecsSinceEpoch()/1000;
             const time_t t_sec = (time_t) seconds_dp;
             const double nanoseconds_dp = ((seconds_dp - t_sec) * kNanoSecondsPerSecond);
             const long t_nsec = (nanoseconds_dp > 0 ) ? nanoseconds_dp : 0;
@@ -404,7 +404,7 @@ bool LoopbackFS::fillStatBuffer(struct stat *stbuf, QString path, QVariant userD
     {
         QDateTime adate = attributes.value(kGMUserFileSystemFileAccessDateKey).toDateTime();
         if (adate.isValid()) {
-            const double seconds_dp = adate.toSecsSinceEpoch();
+            const double seconds_dp = adate.toMSecsSinceEpoch()/1000;
             const time_t t_sec = (time_t) seconds_dp;
             const double nanoseconds_dp = ((seconds_dp - t_sec) * kNanoSecondsPerSecond);
             const long t_nsec = (nanoseconds_dp > 0 ) ? nanoseconds_dp : 0;
@@ -416,7 +416,7 @@ bool LoopbackFS::fillStatBuffer(struct stat *stbuf, QString path, QVariant userD
     {
         QDateTime cdate = attributes.value(kGMUserFileSystemFileChangeDateKey).toDateTime();
         if (cdate.isValid()) {
-            const double seconds_dp = cdate.toSecsSinceEpoch();
+            const double seconds_dp = cdate.toMSecsSinceEpoch()/1000;
             const time_t t_sec = (time_t) seconds_dp;
             const double nanoseconds_dp = ((seconds_dp - t_sec) * kNanoSecondsPerSecond);
             const long t_nsec = (nanoseconds_dp > 0 ) ? nanoseconds_dp : 0;
@@ -430,7 +430,7 @@ bool LoopbackFS::fillStatBuffer(struct stat *stbuf, QString path, QVariant userD
     {
         QDateTime bdate = attributes.value(FileManager::FMFileCreationDate).toDateTime();
         if (bdate.isValid()) {
-            const double seconds_dp = bdate.toSecsSinceEpoch();
+            const double seconds_dp = bdate.toMSecsSinceEpoch()/1000;
             const time_t t_sec = (time_t) seconds_dp;
             const double nanoseconds_dp = ((seconds_dp - t_sec) * kNanoSecondsPerSecond);
             const long t_nsec = (nanoseconds_dp > 0 ) ? nanoseconds_dp : 0;
@@ -475,14 +475,14 @@ bool LoopbackFS::fillStatBuffer(struct stat *stbuf, QString path, QVariant userD
 }
 #pragma mark Creating an Item
 
-bool LoopbackFS::createDirectoryAtPath(QString path, QVariantMap attributes, QVariantMap &error)
+bool VfsMac::createDirectoryAtPath(QString path, QVariantMap attributes, QVariantMap &error)
 {
     QString p = rootPath_ + path;
     FileManager fm;
     return fm.createDirectory(p, attributes, error);
 }
 
-bool LoopbackFS::createFileAtPath(QString path, QVariantMap attributes, int flags, QVariant &userData, QVariantMap &error)
+bool VfsMac::createFileAtPath(QString path, QVariantMap attributes, int flags, QVariant &userData, QVariantMap &error)
 {
     QString p = rootPath_ + path;
     FileManager fm;
@@ -491,7 +491,7 @@ bool LoopbackFS::createFileAtPath(QString path, QVariantMap attributes, int flag
 
 #pragma mark Removing an Item
 
-bool LoopbackFS::removeDirectoryAtPath(QString path, QVariantMap &error)
+bool VfsMac::removeDirectoryAtPath(QString path, QVariantMap &error)
 {
     QString p = rootPath_ + path;
     int ret = rmdir(p.toLatin1().data());
@@ -502,7 +502,7 @@ bool LoopbackFS::removeDirectoryAtPath(QString path, QVariantMap &error)
     return true;
 }
 
-bool LoopbackFS::removeItemAtPath(QString path, QVariantMap &error)
+bool VfsMac::removeItemAtPath(QString path, QVariantMap &error)
 {
     QString p = rootPath_ + path;
     FileManager fs;
@@ -511,7 +511,7 @@ bool LoopbackFS::removeItemAtPath(QString path, QVariantMap &error)
 
 #pragma mark Moving an Item
 
-bool LoopbackFS::moveItemAtPath(QString source, QString destination, QVariantMap &error)
+bool VfsMac::moveItemAtPath(QString source, QString destination, QVariantMap &error)
 {
     // We use rename directly here since NSFileManager can sometimes fail to
     // rename and return non-posix error codes.
@@ -527,7 +527,7 @@ bool LoopbackFS::moveItemAtPath(QString source, QString destination, QVariantMap
 
 #pragma mark Linking an Item
 
-bool LoopbackFS::linkItemAtPath(QString path, QString otherPath, QVariantMap &error)
+bool VfsMac::linkItemAtPath(QString path, QString otherPath, QVariantMap &error)
 {
     QString p_path = rootPath_ + path;
     QString p_otherPath = rootPath_ + otherPath;
@@ -544,13 +544,13 @@ bool LoopbackFS::linkItemAtPath(QString path, QString otherPath, QVariantMap &er
 
 #pragma mark Symbolic Links
 
-bool LoopbackFS::createSymbolicLinkAtPath(QString path, QString otherPath, QVariantMap &error)
+bool VfsMac::createSymbolicLinkAtPath(QString path, QString otherPath, QVariantMap &error)
 {
     FileManager fm;
     return fm.createSymbolicLinkAtPath(rootPath_ + path, otherPath, error);
 }
 
-QString LoopbackFS::destinationOfSymbolicLinkAtPath(QString path, QVariantMap &error)
+QString VfsMac::destinationOfSymbolicLinkAtPath(QString path, QVariantMap &error)
 {
     FileManager fm;
     return fm.destinationOfSymbolicLinkAtPath(rootPath_ + path, error);
@@ -558,7 +558,7 @@ QString LoopbackFS::destinationOfSymbolicLinkAtPath(QString path, QVariantMap &e
 
 #pragma mark Directory Contents
 
-void LoopbackFS::folderFileListFinish(OCC::DiscoveryDirectoryResult *dr)
+void VfsMac::folderFileListFinish(OCC::DiscoveryDirectoryResult *dr)
 {
     if(dr)
     {
@@ -569,7 +569,7 @@ void LoopbackFS::folderFileListFinish(OCC::DiscoveryDirectoryResult *dr)
         qDebug() << "Error al obtener los resultados, viene nulo";
 }
 
-QStringList *LoopbackFS::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
+QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
 {
    // _remotefileListJob->start(path);
     emit startRemoteFileListJob(path);
@@ -586,38 +586,42 @@ QStringList *LoopbackFS::contentsOfDirectoryAtPath(QString path, QVariantMap &er
     }
     
     FileManager fm;
-    foreach(auto r, _fileListMap.value(path)->list)
+    if(!_fileListMap.value(path)->list.empty())
     {
-        QString completePath = rootPath_ + (path.endsWith("/")?path:(path+"/")) + QString::fromLatin1(r->name);
-        QFileInfo fi(completePath);
-        if (!fi.exists())
+        for(unsigned long i=0; i <_fileListMap.value(path)->list.size(); i++)
         {
-            if(r->type == CSYNC_VIO_FILE_TYPE_DIRECTORY)
+            QString completePath = rootPath_ + (path.endsWith("/")?path:(path+"/")) + QString::fromLatin1(_fileListMap.value(path)->list.at(i)->path);
+            QFileInfo fi(completePath);
+            if (!fi.exists())
             {
-                unsigned long perm = 16877 & ALLPERMS;
-                QVariantMap attribs;
-                attribs.insert(FileManager::FMFilePosixPermissions, (long long)perm);
-                fm.createDirectory(completePath, attribs, error);
+                if(_fileListMap.value(path)->list.at(i)->type == ItemTypeDirectory)
+                {
+                    unsigned long perm = 16877 & ALLPERMS;
+                    QVariantMap attribs;
+                    attribs.insert(FileManager::FMFilePosixPermissions, (long long)perm);
+                    fm.createDirectory(completePath, attribs, error);
+                }
+                else if (_fileListMap.value(path)->list.at(i)->type == ItemTypeFile)
+                {
+                    QVariant fd;
+                    unsigned long perm = ALLPERMS;
+                    QVariantMap attribs;
+                    attribs.insert(FileManager::FMFilePosixPermissions, (long long)perm);
+                    fm.createFileAtPath(completePath, attribs, fd, error);
+                    close(fd.toInt());
+                }
             }
-            else if (r->type == CSYNC_VIO_FILE_TYPE_REGULAR)
-            {
-                QVariant fd;
-                unsigned long perm = ALLPERMS;
-                QVariantMap attribs;
-                attribs.insert(FileManager::FMFilePosixPermissions, (long long)perm);
-                fm.createFileAtPath(completePath, attribs, fd, error);
-                close(fd.toInt());
-            }
+    //        qDebug() << Q_FUNC_INFO << "results: " << r->name << r->type;
         }
-        qDebug() << Q_FUNC_INFO << "results: " << r->name << r->type;
     }
+    _fileListMap.remove(path);
     
     return new QStringList (fm.contentsOfDirectoryAtPath(rootPath_ + path, error));
 }
 
 #pragma mark File Contents
 
-bool LoopbackFS::openFileAtPath(QString path, int mode, QVariant &userData, QVariantMap &error)
+bool VfsMac::openFileAtPath(QString path, int mode, QVariant &userData, QVariantMap &error)
 {
     //Sync.
     
@@ -632,14 +636,14 @@ bool LoopbackFS::openFileAtPath(QString path, int mode, QVariant &userData, QVar
     return true;
 }
 
-void LoopbackFS::releaseFileAtPath(QString path, QVariant userData)
+void VfsMac::releaseFileAtPath(QString path, QVariant userData)
 {
     long num = userData.toLongLong();
     int fd = num;
     close(fd);
 }
 
-int LoopbackFS::readFileAtPath(QString path, QVariant userData, char *buffer, size_t size, off_t offset, QVariantMap &error)
+int VfsMac::readFileAtPath(QString path, QVariant userData, char *buffer, size_t size, off_t offset, QVariantMap &error)
 {
     long num = userData.toLongLong();
     int fd = num;
@@ -651,7 +655,7 @@ int LoopbackFS::readFileAtPath(QString path, QVariant userData, char *buffer, si
     return ret;
 }
 
-int LoopbackFS::writeFileAtPath(QString path, QVariant userData, const char *buffer, size_t size, off_t offset, QVariantMap &error)
+int VfsMac::writeFileAtPath(QString path, QVariant userData, const char *buffer, size_t size, off_t offset, QVariantMap &error)
 {
     long num = userData.toLongLong();
     int fd = num;
@@ -663,7 +667,7 @@ int LoopbackFS::writeFileAtPath(QString path, QVariant userData, const char *buf
     return ret;
 }
 
-bool LoopbackFS::preallocateFileAtPath(QString path, QVariant userData, int options, off_t offset, off_t length, QVariantMap &error)
+bool VfsMac::preallocateFileAtPath(QString path, QVariant userData, int options, off_t offset, off_t length, QVariantMap &error)
 {
     long num = userData.toLongLong();
     int fd = num;
@@ -694,7 +698,7 @@ bool LoopbackFS::preallocateFileAtPath(QString path, QVariant userData, int opti
     return true;
 }
 
-bool LoopbackFS::exchangeDataOfItemAtPath(QString path1, QString path2, QVariantMap &error)
+bool VfsMac::exchangeDataOfItemAtPath(QString path1, QString path2, QVariantMap &error)
 {
     QString p1 = rootPath_ + path1;
     QString p2 = rootPath_ + path2;
@@ -708,7 +712,7 @@ bool LoopbackFS::exchangeDataOfItemAtPath(QString path1, QString path2, QVariant
 
 #pragma mark Getting and Setting Attributes
 
-QVariantMap LoopbackFS::attributesOfFileSystemForPath(QString path, QVariantMap &error)
+QVariantMap VfsMac::attributesOfFileSystemForPath(QString path, QVariantMap &error)
 {
     QVariantMap attributes;
     
@@ -749,7 +753,7 @@ QVariantMap LoopbackFS::attributesOfFileSystemForPath(QString path, QVariantMap 
     return attributes;
 }
 
-bool LoopbackFS::setAttributes(QVariantMap attributes, QString path, QVariant userInfo, QVariantMap &error)
+bool VfsMac::setAttributes(QVariantMap attributes, QString path, QVariant userInfo, QVariantMap &error)
 {
     QString p = rootPath_ + path;
     
@@ -778,7 +782,7 @@ bool LoopbackFS::setAttributes(QVariantMap attributes, QString path, QVariant us
     return fm.setAttributes(attributes, p, error);
 }
 
-QVariantMap LoopbackFS::defaultAttributesOfItemAtPath(QString path, QVariant userData, QVariantMap &error)
+QVariantMap VfsMac::defaultAttributesOfItemAtPath(QString path, QVariant userData, QVariantMap &error)
 {
     // Set up default item attributes.
     QVariantMap attributes;
@@ -824,7 +828,7 @@ QVariantMap LoopbackFS::defaultAttributesOfItemAtPath(QString path, QVariant use
     return attributes;
 }
 
-QVariantMap* LoopbackFS::extendedTimesOfItemAtPath(QString path, QVariant userData, QVariantMap &error)
+QVariantMap* VfsMac::extendedTimesOfItemAtPath(QString path, QVariant userData, QVariantMap &error)
 {
     FileManager fm;
     return fm.attributesOfItemAtPath(path, error);
@@ -832,7 +836,7 @@ QVariantMap* LoopbackFS::extendedTimesOfItemAtPath(QString path, QVariant userDa
 
 #pragma mark Extended Attributes
 
-QStringList* LoopbackFS::extendedAttributesOfItemAtPath(QString path, QVariantMap &error)
+QStringList* VfsMac::extendedAttributesOfItemAtPath(QString path, QVariantMap &error)
 {
     QString p = rootPath_ + path;
     QStringList *retval = nullptr;
@@ -859,7 +863,7 @@ QStringList* LoopbackFS::extendedAttributesOfItemAtPath(QString path, QVariantMa
     return retval;
 }
 
-QByteArray* LoopbackFS::valueOfExtendedAttribute(QString name, QString path, off_t position, QVariantMap &error)
+QByteArray* VfsMac::valueOfExtendedAttribute(QString name, QString path, off_t position, QVariantMap &error)
 {
     QByteArray *data=nullptr;
     QString p = rootPath_ + path;
@@ -883,7 +887,7 @@ QByteArray* LoopbackFS::valueOfExtendedAttribute(QString name, QString path, off
 //    data.setRawData(cdata, size);
     return data;
 }
-bool LoopbackFS::setExtendedAttribute(QString name, QString path, QByteArray value, off_t position, int options, QVariantMap &error)
+bool VfsMac::setExtendedAttribute(QString name, QString path, QByteArray value, off_t position, int options, QVariantMap &error)
 {
     // Setting com.apple.FinderInfo happens in the kernel, so security related
     // bits are set in the options. We need to explicitly remove them or the call
@@ -901,7 +905,7 @@ bool LoopbackFS::setExtendedAttribute(QString name, QString path, QByteArray val
     return true;
 }
 
-bool LoopbackFS::removeExtendedAttribute(QString name, QString path, QVariantMap &error)
+bool VfsMac::removeExtendedAttribute(QString name, QString path, QVariantMap &error)
 {
     QString p = rootPath_ + path;
     int ret = removexattr(p.toLatin1().data(), name.toLatin1().data(), XATTR_NOFOLLOW);
@@ -934,7 +938,7 @@ if (code != 0) {                                                      \
 
 static void* fusefm_init(struct fuse_conn_info* conn)
 {
-    LoopbackFS* fs = LoopbackFS::currentFS();
+    VfsMac* fs = VfsMac::currentFS();
     try
     {
         fs->fuseInit();
@@ -952,7 +956,7 @@ static void* fusefm_init(struct fuse_conn_info* conn)
 
 static void fusefm_destroy(void* private_data)
 {
-    LoopbackFS* fs = (LoopbackFS *)private_data;
+    VfsMac* fs = (VfsMac *)private_data;
     try
     {
         fs->fuseDestroy();
@@ -970,7 +974,7 @@ static int fusefm_mkdir(const char* path, mode_t mode)
         unsigned long perm = mode & ALLPERMS;
         QVariantMap attribs;
         attribs.insert(FileManager::FMFilePosixPermissions, (long long)perm);
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         if (fs->createDirectoryAtPath(QString::fromLatin1(path), attribs, error))
             ret = 0;  // Success!
         else
@@ -993,7 +997,7 @@ static int fusefm_create(const char* path, mode_t mode, struct fuse_file_info* f
         unsigned long perms = mode & ALLPERMS;
         QVariantMap attribs;
         attribs.insert(FileManager::FMFilePosixPermissions, (long long)perms);
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         if (fs->createFileAtPath(path, attribs, fi->flags, userData, error))
         {
             ret = 0;
@@ -1014,7 +1018,7 @@ static int fusefm_rmdir(const char* path)
     try
     {
         QVariantMap error;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         if (fs->removeDirectoryAtPath(QString::fromLatin1(path), error))
             ret = 0;  // Success!
         else
@@ -1030,7 +1034,7 @@ static int fusefm_unlink(const char* path)
     try
     {
         QVariantMap error;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         if (fs->removeItemAtPath(QString::fromLatin1(path),error))
             ret = 0;  // Success!
         else
@@ -1049,7 +1053,7 @@ static int fusefm_rename(const char* path, const char* toPath)
         QString source = QString::fromLatin1(path);
         QString destination = QString::fromLatin1(toPath);
         QVariantMap error;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         if (fs->moveItemAtPath(source, destination, error))
             ret = 0;  // Success!
         else
@@ -1066,7 +1070,7 @@ static int fusefm_link(const char* path1, const char* path2)
     try
     {
         QVariantMap error;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         if (fs->linkItemAtPath(QString::fromLatin1(path1), QString::fromLatin1(path2), error))
             ret = 0;  // Success!
         else
@@ -1083,7 +1087,7 @@ static int fusefm_symlink(const char* path1, const char* path2)
     try
     {
         QVariantMap error;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         if (fs->createSymbolicLinkAtPath(QString::fromLatin1(path2), QString::fromLatin1(path1), error))
             ret = 0;  // Success!
         else
@@ -1101,7 +1105,7 @@ static int fusefm_readlink(const char *path, char *buf, size_t size)
     {
         QString linkPath = QString::fromLatin1(path);
         QVariantMap error;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         QString pathContent = fs->destinationOfSymbolicLinkAtPath(linkPath, error);
         if (!pathContent.isEmpty())
         {
@@ -1123,7 +1127,7 @@ static int fusefm_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
     
     try
     {
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         QStringList *contents =
         fs->contentsOfDirectoryAtPath(QString::fromLatin1(path), error);
         if (contents)
@@ -1147,7 +1151,7 @@ static int fusefm_open(const char *path, struct fuse_file_info* fi) {
     {
         QVariant userData;
         QVariantMap error;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         if (fs->openFileAtPath(QString::fromLatin1(path), fi->flags, userData, error))
         {
             ret = 0;
@@ -1166,7 +1170,7 @@ static int fusefm_release(const char *path, struct fuse_file_info* fi)
     try
     {
         QVariant userData = fi->fh;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         fs->releaseFileAtPath(QString::fromLatin1(path), userData);
     }
     catch (QException exception) { }
@@ -1181,7 +1185,7 @@ static int fusefm_read(const char *path, char *buf, size_t size, off_t offset,
     try
     {
         QVariantMap error;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         ret = fs->readFileAtPath(QString::fromLatin1(path), fi->fh, buf, size, offset, error);
         MAYBE_USE_ERROR(ret, error);
     }
@@ -1196,7 +1200,7 @@ static int fusefm_write(const char* path, const char* buf, size_t size,
     
     try {
         QVariantMap error;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         ret = fs->writeFileAtPath(QString::fromLatin1(path), fi->fh, buf, size, offset, error);
         MAYBE_USE_ERROR(ret, error);
     }
@@ -1217,7 +1221,7 @@ static int fusefm_fallocate(const char* path, int mode, off_t offset, off_t leng
     try
     {
         QVariantMap error;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         if (fs->preallocateFileAtPath(QString::fromLatin1(path), (fi ? fi->fh : QVariant()), mode, offset, length, error))
         {
             ret = 0;
@@ -1233,7 +1237,7 @@ static int fusefm_exchange(const char* p1, const char* p2, unsigned long opts) {
     int ret = -ENOSYS;
     try {
         QVariantMap error;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         if (fs->exchangeDataOfItemAtPath(QString::fromLatin1(p1), QString::fromLatin1(p2), error)) {
             ret = 0;
         } else {
@@ -1251,7 +1255,7 @@ static int fusefm_statfs_x(const char* path, struct statfs* stbuf)
     try {
         memset(stbuf, 0, sizeof(struct statfs));
         QVariantMap error;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         if (fs->fillStatfsBuffer(stbuf, QString::fromLatin1(path), error))
             ret = 0;
         else
@@ -1269,7 +1273,7 @@ static int fusefm_setvolname(const char* name)
         QVariantMap error;
         QVariantMap attribs;
         attribs.insert(kGMUserFileSystemVolumeNameKey, QString::fromLatin1(name));
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         if (fs->setAttributes(attribs, "/", QVariantMap(), error)) {
             ret = 0;
         } else {
@@ -1289,7 +1293,7 @@ static int fusefm_fgetattr(const char *path, struct stat *stbuf,
     try {
         memset(stbuf, 0, sizeof(struct stat));
         QVariantMap error;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         QVariant userData = fi ? fi->fh : 0;
         if (fs->fillStatBuffer(stbuf, QString::fromLatin1(path), userData, error))
             ret = 0;
@@ -1315,14 +1319,14 @@ static int fusefm_getxtimes(const char* path, struct timespec* bkuptime,
     try
     {
         QVariantMap error;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         QVariantMap *attribs = fs->extendedTimesOfItemAtPath(QString::fromLatin1(path), QVariant(), error);
         if (attribs) {
             ret = 0;
             QDateTime creationDate = attribs->value(FileManager::FMFileCreationDate).toDateTime();
             if (creationDate.isValid())
             {
-                const double seconds_dp = creationDate.toSecsSinceEpoch();
+                const double seconds_dp = creationDate.toMSecsSinceEpoch()/1000;
                 const time_t t_sec = (time_t) seconds_dp;
                 const double nanoseconds_dp = ((seconds_dp - t_sec) * kNanoSecondsPerSecond);
                 const long t_nsec = (nanoseconds_dp > 0 ) ? nanoseconds_dp : 0;
@@ -1333,7 +1337,7 @@ static int fusefm_getxtimes(const char* path, struct timespec* bkuptime,
             }
             QDateTime backupDate = attribs->value(kGMUserFileSystemFileBackupDateKey).toDateTime();
             if (backupDate.isValid()) {
-                const double seconds_dp = backupDate.toSecsSinceEpoch();
+                const double seconds_dp = backupDate.toMSecsSinceEpoch()/1000;
                 const time_t t_sec = (time_t) seconds_dp;
                 const double nanoseconds_dp = ((seconds_dp - t_sec) * kNanoSecondsPerSecond);
                 const long t_nsec = (nanoseconds_dp > 0 ) ? nanoseconds_dp : 0;
@@ -1354,7 +1358,7 @@ static QDateTime dateWithTimespec(const struct timespec* spec)
 {
     unsigned long long time_ns = spec->tv_nsec;
     unsigned long long time_sec = spec->tv_sec + (time_ns / kNanoSecondsPerSecond);
-    return QDateTime::fromSecsSinceEpoch(time_sec);
+    return QDateTime::fromMSecsSinceEpoch(time_sec*1000);
 }
 
 static QVariantMap dictionaryWithAttributes(const struct setattr_x* attrs)
@@ -1395,7 +1399,7 @@ static int fusefm_fsetattr_x(const char* path, struct setattr_x* attrs,
     {
         QVariantMap error;
         QVariantMap attribs = dictionaryWithAttributes(attrs);
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         if (fs->setAttributes(attribs, QString::fromLatin1(path), (fi ? fi->fh : QVariant()), error))
             ret = 0;
         else
@@ -1415,7 +1419,7 @@ static int fusefm_listxattr(const char *path, char *list, size_t size)
     try
     {
         QVariantMap error;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         QStringList *attributeNames = fs->extendedAttributesOfItemAtPath(QString::fromLatin1(path), error);
         if (attributeNames) {
             char zero = 0;
@@ -1449,7 +1453,7 @@ static int fusefm_getxattr(const char *path, const char *name, char *value,
    // qDebug() << "Path: " << path << "QString: " << QString::fromLatin1(path);
     try {
         QVariantMap error;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         QByteArray* data = fs->valueOfExtendedAttribute(QString::fromLatin1(name), QString::fromLatin1(path), position, error);
         if (data) {
             ret = data->length();  // default to returning size of buffer.
@@ -1474,7 +1478,7 @@ static int fusefm_setxattr(const char *path, const char *name, const char *value
     int ret = -EPERM;
     try {
         QVariantMap error;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         if (fs->setExtendedAttribute(QString::fromLatin1(name), QString::fromLatin1(path), QByteArray(value, size), position, flags, error))
             ret = 0;
         else {
@@ -1491,7 +1495,7 @@ static int fusefm_removexattr(const char *path, const char *name)
     try
     {
         QVariantMap error;
-        LoopbackFS* fs = LoopbackFS::currentFS();
+        VfsMac* fs = VfsMac::currentFS();
         if (fs->removeExtendedAttribute(QString(name), QString(path), error))
             ret = 0;
         else
@@ -1553,14 +1557,14 @@ static struct fuse_operations fusefm_oper = {
     .removexattr = fusefm_removexattr,
 };
 
-/*LoopbackFS::~LoopbackFS()
+/*VfsMac::~VfsMac()
 {
     internal_->deleteLater();
 }*/
 
 #pragma mark Internal Mount
 
-void LoopbackFS::mount(QVariantMap args)
+void VfsMac::mount(QVariantMap args)
 {
     Q_ASSERT(internal_->status() == GMUserFileSystem_NOT_MOUNTED);
     internal_->setStatus(GMUserFileSystem_MOUNTING);

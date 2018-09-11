@@ -292,8 +292,8 @@ Application::~Application()
         this, &Application::slotAccountStateRemoved);
     AccountManager::instance()->shutdown();
 #if defined(Q_OS_MAC)
-    if(lbcont)
-        lbcont->unmount();
+    if(cont)
+        cont->unmount();
 #endif
 }
 
@@ -314,8 +314,8 @@ void Application::slotAccountStateRemoved(AccountState *accountState)
             _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
     }
 #if defined(Q_OS_MAC)
-    if(lbcont)
-        lbcont->unmount();
+    if(cont)
+        cont->unmount();
 #endif
     if (_folderManager) {
         disconnect(accountState, &AccountState::stateChanged,
@@ -347,7 +347,7 @@ void Application::slotAccountStateAdded(AccountState *accountState)
     
     // Mount the virtual FileSystem.
     #if defined(Q_OS_MAC)
-    lbcont = new LoopbackController("/Users/deloyajj/Pruebas_fuse", "/Volumes/loop", accountState, this);
+    cont = new VfsMacController("/Users/JesusDeloya/Pruebas_fuse", "/Volumes/loop", accountState, this);
     #endif
 
 
