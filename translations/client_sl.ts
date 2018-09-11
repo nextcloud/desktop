@@ -233,7 +233,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="652"/>
         <source>Connected to %1.</source>
-        <translation>Povezano z %1.</translation>
+        <translation>Vzpostavljena je povezava z %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="654"/>
@@ -243,7 +243,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>Strežnik %1 je trenutno v načinu vzdrževanja.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="658"/>
@@ -263,7 +263,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="674"/>
         <source>No connection to %1 at %2.</source>
-        <translation>Ni povezave z %1 pri %2.</translation>
+        <translation>S strežnikom %1 ni vzpostavljene povezave (%2).</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="698"/>

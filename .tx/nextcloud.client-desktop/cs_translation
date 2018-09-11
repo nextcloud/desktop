@@ -5,7 +5,7 @@ Exec=@APPLICATION_EXECUTABLE@
 Name=@APPLICATION_NAME@ desktop sync client 
 Comment=@APPLICATION_NAME@ desktop synchronization client
 GenericName=Folder Sync
-Icon=@APPLICATION_EXECUTABLE@
+Icon=@APPLICATION_ICON_NAME@
 Keywords=@APPLICATION_NAME@;syncing;file;sharing;
 X-GNOME-Autostart-Delay=3
 # Translations
@@ -199,6 +199,5 @@ X-GNOME-Autostart-Delay=3
 
 # Translations
 Comment[cs_CZ]=@APPLICATION_NAME@ desktopový synchronizační klient
-Icon[cs_CZ]=@APPLICATION_EXECUTABLE@
 Name[cs_CZ]=@APPLICATION_NAME@ desktopový synchronizační klient
 GenericName[cs_CZ]=Synchronizace složek
