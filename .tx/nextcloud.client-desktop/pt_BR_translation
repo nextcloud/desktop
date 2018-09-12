@@ -201,3 +201,4 @@ X-GNOME-Autostart-Delay=3
 Comment[pt_BR]=@APPLICATION_NAME@ cliente de sincronização desktop
 Name[pt_BR]=@APPLICATION_NAME@ cliente de sincronização desktop
 GenericName[pt_BR]=Sincronizar Pasta
+Icon[pt_BR]=@APPLICATION_ICON_NAME@

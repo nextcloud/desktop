@@ -201,3 +201,4 @@ X-GNOME-Autostart-Delay=3
 Comment[de_DE]=@APPLICATION_NAME@ Client zur Desktop-Synchronisation
 Name[de_DE]=@APPLICATION_NAME@ Client zur Desktop-Synchronisation
 GenericName[de_DE]=Synchronisationsordner
+Icon[de_DE]=@APPLICATION_ICON_NAME@

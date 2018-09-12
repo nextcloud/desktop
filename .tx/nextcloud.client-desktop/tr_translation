@@ -201,3 +201,4 @@ X-GNOME-Autostart-Delay=3
 Comment[tr]=@APPLICATION_NAME@ masaüstü eşitleme istemcisi
 Name[tr]=@APPLICATION_NAME@ masaüstü eşiteme istemcisi
 GenericName[tr]=Klasör Eşitleme
+Icon[tr]=@APPLICATION_ICON_NAME@
