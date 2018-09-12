@@ -74,8 +74,8 @@ public:
 public slots:
     // TODO: this should not be public
     void slotownCloudWizardDone(int);
+    void slotDeleteOnlineFiles();
     void slotCrash();
-	void slotDeleteOnlineFiles();
 
 protected:
     void parseOptions(const QStringList &);

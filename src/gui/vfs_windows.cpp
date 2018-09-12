@@ -52,8 +52,8 @@ THE SOFTWARE.
 #include <time.h>		/* time, _ctime */
 
 #include "vfs_windows.h"
-#include "asserts.h"
-#include "syncjournaldb.h"
+#include "common/asserts.h"
+#include "common/syncjournaldb.h"
 #include <qmutex.h>
 
 #include <thread>
@@ -2302,32 +2302,30 @@ qDebug() << Q_FUNC_INFO << " rootPath: " << rootPath_;
 
 	qDebug() << Q_FUNC_INFO << " paso3: " << rootPath_;
 
-	foreach(auto r, _fileListMap.value(path)->list)
-	{
-		QString tPath = path.endsWith("/") ? path : path + "/";
-		QString completePath = rootPath_ + tPath + QString::fromLatin1(r->name);
-		qDebug() << Q_FUNC_INFO << " paso4: " << rootPath_;
+	for(unsigned long i=0; i <_fileListMap.value(path)->list.size(); i++)
+   	{
 
-		QFileInfo fi(completePath);
-		if (!fi.exists())
-		{
-			if (r->type == CSYNC_VIO_FILE_TYPE_DIRECTORY)
-			{
-			qDebug() << "kkD:" << completePath;
-				if (!QDir(completePath).exists()) {
-					QDir().mkdir(completePath);
-				}
-			}
-			else if (r->type == CSYNC_VIO_FILE_TYPE_REGULAR)
-			{
-			qDebug() << "kkF:" << completePath;
-				QFile file(completePath);			//< Create empty file
-				if (file.open(QIODevice::ReadWrite))
-					file.close();
-			}
+       QString completePath = rootPath_ + (path.endsWith("/")?path:(path+"/")) + QString::fromLatin1(_fileListMap.value(path)->list.at(i)->path);
+       QFileInfo fi(completePath);
+       if (!fi.exists())
+       {
+           if(_fileListMap.value(path)->list.at(i)->type == ItemTypeFile)
+           {
+		qDebug() << "kkF:" << completePath;
+		QFile file(completePath);			//< Create empty file
+		if (file.open(QIODevice::ReadWrite))
+			file.close();
+           }
+           else if (_fileListMap.value(path)->list.at(i)->type == ItemTypeDirectory)
+           {
+		qDebug() << "kkD:" << completePath;
+		if (!QDir(completePath).exists()) {
+		QDir().mkdir(completePath);
 		}
-		qDebug() << Q_FUNC_INFO << "BResults: " << r->name << r->type;
-	}
+           }
+       }
+        //qDebug() << Q_FUNC_INFO << "results: " << r->name << r->type;
+   }
 	
 	delete(_fileListMap.value(path));
 	_fileListMap.remove(path);

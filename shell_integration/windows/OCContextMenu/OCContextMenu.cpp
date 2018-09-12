@@ -138,11 +138,14 @@ void InsertSeperator(HMENU hMenu, UINT indexMenu)
 
 IFACEMETHODIMP OCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmdFirst, UINT idCmdLast, UINT uFlags)
 {
+	//< Comment for file streaming test.
+	/*
     // If uFlags include CMF_DEFAULTONLY then we should not do anything.
     if (CMF_DEFAULTONLY & uFlags)
     {
         return MAKE_HRESULT(SEVERITY_SUCCESS, 0, USHORT(0));
     }
+	*/
 
     m_info = OCClientInterface::FetchInfo(m_selectedFiles);
     if (m_info.menuItems.empty()) {
@@ -258,7 +261,11 @@ IFACEMETHODIMP OCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
     // Return an HRESULT value with the severity set to SEVERITY_SUCCESS. 
     // Set the code value to the offset of the largest command identifier 
     // that was assigned, plus one (1).
-    return MAKE_HRESULT(SEVERITY_SUCCESS, 0, USHORT(indexSubMenu));
+    //< Comment for file streaming test.
+    //return MAKE_HRESULT(SEVERITY_SUCCESS, 0, USHORT(indexSubMenu));
+
+    //< Append for file streaming test.
+    return MAKE_HRESULT(SEVERITY_SUCCESS, 0, USHORT(IDM_LAST));
 }
 
 IFACEMETHODIMP OCContextMenu::InvokeCommand(LPCMINVOKECOMMANDINFO pici)

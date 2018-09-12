@@ -14,7 +14,6 @@
  * for more details.
  */
 
-#include "quotainfo.h"
 #include "application.h"
 
 #include <iostream>
@@ -43,6 +42,7 @@
 
 #if defined(Q_OS_WIN)
 #include <windows.h>
+#include "vfs_windows.h"
 #endif
 
 #if defined(WITH_CRASHREPORTER)
@@ -52,8 +52,10 @@
 #include <QTranslator>
 #include <QMenu>
 #include <QMessageBox>
+#include <Qprocess>
 #include <QDesktopServices>
-#include <QTimer>
+
+#include <openssl/crypto.h>
 
 class QSocket;
 
@@ -325,11 +327,11 @@ void Application::slotAccountStateAdded(AccountState *accountState)
 	ConfigFile cfgFile;
 	QDir pathDir(cfgFile.defaultFileStreamMirrorPath());
 	while (!pathDir.exists())
-		{
+	{
 		qDebug() << "\n dbg_dokan " << Q_FUNC_INFO << " !pathDir.exists() 3-0" << cfgFile.defaultFileStreamMirrorPath();
 		pathDir.mkdir(cfgFile.defaultFileStreamMirrorPath());
 		Sleep(100);
-		}
+	}
 
 	Vfs_windows *_Vfs_windows = NULL;
 	_Vfs_windows = new Vfs_windows(accountState);
@@ -340,33 +342,32 @@ void Application::slotAccountStateAdded(AccountState *accountState)
 		_Vfs_windows->upDrive(cfgFile.defaultFileStreamMirrorPath(), cfgFile.defaultFileStreamLetterDrive());
 		Sleep(1000);
 		cfgFile.createAuxiliarDirectories();
-	
+
 		/* Current owncloudgui::slotLogout */
-			//WCHAR DriveLetter = L'X';
-			//connect(this, SIGNAL(aboutToQuit()), _Vfs_windows, SLOT(unmount(DriveLetter)));
+		//WCHAR DriveLetter = L'X';
+		//connect(this, SIGNAL(aboutToQuit()), _Vfs_windows, SLOT(unmount(DriveLetter)));
 
 		/* Current QuotaInfo::slotUpdateLastQuota */
-			//QuotaInfo _quotaInfo(accountState);
-			//connect(&_quotaInfo, SIGNAL(quotaUpdated(qint64, qint64)), _Vfs_windows, SLOT(quoting(qint64, qint64)));
+		//QuotaInfo _quotaInfo(accountState);
+		//connect(&_quotaInfo, SIGNAL(quotaUpdated(qint64, qint64)), _Vfs_windows, SLOT(quoting(qint64, qint64)));
 	}
 	else
 		qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " BAD up Drive";
 #endif
 
 	//< For cron delete dir/files online. Execute each 60000 msec
-		_cronDeleteOnlineFiles = new QTimer(this);
-		connect(_cronDeleteOnlineFiles, SIGNAL(timeout()), this, SLOT(slotDeleteOnlineFiles()));
-		_cronDeleteOnlineFiles->start(60000);
+	_cronDeleteOnlineFiles = new QTimer(this);
+	connect(_cronDeleteOnlineFiles, SIGNAL(timeout()), this, SLOT(slotDeleteOnlineFiles()));
+	_cronDeleteOnlineFiles->start(60000);
 
 	/* See SocketApi::command_SET_DOWNLOAD_MODE
-		//< Dummy example; Not uncomment
-			SyncJournalDb::instance()->setSyncMode(QString("C:/Users/poncianoj/zd"), SyncJournalDb::SYNCMODE_OFFLINE);
-			SyncJournalDb::instance()->setSyncMode(QString("C:/Users/poncianoj/zf.txt"), SyncJournalDb::SYNCMODE_ONLINE);
+	//< Dummy example; Not uncomment
+	SyncJournalDb::instance()->setSyncMode(QString("C:/Users/poncianoj/zd"), SyncJournalDb::SYNCMODE_OFFLINE);
+	SyncJournalDb::instance()->setSyncMode(QString("C:/Users/poncianoj/zf.txt"), SyncJournalDb::SYNCMODE_ONLINE);
 
-			SyncJournalDb::instance()->updateLastAccess(QString("C:/Users/poncianoj/zd"));
-			SyncJournalDb::instance()->updateLastAccess(QString("C:/Users/poncianoj/zf.txt"));
+	SyncJournalDb::instance()->updateLastAccess(QString("C:/Users/poncianoj/zd"));
+	SyncJournalDb::instance()->updateLastAccess(QString("C:/Users/poncianoj/zf.txt"));
 	*/
-
 }
 
 void Application::slotCleanup()
@@ -717,12 +718,16 @@ bool removeDirs(const QString & dirName)
 
 void Application::slotDeleteOnlineFiles()
 {
-	//qDebug() << Q_FUNC_INFO << " 01: " << SyncJournalDb::instance()->databaseFilePath();
 
-	//< Get paths SyncMode table.
-	//QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
+	qDebug() << Q_FUNC_INFO << " 00:";
 	
-	/*if ( ! list.empty() )
+	qDebug() << Q_FUNC_INFO << " 01: " << SyncJournalDb::instance()->databaseFilePath();
+
+	
+	//< Get paths SyncMode table.
+	QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
+
+	if (!list.empty())
 	{
 		qDebug() << Q_FUNC_INFO << " 02";
 
@@ -730,13 +735,12 @@ void Application::slotDeleteOnlineFiles()
 		foreach(item, list)
 		{
 			qDebug() << Q_FUNC_INFO << " 03";
-
-			//qint64 m_secondsSinceLastAccess = SyncJournalDb::instance()->secondsSinceLastAccess(item);
-			//SyncJournalDb::SyncMode mode = SyncJournalDb::instance()->getSyncMode(item);
+			qint64 m_secondsSinceLastAccess = SyncJournalDb::instance()->secondsSinceLastAccess(item);
+			SyncJournalDb::SyncMode mode = SyncJournalDb::instance()->getSyncMode(item);
 
 			qDebug() << Q_FUNC_INFO << " 04";
 
-			//SyncJournalDb::SyncModeDownload down = SyncJournalDb::instance()->getSyncModeDownload(item);
+			SyncJournalDb::SyncModeDownload down = SyncJournalDb::instance()->getSyncModeDownload(item);
 
 			qDebug() << Q_FUNC_INFO << " 05";
 
@@ -759,28 +763,29 @@ void Application::slotDeleteOnlineFiles()
 				qDebug() << Q_FUNC_INFO << " Prepare to delete file or dir ..." << item;
 
 				QDir dir(item);
-			//< if is dir
+				//< if is dir
 				if (dir.exists())
 				{
 					removeDirs(item);		//< Auxiliary function to remove folder contents
 				}
 				else
 				{
-			//< if is file
+					//< if is file
 					QFile file(item);
 					while (file.exists()) {
 						QFile::remove(item);	//< Remove	
-                        QThread::msleep(100);
+						QThread::msleep(100);
 					}
 
 					QFile file2(item);			//< Create empty file
 					if (file2.open(QIODevice::ReadWrite))
 						file2.close();
 				}
-			//SyncJournalDb::instance()->deleteSyncMode(item);
+				SyncJournalDb::instance()->deleteSyncMode(item);
 			}
 		}
-	}*/
+	}
+	
 }
 
 bool Application::giveHelp()
