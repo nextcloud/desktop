@@ -31,6 +31,8 @@ void VfsMacController::mountFailed(QVariantMap userInfo)
     QMessageBox alert;
     alert.setText(userInfo.contains("localizedDescription")?userInfo.value("localizedDescription").toString() : "Unknown error");
     alert.exec();
+    
+    QApplication::quit();
 }
 
 void VfsMacController::didMount(QVariantMap userInfo)
@@ -38,9 +40,10 @@ void VfsMacController::didMount(QVariantMap userInfo)
     qDebug() << "Got didMount notification.";
     
     QString mountPath = userInfo.value(kGMUserFileSystemMountPathKey).toString();
-    QMessageBox alert;
+    /*QMessageBox alert;
     alert.setText(tr(QString("Mounted at: %1").arg(mountPath).toLatin1().data()));
     alert.exec();
+     */
 }
 
 void VfsMacController::didUnmount(QVariantMap userInfo) {
