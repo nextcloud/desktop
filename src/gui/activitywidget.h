@@ -37,7 +37,6 @@ namespace OCC {
 class Account;
 class AccountStatusPtr;
 class JsonApiJob;
-class NotificationWidget;
 class ActivityListModel;
 
 namespace Ui {
@@ -68,7 +67,7 @@ public:
      * Based on whether activities are enabled and whether notifications are
      * available.
      */
-    void checkActivityTabVisibility();
+    void checkActivityWidgetVisibility();
 
 public slots:
     void slotOpenFile(QModelIndex indx);
@@ -76,14 +75,12 @@ public slots:
     void slotRefreshNotifications();
     void slotRemoveAccount();
     void slotAccountActivityStatus(int statusCode);
-    void slotRequestCleanupAndBlacklist(const Activity &blacklistActivity);
     void addError(const QString &folderAlias, const QString &message, ErrorCategory category);
     void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
 
 signals:
     void guiLog(const QString &, const QString &);
-    void copyToClipboard();
     void rowsInserted();
     void hideActivityTab(bool);
     void sendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
@@ -93,9 +90,7 @@ private slots:
     void slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
     void slotNotifyNetworkError(QNetworkReply *);
     void slotNotifyServerFinished(const QString &reply, int replyCode);
-    void endNotificationRequest(NotificationWidget *widget, int replyCode);
-    void scheduleWidgetToRemove(NotificationWidget *widget, int milliseconds = 100);
-    void slotCheckToCleanWidgets();
+    void endNotificationRequest(int replyCode);
     void slotNotificationRequestFinished(int statusCode);
     void slotPrimaryButtonClickedOnListView(const QModelIndex &index);
     void slotSecondaryButtonClickedOnListView(const QModelIndex &index);
@@ -105,12 +100,10 @@ private:
     QString timeString(QDateTime dt, QLocale::FormatType format) const;
     Ui::ActivityWidget *_ui;
     QSet<QString> _accountsWithoutActivities;
-    QMap<Activity::Identifier, NotificationWidget *> _widgetForNotifId;
     QElapsedTimer _guiLogTimer;
     QSet<int> _guiLoggedNotifications;
     ActivityList _blacklistedNotifications;
 
-    QHash<NotificationWidget *, QDateTime> _widgetsToRemove;
     QTimer _removeTimer;
 
     // number of currently running notification requests. If non zero,
@@ -146,7 +139,6 @@ public slots:
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
 
 private slots:
-    void slotCopyToClipboard();
     void slotRegularNotificationCheck();
     void slotDisplayActivities();
 

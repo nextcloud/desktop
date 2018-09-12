@@ -20,11 +20,10 @@
 
 namespace OCC {
 
-Q_DECLARE_LOGGING_CATEGORY(lcNotifications)
+Q_LOGGING_CATEGORY(lcNotificationsJob, "nextcloud.gui.notifications", QtInfoMsg)
 
 NotificationConfirmJob::NotificationConfirmJob(AccountPtr account)
     : AbstractNetworkJob(account, "")
-    , _widget(0)
 {
     setIgnoreCredentialFailure(true);
 }
@@ -35,20 +34,10 @@ void NotificationConfirmJob::setLinkAndVerb(const QUrl &link, const QByteArray &
     _verb = verb;
 }
 
-void NotificationConfirmJob::setWidget(NotificationWidget *widget)
-{
-    _widget = widget;
-}
-
-NotificationWidget *NotificationConfirmJob::widget()
-{
-    return _widget;
-}
-
 void NotificationConfirmJob::start()
 {
     if (!_link.isValid()) {
-        qCWarning(lcNotifications) << "Attempt to trigger invalid URL: " << _link.toString();
+        qCWarning(lcNotificationsJob) << "Attempt to trigger invalid URL: " << _link.toString();
         return;
     }
     QNetworkRequest req;

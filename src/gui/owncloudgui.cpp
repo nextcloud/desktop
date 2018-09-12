@@ -839,6 +839,20 @@ void ownCloudGui::slotNavigationAppsFetched(const QJsonDocument &reply, int stat
             }
         }
 
+        // TODO see pull #523
+        auto accountList = AccountManager::instance()->accounts();
+        if(accountList.size() > 1){
+            // the list of apps will be displayed under the account that it belongs to
+            foreach (QMenu *accountMenu, _accountMenus) {
+                if(accountMenu->title() == account->account()->displayName()){
+                    buildNavigationAppsMenu(account, accountMenu);
+                    break;
+                }
+            }
+        } else if(accountList.size() == 1){
+            buildNavigationAppsMenu(account, _contextMenu.data());
+        }
+
         if(QObject *accountMenuObj = qvariant_cast<QObject*>(sender()->property(propertyMenuC))){
             if(QMenu *accountMenu = dynamic_cast<QMenu*>(accountMenuObj))
                 buildNavigationAppsMenu(account, accountMenu);

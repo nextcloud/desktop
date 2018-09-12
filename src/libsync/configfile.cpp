@@ -44,7 +44,7 @@ namespace OCC {
 
 namespace chrono = std::chrono;
 
-Q_LOGGING_CATEGORY(lcConfigFile, "sync.configfile", QtInfoMsg);
+Q_LOGGING_CATEGORY(lcConfigFile, "sync.configfile", QtInfoMsg)
 
 
 static const char defaultFileStreamSyncPathC[]			= "fileStreamSyncPathDefault";

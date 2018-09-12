@@ -14,6 +14,7 @@ namespace OCC {
 
 class WebViewPageUrlRequestInterceptor;
 class WebViewPageUrlSchemeHandler;
+class WebEnginePage;
 
 class WebView : public QWidget
 {
@@ -30,7 +31,7 @@ private:
 
     QWebEngineView *_webview;
     QWebEngineProfile *_profile;
-    QWebEnginePage *_page;
+    WebEnginePage *_page;
 
     WebViewPageUrlRequestInterceptor *_interceptor;
     WebViewPageUrlSchemeHandler *_schemeHandler;
