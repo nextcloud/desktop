@@ -4,18 +4,18 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Could not make directories in trash</source>
-        <translation type="unfinished"/>
+        <translation>Ezin da zakarrontzian direktoriorik sortu</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="459"/>
         <location filename="../src/common/filesystembase.cpp" line="465"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Ezin da  &apos;%1&apos;  &apos;%2&apos;-ra mugitu</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>Errore ezezaguna: sare erantzuna ezabatua izan da</translation>
     </message>
 </context>
 <context>
@@ -257,7 +257,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="667"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>%1 zerbitzaria mantenu moduan dago.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="669"/>
@@ -272,7 +272,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="682"/>
         <source>Connecting to %1...</source>
-        <translation type="unfinished"/>
+        <translation>%1-era konektatzen...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="685"/>
@@ -392,7 +392,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="127"/>
         <source>Maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>Mantenu modua</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="129"/>
