@@ -201,3 +201,4 @@ X-GNOME-Autostart-Delay=3
 Comment[nl]=@APPLICATION_NAME@ desktopsynchronisatieclient
 Name[nl]=@APPLICATION_NAME@ desktop sync client 
 GenericName[nl]=Map synchronisatie
+Icon[nl]=@APPLICATION_ICON_NAME@

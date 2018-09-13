@@ -258,7 +258,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="671"/>
         <source>Connecting to %1...</source>
-        <translation>Připojeno k %1...</translation>
+        <translation>Připojeno k %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="674"/>
@@ -304,7 +304,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="269"/>
         <location filename="../src/gui/accountsettings.cpp" line="295"/>
         <source>Open folder</source>
-        <translation>Otevřít adresář</translation>
+        <translation>Otevřít složku</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="199"/>
@@ -345,7 +345,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="680"/>
         <source>No %1 connection configured.</source>
-        <translation>Žádné spojení s %1 nenastaveno.</translation>
+        <translation>Nenastaveno žádné spojení s %1.</translation>
     </message>
 </context>
 <context>
@@ -1076,12 +1076,12 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1056"/>
         <source>Waiting...</source>
-        <translation>Chvíli strpení...</translation>
+        <translation>Chvíli strpení…</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1058"/>
         <source>Waiting for %n other folder(s)...</source>
-        <translation><numerusform>Čeká se na %n další adresář...</numerusform><numerusform>Čeká se na %n další adresáře...</numerusform><numerusform>Čeká se na %n dalších adresářů...</numerusform><numerusform>Čeká se na %n dalších adresářů...</numerusform></translation>
+        <translation><numerusform>Čeká se na %n další složku…</numerusform><numerusform>Čeká se na %n další složky…</numerusform><numerusform>Čeká se na %n dalších složek…</numerusform><numerusform>Čeká se na %n další složky…</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1064"/>
@@ -1671,7 +1671,7 @@ Položky u kterých je povoleno smazání budou vymazány, pokud by bránily ods
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="104"/>
         <source>Closing in a few seconds...</source>
-        <translation>Uzavření za několik sekund...</translation>
+        <translation>Uzavření za několik sekund…</translation>
     </message>
     <message>
         <location filename="../src/gui/notificationwidget.cpp" line="138"/>
@@ -1736,7 +1736,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation>Stahuji verzi %1. Počkejte prosím ...</translation>
+        <translation>Stahuje se verze %1. Vyčkejte…</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
@@ -1761,7 +1761,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>Checking update server...</source>
-        <translation>Kontroluji aktualizační server...</translation>
+        <translation>Kontroluje se aktualizační server…</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
@@ -1794,7 +1794,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="58"/>
         <source>Connect...</source>
-        <translation>Připojit...</translation>
+        <translation>Připojit…</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="156"/>
@@ -1937,7 +1937,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="334"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation>Pokouším se připojit k %1 na %2...</translation>
+        <translation>Pokouší se připojit k %1 na %2…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="385"/>
@@ -1972,7 +1972,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="455"/>
         <source>Creating local sync folder %1...</source>
-        <translation>Vytvářím místní adresář pro synchronizaci %1...</translation>
+        <translation>Vytváření místní složky pro synchronizaci %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="459"/>
@@ -2012,7 +2012,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="526"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Vzdálený adresář %1 již existuje. Spojuji jej pro synchronizaci.</translation>
+        <translation>Vzdálený adresář %1 již existuje. Spojuje se pro synchronizaci.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="528"/>
@@ -2240,7 +2240,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="121"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>Server vrátil neplatný HTTP kód. Očekáván 204, ale obdržen &quot;%1 %2&quot;.</translation>
+        <translation>Server vrátil neplatný HTTP kód. Očekáván 204, ale obdržen „%1 %2“.</translation>
     </message>
 </context>
 <context>
@@ -2248,7 +2248,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="99"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>Server vrátil neplatný HTTP kód. Očekáván 201, ale obdržen &quot;%1 %2&quot;.</translation>
+        <translation>Server vrátil neplatný HTTP kód. Očekáván 201, ale obdržen „%1 %2“.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="151"/>
@@ -2276,7 +2276,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="158"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>Server vrátil neplatný HTTP kód. Očekáván 201, ale obdržen &quot;%1 %2&quot;.</translation>
+        <translation>Server vrátil neplatný HTTP kód. Očekáván 201, ale obdržen „%1 %2“.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="190"/>
@@ -2474,7 +2474,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="74"/>
         <source>Loading ...</source>
-        <translation>Načítám ...</translation>
+        <translation>Načítání…</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="80"/>
@@ -2613,7 +2613,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="127"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
-        <translation>Přijímání nejvyšších možných oprávnění pro sdílení ze serveru...</translation>
+        <translation>Přijímání nejvyšších možných oprávnění pro sdílení ze serveru…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="197"/>
@@ -2651,7 +2651,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="35"/>
         <source>Enter a name to create a new public link...</source>
-        <translation>Zadej název nového veřejného odkazu...</translation>
+        <translation>Zadejte název nového veřejného odkazu…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="42"/>
@@ -2855,7 +2855,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="83"/>
         <source>...</source>
-        <translation>...</translation>
+        <translation>…</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="357"/>
@@ -3369,7 +3369,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="707"/>
         <source>Invalid characters, please rename &quot;%1&quot;</source>
-        <translation>Neplatné znaky, prosím přejmenujte &quot;%1&quot;</translation>
+        <translation>Neplatné znaky, prosím přejmenujte „%1“</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="827"/>
@@ -3395,7 +3395,7 @@ Nedoporučuje se jí používat.</translation>
         <location filename="../src/libsync/syncengine.cpp" line="1216"/>
         <location filename="../src/libsync/syncengine.cpp" line="1256"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>Ignorováno podle nastavení &quot;vybrat co synchronizovat&quot;</translation>
+        <translation>Ignorováno podle nastavení „vybrat co synchronizovat“</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1275"/>
@@ -3405,13 +3405,13 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1322"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation>Není povoleno nahrát tento soubor, protože je na serveru uložen pouze pro čtení, obnovuji</translation>
+        <translation>Není povoleno nahrát tento soubor, protože je na serveru uložen pouze pro čtení, obnovuje se</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1338"/>
         <location filename="../src/libsync/syncengine.cpp" line="1357"/>
         <source>Not allowed to remove, restoring</source>
-        <translation>Odstranění není povoleno, obnovuji</translation>
+        <translation>Odstranění není povoleno, obnovuje se</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1371"/>
@@ -3518,7 +3518,7 @@ Nedoporučuje se jí používat.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="628"/>
         <location filename="../src/gui/owncloudgui.cpp" line="722"/>
         <source>Log in...</source>
-        <translation>Přihlásit...</translation>
+        <translation>Přihlásit…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="375"/>
@@ -3560,12 +3560,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="709"/>
         <source>Settings...</source>
-        <translation>Nastavení...</translation>
+        <translation>Nastavení…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="711"/>
         <source>Details...</source>
-        <translation>Podrobnosti...</translation>
+        <translation>Podrobnosti…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="717"/>
@@ -3676,12 +3676,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="626"/>
         <source>Log in to all accounts...</source>
-        <translation>Přihlásit ke všem účtům...</translation>
+        <translation>Přihlásit ke všem účtům…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="710"/>
         <source>New account...</source>
-        <translation>Nový účet...</translation>
+        <translation>Nový účet…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="728"/>
@@ -3697,7 +3697,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation>Synchronizuji %1 ze %2 (zbývá %3)</translation>
+        <translation>Synchronizuje se %1 ze %2 (zbývá %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="786"/>
@@ -3707,12 +3707,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="795"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation>Synchronizuji %1 (zbývá %2)</translation>
+        <translation>Synchronizuje se %1 (zbývá %2)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="798"/>
         <source>Syncing %1</source>
-        <translation>Synchronizuji %1</translation>
+        <translation>Synchronizuje se %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="816"/>
@@ -4106,7 +4106,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="75"/>
         <source>ignoring</source>
-        <translation>ignoruji</translation>
+        <translation>ignoruje se</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="77"/>
@@ -4160,12 +4160,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="81"/>
         <source>Preparing to sync</source>
-        <translation>Připravuji na synchronizaci</translation>
+        <translation>Připravuje se na synchronizaci</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="84"/>
         <source>Aborting...</source>
-        <translation>Ruším...</translation>
+        <translation>Rušení…</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="87"/>
