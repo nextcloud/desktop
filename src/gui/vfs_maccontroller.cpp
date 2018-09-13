@@ -65,6 +65,15 @@ void VfsMacController::slotquotaUpdated(qint64 total, qint64 used)
 
 VfsMacController::VfsMacController(QString rootPath, QString mountPath, OCC::AccountState *accountState, QObject *parent):QObject(parent), fs_(new VfsMac(rootPath, false, accountState, this))
 {
+    QFileInfo root(rootPath);
+    if(root.exists() && !root.isDir())
+    {
+        QFile().remove(rootPath);
+    }
+    if(!root.exists())
+    {
+        QDir().mkdir(rootPath);
+    }
     qi_ = new OCC::QuotaInfo(accountState, this);
     
     connect(qi_, &OCC::QuotaInfo::quotaUpdated, this, &VfsMacController::slotquotaUpdated);
@@ -76,7 +85,7 @@ VfsMacController::VfsMacController(QString rootPath, QString mountPath, OCC::Acc
     
     QStringList options;
     
-    QFileInfo icons(QCoreApplication::applicationDirPath() + "/../Resources/LoopbackFS.icns");
+    QFileInfo icons(QCoreApplication::applicationDirPath() + "/../Resources/Nextcloud.icns");
     QString volArg = QString("volicon=%1").arg(icons.canonicalFilePath());
     
     options.append(volArg);
@@ -86,8 +95,10 @@ VfsMacController::VfsMacController(QString rootPath, QString mountPath, OCC::Acc
     // would be mounting an HFS+ directory through VfsMac, so we do want
     // this option in that case.
     options.append("native_xattr");
+    options.append("kill_on_unmount");
+    options.append("local");
     
-    options.append("volname=VfsMac");
+    options.append("volname=" + QApplication::applicationName() + "FS");
     fs_->mountAtPath(mountPath, options);
 }
 
