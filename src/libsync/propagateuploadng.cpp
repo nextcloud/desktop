@@ -520,7 +520,7 @@ void PropagateUploadFileNG::doFinalMove()
     connect(job, &MoveJob::finishedSignal, this, &PropagateUploadFileNG::slotMoveJobFinished);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     propagator()->_activeJobList.append(this);
-        adjustLastJobTimeout(job, fileSize);
+    adjustLastJobTimeout(job, _item->_size);
     job->start();
     return;
 }
