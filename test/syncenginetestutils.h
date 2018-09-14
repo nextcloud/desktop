@@ -317,6 +317,7 @@ public:
     QString name;
     bool isDir = true;
     bool isShared = false;
+    OCC::RemotePermissions permissions; // When uset, defaults to everything
     QDateTime lastModified = QDateTime::currentDateTime().addDays(-7);
     QString etag = generateEtag();
     QByteArray fileId = generateFileId();
@@ -390,7 +391,9 @@ public:
             xml.writeTextElement(davUri, QStringLiteral("getlastmodified"), stringDate);
             xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.size));
             xml.writeTextElement(davUri, QStringLiteral("getetag"), fileInfo.etag);
-            xml.writeTextElement(ocUri, QStringLiteral("permissions"), fileInfo.isShared ? QStringLiteral("SRDNVCKW") : QStringLiteral("RDNVCKW"));
+            xml.writeTextElement(ocUri, QStringLiteral("permissions"), !fileInfo.permissions.isNull()
+                ? QString(fileInfo.permissions.toString())
+                : fileInfo.isShared ? QStringLiteral("SRDNVCKW") : QStringLiteral("RDNVCKW"));
             xml.writeTextElement(ocUri, QStringLiteral("id"), fileInfo.fileId);
             xml.writeTextElement(ocUri, QStringLiteral("checksums"), fileInfo.checksums);
             xml.writeTextElement(ocUri, QStringLiteral("zsync"), QStringLiteral("true"));
@@ -475,6 +478,7 @@ public:
         emit uploadProgress(fileInfo->size, fileInfo->size);
         setRawHeader("OC-ETag", fileInfo->etag.toLatin1());
         setRawHeader("ETag", fileInfo->etag.toLatin1());
+        setRawHeader("OC-FileID", fileInfo->fileId);
         setRawHeader("X-OC-MTime", "accepted"); // Prevents Q_ASSERT(!_runningNow) since we'll call PropagateItemJob::done twice in that case.
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
         emit metaDataChanged();
@@ -938,8 +942,8 @@ class FakeErrorReply : public QNetworkReply
     Q_OBJECT
 public:
     FakeErrorReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request,
-                   QObject *parent, int httpErrorCode)
-    : QNetworkReply{parent}, _httpErrorCode(httpErrorCode) {
+                   QObject *parent, int httpErrorCode, const QByteArray &body = QByteArray())
+    : QNetworkReply{parent}, _httpErrorCode(httpErrorCode), _body(body) {
         setRequest(request);
         setUrl(request.url());
         setOperation(op);
@@ -951,13 +955,31 @@ public:
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, _httpErrorCode);
         setError(InternalServerError, "Internal Server Fake Error");
         emit metaDataChanged();
+        emit readyRead();
+        // finishing can come strictly after readyRead was called
+        QTimer::singleShot(5, this, &FakeErrorReply::slotSetFinished);
+    }
+
+public slots:
+    void slotSetFinished() {
+        setFinished(true);
         emit finished();
     }
 
+public:
     void abort() override { }
-    qint64 readData(char *, qint64) override { return 0; }
+    qint64 readData(char *buf, qint64 max) override {
+        max = qMin<qint64>(max, _body.size());
+        memcpy(buf, _body.constData(), max);
+        _body = _body.mid(max);
+        return max;
+    }
+    qint64 bytesAvailable() const override {
+        return _body.size();
+    }
 
     int _httpErrorCode;
+    QByteArray _body;
 };
 
 // A reply that never responds
@@ -974,7 +996,14 @@ public:
         open(QIODevice::ReadOnly);
     }
 
-    void abort() override {}
+    void abort() override {
+        // Follow more or less the implementation of QNetworkReplyImpl::abort
+        close();
+        setError(OperationCanceledError, tr("Operation canceled"));
+        emit error(OperationCanceledError);
+        setFinished(true);
+        emit finished();
+    }
     qint64 readData(char *, qint64) override { return 0; }
 };
 
@@ -1103,6 +1132,7 @@ public:
         _account = OCC::Account::create();
         _account->setUrl(QUrl(QStringLiteral("http://admin:admin@localhost/owncloud")));
         _account->setCredentials(new FakeCredentials{_fakeQnam});
+        _account->setDavDisplayName("fakename");
 
         _journalDb.reset(new OCC::SyncJournalDb(localPath() + "._sync_test.db"));
         _syncEngine.reset(new OCC::SyncEngine(_account, localPath(), "", _journalDb.get()));
@@ -1216,12 +1246,29 @@ private:
                     qWarning() << "Empty file at:" << diskChild.filePath();
                     continue;
                 }
-                char contentChar = f.read(1).at(0);
+                char contentChar = content.at(0);
                 templateFi.children.insert(diskChild.fileName(), FileInfo{diskChild.fileName(), diskChild.size(), contentChar});
             }
         }
     }
 };
+
+/* Return the FileInfo for a conflict file for the specified relative filename */
+inline const FileInfo *findConflict(FileInfo &dir, const QString &filename)
+{
+    QFileInfo info(filename);
+    const FileInfo *parentDir = dir.find(info.path());
+    if (!parentDir)
+        return nullptr;
+    QString start = info.baseName() + " (conflicted copy";
+    for (const auto &item : parentDir->children) {
+        if (item.name.startsWith(start)) {
+            return &item;
+        }
+    }
+    return nullptr;
+}
+
 
 // QTest::toString overloads
 namespace OCC {

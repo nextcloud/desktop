@@ -37,6 +37,7 @@
 #include "updater/ocupdater.h"
 #include "owncloudsetupwizard.h"
 #include "version.h"
+#include "csync_exclude.h"
 
 #include "config.h"
 
@@ -71,7 +72,7 @@ namespace {
         "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
         "                         (to be used with --logdir)\n"
         "  --logflush           : flush the log file after every write.\n"
-        "  --logdebug           : also output debug-level messages in the log (equivalent to setting the env var QT_LOGGING_RULES=\"qt.*=true;*.debug=true\").\n"
+        "  --logdebug           : also output debug-level messages in the log.\n"
         "  --confdir <dirname>  : Use the given configuration folder.\n";
 
     QString applicationTrPath()
@@ -93,6 +94,66 @@ namespace {
 }
 
 // ----------------------------------------------------------------------------------
+
+bool Application::configVersionMigration()
+{
+    QStringList deleteKeys, ignoreKeys;
+    AccountManager::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
+    FolderMan::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
+
+    ConfigFile configFile;
+
+    // Did the client version change?
+    // (The client version is adjusted further down)
+    bool versionChanged = configFile.clientVersionString() != MIRALL_VERSION_STRING;
+
+    // We want to message the user either for destructive changes,
+    // or if we're ignoring something and the client version changed.
+    bool warningMessage = !deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged);
+
+    if (!versionChanged && !warningMessage)
+        return true;
+
+    const auto backupFile = configFile.backup();
+
+    if (warningMessage) {
+        QString boldMessage;
+        if (!deleteKeys.isEmpty()) {
+            boldMessage = tr("Continuing will mean <b>deleting these settings</b>.");
+        } else {
+            boldMessage = tr("Continuing will mean <b>ignoring these settings</b>.");
+        }
+
+        QMessageBox box(
+            QMessageBox::Warning,
+            APPLICATION_SHORTNAME,
+            tr("Some settings were configured in newer versions of this client and "
+               "use features that are not available in this version.<br>"
+               "<br>"
+               "%1<br>"
+               "<br>"
+               "The current configuration file was already backed up to <i>%2</i>.")
+                .arg(boldMessage, backupFile));
+        box.addButton(tr("Quit"), QMessageBox::AcceptRole);
+        auto continueBtn = box.addButton(tr("Continue"), QMessageBox::DestructiveRole);
+
+        box.exec();
+        if (box.clickedButton() != continueBtn) {
+            QTimer::singleShot(0, qApp, SLOT(quit()));
+            return false;
+        }
+
+        auto settings = ConfigFile::settingsWithGroup("foo");
+        settings->endGroup();
+
+        // Wipe confusing keys from the future, ignore the others
+        for (const auto &badKey : deleteKeys)
+            settings->remove(badKey);
+    }
+
+    configFile.setClientVersionString(MIRALL_VERSION_STRING);
+    return true;
+}
 
 Application::Application(int &argc, char **argv)
     : SharedTools::QtSingleApplication(Theme::instance()->appName(), argc, argv)
@@ -125,7 +186,8 @@ Application::Application(int &argc, char **argv)
     setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
     auto confDir = ConfigFile().configPath();
-    if (!QFileInfo(confDir).exists()) {
+    if (confDir.endsWith('/')) confDir.chop(1);  // macOS 10.11.x does not like trailing slash for rename/move.
+    if (!QFileInfo(confDir).isDir()) {
         // Migrate from version <= 2.4
         setApplicationName(_theme->appNameGUI());
 #ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
@@ -136,6 +198,7 @@ Application::Application(int &argc, char **argv)
         // We need to use the deprecated QDesktopServices::storageLocation because of its Qt4
         // behavior of adding "data" to the path
         QString oldDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+        if (oldDir.endsWith('/')) oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
         QT_WARNING_POP
         setApplicationName(_theme->appName());
         if (QFileInfo(oldDir).isDir()) {
@@ -167,8 +230,12 @@ Application::Application(int &argc, char **argv)
     setupLogging();
     setupTranslations();
 
-    // The timeout is initialized with an environment variable, if not, override with the value from the config
+    if (!configVersionMigration()) {
+        return;
+    }
+
     ConfigFile cfg;
+    // The timeout is initialized with an environment variable, if not, override with the value from the config
     if (!AbstractNetworkJob::httpTimeout)
         AbstractNetworkJob::httpTimeout = cfg.timeout();
 
@@ -202,13 +269,15 @@ Application::Application(int &argc, char **argv)
     _theme->setSystrayUseMonoIcons(cfg.monoIcons());
     connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
 
-    FolderMan::instance()->setupFolders();
-    _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
-
+    // Setting up the gui class will allow tray notifications for the
+    // setup that follows, like folder setup
     _gui = new ownCloudGui(this);
     if (_showLogWindow) {
         _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
     }
+
+    FolderMan::instance()->setupFolders();
+    _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
 
     // Enable word wrapping of QInputDialog (#4197)
     setStyleSheet("QInputDialog QLabel { qproperty-wordWrap:1; }");
@@ -362,7 +431,9 @@ void Application::slotownCloudWizardDone(int res)
         shouldSetAutoStart = shouldSetAutoStart
             && QCoreApplication::applicationDirPath().startsWith("/Applications/");
 #endif
-        Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), shouldSetAutoStart);
+        if (shouldSetAutoStart) {
+            Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), true);
+        }
 
         _gui->slotShowSettings();
     }
@@ -371,13 +442,17 @@ void Application::slotownCloudWizardDone(int res)
 void Application::setupLogging()
 {
     // might be called from second instance
-    Logger::instance()->setLogFile(_logFile);
-    Logger::instance()->setLogDir(_logDir);
-    Logger::instance()->setLogExpire(_logExpire);
-    Logger::instance()->setLogFlush(_logFlush);
-    Logger::instance()->setLogDebug(_logDebug);
+    auto logger = Logger::instance();
+    logger->setLogFile(_logFile);
+    logger->setLogDir(_logDir);
+    logger->setLogExpire(_logExpire);
+    logger->setLogFlush(_logFlush);
+    logger->setLogDebug(_logDebug);
+    if (!logger->isLoggingToFile() && ConfigFile().automaticLogDir()) {
+        logger->setupTemporaryFolderLogDir();
+    }
 
-    Logger::instance()->enterNextLogFile();
+    logger->enterNextLogFile();
 
     qCInfo(lcApplication) << QString::fromLatin1("################## %1 locale:[%2] ui_lang:[%3] version:[%4] os:[%5]").arg(_theme->appName()).arg(QLocale::system().name()).arg(property("ui_lang").toString()).arg(_theme->version()).arg(Utility::platformName());
 }
@@ -456,6 +531,9 @@ void Application::parseOptions(const QStringList &options)
             _debugMode = true;
         } else if (option == QLatin1String("--version")) {
             _versionOnly = true;
+        } else if (option.endsWith(QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX))) {
+            // virtual file, open it after the Folder were created (if the app is not terminated)
+            QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });
         } else {
             showHint("Unrecognized option '" + option.toStdString() + "'");
         }
@@ -464,20 +542,12 @@ void Application::parseOptions(const QStringList &options)
 
 // Helpers for displaying messages. Note that there is no console on Windows.
 #ifdef Q_OS_WIN
-// Format as <pre> HTML
-static inline void toHtml(QString &t)
+static void displayHelpText(const QString &t) // No console on Windows.
 {
-    t.replace(QLatin1Char('&'), QLatin1String("&amp;"));
-    t.replace(QLatin1Char('<'), QLatin1String("&lt;"));
-    t.replace(QLatin1Char('>'), QLatin1String("&gt;"));
-    t.insert(0, QLatin1String("<html><pre>"));
-    t.append(QLatin1String("</pre></html>"));
-}
-
-static void displayHelpText(QString t) // No console on Windows.
-{
-    toHtml(t);
-    QMessageBox::information(0, Theme::instance()->appNameGUI(), t);
+    QString spaces(80, ' '); // Add a line of non-wrapped space to make the messagebox wide enough.
+    QString text = QLatin1String("<qt><pre style='white-space:pre-wrap'>")
+        + t.toHtmlEscaped() + QLatin1String("</pre><pre>") + spaces + QLatin1String("</pre></qt>");
+    QMessageBox::information(0, Theme::instance()->appNameGUI(), text);
 }
 
 #else
@@ -621,5 +691,43 @@ void Application::showSettingsDialog()
     _gui->slotShowSettings();
 }
 
+void Application::openVirtualFile(const QString &filename)
+{
+    QString virtualFileExt = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
+    if (!filename.endsWith(virtualFileExt)) {
+        qWarning(lcApplication) << "Can only handle file ending in .owncloud. Unable to open" << filename;
+        return;
+    }
+    QString relativePath;
+    auto folder = FolderMan::instance()->folderForPath(filename, &relativePath);
+    if (!folder) {
+        qWarning(lcApplication) << "Can't find sync folder for" << filename;
+        // TODO: show a QMessageBox for errors
+        return;
+    }
+    folder->downloadVirtualFile(relativePath);
+    QString normalName = filename.left(filename.size() - virtualFileExt.size());
+    auto con = QSharedPointer<QMetaObject::Connection>::create();
+    *con = QObject::connect(folder, &Folder::syncFinished, [con, normalName] {
+        QObject::disconnect(*con);
+        if (QFile::exists(normalName)) {
+            QDesktopServices::openUrl(QUrl::fromLocalFile(normalName));
+        }
+    });
+}
+
+bool Application::event(QEvent *event)
+{
+#ifdef Q_OS_MAC
+    if (event->type() == QEvent::FileOpen) {
+        QFileOpenEvent *openEvent = static_cast<QFileOpenEvent *>(event);
+        qCDebug(lcApplication) << "QFileOpenEvent" << openEvent->file();
+        // virtual file, open it after the Folder were created (if the app is not terminated)
+        QString fn = openEvent->file();
+        QTimer::singleShot(0, this, [this, fn] { openVirtualFile(fn); });
+    }
+#endif
+    return SharedTools::QtSingleApplication::event(event);
+}
 
 } // namespace OCC

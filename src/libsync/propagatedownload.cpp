@@ -133,6 +133,7 @@ void GETFileJob::newReplyHook(QNetworkReply *reply)
 
     connect(reply, &QNetworkReply::metaDataChanged, this, &GETFileJob::slotMetaDataChanged);
     connect(reply, &QIODevice::readyRead, this, &GETFileJob::slotReadyRead);
+    connect(reply, &QNetworkReply::finished, this, &GETFileJob::slotReadyRead);
     connect(reply, &QNetworkReply::downloadProgress, this, &GETFileJob::downloadProgress);
 }
 
@@ -151,6 +152,9 @@ void GETFileJob::slotMetaDataChanged()
     // If the status code isn't 2xx, don't write the reply body to the file.
     // For any error: handle it when the job is finished, not here.
     if (httpStatus / 100 != 2) {
+        // Disable the buffer limit, as we don't limit the bandwidth for error messages.
+        // (We are only going to do a readAll() at the end.)
+        reply()->setReadBufferSize(0);
         _device->close();
         return;
     }
@@ -254,7 +258,7 @@ void GETFileJob::slotReadyRead()
     int bufferSize = qMin(1024 * 8ll, reply()->bytesAvailable());
     QByteArray buffer(bufferSize, Qt::Uninitialized);
 
-    while (reply()->bytesAvailable() > 0) {
+    while (reply()->bytesAvailable() > 0 && _saveBodyToFile) {
         if (_bandwidthChoked) {
             qCWarning(lcGetJob) << "Download choked";
             break;
@@ -278,7 +282,7 @@ void GETFileJob::slotReadyRead()
             return;
         }
 
-        if (_device->isOpen() && _saveBodyToFile) {
+        if (_device->isOpen()) {
             qint64 w = _device->write(buffer.constData(), r);
             if (w != r) {
                 _errorString = _device->errorString();
@@ -290,15 +294,14 @@ void GETFileJob::slotReadyRead()
         }
     }
 
-    if (reply()->isFinished() && reply()->bytesAvailable() == 0) {
+    if (reply()->isFinished() && (reply()->bytesAvailable() == 0 || !_saveBodyToFile)) {
         qCDebug(lcGetJob) << "Actually finished!";
         if (_bandwidthManager) {
             _bandwidthManager->unregisterDownloadJob(this);
         }
         if (!_hasEmittedFinishedSignal) {
             qCInfo(lcGetJob) << "GET of" << reply()->request().url().toString() << "FINISHED WITH STATUS"
-                             << reply()->error()
-                             << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString())
+                             << replyStatusString()
                              << reply()->rawHeader("Content-Range") << reply()->rawHeader("Content-Length");
 
             emit finishedSignal();
@@ -333,6 +336,21 @@ void PropagateDownloadFile::start()
 
     qCDebug(lcPropagateDownload) << _item->_file << propagator()->_activeJobList.count();
     _stopwatch.start();
+
+    // For virtual files just create the file and be done
+    if (_item->_type == ItemTypeVirtualFile) {
+        auto fn = propagator()->getFilePath(_item->_file);
+        qCDebug(lcPropagateDownload) << "creating virtual file" << fn;
+
+        // NOTE: Other places might depend on contents of placeholder files (like csync_update)
+        QFile file(fn);
+        file.open(QFile::ReadWrite | QFile::Truncate);
+        file.write(" ");
+        file.close();
+        FileSystem::setModTime(fn, _item->_modtime);
+        updateMetadata(false);
+        return;
+    }
 
     if (_deleteExisting) {
         deleteExistingFolder();
@@ -561,6 +579,10 @@ void PropagateDownloadFile::slotGetFinished()
     GETJob *job = _job;
     ASSERT(job);
 
+    _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    _item->_responseTimeStamp = job->responseTimestamp();
+    _item->_requestId = job->requestId();
+
     SyncFileItem::Status status = job->errorStatus();
 
     // Needed because GETFileZsyncJob may emit finishedSignal without any further network activity
@@ -585,7 +607,6 @@ void PropagateDownloadFile::slotGetFinished()
 
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
-        _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
         // If we sent a 'Range' header and get 416 back, we want to retry
         // without the header.
@@ -644,7 +665,7 @@ void PropagateDownloadFile::slotGetFinished()
                 &propagator()->_anotherSyncNeeded);
         }
 
-        done(status, job->errorString());
+        done(status,_item->_httpErrorCode >= 400 ? job->errorStringParsingBody() : job->errorString());
         return;
     }
 
@@ -658,7 +679,6 @@ void PropagateDownloadFile::slotGetFinished()
         // so make sure we have the up-to-date time
         _item->_modtime = job->lastModified();
     }
-    _item->_responseTimeStamp = job->responseTimestamp();
 
     _tmpFile.close();
     _tmpFile.flush();
@@ -702,10 +722,11 @@ void PropagateDownloadFile::slotGetFinished()
     // the database yet!)
     if (job->reply()->rawHeader("OC-Conflict") == "1") {
         _conflictRecord.path = _item->_file.toUtf8();
+        _conflictRecord.initialBasePath = job->reply()->rawHeader("OC-ConflictInitialBasePath");
         _conflictRecord.baseFileId = job->reply()->rawHeader("OC-ConflictBaseFileId");
-        _conflictRecord.baseEtag = _job->reply()->rawHeader("OC-ConflictBaseEtag");
+        _conflictRecord.baseEtag = job->reply()->rawHeader("OC-ConflictBaseEtag");
 
-        auto mtimeHeader = _job->reply()->rawHeader("OC-ConflictBaseMtime");
+        auto mtimeHeader = job->reply()->rawHeader("OC-ConflictBaseMtime");
         if (!mtimeHeader.isEmpty())
             _conflictRecord.baseModtime = mtimeHeader.toLongLong();
 
@@ -947,6 +968,17 @@ void PropagateDownloadFile::downloadFinished()
     // (the data was prepared in slotGetFinished above)
     if (_conflictRecord.isValid())
         propagator()->_journal->setConflictRecord(_conflictRecord);
+
+    // If we downloaded something that used to be a virtual file,
+    // wipe the virtual file and its db entry now that we're done.
+    if (_item->_type == ItemTypeVirtualFileDownload) {
+        auto virtualFile = propagator()->addVirtualFileSuffix(_item->_file);
+        auto fn = propagator()->getFilePath(virtualFile);
+        qCDebug(lcPropagateDownload) << "Download of previous virtual file finished" << fn;
+        QFile::remove(fn);
+        propagator()->_journal->deleteFileRecord(virtualFile);
+        _item->_type = ItemTypeFile;
+    }
 
     updateMetadata(isConflict);
 }

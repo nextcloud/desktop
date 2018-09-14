@@ -67,8 +67,7 @@ void MoveJob::start()
 bool MoveJob::finished()
 {
     qCInfo(lcMoveJob) << "MOVE of" << reply()->request().url() << "FINISHED WITH STATUS"
-                      << reply()->error()
-                      << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
+                      << replyStatusString();
 
     emit finishedSignal();
     return true;
@@ -87,24 +86,6 @@ void PropagateRemoteMove::start()
         // The parent has been renamed already so there is nothing more to do.
         finalize();
         return;
-    }
-    if (_item->_file == QLatin1String("Shared")) {
-        // Before owncloud 7, there was no permissions system. At the time all the shared files were
-        // in a directory called "Shared" and were not supposed to be moved, otherwise bad things happened
-
-        QString versionString = propagator()->account()->serverVersion();
-        if (versionString.contains('.') && versionString.split('.')[0].toInt() < 7) {
-            QString originalFile(propagator()->getFilePath(QLatin1String("Shared")));
-            emit propagator()->touchedFile(originalFile);
-            emit propagator()->touchedFile(targetFile);
-            QString renameError;
-            if (FileSystem::rename(targetFile, originalFile, &renameError)) {
-                done(SyncFileItem::NormalError, tr("This folder must not be renamed. It is renamed back to its original name."));
-            } else {
-                done(SyncFileItem::NormalError, tr("This folder must not be renamed. Please name it back to Shared."));
-            }
-            return;
-        }
     }
 
     QString destination = QDir::cleanPath(propagator()->account()->url().path() + QLatin1Char('/')
@@ -135,20 +116,15 @@ void PropagateRemoteMove::slotMoveJobFinished()
 
     QNetworkReply::NetworkError err = _job->reply()->error();
     _item->_httpErrorCode = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    _item->_responseTimeStamp = _job->responseTimestamp();
+    _item->_requestId = _job->requestId();
 
     if (err != QNetworkReply::NoError) {
-        if (checkForProblemsWithShared(_item->_httpErrorCode,
-                tr("The file was renamed but is part of a read only share. The original file was restored."))) {
-            return;
-        }
-
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
             &propagator()->_anotherSyncNeeded);
         done(status, _job->errorString());
         return;
     }
-
-    _item->_responseTimeStamp = _job->responseTimestamp();
 
     if (_item->_httpErrorCode != 201) {
         // Normally we expect "201 Created"

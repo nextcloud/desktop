@@ -141,6 +141,7 @@ static SyncJournalErrorBlacklistRecord createBlacklistEntry(
     entry._lastTryTime = Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc());
     entry._renameTarget = item._renameTarget;
     entry._retryCount = old._retryCount + 1;
+    entry._requestId = item._requestId;
 
     static qint64 minBlacklistTime(getMinBlacklistTime());
     static qint64 maxBlacklistTime(qMax(getMaxBlacklistTime(), minBlacklistTime));
@@ -284,60 +285,6 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
         // Abort all remaining jobs.
         propagator()->abort();
     }
-}
-
-/**
- * For delete or remove, check that we are not removing from a shared directory.
- * If we are, try to restore the file
- *
- * Return true if the problem is handled.
- */
-bool PropagateItemJob::checkForProblemsWithShared(int httpStatusCode, const QString &msg)
-{
-    PropagateItemJob *newJob = NULL;
-
-    if (httpStatusCode == 403 && propagator()->isInSharedDirectory(_item->_file)) {
-        if (!_item->isDirectory()) {
-            SyncFileItemPtr downloadItem(new SyncFileItem(*_item));
-            if (downloadItem->_instruction == CSYNC_INSTRUCTION_NEW
-                || downloadItem->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
-                // don't try to recover pushing new files
-                return false;
-            } else if (downloadItem->_instruction == CSYNC_INSTRUCTION_SYNC) {
-                // we modified the file locally, just create a conflict then
-                downloadItem->_instruction = CSYNC_INSTRUCTION_CONFLICT;
-
-                // HACK to avoid continuation: See task #1448:  We do not know the _modtime from the
-                //  server, at this point, so just set the current one. (rather than the one locally)
-                downloadItem->_modtime = Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc());
-            } else {
-                // the file was removed or renamed, just recover the old one
-                downloadItem->_instruction = CSYNC_INSTRUCTION_SYNC;
-            }
-            downloadItem->_direction = SyncFileItem::Down;
-            newJob = new PropagateDownloadFile(propagator(), downloadItem);
-        } else {
-            // Directories are harder to recover.
-            // But just re-create the directory, next sync will be able to recover the files
-            SyncFileItemPtr mkdirItem(new SyncFileItem(*_item));
-            mkdirItem->_instruction = CSYNC_INSTRUCTION_NEW;
-            mkdirItem->_direction = SyncFileItem::Down;
-            newJob = new PropagateLocalMkdir(propagator(), mkdirItem);
-            // Also remove the inodes and fileid from the db so no further renames are tried for
-            // this item.
-            propagator()->_journal->avoidRenamesOnNextSync(_item->_file);
-            propagator()->_anotherSyncNeeded = true;
-        }
-        if (newJob) {
-            newJob->setRestoreJobMsg(msg);
-            _restoreJob.reset(newJob);
-            connect(_restoreJob.data(), &PropagatorJob::finished,
-                this, &PropagateItemJob::slotRestoreJobFinished);
-            QMetaObject::invokeMethod(newJob, "start");
-        }
-        return true;
-    }
-    return false;
 }
 
 void PropagateItemJob::slotRestoreJobFinished(SyncFileItem::Status status)
@@ -559,23 +506,6 @@ void OwncloudPropagator::setSyncOptions(const SyncOptions &syncOptions)
     _chunkSize = syncOptions._initialChunkSize;
 }
 
-// ownCloud server  < 7.0 did not had permissions so we need some other euristics
-// to detect wrong doing in a Shared directory
-bool OwncloudPropagator::isInSharedDirectory(const QString &file)
-{
-    bool re = false;
-    if (_remoteFolder.startsWith(QLatin1String("Shared"))) {
-        // The Shared directory is synced as its own sync connection
-        re = true;
-    } else {
-        if (file.startsWith("Shared/") || file == "Shared") {
-            // The whole ownCloud is synced and Shared is always a top dir
-            re = true;
-        }
-    }
-    return re;
-}
-
 bool OwncloudPropagator::localFileNameClash(const QString &relFile)
 {
     bool re = false;
@@ -588,8 +518,7 @@ bool OwncloudPropagator::localFileNameClash(const QString &relFile)
             re = false;
             qCWarning(lcPropagator) << "No valid fileinfo";
         } else {
-            // Need to normalize to composited form because of
-            // https://bugreports.qt-project.org/browse/QTBUG-39622
+            // Need to normalize to composited form because of QTBUG-39622/QTBUG-55896
             const QString cName = fileInfo.canonicalFilePath().normalized(QString::NormalizationForm_C);
             bool equal = (file == cName);
             re = (!equal && !cName.endsWith(relFile, Qt::CaseSensitive));
@@ -659,6 +588,11 @@ bool OwncloudPropagator::hasCaseClashAccessibilityProblem(const QString &relfile
 QString OwncloudPropagator::getFilePath(const QString &tmp_file_name) const
 {
     return _localDir + tmp_file_name;
+}
+
+QString OwncloudPropagator::addVirtualFileSuffix(const QString &fileName) const
+{
+    return fileName + _syncOptions._virtualFileSuffix;
 }
 
 void OwncloudPropagator::scheduleNextJob()
@@ -737,8 +671,11 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
 
     QString renameError;
     auto conflictModTime = FileSystem::getModTime(fn);
+    QString conflictUserName;
+    if (account()->capabilities().uploadConflictFiles())
+        conflictUserName = account()->davDisplayName();
     QString conflictFileName = Utility::makeConflictFileName(
-        item->_file, Utility::qDateTimeFromTime_t(conflictModTime));
+        item->_file, Utility::qDateTimeFromTime_t(conflictModTime), conflictUserName);
     QString conflictFilePath = getFilePath(conflictFileName);
 
     emit touchedFile(fn);
@@ -763,6 +700,7 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
     ConflictRecord conflictRecord;
     conflictRecord.path = conflictFileName.toUtf8();
     conflictRecord.baseModtime = item->_previousModtime;
+    conflictRecord.initialBasePath = item->_file.toUtf8();
 
     SyncJournalFileRecord baseRecord;
     if (_journal->getFileRecord(item->_originalFile, &baseRecord) && baseRecord.isValid()) {
@@ -908,10 +846,13 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
     ASSERT(i >= 0);
     _runningJobs.remove(i);
 
+    // Any sub job error will cause the whole composite to fail. This is important
+    // for knowing whether to update the etag in PropagateDirectory, for example.
     if (status == SyncFileItem::FatalError
         || status == SyncFileItem::NormalError
         || status == SyncFileItem::SoftError
-        || status == SyncFileItem::DetailError) {
+        || status == SyncFileItem::DetailError
+        || status == SyncFileItem::BlacklistedError) {
         _hasError = status;
     }
 

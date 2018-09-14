@@ -14,6 +14,8 @@
 
 #include "ocsshareejob.h"
 
+#include <QJsonDocument>
+
 namespace OCC {
 
 OcsShareeJob::OcsShareeJob(AccountPtr account)

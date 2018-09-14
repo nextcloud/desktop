@@ -2,12 +2,13 @@
 if(NOT TOKEN_AUTH_ONLY)
 endif()
 
-set(synclib_NAME ${APPLICATION_EXECUTABLE}sync)
-
 find_package(Qt5 5.6 COMPONENTS Core Network Xml Concurrent REQUIRED)
 if (Qt5Core_VERSION VERSION_LESS 5.9.0)
 message(STATUS "For HTTP/2 support, compile with Qt 5.9 or higher.")
 endif()
+get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
+message(STATUS "Using Qt ${Qt5Core_VERSION} (${QT_QMAKE_EXECUTABLE})")
+
 
 if(NOT TOKEN_AUTH_ONLY)
     find_package(Qt5Keychain REQUIRED)

@@ -35,8 +35,4 @@ typedef struct fhandle_s {
 csync_vio_handle_t *csync_vio_opendir(CSYNC *ctx, const char *name);
 int csync_vio_closedir(CSYNC *ctx, csync_vio_handle_t *dhandle);
 std::unique_ptr<csync_file_stat_t> csync_vio_readdir(CSYNC *ctx, csync_vio_handle_t *dhandle);
-
-char *csync_vio_get_status_string(CSYNC *ctx);
-
-
 #endif /* _CSYNC_VIO_H */

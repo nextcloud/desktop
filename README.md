@@ -1,6 +1,6 @@
 # ownCloud Desktop Client
 
-[![Build Status](https://jenkins.owncloud.org/buildStatus/icon?job=owncloud-client/client/master)](https://jenkins.owncloud.org/job/owncloud-client/job/client/job/master/) [![Build status](https://ci.appveyor.com/api/projects/status/a1x3dslys7de6e21/branch/master?svg=true)](https://ci.appveyor.com/project/ownclouders/client/branch/master)
+[![Build Status](https://drone.owncloud.com/api/badges/owncloud/client/status.svg)](https://drone.owncloud.com/owncloud/client) [![Build status](https://ci.appveyor.com/api/projects/status/a1x3dslys7de6e21/branch/master?svg=true)](https://ci.appveyor.com/project/ownclouders/client/branch/master)
 
 
 ## Introduction
@@ -12,7 +12,7 @@ with your computer.
 
 ### Binary packages
 
-* Refer to the download page https://owncloud.org/install/#install-clients
+* Refer to the download page https://owncloud.org/download/#owncloud-desktop-client
 
 ### Source code
 
@@ -26,18 +26,6 @@ https://github.com/owncloud/client.
 
 [Building the Client](http://doc.owncloud.org/desktop/2.3/building.html)
 in the ownCloud Desktop Client manual.
-
-## Maintainers and Contributors
-
-The maintainers of this repository are:
-
-* Klaas Freitag <freitag@owncloud.com>
-* Daniel Molkentin <danimo@owncloud.com>
-* Markus Goetz <guruz@owncloud.com>
-* Olivier Goffart <ogoffart@owncloud.com>
-
-ownCloud Desktop Client is developed by the ownCloud community and receives
-patches from a variety of authors.
 
 ## Reporting issues and contributing
 
@@ -55,6 +43,23 @@ we can accept your patch.
 If you want to contact us, e.g. before starting a more complex feature,
 you can join us at
 [#owncloud-client-dev](irc://irc.freenode.net/#owncloud-client-dev).
+
+## Maintainers and Contributors
+
+The current maintainers of this repository are:
+
+* Markus Goetz <guruz@owncloud.com>
+* Olivier Goffart <ogoffart@owncloud.com>
+* Christian Kamm <mail@ckamm.de>
+
+ownCloud Desktop Client is developed by the ownCloud community and [receives
+patches from a variety of authors](https://github.com/owncloud/client/graphs/contributors).
+
+Past maintainers:
+
+* Klaas Freitag <freitag@owncloud.com>
+* Daniel Molkentin <daniel@molkentin.de>
+* Andreas Schneider <asn@cryptomilk.org>
 
 ## License
 

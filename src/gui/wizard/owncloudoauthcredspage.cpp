@@ -13,6 +13,8 @@
  */
 
 #include <QVariant>
+#include <QMenu>
+#include <QClipboard>
 
 #include "wizard/owncloudoauthcredspage.h"
 #include "theme.h"
@@ -45,8 +47,19 @@ OwncloudOAuthCredsPage::OwncloudOAuthCredsPage()
 
     connect(_ui.openLinkButton, &QCommandLinkButton::clicked, [this] {
         _ui.errorLabel->hide();
+        qobject_cast<OwncloudWizard *>(wizard())->account()->clearCookieJar(); // #6574
         if (_asyncAuth)
             _asyncAuth->openBrowser();
+    });
+    _ui.openLinkButton->setContextMenuPolicy(Qt::CustomContextMenu);
+    QObject::connect(_ui.openLinkButton, &QWidget::customContextMenuRequested, [this](const QPoint &pos) {
+        auto menu = new QMenu(_ui.openLinkButton);
+        menu->addAction(tr("Copy link to clipboard"), this, [this] {
+            if (_asyncAuth)
+                QApplication::clipboard()->setText(_asyncAuth->authorisationLink().toString(QUrl::FullyEncoded));
+        });
+        menu->setAttribute(Qt::WA_DeleteOnClose);
+        menu->popup(_ui.openLinkButton->mapToGlobal(pos));
     });
 }
 

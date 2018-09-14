@@ -20,7 +20,6 @@
 #include "syncresult.h"
 #include "progressdispatcher.h"
 #include "common/syncjournaldb.h"
-#include "clientproxy.h"
 #include "networkjobs.h"
 
 #include <csync.h>
@@ -40,6 +39,7 @@ class SyncEngine;
 class AccountState;
 class SyncRunFileLog;
 class FolderWatcher;
+class LocalDiscoveryTracker;
 
 /**
  * @brief The FolderDefinition class
@@ -66,6 +66,8 @@ public:
     bool paused;
     /// whether the folder syncs hidden files
     bool ignoreHiddenFiles;
+    /// New files are downloaded as virtual files
+    bool useVirtualFiles = false;
     /// The CLSID where this folder appears in registry for the Explorer navigation pane entry.
     QUuid navigationPaneClsid;
 
@@ -75,6 +77,9 @@ public:
     /// Reads a folder definition from a settings group with the name 'alias'.
     static bool load(QSettings &settings, const QString &alias,
         FolderDefinition *folder);
+
+    /// The highest version in the settings that load() can read
+    static int maxSettingsVersion() { return 1; }
 
     /// Ensure / as separator and trailing /.
     static QString prepareLocalPath(const QString &path);
@@ -237,6 +242,9 @@ public:
      */
     void registerFolderWatcher();
 
+    /** new files are downloaded as virtual files */
+    bool useVirtualFiles() { return _definition.useVirtualFiles; }
+
 signals:
     void syncStateChange();
     void syncStarted();
@@ -283,6 +291,15 @@ public slots:
        */
     void slotWatchedPathChanged(const QString &path);
 
+    /**
+     * Mark a virtual file as being ready for download, and start a sync.
+     * relativePath is the patch to the file (including the extension)
+     */
+    void downloadVirtualFile(const QString &relativepath);
+
+    /** Ensures that the next sync performs a full local discovery. */
+    void slotNextSyncFullLocalDiscovery();
+
 private slots:
     void slotSyncStarted();
     void slotSyncFinished(bool);
@@ -311,8 +328,18 @@ private slots:
      */
     void slotScheduleThisFolder();
 
-    /** Ensures that the next sync performs a full local discovery. */
-    void slotNextSyncFullLocalDiscovery();
+    /** Adjust sync result based on conflict data from IssuesWidget.
+     *
+     * This is pretty awkward, but IssuesWidget just keeps better track
+     * of conflicts across partial local discovery.
+     */
+    void slotFolderConflicts(const QString &folder, const QStringList &conflictPaths);
+
+    /** Warn users if they create a file or folder that is selective-sync excluded */
+    void warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QStringRef &path);
+
+    /** Warn users about an unreliable folder watcher */
+    void slotWatcherUnreliable(const QString &message);
 
 private:
     bool reloadExcludes();
@@ -360,8 +387,6 @@ private:
 
     SyncJournalDb _journal;
 
-    ClientProxy _clientProxy;
-
     QScopedPointer<SyncRunFileLog> _fileLog;
 
     QTimer _scheduleSelfTimer;
@@ -384,20 +409,9 @@ private:
     QScopedPointer<FolderWatcher> _folderWatcher;
 
     /**
-     * The paths that should be checked by the next local discovery.
-     *
-     * Mostly a collection of files the filewatchers have reported as touched.
-     * Also includes files that have had errors in the last sync run.
+     * Keeps track of locally dirty files so we can skip local discovery sometimes.
      */
-    std::set<QByteArray> _localDiscoveryPaths;
-
-    /**
-     * The paths that the current sync run used for local discovery.
-     *
-     * For failing syncs, this list will be merged into _localDiscoveryPaths
-     * again when the sync is done to make sure everything is retried.
-     */
-    std::set<QByteArray> _previousLocalDiscoveryPaths;
+    QScopedPointer<LocalDiscoveryTracker> _localDiscoveryTracker;
 };
 }
 

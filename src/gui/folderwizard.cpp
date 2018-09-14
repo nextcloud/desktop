@@ -36,6 +36,7 @@
 #include <QTreeWidget>
 #include <QVBoxLayout>
 #include <QEvent>
+#include <QCheckBox>
 
 #include <stdlib.h>
 
@@ -66,8 +67,10 @@ FolderWizardLocalPath::FolderWizardLocalPath(const AccountPtr &account)
     connect(_ui.localFolderChooseBtn, &QAbstractButton::clicked, this, &FolderWizardLocalPath::slotChooseLocalFolder);
     _ui.localFolderChooseBtn->setToolTip(tr("Click to select a local folder to sync."));
 
+    QUrl serverUrl = _account->url();
+    serverUrl.setUserName(_account->credentials()->user());
     QString defaultPath = QDir::homePath() + QLatin1Char('/') + Theme::instance()->appName();
-    defaultPath = FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath, account->url());
+    defaultPath = FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath, serverUrl);
     _ui.localFolderLineEdit->setText(QDir::toNativeSeparators(defaultPath));
     _ui.localFolderLineEdit->setToolTip(tr("Enter the path to the local folder."));
 
@@ -481,6 +484,12 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
     QVBoxLayout *layout = new QVBoxLayout(this);
     _selectiveSync = new SelectiveSyncWidget(account, this);
     layout->addWidget(_selectiveSync);
+
+    if (Theme::instance()->showVirtualFilesOption()) {
+        _virtualFilesCheckBox = new QCheckBox(tr("Use virtual files instead of downloading content immediately (experimental)"));
+        connect(_virtualFilesCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::virtualFilesCheckboxClicked);
+        layout->addWidget(_virtualFilesCheckBox);
+    }
 }
 
 FolderWizardSelectiveSync::~FolderWizardSelectiveSync()
@@ -508,6 +517,7 @@ void FolderWizardSelectiveSync::initializePage()
 bool FolderWizardSelectiveSync::validatePage()
 {
     wizard()->setProperty("selectiveSyncBlackList", QVariant(_selectiveSync->createBlackList()));
+    wizard()->setProperty("useVirtualFiles", QVariant(_virtualFilesCheckBox && _virtualFilesCheckBox->isChecked()));
     return true;
 }
 
@@ -519,6 +529,18 @@ void FolderWizardSelectiveSync::cleanupPage()
         alias = Theme::instance()->appName();
     _selectiveSync->setFolderInfo(targetPath, alias);
     QWizardPage::cleanupPage();
+}
+
+void FolderWizardSelectiveSync::virtualFilesCheckboxClicked()
+{
+    // The click has already had an effect on the box, so if it's
+    // checked it was newly activated.
+    if (_virtualFilesCheckBox->isChecked()) {
+        OwncloudWizard::askExperimentalVirtualFilesFeature([this](bool enable) {
+            if (!enable)
+                _virtualFilesCheckBox->setChecked(false);
+        });
+    }
 }
 
 

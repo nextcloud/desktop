@@ -96,7 +96,7 @@ protected:
             auto pos = folderList->mapFromGlobal(QCursor::pos());
             auto index = folderList->indexAt(pos);
             if (model->classify(index) == FolderStatusModel::RootFolder
-                && (FolderStatusDelegate::errorsListRect(folderList->visualRect(index)).contains(pos)
+                && (FolderStatusDelegate::errorsListRect(folderList->visualRect(index), index).contains(pos)
                     || FolderStatusDelegate::optionsButtonRect(folderList->visualRect(index),folderList->layoutDirection()).contains(pos))) {
                 shape = Qt::PointingHandCursor;
             }
@@ -162,7 +162,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     QAction *syncNowWithRemoteDiscovery = new QAction(this);
     syncNowWithRemoteDiscovery->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F6));
-    connect(syncNowWithRemoteDiscovery, &QAction::triggered, this, &AccountSettings::slotScheduleCurrentFolderForceRemoteDiscovery);
+    connect(syncNowWithRemoteDiscovery, &QAction::triggered, this, &AccountSettings::slotScheduleCurrentFolderForceFullDiscovery);
     addAction(syncNowWithRemoteDiscovery);
 
 
@@ -287,6 +287,9 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     bool folderPaused = _model->data(index, FolderStatusDelegate::FolderSyncPaused).toBool();
     bool folderConnected = _model->data(index, FolderStatusDelegate::FolderAccountConnected).toBool();
     auto folderMan = FolderMan::instance();
+    QPointer<Folder> folder = folderMan->folder(alias);
+    if (!folder)
+        return;
 
     QMenu *menu = new QMenu(tv);
 
@@ -295,7 +298,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     QAction *ac = menu->addAction(tr("Open folder"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotOpenCurrentFolder);
 
-    if (!ui->_folderList->isExpanded(index)) {
+    if (!ui->_folderList->isExpanded(index) && !folder->useVirtualFiles()) {
         ac = menu->addAction(tr("Choose what to sync"));
         ac->setEnabled(folderConnected);
         connect(ac, &QAction::triggered, this, &AccountSettings::doExpand);
@@ -340,7 +343,7 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
             slotCustomContextMenuRequested(pos);
             return;
         }
-        if (FolderStatusDelegate::errorsListRect(tv->visualRect(indx)).contains(pos)) {
+        if (FolderStatusDelegate::errorsListRect(tv->visualRect(indx), indx).contains(pos)) {
             emit showIssuesList(_model->data(indx, FolderStatusDelegate::FolderAliasRole).toString());
             return;
         }
@@ -378,6 +381,7 @@ void AccountSettings::slotFolderWizardAccepted()
         folderWizard->field(QLatin1String("sourceFolder")).toString());
     definition.targetPath = FolderDefinition::prepareTargetPath(
         folderWizard->property("targetPath").toString());
+    definition.useVirtualFiles = folderWizard->property("useVirtualFiles").toBool();
 
     {
         QDir dir(definition.localPath);
@@ -562,10 +566,11 @@ void AccountSettings::slotScheduleCurrentFolder()
     }
 }
 
-void AccountSettings::slotScheduleCurrentFolderForceRemoteDiscovery()
+void AccountSettings::slotScheduleCurrentFolderForceFullDiscovery()
 {
     FolderMan *folderMan = FolderMan::instance();
     if (auto folder = folderMan->folder(selectedFolderAlias())) {
+        folder->slotNextSyncFullLocalDiscovery();
         folder->journalDb()->forceRemoteDiscoveryNextSync();
         folderMan->scheduleFolder(folder);
     }
@@ -650,7 +655,7 @@ void AccountSettings::slotAccountStateChanged()
         if (state == AccountState::Connected) {
             QStringList errors;
             if (account->serverVersionUnsupported()) {
-                errors << tr("The server version %1 is old and unsupported! Proceed at your own risk.").arg(account->serverVersion());
+                errors << tr("The server version %1 is unsupported! Proceed at your own risk.").arg(account->serverVersion());
             }
             showConnectionLabel(tr("Connected to %1.").arg(serverWithUser), errors);
         } else if (state == AccountState::ServiceUnavailable) {
@@ -694,9 +699,6 @@ void AccountSettings::slotAccountStateChanged()
             if (ui->_folderList->isExpanded(_model->index(i)))
                 ui->_folderList->setExpanded(_model->index(i), false);
         }
-    } else if (_model->isDirty()) {
-        // If we connect and have pending changes, show the list.
-        doExpand();
     }
 
     // Disabling expansion of folders might require hiding the selective
@@ -755,8 +757,6 @@ AccountSettings::~AccountSettings()
 
 void AccountSettings::refreshSelectiveSyncStatus()
 {
-    bool shouldBeVisible = _model->isDirty() && _accountState->isConnected();
-
     QString msg;
     int cnt = 0;
     foreach (Folder *folder, FolderMan::instance()->map().values()) {
@@ -787,10 +787,20 @@ void AccountSettings::refreshSelectiveSyncStatus()
         }
     }
 
+    // Some selective sync ui (either normal editing or big folder) will show
+    // if this variable ends up true.
+    bool shouldBeVisible = false;
+
     if (msg.isEmpty()) {
+        // Show the ui if the model is dirty only
+        shouldBeVisible = _model->isDirty() && _accountState->isConnected();
+
         ui->selectiveSyncButtons->setVisible(true);
         ui->bigFolderUi->setVisible(false);
     } else {
+        // There's a reason the big folder ui should be shown
+        shouldBeVisible = _accountState->isConnected();
+
         ConfigFile cfg;
         QString info = !cfg.confirmExternalStorage()
             ? tr("There are folders that were not synchronized because they are too big: ")
@@ -801,7 +811,6 @@ void AccountSettings::refreshSelectiveSyncStatus()
         ui->selectiveSyncNotification->setText(info + msg);
         ui->selectiveSyncButtons->setVisible(false);
         ui->bigFolderUi->setVisible(true);
-        shouldBeVisible = true;
     }
 
     ui->selectiveSyncApply->setEnabled(_model->isDirty() || !msg.isEmpty());
@@ -811,6 +820,7 @@ void AccountSettings::refreshSelectiveSyncStatus()
         if (shouldBeVisible) {
             ui->selectiveSyncStatus->setMaximumHeight(0);
             ui->selectiveSyncStatus->setVisible(true);
+            doExpand();
         }
         auto anim = new QPropertyAnimation(ui->selectiveSyncStatus, "maximumHeight", ui->selectiveSyncStatus);
         anim->setEndValue(shouldBeVisible ? hint.height() : 0);

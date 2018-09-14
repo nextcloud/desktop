@@ -67,7 +67,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
         bool ok;
         // The use of isSymLink here is okay:
         // we never want to go into this branch for .lnk files
-        bool isDir = fi.isDir() && !fi.isSymLink();
+        bool isDir = fi.isDir() && !fi.isSymLink() && !FileSystem::isJunction(fi.absoluteFilePath());
         if (isDir) {
             ok = removeRecursively(path + QLatin1Char('/') + di.fileName()); // recursive
         } else {
@@ -116,7 +116,6 @@ void PropagateLocalRemove::start()
         return;
 
     QString filename = propagator()->_localDir + _item->_file;
-
     qCDebug(lcPropagateLocalRemove) << filename;
 
     if (propagator()->localFileNameClash(_item->_file)) {

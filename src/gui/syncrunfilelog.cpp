@@ -93,7 +93,7 @@ QString SyncRunFileLog::instructionToStr(csync_instructions_e inst)
 
 void SyncRunFileLog::start(const QString &folderPath)
 {
-    const qint64 logfileMaxSize = 1024 * 1024; // 1MiB
+    const qint64 logfileMaxSize = 10 * 1024 * 1024; // 10MiB
 
     // Note; this name is ignored in csync_exclude.c
     const QString filename = folderPath + QLatin1String(".owncloudsync.log");
@@ -117,8 +117,7 @@ void SyncRunFileLog::start(const QString &folderPath)
         // We are creating a new file, add the note.
         _out << "# timestamp | duration | file | instruction | dir | modtime | etag | "
                 "size | fileId | status | errorString | http result code | "
-                "other size | other modtime | other etag | other fileId | "
-                "other instruction"
+                "other size | other modtime | X-Request-ID"
              << endl;
 
         FileSystem::setFileHidden(filename, true);
@@ -133,7 +132,8 @@ void SyncRunFileLog::start(const QString &folderPath)
 void SyncRunFileLog::logItem(const SyncFileItem &item)
 {
     // don't log the directory items that are in the list
-    if (item._direction == SyncFileItem::None) {
+    if (item._direction == SyncFileItem::None
+        || item._instruction == CSYNC_INSTRUCTION_IGNORE) {
         return;
     }
     QString ts = QString::fromLatin1(item._responseTimeStamp);
@@ -163,9 +163,7 @@ void SyncRunFileLog::logItem(const SyncFileItem &item)
     _out << QString::number(item._httpErrorCode) << L;
     _out << QString::number(item._previousSize) << L;
     _out << QString::number(item._previousModtime) << L;
-    _out /* << other etag (removed) */ << L;
-    _out /* << other fileId (removed) */ << L;
-    _out /* << other instruction (removed) */ << L;
+    _out << item._requestId << L;
 
     _out << endl;
 }

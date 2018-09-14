@@ -11,9 +11,9 @@ include_directories(
 include_directories(${CHECK_INCLUDE_DIRS})
 # create test library
 add_library(${TORTURE_LIBRARY} STATIC torture.c cmdline.c)
-target_link_libraries(${TORTURE_LIBRARY} ${CMOCKA_LIBRARIES} ${CSYNC_LIBRARY})
+target_link_libraries(${TORTURE_LIBRARY} ${CMOCKA_LIBRARIES})
 
-set(TEST_TARGET_LIBRARIES ${TORTURE_LIBRARY} Qt5::Core ocsync)
+set(TEST_TARGET_LIBRARIES ${TORTURE_LIBRARY} Qt5::Core "${csync_NAME}")
 
 # create tests
 

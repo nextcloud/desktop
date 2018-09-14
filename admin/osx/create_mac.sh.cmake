@@ -23,7 +23,7 @@ identity="$3"
 prjfile=$build_path/admin/osx/macosx.pkgproj
 
 # The name of the installer package
-installer="@APPLICATION_SHORTNAME@-@MIRALL_VERSION_FULL@@MIRALL_VERSION_SUFFIX@"
+installer="@APPLICATION_SHORTNAME@-qt@Qt5Core_VERSION@-@MIRALL_VERSION_FULL@@MIRALL_VERSION_SUFFIX@"
 installer_file="$installer.pkg"
 installer_file_tar="$installer.pkg.tar"
 installer_file_tar_bz2="$installer.pkg.tar.bz2"

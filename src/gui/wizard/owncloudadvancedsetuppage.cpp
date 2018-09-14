@@ -17,6 +17,7 @@
 #include <QFileDialog>
 #include <QUrl>
 #include <QTimer>
+#include <QMessageBox>
 
 #include "QProgressIndicator.h"
 
@@ -50,7 +51,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
 
     registerField(QLatin1String("OCSyncFromScratch"), _ui.cbSyncFromScratch);
 
-    _ui.resultLayout->addWidget(_progressIndi);
+    _ui.errorScrollContents->layout()->addWidget(_progressIndi);
     stopSpinner();
     setupCustomization();
 
@@ -59,7 +60,9 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
 
     connect(_ui.rSyncEverything, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSyncEverythingClicked);
     connect(_ui.rSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
+    connect(_ui.rVirtualFileSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotVirtualFileSyncClicked);
     connect(_ui.bSelectiveSync, &QAbstractButton::clicked, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
+    connect(_ui.rManualFolder, &QAbstractButton::clicked, this, [this] { setRadioChecked(_ui.rManualFolder); });
 
     QIcon appIcon = theme->applicationIcon();
     _ui.lServerIcon->setText(QString());
@@ -102,6 +105,19 @@ void OwncloudAdvancedSetupPage::initializePage()
 {
     WizardCommon::initErrorLabel(_ui.errorLabel);
 
+    auto labelSizeHint = _ui.errorLabel->minimumSizeHint();
+    _ui.errorScroll->setMinimumSize(
+        labelSizeHint.width(),
+        qMax<int>(1.3 * labelSizeHint.height(), _progressIndi->height()));
+
+    if (!Theme::instance()->showVirtualFilesOption()) {
+        // If the layout were wrapped in a widget, the auto-grouping of the
+        // radio buttons no longer works and there are surprising margins.
+        // Just manually hide the button and remove the layout.
+        _ui.rVirtualFileSync->hide();
+        _ui.wSyncStrategy->layout()->removeItem(_ui.lVirtualFileSync);
+    }
+
     _checking = false;
     _ui.lSelectiveSyncSizeLabel->setText(QString());
     _ui.lSyncEverythingSizeLabel->setText(QString());
@@ -126,6 +142,7 @@ void OwncloudAdvancedSetupPage::initializePage()
 
     if (Theme::instance()->wizardSelectiveSyncDefaultNothing()) {
         _selectiveSyncBlacklist = QStringList("/");
+        setRadioChecked(_ui.rSelectiveSync);
         QTimer::singleShot(0, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
     }
 
@@ -170,8 +187,6 @@ void OwncloudAdvancedSetupPage::updateStatus()
     }
 
     _ui.syncModeLabel->setText(t);
-    _ui.syncModeLabel->setFixedHeight(_ui.syncModeLabel->sizeHint().height());
-    wizard()->resize(wizard()->sizeHint());
     setErrorString(errorStr);
     emit completeChanged();
 }
@@ -184,14 +199,12 @@ bool OwncloudAdvancedSetupPage::dataChanged()
 
 void OwncloudAdvancedSetupPage::startSpinner()
 {
-    _ui.resultLayout->setEnabled(true);
     _progressIndi->setVisible(true);
     _progressIndi->startAnimation();
 }
 
 void OwncloudAdvancedSetupPage::stopSpinner()
 {
-    _ui.resultLayout->setEnabled(false);
     _progressIndi->setVisible(false);
     _progressIndi->stopAnimation();
 }
@@ -220,6 +233,16 @@ QString OwncloudAdvancedSetupPage::localFolder() const
 QStringList OwncloudAdvancedSetupPage::selectiveSyncBlacklist() const
 {
     return _selectiveSyncBlacklist;
+}
+
+bool OwncloudAdvancedSetupPage::useVirtualFileSync() const
+{
+    return _ui.rVirtualFileSync->isChecked();
+}
+
+bool OwncloudAdvancedSetupPage::manualFolderConfig() const
+{
+    return _ui.rManualFolder->isChecked();
 }
 
 bool OwncloudAdvancedSetupPage::isConfirmBigFolderChecked() const
@@ -292,9 +315,6 @@ void OwncloudAdvancedSetupPage::slotSelectFolder()
 
 void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
 {
-    // Because clicking on it also changes it, restore it to the previous state in case the user cancelled the dialog
-    _ui.rSyncEverything->setChecked(_selectiveSyncBlacklist.isEmpty());
-
     AccountPtr acc = static_cast<OwncloudWizard *>(wizard())->account();
     SelectiveSyncDialog *dlg = new SelectiveSyncDialog(acc, _remoteFolder, _selectiveSyncBlacklist, this);
 
@@ -317,7 +337,7 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
     if (updateBlacklist) {
         if (!_selectiveSyncBlacklist.isEmpty()) {
             _ui.rSelectiveSync->blockSignals(true);
-            _ui.rSelectiveSync->setChecked(true);
+            setRadioChecked(_ui.rSelectiveSync);
             _ui.rSelectiveSync->blockSignals(false);
             auto s = dlg->estimatedSize();
             if (s > 0) {
@@ -326,23 +346,49 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
                 _ui.lSelectiveSyncSizeLabel->setText(QString());
             }
         } else {
-            _ui.rSyncEverything->setChecked(true);
+            setRadioChecked(_ui.rSyncEverything);
             _ui.lSelectiveSyncSizeLabel->setText(QString());
         }
         wizard()->setProperty("blacklist", _selectiveSyncBlacklist);
     }
 }
 
+void OwncloudAdvancedSetupPage::slotVirtualFileSyncClicked()
+{
+    OwncloudWizard::askExperimentalVirtualFilesFeature([this](bool enable) {
+        if (!enable)
+            return;
+
+        _ui.lSelectiveSyncSizeLabel->setText(QString());
+        _selectiveSyncBlacklist.clear();
+        setRadioChecked(_ui.rVirtualFileSync);
+    });
+}
+
 void OwncloudAdvancedSetupPage::slotSyncEverythingClicked()
 {
     _ui.lSelectiveSyncSizeLabel->setText(QString());
-    _ui.rSyncEverything->setChecked(true);
+    setRadioChecked(_ui.rSyncEverything);
     _selectiveSyncBlacklist.clear();
 }
 
 void OwncloudAdvancedSetupPage::slotQuotaRetrieved(const QVariantMap &result)
 {
     _ui.lSyncEverythingSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(result["size"].toDouble())));
+}
+
+void OwncloudAdvancedSetupPage::setRadioChecked(QRadioButton *radio)
+{
+    // We don't want clicking the radio buttons to immediately adjust the checked state
+    // for selective sync and virtual file sync, so we keep them uncheckable until
+    // they should be checked.
+    radio->setCheckable(true);
+    radio->setChecked(true);
+
+    if (radio != _ui.rSelectiveSync)
+        _ui.rSelectiveSync->setCheckable(false);
+    if (radio != _ui.rVirtualFileSync)
+        _ui.rVirtualFileSync->setCheckable(false);
 }
 
 } // namespace OCC

@@ -28,19 +28,20 @@ import time
 
 from gi.repository import GObject, Nautilus
 
-# Please do not touch the following line.
-# The reason is that we use a script to adopt this file for branding
-# by replacing this line with the branding app name. If the following
-# line is changed, the script can not match the pattern and fails.
+# Note: setappname.sh will search and replace 'ownCloud' on this file to update this line and other
+# occurrences of the name
 appname = 'ownCloud'
 
 print("Initializing "+appname+"-client-nautilus extension")
+print("Using python version {}".format(sys.version_info))
 
 def get_local_path(url):
     if url[0:7] == 'file://':
         url = url[7:]
-    unquote = urllib.parse.unquote if python3 else urllib.unquote
-    return unquote(url)
+    if python3:
+        return urllib.parse.unquote(url)
+    else:
+        return urllib.unquote(url).decode('utf-8')
 
 def get_runtime_dir():
     """Returns the value of $XDG_RUNTIME_DIR, a directory path.
@@ -62,7 +63,7 @@ class SocketConnect(GObject.GObject):
         self._watch_id = 0
         self._sock = None
         self._listeners = [self._update_registered_paths, self._get_version]
-        self._remainder = ''.encode()
+        self._remainder = ''.encode('utf-8')
         self.protocolVersion = '1.0'
         self.nautilusVFSFile_table = {}  # not needed in this object actually but shared 
                                          # all over the other objects.
@@ -81,7 +82,7 @@ class SocketConnect(GObject.GObject):
         # print("Server command: " + cmd)
         if self.connected:
             try:
-                self._sock.send(cmd.encode())
+                self._sock.send(cmd.encode('utf-8'))
             except:
                 print("Sending failed.")
                 self.reconnect()
@@ -96,19 +97,16 @@ class SocketConnect(GObject.GObject):
             self._sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
             sock_file = os.path.join(get_runtime_dir(), appname, "socket")
             try:
-                print("Socket File: " + sock_file)
                 self._sock.connect(sock_file) # fails if sock_file doesn't exist
                 self.connected = True
-                print("Setting connected to %r." % self.connected )
                 self._watch_id = GObject.io_add_watch(self._sock, GObject.IO_IN, self._handle_notify)
-                print("Socket watch id: " + str(self._watch_id))
 
                 self.sendCommand('VERSION:\n')
                 self.sendCommand('GET_STRINGS:\n')
 
                 return False  # Don't run again
             except Exception as e:
-                print("Could not connect to unix socket. " + str(e))
+                print("Could not connect to unix socket " + sock_file + ". " + str(e))
         except Exception as e:  # Bad habbit
             print("Connect could not be established, try again later.")
             self._sock.close()
@@ -131,12 +129,12 @@ class SocketConnect(GObject.GObject):
 
     # Parses response lines out of collected data, returns list of strings
     def get_available_responses(self):
-        end = self._remainder.rfind('\n'.encode())
+        end = self._remainder.rfind(b'\n')
         if end == -1:
             return []
         data = self._remainder[:end]
         self._remainder = self._remainder[end+1:]
-        return data.decode().split('\n')
+        return data.decode('utf-8').split('\n')
 
     # Notify is the raw answer from the socket
     def _handle_notify(self, source, condition):
@@ -152,7 +150,7 @@ class SocketConnect(GObject.GObject):
         return True  # Run again
 
     def handle_server_response(self, line):
-        print("Server response: " + line)
+        # print("Server response: " + line)
         parts = line.split(':')
         action = parts[0]
         args = parts[1:]
@@ -178,7 +176,7 @@ class SocketConnect(GObject.GObject):
 socketConnect = SocketConnect()
 
 
-class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
+class MenuExtension_ownCloud(GObject.GObject, Nautilus.MenuProvider):
     def __init__(self):
         GObject.GObject.__init__(self)
 
@@ -235,7 +233,7 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
     def ask_for_menu_items(self, files):
         record_separator = '\x1e'
         filesstring = record_separator.join(files)
-        socketConnect.sendCommand('GET_MENU_ITEMS:{}\n'.format(filesstring))
+        socketConnect.sendCommand(u'GET_MENU_ITEMS:{}\n'.format(filesstring))
 
         done = False
         start = time.time()
@@ -295,8 +293,8 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
         # and we definitely don't want to show them for IGNORED.
         shareable = False
         state = entry['state']
-        state_ok = state.startswith('OK')
-        state_sync = state.startswith('SYNC')
+        state_ok = state and state.startswith('OK')
+        state_sync = state and state.startswith('SYNC')
         if state_ok:
             shareable = True
         elif state_sync and isDir:
@@ -342,11 +340,11 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
 
 
     def context_menu_action(self, menu, action, filename):
-        print("Context menu: " + action + ' ' + filename)
+        # print("Context menu: " + action + ' ' + filename)
         socketConnect.sendCommand(action + ":" + filename + "\n")
 
 
-class SyncStateExtension(GObject.GObject, Nautilus.ColumnProvider, Nautilus.InfoProvider):
+class SyncStateExtension_ownCloud(GObject.GObject, Nautilus.InfoProvider):
     def __init__(self):
         GObject.GObject.__init__(self)
 

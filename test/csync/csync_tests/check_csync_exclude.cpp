@@ -22,6 +22,8 @@
 #include <time.h>
 #include <sys/time.h>
 
+#include <QTemporaryDir>
+
 #define CSYNC_TEST 1
 #include "csync_exclude.cpp"
 
@@ -271,7 +273,8 @@ static void check_csync_excluded_traversal(void **)
     assert_int_equal(check_file_traversal("subdir/.sync_5bdd60bdfcfa.db"), CSYNC_FILE_SILENTLY_EXCLUDED);
 
     /* Other builtin excludes */
-    assert_int_equal(check_file_traversal("foo/Desktop.ini"), CSYNC_FILE_SILENTLY_EXCLUDED);
+    assert_int_equal(check_file_traversal("foo/Desktop.ini"), CSYNC_NOT_EXCLUDED);
+    assert_int_equal(check_file_traversal("Desktop.ini"), CSYNC_FILE_SILENTLY_EXCLUDED);
 
     /* pattern ]*.directory - ignore and remove */
     assert_int_equal(check_file_traversal("my.~directory"), CSYNC_FILE_EXCLUDE_AND_REMOVE);
@@ -624,6 +627,34 @@ static void check_csync_exclude_expand_escapes(void **state)
     assert_true(0 == strcmp(line.constData(), "\\"));
 }
 
+static void check_version_directive(void **state)
+{
+    (void)state;
+
+    ExcludedFiles excludes;
+    excludes.setClientVersion(ExcludedFiles::Version(2, 5, 0));
+
+    std::vector<std::pair<const char *, bool>> tests = {
+        { "#!version == 2.5.0", true },
+        { "#!version == 2.6.0", false },
+        { "#!version < 2.6.0", true },
+        { "#!version <= 2.6.0", true },
+        { "#!version > 2.6.0", false },
+        { "#!version >= 2.6.0", false },
+        { "#!version < 2.4.0", false },
+        { "#!version <= 2.4.0", false },
+        { "#!version > 2.4.0", true },
+        { "#!version >= 2.4.0", true },
+        { "#!version < 2.5.0", false },
+        { "#!version <= 2.5.0", true },
+        { "#!version > 2.5.0", false },
+        { "#!version >= 2.5.0", true },
+    };
+    for (auto test : tests) {
+        assert_true(excludes.versionDirectiveKeepNextLine(test.first) == test.second);
+    }
+}
+
 }; // class ExcludedFilesTest
 
 int torture_run_tests(void)
@@ -642,6 +673,7 @@ int torture_run_tests(void)
         cmocka_unit_test_setup_teardown(T::check_csync_is_windows_reserved_word, T::setup_init, T::teardown),
         cmocka_unit_test_setup_teardown(T::check_csync_excluded_performance, T::setup_init, T::teardown),
         cmocka_unit_test(T::check_csync_exclude_expand_escapes),
+        cmocka_unit_test(T::check_version_directive),
     };
 
     return cmocka_run_group_tests(tests, NULL, NULL);

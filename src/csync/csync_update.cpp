@@ -47,6 +47,7 @@
 #include "common/asserts.h"
 
 #include <QtCore/QTextCodec>
+#include <QtCore/QFile>
 
 // Needed for PRIu64 on MinGW in C++ mode.
 #define __STDC_FORMAT_MACROS
@@ -108,15 +109,9 @@ static bool _csync_mtime_equal(time_t a, time_t b)
  * See doc/dev/sync-algorithm.md for an overview.
  */
 static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs) {
+  Q_ASSERT(fs);
   OCC::SyncJournalFileRecord base;
   CSYNC_EXCLUDE_TYPE excluded = CSYNC_NOT_EXCLUDED;
-
-  if (fs == NULL) {
-    errno = EINVAL;
-    ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
-    return -1;
-  }
-
   if (fs->type == ItemTypeSkip) {
       excluded =CSYNC_FILE_EXCLUDE_STAT_FAILED;
   } else {
@@ -131,12 +126,12 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
        * This code should probably be in csync_exclude, but it does not have the fs parameter.
        * Keep it here for now */
       if (ctx->ignore_hidden_files && (fs->is_hidden)) {
-          qCDebug(lcUpdate, "file excluded because it is a hidden file: %s", fs->path.constData());
+          qCInfo(lcUpdate, "file excluded because it is a hidden file: %s", fs->path.constData());
           excluded = CSYNC_FILE_EXCLUDE_HIDDEN;
       }
   } else {
       /* File is ignored because it's matched by a user- or system exclude pattern. */
-      qCDebug(lcUpdate, "%s excluded  (%d)", fs->path.constData(), excluded);
+      qCInfo(lcUpdate, "%s excluded  (%d)", fs->path.constData(), excluded);
       if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
           return 1;
       }
@@ -161,7 +156,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
        */
       QTextEncoder encoder(localCodec, QTextCodec::ConvertInvalidToNull);
       if (encoder.fromUnicode(QString::fromUtf8(fs->path)).contains('\0')) {
-          qCDebug(lcUpdate, "cannot encode %s to local encoding %d",
+          qCInfo(lcUpdate, "cannot encode %s to local encoding %d",
               fs->path.constData(), localCodec->mibEnum());
           excluded = CSYNC_FILE_EXCLUDE_CANNOT_ENCODE;
       }
@@ -169,7 +164,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
 
   if (fs->type == ItemTypeFile ) {
     if (fs->modtime == 0) {
-      qCDebug(lcUpdate, "file: %s - mtime is zero!", fs->path.constData());
+      qCInfo(lcUpdate, "file: %s - mtime is zero!", fs->path.constData());
     }
   }
 
@@ -192,19 +187,64 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       return -1;
   }
 
+  // The db entry might be for a virtual file, so look for that on the
+  // remote side. If we find one, change the current fs to look like a
+  // virtual file too, because that's what one would see if the remote
+  // db was filled from the database.
+  if (ctx->current == REMOTE_REPLICA && !base.isValid() && fs->type == ItemTypeFile) {
+      auto virtualFilePath = fs->path;
+      virtualFilePath.append(ctx->virtual_file_suffix);
+      ctx->statedb->getFileRecord(virtualFilePath, &base);
+      if (base.isValid() && base._type == ItemTypeVirtualFile) {
+          fs->type = ItemTypeVirtualFile;
+          fs->path = virtualFilePath;
+      } else {
+          base = OCC::SyncJournalFileRecord();
+      }
+  }
+
   if(base.isValid()) { /* there is an entry in the database */
       /* we have an update! */
       qCInfo(lcUpdate, "Database entry found, compare: %" PRId64 " <-> %" PRId64
                                           ", etag: %s <-> %s, inode: %" PRId64 " <-> %" PRId64
-                                          ", size: %" PRId64 " <-> %" PRId64 ", perms: %x <-> %x, ignore: %d",
+                                          ", size: %" PRId64 " <-> %" PRId64
+                                          ", perms: %x <-> %x"
+                                          ", type: %d <-> %d"
+                                          ", checksum: %s <-> %s"
+                                          ", ignore: %d",
                 ((int64_t) fs->modtime), ((int64_t) base._modtime),
                 fs->etag.constData(), base._etag.constData(), (uint64_t) fs->inode, (uint64_t) base._inode,
-                (uint64_t) fs->size, (uint64_t) base._fileSize, *reinterpret_cast<short*>(&fs->remotePerm), *reinterpret_cast<short*>(&base._remotePerm), base._serverHasIgnoredFiles );
+                (uint64_t) fs->size, (uint64_t) base._fileSize,
+                *reinterpret_cast<short*>(&fs->remotePerm), *reinterpret_cast<short*>(&base._remotePerm),
+                fs->type, base._type,
+                fs->checksumHeader.constData(), base._checksumHeader.constData(),
+                base._serverHasIgnoredFiles );
+
+      // If the db suggests a virtual file should be downloaded,
+      // treat the file as new on the remote.
+      if (ctx->current == REMOTE_REPLICA && base._type == ItemTypeVirtualFileDownload) {
+          fs->instruction = CSYNC_INSTRUCTION_NEW;
+          fs->type = ItemTypeVirtualFileDownload;
+          goto out;
+      }
+
+      // If what the db thinks is a virtual file is actually a file/dir,
+      // treat it as new locally.
+      if (ctx->current == LOCAL_REPLICA
+          && (base._type == ItemTypeVirtualFile || base._type == ItemTypeVirtualFileDownload)
+          && fs->type != ItemTypeVirtualFile) {
+          fs->instruction = CSYNC_INSTRUCTION_EVAL;
+          goto out;
+      }
+
       if (ctx->current == REMOTE_REPLICA && fs->etag != base._etag) {
           fs->instruction = CSYNC_INSTRUCTION_EVAL;
 
-          // Preserve the EVAL flag later on if the type has changed.
-          if (base._type != fs->type) {
+          if (fs->type == ItemTypeVirtualFile) {
+              // If the local thing is a virtual file, we just update the metadata
+              fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+          } else if (base._type != fs->type) {
+              // Preserve the EVAL flag later on if the type has changed.
               fs->child_modified = true;
           }
 
@@ -229,7 +269,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                   checksumIdentical = fs->checksumHeader == base._checksumHeader;
               }
               if (checksumIdentical) {
-                  qCDebug(lcUpdate, "NOTE: Checksums are identical, file did not actually change: %s", fs->path.constData());
+                  qCInfo(lcUpdate, "NOTE: Checksums are identical, file did not actually change: %s", fs->path.constData());
                   fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                   goto out;
               }
@@ -253,7 +293,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
            * The metadata comparison ensure that we fetch all the file id or permission when
            * upgrading owncloud
            */
-          qCDebug(lcUpdate, "Reading from database: %s", fs->path.constData());
+          qCInfo(lcUpdate, "Reading from database: %s", fs->path.constData());
           ctx->remote.read_from_db = true;
       }
       /* If it was remembered in the db that the remote dir has ignored files, store
@@ -264,7 +304,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       }
       if (metadata_differ) {
           /* file id or permissions has changed. Which means we need to update them in the DB. */
-          qCDebug(lcUpdate, "Need to update metadata for: %s", fs->path.constData());
+          qCInfo(lcUpdate, "Need to update metadata for: %s", fs->path.constData());
           fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
       } else {
           fs->instruction = CSYNC_INSTRUCTION_NONE;
@@ -272,7 +312,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
   } else {
       /* check if it's a file and has been renamed */
       if (ctx->current == LOCAL_REPLICA) {
-          qCDebug(lcUpdate, "Checking for rename based on inode # %" PRId64 "", (uint64_t) fs->inode);
+          qCInfo(lcUpdate, "Checking for rename based on inode # %" PRId64 "", (uint64_t) fs->inode);
 
           OCC::SyncJournalFileRecord base;
           if(!ctx->statedb->getFileRecordByInode(fs->inode, &base)) {
@@ -299,13 +339,13 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                       _rel_to_abs(ctx, fs->path), base._checksumHeader,
                       ctx->callbacks.checksum_userdata);
               if (!fs->checksumHeader.isEmpty()) {
-                  qCDebug(lcUpdate, "checking checksum of potential rename %s %s <-> %s", fs->path.constData(), fs->checksumHeader.constData(), base._checksumHeader.constData());
+                  qCInfo(lcUpdate, "checking checksum of potential rename %s %s <-> %s", fs->path.constData(), fs->checksumHeader.constData(), base._checksumHeader.constData());
                   isRename = fs->checksumHeader == base._checksumHeader;
               }
           }
 
           if (isRename) {
-              qCDebug(lcUpdate, "pot rename detected based on inode # %" PRId64 "", (uint64_t) fs->inode);
+              qCInfo(lcUpdate, "pot rename detected based on inode # %" PRId64 "", (uint64_t) fs->inode);
               /* inode found so the file has been renamed */
               fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
               if (fs->type == ItemTypeDirectory) {
@@ -315,6 +355,8 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
           goto out;
 
       } else {
+          qCInfo(lcUpdate, "Checking for rename based on fileid %s", fs->file_id.constData());
+
           /* Remote Replica Rename check */
           fs->instruction = CSYNC_INSTRUCTION_NEW;
 
@@ -325,10 +367,19 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
               if (!base.isValid())
                   return;
 
+              if (base._type == ItemTypeVirtualFileDownload) {
+                  // Remote rename of a virtual file we have locally scheduled
+                  // for download. We just consider this NEW but mark it for download.
+                  fs->type = ItemTypeVirtualFileDownload;
+                  done = true;
+                  return;
+              }
+
               // Some things prohibit rename detection entirely.
               // Since we don't do the same checks again in reconcile, we can't
               // just skip the candidate, but have to give up completely.
-              if (base._type != fs->type) {
+              if (base._type != fs->type
+                  && base._type != ItemTypeVirtualFile) {
                   qCWarning(lcUpdate, "file types different, not a rename");
                   done = true;
                   return;
@@ -338,6 +389,14 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                   qCWarning(lcUpdate, "file etag different, not a rename");
                   done = true;
                   return;
+              }
+
+              // Now we know there is a sane rename candidate.
+
+              // Rename of a virtual file
+              if (base._type == ItemTypeVirtualFile && fs->type == ItemTypeFile) {
+                  fs->type = ItemTypeVirtualFile;
+                  fs->path.append(ctx->virtual_file_suffix);
               }
 
               // Record directory renames
@@ -351,7 +410,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                   csync_rename_record(ctx, base._path, fs->path);
               }
 
-              qCDebug(lcUpdate, "remote rename detected based on fileid %s --> %s", base._path.constData(), fs->path.constData());
+              qCInfo(lcUpdate, "remote rename detected based on fileid %s --> %s", base._path.constData(), fs->path.constData());
               fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
               done = true;
           };
@@ -369,6 +428,15 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                   return 1;
               }
           }
+
+          // Turn new remote files into virtual files if the option is enabled.
+          if (ctx->new_files_are_virtual
+              && fs->instruction == CSYNC_INSTRUCTION_NEW
+              && fs->type == ItemTypeFile) {
+              fs->type = ItemTypeVirtualFile;
+              fs->path.append(ctx->virtual_file_suffix);
+          }
+
           goto out;
       }
   }
@@ -459,11 +527,11 @@ int csync_walker(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs) {
       }
       break;
   case ItemTypeSoftLink:
-    qCDebug(lcUpdate, "symlink: %s - not supported", fs->path.constData());
+    qCInfo(lcUpdate, "symlink: %s - not supported", fs->path.constData());
     break;
   default:
+    qCInfo(lcUpdate, "item: %s - item type %d not iterated", fs->path.constData(), fs->type);
     return 0;
-    break;
   }
 
   rc = _csync_detect_update(ctx, std::move(fs));
@@ -471,7 +539,7 @@ int csync_walker(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs) {
   return rc;
 }
 
-static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
+static bool fill_tree_from_db(CSYNC *ctx, const char *uri, bool singleFile = false)
 {
     int64_t count = 0;
     QByteArray skipbase;
@@ -486,7 +554,7 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
              * their correct etags again and we don't run into this case.
              */
             if (rec._etag == "_invalid_") {
-                qCDebug(lcUpdate, "%s selective sync excluded", rec._path.constData());
+                qCInfo(lcUpdate, "%s selective sync excluded", rec._path.constData());
                 skipbase = rec._path;
                 skipbase += '/';
                 return;
@@ -526,9 +594,19 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
         ++count;
     };
 
-    if (!ctx->statedb->getFilesBelowPath(uri, rowCallback)) {
-        ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
-        return false;
+    if (singleFile) {
+        OCC::SyncJournalFileRecord record;
+        if (ctx->statedb->getFileRecord(QByteArray(uri), &record) && record.isValid()) {
+            rowCallback(record);
+        } else {
+            ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
+            return false;
+        }
+    } else {
+        if (!ctx->statedb->getFilesBelowPath(uri, rowCallback)) {
+            ctx->status_code = CSYNC_STATUS_STATEDB_LOAD_ERROR;
+            return false;
+        }
     }
     qInfo(lcUpdate, "%" PRId64 " entries read below path %s from db.", count, uri);
 
@@ -569,23 +647,12 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   bool do_read_from_db = (ctx->current == REMOTE_REPLICA && ctx->remote.read_from_db);
   const char *db_uri = uri;
 
-  if (ctx->current == LOCAL_REPLICA
-      && ctx->local_discovery_style == LocalDiscoveryStyle::DatabaseAndFilesystem) {
+  if (ctx->current == LOCAL_REPLICA && ctx->should_discover_locally_fn) {
       const char *local_uri = uri + strlen(ctx->local.uri);
       if (*local_uri == '/')
           ++local_uri;
       db_uri = local_uri;
-      do_read_from_db = true;
-
-      // Minor bug: local_uri doesn't have a trailing /. Example: Assume it's "d/foo"
-      // and we want to check whether we should read from the db. Assume "d/foo a" is
-      // in locally_touched_dirs. Then this check will say no, don't read from the db!
-      // (because "d/foo" < "d/foo a" < "d/foo/bar")
-      // C++14: Could skip the conversion to QByteArray here.
-      auto it = ctx->locally_touched_dirs.lower_bound(QByteArray(local_uri));
-      if (it != ctx->locally_touched_dirs.end() && it->startsWith(local_uri)) {
-          do_read_from_db = false;
-      }
+      do_read_from_db = !ctx->should_discover_locally_fn(QByteArray(local_uri));
   }
 
   if (!depth) {
@@ -612,7 +679,6 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
           ctx->status_code = CSYNC_STATUS_ABORTED;
           goto error;
       }
-      int asp = 0;
       /* permission denied */
       ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_OPENDIR_ERROR);
       if (errno == EACCES) {
@@ -621,8 +687,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
               return 0;
           }
       } else if(errno == ENOENT) {
-          asp = asprintf( &ctx->error_string, "%s", uri);
-          ASSERT(asp >= 0);
+          ctx->error_string = QString::fromUtf8(uri);
       }
       // 403 Forbidden can be sent by the server if the file firewall is active.
       // A file or directory should be ignored and sync must continue. See #3490
@@ -649,11 +714,25 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       goto error;
   }
 
-  while ((dirent = csync_vio_readdir(ctx, dh))) {
+  while (true) {
+    // Get the next item in the directory
+    errno = 0;
+    dirent = csync_vio_readdir(ctx, dh);
+    if (!dirent) {
+        if (errno != 0) {
+            // Note: Windows vio converts any error into EACCES
+            qCWarning(lcUpdate, "readdir failed for file in %s - errno %d", uri, errno);
+            goto error;
+        }
+
+        // Normal case: End of items in directory
+        break;
+    }
+
     /* Conversion error */
     if (dirent->path.isEmpty() && !dirent->original_path.isEmpty()) {
         ctx->status_code = CSYNC_STATUS_INVALID_CHARACTERS;
-        ctx->error_string = c_strdup(dirent->original_path);
+        ctx->error_string = QString::fromUtf8(dirent->original_path);
         dirent->original_path.clear();
         goto error;
     }
@@ -676,6 +755,52 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         fullpath = QByteArray() % uri % '/' % filename;
     }
 
+    // When encountering virtual files, read the relevant
+    // entry from the db instead.
+    if (ctx->current == LOCAL_REPLICA
+        && dirent->type == ItemTypeFile
+        && filename.endsWith(ctx->virtual_file_suffix)) {
+        QByteArray db_uri = fullpath.mid(strlen(ctx->local.uri) + 1);
+
+        if( ! fill_tree_from_db(ctx, db_uri.constData(), true) ) {
+            // If we find what looks to be a spurious "abc.owncloud" the base file "abc"
+            // might have been renamed to that. Make sure that the base file is not
+            // deleted from the server.
+            OCC::SyncJournalFileRecord record;
+            QByteArray base_uri = db_uri;
+            base_uri.chop(ctx->virtual_file_suffix.size());
+            ctx->statedb->getFileRecord(base_uri, &record);
+            if (record.isValid()
+                && record._inode == dirent->inode
+                && record._fileSize == dirent->size
+                && record._modtime == dirent->modtime) {
+                qCInfo(lcUpdate) << "Base file was renamed to virtual file:" << filename;
+
+                // Let sync recreate the placeholder file to ensure it has the right size.
+                // WARNING: Side effect on database during update phase:
+                // Makes local/remote discovery order dependent!
+                ctx->statedb->deleteFileRecord(base_uri);
+                record._path = db_uri;
+                record._type = ItemTypeVirtualFile;
+                ctx->statedb->setFileRecord(record);
+
+                QFile::remove(fullpath);
+            } else {
+                // Remove the spurious file if it looks like a placeholder file
+                // (we know placeholder files contain " ")
+                if (dirent->size <= 1) {
+                    QFile::remove(fullpath);
+                    qCWarning(lcUpdate) << "Wiping virtual file without db entry for" << filename;
+                } else {
+                    qCWarning(lcUpdate) << "Virtual file without db entry for" << filename
+                                        << "but looks odd, keeping";
+                }
+            }
+        }
+
+        continue;
+    }
+
     /* if the filename starts with a . we consider it a hidden file
      * For windows, the hidden state is also discovered within the vio
      * local stat function.
@@ -689,10 +814,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
     // Now process to have a relative path to the sync root for the local replica, or to the data root on the remote.
     dirent->path = fullpath;
     if (ctx->current == LOCAL_REPLICA) {
-        if (dirent->path.size() <= (int)strlen(ctx->local.uri)) {
-            ctx->status_code = CSYNC_STATUS_PARAM_ERROR;
-            goto error;
-        }
+        ASSERT(dirent->path.startsWith(ctx->local.uri)); // path is relative to uri
         // "len + 1" to include the slash in-between.
         dirent->path = dirent->path.mid(strlen(ctx->local.uri) + 1);
     }
@@ -746,7 +868,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   }
 
   csync_vio_closedir(ctx, dh);
-  qCDebug(lcUpdate, " <= Closing walk for %s with read_from_db %d", uri, read_from_db);
+  qCInfo(lcUpdate, " <= Closing walk for %s with read_from_db %d", uri, read_from_db);
 
   return rc;
 

@@ -58,11 +58,22 @@ public:
         // (by setting forceRemoteDiscovery in SyncJournalDb::checkConnect)
         PermissionsCount = HasZSyncMetadata
     };
-    RemotePermissions() = default;
-    explicit RemotePermissions(const char *);
-    explicit RemotePermissions(const QString &);
 
+    /// null permissions
+    RemotePermissions() = default;
+
+    /// array with one character per permission, "" is null, " " is non-null but empty
+    QByteArray toDbValue() const;
+
+    /// output for display purposes, no defined format (same as toDbValue in practice)
     QByteArray toString() const;
+
+    /// read value that was written with toDbValue()
+    static RemotePermissions fromDbValue(const QByteArray &);
+
+    /// read a permissions string received from the server, never null
+    static RemotePermissions fromServerString(const QString &);
+
     bool hasPermission(Permissions p) const
     {
         return _value & (1 << static_cast<int>(p));

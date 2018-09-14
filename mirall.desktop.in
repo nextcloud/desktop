@@ -8,68 +8,7 @@ GenericName=Folder Sync
 Icon=@APPLICATION_EXECUTABLE@
 Keywords=@APPLICATION_NAME@;syncing;file;sharing;
 X-GNOME-Autostart-Delay=3
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
-
+MimeType=application/vnd.@APPLICATION_EXECUTABLE@;
 
 # Translations
 
@@ -246,7 +185,7 @@ Icon[eu]=@APPLICATION_EXECUTABLE@
 GenericName[fa]=همسان سازی پوشه‌ها
 Name[fa]=@APPLICATION_EXECUTABLE@ نسخه‌ی همسان سازی مشتری
 Icon[fa]=@APPLICATION_EXECUTABLE@
-Comment[fr]=Synchronisez vos dossiers avec un serveur @APPLICATION_NAME@
+Comment[fr]=Client de synchronisation @APPLICATION_NAME@
 GenericName[fr]=Synchronisation de dossier
 Name[fr]=Client de synchronisation @APPLICATION_NAME@
 Icon[fr]=@APPLICATION_EXECUTABLE@
@@ -278,9 +217,17 @@ Comment[ko]=@APPLICATION_NAME@ 데스크톱 동기화 클라이언트
 GenericName[ko]=폴더 동기화
 Name[ko]=@APPLICATION_NAME@ 데스크톱 동기화 클라이언트
 Icon[ko]=@APPLICATION_EXECUTABLE@
+Comment[lo]=@APPLICATION_NAME@ ການປະສານຂໍ້ມູນຄອມພິວເຕີລູກຂ່າຍ
+GenericName[lo]=ໂຟນເດີຊິງ
+Name[lo]=@APPLICATION_NAME@ ຊິງຄອມພິວເຕີລູກຂ່າຍ 
+Icon[lo]=@APPLICATION_EXECUTABLE@
+Comment[mk]=@APPLICATION_NAME@ десктор клиент за синхронизација
+GenericName[mk]=Папка за синхронизација
+Name[mk]=@APPLICATION_NAME@ десктор клиент за синхронизација
+Icon[mk]=@APPLICATION_EXECUTABLE@
 Comment[hu_HU]=@APPLICATION_NAME@ asztali szinkronizációs kliens
-GenericName[hu_HU]=Könyvtár szinkronizálás
-Name[hu_HU]=@APPLICATION_NAME@ asztali szinkr. kliens
+GenericName[hu_HU]=Mappaszinkronizálás
+Name[hu_HU]=@APPLICATION_NAME@ asztali szinkronizációs kliens
 Icon[hu_HU]=@APPLICATION_EXECUTABLE@
 Comment[af_ZA]=@APPLICATION_NAME@ werkskermsinchroniseerkliënt
 GenericName[af_ZA]=Vouersinchronisering
@@ -355,9 +302,9 @@ Comment[lt_LT]=@APPLICATION_NAME@ darbalaukio sinchronizavimo programa
 GenericName[lt_LT]=Katalogo sinchnorizacija
 Name[lt_LT]=@APPLICATION_NAME@ darbalaukio programa
 Icon[lt_LT]=@APPLICATION_EXECUTABLE@
-Comment[th_TH]=@APPLICATION_NAME@ ไคลเอนต์ประสานข้อมูลเดสก์ท็อป
+Comment[th_TH]=@APPLICATION_NAME@ ประสานข้อมูลด้วยโปรแกรมบนเดสก์ท็อป
 GenericName[th_TH]=ประสานข้อมูลโฟลเดอร์
-Name[th_TH]= @APPLICATION_NAME@ ไคลเอนต์ประสานข้อมูลเดสก์ท็อป
+Name[th_TH]= @APPLICATION_NAME@ ประสานข้อมูลด้วยโปรแกรมบนเดสก์ท็อป
 Icon[th_TH]=@APPLICATION_EXECUTABLE@
 Comment[es_MX]=Cliente de escritorio para  sincronziación de @APPLICATION_NAME@
 GenericName[es_MX]=Sincronización de Carpetas

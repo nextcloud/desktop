@@ -5,41 +5,15 @@ project(client)
 
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-set(OEM_THEME_DIR "" CACHE STRING "Define directory containing a custom theme")
-if ( EXISTS ${OEM_THEME_DIR}/OEM.cmake )
-     include ( ${OEM_THEME_DIR}/OEM.cmake )
-else ()
-     include ( ${CMAKE_SOURCE_DIR}/OWNCLOUD.cmake )
-endif()
-# need this logic to not mess with re/uninstallations via macosx.pkgproj
-if(${APPLICATION_REV_DOMAIN} STREQUAL "com.owncloud.desktopclient")
-    set(APPLICATION_REV_DOMAIN_INSTALLER "com.ownCloud.client")
-else()
-    set(APPLICATION_REV_DOMAIN_INSTALLER ${APPLICATION_REV_DOMAIN})
-endif()
+include("${CMAKE_CURRENT_LIST_DIR}/THEME.cmake")
 
-# For usage in XML files we preprocess
-string(REPLACE "&" "&amp;" APPLICATION_NAME_XML_ESCAPED "${APPLICATION_NAME}")
-string(REPLACE "<" "&lt;" APPLICATION_NAME_XML_ESCAPED "${APPLICATION_NAME_XML_ESCAPED}")
-string(REPLACE ">" "&gt;" APPLICATION_NAME_XML_ESCAPED "${APPLICATION_NAME_XML_ESCAPED}")
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
-if (NOT DEFINED LINUX_PACKAGE_SHORTNAME)
-    set(LINUX_PACKAGE_SHORTNAME "${APPLICATION_SHORTNAME}")
-endif()
-
-if (NOT DEFINED PACKAGE)
-    set(PACKAGE "${LINUX_PACKAGE_SHORTNAME}-client")
-endif()
-
-set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
-
-if(NOT CRASHREPORTER_EXECUTABLE)
-    set(CRASHREPORTER_EXECUTABLE "${APPLICATION_EXECUTABLE}_crash_reporter")
-endif()
+set(synclib_NAME "${APPLICATION_EXECUTABLE}sync")
+set(csync_NAME "${APPLICATION_EXECUTABLE}_csync")
 
 include(Warnings)
 
-include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
 # For config.h
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
 # Allows includes based on src/ like #include "common/utility.h" or #include "csync/csync.h"
@@ -188,7 +162,7 @@ if(BUILD_CLIENT)
 endif()
 
 if (NOT DEFINED APPLICATION_ICON_NAME)
-    set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
+    set(APPLICATION_ICON_NAME "${APPLICATION_SHORTNAME}")
 endif()
 
 include(OwnCloudCPack.cmake)
@@ -210,9 +184,6 @@ endif()
 # Handle Translations, pick all client_* files from trans directory.
 file( GLOB TRANS_FILES ${CMAKE_SOURCE_DIR}/translations/client_*.ts)
 set(TRANSLATIONS ${TRANS_FILES})
-
-# Make sure we set this before recursing into child folders.
-set(WITH_TESTING ${UNIT_TESTING})
 
 if(BUILD_CLIENT)
     add_subdirectory(src)

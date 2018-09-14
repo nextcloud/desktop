@@ -75,10 +75,9 @@ public:
         /** For files whose errors were blacklisted
          *
          * If an file is blacklisted due to an error it isn't even reattempted. These
-         * errors should appear in the issues tab, but not on the account settings and
-         * should not cause the sync run to fail.
+         * errors should appear in the issues tab but should be silent otherwise.
          *
-         * A DetailError that doesn't cause sync failure.
+         * A SoftError caused by blacklisting.
          */
         BlacklistedError
     };
@@ -224,6 +223,7 @@ public:
     RemotePermissions _remotePerm;
     QString _errorString; // Contains a string only in case of error
     QByteArray _responseTimeStamp;
+    QByteArray _requestId; // X-Request-Id of the failed request
     quint32 _affectedItems; // the number of affected items by the operation on this item.
     // usually this value is 1, but for removes on dirs, it might be much higher.
 

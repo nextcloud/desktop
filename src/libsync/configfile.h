@@ -48,6 +48,13 @@ public:
     QString excludeFile(Scope scope) const;
     static QString excludeFileFromSystem(); // doesn't access config dir
 
+    /**
+     * Creates a backup of the file
+     *
+     * Returns the path of the new backup.
+     */
+    QString backup() const;
+
     bool exists();
 
     QString defaultConnection() const;
@@ -88,6 +95,12 @@ public:
 
     bool crashReporter() const;
     void setCrashReporter(bool enabled);
+
+    bool automaticLogDir() const;
+    void setAutomaticLogDir(bool enabled);
+
+    // Whether experimental UI options should be shown
+    bool showExperimentalOptions() const;
 
     // proxy settings
     void setProxyType(int proxyType,
@@ -152,6 +165,9 @@ public:
     bool skipUpdateCheck(const QString &connection = QString()) const;
     void setSkipUpdateCheck(bool, const QString &);
 
+    QString updateChannel() const;
+    void setUpdateChannel(const QString &channel);
+
     void saveGeometryHeader(QHeaderView *header);
     void restoreGeometryHeader(QHeaderView *header);
 
@@ -159,6 +175,11 @@ public:
     void setCertificatePath(const QString &cPath);
     QString certificatePasswd() const;
     void setCertificatePasswd(const QString &cPasswd);
+
+    /** The client version that last used this settings file.
+        Updated by configVersionMigration() at client startup. */
+    QString clientVersionString() const;
+    void setClientVersionString(const QString &version);
 
     /**  Returns a new settings pre-set in a specific group.  The Settings will be created
          with the given parent. If no parent is specified, the caller must destroy the settings */

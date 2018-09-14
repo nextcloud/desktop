@@ -11,6 +11,10 @@
 
 using namespace OCC::Utility;
 
+namespace OCC {
+OCSYNC_EXPORT extern bool fsCasePreserving_override;
+}
+
 class TestUtility : public QObject
 {
     Q_OBJECT
@@ -150,12 +154,12 @@ private slots:
 
     void testFsCasePreserving()
     {
-        qputenv("OWNCLOUD_TEST_CASE_PRESERVING", "1");
-        QVERIFY(fsCasePreserving());
-        qputenv("OWNCLOUD_TEST_CASE_PRESERVING", "0");
-        QVERIFY(! fsCasePreserving());
-        qunsetenv("OWNCLOUD_TEST_CASE_PRESERVING");
         QVERIFY(isMac() || isWindows() ? fsCasePreserving() : ! fsCasePreserving());
+        QScopedValueRollback<bool> scope(OCC::fsCasePreserving_override);
+        OCC::fsCasePreserving_override = 1;
+        QVERIFY(fsCasePreserving());
+        OCC::fsCasePreserving_override = 0;
+        QVERIFY(! fsCasePreserving());
     }
 
     void testFileNamesEqual()
@@ -178,16 +182,36 @@ private slots:
         QVERIFY(fileNamesEqual(a+"/test", b+"/test")); // both exist
         QVERIFY(fileNamesEqual(a+"/test/TESTI", b+"/test/../test/TESTI")); // both exist
 
-        qputenv("OWNCLOUD_TEST_CASE_PRESERVING", "1");
+        QScopedValueRollback<bool> scope(OCC::fsCasePreserving_override, true);
         QVERIFY(fileNamesEqual(a+"/test", b+"/TEST")); // both exist
 
         QVERIFY(!fileNamesEqual(a+"/test", b+"/test/TESTI")); // both are different
 
         dir.remove();
-        qunsetenv("OWNCLOUD_TEST_CASE_PRESERVING");
     }
 
+    void testSanitizeForFileName_data()
+    {
+        QTest::addColumn<QString>("input");
+        QTest::addColumn<QString>("output");
 
+        QTest::newRow("")
+            << "foobar"
+            << "foobar";
+        QTest::newRow("")
+            << "a/b?c<d>e\\f:g*h|i\"j"
+            << "abcdefghij";
+        QTest::newRow("")
+            << QString::fromLatin1("a\x01 b\x1f c\x80 d\x9f")
+            << "a b c d";
+    }
+
+    void testSanitizeForFileName()
+    {
+        QFETCH(QString, input);
+        QFETCH(QString, output);
+        QCOMPARE(sanitizeForFileName(input), output);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestUtility)

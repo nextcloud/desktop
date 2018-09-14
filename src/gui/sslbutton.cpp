@@ -58,7 +58,7 @@ static bool isSelfSigned(const QSslCertificate &certificate)
 }
 
 QMenu *SslButton::buildCertMenu(QMenu *parent, const QSslCertificate &cert,
-    const QList<QSslCertificate> &userApproved, int pos)
+    const QList<QSslCertificate> &userApproved, int pos, const QList<QSslCertificate> &systemCaCertificates)
 {
     QString cn = QStringList(cert.subjectInfo(QSslCertificate::CommonName)).join(QChar(';'));
     QString ou = QStringList(cert.subjectInfo(QSslCertificate::OrganizationalUnitName)).join(QChar(';'));
@@ -129,7 +129,7 @@ QMenu *SslButton::buildCertMenu(QMenu *parent, const QSslCertificate &cert,
 
     QString certId = cn.isEmpty() ? ou : cn;
 
-    if (QSslConfiguration::systemCaCertificates().contains(cert)) {
+    if (systemCaCertificates.contains(cert)) {
         txt += certId;
     } else {
         if (isSelfSigned(cert)) {
@@ -189,6 +189,10 @@ void SslButton::slotUpdateMenu()
 
     AccountPtr account = _accountState->account();
 
+    if (account->isHttp2Supported()) {
+        _menu->addAction("HTTP/2")->setEnabled(false);
+    }
+
     if (account->url().scheme() == QLatin1String("https")) {
         QString sslVersion = account->_sessionCipher.protocolString()
             + ", " + account->_sessionCipher.authenticationMethod()
@@ -232,7 +236,7 @@ void SslButton::slotUpdateMenu()
         it.toBack();
         int i = 0;
         while (it.hasPrevious()) {
-            _menu->addMenu(buildCertMenu(_menu, it.previous(), account->approvedCerts(), i));
+            _menu->addMenu(buildCertMenu(_menu, it.previous(), account->approvedCerts(), i, systemCerts));
             i++;
         }
     }

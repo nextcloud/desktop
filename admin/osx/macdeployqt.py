@@ -22,6 +22,7 @@ import subprocess
 import commands
 import sys
 from glob import glob
+from distutils.version import LooseVersion
 
 def QueryQMake(attrib):
     return subprocess.check_output([qmake_path, '-query', attrib]).rstrip('\n')
@@ -92,6 +93,8 @@ commands.append(['mkdir', '-p', resources_dir])
 plugins_dir = os.path.join(bundle_dir, 'Contents', 'PlugIns')
 binaries = [i for i in glob(os.path.join(bundle_dir, 'Contents', 'MacOS', "*")) if is_exe(i)];
 
+qt_version = QueryQMake('QT_VERSION')
+print "Using Qt", qt_version
 
 fixed_libraries = []
 fixed_frameworks = []
@@ -334,8 +337,18 @@ def FindQtPlugin(name):
 for binary in binaries:
   FixBinary(binary)
 
+
+if LooseVersion(qt_version) >= LooseVersion("5.10.0"):
+  QT_PLUGINS.append('styles/libqmacstyle.dylib')
 for plugin in QT_PLUGINS:
   FixPlugin(FindQtPlugin(plugin), os.path.dirname(plugin))
+
+if LooseVersion(qt_version) >= LooseVersion("5.10.0"):
+  args = ['plutil', '-insert', 'LSMinimumSystemVersion', '-string', '10.10.0', os.path.join(bundle_dir, 'Contents', 'Info.plist')]
+  commands.append(args)
+else:
+  args = ['plutil', '-insert', 'LSMinimumSystemVersion', '-string', '10.7.0', os.path.join(bundle_dir, 'Contents', 'Info.plist')]
+  commands.append(args)
 
 if len(sys.argv) <= 2:
   print 'Will run %d commands:' % len(commands)

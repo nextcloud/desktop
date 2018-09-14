@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>912</width>
-    <height>633</height>
+    <width>917</width>
+    <height>604</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -227,7 +227,7 @@
       </widget>
      </item>
      <item row="0" column="1" colspan="2">
-      <widget class="QWidget" name="widget" native="true">
+      <widget class="QWidget" name="wSyncStrategy" native="true">
        <layout class="QVBoxLayout" name="verticalLayout">
         <property name="leftMargin">
          <number>0</number>
@@ -240,7 +240,7 @@
           <item>
            <widget class="QRadioButton" name="rSyncEverything">
             <property name="text">
-             <string>S&amp;ync everything from server</string>
+             <string>S&amp;ynchronize everything from server (recommended)</string>
             </property>
             <property name="checked">
              <bool>true</bool>
@@ -343,6 +343,9 @@
             <property name="text">
              <string/>
             </property>
+            <property name="checkable">
+             <bool>false</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -377,17 +380,79 @@
           </item>
          </layout>
         </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_40">
+          <item>
+           <widget class="QRadioButton" name="rManualFolder">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When this option is selected, the wizard will close without synchronizing anything. You can use the &amp;quot;Add Folder Sync Connection&amp;quot; button from the account settings to choose which pair of local and remote folder you wish to synchronize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="whatsThis">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When this option is selected, the wizard will close without synchronizing anything. You can use the &amp;quot;Add Folder Sync Connection&amp;quot; button from the account settings to choose which pair of local and remote folder you wish to synchronize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+            <property name="text">
+             <string>Manually create folder sync connections </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="lVirtualFileSync">
+          <item>
+           <widget class="QRadioButton" name="rVirtualFileSync">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Use virtual files instead of downloading content immediately (e&amp;xperimental)</string>
+            </property>
+            <property name="checkable">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
        </layout>
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QLabel" name="errorLabel">
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
    </item>
    <item>
     <widget class="QLabel" name="syncModeLabel">
@@ -406,7 +471,54 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="resultLayout"/>
+    <widget class="QScrollArea" name="errorScroll">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="errorScrollContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>899</width>
+        <height>68</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_6">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="errorLabel">
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </item>
    <item>
     <widget class="QLabel" name="bottomLabel">
@@ -420,6 +532,19 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>rSyncEverything</tabstop>
+  <tabstop>confCheckBoxSize</tabstop>
+  <tabstop>confSpinBox</tabstop>
+  <tabstop>confCheckBoxExternal</tabstop>
+  <tabstop>rSelectiveSync</tabstop>
+  <tabstop>bSelectiveSync</tabstop>
+  <tabstop>rManualFolder</tabstop>
+  <tabstop>rVirtualFileSync</tabstop>
+  <tabstop>pbSelectLocalFolder</tabstop>
+  <tabstop>radioButton</tabstop>
+  <tabstop>cbSyncFromScratch</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -449,8 +574,8 @@
      <y>83</y>
     </hint>
     <hint type="destinationlabel">
-     <x>952</x>
-     <y>134</y>
+     <x>864</x>
+     <y>147</y>
     </hint>
    </hints>
   </connection>
@@ -465,8 +590,8 @@
      <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1076</x>
-     <y>136</y>
+     <x>902</x>
+     <y>147</y>
     </hint>
    </hints>
   </connection>
@@ -483,6 +608,70 @@
     <hint type="destinationlabel">
      <x>382</x>
      <y>174</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rManualFolder</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>pbSelectLocalFolder</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>197</x>
+     <y>269</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>219</x>
+     <y>404</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rManualFolder</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>resolutionWidget</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>260</x>
+     <y>266</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>443</x>
+     <y>437</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rManualFolder</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lLocal</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>163</x>
+     <y>267</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>88</x>
+     <y>438</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rManualFolder</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lLocalIcon</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>551</x>
+     <y>262</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>54</x>
+     <y>400</y>
     </hint>
    </hints>
   </connection>

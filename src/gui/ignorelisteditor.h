@@ -46,8 +46,9 @@ private slots:
     void slotAddPattern();
 
 private:
-    void readIgnoreFile(const QString &file, bool readOnly);
-    int addPattern(const QString &pattern, bool deletable, bool readOnly);
+    void readIgnoreFile(const QString &file, bool global);
+    int addPattern(const QString &pattern, bool deletable, bool readOnly, bool global,
+        const QStringList &skippedLines = QStringList());
     QString readOnlyTooltip;
     Ui::IgnoreListEditor *ui;
 };

@@ -180,7 +180,10 @@ struct OCSYNC_EXPORT csync_s {
   /* csync error code */
   enum csync_status_codes_e status_code = CSYNC_STATUS_OK;
 
-  char *error_string = nullptr;
+  /* Some additional string information which is added to the error message corresponding to the error code in errno.
+   * Usually a filename
+   */
+  QString error_string;
 
   int status = CSYNC_STATUS_INIT;
   volatile bool abort = false;
@@ -190,19 +193,21 @@ struct OCSYNC_EXPORT csync_s {
    */
   bool read_remote_from_db = false;
 
-  LocalDiscoveryStyle local_discovery_style = LocalDiscoveryStyle::FilesystemOnly;
-
-  /**
-   * List of folder-relative directory paths that should be scanned on the
-   * filesystem if the local_discovery_style suggests it.
-   *
-   * Their parents will be scanned too. The paths don't start with a /.
-   */
-  std::set<QByteArray> locally_touched_dirs;
+  std::function<bool(const QByteArray &)> should_discover_locally_fn;
 
   bool ignore_hidden_files = true;
 
   bool upload_conflict_files = false;
+
+  /**
+   * Whether new remote files should start out as virtual.
+   */
+  bool new_files_are_virtual = false;
+
+  /**
+   * The suffix to use for virtual files.
+   */
+  QByteArray virtual_file_suffix;
 
   csync_s(const char *localUri, OCC::SyncJournalDb *statedb);
   ~csync_s();
@@ -215,17 +220,6 @@ struct OCSYNC_EXPORT csync_s {
   csync_s(const csync_s &) = delete;
   csync_s &operator=(const csync_s &) = delete;
 };
-
-/*
- * context for the treewalk function
- */
-struct _csync_treewalk_context_s
-{
-    csync_treewalk_visit_func *user_visitor;
-    int instruction_filter;
-    void *userdata;
-};
-typedef struct _csync_treewalk_context_s _csync_treewalk_context;
 
 void set_errno_from_http_errcode( int err );
 

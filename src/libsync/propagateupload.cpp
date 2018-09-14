@@ -107,6 +107,7 @@ bool PollJob::finished()
     QNetworkReply::NetworkError err = reply()->error();
     if (err != QNetworkReply::NoError) {
         _item->_httpErrorCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        _item->_requestId = requestId();
         _item->_status = classifyError(err, _item->_httpErrorCode);
         _item->_errorString = errorString();
 
@@ -471,12 +472,17 @@ void PropagateUploadFileCommon::slotPollFinished()
     propagator()->_activeJobList.removeOne(this);
 
     if (job->_item->_status != SyncFileItem::Success) {
-        _finished = true;
         done(job->_item->_status, job->_item->_errorString);
         return;
     }
 
     finalize();
+}
+
+void PropagateUploadFileCommon::done(SyncFileItem::Status status, const QString &errorString)
+{
+    _finished = true;
+    PropagateItemJob::done(status, errorString);
 }
 
 void PropagateUploadFileCommon::checkResettingErrors()
@@ -540,28 +546,24 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
     abortWithError(status, errorString);
 }
 
+void PropagateUploadFileCommon::adjustLastJobTimeout(AbstractNetworkJob *job, quint64 fileSize)
+{
+    job->setTimeout(qBound(
+        job->timeoutMsec(),
+        // Calculate 3 minutes for each gigabyte of data
+        qint64((3 * 60 * 1000) * fileSize / 1e9),
+        // Maximum of 30 minutes
+        qint64(30 * 60 * 1000)));
+}
+
 void PropagateUploadFileCommon::slotJobDestroyed(QObject *job)
 {
     _jobs.erase(std::remove(_jobs.begin(), _jobs.end(), job), _jobs.end());
 }
 
-void PropagateUploadFileCommon::abort(PropagatorJob::AbortType abortType)
-{
-    foreach (auto *job, _jobs) {
-        if (job->reply()) {
-            job->reply()->abort();
-        }
-    }
-
-    if (abortType == AbortType::Asynchronous) {
-        emit abortFinished();
-    }
-}
-
 // This function is used whenever there is an error occuring and jobs might be in progress
 void PropagateUploadFileCommon::abortWithError(SyncFileItem::Status status, const QString &error)
 {
-    _finished = true;
     abort(AbortType::Synchronous);
     done(status, error);
 }
@@ -597,6 +599,8 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
     auto conflictRecord = propagator()->_journal->conflictRecord(_item->_file.toUtf8());
     if (conflictRecord.isValid()) {
         headers["OC-Conflict"] = "1";
+        if (!conflictRecord.initialBasePath.isEmpty())
+            headers["OC-ConflictInitialBasePath"] = conflictRecord.initialBasePath;
         if (!conflictRecord.baseFileId.isEmpty())
             headers["OC-ConflictBaseFileId"] = conflictRecord.baseFileId;
         if (conflictRecord.baseModtime != -1)
@@ -610,8 +614,6 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
 
 void PropagateUploadFileCommon::finalize()
 {
-    _finished = true;
-
     // Update the quota, if known
     auto quotaIt = propagator()->_folderQuota.find(QFileInfo(_item->_file).path());
     if (quotaIt != propagator()->_folderQuota.end())
@@ -630,32 +632,45 @@ void PropagateUploadFileCommon::finalize()
     done(SyncFileItem::Success);
 }
 
-void PropagateUploadFileCommon::prepareAbort(PropagatorJob::AbortType abortType) {
-    if (!_jobs.empty()) {
-        // Count number of jobs to be aborted asynchronously
-        _abortCount = _jobs.size();
-
-        foreach (AbstractNetworkJob *job, _jobs) {
-            // Check if async abort is requested
-            if (job->reply() && abortType == AbortType::Asynchronous) {
-                // Connect to finished signal of job reply
-                // to asynchonously finish the abort
-                connect(job->reply(), &QNetworkReply::finished, this, &PropagateUploadFileCommon::slotReplyAbortFinished);
-            }
-        }
-    } else if (abortType == AbortType::Asynchronous) {
-        // Empty job list, emit abortFinished immedietaly
-        emit abortFinished();
-    }
-}
-
-void PropagateUploadFileCommon::slotReplyAbortFinished()
+void PropagateUploadFileCommon::abortNetworkJobs(
+    PropagatorJob::AbortType abortType,
+    const std::function<bool(AbstractNetworkJob *)> &mayAbortJob)
 {
-    _abortCount--;
+    // Count the number of jobs that need aborting, and emit the overall
+    // abort signal when they're all done.
+    QSharedPointer<int> runningCount(new int(0));
+    auto oneAbortFinished = [this, runningCount]() {
+        (*runningCount)--;
+        if (*runningCount == 0) {
+            emit this->abortFinished();
+        }
+    };
 
-    if (_abortCount == 0) {
-        emit abortFinished();
+    // Abort all running jobs, except for explicitly excluded ones
+    foreach (AbstractNetworkJob *job, _jobs) {
+        auto reply = job->reply();
+        if (!reply || !reply->isRunning())
+            continue;
+
+        (*runningCount)++;
+
+        // If a job should not be aborted that means we'll never abort before
+        // the hard abort timeout signal comes as runningCount will never go to
+        // zero.
+        // We may however finish before that if the un-abortable job completes
+        // normally.
+        if (!mayAbortJob(job))
+            continue;
+
+        // Abort the job
+        if (abortType == AbortType::Asynchronous) {
+            // Connect to finished signal of job reply to asynchonously finish the abort
+            connect(reply, &QNetworkReply::finished, this, oneAbortFinished);
+        }
+        reply->abort();
     }
-}
 
+    if (*runningCount == 0 && abortType == AbortType::Asynchronous)
+        emit abortFinished();
+}
 }

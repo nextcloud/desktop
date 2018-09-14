@@ -99,6 +99,8 @@ public:
         UpdateOnlyAvailableThroughSystem };
     explicit OCUpdater(const QUrl &url);
 
+    void setUpdateUrl(const QUrl &url);
+
     bool performUpdate();
 
     void checkForUpdate() Q_DECL_OVERRIDE;
@@ -113,6 +115,7 @@ signals:
     void requestRestart();
 
 public slots:
+    // FIXME Maybe this should be in the NSISUpdater which should have been called WindowsUpdater
     void slotStartInstaller();
 
 protected slots:

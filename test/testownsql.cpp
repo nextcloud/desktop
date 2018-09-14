@@ -126,6 +126,21 @@ private slots:
         }
     }
 
+    void testDestructor()
+    {
+        // This test make sure that the destructor of SqlQuery works even if the SqlDatabase
+        // is destroyed before
+        QScopedPointer<SqlDatabase> db(new SqlDatabase());
+        SqlQuery q1(_db);
+        SqlQuery q2(_db);
+        q2.prepare("SELECT * FROM addresses");
+        SqlQuery q3("SELECT * FROM addresses", _db);
+        SqlQuery q4;
+        SqlQuery q5;
+        q5.initOrReset("SELECT * FROM addresses", _db);
+        db.reset();
+    }
+
 private:
     SqlDatabase _db;
 };

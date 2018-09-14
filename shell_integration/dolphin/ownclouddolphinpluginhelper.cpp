@@ -19,6 +19,7 @@
 
 #include <QtNetwork/QLocalSocket>
 #include <qcoreevent.h>
+#include <QStandardPaths>
 #include <QFile>
 #include "ownclouddolphinpluginhelper.h"
 #include "config.h"
@@ -68,12 +69,14 @@ void OwncloudDolphinPluginHelper::tryConnect()
     if (_socket.state() != QLocalSocket::UnconnectedState) {
         return;
     }
-    QString runtimeDir = QFile::decodeName(qgetenv("XDG_RUNTIME_DIR"));
-    runtimeDir.append( QChar('/'));
-    runtimeDir.append( QLatin1String(APPLICATION_SHORTNAME) );
+    
+    QString socketPath = QStandardPaths::locate(QStandardPaths::RuntimeLocation,
+                                                APPLICATION_SHORTNAME,
+                                                QStandardPaths::LocateDirectory);
+    if(socketPath.isEmpty())
+        return;
 
-    const QString socketPath = runtimeDir + QLatin1String("/socket");
-    _socket.connectToServer(socketPath);
+    _socket.connectToServer(socketPath + QLatin1String("/socket"));
 }
 
 void OwncloudDolphinPluginHelper::slotReadyRead()

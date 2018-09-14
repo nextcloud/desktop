@@ -75,7 +75,7 @@ namespace OCC {
 
     \endcode
  */
-class OWNCLOUDSYNC_EXPORT ConnectionValidator : public QObject
+class ConnectionValidator : public QObject
 {
     Q_OBJECT
 public:
@@ -94,8 +94,7 @@ public:
         MaintenanceMode, // maintenance enabled in status.php
         Timeout // actually also used for other errors on the authed request
     };
-
-    static QString statusString(Status);
+    Q_ENUM(Status);
 
     // How often should the Application ask this object to check for the connection?
     enum { DefaultCallingIntervalMsec = 32 * 1000 };
@@ -109,7 +108,7 @@ public slots:
     void checkAuthentication();
 
 signals:
-    void connectionResult(ConnectionValidator::Status status, QStringList errors);
+    void connectionResult(ConnectionValidator::Status status, const QStringList &errors);
 
 protected slots:
     void slotCheckServerAndAuth();

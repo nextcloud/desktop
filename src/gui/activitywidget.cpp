@@ -84,6 +84,11 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     connect(_model, &ActivityListModel::activityJobStatusCode,
         this, &ActivityWidget::slotAccountActivityStatus);
 
+    connect(AccountManager::instance(), &AccountManager::accountRemoved, this, [this](AccountState *ast) {
+        if (_accountsWithoutActivities.remove(ast->account()->displayName()))
+            showLabels();
+    });
+
     _copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
     _copyBtn->setToolTip(tr("Copy the activity list to the clipboard."));
     connect(_copyBtn, &QAbstractButton::clicked, this, &ActivityWidget::copyToClipboard);
@@ -291,7 +296,7 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
             // store the name of the account that sends the notification to be
             // able to add it to the tray notification
             // remove the user name from the account as that is not accurate here.
-            int indx = host.indexOf(QChar('@'));
+            int indx = host.lastIndexOf(QChar('@'));
             if (indx > -1) {
                 host.remove(0, 1 + indx);
             }

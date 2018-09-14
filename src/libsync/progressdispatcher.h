@@ -199,7 +199,8 @@ public:
     SyncFileItem _lastCompletedItem;
 
     // Used during local and remote update phase
-    QString _currentDiscoveredFolder;
+    QString _currentDiscoveredRemoteFolder;
+    QString _currentDiscoveredLocalFolder;
 
     void setProgressComplete(const SyncFileItem &item);
 
@@ -312,6 +313,11 @@ signals:
      * @brief A new folder-wide sync error was seen.
      */
     void syncError(const QString &folder, const QString &message, ErrorCategory category);
+
+    /**
+     * @brief Emitted for a folder when a sync is done, listing all pending conflicts
+     */
+    void folderConflicts(const QString &folder, const QStringList &conflictPaths);
 
 protected:
     void setProgressInfo(const QString &folder, const ProgressInfo &progress);

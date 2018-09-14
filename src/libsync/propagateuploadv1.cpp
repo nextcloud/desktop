@@ -43,7 +43,7 @@ void PropagateUploadFileV1::doStartUpload()
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
 
-    if (progressInfo._valid && progressInfo._modtime == _item->_modtime
+    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime && progressInfo._size == qint64(_item->_size)
         && (progressInfo._contentChecksum == _item->_checksumHeader || progressInfo._contentChecksum.isEmpty() || _item->_checksumHeader.isEmpty())) {
         _startChunk = progressInfo._chunk;
         _transferId = progressInfo._transferid;
@@ -55,10 +55,11 @@ void PropagateUploadFileV1::doStartUpload()
         SyncJournalDb::UploadInfo pi;
         pi._valid = true;
         pi._chunk = 0;
-        pi._transferid = _transferId;
+        pi._transferid = 0; // We set a null transfer id because it is not chunked.
         pi._modtime = _item->_modtime;
         pi._errorCount = 0;
         pi._contentChecksum = _item->_checksumHeader;
+        pi._size = _item->_size;
         propagator()->_journal->setUploadInfo(_item->_file, pi);
         propagator()->_journal->commit("Upload info");
     }
@@ -144,6 +145,8 @@ void PropagateUploadFileV1::startNextChunk()
     connect(job, &PUTFileJob::uploadProgress, this, &PropagateUploadFileV1::slotUploadProgress);
     connect(job, &PUTFileJob::uploadProgress, device, &UploadDevice::slotJobUploadProgress);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
+    if (isFinalChunk)
+        adjustLastJobTimeout(job, fileSize);
     job->start();
     propagator()->_activeJobList.append(this);
     _currentChunk++;
@@ -197,28 +200,23 @@ void PropagateUploadFileV1::slotPutFinished()
         return;
     }
 
+    _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    _item->_responseTimeStamp = job->responseTimestamp();
+    _item->_requestId = job->requestId();
     QNetworkReply::NetworkError err = job->reply()->error();
-
     if (err != QNetworkReply::NoError) {
-        _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-        if (checkForProblemsWithShared(_item->_httpErrorCode,
-                tr("The file was edited locally but is part of a read only share. "
-                   "It is restored and your edit is in the conflict file."))) {
-            return;
-        }
         commonErrorHandling(job);
         return;
     }
 
-    _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     // The server needs some time to process the request and provide us with a poll URL
     if (_item->_httpErrorCode == 202) {
-        _finished = true;
         QString path = QString::fromUtf8(job->reply()->rawHeader("OC-Finish-Poll"));
         if (path.isEmpty()) {
             done(SyncFileItem::NormalError, tr("Poll URL missing"));
             return;
         }
+        _finished = true;
         startPollJob(path);
         return;
     }
@@ -233,12 +231,12 @@ void PropagateUploadFileV1::slotPutFinished()
     // yet, the upload can be stopped and an error can be displayed, because
     // the server hasn't registered the new file yet.
     QByteArray etag = getEtagFromReply(job->reply());
-    bool finished = etag.length() > 0;
+    _finished = etag.length() > 0;
 
     // Check if the file still exists
     const QString fullFilePath(propagator()->getFilePath(_item->_file));
     if (!FileSystem::fileExists(fullFilePath)) {
-        if (!finished) {
+        if (!_finished) {
             abortWithError(SyncFileItem::SoftError, tr("The local file was removed during sync."));
             return;
         } else {
@@ -249,7 +247,7 @@ void PropagateUploadFileV1::slotPutFinished()
     // Check whether the file changed since discovery.
     if (!FileSystem::verifyFileUnchanged(fullFilePath, _item->_size, _item->_modtime)) {
         propagator()->_anotherSyncNeeded = true;
-        if (!finished) {
+        if (!_finished) {
             abortWithError(SyncFileItem::SoftError, tr("Local file changed during sync."));
             // FIXME:  the legacy code was retrying for a few seconds.
             //         and also checking that after the last chunk, and removed the file in case of INSTRUCTION_NEW
@@ -257,14 +255,13 @@ void PropagateUploadFileV1::slotPutFinished()
         }
     }
 
-    if (!finished) {
+    if (!_finished) {
         // Proceed to next chunk.
         if (_currentChunk >= _chunkCount) {
             if (!_jobs.empty()) {
                 // just wait for the other job to finish.
                 return;
             }
-            _finished = true;
             done(SyncFileItem::NormalError, tr("The server did not acknowledge the last chunk. (No e-tag was present)"));
             return;
         }
@@ -289,14 +286,14 @@ void PropagateUploadFileV1::slotPutFinished()
         pi._modtime = _item->_modtime;
         pi._errorCount = 0; // successful chunk upload resets
         pi._contentChecksum = _item->_checksumHeader;
+        pi._size = _item->_size;
         propagator()->_journal->setUploadInfo(_item->_file, pi);
         propagator()->_journal->commit("Upload info");
         startNextChunk();
         return;
     }
-
     // the following code only happens after all chunks were uploaded.
-    _finished = true;
+
     // the file id should only be empty for new files up- or downloaded
     QByteArray fid = job->reply()->rawHeader("OC-FileID");
     if (!fid.isEmpty()) {
@@ -308,14 +305,13 @@ void PropagateUploadFileV1::slotPutFinished()
 
     _item->_etag = etag;
 
-    _item->_responseTimeStamp = job->responseTimestamp();
-
     if (job->reply()->rawHeader("X-OC-MTime") != "accepted") {
         // X-OC-MTime is supported since owncloud 5.0.   But not when chunking.
         // Normally Owncloud 6 always puts X-OC-MTime
         qCWarning(lcPropagateUpload) << "Server does not support X-OC-MTime" << job->reply()->rawHeader("X-OC-MTime");
         // Well, the mtime was not set
         done(SyncFileItem::SoftError, "Server does not support X-OC-MTime");
+        return;
     }
 
     finalize();
@@ -357,28 +353,19 @@ void PropagateUploadFileV1::slotUploadProgress(qint64 sent, qint64 total)
 
 void PropagateUploadFileV1::abort(PropagatorJob::AbortType abortType)
 {
-    // Prepare abort
-    prepareAbort(abortType);
-
-    // Abort all jobs (if there are any left), except final PUT
-    foreach (AbstractNetworkJob *job, _jobs) {
-        if (job->reply()) {
-            // If asynchronous abort allowed,
-            // dont abort final PUT which uploaded its data,
-            // since this might result in conflicts
+    abortNetworkJobs(
+        abortType,
+        [this, abortType](AbstractNetworkJob *job) {
             if (PUTFileJob *putJob = qobject_cast<PUTFileJob *>(job)){
                 if (abortType == AbortType::Asynchronous
                     && _chunkCount > 0
                     && (((_currentChunk + _startChunk) % _chunkCount) == 0)
                     && putJob->device()->atEnd()) {
-                    continue;
+                    return false;
                 }
             }
-
-            // Abort the job
-            job->reply()->abort();
-        }
-    }
+            return true;
+        });
 }
 
 }

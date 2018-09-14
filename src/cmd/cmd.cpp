@@ -23,17 +23,16 @@
 #include <QFileInfo>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QNetworkProxy>
 #include <qdebug.h>
 
 #include "account.h"
-#include "clientproxy.h"
 #include "configfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
 #include "creds/httpcredentials.h"
 #include "simplesslerrorhandler.h"
 #include "syncengine.h"
 #include "common/syncjournaldb.h"
 #include "config.h"
-#include "connectionvalidator.h"
 
 #include "cmd.h"
 
@@ -84,8 +83,6 @@ struct CmdOptions
 // we can't use csync_set_userdata because the SyncEngine sets it already.
 // So we have to use a global variable
 CmdOptions *opts = 0;
-
-const qint64 timeoutToUseMsec = qMax(1000, ConnectionValidator::DefaultCallingIntervalMsec - 5 * 1000);
 
 class EchoDisabler
 {
@@ -337,7 +334,6 @@ int main(int argc, char **argv)
     options.downlimit = 0;
     options.deltasync = false;
     options.deltasyncminfilesize = 10 * 1024 * 1024;
-    ClientProxy clientProxy;
 
     parseOptions(app.arguments(), &options);
 
@@ -449,8 +445,6 @@ int main(int argc, char **argv)
         } else {
             qFatal("Could not read httpproxy. The proxy should have the format \"http://hostname:port\".");
         }
-    } else {
-        clientProxy.setupQtProxyFromConfig();
     }
 
     SimpleSslErrorHandler *sslErrorHandler = new SimpleSslErrorHandler;
@@ -464,24 +458,29 @@ int main(int argc, char **argv)
     account->setCredentials(cred);
     account->setSslErrorHandler(sslErrorHandler);
 
-    //obtain capabilities using event loop
-    QEventLoop loop;
+    // Perform a call to get the capabilities.
+    if (!options.nonShib) {
+        // Do not do it if '--nonshib' was passed. This mean we should only connect to the 'nonshib'
+        // dav endpoint. Since we do not get the capabilities, in that case, this has the additional
+        // side effect that chunking-ng will be disabled. (because otherwise it would use the new
+        // 'dav' endpoint instead of the nonshib one (which still use the old chunking)
 
-    JsonApiJob *job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/capabilities"));
-    job->setTimeout(timeoutToUseMsec);
-    QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
-        auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
-        qDebug() << "Server capabilities" << caps;
-        account->setCapabilities(caps.toVariantMap());
-        loop.quit();
-    });
-    job->start();
+        QEventLoop loop;
+        JsonApiJob *job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/capabilities"));
+        QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
+            auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
+            qDebug() << "Server capabilities" << caps;
+            account->setCapabilities(caps.toVariantMap());
+            loop.quit();
+        });
+        job->start();
 
-    loop.exec();
+        loop.exec();
 
-    if (job->reply()->error() != QNetworkReply::NoError){
-        std::cout<<"Error connecting to server\n";
-        return EXIT_FAILURE;
+        if (job->reply()->error() != QNetworkReply::NoError){
+            std::cout<<"Error connecting to server\n";
+            return EXIT_FAILURE;
+        }
     }
 
     // much lower age than the default since this utility is usually made to be run right after a change in the tests

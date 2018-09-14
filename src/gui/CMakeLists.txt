@@ -47,6 +47,8 @@ set(client_SRCS
     accountmanager.cpp
     accountsettings.cpp
     application.cpp
+    clientproxy.cpp
+    connectionvalidator.cpp
     folder.cpp
     folderman.cpp
     folderstatusmodel.cpp
@@ -137,7 +139,7 @@ IF( APPLE )
     if(SPARKLE_FOUND)
        # Define this, we need to check in updater.cpp
        add_definitions( -DHAVE_SPARKLE )
-       list(APPEND updater_SRCS updater/sparkleupdater_mac.mm)
+       list(APPEND updater_SRCS updater/sparkleupdater_mac.mm updater/sparkleupdater.h)
    endif()
 ENDIF()
 
@@ -214,18 +216,12 @@ endif()
 # list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 include(ECMAddAppIcon)
 
-# For historical reasons we can not use the application_shortname
-# for ownCloud but must rather set it manually.
-if (NOT DEFINED APPLICATION_ICON_NAME)
-    set(APPLICATION_ICON_NAME ${APPLICATION_SHORTNAME})
-endif()
-
 file(GLOB_RECURSE OWNCLOUD_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-icon*")
 if(APPLE)
     file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-sidebar*")
     MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
 endif()
-ecm_add_app_icon(final_src ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASE "${APPLICATION_ICON_NAME}")
+ecm_add_app_icon(final_src ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")
 
 if(UNIX AND NOT APPLE)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE")
@@ -278,9 +274,6 @@ target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
 )
-# Only relevant for Linux? On OS X it by default properly checks in the bundle directory next to the exe
-set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
-	INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
 target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::Network Qt5::Xml)
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
@@ -349,5 +342,15 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
     configure_file(${CMAKE_SOURCE_DIR}/mirall.desktop.in
                    ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop)
     install(FILES  ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.desktop DESTINATION ${DATADIR}/applications )
+
+    configure_file(owncloud.xml.in ${APPLICATION_EXECUTABLE}.xml)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${APPLICATION_EXECUTABLE}.xml DESTINATION ${DATADIR}/mime/packages )
+
+    find_package(ECM 1.2.0 CONFIG)
+    set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+    find_package(SharedMimeInfo)
+    if(SharedMimeInfo_FOUND)
+        update_xdg_mimetypes( ${DATADIR}/mime/packages )
+    endif(SharedMimeInfo_FOUND)
 endif()
 

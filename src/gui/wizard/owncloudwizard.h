@@ -63,12 +63,21 @@ public:
     QString ocUrl() const;
     QString localFolder() const;
     QStringList selectiveSyncBlacklist() const;
+    bool useVirtualFileSync() const;
+    bool manualFolderConfig() const;
     bool isConfirmBigFolderChecked() const;
 
     void enableFinishOnResultWidget(bool enable);
 
     void displayError(const QString &, bool retryHTTPonly);
     AbstractCredentials *getCredentials() const;
+
+    /**
+     * Shows a dialog explaining the virtual files mode and warning about it
+     * being experimental. Calles the callback with true if enabling was
+     * chosen.
+     */
+    static void askExperimentalVirtualFilesFeature(const std::function<void(bool enable)> &callback);
 
     // FIXME: Can those be local variables?
     // Set from the OwncloudSetupPage, later used from OwncloudHttpCredsPage
@@ -89,7 +98,6 @@ signals:
     void createLocalAndRemoteFolders(const QString &, const QString &);
     // make sure to connect to this, rather than finished(int)!!
     void basicSetupFinished(int);
-    void skipFolderConfiguration();
     void needCertificate();
 
 private:

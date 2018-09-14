@@ -21,6 +21,7 @@
 
 #include <QObject>
 #include <QVariant>
+#include <QSet>
 
 #include "ocsynclib.h"
 
@@ -28,6 +29,8 @@ struct sqlite3;
 struct sqlite3_stmt;
 
 namespace OCC {
+
+class SqlQuery;
 
 /**
  * @brief The SqlDatabase class
@@ -38,6 +41,7 @@ class OCSYNC_EXPORT SqlDatabase
     Q_DISABLE_COPY(SqlDatabase)
 public:
     explicit SqlDatabase();
+    ~SqlDatabase();
 
     bool isOpen();
     bool openOrCreateReadWrite(const QString &filename);
@@ -62,18 +66,54 @@ private:
     sqlite3 *_db;
     QString _error; // last error string
     int _errId;
+
+    friend class SqlQuery;
+    QSet<SqlQuery *> _queries;
 };
 
 /**
  * @brief The SqlQuery class
  * @ingroup libsync
+ *
+ * There is basically 3 ways to initialize and use a query:
+ *
+    SqlQuery q1;
+    [...]
+    q1.initOrReset(...);
+    q1.bindValue(...);
+    q1.exec(...)
+ *
+    SqlQuery q2(db);
+    q2.prepare(...);
+    [...]
+    q2.reset_and_clear_bindings();
+    q2.bindValue(...);
+    q2.exec(...)
+ *
+    SqlQuery q3("...", db);
+    q3.bindValue(...);
+    q3.exec(...)
+ *
  */
 class OCSYNC_EXPORT SqlQuery
 {
     Q_DISABLE_COPY(SqlQuery)
 public:
+    explicit SqlQuery() = default;
     explicit SqlQuery(SqlDatabase &db);
-    explicit SqlQuery(const QString &sql, SqlDatabase &db);
+    explicit SqlQuery(const QByteArray &sql, SqlDatabase &db);
+    /**
+     * Prepare the SqlQuery if it was not prepared yet.
+     * Otherwise, clear the results and the bindings.
+     * return false if there is an error
+     */
+    bool initOrReset(const QByteArray &sql, SqlDatabase &db);
+    /**
+     * Prepare the SqlQuery.
+     * If the query was already prepared, this will first call finish(), and re-prepare it.
+     * This function must only be used if the constructor was setting a SqlDatabase
+     */
+    int prepare(const QByteArray &sql, bool allow_failure = false);
 
     ~SqlQuery();
     QString error() const;
@@ -82,16 +122,13 @@ public:
     /// Checks whether the value at the given column index is NULL
     bool nullValue(int index);
 
-
     QString stringValue(int index);
     int intValue(int index);
     quint64 int64Value(int index);
     QByteArray baValue(int index);
-
     bool isSelect();
     bool isPragma();
     bool exec();
-    int prepare(const QString &sql, bool allow_failure = false);
     bool next();
     void bindValue(int pos, const QVariant &value);
     QString lastQuery() const;
@@ -100,11 +137,12 @@ public:
     void finish();
 
 private:
-    sqlite3 *_db;
-    sqlite3_stmt *_stmt;
+    SqlDatabase *_sqldb = nullptr;
+    sqlite3 *_db = nullptr;
+    sqlite3_stmt *_stmt = nullptr;
     QString _error;
     int _errId;
-    QString _sql;
+    QByteArray _sql;
 };
 
 } // namespace OCC

@@ -90,8 +90,7 @@ void RequestEtagJob::start()
 bool RequestEtagJob::finished()
 {
     qCInfo(lcEtagJob) << "Request Etag of" << reply()->request().url() << "FINISHED WITH STATUS"
-                      << reply()->error()
-                      << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
+                      <<  replyStatusString();
 
     if (reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 207) {
         // Parse DAV response
@@ -148,8 +147,7 @@ void MkColJob::start()
 bool MkColJob::finished()
 {
     qCInfo(lcMkColJob) << "MKCOL of" << reply()->request().url() << "FINISHED WITH STATUS"
-                       << reply()->error()
-                       << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
+                       << replyStatusString();
 
     emit finished(reply()->error());
     return true;
@@ -355,8 +353,7 @@ void LsColJob::start()
 bool LsColJob::finished()
 {
     qCInfo(lcLsColJob) << "LSCOL of" << reply()->request().url() << "FINISHED WITH STATUS"
-                       << reply()->error()
-                       << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
+                       << replyStatusString();
 
     QString contentType = reply()->header(QNetworkRequest::ContentTypeHeader).toString();
     int httpCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -426,7 +423,7 @@ void CheckServerJob::onTimedOut()
 
 QString CheckServerJob::version(const QJsonObject &info)
 {
-    return info.value(QLatin1String("version")).toString();
+    return info.value(QLatin1String("version")).toString() + "-" + info.value(QLatin1String("productname")).toString();
 }
 
 QString CheckServerJob::versionString(const QJsonObject &info)
@@ -581,8 +578,7 @@ QList<QByteArray> PropfindJob::properties() const
 bool PropfindJob::finished()
 {
     qCInfo(lcPropfindJob) << "PROPFIND of" << reply()->request().url() << "FINISHED WITH STATUS"
-                          << reply()->error()
-                          << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
+                          << replyStatusString();
 
     int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
@@ -743,8 +739,7 @@ QMap<QByteArray, QByteArray> ProppatchJob::properties() const
 bool ProppatchJob::finished()
 {
     qCInfo(lcProppatchJob) << "PROPPATCH of" << reply()->request().url() << "FINISHED WITH STATUS"
-                           << reply()->error()
-                           << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
+                           << replyStatusString();
 
     int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
@@ -803,8 +798,7 @@ void JsonApiJob::start()
 bool JsonApiJob::finished()
 {
     qCInfo(lcJsonApiJob) << "JsonApiJob of" << reply()->request().url() << "FINISHED WITH STATUS"
-                         << reply()->error()
-                         << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
+                         << replyStatusString();
 
     int statusCode = 0;
 
@@ -878,6 +872,10 @@ void DetermineAuthTypeJob::start()
             _resultGet = Shibboleth;
             get->setFollowRedirects(false);
         }
+#else
+        Q_UNUSED(this)
+        Q_UNUSED(get)
+        Q_UNUSED(target)
 #endif
     });
     connect(get, &SimpleNetworkJob::finishedSignal, this, [this]() {

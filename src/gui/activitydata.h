@@ -58,9 +58,10 @@ public:
     QString _file;
     QUrl _link;
     QDateTime _dateTime;
-    QString _accName;
+    QString _accName; /* display name of the account involved */
 
-    QVector<ActivityLink> _links;
+    QVector<ActivityLink> _links; /* These links are transformed into buttons that
+                                   * call links as reactions on the activity */
     /**
      * @brief Sort operator to sort the list youngest first.
      * @param val

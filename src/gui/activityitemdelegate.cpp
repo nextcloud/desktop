@@ -135,7 +135,7 @@ void ActivityItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     const QString elidedAction = fm.elidedText(actionText, Qt::ElideRight, actionTextBox.width());
     painter->drawText(actionTextBox, elidedAction);
 
-    int atPos = accountRole.indexOf(QLatin1Char('@'));
+    int atPos = accountRole.lastIndexOf(QLatin1Char('@'));
     if (atPos > -1) {
         accountRole.remove(0, atPos + 1);
     }

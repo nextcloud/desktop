@@ -39,6 +39,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     const QString &localPath,
     SharePermissions maxSharingPermissions,
     const QByteArray &numericFileId,
+    ShareDialogStartPage startPage,
     QWidget *parent)
     : QDialog(parent)
     , _ui(new Ui::ShareDialog)
@@ -47,6 +48,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     , _localPath(localPath)
     , _maxSharingPermissions(maxSharingPermissions)
     , _privateLinkUrl(accountState->account()->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded))
+    , _startPage(startPage)
     , _linkWidget(NULL)
     , _userGroupWidget(NULL)
     , _progressIndicator(NULL)
@@ -79,8 +81,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     }
 
     // Set filename
-    QFileInfo lPath(_localPath);
-    QString fileName = lPath.fileName();
+    QString fileName = QFileInfo(_sharePath).fileName();
     _ui->label_name->setText(tr("%1").arg(fileName));
     QFont f(_ui->label_name->font());
     f.setPointSize(f.pointSize() * 1.4);
@@ -113,6 +114,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
         label->setWordWrap(true);
         label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         layout()->replaceWidget(_ui->shareWidgets, label);
+        _ui->shareWidgets->hide();
         return;
     }
 
@@ -217,6 +219,9 @@ void ShareDialog::showSharingUi()
         _linkWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred);
         _ui->shareWidgets->addTab(_linkWidget, tr("Public Links"));
         _linkWidget->getShares();
+
+        if (_startPage == ShareDialogStartPage::PublicLinks)
+            _ui->shareWidgets->setCurrentWidget(_linkWidget);
     }
 }
 

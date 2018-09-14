@@ -13,6 +13,14 @@ desktop client.
 
 These instructions are updated to work with version |version| of the ownCloud Client.
 
+
+Compiling via ownBrander
+------------------------
+
+If you don't want to go through the trouble of doing all the compile work manually,
+you can use `ownBrander`_ to create installer images for all platforms.
+
+
 Getting Source Code
 -------------------
 
@@ -25,6 +33,9 @@ packages.
 Linux
 -----
 
+For the published desktop clients we link against qt5 dependencies from our ouwn repositories, os that we can have the same versions on all distributions. This chapter shows you how to build the client yourself with this setup.
+If you want to use the qt5 dependencies from your system, see the next chapter.
+
 You may wish to use source packages for your Linux distribution, as these give 
 you the exact sources from which the binary packages are built. These are 
 hosted on the `ownCloud repository from OBS`_. Go to the `Index of 
@@ -33,26 +44,34 @@ repositories`_ to see all the Linux client repos.
 1. The source RPMs for CentOS, RHEL, Fedora, SLES, and openSUSE are at the `bottom of the page for each distribution 
    <https://software.opensuse.org/download/package?project=isv:ownCloud:desktop&
    package=owncloud-client>`
-   the sources for DEB and Ubuntu based distributions are at e.g. http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Ubuntu_16.04/
+   the sources for DEB and Ubuntu based distributions are at e.g. http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Ubuntu_18.04/
    
    To get the .deb source packages add the source 
-   repo for your Debian or Ubuntu version, like this example for Debian 8 
+   repo for your Debian or Ubuntu version, like this example for Debian 9 
    (run as root)::
  
     echo 'deb-src 
-    http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Debian_8.0/ /' >> /etc/apt/sources.list.d/owncloud-client.list
+    http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Debian_9.0/ /' >> /etc/apt/sources.list.d/owncloud-client.list
 
 2. Install the dependencies using the following commands for your specific Linux 
 distribution. Make sure the repositories for source packages are enabled.
   
-   * Debian/Ubuntu: ``apt-get update; apt-get build-dep owncloud-client``
+   * Debian/Ubuntu: ``apt update; apt build-dep owncloud-client``
    * openSUSE/SLES: ``zypper ref; zypper si -d owncloud-client``
    * Fedora/CentOS/RHEL: ``yum install yum-utils; yum-builddep owncloud-client``
 
 3. Follow the :ref:`generic-build-instructions`, starting with step 2.
 
-Mac OS X
---------
+Linux with system dependencies
+------------------------------
+1. Build sources from e.g. a github checkout with dependencies provided by your linux distribution. While this allows more freedom for development, it does not exactly represent what we ship as packages. See above for how to recreate packages from source.
+
+  * Debian/Ubuntu: ``apt install qtdeclarative5-dev libinotifytools-dev qt5keychain-dev libqt5webkit5-dev python-sphinx libsqlite3-dev``
+
+2. Follow the :ref:`generic-build-instructions`, starting with step 1.
+
+macOS
+-----
 
 In addition to needing XCode (along with the command line tools), developing in
 the Mac OS X environment requires extra dependencies.  You can install these
@@ -77,29 +96,23 @@ To set up your build environment for development using HomeBrew_:
 
     brew tap owncloud/owncloud
 
-5. Install a Qt5 version with qtwebkit support::
+5. Install a Qt5 version, ideally from from 5.10.1::
 
-    brew install qt5 --with-qtwebkit
+    brew install qt5
 
 6. Install any missing dependencies::
 
     brew install $(brew deps owncloud-client)
 
-7. Add Qt from brew to the path::
+7. Install qtkeychain from here:  git clone https://github.com/frankosterfeld/qtkeychain.git
+   make sure you make the same install prefix as later while building the client e.g.
+   ``-DCMAKE_INSTALL_PREFIX=/Path/to/client/../install``
 
-    export PATH=/usr/local/Cellar/qt5/5.x.y/bin:$PATH
+8. For compilation of the client, follow the :ref:`generic-build-instructions`.
 
-   Where ``x.y`` is the current version of Qt 5 that brew has installed
-   on your machine.
-8. Install qtkeychain from here:  git clone https://github.com/frankosterfeld/qtkeychain.git
-   make sure you make the same install prefix as later while building the client e.g.  -            
-   ``DCMAKE_INSTALL_PREFIX=/Path/to/client-install``
+9. Install the Packages_ package creation tool.
 
-9. For compilation of the client, follow the :ref:`generic-build-instructions`.
-
-10. Install the Packages_ package creation tool.
-
-11. In the build directory, run ``admin/osx/create_mac.sh <build_dir> <install_dir>``. 
+10. In the build directory, run ``admin/osx/create_mac.sh <CMAKE_INSTALL_DIR> <build dir> <installer sign identity>``.
     If you have a developer signing certificate, you can specify
     its Common Name as a third parameter (use quotes) to have the package
     signed automatically.
@@ -152,7 +165,7 @@ follow `Windows Installer Build (Cross-Compile)`_ instead.
 
 7. Build the client::
 
-     cmake -G "MinGW Makefiles" ../client
+     cmake -G "MinGW Makefiles" -DNO_SHIBBOLETH=1 ../client
      mingw32-make
 
    .. note:: You can try using ninja to build in parallel using
@@ -220,16 +233,14 @@ In order to make setup simple, you can use the provided Dockerfile to build your
 Generic Build Instructions
 --------------------------
 
-Compared to previous versions, building the desktop sync client has become easier. Unlike
-earlier versions, CSync, which is the sync engine library of the client, is now
-part of the client source repository and not a separate module.
-
 To build the most up-to-date version of the client:
 
 1. Clone the latest versions of the client from Git_ as follows::
 
      git clone git://github.com/owncloud/client.git
      cd client
+     # master this default, but you can also check out a tag like v2.4.1
+     git checkout master
      git submodule init
      git submodule update
 
@@ -240,19 +251,20 @@ To build the most up-to-date version of the client:
 
 3. Configure the client build::
 
-     cmake -DCMAKE_BUILD_TYPE="Debug" ..
-    
-   .. note:: You must use absolute paths for the ``include`` and ``library``
-            directories.
+     cmake -DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/  -DNO_SHIBBOLETH=1 ..
 
-   .. note:: On Mac OS X, you need to specify ``-DCMAKE_INSTALL_PREFIX=target``,
-            where ``target`` is a private location, i.e. in parallel to your build
-            dir by specifying ``../install``.
-            
-   .. note:: qtkeychain must be compiled with the same prefix e.g ``CMAKE_INSTALL_PREFIX=/Users/path/to/client/install/ .``
-   
-   .. note:: Example:: ``cmake -DCMAKE_PREFIX_PATH=/usr/local/opt/qt5 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/install/  -DNO_SHIBBOLETH=1``
-   
+.. note:: For Linux builds (using QT5 libraries via build-dep) a typical setting is ``-DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1/`` - version number may vary. For Linux builds using system dependencies -DCMAKE_PREFIX_PATH is not needed.
+
+.. note:: You must use absolute paths for the ``include`` and ``library``
+         directories.
+
+.. note:: On Mac OS X, you need to specify ``-DCMAKE_INSTALL_PREFIX=target``,
+         where ``target`` is a private location, i.e. in parallel to your build
+         dir by specifying ``../install``.
+
+.. note:: qtkeychain must be compiled with the same prefix e.g ``-DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/``
+
+
 4. Call ``make``.
 
    The owncloud binary will appear in the ``bin`` directory.
@@ -264,11 +276,10 @@ The following are known cmake parameters:
 
 * ``QTKEYCHAIN_LIBRARY=/path/to/qtkeychain.dylib -DQTKEYCHAIN_INCLUDE_DIR=/path/to/qtkeychain/``:
    Used for stored credentials.  When compiling with Qt5, the library is called ``qt5keychain.dylib.``
-   You need to compile QtKeychain with the same Qt version.
+   You need to compile QtKeychain with the same Qt version. If you install QtKeychain into the CMAKE_PREFIX_PATH then you don't need to specify the path manually.
 * ``WITH_DOC=TRUE``: Creates doc and manpages through running ``make``; also adds install statements,
   providing the ability to install using ``make install``.
-* ``CMAKE_PREFIX_PATH=/path/to/Qt5.2.0/5.2.0/yourarch/lib/cmake/``: Builds using Qt5.
-* ``BUILD_WITH_QT4=ON``: Builds using Qt4 (even if Qt5 is found).
+* ``CMAKE_PREFIX_PATH=/path/to/Qt5.10.1/5.10.1/yourarch/lib/cmake/``: Builds using that Qt version.
 * ``CMAKE_INSTALL_PREFIX=path``: Set an install prefix. This is mandatory on Mac OS
 
 .. _ownCloud repository from OBS: http://software.opensuse.org/download/package? 
@@ -285,3 +296,4 @@ The following are known cmake parameters:
 .. _QtKeychain: https://github.com/frankosterfeld/qtkeychain
 .. _Packages: http://s.sudre.free.fr/Software/Packages/about.html
 .. _Index of repositories: http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/
+.. _ownBrander: https://doc.owncloud.org/branded_clients/

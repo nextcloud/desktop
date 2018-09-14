@@ -32,6 +32,9 @@
 #include "capabilities.h"
 #include "common/asserts.h"
 #include "guiutility.h"
+#ifndef OWNCLOUD_TEST
+#include "sharemanager.h"
+#endif
 
 #include <array>
 #include <QBitArray>
@@ -45,6 +48,7 @@
 #include <QApplication>
 #include <QLocalSocket>
 #include <QStringBuilder>
+#include <QMessageBox>
 
 #include <QClipboard>
 
@@ -82,6 +86,7 @@ static QString buildMessage(const QString &verb, const QString &path, const QStr
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcSocketApi, "gui.socketapi", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPublicLink, "gui.socketapi.publiclink", QtInfoMsg)
 
 class BloomFilter
 {
@@ -181,6 +186,10 @@ SocketApi::SocketApi(QObject *parent)
         // Example for developer builds (with ad-hoc signing identity): "" "com.owncloud.desktopclient" ".socketApi"
         // Example for official signed packages: "9B5WD74GWJ." "com.owncloud.desktopclient" ".socketApi"
         socketPath = SOCKETAPI_TEAM_IDENTIFIER_PREFIX APPLICATION_REV_DOMAIN ".socketApi";
+#ifdef Q_OS_MAC
+        // Tell Finder to use the Extension (checking it from System Preferences -> Extensions)
+        system("pluginkit -e use -i  " APPLICATION_REV_DOMAIN ".FinderSyncExt &");
+#endif
     } else if (Utility::isLinux() || Utility::isBSD()) {
         QString runtimeDir;
         runtimeDir = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
@@ -218,10 +227,17 @@ SocketApi::~SocketApi()
     // All remaining sockets will be destroyed with _localServer, their parent
     ASSERT(_listeners.isEmpty() || _listeners.first().socket->parent() == &_localServer);
     _listeners.clear();
+
+#ifdef Q_OS_MAC
+    // Unload the extension (uncheck from System Preferences -> Extensions)
+    system("pluginkit -e ignore -i  " APPLICATION_REV_DOMAIN ".FinderSyncExt &");
+#endif
 }
 
 void SocketApi::slotNewConnection()
 {
+    // Note that on macOS this is not actually a line-based QIODevice, it's a SocketApiSocket which is our
+    // custom message based macOS IPC.
     QIODevice *socket = _localServer.nextPendingConnection();
 
     if (!socket) {
@@ -341,6 +357,47 @@ void SocketApi::broadcastMessage(const QString &msg, bool doWait)
     }
 }
 
+void SocketApi::processShareRequest(const QString &localFile, SocketListener *listener, ShareDialogStartPage startPage)
+{
+    auto theme = Theme::instance();
+
+    auto fileData = FileData::get(localFile);
+    auto shareFolder = fileData.folder;
+    if (!shareFolder) {
+        const QString message = QLatin1String("SHARE:NOP:") + QDir::toNativeSeparators(localFile);
+        // files that are not within a sync folder are not synced.
+        listener->sendMessage(message);
+    } else if (!shareFolder->accountState()->isConnected()) {
+        const QString message = QLatin1String("SHARE:NOTCONNECTED:") + QDir::toNativeSeparators(localFile);
+        // if the folder isn't connected, don't open the share dialog
+        listener->sendMessage(message);
+    } else if (!theme->linkSharing() && (!theme->userGroupSharing() || shareFolder->accountState()->account()->serverVersionInt() < Account::makeServerVersion(8, 2, 0))) {
+        const QString message = QLatin1String("SHARE:NOP:") + QDir::toNativeSeparators(localFile);
+        listener->sendMessage(message);
+    } else {
+        // If the file doesn't have a journal record, it might not be uploaded yet
+        if (!fileData.journalRecord().isValid()) {
+            const QString message = QLatin1String("SHARE:NOTSYNCED:") + QDir::toNativeSeparators(localFile);
+            listener->sendMessage(message);
+            return;
+        }
+
+        auto &remotePath = fileData.serverRelativePath;
+
+        // Can't share root folder
+        if (remotePath == "/") {
+            const QString message = QLatin1String("SHARE:CANNOTSHAREROOT:") + QDir::toNativeSeparators(localFile);
+            listener->sendMessage(message);
+            return;
+        }
+
+        const QString message = QLatin1String("SHARE:OK:") + QDir::toNativeSeparators(localFile);
+        listener->sendMessage(message);
+
+        emit shareCommandReceived(remotePath, fileData.localPath, startPage);
+    }
+}
+
 void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus)
 {
     QString msg = buildMessage(QLatin1String("STATUS"), systemPath, fileStatus.toSocketAPIString());
@@ -361,23 +418,17 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argument, SocketList
 {
     QString statusString;
 
-    Folder *syncFolder = FolderMan::instance()->folderForPath(argument);
-    if (!syncFolder) {
+    auto fileData = FileData::get(argument);
+    if (!fileData.folder) {
         // this can happen in offline mode e.g.: nothing to worry about
         statusString = QLatin1String("NOP");
     } else {
-        QString systemPath = QDir::cleanPath(argument);
-        if (systemPath.endsWith(QLatin1Char('/'))) {
-            systemPath.truncate(systemPath.length() - 1);
-            qCWarning(lcSocketApi) << "Removed trailing slash for directory: " << systemPath << "Status pushes won't have one.";
-        }
         // The user probably visited this directory in the file shell.
         // Let the listener know that it should now send status pushes for sibblings of this file.
-        QString directory = systemPath.left(systemPath.lastIndexOf('/'));
+        QString directory = fileData.localPath.left(fileData.localPath.lastIndexOf('/'));
         listener->registerMonitoredDirectory(qHash(directory));
 
-        QString relativePath = systemPath.mid(syncFolder->cleanPath().length() + 1);
-        SyncFileStatus fileStatus = syncFolder->syncEngine().syncFileStatusTracker().fileStatus(relativePath);
+        SyncFileStatus fileStatus = fileData.syncFileStatus();
         statusString = fileStatus.toSocketAPIString();
     }
 
@@ -387,46 +438,12 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argument, SocketList
 
 void SocketApi::command_SHARE(const QString &localFile, SocketListener *listener)
 {
-    auto theme = Theme::instance();
+    processShareRequest(localFile, listener, ShareDialogStartPage::UsersAndGroups);
+}
 
-    Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
-    if (!shareFolder) {
-        const QString message = QLatin1String("SHARE:NOP:") + QDir::toNativeSeparators(localFile);
-        // files that are not within a sync folder are not synced.
-        listener->sendMessage(message);
-    } else if (!shareFolder->accountState()->isConnected()) {
-        const QString message = QLatin1String("SHARE:NOTCONNECTED:") + QDir::toNativeSeparators(localFile);
-        // if the folder isn't connected, don't open the share dialog
-        listener->sendMessage(message);
-    } else if (!theme->linkSharing() && (!theme->userGroupSharing() || shareFolder->accountState()->account()->serverVersionInt() < Account::makeServerVersion(8, 2, 0))) {
-        const QString message = QLatin1String("SHARE:NOP:") + QDir::toNativeSeparators(localFile);
-        listener->sendMessage(message);
-    } else {
-        const QString localFileClean = QDir::cleanPath(localFile);
-        const QString file = localFileClean.mid(shareFolder->cleanPath().length() + 1);
-        SyncFileStatus fileStatus = shareFolder->syncEngine().syncFileStatusTracker().fileStatus(file);
-
-        // Verify the file is on the server (to our knowledge of course)
-        if (fileStatus.tag() != SyncFileStatus::StatusUpToDate) {
-            const QString message = QLatin1String("SHARE:NOTSYNCED:") + QDir::toNativeSeparators(localFile);
-            listener->sendMessage(message);
-            return;
-        }
-
-        const QString remotePath = QDir(shareFolder->remotePath()).filePath(file);
-
-        // Can't share root folder
-        if (remotePath == "/") {
-            const QString message = QLatin1String("SHARE:CANNOTSHAREROOT:") + QDir::toNativeSeparators(localFile);
-            listener->sendMessage(message);
-            return;
-        }
-
-        const QString message = QLatin1String("SHARE:OK:") + QDir::toNativeSeparators(localFile);
-        listener->sendMessage(message);
-
-        emit shareCommandReceived(remotePath, localFileClean);
-    }
+void SocketApi::command_MANAGE_PUBLIC_LINKS(const QString &localFile, SocketListener *listener)
+{
+    processShareRequest(localFile, listener, ShareDialogStartPage::PublicLinks);
 }
 
 void SocketApi::command_VERSION(const QString &, SocketListener *listener)
@@ -434,105 +451,212 @@ void SocketApi::command_VERSION(const QString &, SocketListener *listener)
     listener->sendMessage(QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
 }
 
-void SocketApi::command_SHARE_STATUS(const QString &localFile, SocketListener *listener)
-{
-    Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
-
-    if (!shareFolder) {
-        const QString message = QLatin1String("SHARE_STATUS:NOP:") + QDir::toNativeSeparators(localFile);
-        listener->sendMessage(message);
-    } else {
-        const QString file = QDir::cleanPath(localFile).mid(shareFolder->cleanPath().length() + 1);
-        SyncFileStatus fileStatus = shareFolder->syncEngine().syncFileStatusTracker().fileStatus(file);
-
-        // Verify the file is on the server (to our knowledge of course)
-        if (fileStatus.tag() != SyncFileStatus::StatusUpToDate) {
-            const QString message = QLatin1String("SHARE_STATUS:NOTSYNCED:") + QDir::toNativeSeparators(localFile);
-            listener->sendMessage(message);
-            return;
-        }
-
-        const Capabilities capabilities = shareFolder->accountState()->account()->capabilities();
-
-        if (!capabilities.shareAPI()) {
-            const QString message = QLatin1String("SHARE_STATUS:DISABLED:") + QDir::toNativeSeparators(localFile);
-            listener->sendMessage(message);
-        } else {
-            auto theme = Theme::instance();
-            QString available;
-
-            if (theme->userGroupSharing()) {
-                available = "USER,GROUP";
-            }
-
-            if (theme->linkSharing() && capabilities.sharePublicLink()) {
-                if (available.isEmpty()) {
-                    available = "LINK";
-                } else {
-                    available += ",LINK";
-                }
-            }
-
-            if (available.isEmpty()) {
-                const QString message = QLatin1String("SHARE_STATUS:DISABLED") + ":" + QDir::toNativeSeparators(localFile);
-                listener->sendMessage(message);
-            } else {
-                const QString message = QLatin1String("SHARE_STATUS:") + available + ":" + QDir::toNativeSeparators(localFile);
-                listener->sendMessage(message);
-            }
-        }
-    }
-}
-
 void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketListener *listener)
 {
     listener->sendMessage(QLatin1String("SHARE_MENU_TITLE:") + tr("Share with %1", "parameter is ownCloud").arg(Theme::instance()->appNameGUI()));
 }
 
-// Fetches the private link url asynchronously and then calls the target slot
-static void fetchPrivateLinkUrlHelper(const QString &localFile, SocketApi *target, void (SocketApi::*targetFun)(const QString &url) const)
+// don't pull the share manager into socketapi unittests
+#ifndef OWNCLOUD_TEST
+
+class GetOrCreatePublicLinkShare : public QObject
 {
-    Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
-    if (!shareFolder) {
+    Q_OBJECT
+public:
+    GetOrCreatePublicLinkShare(const AccountPtr &account, const QString &localFile,
+        std::function<void(const QString &link)> targetFun, QObject *parent)
+        : QObject(parent)
+        , _shareManager(account)
+        , _localFile(localFile)
+        , _targetFun(targetFun)
+    {
+        connect(&_shareManager, &ShareManager::sharesFetched,
+            this, &GetOrCreatePublicLinkShare::sharesFetched);
+        connect(&_shareManager, &ShareManager::linkShareCreated,
+            this, &GetOrCreatePublicLinkShare::linkShareCreated);
+        connect(&_shareManager, &ShareManager::serverError,
+            this, &GetOrCreatePublicLinkShare::serverError);
+    }
+
+    void run()
+    {
+        qCDebug(lcPublicLink) << "Fetching shares";
+        _shareManager.fetchShares(_localFile);
+    }
+
+private slots:
+    void sharesFetched(const QList<QSharedPointer<Share>> &shares)
+    {
+        auto shareName = SocketApi::tr("Context menu share");
+        // If there already is a context menu share, reuse it
+        for (const auto &share : shares) {
+            const auto linkShare = qSharedPointerDynamicCast<LinkShare>(share);
+            if (!linkShare)
+                continue;
+
+            if (linkShare->getName() == shareName) {
+                qCDebug(lcPublicLink) << "Found existing share, reusing";
+                return success(linkShare->getLink().toString());
+            }
+        }
+
+        // otherwise create a new one
+        qCDebug(lcPublicLink) << "Creating new share";
+        _shareManager.createLinkShare(_localFile, shareName, QString());
+    }
+
+    void linkShareCreated(const QSharedPointer<LinkShare> &share)
+    {
+        qCDebug(lcPublicLink) << "New share created";
+        success(share->getLink().toString());
+    }
+
+    void serverError(int code, const QString &message)
+    {
+        qCWarning(lcPublicLink) << "Share fetch/create error" << code << message;
+        QMessageBox::warning(
+            0,
+            tr("Sharing error"),
+            tr("Could not retrieve or create the public link share. Error:\n\n%1").arg(message),
+            QMessageBox::Ok,
+            QMessageBox::NoButton);
+        deleteLater();
+    }
+
+private:
+    void success(const QString &link)
+    {
+        _targetFun(link);
+        deleteLater();
+    }
+
+    ShareManager _shareManager;
+    QString _localFile;
+    std::function<void(const QString &url)> _targetFun;
+};
+
+#else
+
+class GetOrCreatePublicLinkShare : public QObject
+{
+    Q_OBJECT
+public:
+    GetOrCreatePublicLinkShare(const AccountPtr &, const QString &,
+        std::function<void(const QString &link)>, QObject *)
+    {
+    }
+
+    void run()
+    {
+    }
+};
+
+#endif
+
+void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFile, SocketListener *)
+{
+    auto fileData = FileData::get(localFile);
+    if (!fileData.folder)
+        return;
+
+    AccountPtr account = fileData.folder->accountState()->account();
+    auto job = new GetOrCreatePublicLinkShare(account, fileData.serverRelativePath, [](const QString &url) { copyUrlToClipboard(url); }, this);
+    job->run();
+}
+
+// Fetches the private link url asynchronously and then calls the target slot
+void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFile, const std::function<void(const QString &url)> &targetFun)
+{
+    auto fileData = FileData::get(localFile);
+    if (!fileData.folder) {
         qCWarning(lcSocketApi) << "Unknown path" << localFile;
         return;
     }
 
-    const QString localFileClean = QDir::cleanPath(localFile);
-    const QString file = localFileClean.mid(shareFolder->cleanPath().length() + 1);
-
-    AccountPtr account = shareFolder->accountState()->account();
-
-    SyncJournalFileRecord rec;
-    if (!shareFolder->journalDb()->getFileRecord(file, &rec) || !rec.isValid())
+    auto record = fileData.journalRecord();
+    if (!record.isValid())
         return;
 
-    fetchPrivateLinkUrl(account, file, rec.numericFileId(), target, [=](const QString &url) {
-        (target->*targetFun)(url);
-    });
+    fetchPrivateLinkUrl(
+        fileData.folder->accountState()->account(),
+        fileData.serverRelativePath,
+        record.legacyDeriveNumericFileId(),
+        this,
+        targetFun);
 }
 
 void SocketApi::command_COPY_PRIVATE_LINK(const QString &localFile, SocketListener *)
 {
-    fetchPrivateLinkUrlHelper(localFile, this, &SocketApi::copyPrivateLinkToClipboard);
+    fetchPrivateLinkUrlHelper(localFile, &SocketApi::copyUrlToClipboard);
 }
 
 void SocketApi::command_EMAIL_PRIVATE_LINK(const QString &localFile, SocketListener *)
 {
-    fetchPrivateLinkUrlHelper(localFile, this, &SocketApi::emailPrivateLink);
+    fetchPrivateLinkUrlHelper(localFile, &SocketApi::emailPrivateLink);
 }
 
 void SocketApi::command_OPEN_PRIVATE_LINK(const QString &localFile, SocketListener *)
 {
-    fetchPrivateLinkUrlHelper(localFile, this, &SocketApi::openPrivateLink);
+    fetchPrivateLinkUrlHelper(localFile, &SocketApi::openPrivateLink);
 }
 
-void SocketApi::copyPrivateLinkToClipboard(const QString &link) const
+void SocketApi::copyUrlToClipboard(const QString &link)
 {
     QApplication::clipboard()->setText(link);
 }
 
-void SocketApi::emailPrivateLink(const QString &link) const
+void SocketApi::command_DOWNLOAD_VIRTUAL_FILE(const QString &filesArg, SocketListener *)
+{
+    QStringList files = filesArg.split(QLatin1Char('\x1e')); // Record Separator
+    auto suffix = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
+
+    for (const auto &file : files) {
+        if (!file.endsWith(suffix) && !QFileInfo(file).isDir())
+            continue;
+        QString relativePath;
+        auto folder = FolderMan::instance()->folderForPath(file, &relativePath);
+        if (folder) {
+            folder->downloadVirtualFile(relativePath);
+        }
+    }
+}
+
+/* Go over all the files ans replace them by a virtual file */
+void SocketApi::command_REPLACE_VIRTUAL_FILE(const QString &filesArg, SocketListener *)
+{
+    QStringList files = filesArg.split(QLatin1Char('\x1e')); // Record Separator
+    auto suffix = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
+
+    for (const auto &file : files) {
+        QString relativePath;
+        auto folder = FolderMan::instance()->folderForPath(file, &relativePath);
+        if (!folder)
+            continue;
+        if (file.endsWith(suffix))
+            continue;
+        QFileInfo fi(file);
+        if (fi.isDir()) {
+            folder->journalDb()->getFilesBelowPath(relativePath.toUtf8(), [&](const SyncJournalFileRecord &rec) {
+                if (rec._type != ItemTypeFile || rec._path.endsWith(APPLICATION_DOTVIRTUALFILE_SUFFIX))
+                    return;
+                QString file = folder->path() + '/' + QString::fromUtf8(rec._path);
+                if (!FileSystem::rename(file, file + suffix)) {
+                    qCWarning(lcSocketApi) << "Unable to rename " << file;
+                }
+            });
+            continue;
+        }
+        SyncJournalFileRecord record;
+        if (!folder->journalDb()->getFileRecord(relativePath, &record) || !record.isValid())
+            continue;
+        if (!FileSystem::rename(file, file + suffix)) {
+            qCWarning(lcSocketApi) << "Unable to rename " << file;
+        }
+        FolderMan::instance()->scheduleFolder(folder);
+    }
+}
+
+void SocketApi::emailPrivateLink(const QString &link)
 {
     Utility::openEmailComposer(
         tr("I shared something with you"),
@@ -540,7 +664,7 @@ void SocketApi::emailPrivateLink(const QString &link) const
         0);
 }
 
-void OCC::SocketApi::openPrivateLink(const QString &link) const
+void OCC::SocketApi::openPrivateLink(const QString &link)
 {
     Utility::openBrowser(link, nullptr);
 }
@@ -562,39 +686,137 @@ void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *lis
     listener->sendMessage(QString("GET_STRINGS:END"));
 }
 
+void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketListener *listener)
+{
+    auto record = fileData.journalRecord();
+    bool isOnTheServer = record.isValid();
+    auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
+
+    auto capabilities = fileData.folder->accountState()->account()->capabilities();
+    auto theme = Theme::instance();
+    if (!capabilities.shareAPI() || !(theme->userGroupSharing() || (theme->linkSharing() && capabilities.sharePublicLink())))
+        return;
+
+    // If sharing is globally disabled, do not show any sharing entries.
+    // If there is no permission to share for this file, add a disabled entry saying so
+    if (isOnTheServer && !record._remotePerm.isNull() && !record._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
+        listener->sendMessage(QLatin1String("MENU_ITEM:DISABLED:d:") + tr("Resharing this file is not allowed"));
+    } else {
+        listener->sendMessage(QLatin1String("MENU_ITEM:SHARE") + flagString + tr("Share..."));
+
+        // Do we have public links?
+        bool publicLinksEnabled = theme->linkSharing() && capabilities.sharePublicLink();
+
+        // Is is possible to create a public link without user choices?
+        bool canCreateDefaultPublicLink = publicLinksEnabled
+            && !capabilities.sharePublicLinkEnforceExpireDate()
+            && !capabilities.sharePublicLinkEnforcePassword();
+
+        if (canCreateDefaultPublicLink) {
+            listener->sendMessage(QLatin1String("MENU_ITEM:COPY_PUBLIC_LINK") + flagString + tr("Copy public link to clipboard"));
+        } else if (publicLinksEnabled) {
+            listener->sendMessage(QLatin1String("MENU_ITEM:MANAGE_PUBLIC_LINKS") + flagString + tr("Copy public link to clipboard"));
+        }
+    }
+
+    listener->sendMessage(QLatin1String("MENU_ITEM:COPY_PRIVATE_LINK") + flagString + tr("Copy private link to clipboard"));
+
+    // Disabled: only providing email option for private links would look odd,
+    // and the copy option is more general.
+    //listener->sendMessage(QLatin1String("MENU_ITEM:EMAIL_PRIVATE_LINK") + flagString + tr("Send private link by email..."));
+}
+
+SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
+{
+    FileData data;
+
+    data.localPath = QDir::cleanPath(localFile);
+    if (data.localPath.endsWith(QLatin1Char('/')))
+        data.localPath.chop(1);
+
+    data.folder = FolderMan::instance()->folderForPath(data.localPath, &data.folderRelativePath);
+    if (!data.folder)
+        return data;
+
+    data.serverRelativePath = QDir(data.folder->remotePath()).filePath(data.folderRelativePath);
+    QString virtualFileExt = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
+    if (data.serverRelativePath.endsWith(virtualFileExt)) {
+        data.serverRelativePath.chop(virtualFileExt.size());
+    }
+    return data;
+}
+
+SyncFileStatus SocketApi::FileData::syncFileStatus() const
+{
+    if (!folder)
+        return SyncFileStatus::StatusNone;
+    return folder->syncEngine().syncFileStatusTracker().fileStatus(folderRelativePath);
+}
+
+SyncJournalFileRecord SocketApi::FileData::journalRecord() const
+{
+    SyncJournalFileRecord record;
+    if (!folder)
+        return record;
+    folder->journalDb()->getFileRecord(folderRelativePath, &record);
+    return record;
+}
+
 void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListener *listener)
 {
     listener->sendMessage(QString("GET_MENU_ITEMS:BEGIN"));
-    bool hasSeveralFiles = argument.contains(QLatin1Char('\x1e')); // Record Separator
-    Folder *syncFolder = hasSeveralFiles ? nullptr : FolderMan::instance()->folderForPath(argument);
-    if (syncFolder && syncFolder->accountState()->isConnected()) {
-        QString systemPath = QDir::cleanPath(argument);
-        if (systemPath.endsWith(QLatin1Char('/'))) {
-            systemPath.truncate(systemPath.length() - 1);
-        }
+    QStringList files = argument.split(QLatin1Char('\x1e')); // Record Separator
 
-        SyncJournalFileRecord rec;
-        QString relativePath = systemPath.mid(syncFolder->cleanPath().length() + 1);
-        // If the file is on the DB, it is on the server
-        bool isOnTheServer = syncFolder->journalDb()->getFileRecord(relativePath, &rec) && rec.isValid();
+    // Find the common sync folder.
+    // syncFolder will be null if files are in different folders.
+    Folder *folder = nullptr;
+    for (const auto &file : files) {
+        auto f = FolderMan::instance()->folderForPath(file);
+        if (f != folder) {
+            if (!folder) {
+                folder = f;
+            } else {
+                folder = nullptr;
+                break;
+            }
+        }
+    }
+
+    // Some options only show for single files
+    if (files.size() == 1) {
+        FileData fileData = FileData::get(files.first());
+        bool isOnTheServer = fileData.journalRecord().isValid();
         auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
 
-        auto capabilities = syncFolder->accountState()->account()->capabilities();
-        auto theme = Theme::instance();
-        if (capabilities.shareAPI() && (theme->userGroupSharing() || (theme->linkSharing() && capabilities.sharePublicLink()))) {
-            // If sharing is globally disabled, do not show any sharing entries.
-            // If there is no permission to share for this file, add a disabled entry saying so
-            if (isOnTheServer && !rec._remotePerm.isNull() && !rec._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
-                listener->sendMessage(QLatin1String("MENU_ITEM:DISABLED:d:") + tr("Resharing this file is not allowed"));
-            } else {
-                listener->sendMessage(QLatin1String("MENU_ITEM:SHARE") + flagString + tr("Share..."));
-            }
-            listener->sendMessage(QLatin1String("MENU_ITEM:EMAIL_PRIVATE_LINK") + flagString + tr("Send private link by email..."));
-            listener->sendMessage(QLatin1String("MENU_ITEM:COPY_PRIVATE_LINK") + flagString + tr("Copy private link to clipboard"));
+        if (fileData.folder && fileData.folder->accountState()->isConnected()) {
+            sendSharingContextMenuOptions(fileData, listener);
+            listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
         }
-
-        listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
     }
+
+    // Virtual file download action
+    if (folder) {
+        auto virtualFileSuffix = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
+        bool hasVirtualFile = false;
+        bool hasNormalFiles = false;
+        bool hasDir = false;
+        for (const auto &file : files) {
+            if (QFileInfo(file).isDir()) {
+                hasDir = true;
+            } else if (file.endsWith(virtualFileSuffix)) {
+                hasVirtualFile = true;
+            } else if (!hasNormalFiles) {
+                bool isOnTheServer = FileData::get(file).journalRecord().isValid();
+                hasNormalFiles = isOnTheServer;
+            }
+        }
+        if (hasVirtualFile || (hasDir && folder->useVirtualFiles()))
+            listener->sendMessage(QLatin1String("MENU_ITEM:DOWNLOAD_VIRTUAL_FILE::") + tr("Download file(s)", "", files.size()));
+
+        if ((hasNormalFiles || hasDir) && folder->useVirtualFiles())
+            listener->sendMessage(QLatin1String("MENU_ITEM:REPLACE_VIRTUAL_FILE::") + tr("Replace file(s) by virtual file", "", files.size()));
+    }
+
     listener->sendMessage(QString("GET_MENU_ITEMS:END"));
 }
 
@@ -607,3 +829,5 @@ QString SocketApi::buildRegisterPathMessage(const QString &path)
 }
 
 } // namespace OCC
+
+#include "socketapi.moc"

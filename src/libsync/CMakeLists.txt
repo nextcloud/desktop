@@ -24,8 +24,6 @@ set(libsync_SRCS
     account.cpp
     bandwidthmanager.cpp
     capabilities.cpp
-    clientproxy.cpp
-    connectionvalidator.cpp
     cookiejar.cpp
     discoveryphase.cpp
     filesystem.cpp
@@ -51,6 +49,7 @@ set(libsync_SRCS
     syncfileitem.cpp
     syncfilestatus.cpp
     syncfilestatustracker.cpp
+    localdiscoverytracker.cpp
     syncresult.cpp
     theme.cpp
     creds/dummycredentials.cpp
@@ -127,7 +126,7 @@ ENDIF(NOT APPLE)
 
 add_library(${synclib_NAME} SHARED ${libsync_SRCS})
 target_link_libraries(${synclib_NAME}
-    ocsync
+    "${csync_NAME}"
     ${OS_SPECIFIC_LINK_LIBRARIES}
     Qt5::Core Qt5::Network
 )
@@ -159,8 +158,6 @@ set_target_properties( ${synclib_NAME}  PROPERTIES
 	SOVERSION ${MIRALL_SOVERSION}
 	RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
 )
-set_target_properties( ${synclib_NAME} PROPERTIES
-	INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     install(TARGETS ${synclib_NAME}

@@ -9,6 +9,7 @@ ownCloud Desktop Client Manual
    introduction
    installing
    navigating
+   conflicts
    advancedusage
    autoupdate
    building 
@@ -16,4 +17,4 @@ ownCloud Desktop Client Manual
    troubleshooting
    faq
    glossary
-   
+

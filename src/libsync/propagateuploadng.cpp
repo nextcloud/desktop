@@ -263,7 +263,8 @@ void PropagateUploadFileNG::doStartUploadNext()
     }
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
-    if (progressInfo._valid && progressInfo._modtime == _item->_modtime) {
+    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime
+            && progressInfo._size == qint64(_item->_size)) {
         _transferId = progressInfo._transferid;
         auto url = chunkUrl();
         auto job = new LsColJob(propagator()->account(), url, this);
@@ -278,7 +279,7 @@ void PropagateUploadFileNG::doStartUploadNext()
             this, &PropagateUploadFileNG::slotPropfindIterate);
         job->start();
         return;
-    } else if (progressInfo._valid) {
+    } else if (progressInfo._valid && progressInfo.isChunked()) {
         // The upload info is stale. remove the stale chunks on the server
         _transferId = progressInfo._transferid;
         // Fire and forget. Any error will be ignored.
@@ -349,6 +350,12 @@ void PropagateUploadFileNG::slotPropfindFinished()
         qCCritical(lcPropagateUpload) << "Inconsistency while resuming " << _item->_file
                                       << ": the size on the server (" << _sent << ") is bigger than the size of the file ("
                                       << _item->_size << ")";
+
+        // Wipe the old chunking data.
+        // Fire and forget. Any error will be ignored.
+        (new DeleteJob(propagator()->account(), chunkUrl(), this))->start();
+
+        propagator()->_activeJobList.append(this);
         startNewUpload();
         return;
     }
@@ -384,6 +391,7 @@ void PropagateUploadFileNG::slotPropfindFinishedWithError()
     auto httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     auto status = classifyError(err, httpErrorCode, &propagator()->_anotherSyncNeeded);
     if (status == SyncFileItem::FatalError) {
+        _item->_requestId = job->requestId();
         propagator()->_activeJobList.removeOne(this);
         abortWithError(status, job->errorStringParsingBody());
         return;
@@ -402,6 +410,7 @@ void PropagateUploadFileNG::slotDeleteJobFinished()
         const int httpStatus = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         SyncFileItem::Status status = classifyError(err, httpStatus);
         if (status == SyncFileItem::FatalError) {
+            _item->_requestId = job->requestId();
             abortWithError(status, job->errorString());
             return;
         } else {
@@ -443,6 +452,7 @@ void PropagateUploadFileNG::startNewUpload()
     pi._transferid = _transferId;
     pi._modtime = _item->_modtime;
     pi._contentChecksum = _item->_checksumHeader;
+    pi._size = _item->_size;
     propagator()->_journal->setUploadInfo(_item->_file, pi);
     propagator()->_journal->commit("Upload info");
     QMap<QByteArray, QByteArray> headers;
@@ -463,6 +473,7 @@ void PropagateUploadFileNG::slotMkColFinished(QNetworkReply::NetworkError)
     _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
     if (err != QNetworkReply::NoError || _item->_httpErrorCode != 201) {
+        _item->_requestId = job->requestId();
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
             &propagator()->_anotherSyncNeeded);
         abortWithError(status, job->errorStringParsingBody());
@@ -485,6 +496,7 @@ void PropagateUploadFileNG::doFinalMove()
     ENFORCE(_jobs.isEmpty(), "MOVE for upload even though jobs are still running");
 
     _finished = true;
+
     // Finish with a MOVE
     QString destination = QDir::cleanPath(propagator()->account()->url().path() + QLatin1Char('/')
         + propagator()->account()->davPath() + propagator()->_remoteFolder + _item->_file);
@@ -508,6 +520,7 @@ void PropagateUploadFileNG::doFinalMove()
     connect(job, &MoveJob::finishedSignal, this, &PropagateUploadFileNG::slotMoveJobFinished);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     propagator()->_activeJobList.append(this);
+        adjustLastJobTimeout(job, fileSize);
     job->start();
     return;
 }
@@ -635,6 +648,7 @@ void PropagateUploadFileNG::slotPutFinished()
 
     if (err != QNetworkReply::NoError) {
         _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+        _item->_requestId = job->requestId();
         commonErrorHandling(job);
         return;
     }
@@ -674,12 +688,12 @@ void PropagateUploadFileNG::slotPutFinished()
                                   << propagator()->_chunkSize << "bytes";
     }
 
-    bool finished = _sent == _bytesToUpload;
+    _finished = _sent == _bytesToUpload;
 
     // Check if the file still exists
     const QString fullFilePath(propagator()->getFilePath(_item->_file));
     if (!FileSystem::fileExists(fullFilePath)) {
-        if (!finished) {
+        if (!_finished) {
             abortWithError(SyncFileItem::SoftError, tr("The local file was removed during sync."));
             return;
         } else {
@@ -690,13 +704,13 @@ void PropagateUploadFileNG::slotPutFinished()
     // Check whether the file changed since discovery.
     if (!FileSystem::verifyFileUnchanged(fullFilePath, _item->_size, _item->_modtime)) {
         propagator()->_anotherSyncNeeded = true;
-        if (!finished) {
+        if (!_finished) {
             abortWithError(SyncFileItem::SoftError, tr("Local file changed during sync."));
             return;
         }
     }
 
-    if (!finished) {
+    if (!_finished) {
         // Deletes an existing blacklist entry on successful chunk upload
         if (_item->_hasBlacklistEntry) {
             propagator()->_journal->wipeErrorBlacklistEntry(_item->_file);
@@ -719,6 +733,8 @@ void PropagateUploadFileNG::slotMoveJobFinished()
     slotJobDestroyed(job); // remove it from the _jobs list
     QNetworkReply::NetworkError err = job->reply()->error();
     _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    _item->_responseTimeStamp = job->responseTimestamp();
+    _item->_requestId = job->requestId();
 
     if (err != QNetworkReply::NoError) {
         commonErrorHandling(job);
@@ -749,7 +765,6 @@ void PropagateUploadFileNG::slotMoveJobFinished()
         abortWithError(SyncFileItem::NormalError, tr("Missing ETag from server"));
         return;
     }
-    _item->_responseTimeStamp = job->responseTimestamp();
     finalize();
 }
 
@@ -767,23 +782,11 @@ void PropagateUploadFileNG::slotUploadProgress(qint64 sent, qint64 total)
 
 void PropagateUploadFileNG::abort(PropagatorJob::AbortType abortType)
 {
-    // Prepare abort
-    prepareAbort(abortType);
-
-    // Abort all jobs (if there are any left), except final PUT
-    foreach (AbstractNetworkJob *job, _jobs) {
-        if (job->reply()) {
-            if (abortType == AbortType::Asynchronous && qobject_cast<MoveJob *>(job)){
-                // If it is async abort, dont abort
-                // MoveJob since it might result in conflict,
-                // only PUT and MKDIR jobs can be safely aborted.
-                continue;
-            }
-
-            // Abort the job
-            job->reply()->abort();
-        }
-    }
+    abortNetworkJobs(
+        abortType,
+        [abortType](AbstractNetworkJob *job) {
+            return abortType != AbortType::Asynchronous || !qobject_cast<MoveJob *>(job);
+        });
 }
 
 }

@@ -25,6 +25,8 @@
 #include "ui_folderwizardsourcepage.h"
 #include "ui_folderwizardtargetpage.h"
 
+class QCheckBox;
+
 namespace OCC {
 
 class SelectiveSyncWidget;
@@ -128,8 +130,12 @@ public:
     virtual void initializePage() Q_DECL_OVERRIDE;
     virtual void cleanupPage() Q_DECL_OVERRIDE;
 
+private slots:
+    void virtualFilesCheckboxClicked();
+
 private:
     SelectiveSyncWidget *_selectiveSync;
+    QCheckBox *_virtualFilesCheckBox = nullptr;
 };
 
 /**

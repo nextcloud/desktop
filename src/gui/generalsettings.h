@@ -45,6 +45,7 @@ private slots:
     void slotToggleOptionalDesktopNotifications(bool);
     void slotShowInExplorerNavigationPane(bool);
     void slotUpdateInfo();
+    void slotUpdateChannelChanged(int index);
     void slotIgnoreFilesEditor();
     void loadMiscSettings();
 

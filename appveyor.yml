@@ -3,6 +3,7 @@ version: '{build}-{branch}'
 branches:
   only:
     - master
+    - 2.5
 
 clone_depth: 50
 
@@ -20,6 +21,7 @@ install:
     & cmd /C "git clone -q --depth=1 git://anongit.kde.org/craftmaster.git C:\CraftMaster\CraftMaster 2>&1"
 
     craft $env:TARGET -i craft
+    craft $env:TARGET --add-blueprint-repository [git]https://github.com/owncloud/craft-blueprints-owncloud.git
     craft $env:TARGET --install-deps owncloud-client
 
 build_script:
@@ -29,11 +31,6 @@ build_script:
 after_build:
 - ps: |
     craft $env:TARGET --src-dir $env:APPVEYOR_BUILD_FOLDER --package owncloud-client
-
-
-on_finish:
-- ps: |
-    Get-ChildItem $env:USERPROFILE\.craft\* | % { Push-AppveyorArtifact $_.FullName -FileName $_.Name }
 
 test_script:
 - ps: |
@@ -45,6 +42,3 @@ environment:
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
     - TARGET: windows-msvc2017_64-cl
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-
-artifacts:
-  - path: binaries/*

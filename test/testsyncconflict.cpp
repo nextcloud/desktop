@@ -42,7 +42,7 @@ QStringList findConflicts(const FileInfo &dir)
 {
     QStringList conflicts;
     for (const auto &item : dir.children) {
-        if (item.name.contains("conflict")) {
+        if (item.name.contains("(conflicted copy")) {
             conflicts.append(item.path());
         }
     }
@@ -56,7 +56,7 @@ bool expectAndWipeConflict(FileModifier &local, FileInfo state, const QString pa
     if (!base)
         return false;
     for (const auto &item : base->children) {
-        if (item.name.startsWith(pathComponents.fileName()) && item.name.contains("_conflict")) {
+        if (item.name.startsWith(pathComponents.fileName()) && item.name.contains("(conflicted copy")) {
             local.remove(item.path());
             return true;
         }
@@ -80,6 +80,12 @@ private slots:
         fakeFolder.remoteModifier().appendByte("A/a2");
         fakeFolder.remoteModifier().appendByte("A/a2");
         QVERIFY(fakeFolder.syncOnce());
+
+        // Verify that the conflict names don't have the user name
+        for (const auto &name : findConflicts(fakeFolder.currentLocalState().children["A"])) {
+            QVERIFY(!name.contains(fakeFolder.syncEngine().account()->davDisplayName()));
+        }
+
         QVERIFY(expectAndWipeConflict(fakeFolder.localModifier(), fakeFolder.currentLocalState(), "A/a1"));
         QVERIFY(expectAndWipeConflict(fakeFolder.localModifier(), fakeFolder.currentLocalState(), "A/a2"));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -94,11 +100,15 @@ private slots:
         QMap<QByteArray, QString> conflictMap;
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (op == QNetworkAccessManager::PutOperation) {
-                auto baseFileId = request.rawHeader("OC-ConflictBaseFileId");
-                if (!baseFileId.isEmpty()) {
+                if (request.rawHeader("OC-Conflict") == "1") {
+                    auto baseFileId = request.rawHeader("OC-ConflictBaseFileId");
                     auto components = request.url().toString().split('/');
                     QString conflictFile = components.mid(components.size() - 2).join('/');
                     conflictMap[baseFileId] = conflictFile;
+                    [&] {
+                        QVERIFY(!baseFileId.isEmpty());
+                        QCOMPARE(request.rawHeader("OC-ConflictInitialBasePath"), Utility::conflictFileBaseName(conflictFile.toUtf8()));
+                    }();
                 }
             }
             return nullptr;
@@ -121,6 +131,9 @@ private slots:
         QCOMPARE(conflictMap.size(), 2);
         QCOMPARE(Utility::conflictFileBaseName(conflictMap[a1FileId].toUtf8()), QByteArray("A/a1"));
 
+        // Check that the conflict file contains the username
+        QVERIFY(conflictMap[a1FileId].contains(QString("(conflicted copy %1 ").arg(fakeFolder.syncEngine().account()->davDisplayName())));
+
         QCOMPARE(remote.find(conflictMap[a1FileId])->contentChar, 'L');
         QCOMPARE(remote.find("A/a1")->contentChar, 'R');
 
@@ -137,11 +150,15 @@ private slots:
         QMap<QByteArray, QString> conflictMap;
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (op == QNetworkAccessManager::PutOperation) {
-                auto baseFileId = request.rawHeader("OC-ConflictBaseFileId");
-                if (!baseFileId.isEmpty()) {
+                if (request.rawHeader("OC-Conflict") == "1") {
+                    auto baseFileId = request.rawHeader("OC-ConflictBaseFileId");
                     auto components = request.url().toString().split('/');
                     QString conflictFile = components.mid(components.size() - 2).join('/');
                     conflictMap[baseFileId] = conflictFile;
+                    [&] {
+                        QVERIFY(!baseFileId.isEmpty());
+                        QCOMPARE(request.rawHeader("OC-ConflictInitialBasePath"), Utility::conflictFileBaseName(conflictFile.toUtf8()));
+                    }();
                 }
             }
             return nullptr;
@@ -151,11 +168,12 @@ private slots:
         // file didn't finish in the same sync run that the conflict was created.
         // To do that we need to create a mock conflict record.
         auto a1FileId = fakeFolder.remoteModifier().find("A/a1")->fileId;
-        QString conflictName = QLatin1String("A/a1_conflict-me-1234");
+        QString conflictName = QLatin1String("A/a1 (conflicted copy me 1234)");
         fakeFolder.localModifier().insert(conflictName, 64, 'L');
         ConflictRecord conflictRecord;
         conflictRecord.path = conflictName.toUtf8();
         conflictRecord.baseFileId = a1FileId;
+        conflictRecord.initialBasePath = "A/a1";
         fakeFolder.syncJournal().setConflictRecord(conflictRecord);
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -201,12 +219,13 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // With no headers from the server
-        fakeFolder.remoteModifier().insert("A/a1_conflict-1234");
+        fakeFolder.remoteModifier().insert("A/a1 (conflicted copy 1234)");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        auto conflictRecord = fakeFolder.syncJournal().conflictRecord("A/a1_conflict-1234");
+        auto conflictRecord = fakeFolder.syncJournal().conflictRecord("A/a1 (conflicted copy 1234)");
         QVERIFY(conflictRecord.isValid());
         QCOMPARE(conflictRecord.baseFileId, fakeFolder.remoteModifier().find("A/a1")->fileId);
+        QCOMPARE(conflictRecord.initialBasePath, QByteArray("A/a1"));
 
         // Now with server headers
         QObject parent;
@@ -218,6 +237,7 @@ private slots:
                 reply->setRawHeader("OC-ConflictBaseFileId", a2FileId);
                 reply->setRawHeader("OC-ConflictBaseMtime", "1234");
                 reply->setRawHeader("OC-ConflictBaseEtag", "etag");
+                reply->setRawHeader("OC-ConflictInitialBasePath", "A/original");
                 return reply;
             }
             return nullptr;
@@ -230,6 +250,7 @@ private slots:
         QCOMPARE(conflictRecord.baseFileId, a2FileId);
         QCOMPARE(conflictRecord.baseModtime, 1234);
         QCOMPARE(conflictRecord.baseEtag, QByteArray("etag"));
+        QCOMPARE(conflictRecord.initialBasePath, QByteArray("A/original"));
     }
 
     // Check that conflict records are removed when the file is gone
@@ -303,40 +324,72 @@ private slots:
         QTest::addColumn<QString>("input");
         QTest::addColumn<QString>("output");
 
-        QTest::newRow("")
+        QTest::newRow("nomatch1")
             << "a/b/foo"
             << "";
-        QTest::newRow("")
+        QTest::newRow("nomatch2")
             << "a/b/foo.txt"
             << "";
-        QTest::newRow("")
+        QTest::newRow("nomatch3")
             << "a/b/foo_conflict"
             << "";
-        QTest::newRow("")
+        QTest::newRow("nomatch4")
             << "a/b/foo_conflict.txt"
             << "";
 
-        QTest::newRow("")
+        QTest::newRow("match1")
             << "a/b/foo_conflict-123.txt"
             << "a/b/foo.txt";
-        QTest::newRow("")
+        QTest::newRow("match2")
             << "a/b/foo_conflict-foo-123.txt"
             << "a/b/foo.txt";
 
-        QTest::newRow("")
+        QTest::newRow("match3")
             << "a/b/foo_conflict-123"
             << "a/b/foo";
-        QTest::newRow("")
+        QTest::newRow("match4")
             << "a/b/foo_conflict-foo-123"
             << "a/b/foo";
 
+        // new style
+        QTest::newRow("newmatch1")
+            << "a/b/foo (conflicted copy 123).txt"
+            << "a/b/foo.txt";
+        QTest::newRow("newmatch2")
+            << "a/b/foo (conflicted copy foo 123).txt"
+            << "a/b/foo.txt";
+
+        QTest::newRow("newmatch3")
+            << "a/b/foo (conflicted copy 123)"
+            << "a/b/foo";
+        QTest::newRow("newmatch4")
+            << "a/b/foo (conflicted copy foo 123)"
+            << "a/b/foo";
+
+        QTest::newRow("newmatch5")
+            << "a/b/foo (conflicted copy foo 123) bla"
+            << "a/b/foo bla";
+
+        QTest::newRow("newmatch6")
+            << "a/b/foo (conflicted copy foo.bar 123)"
+            << "a/b/foo";
+
         // double conflict files
-        QTest::newRow("")
+        QTest::newRow("double1")
             << "a/b/foo_conflict-123_conflict-456.txt"
             << "a/b/foo_conflict-123.txt";
-        QTest::newRow("")
+        QTest::newRow("double2")
             << "a/b/foo_conflict-foo-123_conflict-bar-456.txt"
             << "a/b/foo_conflict-foo-123.txt";
+        QTest::newRow("double3")
+            << "a/b/foo (conflicted copy 123) (conflicted copy 456).txt"
+            << "a/b/foo (conflicted copy 123).txt";
+        QTest::newRow("double4")
+            << "a/b/foo (conflicted copy 123)_conflict-456.txt"
+            << "a/b/foo (conflicted copy 123).txt";
+        QTest::newRow("double5")
+            << "a/b/foo_conflict-123 (conflicted copy 456).txt"
+            << "a/b/foo_conflict-123.txt";
     }
 
     void testConflictFileBaseName()
@@ -500,8 +553,8 @@ private slots:
         auto conflicts = findConflicts(fakeFolder.currentLocalState());
         std::sort(conflicts.begin(), conflicts.end());
         QVERIFY(conflicts.size() == 2);
-        QVERIFY(conflicts[0].contains("A_conflict"));
-        QVERIFY(conflicts[1].contains("B_conflict"));
+        QVERIFY(conflicts[0].contains("A (conflicted copy"));
+        QVERIFY(conflicts[1].contains("B (conflicted copy"));
         for (auto conflict : conflicts)
             QDir(fakeFolder.localPath() + conflict).removeRecursively();
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -539,7 +592,7 @@ private slots:
         // inside of them!
         auto conflicts = findConflicts(fakeFolder.currentLocalState());
         QVERIFY(conflicts.size() == 1);
-        QVERIFY(conflicts[0].contains("A_conflict"));
+        QVERIFY(conflicts[0].contains("A (conflicted copy"));
         for (auto conflict : conflicts)
             QDir(fakeFolder.localPath() + conflict).removeRecursively();
 

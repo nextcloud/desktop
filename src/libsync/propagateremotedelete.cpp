@@ -53,8 +53,7 @@ void DeleteJob::start()
 bool DeleteJob::finished()
 {
     qCInfo(lcDeleteJob) << "DELETE of" << reply()->request().url() << "FINISHED WITH STATUS"
-                        << reply()->error()
-                        << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString());
+                       << replyStatusString();
 
     emit finishedSignal();
     return true;
@@ -94,20 +93,15 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
     QNetworkReply::NetworkError err = _job->reply()->error();
     const int httpStatus = _job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     _item->_httpErrorCode = httpStatus;
+    _item->_responseTimeStamp = _job->responseTimestamp();
+    _item->_requestId = _job->requestId();
 
     if (err != QNetworkReply::NoError && err != QNetworkReply::ContentNotFoundError) {
-        if (checkForProblemsWithShared(_item->_httpErrorCode,
-                tr("The file has been removed from a read only share. It was restored."))) {
-            return;
-        }
-
         SyncFileItem::Status status = classifyError(err, _item->_httpErrorCode,
             &propagator()->_anotherSyncNeeded);
         done(status, _job->errorString());
         return;
     }
-
-    _item->_responseTimeStamp = _job->responseTimestamp();
 
     // A 404 reply is also considered a success here: We want to make sure
     // a file is gone from the server. It not being there in the first place

@@ -44,7 +44,16 @@ void NotificationWidget::setActivity(const Activity &activity)
     _ui._subjectLabel->setVisible(!activity._subject.isEmpty());
     _ui._messageLabel->setVisible(!activity._message.isEmpty());
 
-    _ui._subjectLabel->setText(activity._subject);
+    if (activity._link.isEmpty()) {
+        _ui._subjectLabel->setText(activity._subject);
+    } else {
+        _ui._subjectLabel->setText( QString("<a href=\"%1\">%2</a>")
+                    .arg(activity._link.toString(QUrl::FullyEncoded),
+                         activity._subject.toHtmlEscaped() ));
+        _ui._subjectLabel->setTextFormat(Qt::RichText);
+        _ui._subjectLabel->setOpenExternalLinks(true);
+    }
+
     _ui._messageLabel->setText(activity._message);
 
     _ui._notifIcon->setPixmap(QPixmap(":/client/resources/bell.png"));

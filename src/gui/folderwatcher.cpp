@@ -38,17 +38,20 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFolderWatcher, "gui.folderwatcher", QtInfoMsg)
 
-FolderWatcher::FolderWatcher(const QString &root, Folder *folder)
+FolderWatcher::FolderWatcher(Folder *folder)
     : QObject(folder)
     , _folder(folder)
 {
-    _d.reset(new FolderWatcherPrivate(this, root));
-
-    _timer.start();
 }
 
 FolderWatcher::~FolderWatcher()
 {
+}
+
+void FolderWatcher::init(const QString &root)
+{
+    _d.reset(new FolderWatcherPrivate(this, root));
+    _timer.start();
 }
 
 bool FolderWatcher::pathIsIgnored(const QString &path)

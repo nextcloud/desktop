@@ -46,11 +46,9 @@
  *
  * @param  ctx          The csync context to use.
  *
- * @return 0 on success, < 0 on error.
- *
  * @todo Add an argument to set the algorithm to use.
  */
-int OCSYNC_EXPORT csync_reconcile_updates(CSYNC *ctx);
+void OCSYNC_EXPORT csync_reconcile_updates(CSYNC *ctx);
 
 /**
  * }@

@@ -11,7 +11,7 @@
         <key>CFBundleExecutable</key>
         <string>@APPLICATION_EXECUTABLE@</string>
         <key>CFBundleIconFile</key>
-        <string>ownCloud.icns</string>
+        <string>@APPLICATION_EXECUTABLE@.icns</string>
         <key>CFBundleIdentifier</key>
         <string>@APPLICATION_REV_DOMAIN@</string>
         <key>CFBundleInfoDictionaryVersion</key>
@@ -27,12 +27,47 @@
         <key>CFBundleShortVersionString</key>
         <string>@MIRALL_VERSION_STRING@</string>
         <key>NSHumanReadableCopyright</key>
-        <string>(C) 2014-2016 @APPLICATION_VENDOR@</string>
+        <string>(C) 2014-2018 @APPLICATION_VENDOR@</string>
         <key>SUShowReleaseNotes</key>
         <false/>
-        <key>LSMinimumBundleVersion</key>
-        <string>10.7.0</string>
         <key>SUPublicDSAKeyFile</key>
         <string>dsa_pub.pem</string>
+
+<key>UTExportedTypeDeclarations</key>
+<array>
+    <dict>
+        <key>UTTypeIdentifier</key>
+        <string>@APPLICATION_REV_DOMAIN@.VIRTUALFILE</string>
+        <key>UTTypeTagSpecification</key>
+        <dict>
+            <key>public.filename-extension</key>
+            <string>@APPLICATION_VIRTUALFILE_SUFFIX@</string>
+            <key>public.mime-type</key>
+            <string>application/octet-stream</string>
+        </dict>
+        <key>UTTypeConformsTo</key>
+         <array>
+             <string>public.data</string>
+         </array>
+    </dict>
+</array>
+
+<key>CFBundleDocumentTypes</key>
+<array>
+    <dict>
+        <key>CFBundleTypeName</key>
+        <string>@APPLICATION_EXECUTABLE@ Download Virtual File</string>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>LSHandlerRank</key>
+        <string>Owner</string>
+        <key>LSItemContentTypes</key>
+        <array>
+            <string>@APPLICATION_REV_DOMAIN@.VIRTUALFILE</string>
+        </array>
+    </dict>
+</array>
+
+
 </dict>
 </plist>

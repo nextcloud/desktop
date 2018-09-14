@@ -156,9 +156,7 @@ class PropagateItemJob : public PropagatorJob
 {
     Q_OBJECT
 protected:
-    void done(SyncFileItem::Status status, const QString &errorString = QString());
-
-    bool checkForProblemsWithShared(int httpStatusCode, const QString &msg);
+    virtual void done(SyncFileItem::Status status, const QString &errorString = QString());
 
     /*
      * set a custom restore job message that is used if the restore job succeeded.
@@ -436,8 +434,6 @@ public:
     /* The maximum number of active jobs in parallel  */
     int hardMaximumActiveJob();
 
-    bool isInSharedDirectory(const QString &file);
-
     /** Check whether a download would clash with an existing file
      * in filesystems that are only case-preserving.
      */
@@ -455,6 +451,7 @@ public:
     bool hasCaseClashAccessibilityProblem(const QString &relfile);
 
     QString getFilePath(const QString &tmp_file_name) const;
+    QString addVirtualFileSuffix(const QString &fileName) const;
 
     /** Creates the job for an item.
      */

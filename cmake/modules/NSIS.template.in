@@ -7,6 +7,8 @@
 !define APPLICATION_CMD_EXECUTABLE "@APPLICATION_EXECUTABLE@cmd.exe"
 !define APPLICATION_DOMAIN "@APPLICATION_DOMAIN@"
 !define APPLICATION_LICENSE "@APPLICATION_LICENSE@"
+!define APPLICATION_VIRTUALFILE_SUFFIX "@APPLICATION_VIRTUALFILE_SUFFIX@"
+!define APPLICATION_VIRTUALFILE_FILECLASS "@APPLICATION_EXECUTABLE@.@APPLICATION_VIRTUALFILE_SUFFIX@"
 !define WIN_SETUP_BITMAP_PATH "@WIN_SETUP_BITMAP_PATH@"
 
 !define CRASHREPORTER_EXECUTABLE "@CRASHREPORTER_EXECUTABLE@"
@@ -99,6 +101,8 @@ ReserveFile "${NSISDIR}\Plugins\InstallOptions.dll"
 !include nsProcess.nsh ;Used to kill the running process
 !include Library.nsh ;Used by the COM registration for shell extensions
 !include x64.nsh ;Used to determine the right arch for the shell extensions
+
+!include ${source_path}/admin/win/nsi/lib/fileassoc.nsh
 
 ;-----------------------------------------------------------------------------
 ; Memento selections stored in registry.
@@ -385,7 +389,7 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${BUILD_PATH}\bin\${APPLICATION_EXECUTABLE}"
    File "${BUILD_PATH}\bin\${APPLICATION_CMD_EXECUTABLE}"
    File "${BUILD_PATH}\bin\lib${APPLICATION_SHORTNAME}sync.dll"
-   File "${BUILD_PATH}\bin\libocsync.dll"
+   File "${BUILD_PATH}\bin\lib${APPLICATION_SHORTNAME}_csync.dll"
 
    File "${BUILD_PATH}\src\gui\client*.qm"
    ; Make sure only to copy qt, not qt_help, etc
@@ -403,6 +407,8 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${IMAGEFORMATS_DLL_PATH}\qgif.dll"
    File "${IMAGEFORMATS_DLL_PATH}\qjpeg.dll"
    File "${IMAGEFORMATS_DLL_PATH}\qico.dll"
+   File "${IMAGEFORMATS_DLL_PATH}\qsvg.dll"
+   ; PNG is built in Qt
 
    SetOutPath "$INSTDIR\sqldrivers"
    File "${SQLITE_DLL_PATH}\qsqlite.dll"
@@ -420,6 +426,7 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${QT_DLL_PATH}\Qt5Gui.dll"
    File "${QT_DLL_PATH}\Qt5Network.dll"
    File "${QT_DLL_PATH}\Qt5PrintSupport.dll"
+   File "${QT_DLL_PATH}\Qt5Svg.dll"
    File "${QT_DLL_PATH}\Qt5Qml.dll"
    File "${QT_DLL_PATH}\Qt5Sql.dll"
    File "${QT_DLL_PATH}\Qt5WebKit.dll"
@@ -465,6 +472,9 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
 
    ;CSync configs
    File "${SOURCE_PATH}/sync-exclude.lst"
+
+   ;Add file association
+   !insertmacro APP_ASSOCIATE "${APPLICATION_VIRTUALFILE_SUFFIX}" "${APPLICATION_VIRTUALFILE_FILECLASS}" "Virtual File for Remote File" "$INSTDIR\${APPLICATION_EXECUTABLE},0" "Download" "$INSTDIR\${APPLICATION_EXECUTABLE} $\"%1$\""
 
 SectionEnd
 
@@ -642,6 +652,9 @@ Section Uninstall
    DeleteRegKey HKLM "Software\${APPLICATION_VENDOR}\${APPLICATION_NAME}"
 
    DeleteRegKey HKCR "${APPLICATION_NAME}"
+
+   ;Remove file association
+   !insertmacro APP_UNASSOCIATE "${APPLICATION_VIRTUALFILE_SUFFIX}" "${APPLICATION_VIRTUALFILE_FILECLASS}"
 
    ;Shell extension
    !ifdef OPTION_SECTION_SC_SHELL_EXT

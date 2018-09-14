@@ -37,6 +37,10 @@
 #include <QtCore>
 #include <QMutableSetIterator>
 #include <QSet>
+#include <QNetworkProxy>
+
+static const char versionC[] = "version";
+static const int maxFoldersVersion = 1;
 
 namespace OCC {
 
@@ -161,6 +165,9 @@ int FolderMan::setupFolders()
 {
     unloadAndDeleteAllFolders();
 
+    QStringList skipSettingsKeys;
+    backwardMigrationSettingsKeys(&skipSettingsKeys, &skipSettingsKeys);
+
     auto settings = ConfigFile::settingsWithGroup(QLatin1String("Accounts"));
     const auto accountsWithSettings = settings->childGroups();
     if (accountsWithSettings.isEmpty()) {
@@ -180,14 +187,24 @@ int FolderMan::setupFolders()
         }
         settings->beginGroup(id);
 
-        settings->beginGroup(QLatin1String("Folders"));
-        setupFoldersHelper(*settings, account, true);
-        settings->endGroup();
+        // The "backwardsCompatible" flag here is related to migrating old
+        // database locations
+        auto process = [&](const QString &groupName, bool backwardsCompatible = false) {
+            settings->beginGroup(groupName);
+            if (skipSettingsKeys.contains(settings->group())) {
+                // Should not happen: bad container keys should have been deleted
+                qCWarning(lcFolderMan) << "Folder structure" << groupName << "is too new, ignoring";
+            } else {
+                setupFoldersHelper(*settings, account, backwardsCompatible, skipSettingsKeys);
+            }
+            settings->endGroup();
+        };
 
-        // See Folder::saveToSettings for details about why this exists.
-        settings->beginGroup(QLatin1String("Multifolders"));
-        setupFoldersHelper(*settings, account, false);
-        settings->endGroup();
+        process(QStringLiteral("Folders"), true);
+
+        // See Folder::saveToSettings for details about why these exists.
+        process(QStringLiteral("Multifolders"));
+        process(QStringLiteral("FoldersWithPlaceholders"));
 
         settings->endGroup(); // <account>
     }
@@ -197,9 +214,19 @@ int FolderMan::setupFolders()
     return _folderMap.size();
 }
 
-void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account, bool backwardsCompatible)
+void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account, bool backwardsCompatible, const QStringList &ignoreKeys)
 {
     foreach (const auto &folderAlias, settings.childGroups()) {
+        // Skip folders with too-new version
+        settings.beginGroup(folderAlias);
+        if (ignoreKeys.contains(settings.group())) {
+            qCInfo(lcFolderMan) << "Folder" << folderAlias << "is too new, ignoring";
+            _additionalBlockedFolderAliases.insert(folderAlias);
+            settings.endGroup();
+            continue;
+        }
+        settings.endGroup();
+
         FolderDefinition folderDefinition;
         if (FolderDefinition::load(settings, folderAlias, &folderDefinition)) {
             auto defaultJournalPath = folderDefinition.defaultJournalPath(account->account());
@@ -263,6 +290,37 @@ int FolderMan::setupFoldersMigration()
 
     // return the number of valid folders.
     return _folderMap.size();
+}
+
+void FolderMan::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys)
+{
+    auto settings = ConfigFile::settingsWithGroup(QLatin1String("Accounts"));
+
+    auto processSubgroup = [&](const QString &name) {
+        settings->beginGroup(name);
+        const int foldersVersion = settings->value(QLatin1String(versionC), 1).toInt();
+        if (foldersVersion <= maxFoldersVersion) {
+            foreach (const auto &folderAlias, settings->childGroups()) {
+                settings->beginGroup(folderAlias);
+                const int folderVersion = settings->value(QLatin1String(versionC), 1).toInt();
+                if (folderVersion > FolderDefinition::maxSettingsVersion()) {
+                    ignoreKeys->append(settings->group());
+                }
+                settings->endGroup();
+            }
+        } else {
+            deleteKeys->append(settings->group());
+        }
+        settings->endGroup();
+    };
+
+    for (const auto &accountId : settings->childGroups()) {
+        settings->beginGroup(accountId);
+        processSubgroup("Folders");
+        processSubgroup("Multifolders");
+        processSubgroup("FoldersWithPlaceholders");
+        settings->endGroup();
+    }
 }
 
 bool FolderMan::ensureJournalGone(const QString &journalDbFile)
@@ -904,7 +962,9 @@ Folder *FolderMan::addFolderInternal(FolderDefinition folderDefinition,
 {
     auto alias = folderDefinition.alias;
     int count = 0;
-    while (folderDefinition.alias.isEmpty() || _folderMap.contains(folderDefinition.alias)) {
+    while (folderDefinition.alias.isEmpty()
+        || _folderMap.contains(folderDefinition.alias)
+        || _additionalBlockedFolderAliases.contains(folderDefinition.alias)) {
         // There is already a folder configured with this name and folder names need to be unique
         folderDefinition.alias = alias + QString::number(++count);
     }
@@ -933,7 +993,7 @@ Folder *FolderMan::addFolderInternal(FolderDefinition folderDefinition,
     return folder;
 }
 
-Folder *FolderMan::folderForPath(const QString &path)
+Folder *FolderMan::folderForPath(const QString &path, QString *relativePath)
 {
     QString absolutePath = QDir::cleanPath(path) + QLatin1Char('/');
 
@@ -941,10 +1001,16 @@ Folder *FolderMan::folderForPath(const QString &path)
         const QString folderPath = folder->cleanPath() + QLatin1Char('/');
 
         if (absolutePath.startsWith(folderPath, (Utility::isWindows() || Utility::isMac()) ? Qt::CaseInsensitive : Qt::CaseSensitive)) {
+            if (relativePath) {
+                *relativePath = absolutePath.mid(folderPath.length());
+                relativePath->chop(1); // we added a '/' above
+            }
             return folder;
         }
     }
 
+    if (relativePath)
+        relativePath->clear();
     return 0;
 }
 
@@ -1240,25 +1306,45 @@ QString FolderMan::trayTooltipStatusString(
     return folderMessage;
 }
 
-QString FolderMan::checkPathValidityForNewFolder(const QString &path, const QUrl &serverUrl, bool forNewDirectory) const
+static QString checkPathValidityRecursive(const QString &path)
 {
     if (path.isEmpty()) {
-        return tr("No valid folder selected!");
+        return FolderMan::tr("No valid folder selected!");
     }
 
     QFileInfo selFile(path);
 
     if (!selFile.exists()) {
-        return checkPathValidityForNewFolder(selFile.dir().path(), serverUrl, true);
+        return checkPathValidityRecursive(selFile.dir().path());
     }
 
     if (!selFile.isDir()) {
-        return tr("The selected path is not a folder!");
+        return FolderMan::tr("The selected path is not a folder!");
     }
 
     if (!selFile.isWritable()) {
-        return tr("You have no permission to write to the selected folder!");
+        return FolderMan::tr("You have no permission to write to the selected folder!");
     }
+    return QString();
+}
+
+// QFileInfo::canonicalPath returns an empty string if the file does not exist.
+// This function also works with files that does not exist and resolve the symlinks in the
+// parent directories.
+static QString canonicalPath(const QString &path)
+{
+    QFileInfo selFile(path);
+    if (!selFile.exists()) {
+        return canonicalPath(selFile.dir().path()) + '/' + selFile.fileName();
+    }
+    return selFile.canonicalFilePath();
+}
+
+QString FolderMan::checkPathValidityForNewFolder(const QString &path, const QUrl &serverUrl) const
+{
+    QString recursiveValidity = checkPathValidityRecursive(path);
+    if (!recursiveValidity.isEmpty())
+        return recursiveValidity;
 
     // check if the local directory isn't used yet in another ownCloud sync
     Qt::CaseSensitivity cs = Qt::CaseSensitive;
@@ -1266,49 +1352,20 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path, const QUrl
         cs = Qt::CaseInsensitive;
     }
 
+    const QString userDir = QDir::cleanPath(canonicalPath(path)) + '/';
     for (auto i = _folderMap.constBegin(); i != _folderMap.constEnd(); ++i) {
         Folder *f = static_cast<Folder *>(i.value());
-        QString folderDir = QDir(f->path()).canonicalPath();
-        if (folderDir.isEmpty()) {
-            continue;
-        }
-        if (!folderDir.endsWith(QLatin1Char('/'), cs))
-            folderDir.append(QLatin1Char('/'));
+        QString folderDir = QDir::cleanPath(canonicalPath(f->path())) + '/';
 
-        const QString folderDirClean = QDir::cleanPath(folderDir) + '/';
-        const QString userDirClean = QDir::cleanPath(path) + '/';
-
-        // folderDir follows sym links, path not.
-        bool differentPathes = !Utility::fileNamesEqual(QDir::cleanPath(folderDir), QDir::cleanPath(path));
-
-        if (!forNewDirectory && differentPathes && folderDirClean.startsWith(userDirClean, cs)) {
+        bool differentPaths = QString::compare(folderDir, userDir, cs) != 0;
+        if (differentPaths && folderDir.startsWith(userDir, cs)) {
             return tr("The local folder %1 already contains a folder used in a folder sync connection. "
                       "Please pick another one!")
                 .arg(QDir::toNativeSeparators(path));
         }
 
-        // QDir::cleanPath keeps links
-        // canonicalPath() remove symlinks and uses the symlink targets.
-        QString absCleanUserFolder = QDir::cleanPath(QDir(path).canonicalPath()) + '/';
-
-        if ((forNewDirectory || differentPathes) && userDirClean.startsWith(folderDirClean, cs)) {
+        if (differentPaths && userDir.startsWith(folderDir, cs)) {
             return tr("The local folder %1 is already contained in a folder used in a folder sync connection. "
-                      "Please pick another one!")
-                .arg(QDir::toNativeSeparators(path));
-        }
-
-        // both follow symlinks.
-        bool cleanUserEqualsCleanFolder = Utility::fileNamesEqual(absCleanUserFolder, folderDirClean);
-        if (differentPathes && absCleanUserFolder.startsWith(folderDirClean, cs) && !cleanUserEqualsCleanFolder) {
-            return tr("The local folder %1 is a symbolic link. "
-                      "The link target is already contained in a folder used in a folder sync connection. "
-                      "Please pick another one!")
-                .arg(QDir::toNativeSeparators(path));
-        }
-
-        if (differentPathes && folderDirClean.startsWith(absCleanUserFolder, cs) && !cleanUserEqualsCleanFolder && !forNewDirectory) {
-            return tr("The local folder %1 contains a symbolic link. "
-                      "The link target contains an already synced folder "
                       "Please pick another one!")
                 .arg(QDir::toNativeSeparators(path));
         }
@@ -1316,7 +1373,7 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path, const QUrl
         // if both pathes are equal, the server url needs to be different
         // otherwise it would mean that a new connection from the same local folder
         // to the same account is added which is not wanted. The account must differ.
-        if (serverUrl.isValid() && Utility::fileNamesEqual(absCleanUserFolder, folderDir)) {
+        if (serverUrl.isValid() && !differentPaths) {
             QUrl folderUrl = f->accountState()->account()->url();
             QString user = f->accountState()->account()->credentials()->user();
             folderUrl.setUserName(user);

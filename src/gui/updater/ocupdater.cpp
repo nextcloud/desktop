@@ -92,6 +92,11 @@ OCUpdater::OCUpdater(const QUrl &url)
 {
 }
 
+void OCUpdater::setUpdateUrl(const QUrl &url)
+{
+    _updateUrl = url;
+}
+
 bool OCUpdater::performUpdate()
 {
     ConfigFile cfg;
@@ -187,8 +192,30 @@ void OCUpdater::slotStartInstaller()
     settings.setValue(autoUpdateAttemptedC, true);
     settings.sync();
     qCInfo(lcUpdater) << "Running updater" << updateFile;
-    QProcess::startDetached(updateFile, QStringList() << "/S"
-                                                      << "/launch");
+
+    if(updateFile.endsWith(".exe")) {
+        QProcess::startDetached(updateFile, QStringList() << "/S"
+                                                          << "/launch");
+    } else if(updateFile.endsWith(".msi")) {
+        // When MSIs are installed without gui they cannot launch applications
+        // as they lack the user context. That is why we need to run the client
+        // manually here. We wrap the msiexec and client invocation in a powershell
+        // script because owncloud.exe will be shut down for installation.
+        // | Out-Null forces powershell to wait for msiexec to finish.
+        auto preparePathForPowershell = [](QString path) {
+            path.replace("'", "''");
+
+            return QDir::toNativeSeparators(path);
+        };
+
+        QString msiLogFile = cfg.configPath() + "msi.log";
+        QString command = QString("&{msiexec /norestart /passive /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
+             .arg(preparePathForPowershell(updateFile))
+             .arg(preparePathForPowershell(msiLogFile))
+             .arg(preparePathForPowershell(QCoreApplication::applicationFilePath()));
+
+        QProcess::startDetached("powershell.exe", QStringList{"-Command", command});
+    }
 }
 
 void OCUpdater::checkForUpdate()
@@ -223,6 +250,7 @@ void OCUpdater::slotVersionInfoArrived()
     reply->deleteLater();
     if (reply->error() != QNetworkReply::NoError) {
         qCWarning(lcUpdater) << "Failed to reach version check url: " << reply->errorString();
+        setDownloadState(OCUpdater::Unknown);
         return;
     }
 
@@ -234,6 +262,7 @@ void OCUpdater::slotVersionInfoArrived()
         versionInfoArrived(_updateInfo);
     } else {
         qCWarning(lcUpdater) << "Could not parse update information.";
+        setDownloadState(OCUpdater::Unknown);
     }
 }
 
@@ -298,7 +327,7 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
             showDialog(info);
         }
         if (!url.isEmpty()) {
-            _targetFile = cfg.configPath() + url.mid(url.lastIndexOf('/'));
+            _targetFile = cfg.configPath() + url.mid(url.lastIndexOf('/')+1);
             if (QFile(_targetFile).exists()) {
                 setDownloadState(DownloadComplete);
             } else {

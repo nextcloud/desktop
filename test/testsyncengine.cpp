@@ -172,6 +172,14 @@ private slots:
         fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
                                                                 {"parentFolder/subFolderA/"});
         fakeFolder.syncEngine().journal()->avoidReadFromDbOnNextSync(QByteArrayLiteral("parentFolder/subFolderA/"));
+        auto getEtag = [&](const QByteArray &file) {
+            SyncJournalFileRecord rec;
+            fakeFolder.syncJournal().getFileRecord(file, &rec);
+            return rec._etag;
+        };
+        QVERIFY(getEtag("parentFolder") == "_invalid_");
+        QVERIFY(getEtag("parentFolder/subFolderA") == "_invalid_");
+        QVERIFY(getEtag("parentFolder/subFolderA/subsubFolder") != "_invalid_");
 
         // But touch local file before the next sync, such that the local folder
         // can't be removed
@@ -247,7 +255,8 @@ private slots:
             } else if(item->_file == "Y/Z/d3") {
                 QVERIFY(item->_status != SyncFileItem::Success);
             }
-            QVERIFY(item->_file != "Y/Z/d9"); // we should have aborted the sync before d9 starts
+            // We do not know about the other files - maybe the sync was aborted,
+            // maybe they finished before the error caused the abort.
         }
     }
 
@@ -563,40 +572,6 @@ private slots:
         QVERIFY(!fakeFolder.currentRemoteState().find("C/myfile.txt"));
     }
 
-    // Check correct behavior when local discovery is partially drawn from the db
-    void testLocalDiscoveryStyle()
-    {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-
-        // More subdirectories are useful for testing
-        fakeFolder.localModifier().mkdir("A/X");
-        fakeFolder.localModifier().mkdir("A/Y");
-        fakeFolder.localModifier().insert("A/X/x1");
-        fakeFolder.localModifier().insert("A/Y/y1");
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-
-        // Test begins
-        fakeFolder.localModifier().insert("A/a3");
-        fakeFolder.localModifier().insert("A/X/x2");
-        fakeFolder.localModifier().insert("A/Y/y2");
-        fakeFolder.localModifier().insert("B/b3");
-        fakeFolder.remoteModifier().insert("C/c3");
-
-        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, { "A/X" });
-        QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.currentRemoteState().find("A/a3"));
-        QVERIFY(fakeFolder.currentRemoteState().find("A/X/x2"));
-        QVERIFY(!fakeFolder.currentRemoteState().find("A/Y/y2"));
-        QVERIFY(!fakeFolder.currentRemoteState().find("B/b3"));
-        QVERIFY(fakeFolder.currentLocalState().find("C/c3"));
-        QCOMPARE(fakeFolder.syncEngine().lastLocalDiscoveryStyle(), LocalDiscoveryStyle::DatabaseAndFilesystem);
-
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QCOMPARE(fakeFolder.syncEngine().lastLocalDiscoveryStyle(), LocalDiscoveryStyle::FilesystemOnly);
-    }
-
     void testDiscoveryHiddenFile()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
@@ -641,6 +616,7 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("A/tößt"));
         QVERIFY(fakeFolder.currentLocalState().find("A/t𠜎t"));
 
+#if !defined(Q_OS_MAC) && !defined(Q_OS_WIN)
         // Try again with a locale that can represent ö but not 𠜎 (4-byte utf8).
         QTextCodec::setCodecForLocale(QTextCodec::codecForName("ISO-8859-15"));
         QVERIFY(QTextCodec::codecForLocale()->mibEnum() == 111);
@@ -671,6 +647,7 @@ private slots:
         QVERIFY(fakeFolder.currentRemoteState().find("C/tößt"));
 
         QTextCodec::setCodecForLocale(utf8Locale);
+#endif
     }
 };
 

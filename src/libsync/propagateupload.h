@@ -120,8 +120,7 @@ public:
     virtual bool finished() Q_DECL_OVERRIDE
     {
         qCInfo(lcPutJob) << "PUT of" << reply()->request().url().toString() << "FINISHED WITH STATUS"
-                         << reply()->error()
-                         << (reply()->error() == QNetworkReply::NoError ? QLatin1String("") : errorString())
+                         << replyStatusString()
                          << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute)
                          << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
 
@@ -210,7 +209,6 @@ protected:
     QVector<AbstractNetworkJob *> _jobs; /// network jobs that are currently in transit
     bool _finished BITFIELD(1); /// Tells that all the jobs have been finished
     bool _deleteExisting BITFIELD(1);
-    quint64 _abortCount; /// Keep track of number of aborted items
     QByteArray _transmissionChecksumHeader;
 
 public:
@@ -218,7 +216,6 @@ public:
         : PropagateItemJob(propagator, item)
         , _finished(false)
         , _deleteExisting(false)
-        , _abortCount(0)
     {
     }
 
@@ -249,19 +246,21 @@ public:
     void abortWithError(SyncFileItem::Status status, const QString &error);
 
 public slots:
-    void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE;
     void slotJobDestroyed(QObject *job);
 
 private slots:
-    void slotReplyAbortFinished();
     void slotPollFinished();
 
 protected:
+    void done(SyncFileItem::Status status, const QString &errorString = QString()) override;
+
     /**
-     * Prepares the abort e.g. connects proper signals and slots
-     * to the subjobs to abort asynchronously
+     * Aborts all running network jobs, except for the ones that mayAbortJob
+     * returns false on and, for async aborts, emits abortFinished when done.
      */
-    void prepareAbort(PropagatorJob::AbortType abortType);
+    void abortNetworkJobs(
+        AbortType abortType,
+        const std::function<bool(AbstractNetworkJob *job)> &mayAbortJob);
 
     /**
      * Checks whether the current error is one that should reset the whole
@@ -274,6 +273,17 @@ protected:
      * Error handling functionality that is shared between jobs.
      */
     void commonErrorHandling(AbstractNetworkJob *job);
+
+    /**
+     * Increases the timeout for the final MOVE/PUT for large files.
+     *
+     * This is an unfortunate workaround since the drawback is not being able to
+     * detect real disconnects in a timely manner. Shall go away when the server
+     * response starts coming quicker, or there is some sort of async api.
+     *
+     * See #6527, enterprise#2480
+     */
+    static void adjustLastJobTimeout(AbstractNetworkJob *job, quint64 fileSize);
 
     // Bases headers that need to be sent with every chunk
     QMap<QByteArray, QByteArray> headers();

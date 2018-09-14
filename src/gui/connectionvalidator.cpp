@@ -40,35 +40,6 @@ ConnectionValidator::ConnectionValidator(AccountPtr account, QObject *parent)
 {
 }
 
-QString ConnectionValidator::statusString(Status stat)
-{
-    switch (stat) {
-    case Undefined:
-        return QLatin1String("Undefined");
-    case Connected:
-        return QLatin1String("Connected");
-    case NotConfigured:
-        return QLatin1String("Not configured");
-    case ServerVersionMismatch:
-        return QLatin1String("Server Version Mismatch");
-    case CredentialsNotReady:
-        return QLatin1String("Credentials not ready");
-    case CredentialsWrong:
-        return QLatin1String("Credentials Wrong");
-    case SslError:
-        return QLatin1String("SSL Error");
-    case StatusNotFound:
-        return QLatin1String("Status not found");
-    case ServiceUnavailable:
-        return QLatin1String("Service unavailable");
-    case MaintenanceMode:
-        return QLatin1String("Maintenance mode");
-    case Timeout:
-        return QLatin1String("Timeout");
-    }
-    return QLatin1String("status undeclared.");
-}
-
 void ConnectionValidator::checkServerAndAuth()
 {
     if (!_account) {
@@ -304,19 +275,20 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
     qCInfo(lcConnectionValidator) << _account->url() << "has server version" << version;
     _account->setServerVersion(version);
 
-    // We cannot deal with servers < 5.0.0
+    // We cannot deal with servers < 7.0.0
     if (_account->serverVersionInt()
-        && _account->serverVersionInt() < Account::makeServerVersion(5, 0, 0)) {
+        && _account->serverVersionInt() < Account::makeServerVersion(7, 0, 0)) {
         _errors.append(tr("The configured server for this client is too old"));
         _errors.append(tr("Please update to the latest server and restart the client."));
         reportResult(ServerVersionMismatch);
         return false;
     }
-    // We attempt to work with servers >= 5.0.0 but warn users.
+    // We attempt to work with servers >= 7.0.0 but warn users.
     // Check usages of Account::serverVersionUnsupported() for details.
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
     // Record that the server supports HTTP/2
+    // Actual decision if we should use HTTP/2 is done in AccessManager::createRequest
     if (auto job = qobject_cast<AbstractNetworkJob *>(sender())) {
         if (auto reply = job->reply()) {
             _account->setHttp2Supported(

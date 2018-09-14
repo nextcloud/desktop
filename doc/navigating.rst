@@ -5,7 +5,7 @@ Using the Synchronization Client
 .. index:: navigating, usage
 
 The ownCloud Desktop Client remains in the background and is visible as an icon 
-in the system tray (Windows, KDE), status bar (Mac OS X), or notification area 
+in the system tray (Windows, KDE), menu bar (macOS), or notification area
 (Linux).
 
 .. figure:: images/icon.png

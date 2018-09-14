@@ -35,7 +35,7 @@ class NetworkSettings : public QWidget
 public:
     explicit NetworkSettings(QWidget *parent = 0);
     ~NetworkSettings();
-    QSize sizeHint() const;
+    QSize sizeHint() const override;
 
 private slots:
     void saveProxySettings();
@@ -43,6 +43,9 @@ private slots:
 
     /// Red marking of host field if empty and enabled
     void checkEmptyProxyHost();
+
+protected:
+    void showEvent(QShowEvent *event) override;
 
 private:
     void loadProxySettings();

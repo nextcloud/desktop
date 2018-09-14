@@ -14,6 +14,7 @@
  */
 
 #include "account.h"
+#include "config.h"
 #include "configfile.h"
 #include "theme.h"
 
@@ -31,6 +32,7 @@
 
 #include <QtCore>
 #include <QtGui>
+#include <QMessageBox>
 
 #include <stdlib.h>
 
@@ -77,7 +79,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 #endif
     connect(_advancedSetupPage, &OwncloudAdvancedSetupPage::createLocalAndRemoteFolders,
         this, &OwncloudWizard::createLocalAndRemoteFolders);
-    connect(this, &QWizard::customButtonClicked, this, &OwncloudWizard::skipFolderConfiguration);
 
 
     Theme *theme = Theme::instance();
@@ -90,7 +91,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setOption(QWizard::NoCancelButton);
     setTitleFormat(Qt::RichText);
     setSubTitleFormat(Qt::RichText);
-    setButtonText(QWizard::CustomButton1, tr("Skip folders configuration"));
 }
 
 void OwncloudWizard::setAccount(AccountPtr account)
@@ -111,6 +111,16 @@ QString OwncloudWizard::localFolder() const
 QStringList OwncloudWizard::selectiveSyncBlacklist() const
 {
     return _advancedSetupPage->selectiveSyncBlacklist();
+}
+
+bool OwncloudWizard::useVirtualFileSync() const
+{
+    return _advancedSetupPage->useVirtualFileSync();
+}
+
+bool OwncloudWizard::manualFolderConfig() const
+{
+    return _advancedSetupPage->manualFolderConfig();
 }
 
 bool OwncloudWizard::isConfirmBigFolderChecked() const
@@ -200,7 +210,6 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
         done(Accepted);
     }
 
-    setOption(QWizard::HaveCustomButton1, id == WizardCommon::Page_AdvancedSetup);
     if (id == WizardCommon::Page_AdvancedSetup && _credentialsPage == _browserCredsPage) {
         // For OAuth, disable the back button in the Page_AdvancedSetup because we don't want
         // to re-open the browser.
@@ -243,6 +252,27 @@ AbstractCredentials *OwncloudWizard::getCredentials() const
     }
 
     return 0;
+}
+
+void OwncloudWizard::askExperimentalVirtualFilesFeature(const std::function<void(bool enable)> &callback)
+{
+    auto msgBox = new QMessageBox(
+        QMessageBox::Warning,
+        tr("Enable experimental feature?"),
+        tr("When the \"virtual files\" mode is enabled no files will be downloaded initially. "
+           "Instead, a tiny \"%1\" file will be created for each file that exists on the server. "
+           "The contents can be downloaded by running these files or by using their context menu."
+           "\n\n"
+           "This is a new, experimental mode. If you decide to use it, please report any "
+           "issues that come up.")
+            .arg(APPLICATION_DOTVIRTUALFILE_SUFFIX));
+    msgBox->addButton(tr("Enable experimental mode"), QMessageBox::AcceptRole);
+    msgBox->addButton(tr("Stay safe"), QMessageBox::RejectRole);
+    connect(msgBox, &QMessageBox::finished, msgBox, [callback, msgBox](int result) {
+        callback(result == QMessageBox::AcceptRole);
+        msgBox->deleteLater();
+    });
+    msgBox->open();
 }
 
 } // end namespace

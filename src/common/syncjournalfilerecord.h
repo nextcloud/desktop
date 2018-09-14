@@ -45,13 +45,18 @@ public:
         return !_path.isEmpty();
     }
 
-    /** Returns the numeric part of the full id in _fileId.
+    /** Returns a guess for the numeric part of the full id in _fileId.
      *
-     * On the server this is sometimes known as the internal file id.
+     * On the server this is sometimes known as the internal file id, the "fileid" DAV property.
      *
-     * It is used in the construction of private links.
+     * It is used in the fallback construction of private links.
+     *
+     * New code should not use this function: Request the fileid property from the server.
+     * In the future we might store the fileid instead of the id, but the migration is complex
+     * if we don't want to store both.
      */
-    QByteArray numericFileId() const;
+    QByteArray legacyDeriveNumericFileId() const;
+
     QDateTime modDateTime() const { return Utility::qDateTimeFromTime_t(_modtime); }
 
     QByteArray _path;
@@ -109,23 +114,23 @@ public:
     QString _file;
     QString _renameTarget;
 
+    /// The last X-Request-ID of the request that failled
+    QByteArray _requestId;
+
     bool isValid() const;
 };
 
 /** Represents a conflict in the conflicts table.
  *
- * In the following the "conflict file" is the file with the "_conflict-"
- * tag and the base file is the file that its a conflict for. So if
- * a/foo.txt is the base file, its conflict file could be
- * a/foo_conflict-1234.txt.
+ * In the following the "conflict file" is the file that has the conflict
+ * tag in the filename, and the base file is the file that it's a conflict for.
+ * So if "a/foo.txt" is the base file, its conflict file could be
+ * "a/foo (conflicted copy 1234).txt".
  */
 class OCSYNC_EXPORT ConflictRecord
 {
 public:
-    /** Path to the _conflict- file
-     *
-     * So if a/foo.txt has a conflict, this path would point to
-     * a/foo_conflict-1234.txt.
+    /** Path to the file with the conflict tag in the name
      *
      * The path is sync-folder relative.
      */
@@ -145,6 +150,17 @@ public:
      * may not be available and empty
      */
     QByteArray baseEtag;
+
+    /**
+     * The path of the original file at the time the conflict was created
+     *
+     * Note that in nearly all cases one should query the db by baseFileId and
+     * thus retrieve the *current* base path instead!
+     *
+     * maybe be empty if not available
+     */
+    QByteArray initialBasePath;
+
 
     bool isValid() const { return !path.isEmpty(); }
 };

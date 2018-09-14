@@ -210,6 +210,10 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             : QStringList();
     case FolderStatusDelegate::FolderErrorMsg:
         return f->syncResult().errorStrings();
+    case FolderStatusDelegate::FolderInfoMsg:
+        return f->useVirtualFiles()
+            ? QStringList(tr("New files are being created as virtual files."))
+            : QStringList();
     case FolderStatusDelegate::SyncRunning:
         return f->syncResult().status() == SyncResult::SyncRunning;
     case FolderStatusDelegate::HeaderRole:
@@ -245,9 +249,15 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
                 } else if (status == SyncResult::Undefined) {
                     return theme->syncStateIcon(SyncResult::SyncRunning);
                 } else {
-                    // keep the previous icon for the prepare phase.
-                    if (status == SyncResult::Problem) {
-                        return theme->syncStateIcon(SyncResult::Success);
+                    // The "Problem" *result* just means some files weren't
+                    // synced, so we show "Success" in these cases. But we
+                    // do use the "Problem" *icon* for unresolved conflicts.
+                    if (status == SyncResult::Success || status == SyncResult::Problem) {
+                        if (f->syncResult().hasUnresolvedConflicts()) {
+                            return theme->syncStateIcon(SyncResult::Problem);
+                        } else {
+                            return theme->syncStateIcon(SyncResult::Success);
+                        }
                     } else {
                         return theme->syncStateIcon(status);
                     }
@@ -351,6 +361,8 @@ int FolderStatusModel::rowCount(const QModelIndex &parent) const
     }
     auto info = infoForIndex(parent);
     if (!info)
+        return 0;
+    if (info->_folder && info->_folder->useVirtualFiles())
         return 0;
     if (info->hasLabel())
         return 1;
@@ -507,6 +519,9 @@ bool FolderStatusModel::hasChildren(const QModelIndex &parent) const
     if (!info)
         return false;
 
+    if (info->_folder && info->_folder->useVirtualFiles())
+        return false;
+
     if (!info->_fetched)
         return true;
 
@@ -526,10 +541,14 @@ bool FolderStatusModel::canFetchMore(const QModelIndex &parent) const
         return false;
     }
     auto info = infoForIndex(parent);
-    if (!info || info->_fetched || info->_fetching)
+    if (!info || info->_fetched || info->_fetchingJob)
         return false;
     if (info->_hasError) {
         // Keep showing the error to the user, it will be hidden when the account reconnects
+        return false;
+    }
+    if (info->_folder && info->_folder->useVirtualFiles()) {
+        // Selective sync is hidden in that case
         return false;
     }
     return true;
@@ -540,10 +559,9 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
 {
     auto info = infoForIndex(parent);
 
-    if (!info || info->_fetched || info->_fetching)
+    if (!info || info->_fetched || info->_fetchingJob)
         return;
     info->resetSubs(this, parent);
-    info->_fetching = true;
     QString path = info->_folder->remotePath();
     if (info->_path != QLatin1String("/")) {
         if (!path.endsWith(QLatin1Char('/'))) {
@@ -552,6 +570,7 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
         path += info->_path;
     }
     LsColJob *job = new LsColJob(_accountState->account(), path, this);
+    info->_fetchingJob = job;
     job->setProperties(QList<QByteArray>() << "resourcetype"
                                            << "http://owncloud.org/ns:size"
                                            << "http://owncloud.org/ns:permissions");
@@ -596,18 +615,18 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     if (!parentInfo) {
         return;
     }
-    ASSERT(parentInfo->_fetching); // we should only get a result if we were doing a fetch
+    ASSERT(parentInfo->_fetchingJob == job);
     ASSERT(parentInfo->_subs.isEmpty());
 
     if (parentInfo->hasLabel()) {
         beginRemoveRows(idx, 0, 0);
-        parentInfo->_lastErrorString.clear();
         parentInfo->_hasError = false;
         parentInfo->_fetchingLabel = false;
         endRemoveRows();
     }
 
-    parentInfo->_fetching = false;
+    parentInfo->_lastErrorString.clear();
+    parentInfo->_fetchingJob = nullptr;
     parentInfo->_fetched = true;
 
     QUrl url = parentInfo->_folder->remoteUrl();
@@ -734,10 +753,11 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply *r)
     if (parentInfo) {
         qCDebug(lcFolderStatus) << r->errorString();
         parentInfo->_lastErrorString = r->errorString();
+        auto error = r->error();
 
         parentInfo->resetSubs(this, idx);
 
-        if (r->error() == QNetworkReply::ContentNotFoundError) {
+        if (error == QNetworkReply::ContentNotFoundError) {
             parentInfo->_fetched = true;
         } else {
             ASSERT(!parentInfo->hasLabel());
@@ -803,7 +823,7 @@ void FolderStatusModel::slotApplySelectiveSync()
         auto oldBlackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
         if (!ok) {
             qCWarning(lcFolderStatus) << "Could not read selective sync list from db.";
-            return;
+            continue;
         }
         QStringList blackList = createBlackList(&_folders[i], oldBlackList);
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
@@ -836,6 +856,8 @@ void FolderStatusModel::slotApplySelectiveSync()
             foreach (const auto &it, changes) {
                 folder->journalDb()->avoidReadFromDbOnNextSync(it);
             }
+            // Also make sure we see the local file that had been ignored before
+            folder->slotNextSyncFullLocalDiscovery();
             FolderMan::instance()->scheduleFolder(folder);
         }
     }
@@ -873,11 +895,16 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
           << FolderStatusDelegate::WarningCount
           << Qt::ToolTipRole;
 
-    if (progress.status() == ProgressInfo::Discovery
-        && !progress._currentDiscoveredFolder.isEmpty()) {
-        pi->_overallSyncString = tr("Checking for changes in '%1'").arg(progress._currentDiscoveredFolder);
-        emit dataChanged(index(folderIndex), index(folderIndex), roles);
-        return;
+    if (progress.status() == ProgressInfo::Discovery) {
+        if (!progress._currentDiscoveredRemoteFolder.isEmpty()) {
+            pi->_overallSyncString = tr("Checking for changes in remote '%1'").arg(progress._currentDiscoveredRemoteFolder);
+            emit dataChanged(index(folderIndex), index(folderIndex), roles);
+            return;
+        } else if (!progress._currentDiscoveredLocalFolder.isEmpty()) {
+            pi->_overallSyncString = tr("Checking for changes in local '%1'").arg(progress._currentDiscoveredLocalFolder);
+            emit dataChanged(index(folderIndex), index(folderIndex), roles);
+            return;
+        }
     }
 
     if (progress.status() == ProgressInfo::Reconcile) {
@@ -1144,6 +1171,8 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         foreach (const auto &it, undecidedList) {
             folder->journalDb()->avoidReadFromDbOnNextSync(it);
         }
+        // Also make sure we see the local file that had been ignored before
+        folder->slotNextSyncFullLocalDiscovery();
         FolderMan::instance()->scheduleFolder(folder);
     }
 
@@ -1192,7 +1221,7 @@ void FolderStatusModel::slotShowFetchProgress()
         if (it.value().elapsed() > 800) {
             auto idx = it.key();
             auto *info = infoForIndex(idx);
-            if (info && info->_fetching) {
+            if (info && info->_fetchingJob) {
                 bool add = !info->hasLabel();
                 if (add) {
                     beginInsertRows(idx, 0, 0);
@@ -1215,7 +1244,11 @@ bool FolderStatusModel::SubFolderInfo::hasLabel() const
 void FolderStatusModel::SubFolderInfo::resetSubs(FolderStatusModel *model, QModelIndex index)
 {
     _fetched = false;
-    _fetching = false;
+    if (_fetchingJob) {
+        disconnect(_fetchingJob, nullptr, model, nullptr);
+        _fetchingJob->deleteLater();
+        _fetchingJob.clear();
+    }
     if (hasLabel()) {
         model->beginRemoveRows(index, 0, 0);
         _fetchingLabel = false;
