@@ -579,10 +579,6 @@ void PropagateDownloadFile::slotGetFinished()
     GETJob *job = _job;
     ASSERT(job);
 
-    _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    _item->_responseTimeStamp = job->responseTimestamp();
-    _item->_requestId = job->requestId();
-
     SyncFileItem::Status status = job->errorStatus();
 
     // Needed because GETFileZsyncJob may emit finishedSignal without any further network activity
@@ -604,6 +600,10 @@ void PropagateDownloadFile::slotGetFinished()
         done(SyncFileItem::FatalError, tr("Download slot finished, but there was no reply!"));
         return;
     }
+
+    _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    _item->_responseTimeStamp = job->responseTimestamp();
+    _item->_requestId = job->requestId();
 
     QNetworkReply::NetworkError err = job->reply()->error();
     if (err != QNetworkReply::NoError) {
