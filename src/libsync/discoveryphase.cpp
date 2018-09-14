@@ -339,6 +339,7 @@ static void propertyMapToFileStat(const QMap<QString, QString> &map, csync_file_
             // Since QMap is sorted, "share-types" is always after "permissions".
             if (file_stat->remotePerm.isNull()) {
                 qWarning() << "Server returned a share type, but no permissions?";
+                // Empty permissions will cause a sync failure
             } else {
                 // S means shared with me.
                 // But for our purpose, we want to know if the file is shared. It does not matter
@@ -347,7 +348,13 @@ static void propertyMapToFileStat(const QMap<QString, QString> &map, csync_file_
                 file_stat->remotePerm.setPermission(RemotePermissions::IsShared);
             }
         } else if (property == "zsync" && value.toUtf8() == "true") {
-            file_stat->remotePerm.setPermission(RemotePermissions::HasZSyncMetadata);
+            // Since QMap is sorted, "zsync" is always after "permissions".
+            if (file_stat->remotePerm.isNull()) {
+                qWarning() << "Server returned no permissions";
+                // Empty permissions will cause a sync failure
+            } else {
+                file_stat->remotePerm.setPermission(RemotePermissions::HasZSyncMetadata);
+            }
         }
     }
 }
