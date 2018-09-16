@@ -497,6 +497,9 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account)
     if (ConfigFile().showExperimentalOptions()) {
         _virtualFilesCheckBox = new QCheckBox(tr("Use virtual files instead of downloading content immediately (experimental)"));
         connect(_virtualFilesCheckBox, &QCheckBox::clicked, this, &FolderWizardSelectiveSync::virtualFilesCheckboxClicked);
+        connect(_virtualFilesCheckBox, &QCheckBox::stateChanged, this, [this](int state) {
+            _selectiveSync->setEnabled(state == Qt::Unchecked);
+        });
         layout->addWidget(_virtualFilesCheckBox);
     }
 }
@@ -523,8 +526,9 @@ void FolderWizardSelectiveSync::initializePage()
 
 bool FolderWizardSelectiveSync::validatePage()
 {
-    wizard()->setProperty("selectiveSyncBlackList", QVariant(_selectiveSync->createBlackList()));
-    wizard()->setProperty("useVirtualFiles", QVariant(_virtualFilesCheckBox && _virtualFilesCheckBox->isChecked()));
+    bool useVirtualFiles = _virtualFilesCheckBox && _virtualFilesCheckBox->isChecked();
+    wizard()->setProperty("selectiveSyncBlackList", useVirtualFiles ? QVariant() : QVariant(_selectiveSync->createBlackList()));
+    wizard()->setProperty("useVirtualFiles", QVariant(useVirtualFiles));
     return true;
 }
 
