@@ -201,3 +201,4 @@ X-GNOME-Autostart-Delay=3
 Comment[es]=Cliente de sincronización de escritorio @APPLICATION_NAME@
 Name[es]=Cliente de sincronización de escritorio @APPLICATION_NAME@
 GenericName[es]=Sincronización de carpetas
+Icon[es]=@APPLICATION_ICON_NAME@
