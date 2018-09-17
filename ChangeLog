@@ -1,7 +1,7 @@
 ChangeLog
 =========
 
-version 2.5.0 (2018-08-xx)
+version 2.5.0 (2018-09-18)
 * Local discovery: Speed up by skipping directories without changes reported by the file system watcher.
 * Windows: Add sync folders to Explorer's navigation pane (#5295)
 * Experimental option to create virtual files and download contents on demand ("placeholders")
