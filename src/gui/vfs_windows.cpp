@@ -2605,7 +2605,7 @@ void Vfs_windows::downDrive(WCHAR DriveLetter)
 
 void Vfs_windows::upDrive(QString p, QString l)
 {
-qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " INIT ::upDrive";
+qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " INIT ::upDrive rootDirectory: " << p << " letter: " << l;
 
 		wcscpy((WCHAR*)(RootDirectory), p.toStdWString().c_str());
 		wcscpy((WCHAR*)(MountPoint), l.toStdWString().c_str());

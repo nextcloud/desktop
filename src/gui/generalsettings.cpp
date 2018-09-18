@@ -174,6 +174,11 @@ void GeneralSettings::slotToggleOptionalServerNotifications(bool enable)
     cfgFile.setOptionalServerNotifications(enable);
 
 #ifdef Q_OS_WIN
+//< Set configuration paths.
+    QDir dsrt = QDir::home();
+    QString wwr = dsrt.absolutePath();
+    wwr.append("/dirUser_clientLaboratory");
+    
 	QString m_defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
 	QString m_defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
 	QString m_defaultFileStreamLetterDrive = cfgFile.defaultFileStreamLetterDrive();

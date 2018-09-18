@@ -52,7 +52,10 @@
 
 #include <QClipboard>
 
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QStandardPaths>
+#endif
 
 
 // This is the version that is returned when the client asks for the VERSION.
@@ -87,7 +90,6 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcSocketApi, "gui.socketapi", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPublicLink, "gui.socketapi.publiclink", QtInfoMsg)
-
 
 class BloomFilter
 {
@@ -193,7 +195,16 @@ SocketApi::SocketApi(QObject *parent)
 #endif
     } else if (Utility::isLinux() || Utility::isBSD()) {
         QString runtimeDir;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
         runtimeDir = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
+#else
+        runtimeDir = QFile::decodeName(qgetenv("XDG_RUNTIME_DIR"));
+        if (runtimeDir.isEmpty()) {
+            runtimeDir = QDir::tempPath() + QLatin1String("/runtime-")
+                + QString::fromLocal8Bit(qgetenv("USER"));
+            QDir().mkdir(runtimeDir);
+        }
+#endif
         socketPath = runtimeDir + "/" + Theme::instance()->appName() + "/socket";
     } else {
         qCWarning(lcSocketApi) << "An unexpected system detected, this probably won't work.";
@@ -424,12 +435,17 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argument, SocketList
         // this can happen in offline mode e.g.: nothing to worry about
         statusString = QLatin1String("NOP");
     } else {
+		QString systemPath = QDir::cleanPath(argument);
+        if (systemPath.endsWith(QLatin1Char('/'))) {
+            systemPath.truncate(systemPath.length() - 1);
+            qCWarning(lcSocketApi) << "Removed trailing slash for directory: " << systemPath << "Status pushes won't have one.";
+        }
         // The user probably visited this directory in the file shell.
         // Let the listener know that it should now send status pushes for sibblings of this file.
-        QString directory = fileData.localPath.left(fileData.localPath.lastIndexOf('/'));
+		QString directory = fileData.localPath.left(fileData.localPath.lastIndexOf('/'));
         listener->registerMonitoredDirectory(qHash(directory));
 
-        SyncFileStatus fileStatus = fileData.syncFileStatus();
+		SyncFileStatus fileStatus = fileData.syncFileStatus();
         statusString = fileStatus.toSocketAPIString();
     }
 
@@ -452,9 +468,62 @@ void SocketApi::command_VERSION(const QString &, SocketListener *listener)
     listener->sendMessage(QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
 }
 
+void SocketApi::command_SHARE_STATUS(const QString &localFile, SocketListener *listener)
+{
+    Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
+
+    if (!shareFolder) {
+        const QString message = QLatin1String("SHARE_STATUS:NOP:") + QDir::toNativeSeparators(localFile);
+        listener->sendMessage(message);
+    } else {
+        const QString file = QDir::cleanPath(localFile).mid(shareFolder->cleanPath().length() + 1);
+        SyncFileStatus fileStatus = shareFolder->syncEngine().syncFileStatusTracker().fileStatus(file);
+
+        // Verify the file is on the server (to our knowledge of course)
+        if (fileStatus.tag() != SyncFileStatus::StatusUpToDate) {
+            const QString message = QLatin1String("SHARE_STATUS:NOTSYNCED:") + QDir::toNativeSeparators(localFile);
+            listener->sendMessage(message);
+            return;
+        }
+
+        const Capabilities capabilities = shareFolder->accountState()->account()->capabilities();
+
+        if (!capabilities.shareAPI()) {
+            const QString message = QLatin1String("SHARE_STATUS:DISABLED:") + QDir::toNativeSeparators(localFile);
+            listener->sendMessage(message);
+        } else {
+            auto theme = Theme::instance();
+            QString available;
+
+            if (theme->userGroupSharing()) {
+                available = "USER,GROUP";
+            }
+
+            if (theme->linkSharing() && capabilities.sharePublicLink()) {
+                if (available.isEmpty()) {
+                    available = "LINK";
+                } else {
+                    available += ",LINK";
+                }
+            }
+
+            if (available.isEmpty()) {
+                const QString message = QLatin1String("SHARE_STATUS:DISABLED") + ":" + QDir::toNativeSeparators(localFile);
+                listener->sendMessage(message);
+            } else {
+                const QString message = QLatin1String("SHARE_STATUS:") + available + ":" + QDir::toNativeSeparators(localFile);
+                listener->sendMessage(message);
+            }
+        }
+    }
+}
+
 void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketListener *listener)
 {
     listener->sendMessage(QLatin1String("SHARE_MENU_TITLE:") + tr("Share with %1", "parameter is ownCloud").arg(Theme::instance()->appNameGUI()));
+    listener->sendMessage(QLatin1String("STREAM_SUBMENU_TITLE:") + tr("Claro drive File Stream"));
+    listener->sendMessage(QLatin1String("STREAM_OFFLINE_ITEM_TITLE:") + tr("0ff line"));
+    listener->sendMessage(QLatin1String("STREAM_ONLINE_ITEM_TITLE:") + tr("On line"));
 }
 
 // don't pull the share manager into socketapi unittests
@@ -732,6 +801,98 @@ QString SocketApi::buildRegisterPathMessage(const QString &path)
     return message;
 }
 
+void SocketApi::command_SET_DOWNLOAD_MODE(const QString& argument, SocketListener* listener)
+{
+    qDebug() << Q_FUNC_INFO << " argument: " << argument;
+
+    #if defined(Q_OS_WIN)
+        //< Parser on type string: (for get path and type: 0 or 1).
+        //< "C:\\Users\\USERNAME\\DIR_LOCAL\\Mi unidad\\Mi unidad\\b6.txt|1"
+        std::string m_alias = argument.toLocal8Bit().constData();
+        char *pc = (char*)m_alias.c_str();
+
+        while (*pc != NULL)
+            pc++;
+        pc--;
+        char *pq = pc;
+        char *pw = pq -= 2;
+        pq = (char*)m_alias.c_str();
+        char QQ[300]; int l = 0;
+        while (pq != pw)
+            {
+            if (l < 300) {
+                QQ[l++] = *pq;
+            }
+            else
+                {
+                qDebug() << "\n" << Q_FUNC_INFO << " QQ is very small for enter value";
+                break;
+                }
+            pq++;
+            }
+
+        QQ[l]   = *pq;
+        QQ[l+1] = 0;
+
+        QString path = QString(QQ);
+
+        qDebug() << "\n" << Q_FUNC_INFO << " QQ==" <<QQ<< "==";
+
+            if (*pc == '0')     //< OffLine
+            {
+        qDebug() << "\n" << Q_FUNC_INFO << " *pc is 0";
+            SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_OFFLINE);
+
+            //< Example
+            SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+            SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
+            }
+            else if (*pc == '1')    //< Online
+            {
+        qDebug() << "\n" << Q_FUNC_INFO << " *pc is 1";
+            SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_ONLINE);
+
+            //< Example
+            SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+            SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
+            }
+#endif
+
+    qDebug() << "\n" << Q_FUNC_INFO << " Show paths BD INIT";
+
+        //< Show paths SyncMode table.
+        QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
+            QString item;
+            foreach(item, list)
+                {
+
+                SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
+
+                if(m == SyncJournalDb::SYNCMODE_ONLINE) 
+                    qDebug() << Q_FUNC_INFO << " :::BD " << item << " ONLINE";
+    
+                if(m == SyncJournalDb::SYNCMODE_OFFLINE) 
+                    qDebug() << Q_FUNC_INFO << " :::BD " << item << " OFFLINE";
+                }
+
+    qDebug() << "\n" << Q_FUNC_INFO << " Show paths BD END";
+
+    }
+
+void SocketApi::command_GET_DOWNLOAD_MODE(const QString& localFile, SocketListener* listener)
+    {
+        //< TODO: Check the download mode (online or offline)
+
+        //< The code below is just to check that the context menu dynamically loads the check
+        QString downloadMode;
+        time_t seconds;
+        seconds = time(NULL);
+        if (seconds % 2 == 0)
+            downloadMode = "ONLINE";
+        else
+            downloadMode = "OFFLINE";
+        listener->sendMessage(QLatin1String("GET_DOWNLOAD_MODE:") + downloadMode);
+    }
 } // namespace OCC
 
 #include "socketapi.moc"
