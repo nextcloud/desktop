@@ -59,6 +59,7 @@ public slots:
 
 signals:
     void shareCommandReceived(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage);
+	void shareUserGroupCommandReceived(const QString &sharePath, const QString &localPath, bool resharingAllowed);
 
 private slots:
     void slotNewConnection();
@@ -96,7 +97,7 @@ private:
 
     Q_INVOKABLE void command_VERSION(const QString &argument, SocketListener *listener);
 
-    Q_INVOKABLE void command_SHARE_STATUS(const QString& localFile, SocketListener* listener);
+    Q_INVOKABLE void command_SHARE_STATUS(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString &argument, SocketListener *listener);
 
     Q_INVOKABLE void command_SET_DOWNLOAD_MODE(const QString& argument, SocketListener* listener);
