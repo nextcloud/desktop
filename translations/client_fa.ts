@@ -154,8 +154,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="247"/>
-        <location filename="../src/gui/accountsettings.cpp" line="453"/>
-        <location filename="../src/gui/accountsettings.cpp" line="863"/>
+        <location filename="../src/gui/accountsettings.cpp" line="454"/>
+        <location filename="../src/gui/accountsettings.cpp" line="867"/>
         <source>Cancel</source>
         <translation>منصرف شدن</translation>
     </message>
@@ -205,112 +205,112 @@
         <translation>حذف اتصال همگام سازی پوشه </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="391"/>
+        <location filename="../src/gui/accountsettings.cpp" line="392"/>
         <source>Folder creation failed</source>
         <translation>ساخت پوشه ناموفق</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="392"/>
+        <location filename="../src/gui/accountsettings.cpp" line="393"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;ناتوانی در ساخت پوشه محلی &lt;i&gt;1%&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="445"/>
+        <location filename="../src/gui/accountsettings.cpp" line="446"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>تأیید حذف اتصال همگام سازی پوشه</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="452"/>
+        <location filename="../src/gui/accountsettings.cpp" line="453"/>
         <source>Remove Folder Sync Connection</source>
         <translation>حذف اتصال همگام سازی پوشه</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="534"/>
+        <location filename="../src/gui/accountsettings.cpp" line="535"/>
         <source>Sync Running</source>
         <translation>همگام سازی در حال اجراست</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="535"/>
+        <location filename="../src/gui/accountsettings.cpp" line="536"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>عملیات همگام سازی در حال اجراست.&lt;br/&gt;آیا دوست دارید آن را متوقف کنید؟</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="625"/>
+        <location filename="../src/gui/accountsettings.cpp" line="629"/>
         <source>%1 in use</source>
         <translation>1% در استفاده</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="652"/>
+        <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>1% به عنوان &lt;i&gt;2%&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="660"/>
+        <location filename="../src/gui/accountsettings.cpp" line="664"/>
         <source>Connected to %1.</source>
         <translation>متصل به %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="662"/>
+        <location filename="../src/gui/accountsettings.cpp" line="666"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>سرور %1 بصورت موقت خارج از دسترس است.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="664"/>
+        <location filename="../src/gui/accountsettings.cpp" line="668"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>سرور 1% اکنون در حالت تعمیر است.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="666"/>
+        <location filename="../src/gui/accountsettings.cpp" line="670"/>
         <source>Signed out from %1.</source>
         <translation>از 1% خارج شد.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="675"/>
+        <location filename="../src/gui/accountsettings.cpp" line="679"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
         <translation>دریافت مجوز از مرورگر. &lt;a href=&apos;%1&apos;&gt;اینجا کلیک کنید&lt;/a&gt; تا مرورگر دوباره باز شود.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="679"/>
+        <location filename="../src/gui/accountsettings.cpp" line="683"/>
         <source>Connecting to %1...</source>
         <translation>اتصال به %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="682"/>
+        <location filename="../src/gui/accountsettings.cpp" line="686"/>
         <source>No connection to %1 at %2.</source>
         <translation>اتصال به 1% در 2% وجود ندارد.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="711"/>
+        <location filename="../src/gui/accountsettings.cpp" line="715"/>
         <source>Log in</source>
         <translation>ورود</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="806"/>
+        <location filename="../src/gui/accountsettings.cpp" line="810"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>پوشه‌هایی وجود دارند که همگام سازی نشده اند زیرا آن ها بسیار بزرگ هستند:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="808"/>
+        <location filename="../src/gui/accountsettings.cpp" line="812"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>پوشه‌هایی وجود دارند که همگام سازی نشده اند زیرا آن ها مخازن خارجی هستند:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="809"/>
+        <location filename="../src/gui/accountsettings.cpp" line="813"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>پوشه‌هایی وجود دارند که همگام سازی نشده اند زیرا آن ها بسیار بزرگ یا مخازن خارجی هستند:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="855"/>
+        <location filename="../src/gui/accountsettings.cpp" line="859"/>
         <source>Confirm Account Removal</source>
         <translation>تائید حذف حساب‌کاربری</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="856"/>
+        <location filename="../src/gui/accountsettings.cpp" line="860"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;آیا شما واقعا می خواهید اتصال به حساب &lt;i&gt;1%&lt;/i&gt;را  حذف کنید؟&lt;/p&gt; &lt;p&gt;&lt;b&gt;توجه:&lt;/b&gt; این هیچ فایلی را حذف نخواهد کرد.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="862"/>
+        <location filename="../src/gui/accountsettings.cpp" line="866"/>
         <source>Remove connection</source>
         <translation>حذف ارتباط</translation>
     </message>
@@ -322,7 +322,7 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="199"/>
-        <location filename="../src/gui/accountsettings.cpp" line="713"/>
+        <location filename="../src/gui/accountsettings.cpp" line="717"/>
         <source>Log out</source>
         <translation>خروج</translation>
     </message>
@@ -337,32 +337,32 @@
         <translation>توقف به‌هنگام‌سازی </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="446"/>
+        <location filename="../src/gui/accountsettings.cpp" line="447"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;آیا شما واقعا می خواهید همگام سازی پوشه &lt;i&gt;1%&lt;/i&gt; را متوقف نمایید؟&lt;/p&gt;&lt;p&gt;&lt;b&gt;توجه:&lt;/b&gt;این هیچ فایلی را حذف &lt;b&gt;نخواهد&lt;/b&gt; کرد. &lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="612"/>
+        <location filename="../src/gui/accountsettings.cpp" line="616"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>1% (%3%) از 2% در استفاده. برخی پوشه‌ها، شامل شبکه نصب شده یا پوشه های مشترک، ممکن است محدودیت های متفاوت داشته باشند.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="613"/>
+        <location filename="../src/gui/accountsettings.cpp" line="617"/>
         <source>%1 of %2 in use</source>
         <translation>1% از 2% در استفاده</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="622"/>
+        <location filename="../src/gui/accountsettings.cpp" line="626"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>در حال حاضر هیچ اطلاعات کاربرد ذخیره سازی در دسترس نیست.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="658"/>
+        <location filename="../src/gui/accountsettings.cpp" line="662"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="688"/>
+        <location filename="../src/gui/accountsettings.cpp" line="692"/>
         <source>No %1 connection configured.</source>
         <translation>بدون %1 اتصال پیکربندی شده.</translation>
     </message>
@@ -418,12 +418,12 @@
 <context>
     <name>OCC::ActivityItemDelegate</name>
     <message>
-        <location filename="../src/gui/activityitemdelegate.cpp" line="145"/>
+        <location filename="../src/gui/activityitemdelegate.cpp" line="140"/>
         <source>%1 on %2</source>
         <translation>1% روی 2%</translation>
     </message>
     <message>
-        <location filename="../src/gui/activityitemdelegate.cpp" line="147"/>
+        <location filename="../src/gui/activityitemdelegate.cpp" line="142"/>
         <source>%1 on %2 (disconnected)</source>
         <translation>1% روی 2% (قطع شده)</translation>
     </message>
@@ -431,44 +431,44 @@
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="520"/>
-        <location filename="../src/gui/activitywidget.cpp" line="568"/>
+        <location filename="../src/gui/activitywidget.cpp" line="515"/>
+        <location filename="../src/gui/activitywidget.cpp" line="563"/>
         <source>Server Activity</source>
         <translation>فعالیت سرور</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="527"/>
+        <location filename="../src/gui/activitywidget.cpp" line="522"/>
         <source>Sync Protocol</source>
         <translation>پروتکل همگام سازی</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="576"/>
+        <location filename="../src/gui/activitywidget.cpp" line="571"/>
         <source>Not Synced</source>
         <translation>همگام سازی نشده</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="579"/>
+        <location filename="../src/gui/activitywidget.cpp" line="574"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
         <translation>همگام سازی نشده (1%)</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="611"/>
+        <location filename="../src/gui/activitywidget.cpp" line="606"/>
         <source>The server activity list has been copied to the clipboard.</source>
         <translation>لیست فعالیت سرور در کلیپ بورد کپی شده است.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="615"/>
+        <location filename="../src/gui/activitywidget.cpp" line="610"/>
         <source>The sync activity list has been copied to the clipboard.</source>
         <translation>لیست فعالیت همگام سازی در کلیپ بورد کپی شده است.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="618"/>
+        <location filename="../src/gui/activitywidget.cpp" line="613"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
         <translation>لیست موارد همگام سازی نشده در کلیپ بورد کپی شده است.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="623"/>
+        <location filename="../src/gui/activitywidget.cpp" line="618"/>
         <source>Copied to clipboard</source>
         <translation>کپی به کلیپ بورد</translation>
     </message>
@@ -513,22 +513,22 @@
         <translation>&lt;br/&gt;فعالیت های حساب 1%  فعال نیست.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="354"/>
+        <location filename="../src/gui/activitywidget.cpp" line="349"/>
         <source>You received %n new notification(s) from %2.</source>
         <translation><numerusform>شما n% هشدار جدید از 2% دریافت کردید.</numerusform><numerusform>شما n% هشدار جدید از 2% دریافت کردید.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/activitywidget.cpp" line="361"/>
+        <location filename="../src/gui/activitywidget.cpp" line="356"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
         <translation><numerusform>شما n% هشدار جدید از 1% و 2% دریافت کردید.</numerusform><numerusform>شما n% هشدار جدید از 1% و 2% دریافت کردید.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="363"/>
+        <location filename="../src/gui/activitywidget.cpp" line="358"/>
         <source>You received new notifications from %1, %2 and other accounts.</source>
         <translation>شما هشدارهای جدیدی از 1%، 2% و سایر حساب ها دریافت کردید.</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="367"/>
+        <location filename="../src/gui/activitywidget.cpp" line="362"/>
         <source>%1 Notifications - Action Required</source>
         <translation>1% هشدارها - عمل لازم</translation>
     </message>
@@ -1691,27 +1691,27 @@ Logs will be written to %1</source>
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="359"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="367"/>
         <source>New Version Available</source>
         <translation>نسخه جدید در دسترس است</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="365"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="373"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;یک نسخه جدید از مشتری 1% در دسترس است.&lt;/p&gt; &lt;p&gt;&lt;b&gt;2% &lt;/b&gt; برای دانلود در دسترس است. نسخه نصب شده 3% است. &lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="379"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="387"/>
         <source>Skip this version</source>
         <translation>نادیده گرفتن این نسخه</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="380"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="388"/>
         <source>Skip this time</source>
         <translation>نادیده گرفتن این زمان</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="381"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="389"/>
         <source>Get update</source>
         <translation>به دست آوردن به روز رسانی</translation>
     </message>

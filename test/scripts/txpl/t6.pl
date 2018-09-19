@@ -127,7 +127,7 @@ my $secondETag = getETagFromJournal('BIG3.file', 'Second');
 my $seen = 0;
 opendir(my $dh, localDir() );
 while(readdir $dh) {
-  $seen = 1 if ( /BIG3_conflict.*\.file/ );
+  $seen = 1 if ( /BIG3.*conflicted copy.*\.file/ );
 }
 closedir $dh;
 assert( $seen == 1, "No conflict file created on precondition failed!" );
