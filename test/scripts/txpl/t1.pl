@@ -156,8 +156,8 @@ my $localMD5 = md5OfFile( localDir().'remoteToLocal1/kernelcrash.txt' );
 my $realMD5 = md5OfFile( '/tmp/kernelcrash.txt' );
 print "MD5 compare $localMD5 <-> $realMD5\n";
 assert( $localMD5 eq $realMD5 );
-assert(  glob(localDir().'remoteToLocal1/kernelcrash_conflict-*.txt' ) );
-system("rm " . localDir().'remoteToLocal1/kernelcrash_conflict-*.txt' );
+assert(  glob(localDir().'remoteToLocal1/kernelcrash*conflicted*copy*.txt' ) );
+system("rm " . localDir().'remoteToLocal1/kernelcrash*conflicted*copy*.txt' );
 
 
 # prepare test for issue 1329, rtlX need to be modified

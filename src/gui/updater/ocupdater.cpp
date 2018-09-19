@@ -298,11 +298,19 @@ void NSISUpdater::slotDownloadFinished()
 
     QUrl url(reply->url());
     _file->close();
+
+    ConfigFile cfg;
+    QSettings settings(cfg.configFile(), QSettings::IniFormat);
+
+    // remove previously downloaded but not used installer
+    QFile oldTargetFile(settings.value(updateAvailableC).toString());
+    if (oldTargetFile.exists()) {
+        oldTargetFile.remove();
+    }
+
     QFile::copy(_file->fileName(), _targetFile);
     setDownloadState(DownloadComplete);
     qCInfo(lcUpdater) << "Downloaded" << url.toString() << "to" << _targetFile;
-    ConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
     settings.setValue(updateTargetVersionC, updateInfo().version());
     settings.setValue(updateAvailableC, _targetFile);
 }
