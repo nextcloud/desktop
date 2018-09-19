@@ -41,6 +41,10 @@ extern "C" {
 #include <QDir>
 #include <QTemporaryDir>
 
+#if defined(Q_CC_MSVC)
+#include <io.h>  // for dup
+#endif
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcZsyncSeed, "sync.propagate.zsync.seed", QtInfoMsg)
