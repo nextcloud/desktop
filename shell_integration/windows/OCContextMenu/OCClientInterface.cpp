@@ -32,7 +32,6 @@
 using namespace std;
 
 #define PIPE_TIMEOUT  5*1000 //ms
-#define SOCK_BUFFER 4096
 
 OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstring &files)
 {
@@ -92,9 +91,5 @@ void OCClientInterface::SendRequest(const wchar_t *verb, const std::wstring &pat
         return;
     }
 
-    wchar_t msg[SOCK_BUFFER] = { 0 };
-    if (SUCCEEDED(StringCchPrintf(msg, SOCK_BUFFER, L"%s:%s\n", verb, path.c_str())))
-    {
-        socket.SendMsg(msg);
-    }
+    socket.SendMsg((verb + (L":" + path + L"\n")).data());
 }
