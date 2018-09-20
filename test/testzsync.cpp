@@ -114,7 +114,7 @@ private slots:
                 }
 
                 auto reply = new FakeGetWithDataReply{ fakeFolder.remoteModifier(), data, op, request, this };
-                transferedData += reply->size;
+                transferedData += reply->payload.size();
                 return reply;
             }
 

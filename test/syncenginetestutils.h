@@ -651,8 +651,7 @@ class FakeGetWithDataReply : public QNetworkReply
     Q_OBJECT
 public:
     const FileInfo *fileInfo;
-    const char *payload;
-    quint64 size;
+    QByteArray payload;
     quint64 offset = 0;
     bool aborted = false;
 
@@ -665,8 +664,7 @@ public:
         open(QIODevice::ReadOnly);
 
         Q_ASSERT(!data.isEmpty());
-        payload = data.data();
-        size = data.length();
+        payload = data;
         QString fileName = getFilePathFromUrl(request.url());
         Q_ASSERT(!fileName.isEmpty());
         fileInfo = remoteRootFileInfo.find(fileName);
@@ -678,8 +676,7 @@ public:
             const char *r = range.constData();
             int res = sscanf(r, "bytes=%llu-%llu", &start, &end);
             if (res == 2) {
-                payload += start;
-                size = end - start + 1;
+                payload = payload.mid(start, end - start + 1);
             }
         }
     }
@@ -692,7 +689,7 @@ public:
             emit finished();
             return;
         }
-        setHeader(QNetworkRequest::ContentLengthHeader, size);
+        setHeader(QNetworkRequest::ContentLengthHeader, payload.size());
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
         setRawHeader("OC-ETag", fileInfo->etag.toLatin1());
         setRawHeader("ETag", fileInfo->etag.toLatin1());
@@ -712,14 +709,13 @@ public:
     {
         if (aborted)
             return 0;
-        return size + QIODevice::bytesAvailable();
+        return payload.size() - offset + QIODevice::bytesAvailable();
     }
 
     qint64 readData(char *data, qint64 maxlen) override
     {
-        qint64 len = std::min(size, quint64(maxlen));
-        std::memcpy(data, payload + offset, len);
-        size -= len;
+        qint64 len = std::min(payload.size() - offset, quint64(maxlen));
+        std::memcpy(data, payload.constData() + offset, len);
         offset += len;
         return len;
     }
