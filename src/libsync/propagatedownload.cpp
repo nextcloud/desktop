@@ -881,6 +881,7 @@ void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumTy
 
 void PropagateDownloadFile::downloadFinished()
 {
+    ASSERT(!_tmpFile.isOpen());
     QString fn = propagator()->getFilePath(_item->_file);
 
     // In case of file name clash, report an error

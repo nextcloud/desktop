@@ -129,6 +129,8 @@ bool GETFileZsyncJob::finished()
     }
 
     if (!_hasEmittedFinishedSignal) {
+        _zr.reset();
+        _zs.reset(); // ensure the file is closed.
         emit finishedSignal();
     }
 
@@ -179,6 +181,8 @@ void GETFileZsyncJob::seedFinished(void *zs)
     if (_nrange == 0 && _item->_size == quint64(zsync_file_length(_zs.get()))) {
         _propagator->reportFileTotal(*_item, 0);
         _errorStatus = SyncFileItem::Success;
+        _zr.reset();
+        _zs.reset(); // ensure the file is closed.
         emit finishedSignal();
         return;
     }
