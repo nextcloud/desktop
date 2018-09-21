@@ -2,4 +2,5 @@ name: client
 title: Desktop Client
 version: master
 
-nav: []
+nav:
+- modules/ROOT/nav.adoc
