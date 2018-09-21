@@ -97,15 +97,6 @@ void ZsyncSeedRunnable::run()
     zsyncControlFile.close();
     rewind(f.get());
 
-    zsync_unique_ptr<struct zsync_state> zs(zsync_parse(f.get()), [](struct zsync_state *zs) {
-        zsync_end(zs);
-    });
-    if (!zs) {
-        QString errorString = tr("Unable to parse zsync file.");
-        emit failedSignal(errorString);
-        return;
-    }
-
     QByteArray tmp_file;
     if (!_tmpFilePath.isEmpty()) {
         tmp_file = _tmpFilePath.toLocal8Bit();
@@ -117,14 +108,11 @@ void ZsyncSeedRunnable::run()
     }
 
     const char *tfname = tmp_file;
-    if (zsync_rename_file(zs.get(), tfname) != 0) {
-        QString errorString = tr("Unable to rename temporary file.");
-        emit failedSignal(errorString);
-        return;
-    }
 
-    if (zsync_begin(zs.get(), f.get())) {
-        QString errorString = tr("Unable to begin zsync.");
+    zsync_unique_ptr<struct zsync_state> zs(zsync_begin(f.get(), tfname),
+        [](struct zsync_state *zs) { zsync_end(zs); });
+    if (!zs) {
+        QString errorString = tr("Unable to parse zsync file.");
         emit failedSignal(errorString);
         return;
     }
