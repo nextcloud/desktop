@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;Izberi ...</translation>
+        <translation>&amp;Izbor ...</translation>
     </message>
 </context>
 <context>
@@ -1963,7 +1963,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>The server reported the following error:</source>
-        <translation type="unfinished"/>
+        <translation>Strežnik je vrnil napako:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2770,7 +2770,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
         <source>Delete link share</source>
-        <translation type="unfinished"/>
+        <translation>Izbriši povezavo za souporabo</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="459"/>

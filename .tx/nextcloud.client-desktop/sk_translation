@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Comment[de_DE]=@APPLICATION_NAME@ Client zur Desktop-Synchronisation
-Name[de_DE]=@APPLICATION_NAME@ Client zur Desktop-Synchronisation
-GenericName[de_DE]=Synchronisationsordner
-Icon[de_DE]=@APPLICATION_ICON_NAME@
+Comment[sk_SK]=@APPLICATION_NAME@ Synchronizačný klient pre PC
+Name[sk_SK]=@APPLICATION_NAME@ Synchronizačný klient pre PC
+GenericName[sk_SK]=Synchnonizácia priečinka
+Icon[sk_SK]=@APPLICATION_ICON_NAME@
