@@ -893,7 +893,12 @@ public:
         QString fileName = getFilePathFromUrl(QUrl::fromEncoded(request.rawHeader("Destination")));
         Q_ASSERT(!fileName.isEmpty());
 
-        Q_ASSERT((fileInfo = remoteRootFileInfo.find(fileName)));
+        fileInfo = remoteRootFileInfo.find(fileName);
+        Q_ASSERT(fileInfo);
+        if (!fileInfo) {
+            abort();
+            return;
+        }
 
         QVERIFY(request.hasRawHeader("If")); // The client should put this header
         if (request.rawHeader("If") != QByteArray("<" + request.rawHeader("Destination") + "> ([\"" + fileInfo->etag.toLatin1() + "\"])")) {
@@ -901,10 +906,6 @@ public:
             return;
         }
 
-        if (!fileInfo) {
-            abort();
-            return;
-        }
         fileInfo->lastModified = OCC::Utility::qDateTimeFromTime_t(request.rawHeader("X-OC-Mtime").toLongLong());
         remoteRootFileInfo.find(fileName, /*invalidate_etags=*/true);
 
