@@ -1097,7 +1097,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
         <source>Add Folder Sync Connection</source>
-        <translation>Přidat synchronizaci adresáře</translation>
+        <translation>Přidat připojení pro synchronizaci složky</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="550"/>
@@ -1110,12 +1110,12 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="67"/>
         <source>Click to select a local folder to sync.</source>
-        <translation>Kliknutím zvolíte místní adresář k synchronizaci.</translation>
+        <translation>Kliknutím zvolíte místní složku k synchronizaci.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="72"/>
         <source>Enter the path to the local folder.</source>
-        <translation>Zadejte cestu k místnímu adresáři.</translation>
+        <translation>Zadejte popis umístění místní složky.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="133"/>
@@ -1133,7 +1133,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="182"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation>Zadejte název nově vytvářeného adresáře níže &apos;%1&apos;:</translation>
+        <translation>Níže zadejte název pro nově vytvářenou složku „%1“:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="212"/>
@@ -1143,7 +1143,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="223"/>
         <source>Authentication failed accessing %1</source>
-        <translation>Ověření selhalo při připojení %1</translation>
+        <translation>Chyba ověření při přístupu k %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="225"/>
@@ -1168,7 +1168,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="447"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Již synchronizujete adresář &lt;i&gt;%1&lt;/i&gt;, který je adresáři &lt;i&gt;%2&lt;/i&gt; nadřazený.</translation>
+        <translation>Už synchronizujete složku &lt;i&gt;%1&lt;/i&gt;, ve které se složka &lt;i&gt;%2&lt;/i&gt; nachází.</translation>
     </message>
 </context>
 <context>
@@ -1194,17 +1194,17 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="190"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Obdrželi jsme jiný E-Tag pro pokračování. Zkusím znovu příště.</translation>
+        <translation>Při navazování byl obdržen jiný E-Tag. Bude vyzkoušeno příště.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="217"/>
         <source>Server returned wrong content-range</source>
-        <translation>Server odpověděl chybným rozsahem obsahu</translation>
+        <translation>Server vrátil chybný rozsah obsahu</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="330"/>
         <source>Connection Timeout</source>
-        <translation>Čas spojení vypršel</translation>
+        <translation>Časový limit pro spojení překročen</translation>
     </message>
 </context>
 <context>
@@ -1222,7 +1222,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/generalsettings.ui" line="40"/>
         <source>For System Tray</source>
-        <translation>Pro systémovou lištu</translation>
+        <translation>Pro oznamovací oblast systémového panelu</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="139"/>
@@ -1243,7 +1243,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/generalsettings.ui" line="215"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation>Zeptat se na potvrzení před synchronizací externích úlošišť</translation>
+        <translation>Zeptat se na potvrzení před synchronizací externích úložišť</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
@@ -1284,7 +1284,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/generalsettings.ui" line="100"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Restart &amp;&amp; aktualizace</translation>
+        <translation>&amp;Restartovat a aktualizovat</translation>
     </message>
 </context>
 <context>
@@ -1315,7 +1315,7 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation>Editor ignorovaných souborů</translation>
+        <translation>Editor seznamu ignorovaných souborů</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
