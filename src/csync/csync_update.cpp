@@ -324,10 +324,15 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
           fs->instruction = CSYNC_INSTRUCTION_NEW;
 
           bool isRename =
-              base.isValid() && base._type == fs->type
-                  && ((base._modtime == fs->modtime && base._fileSize == fs->size) || fs->type == ItemTypeDirectory)
+              base.isValid()
+              && (base._type == fs->type
+                     // The file could be scheduled for download and renamed
+                     || (base._type == ItemTypeVirtualFileDownload && fs->type == ItemTypeVirtualFile))
+              && ((base._modtime == fs->modtime && base._fileSize == fs->size)
+                     // Directories and virtual files don't need size/mtime equality
+                     || fs->type == ItemTypeDirectory || fs->type == ItemTypeVirtualFile)
 #ifdef NO_RENAME_EXTENSION
-                  && _csync_sameextension(base._path, fs->path)
+              && _csync_sameextension(base._path, fs->path)
 #endif
               ;
 
@@ -351,7 +356,52 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
               if (fs->type == ItemTypeDirectory) {
                   csync_rename_record(ctx, base._path, fs->path);
               }
+
+              goto out;
           }
+
+          if (fs->type == ItemTypeVirtualFile) {
+              // It's allowed to rename "abc" -> "abc.owncloud": In that case the file
+              // becomes a placeholder by being drained of contents.
+              if (base.isValid()
+                  && base._type == ItemTypeFile
+                  && fs->size == base._fileSize
+                  && fs->modtime == base._modtime
+                  && fs->path.left(fs->path.size() - ctx->virtual_file_suffix.size()) == base._path) {
+                  qCInfo(lcUpdate) << "Base file was renamed to virtual file:" << fs->path;
+
+                  // Wipe the base db entry to make sure the base file isn't removed
+                  // from the server later!
+                  // WARNING: Side effect on database during update phase:
+                  // Makes local/remote discovery order dependent!
+                  ctx->statedb->deleteFileRecord(base._path);
+
+                  // Wipe the placeholder file such that the remote discovery will
+                  // note it must be recreated with the right size and flags.
+                  QFile::remove(QString::fromUtf8(ctx->local.uri) + "/" + fs->path);
+
+                  // Also set up the expected db entry
+                  // WARNING: Side effect on database during update phase again
+                  base._path = fs->path;
+                  base._type = ItemTypeVirtualFile;
+                  ctx->statedb->setFileRecord(base);
+
+                  return 0; // Don't add as entry into local files
+              }
+
+              // Remove the spurious file if it looks like a placeholder file
+              // (we know placeholder files contain " ")
+              if (fs->size <= 1) {
+                  QFile::remove(QString::fromUtf8(ctx->local.uri) + "/" + fs->path);
+                  qCWarning(lcUpdate) << "Wiping virtual file without db entry for" << fs->path;
+                  return 0; // Don't add as entry into local files
+              } else {
+                  fs->instruction = CSYNC_INSTRUCTION_IGNORE;
+                  qCWarning(lcUpdate) << "Virtual file without db entry for" << fs->path
+                                      << "but looks odd, keeping";
+              }
+          }
+
           goto out;
 
       } else {
@@ -512,11 +562,20 @@ int csync_walker(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs) {
   }
 
   switch (fs->type) {
-    case ItemTypeFile:
+  case ItemTypeFile:
       if (ctx->current == REMOTE_REPLICA) {
           qCDebug(lcUpdate, "file: %s [file_id=%s size=%" PRIu64 "]", fs->path.constData(), fs->file_id.constData(), fs->size);
       } else {
           qCDebug(lcUpdate, "file: %s [inode=%" PRIu64 " size=%" PRIu64 "]", fs->path.constData(), fs->inode, fs->size);
+      }
+      break;
+  case ItemTypeVirtualFile:
+      // This can happen when locally a virtual file is seen that doen't have
+      // a matching database entry.
+      if (ctx->current == REMOTE_REPLICA) {
+          qCDebug(lcUpdate, "virtual file: %s [file_id=%s size=%" PRIu64 "]", fs->path.constData(), fs->file_id.constData(), fs->size);
+      } else {
+          qCDebug(lcUpdate, "virtual file: %s [inode=%" PRIu64 " size=%" PRIu64 "]", fs->path.constData(), fs->inode, fs->size);
       }
       break;
   case ItemTypeDirectory: /* enter directory */
@@ -762,43 +821,12 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
         && filename.endsWith(ctx->virtual_file_suffix)) {
         QByteArray db_uri = fullpath.mid(strlen(ctx->local.uri) + 1);
 
-        if( ! fill_tree_from_db(ctx, db_uri.constData(), true) ) {
-            // If we find what looks to be a spurious "abc.owncloud" the base file "abc"
-            // might have been renamed to that. Make sure that the base file is not
-            // deleted from the server.
-            OCC::SyncJournalFileRecord record;
-            QByteArray base_uri = db_uri;
-            base_uri.chop(ctx->virtual_file_suffix.size());
-            ctx->statedb->getFileRecord(base_uri, &record);
-            if (record.isValid()
-                && record._inode == dirent->inode
-                && record._fileSize == dirent->size
-                && record._modtime == dirent->modtime) {
-                qCInfo(lcUpdate) << "Base file was renamed to virtual file:" << filename;
+        if (fill_tree_from_db(ctx, db_uri.constData(), true))
+            continue;
 
-                // Let sync recreate the placeholder file to ensure it has the right size.
-                // WARNING: Side effect on database during update phase:
-                // Makes local/remote discovery order dependent!
-                ctx->statedb->deleteFileRecord(base_uri);
-                record._path = db_uri;
-                record._type = ItemTypeVirtualFile;
-                ctx->statedb->setFileRecord(record);
-
-                QFile::remove(fullpath);
-            } else {
-                // Remove the spurious file if it looks like a placeholder file
-                // (we know placeholder files contain " ")
-                if (dirent->size <= 1) {
-                    QFile::remove(fullpath);
-                    qCWarning(lcUpdate) << "Wiping virtual file without db entry for" << filename;
-                } else {
-                    qCWarning(lcUpdate) << "Virtual file without db entry for" << filename
-                                        << "but looks odd, keeping";
-                }
-            }
-        }
-
-        continue;
+        // We didn't find this file in the database: Let this proceed into
+        // rename detection as a virtual file.
+        dirent->type = ItemTypeVirtualFile;
     }
 
     /* if the filename starts with a . we consider it a hidden file
