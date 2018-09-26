@@ -36,7 +36,9 @@ set(libsync_SRCS
     owncloudtheme.cpp
     progressdispatcher.cpp
     propagatorjobs.cpp
+    propagatecommonzsync.cpp
     propagatedownload.cpp
+    propagatedownloadzsync.cpp
     propagateupload.cpp
     propagateuploadv1.cpp
     propagateuploadng.cpp
@@ -60,6 +62,40 @@ if(TOKEN_AUTH_ONLY)
 else()
     set (libsync_SRCS ${libsync_SRCS} creds/httpcredentials.cpp)
 endif()
+
+## begin zsync
+
+include_directories( ${CMAKE_SOURCE_DIR}/src/3rdparty/zsync/c )
+
+set( libsync_SRCS
+    ${libsync_SRCS}
+    ../3rdparty/zsync/c/librcksum/hash.c
+    ../3rdparty/zsync/c/librcksum/md4.c
+    ../3rdparty/zsync/c/librcksum/range.c
+    ../3rdparty/zsync/c/librcksum/rsum.c
+    ../3rdparty/zsync/c/librcksum/state.c
+    ../3rdparty/zsync/c/libzsync/sha1.c
+    ../3rdparty/zsync/c/libzsync/zsync.c
+    ../3rdparty/zsync/c/libzsync/zsyncfile.c
+    ../3rdparty/zsync/c/progress.c
+)
+
+if ( WIN32 )
+    # ntohs
+    list(APPEND OS_SPECIFIC_LINK_LIBRARIES
+        ws2_32
+    )
+    # ensure size_t is 64 bits
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_FILE_OFFSET_BITS=64")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_FILE_OFFSET_BITS=64")
+endif()
+
+set_source_files_properties( ../3rdparty/zsync/c/libzsync/zsync.c
+    PROPERTIES COMPILE_FLAGS -DVERSION=\\"0.6.3\\" )
+set_source_files_properties( ../3rdparty/zsync/c/libzsync/zsyncfile.c
+    PROPERTIES COMPILE_FLAGS "-DVERSION=\\\"0.6.3\\\" -DSIZEOF_OFF_T=8" )
+
+## end zsync
 
 # These headers are installed for libowncloudsync to be used by 3rd party apps
 set(owncloudsync_HEADERS

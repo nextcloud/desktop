@@ -631,6 +631,11 @@ void OwncloudPropagator::scheduleNextJobImpl()
     }
 }
 
+void OwncloudPropagator::reportFileTotal(const SyncFileItem &item, quint64 newSize)
+{
+    emit updateFileTotal(item, newSize);
+}
+
 void OwncloudPropagator::reportProgress(const SyncFileItem &item, quint64 bytes)
 {
     emit progress(item, bytes);

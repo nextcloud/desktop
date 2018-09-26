@@ -182,7 +182,7 @@ private slots:
 
         // Add a chunk that makes the file completely uploaded
         fakeFolder.uploadState().children.first().insert(
-            QString::number(chunkMap.size()).rightJustified(8, '0'), size - uploadedSize);
+            QString::number(uploadedSize).rightJustified(16, '0'), size - uploadedSize);
 
         bool sawPut = false;
         bool sawDelete = false;
@@ -227,15 +227,13 @@ private slots:
 
         // Add a chunk that makes the file more than completely uploaded
         fakeFolder.uploadState().children.first().insert(
-            QString::number(chunkMap.size()).rightJustified(8, '0'), size - uploadedSize + 100);
+            QString::number(uploadedSize).rightJustified(16, '0'), size - uploadedSize + 100);
 
         QVERIFY(fakeFolder.syncOnce());
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->size, size);
-        // Used a new transfer id but wiped the old one
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
-        QVERIFY(fakeFolder.uploadState().children.first().name != chunkingId);
     }
 
     // Check what happens when we abort during the final MOVE and the

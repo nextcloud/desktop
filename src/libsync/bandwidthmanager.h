@@ -23,7 +23,7 @@
 namespace OCC {
 
 class UploadDevice;
-class GETFileJob;
+class GETJob;
 class OwncloudPropagator;
 
 /**
@@ -47,7 +47,7 @@ public slots:
     void registerUploadDevice(UploadDevice *);
     void unregisterUploadDevice(QObject *);
 
-    void registerDownloadJob(GETFileJob *);
+    void registerDownloadJob(GETJob *);
     void unregisterDownloadJob(QObject *);
 
     void absoluteLimitTimerExpired();
@@ -86,14 +86,14 @@ private:
     qint64 _relativeUploadLimitProgressAtMeasuringRestart;
     qint64 _currentUploadLimit;
 
-    QLinkedList<GETFileJob *> _downloadJobList;
+    QLinkedList<GETJob *> _downloadJobList;
     QTimer _relativeDownloadMeasuringTimer;
 
     // for relative bw limiting, we need to wait this amount before measuring again
     QTimer _relativeDownloadDelayTimer;
 
     // the device measured
-    GETFileJob *_relativeLimitCurrentMeasuredJob;
+    GETJob *_relativeLimitCurrentMeasuredJob;
 
     // for measuring how much progress we made at start
     qint64 _relativeDownloadLimitProgressAtMeasuringRestart;

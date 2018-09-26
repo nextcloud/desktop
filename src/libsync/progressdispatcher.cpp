@@ -196,6 +196,22 @@ void ProgressInfo::adjustTotalsForFile(const SyncFileItem &item)
     }
 }
 
+void ProgressInfo::updateTotalsForFile(const SyncFileItem &item, quint64 newSize)
+{
+    if (!shouldCountProgress(item)) {
+        return;
+    }
+
+    if (!_currentItems.contains(item._file)) {
+        _sizeProgress._total += newSize - item._size;
+    } else {
+        _sizeProgress._total += newSize - _currentItems[item._file]._progress._total;
+    }
+
+    setProgressItem(item, 0);
+    _currentItems[item._file]._progress._total = newSize;
+}
+
 quint64 ProgressInfo::totalFiles() const
 {
     return _fileProgress._total;
@@ -227,11 +243,11 @@ void ProgressInfo::setProgressComplete(const SyncFileItem &item)
         return;
     }
 
-    _currentItems.remove(item._file);
     _fileProgress.setCompleted(_fileProgress._completed + item._affectedItems);
     if (ProgressInfo::isSizeDependent(item)) {
-        _totalSizeOfCompletedJobs += item._size;
+        _totalSizeOfCompletedJobs += _currentItems[item._file]._progress._total;
     }
+    _currentItems.remove(item._file);
     recomputeCompletedSize();
     _lastCompletedItem = item;
 }
@@ -242,8 +258,10 @@ void ProgressInfo::setProgressItem(const SyncFileItem &item, quint64 completed)
         return;
     }
 
-    _currentItems[item._file]._item = item;
-    _currentItems[item._file]._progress._total = item._size;
+    if (!_currentItems.contains(item._file)) {
+        _currentItems[item._file]._item = item;
+        _currentItems[item._file]._progress._total = item._size;
+    }
     _currentItems[item._file]._progress.setCompleted(completed);
     recomputeCompletedSize();
 

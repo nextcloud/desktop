@@ -756,6 +756,9 @@ void Folder::setSyncOptions()
         opt._targetChunkUploadDuration = cfgFile.targetChunkUploadDuration();
     }
 
+    opt._deltaSyncEnabled = cfgFile.deltaSyncEnabled();
+    opt._deltaSyncMinFileSize = cfgFile.deltaSyncMinFileSize();
+
     _engine->setSyncOptions(opt);
 }
 
