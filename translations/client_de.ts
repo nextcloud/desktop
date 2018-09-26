@@ -3784,7 +3784,7 @@ Dies ist ein neuer experimenteller Modus.Wenn du dich dafür entscheidest, diese
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="198"/>
         <source>Unsupported Server Version</source>
-        <translation>nicht unterstütze Server Version</translation>
+        <translation>nicht unterstützte Server Version</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="238"/>
