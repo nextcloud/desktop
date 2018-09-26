@@ -88,11 +88,20 @@ void PropagateRemoteMove::start()
         return;
     }
 
+    QString source = propagator()->_remoteFolder + _item->_file;
     QString destination = QDir::cleanPath(propagator()->account()->url().path() + QLatin1Char('/')
         + propagator()->account()->davPath() + propagator()->_remoteFolder + _item->_renameTarget);
-    _job = new MoveJob(propagator()->account(),
-        propagator()->_remoteFolder + _item->_file,
-        destination, this);
+    if (_item->_type == ItemTypeVirtualFile || _item->_type == ItemTypeVirtualFileDownload) {
+        auto suffix = propagator()->syncOptions()._virtualFileSuffix;
+        ASSERT(source.endsWith(suffix) && destination.endsWith(suffix));
+        if (source.endsWith(suffix) && destination.endsWith(suffix)) {
+            source.chop(suffix.size());
+            destination.chop(suffix.size());
+        }
+    }
+    qCDebug(lcPropagateRemoteMove) << source << destination;
+
+    _job = new MoveJob(propagator()->account(), source, destination, this);
     connect(_job.data(), &MoveJob::finishedSignal, this, &PropagateRemoteMove::slotMoveJobFinished);
     propagator()->_activeJobList.append(this);
     _job->start();
