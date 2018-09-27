@@ -47,7 +47,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="110"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation>Textový popisek</translation>
     </message>
 </context>
 <context>
