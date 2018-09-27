@@ -1,5 +1,3 @@
-ownCloud Desktop Client Manual
-==============================
+= ownCloud Desktop Client Manual.
 
-introduction installing navigating conflicts advancedusage autoupdate
-building architecture troubleshooting faq glossary
+introduction installing navigating conflicts advancedusage autoupdate building architecture troubleshooting faq glossary.
