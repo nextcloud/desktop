@@ -61,6 +61,15 @@ Past maintainers:
 * Daniel Molkentin <daniel@molkentin.de>
 * Andreas Schneider <asn@cryptomilk.org>
 
+## Building the Documentation
+
+The documentation has been migrated from Sphinx-Doc to [Antora](https://docs.antora.org/), which is based on [the AsciiDoc format](https://github.com/owncloud/docs/blob/master/docs/getting-started.md).
+For the moment, it is not possible to generate the client documentation directly, as was previously the case, via a CMake command.
+Instead, the client documentation is built when the entire ownCloud documentation is built; (this is a combination of the _administration_, _developer_, and _user_, _iOS_, and _Android_ manuals).
+
+**Please note:** investigations are underway to see if it can be built both standalone and as as part of the larger documentation bundle.
+This README will be updated as more information is available.
+
 ## License
 
     This program is free software; you can redistribute it and/or modify
