@@ -1,4 +1,4 @@
-= Advanced Usage - Options
+= Options
 
 You have the option of starting your ownCloud desktop client with the `owncloud` command.
 The following options are supported:
