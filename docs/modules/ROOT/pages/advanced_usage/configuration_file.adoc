@@ -1,4 +1,4 @@
-= Advanced Usage - Configuration File
+= Advanced Usage Configuration File
 
 The ownCloud Client reads a configuration file.
 You can locate this configuration file as follows:
