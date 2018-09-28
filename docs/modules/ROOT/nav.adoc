@@ -1,22 +1,21 @@
-* Desktop Client
-** xref:introduction.adoc[Introduction]
-** xref:installing.adoc[Installing the Desktop Synchronization Client]
-** xref:navigating.adoc[Using the Synchronization Client]
-** xref:conflicts.adoc[Conflicts]
+* xref:introduction.adoc[Introduction]
+* xref:installing.adoc[Installing the Desktop Synchronization Client]
+* xref:navigating.adoc[Using the Synchronization Client]
+* xref:conflicts.adoc[Conflicts]
 
-** Advanced Usage
-*** xref:advanced_usage/options.adoc[Options]
-*** xref:advanced_usage/configuration_file.adoc[Configuration File]
-*** xref:advanced_usage/environment_variables.adoc[Environment Variables]
-*** xref:advanced_usage/command_line_client.adoc[Command-Line Client]
-*** xref:advanced_usage/low_disk_space.adoc[Low Disk Space]
+* Advanced Usage
+** xref:advanced_usage/options.adoc[Options]
+** xref:advanced_usage/configuration_file.adoc[Configuration File]
+** xref:advanced_usage/environment_variables.adoc[Environment Variables]
+** xref:advanced_usage/command_line_client.adoc[Command-Line Client]
+** xref:advanced_usage/low_disk_space.adoc[Low Disk Space]
 
-** xref:automatic_updater.adoc[The Automatic Updater]
-** xref:faq.adoc[FAQ]
-** xref:glossary.adoc[Glossary]
+* xref:automatic_updater.adoc[The Automatic Updater]
+* xref:faq.adoc[FAQ]
+* xref:glossary.adoc[Glossary]
 
-** Appendices
-*** xref:building.adoc[Building the Client]
-*** xref:architecture.adoc[History and Architecture]
-*** xref:troubleshooting.adoc[Troubleshooting]
+* Appendices
+** xref:building.adoc[Building the Client]
+** xref:architecture.adoc[History and Architecture]
+** xref:troubleshooting.adoc[Troubleshooting]
 
