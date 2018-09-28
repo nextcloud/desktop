@@ -1,6 +1,6 @@
 name: client
 title: Desktop Client
 version: master
-
+start_page: ROOT:introduction.adoc
 nav:
 - modules/ROOT/nav.adoc

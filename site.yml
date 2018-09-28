@@ -1,0 +1,17 @@
+site:
+  title: ownCloud Client Documentation
+
+content:
+  sources:
+  - url: .
+    branches: [master-antora]
+    start_path: docs/
+
+ui:
+  bundle:
+    url: https://github.com/owncloud/docs-ui/releases/download/1.0.0/ui-bundle.zip
+  output_dir: assets
+
+output:
+  clean: true
+  dir: public
