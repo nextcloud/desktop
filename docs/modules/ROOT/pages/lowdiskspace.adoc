@@ -1,4 +1,4 @@
-= Low Disk Space
+= Advanced Usage - Low Disk Space
 
 When disk space is low the ownCloud Client will be unable to synchronize all files.
 This section describes its behavior in a low disk space situation as well as the options that influence it.

@@ -1,4 +1,4 @@
-= Options
+= Advanced Usage - Options
 
 You have the option of starting your ownCloud desktop client with the `owncloud` command.
 The following options are supported:
@@ -10,7 +10,6 @@ The other options are:
 [options="header"]
 |===
 | Option | Description
-
 | `--logwindow` | Opens a window displaying log output.
 | `--logfile <filename>` | Write log output to the file specified. To write to stdout, specify `-` as the filename.
 | `--logdir <name>` | Writes each synchronization log output in a new file in the specified directory.

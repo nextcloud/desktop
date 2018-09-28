@@ -1,4 +1,4 @@
-= Environment Variables
+= Advanced Usage Environment Variables
 
 The behavior of the client can also be controlled using environment variables.
 The value of the environment variables overrides the values in the configuration file.

@@ -1,4 +1,4 @@
-= Conflicts
+= Advanced Usage - Conflicts
 
 == Overview
 
