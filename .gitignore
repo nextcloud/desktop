@@ -164,3 +164,7 @@ UpgradeLog*.htm
 # Microsoft Fakes
 FakesAssemblies/
 
+# Allow building.adoc to be tracked. 
+# This exclusion needs to be added at the end, after any previous 
+# reference to "build" 
+!building.adoc
