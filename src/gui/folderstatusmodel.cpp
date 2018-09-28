@@ -1072,9 +1072,9 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
     } else if (state == SyncResult::NotYetStarted) {
         FolderMan *folderMan = FolderMan::instance();
         int pos = folderMan->scheduleQueue().indexOf(f);
-        if (folderMan->currentSyncFolder()
-            && folderMan->currentSyncFolder() != f) {
-            pos += 1;
+        for (auto other : folderMan->map()) {
+            if (other != f && other->isSyncRunning())
+                pos += 1;
         }
         QString message;
         if (pos <= 0) {

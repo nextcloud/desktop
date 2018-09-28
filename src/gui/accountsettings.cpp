@@ -307,7 +307,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
     if (!folderPaused) {
         ac = menu->addAction(tr("Force sync now"));
-        if (folderMan->currentSyncFolder() == folder) {
+        if (folder && folder->isSyncRunning()) {
             ac->setText(tr("Restart sync"));
         }
         ac->setEnabled(folderConnected);
@@ -617,9 +617,11 @@ void AccountSettings::slotForceSyncCurrentFolder()
     FolderMan *folderMan = FolderMan::instance();
     if (auto selectedFolder = folderMan->folder(selectedFolderAlias())) {
         // Terminate and reschedule any running sync
-        if (Folder *current = folderMan->currentSyncFolder()) {
-            folderMan->terminateSyncProcess();
-            folderMan->scheduleFolder(current);
+        for (auto f : folderMan->map()) {
+            if (f->isSyncRunning()) {
+                f->slotTerminateSync();
+                folderMan->scheduleFolder(f);
+            }
         }
 
         selectedFolder->slotWipeErrorBlacklist(); // issue #6757

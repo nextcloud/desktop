@@ -170,6 +170,9 @@ public:
      */
     virtual bool isBusy() const;
 
+    /** True if the folder is currently synchronizing */
+    bool isSyncRunning() const;
+
     /**
      * return the last sync result with error message and status
      */

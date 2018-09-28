@@ -512,19 +512,6 @@ void FolderMan::slotFolderCanSyncChanged()
     }
 }
 
-// this really terminates the current sync process
-// ie. no questions, no prisoners
-// csync still remains in a stable state, regardless of that.
-void FolderMan::terminateSyncProcess()
-{
-    Folder *f = _currentSyncFolder;
-    if (f) {
-        // This will, indirectly and eventually, call slotFolderSyncFinished
-        // and thereby clear _currentSyncFolder.
-        f->slotTerminateSync();
-    }
-}
-
 Folder *FolderMan::folder(const QString &alias)
 {
     if (!alias.isEmpty()) {
@@ -636,7 +623,7 @@ void FolderMan::slotRunOneEtagJob()
             //qCDebug(lcFolderMan) << "No more remote ETag check jobs to schedule.";
 
             /* now it might be a good time to check for restarting... */
-            if (_currentSyncFolder == NULL && _appRestartRequired) {
+            if (!isAnySyncRunning() && _appRestartRequired) {
                 restartApplication();
             }
         } else {
@@ -668,9 +655,12 @@ void FolderMan::slotAccountStateChanged()
         qCInfo(lcFolderMan) << "Account" << accountName << "disconnected or paused, "
                                                            "terminating or descheduling sync folders";
 
-        if (_currentSyncFolder
-            && _currentSyncFolder->accountState() == accountState) {
-            _currentSyncFolder->slotTerminateSync();
+        foreach (Folder *f, _folderMap.values()) {
+            if (f
+                && f->isSyncRunning()
+                && f->accountState() == accountState) {
+                f->slotTerminateSync();
+            }
         }
 
         QMutableListIterator<Folder *> it(_scheduledFolders);
@@ -705,7 +695,7 @@ void FolderMan::startScheduledSyncSoon()
     if (_scheduledFolders.empty()) {
         return;
     }
-    if (_currentSyncFolder) {
+    if (isAnySyncRunning()) {
         return;
     }
 
@@ -743,8 +733,11 @@ void FolderMan::startScheduledSyncSoon()
   */
 void FolderMan::slotStartScheduledFolderSync()
 {
-    if (_currentSyncFolder) {
-        qCInfo(lcFolderMan) << "Currently folder " << _currentSyncFolder->remoteUrl().toString() << " is running, wait for finish!";
+    if (isAnySyncRunning()) {
+        for (auto f : _folderMap) {
+            if (f->isSyncRunning())
+                qCInfo(lcFolderMan) << "Currently folder " << f->remoteUrl().toString() << " is running, wait for finish!";
+        }
         return;
     }
 
@@ -791,7 +784,7 @@ void FolderMan::slotEtagPollTimerTimeout()
         if (!f) {
             continue;
         }
-        if (_currentSyncFolder == f) {
+        if (f->isSyncRunning()) {
             continue;
         }
         if (_scheduledFolders.contains(f)) {
@@ -901,12 +894,29 @@ void FolderMan::slotScheduleFolderByTime()
     }
 }
 
+bool FolderMan::isAnySyncRunning() const
+{
+    if (_currentSyncFolder)
+        return true;
+
+    for (auto f : _folderMap) {
+        if (f->isSyncRunning())
+            return true;
+    }
+    return false;
+}
+
 void FolderMan::slotFolderSyncStarted()
 {
+    auto f = qobject_cast<Folder *>(sender());
+    ASSERT(f);
+    if (!f)
+        return;
+
     qCInfo(lcFolderMan, ">========== Sync started for folder [%s] of account [%s] with remote [%s]",
-        qPrintable(_currentSyncFolder->shortGuiLocalPath()),
-        qPrintable(_currentSyncFolder->accountState()->account()->displayName()),
-        qPrintable(_currentSyncFolder->remoteUrl().toString()));
+        qPrintable(f->shortGuiLocalPath()),
+        qPrintable(f->accountState()->account()->displayName()),
+        qPrintable(f->remoteUrl().toString()));
 }
 
 /*
@@ -917,15 +927,22 @@ void FolderMan::slotFolderSyncStarted()
   */
 void FolderMan::slotFolderSyncFinished(const SyncResult &)
 {
+    auto f = qobject_cast<Folder *>(sender());
+    ASSERT(f);
+    if (!f)
+        return;
+
     qCInfo(lcFolderMan, "<========== Sync finished for folder [%s] of account [%s] with remote [%s]",
-        qPrintable(_currentSyncFolder->shortGuiLocalPath()),
-        qPrintable(_currentSyncFolder->accountState()->account()->displayName()),
-        qPrintable(_currentSyncFolder->remoteUrl().toString()));
+        qPrintable(f->shortGuiLocalPath()),
+        qPrintable(f->accountState()->account()->displayName()),
+        qPrintable(f->remoteUrl().toString()));
 
-    _lastSyncFolder = _currentSyncFolder;
-    _currentSyncFolder = 0;
-
-    startScheduledSyncSoon();
+    if (f == _currentSyncFolder) {
+        _lastSyncFolder = _currentSyncFolder;
+        _currentSyncFolder = 0;
+    }
+    if (!isAnySyncRunning())
+        startScheduledSyncSoon();
 }
 
 Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition &folderDefinition)
@@ -1049,10 +1066,10 @@ void FolderMan::removeFolder(Folder *f)
 
     qCInfo(lcFolderMan) << "Removing " << f->alias();
 
-    const bool currentlyRunning = (_currentSyncFolder == f);
+    const bool currentlyRunning = f->isSyncRunning();
     if (currentlyRunning) {
         // abort the sync now
-        terminateSyncProcess();
+        f->slotTerminateSync();
     }
 
     if (_scheduledFolders.removeAll(f) > 0) {
