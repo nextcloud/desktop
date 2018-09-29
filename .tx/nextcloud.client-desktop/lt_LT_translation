@@ -199,6 +199,6 @@ X-GNOME-Autostart-Delay=3
 
 # Translations
 Comment[lt_LT]=@APPLICATION_NAME@ darbalaukio sinchronizavimo kliento programa
+Icon[lt_LT]=@APPLICATION_ICON_NAME@
 Name[lt_LT]=@APPLICATION_NAME@ darbalaukio sinchronizavimo kliento programa
 GenericName[lt_LT]=Aplankų sinchronizavimas
-Icon[lt_LT]=@APPLICATION_ICON_NAME@

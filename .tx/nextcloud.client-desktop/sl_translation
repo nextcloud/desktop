@@ -199,6 +199,6 @@ X-GNOME-Autostart-Delay=3
 
 # Translations
 Comment[sl]=@APPLICATION_NAME@ odjemalec za usklajevanje
+Icon[sl]=@APPLICATION_ICON_NAME@
 Name[sl]=@APPLICATION_NAME@ odjemalec za usklajevanje
 GenericName[sl]=Usklajevanje map
-Icon[sl]=@APPLICATION_ICON_NAME@
