@@ -395,11 +395,13 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         return false;
     };
 
+    bool noServerEntry = (_queryServer != ParentNotChanged && !serverEntry.isValid())
+        || (_queryServer == ParentNotChanged && !dbEntry.isValid());
+
     auto recurseQueryServer = _queryServer;
-    if (recurseQueryServer != ParentNotChanged && !serverEntry.isValid())
+    if (noServerEntry)
         recurseQueryServer = ParentDontExist;
 
-    bool noServerEntry = _queryServer != ParentNotChanged && !serverEntry.isValid();
 
     if (_queryServer == NormalQuery && serverEntry.isValid()) {
         item->_checksumHeader = serverEntry.checksumHeader;
@@ -411,7 +413,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         item->_previousModtime = localEntry.modtime;
         item->_directDownloadUrl = serverEntry.directDownloadUrl;
         item->_directDownloadCookies = serverEntry.directDownloadCookies;
-        if (!dbEntry.isValid() && !localEntry.isVirtualFile) { // New file on the server
+        if (!dbEntry.isValid()) { // New file on the server
             item->_instruction = CSYNC_INSTRUCTION_NEW;
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
@@ -616,6 +618,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         item->_file.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
         item->_type = ItemTypeVirtualFileDownload;
     }
+
     bool serverModified = item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC
         || item->_instruction == CSYNC_INSTRUCTION_RENAME || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
     if ((dbEntry.isValid() && dbEntry._type == ItemTypeVirtualFile) || (localEntry.isValid() && localEntry.isVirtualFile && item->_type != ItemTypeVirtualFileDownload)) {
@@ -631,19 +634,8 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     if (localEntry.isValid()) {
         item->_inode = localEntry.inode;
         bool typeChange = dbEntry.isValid() && localEntry.isDirectory != (dbEntry._type == ItemTypeDirectory);
-        if (localEntry.isVirtualFile) {
-            if (!dbEntry.isValid()) {
-                // Remove the spurious file if it looks like a placeholder file
-                // (we know placeholder files contain " ")
-                if (localEntry.size <= 1) {
-                    QString filename = _discoveryData->_localDir + _currentFolder._local + localEntry.name;
-                    QFile::remove(filename);
-                    qCWarning(lcDisco) << "Wiping virtual file without db entry for" << filename;
-                } else {
-                    qCWarning(lcDisco) << "Virtual file without db entry for" <<  _currentFolder._local << localEntry.name
-                                        << "but looks odd, keeping";
-                }
-            } else if (dbEntry._type == ItemTypeFile) {
+        if (dbEntry.isValid() && localEntry.isVirtualFile) {
+            if (dbEntry._type == ItemTypeFile) {
                 // If we find what looks to be a spurious "abc.owncloud" the base file "abc"
                 // might have been renamed to that. Make sure that the base file is not
                 // deleted from the server.
@@ -662,7 +654,16 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
             }
-        } else if (dbEntry.isValid() && !typeChange && ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) || (localEntry.isDirectory && dbEntry._type == ItemTypeDirectory))) {
+        } else if (!dbEntry.isValid() && localEntry.isVirtualFile && !noServerEntry) {
+            // Somehow there is a missing DB entry while the virtual file already exists.
+            // The instruction should already be set correctly.
+            ASSERT(item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA);
+            ASSERT(item->_type == ItemTypeVirtualFile)
+            ASSERT(item->_file.endsWith(_discoveryData->_syncOptions._virtualFileSuffix));
+            item->_file.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
+        } else if (dbEntry.isValid() && !typeChange &&
+                ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size)
+                || (localEntry.isDirectory && dbEntry._type == ItemTypeDirectory))) {
             // Local file unchanged.
             if (noServerEntry) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
@@ -755,10 +756,27 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             item->_checksumHeader.clear();
             item->_size = localEntry.size;
             item->_modtime = localEntry.modtime;
-            item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+            item->_type = localEntry.isDirectory ? ItemTypeDirectory : localEntry.isVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
             if (!_dirItem || _dirItem->_direction == SyncFileItem::Down) {
                 _childModified = true;
             }
+
+            auto postProcessLocalNew = [item, localEntry, this]() {
+                if (localEntry.isVirtualFile) {
+                    // Remove the spurious file if it looks like a placeholder file
+                    // (we know placeholder files contain " ")
+                    if (localEntry.size <= 1) {
+                        qCWarning(lcDisco) << "Wiping virtual file without db entry for" << _currentFolder._local + "/" + localEntry.name;
+                        item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+                        item->_direction = SyncFileItem::Down;
+                    } else {
+                        qCWarning(lcDisco) << "Virtual file without db entry for" << _currentFolder._local << localEntry.name
+                                           << "but looks odd, keeping";
+                        item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+                    }
+                }
+            };
+
             // Check if it is a move
             OCC::SyncJournalFileRecord base;
             if (!_discoveryData->_statedb->getFileRecordByInode(localEntry.inode, &base)) {
@@ -766,7 +784,9 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                 return;
             }
             bool isMove = base.isValid() && base._type == item->_type
-                && ((base._modtime == localEntry.modtime && base._fileSize == localEntry.size) || item->_type == ItemTypeDirectory);
+                && ((base._modtime == localEntry.modtime && base._fileSize == localEntry.size)
+                       // Directories and virtual files don't need size/mtime equality
+                       || item->_type == ItemTypeDirectory || localEntry.isVirtualFile);
 
             if (isMove) {
                 //  The old file must have been deleted.
@@ -825,7 +845,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                 QByteArray oldEtag;
                 auto it = _discoveryData->_deletedItem.find(originalPath);
                 if (it != _discoveryData->_deletedItem.end()) {
-                    if ((*it)->_instruction != CSYNC_INSTRUCTION_REMOVE)
+                    if ((*it)->_instruction != CSYNC_INSTRUCTION_REMOVE && (*it)->_type != ItemTypeVirtualFile)
                         isMove = false;
                     else
                         (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
@@ -852,6 +872,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                     item->_fileId = base._fileId;
                     item->_remotePerm = base._remotePerm;
                     item->_etag = base._etag;
+                    item->_type = base._type;
                     path._original = originalPath;
                     path._server = adjustedOriginalPath;
                     qCInfo(lcDisco) << "Rename detected (up) " << item->_file << " -> " << item->_renameTarget;
@@ -862,11 +883,15 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                 } else if (isMove) {
                     // We must query the server to know if the etag has not changed
                     _pendingAsyncJobs++;
-                    auto job = new RequestEtagJob(_discoveryData->_account, originalPath, this);
+                    QString serverOriginalPath = originalPath;
+                    if (localEntry.isVirtualFile)
+                        serverOriginalPath.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
+                    auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
                     connect(job, &RequestEtagJob::finishedWithResult, this, [=](const Result<QString> &etag) mutable {
                         if (!etag || (*etag != base._etag && !item->isDirectory()) || _discoveryData->_renamedItems.contains(originalPath)) {
                             qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
                             // Can't be a rename, leave it as a new.
+                            postProcessLocalNew();
                         } else {
                             // In case the deleted item was discovered in parallel
                             auto it = _discoveryData->_deletedItem.find(originalPath);
@@ -895,7 +920,11 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                     });
                     job->start();
                     return;
+                } else {
+                    postProcessLocalNew();
                 }
+            } else {
+                postProcessLocalNew();
             }
         } else {
             item->_instruction = CSYNC_INSTRUCTION_SYNC;
@@ -986,7 +1015,11 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             _queuedJobs.push_back(job);
         }
     } else {
-        if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+        if (item->_instruction == CSYNC_INSTRUCTION_REMOVE
+            // For the purpose of rename deletion, restored deleted placeholder is as if it was deleted
+            || (item->_type == ItemTypeVirtualFile && item->_instruction == CSYNC_INSTRUCTION_NEW)) {
+            if (item->_type == ItemTypeVirtualFile && !path._original.endsWith(_discoveryData->_syncOptions._virtualFileSuffix))
+                path._original.append(_discoveryData->_syncOptions._virtualFileSuffix);
             _discoveryData->_deletedItem[path._original] = item;
         }
         emit _discoveryData->itemDiscovered(item);
