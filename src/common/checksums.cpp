@@ -21,6 +21,11 @@
 
 #include <QLoggingCategory>
 #include <qtconcurrentrun.h>
+#include <QCryptographicHash>
+
+#ifdef ZLIB_FOUND
+#include <zlib.h>
+#endif
 
 /** \file checksums.cpp
  *
@@ -73,12 +78,61 @@
  * - Adler32 (requires zlib)
  * - MD5
  * - SHA1
+ * - SHA256
+ * - SHA3-256 (requires Qt 5.9)
  *
  */
 
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcChecksums, "sync.checksums", QtInfoMsg)
+
+#define BUFSIZE qint64(500 * 1024) // 500 KiB
+
+static QByteArray calcCryptoHash( const QString& filename, QCryptographicHash::Algorithm algo )
+{
+     QFile file(filename);
+     QByteArray arr;
+     QCryptographicHash crypto( algo );
+
+     if (file.open(QIODevice::ReadOnly)) {
+         if (crypto.addData(&file)) {
+             arr = crypto.result().toHex();
+         }
+     }
+     return arr;
+ }
+
+QByteArray calcMd5(const QString &filename)
+{
+    return calcCryptoHash(filename, QCryptographicHash::Md5);
+}
+
+QByteArray calcSha1(const QString &filename)
+{
+    return calcCryptoHash(filename, QCryptographicHash::Sha1);
+}
+
+#ifdef ZLIB_FOUND
+QByteArray calcAdler32(const QString &filename)
+{
+    QFile file(filename);
+    const qint64 bufSize = qMin(BUFSIZE, file.size() + 1);
+    QByteArray buf(bufSize, Qt::Uninitialized);
+
+    unsigned int adler = adler32(0L, Z_NULL, 0);
+    if (file.open(QIODevice::ReadOnly)) {
+        qint64 size;
+        while (!file.atEnd()) {
+            size = file.read(buf.data(), bufSize);
+            if (size > 0)
+                adler = adler32(adler, (const Bytef *)buf.data(), size);
+        }
+    }
+
+    return QByteArray::number(adler, 16);
+}
+#endif
 
 QByteArray makeChecksumHeader(const QByteArray &checksumType, const QByteArray &checksum)
 {
@@ -94,7 +148,9 @@ QByteArray findBestChecksum(const QByteArray &checksums)
 {
     int i = 0;
     // The order of the searches here defines the preference ordering.
-    if (-1 != (i = checksums.indexOf("SHA1:"))
+    if (-1 != (i = checksums.indexOf("SHA3-256:"))
+        || -1 != (i = checksums.indexOf("SHA256:"))
+        || -1 != (i = checksums.indexOf("SHA1:"))
         || -1 != (i = checksums.indexOf("MD5:"))
         || -1 != (i = checksums.indexOf("Adler32:"))) {
         // Now i is the start of the best checksum
@@ -188,13 +244,20 @@ QByteArray ComputeChecksum::computeNow(const QString &filePath, const QByteArray
     }
 
     if (checksumType == checkSumMD5C) {
-        return FileSystem::calcMd5(filePath);
+        return calcMd5(filePath);
     } else if (checksumType == checkSumSHA1C) {
-        return FileSystem::calcSha1(filePath);
+        return calcSha1(filePath);
+    } else if (checksumType == checkSumSHA2C) {
+        return calcCryptoHash(filePath, QCryptographicHash::Sha256);
     }
+#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
+    else if (checksumType == checkSumSHA3C) {
+        return calcCryptoHash(filePath, QCryptographicHash::Sha3_256);
+    }
+#endif
 #ifdef ZLIB_FOUND
     else if (checksumType == checkSumAdlerC) {
-        return FileSystem::calcAdler32(filePath);
+        return calcAdler32(filePath);
     }
 #endif
     // for an unknown checksum or no checksum, we're done right now

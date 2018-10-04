@@ -1,6 +1,7 @@
 find_package(SQLite3 3.8.0 REQUIRED)
 include_directories(${CMAKE_SOURCE_DIR}/src
                     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtokenizer
+                    ${CMAKE_SOURCE_DIR}/src/3rdparty/zsync/c
                     ${CMAKE_SOURCE_DIR}/src/csync
                     ${CMAKE_SOURCE_DIR}/src/csync/std
                     ${CMAKE_SOURCE_DIR}/src/gui
@@ -39,7 +40,6 @@ owncloud_add_test(ChecksumValidator "")
 
 owncloud_add_test(ExcludedFiles "")
 
-owncloud_add_test(FileSystem "")
 owncloud_add_test(Utility "")
 owncloud_add_test(SyncEngine "syncenginetestutils.h")
 owncloud_add_test(SyncVirtualFiles "syncenginetestutils.h")
@@ -48,6 +48,7 @@ owncloud_add_test(SyncConflict "syncenginetestutils.h")
 owncloud_add_test(SyncFileStatusTracker "syncenginetestutils.h")
 owncloud_add_test(Download "syncenginetestutils.h")
 owncloud_add_test(ChunkingNg "syncenginetestutils.h")
+owncloud_add_test(Zsync "syncenginetestutils.h")
 owncloud_add_test(UploadReset "syncenginetestutils.h")
 owncloud_add_test(AllFilesDeleted "syncenginetestutils.h")
 owncloud_add_test(Blacklist "syncenginetestutils.h")

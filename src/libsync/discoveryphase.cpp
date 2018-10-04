@@ -76,7 +76,7 @@ bool DiscoveryPhase::isInSelectiveSyncBlackList(const QString &path) const
 
 bool DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePermissions remotePerm)
 {
-    if (_syncOptions._confirmExternalStorage
+    if (_syncOptions._confirmExternalStorage && !_syncOptions._newFilesAreVirtual
         && remotePerm.hasPermission(RemotePermissions::IsMounted)) {
         // external storage.
 
@@ -99,7 +99,7 @@ bool DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
     }
 
     auto limit = _syncOptions._newBigFolderSizeLimit;
-    if (limit < 0) {
+    if (limit < 0 || _syncOptions._newFilesAreVirtual) {
         // no limit, everything is allowed;
         return false;
     }
@@ -186,7 +186,8 @@ void DiscoverySingleDirectoryJob::start()
           << "http://owncloud.org/ns:downloadURL"
           << "http://owncloud.org/ns:dDC"
           << "http://owncloud.org/ns:permissions"
-          << "http://owncloud.org/ns:checksums";
+          << "http://owncloud.org/ns:checksums"
+          << "http://owncloud.org/ns:zsync";
     if (_isRootPath)
         props << "http://owncloud.org/ns:data-fingerprint";
     if (_account->serverVersionInt() >= Account::makeServerVersion(10, 0, 0)) {
@@ -246,12 +247,21 @@ static void propertyMapToFileStat(const QMap<QString, QString> &map, RemoteInfo 
             // Since QMap is sorted, "share-types" is always after "permissions".
             if (result.remotePerm.isNull()) {
                 qWarning() << "Server returned a share type, but no permissions?";
+                // Empty permissions will cause a sync failure
             } else {
                 // S means shared with me.
                 // But for our purpose, we want to know if the file is shared. It does not matter
                 // if we are the owner or not.
                 // Piggy back on the persmission field
                 result.remotePerm.setPermission(RemotePermissions::IsShared);
+            }
+        } else if (property == "zsync" && value.toUtf8() == "true") {
+            // Since QMap is sorted, "zsync" is always after "permissions".
+            if (result.remotePerm.isNull()) {
+                qWarning() << "Server returned no permissions";
+                // Empty permissions will cause a sync failure
+            } else {
+                result.remotePerm.setPermission(RemotePermissions::HasZSyncMetadata);
             }
         }
     }

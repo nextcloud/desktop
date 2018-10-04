@@ -53,10 +53,11 @@ public:
         IsShared = 8,             // S
         IsMounted = 9,            // M
         IsMountedSub = 10,        // m (internal: set if the parent dir has IsMounted)
+        HasZSyncMetadata = 11,    // z (internal: set if remote file has zsync metadata property set)
 
         // Note: when adding support for more permissions, we need to invalid the cache in the database.
         // (by setting forceRemoteDiscovery in SyncJournalDb::checkConnect)
-        PermissionsCount = IsMountedSub
+        PermissionsCount = HasZSyncMetadata
     };
 
     /// null permissions

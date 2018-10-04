@@ -295,6 +295,9 @@ public slots:
      */
     void downloadVirtualFile(const QString &relativepath);
 
+    /** Ensures that the next sync performs a full local discovery. */
+    void slotNextSyncFullLocalDiscovery();
+
 private slots:
     void slotSyncStarted();
     void slotSyncFinished(bool);
@@ -320,9 +323,6 @@ private slots:
      *  FolderMan.
      */
     void slotScheduleThisFolder();
-
-    /** Ensures that the next sync performs a full local discovery. */
-    void slotNextSyncFullLocalDiscovery();
 
     /** Adjust sync result based on conflict data from IssuesWidget.
      *

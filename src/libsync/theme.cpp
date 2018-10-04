@@ -16,6 +16,7 @@
 #include "config.h"
 #include "common/utility.h"
 #include "version.h"
+#include "configfile.h"
 
 #include <QtCore>
 #ifndef TOKEN_AUTH_ONLY
@@ -553,6 +554,11 @@ QString Theme::versionSwitchOutput() const
     stream << "Using Qt " << qVersion() << ", built against Qt " << QT_VERSION_STR << endl;
     stream << "Using '" << QSslSocket::sslLibraryVersionString() << "'" << endl;
     return helpText;
+}
+
+bool Theme::showVirtualFilesOption() const
+{
+    return ConfigFile().showExperimentalOptions();
 }
 
 } // end namespace client

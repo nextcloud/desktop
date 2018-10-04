@@ -514,11 +514,12 @@ bool SyncJournalDb::checkConnect()
             forceRemoteDiscovery = true;
         }
 
-        // There was a bug in versions <2.3.0 that could lead to stale
-        // local files and a remote discovery will fix them.
-        // See #5190 #5242.
-        if (major == 2 && minor < 3) {
-            qCInfo(lcDb) << "upgrade form client < 2.3.0 detected! forcing remote discovery";
+        // - There was a bug in versions <2.3.0 that could lead to stale
+        //   local files and a remote discovery will fix them.
+        //   See #5190 #5242.
+        // - New remote HasZSyncMetadata permission added, invalidate cache
+        if (major == 2 && minor < 5) {
+            qCInfo(lcDb) << "upgrade from client < 2.5.0 detected! forcing remote discovery";
             forceRemoteDiscovery = true;
         }
 
@@ -1911,7 +1912,7 @@ void SyncJournalDb::setConflictRecord(const ConflictRecord &record)
     query.bindValue(2, record.baseFileId);
     query.bindValue(3, record.baseModtime);
     query.bindValue(4, record.baseEtag);
-    query.bindValue(5, record.basePath);
+    query.bindValue(5, record.initialBasePath);
     ASSERT(query.exec());
 }
 
@@ -1933,7 +1934,7 @@ ConflictRecord SyncJournalDb::conflictRecord(const QByteArray &path)
     entry.baseFileId = query.baValue(0);
     entry.baseModtime = query.int64Value(1);
     entry.baseEtag = query.baValue(2);
-    entry.basePath = query.baValue(3);
+    entry.initialBasePath = query.baValue(3);
     return entry;
 }
 

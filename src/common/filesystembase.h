@@ -130,12 +130,6 @@ namespace FileSystem {
     QString fileSystemForPath(const QString &path);
 #endif
 
-    QByteArray OCSYNC_EXPORT calcMd5(const QString &fileName);
-    QByteArray OCSYNC_EXPORT calcSha1(const QString &fileName);
-#ifdef ZLIB_FOUND
-    QByteArray OCSYNC_EXPORT calcAdler32(const QString &fileName);
-#endif
-
     /**
      * Returns true when a file is locked. (Windows only)
      */

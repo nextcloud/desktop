@@ -177,6 +177,7 @@ private slots:
     void slotItemCompleted(const SyncFileItemPtr &item);
     void slotFinished(bool success);
     void slotProgress(const SyncFileItem &item, quint64 curent);
+    void updateFileTotal(const SyncFileItem &item, quint64 newSize);
     void slotDiscoveryJobFinished();
     void slotCleanPollsJobAborted(const QString &error);
 
@@ -277,6 +278,7 @@ private:
 
     int _uploadLimit;
     int _downloadLimit;
+
     SyncOptions _syncOptions;
 
     AnotherSyncNeeded _anotherSyncNeeded;

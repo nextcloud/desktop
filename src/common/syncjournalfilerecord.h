@@ -45,13 +45,18 @@ public:
         return !_path.isEmpty();
     }
 
-    /** Returns the numeric part of the full id in _fileId.
+    /** Returns a guess for the numeric part of the full id in _fileId.
      *
-     * On the server this is sometimes known as the internal file id.
+     * On the server this is sometimes known as the internal file id, the "fileid" DAV property.
      *
-     * It is used in the construction of private links.
+     * It is used in the fallback construction of private links.
+     *
+     * New code should not use this function: Request the fileid property from the server.
+     * In the future we might store the fileid instead of the id, but the migration is complex
+     * if we don't want to store both.
      */
-    QByteArray numericFileId() const;
+    QByteArray legacyDeriveNumericFileId() const;
+
     QDateTime modDateTime() const { return Utility::qDateTimeFromTime_t(_modtime); }
 
     QByteArray _path;
@@ -147,11 +152,14 @@ public:
     QByteArray baseEtag;
 
     /**
-     * The path of the original file
+     * The path of the original file at the time the conflict was created
+     *
+     * Note that in nearly all cases one should query the db by baseFileId and
+     * thus retrieve the *current* base path instead!
      *
      * maybe be empty if not available
      */
-    QByteArray basePath;
+    QByteArray initialBasePath;
 
 
     bool isValid() const { return !path.isEmpty(); }

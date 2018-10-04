@@ -63,6 +63,8 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(_ui->newFolderLimitCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newFolderLimitSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newExternalStorage, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
+    connect(_ui->deltaSyncCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
+    connect(_ui->deltaSyncSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &GeneralSettings::saveMiscSettings);
 
 #ifndef WITH_CRASHREPORTER
     _ui->crashreporterCheckBox->setVisible(false);
@@ -128,6 +130,8 @@ void GeneralSettings::loadMiscSettings()
     _ui->newFolderLimitSpinBox->setValue(newFolderLimit.second);
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
+    _ui->deltaSyncCheckBox->setChecked(cfgFile.deltaSyncEnabled());
+    _ui->deltaSyncSpinBox->setValue(cfgFile.deltaSyncMinFileSize() / (1024 * 1024));
 }
 
 void GeneralSettings::slotUpdateInfo()
@@ -220,6 +224,8 @@ void GeneralSettings::saveMiscSettings()
     cfgFile.setNewBigFolderSizeLimit(_ui->newFolderLimitCheckBox->isChecked(),
         _ui->newFolderLimitSpinBox->value());
     cfgFile.setConfirmExternalStorage(_ui->newExternalStorage->isChecked());
+    cfgFile.setDeltaSyncEnabled(_ui->deltaSyncCheckBox->isChecked());
+    cfgFile.setDeltaSyncMinFileSize(_ui->deltaSyncSpinBox->value() * 1024 * 1024);
 }
 
 void GeneralSettings::slotToggleLaunchOnStartup(bool enable)

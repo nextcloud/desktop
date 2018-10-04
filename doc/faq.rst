@@ -21,6 +21,40 @@ When a deeply nested directory is excluded from synchronization it will be
 listed with other ignored files and directories in the "Not synced" tab of
 the "Activity" pane.
 
+I See a Warning Message for Unsupported Versions.
+-------------------------------------------------
+
+Keeping software up to date is crucial for file integrity and security – if
+software is outdated, there can be unfixed bugs. That’s why you should always
+upgrade your software when there is a new version.
+
+The ownCloud Desktop Client talks to a server, e.g. the ownCloud server – so
+you don’t only have to upgrade your client when there is a new version for it,
+also the server has to be kept up-to-date by your sysadmin.
+
+Starting with version 2.5.0, the client will show a warning message if you
+connect to an outdated or unsupported server:
+
+.. image:: https://owncloud.org/wp-content/uploads/2018/09/ownCloud-unsupported-version-warning-message.png
+
+**Because earlier versions are not maintained anymore, only ownCloud 10.0.0 or
+higher is supported.** So if you encounter such a message, you should ask your
+administrator to upgrade ownCloud to a secure version.
+
+An important feature of the ownCloud Client is checksumming – each time you
+download or upload a file, the client and the server both check if the file was
+corrupted during the sync. This way you can be sure that you don’t lose any
+files.
+
+There are servers out there which don’t have checksumming implemented on their
+side, or which are not tested by ownCloud’s QA team. They can’t ensure file
+integrity, they have potential security issues, and we can’t guarantee that
+they are compatible with the ownCloud Desktop Client.
+
+**We care about your data and want it to be safe.** That’s why you see this warning
+message, so you can evaluate your data security. Don’t worry – you can still
+use the client with an unsupported server, but do so at your own risk.
+
 There Was A Warning About Changes In Synchronized Folders Not Being Tracked Reliably.
 -------------------------------------------------------------------------------------
 

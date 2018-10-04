@@ -34,7 +34,6 @@ struct MissingPermissionsPropfindReply : FakePropfindReply {
     }
 };
 
-
 enum ErrorKind : int {
     // Lower code are corresponding to HTML error code
     InvalidXML = 1000,

@@ -190,8 +190,10 @@ void IssuesWidget::addItem(QTreeWidgetItem *item)
         return;
 
     int count = _ui->_treeWidget->topLevelItemCount();
-    if (count >= maxIssueCount)
+    if (count >= maxIssueCount) {
+        delete item;
         return;
+    }
 
     _ui->_treeWidget->setSortingEnabled(false);
     _reenableSorting.start();

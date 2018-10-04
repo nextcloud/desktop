@@ -22,15 +22,10 @@
 #include <QDir>
 #include <QUrl>
 #include <QFile>
-#include <QCryptographicHash>
 #include <QCoreApplication>
 
 #include <sys/stat.h>
 #include <sys/types.h>
-
-#ifdef ZLIB_FOUND
-#include <zlib.h>
-#endif
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -358,53 +353,6 @@ QString FileSystem::fileSystemForPath(const QString &path)
         return QString();
     }
     return QString::fromUtf16(reinterpret_cast<const ushort *>(fileSystemBuffer));
-}
-#endif
-
-#define BUFSIZE qint64(500 * 1024) // 500 KiB
-
-static QByteArray readToCrypto( const QString& filename, QCryptographicHash::Algorithm algo )
- {
-     QFile file(filename);
-     QByteArray arr;
-     QCryptographicHash crypto( algo );
-
-     if (file.open(QIODevice::ReadOnly)) {
-         if (crypto.addData(&file)) {
-             arr = crypto.result().toHex();
-         }
-     }
-     return arr;
- }
-
-QByteArray FileSystem::calcMd5(const QString &filename)
-{
-    return readToCrypto(filename, QCryptographicHash::Md5);
-}
-
-QByteArray FileSystem::calcSha1(const QString &filename)
-{
-    return readToCrypto(filename, QCryptographicHash::Sha1);
-}
-
-#ifdef ZLIB_FOUND
-QByteArray FileSystem::calcAdler32(const QString &filename)
-{
-    QFile file(filename);
-    const qint64 bufSize = qMin(BUFSIZE, file.size() + 1);
-    QByteArray buf(bufSize, Qt::Uninitialized);
-
-    unsigned int adler = adler32(0L, Z_NULL, 0);
-    if (file.open(QIODevice::ReadOnly)) {
-        qint64 size;
-        while (!file.atEnd()) {
-            size = file.read(buf.data(), bufSize);
-            if (size > 0)
-                adler = adler32(adler, (const Bytef *)buf.data(), size);
-        }
-    }
-
-    return QByteArray::number(adler, 16);
 }
 #endif
 

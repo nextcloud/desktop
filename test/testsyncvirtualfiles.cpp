@@ -34,6 +34,18 @@ SyncJournalFileRecord dbRecord(FakeFolder &folder, const QString &path)
     return record;
 }
 
+void triggerDownload(FakeFolder &folder, const QByteArray &path)
+{
+    auto &journal = folder.syncJournal();
+    SyncJournalFileRecord record;
+    journal.getFileRecord(path + ".owncloud", &record);
+    if (!record.isValid())
+        return;
+    record._type = ItemTypeVirtualFileDownload;
+    journal.setFileRecord(record);
+    journal.avoidReadFromDbOnNextSync(record._path);
+}
+
 class TestSyncVirtualFiles : public QObject
 {
     Q_OBJECT
@@ -293,16 +305,6 @@ private slots:
         };
         cleanup();
 
-        auto triggerDownload = [&](const QByteArray &path) {
-            auto &journal = fakeFolder.syncJournal();
-            SyncJournalFileRecord record;
-            journal.getFileRecord(path + ".owncloud", &record);
-            if (!record.isValid())
-                return;
-            record._type = ItemTypeVirtualFileDownload;
-            journal.setFileRecord(record);
-        };
-
         // Create a virtual file for remote files
         fakeFolder.remoteModifier().mkdir("A");
         fakeFolder.remoteModifier().insert("A/a1");
@@ -321,12 +323,12 @@ private slots:
         cleanup();
 
         // Download by changing the db entry
-        triggerDownload("A/a1");
-        triggerDownload("A/a2");
-        triggerDownload("A/a3");
-        triggerDownload("A/a4");
-        triggerDownload("A/a5");
-        triggerDownload("A/a6");
+        triggerDownload(fakeFolder, "A/a1");
+        triggerDownload(fakeFolder, "A/a2");
+        triggerDownload(fakeFolder, "A/a3");
+        triggerDownload(fakeFolder, "A/a4");
+        triggerDownload(fakeFolder, "A/a5");
+        triggerDownload(fakeFolder, "A/a6");
         fakeFolder.remoteModifier().appendByte("A/a2");
         fakeFolder.remoteModifier().remove("A/a3");
         fakeFolder.remoteModifier().rename("A/a4", "A/a4m");
@@ -374,17 +376,6 @@ private slots:
         };
         cleanup();
 
-        auto triggerDownload = [&](const QByteArray &path) {
-            auto &journal = fakeFolder.syncJournal();
-            SyncJournalFileRecord record;
-            journal.getFileRecord(path + ".owncloud", &record);
-            if (!record.isValid())
-                return;
-            record._type = ItemTypeVirtualFileDownload;
-            journal.setFileRecord(record);
-            journal.avoidReadFromDbOnNextSync(record._path);
-        };
-
         // Create a virtual file for remote files
         fakeFolder.remoteModifier().mkdir("A");
         fakeFolder.remoteModifier().insert("A/a1");
@@ -393,7 +384,7 @@ private slots:
         cleanup();
 
         // Download by changing the db entry
-        triggerDownload("A/a1");
+        triggerDownload(fakeFolder, "A/a1");
         fakeFolder.serverErrorPaths().append("A/a1", 500);
         QVERIFY(!fakeFolder.syncOnce());
         QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_NEW));
@@ -610,6 +601,8 @@ private slots:
         fakeFolder.localModifier().rename("A/a1", "A/a1.owncloud");
         // If a file is renamed to <random>.owncloud, the file sticks around (to preserve user data)
         fakeFolder.localModifier().rename("A/a2", "A/rand.owncloud");
+        // dangling virtual files are removed
+        fakeFolder.localModifier().insert("A/dangling.owncloud", 1, ' ');
         QVERIFY(fakeFolder.syncOnce());
 
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
@@ -625,7 +618,52 @@ private slots:
         QVERIFY(itemInstruction(completeSpy, "A/a2", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(!dbRecord(fakeFolder, "A/rand.owncloud").isValid());
 
+        QVERIFY(!fakeFolder.currentLocalState().find("A/dangling.owncloud"));
+
         cleanup();
+    }
+
+    void testRenameVirtual()
+    {
+        FakeFolder fakeFolder{ FileInfo() };
+        SyncOptions syncOptions;
+        syncOptions._newFilesAreVirtual = true;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+
+        auto cleanup = [&]() {
+            completeSpy.clear();
+        };
+        cleanup();
+
+        fakeFolder.remoteModifier().insert("file1", 128, 'C');
+        fakeFolder.remoteModifier().insert("file2", 256, 'C');
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.currentLocalState().find("file1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("file2.owncloud"));
+        cleanup();
+
+        fakeFolder.localModifier().rename("file1.owncloud", "renamed1.owncloud");
+        fakeFolder.localModifier().rename("file2.owncloud", "renamed2.owncloud");
+        triggerDownload(fakeFolder, "file2");
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(!fakeFolder.currentLocalState().find("file1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("renamed1.owncloud"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("file1"));
+        QVERIFY(fakeFolder.currentRemoteState().find("renamed1"));
+        QVERIFY(itemInstruction(completeSpy, "renamed1.owncloud", CSYNC_INSTRUCTION_RENAME));
+        QVERIFY(dbRecord(fakeFolder, "renamed1.owncloud").isValid());
+
+        // file2 has a conflict between the download request and the rename:
+        // currently the download wins
+        QVERIFY(!fakeFolder.currentLocalState().find("file2.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("file2"));
+        QVERIFY(fakeFolder.currentRemoteState().find("file2"));
+        QVERIFY(itemInstruction(completeSpy, "file2", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(dbRecord(fakeFolder, "file2").isValid());
     }
 };
 

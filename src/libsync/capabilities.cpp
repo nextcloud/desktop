@@ -159,4 +159,9 @@ bool Capabilities::uploadConflictFiles() const
 
     return _capabilities["uploadConflictFiles"].toBool();
 }
+
+QString Capabilities::zsyncSupportedVersion() const
+{
+    return _capabilities["dav"].toMap()["zsync"].toString();
+}
 }

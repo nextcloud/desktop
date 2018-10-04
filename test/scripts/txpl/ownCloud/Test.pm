@@ -453,7 +453,7 @@ sub traverse( $$;$ )
 	    $seen{$f."/"} = 3;
 	}
 
-	$isHere = 1 if( $acceptConflicts && !$isHere && $f =~ /_conflict/ );
+	$isHere = 1 if( $acceptConflicts && !$isHere && $f =~ /conflicted copy/ );
 	$isHere = 1 if( $f =~ /\.csync/ );
 	$isHere = 1 if( $f =~ /\._sync_/ );
 	assert( $isHere, "Filename local, but not remote: $f" );

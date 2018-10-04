@@ -15,11 +15,11 @@
 
 #include "owncloudpropagator.h"
 #include "networkjobs.h"
+#include "propagatecommonzsync.h"
 
 #include <QBuffer>
 #include <QFile>
 #include <QElapsedTimer>
-
 
 namespace OCC {
 
@@ -346,11 +346,30 @@ class PropagateUploadFileNG : public PropagateUploadFileCommon
 {
     Q_OBJECT
 private:
-    quint64 _sent = 0; /// amount of data (bytes) that was already sent
+    /** Amount of data that was already sent in bytes.
+     *
+     * If this job is resuming an upload, this number includes bytes that were
+     * sent in previous jobs.
+     */
+    quint64 _sent = 0;
+
+    /** Amount of data that needs to be sent to the server in bytes.
+     *
+     * For normal uploads this will be the file size, for zsync uploads it can
+     * be less.
+     *
+     * This value is intended to be comparable to _sent: it's always the total
+     * amount of data that needs to be present at the server to finish the upload -
+     * regardless of whether previous jobs have already sent something.
+     */
+    quint64 _bytesToUpload;
+
     uint _transferId = 0; /// transfer id (part of the url)
-    int _currentChunk = 0; /// Id of the next chunk that will be sent
+    int _currentChunkOffset = 0; /// byte offset of the next chunk data that will be sent
     quint64 _currentChunkSize = 0; /// current chunk size
-    bool _removeJobError = false; /// If not null, there was an error removing the job
+    bool _removeJobError = false; /// if not null, there was an error removing the job
+    bool _zsyncSupported = false; /// if zsync is supported this will be set to true
+    bool _isZsyncMetadataUploadRunning = false; // flag to ensure that zsync metadata upload is complete before job is
 
     // Map chunk number with its size  from the PROPFIND on resume.
     // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
@@ -359,25 +378,45 @@ private:
         quint64 size;
         QString originalName;
     };
-    QMap<int, ServerChunkInfo> _serverChunks;
+    QMap<quint64, ServerChunkInfo> _serverChunks;
+
+    // Vector with expected PUT ranges.
+    struct UploadRangeInfo
+    {
+        quint64 start;
+        quint64 size;
+        quint64 end() const { return start + size; }
+    };
+    QVector<UploadRangeInfo> _rangesToUpload;
 
     /**
      * Return the URL of a chunk.
-     * If chunk == -1, returns the URL of the parent folder containing the chunks
+     * If chunkOffset == -1, returns the URL of the parent folder containing the chunks
      */
-    QUrl chunkUrl(int chunk = -1);
+    QUrl chunkUrl(qint64 chunkOffset = -1);
+
+    /**
+     * Finds the range starting at 'start' in _rangesToUpload and removes the first
+     * 'size' bytes from it. If it becomes empty, remove the range.
+     *
+     * Retuns false if no matching range was found.
+     */
+    bool markRangeAsDone(quint64 start, quint64 size);
 
 public:
     PropagateUploadFileNG(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
         : PropagateUploadFileCommon(propagator, item)
+        , _bytesToUpload(item->_size)
     {
     }
 
     void doStartUpload() Q_DECL_OVERRIDE;
 
 private:
+    void doStartUploadNext();
     void startNewUpload();
     void startNextChunk();
+    void doFinalMove();
 public slots:
     void abort(AbortType abortType) Q_DECL_OVERRIDE;
 private slots:
@@ -387,6 +426,12 @@ private slots:
     void slotDeleteJobFinished();
     void slotMkColFinished(QNetworkReply::NetworkError);
     void slotPutFinished();
+    void slotZsyncGetMetaFinished(QNetworkReply *reply);
+    void slotZsyncSeedFinished(void *zs);
+    void slotZsyncSeedFailed(const QString &errorString);
+    void slotZsyncGenerationFinished(const QString &fileName);
+    void slotZsyncGenerationFailed(const QString &errorString);
+    void slotZsyncMetadataUploadFinished();
     void slotMoveJobFinished();
     void slotUploadProgress(qint64, qint64);
 };

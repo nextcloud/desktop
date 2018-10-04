@@ -631,6 +631,11 @@ void OwncloudPropagator::scheduleNextJobImpl()
     }
 }
 
+void OwncloudPropagator::reportFileTotal(const SyncFileItem &item, quint64 newSize)
+{
+    emit updateFileTotal(item, newSize);
+}
+
 void OwncloudPropagator::reportProgress(const SyncFileItem &item, quint64 bytes)
 {
     emit progress(item, bytes);
@@ -695,7 +700,7 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
     ConflictRecord conflictRecord;
     conflictRecord.path = conflictFileName.toUtf8();
     conflictRecord.baseModtime = item->_previousModtime;
-    conflictRecord.basePath = item->_file.toUtf8();
+    conflictRecord.initialBasePath = item->_file.toUtf8();
 
     SyncJournalFileRecord baseRecord;
     if (_journal->getFileRecord(item->_originalFile, &baseRecord) && baseRecord.isValid()) {

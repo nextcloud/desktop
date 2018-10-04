@@ -273,7 +273,7 @@ void SyncEngine::conflictRecordMaintenance()
             ConflictRecord record;
             record.path = bapath;
             auto basePath = Utility::conflictFileBaseName(bapath);
-            record.basePath = basePath;
+            record.initialBasePath = basePath;
 
             // Determine fileid of target file
             SyncJournalFileRecord baseRecord;
@@ -679,6 +679,8 @@ void SyncEngine::slotDiscoveryJobFinished()
         this, &SyncEngine::slotItemCompleted);
     connect(_propagator.data(), &OwncloudPropagator::progress,
         this, &SyncEngine::slotProgress);
+    connect(_propagator.data(), &OwncloudPropagator::updateFileTotal,
+        this, &SyncEngine::updateFileTotal);
     connect(_propagator.data(), &OwncloudPropagator::finished, this, &SyncEngine::slotFinished, Qt::QueuedConnection);
     connect(_propagator.data(), &OwncloudPropagator::seenLockedFile, this, &SyncEngine::seenLockedFile);
     connect(_propagator.data(), &OwncloudPropagator::touchedFile, this, &SyncEngine::slotAddTouchedFile);
@@ -797,6 +799,11 @@ void SyncEngine::slotProgress(const SyncFileItem &item, quint64 current)
     emit transmissionProgress(*_progressInfo);
 }
 
+void SyncEngine::updateFileTotal(const SyncFileItem &item, quint64 newSize)
+{
+    _progressInfo->updateTotalsForFile(item, newSize);
+    emit transmissionProgress(*_progressInfo);
+}
 void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)
 {
     /* When the server is trying to send us lots of file in the past, this means that a backup
