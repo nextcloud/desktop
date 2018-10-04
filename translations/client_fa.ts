@@ -1175,12 +1175,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="570"/>
+        <location filename="../src/gui/folderwizard.cpp" line="574"/>
         <source>Add Folder Sync Connection</source>
         <translation>اضافه کردن اتصال همگام سازی پوشه</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="572"/>
+        <location filename="../src/gui/folderwizard.cpp" line="576"/>
         <source>Add Sync Connection</source>
         <translation>افزودن اتصال همگام سازی</translation>
     </message>
@@ -2448,13 +2448,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateRemoteMove</name>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>کد HTTP اشتباه توسط سرور برگردانده شد. 201 انتظار می رفت، اما &quot;1% 2%&quot; دریافت شد.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="166"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="172"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="175"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="181"/>
         <source>Error writing metadata to the database</source>
         <translation>خطا در نوشتن متادیتا در پایگاه داده</translation>
     </message>

@@ -1179,12 +1179,12 @@ Si continua con la sincronización todos los archivos serán remplazados por su 
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="570"/>
+        <location filename="../src/gui/folderwizard.cpp" line="574"/>
         <source>Add Folder Sync Connection</source>
         <translation>Añadir Conexión para el Directorio de Sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="572"/>
+        <location filename="../src/gui/folderwizard.cpp" line="576"/>
         <source>Add Sync Connection</source>
         <translation>Añadir Sincronización de Conexión</translation>
     </message>
@@ -2459,13 +2459,13 @@ Este es un nuevo modo experimental. Si decide usarlo, por favor informe de los p
 <context>
     <name>OCC::PropagateRemoteMove</name>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>El código HTTP devuelto por el servidor es erróneo. Esperado 201, pero recibido &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="166"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="172"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="175"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="181"/>
         <source>Error writing metadata to the database</source>
         <translation>Error al escribir los metadatos en la base de datos</translation>
     </message>

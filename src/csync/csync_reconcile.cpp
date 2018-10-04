@@ -465,6 +465,16 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
         }
     }
 
+    // We *never* propagate a local NEW virtual file to the server
+    // This can happen if we had EVAL_RENAME but something else happened on the remote
+    // and the rename doesn't go through.
+    if ((cur->type == ItemTypeVirtualFile || cur->type == ItemTypeVirtualFileDownload)
+        && ctx->current == LOCAL_REPLICA
+        && cur->instruction == CSYNC_INSTRUCTION_NEW) {
+        qCInfo(lcReconcile) << "Downgrading NEW to IGNORE for local virtual file" << cur->path;
+        cur->instruction = CSYNC_INSTRUCTION_IGNORE;
+    }
+
     //hide instruction NONE messages when log level is set to debug,
     //only show these messages on log level trace
     const char *repo = ctx->current == REMOTE_REPLICA ? "server" : "client";

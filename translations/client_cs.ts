@@ -1173,12 +1173,12 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="570"/>
+        <location filename="../src/gui/folderwizard.cpp" line="574"/>
         <source>Add Folder Sync Connection</source>
         <translation>Přidat synchronizaci adresáře</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="572"/>
+        <location filename="../src/gui/folderwizard.cpp" line="576"/>
         <source>Add Sync Connection</source>
         <translation>Přidat synchronizační připojení</translation>
     </message>
@@ -2448,13 +2448,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateRemoteMove</name>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>Server vrátil neplatný HTTP kód. Očekáván 201, ale obdržen &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="166"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="172"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="175"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="181"/>
         <source>Error writing metadata to the database</source>
         <translation>Chyba zápisu metadat do databáze</translation>
     </message>

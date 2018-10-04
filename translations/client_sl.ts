@@ -1175,12 +1175,12 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="570"/>
+        <location filename="../src/gui/folderwizard.cpp" line="574"/>
         <source>Add Folder Sync Connection</source>
         <translation>Dodaj povezavo za usklajevanje mape</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="572"/>
+        <location filename="../src/gui/folderwizard.cpp" line="576"/>
         <source>Add Sync Connection</source>
         <translation>Dodaj povezavo za usklajevanje</translation>
     </message>
@@ -2450,13 +2450,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateRemoteMove</name>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="143"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>S strežnika je vrnjen neveljaven odziv HTTP. Pričakovan je 201, prejet pa je bil &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="166"/>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="172"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="175"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="181"/>
         <source>Error writing metadata to the database</source>
         <translation>Napaka zapisovanja metapodatkov v podatkovno zbirko</translation>
     </message>
