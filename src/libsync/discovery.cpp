@@ -383,235 +383,11 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     item->_file = path._target;
     item->_originalFile = path._original;
 
-    auto computeLocalChecksum = [&](const QByteArray &type, const QString &path) {
-        if (!type.isEmpty()) {
-            // TODO: compute async?
-            QByteArray checksum = ComputeChecksum::computeNow(_discoveryData->_localDir + path, type);
-            if (!checksum.isEmpty()) {
-                item->_checksumHeader = makeChecksumHeader(type, checksum);
-                return true;
-            }
-        }
-        return false;
-    };
-
-    bool noServerEntry = (_queryServer != ParentNotChanged && !serverEntry.isValid())
-        || (_queryServer == ParentNotChanged && !dbEntry.isValid());
-
-    auto recurseQueryServer = _queryServer;
-    if (noServerEntry)
-        recurseQueryServer = ParentDontExist;
-
-
     if (_queryServer == NormalQuery && serverEntry.isValid()) {
-        item->_checksumHeader = serverEntry.checksumHeader;
-        item->_fileId = serverEntry.fileId;
-        item->_remotePerm = serverEntry.remotePerm;
-        item->_type = serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
-        item->_etag = serverEntry.etag;
-        item->_previousSize = localEntry.size;
-        item->_previousModtime = localEntry.modtime;
-        item->_directDownloadUrl = serverEntry.directDownloadUrl;
-        item->_directDownloadCookies = serverEntry.directDownloadCookies;
-        if (!dbEntry.isValid()) { // New file on the server
-            item->_instruction = CSYNC_INSTRUCTION_NEW;
-            item->_direction = SyncFileItem::Down;
-            item->_modtime = serverEntry.modtime;
-            item->_size = serverEntry.size;
-
-            auto postProcessNew = [item, this, path, serverEntry] {
-                if (item->isDirectory()) {
-                    if (_discoveryData->checkSelectiveSyncNewFolder(path._server, serverEntry.remotePerm)) {
-                        return;
-                    }
-                }
-                // Turn new remote files into virtual files if the option is enabled.
-                if (_discoveryData->_syncOptions._newFilesAreVirtual && item->_type == ItemTypeFile) {
-                    item->_type = ItemTypeVirtualFile;
-                    item->_file.append(_discoveryData->_syncOptions._virtualFileSuffix);
-                }
-            };
-
-            if (!localEntry.isValid()) {
-                // Check for renames (if there is a file with the same file id)
-                bool done = false;
-                auto renameCandidateProcessing = [&](const OCC::SyncJournalFileRecord &base) {
-                    if (done)
-                        return;
-                    if (!base.isValid())
-                        return;
-
-                    if (base._type == ItemTypeVirtualFileDownload) {
-                        // Remote rename of a virtual file we have locally scheduled
-                        // for download. We just consider this NEW but mark it for download.
-                        item->_type = ItemTypeVirtualFileDownload;
-                        done = true;
-                        return;
-                    }
-
-                    // Some things prohibit rename detection entirely.
-                    // Since we don't do the same checks again in reconcile, we can't
-                    // just skip the candidate, but have to give up completely.
-                    if (base._type != item->_type && base._type != ItemTypeVirtualFile) {
-                        qCInfo(lcDisco, "file types different, not a rename");
-                        done = true;
-                        return;
-                    }
-                    if (!serverEntry.isDirectory && base._etag != serverEntry.etag) {
-                        /* File with different etag, don't do a rename, but download the file again */
-                        qCInfo(lcDisco, "file etag different, not a rename");
-                        done = true;
-                        return;
-                    }
-
-                    // Now we know there is a sane rename candidate.
-                    QString originalPath = QString::fromUtf8(base._path);
-
-                    // Rename of a virtual file
-                    if (base._type == ItemTypeVirtualFile && item->_type == ItemTypeFile) {
-                        // Ignore if the base is a virtual files
-                        return;
-                    }
-
-                    if (_discoveryData->_renamedItems.contains(originalPath)) {
-                        qCInfo(lcDisco, "folder already has a rename entry, skipping");
-                        return;
-                    }
-
-                    if (item->_type == ItemTypeFile) {
-                        csync_file_stat_t buf;
-                        if (csync_vio_local_stat((_discoveryData->_localDir + originalPath).toUtf8(), &buf)) {
-                            qCInfo(lcDisco) << "Local file does not exist anymore." << originalPath;
-                            return;
-                        }
-                        if (buf.modtime != base._modtime || buf.size != base._fileSize || buf.type != ItemTypeFile) {
-                            qCInfo(lcDisco) << "File has changed locally, not a rename." << originalPath;
-                            return;
-                        }
-                    } else {
-                        if (!QFileInfo(_discoveryData->_localDir + originalPath).isDir()) {
-                            qCInfo(lcDisco) << "Local directory does not exist anymore." << originalPath;
-                            return;
-                        }
-                    }
-
-                    bool wasDeletedOnServer = false;
-                    auto it = _discoveryData->_deletedItem.find(originalPath);
-                    if (it != _discoveryData->_deletedItem.end()) {
-                        ASSERT((*it)->_instruction == CSYNC_INSTRUCTION_REMOVE);
-                        (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
-                        wasDeletedOnServer = true;
-                    }
-                    auto otherJob = _discoveryData->_queuedDeletedDirectories.take(originalPath);
-                    if (otherJob) {
-                        delete otherJob;
-                        wasDeletedOnServer = true;
-                    }
-
-                    auto postProcessRename = [this, item, base, originalPath](PathTuple &path) {
-                        auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath);
-                        _discoveryData->_renamedItems.insert(originalPath, path._target);
-                        item->_modtime = base._modtime;
-                        item->_inode = base._inode;
-                        item->_instruction = CSYNC_INSTRUCTION_RENAME;
-                        item->_direction = SyncFileItem::Down;
-                        item->_renameTarget = path._target;
-                        item->_file = adjustedOriginalPath;
-                        item->_originalFile = originalPath;
-                        path._original = originalPath;
-                        path._local = adjustedOriginalPath;
-                        qCInfo(lcDisco) << "Rename detected (down) " << item->_file << " -> " << item->_renameTarget;
-                    };
-
-                    if (wasDeletedOnServer) {
-                        postProcessRename(path);
-                        done = true;
-                    } else {
-                        // we need to make a request to the server to know that the original file is deleted on the server
-                        _pendingAsyncJobs++;
-                        auto job = new RequestEtagJob(_discoveryData->_account, originalPath, this);
-                        connect(job, &RequestEtagJob::finishedWithResult, this, [=](const Result<QString> &etag) mutable {
-                            if (etag.errorCode() != 404 ||
-                                // Somehow another item claimed this original path, consider as if it existed
-                                _discoveryData->_renamedItems.contains(originalPath)) {
-                                // If the file exist or if there is another error, consider it is a new file.
-                                postProcessNew();
-                            } else {
-                                // The file do not exist, it is a rename
-
-                                // In case the deleted item was discovered in parallel
-                                auto it = _discoveryData->_deletedItem.find(originalPath);
-                                if (it != _discoveryData->_deletedItem.end()) {
-                                    ASSERT((*it)->_instruction == CSYNC_INSTRUCTION_REMOVE);
-                                    (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
-                                }
-                                delete _discoveryData->_queuedDeletedDirectories.take(originalPath);
-
-                                postProcessRename(path);
-                            }
-
-                            qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->isDirectory();
-                            if (item->isDirectory()) {
-                                auto job = new ProcessDirectoryJob(item, recurseQueryServer,
-                                    item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist,
-                                    _discoveryData, this);
-                                job->_currentFolder = path;
-                                connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
-                                _queuedJobs.push_back(job);
-                            } else {
-                                emit _discoveryData->itemDiscovered(item);
-                            }
-                            _pendingAsyncJobs--;
-                            progress();
-                        });
-                        job->start();
-                        done = true; // Ideally, if the origin still exist on the server, we should continue searching...  but that'd be difficult
-                        item = nullptr;
-                    }
-                };
-                if (!_discoveryData->_statedb->getFileRecordsByFileId(serverEntry.fileId, renameCandidateProcessing)) {
-                    dbError();
-                    return;
-                }
-                if (!item) {
-                    return; // We went async
-                }
-            }
-
-            if (item->_instruction == CSYNC_INSTRUCTION_NEW) {
-                postProcessNew();
-            }
-        } else if (serverEntry.isDirectory != (dbEntry._type == ItemTypeDirectory)) {
-            // If the type of the entity changed, it's like NEW, but
-            // needs to delete the other entity first.
-            item->_instruction = CSYNC_INSTRUCTION_TYPE_CHANGE;
-            item->_direction = SyncFileItem::Down;
-            item->_modtime = serverEntry.modtime;
-            item->_size = serverEntry.size;
-        } else if (dbEntry._type == ItemTypeVirtualFileDownload) {
-            item->_direction = SyncFileItem::Down;
-            item->_instruction = CSYNC_INSTRUCTION_NEW;
-            item->_file = _currentFolder._target + QLatin1Char('/') + serverEntry.name;
-            item->_type = ItemTypeVirtualFileDownload;
-        } else if (dbEntry._etag != serverEntry.etag) {
-            item->_direction = SyncFileItem::Down;
-            item->_modtime = serverEntry.modtime;
-            item->_size = serverEntry.size;
-            if (serverEntry.isDirectory && dbEntry._type == ItemTypeDirectory) {
-                item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-            } else if (!localEntry.isValid() && _queryLocal != ParentNotChanged) {
-                // Deleted locally, changed on server
-                item->_instruction = CSYNC_INSTRUCTION_NEW;
-            } else {
-                item->_instruction = CSYNC_INSTRUCTION_SYNC;
-            }
-        } else if (dbEntry._remotePerm != serverEntry.remotePerm || dbEntry._fileId != serverEntry.fileId) {
-            item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-            item->_direction = SyncFileItem::Down;
-        } else {
-            recurseQueryServer = ParentNotChanged;
-        }
+        processFileAnalyzeRemoteInfo(item, path, localEntry, serverEntry, dbEntry);
+        return;
     } else if (_queryServer == ParentNotChanged && dbEntry._type == ItemTypeVirtualFileDownload) {
+        // download virtual file
         item->_direction = SyncFileItem::Down;
         item->_instruction = CSYNC_INSTRUCTION_NEW;
         Q_ASSERT(item->_file.endsWith(_discoveryData->_syncOptions._virtualFileSuffix));
@@ -619,8 +395,256 @@ void ProcessDirectoryJob::processFile(PathTuple path,
         item->_type = ItemTypeVirtualFileDownload;
     }
 
+    processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
+}
+
+// Compute the checksum of the given file and assign the result in item->_checksumHeader
+// Returns true if the checksum was successfully computed
+static bool computeLocalChecksum(const QByteArray &header, const QString &path, const SyncFileItemPtr &item)
+{
+    auto type = parseChecksumHeaderType(header);
+    if (!type.isEmpty()) {
+        // TODO: compute async?
+        QByteArray checksum = ComputeChecksum::computeNow(path, type);
+        if (!checksum.isEmpty()) {
+            item->_checksumHeader = makeChecksumHeader(type, checksum);
+            return true;
+        }
+    }
+    return false;
+}
+
+void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
+    const SyncFileItemPtr &item, PathTuple path, const LocalInfo &localEntry,
+    const RemoteInfo &serverEntry, const SyncJournalFileRecord &dbEntry)
+{
+    item->_checksumHeader = serverEntry.checksumHeader;
+    item->_fileId = serverEntry.fileId;
+    item->_remotePerm = serverEntry.remotePerm;
+    item->_type = serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
+    item->_etag = serverEntry.etag;
+    item->_previousSize = localEntry.size;
+    item->_previousModtime = localEntry.modtime;
+    item->_directDownloadUrl = serverEntry.directDownloadUrl;
+    item->_directDownloadCookies = serverEntry.directDownloadCookies;
+    if (!dbEntry.isValid()) { // New file on the server
+        item->_instruction = CSYNC_INSTRUCTION_NEW;
+        item->_direction = SyncFileItem::Down;
+        item->_modtime = serverEntry.modtime;
+        item->_size = serverEntry.size;
+
+        auto postProcessNew = [item, this, path, serverEntry] {
+            if (item->isDirectory()) {
+                if (_discoveryData->checkSelectiveSyncNewFolder(path._server, serverEntry.remotePerm)) {
+                    return;
+                }
+            }
+            // Turn new remote files into virtual files if the option is enabled.
+            if (_discoveryData->_syncOptions._newFilesAreVirtual && item->_type == ItemTypeFile) {
+                item->_type = ItemTypeVirtualFile;
+                item->_file.append(_discoveryData->_syncOptions._virtualFileSuffix);
+            }
+        };
+
+        if (!localEntry.isValid()) {
+            // Check for renames (if there is a file with the same file id)
+            bool done = false;
+            bool async = false;
+            // This function will be executed for every candidate
+            auto renameCandidateProcessing = [&](const OCC::SyncJournalFileRecord &base) {
+                if (done)
+                    return;
+                if (!base.isValid())
+                    return;
+
+                if (base._type == ItemTypeVirtualFileDownload) {
+                    // Remote rename of a virtual file we have locally scheduled
+                    // for download. We just consider this NEW but mark it for download.
+                    item->_type = ItemTypeVirtualFileDownload;
+                    done = true;
+                    return;
+                }
+
+                // Some things prohibit rename detection entirely.
+                // Since we don't do the same checks again in reconcile, we can't
+                // just skip the candidate, but have to give up completely.
+                if (base._type != item->_type && base._type != ItemTypeVirtualFile) {
+                    qCInfo(lcDisco, "file types different, not a rename");
+                    done = true;
+                    return;
+                }
+                if (!serverEntry.isDirectory && base._etag != serverEntry.etag) {
+                    /* File with different etag, don't do a rename, but download the file again */
+                    qCInfo(lcDisco, "file etag different, not a rename");
+                    done = true;
+                    return;
+                }
+
+                // Now we know there is a sane rename candidate.
+                QString originalPath = QString::fromUtf8(base._path);
+
+                // Rename of a virtual file
+                if (base._type == ItemTypeVirtualFile && item->_type == ItemTypeFile) {
+                    // Ignore if the base is a virtual files
+                    return;
+                }
+
+                if (_discoveryData->_renamedItems.contains(originalPath)) {
+                    qCInfo(lcDisco, "folder already has a rename entry, skipping");
+                    return;
+                }
+
+                if (item->_type == ItemTypeFile) {
+                    csync_file_stat_t buf;
+                    if (csync_vio_local_stat((_discoveryData->_localDir + originalPath).toUtf8(), &buf)) {
+                        qCInfo(lcDisco) << "Local file does not exist anymore." << originalPath;
+                        return;
+                    }
+                    if (buf.modtime != base._modtime || buf.size != base._fileSize || buf.type != ItemTypeFile) {
+                        qCInfo(lcDisco) << "File has changed locally, not a rename." << originalPath;
+                        return;
+                    }
+                } else {
+                    if (!QFileInfo(_discoveryData->_localDir + originalPath).isDir()) {
+                        qCInfo(lcDisco) << "Local directory does not exist anymore." << originalPath;
+                        return;
+                    }
+                }
+
+                bool wasDeletedOnServer = false;
+                auto it = _discoveryData->_deletedItem.find(originalPath);
+                if (it != _discoveryData->_deletedItem.end()) {
+                    ASSERT((*it)->_instruction == CSYNC_INSTRUCTION_REMOVE);
+                    (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
+                    wasDeletedOnServer = true;
+                }
+                auto otherJob = _discoveryData->_queuedDeletedDirectories.take(originalPath);
+                if (otherJob) {
+                    delete otherJob;
+                    wasDeletedOnServer = true;
+                }
+
+                auto postProcessRename = [this, item, base, originalPath](PathTuple &path) {
+                    auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath);
+                    _discoveryData->_renamedItems.insert(originalPath, path._target);
+                    item->_modtime = base._modtime;
+                    item->_inode = base._inode;
+                    item->_instruction = CSYNC_INSTRUCTION_RENAME;
+                    item->_direction = SyncFileItem::Down;
+                    item->_renameTarget = path._target;
+                    item->_file = adjustedOriginalPath;
+                    item->_originalFile = originalPath;
+                    path._original = originalPath;
+                    path._local = adjustedOriginalPath;
+                    qCInfo(lcDisco) << "Rename detected (down) " << item->_file << " -> " << item->_renameTarget;
+                };
+
+                if (wasDeletedOnServer) {
+                    postProcessRename(path);
+                    done = true;
+                } else {
+                    // we need to make a request to the server to know that the original file is deleted on the server
+                    _pendingAsyncJobs++;
+                    auto job = new RequestEtagJob(_discoveryData->_account, originalPath, this);
+                    connect(job, &RequestEtagJob::finishedWithResult, this, [=](const Result<QString> &etag) mutable {
+                        if (etag.errorCode() != 404 ||
+                            // Somehow another item claimed this original path, consider as if it existed
+                            _discoveryData->_renamedItems.contains(originalPath)) {
+                            // If the file exist or if there is another error, consider it is a new file.
+                            postProcessNew();
+                        } else {
+                            // The file do not exist, it is a rename
+
+                            // In case the deleted item was discovered in parallel
+                            auto it = _discoveryData->_deletedItem.find(originalPath);
+                            if (it != _discoveryData->_deletedItem.end()) {
+                                ASSERT((*it)->_instruction == CSYNC_INSTRUCTION_REMOVE);
+                                (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
+                            }
+                            delete _discoveryData->_queuedDeletedDirectories.take(originalPath);
+
+                            postProcessRename(path);
+                        }
+
+                        qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->isDirectory();
+                        if (item->isDirectory()) {
+                            auto job = new ProcessDirectoryJob(item, _queryServer,
+                                item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist,
+                                _discoveryData, this);
+                            job->_currentFolder = path;
+                            connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
+                            _queuedJobs.push_back(job);
+                        } else {
+                            emit _discoveryData->itemDiscovered(item);
+                        }
+                        _pendingAsyncJobs--;
+                        progress();
+                    });
+                    job->start();
+                    done = true; // Ideally, if the origin still exist on the server, we should continue searching...  but that'd be difficult
+                    async = true;
+                }
+            };
+            if (!_discoveryData->_statedb->getFileRecordsByFileId(serverEntry.fileId, renameCandidateProcessing)) {
+                dbError();
+                return;
+            }
+            if (async) {
+                return; // We went async
+            }
+        }
+
+        if (item->_instruction == CSYNC_INSTRUCTION_NEW) {
+            postProcessNew();
+        }
+    } else if (serverEntry.isDirectory != (dbEntry._type == ItemTypeDirectory)) {
+        // If the type of the entity changed, it's like NEW, but
+        // needs to delete the other entity first.
+        item->_instruction = CSYNC_INSTRUCTION_TYPE_CHANGE;
+        item->_direction = SyncFileItem::Down;
+        item->_modtime = serverEntry.modtime;
+        item->_size = serverEntry.size;
+    } else if (dbEntry._type == ItemTypeVirtualFileDownload) {
+        item->_direction = SyncFileItem::Down;
+        item->_instruction = CSYNC_INSTRUCTION_NEW;
+        item->_file = _currentFolder._target + QLatin1Char('/') + serverEntry.name;
+        item->_type = ItemTypeVirtualFileDownload;
+    } else if (dbEntry._etag != serverEntry.etag) {
+        item->_direction = SyncFileItem::Down;
+        item->_modtime = serverEntry.modtime;
+        item->_size = serverEntry.size;
+        if (serverEntry.isDirectory && dbEntry._type == ItemTypeDirectory) {
+            item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+        } else if (!localEntry.isValid() && _queryLocal != ParentNotChanged) {
+            // Deleted locally, changed on server
+            item->_instruction = CSYNC_INSTRUCTION_NEW;
+        } else {
+            item->_instruction = CSYNC_INSTRUCTION_SYNC;
+        }
+    } else if (dbEntry._remotePerm != serverEntry.remotePerm || dbEntry._fileId != serverEntry.fileId) {
+        item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+        item->_direction = SyncFileItem::Down;
+    } else {
+        processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, ParentNotChanged);
+        return;
+    }
+
+    processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
+}
+
+void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
+    const SyncFileItemPtr &item, PathTuple path, const LocalInfo &localEntry,
+    const RemoteInfo &serverEntry, const SyncJournalFileRecord &dbEntry, QueryMode recurseQueryServer)
+{
+    bool noServerEntry = (_queryServer != ParentNotChanged && !serverEntry.isValid())
+        || (_queryServer == ParentNotChanged && !dbEntry.isValid());
+
+    if (noServerEntry)
+        recurseQueryServer = ParentDontExist;
+
     bool serverModified = item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC
         || item->_instruction == CSYNC_INSTRUCTION_RENAME || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
+
     if ((dbEntry.isValid() && dbEntry._type == ItemTypeVirtualFile) || (localEntry.isValid() && localEntry.isVirtualFile && item->_type != ItemTypeVirtualFileDownload)) {
         // Do not download virtual files
         if (serverModified || dbEntry._type != ItemTypeVirtualFile)
@@ -661,9 +685,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             ASSERT(item->_type == ItemTypeVirtualFile)
             ASSERT(item->_file.endsWith(_discoveryData->_syncOptions._virtualFileSuffix));
             item->_file.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
-        } else if (dbEntry.isValid() && !typeChange &&
-                ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size)
-                || (localEntry.isDirectory && dbEntry._type == ItemTypeDirectory))) {
+        } else if (dbEntry.isValid() && !typeChange && ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) || (localEntry.isDirectory && dbEntry._type == ItemTypeDirectory))) {
             // Local file unchanged.
             if (noServerEntry) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
@@ -795,7 +817,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
 
             // Verify the checksum where possible
             if (isMove && !base._checksumHeader.isEmpty() && item->_type == ItemTypeFile) {
-                if (computeLocalChecksum(parseChecksumHeaderType(base._checksumHeader), path._original)) {
+                if (computeLocalChecksum(base._checksumHeader, _discoveryData->_localDir + path._original, item)) {
                     qCInfo(lcDisco) << "checking checksum of potential rename " << path._original << item->_checksumHeader << base._checksumHeader;
                     isMove = item->_checksumHeader == base._checksumHeader;
                 }
@@ -946,7 +968,8 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             // check #4754 #4755
             bool isEmlFile = path._original.endsWith(QLatin1String(".eml"), Qt::CaseInsensitive);
             if (isEmlFile && dbEntry._fileSize == localEntry.size && !dbEntry._checksumHeader.isEmpty()) {
-                if (computeLocalChecksum(parseChecksumHeaderType(dbEntry._checksumHeader), path._local) && item->_checksumHeader == dbEntry._checksumHeader) {
+                if (computeLocalChecksum(dbEntry._checksumHeader, _discoveryData->_localDir + path._local, item)
+                        && item->_checksumHeader == dbEntry._checksumHeader) {
                     qCInfo(lcDisco) << "NOTE: Checksums are identical, file did not actually change: " << path._local;
                     item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                 }

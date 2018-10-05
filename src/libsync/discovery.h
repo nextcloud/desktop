@@ -73,7 +73,11 @@ private:
     void process();
     // return true if the file is excluded
     bool handleExcluded(const QString &path, bool isDirectory, bool isHidden, bool isSymlink);
-    void processFile(PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &dbEntry);
+    void processFile(PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
+    void processFileAnalyzeRemoteInfo(const SyncFileItemPtr &item, PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
+    void processFileAnalyzeLocalInfo(const SyncFileItemPtr &item, PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &, QueryMode recurseQueryServer);
+
+
     // Return false if there is an error and that a directory must not be recursively be taken
     bool checkPermissions(const SyncFileItemPtr &item);
     void processBlacklisted(const PathTuple &, const LocalInfo &, const SyncJournalFileRecord &dbEntry);
