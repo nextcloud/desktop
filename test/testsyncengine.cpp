@@ -439,13 +439,13 @@ private slots:
         // Produce an error based on upload size
         int remoteQuota = 1000;
         int n507 = 0, nPUT = 0;
-        auto parent = new QObject;
+        QObject parent;
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (op == QNetworkAccessManager::PutOperation) {
                 nPUT++;
                 if (request.rawHeader("OC-Total-Length").toInt() > remoteQuota) {
                     n507++;
-                    return new FakeErrorReply(op, request, parent, 507);
+                    return new FakeErrorReply(op, request, &parent, 507);
                 }
             }
             return nullptr;
