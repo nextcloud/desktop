@@ -111,7 +111,10 @@ QString Account::davUser() const
 
 void Account::setDavUser(const QString &newDavUser)
 {
+    if (_davUser == newDavUser)
+        return;
     _davUser = newDavUser;
+    emit wantsAccountSaved(this);
 }
 
 #ifndef TOKEN_AUTH_ONLY

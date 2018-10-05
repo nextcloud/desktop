@@ -48,7 +48,7 @@ void HttpCredentialsGui::askFromUserAsync()
     QObject::connect(job, &DetermineAuthTypeJob::authType, this, [this](DetermineAuthTypeJob::AuthType type) {
         if (type == DetermineAuthTypeJob::OAuth) {
             _asyncAuth.reset(new OAuth(_account, this));
-            _asyncAuth->_expectedUser = _user;
+            _asyncAuth->_expectedUser = _account->davUser();
             connect(_asyncAuth.data(), &OAuth::result,
                 this, &HttpCredentialsGui::asyncAuthResult);
             connect(_asyncAuth.data(), &OAuth::destroyed,
