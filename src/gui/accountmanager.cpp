@@ -29,6 +29,7 @@ static const char urlC[] = "url";
 static const char authTypeC[] = "authType";
 static const char userC[] = "user";
 static const char httpUserC[] = "http_user";
+static const char davUserC[] = "dav_user";
 static const char caCertsKeyC[] = "CaCertificates";
 static const char accountsC[] = "Accounts";
 static const char versionC[] = "version";
@@ -212,6 +213,7 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
 {
     settings.setValue(QLatin1String(versionC), maxAccountVersion);
     settings.setValue(QLatin1String(urlC), acc->_url.toString());
+    settings.setValue(QLatin1String(davUserC), acc->_davUser);
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
     if (acc->_credentials) {
         if (saveCredentials) {
@@ -290,6 +292,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     qCInfo(lcAccountManager) << "Account for" << acc->url() << "using auth type" << authType;
 
     acc->_serverVersion = settings.value(QLatin1String(serverVersionC)).toString();
+    acc->_davUser = settings.value(QLatin1String(davUserC)).toString();
 
     // We want to only restore settings for that auth type and the user value
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
