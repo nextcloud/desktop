@@ -219,9 +219,12 @@ static void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
 
 void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &errorString)
 {
+    // Duplicate calls to done() are a logic error
+    ENFORCE(_state != Finished);
+    _state = Finished;
+
     _item->_status = statusArg;
 
-    _state = Finished;
     if (_item->_isRestoration) {
         if (_item->_status == SyncFileItem::Success
             || _item->_status == SyncFileItem::Conflict) {
@@ -838,7 +841,7 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
     // Delete the job and remove it from our list of jobs.
     subJob->deleteLater();
     int i = _runningJobs.indexOf(subJob);
-    ASSERT(i >= 0);
+    ENFORCE(i >= 0); // should only happen if this function is called more than once
     _runningJobs.remove(i);
 
     // Any sub job error will cause the whole composite to fail. This is important
