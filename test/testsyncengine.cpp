@@ -649,6 +649,33 @@ private slots:
         QTextCodec::setCodecForLocale(utf8Locale);
 #endif
     }
+
+    // Aborting has had bugs when there are parallel upload jobs
+    void testUploadV1Multiabort()
+    {
+        FakeFolder fakeFolder{ FileInfo{} };
+        SyncOptions options;
+        options._initialChunkSize = 10;
+        options._maxChunkSize = 10;
+        options._minChunkSize = 10;
+        fakeFolder.syncEngine().setSyncOptions(options);
+
+        QObject parent;
+        int nPUT = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation) {
+                ++nPUT;
+                return new FakeHangingReply(op, request, &parent);
+            }
+            return nullptr;
+        });
+
+        fakeFolder.localModifier().insert("file", 100, 'W');
+        QTimer::singleShot(100, &fakeFolder.syncEngine(), [&]() { fakeFolder.syncEngine().abort(); });
+        QVERIFY(!fakeFolder.syncOnce());
+
+        QCOMPARE(nPUT, 3);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)
