@@ -169,6 +169,7 @@ PropagateUploadFileCommon::PropagateUploadFileCommon(OwncloudPropagator *propaga
     : PropagateItemJob(propagator, item)
     , _finished(false)
     , _deleteExisting(false)
+    , _aborting(false)
     , _parallelism(FullParallelism)
     , _uploadEncryptedHelper(nullptr)
     , _uploadingEncrypted(false)
@@ -696,6 +697,8 @@ void PropagateUploadFileCommon::slotJobDestroyed(QObject *job)
 // This function is used whenever there is an error occuring and jobs might be in progress
 void PropagateUploadFileCommon::abortWithError(SyncFileItem::Status status, const QString &error)
 {
+    if (_aborting)
+        return;
     abort(AbortType::Synchronous);
     done(status, error);
 }
@@ -777,6 +780,10 @@ void PropagateUploadFileCommon::abortNetworkJobs(
     PropagatorJob::AbortType abortType,
     const std::function<bool(AbstractNetworkJob *)> &mayAbortJob)
 {
+    if (_aborting)
+        return;
+    _aborting = true;
+
     // Count the number of jobs that need aborting, and emit the overall
     // abort signal when they're all done.
     QSharedPointer<int> runningCount(new int(0));

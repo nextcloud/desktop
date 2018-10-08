@@ -212,6 +212,13 @@ protected:
     bool _finished BITFIELD(1); /// Tells that all the jobs have been finished
     bool _deleteExisting BITFIELD(1);
 
+    /** Whether an abort is currently ongoing.
+     *
+     * Important to avoid duplicate aborts since each finishing PUTFileJob might
+     * trigger an abort on error.
+     */
+    bool _aborting BITFIELD(1);
+
     /* This is a minified version of the SyncFileItem,
      * that holds only the specifics about the file that's
      * being uploaded.

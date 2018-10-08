@@ -732,7 +732,7 @@ public:
         QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
     }
 
-    Q_INVOKABLE void respond() {
+    Q_INVOKABLE virtual void respond() {
         emit metaDataChanged();
         emit readyRead();
         // finishing can come strictly after readyRead was called
@@ -916,6 +916,7 @@ public:
         _account->setUrl(QUrl(QStringLiteral("http://admin:admin@localhost/owncloud")));
         _account->setCredentials(new FakeCredentials{_fakeQnam});
         _account->setDavDisplayName("fakename");
+        _account->setServerVersion("10.0.0");
 
         _journalDb = std::make_unique<OCC::SyncJournalDb>(localPath() + "._sync_test.db");
         _syncEngine = std::make_unique<OCC::SyncEngine>(_account, localPath(), "", _journalDb.get());
