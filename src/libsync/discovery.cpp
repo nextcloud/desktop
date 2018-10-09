@@ -296,6 +296,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, 
 
     auto item = SyncFileItemPtr::create();
     item->_file = path;
+    item->_originalFile = path;
     item->_instruction = CSYNC_INSTRUCTION_IGNORE;
 
     if (isSymlink) {
@@ -1053,6 +1054,7 @@ void ProcessDirectoryJob::processBlacklisted(const PathTuple &path, const OCC::L
 
     auto item = SyncFileItem::fromSyncJournalFileRecord(dbEntry);
     item->_file = path._target;
+    item->_originalFile = path._original;
     item->_inode = localEntry.inode;
     if (dbEntry.isValid() && ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) || (localEntry.isDirectory && dbEntry._type == ItemTypeDirectory))) {
         item->_instruction = CSYNC_INSTRUCTION_REMOVE;
