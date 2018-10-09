@@ -1161,57 +1161,6 @@ bool SyncJournalDb::getFilesBelowPath(const QByteArray &path, const std::functio
     return true;
 }
 
-bool SyncJournalDb::postSyncCleanup(const QSet<QString> &filepathsToKeep,
-    const QSet<QString> &prefixesToKeep)
-{
-    QMutexLocker locker(&_mutex);
-
-    if (!checkConnect()) {
-        return false;
-    }
-
-    SqlQuery query(_db);
-    query.prepare("SELECT phash, path, e2eMangledName FROM metadata order by path");
-
-    if (!query.exec()) {
-        return false;
-    }
-
-    QByteArrayList superfluousItems;
-
-    while (query.next()) {
-        const auto file = QString(query.baValue(1));
-        const auto mangledPath = QString(query.baValue(2));
-        bool keep = filepathsToKeep.contains(file) || filepathsToKeep.contains(mangledPath);
-        if (!keep) {
-            foreach (const QString &prefix, prefixesToKeep) {
-                if (file.startsWith(prefix) || mangledPath.startsWith(prefix)) {
-                    keep = true;
-                    break;
-                }
-            }
-        }
-        if (!keep) {
-            superfluousItems.append(query.baValue(0));
-        }
-    }
-
-    if (superfluousItems.count()) {
-        QByteArray sql = "DELETE FROM metadata WHERE phash in (" + superfluousItems.join(",") + ")";
-        qCInfo(lcDb) << "Sync Journal cleanup for" << superfluousItems;
-        SqlQuery delQuery(_db);
-        delQuery.prepare(sql);
-        if (!delQuery.exec()) {
-            return false;
-        }
-    }
-
-    // Incorporate results back into main DB
-    walCheckpoint();
-
-    return true;
-}
-
 int SyncJournalDb::getFileRecordCount()
 {
     QMutexLocker locker(&_mutex);
