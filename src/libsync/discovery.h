@@ -35,7 +35,7 @@ public:
         InBlackList // Do not query this folder because it is in th blacklist (remote entries only)
     };
     Q_ENUM(QueryMode)
-    explicit ProcessDirectoryJob(const SyncFileItemPtr &dirItem, QueryMode queryServer, QueryMode queryLocal,
+    explicit ProcessDirectoryJob(const SyncFileItemPtr &dirItem, QueryMode queryLocal, QueryMode queryServer,
         DiscoveryPhase *data, QObject *parent)
         : QObject(parent)
         , _dirItem(dirItem)
@@ -76,6 +76,7 @@ private:
     void processFile(PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
     void processFileAnalyzeRemoteInfo(const SyncFileItemPtr &item, PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
     void processFileAnalyzeLocalInfo(const SyncFileItemPtr &item, PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &, QueryMode recurseQueryServer);
+    void processFileFinalize(const SyncFileItemPtr &item, PathTuple, bool recurse, QueryMode recurseQueryLocal, QueryMode recurseQueryServer);
 
 
     // Return false if there is an error and that a directory must not be recursively be taken
