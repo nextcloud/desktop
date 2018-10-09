@@ -411,7 +411,6 @@ void SyncEngine::startSync()
     _hasForwardInTimeFiles = false;
     _backInTimeFiles = 0;
     _seenFiles.clear();
-    _temporarilyUnavailablePaths.clear();
 
     _progressInfo->reset();
 
@@ -744,10 +743,6 @@ void SyncEngine::slotFinished(bool success)
         _journal->setDataFingerprint(_discoveryPhase->_dataFingerprint);
     }
 
-    if (success && !_journal->postSyncCleanup(_seenFiles, _temporarilyUnavailablePaths)) {
-        qCDebug(lcEngine) << "Cleaning of synced ";
-    }
-
     conflictRecordMaintenance();
 
     _journal->commit("All Finished.", false);
@@ -776,7 +771,6 @@ void SyncEngine::finalize(bool success)
     // Delete the propagator only after emitting the signal.
     _propagator.clear();
     _seenFiles.clear();
-    _temporarilyUnavailablePaths.clear();
     _uniqueErrors.clear();
     _localDiscoveryPaths.clear();
     _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
