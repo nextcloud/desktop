@@ -618,16 +618,7 @@ void SyncEngine::slotStartDiscovery()
     auto discoveryJob = new ProcessDirectoryJob(SyncFileItemPtr(), ProcessDirectoryJob::NormalQuery, ProcessDirectoryJob::NormalQuery,
         _discoveryPhase.data(), _discoveryPhase.data());
     _discoveryPhase->startJob(discoveryJob);
-
-    /*
-     * FIXME
-    if (account()->rootEtagChangesNotOnlySubFolderEtags()) {
-        connect(_discoveryMainThread.data(), &DiscoveryMainThread::etag, this, &SyncEngine::slotRootEtagReceived);
-    } else {
-        connect(_discoveryMainThread.data(), &DiscoveryMainThread::etagConcatenation, this, &SyncEngine::slotRootEtagReceived);
-    }
-
-    */
+    connect(discoveryJob, &ProcessDirectoryJob::etag, this, &SyncEngine::slotRootEtagReceived);
 }
 
 void SyncEngine::slotFolderDiscovered(bool local, const QString &folder)

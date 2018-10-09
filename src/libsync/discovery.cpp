@@ -37,6 +37,7 @@ void ProcessDirectoryJob::start()
     if (_queryServer == NormalQuery) {
         serverJob = new DiscoverySingleDirectoryJob(_discoveryData->_account,
             _discoveryData->_remoteFolder + _currentFolder._server, this);
+        connect(serverJob, &DiscoverySingleDirectoryJob::etag, this, &ProcessDirectoryJob::etag);
         connect(serverJob, &DiscoverySingleDirectoryJob::finished, this, [this, serverJob](const auto &results) {
             if (results) {
                 _serverEntries = *results;
