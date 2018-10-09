@@ -235,6 +235,7 @@ def FixBinary(path):
     FixLibraryInstallPath(library, path)
 
 def CopyLibrary(path):
+  print "CopyLibrary:", path
   new_path = os.path.join(binary_dir, os.path.basename(path))
   args = ['ditto', '--arch=x86_64', path, new_path]
   commands.append(args)
@@ -243,6 +244,7 @@ def CopyLibrary(path):
   return new_path
 
 def CopyPlugin(path, subdir):
+  print "CopyPlugin:", path, subdir
   new_path = os.path.join(plugins_dir, subdir, os.path.basename(path))
   args = ['mkdir', '-p', os.path.dirname(new_path)]
   commands.append(args)
@@ -253,8 +255,8 @@ def CopyPlugin(path, subdir):
   return new_path
 
 def CopyFramework(source_dylib):
-  parts = source_dylib.split(os.sep)
   print "CopyFramework:", source_dylib
+  parts = source_dylib.split(os.sep)
   for i, part in enumerate(parts):
     matchObj = re.match(r'(\w+\.framework)', part)
     if matchObj:
