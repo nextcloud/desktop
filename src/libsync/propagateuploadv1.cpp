@@ -310,8 +310,6 @@ void PropagateUploadFileV1::slotPutFinished()
         // Normally Owncloud 6 always puts X-OC-MTime
         qCWarning(lcPropagateUpload) << "Server does not support X-OC-MTime" << job->reply()->rawHeader("X-OC-MTime");
         // Well, the mtime was not set
-        done(SyncFileItem::SoftError, "Server does not support X-OC-MTime");
-        return;
     }
 
     finalize();
