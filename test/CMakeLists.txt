@@ -57,6 +57,7 @@ nextcloud_add_test(Blacklist "syncenginetestutils.h")
 nextcloud_add_test(LocalDiscovery "syncenginetestutils.h")
 nextcloud_add_test(RemoteDiscovery "syncenginetestutils.h")
 nextcloud_add_test(Permissions "syncenginetestutils.h")
+nextcloud_add_test(SelectiveSync "syncenginetestutils.h")
 nextcloud_add_test(FolderWatcher "${FolderWatcher_SRC}")
 
 if( UNIX AND NOT APPLE )
