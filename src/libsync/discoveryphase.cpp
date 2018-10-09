@@ -321,8 +321,6 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
 
     //This works in concerto with the RequestEtagJob and the Folder object to check if the remote folder changed.
     if (map.contains("getetag")) {
-        _etagConcatenation += map.value("getetag");
-
         if (_firstEtag.isEmpty()) {
             _firstEtag = map.value("getetag"); // for directory itself
         }
@@ -343,7 +341,6 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
         return;
     }
     emit etag(_firstEtag);
-    emit etagConcatenation(_etagConcatenation);
     emit finished(_results);
     deleteLater();
 }

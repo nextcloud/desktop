@@ -58,16 +58,7 @@ RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject 
 void RequestEtagJob::start()
 {
     QNetworkRequest req;
-    if (_account && _account->rootEtagChangesNotOnlySubFolderEtags()) {
-        // Fixed from 8.1 https://github.com/owncloud/client/issues/3730
-        req.setRawHeader("Depth", "0");
-    } else {
-        // Let's always request all entries inside a directory. There are/were bugs in the server
-        // where a root or root-folder ETag is not updated when its contents change. We work around
-        // this by concatenating the ETags of the root and its contents.
-        req.setRawHeader("Depth", "1");
-        // See https://github.com/owncloud/core/issues/5255 and others
-    }
+    req.setRawHeader("Depth", "0");
 
     QByteArray xml("<?xml version=\"1.0\" ?>\n"
                    "<d:propfind xmlns:d=\"DAV:\">\n"

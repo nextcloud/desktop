@@ -478,11 +478,6 @@ void Account::setServerVersion(const QString &version)
     emit serverVersionChanged(this, oldServerVersion, version);
 }
 
-bool Account::rootEtagChangesNotOnlySubFolderEtags()
-{
-    return (serverVersionInt() >= makeServerVersion(8, 1, 0));
-}
-
 void Account::setNonShib(bool nonShib)
 {
     if (nonShib) {

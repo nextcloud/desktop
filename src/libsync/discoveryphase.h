@@ -93,7 +93,6 @@ public:
     // This is not actually a network job, it is just a job
 signals:
     void firstDirectoryPermissions(RemotePermissions);
-    void etagConcatenation(const QString &);
     void etag(const QString &);
     void finished(const Result<QVector<RemoteInfo>> &result);
 private slots:
@@ -104,7 +103,6 @@ private slots:
 private:
     QVector<RemoteInfo> _results;
     QString _subPath;
-    QString _etagConcatenation;
     QString _firstEtag;
     AccountPtr _account;
     // The first result is for the directory itself and need to be ignored.

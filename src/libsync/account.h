@@ -214,10 +214,6 @@ public:
      */
     bool serverVersionUnsupported() const;
 
-    // Fixed from 8.1 https://github.com/owncloud/client/issues/3730
-    /** Detects a specific bug in older server versions */
-    bool rootEtagChangesNotOnlySubFolderEtags();
-
     /** True when the server connection is using HTTP2  */
     bool isHttp2Supported() { return _http2Supported; }
     void setHttp2Supported(bool value) { _http2Supported = value; }
