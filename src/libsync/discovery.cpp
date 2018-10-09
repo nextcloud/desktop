@@ -565,18 +565,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
 
                             postProcessRename(path);
                         }
-
-                        qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->isDirectory();
-                        if (item->isDirectory()) {
-                            auto job = new ProcessDirectoryJob(item, _queryServer,
-                                item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist,
-                                _discoveryData, this);
-                            job->_currentFolder = path;
-                            connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
-                            _queuedJobs.push_back(job);
-                        } else {
-                            emit _discoveryData->itemDiscovered(item);
-                        }
+                        processFileFinalize(item, path, item->isDirectory(), item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist, _queryServer);
                         _pendingAsyncJobs--;
                         progress();
                     });
@@ -926,17 +915,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                             processRename(path);
                             recurseQueryServer = *etag == base._etag ? ParentNotChanged : NormalQuery;
                         }
-
-                        qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->isDirectory();
-                        bool recurse = checkPermissions(item);
-                        if (recurse && item->isDirectory()) {
-                            auto job = new ProcessDirectoryJob(item, recurseQueryServer, NormalQuery, _discoveryData, this);
-                            job->_currentFolder = path;
-                            connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
-                            _queuedJobs.push_back(job);
-                        } else {
-                            emit _discoveryData->itemDiscovered(item);
-                        }
+                        processFileFinalize(item, path, item->isDirectory(), NormalQuery, recurseQueryServer);
                         _pendingAsyncJobs--;
                         progress();
                     });
@@ -1005,6 +984,18 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         }
     }
 
+    bool recurse = item->isDirectory() || localEntry.isDirectory || serverEntry.isDirectory;
+    if (_queryLocal != NormalQuery && _queryServer != NormalQuery && !item->_isRestoration)
+        recurse = false;
+
+    auto recurseQueryLocal = _queryLocal == ParentNotChanged ? ParentNotChanged : localEntry.isDirectory || item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist;
+    processFileFinalize(item, path, recurse, recurseQueryLocal, recurseQueryServer);
+}
+
+void ProcessDirectoryJob::processFileFinalize(
+    const SyncFileItemPtr &item, PathTuple path, bool recurse,
+    QueryMode recurseQueryLocal, QueryMode recurseQueryServer)
+{
     if (path._original != path._target && (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA || item->_instruction == CSYNC_INSTRUCTION_NONE)) {
         ASSERT(_dirItem && _dirItem->_instruction == CSYNC_INSTRUCTION_RENAME);
         // This is because otherwise subitems are not updated!  (ideally renaming a directory could
@@ -1018,17 +1009,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_SYNC)
         item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-
-
-    bool recurse = item->isDirectory() || localEntry.isDirectory || serverEntry.isDirectory;
     if (!checkPermissions(item))
         recurse = false;
-    if (_queryLocal != NormalQuery && _queryServer != NormalQuery && !item->_isRestoration)
-        recurse = false;
     if (recurse) {
-        auto job = new ProcessDirectoryJob(item, recurseQueryServer,
-            _queryLocal == ParentNotChanged ? ParentNotChanged : localEntry.isDirectory || item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist,
-            _discoveryData, this);
+        auto job = new ProcessDirectoryJob(item, recurseQueryLocal, recurseQueryServer, _discoveryData, this);
         job->_currentFolder = path;
         if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
             job->setParent(_discoveryData);
@@ -1071,7 +1055,7 @@ void ProcessDirectoryJob::processBlacklisted(const PathTuple &path, const OCC::L
     qCInfo(lcDisco) << "Discovered (blacklisted) " << item->_file << item->_instruction << item->_direction << item->isDirectory();
 
     if (item->isDirectory() && item->_instruction != CSYNC_INSTRUCTION_IGNORE) {
-        auto job = new ProcessDirectoryJob(item, InBlackList, NormalQuery, _discoveryData, this);
+        auto job = new ProcessDirectoryJob(item, NormalQuery, InBlackList, _discoveryData, this);
         job->_currentFolder = path;
         connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
         _queuedJobs.push_back(job);
