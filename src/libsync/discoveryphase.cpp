@@ -74,7 +74,8 @@ bool DiscoveryPhase::isInSelectiveSyncBlackList(const QString &path) const
     return false;
 }
 
-bool DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePermissions remotePerm)
+void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePermissions remotePerm,
+    std::function<void(bool)> callback)
 {
     if (_syncOptions._confirmExternalStorage && !_syncOptions._newFilesAreVirtual
         && remotePerm.hasPermission(RemotePermissions::IsMounted)) {
@@ -86,51 +87,49 @@ bool DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
         // Only allow it if the white list contains exactly this path (not parents)
         // We want to ask confirmation for external storage even if the parents where selected
         if (_selectiveSyncWhiteList.contains(path + QLatin1Char('/'))) {
-            return false;
+            return callback(false);
         }
 
         emit newBigFolder(path, true);
-        return true;
+        return callback(true);
     }
 
     // If this path or the parent is in the white list, then we do not block this file
     if (findPathInList(_selectiveSyncWhiteList, path)) {
-        return false;
+        return callback(false);
     }
 
     auto limit = _syncOptions._newBigFolderSizeLimit;
     if (limit < 0 || _syncOptions._newFilesAreVirtual) {
         // no limit, everything is allowed;
-        return false;
+        return callback(false);
     }
 
-    // Go in the main thread to do a PROPFIND to know the size of this folder
-    qint64 result = -1;
-
-    /* FIXME TOTO
-    {
-        QMutexLocker locker(&_vioMutex);
-        emit doGetSizeSignal(path, &result);
-        _vioWaitCondition.wait(&_vioMutex);
-    }*/
-
-    if (result >= limit) {
-        // we tell the UI there is a new folder
-        emit newBigFolder(path, false);
-        return true;
-    } else {
-        // it is not too big, put it in the white list (so we will not do more query for the children)
-        // and and do not block.
-        auto p = path;
-        if (!p.endsWith(QLatin1Char('/'))) {
-            p += QLatin1Char('/');
+    // do a PROPFIND to know the size of this folder
+    auto propfindJob = new PropfindJob(_account, _remoteFolder + path, this);
+    propfindJob->setProperties(QList<QByteArray>() << "resourcetype"
+                                                   << "http://owncloud.org/ns:size");
+    QObject::connect(propfindJob, &PropfindJob::finishedWithError,
+        this, [=] { return callback(false); });
+    QObject::connect(propfindJob, &PropfindJob::result, this, [=](const QVariantMap &values) {
+        auto result = values.value(QLatin1String("size")).toLongLong();
+        if (result >= limit) {
+            // we tell the UI there is a new folder
+            emit newBigFolder(path, false);
+            return callback(true);
+        } else {
+            // it is not too big, put it in the white list (so we will not do more query for the children)
+            // and and do not block.
+            auto p = path;
+            if (!p.endsWith(QLatin1Char('/')))
+                p += QLatin1Char('/');
+            _selectiveSyncWhiteList.insert(
+                std::upper_bound(_selectiveSyncWhiteList.begin(), _selectiveSyncWhiteList.end(), p),
+                p);
+            return callback(false);
         }
-        _selectiveSyncWhiteList.insert(std::upper_bound(_selectiveSyncWhiteList.begin(),
-                                           _selectiveSyncWhiteList.end(), p),
-            p);
-
-        return false;
-    }
+    });
+    propfindJob->start();
 }
 
 /* Given a path on the remote, give the path as it is when the rename is done */
@@ -363,67 +362,4 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
     emit finished({httpCode, msg});
     deleteLater();
 }
-
-/*
-void DiscoveryMainThread::singleDirectoryJobFirstDirectoryPermissionsSlot(RemotePermissions p)
-{
-    // Should be thread safe since the sync thread is blocked
-    if (_discoveryJob->_csync_ctx->remote.root_perms.isNull()) {
-        qCDebug(lcDiscovery) << "Permissions for root dir:" << p.toString();
-        _discoveryJob->_csync_ctx->remote.root_perms = p;
-    }
-}
-
-void DiscoveryMainThread::doGetSizeSlot(const QString &path, qint64 *result)
-{
-    QString fullPath = _pathPrefix;
-    if (!_pathPrefix.endsWith('/')) {
-        fullPath += '/';
-    }
-    fullPath += path;
-    // remove trailing slash
-    while (fullPath.endsWith('/')) {
-        fullPath.chop(1);
-    }
-
-    _currentGetSizeResult = result;
-
-    // Schedule the DiscoverySingleDirectoryJob
-    auto propfindJob = new PropfindJob(_account, fullPath, this);
-    propfindJob->setProperties(QList<QByteArray>() << "resourcetype"
-                                                   << "http://owncloud.org/ns:size");
-    QObject::connect(propfindJob, &PropfindJob::finishedWithError,
-        this, &DiscoveryMainThread::slotGetSizeFinishedWithError);
-    QObject::connect(propfindJob, &PropfindJob::result,
-        this, &DiscoveryMainThread::slotGetSizeResult);
-    propfindJob->start();
-}
-
-void DiscoveryMainThread::slotGetSizeFinishedWithError()
-{
-    if (!_currentGetSizeResult) {
-        return; // possibly aborted
-    }
-
-    qCWarning(lcDiscovery) << "Error getting the size of the directory";
-    // just let let the discovery job continue then
-    _currentGetSizeResult = 0;
-    QMutexLocker locker(&_discoveryJob->_vioMutex);
-    _discoveryJob->_vioWaitCondition.wakeAll();
-}
-
-void DiscoveryMainThread::slotGetSizeResult(const QVariantMap &map)
-{
-    if (!_currentGetSizeResult) {
-        return; // possibly aborted
-    }
-
-    *_currentGetSizeResult = map.value(QLatin1String("size")).toLongLong();
-    qCDebug(lcDiscovery) << "Size of folder:" << *_currentGetSizeResult;
-    _currentGetSizeResult = 0;
-    QMutexLocker locker(&_discoveryJob->_vioMutex);
-    _discoveryJob->_vioWaitCondition.wakeAll();
-}
-
-*/
 }

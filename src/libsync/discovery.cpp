@@ -433,17 +433,25 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         item->_modtime = serverEntry.modtime;
         item->_size = serverEntry.size;
 
-        auto postProcessNew = [item, this, path, serverEntry] {
+        auto postProcessServerNew = [item, this, path, serverEntry, localEntry, dbEntry] {
             if (item->isDirectory()) {
-                if (_discoveryData->checkSelectiveSyncNewFolder(path._server, serverEntry.remotePerm)) {
-                    return;
-                }
+                _pendingAsyncJobs++;
+                _discoveryData->checkSelectiveSyncNewFolder(path._server, serverEntry.remotePerm,
+                    [=](bool result) {
+                        --_pendingAsyncJobs;
+                        if (!result) {
+                            processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
+                        }
+                        progress();
+                    });
+                return;
             }
             // Turn new remote files into virtual files if the option is enabled.
             if (_discoveryData->_syncOptions._newFilesAreVirtual && item->_type == ItemTypeFile) {
                 item->_type = ItemTypeVirtualFile;
                 item->_file.append(_discoveryData->_syncOptions._virtualFileSuffix);
             }
+            processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
         };
 
         if (!localEntry.isValid()) {
@@ -547,26 +555,28 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                     _pendingAsyncJobs++;
                     auto job = new RequestEtagJob(_discoveryData->_account, originalPath, this);
                     connect(job, &RequestEtagJob::finishedWithResult, this, [=](const Result<QString> &etag) mutable {
+                        _pendingAsyncJobs--;
                         if (etag.errorCode() != 404 ||
                             // Somehow another item claimed this original path, consider as if it existed
                             _discoveryData->_renamedItems.contains(originalPath)) {
                             // If the file exist or if there is another error, consider it is a new file.
-                            postProcessNew();
-                        } else {
-                            // The file do not exist, it is a rename
-
-                            // In case the deleted item was discovered in parallel
-                            auto it = _discoveryData->_deletedItem.find(originalPath);
-                            if (it != _discoveryData->_deletedItem.end()) {
-                                ASSERT((*it)->_instruction == CSYNC_INSTRUCTION_REMOVE);
-                                (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
-                            }
-                            delete _discoveryData->_queuedDeletedDirectories.take(originalPath);
-
-                            postProcessRename(path);
+                            postProcessServerNew();
+                            progress();
+                            return;
                         }
+
+                        // The file do not exist, it is a rename
+
+                        // In case the deleted item was discovered in parallel
+                        auto it = _discoveryData->_deletedItem.find(originalPath);
+                        if (it != _discoveryData->_deletedItem.end()) {
+                            ASSERT((*it)->_instruction == CSYNC_INSTRUCTION_REMOVE);
+                            (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
+                        }
+                        delete _discoveryData->_queuedDeletedDirectories.take(originalPath);
+
+                        postProcessRename(path);
                         processFileFinalize(item, path, item->isDirectory(), item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist, _queryServer);
-                        _pendingAsyncJobs--;
                         progress();
                     });
                     job->start();
@@ -584,7 +594,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         }
 
         if (item->_instruction == CSYNC_INSTRUCTION_NEW) {
-            postProcessNew();
+            postProcessServerNew();
+            return;
         }
     } else if (serverEntry.isDirectory != (dbEntry._type == ItemTypeDirectory)) {
         // If the type of the entity changed, it's like NEW, but

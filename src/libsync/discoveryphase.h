@@ -139,7 +139,11 @@ public:
     std::function<bool(const QString &)> _shouldDiscoverLocaly;
 
     bool isInSelectiveSyncBlackList(const QString &path) const;
-    bool checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp);
+
+    // Check if the new folder should be deselected or not.
+    // May be async. "Return" via the callback, true if the item is blacklisted
+    void checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp,
+        std::function<void(bool)> callback);
 
     QMap<QString, SyncFileItemPtr> _deletedItem;
     QMap<QString, ProcessDirectoryJob *> _queuedDeletedDirectories;

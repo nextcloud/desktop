@@ -55,6 +55,7 @@ owncloud_add_test(Blacklist "syncenginetestutils.h")
 owncloud_add_test(LocalDiscovery "syncenginetestutils.h")
 owncloud_add_test(RemoteDiscovery "syncenginetestutils.h")
 owncloud_add_test(Permissions "syncenginetestutils.h")
+owncloud_add_test(SelectiveSync "syncenginetestutils.h")
 owncloud_add_test(FolderWatcher "${FolderWatcher_SRC}")
 
 if( UNIX AND NOT APPLE )
