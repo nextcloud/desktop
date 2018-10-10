@@ -32,7 +32,9 @@ FRAMEWORK_SEARCH_PATH=[
     os.path.join(os.environ['HOME'], 'Library/Frameworks')
 ]
 
-LIBRARY_SEARCH_PATH=['/usr/local/lib', '.']
+LIBRARY_SEARCH_PATH=[
+    '.'
+]
 
 QT_PLUGINS = [
     'sqldrivers/libqsqlite.dylib',
@@ -44,8 +46,6 @@ QT_PLUGINS = [
 ]
 
 QT_PLUGINS_SEARCH_PATH=[
-#    os.path.join(os.environ['QTDIR'], 'plugins'),
-    '/usr/local/Cellar/qt/5.2.1/plugins',
 ]
 
 
