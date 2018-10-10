@@ -366,12 +366,12 @@ typedef struct _EVENT_START {
 #pragma warning(disable : 4201)
 typedef struct _DOKAN_RENAME_INFORMATION {
 #if (_WIN32_WINNT >= _WIN32_WINNT_WIN10_RS1)
-	union {
-		BOOLEAN ReplaceIfExists;  // FileRenameInformation
-		ULONG Flags;              // FileRenameInformationEx
-	} DUMMYUNIONNAME;
+        union {
+                BOOLEAN ReplaceIfExists;  // FileRenameInformation
+                ULONG Flags;              // FileRenameInformationEx
+        } DUMMYUNIONNAME;
 #else
-	BOOLEAN ReplaceIfExists;
+        BOOLEAN ReplaceIfExists;
 #endif
   ULONG FileNameLength;
   WCHAR FileName[1];
