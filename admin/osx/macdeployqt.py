@@ -24,6 +24,9 @@ import sys
 from glob import glob
 from distutils.version import LooseVersion
 
+bundle_dir = sys.argv[1]
+qmake_path = sys.argv[2]
+
 def QueryQMake(attrib):
     return subprocess.check_output([qmake_path, '-query', attrib]).rstrip('\n')
 
@@ -48,10 +51,9 @@ QT_PLUGINS = [
 QT_PLUGINS_SEARCH_PATH=[
 ]
 
-# Package these libraries even if they are (also) a system lib
-SYSTEM_LIBRARY_BLACKLIST=[
-    'libcrypto.dylib',
-    'libssl.dylib'
+# Package libraries from these paths even if they are also a system library
+SYSTEM_LIBRARY_BLACKLIST = [
+    QueryQMake('QT_INSTALL_LIBS')
 ]
 
 class Error(Exception):
@@ -83,8 +85,6 @@ if len(sys.argv) < 3:
 def is_exe(fpath):
   return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
 
-bundle_dir = sys.argv[1]
-qmake_path = sys.argv[2]
 
 bundle_name = os.path.basename(bundle_dir).split('.')[0]
 
@@ -203,7 +203,7 @@ def FixFramework(path):
     FixLibraryInstallPath(library, new_path)
 
 def FixLibrary(path):
-  if path in fixed_libraries or FindSystemLibrary(os.path.basename(path)) is not None:
+  if path in fixed_libraries or FindSystemLibrary(path) is not None:
     return
   else:
     fixed_libraries.append(path)
@@ -308,10 +308,12 @@ def FixInstallPath(library_path, library, new_path):
   args = ['install_name_tool', '-change', library_path, new_path, library]
   commands.append(args)
 
-def FindSystemLibrary(library_name):
-  if library_name in SYSTEM_LIBRARY_BLACKLIST:
-      return None
+def FindSystemLibrary(library_path):
+  for item in SYSTEM_LIBRARY_BLACKLIST:
+      if library_path.startswith(item):
+          return None
 
+  library_name = os.path.basename(library_path)
   for path in ['/lib', '/usr/lib']:
     full_path = os.path.join(path, library_name)
     if os.path.exists(full_path):
@@ -319,7 +321,7 @@ def FindSystemLibrary(library_name):
   return None
 
 def FixLibraryInstallPath(library_path, library):
-  system_library = FindSystemLibrary(os.path.basename(library_path))
+  system_library = FindSystemLibrary(library_path)
   if system_library is None:
     new_path = '@executable_path/../MacOS/%s' % os.path.basename(library_path)
     FixInstallPath(library_path, library, new_path)
