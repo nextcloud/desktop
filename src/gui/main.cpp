@@ -51,10 +51,10 @@ int main(int argc, char **argv)
 {
     Q_INIT_RESOURCE(client);
 
-    /* Initialise the library
+    /* Initialise the library */
     ERR_load_crypto_strings();
     OpenSSL_add_all_algorithms();
-    OPENSSL_config(NULL);*/
+    OPENSSL_config(NULL);
 
 #ifdef Q_OS_WIN
 // If the font size ratio is set on Windows, we need to
