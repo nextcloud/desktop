@@ -2488,7 +2488,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>بارگذاری از 1% بیش از سهمیه برای پوشه است</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="624"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="626"/>
         <source>Error writing metadata to the database</source>
         <translation>خطا در نوشتن متادیتا در پایگاه داده</translation>
     </message>
