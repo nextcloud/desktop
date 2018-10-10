@@ -48,6 +48,11 @@ QT_PLUGINS = [
 QT_PLUGINS_SEARCH_PATH=[
 ]
 
+# Package these libraries even if they are (also) a system lib
+SYSTEM_LIBRARY_BLACKLIST=[
+    'libcrypto.dylib',
+    'libssl.dylib'
+]
 
 class Error(Exception):
   pass
@@ -304,6 +309,9 @@ def FixInstallPath(library_path, library, new_path):
   commands.append(args)
 
 def FindSystemLibrary(library_name):
+  if library_name in SYSTEM_LIBRARY_BLACKLIST:
+      return None
+
   for path in ['/lib', '/usr/lib']:
     full_path = os.path.join(path, library_name)
     if os.path.exists(full_path):
