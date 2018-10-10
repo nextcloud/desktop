@@ -58,14 +58,8 @@
 #include <QMessageBox>
 #include <Qprocess>
 #include <QDesktopServices>
-<<<<<<< HEAD
-#include <QGuiApplication>
-#include <QTimer>
-=======
 
 #include <openssl/crypto.h>
->>>>>>> Windows integration
-
 
 class QSocket;
 
