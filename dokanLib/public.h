@@ -24,8 +24,8 @@ with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #ifndef DOKAN_MAJOR_API_VERSION
 #define DOKAN_MAJOR_API_VERSION L"1"
-/*#include <minwindef.h> */
-#include "C:/Program Files (x86)/Windows Kits/8.1/Include/shared/minwindef.h"
+#include <minwindef.h>
+//#include "C:/Program Files (x86)/Windows Kits/8.1/Include/shared/minwindef.h"
 #endif
 
 #define DOKAN_DRIVER_VERSION 0x0000190
@@ -367,12 +367,12 @@ typedef struct _EVENT_START {
 #pragma warning(disable : 4201)
 typedef struct _DOKAN_RENAME_INFORMATION {
 #if (_WIN32_WINNT >= _WIN32_WINNT_WIN10_RS1)
-	union {
-		BOOLEAN ReplaceIfExists;  // FileRenameInformation
-		ULONG Flags;              // FileRenameInformationEx
-	} DUMMYUNIONNAME;
+        union {
+                BOOLEAN ReplaceIfExists;  // FileRenameInformation
+                ULONG Flags;              // FileRenameInformationEx
+        } DUMMYUNIONNAME;
 #else
-	BOOLEAN ReplaceIfExists;
+        BOOLEAN ReplaceIfExists;
 #endif
   ULONG FileNameLength;
   WCHAR FileName[1];
