@@ -558,13 +558,13 @@ void OwncloudSetupWizard::finalizeSetup(bool success)
             _ocWizard->appendToConfigurationLog(
                 tr("A sync connection from %1 to remote directory %2 was set up.")
                     .arg(localFolder, _remoteFolder));
+            _ocWizard->beforeSuccessfulStep();
         }
         _ocWizard->appendToConfigurationLog(QLatin1String(" "));
         _ocWizard->appendToConfigurationLog(QLatin1String("<p><font color=\"green\"><b>")
             + tr("Successfully connected to %1!")
                   .arg(Theme::instance()->appNameGUI())
             + QLatin1String("</b></font></p>"));
-        _ocWizard->successfulStep();
     } else {
         // ### this is not quite true, pass in the real problem as optional parameter
         _ocWizard->appendToConfigurationLog(QLatin1String("<p><font color=\"red\">")
@@ -608,10 +608,11 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
         // is changed.
         auto account = applyAccountChanges();
 
-        QString localFolder = FolderDefinition::prepareLocalPath(_ocWizard->localFolder());
+        ConfigFile cfgFile;
+        QString localFolder = FolderDefinition::prepareLocalPath(cfgFile.defaultFileStreamMirrorPath());
 
-        bool startFromScratch = _ocWizard->field("OCSyncFromScratch").toBool();
-        if (!startFromScratch || ensureStartFromScratch(localFolder)) {
+//        bool startFromScratch = _ocWizard->field("OCSyncFromScratch").toBool();
+//        if (!startFromScratch || ensureStartFromScratch(localFolder)) {
             qCInfo(lcWizard) << "Adding folder definition for" << localFolder << _remoteFolder;
             FolderDefinition folderDefinition;
             folderDefinition.localPath = localFolder;
@@ -621,20 +622,21 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
                 folderDefinition.navigationPaneClsid = QUuid::createUuid();
 
             auto f = folderMan->addFolder(account, folderDefinition);
-            if (f) {
-                f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
-                    _ocWizard->selectiveSyncBlacklist());
-                if (!_ocWizard->isConfirmBigFolderChecked()) {
-                    // The user already accepted the selective sync dialog. everything is in the white list
-                    f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
-                        QStringList() << QLatin1String("/"));
-                }
-            }
+//            if (f) {
+//                f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
+//                    _ocWizard->selectiveSyncBlacklist());
+//                if (!_ocWizard->isConfirmBigFolderChecked()) {
+//                    // The user already accepted the selective sync dialog. everything is in the white list
+//                    f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
+//                        QStringList() << QLatin1String("/"));
+//                }
+//            }
             _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
         }
-    }
+    //}
 
     // notify others.
+    _ocWizard->successfulStep();
     emit ownCloudWizardDone(result);
 }
 

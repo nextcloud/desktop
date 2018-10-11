@@ -64,9 +64,9 @@ public:
 
     void setupCustomMedia(QVariant, QLabel *);
     QString ocUrl() const;
-    QString localFolder() const;
-    QStringList selectiveSyncBlacklist() const;
-    bool isConfirmBigFolderChecked() const;
+    //QString localFolder() const;
+    //QStringList selectiveSyncBlacklist() const;
+    //bool isConfirmBigFolderChecked() const;
 
     void enableFinishOnResultWidget(bool enable);
 
@@ -77,6 +77,8 @@ public:
     // Set from the OwncloudSetupPage, later used from OwncloudHttpCredsPage
     QSslKey _clientSslKey;
     QSslCertificate _clientSslCertificate;
+
+    void beforeSuccessfulStep();
 
 public slots:
     void setAuthType(DetermineAuthTypeJob::AuthType type);
@@ -103,7 +105,7 @@ private:
 #ifndef NO_SHIBBOLETH
     OwncloudShibbolethCredsPage *_shibbolethCredsPage;
 #endif
-    OwncloudAdvancedSetupPage *_advancedSetupPage;
+    //OwncloudAdvancedSetupPage *_advancedSetupPage;
     OwncloudWizardResultPage *_resultPage;
     AbstractCredentialsWizardPage *_credentialsPage;
     WebViewPage *_webViewPage;

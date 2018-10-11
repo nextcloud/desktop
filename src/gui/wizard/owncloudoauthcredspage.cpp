@@ -98,7 +98,7 @@ void OwncloudOAuthCredsPage::asyncAuthResult(OAuth::Result r, const QString &use
 
 int OwncloudOAuthCredsPage::nextId() const
 {
-    return WizardCommon::Page_AdvancedSetup;
+    return WizardCommon::Page_Result;
 }
 
 void OwncloudOAuthCredsPage::setConnected()

@@ -173,34 +173,51 @@ void GeneralSettings::slotToggleOptionalServerNotifications(bool enable)
     ConfigFile cfgFile;
     cfgFile.setOptionalServerNotifications(enable);
 
+    #if defined(Q_OS_MAC)
+        QString defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
+        QString defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
+
+        if (defaultFileStreamSyncPath.isEmpty() || defaultFileStreamSyncPath.compare(QString("")) == 0)
+        {
+            cfgFile.setDefaultFileStreamSyncPath(QString("/Volumes/" + _theme->appName() + "fs"));
+            //?? defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
+        }
+
+        if (defaultFileStreamMirrorPath.isEmpty() || defaultFileStreamMirrorPath.compare(QString("")) == 0)
+        {
+            cfgFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/.cachedFiles");
+            //?? defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
+        }
+    #endif
+
 #ifdef Q_OS_WIN
 //< Set configuration paths.
     QDir dsrt = QDir::home();
     QString wwr = dsrt.absolutePath();
     wwr.append("/dirUser_clientLaboratory");
-    
-	QString m_defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
-	QString m_defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
-	QString m_defaultFileStreamLetterDrive = cfgFile.defaultFileStreamLetterDrive();
+
+    QString m_defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
+    QString m_defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
+    QString m_defaultFileStreamLetterDrive = cfgFile.defaultFileStreamLetterDrive();
 
 
-	if (m_defaultFileStreamSyncPath.isEmpty() || m_defaultFileStreamSyncPath.compare(QString("")) == 0)
-	{
-	cfgFile.setDefaultFileStreamSyncPath(QString("X:/Mi unidad"));
-	m_defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
-	}
+    if (m_defaultFileStreamSyncPath.isEmpty() || m_defaultFileStreamSyncPath.compare(QString("")) == 0)
+    {
+    cfgFile.setDefaultFileStreamSyncPath(QString("X:/Mi unidad"));
+    m_defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
+    }
 
-	if (m_defaultFileStreamMirrorPath.isEmpty() || m_defaultFileStreamMirrorPath.compare(QString("")) == 0)
-	{
-		cfgFile.setDefaultFileStreamMirrorPath(wwr);
-		m_defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
-	}
+    if (m_defaultFileStreamMirrorPath.isEmpty() || m_defaultFileStreamMirrorPath.compare(QString("")) == 0)
+    {
+        cfgFile.setDefaultFileStreamMirrorPath(wwr);
+        m_defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
+    }
 
-	if (m_defaultFileStreamLetterDrive.isEmpty() || m_defaultFileStreamLetterDrive.compare(QString("")) == 0)
-	{
-		cfgFile.setDefaultFileStreamLetterDrive(QString("x"));
-		m_defaultFileStreamLetterDrive = cfgFile.defaultFileStreamLetterDrive();
-	}
+    if (m_defaultFileStreamLetterDrive.isEmpty() || m_defaultFileStreamLetterDrive.compare(QString("")) == 0)
+    {
+        cfgFile.setDefaultFileStreamLetterDrive(QString("x"));
+        m_defaultFileStreamLetterDrive = cfgFile.defaultFileStreamLetterDrive();
+    }
 #endif
 }
 

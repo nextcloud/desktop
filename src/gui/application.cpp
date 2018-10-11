@@ -319,8 +319,8 @@ void Application::slotAccountStateAdded(AccountState *accountState)
 
     // Mount the virtual FileSystem.
     #if defined(Q_OS_MAC)
-    QString hiddenPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/.cachedFiles";
-    cont = new VfsMacController(hiddenPath, "/Volumes/" + _theme->appName() + "fs" , accountState, this);
+    ConfigFile cfgFile;
+    cont = new VfsMacController(cfgFile.defaultFileStreamMirrorPath(), cfgFile.defaultFileStreamSyncPath(), accountState, this);
     #endif
 
 
