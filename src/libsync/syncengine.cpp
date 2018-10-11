@@ -1642,6 +1642,22 @@ void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QB
 {
     _localDiscoveryStyle = style;
     _localDiscoveryPaths = std::move(paths);
+
+    // Normalize to make sure that no path is a contained in another.
+    // Note: for simplicity, this code consider anything less than '/' as a path separator, so for
+    // example, this will remove "foo.bar" if "foo" is in the list. This will mean we might have
+    // some false positive, but that's Ok.
+    // This invariant is used in SyncEngine::shouldDiscoverLocally
+    QByteArray prev;
+    auto it = _localDiscoveryPaths.begin();
+    while(it != _localDiscoveryPaths.end()) {
+        if (!prev.isNull() && it->startsWith(prev) && (prev.endsWith('/') || *it == prev || it->at(prev.size()) <= '/')) {
+            it = _localDiscoveryPaths.erase(it);
+        } else {
+            prev = *it;
+            ++it;
+        }
+    }
 }
 
 bool SyncEngine::shouldDiscoverLocally(const QByteArray &path) const
@@ -1649,14 +1665,28 @@ bool SyncEngine::shouldDiscoverLocally(const QByteArray &path) const
     if (_localDiscoveryStyle == LocalDiscoveryStyle::FilesystemOnly)
         return true;
 
+    // The intention is that if "A/X" is in _localDiscoveryPaths:
+    // - parent folders like "/", "A" will be discovered (to make sure the discovery reaches the
+    //   point where something new happened)
+    // - the folder itself "A/X" will be discovered
+    // - subfolders like "A/X/Y" will be discovered (so data inside a new or renamed folder will be
+    //   discovered in full)
+    // Check out TestLocalDiscovery::testLocalDiscoveryDecision()
+
     auto it = _localDiscoveryPaths.lower_bound(path);
-    if (it == _localDiscoveryPaths.end() || !it->startsWith(path))
+    if (it == _localDiscoveryPaths.end() || !it->startsWith(path)) {
+        // Maybe a subfolder of something in the list?
+        if (it != _localDiscoveryPaths.begin() && path.startsWith(*(--it))) {
+            return it->endsWith('/') || (path.size() > it->size() && path.at(it->size()) <= '/');
+        }
         return false;
+    }
 
     // maybe an exact match or an empty path?
     if (it->size() == path.size() || path.isEmpty())
         return true;
 
+    // Maybe a parent folder of something in the list?
     // check for a prefix + / match
     forever {
         if (it->size() > path.size() && it->at(path.size()) == '/')
