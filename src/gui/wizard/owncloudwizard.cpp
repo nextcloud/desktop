@@ -48,7 +48,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 #ifndef NO_SHIBBOLETH
     , _shibbolethCredsPage(new OwncloudShibbolethCredsPage)
 #endif
-    , _advancedSetupPage(new OwncloudAdvancedSetupPage)
+    //, _advancedSetupPage(new OwncloudAdvancedSetupPage)
     , _resultPage(new OwncloudWizardResultPage)
     , _credentialsPage(0)
     , _webViewPage(new WebViewPage(this))
@@ -62,11 +62,12 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 #ifndef NO_SHIBBOLETH
     setPage(WizardCommon::Page_ShibbolethCreds, _shibbolethCredsPage);
 #endif
-    setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
-    setPage(WizardCommon::Page_Result, _resultPage);
     setPage(WizardCommon::Page_WebView, _webViewPage);
+    //setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
+    setPage(WizardCommon::Page_Result, _resultPage);
 
-    connect(this, &QDialog::finished, this, &OwncloudWizard::basicSetupFinished);
+
+    //connect(this, &QDialog::finished, this, &OwncloudWizard::basicSetupFinished);
 
     // note: start Id is set by the calling class depending on if the
     // welcome text is to be shown or not.
@@ -80,8 +81,8 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     connect(_shibbolethCredsPage, &OwncloudShibbolethCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
 #endif
     connect(_webViewPage, &WebViewPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
-    connect(_advancedSetupPage, &OwncloudAdvancedSetupPage::createLocalAndRemoteFolders,
-        this, &OwncloudWizard::createLocalAndRemoteFolders);
+//    connect(_advancedSetupPage, &OwncloudAdvancedSetupPage::createLocalAndRemoteFolders,
+//        this, &OwncloudWizard::createLocalAndRemoteFolders);
     connect(this, &QWizard::customButtonClicked, this, &OwncloudWizard::skipFolderConfiguration);
 
 
@@ -108,20 +109,20 @@ AccountPtr OwncloudWizard::account() const
     return _account;
 }
 
-QString OwncloudWizard::localFolder() const
-{
-    return (_advancedSetupPage->localFolder());
-}
+//QString OwncloudWizard::localFolder() const
+//{
+//    return (_advancedSetupPage->localFolder());
+//}
 
-QStringList OwncloudWizard::selectiveSyncBlacklist() const
-{
-    return _advancedSetupPage->selectiveSyncBlacklist();
-}
+//QStringList OwncloudWizard::selectiveSyncBlacklist() const
+//{
+//    return _advancedSetupPage->selectiveSyncBlacklist();
+//}
 
-bool OwncloudWizard::isConfirmBigFolderChecked() const
-{
-    return _advancedSetupPage->isConfirmBigFolderChecked();
-}
+//bool OwncloudWizard::isConfirmBigFolderChecked() const
+//{
+//    return _advancedSetupPage->isConfirmBigFolderChecked();
+//}
 
 QString OwncloudWizard::ocUrl() const
 {
@@ -145,8 +146,16 @@ void OwncloudWizard::enableFinishOnResultWidget(bool enable)
 
 void OwncloudWizard::setRemoteFolder(const QString &remoteFolder)
 {
-    _advancedSetupPage->setRemoteFolder(remoteFolder);
+    //_advancedSetupPage->setRemoteFolder(remoteFolder);
     _resultPage->setRemoteFolder(remoteFolder);
+}
+
+void OwncloudWizard::beforeSuccessfulStep(){
+    //disconnect(this, &QDialog::finished, this, &OwncloudWizard::basicSetupFinished);
+    emit basicSetupFinished(QDialog::Accepted);
+    appendToConfigurationLog(QString());
+    // Immediately close on show, we currently don't want this page anymore
+    done(Accepted);
 }
 
 void OwncloudWizard::successfulStep()
@@ -168,17 +177,19 @@ void OwncloudWizard::successfulStep()
         break;
 #endif
 
-    case WizardCommon::Page_WebView:
+    case WizardCommon::Page_WebView:{
         _webViewPage->setConnected();
+        ConfigFile cfgFile;
+        emit createLocalAndRemoteFolders(cfgFile.defaultFileStreamMirrorPath(), ocUrl());
         break;
-
-    case WizardCommon::Page_AdvancedSetup:
-        _advancedSetupPage->directoriesCreated();
-        break;
+      }
+//    case WizardCommon::Page_AdvancedSetup:
+//        qCDebug(lcWizard, "Directories set.");
+//        break;
 
     case WizardCommon::Page_ServerSetup:
     case WizardCommon::Page_Result:
-        qCWarning(lcWizard, "Should not happen at this stage.");
+        qCWarning(lcWizard, "Directories set.");
         break;
     }
 
@@ -212,20 +223,20 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
         emit clearPendingRequests();
     }
 
-    if (id == WizardCommon::Page_Result) {
-        disconnect(this, &QDialog::finished, this, &OwncloudWizard::basicSetupFinished);
-        emit basicSetupFinished(QDialog::Accepted);
-        appendToConfigurationLog(QString());
-        // Immediately close on show, we currently don't want this page anymore
-        done(Accepted);
-    }
+//    if (id == WizardCommon::Page_AdvancedSetup && _credentialsPage == _browserCredsPage) {
+//        disconnect(this, &QDialog::finished, this, &OwncloudWizard::basicSetupFinished);
+//        emit basicSetupFinished(QDialog::Accepted);
+//        appendToConfigurationLog(QString());
+//        // Immediately close on show, we currently don't want this page anymore
+//        done(Accepted);
+//    }
 
-    setOption(QWizard::HaveCustomButton1, id == WizardCommon::Page_AdvancedSetup);
-    if (id == WizardCommon::Page_AdvancedSetup && _credentialsPage == _browserCredsPage) {
-        // For OAuth, disable the back button in the Page_AdvancedSetup because we don't want
-        // to re-open the browser.
-        button(QWizard::BackButton)->setEnabled(false);
-    }
+//    setOption(QWizard::HaveCustomButton1, id == WizardCommon::Page_AdvancedSetup);
+//    if (id == WizardCommon::Page_AdvancedSetup && _credentialsPage == _browserCredsPage) {
+//        // For OAuth, disable the back button in the Page_AdvancedSetup because we don't want
+//        // to re-open the browser.
+//        button(QWizard::BackButton)->setEnabled(false);
+//    }
 }
 
 void OwncloudWizard::displayError(const QString &msg, bool retryHTTPonly)
@@ -239,9 +250,9 @@ void OwncloudWizard::displayError(const QString &msg, bool retryHTTPonly)
         _httpCredsPage->setErrorString(msg);
         break;
 
-    case WizardCommon::Page_AdvancedSetup:
-        _advancedSetupPage->setErrorString(msg);
-        break;
+//    case WizardCommon::Page_AdvancedSetup:
+//        _advancedSetupPage->setErrorString(msg);
+//        break;
     }
 }
 
