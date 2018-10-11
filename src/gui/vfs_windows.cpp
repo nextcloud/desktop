@@ -57,6 +57,12 @@ THE SOFTWARE.
 #include <qmutex.h>
 
 #include <thread>
+#include <tlhelp32.h>
+#include <vector>
+#include <QFileInfo>
+
+
+
 
 namespace OCC {
 
@@ -86,6 +92,8 @@ namespace OCC {
 	QMutex _mutexMirrorMounted;
 
 	Vfs_windows* Vfs_windows::_instance = 0;
+	static DWORD explorer_process_pid = 0;
+	static int i_deleted = 0;
 
 
 //#define WIN10_ENABLE_LONG_PATH
@@ -188,6 +196,83 @@ static void PrintUserName(PDOKAN_FILE_INFO DokanFileInfo) {
 	DbgPrint(L"  AccountName: %s, DomainName: %s\n", accountName, domainName);
 }
 
+static DWORD getExplorerID()
+{
+    if (explorer_process_pid > 0) {
+        return explorer_process_pid;
+    } else {
+        std::wstring ExplorerProcessName = L"explorer.exe";
+
+        HANDLE snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+
+        PROCESSENTRY32W entry;
+        entry.dwSize = sizeof entry;
+
+        if (!Process32FirstW(snap, &entry)) {
+            return 0;
+        }
+
+        do {
+            if (std::wstring(entry.szExeFile) == ExplorerProcessName) {
+                explorer_process_pid = entry.th32ProcessID;
+            }
+        } while (Process32NextW(snap, &entry));
+
+        return explorer_process_pid;
+        /*for (int i(0); i < pids.size(); ++i) {
+        std::cout << pids[i] << std::endl;
+        }*/
+    }
+}
+
+static void determinesTypeOfOperation(LPCWSTR FileName, PDOKAN_FILE_INFO DokanFileInfo, DWORD DesiredAccess)
+{
+
+QString QSFileName;
+#ifdef UNICODE
+    QSFileName = QString::fromWCharArray(FileName);
+#else
+    QSFileName = QString::fromLocal8Bit(FileName);
+#endif
+	QSFileName.replace("\\","/");
+
+    int da = (int)DesiredAccess;
+    if (da == 1048576 || da == 128 || da == 1048704 || da == 131200 || da == 1048577 || da == 1179785 || da == 1048705) 
+        return;
+
+    if (DokanFileInfo->ProcessId == getExplorerID()) 
+	{
+        QVariantMap error;
+
+        if (da == 1179776)		//< OpenFile
+            Vfs_windows::instance()->openFileAtPath(QSFileName, error);            
+		else if (da == 65536)	//< DeleteFile
+            Vfs_windows::instance()->deleteFileAtPath(QSFileName, error);            
+
+	}
+}
+
+static void TypeOfOperation_DeleteDirectory(LPCWSTR FileName, PDOKAN_FILE_INFO DokanFileInfo)
+{
+QString QSFileName;
+#ifdef UNICODE
+    QSFileName = QString::fromWCharArray(FileName);
+#else
+    QSFileName = QString::fromLocal8Bit(FileName);
+#endif
+	QSFileName.replace("\\", "/");
+
+    QVariantMap error;
+	
+    if (i_deleted == 0) {
+        i_deleted++;
+        Vfs_windows::instance()->startDeleteDirectoryAtPath(QSFileName, error);
+    } else {
+        Vfs_windows::instance()->endDeleteDirectoryAtPath(QSFileName, error);
+        i_deleted = 0;
+    }
+}
+
 static BOOL AddSeSecurityNamePrivilege() {
 	HANDLE token = 0;
 	DbgPrint(
@@ -256,6 +341,8 @@ MirrorCreateFile(LPCWSTR FileName, PDOKAN_IO_SECURITY_CONTEXT SecurityContext,
 	ACCESS_MASK DesiredAccess, ULONG FileAttributes,
 	ULONG ShareAccess, ULONG CreateDisposition,
 	ULONG CreateOptions, PDOKAN_FILE_INFO DokanFileInfo) {
+
+	determinesTypeOfOperation(FileName, DokanFileInfo, DesiredAccess);
 
 	//< Capture CreateFile Virtual File System Operation
 
@@ -1240,6 +1327,8 @@ MirrorDeleteFile(LPCWSTR FileName, PDOKAN_FILE_INFO DokanFileInfo) {
 
 static NTSTATUS DOKAN_CALLBACK
 MirrorDeleteDirectory(LPCWSTR FileName, PDOKAN_FILE_INFO DokanFileInfo) {
+
+    TypeOfOperation_DeleteDirectory(FileName, DokanFileInfo);
 
 	//< Capture DeleteDirectory Virtual File System Operation
 
@@ -2276,6 +2365,26 @@ void ShowUsage() {
 	// clang-format on
 }
 
+void Vfs_windows::openFileAtPath(QString path, QVariantMap &error)
+{
+    qDebug() << " path: " << path;
+}
+
+void Vfs_windows::deleteFileAtPath(QString path, QVariantMap &error)
+{
+    qDebug() << " path: " << path;
+}
+
+void Vfs_windows::startDeleteDirectoryAtPath(QString path, QVariantMap &error)
+{
+    qDebug() << " path: " << path;
+}
+
+void Vfs_windows::endDeleteDirectoryAtPath(QString path, QVariantMap &error)
+{
+    qDebug() << " path: " << path;
+}
+
 QStringList *Vfs_windows::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
 {
 qDebug() << Q_FUNC_INFO << " path: " << path;
@@ -2646,7 +2755,7 @@ qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " INIT ::upDrive rootDirectory: " <
 
 	ZeroMemory(dokanOptions, sizeof(DOKAN_OPTIONS));
 	dokanOptions->Version = DOKAN_VERSION;
-	dokanOptions->ThreadCount = 14;			// < Set by file stream support, 
+	dokanOptions->ThreadCount = 500;			// < Set by file stream support, 
 												// < recompile DokanLib DOKAN_MAX_THREAD 501
 												// < update dokanc.h
 
