@@ -43,6 +43,10 @@ public:
 	unsigned long long DgetTotalNumberOfFreeBytes();// { return m_TotalNumberOfFreeBytes; }
 
 	QStringList* contentsOfDirectoryAtPath(QString path, QVariantMap &error);
+    void openFileAtPath(QString path, QVariantMap &error);
+    void deleteFileAtPath(QString path, QVariantMap &error);
+    void startDeleteDirectoryAtPath(QString path, QVariantMap &error);
+    void endDeleteDirectoryAtPath(QString path, QVariantMap &error);
 
 private:
 	static Vfs_windows *_instance;
