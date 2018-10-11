@@ -77,7 +77,7 @@ private slots:
 
         fakeFolder.syncEngine().setLocalDiscoveryOptions(
             LocalDiscoveryStyle::DatabaseAndFilesystem,
-            { "A/X", "foo bar space/touch", "foo/", "zzz" });
+            { "A/X", "A/X space", "A/X/beta", "foo bar space/touch", "foo/", "zzz", "zzzz" });
 
         QVERIFY(engine.shouldDiscoverLocally(""));
         QVERIFY(engine.shouldDiscoverLocally("A"));
@@ -85,11 +85,23 @@ private slots:
         QVERIFY(!engine.shouldDiscoverLocally("B"));
         QVERIFY(!engine.shouldDiscoverLocally("A B"));
         QVERIFY(!engine.shouldDiscoverLocally("B/X"));
-        QVERIFY(!engine.shouldDiscoverLocally("A/X/Y"));
         QVERIFY(engine.shouldDiscoverLocally("foo bar space"));
         QVERIFY(engine.shouldDiscoverLocally("foo"));
         QVERIFY(!engine.shouldDiscoverLocally("foo bar"));
         QVERIFY(!engine.shouldDiscoverLocally("foo bar/touch"));
+        // These are within "A/X" so they should be discovered
+        QVERIFY(engine.shouldDiscoverLocally("A/X/alpha"));
+        QVERIFY(engine.shouldDiscoverLocally("A/X beta"));
+        QVERIFY(engine.shouldDiscoverLocally("A/X/Y"));
+        QVERIFY(engine.shouldDiscoverLocally("A/X space"));
+        QVERIFY(engine.shouldDiscoverLocally("A/X space/alpha"));
+        QVERIFY(!engine.shouldDiscoverLocally("A/Xylo/foo"));
+        QVERIFY(engine.shouldDiscoverLocally("zzzz/hello"));
+        QVERIFY(!engine.shouldDiscoverLocally("zzza/hello"));
+
+        QEXPECT_FAIL("", "There is a possibility of false positives if the set contains a path "
+            "which is a prefix, and that prefix is followed by a character less than '/'", Continue);
+        QVERIFY(!engine.shouldDiscoverLocally("A/X o"));
 
         fakeFolder.syncEngine().setLocalDiscoveryOptions(
             LocalDiscoveryStyle::DatabaseAndFilesystem,
@@ -97,6 +109,82 @@ private slots:
 
         QVERIFY(!engine.shouldDiscoverLocally(""));
     }
+
+    // Check whether item success and item failure adjusts the
+    // tracker correctly.
+    void testTrackerItemCompletion()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+
+        LocalDiscoveryTracker tracker;
+        connect(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted, &tracker, &LocalDiscoveryTracker::slotItemCompleted);
+        connect(&fakeFolder.syncEngine(), &SyncEngine::finished, &tracker, &LocalDiscoveryTracker::slotSyncFinished);
+        auto trackerContains = [&](const char *path) {
+            return tracker.localDiscoveryPaths().find(path) != tracker.localDiscoveryPaths().end();
+        };
+
+        tracker.addTouchedPath("A/spurious");
+
+        fakeFolder.localModifier().insert("A/a3");
+        tracker.addTouchedPath("A/a3");
+
+        fakeFolder.localModifier().insert("A/a4");
+        fakeFolder.serverErrorPaths().append("A/a4");
+        // We're not adding a4 as touched, it's in the same folder as a3 and will be seen.
+        // And due to the error it should be added to the explicit list while a3 gets removed.
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, tracker.localDiscoveryPaths());
+        tracker.startSyncPartialDiscovery();
+        QVERIFY(!fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.currentRemoteState().find("A/a3"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("A/a4"));
+        QVERIFY(!trackerContains("A/a3"));
+        QVERIFY(trackerContains("A/a4"));
+        QVERIFY(trackerContains("A/spurious")); // not removed since overall sync not successful
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
+        tracker.startSyncFullDiscovery();
+        QVERIFY(!fakeFolder.syncOnce());
+
+        QVERIFY(!fakeFolder.currentRemoteState().find("A/a4"));
+        QVERIFY(trackerContains("A/a4")); // had an error, still here
+        QVERIFY(!trackerContains("A/spurious")); // removed due to full discovery
+
+        fakeFolder.serverErrorPaths().clear();
+        fakeFolder.syncJournal().wipeErrorBlacklist();
+        tracker.addTouchedPath("A/newspurious"); // will be removed due to successful sync
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, tracker.localDiscoveryPaths());
+        tracker.startSyncPartialDiscovery();
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.currentRemoteState().find("A/a4"));
+        QVERIFY(tracker.localDiscoveryPaths().empty());
+    }
+
+    void testDirectoryAndSubDirectory()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+
+        fakeFolder.localModifier().mkdir("A/newDir");
+        fakeFolder.localModifier().mkdir("A/newDir/subDir");
+        fakeFolder.localModifier().insert("A/newDir/subDir/file", 10);
+
+        auto expectedState = fakeFolder.currentLocalState();
+
+        // Only "A" was modified according to the file system tracker
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(
+            LocalDiscoveryStyle::DatabaseAndFilesystem,
+            { "A" });
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.currentLocalState(), expectedState);
+        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+    }
+
+
 };
 
 QTEST_GUILESS_MAIN(TestLocalDiscovery)
