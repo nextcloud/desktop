@@ -239,11 +239,26 @@ void GeneralSettings::slotToggleOptionalServerNotifications(bool enable)
     ConfigFile cfgFile;
     cfgFile.setOptionalServerNotifications(enable);
 
+    #if defined(Q_OS_MAC)
+        QString defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
+        QString defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
+
+        if (defaultFileStreamSyncPath.isEmpty() || defaultFileStreamSyncPath.compare(QString("")) == 0)
+        {
+            cfgFile.setDefaultFileStreamSyncPath(QString("/Volumes/" + _theme->appName() + "fs"));
+            //?? defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
+        }
+
+        if (defaultFileStreamMirrorPath.isEmpty() || defaultFileStreamMirrorPath.compare(QString("")) == 0)
+        {
+            cfgFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/.cachedFiles");
+            //?? defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
+        }
+    #endif
+
 #ifdef Q_OS_WIN
 //< Set configuration paths.
     QDir dsrt = QDir::home();
-    QString wwr = dsrt.absolutePath();
-    wwr.append("/dirUser_clientLaboratory");
     
 	QString m_defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
 	QString m_defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();

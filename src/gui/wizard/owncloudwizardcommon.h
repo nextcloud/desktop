@@ -40,7 +40,7 @@ namespace WizardCommon {
         Page_OAuthCreds,
         Page_Flow2AuthCreds,
         Page_WebView,
-        Page_AdvancedSetup,
+        //Page_AdvancedSetup,
         Page_Result
     };
 

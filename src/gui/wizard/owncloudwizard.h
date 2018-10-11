@@ -65,9 +65,9 @@ public:
 
     void setupCustomMedia(QVariant, QLabel *);
     QString ocUrl() const;
-    QString localFolder() const;
-    QStringList selectiveSyncBlacklist() const;
-    bool isConfirmBigFolderChecked() const;
+    //QString localFolder() const;
+    //QStringList selectiveSyncBlacklist() const;
+    //bool isConfirmBigFolderChecked() const;
 
     void enableFinishOnResultWidget(bool enable);
 
@@ -81,6 +81,8 @@ public:
     QSslKey _clientSslKey;
     QSslCertificate _clientSslCertificate;
     QList<QSslCertificate> _clientSslCaCertificates;
+
+    void beforeSuccessfulStep();
 
 public slots:
     void setAuthType(DetermineAuthTypeJob::AuthType type);
