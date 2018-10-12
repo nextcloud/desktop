@@ -8,7 +8,7 @@
 #include <QDebug>
 
 #include "propagatedownload.h"
-#include "nextcloudpropagator_p.h"
+#include "owncloudpropagator_p.h"
 
 using namespace OCC;
 namespace OCC {
