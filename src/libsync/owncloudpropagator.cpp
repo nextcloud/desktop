@@ -84,7 +84,7 @@ int OwncloudPropagator::maximumActiveTransferJob()
         // disable parallelism when there is a network limit.
         return 1;
     }
-    return qMin(3, qCeil(hardMaximumActiveJob() / 2.));
+    return qMin(3, qCeil(_syncOptions._parallelNetworkJobs / 2.));
 }
 
 /* The maximum number of active jobs in parallel  */
@@ -92,12 +92,7 @@ int OwncloudPropagator::hardMaximumActiveJob()
 {
     if (!_syncOptions._parallelNetworkJobs)
         return 1;
-    static int max = qgetenv("OWNCLOUD_MAX_PARALLEL").toUInt();
-    if (max)
-        return max;
-    if (_account->isHttp2Supported())
-        return 20;
-    return 6; // (Qt cannot do more anyway)
+    return _syncOptions._parallelNetworkJobs;
 }
 
 PropagateItemJob::~PropagateItemJob()

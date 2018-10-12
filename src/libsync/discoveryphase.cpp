@@ -148,6 +148,7 @@ QString DiscoveryPhase::adjustRenamedPath(const QString &original) const
 void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
 {
     connect(job, &ProcessDirectoryJob::finished, this, [this, job] {
+        _currentRootJob = nullptr;
         if (job->_dirItem)
             emit itemDiscovered(job->_dirItem);
         job->deleteLater();
@@ -158,7 +159,16 @@ void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
             emit finished();
         }
     });
+    _currentRootJob = job;
     job->start();
+}
+
+void DiscoveryPhase::scheduleMoreJobs()
+{
+    auto limit = qMax(1, _syncOptions._parallelNetworkJobs);
+    if (_currentRootJob && _currentlyActiveJobs < limit) {
+        _currentRootJob->progress(limit - _currentlyActiveJobs);
+    }
 }
 
 DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent)
