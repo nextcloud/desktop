@@ -23,6 +23,8 @@
 
 #include "folderwatcher.h"
 
+class QTimer;
+
 namespace OCC {
 
 /**
@@ -44,9 +46,21 @@ protected slots:
     void slotReceivedNotification(int fd);
     void slotAddFolderRecursive(const QString &path);
 
+    /// Remove all half-built renames. Called by timer when idle for a bit.
+    void wipePotentialRenames();
+
 protected:
+    struct Rename
+    {
+        QString from;
+        QString to;
+    };
+
     bool findFoldersBelow(const QDir &dir, QStringList &fullList);
     void inotifyRegisterPath(const QString &path);
+
+    /// Adjusts the paths in _watches when directories are renamed.
+    void applyDirectoryRename(const Rename &rename);
 
 private:
     FolderWatcher *_parent;
@@ -55,6 +69,25 @@ private:
     QHash<int, QString> _watches;
     QScopedPointer<QSocketNotifier> _socket;
     int _fd;
+
+    /** Maps inotify event cookie to rename data.
+     *
+     * For moves two independent inotify events will be seen and they
+     * can be matched via the event cookie. This field stores partial
+     * information as it is received. When both sides have arrived,
+     * directory moves can be processed with applyDirectoryRename().
+     *
+     * If we don't receive both sides (if something moves away from
+     * the watched folder tree, or into it from an unwatched location)
+     * the _wipePotentialRenamesSoon will eventually discard the
+     * incomplete data.
+     *
+     * These events can even be emitted by different watches if the
+     * directory parent folder changed.
+     */
+    QHash<quint32, Rename> _potentialRenames;
+
+    QTimer *_wipePotentialRenamesSoon;
 };
 }
 
