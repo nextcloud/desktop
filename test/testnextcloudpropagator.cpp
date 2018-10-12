@@ -8,21 +8,21 @@
 #include <QDebug>
 
 #include "propagatedownload.h"
-#include "owncloudpropagator_p.h"
+#include "nextcloudpropagator_p.h"
 
 using namespace OCC;
 namespace OCC {
 QString OWNCLOUDSYNC_EXPORT createDownloadTmpFileName(const QString &previous);
 }
 
-class TestOwncloudPropagator : public QObject
+class TestNextcloudPropagator : public QObject
 {
     Q_OBJECT
 
 private slots:
     void testUpdateErrorFromSession()
     {
-//        OwncloudPropagator propagator( NULL, QLatin1String("test1"), QLatin1String("test2"), new ProgressDatabase);
+//        NextcloudPropagator propagator( NULL, QLatin1String("test1"), QLatin1String("test2"), new ProgressDatabase);
         QVERIFY( true );
     }
 
@@ -78,5 +78,5 @@ private slots:
     }
 };
 
-QTEST_APPLESS_MAIN(TestOwncloudPropagator)
-#include "testowncloudpropagator.moc"
+QTEST_APPLESS_MAIN(TestNextcloudPropagator)
+#include "testnextcloudpropagator.moc"
