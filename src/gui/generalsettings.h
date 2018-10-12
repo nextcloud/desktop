@@ -35,7 +35,7 @@ class GeneralSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit GeneralSettings(QWidget *parent = 0);
+    explicit GeneralSettings(QWidget *parent = Q_NULLPTR);
     ~GeneralSettings();
     QSize sizeHint() const;
 

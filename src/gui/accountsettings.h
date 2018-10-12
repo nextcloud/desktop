@@ -53,7 +53,7 @@ class AccountSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit AccountSettings(AccountState *accountState, QWidget *parent = 0);
+    explicit AccountSettings(AccountState *accountState, QWidget *parent = Q_NULLPTR);
     ~AccountSettings();
     QSize sizeHint() const Q_DECL_OVERRIDE { return ownCloudGui::settingsDialogSize(); }
     bool canEncryptOrDecrypt(const FolderStatusModel::SubFolderInfo* folderInfo);

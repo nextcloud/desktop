@@ -267,7 +267,7 @@ protected Q_SLOTS:
     void slotCredentialsAsked();
 
 private:
-    Account(QObject *parent = 0);
+    Account(QObject *parent = Q_NULLPTR);
     void setSharedThis(AccountPtr sharedThis);
 
     QWeakPointer<Account> _sharedThis;

@@ -42,7 +42,7 @@ class SettingsDialogMac : public MacPreferencesWindow
     Q_OBJECT
 
 public:
-    explicit SettingsDialogMac(ownCloudGui *gui, QWidget *parent = 0);
+    explicit SettingsDialogMac(ownCloudGui *gui, QWidget *parent = Q_NULLPTR);
 
 public slots:
     void showActivityPage();

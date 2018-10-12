@@ -63,7 +63,7 @@ class ShareeModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    explicit ShareeModel(const AccountPtr &account, const QString &type, QObject *parent = 0);
+    explicit ShareeModel(const AccountPtr &account, const QString &type, QObject *parent = Q_NULLPTR);
 
     typedef QVector<QSharedPointer<Sharee>> ShareeSet; // FIXME: make it a QSet<Sharee> when Sharee can be compared
     void fetch(const QString &search, const ShareeSet &blacklist);

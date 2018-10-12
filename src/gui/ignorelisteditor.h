@@ -35,7 +35,7 @@ class IgnoreListEditor : public QDialog
     Q_OBJECT
 
 public:
-    explicit IgnoreListEditor(QWidget *parent = 0);
+    explicit IgnoreListEditor(QWidget *parent = Q_NULLPTR);
     ~IgnoreListEditor();
 
     bool ignoreHiddenFiles();

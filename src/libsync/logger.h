@@ -94,7 +94,7 @@ public slots:
     void enterNextLogFile();
 
 private:
-    Logger(QObject *parent = 0);
+    Logger(QObject *parent = Q_NULLPTR);
     ~Logger();
     QList<Log> _logs;
     bool _showTime;

@@ -31,7 +31,7 @@ class ThumbnailJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit ThumbnailJob(const QString &path, AccountPtr account, QObject *parent = 0);
+    explicit ThumbnailJob(const QString &path, AccountPtr account, QObject *parent = Q_NULLPTR);
 public slots:
     void start() Q_DECL_OVERRIDE;
 signals:

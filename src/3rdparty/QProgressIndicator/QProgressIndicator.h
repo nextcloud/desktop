@@ -42,7 +42,7 @@ class QProgressIndicator : public QWidget
     Q_PROPERTY(bool displayedWhenStopped READ isDisplayedWhenStopped WRITE setDisplayedWhenStopped)
     Q_PROPERTY(QColor color READ color WRITE setColor)
 public:
-    QProgressIndicator(QWidget* parent = 0);
+    QProgressIndicator(QWidget* parent = Q_NULLPTR);
 
     /*! Returns the delay between animation steps.
         \return The number of milliseconds between animation steps. By default, the animation delay is set to 40 milliseconds.

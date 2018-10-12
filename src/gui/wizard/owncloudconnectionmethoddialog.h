@@ -35,7 +35,7 @@ class OwncloudConnectionMethodDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit OwncloudConnectionMethodDialog(QWidget *parent = 0);
+    explicit OwncloudConnectionMethodDialog(QWidget *parent = Q_NULLPTR);
     ~OwncloudConnectionMethodDialog();
     enum {
         Closed = 0,

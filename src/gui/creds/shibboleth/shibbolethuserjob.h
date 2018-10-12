@@ -28,7 +28,7 @@ class ShibbolethUserJob : public JsonApiJob
 {
     Q_OBJECT
 public:
-    explicit ShibbolethUserJob(AccountPtr account, QObject *parent = 0);
+    explicit ShibbolethUserJob(AccountPtr account, QObject *parent = Q_NULLPTR);
 
 signals:
     // is always emitted when the job is finished.  user is empty in case of error.

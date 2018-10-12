@@ -15,7 +15,7 @@ class WebFlowCredentialsDialog : public QDialog
 {
     Q_OBJECT
 public:
-    WebFlowCredentialsDialog(QWidget *parent = 0);
+    WebFlowCredentialsDialog(QWidget *parent = Q_NULLPTR);
 
     void setUrl(const QUrl &url);
     void setInfo(const QString &msg);

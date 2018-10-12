@@ -53,7 +53,7 @@ class ownCloudGui : public QObject
 {
     Q_OBJECT
 public:
-    explicit ownCloudGui(Application *parent = 0);
+    explicit ownCloudGui(Application *parent = Q_NULLPTR);
 
     bool checkAccountExists(bool openSettings);
 

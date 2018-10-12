@@ -59,7 +59,7 @@ class DiscoverySingleDirectoryJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent = 0);
+    explicit DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent = Q_NULLPTR);
     // Specify thgat this is the root and we need to check the data-fingerprint
     void setIsRootPath() { _isRootPath = true; }
     void start();
@@ -187,7 +187,7 @@ class DiscoveryJob : public QObject
 
 
 public:
-    explicit DiscoveryJob(CSYNC *ctx, QObject *parent = 0)
+    explicit DiscoveryJob(CSYNC *ctx, QObject *parent = Q_NULLPTR)
         : QObject(parent)
         , _csync_ctx(ctx)
     {

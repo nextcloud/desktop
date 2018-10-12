@@ -808,7 +808,7 @@ void AccountSettings::slotEnableCurrentFolder()
                 QWidget *parent = this;
                 Qt::WindowFlags flags = Qt::Sheet;
 #else
-                QWidget *parent = 0;
+                QWidget *parent = Q_NULLPTR;
                 Qt::WindowFlags flags = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint; // default flags
 #endif
                 QMessageBox msgbox(QMessageBox::Question, tr("Sync Running"),

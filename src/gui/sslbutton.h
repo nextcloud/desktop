@@ -35,7 +35,7 @@ class SslButton : public QToolButton
 {
     Q_OBJECT
 public:
-    explicit SslButton(QWidget *parent = 0);
+    explicit SslButton(QWidget *parent = Q_NULLPTR);
     void updateAccountState(AccountState *accountState);
 
 public slots:

@@ -48,7 +48,7 @@ class SettingsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit SettingsDialog(ownCloudGui *gui, QWidget *parent = 0);
+    explicit SettingsDialog(ownCloudGui *gui, QWidget *parent = Q_NULLPTR);
     ~SettingsDialog();
 
     void addAccount(const QString &title, QWidget *widget);

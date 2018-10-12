@@ -35,7 +35,7 @@ class SelectiveSyncWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SelectiveSyncWidget(AccountPtr account, QWidget *parent = 0);
+    explicit SelectiveSyncWidget(AccountPtr account, QWidget *parent = Q_NULLPTR);
 
     /// Returns a list of blacklisted paths, each including the trailing /
     QStringList createBlackList(QTreeWidgetItem *root = 0) const;
@@ -89,10 +89,10 @@ class SelectiveSyncDialog : public QDialog
     Q_OBJECT
 public:
     // Dialog for a specific folder (used from the account settings button)
-    explicit SelectiveSyncDialog(AccountPtr account, Folder *folder, QWidget *parent = 0, Qt::WindowFlags f = 0);
+    explicit SelectiveSyncDialog(AccountPtr account, Folder *folder, QWidget *parent = Q_NULLPTR, Qt::WindowFlags f = 0);
 
     // Dialog for the whole account (Used from the wizard)
-    explicit SelectiveSyncDialog(AccountPtr account, const QString &folder, const QStringList &blacklist, QWidget *parent = 0, Qt::WindowFlags f = 0);
+    explicit SelectiveSyncDialog(AccountPtr account, const QString &folder, const QStringList &blacklist, QWidget *parent = Q_NULLPTR, Qt::WindowFlags f = 0);
 
     virtual void accept() Q_DECL_OVERRIDE;
 

@@ -42,7 +42,7 @@ class OCSYNC_EXPORT SyncJournalDb : public QObject
 {
     Q_OBJECT
 public:
-    explicit SyncJournalDb(const QString &dbFilePath, QObject *parent = 0);
+    explicit SyncJournalDb(const QString &dbFilePath, QObject *parent = Q_NULLPTR);
     virtual ~SyncJournalDb();
 
     /// Create a journal path for a specific configuration

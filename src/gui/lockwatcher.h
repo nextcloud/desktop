@@ -42,7 +42,7 @@ class LockWatcher : public QObject
 {
     Q_OBJECT
 public:
-    explicit LockWatcher(QObject *parent = 0);
+    explicit LockWatcher(QObject *parent = Q_NULLPTR);
 
     /** Start watching a file.
      *

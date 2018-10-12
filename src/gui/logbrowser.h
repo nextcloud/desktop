@@ -37,7 +37,7 @@ class LogWidget : public QPlainTextEdit
 {
     Q_OBJECT
 public:
-    explicit LogWidget(QWidget *parent = 0);
+    explicit LogWidget(QWidget *parent = Q_NULLPTR);
 
 signals:
 };
@@ -50,7 +50,7 @@ class LogBrowser : public QDialog
 {
     Q_OBJECT
 public:
-    explicit LogBrowser(QWidget *parent = 0);
+    explicit LogBrowser(QWidget *parent = Q_NULLPTR);
     ~LogBrowser();
 
     void setLogFile(const QString &, bool);

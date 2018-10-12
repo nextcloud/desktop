@@ -29,7 +29,7 @@ class AuthenticationDialog : public QDialog
 {
     Q_OBJECT
 public:
-    AuthenticationDialog(const QString &realm, const QString &domain, QWidget *parent = 0);
+    AuthenticationDialog(const QString &realm, const QString &domain, QWidget *parent = Q_NULLPTR);
 
     QString user() const;
     QString password() const;

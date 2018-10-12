@@ -70,7 +70,7 @@ class OCSYNC_EXPORT ComputeChecksum : public QObject
 {
     Q_OBJECT
 public:
-    explicit ComputeChecksum(QObject *parent = 0);
+    explicit ComputeChecksum(QObject *parent = Q_NULLPTR);
 
     /**
      * Sets the checksum type to be used. The default is empty.
@@ -112,7 +112,7 @@ class OCSYNC_EXPORT ValidateChecksumHeader : public QObject
 {
     Q_OBJECT
 public:
-    explicit ValidateChecksumHeader(QObject *parent = 0);
+    explicit ValidateChecksumHeader(QObject *parent = Q_NULLPTR);
 
     /**
      * Check a file's actual checksum against the provided checksumHeader

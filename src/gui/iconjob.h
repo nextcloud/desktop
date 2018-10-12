@@ -31,7 +31,7 @@ class IconJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit IconJob(const QUrl &url, QObject *parent = 0);
+    explicit IconJob(const QUrl &url, QObject *parent = Q_NULLPTR);
 
 signals:
     void jobFinished(QByteArray iconData);

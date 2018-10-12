@@ -28,7 +28,7 @@ class OWNCLOUDSYNC_EXPORT SignPublicKeyApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit SignPublicKeyApiJob(const AccountPtr &account, const QString &path, QObject *parent = 0);
+    explicit SignPublicKeyApiJob(const AccountPtr &account, const QString &path, QObject *parent = Q_NULLPTR);
 
     /**
      * @brief setCsr - the CSR with the public key.
@@ -71,7 +71,7 @@ class OWNCLOUDSYNC_EXPORT StorePrivateKeyApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit StorePrivateKeyApiJob(const AccountPtr &account, const QString &path, QObject *parent = 0);
+    explicit StorePrivateKeyApiJob(const AccountPtr &account, const QString &path, QObject *parent = Q_NULLPTR);
 
     /**
      * @brief setCsr - the CSR with the public key.
@@ -114,7 +114,7 @@ class OWNCLOUDSYNC_EXPORT SetEncryptionFlagApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit SetEncryptionFlagApiJob(const AccountPtr &account, const QByteArray& fileId, QObject *parent = 0);
+    explicit SetEncryptionFlagApiJob(const AccountPtr &account, const QByteArray& fileId, QObject *parent = Q_NULLPTR);
 
 public slots:
     void start() override;
@@ -134,7 +134,7 @@ class OWNCLOUDSYNC_EXPORT LockEncryptFolderApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit LockEncryptFolderApiJob(const AccountPtr &account, const QByteArray& fileId, QObject *parent = 0);
+    explicit LockEncryptFolderApiJob(const AccountPtr &account, const QByteArray& fileId, QObject *parent = Q_NULLPTR);
 
 public slots:
     void start() override;
@@ -159,7 +159,7 @@ public:
         const AccountPtr &account,
         const QByteArray& fileId,
         const QByteArray& token,
-        QObject *parent = 0);
+        QObject *parent = Q_NULLPTR);
 
 public slots:
     void start() override;
@@ -186,7 +186,7 @@ public:
         const AccountPtr &account,
         const QByteArray& fileId,
         const QByteArray& b64Metadata,
-        QObject *parent = 0);
+        QObject *parent = Q_NULLPTR);
 
 public slots:
     void start() override;
@@ -212,7 +212,7 @@ public:
         const QByteArray& fileId,
         const QByteArray& b64Metadata,
         const QByteArray& lockedToken,
-        QObject *parent = 0);
+        QObject *parent = Q_NULLPTR);
 
 public slots:
     void start() override;
@@ -238,7 +238,7 @@ public:
     explicit GetMetadataApiJob (
         const AccountPtr &account,
         const QByteArray& fileId,
-        QObject *parent = 0);
+        QObject *parent = Q_NULLPTR);
 
 public slots:
     void start() override;
@@ -261,7 +261,7 @@ public:
     explicit DeleteMetadataApiJob (
         const AccountPtr &account,
         const QByteArray& fileId,
-        QObject *parent = 0);
+        QObject *parent = Q_NULLPTR);
 
 public slots:
     void start() override;
@@ -284,7 +284,7 @@ class OWNCLOUDSYNC_EXPORT GetFolderEncryptStatusJob : public AbstractNetworkJob
 {
 	Q_OBJECT
 public:
-	explicit GetFolderEncryptStatusJob (const AccountPtr &account, const QString& folder, QObject *parent = 0);
+	explicit GetFolderEncryptStatusJob (const AccountPtr &account, const QString& folder, QObject *parent = Q_NULLPTR);
 
 public slots:
 	void start() override;

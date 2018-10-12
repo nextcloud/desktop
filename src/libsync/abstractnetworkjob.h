@@ -39,7 +39,7 @@ class OWNCLOUDSYNC_EXPORT AbstractNetworkJob : public QObject
 {
     Q_OBJECT
 public:
-    explicit AbstractNetworkJob(AccountPtr account, const QString &path, QObject *parent = 0);
+    explicit AbstractNetworkJob(AccountPtr account, const QString &path, QObject *parent = Q_NULLPTR);
     virtual ~AbstractNetworkJob();
 
     virtual void start();

@@ -33,7 +33,7 @@ class ProxyAuthDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit ProxyAuthDialog(QWidget *parent = 0);
+    explicit ProxyAuthDialog(QWidget *parent = Q_NULLPTR);
     ~ProxyAuthDialog();
 
     void setProxyAddress(const QString &address);

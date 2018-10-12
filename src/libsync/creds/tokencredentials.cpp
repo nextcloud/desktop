@@ -41,7 +41,7 @@ class TokenCredentialsAccessManager : public AccessManager
 {
 public:
     friend class TokenCredentials;
-    TokenCredentialsAccessManager(const TokenCredentials *cred, QObject *parent = 0)
+    TokenCredentialsAccessManager(const TokenCredentials *cred, QObject *parent = Q_NULLPTR)
         : AccessManager(parent)
         , _cred(cred)
     {

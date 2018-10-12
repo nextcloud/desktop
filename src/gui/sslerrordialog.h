@@ -48,7 +48,7 @@ class SslErrorDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit SslErrorDialog(AccountPtr account, QWidget *parent = 0);
+    explicit SslErrorDialog(AccountPtr account, QWidget *parent = Q_NULLPTR);
     ~SslErrorDialog();
     bool checkFailingCertsKnown(const QList<QSslError> &errors);
     bool trustConnection();

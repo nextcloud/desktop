@@ -33,7 +33,7 @@ class NetworkSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit NetworkSettings(QWidget *parent = 0);
+    explicit NetworkSettings(QWidget *parent = Q_NULLPTR);
     ~NetworkSettings();
     QSize sizeHint() const override;
 

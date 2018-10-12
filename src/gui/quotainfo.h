@@ -47,7 +47,7 @@ class QuotaInfo : public QObject
 {
     Q_OBJECT
 public:
-    explicit QuotaInfo(OCC::AccountState *accountState, QObject *parent = 0);
+    explicit QuotaInfo(OCC::AccountState *accountState, QObject *parent = Q_NULLPTR);
 
     qint64 lastQuotaTotalBytes() const { return _lastQuotaTotalBytes; }
     qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }

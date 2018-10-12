@@ -32,7 +32,7 @@ class OWNCLOUDSYNC_EXPORT AccessManager : public QNetworkAccessManager
     Q_OBJECT
 
 public:
-    AccessManager(QObject *parent = 0);
+    AccessManager(QObject *parent = Q_NULLPTR);
 
     void setRawCookie(const QByteArray &rawCookie, const QUrl &url);
 

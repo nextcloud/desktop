@@ -83,7 +83,7 @@ class ConnectionValidator : public QObject
 {
     Q_OBJECT
 public:
-    explicit ConnectionValidator(AccountPtr account, QObject *parent = 0);
+    explicit ConnectionValidator(AccountPtr account, QObject *parent = Q_NULLPTR);
 
     enum Status {
         Undefined,

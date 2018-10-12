@@ -305,7 +305,7 @@ protected:
     void setProgressInfo(const QString &folder, const ProgressInfo &progress);
 
 private:
-    ProgressDispatcher(QObject *parent = 0);
+    ProgressDispatcher(QObject *parent = Q_NULLPTR);
 
     QElapsedTimer _timer;
     static ProgressDispatcher *_instance;

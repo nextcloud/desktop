@@ -93,7 +93,7 @@ private:
 public:
     // Takes ownership of the device
     explicit PUTFileJob(AccountPtr account, const QString &path, QIODevice *device,
-        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = 0)
+        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = Q_NULLPTR)
         : AbstractNetworkJob(account, path, parent)
         , _device(device)
         , _headers(headers)
@@ -102,7 +102,7 @@ public:
         _device->setParent(this);
     }
     explicit PUTFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
-        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = 0)
+        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = Q_NULLPTR)
         : AbstractNetworkJob(account, QString(), parent)
         , _device(device)
         , _headers(headers)
