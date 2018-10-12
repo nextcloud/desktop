@@ -34,6 +34,7 @@
 #include <QNetworkProxy>
 #include <QDir>
 #include <QScopedValueRollback>
+#include <QStandardPaths>
 
 namespace OCC {
 
@@ -178,46 +179,27 @@ void GeneralSettings::slotToggleOptionalServerNotifications(bool enable)
         QString defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
 
         if (defaultFileStreamSyncPath.isEmpty() || defaultFileStreamSyncPath.compare(QString("")) == 0)
-        {
             cfgFile.setDefaultFileStreamSyncPath(QString("/Volumes/" + _theme->appName() + "fs"));
-            //?? defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
-        }
 
         if (defaultFileStreamMirrorPath.isEmpty() || defaultFileStreamMirrorPath.compare(QString("")) == 0)
-        {
             cfgFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/.cachedFiles");
-            //?? defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
-        }
     #endif
 
 #ifdef Q_OS_WIN
-//< Set configuration paths.
-    QDir dsrt = QDir::home();
-    QString wwr = dsrt.absolutePath();
-    wwr.append("/dirUser_clientLaboratory");
+    //< Set configuration paths.
 
     QString m_defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
     QString m_defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
     QString m_defaultFileStreamLetterDrive = cfgFile.defaultFileStreamLetterDrive();
 
-
     if (m_defaultFileStreamSyncPath.isEmpty() || m_defaultFileStreamSyncPath.compare(QString("")) == 0)
-    {
-    cfgFile.setDefaultFileStreamSyncPath(QString("X:/Mi unidad"));
-    m_defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
-    }
+        cfgFile.setDefaultFileStreamSyncPath(QString("X:/Mi unidad"));
 
     if (m_defaultFileStreamMirrorPath.isEmpty() || m_defaultFileStreamMirrorPath.compare(QString("")) == 0)
-    {
-        cfgFile.setDefaultFileStreamMirrorPath(wwr);
-        m_defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
-    }
+        cfgFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles");
 
     if (m_defaultFileStreamLetterDrive.isEmpty() || m_defaultFileStreamLetterDrive.compare(QString("")) == 0)
-    {
         cfgFile.setDefaultFileStreamLetterDrive(QString("x"));
-        m_defaultFileStreamLetterDrive = cfgFile.defaultFileStreamLetterDrive();
-    }
 #endif
 }
 

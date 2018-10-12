@@ -331,6 +331,7 @@ void Application::slotAccountStateAdded(AccountState *accountState)
     {
         qDebug() << "\n dbg_dokan " << Q_FUNC_INFO << " !pathDir.exists() 3-0" << cfgFile.defaultFileStreamMirrorPath();
         pathDir.mkdir(cfgFile.defaultFileStreamMirrorPath());
+        SetFileAttributes((const wchar_t *) cfgFile.defaultFileStreamMirrorPath().utf16(), FILE_ATTRIBUTE_HIDDEN);
         Sleep(100);
     }
 
