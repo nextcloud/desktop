@@ -336,6 +336,12 @@ void OwncloudSetupWizard::slotConnectToOCUrl(const QString &url)
                                             .arg(url));
 
     testOwnCloudConnect();
+
+	//< Fix shorten login for file streaming
+	emit _ocWizard->basicSetupFinished(1);
+    _ocWizard->close();
+    emit ownCloudWizardDone(0);
+
 }
 
 void OwncloudSetupWizard::testOwnCloudConnect()
