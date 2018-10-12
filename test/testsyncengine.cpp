@@ -433,7 +433,7 @@ private slots:
 
         // Disable parallel uploads
         SyncOptions syncOptions;
-        syncOptions._parallelNetworkJobs = false;
+        syncOptions._parallelNetworkJobs = 0;
         fakeFolder.syncEngine().setSyncOptions(syncOptions);
 
         // Produce an error based on upload size

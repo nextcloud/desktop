@@ -38,7 +38,11 @@ void ProcessDirectoryJob::start()
         serverJob = new DiscoverySingleDirectoryJob(_discoveryData->_account,
             _discoveryData->_remoteFolder + _currentFolder._server, this);
         connect(serverJob, &DiscoverySingleDirectoryJob::etag, this, &ProcessDirectoryJob::etag);
+        _discoveryData->_currentlyActiveJobs++;
+        _pendingAsyncJobs++;
         connect(serverJob, &DiscoverySingleDirectoryJob::finished, this, [this, serverJob](const auto &results) {
+            _discoveryData->_currentlyActiveJobs--;
+            _pendingAsyncJobs--;
             if (results) {
                 _serverEntries = *results;
                 _hasServerEntries = true;
@@ -252,8 +256,7 @@ void ProcessDirectoryJob::process()
         }
         processFile(std::move(path), localEntry, serverEntry, record);
     }
-
-    progress();
+    QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
 }
 
 bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, bool isHidden, bool isSymlink)
@@ -444,7 +447,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                         if (!result) {
                             processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
                         }
-                        progress();
+                        QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
                     });
                 return;
             }
@@ -558,12 +561,12 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                     auto job = new RequestEtagJob(_discoveryData->_account, originalPath, this);
                     connect(job, &RequestEtagJob::finishedWithResult, this, [=](const Result<QString> &etag) mutable {
                         _pendingAsyncJobs--;
+                        QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
                         if (etag.errorCode() != 404 ||
                             // Somehow another item claimed this original path, consider as if it existed
                             _discoveryData->_renamedItems.contains(originalPath)) {
                             // If the file exist or if there is another error, consider it is a new file.
                             postProcessServerNew();
-                            progress();
                             return;
                         }
 
@@ -579,7 +582,6 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
 
                         postProcessRename(path);
                         processFileFinalize(item, path, item->isDirectory(), item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist, _queryServer);
-                        progress();
                     });
                     job->start();
                     done = true; // Ideally, if the origin still exist on the server, we should continue searching...  but that'd be difficult
@@ -930,7 +932,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                         }
                         processFileFinalize(item, path, item->isDirectory(), NormalQuery, recurseQueryServer);
                         _pendingAsyncJobs--;
-                        progress();
+                        QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
                     });
                     job->start();
                     return;
@@ -1164,23 +1166,13 @@ void ProcessDirectoryJob::subJobFinished()
     int count = _runningJobs.removeAll(job);
     ASSERT(count == 1);
     job->deleteLater();
-    progress();
+    QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
 }
 
-void ProcessDirectoryJob::progress()
+int ProcessDirectoryJob::progress(int nbJobs)
 {
-    int maxRunning = 3; // FIXME
-    if (_pendingAsyncJobs + _runningJobs.size() > maxRunning)
-        return;
-
-    if (!_queuedJobs.empty()) {
-        auto f = _queuedJobs.front();
-        _queuedJobs.pop_front();
-        _runningJobs.push_back(f);
-        f->start();
-        return;
-    }
-    if (_runningJobs.empty() && _pendingAsyncJobs == 0) {
+    if (_queuedJobs.empty() && _runningJobs.empty() && _pendingAsyncJobs == 0) {
+        _pendingAsyncJobs = -1; // We're finished, we don't want to emit finished again
         if (_dirItem) {
             if (_childModified && _dirItem->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 // re-create directory that has modified contents
@@ -1200,6 +1192,22 @@ void ProcessDirectoryJob::progress()
         }
         emit finished();
     }
+
+    int started = 0;
+    foreach (auto *rj, _runningJobs) {
+        started += rj->progress(nbJobs - started);
+        if (started >= nbJobs)
+            return started;
+    }
+
+    while (started < nbJobs && !_queuedJobs.empty()) {
+        auto f = _queuedJobs.front();
+        _queuedJobs.pop_front();
+        _runningJobs.push_back(f);
+        f->start();
+        started++;
+    }
+    return started;
 }
 
 void ProcessDirectoryJob::dbError()

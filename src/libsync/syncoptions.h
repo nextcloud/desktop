@@ -61,8 +61,8 @@ struct SyncOptions
      */
     std::chrono::milliseconds _targetChunkUploadDuration = std::chrono::minutes(1);
 
-    /** Whether parallel network jobs are allowed. */
-    bool _parallelNetworkJobs = true;
+    /** The maximum number of active jobs in parallel  */
+    int _parallelNetworkJobs = 6;
 
     /** Whether delta-synchronization is enabled */
     bool _deltaSyncEnabled = false;

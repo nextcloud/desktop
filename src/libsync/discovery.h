@@ -46,6 +46,8 @@ public:
     {
     }
     void start();
+    /** Start up to nbJobs, return the number of job started  */
+    int progress(int nbJobs);
 
     SyncFileItemPtr _dirItem;
 
@@ -83,7 +85,6 @@ private:
     bool checkPermissions(const SyncFileItemPtr &item);
     void processBlacklisted(const PathTuple &, const LocalInfo &, const SyncJournalFileRecord &dbEntry);
     void subJobFinished();
-    void progress();
 
     /** An DB operation failed */
     void dbError();

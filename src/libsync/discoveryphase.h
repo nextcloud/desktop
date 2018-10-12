@@ -123,6 +123,9 @@ public:
 class DiscoveryPhase : public QObject
 {
     Q_OBJECT
+
+    ProcessDirectoryJob *_currentRootJob = nullptr;
+
 public:
     QString _localDir; // absolute path to the local directory. ends with '/'
     QString _remoteFolder; // remote folder, ends with '/'
@@ -133,6 +136,7 @@ public:
     QStringList _selectiveSyncWhiteList;
     ExcludedFiles *_excludes;
     QString _invalidFilenamePattern; // FIXME: maybe move in ExcludedFiles
+    int _currentlyActiveJobs = 0;
     bool _ignoreHiddenFiles = false;
     std::function<bool(const QString &)> _shouldDiscoverLocaly;
 
@@ -152,6 +156,7 @@ public:
 
     QByteArray _dataFingerprint;
 
+    void scheduleMoreJobs();
 signals:
     void fatalError(const QString &errorString);
     void itemDiscovered(const SyncFileItemPtr &item);

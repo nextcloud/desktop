@@ -740,6 +740,9 @@ void Folder::setSyncOptions()
         opt._maxChunkSize = cfgFile.maxChunkSize();
     }
 
+    int maxParallel = qgetenv("OWNCLOUD_MAX_PARALLEL").toUInt();
+    opt._parallelNetworkJobs = maxParallel ? maxParallel : _accountState->account()->isHttp2Supported() ? 20 : 6;
+
     // Previously min/max chunk size values didn't exist, so users might
     // have setups where the chunk size exceeds the new min/max default
     // values. To cope with this, adjust min/max to always include the
