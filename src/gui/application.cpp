@@ -355,35 +355,36 @@ void Application::slotAccountStateAdded(AccountState *accountState)
 
 
 #if defined(Q_OS_WIN)
-	ConfigFile cfgFile;
-	QDir pathDir(cfgFile.defaultFileStreamMirrorPath());
-	while (!pathDir.exists())
-	{
-		qDebug() << "\n dbg_dokan " << Q_FUNC_INFO << " !pathDir.exists() 3-0" << cfgFile.defaultFileStreamMirrorPath();
-		pathDir.mkdir(cfgFile.defaultFileStreamMirrorPath());
-		Sleep(100);
-	}
+    ConfigFile cfgFile;
+    QDir pathDir(cfgFile.defaultFileStreamMirrorPath());
+    while (!pathDir.exists())
+    {
+        qDebug() << "\n dbg_dokan " << Q_FUNC_INFO << " !pathDir.exists() 3-0" << cfgFile.defaultFileStreamMirrorPath();
+        pathDir.mkdir(cfgFile.defaultFileStreamMirrorPath());
+        SetFileAttributes((const wchar_t *) cfgFile.defaultFileStreamMirrorPath().utf16(), FILE_ATTRIBUTE_HIDDEN);
+        Sleep(100);
+    }
 
-	Vfs_windows *_Vfs_windows = NULL;
-	_Vfs_windows = new Vfs_windows(accountState);
+    Vfs_windows *_Vfs_windows = NULL;
+    _Vfs_windows = new Vfs_windows(accountState);
 
-	if (_Vfs_windows)
-	{
-		qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " up Drive: " << Vfs_windows::instance();
-		_Vfs_windows->upDrive(cfgFile.defaultFileStreamMirrorPath(), cfgFile.defaultFileStreamLetterDrive());
-		Sleep(1000);
-		cfgFile.createAuxiliarDirectories();
+    if (_Vfs_windows)
+    {
+        qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " up Drive: " << Vfs_windows::instance();
+        _Vfs_windows->upDrive(cfgFile.defaultFileStreamMirrorPath(), cfgFile.defaultFileStreamLetterDrive());
+        Sleep(1000);
+        cfgFile.createAuxiliarDirectories();
 
-		/* Current owncloudgui::slotLogout */
-		//WCHAR DriveLetter = L'X';
-		//connect(this, SIGNAL(aboutToQuit()), _Vfs_windows, SLOT(unmount(DriveLetter)));
+        /* Current owncloudgui::slotLogout */
+        //WCHAR DriveLetter = L'X';
+        //connect(this, SIGNAL(aboutToQuit()), _Vfs_windows, SLOT(unmount(DriveLetter)));
 
-		/* Current QuotaInfo::slotUpdateLastQuota */
-		//QuotaInfo _quotaInfo(accountState);
-		//connect(&_quotaInfo, SIGNAL(quotaUpdated(qint64, qint64)), _Vfs_windows, SLOT(quoting(qint64, qint64)));
-	}
-	else
-		qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " BAD up Drive";
+        /* Current QuotaInfo::slotUpdateLastQuota */
+        //QuotaInfo _quotaInfo(accountState);
+        //connect(&_quotaInfo, SIGNAL(quotaUpdated(qint64, qint64)), _Vfs_windows, SLOT(quoting(qint64, qint64)));
+    }
+    else
+        qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " BAD up Drive";
 #endif
 
 	//< For cron delete dir/files online. Execute each 60000 msec

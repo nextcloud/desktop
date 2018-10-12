@@ -38,6 +38,7 @@
 #include <QNetworkProxy>
 #include <QDir>
 #include <QScopedValueRollback>
+#include <QStandardPaths>
 
 #define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5,9,0))
 
@@ -238,6 +239,17 @@ void GeneralSettings::slotToggleOptionalServerNotifications(bool enable)
 {
     ConfigFile cfgFile;
     cfgFile.setOptionalServerNotifications(enable);
+
+    #if defined(Q_OS_MAC)
+        QString defaultFileStreamSyncPath = cfgFile.defaultFileStreamSyncPath();
+        QString defaultFileStreamMirrorPath = cfgFile.defaultFileStreamMirrorPath();
+
+        if (defaultFileStreamSyncPath.isEmpty() || defaultFileStreamSyncPath.compare(QString("")) == 0)
+            cfgFile.setDefaultFileStreamSyncPath(QString("/Volumes/" + _theme->appName() + "fs"));
+
+        if (defaultFileStreamMirrorPath.isEmpty() || defaultFileStreamMirrorPath.compare(QString("")) == 0)
+            cfgFile.setDefaultFileStreamMirrorPath(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/.cachedFiles");
+    #endif
 
 #ifdef Q_OS_WIN
 //< Set configuration paths.
