@@ -50,6 +50,8 @@ repositories`_ to see all the Linux client repos.
    repo for your Debian or Ubuntu version, like this example for Debian 9 
    (run as root)::
  
+    echo 'deb 
+    http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Debian_9.0/ /' >> /etc/apt/sources.list.d/owncloud-client.list
     echo 'deb-src 
     http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Debian_9.0/ /' >> /etc/apt/sources.list.d/owncloud-client.list
 
