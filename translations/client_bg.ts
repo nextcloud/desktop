@@ -78,17 +78,17 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="245"/>
         <source>Connection timed out</source>
-        <translation type="unfinished"/>
+        <translation>Връзката прекъсна</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="247"/>
         <source>Unknown error: network reply was deleted</source>
-        <translation type="unfinished"/>
+        <translation>Неизвестна грешка: мрежовия отговор беше изтрит</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="390"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Сървъра отговори &quot;%1 %2&quot; на &quot;%3 %4&quot;</translation>
     </message>
 </context>
 <context>
@@ -106,12 +106,12 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="79"/>
         <source>Storage space: ...</source>
-        <translation type="unfinished"/>
+        <translation>Дисково пространство: ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="152"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation type="unfinished"/>
+        <translation>Не маркирани папки ще бъдат &lt;b&gt;премахнати&lt;/b&gt; от локалната файлова система и няма да бъдат синхронизирани на този компютър повече</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
@@ -126,7 +126,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="212"/>
         <source>Apply manual changes</source>
-        <translation type="unfinished"/>
+        <translation>Потвърди ръчните промени</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="260"/>
@@ -143,7 +143,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="42"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Свързан с &lt;server&gt;, като &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="182"/>
@@ -253,7 +253,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="667"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Извършва се оторизация от браузъра. &lt;a href=&apos;%1&apos;&gt;Кликнете тук&lt;/a&gt; за да отворите отново браузъра.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="671"/>
@@ -278,12 +278,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="787"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Има папки, които не са синхронизирани защото са външни хранилища:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="788"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Има папки, които не са синхронизирани защото са твърде големи или са външни хранилища:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="834"/>
@@ -340,12 +340,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="614"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation type="unfinished"/>
+        <translation>В момента няма достъпна информация за използването на хранилището.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="680"/>
         <source>No %1 connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>Няма %1 конфигурирана връзка.</translation>
     </message>
 </context>
 <context>
@@ -358,7 +358,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="126"/>
         <source>Disconnected</source>
-        <translation type="unfinished"/>
+        <translation>Без връзка</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="128"/>
@@ -383,17 +383,17 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="136"/>
         <source>Configuration error</source>
-        <translation type="unfinished"/>
+        <translation>Грешка с конфигурацията</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="138"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Въведете потребителска информация за вход</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="140"/>
         <source>Unknown account state</source>
-        <translation type="unfinished"/>
+        <translation>Непознато състояние на профила</translation>
     </message>
 </context>
 <context>
@@ -401,12 +401,12 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="145"/>
         <source>%1 on %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 на %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="147"/>
         <source>%1 on %2 (disconnected)</source>
-        <translation type="unfinished"/>
+        <translation>%1 на %2 (без връзка)</translation>
     </message>
 </context>
 <context>
@@ -486,7 +486,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="135"/>
         <source>Action Required: Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Необходмо е действие: Известия</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="140"/>
@@ -511,7 +511,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="362"/>
         <source>%1 Notifications - Action Required</source>
-        <translation type="unfinished"/>
+        <translation>%1 Известия - Необходимо е действие</translation>
     </message>
 </context>
 <context>
@@ -519,7 +519,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation type="unfinished"/>
+        <translation>Идентификация на клиентския SSL сертификат</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="168"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Излез от ownCloud</translation>
     </message>
 </context>
 <context>
@@ -575,7 +575,7 @@
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="30"/>
         <source>Authentication Required</source>
-        <translation type="unfinished"/>
+        <translation>Необходима е идентификация</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
@@ -598,7 +598,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1001"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Възника грешка при запис на метаданните в базата данни</translation>
     </message>
 </context>
 <context>
@@ -606,32 +606,32 @@
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="75"/>
         <source>No ownCloud account configured</source>
-        <translation type="unfinished"/>
+        <translation>Няма конфигуриран ownCloud профил</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="310"/>
         <source>The configured server for this client is too old</source>
-        <translation type="unfinished"/>
+        <translation>Конфигурирания сървър за този клиент е прекалено стар</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="311"/>
         <source>Please update to the latest server and restart the client.</source>
-        <translation type="unfinished"/>
+        <translation>Моля, обновете до по-нов сървър и рестартирайте клиента</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="172"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation type="unfinished"/>
+        <translation>Грешка при идентификация: Грешен потребител или парола.</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="184"/>
         <source>timeout</source>
-        <translation type="unfinished"/>
+        <translation>Време за изчакване</translation>
     </message>
     <message>
         <location filename="../src/libsync/connectionvalidator.cpp" line="221"/>
         <source>The provided credentials are not correct</source>
-        <translation type="unfinished"/>
+        <translation>Въведените данни за вход не са коректни</translation>
     </message>
 </context>
 <context>
@@ -754,12 +754,13 @@
         <location filename="../src/gui/folder.cpp" line="891"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation type="unfinished"/>
+        <translation>Добавена е папка от външно хранилище.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="892"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Моля, отидете в настройки, ако желаете да го свалите.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="927"/>
@@ -801,7 +802,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folder.cpp" line="962"/>
         <source>Backup detected</source>
-        <translation type="unfinished"/>
+        <translation>Засечено е резервно копие</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="965"/>
