@@ -2005,7 +2005,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="526"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>A %1 távoli mappa már létezik. Csatlakoztassa a szinkronizációhoz.</translation>
+        <translation>A %1 távoli mappa már létezik. Csatlakoztasd a szinkronizációhoz!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="528"/>
