@@ -364,7 +364,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
     QString httpReason = r->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
     QString msg = r->errorString();
     qCWarning(lcDiscovery) << "LSCOL job error" << r->errorString() << httpCode << r->error();
-    if (httpCode == 0 && r->error() == QNetworkReply::NoError
+    if (r->error() == QNetworkReply::NoError
         && !contentType.contains("application/xml; charset=utf-8")) {
         msg = tr("Server error: PROPFIND reply is not XML formatted!");
     }
