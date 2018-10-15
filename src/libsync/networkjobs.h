@@ -18,6 +18,8 @@
 
 #include "abstractnetworkjob.h"
 
+#include "result.h"
+
 #include <QBuffer>
 #include <QUrlQuery>
 #include <functional>
