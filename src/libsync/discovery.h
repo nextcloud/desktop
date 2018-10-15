@@ -24,6 +24,22 @@ class ExcludedFiles;
 namespace OCC {
 class SyncJournalDb;
 
+/**
+ * Job that handle the discovering of a directory.
+ *
+ * This includes:
+ *  - Do a DiscoverySingleDirectoryJob network job which will do a PROPFIND of this directory
+ *  - Stat all the entries in the local file system for this directory
+ *  - Merge all invormation (and the information from the database) in order to know what need
+ *    to be done for every file within this directory.
+ *  - For every sub-directory within this directory, "recursively" create a new ProcessDirectoryJob
+ *
+ * This job is tightly couple with the DiscoveryPhase class.
+ *
+ * After being start()'ed, one must call progress() on this job until it emit finished().
+ * This job will call DiscoveryPhase::scheduleMoreJobs when one of its sub-jobs is finished.
+ * DiscoveryPhase::scheduleMoreJobs is the one which will call progress().
+ */
 class ProcessDirectoryJob : public QObject
 {
     Q_OBJECT
@@ -32,7 +48,7 @@ public:
         NormalQuery,
         ParentDontExist, // Do not query this folder because it does not exist
         ParentNotChanged, // No need to query this folder because it has not changed from what is in the DB
-        InBlackList // Do not query this folder because it is in th blacklist (remote entries only)
+        InBlackList // Do not query this folder because it is in the blacklist (remote entries only)
     };
     Q_ENUM(QueryMode)
     explicit ProcessDirectoryJob(const SyncFileItemPtr &dirItem, QueryMode queryLocal, QueryMode queryServer,
@@ -52,10 +68,16 @@ public:
     SyncFileItemPtr _dirItem;
 
 private:
+    /** Structure representing a path during discovery. A same path may have different value locally
+     * or on the server in case of renames.
+     *
+     * These strings never start or ends with slashes. They are all relative to the folder's root.
+     * Usually they are all the same and are even shared instance of the same QString.
+     */
     struct PathTuple
     {
-        QString _original; // Path as in the DB
-        QString _target; // Path that will be the result after the sync
+        QString _original; // Path as in the DB (before the sync)
+        QString _target; // Path that will be the result after the sync (and will be in the DB)
         QString _server; // Path on the server
         QString _local; // Path locally
         PathTuple addName(const QString &name) const
@@ -81,8 +103,12 @@ private:
     void processFileFinalize(const SyncFileItemPtr &item, PathTuple, bool recurse, QueryMode recurseQueryLocal, QueryMode recurseQueryServer);
 
 
-    // Return false if there is an error and that a directory must not be recursively be taken
+    /** Checks the permission for this item, if needed, change the item to a restoration item.
+     * @return false indicate that this is an error and if it is a directory, one should not recurse
+     * inside it.
+     */
     bool checkPermissions(const SyncFileItemPtr &item);
+
     void processBlacklisted(const PathTuple &, const LocalInfo &, const SyncJournalFileRecord &dbEntry);
     void subJobFinished();
 

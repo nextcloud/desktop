@@ -38,8 +38,6 @@ class SyncFileItem;
 class OCSYNC_EXPORT SyncJournalFileRecord
 {
 public:
-    SyncJournalFileRecord();
-
     bool isValid() const
     {
         return !_path.isEmpty();
