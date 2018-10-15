@@ -38,8 +38,6 @@ class SyncFileItem;
 class OCSYNC_EXPORT SyncJournalFileRecord
 {
 public:
-    SyncJournalFileRecord();
-
     bool isValid() const
     {
         return !_path.isEmpty();
@@ -60,14 +58,14 @@ public:
     QDateTime modDateTime() const { return Utility::qDateTimeFromTime_t(_modtime); }
 
     QByteArray _path;
-    quint64 _inode;
+    quint64 _inode = 0;
     qint64 _modtime = 0;
-    ItemType _type;
+    ItemType _type = ItemTypeSkip;
     QByteArray _etag;
     QByteArray _fileId;
     qint64 _fileSize;
     RemotePermissions _remotePerm;
-    bool _serverHasIgnoredFiles;
+    bool _serverHasIgnoredFiles = false;
     QByteArray _checksumHeader;
 };
 

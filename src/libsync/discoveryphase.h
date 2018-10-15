@@ -42,9 +42,12 @@ class Account;
 class SyncJournalDb;
 class ProcessDirectoryJob;
 
-
+/**
+ * Represent all the meta-data about a file in the server
+ */
 struct RemoteInfo
 {
+    /** FileName of the entry (this does not contains any directory or path, just the plain name */
     QString name;
     QByteArray etag;
     QByteArray fileId;
@@ -61,6 +64,7 @@ struct RemoteInfo
 
 struct LocalInfo
 {
+    /** FileName of the entry (this does not contains any directory or path, just the plain name */
     QString name;
     time_t modtime = 0;
     int64_t size = 0;
@@ -150,6 +154,11 @@ public:
     QMap<QString, SyncFileItemPtr> _deletedItem;
     QMap<QString, ProcessDirectoryJob *> _queuedDeletedDirectories;
     QMap<QString, QString> _renamedItems; // map source -> destinations
+    /** Given an original path, return the target path obtained when renaming is done.
+     *
+     * Note that it only considers parent directory renames. So if A/B got renamed to C/D,
+     * checking A/B/file would yield C/D/file, but checking A/B would yield A/B.
+     */
     QString adjustRenamedPath(const QString &original) const;
 
     void startJob(ProcessDirectoryJob *);

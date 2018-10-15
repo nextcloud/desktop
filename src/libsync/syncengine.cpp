@@ -513,9 +513,9 @@ void SyncEngine::startSync()
     _discoveryPhase->_localDir = _localPath;
     _discoveryPhase->_remoteFolder = _remotePath;
     _discoveryPhase->_syncOptions = _syncOptions;
+    _discoveryPhase->_shouldDiscoverLocaly = [this](const QString &s) { return shouldDiscoverLocally(s); };
     _discoveryPhase->_selectiveSyncBlackList = selectiveSyncBlackList;
     _discoveryPhase->_selectiveSyncWhiteList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);
-    _discoveryPhase->_shouldDiscoverLocaly = [this](const QString &s) { return shouldDiscoverLocally(s); };
     if (!ok) {
         qCWarning(lcEngine) << "Unable to read selective sync list, aborting.";
         syncError(tr("Unable to read from the sync journal."));

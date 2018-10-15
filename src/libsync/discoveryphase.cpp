@@ -147,7 +147,9 @@ QString DiscoveryPhase::adjustRenamedPath(const QString &original) const
 
 void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
 {
+    ENFORCE(!_currentRootJob);
     connect(job, &ProcessDirectoryJob::finished, this, [this, job] {
+        ENFORCE(_currentRootJob == sender());
         _currentRootJob = nullptr;
         if (job->_dirItem)
             emit itemDiscovered(job->_dirItem);
@@ -222,7 +224,7 @@ void DiscoverySingleDirectoryJob::abort()
     }
 }
 
-static void propertyMapToFileStat(const QMap<QString, QString> &map, RemoteInfo &result)
+static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInfo &result)
 {
     for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
         QString property = it.key();
@@ -299,7 +301,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         int slash = file.lastIndexOf('/');
         result.name = file.mid(slash + 1);
         result.size = -1;
-        propertyMapToFileStat(map, result);
+        propertyMapToRemoteInfo(map, result);
         if (result.isDirectory)
             result.size = 0;
         if (result.size == -1
