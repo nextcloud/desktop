@@ -17,6 +17,7 @@
 #define NETWORKJOBS_H
 
 #include "abstractnetworkjob.h"
+#include "result.h"
 #include <QUrlQuery>
 #include <functional>
 
