@@ -136,18 +136,7 @@ class DiscoveryPhase : public QObject
     QMap<QString, QString> _renamedItems; // map source -> destinations
     int _currentlyActiveJobs = 0;
 
-public:
-    QString _localDir; // absolute path to the local directory. ends with '/'
-    QString _remoteFolder; // remote folder, ends with '/'
-    SyncJournalDb *_statedb;
-    AccountPtr _account;
-    SyncOptions _syncOptions;
-    QStringList _selectiveSyncBlackList;
-    QStringList _selectiveSyncWhiteList;
-    ExcludedFiles *_excludes;
-    QString _invalidFilenamePattern; // FIXME: maybe move in ExcludedFiles
-    bool _ignoreHiddenFiles = false;
-    std::function<bool(const QString &)> _shouldDiscoverLocaly;
+    void scheduleMoreJobs();
 
     bool isInSelectiveSyncBlackList(const QString &path) const;
 
@@ -171,11 +160,25 @@ public:
      */
     QPair<bool, QByteArray> findAndCancelDeletedJob(const QString &originalPath);
 
+public:
+    // input
+    QString _localDir; // absolute path to the local directory. ends with '/'
+    QString _remoteFolder; // remote folder, ends with '/'
+    SyncJournalDb *_statedb;
+    AccountPtr _account;
+    SyncOptions _syncOptions;
+    QStringList _selectiveSyncBlackList;
+    QStringList _selectiveSyncWhiteList;
+    ExcludedFiles *_excludes;
+    QString _invalidFilenamePattern; // FIXME: maybe move in ExcludedFiles
+    bool _ignoreHiddenFiles = false;
+    std::function<bool(const QString &)> _shouldDiscoverLocaly;
+
     void startJob(ProcessDirectoryJob *);
 
+    // output
     QByteArray _dataFingerprint;
 
-    void scheduleMoreJobs();
 signals:
     void fatalError(const QString &errorString);
     void itemDiscovered(const SyncFileItemPtr &item);

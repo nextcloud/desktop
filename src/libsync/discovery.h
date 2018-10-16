@@ -25,21 +25,24 @@ namespace OCC {
 class SyncJournalDb;
 
 /**
- * Job that handles the discovering of a directory.
+ * Job that handles discovery of a directory.
  *
  * This includes:
  *  - Do a DiscoverySingleDirectoryJob network job which will do a PROPFIND of this directory
  *  - Stat all the entries in the local file system for this directory
  *  - Merge all information (and the information from the database) in order to know what needs
  *    to be done for every file within this directory.
- *  - For every sub-directory within this directory, "recursively" create a new ProcessDirectoryJob
+ *  - For every sub-directory within this directory, "recursively" create a new ProcessDirectoryJob.
  *
  * This job is tightly coupled with the DiscoveryPhase class.
  *
- * After being start()'ed, one must call processSubJobs() on this job until it emits finished().
- * This job will call DiscoveryPhase::scheduleMoreJobs when one of its sub-jobs is finished.
- * DiscoveryPhase::scheduleMoreJobs is the one which will call processSubJobs().
- * Results are fed outwards via DiscoveryPhase::itemDiscovered
+ * After being start()'ed this job will perform work asynchronously and emit finished() when done.
+ *
+ * Internally, this job will call DiscoveryPhase::scheduleMoreJobs when one of its sub-jobs is
+ * finished. DiscoveryPhase::scheduleMoreJobs will call processSubJobs() to continue work until
+ * the job is finished.
+ *
+ * Results are fed outwards via the DiscoveryPhase::itemDiscovered() signal.
  */
 class ProcessDirectoryJob : public QObject
 {
@@ -63,12 +66,13 @@ public:
     {
     }
     void start();
-    /** Start up to nbJobs, return the number of job started  */
+    /** Start up to nbJobs, return the number of job started; emit finished() when done */
     int processSubJobs(int nbJobs);
 
     SyncFileItemPtr _dirItem;
 
 private:
+
     /** Structure representing a path during discovery. A same path may have different value locally
      * or on the server in case of renames.
      *
@@ -123,17 +127,35 @@ private:
     /** An DB operation failed */
     void dbError();
 
-    QVector<RemoteInfo> _serverEntries;
-    QVector<LocalInfo> _localEntries;
-    RemotePermissions _rootPermissions;
-    bool _hasServerEntries = false;
-    bool _hasLocalEntries = false;
-    int _pendingAsyncJobs = 0;
-    QPointer<DiscoverySingleDirectoryJob> _serverJob;
-    std::deque<ProcessDirectoryJob *> _queuedJobs;
-    QVector<ProcessDirectoryJob *> _runningJobs;
     QueryMode _queryServer;
     QueryMode _queryLocal;
+    QVector<RemoteInfo> _serverEntries;
+    QVector<LocalInfo> _localEntries;
+    bool _hasServerEntries = false;
+    bool _hasLocalEntries = false;
+
+    RemotePermissions _rootPermissions;
+    QPointer<DiscoverySingleDirectoryJob> _serverJob;
+
+    /** Number of currently running async jobs.
+     *
+     * These "async jobs" have nothing to do with the jobs for subdirectories
+     * which are being tracked by _queuedJobs and _runningJobs.
+     *
+     * They are jobs that need to be completed to finish processing of directory
+     * entries. This variable is used to ensure this job doesn't finish while
+     * these jobs are still in flight.
+     */
+    int _pendingAsyncJobs = 0;
+
+    /** The queued and running jobs for subdirectories.
+     *
+     * The jobs are enqueued while processind directory entries and
+     * then gradually run via calls to processSubJobs().
+     */
+    std::deque<ProcessDirectoryJob *> _queuedJobs;
+    QVector<ProcessDirectoryJob *> _runningJobs;
+
     DiscoveryPhase *_discoveryData;
 
     PathTuple _currentFolder;
