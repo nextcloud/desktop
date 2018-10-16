@@ -111,6 +111,12 @@ private:
      */
     bool checkPermissions(const SyncFileItemPtr &item);
 
+    /**
+     * Check if the move is of a specified file within this directory is allowed.
+     * Return true if it is allowed, false otherwise
+     */
+    bool checkMovePermissions(RemotePermissions srcPerm, const QString &srcPath, bool isDirectory);
+
     void processBlacklisted(const PathTuple &, const LocalInfo &, const SyncJournalFileRecord &dbEntry);
     void subJobFinished();
 
