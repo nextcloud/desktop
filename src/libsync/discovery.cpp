@@ -200,23 +200,22 @@ void ProcessDirectoryJob::process()
     }
     _localEntries.clear();
 
-    if (_queryServer == ParentNotChanged || _queryLocal == ParentNotChanged) {
-        // fetch all the name from the DB
-        auto pathU8 = _currentFolder._original.toUtf8();
-        // FIXME do that better (a query that do not get stuff recursively ?)
-        if (!_discoveryData->_statedb->getFilesBelowPath(pathU8, [&](const SyncJournalFileRecord &rec) {
-                if (rec._path.indexOf("/", pathU8.size() + 1) > 0)
-                    return;
-                auto name = pathU8.isEmpty() ? rec._path : QString::fromUtf8(rec._path.mid(pathU8.size() + 1));
-                if (rec._type == ItemTypeVirtualFile || rec._type == ItemTypeVirtualFileDownload) {
-                    name.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
-                }
-                entriesNames.insert(name);
-                dbEntriesHash[name] = rec;
-            })) {
-            dbError();
-            return;
-        }
+
+    // fetch all the name from the DB
+    auto pathU8 = _currentFolder._original.toUtf8();
+    // FIXME do that better (a query that do not get stuff recursively ?)
+    if (!_discoveryData->_statedb->getFilesBelowPath(pathU8, [&](const SyncJournalFileRecord &rec) {
+            if (rec._path.indexOf("/", pathU8.size() + 1) > 0)
+                return;
+            auto name = pathU8.isEmpty() ? rec._path : QString::fromUtf8(rec._path.mid(pathU8.size() + 1));
+            if (rec._type == ItemTypeVirtualFile || rec._type == ItemTypeVirtualFileDownload) {
+                name.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
+            }
+            entriesNames.insert(name);
+            dbEntriesHash[name] = rec;
+        })) {
+        dbError();
+        return;
     }
 
 
@@ -246,10 +245,6 @@ void ProcessDirectoryJob::process()
         if (handleExcluded(path._target, localEntry.isDirectory || serverEntry.isDirectory, isHidden, localEntry.isSymLink))
             continue;
 
-        if (_queryServer != ParentNotChanged && _queryLocal != ParentNotChanged && !_discoveryData->_statedb->getFileRecord(path._original, &record)) {
-            dbError();
-            return;
-        }
         if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original)) {
             processBlacklisted(path, localEntry, record);
             continue;
@@ -595,9 +590,10 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     } else if (dbEntry._type == ItemTypeVirtualFileDownload) {
         item->_direction = SyncFileItem::Down;
         item->_instruction = CSYNC_INSTRUCTION_NEW;
-        // (path contains the suffix)
-        item->_file = _currentFolder._target + QLatin1Char('/') + serverEntry.name;
         item->_type = ItemTypeVirtualFileDownload;
+        item->_file = path._target;
+        if (item->_file.endsWith(_discoveryData->_syncOptions._virtualFileSuffix))
+            item->_file.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
     } else if (dbEntry._etag != serverEntry.etag) {
         item->_direction = SyncFileItem::Down;
         item->_modtime = serverEntry.modtime;
@@ -899,6 +895,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     } else if (noServerEntry) {
         // Not locally, not on the server. The entry is stale!
         qCInfo(lcDisco) << "Stale DB entry";
+        _discoveryData->_statedb->deleteFileRecord(path._original, true);
         return;
     } else if (dbEntry._type == ItemTypeVirtualFile) {
         // If the virtual file is removed, recreate it.
