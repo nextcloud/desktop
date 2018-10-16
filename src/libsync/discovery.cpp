@@ -809,41 +809,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 isMove = false;
 
             //Check local permission if we are allowed to put move the file here
-            if (isMove) {
-                auto destPerms = !_rootPermissions.isNull() ? _rootPermissions
-                                                            : _dirItem ? _dirItem->_remotePerm : _rootPermissions;
-                auto filePerms = base._remotePerm; // Technicly we should use the one from the server, but we'll assume it is the same
-                //true when it is just a rename in the same directory. (not a move)
-                bool isRename = originalPath.startsWith(_currentFolder._original)
-                    && originalPath.lastIndexOf('/') == _currentFolder._original.size();
-                // Check if we are allowed to move to the destination.
-                bool destinationOK = true;
-                if (isRename || destPerms.isNull()) {
-                    // no need to check for the destination dir permission
-                    destinationOK = true;
-                } else if (item->isDirectory() && !destPerms.hasPermission(RemotePermissions::CanAddSubDirectories)) {
-                    destinationOK = false;
-                } else if (!item->isDirectory() && !destPerms.hasPermission(RemotePermissions::CanAddFile)) {
-                    destinationOK = false;
-                }
-
-                // check if we are allowed to move from the source
-                bool sourceOK = true;
-                if (!filePerms.isNull()
-                    && ((isRename && !filePerms.hasPermission(RemotePermissions::CanRename))
-                           || (!isRename && !filePerms.hasPermission(RemotePermissions::CanMove)))) {
-                    // We are not allowed to move or rename this file
-                    sourceOK = false;
-                }
-                if (!sourceOK || !destinationOK) {
-                    qCInfo(lcDisco) << "Not a move because permission does not allow it." << sourceOK << destinationOK;
-                    if (!sourceOK) {
-                        // This is the behavior that we had in the client <= 2.5.
-                        _discoveryData->_statedb->avoidRenamesOnNextSync(base._path);
-                    }
-                    isMove = false;
-                }
-            }
+            // Technically we should use the one from the server, but we'll assume it is the same
+            if (isMove && !checkMovePermissions(base._remotePerm, originalPath, item->isDirectory()))
+                isMove = false;
 
             if (isMove) {
                 auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
@@ -924,7 +892,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         }
     } else if (_queryLocal == ParentNotChanged && dbEntry.isValid()) {
         if (noServerEntry) {
-            // Not modified locally (ParentNotChanged), bit not on the server:  Removed on the server.
+            // Not modified locally (ParentNotChanged), but not on the server: Removed on the server.
             item->_instruction = CSYNC_INSTRUCTION_REMOVE;
             item->_direction = SyncFileItem::Down;
         }
@@ -1101,6 +1069,47 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
     }
     default:
         break;
+    }
+    return true;
+}
+
+
+bool ProcessDirectoryJob::checkMovePermissions(RemotePermissions srcPerm, const QString &srcPath,
+                                               bool isDirectory)
+{
+    auto destPerms = !_rootPermissions.isNull() ? _rootPermissions
+                                                : _dirItem ? _dirItem->_remotePerm : _rootPermissions;
+    auto filePerms = srcPerm;
+    //true when it is just a rename in the same directory. (not a move)
+    bool isRename = srcPath.startsWith(_currentFolder._original)
+        && srcPath.lastIndexOf('/') == _currentFolder._original.size();
+    // Check if we are allowed to move to the destination.
+    bool destinationOK = true;
+    if (isRename || destPerms.isNull()) {
+        // no need to check for the destination dir permission
+        destinationOK = true;
+    } else if (isDirectory && !destPerms.hasPermission(RemotePermissions::CanAddSubDirectories)) {
+        destinationOK = false;
+    } else if (!isDirectory && !destPerms.hasPermission(RemotePermissions::CanAddFile)) {
+        destinationOK = false;
+    }
+
+    // check if we are allowed to move from the source
+    bool sourceOK = true;
+    if (!filePerms.isNull()
+        && ((isRename && !filePerms.hasPermission(RemotePermissions::CanRename))
+                || (!isRename && !filePerms.hasPermission(RemotePermissions::CanMove)))) {
+        // We are not allowed to move or rename this file
+        sourceOK = false;
+    }
+    if (!sourceOK || !destinationOK) {
+        qCInfo(lcDisco) << "Not a move because permission does not allow it." << sourceOK << destinationOK;
+        if (!sourceOK) {
+            // This is the behavior that we had in the client <= 2.5.
+            // but that might not be needed anymore
+            _discoveryData->_statedb->avoidRenamesOnNextSync(srcPath);
+        }
+        return false;
     }
     return true;
 }
