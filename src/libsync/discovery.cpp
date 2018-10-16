@@ -1182,6 +1182,7 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
 void ProcessDirectoryJob::dbError()
 {
     _discoveryData->fatalError(tr("Error while reading the database"));
+    _pendingAsyncJobs = -1; // We're finished, we don't want to emit finished again
     emit finished();
 }
 }
