@@ -87,6 +87,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     connect(_manager, &ShareManager::shareCreated, this, &ShareUserGroupWidget::getShares);
     connect(_manager, &ShareManager::serverError, this, &ShareUserGroupWidget::displayError);
     connect(_ui->shareeLineEdit, &QLineEdit::returnPressed, this, &ShareUserGroupWidget::slotLineEditReturn);
+    connect(_ui->confirmShare, &QPushButton::clicked, this, &ShareUserGroupWidget::slotLineEditReturn);
     //TODO connect(_ui->privateLinkText, &QLabel::linkActivated, this, &ShareUserGroupWidget::slotPrivateLinkShare);
 
     // By making the next two QueuedConnections we can override
