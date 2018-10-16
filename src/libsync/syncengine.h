@@ -143,12 +143,6 @@ signals:
      * Set *cancel to true in a slot connected from this signal to abort the sync.
      */
     void aboutToRemoveAllFiles(SyncFileItem::Direction direction, bool *cancel);
-    /**
-     * Emited when the sync engine detects that all the files are changed to dates in the past.
-     * This usually happen when a backup was restored on the server from an earlier date.
-     * Set *restore to true in a slot connected from this signal to re-upload all files.
-     */
-    void aboutToRestoreBackup(bool *restore);
 
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);
@@ -253,12 +247,6 @@ private:
 
     // true if there is at leasr one file with instruction REMOVE
     bool _hasRemoveFile;
-
-    // true if there is at least one file from the server that goes forward in time
-    bool _hasForwardInTimeFiles;
-
-    // number of files which goes back in time from the server
-    int _backInTimeFiles;
 
     // If ignored files should be ignored
     bool _ignore_hidden_files = false;

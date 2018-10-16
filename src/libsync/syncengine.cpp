@@ -72,8 +72,6 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
     , _progressInfo(new ProgressInfo)
     , _hasNoneFiles(false)
     , _hasRemoveFile(false)
-    , _hasForwardInTimeFiles(false)
-    , _backInTimeFiles(0)
     , _uploadLimit(0)
     , _downloadLimit(0)
     , _anotherSyncNeeded(NoFollowUpSync)
@@ -354,18 +352,6 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             // An upload of an existing file means that the file was left unchanged on the server
             // This counts as a NONE for detecting if all the files on the server were changed
             _hasNoneFiles = true;
-        } else if (!item->isDirectory()) {
-            auto difftime = std::difftime(item->_modtime, item->_previousModtime);
-            if (difftime < -3600 * 2) {
-                // We are going back on time
-                // We only increment if the difference is more than two hours to avoid clock skew
-                // issues or DST changes. (We simply ignore files that goes in the past less than
-                // two hours for the backup detection heuristics.)
-                _backInTimeFiles++;
-                qCWarning(lcEngine) << item->_file << "has a timestamp earlier than the local file";
-            } else if (difftime > 0) {
-                _hasForwardInTimeFiles = true;
-            }
         }
     }
 
@@ -408,8 +394,6 @@ void SyncEngine::startSync()
 
     _hasNoneFiles = false;
     _hasRemoveFile = false;
-    _hasForwardInTimeFiles = false;
-    _backInTimeFiles = 0;
     _seenFiles.clear();
 
     _progressInfo->reset();

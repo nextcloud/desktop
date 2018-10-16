@@ -267,8 +267,6 @@ public slots:
 
     // connected to the corresponding signals in the SyncEngine
     void slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *);
-    void slotAboutToRestoreBackup(bool *);
-
 
     /**
       * Starts a sync operation

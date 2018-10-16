@@ -93,8 +93,6 @@ Folder::Folder(const FolderDefinition &definition,
     //direct connection so the message box is blocking the sync.
     connect(_engine.data(), &SyncEngine::aboutToRemoveAllFiles,
         this, &Folder::slotAboutToRemoveAllFiles);
-    connect(_engine.data(), &SyncEngine::aboutToRestoreBackup,
-        this, &Folder::slotAboutToRestoreBackup);
     connect(_engine.data(), &SyncEngine::transmissionProgress, this, &Folder::slotTransmissionProgress);
     connect(_engine.data(), &SyncEngine::itemCompleted,
         this, &Folder::slotItemCompleted);
@@ -1098,28 +1096,6 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, bool *cancel
         slotScheduleThisFolder();
     }
 }
-
-void Folder::slotAboutToRestoreBackup(bool *restore)
-{
-    QString msg =
-        tr("This sync would reset the files to an earlier time in the sync folder '%1'.\n"
-           "This might be because a backup was restored on the server.\n"
-           "Continuing the sync as normal will cause all your files to be overwritten by an older "
-           "file in an earlier state. "
-           "Do you want to keep your local most recent files as conflict files?");
-    QMessageBox msgBox(QMessageBox::Warning, tr("Backup detected"),
-        msg.arg(shortGuiLocalPath()));
-    msgBox.setWindowFlags(msgBox.windowFlags() | Qt::WindowStaysOnTopHint);
-    msgBox.addButton(tr("Normal Synchronisation"), QMessageBox::DestructiveRole);
-    QPushButton *keepBtn = msgBox.addButton(tr("Keep Local Files as Conflict"), QMessageBox::AcceptRole);
-
-    if (msgBox.exec() == -1) {
-        *restore = true;
-        return;
-    }
-    *restore = msgBox.clickedButton() == keepBtn;
-}
-
 
 void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
 {
