@@ -595,13 +595,15 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     } else if (dbEntry._type == ItemTypeVirtualFileDownload) {
         item->_direction = SyncFileItem::Down;
         item->_instruction = CSYNC_INSTRUCTION_NEW;
+        // (path contains the suffix)
         item->_file = _currentFolder._target + QLatin1Char('/') + serverEntry.name;
         item->_type = ItemTypeVirtualFileDownload;
     } else if (dbEntry._etag != serverEntry.etag) {
         item->_direction = SyncFileItem::Down;
         item->_modtime = serverEntry.modtime;
         item->_size = serverEntry.size;
-        if (serverEntry.isDirectory && dbEntry._type == ItemTypeDirectory) {
+        if (serverEntry.isDirectory) {
+            ENFORCE(dbEntry._type == ItemTypeDirectory);
             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
         } else if (!localEntry.isValid() && _queryLocal != ParentNotChanged) {
             // Deleted locally, changed on server
@@ -656,10 +658,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                     item->_instruction = CSYNC_INSTRUCTION_NEW;
                     item->_type = ItemTypeVirtualFile;
                 }
-            } else if (item->_type != ItemTypeVirtualFileDownload) {
-                item->_type = ItemTypeVirtualFile;
             }
-
             if (noServerEntry) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
@@ -671,8 +670,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             ASSERT(item->_type == ItemTypeVirtualFile)
             ASSERT(item->_file.endsWith(_discoveryData->_syncOptions._virtualFileSuffix));
             item->_file.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
-        } else if (dbEntry.isValid() && !typeChange && ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) || (localEntry.isDirectory && dbEntry._type == ItemTypeDirectory))) {
+        } else if (dbEntry.isValid() && !typeChange && ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) || localEntry.isDirectory)) {
             // Local file unchanged.
+            ENFORCE(localEntry.isDirectory == (dbEntry._type == ItemTypeDirectory));
             if (noServerEntry) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
@@ -681,18 +681,11 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 item->_direction = SyncFileItem::Down; // Does not matter
             }
         } else if (serverModified || dbEntry._type == ItemTypeVirtualFile) {
+            // Conflict!
             if (serverEntry.isDirectory && localEntry.isDirectory) {
                 // Folders of the same path are always considered equals
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
             } else {
-                // It could be a conflict even if size and mtime match!
-                //
-                // In older client versions we always treated these cases as a
-                // non-conflict. This behavior is preserved in case the server
-                // doesn't provide a content checksum.
-                //
-                // When it does have one, however, we do create a job, but the job
-                // will compare hashes and avoid the download if possible.
                 QByteArray remoteChecksumHeader = serverEntry.checksumHeader;
                 if (!remoteChecksumHeader.isEmpty()) {
                     // Do we have an UploadInfo for this?
@@ -725,11 +718,17 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                         item->_direction = SyncFileItem::None;
                     }
                 } else {
+
                     // If the size or mtime is different, it's definitely a conflict.
                     bool isConflict = (serverEntry.size != localEntry.size) || (serverEntry.modtime != localEntry.modtime);
 
-                    // SO: If there is no checksum, we can have !is_conflict here
-                    // even though the files have different content! This is an
+                    // It could be a conflict even if size and mtime match!
+                    //
+                    // In older client versions we always treated these cases as a
+                    // non-conflict. This behavior is preserved in case the server
+                    // doesn't provide a content checksum.
+                    // SO: If there is no checksum, we can have !isConflict here
+                    // even though the files might have different content! This is an
                     // intentional tradeoff. Downloading and comparing files would
                     // be technically correct in this situation but leads to too
                     // much waste.
@@ -866,6 +865,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 postProcessLocalNew();
             }
         } else {
+            // Local file was changed
             item->_instruction = CSYNC_INSTRUCTION_SYNC;
             if (noServerEntry) {
                 // Special case! deleted on server, modified on client, the instruction is then NEW
