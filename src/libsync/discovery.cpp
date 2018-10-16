@@ -1169,7 +1169,7 @@ void ProcessDirectoryJob::subJobFinished()
     QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
 }
 
-int ProcessDirectoryJob::progress(int nbJobs)
+int ProcessDirectoryJob::processSubJobs(int nbJobs)
 {
     if (_queuedJobs.empty() && _runningJobs.empty() && _pendingAsyncJobs == 0) {
         _pendingAsyncJobs = -1; // We're finished, we don't want to emit finished again
@@ -1195,7 +1195,7 @@ int ProcessDirectoryJob::progress(int nbJobs)
 
     int started = 0;
     foreach (auto *rj, _runningJobs) {
-        started += rj->progress(nbJobs - started);
+        started += rj->processSubJobs(nbJobs - started);
         if (started >= nbJobs)
             return started;
     }

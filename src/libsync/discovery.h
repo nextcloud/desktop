@@ -25,20 +25,21 @@ namespace OCC {
 class SyncJournalDb;
 
 /**
- * Job that handle the discovering of a directory.
+ * Job that handles the discovering of a directory.
  *
  * This includes:
  *  - Do a DiscoverySingleDirectoryJob network job which will do a PROPFIND of this directory
  *  - Stat all the entries in the local file system for this directory
- *  - Merge all invormation (and the information from the database) in order to know what need
+ *  - Merge all information (and the information from the database) in order to know what needs
  *    to be done for every file within this directory.
  *  - For every sub-directory within this directory, "recursively" create a new ProcessDirectoryJob
  *
- * This job is tightly couple with the DiscoveryPhase class.
+ * This job is tightly coupled with the DiscoveryPhase class.
  *
- * After being start()'ed, one must call progress() on this job until it emit finished().
+ * After being start()'ed, one must call processSubJobs() on this job until it emits finished().
  * This job will call DiscoveryPhase::scheduleMoreJobs when one of its sub-jobs is finished.
- * DiscoveryPhase::scheduleMoreJobs is the one which will call progress().
+ * DiscoveryPhase::scheduleMoreJobs is the one which will call processSubJobs().
+ * Results are fed outwards via DiscoveryPhase::itemDiscovered
  */
 class ProcessDirectoryJob : public QObject
 {
@@ -63,7 +64,7 @@ public:
     }
     void start();
     /** Start up to nbJobs, return the number of job started  */
-    int progress(int nbJobs);
+    int processSubJobs(int nbJobs);
 
     SyncFileItemPtr _dirItem;
 
@@ -94,6 +95,7 @@ private:
             return result;
         }
     };
+    // Called once _serverEntries and _localEntries are filled
     void process();
     // return true if the file is excluded
     bool handleExcluded(const QString &path, bool isDirectory, bool isHidden, bool isSymlink);

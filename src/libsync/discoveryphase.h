@@ -130,6 +130,12 @@ class DiscoveryPhase : public QObject
 
     ProcessDirectoryJob *_currentRootJob = nullptr;
 
+    friend class ProcessDirectoryJob;
+    QMap<QString, SyncFileItemPtr> _deletedItem;
+    QMap<QString, ProcessDirectoryJob *> _queuedDeletedDirectories;
+    QMap<QString, QString> _renamedItems; // map source -> destinations
+    int _currentlyActiveJobs = 0;
+
 public:
     QString _localDir; // absolute path to the local directory. ends with '/'
     QString _remoteFolder; // remote folder, ends with '/'
@@ -140,7 +146,6 @@ public:
     QStringList _selectiveSyncWhiteList;
     ExcludedFiles *_excludes;
     QString _invalidFilenamePattern; // FIXME: maybe move in ExcludedFiles
-    int _currentlyActiveJobs = 0;
     bool _ignoreHiddenFiles = false;
     std::function<bool(const QString &)> _shouldDiscoverLocaly;
 
@@ -151,9 +156,6 @@ public:
     void checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp,
         std::function<void(bool)> callback);
 
-    QMap<QString, SyncFileItemPtr> _deletedItem;
-    QMap<QString, ProcessDirectoryJob *> _queuedDeletedDirectories;
-    QMap<QString, QString> _renamedItems; // map source -> destinations
     /** Given an original path, return the target path obtained when renaming is done.
      *
      * Note that it only considers parent directory renames. So if A/B got renamed to C/D,
