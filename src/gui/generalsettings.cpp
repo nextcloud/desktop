@@ -157,8 +157,14 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     _ui->showInExplorerNavigationPaneCheckBox->setText(txt);
 #endif
 
-    _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
-    connect(_ui->autostartCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleLaunchOnStartup);
+    if(Utility::hasSystemLaunchOnStartup(Theme::instance()->appName())) {
+        _ui->autostartCheckBox->setChecked(true);
+        _ui->autostartCheckBox->setDisabled(true);
+        _ui->autostartCheckBox->setToolTip(tr("You cannot disable autostart because system-wide autostart is enabled."));
+    } else {
+        _ui->autostartCheckBox->setChecked(Utility::hasLaunchOnStartup(Theme::instance()->appName()));
+        connect(_ui->autostartCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleLaunchOnStartup);
+    }
 
     // setup about section
     QString about = Theme::instance()->about();

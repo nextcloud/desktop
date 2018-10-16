@@ -58,6 +58,15 @@ namespace Utility {
     OCSYNC_EXPORT QString octetsToString(qint64 octets);
     OCSYNC_EXPORT QByteArray userAgentString();
     OCSYNC_EXPORT QByteArray friendlyUserAgentString();
+    /**
+      * @brief Return whether launch on startup is enabled system wide.
+      *
+      * If this returns true, the checkbox for user specific launch
+      * on startup will be hidden.
+      *
+      * Currently only implemented on Windows.
+      */
+    OCSYNC_EXPORT bool hasSystemLaunchOnStartup(const QString &appName);
     OCSYNC_EXPORT bool hasLaunchOnStartup(const QString &appName);
     OCSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString &guiName, bool launch);
     OCSYNC_EXPORT uint convertSizeToUint(size_t &convertVar);
