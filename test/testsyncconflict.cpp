@@ -64,6 +64,13 @@ bool expectAndWipeConflict(FileModifier &local, FileInfo state, const QString pa
     return false;
 }
 
+SyncJournalFileRecord dbRecord(FakeFolder &folder, const QString &path)
+{
+    SyncJournalFileRecord record;
+    folder.syncJournal().getFileRecord(path, &record);
+    return record;
+}
+
 class TestSyncConflict : public QObject
 {
     Q_OBJECT
@@ -599,6 +606,30 @@ private slots:
         QVERIFY(fakeFolder.syncEngine().isAnotherSyncNeeded() == ImmediateFollowUp);
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    // Test what happens if we remove entries both on the server, and locally
+    void testRemoveRemove()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        fakeFolder.remoteModifier().remove("A");
+        fakeFolder.localModifier().remove("A");
+        fakeFolder.remoteModifier().remove("B/b1");
+        fakeFolder.localModifier().remove("B/b1");
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        auto expectedState = fakeFolder.currentLocalState();
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.currentLocalState(), expectedState);
+        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+
+        QVERIFY(dbRecord(fakeFolder, "B/b2").isValid());
+
+        QVERIFY(!dbRecord(fakeFolder, "B/b1").isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/a1").isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A").isValid());
     }
 };
 
