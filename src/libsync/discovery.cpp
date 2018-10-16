@@ -640,9 +640,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         serverModified = false;
         item->_type = ItemTypeVirtualFile;
     }
-    if (!_dirItem || _dirItem->_direction == SyncFileItem::Up) {
-        _childModified |= serverModified;
-    }
+    _childModified |= serverModified;
     if (localEntry.isValid()) {
         item->_inode = localEntry.inode;
         bool typeChange = dbEntry.isValid() && localEntry.isDirectory != (dbEntry._type == ItemTypeDirectory);
@@ -757,9 +755,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_size = localEntry.size;
             item->_modtime = localEntry.modtime;
             item->_type = localEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
-            if (!_dirItem || _dirItem->_direction == SyncFileItem::Down) {
-                _childModified = true;
-            }
+            _childModified = true;
         } else if (!dbEntry.isValid()) { // New local file
             item->_instruction = CSYNC_INSTRUCTION_NEW;
             item->_direction = SyncFileItem::Up;
@@ -767,9 +763,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_size = localEntry.size;
             item->_modtime = localEntry.modtime;
             item->_type = localEntry.isDirectory ? ItemTypeDirectory : localEntry.isVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
-            if (!_dirItem || _dirItem->_direction == SyncFileItem::Down) {
-                _childModified = true;
-            }
+            _childModified = true;
 
             auto postProcessLocalNew = [item, localEntry, this]() {
                 if (localEntry.isVirtualFile) {
@@ -915,9 +909,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_modtime = localEntry.modtime;
             item->_previousSize = dbEntry._fileSize;
             item->_previousModtime = dbEntry._modtime;
-            if (!_dirItem || _dirItem->_direction == SyncFileItem::Down) {
-                _childModified = true;
-            }
+            _childModified = true;
 
             // Checksum comparison at this stage is only enabled for .eml files,
             // check #4754 #4755
@@ -1139,12 +1131,13 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
                 // re-create directory that has modified contents
                 _dirItem->_instruction = CSYNC_INSTRUCTION_NEW;
             }
-            if (_childModified && _dirItem->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
+            if (_childModified && _dirItem->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE && !_dirItem->isDirectory()) {
+                // Replacing a directory by a file is a conflict, if the directory had modified children
+                _dirItem->_instruction = CSYNC_INSTRUCTION_CONFLICT;
                 if (_dirItem->_direction == SyncFileItem::Up) {
                     _dirItem->_type = ItemTypeDirectory;
                     _dirItem->_direction = SyncFileItem::Down;
                 }
-                _dirItem->_instruction = CSYNC_INSTRUCTION_CONFLICT;
             }
             if (_childIgnored && _dirItem->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 // Do not remove a directory that has ignored files
