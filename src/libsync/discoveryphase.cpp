@@ -169,7 +169,7 @@ void DiscoveryPhase::scheduleMoreJobs()
 {
     auto limit = qMax(1, _syncOptions._parallelNetworkJobs);
     if (_currentRootJob && _currentlyActiveJobs < limit) {
-        _currentRootJob->progress(limit - _currentlyActiveJobs);
+        _currentRootJob->processSubJobs(limit - _currentlyActiveJobs);
     }
 }
 
