@@ -163,6 +163,14 @@ public:
      */
     QString adjustRenamedPath(const QString &original) const;
 
+    /**
+     * Check if there is already a job to delete that item.
+     * If that's not the case, return { false, QByteArray() }.
+     * If there is such a job, cancel that job and return true and the old etag
+     * This is useful to detect if a file has been renamed to something else.
+     */
+    QPair<bool, QByteArray> findAndCancelDeletedJob(const QString &originalPath);
+
     void startJob(ProcessDirectoryJob *);
 
     QByteArray _dataFingerprint;

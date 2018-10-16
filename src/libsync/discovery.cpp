@@ -524,18 +524,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                     }
                 }
 
-                bool wasDeletedOnServer = false;
-                auto it = _discoveryData->_deletedItem.find(originalPath);
-                if (it != _discoveryData->_deletedItem.end()) {
-                    ASSERT((*it)->_instruction == CSYNC_INSTRUCTION_REMOVE);
-                    (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
-                    wasDeletedOnServer = true;
-                }
-                auto otherJob = _discoveryData->_queuedDeletedDirectories.take(originalPath);
-                if (otherJob) {
-                    delete otherJob;
-                    wasDeletedOnServer = true;
-                }
+                bool wasDeletedOnServer = _discoveryData->findAndCancelDeletedJob(originalPath).first;
 
                 auto postProcessRename = [this, item, base, originalPath](PathTuple &path) {
                     auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath);
@@ -573,12 +562,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                         // The file do not exist, it is a rename
 
                         // In case the deleted item was discovered in parallel
-                        auto it = _discoveryData->_deletedItem.find(originalPath);
-                        if (it != _discoveryData->_deletedItem.end()) {
-                            ASSERT((*it)->_instruction == CSYNC_INSTRUCTION_REMOVE);
-                            (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
-                        }
-                        delete _discoveryData->_queuedDeletedDirectories.take(originalPath);
+                        _discoveryData->findAndCancelDeletedJob(originalPath);
 
                         postProcessRename(path);
                         processFileFinalize(item, path, item->isDirectory(), item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist, _queryServer);
@@ -868,22 +852,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             }
 
             if (isMove) {
-                QByteArray oldEtag;
-                auto it = _discoveryData->_deletedItem.find(originalPath);
-                if (it != _discoveryData->_deletedItem.end()) {
-                    if ((*it)->_instruction != CSYNC_INSTRUCTION_REMOVE && (*it)->_type != ItemTypeVirtualFile)
-                        isMove = false;
-                    else
-                        (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
-                    oldEtag = (*it)->_etag;
-                    if (!item->isDirectory() && oldEtag != base._etag) {
-                        isMove = false;
-                    }
-                }
-                if (auto deleteJob = _discoveryData->_queuedDeletedDirectories.value(originalPath)) {
-                    oldEtag = deleteJob->_dirItem->_etag;
-                    delete _discoveryData->_queuedDeletedDirectories.take(originalPath);
-                }
+                auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
 
                 auto processRename = [item, originalPath, base, this](PathTuple &path) {
                     auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath);
@@ -903,10 +872,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                     path._server = adjustedOriginalPath;
                     qCInfo(lcDisco) << "Rename detected (up) " << item->_file << " -> " << item->_renameTarget;
                 };
-                if (isMove && !oldEtag.isEmpty()) {
-                    recurseQueryServer = oldEtag == base._etag ? ParentNotChanged : NormalQuery;
+                if (wasDeletedOnClient.first) {
+                    recurseQueryServer = wasDeletedOnClient.second == base._etag ? ParentNotChanged : NormalQuery;
                     processRename(path);
-                } else if (isMove) {
+                } else {
                     // We must query the server to know if the etag has not changed
                     _pendingAsyncJobs++;
                     QString serverOriginalPath = originalPath;
@@ -920,13 +889,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                             postProcessLocalNew();
                         } else {
                             // In case the deleted item was discovered in parallel
-                            auto it = _discoveryData->_deletedItem.find(originalPath);
-                            if (it != _discoveryData->_deletedItem.end()) {
-                                ASSERT((*it)->_instruction == CSYNC_INSTRUCTION_REMOVE);
-                                (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
-                            }
-                            delete _discoveryData->_queuedDeletedDirectories.take(originalPath);
-
+                            _discoveryData->findAndCancelDeletedJob(originalPath);
                             processRename(path);
                             recurseQueryServer = *etag == base._etag ? ParentNotChanged : NormalQuery;
                         }
@@ -936,8 +899,6 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                     });
                     job->start();
                     return;
-                } else {
-                    postProcessLocalNew();
                 }
             } else {
                 postProcessLocalNew();
