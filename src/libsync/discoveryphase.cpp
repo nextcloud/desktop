@@ -145,6 +145,27 @@ QString DiscoveryPhase::adjustRenamedPath(const QString &original) const
     return original;
 }
 
+QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &originalPath)
+{
+    bool result = false;
+    QByteArray oldEtag;
+    auto it = _deletedItem.find(originalPath);
+    if (it != _deletedItem.end()) {
+        ENFORCE((*it)->_instruction == CSYNC_INSTRUCTION_REMOVE
+            // re-creation of virtual files count as a delete
+             || ((*it)->_type == ItemTypeVirtualFile && (*it)->_instruction == CSYNC_INSTRUCTION_NEW));
+        (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
+        result = true;
+        oldEtag = (*it)->_etag;
+    }
+    if (auto *otherJob = _queuedDeletedDirectories.take(originalPath)) {
+        oldEtag = otherJob->_dirItem->_etag;
+        delete otherJob;
+        result = true;
+    }
+    return { result, oldEtag };
+}
+
 void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
 {
     ENFORCE(!_currentRootJob);
