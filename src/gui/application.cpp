@@ -297,6 +297,17 @@ Application::~Application()
     if(cont)
         cont->unmount();
 #endif
+
+#if defined(Q_OS_WIN)
+    Vfs_windows *_Vfs_windows = NULL;
+    _Vfs_windows = Vfs_windows::instance();
+    if (_Vfs_windows) {
+        qDebug() << Q_FUNC_INFO << " Up drive: " << _Vfs_windows;
+        WCHAR DriveLetter = L'X';
+        _Vfs_windows->downDrive(DriveLetter);
+    } else
+        qDebug() << Q_FUNC_INFO << " Bad up drive";
+#endif
 }
 
 void Application::slotAccountStateRemoved(AccountState *accountState)
@@ -318,6 +329,17 @@ void Application::slotAccountStateRemoved(AccountState *accountState)
 #if defined(Q_OS_MAC)
     if(cont)
         cont->unmount();
+#endif
+
+#if defined(Q_OS_WIN)
+    Vfs_windows *_Vfs_windows = NULL;
+    _Vfs_windows = Vfs_windows::instance();
+    if (_Vfs_windows) {
+        qDebug() << Q_FUNC_INFO << " Up drive: " << _Vfs_windows;
+        WCHAR DriveLetter = L'X';
+        _Vfs_windows->downDrive(DriveLetter);
+    } else
+        qDebug() << Q_FUNC_INFO << " Bad up drive";
 #endif
     if (_folderManager) {
         disconnect(accountState, &AccountState::stateChanged,
@@ -370,7 +392,7 @@ void Application::slotAccountStateAdded(AccountState *accountState)
 
     if (_Vfs_windows)
     {
-        qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " up Drive: " << Vfs_windows::instance();
+        qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " Up drive: " << Vfs_windows::instance();
         _Vfs_windows->upDrive(cfgFile.defaultFileStreamMirrorPath(), cfgFile.defaultFileStreamLetterDrive());
         Sleep(1000);
         cfgFile.createAuxiliarDirectories();
@@ -384,7 +406,7 @@ void Application::slotAccountStateAdded(AccountState *accountState)
         //connect(&_quotaInfo, SIGNAL(quotaUpdated(qint64, qint64)), _Vfs_windows, SLOT(quoting(qint64, qint64)));
     }
     else
-        qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " BAD up Drive";
+        qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " Bad up drive";
 #endif
 
 	//< For cron delete dir/files online. Execute each 60000 msec
