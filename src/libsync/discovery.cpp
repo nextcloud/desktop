@@ -177,21 +177,28 @@ void ProcessDirectoryJob::process()
 
     QString localDir;
 
+    //
+    // Build lookup tables for local, remote and db entries.
+    // For suffix-virtual files, the key will always be the base file name
+    // without the suffix.
+    //
     std::set<QString> entriesNames; // sorted
     QHash<QString, RemoteInfo> serverEntriesHash;
     QHash<QString, LocalInfo> localEntriesHash;
     QHash<QString, SyncJournalFileRecord> dbEntriesHash;
+
     for (auto &e : _serverEntries) {
         entriesNames.insert(e.name);
         serverEntriesHash[e.name] = std::move(e);
     }
     _serverEntries.clear();
+
     for (auto &e : _localEntries) {
         // Remove the virtual file suffix
         auto name = e.name;
         if (e.name.endsWith(_discoveryData->_syncOptions._virtualFileSuffix)) {
             e.isVirtualFile = true;
-            name = e.name.left(e.name.size() - _discoveryData->_syncOptions._virtualFileSuffix.size());
+            name.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
             if (localEntriesHash.contains(name))
                 continue; // If there is both a virtual file and a real file, we must keep the real file
         }
@@ -199,7 +206,6 @@ void ProcessDirectoryJob::process()
         localEntriesHash[name] = std::move(e);
     }
     _localEntries.clear();
-
 
     // fetch all the name from the DB
     auto pathU8 = _currentFolder._original.toUtf8();
@@ -218,18 +224,20 @@ void ProcessDirectoryJob::process()
         return;
     }
 
-
+    //
+    // Iterate over entries and process them
+    //
     for (const auto &f : entriesNames) {
         auto localEntry = localEntriesHash.value(f);
         auto serverEntry = serverEntriesHash.value(f);
         SyncJournalFileRecord record = dbEntriesHash.value(f);
         PathTuple path;
 
-        if ((localEntry.isValid() && localEntry.isVirtualFile)) {
-            Q_ASSERT(localEntry.name.endsWith(_discoveryData->_syncOptions._virtualFileSuffix));
-            path = _currentFolder.addName(localEntry.name);
-            path._server.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
-        } else if (_queryLocal == ParentNotChanged && record.isValid() && record._type == ItemTypeVirtualFile) {
+        // If there's a local virtual file, the server path should not have the suffix
+        // but local/original/db should have it.
+        if ((localEntry.isValid() && localEntry.isVirtualFile)
+            || (_queryLocal == ParentNotChanged && record.isValid() && record._type == ItemTypeVirtualFile)) {
+            Q_ASSERT(!localEntry.isValid() || localEntry.name.endsWith(_discoveryData->_syncOptions._virtualFileSuffix));
             QString name = f + _discoveryData->_syncOptions._virtualFileSuffix;
             path = _currentFolder.addName(name);
             path._server.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
@@ -383,11 +391,14 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     item->_file = path._target;
     item->_originalFile = path._original;
 
-    if (_queryServer == NormalQuery && serverEntry.isValid()) {
+    if (serverEntry.isValid()) {
         processFileAnalyzeRemoteInfo(item, path, localEntry, serverEntry, dbEntry);
         return;
-    } else if (_queryServer == ParentNotChanged && dbEntry._type == ItemTypeVirtualFileDownload) {
-        // download virtual file
+    }
+
+    // Downloading a virtual file is like a server action and can happen even if
+    // server-side nothing has changed
+    if (_queryServer == ParentNotChanged && dbEntry._type == ItemTypeVirtualFileDownload) {
         item->_direction = SyncFileItem::Down;
         item->_instruction = CSYNC_INSTRUCTION_NEW;
         Q_ASSERT(item->_file.endsWith(_discoveryData->_syncOptions._virtualFileSuffix));
