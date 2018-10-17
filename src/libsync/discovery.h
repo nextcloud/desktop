@@ -99,13 +99,34 @@ private:
             return result;
         }
     };
-    // Called once _serverEntries and _localEntries are filled
+
+    /** Iterate over entries inside the directory (non-recursively).
+     *
+     * Called once _serverEntries and _localEntries are filled
+     * Calls processFile() for each non-excluded one.
+     * Will start scheduling subdir jobs when done.
+     */
     void process();
+
     // return true if the file is excluded
     bool handleExcluded(const QString &path, bool isDirectory, bool isHidden, bool isSymlink);
+
+    /** Reconcile local/remote/db information for a single item.
+     *
+     * Can be a file or a directory.
+     * Usually ends up emitting itemDiscovered() or creating a subdirectory job.
+     *
+     * This main function delegates some work to the processFile* functions.
+     */
     void processFile(PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
+
+    /// processFile helper for when remote information is available, typically flows into AnalyzeLocalInfo when done
     void processFileAnalyzeRemoteInfo(const SyncFileItemPtr &item, PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
+
+    /// processFile helper for reconciling local changes
     void processFileAnalyzeLocalInfo(const SyncFileItemPtr &item, PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &, QueryMode recurseQueryServer);
+
+    /// processFile helper for common final processing
     void processFileFinalize(const SyncFileItemPtr &item, PathTuple, bool recurse, QueryMode recurseQueryLocal, QueryMode recurseQueryServer);
 
 
