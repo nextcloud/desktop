@@ -65,7 +65,7 @@ public:
     virtual void start() Q_DECL_OVERRIDE;
     virtual bool finished() Q_DECL_OVERRIDE
     {
-        if (reply()->bytesAvailable()) {
+        if (_saveBodyToFile && reply()->bytesAvailable()) {
             return false;
         } else {
             if (_bandwidthManager) {

@@ -107,6 +107,8 @@ public:
     // Whether we are using OAuth
     bool isUsingOAuth() const { return !_refreshToken.isNull(); }
 
+    bool retryIfNeeded(AbstractNetworkJob *) override;
+
 private Q_SLOTS:
     void slotAuthentication(QNetworkReply *, QAuthenticator *);
 
@@ -138,10 +140,13 @@ protected:
 
     QString _fetchErrorString;
     bool _ready = false;
+    bool _isRenewingOAuthToken = false;
     QSslKey _clientSslKey;
     QSslCertificate _clientSslCertificate;
     bool _keychainMigration = false;
     bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
+
+    QVector<QPointer<AbstractNetworkJob>> _retryQueue; // Jobs we need to retry once the auth token is fetched
 };
 
 
