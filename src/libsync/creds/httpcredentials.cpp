@@ -103,12 +103,6 @@ static void addSettingsToJob(Account *account, QKeychain::Job *job)
     job->setSettings(settings.release());
 }
 
-HttpCredentials::HttpCredentials()
-    : _ready(false)
-    , _keychainMigration(false)
-{
-}
-
 // From wizard
 HttpCredentials::HttpCredentials(const QString &user, const QString &password, const QSslCertificate &certificate, const QSslKey &key)
     : _user(user)

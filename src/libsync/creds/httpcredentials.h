@@ -79,8 +79,8 @@ public:
     /// Don't add credentials if this is set on a QNetworkRequest
     static constexpr QNetworkRequest::Attribute DontAddCredentialsAttribute = QNetworkRequest::User;
 
-    explicit HttpCredentials();
-    HttpCredentials(const QString &user, const QString &password, const QSslCertificate &certificate = QSslCertificate(), const QSslKey &key = QSslKey());
+    HttpCredentials() = default;
+    explicit HttpCredentials(const QString &user, const QString &password, const QSslCertificate &certificate = QSslCertificate(), const QSslKey &key = QSslKey());
 
     QString authType() const Q_DECL_OVERRIDE;
     QNetworkAccessManager *createQNAM() const Q_DECL_OVERRIDE;
@@ -137,10 +137,10 @@ protected:
     QString _previousPassword;
 
     QString _fetchErrorString;
-    bool _ready;
+    bool _ready = false;
     QSslKey _clientSslKey;
     QSslCertificate _clientSslCertificate;
-    bool _keychainMigration;
+    bool _keychainMigration = false;
     bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
 };
 
