@@ -67,7 +67,7 @@ public:
     void start() override;
     bool finished() override
     {
-        if (reply()->bytesAvailable()) {
+        if (_saveBodyToFile && reply()->bytesAvailable()) {
             return false;
         } else {
             if (_bandwidthManager) {

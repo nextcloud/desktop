@@ -91,6 +91,9 @@ public:
      */
     QString errorStringParsingBody(QByteArray *body = nullptr);
 
+    /** Make a new request */
+    void retry();
+
     /** static variable the HTTP timeout (in seconds). If set to 0, the default will be used
      */
     static int httpTimeout;
