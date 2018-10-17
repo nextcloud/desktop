@@ -272,10 +272,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         rect.setRight(option.rect.right() - margin);
 
         // save previous state to not mess up colours with the background (fixes issue: https://github.com/nextcloud/desktop/issues/1237)
-        auto oldBrush = painter->brush();
-        auto oldPen = painter->pen();
-        auto oldFont = painter->font();
-
+        painter->save();
         painter->setBrush(color);
         painter->setPen(QColor(0xaa, 0xaa, 0xaa));
         painter->drawRoundedRect(QStyle::visualRect(option.direction, option.rect, rect),
@@ -292,11 +289,8 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
                 subFm.elidedText(eText, Qt::ElideLeft, textRect.width()));
             textRect.translate(0, textRect.height());
         }
-
         // restore previous state
-        painter->setBrush(oldBrush);
-        painter->setPen(oldPen);
-        painter->setFont(oldFont);
+        painter->restore();
 
         h = rect.bottom() + margin;
     };
