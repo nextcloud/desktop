@@ -79,8 +79,8 @@ public:
     /// Don't add credentials if this is set on a QNetworkRequest
     static constexpr QNetworkRequest::Attribute DontAddCredentialsAttribute = QNetworkRequest::User;
 
-    explicit HttpCredentials();
-    HttpCredentials(const QString &user, const QString &password, const QSslCertificate &certificate = QSslCertificate(), const QSslKey &key = QSslKey());
+    HttpCredentials();
+    explicit HttpCredentials(const QString &user, const QString &password, const QSslCertificate &certificate = QSslCertificate(), const QSslKey &key = QSslKey());
 
     QString authType() const override;
     QNetworkAccessManager *createQNAM() const override;
