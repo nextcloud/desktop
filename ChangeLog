@@ -1,6 +1,19 @@
 ChangeLog
 =========
 
+version 2.5.1 (2018-??-??)
+
+* OAuth2: Fix migration from BasicAuth when the server uses LDAP
+* Linux: FolderWatcher: fix paths after dir renames (#6808)
+* Mac: Do not select ownCloud in Finder after installation (#6781)
+* Sync: always recurse within touched directory (#6804)
+* Sync: Fixed crash when aborting sync of large files with older servers
+* Sync: Don't error out if X-OC-MTime header is missing (#6797)
+* Virtual Files: Renaming a virtual files also rename the file on the server (#6718)
+* Virtual Files: Disable the 'choose what to sync' in the new folder wizard when virtual files are selected
+* Windows Shell Integration: no limit on the amount of selected files (#6780)
+* GUI: Plug a few leaks
+
 version 2.5.0 (2018-09-18)
 * Local discovery: Speed up by skipping directories without changes reported by the file system watcher.
 * Experimental option to create virtual files (e.g. my_document.txt.owncloud) and download contents on demand ("placeholders")

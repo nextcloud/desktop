@@ -137,9 +137,16 @@ IF( APPLE )
     list(APPEND client_SRCS systray.mm)
 
     if(SPARKLE_FOUND)
-       # Define this, we need to check in updater.cpp
-       add_definitions( -DHAVE_SPARKLE )
-       list(APPEND updater_SRCS updater/sparkleupdater_mac.mm updater/sparkleupdater.h)
+        # Define this, we need to check in updater.cpp
+        add_definitions(-DHAVE_SPARKLE)
+        list(APPEND updater_SRCS updater/sparkleupdater_mac.mm updater/sparkleupdater.h)
+        list(APPEND updater_DEPS ${SPARKLE_LIBRARY})
+
+        # Sparkle.framework is installed from here because macdeployqt's CopyFramework breaks on this bundle
+        # as its logic is tightly tailored around Qt5 frameworks
+        install(DIRECTORY "${SPARKLE_LIBRARY}"
+                DESTINATION "${OWNCLOUD_OSX_BUNDLE}/Contents/Frameworks" USE_SOURCE_PERMISSIONS)
+
    endif()
 ENDIF()
 
@@ -268,7 +275,7 @@ else()
 endif()
 
 add_library(updater STATIC ${updater_SRCS})
-target_link_libraries(updater ${synclib_NAME} Qt5::Widgets Qt5::Network Qt5::Xml)
+target_link_libraries(updater ${synclib_NAME} ${updater_DEPS} Qt5::Widgets Qt5::Network Qt5::Xml)
 target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES

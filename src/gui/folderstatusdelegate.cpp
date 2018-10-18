@@ -264,6 +264,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         rect.setHeight(texts.count() * subFm.height() + 2 * margin);
         rect.setRight(option.rect.right() - margin);
 
+        painter->save();
         painter->setBrush(color);
         painter->setPen(QColor(0xaa, 0xaa, 0xaa));
         painter->drawRoundedRect(QStyle::visualRect(option.direction, option.rect, rect),
@@ -280,6 +281,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
                 subFm.elidedText(eText, Qt::ElideLeft, textRect.width()));
             textRect.translate(0, textRect.height());
         }
+        painter->restore();
 
         h = rect.bottom() + margin;
     };

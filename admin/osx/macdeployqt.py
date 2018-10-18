@@ -24,6 +24,9 @@ import sys
 from glob import glob
 from distutils.version import LooseVersion
 
+bundle_dir = sys.argv[1]
+qmake_path = sys.argv[2]
+
 def QueryQMake(attrib):
     return subprocess.check_output([qmake_path, '-query', attrib]).rstrip('\n')
 
@@ -32,7 +35,9 @@ FRAMEWORK_SEARCH_PATH=[
     os.path.join(os.environ['HOME'], 'Library/Frameworks')
 ]
 
-LIBRARY_SEARCH_PATH=['/usr/local/lib', '.']
+LIBRARY_SEARCH_PATH=[
+    '.'
+]
 
 QT_PLUGINS = [
     'sqldrivers/libqsqlite.dylib',
@@ -44,10 +49,12 @@ QT_PLUGINS = [
 ]
 
 QT_PLUGINS_SEARCH_PATH=[
-#    os.path.join(os.environ['QTDIR'], 'plugins'),
-    '/usr/local/Cellar/qt/5.2.1/plugins',
 ]
 
+# Package libraries from these paths even if they are also a system library
+SYSTEM_LIBRARY_BLACKLIST = [
+    QueryQMake('QT_INSTALL_LIBS')
+]
 
 class Error(Exception):
   pass
@@ -78,8 +85,6 @@ if len(sys.argv) < 3:
 def is_exe(fpath):
   return os.path.isfile(fpath) and os.access(fpath, os.X_OK)
 
-bundle_dir = sys.argv[1]
-qmake_path = sys.argv[2]
 
 bundle_name = os.path.basename(bundle_dir).split('.')[0]
 
@@ -198,7 +203,7 @@ def FixFramework(path):
     FixLibraryInstallPath(library, new_path)
 
 def FixLibrary(path):
-  if path in fixed_libraries or FindSystemLibrary(os.path.basename(path)) is not None:
+  if path in fixed_libraries or FindSystemLibrary(path) is not None:
     return
   else:
     fixed_libraries.append(path)
@@ -235,6 +240,7 @@ def FixBinary(path):
     FixLibraryInstallPath(library, path)
 
 def CopyLibrary(path):
+  print "CopyLibrary:", path
   new_path = os.path.join(binary_dir, os.path.basename(path))
   args = ['ditto', '--arch=x86_64', path, new_path]
   commands.append(args)
@@ -243,6 +249,7 @@ def CopyLibrary(path):
   return new_path
 
 def CopyPlugin(path, subdir):
+  print "CopyPlugin:", path, subdir
   new_path = os.path.join(plugins_dir, subdir, os.path.basename(path))
   args = ['mkdir', '-p', os.path.dirname(new_path)]
   commands.append(args)
@@ -253,8 +260,8 @@ def CopyPlugin(path, subdir):
   return new_path
 
 def CopyFramework(source_dylib):
-  parts = source_dylib.split(os.sep)
   print "CopyFramework:", source_dylib
+  parts = source_dylib.split(os.sep)
   for i, part in enumerate(parts):
     matchObj = re.match(r'(\w+\.framework)', part)
     if matchObj:
@@ -301,7 +308,12 @@ def FixInstallPath(library_path, library, new_path):
   args = ['install_name_tool', '-change', library_path, new_path, library]
   commands.append(args)
 
-def FindSystemLibrary(library_name):
+def FindSystemLibrary(library_path):
+  for item in SYSTEM_LIBRARY_BLACKLIST:
+    if os.path.realpath(library_path).startswith(os.path.realpath(item)):
+          return None
+
+  library_name = os.path.basename(library_path)
   for path in ['/lib', '/usr/lib']:
     full_path = os.path.join(path, library_name)
     if os.path.exists(full_path):
@@ -309,7 +321,7 @@ def FindSystemLibrary(library_name):
   return None
 
 def FixLibraryInstallPath(library_path, library):
-  system_library = FindSystemLibrary(os.path.basename(library_path))
+  system_library = FindSystemLibrary(library_path)
   if system_library is None:
     new_path = '@executable_path/../MacOS/%s' % os.path.basename(library_path)
     FixInstallPath(library_path, library, new_path)

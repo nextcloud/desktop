@@ -534,6 +534,13 @@ void Folder::downloadVirtualFile(const QString &_relativepath)
     slotScheduleThisFolder();
 }
 
+
+void Folder::setUseVirtualFiles(bool enabled)
+{
+    _definition.useVirtualFiles = enabled;
+    saveToSettings();
+}
+
 void Folder::saveToSettings() const
 {
     // Remove first to make sure we don't get duplicates

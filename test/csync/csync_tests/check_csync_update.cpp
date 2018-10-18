@@ -127,7 +127,6 @@ static int setup_ftw(void **state)
     assert_int_equal(rc, 0);
     rc = system("mkdir -p /tmp/check_csync1");
     assert_int_equal(rc, 0);
-    csync = new CSYNC("/tmp", new OCC::SyncJournalDb(TESTDB));
 
     sqlite3 *db = NULL;
     rc = sqlite3_open_v2(TESTDB, &db, SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, NULL);
