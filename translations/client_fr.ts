@@ -154,8 +154,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="247"/>
-        <location filename="../src/gui/accountsettings.cpp" line="454"/>
-        <location filename="../src/gui/accountsettings.cpp" line="867"/>
+        <location filename="../src/gui/accountsettings.cpp" line="488"/>
+        <location filename="../src/gui/accountsettings.cpp" line="901"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
@@ -165,204 +165,209 @@
         <translation>Connecté au serveur &lt;server&gt; avec le compte &lt;user&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="182"/>
+        <location filename="../src/gui/accountsettings.cpp" line="183"/>
         <source>No account configured.</source>
         <translation>Aucun compte configuré.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="195"/>
+        <location filename="../src/gui/accountsettings.cpp" line="196"/>
         <source>Add new</source>
         <translation>Ajouter un nouveau compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="203"/>
+        <location filename="../src/gui/accountsettings.cpp" line="204"/>
         <source>Remove</source>
         <translation>Supprimer</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="207"/>
+        <location filename="../src/gui/accountsettings.cpp" line="208"/>
         <source>Account</source>
         <translation>Compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="302"/>
+        <location filename="../src/gui/accountsettings.cpp" line="303"/>
         <source>Choose what to sync</source>
         <translation>Sélectionner le contenu à synchroniser</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="308"/>
+        <location filename="../src/gui/accountsettings.cpp" line="309"/>
         <source>Force sync now</source>
         <translation>Forcer la synchronisation maintenant</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="310"/>
+        <location filename="../src/gui/accountsettings.cpp" line="311"/>
         <source>Restart sync</source>
         <translation>Redémarrer la synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="319"/>
+        <location filename="../src/gui/accountsettings.cpp" line="320"/>
         <source>Remove folder sync connection</source>
         <translation>Supprimer la synchronisation du dossier</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="392"/>
+        <location filename="../src/gui/accountsettings.cpp" line="324"/>
+        <source>Create virtual files for new files (Experimental)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="426"/>
         <source>Folder creation failed</source>
         <translation>Échec de création du dossier</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="393"/>
+        <location filename="../src/gui/accountsettings.cpp" line="427"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;Impossible de créer le dossier local &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="446"/>
+        <location filename="../src/gui/accountsettings.cpp" line="480"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Confirmer une suppression de synchronisation de dossier</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="453"/>
+        <location filename="../src/gui/accountsettings.cpp" line="487"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Supprimer la synchronisation de ce dossier</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="535"/>
+        <location filename="../src/gui/accountsettings.cpp" line="569"/>
         <source>Sync Running</source>
         <translation>Synchronisation en cours</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="536"/>
+        <location filename="../src/gui/accountsettings.cpp" line="570"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>La synchronisation est en cours.&lt;br/&gt;Voulez-vous l&apos;arrêter ?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="629"/>
+        <location filename="../src/gui/accountsettings.cpp" line="663"/>
         <source>%1 in use</source>
         <translation>%1 utilisés</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="656"/>
+        <location filename="../src/gui/accountsettings.cpp" line="690"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 avec le compte &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="664"/>
+        <location filename="../src/gui/accountsettings.cpp" line="698"/>
         <source>Connected to %1.</source>
         <translation>Connecté au serveur %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="666"/>
+        <location filename="../src/gui/accountsettings.cpp" line="700"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Le serveur %1 est temporairement indisponible.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="668"/>
+        <location filename="../src/gui/accountsettings.cpp" line="702"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Le serveur %1 est en cours de maintenance.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="670"/>
+        <location filename="../src/gui/accountsettings.cpp" line="704"/>
         <source>Signed out from %1.</source>
         <translation>Session sur %1 fermée.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="679"/>
+        <location filename="../src/gui/accountsettings.cpp" line="713"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
         <translation>En attente d&apos;autorisation du navigateur. &lt;a href=&apos;%1&apos;&gt;Cliquer ici&lt;/a&gt; pour recharger le navigateur.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="683"/>
+        <location filename="../src/gui/accountsettings.cpp" line="717"/>
         <source>Connecting to %1...</source>
         <translation>Connexion à %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="686"/>
+        <location filename="../src/gui/accountsettings.cpp" line="720"/>
         <source>No connection to %1 at %2.</source>
         <translation>Aucune connexion au serveur %1 à l&apos;adresse %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="715"/>
+        <location filename="../src/gui/accountsettings.cpp" line="749"/>
         <source>Log in</source>
         <translation>Se connecter</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="810"/>
+        <location filename="../src/gui/accountsettings.cpp" line="844"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Certains dossiers n&apos;ont pas été synchronisés parce qu&apos;ils sont de taille trop importante :</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="812"/>
+        <location filename="../src/gui/accountsettings.cpp" line="846"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Certains dossiers n&apos;ont pas été synchronisés parce qu&apos;ils sont localisés sur un stockage externe :</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="813"/>
+        <location filename="../src/gui/accountsettings.cpp" line="847"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Certains dossiers n&apos;ont pas été synchronisés parce qu&apos;ils sont localisés sur un stockage externe ou qu&apos;ils sont de taille trop importante :</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="859"/>
+        <location filename="../src/gui/accountsettings.cpp" line="893"/>
         <source>Confirm Account Removal</source>
         <translation>Confirmation de retrait du compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="860"/>
+        <location filename="../src/gui/accountsettings.cpp" line="894"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Êtes-vous certain de vouloir retirer &lt;i&gt;%1&lt;/i&gt; des comptes synchronisés avec le serveur ?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Remarque :&lt;/b&gt; cela ne supprimera pas votre compte sur le serveur, et aucun fichier ne sera supprimé ni localement ni en ligne.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="866"/>
+        <location filename="../src/gui/accountsettings.cpp" line="900"/>
         <source>Remove connection</source>
         <translation>Retirer le compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="269"/>
-        <location filename="../src/gui/accountsettings.cpp" line="298"/>
+        <location filename="../src/gui/accountsettings.cpp" line="270"/>
+        <location filename="../src/gui/accountsettings.cpp" line="299"/>
         <source>Open folder</source>
         <translation>Ouvrir le dossier local</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="199"/>
-        <location filename="../src/gui/accountsettings.cpp" line="717"/>
+        <location filename="../src/gui/accountsettings.cpp" line="200"/>
+        <location filename="../src/gui/accountsettings.cpp" line="751"/>
         <source>Log out</source>
         <translation>Se déconnecter</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="316"/>
+        <location filename="../src/gui/accountsettings.cpp" line="317"/>
         <source>Resume sync</source>
         <translation>Reprendre la synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="316"/>
+        <location filename="../src/gui/accountsettings.cpp" line="317"/>
         <source>Pause sync</source>
         <translation>Mettre en pause</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="447"/>
+        <location filename="../src/gui/accountsettings.cpp" line="481"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Voulez-vous vraiment arrêter de synchroniser le dossier &lt;i&gt;%1&lt;/i&gt; ?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note :&lt;/b&gt; Aucun fichier ne sera supprimé.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="616"/>
+        <location filename="../src/gui/accountsettings.cpp" line="650"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) utilisés sur %2. Certains dossiers, montés depuis le réseau ou partagés, peuvent avoir des limites différentes.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="617"/>
+        <location filename="../src/gui/accountsettings.cpp" line="651"/>
         <source>%1 of %2 in use</source>
         <translation>%1 utilisés sur %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="626"/>
+        <location filename="../src/gui/accountsettings.cpp" line="660"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Actuellement aucune information d&apos;utilisation de stockage n&apos;est disponible.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="662"/>
+        <location filename="../src/gui/accountsettings.cpp" line="696"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="692"/>
+        <location filename="../src/gui/accountsettings.cpp" line="726"/>
         <source>No %1 connection configured.</source>
         <translation>Aucune connexion à %1 configurée</translation>
     </message>
@@ -791,19 +796,19 @@
         <translation>Activité de synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="673"/>
+        <location filename="../src/gui/folder.cpp" line="680"/>
         <source>Could not read system exclude file</source>
         <translation>Impossible de lire le fichier d&apos;exclusion du système</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="961"/>
+        <location filename="../src/gui/folder.cpp" line="968"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Un nouveau dossier de taille supérieure à %1 Mo a été ajouté : %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="964"/>
+        <location filename="../src/gui/folder.cpp" line="971"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Un nouveau dossier localisé sur un stockage externe a été ajouté.
@@ -811,22 +816,22 @@
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="965"/>
+        <location filename="../src/gui/folder.cpp" line="972"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Merci d&apos;aller dans les Paramètres pour indiquer si vous souhaitez le télécharger.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1020"/>
+        <location filename="../src/gui/folder.cpp" line="1027"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Le dossier %1 a été créé mais avait été exclu de la synchronisation auparavant. Les données à l&apos;intérieur ne seront pas synchronisées.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1023"/>
+        <location filename="../src/gui/folder.cpp" line="1030"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Le fichier %1 a été créé mais avait été exclu de la synchronisation auparavant. Il ne sera pas synchronisé.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1034"/>
+        <location filename="../src/gui/folder.cpp" line="1041"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -839,7 +844,7 @@ Cela veut dire que le client de synchronisation ne peut pas téléverser les cha
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1079"/>
+        <location filename="../src/gui/folder.cpp" line="1086"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -850,7 +855,7 @@ Si vous décidez de conserver ces fichiers, ils seront synchronisés à nouveau 
 Si vous décidez de supprimer ces fichiers, ils vous seront inaccessibles, sauf si vous en êtes le/la propriétaire.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1084"/>
+        <location filename="../src/gui/folder.cpp" line="1091"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -859,22 +864,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
 S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserver vos fichiers, ils seront synchronisés à nouveau depuis le serveur.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1088"/>
+        <location filename="../src/gui/folder.cpp" line="1095"/>
         <source>Remove All Files?</source>
         <translation>Supprimer tous les fichiers ?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1091"/>
+        <location filename="../src/gui/folder.cpp" line="1098"/>
         <source>Remove all files</source>
         <translation>Supprimer tous les fichiers</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1092"/>
+        <location filename="../src/gui/folder.cpp" line="1099"/>
         <source>Keep files</source>
         <translation>Conserver les fichiers</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1109"/>
+        <location filename="../src/gui/folder.cpp" line="1116"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
@@ -883,17 +888,17 @@ Cela peut être dû à une copie de sauvegarde restaurée sur le serveur.
 Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fichiers soient remplacés par des fichiers plus vieux d&apos;un état précédent. Voulez-vous conserver les versions les plus récentes de vos fichiers en tant que fichiers conflictuels ?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1114"/>
+        <location filename="../src/gui/folder.cpp" line="1121"/>
         <source>Backup detected</source>
         <translation>Sauvegarde détectée</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1117"/>
+        <location filename="../src/gui/folder.cpp" line="1124"/>
         <source>Normal Synchronisation</source>
         <translation>Synchronisation normale</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1118"/>
+        <location filename="../src/gui/folder.cpp" line="1125"/>
         <source>Keep Local Files as Conflict</source>
         <translation>Conserver les fichiers locaux comme Conflits</translation>
     </message>
@@ -1014,7 +1019,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
         <translation>Sélectionnez les sous-dossiers à synchroniser à partir du dossier local</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="296"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="298"/>
         <source>File</source>
         <translation>Fichier</translation>
     </message>
@@ -1172,7 +1177,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
 <context>
     <name>OCC::FolderWatcherPrivate</name>
     <message>
-        <location filename="../src/gui/folderwatcher_linux.cpp" line="87"/>
+        <location filename="../src/gui/folderwatcher_linux.cpp" line="92"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
         <translation>Ce problème survient généralement lorsque les contrôleurs inotify sont saturés. Consulter la FAQ pour plus de détails.</translation>
     </message>
@@ -2503,7 +2508,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Le téléversement de %1 amène un dépassement de quota pour le dossier</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="624"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="626"/>
         <source>Error writing metadata to the database</source>
         <translation>Erreur à l&apos;écriture des métadonnées dans la base de données</translation>
     </message>
@@ -3446,12 +3451,12 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Non autorisé car vous n&apos;avez pas la permission d&apos;ajouter des fichiers dans ce dossier</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1701"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1731"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>L&apos;espace disque est faible : les téléchargements qui amèneraient à réduire l&apos;espace libre en dessous de %1 ont été ignorés.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1708"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1738"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Il n&apos;y a pas suffisamment d’espace disponible sur le serveur pour certains téléversements.</translation>
     </message>

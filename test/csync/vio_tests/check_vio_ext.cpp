@@ -125,7 +125,8 @@ static int teardown(void **state) {
     rc = wipe_testdir();
     assert_int_equal(rc, 0);
 
-    *state = NULL;
+    SAFE_FREE(((statevar*)*state)->result);
+    SAFE_FREE(*state);
     return 0;
 }
 
@@ -409,6 +410,8 @@ static void check_readdir_longtree(void **state)
     assert_int_equal(files_cnt, 0);
     /* and compare. */
     assert_string_equal( sv->result, result);
+
+    SAFE_FREE(result);
 }
 
 // https://github.com/owncloud/client/issues/3128 https://github.com/owncloud/client/issues/2777

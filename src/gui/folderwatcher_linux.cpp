@@ -31,6 +31,11 @@ FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString &path
     , _parent(p)
     , _folder(path)
 {
+    _wipePotentialRenamesSoon = new QTimer(this);
+    _wipePotentialRenamesSoon->setInterval(1000);
+    _wipePotentialRenamesSoon->setSingleShot(true);
+    connect(_wipePotentialRenamesSoon, &QTimer::timeout, this, &FolderWatcherPrivate::wipePotentialRenames);
+
     _fd = inotify_init();
     if (_fd != -1) {
         _socket.reset(new QSocketNotifier(_fd, QSocketNotifier::Read));
@@ -91,6 +96,17 @@ void FolderWatcherPrivate::inotifyRegisterPath(const QString &path)
     }
 }
 
+void FolderWatcherPrivate::applyDirectoryRename(const FolderWatcherPrivate::Rename &rename)
+{
+    QString fromSlash = rename.from + "/";
+    qCInfo(lcFolderWatcher) << "Applying rename from" << rename.from << "to" << rename.to;
+    for (auto &watch : _watches) {
+        if (watch == rename.from || watch.startsWith(fromSlash)) {
+            watch = rename.to + watch.mid(rename.from.size());
+        }
+    }
+}
+
 void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
 {
     int subdirs = 0;
@@ -126,6 +142,11 @@ void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
     }
 }
 
+void FolderWatcherPrivate::wipePotentialRenames()
+{
+    _potentialRenames.clear();
+}
+
 void FolderWatcherPrivate::slotReceivedNotification(int fd)
 {
     int len;
@@ -154,33 +175,44 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
         }
     } while (false);
 
-    // reset counter
-    i = 0;
-    // while there are enough events in the buffer
-    while (i + sizeof(struct inotify_event) < static_cast<unsigned int>(len)) {
+    // iterate events in buffer
+    unsigned int ulen = len;
+    for (i = 0; i + sizeof(inotify_event) < ulen; i += sizeof(inotify_event) + (event ? event->len : 0)) {
         // cast an inotify_event
         event = (struct inotify_event *)&buffer[i];
         if (event == NULL) {
             qCDebug(lcFolderWatcher) << "NULL event";
-            i += sizeof(struct inotify_event);
             continue;
         }
 
         // Fire event for the path that was changed.
-        if (event->len > 0 && event->wd > -1) {
-            QByteArray fileName(event->name);
-            if (fileName.startsWith("._sync_")
-                || fileName.startsWith(".csync_journal.db")
-                || fileName.startsWith(".owncloudsync.log")
-                || fileName.startsWith(".sync_")) {
+        if (event->len == 0 || event->wd <= -1)
+            continue;
+        QByteArray fileName(event->name);
+        if (fileName.startsWith("._sync_")
+            || fileName.startsWith(".csync_journal.db")
+            || fileName.startsWith(".owncloudsync.log")
+            || fileName.startsWith(".sync_")) {
+            continue;
+        }
+        const QString p = _watches[event->wd] + '/' + fileName;
+        _parent->changeDetected(p);
+
+        // Collect events to form complete renames where possible
+        // and apply directory renames to the cached paths.
+        if ((event->mask & (IN_MOVED_TO | IN_MOVED_FROM)) && (event->mask & IN_ISDIR) && event->cookie > 0) {
+            auto &rename = _potentialRenames[event->cookie];
+            if (event->mask & IN_MOVED_TO)
+                rename.to = p;
+            if (event->mask & IN_MOVED_FROM)
+                rename.from = p;
+            if (!rename.from.isEmpty() && !rename.to.isEmpty()) {
+                applyDirectoryRename(rename);
+                _potentialRenames.remove(event->cookie);
             } else {
-                const QString p = _watches[event->wd] + '/' + fileName;
-                _parent->changeDetected(p);
+                _wipePotentialRenamesSoon->start();
             }
         }
-
-        // increment counter
-        i += sizeof(struct inotify_event) + event->len;
     }
 }
 

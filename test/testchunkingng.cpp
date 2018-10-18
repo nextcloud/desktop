@@ -246,15 +246,15 @@ private slots:
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
 
         // Make the MOVE never reply, but trigger a client-abort and apply the change remotely
-        auto parent = new QObject;
+        QObject parent;
         QByteArray moveChecksumHeader;
         int nGET = 0;
         int responseDelay = 100000; // bigger than abort-wait timeout
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
-                QTimer::singleShot(50, parent, [&]() { fakeFolder.syncEngine().abort(); });
+                QTimer::singleShot(50, &parent, [&]() { fakeFolder.syncEngine().abort(); });
                 moveChecksumHeader = request.rawHeader("OC-Checksum");
-                return new DelayedReply<FakeChunkMoveReply>(responseDelay, fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, parent);
+                return new DelayedReply<FakeChunkMoveReply>(responseDelay, fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, &parent);
             } else if (op == QNetworkAccessManager::GetOperation) {
                 nGET++;
             }
@@ -330,12 +330,12 @@ private slots:
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
 
         // Make the MOVE never reply, but trigger a client-abort and apply the change remotely
-        auto parent = new QObject;
+        QObject parent;
         int responseDelay = 200; // smaller than abort-wait timeout
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
-                QTimer::singleShot(50, parent, [&]() { fakeFolder.syncEngine().abort(); });
-                return new DelayedReply<FakeChunkMoveReply>(responseDelay, fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, parent);
+                QTimer::singleShot(50, &parent, [&]() { fakeFolder.syncEngine().abort(); });
+                return new DelayedReply<FakeChunkMoveReply>(responseDelay, fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, &parent);
             }
             return nullptr;
         });

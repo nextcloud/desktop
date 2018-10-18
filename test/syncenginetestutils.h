@@ -948,7 +948,7 @@ public:
         QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
     }
 
-    Q_INVOKABLE void respond() {
+    Q_INVOKABLE virtual void respond() {
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, _httpErrorCode);
         setError(InternalServerError, "Internal Server Fake Error");
         emit metaDataChanged();
@@ -1130,6 +1130,7 @@ public:
         _account->setUrl(QUrl(QStringLiteral("http://admin:admin@localhost/owncloud")));
         _account->setCredentials(new FakeCredentials{_fakeQnam});
         _account->setDavDisplayName("fakename");
+        _account->setServerVersion("10.0.0");
 
         _journalDb.reset(new OCC::SyncJournalDb(localPath() + "._sync_test.db"));
         _syncEngine.reset(new OCC::SyncEngine(_account, localPath(), "", _journalDb.get()));
