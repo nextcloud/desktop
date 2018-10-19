@@ -23,6 +23,7 @@
 #include "vio/csync_vio_local.h"
 #include "common/checksums.h"
 #include "csync_exclude.h"
+#include "csync_util.h"
 
 
 namespace OCC {
@@ -893,7 +894,7 @@ void ProcessDirectoryJob::processFileFinalize(
         item->_direction = _dirItem->_direction;
     }
 
-    qCInfo(lcDisco) << "Discovered" << item->_file << item->_instruction << item->_direction << item->_type;
+    qCInfo(lcDisco) << "Discovered" << item->_file << csync_instruction_str(item->_instruction) << item->_direction << item->_type;
 
     if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_SYNC)
         item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
