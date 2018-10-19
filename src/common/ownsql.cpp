@@ -49,6 +49,12 @@ SqlDatabase::SqlDatabase()
 {
 }
 
+SqlDatabase::~SqlDatabase()
+{
+    close();
+}
+
+
 bool SqlDatabase::isOpen()
 {
     return _db != 0;
@@ -184,6 +190,9 @@ QString SqlDatabase::error() const
 void SqlDatabase::close()
 {
     if (_db) {
+        foreach (auto q, _queries) {
+            q->finish();
+        }
         SQLITE_DO(sqlite3_close(_db));
         if (_errId != SQLITE_OK)
             qCWarning(lcSql) << "Closing database failed" << _error;
@@ -217,9 +226,8 @@ sqlite3 *SqlDatabase::sqliteDb()
 /* =========================================================================================== */
 
 SqlQuery::SqlQuery(SqlDatabase &db)
-    : _db(db.sqliteDb())
-    , _stmt(0)
-    , _errId(0)
+    : _sqldb(&db)
+    , _db(db.sqliteDb())
 {
 }
 
@@ -230,18 +238,16 @@ SqlQuery::~SqlQuery()
     }
 }
 
-SqlQuery::SqlQuery(const QString &sql, SqlDatabase &db)
-    : _db(db.sqliteDb())
-    , _stmt(0)
-    , _errId(0)
+SqlQuery::SqlQuery(const QByteArray &sql, SqlDatabase &db)
+    : _sqldb(&db)
+    , _db(db.sqliteDb())
 {
     prepare(sql);
 }
 
-int SqlQuery::prepare(const QString &sql, bool allow_failure)
+int SqlQuery::prepare(const QByteArray &sql, bool allow_failure)
 {
-    QString s(sql);
-    _sql = s.trimmed();
+    _sql = sql.trimmed();
     if (_stmt) {
         finish();
     }
@@ -249,7 +255,7 @@ int SqlQuery::prepare(const QString &sql, bool allow_failure)
         int n = 0;
         int rc;
         do {
-            rc = sqlite3_prepare_v2(_db, _sql.toUtf8().constData(), -1, &_stmt, 0);
+            rc = sqlite3_prepare_v2(_db, _sql.constData(), -1, &_stmt, 0);
             if ((rc == SQLITE_BUSY) || (rc == SQLITE_LOCKED)) {
                 n++;
                 OCC::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
@@ -261,19 +267,32 @@ int SqlQuery::prepare(const QString &sql, bool allow_failure)
             _error = QString::fromUtf8(sqlite3_errmsg(_db));
             qCWarning(lcSql) << "Sqlite prepare statement error:" << _error << "in" << _sql;
             ENFORCE(allow_failure, "SQLITE Prepare error");
+        } else {
+            ASSERT(_stmt);
+            _sqldb->_queries.insert(this);
         }
     }
     return _errId;
 }
 
+/**
+ * There is no overloads to QByteArray::startWith that takes Qt::CaseInsensitive.
+ * Returns true if 'a' starts with 'b' in a case insensitive way
+ */
+static bool startsWithInsensitive(const QByteArray &a, const char *b)
+{
+    int len = strlen(b);
+    return a.size() >= len && qstrnicmp(a.constData(), b, len) == 0;
+}
+
 bool SqlQuery::isSelect()
 {
-    return (!_sql.isEmpty() && _sql.startsWith("SELECT", Qt::CaseInsensitive));
+    return startsWithInsensitive(_sql, "SELECT");
 }
 
 bool SqlQuery::isPragma()
 {
-    return (!_sql.isEmpty() && _sql.startsWith("PRAGMA", Qt::CaseInsensitive));
+    return startsWithInsensitive(_sql, "PRAGMA");
 }
 
 bool SqlQuery::exec()
@@ -440,8 +459,13 @@ int SqlQuery::numRowsAffected()
 
 void SqlQuery::finish()
 {
+    if (!_stmt)
+        return;
     SQLITE_DO(sqlite3_finalize(_stmt));
     _stmt = 0;
+    if (_sqldb) {
+        _sqldb->_queries.remove(this);
+    }
 }
 
 void SqlQuery::reset_and_clear_bindings()
@@ -451,5 +475,19 @@ void SqlQuery::reset_and_clear_bindings()
         SQLITE_DO(sqlite3_clear_bindings(_stmt));
     }
 }
+
+bool SqlQuery::initOrReset(const QByteArray &sql, OCC::SqlDatabase &db)
+{
+    ENFORCE(!_sqldb || &db == _sqldb);
+    _sqldb = &db;
+    _db = db.sqliteDb();
+    if (_stmt) {
+        reset_and_clear_bindings();
+        return true;
+    } else {
+        return prepare(sql) == 0;
+    }
+}
+
 
 } // namespace OCC

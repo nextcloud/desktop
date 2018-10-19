@@ -8,13 +8,14 @@ Build-Depends: cmake,
                dh-python,
                extra-cmake-modules (>= 5.16),
                kdelibs5-dev,
-               kio-dev,
+               libkf5kio-dev,
                libcmocka-dev,
                libhttp-dav-perl,
                libinotify-dev [kfreebsd-any],
+               libqt5svg5-dev,
                libqt5webkit5-dev,
                libsqlite3-dev,
-               libssl-dev (>> 1.0.0),
+               libssl-dev (>= 1.1.0),
                zlib1g-dev,
                optipng,
                pkg-kde-tools,
@@ -33,8 +34,7 @@ Homepage: https://github.com/nextcloud/client_theming
 
 Package: nextcloud-client
 Architecture: any
-Depends: libnextcloudsync0 (=${binary:Version}), ${shlibs:Depends}, ${misc:Depends}, nextcloud-client-l10n
-Recommends: libgnome-keyring0
+Depends: libnextcloudsync0 (=${binary:Version}), ${shlibs:Depends}, ${misc:Depends}, libgnome-keyring0, nextcloud-client-l10n
 Description: Nextcloud desktop sync client
  Use the desktop client to keep your files synchronized
  between your Nextcloud server and your desktop. Select

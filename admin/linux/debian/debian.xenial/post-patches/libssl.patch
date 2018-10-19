@@ -1,0 +1,11 @@
+--- nextcloud-client-2.5.0.orig/CMakeLists.txt	2018-08-13 16:19:57.191634632 +0200
++++ nextcloud-client-2.5.0/CMakeLists.txt	2018-08-13 16:20:05.167612238 +0200
+@@ -183,7 +183,7 @@
+     endif()
+     find_package(Sphinx)
+     find_package(PdfLatex)
+-    find_package(OpenSSL 1.1 REQUIRED )
++    find_package(OpenSSL 1.0 REQUIRED )
+ 
+    find_package(ZLIB REQUIRED)
+    find_package(GLib2)

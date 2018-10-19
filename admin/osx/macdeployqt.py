@@ -22,6 +22,7 @@ import subprocess
 import commands
 import sys
 from glob import glob
+from distutils.version import LooseVersion
 
 def QueryQMake(attrib):
     return subprocess.check_output([qmake_path, '-query', attrib]).rstrip('\n')
@@ -31,7 +32,7 @@ FRAMEWORK_SEARCH_PATH=[
     os.path.join(os.environ['HOME'], 'Library/Frameworks')
 ]
 
-LIBRARY_SEARCH_PATH=['/usr/local/lib', '.']
+LIBRARY_SEARCH_PATH=['/usr/local/lib', '/usr/local/Qt-5.6.2/lib', '.']
 
 QT_PLUGINS = [
     'sqldrivers/libqsqlite.dylib',
@@ -44,7 +45,8 @@ QT_PLUGINS = [
 
 QT_PLUGINS_SEARCH_PATH=[
 #    os.path.join(os.environ['QTDIR'], 'plugins'),
-    '/usr/local/Cellar/qt/5.2.1/plugins',
+#    '/usr/local/Cellar/qt/5.2.1/plugins',
+    '/usr/local/Qt-5.6.2/plugins',
 ]
 
 
@@ -92,6 +94,8 @@ commands.append(['mkdir', '-p', resources_dir])
 plugins_dir = os.path.join(bundle_dir, 'Contents', 'PlugIns')
 binaries = [i for i in glob(os.path.join(bundle_dir, 'Contents', 'MacOS', "*")) if is_exe(i)];
 
+qt_version = QueryQMake('QT_VERSION')
+print "Using Qt", qt_version
 
 fixed_libraries = []
 fixed_frameworks = []
@@ -261,9 +265,9 @@ def CopyFramework(source_dylib):
       dest_path = os.path.join(frameworks_dir, framework)
       dest_dylib_path = os.path.join(frameworks_dir, *parts[i:-1])
       break
-  if os.path.exists(dest_path):
-    print dest_path, "already exists, skipping copy..."
-    return os.path.join(dest_dylib_path, dylib_name)
+#  if os.path.exists(dest_path):
+#    print dest_path, "already exists, skipping copy..."
+#    return os.path.join(dest_dylib_path, dylib_name)
 
   args = ['mkdir', '-p', dest_dylib_path]
   commands.append(args)
@@ -278,6 +282,10 @@ def CopyFramework(source_dylib):
   args = ['ln', '-s', os.path.join('Versions', 'Current', 'Resources'), os.path.join(dest_path, 'Resources')]
   commands.append(args)
   args = ['cp', '-r', os.path.join(source_path, 'Versions', '5', 'Resources'), os.path.join(dest_path, 'Versions', '5')]
+  commands.append(args)
+  args = ['ln', '-s', os.path.join('Versions', 'Current', 'Helpers'), os.path.join(dest_path, 'Helpers')]
+  commands.append(args)
+  args = ['cp', '-r', os.path.join(source_path, 'Versions', '5', 'Helpers'), os.path.join(dest_path, 'Versions', '5')]
   commands.append(args)
 
   return os.path.join(dest_dylib_path, dylib_name)

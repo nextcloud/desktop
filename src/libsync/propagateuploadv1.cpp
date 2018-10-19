@@ -43,7 +43,7 @@ void PropagateUploadFileV1::doStartUpload()
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
 
-    if (progressInfo._valid && progressInfo._modtime == _item->_modtime
+    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime
         && (progressInfo._contentChecksum == _item->_checksumHeader || progressInfo._contentChecksum.isEmpty() || _item->_checksumHeader.isEmpty())) {
         _startChunk = progressInfo._chunk;
         _transferId = progressInfo._transferid;
@@ -55,7 +55,7 @@ void PropagateUploadFileV1::doStartUpload()
         SyncJournalDb::UploadInfo pi;
         pi._valid = true;
         pi._chunk = 0;
-        pi._transferid = _transferId;
+        pi._transferid = 0; // We set a null transfer id because it is not chunked.
         pi._modtime = _item->_modtime;
         pi._errorCount = 0;
         pi._contentChecksum = _item->_checksumHeader;
@@ -145,6 +145,8 @@ void PropagateUploadFileV1::startNextChunk()
     connect(job, &PUTFileJob::uploadProgress, this, &PropagateUploadFileV1::slotUploadProgress);
     connect(job, &PUTFileJob::uploadProgress, device, &UploadDevice::slotJobUploadProgress);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
+    if (isFinalChunk)
+        adjustLastJobTimeout(job, fileSize);
     job->start();
     propagator()->_activeJobList.append(this);
     _currentChunk++;
@@ -352,28 +354,19 @@ void PropagateUploadFileV1::slotUploadProgress(qint64 sent, qint64 total)
 
 void PropagateUploadFileV1::abort(PropagatorJob::AbortType abortType)
 {
-    // Prepare abort
-    prepareAbort(abortType);
-
-    // Abort all jobs (if there are any left), except final PUT
-    foreach (AbstractNetworkJob *job, _jobs) {
-        if (job->reply()) {
-            // If asynchronous abort allowed,
-            // dont abort final PUT which uploaded its data,
-            // since this might result in conflicts
+    abortNetworkJobs(
+        abortType,
+        [this, abortType](AbstractNetworkJob *job) {
             if (PUTFileJob *putJob = qobject_cast<PUTFileJob *>(job)){
                 if (abortType == AbortType::Asynchronous
                     && _chunkCount > 0
                     && (((_currentChunk + _startChunk) % _chunkCount) == 0)
                     && putJob->device()->atEnd()) {
-                    continue;
+                    return false;
                 }
             }
-
-            // Abort the job
-            job->reply()->abort();
-        }
-    }
+            return true;
+        });
 }
 
 }

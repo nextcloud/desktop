@@ -18,7 +18,8 @@
 
 #include "syncfileitem.h"
 #include "syncfilestatus.h"
-// #include "ownsql.h"
+#include "sharedialog.h" // for the ShareDialogStartPage
+#include "common/syncjournalfilerecord.h"
 
 #if defined(Q_OS_MAC)
 #include "socketapisocket_mac.h"
@@ -56,7 +57,7 @@ public slots:
     void broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus);
 
 signals:
-    void shareCommandReceived(const QString &sharePath, const QString &localPath);
+    void shareCommandReceived(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage);
 
 private slots:
     void slotNewConnection();
@@ -64,29 +65,54 @@ private slots:
     void slotSocketDestroyed(QObject *obj);
     void slotReadSocket();
 
-    void copyPrivateLinkToClipboard(const QString &link) const;
-    void emailPrivateLink(const QString &link) const;
-    void openPrivateLink(const QString &link) const;
+    static void copyUrlToClipboard(const QString &link);
+    static void emailPrivateLink(const QString &link);
+    static void openPrivateLink(const QString &link);
 
 private:
+    // Helper structure for getting information on a file
+    // based on its local path - used for nearly all remote
+    // actions.
+    struct FileData
+    {
+        static FileData get(const QString &localFile);
+        SyncFileStatus syncFileStatus() const;
+        SyncJournalFileRecord journalRecord() const;
+
+        Folder *folder;
+        QString localPath;
+        QString folderRelativePath;
+        QString accountRelativePath;
+    };
+
     void broadcastMessage(const QString &msg, bool doWait = false);
+
+    // opens share dialog, sends reply
+    void processShareRequest(const QString &localFile, SocketListener *listener, ShareDialogStartPage startPage);
 
     Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString &argument, SocketListener *listener);
     Q_INVOKABLE void command_RETRIEVE_FILE_STATUS(const QString &argument, SocketListener *listener);
 
     Q_INVOKABLE void command_VERSION(const QString &argument, SocketListener *listener);
 
-    Q_INVOKABLE void command_SHARE_STATUS(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_SHARE_MENU_TITLE(const QString &argument, SocketListener *listener);
 
     // The context menu actions
     Q_INVOKABLE void command_SHARE(const QString &localFile, SocketListener *listener);
+    Q_INVOKABLE void command_MANAGE_PUBLIC_LINKS(const QString &localFile, SocketListener *listener);
+    Q_INVOKABLE void command_COPY_PUBLIC_LINK(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_COPY_PRIVATE_LINK(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_EMAIL_PRIVATE_LINK(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_OPEN_PRIVATE_LINK(const QString &localFile, SocketListener *listener);
 
+    // Fetch the private link and call targetFun
+    void fetchPrivateLinkUrlHelper(const QString &localFile, const std::function<void(const QString &url)> &targetFun);
+
     /** Sends translated/branded strings that may be useful to the integration */
     Q_INVOKABLE void command_GET_STRINGS(const QString &argument, SocketListener *listener);
+
+    // Sends the context menu options relating to sharing to listener
+    void sendSharingContextMenuOptions(const FileData &fileData, SocketListener *listener);
 
     /** Send the list of menu item. (added in version 1.1)
      * argument is a list of files for which the menu should be shown, separated by '\x1e'

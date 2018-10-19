@@ -71,7 +71,7 @@ namespace {
         "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
         "                         (to be used with --logdir)\n"
         "  --logflush           : flush the log file after every write.\n"
-        "  --logdebug           : also output debug-level messages in the log (equivalent to setting the env var QT_LOGGING_RULES=\"qt.*=true;*.debug=true\").\n"
+        "  --logdebug           : also output debug-level messages in the log.\n"
         "  --confdir <dirname>  : Use the given configuration folder.\n";
 
     QString applicationTrPath()
@@ -83,7 +83,7 @@ namespace {
             return devTrPath;
         }
 #if defined(Q_OS_WIN)
-        return QApplication::applicationDirPath();
+        return QApplication::applicationDirPath() + QLatin1String("/i18n/");
 #elif defined(Q_OS_MAC)
         return QApplication::applicationDirPath() + QLatin1String("/../Resources/Translations"); // path defaults to app dir.
 #elif defined(Q_OS_UNIX)
@@ -376,13 +376,17 @@ void Application::slotownCloudWizardDone(int res)
 void Application::setupLogging()
 {
     // might be called from second instance
-    Logger::instance()->setLogFile(_logFile);
-    Logger::instance()->setLogDir(_logDir);
-    Logger::instance()->setLogExpire(_logExpire);
-    Logger::instance()->setLogFlush(_logFlush);
-    Logger::instance()->setLogDebug(_logDebug);
+    auto logger = Logger::instance();
+    logger->setLogFile(_logFile);
+    logger->setLogDir(_logDir);
+    logger->setLogExpire(_logExpire);
+    logger->setLogFlush(_logFlush);
+    logger->setLogDebug(_logDebug);
+    if (!logger->isLoggingToFile() && ConfigFile().automaticLogDir()) {
+        logger->setupTemporaryFolderLogDir();
+    }
 
-    Logger::instance()->enterNextLogFile();
+    logger->enterNextLogFile();
 
     qCInfo(lcApplication) << QString::fromLatin1("################## %1 locale:[%2] ui_lang:[%3] version:[%4] os:[%5]").arg(_theme->appName()).arg(QLocale::system().name()).arg(property("ui_lang").toString()).arg(_theme->version()).arg(Utility::platformName());
 }

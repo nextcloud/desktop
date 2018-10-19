@@ -20,8 +20,23 @@
         <file>resources/lock-https.png</file>
         <file>resources/lock-https@2x.png</file>
         <file>resources/account.png</file>
-        <file>resources/more.png</file>
+        <file>resources/more.svg</file>
         <file>resources/delete.png</file>
-        <file>resources/bell.png</file>
+        <file>resources/close.svg</file>
+        <file>resources/bell.svg</file>
+        <file>resources/link.svg</file>
+        <file>resources/files.svg</file>
+        <file>resources/folder-grey.png</file>
+        <file>resources/state-error.svg</file>
+        <file>resources/state-warning.svg</file>
+        <file>resources/folder.svg</file>
+        <file>resources/network.svg</file>
+        <file>resources/settings.svg</file>
+        <file>resources/public-white.svg</file>
+        <file>resources/public.svg</file>
+        <file>resources/confirm.svg</file>
+        <file>resources/copy.svg</file>
+        <file>resources/state-sync.svg</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>

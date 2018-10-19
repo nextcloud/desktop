@@ -29,17 +29,16 @@
 #include "accountstate.h"
 #include "accountmanager.h"
 #include "activityitemdelegate.h"
-#include "protocolwidget.h"
-#include "issueswidget.h"
 #include "QProgressIndicator.h"
-#include "notificationwidget.h"
 #include "notificationconfirmjob.h"
 #include "servernotificationhandler.h"
 #include "theme.h"
 #include "ocsjob.h"
 #include "configfile.h"
-
+#include "guiutility.h"
+#include "socketapi.h"
 #include "ui_activitywidget.h"
+#include "syncengine.h"
 
 #include <climits>
 
@@ -49,10 +48,13 @@
 
 namespace OCC {
 
-ActivityWidget::ActivityWidget(QWidget *parent)
+ActivityWidget::ActivityWidget(AccountState *accountState, QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::ActivityWidget)
     , _notificationRequestsRunning(0)
+    , _accountState(accountState)
+    , _accept(tr("Accept"))
+    , _remote_share("remote_share")
 {
     _ui->setupUi(this);
 
@@ -61,39 +63,31 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     _ui->_activityList->setMinimumWidth(400);
 #endif
 
-    _model = new ActivityListModel(this);
+    _model = new ActivityListModel(accountState, this);
     ActivityItemDelegate *delegate = new ActivityItemDelegate;
     delegate->setParent(this);
     _ui->_activityList->setItemDelegate(delegate);
     _ui->_activityList->setAlternatingRowColors(true);
     _ui->_activityList->setModel(_model);
 
-    _ui->_notifyLabel->hide();
-    _ui->_notifyScroll->hide();
-
-    // Create a widget container for the notifications. The ui file defines
-    // a scroll area that get a widget with a layout as children
-    QWidget *w = new QWidget;
-    _notificationsLayout = new QVBoxLayout;
-    w->setLayout(_notificationsLayout);
-    _notificationsLayout->setAlignment(Qt::AlignTop);
-    _ui->_notifyScroll->setAlignment(Qt::AlignTop);
-    _ui->_notifyScroll->setWidget(w);
-
     showLabels();
 
     connect(_model, &ActivityListModel::activityJobStatusCode,
         this, &ActivityWidget::slotAccountActivityStatus);
 
-    _copyBtn = _ui->_dialogButtonBox->addButton(tr("Copy"), QDialogButtonBox::ActionRole);
-    _copyBtn->setToolTip(tr("Copy the activity list to the clipboard."));
-    connect(_copyBtn, &QAbstractButton::clicked, this, &ActivityWidget::copyToClipboard);
-
     connect(_model, &QAbstractItemModel::rowsInserted, this, &ActivityWidget::rowsInserted);
 
+    connect(delegate, &ActivityItemDelegate::primaryButtonClickedOnItemView, this, &ActivityWidget::slotPrimaryButtonClickedOnListView);
+    connect(delegate, &ActivityItemDelegate::secondaryButtonClickedOnItemView, this, &ActivityWidget::slotSecondaryButtonClickedOnListView);
     connect(_ui->_activityList, &QListView::activated, this, &ActivityWidget::slotOpenFile);
 
-    connect(&_removeTimer, &QTimer::timeout, this, &ActivityWidget::slotCheckToCleanWidgets);
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
+        this, &ActivityWidget::slotProgressInfo);
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::itemCompleted,
+        this, &ActivityWidget::slotItemCompleted);
+    connect(ProgressDispatcher::instance(), &ProgressDispatcher::syncError,
+        this, &ActivityWidget::addError);
+
     _removeTimer.setInterval(1000);
 }
 
@@ -102,60 +96,260 @@ ActivityWidget::~ActivityWidget()
     delete _ui;
 }
 
-void ActivityWidget::slotRefreshActivities(AccountState *ptr)
+void ActivityWidget::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
 {
-    _model->slotRefreshActivity(ptr);
+    if (progress.status() == ProgressInfo::Reconcile) {
+        // Wipe all non-persistent entries - as well as the persistent ones
+        // in cases where a local discovery was done.
+        auto f = FolderMan::instance()->folder(folder);
+        if (!f)
+            return;
+        const auto &engine = f->syncEngine();
+        const auto style = engine.lastLocalDiscoveryStyle();
+        foreach (Activity activity, _model->errorsList()) {
+            if (activity._folder != folder){
+                continue;
+            }
+
+            if (style == LocalDiscoveryStyle::FilesystemOnly){
+                _model->removeActivityFromActivityList(activity);
+                continue;
+            }
+
+            if(activity._status == SyncFileItem::Conflict && !QFileInfo(f->path() + activity._file).exists()){
+                _model->removeActivityFromActivityList(activity);
+                continue;
+            }
+
+
+            if(activity._status == SyncFileItem::FileIgnored && !QFileInfo(f->path() + activity._file).exists()){
+                _model->removeActivityFromActivityList(activity);
+                continue;
+            }
+
+            if(!QFileInfo(f->path() + activity._file).exists()){
+                _model->removeActivityFromActivityList(activity);
+                continue;
+            }
+
+            auto path = QFileInfo(activity._file).dir().path().toUtf8();
+            if (path == ".")
+                path.clear();
+
+            if(engine.shouldDiscoverLocally(path))
+                _model->removeActivityFromActivityList(activity);
+        }
+
+    }
+
+    if (progress.status() == ProgressInfo::Done) {
+        // We keep track very well of pending conflicts.
+        // Inform other components about them.
+        QStringList conflicts;
+        foreach (Activity activity, _model->errorsList()) {
+            if (activity._folder == folder
+                && activity._status == SyncFileItem::Conflict) {
+                conflicts.append(activity._file);
+            }
+        }
+
+        emit ProgressDispatcher::instance()->folderConflicts(folder, conflicts);
+    }
 }
 
-void ActivityWidget::slotRefreshNotifications(AccountState *ptr)
+void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item){
+    auto folderInstance = FolderMan::instance()->folder(folder);
+
+    if (!folderInstance)
+        return;
+
+    // check if we are adding it to the right account and if it is useful information (protocol errors)
+    if(folderInstance->accountState() == _accountState){
+        qCWarning(lcActivity) << "Item " << item->_file << " retrieved resulted in " << item->_errorString;
+
+        Activity activity;
+        activity._type = Activity::SyncFileItemType; //client activity
+        activity._status = item->_status;
+        activity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
+        activity._message = item->_originalFile;
+        activity._link = folderInstance->accountState()->account()->url();
+        activity._accName = folderInstance->accountState()->account()->displayName();
+        activity._file = item->_file;
+        activity._folder = folder;
+
+        if(item->_status == SyncFileItem::NoStatus || item->_status == SyncFileItem::Success){
+            qCWarning(lcActivity) << "Item " << item->_file << " retrieved successfully.";
+            activity._message.prepend(tr("Synced "));
+            _model->addSyncFileItemToActivityList(activity);
+        } else {
+            qCWarning(lcActivity) << "Item " << item->_file << " retrieved resulted in error " << item->_errorString;
+            activity._subject = item->_errorString;
+
+            // add 'protocol error' to activity list
+            _model->addErrorToActivityList(activity);
+        }
+    }
+}
+
+void ActivityWidget::addError(const QString &folderAlias, const QString &message,
+    ErrorCategory category)
+{
+    auto folderInstance = FolderMan::instance()->folder(folderAlias);
+    if (!folderInstance)
+        return;
+
+    if(folderInstance->accountState() == _accountState){
+        qCWarning(lcActivity) << "Item " << folderInstance->shortGuiLocalPath() << " retrieved resulted in " << message;
+
+        Activity activity;
+        activity._type = Activity::SyncResultType;
+        activity._status = SyncResult::Error;
+        activity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
+        activity._subject = message;
+        activity._message = folderInstance->shortGuiLocalPath();
+        activity._link = folderInstance->shortGuiLocalPath();
+        activity._accName = folderInstance->accountState()->account()->displayName();
+        activity._folder = folderAlias;
+
+
+        if (category == ErrorCategory::InsufficientRemoteStorage) {
+            ActivityLink link;
+            link._label = tr("Retry all uploads");
+            link._link = folderInstance->path();
+            link._verb = "";
+            link._isPrimary = true;
+            activity._links.append(link);
+        }
+
+        // add 'other errors' to activity list
+        _model->addErrorToActivityList(activity);
+    }
+}
+
+
+void ActivityWidget::slotPrimaryButtonClickedOnListView(const QModelIndex &index){
+    QUrl link = qvariant_cast<QString>(index.data(ActivityItemDelegate::LinkRole));
+    QString objectType = index.data(ActivityItemDelegate::ObjectTypeRole).toString();
+    if(!link.isEmpty()){
+        qCWarning(lcActivity) << "Opening" << link.toString() <<  "in browser for Notification/Activity" << qvariant_cast<QString>(index.data(ActivityItemDelegate::ActionTextRole));
+        Utility::openBrowser(link, this);
+    } else if(objectType == _remote_share){
+        QVariant customItem = index.data(ActivityItemDelegate::ActionsLinksRole).toList().first();
+        ActivityLink actionLink = qvariant_cast<ActivityLink>(customItem);
+        if(actionLink._label == _accept){
+            qCWarning(lcActivity) << objectType <<  "action" << actionLink._label << "for" << qvariant_cast<QString>(index.data(ActivityItemDelegate::ActionTextRole));
+            const QString accountName = index.data(ActivityItemDelegate::AccountRole).toString();
+            slotSendNotificationRequest(accountName, actionLink._link, actionLink._verb, index.row());
+        } else {
+            qCWarning(lcActivity) << "Failed: " << objectType <<  "action" << actionLink._label << "for" << qvariant_cast<QString>(index.data(ActivityItemDelegate::ActionTextRole));
+        }
+    }
+}
+
+void ActivityWidget::slotSecondaryButtonClickedOnListView(const QModelIndex &index){
+    QList<QVariant> customList = index.data(ActivityItemDelegate::ActionsLinksRole).toList();
+    QString objectType = index.data(ActivityItemDelegate::ObjectTypeRole).toString();
+
+    QList<ActivityLink> actionLinks;
+    foreach(QVariant customItem, customList){
+        actionLinks << qvariant_cast<ActivityLink>(customItem);
+    }
+
+    if(objectType == _remote_share && actionLinks.first()._label == _accept)
+        actionLinks.removeFirst();
+
+    if(qvariant_cast<Activity::Type>(index.data(ActivityItemDelegate::ActionRole)) == Activity::Type::NotificationType){
+        const QString accountName = index.data(ActivityItemDelegate::AccountRole).toString();
+        if(actionLinks.size() == 1){
+            if(actionLinks.at(0)._verb == "DELETE"){
+                qCWarning(lcActivity) << "Dismissing Notification/Activity" << qvariant_cast<QString>(index.data(ActivityItemDelegate::ActionTextRole));
+                slotSendNotificationRequest(index.data(ActivityItemDelegate::AccountRole).toString(), actionLinks.at(0)._link, actionLinks.at(0)._verb, index.row());
+            }
+        } else if(actionLinks.size() > 1){
+            QMenu menu;
+            qCWarning(lcActivity) << "Displaying menu for Notification/Activity" << qvariant_cast<QString>(index.data(ActivityItemDelegate::ActionTextRole));
+            foreach (ActivityLink actionLink, actionLinks) {
+                QAction *menuAction = new QAction(actionLink._label, &menu);
+                connect(menuAction, &QAction::triggered, this, [this, index, accountName, actionLink] {
+                    this->slotSendNotificationRequest(accountName, actionLink._link, actionLink._verb, index.row());
+                });
+                menu.addAction(menuAction);
+            }
+            menu.exec(QCursor::pos());
+        }
+    }
+
+    Activity::Type activityType = qvariant_cast<Activity::Type>(index.data(ActivityItemDelegate::ActionRole));
+    if(activityType == Activity::Type::SyncFileItemType || activityType == Activity::Type::SyncResultType)
+        slotOpenFile(index);
+}
+
+void ActivityWidget::slotNotificationRequestFinished(int statusCode)
+{
+    int row = sender()->property("activityRow").toInt();
+
+    // the ocs API returns stat code 100 or 200 inside the xml if it succeeded.
+    if (statusCode != OCS_SUCCESS_STATUS_CODE && statusCode != OCS_SUCCESS_STATUS_CODE_V2) {
+        qCWarning(lcActivity) << "Notification Request to Server failed, leave notification visible.";
+    } else {
+       // to do use the model to rebuild the list or remove the item
+        qCWarning(lcActivity) << "Notification Request to Server successed, rebuilding list.";
+       _model->removeActivityFromActivityList(row);
+    }
+}
+
+void ActivityWidget::slotRefreshActivities()
+{
+    _model->slotRefreshActivity();
+}
+
+void ActivityWidget::slotRefreshNotifications()
 {
     // start a server notification handler if no notification requests
     // are running
     if (_notificationRequestsRunning == 0) {
-        ServerNotificationHandler *snh = new ServerNotificationHandler;
+        ServerNotificationHandler *snh = new ServerNotificationHandler(_accountState);
         connect(snh, &ServerNotificationHandler::newNotificationList,
             this, &ActivityWidget::slotBuildNotificationDisplay);
 
-        snh->slotFetchNotifications(ptr);
+        snh->slotFetchNotifications();
     } else {
         qCWarning(lcActivity) << "Notification request counter not zero.";
     }
 }
 
-void ActivityWidget::slotRemoveAccount(AccountState *ptr)
+void ActivityWidget::slotRemoveAccount()
 {
-    _model->slotRemoveAccount(ptr);
+    _model->slotRemoveAccount();
 }
 
 void ActivityWidget::showLabels()
 {
-    QString t = tr("Server Activities");
-    _ui->_headerLabel->setTextFormat(Qt::RichText);
-    _ui->_headerLabel->setText(t);
-
-    _ui->_notifyLabel->setText(tr("Action Required: Notifications"));
-
-    t.clear();
+    _ui->_bottomLabel->hide(); // hide whatever was there before
+    QString t("");
     QSetIterator<QString> i(_accountsWithoutActivities);
     while (i.hasNext()) {
         t.append(tr("<br/>Account %1 does not have activities enabled.").arg(i.next()));
     }
-    _ui->_bottomLabel->setTextFormat(Qt::RichText);
-    _ui->_bottomLabel->setText(t);
+    if(!t.isEmpty()){
+        _ui->_bottomLabel->setTextFormat(Qt::RichText);
+        _ui->_bottomLabel->setText(t);
+        _ui->_bottomLabel->show();
+    }
 }
 
-void ActivityWidget::slotAccountActivityStatus(AccountState *ast, int statusCode)
+void ActivityWidget::slotAccountActivityStatus(int statusCode)
 {
-    if (!(ast && ast->account())) {
+    if (!(_accountState && _accountState->account())) {
         return;
     }
     if (statusCode == 999) {
-        _accountsWithoutActivities.insert(ast->account()->displayName());
+        _accountsWithoutActivities.insert(_accountState->account()->displayName());
     } else {
-        _accountsWithoutActivities.remove(ast->account()->displayName());
+        _accountsWithoutActivities.remove(_accountState->account()->displayName());
     }
 
-    checkActivityTabVisibility();
+    checkActivityWidgetVisibility();
     showLabels();
 }
 
@@ -176,52 +370,45 @@ void ActivityWidget::storeActivityList(QTextStream &ts)
     foreach (Activity activity, activities) {
         ts << right
            // account name
-           << qSetFieldWidth(30)
+           << qSetFieldWidth(activity._accName.length())
            << activity._accName
            // separator
-           << qSetFieldWidth(0) << ","
+           << qSetFieldWidth(2) << " - "
 
            // date and time
-           << qSetFieldWidth(34)
+           << qSetFieldWidth(activity._dateTime.toString().length())
            << activity._dateTime.toString()
            // separator
-           << qSetFieldWidth(0) << ","
+           << qSetFieldWidth(2) << " - "
 
-           // file
-           << qSetFieldWidth(30)
+           // fileq
+           << qSetFieldWidth(activity._file.length())
            << activity._file
            // separator
-           << qSetFieldWidth(0) << ","
+           << qSetFieldWidth(2) << " - "
 
            // subject
-           << qSetFieldWidth(100)
+           << qSetFieldWidth(activity._subject.length())
            << activity._subject
            // separator
-           << qSetFieldWidth(0) << ","
+           << qSetFieldWidth(2) << " - "
 
-           // message (mostly empty)
-           << qSetFieldWidth(55)
-           << activity._message
-           //
-           << qSetFieldWidth(0)
-           << endl;
+          // message
+          << qSetFieldWidth(activity._message.length())
+          << activity._message
+          << endl;
     }
 }
 
-void ActivityWidget::checkActivityTabVisibility()
+void ActivityWidget::checkActivityWidgetVisibility()
 {
     int accountCount = AccountManager::instance()->accounts().count();
     bool hasAccountsWithActivity =
         _accountsWithoutActivities.count() != accountCount;
-    bool hasNotifications = !_widgetForNotifId.isEmpty();
 
-    _ui->_headerLabel->setVisible(hasAccountsWithActivity);
     _ui->_activityList->setVisible(hasAccountsWithActivity);
 
-    _ui->_notifyLabel->setVisible(hasNotifications);
-    _ui->_notifyScroll->setVisible(hasNotifications);
-
-    emit hideActivityTab(!hasAccountsWithActivity && !hasNotifications);
+    emit hideActivityTab(!hasAccountsWithActivity);
 }
 
 void ActivityWidget::slotOpenFile(QModelIndex indx)
@@ -229,9 +416,10 @@ void ActivityWidget::slotOpenFile(QModelIndex indx)
     qCDebug(lcActivity) << indx.isValid() << indx.data(ActivityItemDelegate::PathRole).toString() << QFile::exists(indx.data(ActivityItemDelegate::PathRole).toString());
     if (indx.isValid()) {
         QString fullPath = indx.data(ActivityItemDelegate::PathRole).toString();
-
-        if (QFile::exists(fullPath)) {
-            showInFileManager(fullPath);
+        if(!fullPath.isEmpty()){
+            if (QFile::exists(fullPath)) {
+                showInFileManager(fullPath);
+            }
         }
     }
 }
@@ -242,10 +430,9 @@ void ActivityWidget::slotOpenFile(QModelIndex indx)
 // collected.
 void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
 {
-    QHash<QString, int> accNotified;
     QString listAccountName;
 
-    // Whether a new notification widget was added to the notificationLayout.
+    // Whether a new notification was added to the list
     bool newNotificationShown = false;
 
     foreach (auto activity, list) {
@@ -253,26 +440,6 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
             qCInfo(lcActivity) << "Activity in blacklist, skip";
             continue;
         }
-
-        NotificationWidget *widget = 0;
-
-        if (_widgetForNotifId.contains(activity.ident())) {
-            widget = _widgetForNotifId[activity.ident()];
-        } else {
-            widget = new NotificationWidget(this);
-            connect(widget, &NotificationWidget::sendNotificationRequest,
-                this, &ActivityWidget::slotSendNotificationRequest);
-            connect(widget, &NotificationWidget::requestCleanupAndBlacklist,
-                this, &ActivityWidget::slotRequestCleanupAndBlacklist);
-
-            _notificationsLayout->addWidget(widget);
-// _ui->_notifyScroll->setMinimumHeight( widget->height());
-            _ui->_notifyScroll->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContentsOnFirstShow);
-            _widgetForNotifId[activity.ident()] = widget;
-            newNotificationShown = true;
-        }
-
-        widget->setActivity(activity);
 
         // remember the list account name for the strayCat handling below.
         listAccountName = activity._accName;
@@ -287,22 +454,9 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
         if (_guiLogTimer.elapsed() > 60 * 60 * 1000) {
             _guiLoggedNotifications.clear();
         }
+
         if (!_guiLoggedNotifications.contains(activity._id)) {
-            QString host = activity._accName;
-            // store the name of the account that sends the notification to be
-            // able to add it to the tray notification
-            // remove the user name from the account as that is not accurate here.
-            int indx = host.indexOf(QChar('@'));
-            if (indx > -1) {
-                host.remove(0, 1 + indx);
-            }
-            if (!host.isEmpty()) {
-                if (accNotified.contains(host)) {
-                    accNotified[host] = accNotified[host] + 1;
-                } else {
-                    accNotified[host] = 1;
-                }
-            }
+            newNotificationShown = true;
             _guiLoggedNotifications.insert(activity._id);
 
             // Assemble a tray notification for the NEW notification
@@ -314,53 +468,19 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
                     emit guiLog(activity._subject, activity._accName);
                 }
             }
+
+            _model->addNotificationToActivityList(activity);
         }
     }
 
-    // check if there are widgets that have no corresponding activity from
-    // the server any more. Collect them in a list
-    QList<Activity::Identifier> strayCats;
-    foreach (auto id, _widgetForNotifId.keys()) {
-        NotificationWidget *widget = _widgetForNotifId[id];
-
-        bool found = false;
-        // do not mark widgets of other accounts to delete.
-        if (widget->activity()._accName != listAccountName) {
-            continue;
-        }
-
-        foreach (auto activity, list) {
-            if (activity.ident() == id) {
-                // found an activity
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            // the activity does not exist any more.
-            strayCats.append(id);
-        }
-    }
-
-    // .. and now delete all these stray cat widgets.
-    foreach (auto strayCatId, strayCats) {
-        NotificationWidget *widgetToGo = _widgetForNotifId[strayCatId];
-        scheduleWidgetToRemove(widgetToGo, 0);
-    }
-
-    checkActivityTabVisibility();
-
-    if (newNotificationShown) {
-        // restart the gui log timer now that we show a notification
+    // restart the gui log timer now that we show a new notification
+    if(newNotificationShown)
         _guiLogTimer.start();
-        emit newNotification();
-    }
 }
 
-void ActivityWidget::slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb)
+void ActivityWidget::slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row)
 {
     qCInfo(lcActivity) << "Server Notification Request " << verb << link << "on account" << accountName;
-    NotificationWidget *theSender = qobject_cast<NotificationWidget *>(sender());
 
     const QStringList validVerbs = QStringList() << "GET"
                                                  << "PUT"
@@ -373,7 +493,7 @@ void ActivityWidget::slotSendNotificationRequest(const QString &accountName, con
             NotificationConfirmJob *job = new NotificationConfirmJob(acc->account());
             QUrl l(link);
             job->setLinkAndVerb(l, verb);
-            job->setWidget(theSender);
+            job->setProperty("activityRow", QVariant::fromValue(row));
             connect(job, &AbstractNetworkJob::networkError,
                 this, &ActivityWidget::slotNotifyNetworkError);
             connect(job, &NotificationConfirmJob::jobFinished,
@@ -389,12 +509,10 @@ void ActivityWidget::slotSendNotificationRequest(const QString &accountName, con
     }
 }
 
-void ActivityWidget::endNotificationRequest(NotificationWidget *widget, int replyCode)
+void ActivityWidget::endNotificationRequest(int replyCode)
 {
     _notificationRequestsRunning--;
-    if (widget) {
-        widget->slotNotificationRequestFinished(replyCode);
-    }
+    slotNotificationRequestFinished(replyCode);
 }
 
 void ActivityWidget::slotNotifyNetworkError(QNetworkReply *reply)
@@ -406,7 +524,7 @@ void ActivityWidget::slotNotifyNetworkError(QNetworkReply *reply)
 
     int resultCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
-    endNotificationRequest(job->widget(), resultCode);
+    endNotificationRequest(resultCode);
     qCWarning(lcActivity) << "Server notify job failed with code " << resultCode;
 }
 
@@ -417,240 +535,83 @@ void ActivityWidget::slotNotifyServerFinished(const QString &reply, int replyCod
         return;
     }
 
-    endNotificationRequest(job->widget(), replyCode);
+    endNotificationRequest(replyCode);
     qCInfo(lcActivity) << "Server Notification reply code" << replyCode << reply;
-
-    // if the notification was successful start a timer that triggers
-    // removal of the done widgets in a few seconds
-    // Add 200 millisecs to the predefined value to make sure that the timer in
-    // widget's method readyToClose() has elapsed.
-    if (replyCode == OCS_SUCCESS_STATUS_CODE || replyCode == OCS_SUCCESS_STATUS_CODE_V2) {
-        scheduleWidgetToRemove(job->widget());
-    }
 }
-
-// blacklist the activity coming in here.
-void ActivityWidget::slotRequestCleanupAndBlacklist(const Activity &blacklistActivity)
-{
-    if (!_blacklistedNotifications.contains(blacklistActivity)) {
-        _blacklistedNotifications.append(blacklistActivity);
-    }
-
-    NotificationWidget *widget = _widgetForNotifId[blacklistActivity.ident()];
-    scheduleWidgetToRemove(widget);
-}
-
-void ActivityWidget::scheduleWidgetToRemove(NotificationWidget *widget, int milliseconds)
-{
-    if (!widget) {
-        return;
-    }
-    // in five seconds from now, remove the widget.
-    QDateTime removeTime = QDateTime::currentDateTimeUtc().addMSecs(milliseconds);
-    QDateTime &it = _widgetsToRemove[widget];
-    if (!it.isValid() || it > removeTime) {
-        it = removeTime;
-    }
-    if (!_removeTimer.isActive()) {
-        _removeTimer.start();
-    }
-}
-
-// Called every second to see if widgets need to be removed.
-void ActivityWidget::slotCheckToCleanWidgets()
-{
-    auto currentTime = QDateTime::currentDateTimeUtc();
-    auto it = _widgetsToRemove.begin();
-    while (it != _widgetsToRemove.end()) {
-        // loop over all widgets in the to-remove queue
-        QDateTime t = it.value();
-        NotificationWidget *widget = it.key();
-
-        if (currentTime > t) {
-            // found one to remove!
-            Activity::Identifier id = widget->activity().ident();
-            _widgetForNotifId.remove(id);
-            widget->deleteLater();
-            it = _widgetsToRemove.erase(it);
-        } else {
-            ++it;
-        }
-    }
-
-    if (_widgetsToRemove.isEmpty()) {
-        _removeTimer.stop();
-    }
-
-    // check to see if the whole notification pane should be hidden
-    if (_widgetForNotifId.isEmpty()) {
-        _ui->_notifyLabel->setHidden(true);
-        _ui->_notifyScroll->setHidden(true);
-    }
-}
-
 
 /* ==================================================================== */
 
-ActivitySettings::ActivitySettings(QWidget *parent)
+ActivitySettings::ActivitySettings(AccountState *accountState, QWidget *parent)
     : QWidget(parent)
+    , _accountState(accountState)
 {
-    QHBoxLayout *hbox = new QHBoxLayout(this);
-    setLayout(hbox);
+    _vbox = new QVBoxLayout(this);
+    setLayout(_vbox);
 
-    // create a tab widget for the three activity views
-    _tab = new QTabWidget(this);
-    hbox->addWidget(_tab);
-    _activityWidget = new ActivityWidget(this);
-    _activityTabId = _tab->addTab(_activityWidget, Theme::instance()->applicationIcon(), tr("Server Activity"));
-    connect(_activityWidget, &ActivityWidget::copyToClipboard, this, &ActivitySettings::slotCopyToClipboard);
-    connect(_activityWidget, &ActivityWidget::hideActivityTab, this, &ActivitySettings::setActivityTabHidden);
+    _activityWidget = new ActivityWidget(_accountState, this);
+
+    _vbox->insertWidget(1, _activityWidget);
     connect(_activityWidget, &ActivityWidget::guiLog, this, &ActivitySettings::guiLog);
-    connect(_activityWidget, &ActivityWidget::newNotification, this, &ActivitySettings::slotShowActivityTab);
-
-    _protocolWidget = new ProtocolWidget(this);
-    _protocolTabId = _tab->addTab(_protocolWidget, Theme::instance()->syncStateIcon(SyncResult::Success), tr("Sync Protocol"));
-    connect(_protocolWidget, &ProtocolWidget::copyToClipboard, this, &ActivitySettings::slotCopyToClipboard);
-
-    _issuesWidget = new IssuesWidget(this);
-    _syncIssueTabId = _tab->addTab(_issuesWidget, Theme::instance()->syncStateIcon(SyncResult::Problem), QString());
-    slotShowIssueItemCount(0); // to display the label.
-    connect(_issuesWidget, &IssuesWidget::issueCountUpdated,
-        this, &ActivitySettings::slotShowIssueItemCount);
-    connect(_issuesWidget, &IssuesWidget::copyToClipboard,
-        this, &ActivitySettings::slotCopyToClipboard);
-
-    // Add a progress indicator to spin if the acitivity list is updated.
-    _progressIndicator = new QProgressIndicator(this);
-    _tab->setCornerWidget(_progressIndicator);
-
     connect(&_notificationCheckTimer, &QTimer::timeout,
         this, &ActivitySettings::slotRegularNotificationCheck);
 
-    // connect a model signal to stop the animation.
+    // Add a progress indicator to spin if the acitivity list is updated.
+    _progressIndicator = new QProgressIndicator(this);
+
+    // connect a model signal to stop the animation
     connect(_activityWidget, &ActivityWidget::rowsInserted, _progressIndicator, &QProgressIndicator::stopAnimation);
-
-    // We want the protocol be the default
-    _tab->setCurrentIndex(1);
+    connect(_activityWidget, &ActivityWidget::rowsInserted, this, &ActivitySettings::slotDisplayActivities);
 }
 
-void ActivitySettings::setNotificationRefreshInterval(quint64 interval)
+void ActivitySettings::slotDisplayActivities(){
+   _vbox->removeWidget(_progressIndicator);
+}
+
+void ActivitySettings::setNotificationRefreshInterval(std::chrono::milliseconds interval)
 {
-    qCDebug(lcActivity) << "Starting Notification refresh timer with " << interval / 1000 << " sec interval";
-    _notificationCheckTimer.start(interval);
+    qCDebug(lcActivity) << "Starting Notification refresh timer with " << interval.count() / 1000 << " sec interval";
+    _notificationCheckTimer.start(interval.count());
 }
 
-void ActivitySettings::setActivityTabHidden(bool hidden)
+void ActivitySettings::slotRemoveAccount()
 {
-    if (hidden && _activityTabId > -1) {
-        _tab->removeTab(_activityTabId);
-        _activityTabId = -1;
-        _protocolTabId -= 1;
-        _syncIssueTabId -= 1;
-    }
-
-    if (!hidden && _activityTabId == -1) {
-        _activityTabId = _tab->insertTab(0, _activityWidget, Theme::instance()->applicationIcon(), tr("Server Activity"));
-        _protocolTabId += 1;
-        _syncIssueTabId += 1;
-    }
+    _activityWidget->slotRemoveAccount();
 }
 
-void ActivitySettings::slotShowIssueItemCount(int cnt)
-{
-    QString cntText = tr("Not Synced");
-    if (cnt) {
-        //: %1 is the number of not synced files.
-        cntText = tr("Not Synced (%1)").arg(cnt);
-    }
-    _tab->setTabText(_syncIssueTabId, cntText);
-}
-
-void ActivitySettings::slotShowActivityTab()
-{
-    if (_activityTabId != -1) {
-        _tab->setCurrentIndex(_activityTabId);
-    }
-}
-
-void ActivitySettings::slotShowIssuesTab(const QString &folderAlias)
-{
-    if (_syncIssueTabId == -1)
-        return;
-    _tab->setCurrentIndex(_syncIssueTabId);
-
-    _issuesWidget->showFolderErrors(folderAlias);
-}
-
-void ActivitySettings::slotCopyToClipboard()
-{
-    QString text;
-    QTextStream ts(&text);
-
-    int idx = _tab->currentIndex();
-    QString message;
-
-    if (idx == _activityTabId) {
-        // the activity widget
-        _activityWidget->storeActivityList(ts);
-        message = tr("The server activity list has been copied to the clipboard.");
-    } else if (idx == _protocolTabId) {
-        // the protocol widget
-        _protocolWidget->storeSyncActivity(ts);
-        message = tr("The sync activity list has been copied to the clipboard.");
-    } else if (idx == _syncIssueTabId) {
-        // issues Widget
-        message = tr("The list of unsynced items has been copied to the clipboard.");
-        _issuesWidget->storeSyncIssues(ts);
-    }
-
-    QApplication::clipboard()->setText(text);
-
-    emit guiLog(tr("Copied to clipboard"), message);
-}
-
-void ActivitySettings::slotRemoveAccount(AccountState *ptr)
-{
-    _activityWidget->slotRemoveAccount(ptr);
-}
-
-void ActivitySettings::slotRefresh(AccountState *ptr)
+void ActivitySettings::slotRefresh()
 {
     // QElapsedTimer isn't actually constructed as invalid.
-    if (!_timeSinceLastCheck.contains(ptr)) {
-        _timeSinceLastCheck[ptr].invalidate();
+    if (!_timeSinceLastCheck.contains(_accountState)) {
+        _timeSinceLastCheck[_accountState].invalidate();
     }
-    QElapsedTimer &timer = _timeSinceLastCheck[ptr];
+    QElapsedTimer &timer = _timeSinceLastCheck[_accountState];
 
     // Fetch Activities only if visible and if last check is longer than 15 secs ago
     if (timer.isValid() && timer.elapsed() < NOTIFICATION_REQUEST_FREE_PERIOD) {
         qCDebug(lcActivity) << "Do not check as last check is only secs ago: " << timer.elapsed() / 1000;
         return;
     }
-    if (ptr && ptr->isConnected()) {
+    if (_accountState && _accountState->isConnected()) {
         if (isVisible() || !timer.isValid()) {
+            _vbox->insertWidget(0, _progressIndicator);
+            _vbox->setAlignment(_progressIndicator, Qt::AlignHCenter);
             _progressIndicator->startAnimation();
-            _activityWidget->slotRefreshActivities(ptr);
+            _activityWidget->slotRefreshActivities();
         }
-        _activityWidget->slotRefreshNotifications(ptr);
+        _activityWidget->slotRefreshNotifications();
         timer.start();
     }
 }
 
 void ActivitySettings::slotRegularNotificationCheck()
 {
-    AccountManager *am = AccountManager::instance();
-    foreach (AccountStatePtr a, am->accounts()) {
-        slotRefresh(a.data());
-    }
+    slotRefresh();
 }
 
 bool ActivitySettings::event(QEvent *e)
 {
     if (e->type() == QEvent::Show) {
-        AccountManager *am = AccountManager::instance();
-        foreach (AccountStatePtr a, am->accounts()) {
-            slotRefresh(a.data());
-        }
+        slotRefresh();
     }
     return QWidget::event(e);
 }

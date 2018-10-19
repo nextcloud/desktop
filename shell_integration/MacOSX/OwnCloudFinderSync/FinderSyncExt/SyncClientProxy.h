@@ -21,6 +21,8 @@
 - (void)registerPath:(NSString*)path;
 - (void)unregisterPath:(NSString*)path;
 - (void)setString:(NSString*)key value:(NSString*)value;
+- (void)resetMenuItems;
+- (void)addMenuItem:(NSDictionary *)item;
 - (void)connectionDidDie;
 @end
 

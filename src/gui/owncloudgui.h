@@ -40,6 +40,11 @@ class Application;
 class LogBrowser;
 class AccountState;
 
+enum class ShareDialogStartPage {
+    UsersAndGroups,
+    PublicLinks,
+};
+
 /**
  * @brief The ownCloudGui class
  * @ingroup gui
@@ -104,7 +109,7 @@ public slots:
      * localPath is the absolute local path to it (so not relative
      * to the folder).
      */
-    void slotShowShareDialog(const QString &sharePath, const QString &localPath);
+    void slotShowShareDialog(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage);
 
     void slotRemoveDestroyedShareDialogs();
 
@@ -122,7 +127,7 @@ private:
     void setPauseOnAllFoldersHelper(bool pause);
     void setupActions();
     void addAccountContextMenu(AccountStatePtr accountState, QMenu *menu, bool separateMenu);
-    void fetchNavigationApps(AccountStatePtr account, QMenu *accountMenu);
+    void fetchNavigationApps(AccountStatePtr account);
     void buildNavigationAppsMenu(AccountStatePtr account, QMenu *accountMenu);
 
     QPointer<Systray> _tray;

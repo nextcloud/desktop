@@ -58,7 +58,6 @@
 namespace OCC {
 
 const char propertyAccountC[] = "oc_account";
-const char propertyMenuC[] = "oc_account_menu";
 
 ownCloudGui::ownCloudGui(Application *parent)
     : QObject(parent)
@@ -203,7 +202,10 @@ void ownCloudGui::slotSyncStateChange(Folder *folder)
 
     qCInfo(lcApplication) << "Sync state changed for folder " << folder->remoteUrl().toString() << ": " << result.statusString();
 
-    if (result.status() == SyncResult::Success || result.status() == SyncResult::Error) {
+    if (result.status() == SyncResult::Success
+        || result.status() == SyncResult::Problem
+        || result.status() == SyncResult::SyncAbortRequested
+        || result.status() == SyncResult::Error) {
         Logger::instance()->enterNextLogFile();
     }
 
@@ -413,7 +415,7 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
     menu->addSeparator();
     if (separateMenu) {
         if (onePaused) {
-            QAction *enable = menu->addAction(tr("Unpause all folders"));
+            QAction *enable = menu->addAction(tr("Resume all folders"));
             enable->setProperty(propertyAccountC, QVariant::fromValue(accountState));
             connect(enable, &QAction::triggered, this, &ownCloudGui::slotUnpauseAllFolders);
         }
@@ -614,11 +616,11 @@ void ownCloudGui::updateContextMenu()
             _contextMenu->addMenu(accountMenu);
 
             addAccountContextMenu(account, accountMenu, true);
-            fetchNavigationApps(account, accountMenu);
+            fetchNavigationApps(account);
         }
     } else if (accountList.count() == 1) {
         addAccountContextMenu(accountList.first(), _contextMenu.data(), false);
-        fetchNavigationApps(accountList.first(), _contextMenu.data());
+        fetchNavigationApps(accountList.first());
     }
 
     _contextMenu->addSeparator();
@@ -646,9 +648,9 @@ void ownCloudGui::updateContextMenu()
     if (atLeastOnePaused) {
         QString text;
         if (accountList.count() > 1) {
-            text = tr("Unpause all synchronization");
+            text = tr("Resume all synchronization");
         } else {
-            text = tr("Unpause synchronization");
+            text = tr("Resume synchronization");
         }
         QAction *action = _contextMenu->addAction(text);
         connect(action, &QAction::triggered, this, &ownCloudGui::slotUnpauseAllFolders);
@@ -766,10 +768,9 @@ void ownCloudGui::slotEtagResponseHeaderReceived(const QByteArray &value, int st
     }
 }
 
-void ownCloudGui::fetchNavigationApps(AccountStatePtr account, QMenu *accountMenu){
+void ownCloudGui::fetchNavigationApps(AccountStatePtr account){
     OcsNavigationAppsJob *job = new OcsNavigationAppsJob(account->account());
     job->setProperty(propertyAccountC, QVariant::fromValue(account));
-    job->setProperty(propertyMenuC, QVariant::fromValue(accountMenu));
     job->addRawHeader("If-None-Match", account->navigationAppsEtagResponseHeader());
     connect(job, &OcsNavigationAppsJob::appsJobFinished, this, &ownCloudGui::slotNavigationAppsFetched);
     connect(job, &OcsNavigationAppsJob::etagResponseHeaderReceived, this, &ownCloudGui::slotEtagResponseHeaderReceived);
@@ -815,23 +816,31 @@ void ownCloudGui::buildNavigationAppsMenu(AccountStatePtr account, QMenu *accoun
 
 void ownCloudGui::slotNavigationAppsFetched(const QJsonDocument &reply, int statusCode)
 {
-    auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC));
-    auto accountMenu = qvariant_cast<QMenu*>(sender()->property(propertyMenuC));
-
-    if (statusCode == 304) {
-        qCWarning(lcApplication) << "Status code " << statusCode << " Not Modified - No new navigation apps.";
-    } else {
-        if(!reply.isEmpty()){
-            auto element = reply.object().value("ocs").toObject().value("data");
-            auto navLinks = element.toArray();
-            if(account){
+    if(auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))){
+        if (statusCode == 304) {
+            qCWarning(lcApplication) << "Status code " << statusCode << " Not Modified - No new navigation apps.";
+        } else {
+            if(!reply.isEmpty()){
+                auto element = reply.object().value("ocs").toObject().value("data");
+                auto navLinks = element.toArray();
                 _navApps.insert(account, navLinks);
             }
-         }
-    }
+        }
 
-    if(accountMenu)
-        buildNavigationAppsMenu(account, accountMenu);
+        // TODO see pull #523
+        auto accountList = AccountManager::instance()->accounts();
+        if(accountList.size() > 1){
+            // the list of apps will be displayed under the account that it belongs to
+            foreach (QMenu *accountMenu, _accountMenus) {
+                if(accountMenu->title() == account->account()->displayName()){
+                    buildNavigationAppsMenu(account, accountMenu);
+                    break;
+                }
+            }
+        } else if(accountList.size() == 1){
+            buildNavigationAppsMenu(account, _contextMenu.data());
+        }
+    }
 }
 
 void ownCloudGui::slotOcsError(int statusCode, const QString &message)
@@ -1037,7 +1046,7 @@ void ownCloudGui::slotShowSettings()
 void ownCloudGui::slotShowSyncProtocol()
 {
     slotShowSettings();
-    _settingsDialog->showActivityPage();
+    //_settingsDialog->showActivityPage();
 }
 
 
@@ -1118,7 +1127,7 @@ void ownCloudGui::raiseDialog(QWidget *raiseWidget)
 }
 
 
-void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &localPath)
+void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage)
 {
     const auto folder = FolderMan::instance()->folderForPath(localPath);
     if (!folder) {
@@ -1162,7 +1171,7 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
         w = _shareDialogs[localPath];
     } else {
         qCInfo(lcApplication) << "Opening share dialog" << sharePath << localPath << maxSharingPermissions;
-        w = new ShareDialog(accountState, sharePath, localPath, maxSharingPermissions, fileRecord.numericFileId());
+        w = new ShareDialog(accountState, sharePath, localPath, maxSharingPermissions, fileRecord.numericFileId(), startPage);
         w->setAttribute(Qt::WA_DeleteOnClose, true);
 
         _shareDialogs[localPath] = w;

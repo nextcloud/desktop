@@ -16,6 +16,7 @@
 
 #include "owncloudlib.h"
 #include <QString>
+#include <chrono>
 
 
 namespace OCC {
@@ -54,7 +55,7 @@ struct SyncOptions
      *
      * Set to 0 it will disable dynamic chunk sizing.
      */
-    quint64 _targetChunkUploadDuration = 60 * 1000; // 1 minute
+    std::chrono::milliseconds _targetChunkUploadDuration = std::chrono::minutes(1);
 
     /** Whether parallel network jobs are allowed. */
     bool _parallelNetworkJobs = true;

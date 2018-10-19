@@ -20,10 +20,9 @@ set(client_UI_SRCS
     folderwizardsourcepage.ui
     folderwizardtargetpage.ui
     generalsettings.ui
+    legalnotice.ui
     ignorelisteditor.ui
     networksettings.ui
-    protocolwidget.ui
-    issueswidget.ui
     activitywidget.ui
     synclogdialog.ui
     settingsdialog.ui
@@ -34,7 +33,7 @@ set(client_UI_SRCS
     sslerrordialog.ui
     addcertificatedialog.ui
     proxyauthdialog.ui
-    notificationwidget.ui
+    mnemonicdialog.ui
     wizard/owncloudadvancedsetuppage.ui
     wizard/owncloudconnectionmethoddialog.ui
     wizard/owncloudhttpcredspage.ui
@@ -57,6 +56,7 @@ set(client_SRCS
     folderwatcher.cpp
     folderwizard.cpp
     generalsettings.cpp
+    legalnotice.cpp
     ignorelisteditor.cpp
     lockwatcher.cpp
     logbrowser.cpp
@@ -69,8 +69,6 @@ set(client_SRCS
     openfilemanager.cpp
     owncloudgui.cpp
     owncloudsetupwizard.cpp
-    protocolwidget.cpp
-    issueswidget.cpp
     activitydata.cpp
     activitylistmodel.cpp
     activitywidget.cpp
@@ -96,11 +94,11 @@ set(client_SRCS
     proxyauthdialog.cpp
     synclogdialog.cpp
     tooltipupdater.cpp
-    notificationwidget.cpp
     notificationconfirmjob.cpp
     servernotificationhandler.cpp
     guiutility.cpp
     elidedlabel.cpp
+    iconjob.cpp
     creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/oauth.cpp
@@ -263,9 +261,10 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
             string(REPLACE "-${APPLICATION_ICON_NAME}-icon.png" "" _res ${_res})
             install(FILES ${_file} RENAME ${APPLICATION_ICON_NAME}.png DESTINATION ${DATADIR}/icons/hicolor/${_res}x${_res}/apps)
         endforeach(_file)
-    endif(NOT WIN32)
-
-    install(FILES ${client_I18N} DESTINATION ${SHAREDIR}/${APPLICATION_EXECUTABLE}/i18n)
+        install(FILES ${client_I18N} DESTINATION ${SHAREDIR}/${APPLICATION_EXECUTABLE}/i18n)
+    else()
+        install(FILES ${client_I18N} DESTINATION i18n)
+    endif()
 
     # we may not add MACOSX_BUNDLE here, if not building one
 
@@ -273,7 +272,7 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 main.cpp ${final_src})
 else()
     # set(CMAKE_INSTALL_PREFIX ".") # Examples use /Applications. hurmpf.
-    set(MACOSX_BUNDLE_ICON_FILE "ownCloud.icns")
+    set(MACOSX_BUNDLE_ICON_FILE "${APPLICATION_ICON_NAME}.icns")
 
     # we must add MACOSX_BUNDLE only if building a bundle
     add_executable( ${APPLICATION_EXECUTABLE} WIN32 MACOSX_BUNDLE main.cpp ${final_src})
@@ -378,6 +377,7 @@ if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
    install(CODE "
     message(STATUS \"Deploying (Qt) dependencies and fixing library paths...\")
     execute_process(COMMAND \"${CMAKE_SOURCE_DIR}/admin/osx/macdeployqt.py\" ${CMAKE_INSTALL_PREFIX}/${OWNCLOUD_OSX_BUNDLE} ${QT_QMAKE_EXECUTABLE})
+    execute_process(COMMAND \"${CMAKE_SOURCE_DIR}/admin/osx/macdeployqt.py\" ${CMAKE_INSTALL_PREFIX}/${OWNCLOUD_OSX_BUNDLE}/Contents/Frameworks/QtWebEngineCore.framework/Helpers/QtWebEngineProcess.app ${QT_QMAKE_EXECUTABLE})
     " COMPONENT RUNTIME)
 endif()
 

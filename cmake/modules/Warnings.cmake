@@ -7,10 +7,11 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
 
     # Fix sqlite compilation on macOS
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-incompatible-pointer-types-discards-qualifiers")
-    # Fix sqlite compilation on MinGW
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-discarded-qualifiers")
 
     if (CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+        # Fix sqlite compilation on MinGW
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-discarded-qualifiers")
+
         execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpversion
                         OUTPUT_VARIABLE GCC_VERSION)
         if(GCC_VERSION VERSION_GREATER 4.8 OR GCC_VERSION VERSION_EQUAL 4.8)

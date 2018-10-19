@@ -83,7 +83,7 @@ void PropagateUploadFileNG::doStartUpload()
     propagator()->_activeJobList.append(this);
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
-    if (progressInfo._valid && progressInfo._modtime == _item->_modtime) {
+    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime) {
         _transferId = progressInfo._transferid;
         auto url = chunkUrl();
         auto job = new LsColJob(propagator()->account(), url, this);
@@ -98,7 +98,7 @@ void PropagateUploadFileNG::doStartUpload()
             this, &PropagateUploadFileNG::slotPropfindIterate);
         job->start();
         return;
-    } else if (progressInfo._valid) {
+    } else if (progressInfo._valid && progressInfo.isChunked()) {
         // The upload info is stale. remove the stale chunks on the server
         _transferId = progressInfo._transferid;
         // Fire and forget. Any error will be ignored.
@@ -300,6 +300,7 @@ void PropagateUploadFileNG::startNextChunk()
         connect(job, &MoveJob::finishedSignal, this, &PropagateUploadFileNG::slotMoveJobFinished);
         connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
         propagator()->_activeJobList.append(this);
+        adjustLastJobTimeout(job, fileSize);
         job->start();
         return;
     }
@@ -368,12 +369,10 @@ void PropagateUploadFileNG::slotPutFinished()
     //
     // Dynamic chunk sizing is enabled if the server configured a
     // target duration for each chunk upload.
-    double targetDuration = propagator()->syncOptions()._targetChunkUploadDuration;
-    if (targetDuration > 0) {
-        double uploadTime = job->msSinceStart() + 1; // add one to avoid div-by-zero
-
-        auto predictedGoodSize = static_cast<quint64>(
-            _currentChunkSize / uploadTime * targetDuration);
+    auto targetDuration = propagator()->syncOptions()._targetChunkUploadDuration;
+    if (targetDuration.count() > 0) {
+        auto uploadTime = ++job->msSinceStart(); // add one to avoid div-by-zero
+        qint64 predictedGoodSize = (_currentChunkSize * targetDuration) / uploadTime;
 
         // The whole targeting is heuristic. The predictedGoodSize will fluctuate
         // quite a bit because of external factors (like available bandwidth)
@@ -389,8 +388,8 @@ void PropagateUploadFileNG::slotPutFinished()
             targetSize,
             propagator()->syncOptions()._maxChunkSize);
 
-        qCInfo(lcPropagateUpload) << "Chunked upload of" << _currentChunkSize << "bytes took" << uploadTime
-                                  << "ms, desired is" << targetDuration << "ms, expected good chunk size is"
+        qCInfo(lcPropagateUpload) << "Chunked upload of" << _currentChunkSize << "bytes took" << uploadTime.count()
+                                  << "ms, desired is" << targetDuration.count() << "ms, expected good chunk size is"
                                   << predictedGoodSize << "bytes and nudged next chunk size to "
                                   << propagator()->_chunkSize << "bytes";
     }
@@ -488,23 +487,11 @@ void PropagateUploadFileNG::slotUploadProgress(qint64 sent, qint64 total)
 
 void PropagateUploadFileNG::abort(PropagatorJob::AbortType abortType)
 {
-    // Prepare abort
-    prepareAbort(abortType);
-
-    // Abort all jobs (if there are any left), except final PUT
-    foreach (AbstractNetworkJob *job, _jobs) {
-        if (job->reply()) {
-            if (abortType == AbortType::Asynchronous && qobject_cast<MoveJob *>(job)){
-                // If it is async abort, dont abort
-                // MoveJob since it might result in conflict,
-                // only PUT and MKDIR jobs can be safely aborted.
-                continue;
-            }
-
-            // Abort the job
-            job->reply()->abort();
-        }
-    }
+    abortNetworkJobs(
+        abortType,
+        [abortType](AbstractNetworkJob *job) {
+            return abortType != AbortType::Asynchronous || !qobject_cast<MoveJob *>(job);
+        });
 }
 
 }

@@ -765,13 +765,13 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="927"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>&apos;%1&apos; eşitleme klasöründeki tüm dosyalar sunucudan silindi.
 Silinen dosyalar eşitleme sırasında yerel eşitleme klasörünüzden de silinecek ve bu dosyaları geri yüklemeyeceksiniz.
 Dosyaları korumayı seçerseniz, yeterli izinlerinizin olması durumunda dosyalar sunucu ile yeniden eşitlenecek.
-Dosyaları silmeyi seçerseniz, dosyaların sahibi değilseniz göremeyeceksiniz.</translation>
+Dosyaları silmeyi seçerseniz, dosyaların sahibi değilseniz daha sonra göremeyeceksiniz.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="932"/>
@@ -2656,12 +2656,12 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="35"/>
         <source>Enter a name to create a new public link...</source>
-        <translation>Yeni herkese açık bağlantı için bir ad yazın...</translation>
+        <translation>Eklenecek herkese açık bağlantının adını yazın...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="42"/>
         <source>&amp;Create new</source>
-        <translation>&amp;Yeni ekle</translation>
+        <translation>&amp;Ekle</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="105"/>
@@ -3645,7 +3645,7 @@ Kullanmanız önerilmez.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
-        <source>Unpause all folders</source>
+        <source>Resume all folders</source>
         <translation>Tüm klasörleri sürdür</translation>
     </message>
     <message>
@@ -3655,12 +3655,12 @@ Kullanmanız önerilmez.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
-        <source>Unpause all synchronization</source>
+        <source>Resume all synchronization</source>
         <translation>Tüm eşitlemeleri sürdür</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
-        <source>Unpause synchronization</source>
+        <source>Resume synchronization</source>
         <translation>Eşitlemeyi sürdür</translation>
     </message>
     <message>

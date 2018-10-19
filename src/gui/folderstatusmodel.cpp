@@ -158,6 +158,9 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         case Qt::CheckStateRole:
             return x._checked;
         case Qt::DecorationRole:
+            if (_accountState->account()->e2e()->isFolderEncrypted(x._path)) {
+                return QIcon(QLatin1String(":/client/resources/lock-https.png"));
+            }
             return QFileIconProvider().icon(x._isExternal ? QFileIconProvider::Network : QFileIconProvider::Folder);
         case Qt::ForegroundRole:
             if (x._isUndecided) {
@@ -248,9 +251,15 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
                 } else if (status == SyncResult::Undefined) {
                     return theme->syncStateIcon(SyncResult::SyncRunning);
                 } else {
-                    // keep the previous icon for the prepare phase.
-                    if (status == SyncResult::Problem) {
-                        return theme->syncStateIcon(SyncResult::Success);
+                    // The "Problem" *result* just means some files weren't
+                    // synced, so we show "Success" in these cases. But we
+                    // do use the "Problem" *icon* for unresolved conflicts.
+                    if (status == SyncResult::Success || status == SyncResult::Problem) {
+                        if (f->syncResult().hasUnresolvedConflicts()) {
+                            return theme->syncStateIcon(SyncResult::Problem);
+                        } else {
+                            return theme->syncStateIcon(SyncResult::Success);
+                        }
                     } else {
                         return theme->syncStateIcon(status);
                     }

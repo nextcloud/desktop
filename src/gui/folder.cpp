@@ -494,6 +494,8 @@ void Folder::slotWatchedPathChanged(const QString &path)
         return; // probably a spurious notification
     }
 
+    warnOnNewExcludedItem(record, relativePath);
+
     emit watchedFileChangedExternally(path);
 
     // Also schedule this folder for a sync, but only after some delay:
@@ -635,18 +637,17 @@ void Folder::startSync(const QStringList &pathList)
     setDirtyNetworkLimits();
     setSyncOptions();
 
-    static qint64 fullLocalDiscoveryInterval = []() {
+    static std::chrono::milliseconds fullLocalDiscoveryInterval = []() {
         auto interval = ConfigFile().fullLocalDiscoveryInterval();
         QByteArray env = qgetenv("OWNCLOUD_FULL_LOCAL_DISCOVERY_INTERVAL");
         if (!env.isEmpty()) {
-            interval = env.toLongLong();
+            interval = std::chrono::milliseconds(env.toLongLong());
         }
         return interval;
     }();
-    if (_folderWatcher && _folderWatcher->isReliable()
-        && _timeSinceLastFullLocalDiscovery.isValid()
-        && (fullLocalDiscoveryInterval < 0
-               || _timeSinceLastFullLocalDiscovery.elapsed() < fullLocalDiscoveryInterval)) {
+    if (_folderWatcher && _folderWatcher->isReliable() && _timeSinceLastFullLocalDiscovery.isValid()
+        && (fullLocalDiscoveryInterval.count() < 0
+               || _timeSinceLastFullLocalDiscovery.hasExpired(fullLocalDiscoveryInterval.count()))) {
         qCInfo(lcFolder) << "Allowing local discovery to read from the database";
         _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, _localDiscoveryPaths);
 
@@ -710,7 +711,7 @@ void Folder::setSyncOptions()
 
     QByteArray targetChunkUploadDurationEnv = qgetenv("OWNCLOUD_TARGET_CHUNK_UPLOAD_DURATION");
     if (!targetChunkUploadDurationEnv.isEmpty()) {
-        opt._targetChunkUploadDuration = targetChunkUploadDurationEnv.toUInt();
+        opt._targetChunkUploadDuration = std::chrono::milliseconds(targetChunkUploadDurationEnv.toUInt());
     } else {
         opt._targetChunkUploadDuration = cfgFile.targetChunkUploadDuration();
     }
@@ -832,7 +833,7 @@ void Folder::slotSyncFinished(bool success)
     // all come in.
     QTimer::singleShot(200, this, &Folder::slotEmitFinishedDelayed);
 
-    _lastSyncDuration = _timeSinceLastSyncStart.elapsed();
+    _lastSyncDuration = std::chrono::milliseconds(_timeSinceLastSyncStart.elapsed());
     _timeSinceLastSyncDone.start();
 
     // Increment the follow-up sync counter if necessary.
@@ -980,6 +981,38 @@ void Folder::slotFolderConflicts(const QString &folder, const QStringList &confl
     // If the number of conflicts is too low, adjust it upwards
     if (conflictPaths.size() > r.numNewConflictItems() + r.numOldConflictItems())
         r.setNumOldConflictItems(conflictPaths.size() - r.numNewConflictItems());
+}
+
+void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QStringRef &path)
+{
+    // Never warn for items in the database
+    if (record.isValid())
+        return;
+
+    // Don't warn for items that no longer exist.
+    // Note: This assumes we're getting file watcher notifications
+    // for folders only on creation and deletion - if we got a notification
+    // on content change that would create spurious warnings.
+    QFileInfo fi(_canonicalLocalPath + path);
+    if (!fi.exists())
+        return;
+
+    bool ok = false;
+    auto blacklist = _journal.getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+    if (!ok)
+        return;
+    if (!blacklist.contains(path + "/"))
+        return;
+
+    const auto message = fi.isDir()
+        ? tr("The folder %1 was created but was excluded from synchronization previously. "
+             "Data inside it will not be synchronized.")
+              .arg(fi.filePath())
+        : tr("The file %1 was created but was excluded from synchronization previously. "
+             "It will not be synchronized.")
+              .arg(fi.filePath());
+
+    Logger::instance()->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);
 }
 
 void Folder::scheduleThisFolderSoon()

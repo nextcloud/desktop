@@ -34,8 +34,8 @@ AccountState::AccountState(AccountPtr account)
     , _state(AccountState::Disconnected)
     , _connectionStatus(ConnectionValidator::Undefined)
     , _waitingForNewCredentials(false)
-    , _maintenanceToConnectedDelay(60000 + (qrand() % (4 * 60000))) // 1-5min delay
     , _notificationsEtagResponseHeader("*")
+    , _maintenanceToConnectedDelay(60000 + (qrand() % (4 * 60000))) // 1-5min delay
 {
     qRegisterMetaType<AccountState *>("AccountState*");
 
@@ -214,11 +214,11 @@ void AccountState::checkConnectivity()
     // IF the account is connected the connection check can be skipped
     // if the last successful etag check job is not so long ago.
     ConfigFile cfg;
-    int polltime = cfg.remotePollInterval();
+    std::chrono::milliseconds polltime = cfg.remotePollInterval();
 
     if (isConnected() && _timeSinceLastETagCheck.isValid()
-        && _timeSinceLastETagCheck.elapsed() < polltime) {
-        qCDebug(lcAccountState) << account()->displayName() << "The last ETag check succeeded within the last " << polltime / 1000 << " secs. No connection check needed!";
+        && _timeSinceLastETagCheck.hasExpired(polltime.count())) {
+        qCDebug(lcAccountState) << account()->displayName() << "The last ETag check succeeded within the last " << polltime.count() / 1000 << " secs. No connection check needed!";
         return;
     }
 

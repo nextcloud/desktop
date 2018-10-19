@@ -21,6 +21,7 @@
 #include <QSettings>
 #include <QString>
 #include <QVariant>
+#include <chrono>
 
 class QWidget;
 class QHeaderView;
@@ -62,22 +63,22 @@ public:
     void setMaxLogLines(int);
 
     /* Server poll interval in milliseconds */
-    int remotePollInterval(const QString &connection = QString()) const;
+    std::chrono::milliseconds remotePollInterval(const QString &connection = QString()) const;
     /* Set poll interval. Value in milliseconds has to be larger than 5000 */
-    void setRemotePollInterval(int interval, const QString &connection = QString());
+    void setRemotePollInterval(std::chrono::milliseconds interval, const QString &connection = QString());
 
     /* Interval to check for new notifications */
-    quint64 notificationRefreshInterval(const QString &connection = QString()) const;
+    std::chrono::milliseconds notificationRefreshInterval(const QString &connection = QString()) const;
 
     /* Force sync interval, in milliseconds */
-    quint64 forceSyncInterval(const QString &connection = QString()) const;
+    std::chrono::milliseconds forceSyncInterval(const QString &connection = QString()) const;
 
     /**
      * Interval in milliseconds within which full local discovery is required
      *
      * Use -1 to disable regular full local discoveries.
      */
-    qint64 fullLocalDiscoveryInterval() const;
+    std::chrono::milliseconds fullLocalDiscoveryInterval() const;
 
     bool monoIcons() const;
     void setMonoIcons(bool);
@@ -87,6 +88,9 @@ public:
 
     bool crashReporter() const;
     void setCrashReporter(bool enabled);
+
+    bool automaticLogDir() const;
+    void setAutomaticLogDir(bool enabled);
 
     // proxy settings
     void setProxyType(int proxyType,
@@ -134,13 +138,13 @@ public:
     quint64 chunkSize() const;
     quint64 maxChunkSize() const;
     quint64 minChunkSize() const;
-    quint64 targetChunkUploadDuration() const;
+    std::chrono::milliseconds targetChunkUploadDuration() const;
 
     void saveGeometry(QWidget *w);
     void restoreGeometry(QWidget *w);
 
-    // how often the check about new versions runs, default two hours
-    int updateCheckInterval(const QString &connection = QString()) const;
+    // how often the check about new versions runs
+    std::chrono::milliseconds updateCheckInterval(const QString &connection = QString()) const;
 
     bool skipUpdateCheck(const QString &connection = QString()) const;
     void setSkipUpdateCheck(bool, const QString &);

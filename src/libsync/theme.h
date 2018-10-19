@@ -84,15 +84,10 @@ public:
      * @brief configFileName
      * @return the name of the config file.
      */
-    virtual QString configFileName() const = 0;
+    virtual QString configFileName() const;
 
 #ifndef TOKEN_AUTH_ONLY
     static QString hidpiFileName(const QString &fileName, QPaintDevice *dev = 0);
-
-    /**
-      * the icon that is shown in the tray context menu left of the folder name
-      */
-    virtual QIcon trayFolderIcon(const QString &) const;
 
     /**
       * get an sync state icon
@@ -101,7 +96,7 @@ public:
 
     virtual QIcon folderDisabledIcon() const;
     virtual QIcon folderOfflineIcon(bool sysTray = false, bool sysTrayMenuVisible = false) const;
-    virtual QIcon applicationIcon() const = 0;
+    virtual QIcon applicationIcon() const;
 #endif
 
     virtual QString statusHeaderText(SyncResult::Status) const;
@@ -118,9 +113,27 @@ public:
     virtual bool multiAccount() const;
 
     /**
-    * URL to help file
+    * URL to documentation.
+    *
+    * This is opened in the browser when the "Help" action is selected from the tray menu.
+    *
+    * If the function is overridden to return an empty string the action is removed from
+    * the menu.
+    *
+    * Defaults to Nextclouds client documentation website.
     */
-    virtual QString helpUrl() const { return QString(); }
+    virtual QString helpUrl() const;
+
+    /**
+     * The url to use for showing help on conflicts.
+     *
+     * If the function is overridden to return an empty string no help link will be shown.
+     *
+     * Defaults to helpUrl() + "conflicts.html", which is a page in ownCloud's client
+     * documentation website. If helpUrl() is empty, this function will also return the
+     * empty string.
+     */
+    virtual QString conflictHelpUrl() const;
 
     /**
      * Setting a value here will pre-define the server url.
@@ -334,7 +347,6 @@ public:
      * important dependency versions.
      */
     virtual QString versionSwitchOutput() const;
-
 
 protected:
 #ifndef TOKEN_AUTH_ONLY

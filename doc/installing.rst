@@ -4,9 +4,9 @@ Installing the Desktop Synchronization Client
 
 You can download the  latest version of the Nextcloud Desktop Synchronization
 Client from the `Nextcloud download page`_.
-There are clients for Linux, macOS, and Microsoft Windows.
+There are clients for Linux, macOs, and Microsoft Windows.
 
-Installation on macOS and Windows is the same as for any software
+Installation on Mac OS X and Windows is the same as for any software
 application: download the program and then double-click it to launch the
 installation, and then follow the installation wizard. After it is installed and
 configured the sync client will automatically keep itself updated; see
@@ -29,6 +29,15 @@ System Requirements
 
 - Windows 7+
 - macOS 10.7+ (**64-bit only**)
+- CentOS 6 & 7 (64-bit only)
+- Debian 8.0 & 9.0
+- Fedora 25 & 26 & 27
+- Ubuntu 16.04 & 17.04 & 17.10
+- openSUSE Leap 42.2 & 42.3
+
+.. note::
+   For Linux distributions, we support, if technically feasible, the latest 2 versions per platform and the previous `LTS`_.
+>>>>>>> b2da03441... update supported linux platforms
 
 Installation Wizard
 -------------------

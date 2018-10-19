@@ -53,6 +53,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _credentialsPage(0)
     , _webViewPage(new WebViewPage(this))
     , _setupLog()
+    , _registration(false)
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setPage(WizardCommon::Page_ServerSetup, _setupPage);
@@ -127,6 +128,15 @@ QString OwncloudWizard::ocUrl() const
     QString url = field("OCUrl").toString().simplified();
     return url;
 }
+
+bool OwncloudWizard::registration() {
+    return _registration;
+}
+
+void OwncloudWizard::setRegistration(bool registration) {
+    _registration = registration;
+}
+
 
 void OwncloudWizard::enableFinishOnResultWidget(bool enable)
 {

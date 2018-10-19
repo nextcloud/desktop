@@ -54,7 +54,7 @@ UpdaterScheduler::UpdaterScheduler(QObject *parent)
 
     ConfigFile cfg;
     auto checkInterval = cfg.updateCheckInterval();
-    _updateCheckTimer.start(checkInterval);
+    _updateCheckTimer.start(std::chrono::milliseconds(checkInterval).count());
 }
 
 void UpdaterScheduler::slotTimerFired()
@@ -62,7 +62,7 @@ void UpdaterScheduler::slotTimerFired()
     ConfigFile cfg;
 
     // re-set the check interval if it changed in the config file meanwhile
-    auto checkInterval = cfg.updateCheckInterval();
+    auto checkInterval = std::chrono::milliseconds(cfg.updateCheckInterval()).count();
     if (checkInterval != _updateCheckTimer.interval()) {
         _updateCheckTimer.setInterval(checkInterval);
         qCInfo(lcUpdater) << "Setting new update check interval " << checkInterval;

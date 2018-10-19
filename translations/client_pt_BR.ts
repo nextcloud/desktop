@@ -765,13 +765,13 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="927"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Todos os arquivos na pasta &apos;%1&apos; foram excluídos no servidor. 
-Essas exclusões serão sincronizadas com a pasta de sincronização local, tornando esses arquivos indisponíveis, a menos que você tenha o direito de restaurar. 
-Se você decidir manter os arquivos, eles serão ressincronizados com o servidor se você tiver direitos para fazê-lo. 
-Se decidir excluir os arquivos, eles não estarão disponíveis para você, a menos que você seja o proprietário.</translation>
+        <translation>Todos os arquivos na pasta de sincronização &apos;% 1&apos; foram excluídos do servidor.
+Essas exclusões serão sincronizadas com sua pasta local, tornando esses arquivos indisponíveis, a menos que você tenha o direito de restaurá-los.
+Se decidir manter os arquivos, eles serão re-sincronizados com o servidor se você tiver direitos para fazê-lo.
+Se decidir excluir os arquivos, eles ficarão indisponíveis, a menos que você seja o proprietário.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="932"/>
@@ -1865,7 +1865,7 @@ pode solicitar por privilégios adicionais durante o processo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="49"/>
         <source>&amp;Email</source>
-        <translation>&amp;Email</translation>
+        <translation>&amp;E-mail</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="59"/>
@@ -2063,7 +2063,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="586"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Não é possível remover e fazer backup da pasta porque a pasta ou um arquivo estão abertos em outro programa. Por favor, feche a pasta ou arquivo e tente novamente ou cancele a operação.</translation>
+        <translation>Não é possível remover e fazer backup da pasta porque a pasta ou um arquivo estão abertos em outro programa. Feche a pasta ou arquivo e tente novamente ou cancele a operação.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="631"/>
@@ -2742,12 +2742,12 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
         <source>Send link by email</source>
-        <translation>Enviar link por email</translation>
+        <translation>Enviar link por e-mail</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="167"/>
         <source>Send link by email (direct download)</source>
-        <translation>Enviar link por email (download direto)</translation>
+        <translation>Enviar link por e-mail (download direto)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
@@ -2821,7 +2821,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="239"/>
         <source>Send link by email</source>
-        <translation>Enviar link por email</translation>
+        <translation>Enviar link por e-mail</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="249"/>
@@ -2939,7 +2939,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="568"/>
         <source>Send private link by email...</source>
-        <translation>Enviar o link privado por email...</translation>
+        <translation>Enviar o link privado por e-mail...</translation>
     </message>
 </context>
 <context>
@@ -3644,7 +3644,7 @@ Não é aconselhável usá-la.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
-        <source>Unpause all folders</source>
+        <source>Resume all folders</source>
         <translation>Retomar todas as pastas</translation>
     </message>
     <message>
@@ -3654,13 +3654,13 @@ Não é aconselhável usá-la.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
-        <source>Unpause all synchronization</source>
+        <source>Resume all synchronization</source>
         <translation>Retomar todas as sincronizações</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
-        <source>Unpause synchronization</source>
-        <translation>Retomar sincronização</translation>
+        <source>Resume synchronization</source>
+        <translation>Retomar a sincronização</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="609"/>
@@ -3941,7 +3941,7 @@ Não é aconselhável usá-la.</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="456"/>
         <source>%n minute(s) ago</source>
-        <translation><numerusform>%n minuto atrás</numerusform><numerusform>%n minutos atrás</numerusform></translation>
+        <translation><numerusform>%n minuto(s) atrás</numerusform><numerusform>%n minuto(s) atrás</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="459"/>
@@ -4192,12 +4192,12 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="55"/>
         <source>Could not open email client</source>
-        <translation>Não foi possível abrir o cliente de email</translation>
+        <translation>Não foi possível abrir o cliente de e-mail</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="56"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation>Ocorreu um erro ao iniciar o cliente de email para criar uma nova mensagem. Talvez nenhum cliente de email padrão esteja configurado?</translation>
+        <translation>Ocorreu um erro ao iniciar o cliente de e-mail para criar uma nova mensagem. Talvez nenhum cliente de e-mail padrão esteja configurado?</translation>
     </message>
 </context>
 </TS>

@@ -29,6 +29,8 @@
 
 #include "config.h"
 
+#include "legalnotice.h"
+
 #include <QNetworkProxy>
 #include <QDir>
 #include <QScopedValueRollback>
@@ -53,14 +55,13 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 
     // setup about section
     QString about = Theme::instance()->about();
-    if (about.isEmpty()) {
-        _ui->aboutGroupBox->hide();
-    } else {
-        _ui->aboutLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
-        _ui->aboutLabel->setText(about);
-        _ui->aboutLabel->setWordWrap(true);
-        _ui->aboutLabel->setOpenExternalLinks(true);
-    }
+    _ui->aboutLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
+    _ui->aboutLabel->setText(about);
+    _ui->aboutLabel->setWordWrap(true);
+    _ui->aboutLabel->setOpenExternalLinks(true);
+
+    // About legal notice
+    connect(_ui->legalNoticeButton, &QPushButton::clicked, this, &GeneralSettings::slotShowLegalNotice);
 
     loadMiscSettings();
     slotUpdateInfo();
@@ -190,6 +191,13 @@ void GeneralSettings::slotIgnoreFilesEditor()
     } else {
         ownCloudGui::raiseDialog(_ignoreEditor);
     }
+}
+
+void GeneralSettings::slotShowLegalNotice()
+{
+    auto notice = new LegalNotice();
+    notice->exec();
+    delete notice;
 }
 
 } // namespace OCC
