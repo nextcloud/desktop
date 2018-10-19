@@ -78,13 +78,20 @@ private:
      *
      * These strings never start or ends with slashes. They are all relative to the folder's root.
      * Usually they are all the same and are even shared instance of the same QString.
+     *
+     * _server and _local paths will differ if there are renames, example:
+     *   remote renamed A/ to B/ and local renamed A/X to A/Y then
+     *     target:   B/Y/file
+     *     original: A/X/file
+     *     local:    A/Y/file
+     *     server:   B/X/file
      */
     struct PathTuple
     {
         QString _original; // Path as in the DB (before the sync)
         QString _target; // Path that will be the result after the sync (and will be in the DB)
-        QString _server; // Path on the server
-        QString _local; // Path locally
+        QString _server; // Path on the server (before the sync)
+        QString _local; // Path locally (before the sync)
         PathTuple addName(const QString &name) const
         {
             PathTuple result;
@@ -150,6 +157,10 @@ private:
 
     /** An DB operation failed */
     void dbError();
+
+    void addVirtualFileSuffix(QString &str) const;
+    bool hasVirtualFileSuffix(const QString &str) const;
+    void chopVirtualFileSuffix(QString &str) const;
 
     /** Start a remote discovery network job
      *
