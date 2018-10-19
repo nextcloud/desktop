@@ -35,57 +35,12 @@ void ProcessDirectoryJob::start()
 
     DiscoverySingleDirectoryJob *serverJob = nullptr;
     if (_queryServer == NormalQuery) {
-        serverJob = new DiscoverySingleDirectoryJob(_discoveryData->_account,
-            _discoveryData->_remoteFolder + _currentFolder._server, this);
-        connect(serverJob, &DiscoverySingleDirectoryJob::etag, this, &ProcessDirectoryJob::etag);
-        _discoveryData->_currentlyActiveJobs++;
-        _pendingAsyncJobs++;
-        connect(serverJob, &DiscoverySingleDirectoryJob::finished, this, [this, serverJob](const auto &results) {
-            _discoveryData->_currentlyActiveJobs--;
-            _pendingAsyncJobs--;
-            if (results) {
-                _serverEntries = *results;
-                _hasServerEntries = true;
-                if (!serverJob->_dataFingerprint.isEmpty() && _discoveryData->_dataFingerprint.isEmpty())
-                    _discoveryData->_dataFingerprint = serverJob->_dataFingerprint;
-                if (_hasLocalEntries)
-                    process();
-            } else {
-                if (results.errorCode() == 403) {
-                    // 403 Forbidden can be sent by the server if the file firewall is active.
-                    // A file or directory should be ignored and sync must continue. See #3490
-                    qCWarning(lcDisco, "Directory access Forbidden (File Firewall?)");
-                    if (_dirItem) {
-                        _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
-                        _dirItem->_errorString = results.errorMessage();
-                        emit finished();
-                        return;
-                    }
-                } else if (results.errorCode() == 503) {
-                    // The server usually replies with the custom "503 Storage not available"
-                    // if some path is temporarily unavailable. But in some cases a standard 503
-                    // is returned too. Thus we can't distinguish the two and will treat any
-                    // 503 as request to ignore the folder. See #3113 #2884.
-                    qCWarning(lcDisco(), "Storage was not available!");
-                    if (_dirItem) {
-                        _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
-                        _dirItem->_errorString = results.errorMessage();
-                        emit finished();
-                        return;
-                    }
-                }
-                emit _discoveryData->fatalError(tr("Server replied with an error while reading directory '%1' : %2")
-                    .arg(_currentFolder._server, results.errorMessage()));
-                emit finished();
-            }
-        });
-        connect(serverJob, &DiscoverySingleDirectoryJob::firstDirectoryPermissions, this,
-            [this](const RemotePermissions &perms) { _rootPermissions = perms; });
-        serverJob->start();
+        serverJob = startAsyncServerQuery();
     } else {
-        _hasServerEntries = true;
+        _serverQueryDone = true;
     }
 
+    // Check whether a normal local query is even necessary
     if (_queryLocal == NormalQuery) {
         if (!_discoveryData->_shouldDiscoverLocaly(_currentFolder._local)
             && (_currentFolder._local == _currentFolder._original || !_discoveryData->_shouldDiscoverLocaly(_currentFolder._original))) {
@@ -94,86 +49,19 @@ void ProcessDirectoryJob::start()
     }
 
     if (_queryLocal == NormalQuery) {
-        /*QDirIterator dirIt(_propagator->_localDir + _currentFolder);
-        while (dirIt.hasNext()) {
-            auto x = dirIt.next();
-            LocalInfo i;
-            i.name = dirIt.fileName();
-
-        }*/
-        auto dh = csync_vio_local_opendir((_discoveryData->_localDir + _currentFolder._local).toUtf8());
-        if (!dh) {
-            qCInfo(lcDisco) << "Error while opening directory" << (_discoveryData->_localDir + _currentFolder._local) << errno;
-            if (serverJob) {
-                serverJob->abort();
-            }
-            QString errorString = tr("Error while opening directory %1").arg(_discoveryData->_localDir + _currentFolder._local);
-            if (errno == EACCES) {
-                errorString = tr("Directory not accessible on client, permission denied");
-                if (_dirItem) {
-                    _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
-                    _dirItem->_errorString = errorString;
-                    emit finished();
-                    return;
-                }
-            } else if (errno == ENOENT) {
-                errorString = tr("Directory not found: %1").arg(_discoveryData->_localDir + _currentFolder._local);
-            } else if (errno == ENOTDIR) {
-                // Not a directory..
-                // Just consider it is empty
-                _hasLocalEntries = true;
-                if (_hasServerEntries)
-                    process();
-                return;
-            }
-            emit _discoveryData->fatalError(errorString);
-            emit finished();
-            return;
-        }
-        errno = 0;
-        while (auto dirent = csync_vio_local_readdir(dh)) {
-            if (dirent->type == ItemTypeSkip)
-                continue;
-            LocalInfo i;
-            static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-            ASSERT(codec);
-            QTextCodec::ConverterState state;
-            i.name = codec->toUnicode(dirent->path, dirent->path.size(), &state);
-            if (state.invalidChars > 0 || state.remainingChars > 0) {
-                _childIgnored = true;
-                auto item = SyncFileItemPtr::create();
-                item->_file = _currentFolder._target + i.name;
-                item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-                item->_status = SyncFileItem::NormalError;
-                item->_errorString = tr("Filename encoding is not valid");
-                emit _discoveryData->itemDiscovered(item);
-                continue;
-            }
-            i.modtime = dirent->modtime;
-            i.size = dirent->size;
-            i.inode = dirent->inode;
-            i.isDirectory = dirent->type == ItemTypeDirectory;
-            i.isHidden = dirent->is_hidden;
-            i.isSymLink = dirent->type == ItemTypeSoftLink;
-            _localEntries.push_back(i);
-        }
-        if (errno != 0) {
-            // Note: Windows vio converts any error into EACCES
-            qCWarning(lcDisco) << "readdir failed for file in " << _currentFolder._local << " - errno: " << errno;
-            emit _discoveryData->fatalError(tr("Error while reading directory %1").arg(_discoveryData->_localDir + _currentFolder._local));
-            emit finished();
-        }
-        csync_vio_local_closedir(dh);
+        if (!runLocalQuery() && serverJob)
+            serverJob->abort();
     }
-    _hasLocalEntries = true;
+    _localQueryDone = true;
+
     // Process is being called when both local and server entries are fetched.
-    if (_hasServerEntries)
+    if (_serverQueryDone)
         process();
 }
 
 void ProcessDirectoryJob::process()
 {
-    ASSERT(_hasLocalEntries && _hasServerEntries);
+    ASSERT(_localQueryDone && _serverQueryDone);
 
     QString localDir;
 
@@ -187,13 +75,13 @@ void ProcessDirectoryJob::process()
     QHash<QString, LocalInfo> localEntriesHash;
     QHash<QString, SyncJournalFileRecord> dbEntriesHash;
 
-    for (auto &e : _serverEntries) {
+    for (auto &e : _serverNormalQueryEntries) {
         entriesNames.insert(e.name);
         serverEntriesHash[e.name] = std::move(e);
     }
-    _serverEntries.clear();
+    _serverNormalQueryEntries.clear();
 
-    for (auto &e : _localEntries) {
+    for (auto &e : _localNormalQueryEntries) {
         // Remove the virtual file suffix
         auto name = e.name;
         if (e.name.endsWith(_discoveryData->_syncOptions._virtualFileSuffix)) {
@@ -205,7 +93,7 @@ void ProcessDirectoryJob::process()
         entriesNames.insert(name);
         localEntriesHash[name] = std::move(e);
     }
-    _localEntries.clear();
+    _localNormalQueryEntries.clear();
 
     // fetch all the name from the DB
     auto pathU8 = _currentFolder._original.toUtf8();
@@ -1244,4 +1132,120 @@ void ProcessDirectoryJob::dbError()
     _pendingAsyncJobs = -1; // We're finished, we don't want to emit finished again
     emit finished();
 }
+
+DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
+{
+    auto serverJob = new DiscoverySingleDirectoryJob(_discoveryData->_account,
+        _discoveryData->_remoteFolder + _currentFolder._server, this);
+    connect(serverJob, &DiscoverySingleDirectoryJob::etag, this, &ProcessDirectoryJob::etag);
+    _discoveryData->_currentlyActiveJobs++;
+    _pendingAsyncJobs++;
+    connect(serverJob, &DiscoverySingleDirectoryJob::finished, this, [this, serverJob](const auto &results) {
+        _discoveryData->_currentlyActiveJobs--;
+        _pendingAsyncJobs--;
+        if (results) {
+            _serverNormalQueryEntries = *results;
+            _serverQueryDone = true;
+            if (!serverJob->_dataFingerprint.isEmpty() && _discoveryData->_dataFingerprint.isEmpty())
+                _discoveryData->_dataFingerprint = serverJob->_dataFingerprint;
+            if (_localQueryDone)
+                process();
+        } else {
+            if (results.errorCode() == 403) {
+                // 403 Forbidden can be sent by the server if the file firewall is active.
+                // A file or directory should be ignored and sync must continue. See #3490
+                qCWarning(lcDisco, "Directory access Forbidden (File Firewall?)");
+                if (_dirItem) {
+                    _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
+                    _dirItem->_errorString = results.errorMessage();
+                    emit finished();
+                    return;
+                }
+            } else if (results.errorCode() == 503) {
+                // The server usually replies with the custom "503 Storage not available"
+                // if some path is temporarily unavailable. But in some cases a standard 503
+                // is returned too. Thus we can't distinguish the two and will treat any
+                // 503 as request to ignore the folder. See #3113 #2884.
+                qCWarning(lcDisco(), "Storage was not available!");
+                if (_dirItem) {
+                    _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
+                    _dirItem->_errorString = results.errorMessage();
+                    emit finished();
+                    return;
+                }
+            }
+            emit _discoveryData->fatalError(tr("Server replied with an error while reading directory '%1' : %2")
+                .arg(_currentFolder._server, results.errorMessage()));
+            emit finished();
+        }
+    });
+    connect(serverJob, &DiscoverySingleDirectoryJob::firstDirectoryPermissions, this,
+        [this](const RemotePermissions &perms) { _rootPermissions = perms; });
+    serverJob->start();
+    return serverJob;
+}
+
+bool ProcessDirectoryJob::runLocalQuery()
+{
+    auto dh = csync_vio_local_opendir((_discoveryData->_localDir + _currentFolder._local).toUtf8());
+    if (!dh) {
+        qCInfo(lcDisco) << "Error while opening directory" << (_discoveryData->_localDir + _currentFolder._local) << errno;
+        QString errorString = tr("Error while opening directory %1").arg(_discoveryData->_localDir + _currentFolder._local);
+        if (errno == EACCES) {
+            errorString = tr("Directory not accessible on client, permission denied");
+            if (_dirItem) {
+                _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
+                _dirItem->_errorString = errorString;
+                emit finished();
+                return false;
+            }
+        } else if (errno == ENOENT) {
+            errorString = tr("Directory not found: %1").arg(_discoveryData->_localDir + _currentFolder._local);
+        } else if (errno == ENOTDIR) {
+            // Not a directory..
+            // Just consider it is empty
+            return true;
+        }
+        emit _discoveryData->fatalError(errorString);
+        emit finished();
+        return false;
+    }
+    errno = 0;
+    while (auto dirent = csync_vio_local_readdir(dh)) {
+        if (dirent->type == ItemTypeSkip)
+            continue;
+        LocalInfo i;
+        static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+        ASSERT(codec);
+        QTextCodec::ConverterState state;
+        i.name = codec->toUnicode(dirent->path, dirent->path.size(), &state);
+        if (state.invalidChars > 0 || state.remainingChars > 0) {
+            _childIgnored = true;
+            auto item = SyncFileItemPtr::create();
+            item->_file = _currentFolder._target + i.name;
+            item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+            item->_status = SyncFileItem::NormalError;
+            item->_errorString = tr("Filename encoding is not valid");
+            emit _discoveryData->itemDiscovered(item);
+            continue;
+        }
+        i.modtime = dirent->modtime;
+        i.size = dirent->size;
+        i.inode = dirent->inode;
+        i.isDirectory = dirent->type == ItemTypeDirectory;
+        i.isHidden = dirent->is_hidden;
+        i.isSymLink = dirent->type == ItemTypeSoftLink;
+        _localNormalQueryEntries.push_back(i);
+    }
+    csync_vio_local_closedir(dh);
+    if (errno != 0) {
+        // Note: Windows vio converts any error into EACCES
+        qCWarning(lcDisco) << "readdir failed for file in " << _currentFolder._local << " - errno: " << errno;
+        emit _discoveryData->fatalError(tr("Error while reading directory %1").arg(_discoveryData->_localDir + _currentFolder._local));
+        emit finished();
+        return false;
+    }
+    return true;
+}
+
 }

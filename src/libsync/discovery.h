@@ -151,12 +151,29 @@ private:
     /** An DB operation failed */
     void dbError();
 
+    /** Start a remote discovery network job
+     *
+     * It fills _serverNormalQueryEntries and sets _serverQueryDone when done.
+     */
+    DiscoverySingleDirectoryJob *startAsyncServerQuery();
+
+    /** Discover the local directory now
+      *
+      * Fills _localNormalQueryEntries.
+      */
+    bool runLocalQuery();
+
     QueryMode _queryServer;
     QueryMode _queryLocal;
-    QVector<RemoteInfo> _serverEntries;
-    QVector<LocalInfo> _localEntries;
-    bool _hasServerEntries = false;
-    bool _hasLocalEntries = false;
+
+    // Holds entries that resulted from a NormalQuery
+    QVector<RemoteInfo> _serverNormalQueryEntries;
+    QVector<LocalInfo> _localNormalQueryEntries;
+
+    // Whether the local/remote directory item queries are done. Will be set
+    // even even for do-nothing (!= NormalQuery) queries.
+    bool _serverQueryDone = false;
+    bool _localQueryDone = false;
 
     RemotePermissions _rootPermissions;
     QPointer<DiscoverySingleDirectoryJob> _serverJob;
