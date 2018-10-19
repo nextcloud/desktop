@@ -145,7 +145,10 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("A/a1m.owncloud"));
         QVERIFY(!fakeFolder.currentRemoteState().find("A/a1"));
         QVERIFY(fakeFolder.currentRemoteState().find("A/a1m"));
-        //QVERIFY(itemInstruction(completeSpy, "A/a1m.owncloud", CSYNC_INSTRUCTION_RENAME));
+        QVERIFY(
+            itemInstruction(completeSpy, "A/a1m.owncloud", CSYNC_INSTRUCTION_RENAME)
+            || (itemInstruction(completeSpy, "A/a1m.owncloud", CSYNC_INSTRUCTION_NEW)
+                && itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_REMOVE)));
         QCOMPARE(dbRecord(fakeFolder, "A/a1m.owncloud")._type, ItemTypeVirtualFile);
         cleanup();
 
@@ -173,9 +176,10 @@ private slots:
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("A/a2.owncloud"));
-        //QVERIFY(itemInstruction(completeSpy, "A/a2.owncloud", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "A/a2.owncloud", CSYNC_INSTRUCTION_UPDATE_METADATA));
         QVERIFY(dbRecord(fakeFolder, "A/a2.owncloud").isValid());
         QVERIFY(!fakeFolder.currentLocalState().find("A/a3.owncloud"));
+        QVERIFY(itemInstruction(completeSpy, "A/a3.owncloud", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(!dbRecord(fakeFolder, "A/a3.owncloud").isValid());
         cleanup();
     }
