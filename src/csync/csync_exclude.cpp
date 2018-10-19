@@ -454,12 +454,6 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::fullPatternMatch(const char *path, ItemType fi
     return CSYNC_NOT_EXCLUDED;
 }
 
-auto ExcludedFiles::csyncTraversalMatchFun() const
-    -> std::function<CSYNC_EXCLUDE_TYPE(const char *path, ItemType filetype)>
-{
-    return [this](const char *path, ItemType filetype) { return this->traversalPatternMatch(path, filetype); };
-}
-
 /**
  * On linux we used to use fnmatch with FNM_PATHNAME, but the windows function we used
  * didn't have that behavior. wildcardsMatchSlash can be used to control which behavior

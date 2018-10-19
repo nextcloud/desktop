@@ -122,14 +122,21 @@ public:
     void setClientVersion(Version version);
 
     /**
-     * Generate a hook for traversal exclude pattern matching
-     * that csync can use.
+     * @brief Check if the given path should be excluded in a traversal situation.
      *
-     * Careful: The function will only be valid for as long as this
-     * ExcludedFiles instance stays alive.
+     * It does only part of the work that full() does because it's assumed
+     * that all leading directories have been run through traversal()
+     * before. This can be significantly faster.
+     *
+     * That means for 'foo/bar/file' only ('foo/bar/file', 'file') is checked
+     * against the exclude patterns.
+     *
+     * @param Path is folder-relative, should not start with a /.
+     *
+     * Note that this only matches patterns. It does not check whether the file
+     * or directory pointed to is hidden (or whether it even exists).
      */
-    auto csyncTraversalMatchFun() const
-        -> std::function<CSYNC_EXCLUDE_TYPE(const char *path, ItemType filetype)>;
+    CSYNC_EXCLUDE_TYPE traversalPatternMatch(const char *path, ItemType filetype) const;
 
 public slots:
     /**
@@ -164,23 +171,6 @@ private:
      * or directory pointed to is hidden (or whether it even exists).
      */
     CSYNC_EXCLUDE_TYPE fullPatternMatch(const char *path, ItemType filetype) const;
-
-    /**
-     * @brief Check if the given path should be excluded in a traversal situation.
-     *
-     * It does only part of the work that full() does because it's assumed
-     * that all leading directories have been run through traversal()
-     * before. This can be significantly faster.
-     *
-     * That means for 'foo/bar/file' only ('foo/bar/file', 'file') is checked
-     * against the exclude patterns.
-     *
-     * @param Path is folder-relative, should not start with a /.
-     *
-     * Note that this only matches patterns. It does not check whether the file
-     * or directory pointed to is hidden (or whether it even exists).
-     */
-    CSYNC_EXCLUDE_TYPE traversalPatternMatch(const char *path, ItemType filetype) const;
 
     /**
      * Generate optimized regular expressions for the exclude patterns.
