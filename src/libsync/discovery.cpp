@@ -265,7 +265,7 @@ void ProcessDirectoryJob::process()
 bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, bool isHidden, bool isSymlink)
 {
     // FIXME! call directly, without char* conversion
-    auto excluded = _discoveryData->_excludes->csyncTraversalMatchFun()(path.toUtf8(), isDirectory ? ItemTypeDirectory : ItemTypeFile);
+    auto excluded = _discoveryData->_excludes->traversalPatternMatch(path.toUtf8(), isDirectory ? ItemTypeDirectory : ItemTypeFile);
 
     // FIXME: move to ExcludedFiles 's regexp ?
     bool isInvalidPattern = false;
