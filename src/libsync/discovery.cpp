@@ -157,9 +157,8 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, 
 
     // FIXME: move to ExcludedFiles 's regexp ?
     bool isInvalidPattern = false;
-    if (excluded == CSYNC_NOT_EXCLUDED && !_discoveryData->_invalidFilenamePattern.isEmpty()) {
-        const QRegExp invalidFilenameRx(_discoveryData->_invalidFilenamePattern);
-        if (path.contains(invalidFilenameRx)) {
+    if (excluded == CSYNC_NOT_EXCLUDED && !_discoveryData->_invalidFilenameRx.isEmpty()) {
+        if (path.contains(_discoveryData->_invalidFilenameRx)) {
             excluded = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
             isInvalidPattern = true;
         }

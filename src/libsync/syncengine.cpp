@@ -587,7 +587,8 @@ void SyncEngine::slotStartDiscovery()
         // version check doesn't make sense for custom servers.
         invalidFilenamePattern = "[\\\\:?*\"<>|]";
     }
-    _discoveryPhase->_invalidFilenamePattern = invalidFilenamePattern;
+    if (!invalidFilenamePattern.isEmpty())
+        _discoveryPhase->_invalidFilenameRx = QRegExp(invalidFilenamePattern);
     _discoveryPhase->_ignoreHiddenFiles = ignoreHiddenFiles();
 
     connect(_discoveryPhase.data(), &DiscoveryPhase::itemDiscovered, this, &SyncEngine::slotItemDiscovered);
