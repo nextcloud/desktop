@@ -170,7 +170,7 @@ public:
     QStringList _selectiveSyncBlackList;
     QStringList _selectiveSyncWhiteList;
     ExcludedFiles *_excludes;
-    QString _invalidFilenamePattern; // FIXME: maybe move in ExcludedFiles
+    QRegExp _invalidFilenameRx; // FIXME: maybe move in ExcludedFiles
     bool _ignoreHiddenFiles = false;
     std::function<bool(const QString &)> _shouldDiscoverLocaly;
 
