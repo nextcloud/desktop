@@ -57,6 +57,9 @@ public:
 
     QDateTime modDateTime() const { return Utility::qDateTimeFromTime_t(_modtime); }
 
+    bool isDirectory() const { return _type == ItemTypeDirectory; }
+    bool isVirtualFile() const { return _type == ItemTypeVirtualFile || _type == ItemTypeVirtualFileDownload; }
+
     QByteArray _path;
     quint64 _inode = 0;
     qint64 _modtime = 0;
