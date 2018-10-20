@@ -195,6 +195,7 @@ bool Utility::hasSystemLaunchOnStartup(const QString &appName)
 #if defined(Q_OS_WIN)
     return hasSystemLaunchOnStartup_private(appName);
 #else
+    Q_UNUSED(appName)
     return false;
 #endif
 }
