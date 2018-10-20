@@ -61,6 +61,7 @@ public:
     bool getFileRecordByInode(quint64 inode, SyncJournalFileRecord *rec);
     bool getFileRecordsByFileId(const QByteArray &fileId, const std::function<void(const SyncJournalFileRecord &)> &rowCallback);
     bool getFilesBelowPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
+    bool listFilesInPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
     bool setFileRecord(const SyncJournalFileRecord &record);
 
     /// Like setFileRecord, but preserves checksums
@@ -276,6 +277,7 @@ private:
     SqlQuery _getFileRecordQueryByFileId;
     SqlQuery _getFilesBelowPathQuery;
     SqlQuery _getAllFilesQuery;
+    SqlQuery _listFilesInPathQuery;
     SqlQuery _setFileRecordQuery;
     SqlQuery _setFileRecordChecksumQuery;
     SqlQuery _setFileRecordLocalMetadataQuery;
