@@ -24,6 +24,7 @@
 #include <QUrl>
 #include <QDir>
 #include <sqlite3.h>
+#include <cstring>
 
 #include "common/syncjournaldb.h"
 #include "version.h"
@@ -339,6 +340,15 @@ bool SyncJournalDb::checkConnect()
     if (!pragma1.exec()) {
         return sqlFail("Set PRAGMA case_sensitivity", pragma1);
     }
+
+    sqlite3_create_function(_db.sqliteDb(), "parent_hash", 1, SQLITE_UTF8 | SQLITE_DETERMINISTIC, nullptr,
+                                [] (sqlite3_context *ctx,int, sqlite3_value **argv) {
+                                    auto text = reinterpret_cast<const char*>(sqlite3_value_text(argv[0]));
+                                    const char *end = std::strrchr(text, '/');
+                                    if (!end) end = text;
+                                    sqlite3_result_int64(ctx, c_jhash64(reinterpret_cast<const uint8_t*>(text),
+                                                                        end - text, 0));
+                                }, nullptr, nullptr);
 
     /* Because insert is so slow, we do everything in a transaction, and only need one call to commit */
     startTransaction();
@@ -679,6 +689,16 @@ bool SyncJournalDb::updateMetadataTableStructure()
         commitInternal("update database structure: add path index");
     }
 
+    if (1) {
+        SqlQuery query(_db);
+        query.prepare("CREATE INDEX IF NOT EXISTS metadata_parent ON metadata(parent_hash(path));");
+        if (!query.exec()) {
+            sqlFail("updateMetadataTableStructure: create index parent", query);
+            re = false;
+        }
+        commitInternal("update database structure: add parent index");
+    }
+
     if (columns.indexOf("ignoredChildrenRemote") == -1) {
         SqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN ignoredChildrenRemote INT;");
@@ -815,11 +835,6 @@ QVector<QByteArray> SyncJournalDb::tableColumns(const QByteArray &table)
 qint64 SyncJournalDb::getPHash(const QByteArray &file)
 {
     int64_t h;
-
-    if (file.isEmpty()) {
-        return -1;
-    }
-
     int len = file.length();
 
     h = c_jhash64((uint8_t *)file.data(), len, 0);
@@ -1076,6 +1091,39 @@ bool SyncJournalDb::getFilesBelowPath(const QByteArray &path, const std::functio
     while (query->next()) {
         SyncJournalFileRecord rec;
         fillFileRecordFromGetQuery(rec, *query);
+        rowCallback(rec);
+    }
+
+    return true;
+}
+
+bool SyncJournalDb::listFilesInPath(const QByteArray& path,
+                                    const std::function<void (const SyncJournalFileRecord &)>& rowCallback)
+{
+    QMutexLocker locker(&_mutex);
+
+    if (_metadataTableIsEmpty)
+        return true;
+
+    if (!checkConnect())
+        return false;
+
+    if (!_listFilesInPathQuery.initOrReset(QByteArrayLiteral(
+            GET_FILE_RECORD_QUERY " WHERE parent_hash(path) = ?1 ORDER BY path||'/' ASC"), _db))
+        return false;
+
+    _listFilesInPathQuery.bindValue(1, getPHash(path));
+
+    if (!_listFilesInPathQuery.exec())
+        return false;
+
+    while (_listFilesInPathQuery.next()) {
+        SyncJournalFileRecord rec;
+        fillFileRecordFromGetQuery(rec, _listFilesInPathQuery);
+        if (!rec._path.startsWith(path) || rec._path.indexOf("/", path.size() + 1) > 0) {
+            qWarning(lcDb) << "hash collision " << path << rec._path;
+            continue;
+        }
         rowCallback(rec);
     }
 

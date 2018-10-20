@@ -98,10 +98,7 @@ void ProcessDirectoryJob::process()
 
     // fetch all the name from the DB
     auto pathU8 = _currentFolder._original.toUtf8();
-    // FIXME do that better (a query that do not get stuff recursively ?)
-    if (!_discoveryData->_statedb->getFilesBelowPath(pathU8, [&](const SyncJournalFileRecord &rec) {
-            if (rec._path.indexOf("/", pathU8.size() + 1) > 0)
-                return;
+    if (!_discoveryData->_statedb->listFilesInPath(pathU8, [&](const SyncJournalFileRecord &rec) {
             auto name = pathU8.isEmpty() ? rec._path : QString::fromUtf8(rec._path.mid(pathU8.size() + 1));
             if (rec._type == ItemTypeVirtualFile || rec._type == ItemTypeVirtualFileDownload) {
                 name.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
