@@ -23,6 +23,8 @@
 
 #include <csync.h>
 
+#include <owncloudlib.h>
+
 namespace OCC {
 
 class SyncFileItem;
@@ -33,7 +35,7 @@ typedef QSharedPointer<SyncFileItem> SyncFileItemPtr;
  * @brief The SyncFileItem class
  * @ingroup libsync
  */
-class SyncFileItem
+class OWNCLOUDSYNC_EXPORT SyncFileItem
 {
     Q_GADGET
 public:
