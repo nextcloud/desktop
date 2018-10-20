@@ -95,17 +95,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="254"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="259"/>
         <source>Connection timed out</source>
         <translation>زمان ارتباط تمام شد</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="256"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="261"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>خطای ناشناخته: پاسخ شبکه پاک شد</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="408"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="413"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>سرور &quot;1% 2%&quot; به &quot;3% 4%&quot; پاسخ داد</translation>
     </message>
@@ -1280,22 +1280,22 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="194"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>E-Tag از سرور دریافت نشده است، لطفا پروکسی/دروازه را بررسی نمایید</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="194"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="201"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>ما برای بازخوانی E-Tag متفاوتی دریافت کردیم. بار بعدی دوباره امتحان کنید.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="221"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="228"/>
         <source>Server returned wrong content-range</source>
         <translation>سرور محدوده محتوای اشتباهی برگرداند.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="333"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="340"/>
         <source>Connection Timeout</source>
         <translation>تایم اوت اتصال</translation>
     </message>
@@ -1394,24 +1394,29 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>راه اندازی مجدد و به روز رسانی</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="173"/>
+        <location filename="../src/gui/generalsettings.cpp" line="57"/>
+        <source>You cannot disable autostart because system-wide autostart is enabled.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="178"/>
         <source>Change update channel?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="174"/>
+        <location filename="../src/gui/generalsettings.cpp" line="179"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="187"/>
+        <location filename="../src/gui/generalsettings.cpp" line="192"/>
         <source>Change update channel</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="188"/>
+        <location filename="../src/gui/generalsettings.cpp" line="193"/>
         <source>Cancel</source>
         <translation>لغو</translation>
     </message>
@@ -2316,47 +2321,47 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="427"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="434"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
         <translation>پرونده 1% بخاطر یک پرونده محلی به نام برخورد دانلود نمی شود!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="477"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="484"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>دانلود فضای دیسک محلی آزاد تحت محدودیت را کاهش می دهد</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="481"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="488"/>
         <source>Free space on disk is less than %1</source>
         <translation>فضای خالی دیسک کمتر از %1 است</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="598"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="605"/>
         <source>File was deleted from server</source>
         <translation>فایل از روی سرور حذف شد</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="650"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="657"/>
         <source>The file could not be downloaded completely.</source>
         <translation>فایل به طور کامل قابل دانلود نیست.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="657"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="664"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>پرونده دانلود شده خالی است با وجود اینکه سرور اعلام کرده است این باید 1% باشد.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="834"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="841"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>پرونده 1% بخاطر یک پرونده محلی به نام برخورد ذخیره نمی شود!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="869"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="876"/>
         <source>File has changed since discovery</source>
         <translation>پرونده از زمان کشف تغییر کرده است.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="936"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="943"/>
         <source>Error writing metadata to the database</source>
         <translation>خطا در نوشتن متادیتا در پایگاه داده</translation>
     </message>
@@ -4126,37 +4131,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/common/utility.cpp" line="442"/>
+        <location filename="../src/common/utility.cpp" line="451"/>
         <source>in the future</source>
         <translation>در آینده</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="438"/>
+        <location filename="../src/common/utility.cpp" line="447"/>
         <source>%n day(s) ago</source>
         <translation><numerusform>n% روز پیش</numerusform><numerusform>n% روز پیش</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="446"/>
+        <location filename="../src/common/utility.cpp" line="455"/>
         <source>%n hour(s) ago</source>
         <translation><numerusform>n% ساعت پیش</numerusform><numerusform>n% ساعت پیش</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="451"/>
+        <location filename="../src/common/utility.cpp" line="460"/>
         <source>now</source>
         <translation>اکنون</translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="453"/>
+        <location filename="../src/common/utility.cpp" line="462"/>
         <source>Less than a minute ago</source>
         <translation>کمتر از یک دقیقه پیش</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="456"/>
+        <location filename="../src/common/utility.cpp" line="465"/>
         <source>%n minute(s) ago</source>
         <translation><numerusform>n% دقیقه پیش</numerusform><numerusform>n% دقیقه پیش</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="459"/>
+        <location filename="../src/common/utility.cpp" line="468"/>
         <source>Some time ago</source>
         <translation>چند وقت پیش</translation>
     </message>
@@ -4190,37 +4195,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%L1 B</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="310"/>
+        <location filename="../src/common/utility.cpp" line="319"/>
         <source>%n year(s)</source>
         <translation><numerusform>n% سال</numerusform><numerusform>n% سال</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="311"/>
+        <location filename="../src/common/utility.cpp" line="320"/>
         <source>%n month(s)</source>
         <translation><numerusform>n% ماه</numerusform><numerusform>n% ماه</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="312"/>
+        <location filename="../src/common/utility.cpp" line="321"/>
         <source>%n day(s)</source>
         <translation><numerusform>n% روز</numerusform><numerusform>n% روز</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="313"/>
+        <location filename="../src/common/utility.cpp" line="322"/>
         <source>%n hour(s)</source>
         <translation><numerusform>n% ساعت</numerusform><numerusform>n% ساعت</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="314"/>
+        <location filename="../src/common/utility.cpp" line="323"/>
         <source>%n minute(s)</source>
         <translation><numerusform>n% دقیقه</numerusform><numerusform>n% دقیقه</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="315"/>
+        <location filename="../src/common/utility.cpp" line="324"/>
         <source>%n second(s)</source>
         <translation><numerusform>n% ثانیه</numerusform><numerusform>n% ثانیه</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="339"/>
+        <location filename="../src/common/utility.cpp" line="348"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>
