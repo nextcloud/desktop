@@ -4131,37 +4131,37 @@ Kliknij</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/common/utility.cpp" line="451"/>
+        <location filename="../src/common/utility.cpp" line="452"/>
         <source>in the future</source>
         <translation>w przyszłości</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="447"/>
+        <location filename="../src/common/utility.cpp" line="448"/>
         <source>%n day(s) ago</source>
         <translation><numerusform>%n dzień temu</numerusform><numerusform>%n dni temu</numerusform><numerusform>%n dni temu</numerusform><numerusform>%n dni temu</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="455"/>
+        <location filename="../src/common/utility.cpp" line="456"/>
         <source>%n hour(s) ago</source>
         <translation><numerusform>%n godzinę temu</numerusform><numerusform>%n godziny temu</numerusform><numerusform>%n godzin temu</numerusform><numerusform>%n godzin temu</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="460"/>
+        <location filename="../src/common/utility.cpp" line="461"/>
         <source>now</source>
         <translation>teraz</translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="462"/>
+        <location filename="../src/common/utility.cpp" line="463"/>
         <source>Less than a minute ago</source>
         <translation>Mniej niż minutę temu</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="465"/>
+        <location filename="../src/common/utility.cpp" line="466"/>
         <source>%n minute(s) ago</source>
         <translation><numerusform>%n minutę temu</numerusform><numerusform>%n minuty temu</numerusform><numerusform>%n minut temu</numerusform><numerusform>%n minut temu</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="468"/>
+        <location filename="../src/common/utility.cpp" line="469"/>
         <source>Some time ago</source>
         <translation>Jakiś czas temu</translation>
     </message>
@@ -4195,37 +4195,37 @@ Kliknij</translation>
         <translation>%L1 B</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="319"/>
+        <location filename="../src/common/utility.cpp" line="320"/>
         <source>%n year(s)</source>
         <translation><numerusform>%n rok</numerusform><numerusform>%n lata</numerusform><numerusform>%n lat</numerusform><numerusform>%n lat</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="320"/>
+        <location filename="../src/common/utility.cpp" line="321"/>
         <source>%n month(s)</source>
         <translation><numerusform>%n miesiąc</numerusform><numerusform>%n miesiące</numerusform><numerusform>%n miesięcy</numerusform><numerusform>%n miesięcy</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="321"/>
+        <location filename="../src/common/utility.cpp" line="322"/>
         <source>%n day(s)</source>
         <translation><numerusform>%n dzień</numerusform><numerusform>%n dni</numerusform><numerusform>%n dni</numerusform><numerusform>%n dni</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="322"/>
+        <location filename="../src/common/utility.cpp" line="323"/>
         <source>%n hour(s)</source>
         <translation><numerusform>%n godzina</numerusform><numerusform>%n godziny</numerusform><numerusform>%n godzin</numerusform><numerusform>%n godzin</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="323"/>
+        <location filename="../src/common/utility.cpp" line="324"/>
         <source>%n minute(s)</source>
         <translation><numerusform>%n minuta</numerusform><numerusform>%n minuty</numerusform><numerusform>%n minut</numerusform><numerusform>%n minut</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="324"/>
+        <location filename="../src/common/utility.cpp" line="325"/>
         <source>%n second(s)</source>
         <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekund</numerusform><numerusform>%n sekund</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="348"/>
+        <location filename="../src/common/utility.cpp" line="349"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>

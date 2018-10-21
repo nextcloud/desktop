@@ -4123,37 +4123,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/common/utility.cpp" line="451"/>
+        <location filename="../src/common/utility.cpp" line="452"/>
         <source>in the future</source>
         <translation>v budúcnosti</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="447"/>
+        <location filename="../src/common/utility.cpp" line="448"/>
         <source>%n day(s) ago</source>
         <translation><numerusform>pred %n dňom</numerusform><numerusform>pred %n dňami</numerusform><numerusform>pred %n dňami</numerusform><numerusform>pred %n dňami</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="455"/>
+        <location filename="../src/common/utility.cpp" line="456"/>
         <source>%n hour(s) ago</source>
         <translation><numerusform>pred %n hodinou</numerusform><numerusform>pred %n hodinami</numerusform><numerusform>pred %n hodinami</numerusform><numerusform>pred %n hodinami</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="460"/>
+        <location filename="../src/common/utility.cpp" line="461"/>
         <source>now</source>
         <translation>teraz</translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="462"/>
+        <location filename="../src/common/utility.cpp" line="463"/>
         <source>Less than a minute ago</source>
         <translation>Menej ako pred minútou</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="465"/>
+        <location filename="../src/common/utility.cpp" line="466"/>
         <source>%n minute(s) ago</source>
         <translation><numerusform>pred %n minútou</numerusform><numerusform>pred %n minútami</numerusform><numerusform>pred %n minútami</numerusform><numerusform>pred %n minútami</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="468"/>
+        <location filename="../src/common/utility.cpp" line="469"/>
         <source>Some time ago</source>
         <translation>Pred istým časom</translation>
     </message>
@@ -4187,37 +4187,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%L1 B</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="319"/>
+        <location filename="../src/common/utility.cpp" line="320"/>
         <source>%n year(s)</source>
         <translation><numerusform>%n rok</numerusform><numerusform>%n roky</numerusform><numerusform>%n rokov</numerusform><numerusform>%n rokov</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="320"/>
+        <location filename="../src/common/utility.cpp" line="321"/>
         <source>%n month(s)</source>
         <translation><numerusform>%n mesiac</numerusform><numerusform>%n mesiace</numerusform><numerusform>%n mesiacov</numerusform><numerusform>%n mesiacov</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="321"/>
+        <location filename="../src/common/utility.cpp" line="322"/>
         <source>%n day(s)</source>
         <translation><numerusform>%n deň</numerusform><numerusform>%n dni</numerusform><numerusform>%n dní</numerusform><numerusform>%n dní</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="322"/>
+        <location filename="../src/common/utility.cpp" line="323"/>
         <source>%n hour(s)</source>
         <translation><numerusform>%n hodina</numerusform><numerusform>%n hodiny</numerusform><numerusform>%n hodín</numerusform><numerusform>%n hodín</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="323"/>
+        <location filename="../src/common/utility.cpp" line="324"/>
         <source>%n minute(s)</source>
         <translation><numerusform>%n minúta</numerusform><numerusform>%n minúty</numerusform><numerusform>%n minút</numerusform><numerusform>%n minút</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/common/utility.cpp" line="324"/>
+        <location filename="../src/common/utility.cpp" line="325"/>
         <source>%n second(s)</source>
         <translation><numerusform>%n sekunda</numerusform><numerusform>%n sekundy</numerusform><numerusform>%n sekúnd</numerusform><numerusform>%n sekúnd</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/common/utility.cpp" line="348"/>
+        <location filename="../src/common/utility.cpp" line="349"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>
