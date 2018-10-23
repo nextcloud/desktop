@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Comment[sr]=@APPLICATION_NAME@ десктоп клијент за синхронизацију
-Icon[sr]=@APPLICATION_ICON_NAME@
-Name[sr]=@APPLICATION_NAME@ десктоп клијент за синхронизацију
-GenericName[sr]=Синхронизација фасцикли
+Comment[sk_SK]=@APPLICATION_NAME@ Synchronizačný klient pre PC
+Icon[sk_SK]=@APPLICATION_ICON_NAME@
+Name[sk_SK]=@APPLICATION_NAME@ Synchronizačný klient pre PC
+GenericName[sk_SK]=Synchnonizácia priečinka

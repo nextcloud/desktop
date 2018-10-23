@@ -728,9 +728,18 @@ public:
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, _httpErrorCode);
         setError(InternalServerError, "Internal Server Fake Error");
         emit metaDataChanged();
+        emit readyRead();
+        // finishing can come strictly after readyRead was called
+        QTimer::singleShot(5, this, &FakeErrorReply::slotSetFinished);
+    }
+
+public slots:
+    void slotSetFinished() {
+        setFinished(true);
         emit finished();
     }
 
+public:
     void abort() override { }
     qint64 readData(char *, qint64) override { return 0; }
 
