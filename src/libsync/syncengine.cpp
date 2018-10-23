@@ -1047,10 +1047,9 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     }
 
     auto databaseFingerprint = _journal->dataFingerprint();
-    // If databaseFingerprint is null, this means that there was no information in the database
-    // (for example, upgrading from a previous version, or first sync)
-    // Note that an empty ("") fingerprint is valid and means it was empty on the server before.
-    if (!databaseFingerprint.isNull()
+    // If databaseFingerprint is empty, this means that there was no information in the database
+    // (for example, upgrading from a previous version, or first sync, or server not supporting fingerprint)
+    if (!databaseFingerprint.isEmpty()
         && _discoveryMainThread->_dataFingerprint != databaseFingerprint) {
         qCInfo(lcEngine) << "data fingerprint changed, assume restore from backup" << databaseFingerprint << _discoveryMainThread->_dataFingerprint;
         restoreOldFiles(syncItems);
