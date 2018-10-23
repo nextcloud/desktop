@@ -47,7 +47,7 @@ namespace EncryptionHelper {
             const QByteArray& data
     );
 
-    QByteArray privateKeyToPem(const QSslKey key);
+    QByteArray privateKeyToPem(const QByteArray key);
 
     //TODO: change those two EVP_PKEY into QSslKey.
     QByteArray encryptStringAsymmetric(
@@ -122,7 +122,8 @@ private:
     QMap<QString, bool> _folder2encryptedStatus;
 
 public:
-    QSslKey _privateKey;
+    //QSslKey _privateKey;
+    QByteArray _privateKey;
     QSslKey _publicKey;
     QSslCertificate _certificate;
     QString _mnemonic;
