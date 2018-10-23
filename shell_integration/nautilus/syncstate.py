@@ -63,7 +63,7 @@ class SocketConnect(GObject.GObject):
         self._watch_id = 0
         self._sock = None
         self._listeners = [self._update_registered_paths, self._get_version]
-        self._remainder = ''.encode()
+        self._remainder = ''.encode() if python3 else ''
         self.protocolVersion = '1.0'
         self.nautilusVFSFile_table = {}  # not needed in this object actually but shared
                                          # all over the other objects.
@@ -82,7 +82,7 @@ class SocketConnect(GObject.GObject):
         # print("Server command: " + cmd)
         if self.connected:
             try:
-                self._sock.send(cmd.encode())
+                self._sock.send(cmd.encode() if python3 else cmd)
             except:
                 print("Sending failed.")
                 self.reconnect()
@@ -134,7 +134,8 @@ class SocketConnect(GObject.GObject):
             return []
         data = self._remainder[:end]
         self._remainder = self._remainder[end+1:]
-        return data.decode().split('\n')
+        data = data.decode() if python3 else data
+        return data.split('\n')
 
     # Notify is the raw answer from the socket
     def _handle_notify(self, source, condition):
