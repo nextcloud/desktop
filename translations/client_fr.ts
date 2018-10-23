@@ -2082,7 +2082,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="93"/>
         <source>Skip folders configuration</source>
-        <translation>Passer outre la configuration des dossiers</translation>
+        <translation>Ignorer la configuration des dossiers</translation>
     </message>
 </context>
 <context>
