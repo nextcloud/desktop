@@ -166,7 +166,7 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                 /* First, check that the file is NOT in our tree (another file with the same name was added) */
                 if (our_tree->findFile(basePath)) {
                     other = nullptr;
-                    qCDebug(lcReconcile, "Origin found in our tree : %s", basePath.constData());
+                    qCInfo(lcReconcile, "Origin found in our tree : %s", basePath.constData());
                 } else {
                     /* Find the potential rename source file in the other tree.
                     * If the renamed file could not be found in the opposite tree, that is because it
@@ -174,7 +174,7 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                     * The journal is cleaned up later after propagation.
                     */
                     other = other_tree->findFile(basePath);
-                    qCDebug(lcReconcile, "Rename origin in other tree (%s) %s",
+                    qCInfo(lcReconcile, "Rename origin in other tree (%s) %s",
                         basePath.constData(), other ? "found" : "not found");
                 }
 
@@ -185,7 +185,7 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                     // Some other EVAL_RENAME already claimed other.
                     // We do nothing: maybe a different candidate for
                     // other is found as well?
-                    qCDebug(lcReconcile, "Other has already been renamed to %s",
+                    qCInfo(lcReconcile, "Other has already been renamed to %s",
                         other->rename_path.constData());
                 } else if (cur->type == ItemTypeDirectory
                     // The local replica is reconciled first, so the remote tree would
@@ -197,7 +197,7 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                     || other->instruction == CSYNC_INSTRUCTION_NONE
                     || other->instruction == CSYNC_INSTRUCTION_UPDATE_METADATA
                     || other->instruction == CSYNC_INSTRUCTION_REMOVE) {
-                    qCDebug(lcReconcile, "Switching %s to RENAME to %s",
+                    qCInfo(lcReconcile, "Switching %s to RENAME to %s",
                         other->path.constData(), cur->path.constData());
                     other->instruction = CSYNC_INSTRUCTION_RENAME;
                     other->rename_path = cur->path;
@@ -221,7 +221,7 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                     // Local: The remote reconcile will be able to deal with this.
                     // Remote: The local replica has already dealt with this.
                     //         See the EVAL_RENAME case when other was found directly.
-                    qCDebug(lcReconcile, "File in a renamed directory, other side's instruction: %d",
+                    qCInfo(lcReconcile, "File in a renamed directory, other side's instruction: %d",
                         other->instruction);
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
                 } else {
@@ -229,7 +229,7 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                     // and the instruction in the local tree is NEW while cur has EVAL_RENAME
                     // due to a remote move of the same file. In these scenarios we just
                     // want the instruction to stay NEW.
-                    qCDebug(lcReconcile, "Other already has instruction %d",
+                    qCInfo(lcReconcile, "Other already has instruction %d",
                         other->instruction);
                 }
             };
@@ -237,7 +237,7 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
             if (ctx->current == LOCAL_REPLICA) {
                 /* use the old name to find the "other" node */
                 OCC::SyncJournalFileRecord base;
-                qCDebug(lcReconcile, "Finding rename origin through inode %" PRIu64 "",
+                qCInfo(lcReconcile, "Finding rename origin through inode %" PRIu64 "",
                     cur->inode);
                 ctx->statedb->getFileRecordByInode(cur->inode, &base);
                 renameCandidateProcessing(base._path);
@@ -250,7 +250,7 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                 // line.
                 auto basePath = csync_rename_adjust_full_path_source(ctx, cur->path);
                 if (basePath != cur->path) {
-                    qCDebug(lcReconcile, "Trying rename origin by csync_rename mapping %s",
+                    qCInfo(lcReconcile, "Trying rename origin by csync_rename mapping %s",
                         basePath.constData());
                     // We go through getFileRecordsByFileId to ensure the basePath
                     // computed in this way also has the expected fileid.
@@ -263,7 +263,7 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
 
                 // Also feed all the other files with the same fileid if necessary
                 if (!processedRename) {
-                    qCDebug(lcReconcile, "Finding rename origin through file ID %s",
+                    qCInfo(lcReconcile, "Finding rename origin through file ID %s",
                         cur->file_id.constData());
                     ctx->statedb->getFileRecordsByFileId(cur->file_id,
                         [&](const OCC::SyncJournalFileRecord &base) { renameCandidateProcessing(base._path); });
