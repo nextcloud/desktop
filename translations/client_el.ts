@@ -388,7 +388,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="138"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Ερώτηση πιστοποιητικών</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="140"/>
