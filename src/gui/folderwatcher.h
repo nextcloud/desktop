@@ -55,11 +55,14 @@ class FolderWatcher : public QObject
 {
     Q_OBJECT
 public:
+    // Construct, connect signals, call init()
+    explicit FolderWatcher(Folder *folder = 0L);
+    virtual ~FolderWatcher();
+
     /**
      * @param root Path of the root of the folder
      */
-    FolderWatcher(const QString &root, Folder *folder = 0L);
-    virtual ~FolderWatcher();
+    void init(const QString &root);
 
     /**
      * Not all backends are recursive by default.
@@ -95,6 +98,12 @@ signals:
      * i.e. isReliable() is orthogonal to losing changes occasionally.
      */
     void lostChanges();
+
+    /**
+     * Signals when the watcher became unreliable. The string is a translated
+     * message that can be shown to users.
+     */
+    void becameUnreliable(const QString &message);
 
 protected slots:
     // called from the implementations to indicate a change in path
