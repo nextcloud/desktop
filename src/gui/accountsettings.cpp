@@ -680,7 +680,7 @@ void AccountSettings::slotFolderWizardAccepted()
 
     /* take the value from the definition of already existing folders. All folders have
      * the same setting so far.
-     * The default is to not sync hidden files
+     * The default is to sync hidden files
      */
     definition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
 

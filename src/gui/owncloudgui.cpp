@@ -62,21 +62,16 @@ const char propertyAccountC[] = "oc_account";
 ownCloudGui::ownCloudGui(Application *parent)
     : QObject(parent)
     , _tray(0)
-    ,
 #if defined(Q_OS_MAC)
-    _settingsDialog(new SettingsDialogMac(this))
-    ,
+    , _settingsDialog(new SettingsDialogMac(this))
 #else
-    _settingsDialog(new SettingsDialog(this))
-    ,
+    , _settingsDialog(new SettingsDialog(this))
 #endif
-    _logBrowser(0)
-    , _contextMenuVisibleOsx(false)
+    , _logBrowser(0)
 #ifdef WITH_LIBCLOUDPROVIDERS
     , _bus(QDBusConnection::sessionBus())
 #endif
     , _recentActionsMenu(0)
-    , _qdbusmenuWorkaround(false)
     , _app(parent)
 {
     _tray = new Systray();
@@ -154,7 +149,7 @@ void ownCloudGui::slotOpenSettingsDialog()
 
 void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
 {
-    if (_qdbusmenuWorkaround) {
+    if (_workaroundFakeDoubleClick) {
         static QElapsedTimer last_click;
         if (last_click.isValid() && last_click.elapsed() < 200) {
             return;
@@ -415,7 +410,7 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
     menu->addSeparator();
     if (separateMenu) {
         if (onePaused) {
-            QAction *enable = menu->addAction(tr("Unpause all folders"));
+            QAction *enable = menu->addAction(tr("Resume all folders"));
             enable->setProperty(propertyAccountC, QVariant::fromValue(accountState));
             connect(enable, &QAction::triggered, this, &ownCloudGui::slotUnpauseAllFolders);
         }
@@ -439,17 +434,19 @@ void ownCloudGui::addAccountContextMenu(AccountStatePtr accountState, QMenu *men
 
 void ownCloudGui::slotContextMenuAboutToShow()
 {
-    // For some reason on OS X _contextMenu->isVisible returns always false
-    _contextMenuVisibleOsx = true;
+    _contextMenuVisibleManual = true;
 
     // Update icon in sys tray, as it might change depending on the context menu state
     slotComputeOverallSyncStatus();
+
+    if (!_workaroundNoAboutToShowUpdate) {
+        updateContextMenu();
+    }
 }
 
 void ownCloudGui::slotContextMenuAboutToHide()
 {
-    // For some reason on OS X _contextMenu->isVisible returns always false
-    _contextMenuVisibleOsx = false;
+    _contextMenuVisibleManual = false;
 
     // Update icon in sys tray, as it might change depending on the context menu state
     slotComputeOverallSyncStatus();
@@ -457,11 +454,11 @@ void ownCloudGui::slotContextMenuAboutToHide()
 
 bool ownCloudGui::contextMenuVisible() const
 {
-#ifdef Q_OS_MAC
-    return _contextMenuVisibleOsx;
-#else
+    // On some platforms isVisible doesn't work and always returns false,
+    // elsewhere aboutToHide is unreliable.
+    if (_workaroundManualVisibility)
+        return _contextMenuVisibleManual;
     return _contextMenu->isVisible();
-#endif
 }
 
 static bool minimalTrayMenu()
@@ -484,9 +481,33 @@ static bool updateWhileVisible()
     }
 }
 
-static QByteArray forceQDBusTrayWorkaround()
+static QByteArray envForceQDBusTrayWorkaround()
 {
     static QByteArray var = qgetenv("OWNCLOUD_FORCE_QDBUS_TRAY_WORKAROUND");
+    return var;
+}
+
+static QByteArray envForceWorkaroundShowAndHideTray()
+{
+    static QByteArray var = qgetenv("OWNCLOUD_FORCE_TRAY_SHOW_HIDE");
+    return var;
+}
+
+static QByteArray envForceWorkaroundNoAboutToShowUpdate()
+{
+    static QByteArray var = qgetenv("OWNCLOUD_FORCE_TRAY_NO_ABOUT_TO_SHOW");
+    return var;
+}
+
+static QByteArray envForceWorkaroundFakeDoubleClick()
+{
+    static QByteArray var = qgetenv("OWNCLOUD_FORCE_TRAY_FAKE_DOUBLE_CLICK");
+    return var;
+}
+
+static QByteArray envForceWorkaroundManualVisibility()
+{
+    static QByteArray var = qgetenv("OWNCLOUD_FORCE_TRAY_MANUAL_VISIBILITY");
     return var;
 }
 
@@ -512,51 +533,65 @@ void ownCloudGui::setupContextMenu()
         return;
     }
 
-// Enables workarounds for bugs introduced in Qt 5.5.0
-// In particular QTBUG-47863 #3672 (tray menu fails to update and
-// becomes unresponsive) and QTBUG-48068 #3722 (click signal is
-// emitted several times)
-// The Qt version check intentionally uses 5.0.0 (where platformMenu()
-// was introduced) instead of 5.5.0 to avoid issues where the Qt
-// version used to build is different from the one used at runtime.
-// If we build with 5.6.1 or newer, we can skip this because the
-// bugs should be fixed there.
-#ifdef Q_OS_LINUX
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)) && (QT_VERSION < QT_VERSION_CHECK(5, 6, 0))
-    if (qVersion() == QByteArray("5.5.0")) {
-        QObject *platformMenu = reinterpret_cast<QObject *>(_tray->contextMenu()->platformMenu());
-        if (platformMenu
-            && platformMenu->metaObject()->className() == QLatin1String("QDBusPlatformMenu")) {
-            _qdbusmenuWorkaround = true;
-            qCWarning(lcApplication) << "Enabled QDBusPlatformMenu workaround";
-        }
-    }
-#endif
-#endif
+    auto applyEnvVariable = [](bool *sw, const QByteArray &value) {
+        if (value == "1")
+            *sw = true;
+        if (value == "0")
+            *sw = false;
+    };
 
-    if (forceQDBusTrayWorkaround() == "1") {
-        _qdbusmenuWorkaround = true;
-    } else if (forceQDBusTrayWorkaround() == "0") {
-        _qdbusmenuWorkaround = false;
+    // This is an old compound flag that people might still depend on
+    bool qdbusmenuWorkarounds = false;
+    applyEnvVariable(&qdbusmenuWorkarounds, envForceQDBusTrayWorkaround());
+    if (qdbusmenuWorkarounds) {
+        _workaroundFakeDoubleClick = true;
+        _workaroundNoAboutToShowUpdate = true;
+        _workaroundShowAndHideTray = true;
     }
 
-    // When the qdbusmenuWorkaround is necessary, we can't do on-demand updates
-    // because the workaround is to hide and show the tray icon.
-    if (_qdbusmenuWorkaround) {
-        connect(&_workaroundBatchTrayUpdate, &QTimer::timeout, this, &ownCloudGui::updateContextMenu);
-        _workaroundBatchTrayUpdate.setInterval(30 * 1000);
-        _workaroundBatchTrayUpdate.setSingleShot(true);
-    } else {
-// Update the context menu whenever we're about to show it
-// to the user.
 #ifdef Q_OS_MAC
-        // https://bugreports.qt.io/browse/QTBUG-54633
-        connect(_contextMenu.data(), SIGNAL(aboutToShow()), SLOT(slotContextMenuAboutToShow()));
-        connect(_contextMenu.data(), SIGNAL(aboutToHide()), SLOT(slotContextMenuAboutToHide()));
-#else
-        connect(_contextMenu.data(), &QMenu::aboutToShow, this, &ownCloudGui::updateContextMenu);
+    // https://bugreports.qt.io/browse/QTBUG-54633
+    _workaroundNoAboutToShowUpdate = true;
+    _workaroundManualVisibility = true;
 #endif
+
+#ifdef Q_OS_LINUX
+    // For KDE sessions if the platform plugin is missing,
+    // neither aboutToShow() updates nor the isVisible() call
+    // work. At least aboutToHide is reliable.
+    // https://github.com/owncloud/client/issues/6545
+    static QByteArray xdgCurrentDesktop = qgetenv("XDG_CURRENT_DESKTOP");
+    static QByteArray desktopSession = qgetenv("DESKTOP_SESSION");
+    bool isKde =
+        xdgCurrentDesktop.contains("KDE")
+        || desktopSession.contains("plasma")
+        || desktopSession.contains("kde");
+    QObject *platformMenu = reinterpret_cast<QObject *>(_tray->contextMenu()->platformMenu());
+    if (isKde && platformMenu && platformMenu->metaObject()->className() == QLatin1String("QDBusPlatformMenu")) {
+        _workaroundManualVisibility = true;
+        _workaroundNoAboutToShowUpdate = true;
     }
+#endif
+
+    applyEnvVariable(&_workaroundNoAboutToShowUpdate, envForceWorkaroundNoAboutToShowUpdate());
+    applyEnvVariable(&_workaroundFakeDoubleClick, envForceWorkaroundFakeDoubleClick());
+    applyEnvVariable(&_workaroundShowAndHideTray, envForceWorkaroundShowAndHideTray());
+    applyEnvVariable(&_workaroundManualVisibility, envForceWorkaroundManualVisibility());
+
+    qCInfo(lcApplication) << "Tray menu workarounds:"
+                          << "noabouttoshow:" << _workaroundNoAboutToShowUpdate
+                          << "fakedoubleclick:" << _workaroundFakeDoubleClick
+                          << "showhide:" << _workaroundShowAndHideTray
+                          << "manualvisibility:" << _workaroundManualVisibility;
+
+
+    connect(&_delayedTrayUpdateTimer, &QTimer::timeout, this, &ownCloudGui::updateContextMenu);
+    _delayedTrayUpdateTimer.setInterval(2 * 1000);
+    _delayedTrayUpdateTimer.setSingleShot(true);
+
+    connect(_contextMenu.data(), SIGNAL(aboutToShow()), SLOT(slotContextMenuAboutToShow()));
+    // unfortunately aboutToHide is unreliable, it seems to work on OSX though
+    connect(_contextMenu.data(), SIGNAL(aboutToHide()), SLOT(slotContextMenuAboutToHide()));
 
     // Populate the context menu now.
     updateContextMenu();
@@ -568,13 +603,21 @@ void ownCloudGui::updateContextMenu()
         return;
     }
 
-    if (_qdbusmenuWorkaround) {
+    // If it's visible, we can't update live, and it won't be updated lazily: reschedule
+    if (contextMenuVisible() && !updateWhileVisible() && _workaroundNoAboutToShowUpdate) {
+        if (!_delayedTrayUpdateTimer.isActive()) {
+            _delayedTrayUpdateTimer.start();
+        }
+        return;
+    }
+
+    if (_workaroundShowAndHideTray) {
         // To make tray menu updates work with these bugs (see setupContextMenu)
         // we need to hide and show the tray icon. We don't want to do that
         // while it's visible!
         if (contextMenuVisible()) {
-            if (!_workaroundBatchTrayUpdate.isActive()) {
-                _workaroundBatchTrayUpdate.start();
+            if (!_delayedTrayUpdateTimer.isActive()) {
+                _delayedTrayUpdateTimer.start();
             }
             return;
         }
@@ -648,9 +691,9 @@ void ownCloudGui::updateContextMenu()
     if (atLeastOnePaused) {
         QString text;
         if (accountList.count() > 1) {
-            text = tr("Unpause all synchronization");
+            text = tr("Resume all synchronization");
         } else {
-            text = tr("Unpause synchronization");
+            text = tr("Resume synchronization");
         }
         QAction *action = _contextMenu->addAction(text);
         connect(action, &QAction::triggered, this, &ownCloudGui::slotUnpauseAllFolders);
@@ -667,35 +710,30 @@ void ownCloudGui::updateContextMenu()
     }
     _contextMenu->addAction(_actionQuit);
 
-    if (_qdbusmenuWorkaround) {
+    if (_workaroundShowAndHideTray) {
         _tray->show();
     }
 }
 
 void ownCloudGui::updateContextMenuNeeded()
 {
-    // For the workaround case updating while visible is impossible. Instead
-    // occasionally update the menu when it's invisible.
-    if (_qdbusmenuWorkaround) {
-        if (!_workaroundBatchTrayUpdate.isActive()) {
-            _workaroundBatchTrayUpdate.start();
-        }
+    // if it's visible and we can update live: update now
+    if (contextMenuVisible() && updateWhileVisible()) {
+        // Note: don't update while visible on OSX
+        // https://bugreports.qt.io/browse/QTBUG-54845
+        updateContextMenu();
         return;
     }
 
-#ifdef Q_OS_MAC
-    // https://bugreports.qt.io/browse/QTBUG-54845
-    // We cannot update on demand or while visible -> update when invisible.
-    if (!contextMenuVisible()) {
-        updateContextMenu();
+    // if we can't lazily update: update later
+    if (_workaroundNoAboutToShowUpdate) {
+        // Note: don't update immediately even in the invisible case
+        // as that can lead to extremely frequent menu updates
+        if (!_delayedTrayUpdateTimer.isActive()) {
+            _delayedTrayUpdateTimer.start();
+        }
+        return;
     }
-#else
-    if (updateWhileVisible() && contextMenuVisible())
-        updateContextMenu();
-#endif
-
-    // If no update was done here, we might update it on-demand due to
-    // the aboutToShow() signal.
 }
 
 void ownCloudGui::slotShowTrayMessage(const QString &title, const QString &msg)

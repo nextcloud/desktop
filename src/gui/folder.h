@@ -49,7 +49,7 @@ class FolderDefinition
 public:
     FolderDefinition()
         : paused(false)
-        , ignoreHiddenFiles(true)
+        , ignoreHiddenFiles(false)
     {
     }
 

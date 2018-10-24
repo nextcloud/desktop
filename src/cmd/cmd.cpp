@@ -319,7 +319,7 @@ int main(int argc, char **argv)
     options.trustSSL = false;
     options.useNetrc = false;
     options.interactive = true;
-    options.ignoreHiddenFiles = true;
+    options.ignoreHiddenFiles = false; // Default is to sync hidden files
     options.nonShib = false;
     options.restartTimes = 3;
     options.uplimit = 0;

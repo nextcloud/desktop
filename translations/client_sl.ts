@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;Izberi ...</translation>
+        <translation>&amp;Izbor ...</translation>
     </message>
 </context>
 <context>
@@ -27,7 +27,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
         <source>Select a remote destination folder</source>
-        <translation>Izberite oddaljeno ciljno mapo.</translation>
+        <translation>Izbor oddaljene ciljne mape</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
@@ -153,12 +153,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="195"/>
         <source>Add new</source>
-        <translation>Dodaj novo</translation>
+        <translation>Dodaj nov račun</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="203"/>
         <source>Remove</source>
-        <translation>Odstrani</translation>
+        <translation>Odstrani račun</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="207"/>
@@ -183,7 +183,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="316"/>
         <source>Remove folder sync connection</source>
-        <translation>Odstrani povezavo mape usklajevanja</translation>
+        <translation>Odstrani povezavo za usklajevanje mape</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="387"/>
@@ -203,7 +203,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="445"/>
         <source>Remove Folder Sync Connection</source>
-        <translation>Odstrani povezavo usklajevanja mape</translation>
+        <translation>Odstrani povezavo za usklajevanje mape</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="527"/>
@@ -233,7 +233,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="652"/>
         <source>Connected to %1.</source>
-        <translation>Povezano z %1.</translation>
+        <translation>Vzpostavljena je povezava z %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="654"/>
@@ -243,7 +243,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>Strežnik %1 je trenutno v načinu vzdrževanja.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="658"/>
@@ -253,7 +253,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="667"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Poteka pridobitev overitve prek brskalnika. &lt;a href=&apos;%1&apos;&gt;Kliknite&lt;/a&gt; to za ponovno odpiranje brskalnika.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="671"/>
@@ -263,7 +263,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="674"/>
         <source>No connection to %1 at %2.</source>
-        <translation>Ni povezave z %1 pri %2.</translation>
+        <translation>S strežnikom %1 ni vzpostavljene povezave (%2).</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="698"/>
@@ -288,12 +288,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="834"/>
         <source>Confirm Account Removal</source>
-        <translation>Potrdi odstranitev računa</translation>
+        <translation>Potrdi odstranjevanje računa</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="835"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ali res želite odstraniti povezavo z računom &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Opomba:&lt;/b&gt; S tem &lt;b&gt;ne bo&lt;/b&gt; izbrisana nobena datoteka.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Ali res želite odstraniti povezavo z računom &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Opomba:&lt;/b&gt; odstranitev ovezave &lt;b&gt;ne izbriše&lt;/b&gt; nobene datoteke.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="841"/>
@@ -310,7 +310,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="199"/>
         <location filename="../src/gui/accountsettings.cpp" line="700"/>
         <source>Log out</source>
-        <translation>Odjava</translation>
+        <translation>Odjavi račun</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="313"/>
@@ -425,13 +425,13 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="571"/>
         <source>Not Synced</source>
-        <translation>Ni usklajeno</translation>
+        <translation>Neusklajeno</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="574"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
-        <translation>Ni usklajeno (%1)</translation>
+        <translation>Neusklajeno ( %1 )</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="606"/>
@@ -765,12 +765,12 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="927"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>Vse datoteke v usklajevani mapi »%1« so bile na strežniku izbrisane.
 Sprememba bo usklajena tudi s krajevno mapo na disku, zato bodo te datoteke, če ni ustreznih dovoljenj za obnovitev, izgubljene. 
-V kolikor se odločite te datoteke ohraniti, in so na voljo ustrezna dovoljenja, bodo spet usklajene s strežnikom.
+V kolikor se odločite datoteke ohraniti in so na voljo ustrezna dovoljenja, bodo te spet usklajene s strežnikom.
 Nasprotno, če potrdite izbris in niste lastnik datotek, te ne bodo več na voljo.</translation>
     </message>
     <message>
@@ -832,7 +832,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
     <message>
         <location filename="../src/gui/folderman.cpp" line="312"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Obstaja starejši dnevnik usklajevanja &apos;%1&apos;, vendar ga ni mogoče odstraniti. Preverite, ali je datoteka v uporabi.</translation>
+        <translation>Obstaja star dnevnik usklajevanja »%1«, ki pa ga ni mogoče odstraniti. Preverite, ali je datoteka morda v uporabi.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1054"/>
@@ -857,7 +857,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1271"/>
         <source>Preparing for sync.</source>
-        <translation>Poteka priprava za usklajevanje.</translation>
+        <translation>Poteka priprava na usklajevanje.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1274"/>
@@ -945,7 +945,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="249"/>
         <source>Synchronizing with local folder</source>
-        <translation>Poteka usklajevanje s krajevno mapo</translation>
+        <translation>Datoteke so usklajene v krajevni mapi</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="296"/>
@@ -1233,7 +1233,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="171"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation>Vprašaj za potrditev pred usklajevanjem map, večjih kot</translation>
+        <translation>Zahtevaj potrditev pred usklajevanjem map, večjih od</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="191"/>
@@ -1264,7 +1264,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="147"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Uredi &amp;prezrte datoteke</translation>
+        <translation>Uredi &amp;neusklajevane datoteke</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="232"/>
@@ -1275,7 +1275,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
         <location filename="../src/gui/generalsettings.ui" line="53"/>
         <location filename="../src/gui/generalsettings.ui" line="65"/>
         <source>About</source>
-        <translation>O programu...</translation>
+        <translation>O programu ...</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
@@ -1316,22 +1316,22 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="14"/>
         <source>Ignored Files Editor</source>
-        <translation>Urejevalnik prezrtih datotek</translation>
+        <translation>Urejevalnik neusklajevanih datotek</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Global Ignore Settings</source>
-        <translation>Splošne nastavitve prezrtih datotek</translation>
+        <translation>Splošne nastavitve neusklajevanih datotek</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
         <source>Sync hidden files</source>
-        <translation>Uskladi tudi skrite datoteke</translation>
+        <translation>Usklajuj tudi skrite datoteke</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
         <source>Files Ignored by Patterns</source>
-        <translation>Datoteke, prezrte po vzorcu</translation>
+        <translation>Maske neusklajevanih datotek</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="55"/>
@@ -1341,7 +1341,7 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="75"/>
         <source>Pattern</source>
-        <translation>Vzorec</translation>
+        <translation>Maska</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="80"/>
@@ -1358,9 +1358,9 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Datoteke in mape, ki so skladne z vzorcem, ne bodo usklajevane.
+        <translation>Datoteke in mape, ki so skladne z masko, ne bodo usklajevane.
 
-Predmeti na mestu, kjer je brisanje dovoljeno, bodo izbisani, v kolikor zaradi njih brisanje mape ni mogoče. Možnost je uporabna pri metapodatkih.</translation>
+Predmeti v mapah, ki jih je dovoljeno izbrisati, bodo odstranjeni, če preprečujejo brisanje mape. Možnost je uporabna pri odstranjevanju metapodatkov.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="117"/>
@@ -1375,12 +1375,12 @@ Predmeti na mestu, kjer je brisanje dovoljeno, bodo izbisani, v kolikor zaradi n
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="145"/>
         <source>Add Ignore Pattern</source>
-        <translation>Dodaj vzorec za izpuščanje</translation>
+        <translation>Dodaj masko za neusklajevanje</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="146"/>
         <source>Add a new ignore pattern:</source>
-        <translation>Dodaj nov vzorec za izpuščanje:</translation>
+        <translation>Dodaj novo masko za neusklajevanje:</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="47"/>
@@ -1425,7 +1425,7 @@ Predmeti na mestu, kjer je brisanje dovoljeno, bodo izbisani, v kolikor zaradi n
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
         <source>Show ignored files</source>
-        <translation>Pokaži prezrte datoteke</translation>
+        <translation>Pokaži neusklajevane datoteke</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="133"/>
@@ -1478,7 +1478,7 @@ Predmeti na mestu, kjer je brisanje dovoljeno, bodo izbisani, v kolikor zaradi n
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
         <source>&amp;Capture debug messages</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Zajemi sporočila razhroščevanja</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
@@ -1602,7 +1602,7 @@ Predmeti na mestu, kjer je brisanje dovoljeno, bodo izbisani, v kolikor zaradi n
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation>Pasovna širina prejemanja</translation>
+        <translation>Hitrost prejemanja</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="196"/>
@@ -1614,24 +1614,24 @@ Predmeti na mestu, kjer je brisanje dovoljeno, bodo izbisani, v kolikor zaradi n
         <location filename="../src/gui/networksettings.ui" line="241"/>
         <location filename="../src/gui/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
-        <translation>KBajtov/s</translation>
+        <translation>kbajtov/s</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="203"/>
         <location filename="../src/gui/networksettings.ui" line="292"/>
         <source>No limit</source>
-        <translation>Ni omejitve</translation>
+        <translation>Brez omejitve</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="250"/>
         <location filename="../src/gui/networksettings.ui" line="282"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation>Omeji prenos na 3/4 ocenjene pasovne širine</translation>
+        <translation>Omeji prenos na 3/4 ocenjene hitrosti</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="269"/>
         <source>Upload Bandwidth</source>
-        <translation>Pasovna širina pošiljanja</translation>
+        <translation>Hitrost pošiljanja</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="253"/>
@@ -1695,7 +1695,7 @@ Predmeti na mestu, kjer je brisanje dovoljeno, bodo izbisani, v kolikor zaradi n
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="112"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>S strežnika je prejet odziv o napaki: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
@@ -1715,7 +1715,7 @@ Predmeti na mestu, kjer je brisanje dovoljeno, bodo izbisani, v kolikor zaradi n
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="125"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Napaka prijave&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="131"/>
@@ -1888,7 +1888,7 @@ zahteva skrbniška dovoljenja za dokončanje opravila.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="44"/>
         <source>Login in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Prijava v brskalniku</translation>
     </message>
 </context>
 <context>
@@ -1966,7 +1966,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>The server reported the following error:</source>
-        <translation type="unfinished"/>
+        <translation>Strežnik je vrnil napako:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2063,7 +2063,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="586"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation>Mape ni mogoče odstraniti niti ni mogoče ustvariti varnostne kopije, saj je mapa oziroma dokument v njej odprt z drugim programom. Zaprite mapo/dokument ali prekinite namestitev.</translation>
+        <translation>Mape ni mogoče odstraniti niti ni mogoče ustvariti varnostne kopije, ker je mapa, oziroma dokument v njej, odprt v drugem programu. Zaprite mapo oziroma dokument, ali pa prekinite namestitev.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="631"/>
@@ -2128,7 +2128,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="459"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation type="unfinished"/>
+        <translation>Prejem predmetov bi zmanjšal prostor na krajevnem disku pod omejitev.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
@@ -2212,12 +2212,12 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="101"/>
         <source>Could not remove folder &apos;%1&apos;</source>
-        <translation>Ni mogoče odstraniti mape &apos;%1&apos;</translation>
+        <translation>Mape »%1« ni mogoče odstraniti.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="120"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation>Ni mogoče odstraniti %1 zaradi neskladja s krajevnim imenom datoteke</translation>
+        <translation>Predmeta »%1« ni mogoče odstraniti zaradi neskladja s krajevnim imenom datoteke.</translation>
     </message>
 </context>
 <context>
@@ -2315,7 +2315,7 @@ Uporaba ni priporočljiva.</translation>
         <location filename="../src/libsync/propagateupload.cpp" line="186"/>
         <location filename="../src/libsync/propagateupload.cpp" line="549"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>Pošiljanje %1 preseže omejitev, določeno za mapo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="622"/>
@@ -2773,7 +2773,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
         <source>Delete link share</source>
-        <translation type="unfinished"/>
+        <translation>Izbriši povezavo za souporabo</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="459"/>
@@ -2934,12 +2934,12 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="567"/>
         <source>Copy private link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopiraj zasebno povezavo v odložišče</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="568"/>
         <source>Send private link by email...</source>
-        <translation type="unfinished"/>
+        <translation>Pošlji zasebno povezavo po elektronski pošti ...</translation>
     </message>
 </context>
 <context>
@@ -3222,12 +3222,12 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="474"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation>Datoteka/Mapa je prezrta, ker je skrita.</translation>
+        <translation>Datoteka/Mapa ni usklajevana, ker je skrita.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="477"/>
         <source>Folder hierarchy is too deep</source>
-        <translation type="unfinished"/>
+        <translation>Zaznano je preveliko število ravni map</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="493"/>
@@ -3323,7 +3323,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="446"/>
         <source>File is listed on the ignore list.</source>
-        <translation>Datoteka je na seznamu prezrtih datotek.</translation>
+        <translation>Datoteka je na seznamu neusklajevanih datotek.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="450"/>
@@ -3399,7 +3399,7 @@ Uporaba ni priporočljiva.</translation>
         <location filename="../src/libsync/syncengine.cpp" line="1216"/>
         <location filename="../src/libsync/syncengine.cpp" line="1256"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>Prezrto, ker je predmet označen na črni listi za usklajevanje</translation>
+        <translation>Predmet ni usklajevan, ker je na »črnem seznamu datotek« za usklajevanje</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1275"/>
@@ -3464,7 +3464,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="315"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Različica %1. Za več podrobnosti si oglejte &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Različica %1. Podrobnosti so na voljo na spletišču &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="320"/>
@@ -3644,8 +3644,8 @@ Uporaba ni priporočljiva.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
-        <source>Unpause all folders</source>
-        <translation>Nadaljuj usklajevanje vseh map</translation>
+        <source>Resume all folders</source>
+        <translation>Nadaljuj z usklajevanjem vseh map</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -3654,13 +3654,13 @@ Uporaba ni priporočljiva.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
-        <source>Unpause all synchronization</source>
-        <translation>Nadaljuj usklajevanje vsega</translation>
+        <source>Resume all synchronization</source>
+        <translation>Nadaljuj z vsemi usklajevanji</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
-        <source>Unpause synchronization</source>
-        <translation>Nadaljuj usklajevanje</translation>
+        <source>Resume synchronization</source>
+        <translation>Nadaljuj z usklajevanjem</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="609"/>
@@ -3734,7 +3734,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/owncloudtheme.cpp" line="46"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0&lt;br/&gt;ownCloud and the ownCloud Logo are registered trademarks of ownCloud GmbH in the United States, other countries, or both.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Različica %2. Več podrobnosti je mogoče najti na &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Znane težave in pomoč je na voljo na povezavi &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Avtorstvo: Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, Jan-Christoph Borchardt in drugi.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Avtorske pravice ownCloud GmbH&lt;/p&gt;&lt;p&gt;Programski paket je objavljen z dovoljenjem GNU General Public License (GPL), različice 2.0.&lt;br/&gt;Znamka in logotip ownCloud sta blagovni znamki družbe ownCloud GmbH v Združenih državah, drugih državah ali obojih.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Različica %2. Podrobnosti so na voljo na spletišču &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Pomoč za znane težave je na voljo na povezavi &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;&lt;small&gt;Avtorstvo: Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, Jan-Christoph Borchardt in drugi.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Avtorske pravice ownCloud GmbH&lt;/p&gt;&lt;p&gt;Programski paket je objavljen z dovoljenjem GNU General Public License (GPL), različice 2.0.&lt;br/&gt;Znamka in logotip ownCloud sta blagovni znamki družbe ownCloud GmbH v Združenih državah, drugih državah ali obojih.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3773,7 +3773,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="301"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation>Vprašaj za potrditev pred usklajevan&amp;jem map, večjih kot</translation>
+        <translation>Zahtevaj potrditev pred usklajevan&amp;jem map, večjih od</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="318"/>
@@ -3970,7 +3970,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="138"/>
         <source>%L1 KB</source>
-        <translation>%L1 KB</translation>
+        <translation>%L1 kb</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="141"/>
@@ -4064,7 +4064,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
         <source>Ignored</source>
-        <translation>Prezrto</translation>
+        <translation>Neusklajeno</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>
@@ -4149,7 +4149,7 @@ Uporaba ni priporočljiva.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="72"/>
         <source>Sync Success, some files were ignored.</source>
-        <translation>Usklajevanje je končano, ostajajo pa nerešene težave s posameznimi datotekami.</translation>
+        <translation>Usklajevanje je končano, nekatere datoteke niso bile usklajene.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="75"/>
