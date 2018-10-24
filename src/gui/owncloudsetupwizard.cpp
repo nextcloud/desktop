@@ -152,6 +152,8 @@ void OwncloudSetupWizard::slotCheckServer(const QString &urlString)
     // Reset the proxy which might had been determined previously in ConnectionValidator::checkServerAndAuth()
     // when there was a previous account.
     account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::NoProxy));
+    // And also reset the QSslConfiguration, for the same reason (#6832)
+    account->setSslConfiguration({});
 
     // Lookup system proxy in a thread https://github.com/owncloud/client/issues/2993
     if (ClientProxy::isUsingSystemDefault()) {
