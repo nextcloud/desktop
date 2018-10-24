@@ -521,7 +521,7 @@ void SocketApi::command_SHARE_STATUS(const QString &localFile, SocketListener *l
 void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketListener *listener)
 {
     listener->sendMessage(QLatin1String("SHARE_MENU_TITLE:") + tr("Share with %1", "parameter is ownCloud").arg(Theme::instance()->appNameGUI()));
-    listener->sendMessage(QLatin1String("STREAM_SUBMENU_TITLE:") + tr("Claro drive File Stream"));
+    listener->sendMessage(QLatin1String("STREAM_SUBMENU_TITLE:") + tr("Claro drive FS"));
     listener->sendMessage(QLatin1String("STREAM_OFFLINE_ITEM_TITLE:") + tr("0ff line"));
     listener->sendMessage(QLatin1String("STREAM_ONLINE_ITEM_TITLE:") + tr("On line"));
 }
@@ -881,16 +881,23 @@ void SocketApi::command_SET_DOWNLOAD_MODE(const QString& argument, SocketListene
 
 void SocketApi::command_GET_DOWNLOAD_MODE(const QString& localFile, SocketListener* listener)
     {
-        //< TODO: Check the download mode (online or offline)
+        QString downloadMode = "ONLINE";
 
-        //< The code below is just to check that the context menu dynamically loads the check
-        QString downloadMode;
-        time_t seconds;
-        seconds = time(NULL);
-        if (seconds % 2 == 0)
-            downloadMode = "ONLINE";
-        else
-            downloadMode = "OFFLINE";
+        //< Show paths SyncMode table.
+        QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
+        QString item;
+
+        foreach(item, list)
+        {
+            qDebug() << "\n jjjj localFile: " << localFile << " item: " << item;
+            if (item.compare(localFile) == 0)
+            {
+            SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
+            if (m == SyncJournalDb::SYNCMODE_OFFLINE)
+                downloadMode = "OFFLINE";
+            break;
+            }
+        }
         listener->sendMessage(QLatin1String("GET_DOWNLOAD_MODE:") + downloadMode);
     }
 } // namespace OCC
