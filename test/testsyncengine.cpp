@@ -255,7 +255,8 @@ private slots:
             } else if(item->_file == "Y/Z/d3") {
                 QVERIFY(item->_status != SyncFileItem::Success);
             }
-            QVERIFY(item->_file != "Y/Z/d9"); // we should have aborted the sync before d9 starts
+            // We do not know about the other files - maybe the sync was aborted,
+            // maybe they finished before the error caused the abort.
         }
     }
 

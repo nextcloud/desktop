@@ -151,6 +151,76 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), expectedState);
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
     }
+
+    void testDataFingetPrint_data()
+    {
+        QTest::addColumn<bool>("hasInitialFingerPrint");
+        QTest::newRow("initial finger print") << true;
+        QTest::newRow("no initial finger print") << false;
+    }
+
+    void testDataFingetPrint()
+    {
+        QFETCH(bool, hasInitialFingerPrint);
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        fakeFolder.remoteModifier().setContents("C/c1", 'N');
+        fakeFolder.remoteModifier().setModTime("C/c1", QDateTime::currentDateTimeUtc().addDays(-2));
+        fakeFolder.remoteModifier().remove("C/c2");
+        if (hasInitialFingerPrint) {
+            fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint>initial_finger_print</oc:data-fingerprint>";
+        } else {
+            //Server support finger print, but none is set.
+            fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint></oc:data-fingerprint>";
+        }
+        QVERIFY(fakeFolder.syncOnce());
+        // First sync, we did not change the finger print, so the file should be downloaded as normal
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(fakeFolder.currentRemoteState().find("C/c1")->contentChar, 'N');
+        QVERIFY(!fakeFolder.currentRemoteState().find("C/c2"));
+
+        /* Simulate a backup restoration */
+
+        // A/a1 is an old file
+        fakeFolder.remoteModifier().setContents("A/a1", 'O');
+        fakeFolder.remoteModifier().setModTime("A/a1", QDateTime::currentDateTimeUtc().addDays(-2));
+        // B/b1 did not exist at the time of the backup
+        fakeFolder.remoteModifier().remove("B/b1");
+        // B/b2 was uploaded by another user in the mean time.
+        fakeFolder.remoteModifier().setContents("B/b2", 'N');
+        fakeFolder.remoteModifier().setModTime("B/b2", QDateTime::currentDateTimeUtc().addDays(2));
+
+        // C/c3 was removed since we made the backup
+        fakeFolder.remoteModifier().insert("C/c3_removed");
+        // C/c4 was moved to A/a2 since we made the backup
+        fakeFolder.remoteModifier().rename("A/a2", "C/old_a2_location");
+
+        // The admin sets the data-fingerprint property
+        fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint>new_finger_print</oc:data-fingerprint>";
+
+        QVERIFY(fakeFolder.syncOnce());
+        auto currentState = fakeFolder.currentLocalState();
+        // Altough the local file is kept as a conflict, the server file is downloaded
+        QCOMPARE(currentState.find("A/a1")->contentChar, 'O');
+        auto conflict = findConflict(currentState, "A/a1");
+        QVERIFY(conflict);
+        QCOMPARE(conflict->contentChar, 'W');
+        fakeFolder.localModifier().remove(conflict->path());
+        // b1 was restored (re-uploaded)
+        QVERIFY(currentState.find("B/b1"));
+
+        // b2 has the new content (was not restored), since its mode time goes forward in time
+        QCOMPARE(currentState.find("B/b2")->contentChar, 'N');
+        conflict = findConflict(currentState, "B/b2");
+        QVERIFY(conflict); // Just to be sure, we kept the old file in a conflict
+        QCOMPARE(conflict->contentChar, 'W');
+        fakeFolder.localModifier().remove(conflict->path());
+
+        // We actually do not remove files that technically should have been removed (we don't want data-loss)
+        QVERIFY(currentState.find("C/c3_removed"));
+        QVERIFY(currentState.find("C/old_a2_location"));
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestAllFilesDeleted)
