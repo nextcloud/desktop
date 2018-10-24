@@ -199,5 +199,6 @@ X-GNOME-Autostart-Delay=3
 
 # Translations
 Comment[lv]=@APPLICATION_NAME@ darbavirsmas sinhronizešanas klients
+Icon[lv]=@APPLICATION_ICON_NAME@
 Name[lv]=@APPLICATION_NAME@ darbavirsmas sinhronizešanas klients
 GenericName[lv]=Mapju Sinhronizēšana

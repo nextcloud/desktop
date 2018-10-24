@@ -113,7 +113,8 @@ public:
         Utility::writeRandomFile( _rootPath+"/a2/renamefile");
         Utility::writeRandomFile( _rootPath+"/a1/movefile");
 
-        _watcher.reset(new FolderWatcher(_rootPath));
+        _watcher.reset(new FolderWatcher);
+        _watcher->init(_rootPath);
         _pathChangedSpy.reset(new QSignalSpy(_watcher.data(), SIGNAL(pathChanged(QString))));
     }
 

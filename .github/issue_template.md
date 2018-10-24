@@ -1,4 +1,3 @@
-# Create a bug report to help us improve
 <!---
 Please try to only report a bug if it happens with the latest version
 The latest version can be seen by checking https://download.nextcloud.com/desktop/
@@ -26,7 +25,7 @@ OS language:
 
 Qt version used by client package (Linux only, see also Settings dialog):
 
-Client package (From ownCloud or distro) (Linux only):
+Client package (From Nextcloud or distro) (Linux only):
 
 Installation path of client:
 
@@ -44,7 +43,7 @@ Database:
 
 PHP version:
 
-ownCloud version:
+Nextcloud version:
 
 Storage backend (external storage):
 
@@ -55,11 +54,11 @@ logs.
 
 ```Template for output < 10 lines```
 
-1. Client logfile: Output of `owncloud --logwindow` or `owncloud --logfile log.txt`
-(On Windows using `cmd.exe`, you might need to first `cd` into the ownCloud directory)
-(See also http://doc.owncloud.org/desktop/2.2/troubleshooting.html#client-logfile )
+1. Client logfile: Output of `nextcloud --logwindow` or `nextcloud --logfile log.txt`
+(On Windows using `cmd.exe`, you might need to first `cd` into the Nextcloud directory)
+(See also https://docs.nextcloud.com/desktop/2.3/troubleshooting.html#log-files)
 
 2. Web server error log:
 
-3. Server logfile: ownCloud log (data/owncloud.log):
+3. Server logfile: nextcloud log (data/nextcloud.log):
 
