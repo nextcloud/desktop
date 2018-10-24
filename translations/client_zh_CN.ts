@@ -2274,7 +2274,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="141"/>
         <source>The file was renamed but is part of a read only share. The original file was restored.</source>
-        <translation>文件已经更名，但这是某个只读分享的一部分，原文件已经恢复。</translation>
+        <translation>文件已经更名，但这是某个只读共享的一部分，原文件已经恢复。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="158"/>
@@ -2355,7 +2355,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="191"/>
         <source>The file was edited locally but is part of a read only share. It is restored and your edit is in the conflict file.</source>
-        <translation>文件已经在本地修改，但这是某个只读分享的一部分，原文件已经恢复。您的修改已保存在冲突文件中。</translation>
+        <translation>文件已经在本地修改，但这是某个只读共享的一部分，原文件已经恢复。您的修改已保存在冲突文件中。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="205"/>
@@ -2581,7 +2581,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="28"/>
         <source>share label</source>
-        <translation>分享标签</translation>
+        <translation>共享标签</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="14"/>
@@ -2596,7 +2596,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="109"/>
         <source>%1 Sharing</source>
-        <translation>%1 分享</translation>
+        <translation>%1 共享</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="84"/>
@@ -2639,7 +2639,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation>分享 NewDocument.odt</translation>
+        <translation>共享 NewDocument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="276"/>
@@ -2710,12 +2710,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="93"/>
         <source>Link shares have been disabled</source>
-        <translation>分享链接已被关闭</translation>
+        <translation>共享链接已被关闭</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="107"/>
         <source>Create public link share</source>
-        <translation>创建公共分享链接</translation>
+        <translation>创建公共共享链接</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
@@ -2777,7 +2777,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="459"/>
         <source>Public sh&amp;aring requires a password</source>
-        <translation>公开分享需要密码</translation>
+        <translation>公开共享需要密码</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="477"/>
@@ -2790,12 +2790,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="14"/>
         <source>Share NewDocument.odt</source>
-        <translation>分享 NewDocument.odt</translation>
+        <translation>共享 NewDocument.odt</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="22"/>
         <source>Share with users or groups ...</source>
-        <translation>分享给其他用户或组 ...</translation>
+        <translation>共享给其他用户或组 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="108"/>
@@ -2805,7 +2805,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="186"/>
         <source>The item is not shared with any users or groups</source>
-        <translation>本条目没有被任何用户或组分享</translation>
+        <translation>本条目没有被任何用户或组共享</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="235"/>
@@ -2830,7 +2830,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
         <source>I shared something with you</source>
-        <translation>我向您分享了一些东西</translation>
+        <translation>我向您共享了一些东西</translation>
     </message>
 </context>
 <context>
@@ -2923,12 +2923,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="557"/>
         <source>I shared something with you</source>
-        <translation>我向您分享了一些东西</translation>
+        <translation>我向您共享了一些东西</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="565"/>
         <source>Share...</source>
-        <translation>分享到...</translation>
+        <translation>共享到...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="567"/>
