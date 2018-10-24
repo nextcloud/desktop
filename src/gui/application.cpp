@@ -185,9 +185,7 @@ Application::Application(int &argc, char **argv)
     setWindowIcon(_theme->applicationIcon());
     setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
-    auto confDir = ConfigFile().configPath();
-    if (confDir.endsWith('/')) confDir.chop(1);  // macOS 10.11.x does not like trailing slash for rename/move.
-    if (!QFileInfo(confDir).isDir()) {
+    if (!ConfigFile().exists()) {
         // Migrate from version <= 2.4
         setApplicationName(_theme->appNameGUI());
 #ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
@@ -202,9 +200,23 @@ Application::Application(int &argc, char **argv)
         QT_WARNING_POP
         setApplicationName(_theme->appName());
         if (QFileInfo(oldDir).isDir()) {
+            auto confDir = ConfigFile().configPath();
+            if (confDir.endsWith('/')) confDir.chop(1);  // macOS 10.11.x does not like trailing slash for rename/move.
             qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
+
             if (!QFile::rename(oldDir, confDir)) {
-                qCWarning(lcApplication) << "Failed to move the old config file to its new location (" << oldDir << "to" << confDir << ")";
+                qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
+
+                // Try to move the files one by one
+                if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
+                    const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
+                    qCInfo(lcApplication) << "Will move the individual files" << filesList;
+                    for (const auto &name : filesList) {
+                        if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
+                            qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
+                        }
+                    }
+                }
             } else {
 #ifndef Q_OS_WIN
                 // Create a symbolic link so a downgrade of the client would still find the config.
