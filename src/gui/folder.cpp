@@ -1015,6 +1015,20 @@ void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QS
     Logger::instance()->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);
 }
 
+void Folder::slotWatcherUnreliable(const QString &message)
+{
+    qCWarning(lcFolder) << "Folder watcher for" << path() << "became unreliable:" << message;
+    auto fullMessage =
+        tr("Changes in synchronized folders could not be tracked reliably.\n"
+           "\n"
+           "This means that the synchronization client might not upload local changes "
+           "immediately and will instead only scan for local changes and upload them "
+           "occasionally (every two hours by default).\n"
+           "\n"
+           "%1").arg(message);
+    Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), fullMessage);
+}
+
 void Folder::scheduleThisFolderSoon()
 {
     if (!_scheduleSelfTimer.isActive()) {
@@ -1034,11 +1048,14 @@ void Folder::registerFolderWatcher()
     if (!QDir(path()).exists())
         return;
 
-    _folderWatcher.reset(new FolderWatcher(path(), this));
+    _folderWatcher.reset(new FolderWatcher(this));
     connect(_folderWatcher.data(), &FolderWatcher::pathChanged,
         this, &Folder::slotWatchedPathChanged);
     connect(_folderWatcher.data(), &FolderWatcher::lostChanges,
         this, &Folder::slotNextSyncFullLocalDiscovery);
+    connect(_folderWatcher.data(), &FolderWatcher::becameUnreliable,
+        this, &Folder::slotWatcherUnreliable);
+    _folderWatcher->init(path());
 }
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, bool *cancel)
