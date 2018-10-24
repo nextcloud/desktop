@@ -289,6 +289,7 @@ void SocketApi::slotSocketDestroyed(QObject *obj)
 void SocketApi::slotReadSocket()
 {
     auto *socket = qobject_cast<QIODevice *>(sender());
+
     ASSERT(socket);
     SocketListener *listener = &*std::find_if(_listeners.begin(), _listeners.end(), ListenerHasSocketPred(socket));
 
@@ -303,6 +304,7 @@ void SocketApi::slotReadSocket()
         int indexOfMethod = staticMetaObject.indexOfMethod(functionWithArguments);
 
         QString argument = line.remove(0, command.length() + 1);
+
         if (indexOfMethod == -1) {
             // Fallback: Try upper-case command
             functionWithArguments = "command_" + command.toUpper() + "(QString,SocketListener*)";
@@ -990,18 +992,25 @@ void SocketApi::command_SET_DOWNLOAD_MODE(const QString& argument, SocketListene
 
 void SocketApi::command_GET_DOWNLOAD_MODE(const QString& localFile, SocketListener* listener)
     {
-        //< TODO: Check the download mode (online or offline)
+        QString downloadMode = "ONLINE";
 
-        //< The code below is just to check that the context menu dynamically loads the check
-        QString downloadMode;
-        time_t seconds;
-        seconds = time(NULL);
-        if (seconds % 2 == 0)
-            downloadMode = "ONLINE";
-        else
-            downloadMode = "OFFLINE";
+        //< Show paths SyncMode table.
+        QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
+        QString item;
+
+        foreach(item, list)
+        {
+            qDebug() << "\n jjjj localFile: " << localFile << " item: " << item;
+            if (item.compare(localFile) == 0)
+            {
+            SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
+            if (m == SyncJournalDb::SYNCMODE_OFFLINE)
+                downloadMode = "OFFLINE";
+            break;
+            }
+        }
+
         listener->sendMessage(QLatin1String("GET_DOWNLOAD_MODE:") + downloadMode);
     }
 } // namespace OCC
-
 #include "socketapi.moc"
