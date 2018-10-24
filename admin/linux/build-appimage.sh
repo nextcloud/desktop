@@ -5,7 +5,8 @@ set -xe
 mkdir /app
 mkdir /build
 
-apt-get update && apt-get install -y ninja-build meson
+apt-get update && apt-get install -y ninja-build python3-pip pkg-config libglib2.0-dev
+pip3 install meson
 
 #Set Qt-5.11
 export QT_BASE_DIR=/opt/qt511
@@ -38,6 +39,7 @@ cd /build
 git clone https://gitlab.gnome.org/World/libcloudproviders.git
 cd libcloudproviders
 git checkout 0.2.5
+sed -i "s/glib_ver = '>= 2\.51\.2'/glib_ver = '>= 2.48.2'/" meson.build
 mkdir build
 meson build
 cd build
