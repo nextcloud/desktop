@@ -860,7 +860,7 @@ void SocketApi::command_SET_DOWNLOAD_MODE(const QString& argument, SocketListene
 
     qDebug() << "\n" << Q_FUNC_INFO << " Show paths BD INIT";
 
-        //< Show paths SyncMode table.
+        //< Show paths from SyncMode table.
         QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
             QString item;
             foreach(item, list)
@@ -883,13 +883,13 @@ void SocketApi::command_GET_DOWNLOAD_MODE(const QString& localFile, SocketListen
     {
         QString downloadMode = "ONLINE";
 
-        //< Show paths SyncMode table.
+        //< Iterate paths from SyncMode table.
         QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
         QString item;
 
         foreach(item, list)
         {
-            qDebug() << "\n jjjj localFile: " << localFile << " item: " << item;
+            qDebug() << Q_FUNC_INFO << " localFile: " << localFile << " item: " << item;
             if (item.compare(localFile) == 0)
             {
             SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
