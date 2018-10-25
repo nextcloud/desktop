@@ -24,7 +24,6 @@
 #include <QNetworkAccessManager>
 #include <QPropertyAnimation>
 #include <QGraphicsPixmapItem>
-#include <QtSvg/QSvgRenderer>
 
 #include "QProgressIndicator.h"
 
