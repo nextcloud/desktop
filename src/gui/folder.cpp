@@ -1142,7 +1142,7 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
     settings.setValue(QLatin1String("paused"), folder.paused);
     settings.setValue(QLatin1String("ignoreHiddenFiles"), folder.ignoreHiddenFiles);
     settings.setValue(QLatin1String("usePlaceholders"), folder.useVirtualFiles);
-    settings.setValue(QLatin1String(versionC), maxSettingsVersion());
+    settings.setValue(QLatin1String(versionC), 1);
 
     // Happens only on Windows when the explorer integration is enabled.
     if (!folder.navigationPaneClsid.isNull())

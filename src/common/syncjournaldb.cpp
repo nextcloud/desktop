@@ -313,6 +313,20 @@ bool SyncJournalDb::checkConnect()
         qCInfo(lcDb) << "sqlite3 version" << pragma1.stringValue(0);
     }
 
+    {
+        // Future version of the client (2.6) will have an index 'metadata_parent' which
+        // depends on a custom sqlite function which does not exist yet in 2.5.
+        // So make sure to remove the index if it exists, otherwise we will crash when inserting
+        // rows in the metadata database.
+        // This needs to be done before the synchronous mode is enabled.
+        // The 2.6 client will anyway re-creates this index if it does not exist.
+        SqlQuery query(_db);
+        query.prepare("DROP INDEX IF EXISTS metadata_parent;");
+        if (!query.exec()) {
+            return sqlFail("updateMetadataTableStructure: remove index metadata_parent", query);
+        }
+    }
+
     pragma1.prepare("PRAGMA journal_mode=" + _journalMode + ";");
     if (!pragma1.exec()) {
         return sqlFail("Set PRAGMA journal_mode", pragma1);
