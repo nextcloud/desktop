@@ -63,6 +63,7 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     ui->tableWidget->verticalHeader()->setVisible(false);
 
     ui->syncHiddenFilesCheckBox->setChecked(!FolderMan::instance()->ignoreHiddenFiles());
+    ui->syncGitignoreFilesCheckBox->setChecked(!FolderMan::instance()->ignoreGitignoreFiles());
 }
 
 IgnoreListEditor::~IgnoreListEditor()
@@ -81,6 +82,11 @@ void IgnoreListEditor::setupTableReadOnlyItems(){
 bool IgnoreListEditor::ignoreHiddenFiles()
 {
     return !ui->syncHiddenFilesCheckBox->isChecked();
+}
+
+bool IgnoreListEditor::ignoreGitignoreFiles()
+{
+    return !ui->syncGitignoreFilesCheckBox->isChecked();
 }
 
 void IgnoreListEditor::slotItemSelectionChanged()
@@ -143,6 +149,9 @@ void IgnoreListEditor::slotUpdateLocalIgnoreList()
      * handled globally. Save it to every folder that is defined.
      */
     folderMan->setIgnoreHiddenFiles(ignoreHiddenFiles());
+
+    /* handle the gitignore checkbox */
+    folderMan->setIgnoreGitignoreFiles(ignoreGitignoreFiles());
 
     // We need to force a remote discovery after a change of the ignore list.
     // Otherwise we would not download the files/directories that are no longer

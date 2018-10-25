@@ -23,6 +23,7 @@
 #include "networkjobs.h"
 
 #include <csync.h>
+#include <csync/csync_misc.h>
 
 #include <QObject>
 #include <QStringList>
@@ -50,6 +51,7 @@ public:
     FolderDefinition()
         : paused(false)
         , ignoreHiddenFiles(false)
+        , ignoreGitignoreFiles(CSYNC_IGNORE_GITIGNORE_FILES_DEFAULT)
     {
     }
 
@@ -65,6 +67,8 @@ public:
     bool paused;
     /// whether the folder syncs hidden files
     bool ignoreHiddenFiles;
+    /// whether the folder syncs files ignored by git
+    bool ignoreGitignoreFiles;
     /// the folder has client side encryption
     bool isClientSideEncrypted;
     /// The CLSID where this folder appears in registry for the Explorer navigation pane entry.
@@ -188,6 +192,9 @@ public:
       */
     bool ignoreHiddenFiles();
     void setIgnoreHiddenFiles(bool ignore);
+
+    bool ignoreGitignoreFiles() const;
+    void setIgnoreGitignoreFiles(bool ignore);
 
     // Used by the Socket API
     SyncJournalDb *journalDb() { return &_journal; }

@@ -153,6 +153,9 @@ public:
     bool ignoreHiddenFiles() const;
     void setIgnoreHiddenFiles(bool ignore);
 
+    bool ignoreGitignoreFiles() const;
+    void setIgnoreGitignoreFiles(bool ignore);
+
     /**
      * Access to the current queue of scheduled folders.
      */

@@ -201,6 +201,15 @@ void Folder::setIgnoreHiddenFiles(bool ignore)
     _definition.ignoreHiddenFiles = ignore;
 }
 
+bool Folder::ignoreGitignoreFiles() const {
+    bool re(_definition.ignoreGitignoreFiles);
+    return re;
+}
+
+void Folder::setIgnoreGitignoreFiles(bool ignore) {
+    _definition.ignoreGitignoreFiles = ignore;
+}
+
 QString Folder::cleanPath() const
 {
     QString cleanedPath = QDir::cleanPath(_canonicalLocalPath);
@@ -550,12 +559,13 @@ void Folder::removeFromSettings() const
 
 bool Folder::isFileExcludedAbsolute(const QString &fullPath) const
 {
-    return _engine->excludedFiles().isExcluded(fullPath, path(), _definition.ignoreHiddenFiles);
+    return _engine->excludedFiles().isExcluded(fullPath, path(), _definition.ignoreHiddenFiles,
+                                               _definition.ignoreGitignoreFiles);
 }
 
 bool Folder::isFileExcludedRelative(const QString &relativePath) const
 {
-    return _engine->excludedFiles().isExcluded(path() + relativePath, path(), _definition.ignoreHiddenFiles);
+    return isFileExcludedAbsolute(path() + relativePath);
 }
 
 void Folder::slotTerminateSync()

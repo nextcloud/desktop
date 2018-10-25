@@ -39,6 +39,7 @@ public:
     ~IgnoreListEditor();
 
     bool ignoreHiddenFiles();
+    bool ignoreGitignoreFiles();
 
 private slots:
     void slotItemSelectionChanged();

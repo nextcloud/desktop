@@ -27,6 +27,13 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="1">
+      <widget class="QCheckBox" name="syncGitignoreFilesCheckBox">
+        <property name="text">
+         <string>Sync files ignored by Git</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

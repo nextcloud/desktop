@@ -137,7 +137,9 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString &relativePath)
     // it's an acceptable compromize to treat all exclude types the same.
     if (_syncEngine->excludedFiles().isExcluded(_syncEngine->localPath() + relativePath,
             _syncEngine->localPath(),
-            _syncEngine->ignoreHiddenFiles())) {
+            _syncEngine->ignoreHiddenFiles(),
+            _syncEngine->ignoreGitignoreFiles())
+        ) {
         return SyncFileStatus(SyncFileStatus::StatusWarning);
     }
 

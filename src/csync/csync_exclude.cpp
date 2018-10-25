@@ -37,6 +37,7 @@
 #include <QString>
 #include <QFileInfo>
 
+#include "git2.h"
 
 /** Expands C-like escape sequences (in place)
  */
@@ -243,10 +244,12 @@ ExcludedFiles::ExcludedFiles()
 {
     // Windows used to use PathMatchSpec which allows *foo to match abc/deffoo.
     _wildcardsMatchSlash = Utility::isWindows();
+    git_libgit2_init();
 }
 
 ExcludedFiles::~ExcludedFiles()
 {
+    git_libgit2_shutdown();
 }
 
 void ExcludedFiles::addExcludeFilePath(const QString &path)
@@ -301,10 +304,35 @@ bool ExcludedFiles::reloadExcludeFiles()
     return success;
 }
 
+static bool isIgnoredByGit(const QString &filePath) {
+    size_t size = filePath.size();
+    std::unique_ptr<char[]> buffer(new char[size]);
+    git_buf git_dir = GIT_BUF_INIT_CONST(buffer.get(), size);
+    if (git_repository_discover(&git_dir, filePath.toUtf8().data(), /*across_fs=*/0, NULL)) {
+        return false;
+    }
+    if (filePath.startsWith(git_dir.ptr)) {
+        return false;
+    }
+    git_repository *repo;
+    if (git_repository_open(&repo, git_dir.ptr)) {
+        return false;
+    }
+    int ignored;
+    if(git_ignore_path_is_ignored(&ignored, repo, filePath.toUtf8().data())) {
+        return false;
+    }
+    if (ignored) {
+        return true;
+    }
+    return false;
+}
+
 bool ExcludedFiles::isExcluded(
     const QString &filePath,
     const QString &basePath,
-    bool excludeHidden) const
+    bool excludeHidden,
+    bool excludeGitignoreFiles) const
 {
     if (!filePath.startsWith(basePath, Utility::fsCasePreserving() ? Qt::CaseInsensitive : Qt::CaseSensitive)) {
         // Mark paths we're not responsible for as excluded...
@@ -324,6 +352,10 @@ bool ExcludedFiles::isExcluded(
             // Get the parent path
             path = fi.absolutePath();
         }
+    }
+
+    if (excludeGitignoreFiles && isIgnoredByGit(filePath)) {
+        return true;
     }
 
     QFileInfo fi(filePath);

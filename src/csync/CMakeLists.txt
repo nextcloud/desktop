@@ -95,6 +95,7 @@ target_link_libraries(${CSYNC_LIBRARY}
   ${CSYNC_REQUIRED_LIBRARIES}
   ${SQLITE3_LIBRARIES}
   Qt5::Core Qt5::Concurrent
+  git2
 )
 
 if(ZLIB_FOUND)

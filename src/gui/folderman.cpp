@@ -1389,6 +1389,23 @@ void FolderMan::setIgnoreHiddenFiles(bool ignore)
     }
 }
 
+bool FolderMan::ignoreGitignoreFiles() const
+{
+    if (_folderMap.empty()) {
+        // Currently no folders in the manager -> return default
+        return CSYNC_IGNORE_GITIGNORE_FILES_DEFAULT;
+    }
+    // Since the hiddenFiles settings is the same for all folders, just return the settings of the first folder
+    return _folderMap.begin().value()->ignoreGitignoreFiles();
+}
+
+void FolderMan::setIgnoreGitignoreFiles(bool ignore) {
+    foreach (Folder *folder, _folderMap) {
+        folder->setIgnoreGitignoreFiles(ignore);
+        folder->saveToSettings();
+    }
+}
+
 QQueue<Folder *> FolderMan::scheduleQueue() const
 {
     return _scheduledFolders;

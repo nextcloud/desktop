@@ -205,6 +205,8 @@ struct OCSYNC_EXPORT csync_s {
 
   bool ignore_hidden_files = true;
 
+  bool ignore_gitignore_files = CSYNC_IGNORE_GITIGNORE_FILES_DEFAULT;
+
   bool upload_conflict_files = false;
 
   csync_s(const char *localUri, OCC::SyncJournalDb *statedb);

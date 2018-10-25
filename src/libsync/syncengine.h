@@ -79,6 +79,8 @@ public:
     void setSyncOptions(const SyncOptions &options) { _syncOptions = options; }
     bool ignoreHiddenFiles() const { return _csync_ctx->ignore_hidden_files; }
     void setIgnoreHiddenFiles(bool ignore) { _csync_ctx->ignore_hidden_files = ignore; }
+    bool ignoreGitignoreFiles() const { return _csync_ctx->ignore_gitignore_files; }
+    void setIgnoreGitignoreFiles(bool ignore) { _csync_ctx->ignore_gitignore_files = ignore; }
 
     ExcludedFiles &excludedFiles() { return *_excludedFiles; }
     Utility::StopWatch &stopWatch() { return _stopWatch; }

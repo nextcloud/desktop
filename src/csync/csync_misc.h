@@ -48,4 +48,6 @@ int csync_fnmatch(const char *pattern, const char *name, int flags);
  */
 CSYNC_STATUS csync_errno_to_status(int error, CSYNC_STATUS default_status);
 
+#define CSYNC_IGNORE_GITIGNORE_FILES_DEFAULT true
+
 #endif /* _CSYNC_MISC_H */

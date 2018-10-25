@@ -92,7 +92,8 @@ public:
     bool isExcluded(
         const QString &filePath,
         const QString &basePath,
-        bool excludeHidden) const;
+        bool excludeHidden,
+        bool excludeGitignoreFiles) const;
 
     /**
      * Adds an exclude pattern.
