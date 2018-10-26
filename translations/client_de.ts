@@ -207,7 +207,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="324"/>
         <source>Create virtual files for new files (Experimental)</source>
-        <translation type="unfinished"/>
+        <translation>Neue Dateien als virtuelle Dateien anlegen (Experimentell)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="426"/>
@@ -364,7 +364,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="696"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Die Serverversion %1 ist nicht unterstützt! Fortfahren auf eigenes Risiko.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="726"/>
@@ -1065,7 +1065,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
         <source>New files are being created as virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Neue Dateien werden als virtuelle Dateien angelegt</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="900"/>
@@ -1324,7 +1324,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/generalsettings.ui" line="67"/>
         <source>&amp;Channel</source>
-        <translation>&amp;Channel</translation>
+        <translation>&amp;Kanal</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="84"/>
@@ -1390,7 +1390,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/generalsettings.ui" line="53"/>
         <source>Updates</source>
-        <translation>Updates</translation>
+        <translation>Aktualisierungen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="116"/>
@@ -1400,7 +1400,7 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="57"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Autostart kann nicht abgeschaltet werden, da Autostart als Systemeinstellung aktiviert ist.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="178"/>
@@ -3084,6 +3084,15 @@ Dies ist ein neuer experimenteller Modus.Wenn du dich dafür entscheidest, diese
     </message>
 </context>
 <context>
+    <name>OCC::ShareeModel</name>
+    <message>
+        <location filename="../src/gui/sharee.cpp" line="151"/>
+        <source>%1 (%2)</source>
+        <comment>sharee (shareWithAdditionalInfo)</comment>
+        <translation>%1 (%2)</translation>
+    </message>
+</context>
+<context>
     <name>OCC::ShibbolethCredentials</name>
     <message>
         <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="259"/>
@@ -3178,7 +3187,7 @@ Dies ist ein neuer experimenteller Modus.Wenn du dich dafür entscheidest, diese
     <message numerus="yes">
         <location filename="../src/gui/socketapi.cpp" line="817"/>
         <source>Replace file(s) by virtual file</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Ersetze Datei(en) durch virtuelle Datei</numerusform><numerusform>Ersetze Datei(en) durch virtuelle Datei</numerusform></translation>
     </message>
 </context>
 <context>
@@ -3759,7 +3768,7 @@ Dies ist ein neuer experimenteller Modus.Wenn du dich dafür entscheidest, diese
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="199"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Der Server mit Konto %1 läuft mit einer nicht unterstützten Version %2. Die Verwendung dieses Clienten mit nicht unterstützten Serverversionen ist ungetestet und möglicherweise gefährlich. Fortfahren auf eigenes Risiko.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="778"/>
