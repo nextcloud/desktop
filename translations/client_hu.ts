@@ -373,7 +373,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="132"/>
         <source>Maintenance mode</source>
-        <translation>Karbantartó üzemmód</translation>
+        <translation>Karbantartási üzemmód</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="134"/>
