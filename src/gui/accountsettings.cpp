@@ -606,9 +606,12 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
 {
     if (indx.data(FolderStatusDelegate::AddButton).toBool()) {
         // "Add Folder Sync Connection"
-        if (indx.flags() & Qt::ItemIsEnabled) {
-            slotAddFolder();
-        } else {
+// TODO: FUSE - only one folder is allowed
+//        if (indx.flags() & Qt::ItemIsEnabled) {
+//            slotAddFolder();
+//        } else {
+
+        if (!indx.flags() & !Qt::ItemIsEnabled){
             QToolTip::showText(
                 QCursor::pos(),
                 _model->data(indx, Qt::ToolTipRole).toString(),
@@ -637,70 +640,71 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
     }
 }
 
+// TODO: FUSE - only one folder is allowed
 void AccountSettings::slotAddFolder()
 {
-    FolderMan *folderMan = FolderMan::instance();
-    folderMan->setSyncEnabled(false); // do not start more syncs.
+//    FolderMan *folderMan = FolderMan::instance();
+//    folderMan->setSyncEnabled(false); // do not start more syncs.
 
-    FolderWizard *folderWizard = new FolderWizard(_accountState->account(), this);
+//    FolderWizard *folderWizard = new FolderWizard(_accountState->account(), this);
 
-    connect(folderWizard, &QDialog::accepted, this, &AccountSettings::slotFolderWizardAccepted);
-    connect(folderWizard, &QDialog::rejected, this, &AccountSettings::slotFolderWizardRejected);
-    folderWizard->open();
+//    connect(folderWizard, &QDialog::accepted, this, &AccountSettings::slotFolderWizardAccepted);
+//    connect(folderWizard, &QDialog::rejected, this, &AccountSettings::slotFolderWizardRejected);
+//    folderWizard->open();
 }
 
-
+// TODO: FUSE - only one folder is allowed
 void AccountSettings::slotFolderWizardAccepted()
 {
-    FolderWizard *folderWizard = qobject_cast<FolderWizard *>(sender());
-    FolderMan *folderMan = FolderMan::instance();
+//    FolderWizard *folderWizard = qobject_cast<FolderWizard *>(sender());
+//    FolderMan *folderMan = FolderMan::instance();
 
-    qCInfo(lcAccountSettings) << "Folder wizard completed";
+//    qCInfo(lcAccountSettings) << "Folder wizard completed";
 
-    FolderDefinition definition;
-    definition.localPath = FolderDefinition::prepareLocalPath(
-        folderWizard->field(QLatin1String("sourceFolder")).toString());
-    definition.targetPath = FolderDefinition::prepareTargetPath(
-        folderWizard->property("targetPath").toString());
+//    FolderDefinition definition;
+//    definition.localPath = FolderDefinition::prepareLocalPath(
+//        folderWizard->field(QLatin1String("sourceFolder")).toString());
+//    definition.targetPath = FolderDefinition::prepareTargetPath(
+//        folderWizard->property("targetPath").toString());
 
-    {
-        QDir dir(definition.localPath);
-        if (!dir.exists()) {
-            qCInfo(lcAccountSettings) << "Creating folder" << definition.localPath;
-            if (!dir.mkpath(".")) {
-                QMessageBox::warning(this, tr("Folder creation failed"),
-                    tr("<p>Could not create local folder <i>%1</i>.")
-                        .arg(QDir::toNativeSeparators(definition.localPath)));
-                return;
-            }
-        }
-        FileSystem::setFolderMinimumPermissions(definition.localPath);
-        Utility::setupFavLink(definition.localPath);
-    }
+//    {
+//        QDir dir(definition.localPath);
+//        if (!dir.exists()) {
+//            qCInfo(lcAccountSettings) << "Creating folder" << definition.localPath;
+//            if (!dir.mkpath(".")) {
+//                QMessageBox::warning(this, tr("Folder creation failed"),
+//                    tr("<p>Could not create local folder <i>%1</i>.")
+//                        .arg(QDir::toNativeSeparators(definition.localPath)));
+//                return;
+//            }
+//        }
+//        FileSystem::setFolderMinimumPermissions(definition.localPath);
+//        Utility::setupFavLink(definition.localPath);
+//    }
 
-    /* take the value from the definition of already existing folders. All folders have
-     * the same setting so far.
-     * The default is to not sync hidden files
-     */
-    definition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
+//    /* take the value from the definition of already existing folders. All folders have
+//     * the same setting so far.
+//     * The default is to not sync hidden files
+//     */
+//    definition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
 
-    if (folderMan->navigationPaneHelper().showInExplorerNavigationPane())
-        definition.navigationPaneClsid = QUuid::createUuid();
+//    if (folderMan->navigationPaneHelper().showInExplorerNavigationPane())
+//        definition.navigationPaneClsid = QUuid::createUuid();
 
-    auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
+//    auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
 
-    folderMan->setSyncEnabled(true);
+//    folderMan->setSyncEnabled(true);
 
-    Folder *f = folderMan->addFolder(_accountState, definition);
-    if (f) {
-        f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, selectiveSyncBlackList);
+//    Folder *f = folderMan->addFolder(_accountState, definition);
+//    if (f) {
+//        f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, selectiveSyncBlackList);
 
-        // The user already accepted the selective sync dialog. everything is in the white list
-        f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
-            QStringList() << QLatin1String("/"));
-        folderMan->scheduleAllFolders();
-        emit folderChanged();
-    }
+//        // The user already accepted the selective sync dialog. everything is in the white list
+//        f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
+//            QStringList() << QLatin1String("/"));
+//        folderMan->scheduleAllFolders();
+//        emit folderChanged();
+//    }
 }
 
 void AccountSettings::slotFolderWizardRejected()
