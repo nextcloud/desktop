@@ -558,20 +558,37 @@ QString VfsMac::destinationOfSymbolicLinkAtPath(QString path, QVariantMap &error
 
 #pragma mark Directory Contents
 
+void VfsMac::setFuseData(QString path, void *buf, fuse_fill_dir_t filler){
+    _fuseDataList.insert(path, new FuseData(buf, filler));
+}
+
 void VfsMac::folderFileListFinish(OCC::DiscoveryDirectoryResult *dr)
 {
     if(dr)
     {
         QString ruta = dr->path;
         _fileListMap.insert(dr->path, dr);
+
+//        QVariantMap error;
+//        QStringList *contents = contentsOfDirectoryAtPath(dr->path, error);
+//        if(_fuseDataList.contains(dr->path)){
+//            FuseData *fuseData = _fuseDataList.value(dr->path);
+//            for (int i = 0, count = contents->length(); i < count; i++){
+//                fuseData->_filler(fuseData->_buf, contents->at(i).toLatin1().data(), NULL, 0);
+//            }
+//            //_fuseDataList.remove(dr->path);
+//        }
     }
     else
         qDebug() << "Error al obtener los resultados, viene nulo";
 }
 
+void VfsMac::startGetRemoteFileListJob(QString path){
+    emit startRemoteFileListJob(path);
+}
+
 QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
 {
-   // _remotefileListJob->start(path);
     emit startRemoteFileListJob(path);
     
     while (!_fileListMap.contains(path))
@@ -614,7 +631,7 @@ QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
     //        qDebug() << Q_FUNC_INFO << "results: " << r->name << r->type;
         }
     }
-    _fileListMap.remove(path);
+    //_fileListMap.remove(path);
     
     return new QStringList (fm.contentsOfDirectoryAtPath(rootPath_ + path, error));
 }
@@ -1158,13 +1175,15 @@ static int fusefm_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
     try
     {
         VfsMac* fs = VfsMac::currentFS();
+//        fs->startGetRemoteFileListJob(QString::fromLatin1(path));
+//        fs->setFuseData(path, buf, filler);
+//        ret = 0;
+
         QStringList *contents =
         fs->contentsOfDirectoryAtPath(QString::fromLatin1(path), error);
         if (contents)
         {
             ret = 0;
-            /*filler(buf, ".", NULL, 0);
-            filler(buf, "..", NULL, 0);*/
             for (int i = 0, count = contents->length(); i < count; i++)
                 filler(buf, contents->at(i).toLatin1().data(), NULL, 0);
         }
