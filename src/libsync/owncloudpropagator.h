@@ -301,7 +301,10 @@ public:
 
     void appendTask(const SyncFileItemPtr &item)
     {
-        _subJobs.appendTask(item);
+        // Nothing to do if the file is Offline
+        if(SyncJournalDb::instance()->getSyncMode(item->_file) == SyncJournalDb::SyncMode::SYNCMODE_ONLINE){
+            _subJobs.appendTask(item);
+        }
     }
 
     virtual bool scheduleSelfOrChild() Q_DECL_OVERRIDE;
