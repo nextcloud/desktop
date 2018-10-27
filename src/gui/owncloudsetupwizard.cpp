@@ -611,31 +611,17 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
         ConfigFile cfgFile;
         QString localFolder = FolderDefinition::prepareLocalPath(cfgFile.defaultFileStreamMirrorPath());
 
-//        bool startFromScratch = _ocWizard->field("OCSyncFromScratch").toBool();
-//        if (!startFromScratch || ensureStartFromScratch(localFolder)) {
-            qCInfo(lcWizard) << "Adding folder definition for" << localFolder << _remoteFolder;
-            FolderDefinition folderDefinition;
-            folderDefinition.localPath = localFolder;
-            folderDefinition.targetPath = FolderDefinition::prepareTargetPath(_remoteFolder);
-            folderDefinition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
-            if (folderMan->navigationPaneHelper().showInExplorerNavigationPane())
-                folderDefinition.navigationPaneClsid = QUuid::createUuid();
+        qCInfo(lcWizard) << "Adding folder definition for" << localFolder << _remoteFolder;
+        FolderDefinition folderDefinition;
+        folderDefinition.localPath = localFolder;
+        folderDefinition.targetPath = FolderDefinition::prepareTargetPath(_remoteFolder);
+        folderDefinition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
+        if (folderMan->navigationPaneHelper().showInExplorerNavigationPane())
+            folderDefinition.navigationPaneClsid = QUuid::createUuid();
 
-            auto f = folderMan->addFolder(account, folderDefinition);
-//            if (f) {
-//                f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
-//                    _ocWizard->selectiveSyncBlacklist());
-//                if (!_ocWizard->isConfirmBigFolderChecked()) {
-//                    // The user already accepted the selective sync dialog. everything is in the white list
-//                    f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
-//                        QStringList() << QLatin1String("/"));
-//                }
-//            }
-            _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
-        }
-    //}
-
-    // notify others.
+        auto folder = folderMan->addFolder(account, folderDefinition);
+        _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
+    }
     _ocWizard->successfulStep();
     emit ownCloudWizardDone(result);
 }

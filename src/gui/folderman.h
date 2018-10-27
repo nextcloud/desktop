@@ -75,7 +75,7 @@ public:
     Folder *addFolder(AccountState *accountState, const FolderDefinition &folderDefinition);
 
     /** Removes a folder */
-    void removeFolder(Folder *);
+    void removeFolder();
 
     /** Returns the folder which the file or directory stored in path is in */
     Folder *folderForPath(const QString &path);
@@ -110,8 +110,7 @@ public:
     static QString trayTooltipStatusString(SyncResult::Status syncStatus, bool hasUnresolvedConflicts, bool paused);
 
     /// Compute status summarizing multiple folders
-    static void trayOverallStatus(const QList<Folder *> &folders,
-        SyncResult::Status *status, bool *unresolvedConflicts);
+    static void trayOverallStatus(SyncResult::Status *status, bool *unresolvedConflicts);
 
     // Escaping of the alias which is used in QSettings AND the file
     // system, thus need to be escaped.
@@ -173,10 +172,10 @@ public:
     void setSyncEnabled(bool);
 
     /** Queues a folder for syncing. */
-    void scheduleFolder(Folder *);
+    void scheduleFolder();
 
     /** Puts a folder in the very front of the queue. */
-    void scheduleFolderNext(Folder *);
+    void scheduleFolderNext();
 
     /** Queues all folders for syncing. */
     void scheduleAllFolders();
@@ -197,7 +196,7 @@ signals:
       *
       * Attention: The folder may be zero. Do a general update of the state then.
       */
-    void folderSyncStateChange(Folder *);
+    void folderSyncStateChange();
 
     /**
      * Indicates when the schedule queue changes.
@@ -234,7 +233,7 @@ public slots:
     void slotScheduleETagJob(const QString &alias, RequestEtagJob *job);
 
 private slots:
-    void slotFolderSyncPaused(Folder *, bool paused);
+    void slotFolderSyncPaused(bool paused);
     void slotFolderCanSyncChanged();
     void slotFolderSyncStarted();
     void slotFolderSyncFinished(const SyncResult &);
@@ -278,7 +277,7 @@ private:
         AccountState *accountState);
 
     /* unloads a folder object, does not delete it */
-    void unloadFolder(Folder *);
+    void unloadFolder();
 
     /** Will start a sync after a bit of delay. */
     void startScheduledSyncSoon();
@@ -288,18 +287,21 @@ private:
     QString getBackupName(QString fullPathName) const;
 
     // makes the folder known to the socket api
-    void registerFolderWithSocketApi(Folder *folder);
+    void registerFolderWithSocketApi();
 
     // restarts the application (Linux only)
     void restartApplication();
 
     void setupFoldersHelper(QSettings &settings, AccountStatePtr account, bool backwardsCompatible);
 
-    QSet<Folder *> _disabledFolders;
+    Folder *_disabledFolder;
+
+    //TODO FUSE
+    //Folder::Map _folderMap;
     Folder::Map _folderMap;
+
     QString _folderConfigPath;
     Folder *_currentSyncFolder;
-    QPointer<Folder> _lastSyncFolder;
     bool _syncEnabled;
 
     /// Starts regular etag query jobs

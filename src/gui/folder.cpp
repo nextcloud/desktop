@@ -964,7 +964,7 @@ void Folder::slotLogPropagationStart()
 
 void Folder::slotScheduleThisFolder()
 {
-    FolderMan::instance()->scheduleFolder(this);
+    FolderMan::instance()->scheduleFolder();
 }
 
 void Folder::slotNextSyncFullLocalDiscovery()

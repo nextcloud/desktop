@@ -207,11 +207,12 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
     // or SSL error dialog also comes to front.
 }
 
-void ownCloudGui::slotSyncStateChange(Folder *folder)
+void ownCloudGui::slotSyncStateChange()
 {
     slotComputeOverallSyncStatus();
     updateContextMenuNeeded();
 
+    Folder * folder = FolderMan::instance()->currentSyncFolder();
     if (!folder) {
         return; // Valid, just a general GUI redraw was needed.
     }
@@ -270,7 +271,8 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     auto setStatusText = [&](const QString &text) {
         // Don't overwrite the status if we're currently syncing
         if (FolderMan::instance()->currentSyncFolder())
-            return;
+            if(FolderMan::instance()->currentSyncFolder()->isBusy())
+                return;
         _actionStatus->setText(text);
     };
 
@@ -339,7 +341,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
 
     SyncResult::Status overallStatus = SyncResult::Undefined;
     bool hasUnresolvedConflicts = false;
-    FolderMan::trayOverallStatus(map.values(), &overallStatus, &hasUnresolvedConflicts);
+    FolderMan::trayOverallStatus(&overallStatus, &hasUnresolvedConflicts);
 
     // If the sync succeeded but there are unresolved conflicts,
     // show the problem icon!

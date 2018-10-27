@@ -338,12 +338,13 @@ void SocketApi::slotUnregisterPath(const QString &alias)
     _registeredAliases.remove(alias);
 }
 
-void SocketApi::slotUpdateFolderView(Folder *f)
+void SocketApi::slotUpdateFolderView()
 {
     if (_listeners.isEmpty()) {
         return;
     }
 
+    Folder *f = FolderMan::instance()->currentSyncFolder();
     if (f) {
         // do only send UPDATE_VIEW for a couple of status
         if (f->syncResult().status() == SyncResult::SyncPrepare

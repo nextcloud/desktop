@@ -51,7 +51,7 @@ public:
     virtual ~SocketApi();
 
 public slots:
-    void slotUpdateFolderView(Folder *f);
+    void slotUpdateFolderView();
     void slotUnregisterPath(const QString &alias);
     void slotRegisterPath(const QString &alias);
     void broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus);

@@ -737,7 +737,7 @@ void AccountSettings::slotRemoveCurrentFolder()
             return;
         }
 
-        folderMan->removeFolder(folder);
+        folderMan->removeFolder();
         _model->removeRow(row);
 
         // single folder fix to show add-button and hide remove-button
@@ -834,7 +834,7 @@ void AccountSettings::slotEnableCurrentFolder()
         if (currentlyPaused)
             _wasDisabledBefore = true;
 
-        _model->slotUpdateFolderState(f);
+        _model->slotUpdateFolderState();
     }
 }
 
@@ -842,7 +842,7 @@ void AccountSettings::slotScheduleCurrentFolder()
 {
     FolderMan *folderMan = FolderMan::instance();
     if (auto folder = folderMan->folder(selectedFolderAlias())) {
-        folderMan->scheduleFolder(folder);
+        folderMan->scheduleFolder();
     }
 }
 
@@ -851,7 +851,7 @@ void AccountSettings::slotScheduleCurrentFolderForceRemoteDiscovery()
     FolderMan *folderMan = FolderMan::instance();
     if (auto folder = folderMan->folder(selectedFolderAlias())) {
         folder->journalDb()->forceRemoteDiscoveryNextSync();
-        folderMan->scheduleFolder(folder);
+        folderMan->scheduleFolder();
     }
 }
 
@@ -862,11 +862,11 @@ void AccountSettings::slotForceSyncCurrentFolder()
         // Terminate and reschedule any running sync
         if (Folder *current = folderMan->currentSyncFolder()) {
             folderMan->terminateSyncProcess();
-            folderMan->scheduleFolder(current);
+            folderMan->scheduleFolder();
         }
 
         // Insert the selected folder at the front of the queue
-        folderMan->scheduleFolderNext(selectedFolder);
+        folderMan->scheduleFolderNext();
     }
 }
 
@@ -916,7 +916,7 @@ void AccountSettings::slotAccountStateChanged()
         safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
         FolderMan *folderMan = FolderMan::instance();
         foreach (Folder *folder, folderMan->map().values()) {
-            _model->slotUpdateFolderState(folder);
+            _model->slotUpdateFolderState();
         }
 
         QString server = QString::fromLatin1("<a href=\"%1\">%2</a>")
@@ -1019,12 +1019,12 @@ void AccountSettings::slotLinkActivated(const QString &link)
 
         // Make sure the folder itself is expanded
         Folder *f = FolderMan::instance()->folder(alias);
-        QModelIndex folderIndx = _model->indexForPath(f, QString());
+        QModelIndex folderIndx = _model->indexForPath(QString());
         if (!ui->_folderList->isExpanded(folderIndx)) {
             ui->_folderList->setExpanded(folderIndx, true);
         }
 
-        QModelIndex indx = _model->indexForPath(f, myFolder);
+        QModelIndex indx = _model->indexForPath(myFolder);
         if (indx.isValid()) {
             // make sure all the parents are expanded
             for (auto i = indx.parent(); i.isValid(); i = i.parent()) {
@@ -1070,7 +1070,7 @@ void AccountSettings::refreshSelectiveSyncStatus()
             if (myFolder.endsWith('/')) {
                 myFolder.chop(1);
             }
-            QModelIndex theIndx = _model->indexForPath(folder, myFolder);
+            QModelIndex theIndx = _model->indexForPath(myFolder);
             if (theIndx.isValid()) {
                 msg += QString::fromLatin1("<a href=\"%1?folder=%2\">%1</a>")
                            .arg(Utility::escape(myFolder), Utility::escape(folder->alias()));
