@@ -619,7 +619,7 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
         if (folderMan->navigationPaneHelper().showInExplorerNavigationPane())
             folderDefinition.navigationPaneClsid = QUuid::createUuid();
 
-        auto folder = folderMan->addFolder(account, folderDefinition);
+        folderMan->addFolder(account, folderDefinition);
         _ocWizard->appendToConfigurationLog(tr("<font color=\"green\"><b>Local sync folder %1 successfully created!</b></font>").arg(localFolder));
     }
     _ocWizard->successfulStep();
