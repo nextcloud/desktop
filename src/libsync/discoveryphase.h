@@ -216,7 +216,8 @@ class OWNCLOUDSYNC_EXPORT DiscoveryFolderFileList : public QObject {
     AccountPtr _account;
     DiscoveryDirectoryResult *_DiscoveryFolderFileListResult;
     bool _firstFolderProcessed;
-    
+    void setFolderContentSyncMode();
+
 public:
     DiscoveryFolderFileList(AccountPtr account) : QObject(), _account(account), _DiscoveryFolderFileListResult(0), _firstFolderProcessed(false)
     { }

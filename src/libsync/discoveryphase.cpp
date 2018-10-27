@@ -17,6 +17,7 @@
 #include "account.h"
 #include "common/asserts.h"
 #include "common/checksums.h"
+#include "common/syncjournaldb.h"
 
 #include <csync_private.h>
 #include <csync_rename.h>
@@ -91,7 +92,7 @@ int DiscoveryJob::isInSelectiveSyncBlackListCallback(void *data, const QByteArra
 bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString &path, RemotePermissions remotePerm)
 {
     if (_syncOptions._confirmExternalStorage
-        && remotePerm.hasPermission(RemotePermissions::IsMounted)) {
+            && remotePerm.hasPermission(RemotePermissions::IsMounted)) {
         // external storage.
 
         /* Note: DiscoverySingleDirectoryJob::directoryListingIteratedSlot make sure that only the
@@ -139,8 +140,8 @@ bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString &path, RemotePermis
             p += QLatin1Char('/');
         }
         _selectiveSyncWhiteList.insert(std::upper_bound(_selectiveSyncWhiteList.begin(),
-                                           _selectiveSyncWhiteList.end(), p),
-            p);
+                                                        _selectiveSyncWhiteList.end(), p),
+                                       p);
 
         return false;
     }
@@ -153,8 +154,8 @@ int DiscoveryJob::checkSelectiveSyncNewFolderCallback(void *data, const QByteArr
 
 
 void DiscoveryJob::update_job_update_callback(bool local,
-    const char *dirUrl,
-    void *userdata)
+                                              const char *dirUrl,
+                                              void *userdata)
 {
     DiscoveryJob *updateJob = static_cast<DiscoveryJob *>(userdata);
     if (updateJob) {
@@ -285,7 +286,7 @@ void DiscoverySingleDirectoryJob::start()
     lsColJob->setProperties(props);
 
     QObject::connect(lsColJob, &LsColJob::directoryListingIterated,
-        this, &DiscoverySingleDirectoryJob::directoryListingIteratedSlot);
+                     this, &DiscoverySingleDirectoryJob::directoryListingIteratedSlot);
     QObject::connect(lsColJob, &LsColJob::finishedWithError, this, &DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot);
     QObject::connect(lsColJob, &LsColJob::finishedWithoutError, this, &DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot);
     lsColJob->start();
@@ -382,16 +383,16 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         if (file_stat->type == ItemTypeDirectory)
             file_stat->size = 0;
         if (file_stat->type == ItemTypeSkip
-            || file_stat->size == -1
-            || file_stat->modtime == -1
-            || file_stat->remotePerm.isNull()
-            || file_stat->etag.isEmpty()
-            || file_stat->file_id.isEmpty()) {
+                || file_stat->size == -1
+                || file_stat->modtime == -1
+                || file_stat->remotePerm.isNull()
+                || file_stat->etag.isEmpty()
+                || file_stat->file_id.isEmpty()) {
             _error = tr("The server file discovery reply is missing data.");
             qCWarning(lcDiscovery)
-                << "Missing properties:" << file << file_stat->type << file_stat->size
-                << file_stat->modtime << file_stat->remotePerm.toString()
-                << file_stat->etag << file_stat->file_id;
+                    << "Missing properties:" << file << file_stat->type << file_stat->size
+                    << file_stat->modtime << file_stat->remotePerm.toString()
+                    << file_stat->etag << file_stat->file_id;
         }
 
         if (_isExternalStorage && file_stat->remotePerm.hasPermission(RemotePermissions::IsMounted)) {
@@ -468,11 +469,11 @@ void DiscoveryMainThread::setupHooks(DiscoveryJob *discoveryJob, const QString &
     _pathPrefix = pathPrefix;
 
     connect(discoveryJob, &DiscoveryJob::doOpendirSignal,
-        this, &DiscoveryMainThread::doOpendirSlot,
-        Qt::QueuedConnection);
+            this, &DiscoveryMainThread::doOpendirSlot,
+            Qt::QueuedConnection);
     connect(discoveryJob, &DiscoveryJob::doGetSizeSignal,
-        this, &DiscoveryMainThread::doGetSizeSlot,
-        Qt::QueuedConnection);
+            this, &DiscoveryMainThread::doGetSizeSlot,
+            Qt::QueuedConnection);
 }
 
 // Coming from owncloud_opendir -> DiscoveryJob::vio_opendir_hook -> doOpendirSignal
@@ -497,15 +498,15 @@ void DiscoveryMainThread::doOpendirSlot(const QString &subPath, DiscoveryDirecto
     // Schedule the DiscoverySingleDirectoryJob
     _singleDirJob = new DiscoverySingleDirectoryJob(_account, fullPath, this);
     QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::finishedWithResult,
-        this, &DiscoveryMainThread::singleDirectoryJobResultSlot);
+                     this, &DiscoveryMainThread::singleDirectoryJobResultSlot);
     QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::finishedWithError,
-        this, &DiscoveryMainThread::singleDirectoryJobFinishedWithErrorSlot);
+                     this, &DiscoveryMainThread::singleDirectoryJobFinishedWithErrorSlot);
     QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::firstDirectoryPermissions,
-        this, &DiscoveryMainThread::singleDirectoryJobFirstDirectoryPermissionsSlot);
+                     this, &DiscoveryMainThread::singleDirectoryJobFirstDirectoryPermissionsSlot);
     QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::etagConcatenation,
-        this, &DiscoveryMainThread::etagConcatenation);
+                     this, &DiscoveryMainThread::etagConcatenation);
     QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::etag,
-        this, &DiscoveryMainThread::etag);
+                     this, &DiscoveryMainThread::etag);
 
     if (!_firstFolderProcessed) {
         _singleDirJob->setIsRootPath();
@@ -580,11 +581,11 @@ void DiscoveryMainThread::doGetSizeSlot(const QString &path, qint64 *result)
     // Schedule the DiscoverySingleDirectoryJob
     auto propfindJob = new PropfindJob(_account, fullPath, this);
     propfindJob->setProperties(QList<QByteArray>() << "resourcetype"
-                                                   << "http://owncloud.org/ns:size");
+                               << "http://owncloud.org/ns:size");
     QObject::connect(propfindJob, &PropfindJob::finishedWithError,
-        this, &DiscoveryMainThread::slotGetSizeFinishedWithError);
+                     this, &DiscoveryMainThread::slotGetSizeFinishedWithError);
     QObject::connect(propfindJob, &PropfindJob::result,
-        this, &DiscoveryMainThread::slotGetSizeResult);
+                     this, &DiscoveryMainThread::slotGetSizeResult);
     propfindJob->start();
 }
 
@@ -641,7 +642,7 @@ void DiscoveryMainThread::abort()
 }
 
 csync_vio_handle_t *DiscoveryJob::remote_vio_opendir_hook(const char *url,
-    void *userdata)
+                                                          void *userdata)
 {
     DiscoveryJob *discoveryJob = static_cast<DiscoveryJob *>(userdata);
     if (discoveryJob) {
@@ -674,7 +675,7 @@ csync_vio_handle_t *DiscoveryJob::remote_vio_opendir_hook(const char *url,
 
 
 std::unique_ptr<csync_file_stat_t> DiscoveryJob::remote_vio_readdir_hook(csync_vio_handle_t *dhandle,
-    void *userdata)
+                                                                         void *userdata)
 {
     DiscoveryJob *discoveryJob = static_cast<DiscoveryJob *>(userdata);
     if (discoveryJob) {
@@ -725,72 +726,90 @@ void DiscoveryJob::start()
     emit finished(ret);
     deleteLater();
 }
-    void DiscoveryFolderFileList::doGetFolderContent(const QString &subPath)
-    {
-		qDebug() << Q_FUNC_INFO << "Sub path: " << subPath;
+void DiscoveryFolderFileList::doGetFolderContent(const QString &subPath)
+{
+    qDebug() << Q_FUNC_INFO << "Sub path: " << subPath;
 
-        QString fullPath = _pathPrefix;
-        fullPath += subPath;
-        // remove trailing slash
-        while (fullPath.endsWith('/')) {
-            fullPath.chop(1);
-        }
-        
-        // Result gets written in there
-        _DiscoveryFolderFileListResult = new DiscoveryDirectoryResult();
-        _DiscoveryFolderFileListResult->path = subPath;
-        
-        // Schedule the DiscoverySingleDirectoryJob
-        qDebug() << Q_FUNC_INFO << "Full path: " << fullPath;
-        _singleDirJob = new DiscoverySingleDirectoryJob(_account, fullPath, this);
-        connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::finishedWithResult,
-            this, &DiscoveryFolderFileList::singleDirectoryJobResultSlot);
-        connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::finishedWithError,
-            this, &DiscoveryFolderFileList::singleDirectoryJobFinishedWithErrorSlot);
-        
-        if (fullPath.isEmpty()) {
-            _singleDirJob->setIsRootPath();
-        }
-        
-        _singleDirJob->start();
+    QString fullPath = _pathPrefix;
+    fullPath += subPath;
+    // remove trailing slash
+    while (fullPath.endsWith('/')) {
+        fullPath.chop(1);
     }
-    
-    void DiscoveryFolderFileList::singleDirectoryJobResultSlot()
-    {
-        if (!_DiscoveryFolderFileListResult) {
-            return; // possibly aborted
-        }
-        //qDebug() << Q_FUNC_INFO << "QHave" << _singleDirJob->takeResults().count() << "results for " << _DiscoveryFolderFileListResult->path;
-        
-        _DiscoveryFolderFileListResult->list = _singleDirJob->takeResults();
-        _DiscoveryFolderFileListResult->code = 0;
-       // _DiscoveryFolderFileListResult->listIndex = 0;
-        
-        if (!_firstFolderProcessed) {
-            _firstFolderProcessed = true;
-        }
-        
-        /*for(unsigned long i=0; i <_DiscoveryFolderFileListResult->list.size(); i++)
+
+    // Result gets written in there
+    _DiscoveryFolderFileListResult = new DiscoveryDirectoryResult();
+    _DiscoveryFolderFileListResult->path = subPath;
+
+    // Schedule the DiscoverySingleDirectoryJob
+    qDebug() << Q_FUNC_INFO << "Full path: " << fullPath;
+    _singleDirJob = new DiscoverySingleDirectoryJob(_account, fullPath, this);
+    connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::finishedWithResult,
+            this, &DiscoveryFolderFileList::singleDirectoryJobResultSlot);
+    connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::finishedWithError,
+            this, &DiscoveryFolderFileList::singleDirectoryJobFinishedWithErrorSlot);
+
+    if (fullPath.isEmpty()) {
+        _singleDirJob->setIsRootPath();
+    }
+
+    _singleDirJob->start();
+}
+
+void DiscoveryFolderFileList::singleDirectoryJobResultSlot()
+{
+    if (!_DiscoveryFolderFileListResult) {
+        return; // possibly aborted
+    }
+    //qDebug() << Q_FUNC_INFO << "QHave" << _singleDirJob->takeResults().count() << "results for " << _DiscoveryFolderFileListResult->path;
+
+    _DiscoveryFolderFileListResult->list = _singleDirJob->takeResults();
+    _DiscoveryFolderFileListResult->code = 0;
+    // _DiscoveryFolderFileListResult->listIndex = 0;
+
+    if (!_firstFolderProcessed) {
+        _firstFolderProcessed = true;
+    }
+
+    /*for(unsigned long i=0; i <_DiscoveryFolderFileListResult->list.size(); i++)
         //foreach(auto r, _DiscoveryFolderFileListResult->list)
         {
             qDebug() << Q_FUNC_INFO << "results: " << _DiscoveryFolderFileListResult->list.at(i)->path << _DiscoveryFolderFileListResult->list.at(i)->type;
         }*/
+
+    setFolderContentSyncMode();
+}
+
+void DiscoveryFolderFileList::singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, const QString &msg)
+{
+    if (!_DiscoveryFolderFileListResult) {
+        return; // possibly aborted
         
-        emit gotDataSignal(_DiscoveryFolderFileListResult);
     }
-    
-    void DiscoveryFolderFileList::singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, const QString &msg)
-    {
-        if (!_DiscoveryFolderFileListResult) {
-            return; // possibly aborted
-        
-        }
-        qDebug() << Q_FUNC_INFO << csyncErrnoCode << msg;
-        
-        _DiscoveryFolderFileListResult->code = csyncErrnoCode;
-        _DiscoveryFolderFileListResult->msg = msg;
-        
-        emit gotDataSignal(_DiscoveryFolderFileListResult);
+    qDebug() << Q_FUNC_INFO << csyncErrnoCode << msg;
+
+    _DiscoveryFolderFileListResult->code = csyncErrnoCode;
+    _DiscoveryFolderFileListResult->msg = msg;
+
+    emit gotDataSignal(_DiscoveryFolderFileListResult);
+}
+
+void DiscoveryFolderFileList::setFolderContentSyncMode(){
+    if (!_DiscoveryFolderFileListResult) {
+        return; // possibly aborted
     }
-    
+
+    for(unsigned long i=0; i < _DiscoveryFolderFileListResult->list.size(); i++){
+        QString path = _DiscoveryFolderFileListResult->list.at(i)->path;
+        qDebug() << Q_FUNC_INFO << "Setting sync mode for: " << path << _DiscoveryFolderFileListResult->list.at(i)->type;
+        if(SyncJournalDb::instance()->getSyncMode(path) == SyncJournalDb::SyncMode::SYNCMODE_NONE)
+            SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SyncMode::SYNCMODE_OFFLINE);
+
+        if(SyncJournalDb::instance()->getSyncModeDownload(path) == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NONE)
+            SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO);
+    }
+
+    emit gotDataSignal(_DiscoveryFolderFileListResult);
+}
+
 }
