@@ -66,11 +66,15 @@ csync_s::csync_s(const char *localUri, OCC::SyncJournalDb *statedb)
 
 int csync_update(CSYNC *ctx) {
   int rc = -1;
-
+  
   if (!ctx) {
+	  if(ctx->fuseEnabled){
+		qCInfo(lcCSync, "Running FUSE!");
+	  }
     errno = EBADF;
     return -1;
   }
+
   ctx->status_code = CSYNC_STATUS_OK;
 
   ctx->status_code = CSYNC_STATUS_OK;

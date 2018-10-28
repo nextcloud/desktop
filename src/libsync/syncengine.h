@@ -69,6 +69,7 @@ public:
     static QString csyncErrorToString(CSYNC_STATUS);
 
     Q_INVOKABLE void startSync();
+    Q_INVOKABLE void startFuseSync();
     void setNetworkLimits(int upload, int download);
 
     /* Abort the sync.  Called from the main thread */
@@ -111,7 +112,9 @@ public:
      * revert afterwards. Use _lastLocalDiscoveryStyle to discover the last
      * sync's style.
      */
-    void setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> paths = {});
+    void setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> paths = {}, std::map<QByteArray, csync_instructions_e> fusePaths = {});
+
+    void setCurrentFusePath(const QString &path);
 
     /**
      * Returns whether the given folder-relative path should be locally discovered
@@ -236,6 +239,7 @@ private:
     QString _remoteRootEtag;
     SyncJournalDb *_journal;
     QPointer<DiscoveryMainThread> _discoveryMainThread;
+    QPointer<DiscoveryMainThread> _discoveryFuseThread;
     QSharedPointer<OwncloudPropagator> _propagator;
 
     // After a sync, only the syncdb entries whose filenames appear in this
@@ -253,6 +257,7 @@ private:
     QSet<QString> _temporarilyUnavailablePaths;
 
     QThread _thread;
+    QThread _fuseThread;
 
     QScopedPointer<ProgressInfo> _progressInfo;
 
@@ -311,6 +316,8 @@ private:
     LocalDiscoveryStyle _lastLocalDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
     LocalDiscoveryStyle _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
     std::set<QByteArray> _localDiscoveryPaths;
+    std::map<QByteArray, csync_instructions_e> _fuseDiscoveryPaths;
+    QByteArray _currentFusePath;
 };
 }
 

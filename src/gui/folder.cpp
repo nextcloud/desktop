@@ -620,10 +620,61 @@ bool Folder::reloadExcludes()
     return _engine->excludedFiles().reloadExcludeFiles();
 }
 
+void Folder::updateFuseDiscoveryPaths(const QString &path, csync_instructions_e instruction){
+    //insert or update key
+    _fuseDiscoveryPaths.emplace(path.toLatin1(), instruction);
+    _engine->setCurrentFusePath(path);
+}
+
+void Folder::startFuseSync()
+{
+    if (_fuseDiscoveryPaths.size() == 0) {
+        qCCritical(lcFolder) << "ERROR : there are no selected paths to sync";
+        return;
+    }
+
+    if (isBusy()) {
+        slotTerminateSync();
+        qCCritical(lcFolder) << "WARNING csync is still running and new sync requested.";
+    }
+    _csyncUnavail = false; //??
+
+    _syncResult.setStatus(SyncResult::SyncPrepare);
+    emit syncStateChange();
+
+    qCInfo(lcFolder) << "*** Start SELECTIVE syncing " << remoteUrl().toString() << " - client version"
+                     << qPrintable(Theme::instance()->version());
+
+    _fileLog->start(path());
+
+    if (!reloadExcludes()) {
+        slotSyncError(tr("Could not read system exclude file"));
+        QMetaObject::invokeMethod(this, "slotSyncFinished", Qt::QueuedConnection, Q_ARG(bool, false));
+        return;
+    }
+
+    setDirtyNetworkLimits();
+    setSyncOptions();
+
+    qCInfo(lcFolder) << "Allowing local discovery to read from the database";
+    _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::FUSEFilesystem, {}, _fuseDiscoveryPaths);
+
+    for (auto &files : _fuseDiscoveryPaths){
+        qCDebug(lcFolder) << "selected path to sync: " << files.first;
+        qCDebug(lcFolder) << "path instruction: " << files.second;
+    }
+
+    _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
+
+    QMetaObject::invokeMethod(_engine.data(),
+                              "startFuseSync",
+                              Qt::DirectConnection);
+
+    emit syncStarted();
+}
+
 void Folder::startSync(const QStringList &pathList)
 {
-    Q_UNUSED(pathList)
-
     if (isBusy()) {
         qCCritical(lcFolder) << "ERROR csync is still running and new sync requested.";
         return;
@@ -656,13 +707,11 @@ void Folder::startSync(const QStringList &pathList)
         }
         return interval;
     }();
-    bool hasDoneFullLocalDiscovery = _timeSinceLastFullLocalDiscovery.isValid();
-    bool periodicFullLocalDiscoveryNow =
-        fullLocalDiscoveryInterval.count() >= 0 // negative means we don't require periodic full runs
-        && _timeSinceLastFullLocalDiscovery.hasExpired(fullLocalDiscoveryInterval.count());
-    if (_folderWatcher && _folderWatcher->isReliable()
-        && hasDoneFullLocalDiscovery
-        && !periodicFullLocalDiscoveryNow) {
+
+    if (_folderWatcher && _folderWatcher->isReliable() && _timeSinceLastFullLocalDiscovery.isValid()
+        && (fullLocalDiscoveryInterval.count() < 0
+               || _timeSinceLastFullLocalDiscovery.hasExpired(fullLocalDiscoveryInterval.count()))) {
+
         qCInfo(lcFolder) << "Allowing local discovery to read from the database";
         _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, _localDiscoveryPaths);
 
@@ -827,6 +876,7 @@ void Folder::slotSyncFinished(bool success)
         if (_engine->lastLocalDiscoveryStyle() == LocalDiscoveryStyle::FilesystemOnly) {
             _timeSinceLastFullLocalDiscovery.start();
         }
+
         qCDebug(lcFolder) << "Sync success, forgetting last sync's local discovery path list";
     } else {
         // On overall-failure we can't forget about last sync's local discovery
@@ -937,6 +987,9 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
         _localDiscoveryPaths.insert(item->_file.toUtf8());
         qCDebug(lcFolder) << "local discovery: inserted" << item->_file << "due to sync failure";
     }
+
+    // notify this file 'got' synced - true to stop
+    SyncJournalDb::instance()->syncStatusChanged(item->_file, true);
 
     _syncResult.processCompletedItem(item);
 

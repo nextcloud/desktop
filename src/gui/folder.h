@@ -29,6 +29,7 @@
 #include <QUuid>
 #include <set>
 #include <chrono>
+#include <QThread>
 
 class QThread;
 class QSettings;
@@ -258,11 +259,22 @@ public slots:
 
 
     /**
-      * Starts a sync operation
+      * Starts a sync operation using _localDiscoveryPaths
       *
       * If the list of changed files is known, it is passed.
       */
-    void startSync(const QStringList &pathList = QStringList());
+    void startSync(const QStringList &pathList);
+
+    /**
+      * Set local files and actions when it is known - triggered by FUSE operations
+      *
+      */
+    void updateFuseDiscoveryPaths(const QString &path, csync_instructions_e instruction);
+
+    /**
+      * Starts selecttive sync operation with _localDiscoveryPathsAndInstructions
+      */
+    void startFuseSync();
 
     int slotDiscardDownloadProgress();
     int downloadInfoCount();
@@ -395,6 +407,11 @@ private:
      * Also includes files that have had errors in the last sync run.
      */
     std::set<QByteArray> _localDiscoveryPaths;
+
+    /**
+     * The known local paths and instructions that should be checked by the next local discovery.
+     */
+    std::map<QByteArray, csync_instructions_e> _fuseDiscoveryPaths;
 
     /**
      * The paths that the current sync run used for local discovery.
