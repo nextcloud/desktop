@@ -689,7 +689,7 @@ void FolderMan::slotStartScheduledFolderSync()
         // the folder path didn't exist previously.
         _currentSyncFolder->registerFolderWatcher();
         registerFolderWithSocketApi();
-        _currentSyncFolder->startSync(QStringList());
+        _currentSyncFolder->startSync();
     }
 }
 

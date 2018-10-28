@@ -46,16 +46,6 @@ namespace OCC
 
 class InternalVfsMac;
 
-struct FuseData
-{
-    void *_buf;
-    fuse_fill_dir_t _filler;
-    FuseData(void *buf = nullptr, fuse_fill_dir_t filler = nullptr)
-        : _buf(buf)
-        , _filler(filler)
-    {
-    }
-};
 /*!
  * class
  * discussion This class controls the life cycle of a user space file system.
@@ -83,9 +73,11 @@ private:
     qint64 totalQuota_;
     QMap<QString, OCC::DiscoveryDirectoryResult*> _fileListMap;
     QPointer<OCC::DiscoveryFolderFileList> _remotefileListJob;
-    QMap<QString, FuseData *> _fuseDataList;
     
     QPointer<OCC::AccountState> accountState_;
+    QMap<QString, bool> _syncDone;
+    int _counter = 0;
+
 #pragma mark Fuse operations.
     void mount(QVariantMap args);
     void waitUntilMounted (int fileDescriptor);
@@ -529,16 +521,8 @@ public:
      */
     bool removeExtendedAttribute(QString name, QString path, QVariantMap &error);
 
-    /*!
-     * abstract Emit startRemoteFileListJob signal
-     */
-    void startGetRemoteFileListJob(QString path);
+    QString prepareSync(QString path);
 
-    /*!
-     * abstract Store fuse data
-     */
-    void setFuseData(QString path, void *buf, fuse_fill_dir_t filler);
-    
     //~VfsMac();
     
     bool enableAllocate();
@@ -561,13 +545,14 @@ public:
     
 public slots:
     void folderFileListFinish(OCC::DiscoveryDirectoryResult *dr);
+    void syncDone(QString, bool);
     
 signals:
     void FuseFileSystemDidMount(QVariantMap userInfo);
     void FuseFileSystemMountFailed(QVariantMap error);
     void FuseFileSystemDidUnmount(QVariantMap userInfo);
     void startRemoteFileListJob(QString path);
-    
+
 };
 
 #endif

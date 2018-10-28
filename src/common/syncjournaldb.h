@@ -322,6 +322,8 @@ public:
 	*/
 	qint64 secondsSinceLastAccess(QString const & path);
 
+    void emitSyncStatusChanged(QString path, bool status);
+
 private:
     int getFileRecordCount();
     bool updateDatabaseStructure();
@@ -403,6 +405,9 @@ private:
      * variable, for specific filesystems, or when WAL fails in a particular way.
      */
     QByteArray _journalMode;
+
+signals:
+    void syncStatusChanged(QString path, bool status);
 };
 
 bool OCSYNC_EXPORT

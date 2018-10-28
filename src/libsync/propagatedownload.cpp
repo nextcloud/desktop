@@ -949,6 +949,11 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
     //File is FINALLY downloaded - since it is downloaded, it is also online (?)
     propagator()->_journal->setSyncMode(_item->_file, SyncJournalDb::SyncMode::SYNCMODE_ONLINE);
     propagator()->_journal->setSyncModeDownload(_item->_file, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES);
+    propagator()->_journal->updateLastAccess(_item->_file);
+
+    // syncing is done
+    propagator()->_journal->emitSyncStatusChanged(_item->_file, true);
+
     qCWarning(lcPropagateDownload) << "INFO: " << _item->_file << " is FINALLY downloaded - SYNC MODE is "<< propagator()->_journal->getSyncModeDownload(_item->_file);
 
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);

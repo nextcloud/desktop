@@ -777,7 +777,8 @@ void DiscoveryFolderFileList::singleDirectoryJobResultSlot()
             qDebug() << Q_FUNC_INFO << "results: " << _DiscoveryFolderFileListResult->list.at(i)->path << _DiscoveryFolderFileListResult->list.at(i)->type;
         }*/
 
-    setFolderContentSyncMode();
+    emit gotDataSignal(_DiscoveryFolderFileListResult);
+    //setFolderContentSyncMode();
 }
 
 void DiscoveryFolderFileList::singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, const QString &msg)
@@ -794,22 +795,25 @@ void DiscoveryFolderFileList::singleDirectoryJobFinishedWithErrorSlot(int csyncE
     emit gotDataSignal(_DiscoveryFolderFileListResult);
 }
 
-void DiscoveryFolderFileList::setFolderContentSyncMode(){
+void DiscoveryFolderFileList::setFolderContentSyncMode(QString path){
     if (!_DiscoveryFolderFileListResult) {
         return; // possibly aborted
     }
 
     for(unsigned long i=0; i < _DiscoveryFolderFileListResult->list.size(); i++){
-        QString path = _DiscoveryFolderFileListResult->list.at(i)->path;
-        qDebug() << Q_FUNC_INFO << "Setting sync mode for: " << path << _DiscoveryFolderFileListResult->list.at(i)->type;
-        if(SyncJournalDb::instance()->getSyncMode(path) == SyncJournalDb::SyncMode::SYNCMODE_NONE)
-            SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SyncMode::SYNCMODE_OFFLINE);
+        QString discoveryPath = _DiscoveryFolderFileListResult->list.at(i)->path;
 
-        if(SyncJournalDb::instance()->getSyncModeDownload(path) == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NONE)
-            SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO);
+        if(discoveryPath == path){
+            qDebug() << Q_FUNC_INFO << "Setting sync mode for: " << discoveryPath << _DiscoveryFolderFileListResult->list.at(i)->type;
+            if(SyncJournalDb::instance()->getSyncMode(path) == SyncJournalDb::SyncMode::SYNCMODE_NONE)
+                SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SyncMode::SYNCMODE_OFFLINE);
+
+            if(SyncJournalDb::instance()->getSyncModeDownload(path) == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NONE)
+                SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO);
+
+            break;
+        }
     }
-
-    emit gotDataSignal(_DiscoveryFolderFileListResult);
 }
 
 }

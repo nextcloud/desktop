@@ -72,6 +72,7 @@ enum csync_replica_e {
 enum class LocalDiscoveryStyle {
     FilesystemOnly, //< read all local data from the filesystem
     DatabaseAndFilesystem, //< read from the db, except for listed paths
+    FUSEFilesystem, //< read from the db, except for listed paths
 };
 
 
@@ -217,6 +218,11 @@ struct OCSYNC_EXPORT csync_s {
   // https://social.msdn.microsoft.com/Forums/en-US/vcgeneral/thread/e39ab33d-1aaf-4125-b6de-50410d9ced1d
   csync_s(const csync_s &) = delete;
   csync_s &operator=(const csync_s &) = delete;
+
+  /* fuse selective sync */
+  bool fuseEnabled = false;
+  QByteArray fusePath = QByteArray();
+  csync_instructions_e fuseInstuction = CSYNC_INSTRUCTION_NONE;
 };
 
 void set_errno_from_http_errcode( int err );
