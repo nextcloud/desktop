@@ -116,6 +116,7 @@ set(client_SRCS
     wizard/owncloudwizardresultpage.cpp
     wizard/webviewpage.cpp
     wizard/webview.cpp
+    wizard/slideshow.cpp
 )
 
 IF(NOT NO_SHIBBOLETH)
