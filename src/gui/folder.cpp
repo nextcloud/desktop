@@ -60,7 +60,6 @@ Folder::Folder(const FolderDefinition &definition,
     , _consecutiveFollowUpSyncs(0)
     , _journal(_definition.absoluteJournalPath())
     , _fileLog(new SyncRunFileLog)
-    , _saveBackwardsCompatible(false)
 {
     _timeSinceLastSyncStart.start();
     _timeSinceLastSyncDone.start();
@@ -548,6 +547,8 @@ void Folder::downloadVirtualFile(const QString &_relativepath)
 void Folder::setUseVirtualFiles(bool enabled)
 {
     _definition.useVirtualFiles = enabled;
+    if (enabled)
+        _saveInFoldersWithPlaceholders = true;
     saveToSettings();
 }
 
@@ -565,9 +566,9 @@ void Folder::saveToSettings() const
         return other != this && other->cleanPath() == this->cleanPath();
     });
 
-    if (_definition.useVirtualFiles) {
-        // If virtual files are enabled, save the folder to a group
-        // that will not be read by older (<2.5.0) clients.
+    if (_definition.useVirtualFiles || _saveInFoldersWithPlaceholders) {
+        // If virtual files are enabled or even were enabled at some point,
+        // save the folder to a group that will not be read by older (<2.5.0) clients.
         // The name is from when virtual files were called placeholders.
         settingsGroup = QStringLiteral("FoldersWithPlaceholders");
     } else if (_saveBackwardsCompatible || oneAccountOnly) {
