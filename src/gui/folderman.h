@@ -302,7 +302,7 @@ private:
     // restarts the application (Linux only)
     void restartApplication();
 
-    void setupFoldersHelper(QSettings &settings, AccountStatePtr account, bool backwardsCompatible, const QStringList &ignoreKeys);
+    void setupFoldersHelper(QSettings &settings, AccountStatePtr account, const QStringList &ignoreKeys, bool backwardsCompatible, bool foldersWithPlaceholders);
 
     QSet<Folder *> _disabledFolders;
     Folder::Map _folderMap;
