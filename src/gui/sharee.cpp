@@ -143,9 +143,13 @@ void ShareeModel::shareesFetched(const QJsonDocument &reply)
 
 QSharedPointer<Sharee> ShareeModel::parseSharee(const QJsonObject &data)
 {
-    const QString displayName = data.value("label").toString();
+    QString displayName = data.value("label").toString();
     const QString shareWith = data.value("value").toObject().value("shareWith").toString();
     Sharee::Type type = (Sharee::Type)data.value("value").toObject().value("shareType").toInt();
+    const QString additionalInfo = data.value("value").toObject().value("shareWithAdditionalInfo").toString();
+    if (!additionalInfo.isEmpty()) {
+        displayName = tr("%1 (%2)", "sharee (shareWithAdditionalInfo)").arg(displayName, additionalInfo);
+    }
 
     return QSharedPointer<Sharee>(new Sharee(shareWith, displayName, type));
 }

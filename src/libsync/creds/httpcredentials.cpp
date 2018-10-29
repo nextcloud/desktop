@@ -45,6 +45,7 @@ namespace {
     const char clientCertificatePEMC[] = "_clientCertificatePEM";
     const char clientKeyPEMC[] = "_clientKeyPEM";
     const char authenticationFailedC[] = "owncloud-authentication-failed";
+    const char needRetryC[] = "owncloud-need-retry";
 } // ns
 
 class HttpCredentialsAccessManager : public AccessManager
@@ -84,8 +85,15 @@ protected:
             req.setSslConfiguration(sslConfiguration);
         }
 
+        auto *reply = AccessManager::createRequest(op, req, outgoingData);
 
-        return AccessManager::createRequest(op, req, outgoingData);
+        if (_cred->_isRenewingOAuthToken) {
+            // We know this is going to fail, but we have no way to queue it there, so we will
+            // simply restart the job after the failure.
+            reply->setProperty(needRetryC, true);
+        }
+
+        return reply;
     }
 
 private:
@@ -101,12 +109,6 @@ static void addSettingsToJob(Account *account, QKeychain::Job *job)
     auto settings = ConfigFile::settingsWithGroup(Theme::instance()->appName());
     settings->setParent(job); // make the job parent to make setting deleted properly
     job->setSettings(settings.release());
-}
-
-HttpCredentials::HttpCredentials()
-    : _ready(false)
-    , _keychainMigration(false)
-{
 }
 
 // From wizard
@@ -367,6 +369,7 @@ bool HttpCredentials::refreshAccessToken()
     QString basicAuth = QString("%1:%2").arg(
         Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret());
     req.setRawHeader("Authorization", "Basic " + basicAuth.toUtf8().toBase64());
+    req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
 
     auto requestBody = new QBuffer;
     QUrlQuery arguments(QString("grant_type=refresh_token&refresh_token=%1").arg(_refreshToken));
@@ -393,8 +396,15 @@ bool HttpCredentials::refreshAccessToken()
             _refreshToken = json["refresh_token"].toString();
             persist();
         }
+        _isRenewingOAuthToken = false;
+        for (const auto &job : _retryQueue) {
+            if (job)
+                job->retry();
+        }
+        _retryQueue.clear();
         emit fetched();
     });
+    _isRenewingOAuthToken = true;
     return true;
 }
 
@@ -522,7 +532,27 @@ void HttpCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator *a
     // Thus, if we reach this signal, those credentials were invalid and we terminate.
     qCWarning(lcHttpCredentials) << "Stop request: Authentication failed for " << reply->url().toString();
     reply->setProperty(authenticationFailedC, true);
-    reply->close();
+
+    if (_isRenewingOAuthToken) {
+        reply->setProperty(needRetryC, true);
+    } else if (isUsingOAuth() && !reply->property(needRetryC).toBool()) {
+        reply->setProperty(needRetryC, true);
+        qCInfo(lcHttpCredentials) << "Refreshing token";
+        refreshAccessToken();
+    }
+}
+
+bool HttpCredentials::retryIfNeeded(AbstractNetworkJob *job)
+{
+    auto *reply = job->reply();
+    if (!reply || !reply->property(needRetryC).toBool())
+        return false;
+    if (_isRenewingOAuthToken) {
+        _retryQueue.append(job);
+    } else {
+        job->retry();
+    }
+    return true;
 }
 
 } // namespace OCC

@@ -145,9 +145,16 @@ void GETFileJob::slotMetaDataChanged()
 
     int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
-    // Ignore redirects
-    if (httpStatus == 301 || httpStatus == 302 || httpStatus == 303 || httpStatus == 307 || httpStatus == 308)
+    if (httpStatus == 301 || httpStatus == 302 || httpStatus == 303 || httpStatus == 307
+        || httpStatus == 308 || httpStatus == 401) {
+        // Redirects and auth failures (oauth token renew) are handled by AbstractNetworkJob and
+        // will end up restarting the job. We do not want to process further data from the initial
+        // request. newReplyHook() will reestablish signal connections for the follow-up request.
+        bool ok = disconnect(reply(), &QNetworkReply::finished, this, &GETFileJob::slotReadyRead)
+            && disconnect(reply(), &QNetworkReply::readyRead, this, &GETFileJob::slotReadyRead);
+        ASSERT(ok);
         return;
+    }
 
     // If the status code isn't 2xx, don't write the reply body to the file.
     // For any error: handle it when the job is finished, not here.

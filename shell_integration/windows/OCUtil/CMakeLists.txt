@@ -1,4 +1,4 @@
-add_library(OCUtil SHARED
+add_library(OCUtil STATIC
     CommunicationSocket.cpp
     FileUtil.cpp
     RegistryUtil.cpp
@@ -11,8 +11,4 @@ add_library(OCUtil SHARED
 target_include_directories(OCUtil
     PUBLIC
         "${CMAKE_CURRENT_SOURCE_DIR}"
-)
-
-install(TARGETS OCUtil
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )

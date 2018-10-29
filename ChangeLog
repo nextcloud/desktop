@@ -2,17 +2,25 @@ ChangeLog
 =========
 
 version 2.5.1 (2018-??-??)
-
+* OAuth2: Refresh the token without aborting the sync (#6814)
 * OAuth2: Fix migration from BasicAuth when the server uses LDAP
 * Linux: FolderWatcher: fix paths after dir renames (#6808)
-* Mac: Do not select ownCloud in Finder after installation (#6781)
-* Sync: always recurse within touched directory (#6804)
+* Sync: Always recurse within touched directory (#6804)
 * Sync: Fixed crash when aborting sync of large files with older servers
 * Sync: Don't error out if X-OC-MTime header is missing (#6797)
+* Discovery: Windows: Don't check if a server file name can be encoded (#6810)
 * Virtual Files: Renaming a virtual files also rename the file on the server (#6718)
 * Virtual Files: Disable the 'choose what to sync' in the new folder wizard when virtual files are selected
-* Windows Shell Integration: no limit on the amount of selected files (#6780)
-* GUI: Plug a few leaks
+* Virtual files: Wipe selective sync settings when enabled
+* Virtual files: Use theme to check for option availability
+* Account Settings: Add a context menu entry to enable or disable virtual files (#6725)
+* Account Settings: Fix progress being written in white when there are errors
+* GUI: Plug a few smaller memory leaks
+* Windows Shell Integration: No limit on the amount of selected files (#6780)
+* Windows: Disable autostartCheckBox if autostart is configured system wide (#6816)
+* macOS: Fix icon name in Info.plist
+* macOS: Do not select ownCloud in Finder after installation (#6781)
+* macOS: Improve macdeployqt.py
 
 version 2.5.0 (2018-09-18)
 * Local discovery: Speed up by skipping directories without changes reported by the file system watcher.

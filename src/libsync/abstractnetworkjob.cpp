@@ -29,6 +29,7 @@
 #include <QAuthenticator>
 #include <QMetaEnum>
 
+#include "common/asserts.h"
 #include "networkjobs.h"
 #include "account.h"
 #include "owncloudpropagator.h"
@@ -161,6 +162,10 @@ void AbstractNetworkJob::slotFinished()
     }
 
     if (_reply->error() != QNetworkReply::NoError) {
+
+        if (_account->credentials()->retryIfNeeded(this))
+            return;
+
         if (!_ignoreCredentialFailure || _reply->error() != QNetworkReply::AuthenticationRequiredError) {
             qCWarning(lcNetworkJob) << _reply->error() << errorString()
                                     << _reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
@@ -406,6 +411,22 @@ QString networkReplyErrorString(const QNetworkReply &reply)
     }
 
     return AbstractNetworkJob::tr("Server replied \"%1 %2\" to \"%3 %4\"").arg(QString::number(httpStatus), httpReason, requestVerb(reply), reply.request().url().toDisplayString());
+}
+
+void AbstractNetworkJob::retry()
+{
+    ENFORCE(_reply);
+    auto req = _reply->request();
+    QUrl requestedUrl = req.url();
+    QByteArray verb = requestVerb(*_reply);
+    qCInfo(lcNetworkJob) << "Restarting" << verb << requestedUrl;
+    resetTimeout();
+    if (_requestBody) {
+        _requestBody->seek(0);
+    }
+    // The cookie will be added automatically, we don't want AccessManager::createRequest to duplicate them
+    req.setRawHeader("cookie", QByteArray());
+    sendRequest(verb, requestedUrl, req, _requestBody);
 }
 
 } // namespace OCC

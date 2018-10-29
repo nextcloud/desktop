@@ -25,6 +25,7 @@
 #include <string>
 #include <QLibrary>
 
+static const char systemRunPathC[] = "HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 static const char runPathC[] = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run";
 
 namespace OCC {
@@ -67,6 +68,12 @@ static void setupFavLink_private(const QString &folder)
         qCWarning(lcUtility) << "linking" << folder << "to" << linkName << "failed!";
 }
 
+bool hasSystemLaunchOnStartup_private(const QString &appName)
+{
+    QString runPath = QLatin1String(systemRunPathC);
+    QSettings settings(runPath, QSettings::NativeFormat);
+    return settings.contains(appName);
+}
 
 bool hasLaunchOnStartup_private(const QString &appName)
 {

@@ -25,6 +25,8 @@ class QNetworkAccessManager;
 class QNetworkReply;
 namespace OCC {
 
+class AbstractNetworkJob;
+
 class OWNCLOUDSYNC_EXPORT AbstractCredentials : public QObject
 {
     Q_OBJECT
@@ -86,6 +88,9 @@ public:
     virtual void forgetSensitiveData() = 0;
 
     static QString keychainKey(const QString &url, const QString &user, const QString &accountId);
+
+    /** If the job need to be restarted or queue, this does it and returns true. */
+    virtual bool retryIfNeeded(AbstractNetworkJob *) { return false; }
 
 Q_SIGNALS:
     /** Emitted when fetchFromKeychain() is done.

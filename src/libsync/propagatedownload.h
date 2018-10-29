@@ -161,7 +161,7 @@ public:
     void start() Q_DECL_OVERRIDE;
     bool finished() Q_DECL_OVERRIDE
     {
-        if (reply()->bytesAvailable()) {
+        if (_saveBodyToFile && reply()->bytesAvailable()) {
             return false;
         } else {
             if (!_hasEmittedFinishedSignal) {
