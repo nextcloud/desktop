@@ -461,6 +461,7 @@ int main(int argc, char **argv)
             auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
             qDebug() << "Server capabilities" << caps;
             account->setCapabilities(caps.toVariantMap());
+            account->setServerVersion(caps["core"].toObject()["status"].toObject()["version"].toString());
             loop.quit();
         });
         job->start();
