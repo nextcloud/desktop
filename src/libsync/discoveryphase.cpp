@@ -664,8 +664,17 @@ csync_vio_handle_t *DiscoveryJob::remote_vio_opendir_hook(const char *url,
         if (directoryResult->code != 0) {
             qCDebug(lcDiscovery) << directoryResult->code << "when opening" << url << "msg=" << directoryResult->msg;
             errno = directoryResult->code;
+
             // save the error string to the context
-            discoveryJob->_csync_ctx->error_string = directoryResult->msg;
+            QString errorString = directoryResult->path;
+            if (errorString.startsWith("/"))
+                errorString = errorString.mid(1);
+            if (!directoryResult->msg.isEmpty()) {
+                errorString.append(": ");
+                errorString.append(directoryResult->msg);
+            }
+            discoveryJob->_csync_ctx->error_string = errorString;
+
             return NULL;
         }
 
