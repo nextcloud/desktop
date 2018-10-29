@@ -8,11 +8,6 @@ add_library(OCUtil STATIC
     OCUtil.rc
 )
 
-target_compile_options(OCUtil
-    PUBLIC
-        "/MT$<$<CONFIG:Debug>:d>"
-)
-
 target_include_directories(OCUtil
     PUBLIC
         "${CMAKE_CURRENT_SOURCE_DIR}"
