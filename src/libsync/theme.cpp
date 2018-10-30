@@ -356,6 +356,11 @@ QString Theme::about() const
     return devString;
 }
 
+bool Theme::aboutShowCopyright() const
+{
+    return false;
+}
+
 #ifndef TOKEN_AUTH_ONLY
 QVariant Theme::customMedia(CustomMediaType type)
 {

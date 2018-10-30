@@ -110,6 +110,7 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     QIcon generalIcon = MacStandardIcon::icon(MacStandardIcon::PreferencesGeneral);
     GeneralSettings *generalSettings = new GeneralSettings;
     addPreferencesPanel(generalIcon, tr("General"), generalSettings);
+    QObject::connect(generalSettings, &GeneralSettings::showAbout, gui, &ownCloudGui::slotAbout);
 
     QIcon networkIcon = MacStandardIcon::icon(MacStandardIcon::Network);
     NetworkSettings *networkSettings = new NetworkSettings;

@@ -39,6 +39,9 @@ public:
     ~GeneralSettings();
     QSize sizeHint() const;
 
+signals:
+    void showAbout();
+
 private slots:
     void saveMiscSettings();
     void slotToggleLaunchOnStartup(bool);
