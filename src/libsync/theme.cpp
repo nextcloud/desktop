@@ -338,7 +338,8 @@ QString Theme::about() const
               .arg("http://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
               .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN));
 
-    devString += tr("<p>This release was supplied by the Nextcloud GmbH</p>");
+    devString += tr("<p>This release was supplied by %1</p>")
+              .arg(APPLICATION_VENDOR);
 
     devString += gitSHA1();
 
