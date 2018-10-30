@@ -57,11 +57,13 @@ public:
      * return the position of the option button within the item
      */
     static QRect optionsButtonRect(QRect within, Qt::LayoutDirection direction);
+    static QRect addButtonRect(QRect within, Qt::LayoutDirection direction);
     static QRect errorsListRect(QRect within);
     static int rootFolderHeightWithoutErrors(const QFontMetrics &fm, const QFontMetrics &aliasFm);
 
 private:
     static QString addFolderText();
+    QPersistentModelIndex _pressedIndex;
 };
 
 } // namespace OCC
