@@ -1,0 +1,204 @@
+[Desktop Entry]
+Categories=Utility;X-SuSE-SyncUtility;
+Type=Application
+Exec=@APPLICATION_EXECUTABLE@
+Name=@APPLICATION_NAME@ desktop sync client 
+Comment=@APPLICATION_NAME@ desktop synchronization client
+GenericName=Folder Sync
+Icon=@APPLICATION_ICON_NAME@
+Keywords=@APPLICATION_NAME@;syncing;file;sharing;
+X-GNOME-Autostart-Delay=3
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+Comment[nl]=@APPLICATION_NAME@ desktopsynchronisatieclient
+Icon[nl]=@APPLICATION_ICON_NAME@
+Name[nl]=@APPLICATION_NAME@ desktop sync client 
+GenericName[nl]=Map synchronisatie

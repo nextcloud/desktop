@@ -24,6 +24,35 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcWebFlowCredentials, "sync.credentials.webflow", QtInfoMsg)
 
+class WebFlowCredentialsAccessManager : public AccessManager
+{
+public:
+    WebFlowCredentialsAccessManager(const WebFlowCredentials *cred, QObject *parent = nullptr)
+        : AccessManager(parent)
+        , _cred(cred)
+    {
+    }
+
+protected:
+    QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData) Q_DECL_OVERRIDE
+    {
+        QNetworkRequest req(request);
+        if (!req.attribute(HttpCredentials::DontAddCredentialsAttribute).toBool()) {
+            if (_cred && !_cred->password().isEmpty()) {
+                QByteArray credHash = QByteArray(_cred->user().toUtf8() + ":" + _cred->password().toUtf8()).toBase64();
+                req.setRawHeader("Authorization", "Basic " + credHash);
+            }
+        }
+
+        return AccessManager::createRequest(op, req, outgoingData);
+    }
+
+private:
+    // The credentials object dies along with the account, while the QNAM might
+    // outlive both.
+    QPointer<const WebFlowCredentials> _cred;
+};
+
 WebFlowCredentials::WebFlowCredentials()
     : _ready(false),
       _credentialsValid(false)
@@ -56,7 +85,7 @@ QString WebFlowCredentials::password() const {
 
 QNetworkAccessManager *WebFlowCredentials::createQNAM() const {
     qCInfo(lcWebFlowCredentials()) << "Get QNAM";
-    AccessManager *qnam = new AccessManager();
+    AccessManager *qnam = new WebFlowCredentialsAccessManager(this);
 
     connect(qnam, &AccessManager::authenticationRequired, this, &WebFlowCredentials::slotAuthentication);
     connect(qnam, &AccessManager::finished, this, &WebFlowCredentials::slotFinished);
@@ -102,6 +131,8 @@ void WebFlowCredentials::askFromUser() {
 }
 
 void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user, const QString &pass, const QString &host) {
+    Q_UNUSED(host);
+
     if (_user != user) {
         qCInfo(lcWebFlowCredentials()) << "Authed with the wrong user!";
 

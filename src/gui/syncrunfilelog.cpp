@@ -93,25 +93,25 @@ QString SyncRunFileLog::instructionToStr(csync_instructions_e inst)
 
 void SyncRunFileLog::start(const QString &folderPath)
 {
-     const qint64 logfileMaxSize = 1024 * 1024; // 1MiB
-    
+    const qint64 logfileMaxSize = 10 * 1024 * 1024; // 10MiB
+
     const QString logpath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     if(!QDir(logpath).exists()) {
         QDir().mkdir(logpath);
     }
-    
+
     int length = folderPath.split(QLatin1String("/")).length();
     QString filenameSingle = folderPath.split(QLatin1String("/")).at(length - 2);
     QString filename = logpath + QLatin1String("/") + filenameSingle + QLatin1String("_sync.log");
-    
+
     int depthIndex = 2;
     while(QFile::exists(filename)) {
-        
+
         QFile file(filename);
         file.open(QIODevice::ReadOnly| QIODevice::Text);
         QTextStream in(&file);
         QString line = in.readLine();
-        
+
         if(QString::compare(folderPath,line,Qt::CaseSensitive)!=0) {
             depthIndex++;
             if(depthIndex <= length) {
@@ -126,7 +126,7 @@ void SyncRunFileLog::start(const QString &folderPath)
         }
         else break;
     }
-    
+
     // When the file is too big, just rename it to an old name.
     QFileInfo info(filename);
     bool exists = info.exists();
@@ -137,11 +137,11 @@ void SyncRunFileLog::start(const QString &folderPath)
         QFile::rename(filename, newFilename);
     }
     _file.reset(new QFile(filename));
-    
+
     _file->open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text);
     _out.setDevice(_file.data());
-    
-    
+
+
     if (!exists) {
         _out << folderPath.toLatin1() << endl;
         // We are creating a new file, add the note.
@@ -150,11 +150,11 @@ void SyncRunFileLog::start(const QString &folderPath)
                 "other size | other modtime | other etag | other fileId | "
                 "other instruction"
              << endl;
-        
+
         FileSystem::setFileHidden(filename, true);
     }
-    
-    
+
+
     _totalDuration.start();
     _lapDuration.start();
     _out << "#=#=#=# Syncrun started " << dateTimeStr(QDateTime::currentDateTimeUtc()) << endl;

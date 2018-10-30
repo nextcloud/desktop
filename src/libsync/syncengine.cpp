@@ -837,6 +837,11 @@ void SyncEngine::startSync()
         // database creation error!
     }
 
+    // Functionality like selective sync might have set up etag storage
+    // filtering via avoidReadFromDbOnNextSync(). This *is* the next sync, so
+    // undo the filter to allow this sync to retrieve and store the correct etags.
+    _journal->clearEtagStorageFilter();
+
     _csync_ctx->upload_conflict_files = _account->capabilities().uploadConflictFiles();
     _excludedFiles->setExcludeConflictFiles(!_account->capabilities().uploadConflictFiles());
 
@@ -1042,10 +1047,9 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     }
 
     auto databaseFingerprint = _journal->dataFingerprint();
-    // If databaseFingerprint is null, this means that there was no information in the database
-    // (for example, upgrading from a previous version, or first sync)
-    // Note that an empty ("") fingerprint is valid and means it was empty on the server before.
-    if (!databaseFingerprint.isNull()
+    // If databaseFingerprint is empty, this means that there was no information in the database
+    // (for example, upgrading from a previous version, or first sync, or server not supporting fingerprint)
+    if (!databaseFingerprint.isEmpty()
         && _discoveryMainThread->_dataFingerprint != databaseFingerprint) {
         qCInfo(lcEngine) << "data fingerprint changed, assume restore from backup" << databaseFingerprint << _discoveryMainThread->_dataFingerprint;
         restoreOldFiles(syncItems);
@@ -1620,10 +1624,10 @@ AccountPtr SyncEngine::account() const
     return _account;
 }
 
-void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> dirs)
+void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> paths)
 {
     _localDiscoveryStyle = style;
-    _localDiscoveryPaths = std::move(dirs);
+    _localDiscoveryPaths = std::move(paths);
 }
 
 bool SyncEngine::shouldDiscoverLocally(const QByteArray &path) const

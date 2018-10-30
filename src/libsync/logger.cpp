@@ -50,7 +50,7 @@ Logger::Logger(QObject *parent)
 {
     qSetMessagePattern("[%{function} \t%{message}");
 #ifndef NO_MSG_HANDLER
-   // qInstallMessageHandler(mirallLogCatcher);
+   qInstallMessageHandler(mirallLogCatcher);
 #else
     Q_UNUSED(mirallLogCatcher)
 #endif

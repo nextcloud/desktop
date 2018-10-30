@@ -114,8 +114,10 @@ void PropagateUploadEncrypted::slotFolderLockedSuccessfully(const QByteArray& fi
 
 void PropagateUploadEncrypted::slotFolderEncryptedMetadataError(const QByteArray& fileId, int httpReturnCode)
 {
-  qCDebug(lcPropagateUploadEncrypted()) << "Error Getting the encrypted metadata. unlock the folder.";
-  unlockFolder();
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpReturnCode);
+    qCDebug(lcPropagateUploadEncrypted()) << "Error Getting the encrypted metadata. unlock the folder.";
+    unlockFolder();
 }
 
 void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode)
@@ -151,7 +153,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
       encryptedFile.metadataKey = 1;
       encryptedFile.originalFilename = fileName;
 
-      static thread_local QMimeDatabase mdb;
+      QMimeDatabase mdb;
       encryptedFile.mimetype = mdb.mimeTypeForFile(info).name().toLocal8Bit();
   }
 
@@ -207,14 +209,15 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
 
 void PropagateUploadEncrypted::slotUpdateMetadataSuccess(const QByteArray& fileId)
 {
-  qCDebug(lcPropagateUploadEncrypted) << "Uploading of the metadata success, Encrypting the file";
-  QFileInfo outputInfo(_completeFileName);
+    Q_UNUSED(fileId);
+    qCDebug(lcPropagateUploadEncrypted) << "Uploading of the metadata success, Encrypting the file";
+    QFileInfo outputInfo(_completeFileName);
 
-  qCDebug(lcPropagateUploadEncrypted) << "Encrypted Info:" << outputInfo.path() << outputInfo.fileName() << outputInfo.size();
-  qCDebug(lcPropagateUploadEncrypted) << "Finalizing the upload part, now the actuall uploader will take over";
-  emit finalized(outputInfo.path() + QLatin1Char('/') + outputInfo.fileName(),
-                 _item->_file.section(QLatin1Char('/'), 0, -2) + QLatin1Char('/') + outputInfo.fileName(),
-                 outputInfo.size());
+    qCDebug(lcPropagateUploadEncrypted) << "Encrypted Info:" << outputInfo.path() << outputInfo.fileName() << outputInfo.size();
+    qCDebug(lcPropagateUploadEncrypted) << "Finalizing the upload part, now the actuall uploader will take over";
+    emit finalized(outputInfo.path() + QLatin1Char('/') + outputInfo.fileName(),
+                   _item->_file.section(QLatin1Char('/'), 0, -2) + QLatin1Char('/') + outputInfo.fileName(),
+                   outputInfo.size());
 }
 
 void PropagateUploadEncrypted::slotUpdateMetadataError(const QByteArray& fileId, int httpErrorResponse)
@@ -226,30 +229,32 @@ void PropagateUploadEncrypted::slotUpdateMetadataError(const QByteArray& fileId,
 
 void PropagateUploadEncrypted::slotFolderLockedError(const QByteArray& fileId, int httpErrorCode)
 {
-  /* try to call the lock from 5 to 5 seconds
-    and fail if it's more than 5 minutes. */
-  QTimer::singleShot(5000, this, [this, fileId]{
-    if (!_currentLockingInProgress) {
-      qCDebug(lcPropagateUploadEncrypted) << "Error locking the folder while no other update is locking it up.";
-      qCDebug(lcPropagateUploadEncrypted) << "Perhaps another client locked it.";
-      qCDebug(lcPropagateUploadEncrypted) << "Abort";
-      return;
-    }
+    Q_UNUSED(httpErrorCode);
+    /* try to call the lock from 5 to 5 seconds
+     * and fail if it's more than 5 minutes. */
+    QTimer::singleShot(5000, this, [this, fileId]{
+        if (!_currentLockingInProgress) {
+            qCDebug(lcPropagateUploadEncrypted) << "Error locking the folder while no other update is locking it up.";
+            qCDebug(lcPropagateUploadEncrypted) << "Perhaps another client locked it.";
+            qCDebug(lcPropagateUploadEncrypted) << "Abort";
+        return;
+        }
 
-    // Perhaps I should remove the elapsed timer if the lock is from this client?
-    if (_folderLockFirstTry.elapsed() > /* five minutes */ 1000 * 60 * 5 ) {
-      qCDebug(lcPropagateUploadEncrypted) << "One minute passed, ignoring more attemps to lock the folder.";
-      return;
-    }
-    slotTryLock(fileId);
-  });
+        // Perhaps I should remove the elapsed timer if the lock is from this client?
+        if (_folderLockFirstTry.elapsed() > /* five minutes */ 1000 * 60 * 5 ) {
+            qCDebug(lcPropagateUploadEncrypted) << "One minute passed, ignoring more attemps to lock the folder.";
+        return;
+        }
+        slotTryLock(fileId);
+    });
 
-  qCDebug(lcPropagateUploadEncrypted) << "Folder" << fileId << "Coundn't be locked.";
+    qCDebug(lcPropagateUploadEncrypted) << "Folder" << fileId << "Coundn't be locked.";
 }
 
 void PropagateUploadEncrypted::slotFolderEncryptedIdError(QNetworkReply *r)
 {
-  qCDebug(lcPropagateUploadEncrypted) << "Error retrieving the Id of the encrypted folder.";
+    Q_UNUSED(r);
+    qCDebug(lcPropagateUploadEncrypted) << "Error retrieving the Id of the encrypted folder.";
 }
 
 void PropagateUploadEncrypted::slotFolderEncryptedStatusError(int error)

@@ -189,16 +189,11 @@ private slots:
 
         // Make the MOVE never reply, but trigger a client-abort and apply the change remotely
         auto parent = new QObject;
-        QByteArray moveChecksumHeader;
-        int nGET = 0;
         int responseDelay = 2000; // smaller than abort-wait timeout
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
                 QTimer::singleShot(50, parent, [&]() { fakeFolder.syncEngine().abort(); });
-                moveChecksumHeader = request.rawHeader("OC-Checksum");
                 return new DelayedReply<FakeChunkMoveReply>(responseDelay, fakeFolder.uploadState(), fakeFolder.remoteModifier(), op, request, parent);
-            } else if (op == QNetworkAccessManager::GetOperation) {
-                nGET++;
             }
             return nullptr;
         });
@@ -294,7 +289,7 @@ private slots:
         // There is a conflict file with our version
         auto &stateAChildren = localState.find("A")->children;
         auto it = std::find_if(stateAChildren.cbegin(), stateAChildren.cend(), [&](const FileInfo &fi) {
-            return fi.name.startsWith("a0_conflict");
+            return fi.name.startsWith("a0 (conflicted copy");
         });
         QVERIFY(it != stateAChildren.cend());
         QCOMPARE(it->contentChar, 'B');

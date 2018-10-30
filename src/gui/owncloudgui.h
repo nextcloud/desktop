@@ -127,7 +127,7 @@ private:
     void setPauseOnAllFoldersHelper(bool pause);
     void setupActions();
     void addAccountContextMenu(AccountStatePtr accountState, QMenu *menu, bool separateMenu);
-    void fetchNavigationApps(AccountStatePtr account, QMenu *accountMenu);
+    void fetchNavigationApps(AccountStatePtr account);
     void buildNavigationAppsMenu(AccountStatePtr account, QMenu *accountMenu);
 
     QPointer<Systray> _tray;
@@ -140,9 +140,11 @@ private:
     // tray's menu
     QScopedPointer<QMenu> _contextMenu;
 
-    // Manually tracking whether the context menu is visible, but only works
-    // on OSX because aboutToHide is not reliable everywhere.
-    bool _contextMenuVisibleOsx;
+    // Manually tracking whether the context menu is visible via aboutToShow
+    // and aboutToHide. Unfortunately aboutToHide isn't reliable everywhere
+    // so this only gets used with _workaroundManualVisibility (when the tray's
+    // isVisible() is unreliable)
+    bool _contextMenuVisibleManual = false;
 
 #ifdef WITH_LIBCLOUDPROVIDERS
     QDBusConnection _bus;
@@ -150,8 +152,11 @@ private:
 
     QMenu *_recentActionsMenu;
     QVector<QMenu *> _accountMenus;
-    bool _qdbusmenuWorkaround;
-    QTimer _workaroundBatchTrayUpdate;
+    bool _workaroundShowAndHideTray = false;
+    bool _workaroundNoAboutToShowUpdate = false;
+    bool _workaroundFakeDoubleClick = false;
+    bool _workaroundManualVisibility = false;
+    QTimer _delayedTrayUpdateTimer;
     QMap<QString, QPointer<ShareDialog>> _shareDialogs;
 
     QAction *_actionNewAccountWizard;

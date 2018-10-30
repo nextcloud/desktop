@@ -388,7 +388,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="138"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Frågar efter inloggningsuppgifter</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="140"/>
@@ -765,17 +765,22 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="927"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Alla filer i den synkade mappen &apos;%1&apos; raderades på servern.
+Dessa raderingar kommer att synkroniseras till din lokalt synkade mapp och göra filerna otillgängliga, om du inte har möjlighet att återställa.
+Om du vill behålla dessa filer kommer dom att synkroniseras till servern på nytt, om du har rättighet att göra det.
+Om du raderar filerna kommer dom att vara otillgängliga för dig, om du inte är ägaren.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="932"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Alla filer i din lokalt synkade mappen &apos;%1&apos; raderades. Dessa raderingar kommer att synkroniseras med servern och göra filerna otillgängliga, om dom inte återställs.
+Är du säker på att du vill synka ändringarna till servern?
+Om detta var ett misstag och du vill behålla dina filer, kommer dom att synkroniseras på nytt från servern.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="936"/>
@@ -995,7 +1000,7 @@ Om du fortsätter synkningen kommer alla dina filer återställas med en äldre 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="884"/>
         <source>Reconciling changes</source>
-        <translation type="unfinished"/>
+        <translation>slå ihop förärändringar</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
@@ -1425,7 +1430,7 @@ Objekt som tillåter radering kommer tas bort om de förhindrar en mapp att tas 
     <message>
         <location filename="../src/gui/issueswidget.ui" line="133"/>
         <source>There were too many issues. Not all will be visible here.</source>
-        <translation type="unfinished"/>
+        <translation>Det var för många problem. Alla kommer inte att vara synliga här.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="155"/>
@@ -1695,7 +1700,7 @@ Objekt som tillåter radering kommer tas bort om de förhindrar en mapp att tas 
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Fel uppstod vid åtkomst till &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
@@ -2289,7 +2294,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="175"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Fil %1 kan inte laddas upp eftersom en annan fil med samma namn, där endast stora/små bokstäver skiljer sig, existerar</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="291"/>
@@ -2747,12 +2752,12 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
         <source>Confirm Link Share Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Bekräfta radering av delad länk</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="521"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Vill du verkligen radera den publikt delade länken &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Obs: Den här åtgärden kan inte ångras.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="528"/>
@@ -2768,7 +2773,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
         <source>Delete link share</source>
-        <translation type="unfinished"/>
+        <translation>Radera delad länk</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="459"/>
@@ -2796,12 +2801,12 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="108"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can direct people to this shared file or folder &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;by giving them a private link&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Du kan hänvisa till den delade filen eller mappen &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;genom att ge en privat länk&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="186"/>
         <source>The item is not shared with any users or groups</source>
-        <translation type="unfinished"/>
+        <translation>Objektet delas inte med några användare eller grupper</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="235"/>
@@ -3348,7 +3353,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="480"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>Filnamnet kan inte kodas på ditt filsystem.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="489"/>
@@ -3599,7 +3604,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="240"/>
         <source>Disconnected from some accounts</source>
-        <translation type="unfinished"/>
+        <translation>Nedkopplad från vissa konton</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="251"/>
@@ -3625,7 +3630,7 @@ Det är inte lämpligt använda den.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="273"/>
         <location filename="../src/gui/owncloudgui.cpp" line="304"/>
         <source>Synchronization is paused</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniseringen är pausad</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="306"/>
@@ -3639,8 +3644,8 @@ Det är inte lämpligt använda den.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
-        <source>Unpause all folders</source>
-        <translation>Sluta pausa alla mappar</translation>
+        <source>Resume all folders</source>
+        <translation>Återuppta alla mappar</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -3649,13 +3654,13 @@ Det är inte lämpligt använda den.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
-        <source>Unpause all synchronization</source>
-        <translation>Sluta pausa all synkroinisering</translation>
+        <source>Resume all synchronization</source>
+        <translation>Återuppta all synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
-        <source>Unpause synchronization</source>
-        <translation>Sluta pausa synkronisering</translation>
+        <source>Resume synchronization</source>
+        <translation>Återuppta synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="609"/>

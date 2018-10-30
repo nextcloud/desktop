@@ -7,6 +7,7 @@
 #include "owncloudwizard.h"
 #include "creds/webflowcredentials.h"
 #include "webview.h"
+#include "account.h"
 
 namespace OCC {
 
@@ -29,8 +30,13 @@ WebViewPage::WebViewPage(QWidget *parent)
 }
 
 void WebViewPage::initializePage() {
-    auto url = _ocWizard->ocUrl();
-    url += "/index.php/login/flow";
+    QString url;
+    if (_ocWizard->registration()) {
+        url = "https://nextcloud.com/register";
+    } else {
+        url = _ocWizard->ocUrl();
+        url += "/index.php/login/flow";
+    }
     qCInfo(lcWizardWebiewPage()) << "Url to auth at: " << url;
     _webView->setUrl(QUrl(url));
 }
@@ -57,8 +63,11 @@ void WebViewPage::urlCatched(QString user, QString pass, QString host) {
     _user = user;
     _pass = pass;
 
+    AccountPtr account = _ocWizard->account();
+    account->setUrl(host);
+
     qCInfo(lcWizardWebiewPage()) << "URL: " << field("OCUrl").toString();
-    emit connectToOCUrl(field("OCUrl").toString().simplified());
+    emit connectToOCUrl(host);
 }
 
 }

@@ -20,6 +20,8 @@
 #include <QtCore>
 #ifndef TOKEN_AUTH_ONLY
 #include <QtGui>
+#include <QStyle>
+#include <QApplication>
 #endif
 #include <QSslSocket>
 
@@ -105,12 +107,16 @@ QString Theme::version() const
     return MIRALL_VERSION_STRING;
 }
 
+QString Theme::configFileName() const
+{
+    return QStringLiteral(APPLICATION_EXECUTABLE ".cfg");
+}
+
 #ifndef TOKEN_AUTH_ONLY
 
-QIcon Theme::trayFolderIcon(const QString &backend) const
+QIcon Theme::applicationIcon() const
 {
-    Q_UNUSED(backend)
-    return applicationIcon();
+    return themeIcon(QStringLiteral(APPLICATION_ICON_NAME "-icon"));
 }
 
 /*
@@ -135,7 +141,7 @@ QIcon Theme::themeIcon(const QString &name, bool sysTray, bool sysTrayMenuVisibl
         }
 
         QList<int> sizes;
-        sizes << 16 << 22 << 32 << 48 << 64 << 128 << 256;
+        sizes << 16 << 22 << 32 << 48 << 64 << 128 << 256 << 512 << 1024;
         foreach (int size, sizes) {
             QString pixmapName = QString::fromLatin1(":/client/theme/%1/%2-%3.png").arg(flavor).arg(name).arg(size);
             if (QFile::exists(pixmapName)) {
@@ -217,6 +223,21 @@ QString Theme::defaultServerFolder() const
     return QLatin1String("/");
 }
 
+QString Theme::helpUrl() const
+{
+    return QString::fromLatin1("https://docs.nextcloud.com/desktop/%1.%2/").arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR);
+}
+
+QString Theme::conflictHelpUrl() const
+{
+    auto baseUrl = helpUrl();
+    if (baseUrl.isEmpty())
+        return QString();
+    if (!baseUrl.endsWith('/'))
+        baseUrl.append('/');
+    return baseUrl + QStringLiteral("conflicts.html");
+}
+
 QString Theme::overrideServerUrl() const
 {
     return QString();
@@ -270,7 +291,7 @@ bool Theme::monoIconsAvailable() const
 
 QString Theme::updateCheckUrl() const
 {
-    return QLatin1String("https://updates.owncloud.com/client/");
+    return QLatin1String("https://updates.nextcloud.org/client/");
 }
 
 qint64 Theme::newBigFolderSizeLimit() const
@@ -294,7 +315,7 @@ QString Theme::gitSHA1() const
     QString devString;
 #ifdef GIT_SHA1
     const QString githubPrefix(QLatin1String(
-        "https://github.com/owncloud/client/commit/"));
+        "https://github.com/nextcloud/desktop/commit/"));
     const QString gitSha1(QLatin1String(GIT_SHA1));
     devString = QCoreApplication::translate("nextcloudTheme::about()",
         "<p><small>Built from Git revision <a href=\"%1\">%2</a>"
@@ -311,21 +332,17 @@ QString Theme::gitSHA1() const
 
 QString Theme::about() const
 {
-    QString re;
-    re = tr("<p>Version %1. For more information please visit <a href='%2'>%3</a>.</p>")
-             .arg(MIRALL_VERSION_STRING)
-             .arg("http://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
-             .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN));
+    QString devString;
+    devString = tr("<p>Version %1. For more information please visit <a href='%2'>%3</a>.</p>")
+              .arg(MIRALL_VERSION_STRING)
+              .arg("http://" MIRALL_STRINGIFY(APPLICATION_DOMAIN))
+              .arg(MIRALL_STRINGIFY(APPLICATION_DOMAIN));
 
-    re += tr("<p>Copyright ownCloud GmbH</p>");
-    re += tr("<p>Distributed by %1 and licensed under the GNU General Public License (GPL) Version 2.0.<br/>"
-             "%2 and the %2 logo are registered trademarks of %1 in the "
-             "United States, other countries, or both.</p>")
-              .arg(APPLICATION_VENDOR)
-              .arg(APPLICATION_NAME);
+    devString += tr("<p>This release was supplied by the Nextcloud GmbH</p>");
 
-    re += gitSHA1();
-    return re;
+    devString += gitSHA1();
+
+    return devString;
 }
 
 #ifndef TOKEN_AUTH_ONLY
@@ -370,7 +387,7 @@ QIcon Theme::syncStateIcon(SyncResult::Status status, bool sysTray, bool sysTray
     switch (status) {
     case SyncResult::Undefined:
         // this can happen if no sync connections are configured.
-        statusIcon = QLatin1String("state-information");
+        statusIcon = QLatin1String("state-warning");
         break;
     case SyncResult::NotYetStarted:
     case SyncResult::SyncRunning:
@@ -385,7 +402,7 @@ QIcon Theme::syncStateIcon(SyncResult::Status status, bool sysTray, bool sysTray
         statusIcon = QLatin1String("state-ok");
         break;
     case SyncResult::Problem:
-        statusIcon = QLatin1String("state-information");
+        statusIcon = QLatin1String("state-warning");
         break;
     case SyncResult::Error:
     case SyncResult::SetupError:
@@ -527,6 +544,5 @@ QString Theme::versionSwitchOutput() const
     stream << "Using '" << QSslSocket::sslLibraryVersionString() << "'" << endl;
     return helpText;
 }
-
 
 } // end namespace client

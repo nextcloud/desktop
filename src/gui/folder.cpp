@@ -494,6 +494,8 @@ void Folder::slotWatchedPathChanged(const QString &path)
         return; // probably a spurious notification
     }
 
+    warnOnNewExcludedItem(record, relativePath);
+
     emit watchedFileChangedExternally(path);
 
     // Also schedule this folder for a sync, but only after some delay:
@@ -985,6 +987,52 @@ void Folder::slotFolderConflicts(const QString &folder, const QStringList &confl
         r.setNumOldConflictItems(conflictPaths.size() - r.numNewConflictItems());
 }
 
+void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QStringRef &path)
+{
+    // Never warn for items in the database
+    if (record.isValid())
+        return;
+
+    // Don't warn for items that no longer exist.
+    // Note: This assumes we're getting file watcher notifications
+    // for folders only on creation and deletion - if we got a notification
+    // on content change that would create spurious warnings.
+    QFileInfo fi(_canonicalLocalPath + path);
+    if (!fi.exists())
+        return;
+
+    bool ok = false;
+    auto blacklist = _journal.getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+    if (!ok)
+        return;
+    if (!blacklist.contains(path + "/"))
+        return;
+
+    const auto message = fi.isDir()
+        ? tr("The folder %1 was created but was excluded from synchronization previously. "
+             "Data inside it will not be synchronized.")
+              .arg(fi.filePath())
+        : tr("The file %1 was created but was excluded from synchronization previously. "
+             "It will not be synchronized.")
+              .arg(fi.filePath());
+
+    Logger::instance()->postOptionalGuiLog(Theme::instance()->appNameGUI(), message);
+}
+
+void Folder::slotWatcherUnreliable(const QString &message)
+{
+    qCWarning(lcFolder) << "Folder watcher for" << path() << "became unreliable:" << message;
+    auto fullMessage =
+        tr("Changes in synchronized folders could not be tracked reliably.\n"
+           "\n"
+           "This means that the synchronization client might not upload local changes "
+           "immediately and will instead only scan for local changes and upload them "
+           "occasionally (every two hours by default).\n"
+           "\n"
+           "%1").arg(message);
+    Logger::instance()->postGuiLog(Theme::instance()->appNameGUI(), fullMessage);
+}
+
 void Folder::scheduleThisFolderSoon()
 {
     if (!_scheduleSelfTimer.isActive()) {
@@ -1004,11 +1052,14 @@ void Folder::registerFolderWatcher()
     if (!QDir(path()).exists())
         return;
 
-    _folderWatcher.reset(new FolderWatcher(path(), this));
+    _folderWatcher.reset(new FolderWatcher(this));
     connect(_folderWatcher.data(), &FolderWatcher::pathChanged,
         this, &Folder::slotWatchedPathChanged);
     connect(_folderWatcher.data(), &FolderWatcher::lostChanges,
         this, &Folder::slotNextSyncFullLocalDiscovery);
+    connect(_folderWatcher.data(), &FolderWatcher::becameUnreliable,
+        this, &Folder::slotWatcherUnreliable);
+    _folderWatcher->init(path());
 }
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, bool *cancel)

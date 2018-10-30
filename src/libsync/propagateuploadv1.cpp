@@ -145,6 +145,8 @@ void PropagateUploadFileV1::startNextChunk()
     connect(job, &PUTFileJob::uploadProgress, this, &PropagateUploadFileV1::slotUploadProgress);
     connect(job, &PUTFileJob::uploadProgress, device, &UploadDevice::slotJobUploadProgress);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
+    if (isFinalChunk)
+        adjustLastJobTimeout(job, fileSize);
     job->start();
     propagator()->_activeJobList.append(this);
     _currentChunk++;
@@ -352,28 +354,19 @@ void PropagateUploadFileV1::slotUploadProgress(qint64 sent, qint64 total)
 
 void PropagateUploadFileV1::abort(PropagatorJob::AbortType abortType)
 {
-    // Prepare abort
-    prepareAbort(abortType);
-
-    // Abort all jobs (if there are any left), except final PUT
-    foreach (AbstractNetworkJob *job, _jobs) {
-        if (job->reply()) {
-            // If asynchronous abort allowed,
-            // dont abort final PUT which uploaded its data,
-            // since this might result in conflicts
+    abortNetworkJobs(
+        abortType,
+        [this, abortType](AbstractNetworkJob *job) {
             if (PUTFileJob *putJob = qobject_cast<PUTFileJob *>(job)){
                 if (abortType == AbortType::Asynchronous
                     && _chunkCount > 0
                     && (((_currentChunk + _startChunk) % _chunkCount) == 0)
                     && putJob->device()->atEnd()) {
-                    continue;
+                    return false;
                 }
             }
-
-            // Abort the job
-            job->reply()->abort();
-        }
-    }
+            return true;
+        });
 }
 
 }

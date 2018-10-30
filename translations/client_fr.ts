@@ -766,7 +766,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="927"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation>Tous les fichiers contenus dans le dossier synchronisé &apos;%1&apos; ont été supprimés du serveur.
@@ -2082,7 +2082,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="93"/>
         <source>Skip folders configuration</source>
-        <translation>Passer outre la configuration des dossiers</translation>
+        <translation>Ignorer la configuration des dossiers</translation>
     </message>
 </context>
 <context>
@@ -3646,8 +3646,8 @@ Il est déconseillé de l&apos;utiliser.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
-        <source>Unpause all folders</source>
-        <translation>Relancer tous les dossiers </translation>
+        <source>Resume all folders</source>
+        <translation>Reprendre tous les dossiers</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -3656,13 +3656,13 @@ Il est déconseillé de l&apos;utiliser.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
-        <source>Unpause all synchronization</source>
-        <translation>Relancer toutes les synchronisations</translation>
+        <source>Resume all synchronization</source>
+        <translation>Reprendre toutes les synchronisations</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
-        <source>Unpause synchronization</source>
-        <translation>Relancer la synchronisation</translation>
+        <source>Resume synchronization</source>
+        <translation>Reprendre la synchronisation</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="609"/>
@@ -3847,7 +3847,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation>Merci de basculer vers votre navigateur pour poursuivre.</translation>
+        <translation>Merci de basculer vers votre navigateur pour terminer.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>

@@ -141,6 +141,7 @@ protected:
     QSslKey _clientSslKey;
     QSslCertificate _clientSslCertificate;
     bool _keychainMigration;
+    bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
 };
 
 

@@ -34,8 +34,8 @@ AccountState::AccountState(AccountPtr account)
     , _state(AccountState::Disconnected)
     , _connectionStatus(ConnectionValidator::Undefined)
     , _waitingForNewCredentials(false)
-    , _maintenanceToConnectedDelay(60000 + (qrand() % (4 * 60000))) // 1-5min delay
     , _notificationsEtagResponseHeader("*")
+    , _maintenanceToConnectedDelay(60000 + (qrand() % (4 * 60000))) // 1-5min delay
 {
     qRegisterMetaType<AccountState *>("AccountState*");
 
@@ -335,10 +335,10 @@ void AccountState::slotInvalidCredentials()
 
     if (account()->credentials()->ready()) {
         account()->credentials()->invalidateToken();
-        if (auto creds = qobject_cast<HttpCredentials *>(account()->credentials())) {
-            if (creds->refreshAccessToken())
-                return;
-        }
+    }
+    if (auto creds = qobject_cast<HttpCredentials *>(account()->credentials())) {
+        if (creds->refreshAccessToken())
+            return;
     }
     account()->credentials()->askFromUser();
 }

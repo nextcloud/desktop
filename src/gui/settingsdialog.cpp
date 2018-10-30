@@ -25,7 +25,6 @@
 #include "owncloudgui.h"
 #include "activitywidget.h"
 #include "accountmanager.h"
-#include "protocolwidget.h"
 
 #include <QLabel>
 #include <QStandardItemModel>
@@ -44,8 +43,8 @@
 
 namespace {
 const char TOOLBAR_CSS[] =
-    "QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 1px solid %2; spacing: 0; } "
-    "QToolBar QToolButton { background: %1; border: none; border-bottom: 1px solid %2; margin: 0; padding: 5px; } "
+    "QToolBar { background: %1; margin: 0; padding: 0; border: none; border-bottom: 0 solid %2; spacing: 0; } "
+    "QToolBar QToolButton { background: %1; border: none; border-bottom: 0 solid %2; margin: 0; padding: 5px; } "
     "QToolBar QToolBarExtension { padding:0; } "
     "QToolBar QToolButton:checked { background: %3; color: %4; }";
 
@@ -84,19 +83,27 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     setObjectName("Settings"); // required as group for saveGeometry call
     setWindowTitle(Theme::instance()->appNameGUI());
 
+    connect(AccountManager::instance(), &AccountManager::accountAdded,
+        this, &SettingsDialog::accountAdded);
+    connect(AccountManager::instance(), &AccountManager::accountRemoved,
+        this, &SettingsDialog::accountRemoved);
+
     _actionGroup = new QActionGroup(this);
     _actionGroup->setExclusive(true);
+    connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
 
-    // Note: all the actions have a '\n' because the account name is in two lines and
-    // all buttons must have the same size in order to keep a good layout
-    _activityAction = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
-    _actionGroup->addAction(_activityAction);
-    _toolBar->addAction(_activityAction);
-    _activitySettings = new ActivitySettings;
-    _ui->stack->addWidget(_activitySettings);
-    connect(_activitySettings, &ActivitySettings::guiLog, _gui,
-        &ownCloudGui::slotShowOptionalTrayMessage);
-    _activitySettings->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
+    foreach(auto ai, AccountManager::instance()->accounts()) {
+        accountAdded(ai.data());
+    }
+
+    _actionBefore = new QAction(this);
+    _toolBar->addAction(_actionBefore);
+
+    // Adds space between users + activities and general + network actions
+    QWidget* spacer = new QWidget();
+    spacer->setMinimumWidth(10);
+    spacer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
+    _toolBar->addWidget(spacer);
 
     QAction *generalAction = createColorAwareAction(QLatin1String(":/client/resources/settings.png"), tr("General"));
     _actionGroup->addAction(generalAction);
@@ -110,19 +117,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     NetworkSettings *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
 
-    _actionGroupWidgets.insert(_activityAction, _activitySettings);
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
-
-    connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
-
-    connect(AccountManager::instance(), &AccountManager::accountAdded,
-        this, &SettingsDialog::accountAdded);
-    connect(AccountManager::instance(), &AccountManager::accountRemoved,
-        this, &SettingsDialog::accountRemoved);
-    foreach (auto ai, AccountManager::instance()->accounts()) {
-        accountAdded(ai.data());
-    }
 
     QTimer::singleShot(1, this, &SettingsDialog::showFirstPage);
 
@@ -189,24 +185,42 @@ void SettingsDialog::showFirstPage()
 
 void SettingsDialog::showActivityPage()
 {
-    if (_activityAction) {
-        _activityAction->trigger();
+    if (auto account = qvariant_cast<AccountState*>(sender()->property("account"))) {
+        _activitySettings[account]->show();
+        _ui->stack->setCurrentWidget(_activitySettings[account]);
     }
 }
 
-void SettingsDialog::showIssuesList(const QString &folderAlias)
-{
-    if (!_activityAction)
-        return;
-    _activityAction->trigger();
-    _activitySettings->slotShowIssuesTab(folderAlias);
+void SettingsDialog::activityAdded(AccountState *s){
+    _ui->stack->addWidget(_activitySettings[s]);
+    connect(_activitySettings[s], &ActivitySettings::guiLog, _gui,
+        &ownCloudGui::slotShowOptionalTrayMessage);
+
+    ConfigFile cfg;
+    _activitySettings[s]->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
+
+    // Note: all the actions have a '\n' because the account name is in two lines and
+    // all buttons must have the same size in order to keep a good layout
+    QAction *action = createColorAwareAction(QLatin1String(":/client/resources/activity.png"), tr("Activity"));
+    action->setProperty("account", QVariant::fromValue(s));
+    _toolBar->insertAction(_actionBefore, action);
+    _actionGroup->addAction(action);
+    _actionGroupWidgets.insert(action, _activitySettings[s]);
+    connect(action, &QAction::triggered, this, &SettingsDialog::showActivityPage);
 }
 
 void SettingsDialog::accountAdded(AccountState *s)
 {
     auto height = _toolBar->sizeHint().height();
-
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
+
+    _activitySettings[s] = new ActivitySettings(s, this);
+
+    // if this is not the first account, then before we continue to add more accounts we add a separator
+    if(AccountManager::instance()->accounts().first().data() != s &&
+        AccountManager::instance()->accounts().size() >= 1){
+        _actionGroupWidgets.insert(_toolBar->insertSeparator(_actionBefore), _activitySettings[s]);
+    }
 
     QAction *accountAction;
     QImage avatar = s->account()->avatar();
@@ -223,23 +237,25 @@ void SettingsDialog::accountAdded(AccountState *s)
         accountAction->setToolTip(s->account()->displayName());
         accountAction->setIconText(SettingsDialogCommon::shortDisplayNameForSettings(s->account().data(),  height * buttonSizeRatio));
     }
-    _toolBar->insertAction(_toolBar->actions().at(0), accountAction);
+
+    _toolBar->insertAction(_actionBefore, accountAction);
     auto accountSettings = new AccountSettings(s, this);
     _ui->stack->insertWidget(0, accountSettings);
     _actionGroup->addAction(accountAction);
     _actionGroupWidgets.insert(accountAction, accountSettings);
     _actionForAccount.insert(s->account().data(), accountAction);
+    accountAction->trigger();
 
     connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotFoldersChanged);
     connect(accountSettings, &AccountSettings::openFolderAlias,
         _gui, &ownCloudGui::slotFolderOpenAction);
-    connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
     connect(s->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
     connect(s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
 
     // Refresh immediatly when getting online
     connect(s, &AccountState::isConnectedChanged, this, &SettingsDialog::slotRefreshActivityAccountStateSender);
 
+    activityAdded(s);
     slotRefreshActivity(s);
 }
 
@@ -295,7 +311,19 @@ void SettingsDialog::accountRemoved(AccountState *s)
     if (_actionForAccount.contains(s->account().data())) {
         _actionForAccount.remove(s->account().data());
     }
-    _activitySettings->slotRemoveAccount(s);
+
+    if(_activitySettings.contains(s)){
+        _activitySettings[s]->slotRemoveAccount();
+        _activitySettings[s]->hide();
+
+        // get the settings widget and the separator
+        foreach(QAction *action, _actionGroupWidgets.keys(_activitySettings[s])){
+            _actionGroupWidgets.remove(action);
+            _toolBar->removeAction(action);
+        }
+        _toolBar->widgetForAction(_actionBefore)->hide();
+        _activitySettings.remove(s);
+    }
 
     // Hide when the last account is deleted. We want to enter the same
     // state we'd be in the client was started up without an account
@@ -317,9 +345,8 @@ void SettingsDialog::customizeStyle()
         QIcon icon = createColorAwareIcon(a->property("iconPath").toString());
         a->setIcon(icon);
         QToolButton *btn = qobject_cast<QToolButton *>(_toolBar->widgetForAction(a));
-        if (btn) {
+        if (btn)
             btn->setIcon(icon);
-        }
     }
 }
 
@@ -359,8 +386,6 @@ public:
         btn->setDefaultAction(this);
         btn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-        //         btn->setMinimumWidth(qMax<int>(parent->sizeHint().height() * buttonSizeRatio,
-        //                                        btn->sizeHint().width()));
         return btn;
     }
 };
@@ -389,9 +414,8 @@ void SettingsDialog::slotRefreshActivityAccountStateSender()
 
 void SettingsDialog::slotRefreshActivity(AccountState *accountState)
 {
-    if (accountState) {
-        _activitySettings->slotRefresh(accountState);
-    }
+    if (accountState->isConnected())
+        _activitySettings[accountState]->slotRefresh();
 }
 
 } // namespace OCC

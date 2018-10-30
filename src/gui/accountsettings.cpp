@@ -115,6 +115,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     , _wasDisabledBefore(false)
     , _accountState(accountState)
     , _quotaInfo(accountState)
+    , _menuShown(false)
 {
     ui->setupUi(this);
 
@@ -189,12 +190,19 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     connect(&_quotaInfo, &QuotaInfo::quotaUpdated,
         this, &AccountSettings::slotUpdateQuota);
+
+    // Connect E2E stuff
+    connect(this, &AccountSettings::requesetMnemonic, _accountState->account()->e2e(), &ClientSideEncryption::slotRequestMnemonic);
+    connect(_accountState->account()->e2e(), &ClientSideEncryption::showMnemonic, this, &AccountSettings::slotShowMnemonic);
 }
 
 
 void AccountSettings::createAccountToolbox()
 {
     QMenu *menu = new QMenu();
+
+    connect(menu, &QMenu::aboutToShow, this, &AccountSettings::slotMenuBeforeShow);
+
     _addAccountAction = new QAction(tr("Add new"), this);
     menu->addAction(_addAccountAction);
     connect(_addAccountAction, &QAction::triggered, this, &AccountSettings::slotOpenAccountWizard);
@@ -213,6 +221,24 @@ void AccountSettings::createAccountToolbox()
 
     slotAccountAdded(_accountState);
 }
+
+void AccountSettings::slotMenuBeforeShow() {
+    if (_menuShown) {
+        return;
+    }
+
+    auto menu = ui->_accountToolbox->menu();
+
+    // We can't check this during the initial creation as there is no account yet then
+    if (_accountState->account()->capabilities().clientSideEncryptionAvaliable()) {
+        QAction *mnemonic = new QAction(tr("Show E2E mnemonic"), this);
+        connect(mnemonic, &QAction::triggered, this, &AccountSettings::requesetMnemonic);
+        menu->addAction(mnemonic);
+    }
+
+    _menuShown = true;
+}
+
 
 QString AccountSettings::selectedFolderAlias() const
 {
@@ -257,6 +283,10 @@ void AccountSettings::doExpand()
     ui->_folderList->expandToDepth(0);
 }
 
+void AccountSettings::slotShowMnemonic(const QString &mnemonic) {
+    AccountManager::instance()->displayMnemonic(mnemonic);
+}
+
 void AccountSettings::slotEncryptionFlagSuccess(const QByteArray& fileId)
 {
     if (auto info = _model->infoForFileId(fileId)) {
@@ -274,6 +304,8 @@ void AccountSettings::slotEncryptionFlagSuccess(const QByteArray& fileId)
 
 void AccountSettings::slotEncryptionFlagError(const QByteArray& fileId, int httpErrorCode)
 {
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpErrorCode);
     qDebug() << "Error on the encryption flag";
 }
 
@@ -314,6 +346,8 @@ void AccountSettings::slotUploadMetadataSuccess(const QByteArray& folderId)
 
 void AccountSettings::slotUpdateMetadataError(const QByteArray& folderId, int httpReturnCode)
 {
+    Q_UNUSED(httpReturnCode);
+
 	const auto token = accountsState()->account()->e2e()->tokenForFolder(folderId);
 	auto unlockJob = new UnlockEncryptFolderApiJob(accountsState()->account(), folderId, token);
 	connect(unlockJob, &UnlockEncryptFolderApiJob::success,
@@ -325,15 +359,23 @@ void AccountSettings::slotUpdateMetadataError(const QByteArray& folderId, int ht
 
 void AccountSettings::slotLockForEncryptionError(const QByteArray& fileId, int httpErrorCode)
 {
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpErrorCode);
+
     qCInfo(lcAccountSettings()) << "Locking error" << httpErrorCode;
 }
 
 void AccountSettings::slotUnlockFolderError(const QByteArray& fileId, int httpErrorCode)
 {
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpErrorCode);
+
     qCInfo(lcAccountSettings()) << "Unlocking error!";
 }
 void AccountSettings::slotUnlockFolderSuccess(const QByteArray& fileId)
 {
+    Q_UNUSED(fileId);
+
     qCInfo(lcAccountSettings()) << "Unlocking success!";
 }
 
@@ -445,27 +487,41 @@ void AccountSettings::slotDecryptionFlagSuccess(const QByteArray& fileId)
     }
 }
 
-void AccountSettings::slotDecryptionFlagError(const QByteArray& fileID, int httpReturnCode)
+void AccountSettings::slotDecryptionFlagError(const QByteArray& fileId, int httpReturnCode)
 {
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpReturnCode);
+
     qDebug() << "Error Setting the Decryption Flag";
 }
 
 void AccountSettings::slotUnlockForDecryptionError(const QByteArray& fileId, int httpReturnCode)
 {
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpReturnCode);
+
     qDebug() << "Error unlocking folder after decryption";
 }
 
 void AccountSettings::slotDeleteMetadataError(const QByteArray& fileId, int httpReturnCode)
 {
-  qDebug() << "Error deleting the metadata";
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpReturnCode);
+
+    qDebug() << "Error deleting the metadata";
 }
 void AccountSettings::slotLockForDecryptionError(const QByteArray& fileId, int httpReturnCode)
 {
-  qDebug() << "Error Locking for decryption";
+    Q_UNUSED(fileId);
+    Q_UNUSED(httpReturnCode);
+
+    qDebug() << "Error Locking for decryption";
 }
 
 void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index, const QPoint& pos)
 {
+    Q_UNUSED(pos);
+
     QMenu menu;
     auto ac = menu.addAction(tr("Open folder"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotOpenCurrentLocalSubFolder);
@@ -481,12 +537,13 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
         // Verify if the folder is empty before attempting to encrypt.
 
         bool isEncrypted = acc->e2e()->isFolderEncrypted(info->_path);
-        ac = menu.addAction( isEncrypted ? tr("Decrypt") : tr("Encrypt"));
 
-        if (not isEncrypted) {
+        if (!isEncrypted) {
+            ac = menu.addAction(tr("Encrypt"));
             connect(ac, &QAction::triggered, [this, &info] { slotMarkSubfolderEncrpted(info); });
         } else {
-            connect(ac, &QAction::triggered, [this, &info] { slotMarkSubfolderDecrypted(info); });
+            // Ingore decrypting for now since it only works with an empty folder
+            // connect(ac, &QAction::triggered, [this, &info] { slotMarkSubfolderDecrypted(info); });
         }
     }
     menu.exec(QCursor::pos());
@@ -623,7 +680,7 @@ void AccountSettings::slotFolderWizardAccepted()
 
     /* take the value from the definition of already existing folders. All folders have
      * the same setting so far.
-     * The default is to not sync hidden files
+     * The default is to sync hidden files
      */
     definition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
 

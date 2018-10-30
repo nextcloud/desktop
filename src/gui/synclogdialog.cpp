@@ -27,17 +27,13 @@
 
 namespace OCC {
 
-SyncLogDialog::SyncLogDialog(QWidget *parent, ProtocolWidget *protoWidget)
+SyncLogDialog::SyncLogDialog(QWidget *parent)
     : QDialog(parent)
     , _ui(new Ui::SyncLogDialog)
 {
     setObjectName("SyncLogDialog"); // required as group for saveGeometry call
 
     _ui->setupUi(this);
-
-    if (protoWidget) {
-        _ui->logWidgetLayout->addWidget(protoWidget);
-    }
 
     QPushButton *closeButton = _ui->buttonBox->button(QDialogButtonBox::Close);
     if (closeButton) {

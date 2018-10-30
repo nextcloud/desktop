@@ -29,15 +29,6 @@ class NextcloudTheme : public Theme
 public:
     NextcloudTheme();
 
-    QString configFileName() const Q_DECL_OVERRIDE;
-    QString about() const Q_DECL_OVERRIDE;
-
-#ifndef TOKEN_AUTH_ONLY
-    QIcon trayFolderIcon(const QString &) const Q_DECL_OVERRIDE;
-    QIcon applicationIcon() const Q_DECL_OVERRIDE;
-#endif
-
-    QString helpUrl() const Q_DECL_OVERRIDE;
 #ifndef TOKEN_AUTH_ONLY
     QVariant customMedia(CustomMediaType type) Q_DECL_OVERRIDE;
 

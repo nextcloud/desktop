@@ -59,6 +59,8 @@ public:
     void setAccount(AccountPtr account);
     AccountPtr account() const;
     void setOCUrl(const QString &);
+    bool registration();
+    void setRegistration(bool registration);
 
     void setupCustomMedia(QVariant, QLabel *);
     QString ocUrl() const;
@@ -107,6 +109,8 @@ private:
     WebViewPage *_webViewPage;
 
     QStringList _setupLog;
+
+    bool _registration;
 
     friend class OwncloudSetupWizard;
 };

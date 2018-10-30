@@ -178,7 +178,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="307"/>
         <source>Restart sync</source>
-        <translation type="unfinished"/>
+        <translation>Reštartovať synchronizáciu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="316"/>
@@ -253,7 +253,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="667"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Získavam autorizáciu z prehliadača.  &lt;a href=&apos;%1&apos;&gt;Kliknite sem&lt;/a&gt; na opätovné otvorenie prehliadača.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="671"/>
@@ -278,12 +278,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="787"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Niektoré priečinky neboli synchronizované, pretože sú na externom úložisku</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="788"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation type="unfinished"/>
+        <translation>Niektoré priečinky neboli synchronizované, pretože sú príliš veľké alebo sú na externom úložisku</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="834"/>
@@ -388,7 +388,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="138"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Zisťujem prihlasovacie údaje</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="140"/>
@@ -446,7 +446,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="613"/>
         <source>The list of unsynced items has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Zoznam nezosynchronizovaných položiek bol skopírovaný do schránky.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="618"/>
@@ -496,22 +496,22 @@
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="349"/>
         <source>You received %n new notification(s) from %2.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Prijali ste %n novú notifikáciu od %2.</numerusform><numerusform>Prijali ste %n nové notifikácie od %2.</numerusform><numerusform>Prijali ste %n nových notifikácií od %2.</numerusform><numerusform>Prijali ste %n nových notifikácií od %2.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="356"/>
         <source>You received %n new notification(s) from %1 and %2.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Prijali ste %n novú notifikáciu od %1 a %2.</numerusform><numerusform>Prijali ste %n nové notifikácie od %1 a %2.</numerusform><numerusform>Prijali ste %n nových notifikácií od %1 a %2.</numerusform><numerusform>Prijali ste %n nových notifikácií od %1 a %2.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="358"/>
         <source>You received new notifications from %1, %2 and other accounts.</source>
-        <translation type="unfinished"/>
+        <translation>Prijali ste nové notifikácie od %1, %2 a iných účtov.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="362"/>
         <source>%1 Notifications - Action Required</source>
-        <translation type="unfinished"/>
+        <translation>%1 Notifikácií - vyžaduje sa akcia</translation>
     </message>
 </context>
 <context>
@@ -557,12 +557,12 @@
     <message>
         <location filename="../src/gui/application.cpp" line="164"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri prístupe ku konfiguračnému súboru</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="165"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri prístupe ku konfiguračnému súboru %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="168"/>
@@ -691,42 +691,42 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="364"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 a %n iný súbor bol odstránený.</numerusform><numerusform>%1 a %n iné súbory boli odstránené.</numerusform><numerusform>%1 a %n iných súborov bolo odstránených.</numerusform><numerusform>%1 a %n iných súborov bolo odstránených.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="371"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 a %n iný súbor bol stiahnutý.</numerusform><numerusform>%1 a %n iné súbory boli stiahnuté.</numerusform><numerusform>%1 a %n iných súborov bolo stiahnutých.</numerusform><numerusform>%1 a %n iných súborov bolo stiahnutých.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="378"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 a %n iný súbor bol nahratý.</numerusform><numerusform>%1 a %n iné súbory boli nahraté.</numerusform><numerusform>%1 a %n iných súborov bolo nahratých.</numerusform><numerusform>%1 a %n iných súborov bolo nahratých.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="385"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 bol premenovaný na %2 a %n iný súbor bol premenovaný.</numerusform><numerusform>%1 bol premenovaný na %2 a %n iné súbory boli premenované.</numerusform><numerusform>%1 bol premenovaný na %2 a %n iných súborov bolo premenovaných.</numerusform><numerusform>%1 bol premenovaný na %2 a %n iných súborov bolo premenovaných.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="392"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 bol presunuý do %2 a %n iných súbor bol presunutý.</numerusform><numerusform>%1 bol presunuý do %2 a %n iné súbory boli presunuté.</numerusform><numerusform>%1 bol presunuý do %2 a %n iných súborov bolo presunutých.</numerusform><numerusform>%1 bol presunuý do %2 a %n iných súborov bolo presunutých.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="399"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 má a %n iný súbor má synchronizačný konflikt.</numerusform><numerusform>%1 má a %n iné súbory majú synchronizačný konflikt.</numerusform><numerusform>%1 má a %n iných súborov má synchronizačný konflikt.</numerusform><numerusform>%1 má a %n iných súborov má synchronizačný konflikt.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="401"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation type="unfinished"/>
+        <translation>%1 má synchronizačný konflikt.  Prosím skontrolujte konfliktný súbor!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="406"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 a %n iný súbor nie je možné synchronizovať kvôli chybe. Skontrolujte log pre podrobnosti.</numerusform><numerusform>%1 a %n iné súbory nie je možné synchronizovať kvôli chybe. Skontrolujte log pre podrobnosti.</numerusform><numerusform>%1 a %n iných súborov nie je možné synchronizovať kvôli chybe. Skontrolujte log pre podrobnosti.</numerusform><numerusform>%1 a %n iných súborov nie je možné synchronizovať kvôli chybe.  Skontrolujte log pre podrobnosti.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="408"/>
@@ -747,13 +747,15 @@
         <location filename="../src/gui/folder.cpp" line="888"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>Bol pridaný nový priečinok väčší ako %1 MB: %2.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="891"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation type="unfinished"/>
+        <translation>Bol pridaný priečinok z externého úložiska.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="892"/>
@@ -763,7 +765,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="927"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation type="unfinished"/>
@@ -931,7 +933,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="46"/>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Pridať prepojenie priečinka</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="249"/>
@@ -991,7 +993,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="884"/>
         <source>Reconciling changes</source>
-        <translation type="unfinished"/>
+        <translation>Zosúladenie zmien</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
@@ -1089,7 +1091,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="548"/>
         <source>Add Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Pridať prepojenie priečinka</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="550"/>
@@ -1240,12 +1242,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
         <source>&amp;Launch on System Startup</source>
-        <translation type="unfinished"/>
+        <translation>Spustiť pri štarte systému</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
         <source>Show &amp;Desktop Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Zobrazovať notifikácie</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
@@ -1255,7 +1257,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="147"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation type="unfinished"/>
+        <translation>Editovať &amp;ignorované súbory</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="232"/>
@@ -1387,7 +1389,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="20"/>
         <source>List of issues</source>
-        <translation type="unfinished"/>
+        <translation>Zoznam problémov</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="34"/>
@@ -1398,7 +1400,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/issueswidget.ui" line="42"/>
         <location filename="../src/gui/issueswidget.ui" line="61"/>
         <source>&lt;no filter&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;no filter&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="50"/>
@@ -1409,7 +1411,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="73"/>
         <source>Show warnings</source>
-        <translation type="unfinished"/>
+        <translation>Zobraziť varovania</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
@@ -1424,7 +1426,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.ui" line="155"/>
         <source>Copy the issues list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Skopírovať zoznam problémov do schránky.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="158"/>
@@ -1444,7 +1446,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="84"/>
         <source>Issue</source>
-        <translation type="unfinished"/>
+        <translation>Problémy</translation>
     </message>
 </context>
 <context>
@@ -1955,7 +1957,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>The server reported the following error:</source>
-        <translation type="unfinished"/>
+        <translation>Server nahlásil nasledovnú chybu:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2889,7 +2891,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
         <source>SSL Chipher Debug View</source>
-        <translation type="unfinished"/>
+        <translation>Debug zobrazenie šifrovania SSL</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
@@ -2913,7 +2915,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="557"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Niečo som vám sprístupnil</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="565"/>
@@ -3033,7 +3035,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="215"/>
         <source>No support for SSL session tickets/identifiers</source>
-        <translation type="unfinished"/>
+        <translation>Nie je dostupná podpora tiketov/identifikátorov SSL sedenia</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="225"/>
@@ -3068,7 +3070,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="132"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation type="unfinished"/>
+        <translation>Nie je možné sa bezpečne pripojiť k &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
@@ -3216,7 +3218,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="477"/>
         <source>Folder hierarchy is too deep</source>
-        <translation type="unfinished"/>
+        <translation>Hierarchia priečinkov je príliš hlboká</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="493"/>
@@ -3619,7 +3621,7 @@ Nie je vhodné ju používať.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="273"/>
         <location filename="../src/gui/owncloudgui.cpp" line="304"/>
         <source>Synchronization is paused</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizácia je pozastavená</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="306"/>
@@ -3633,8 +3635,8 @@ Nie je vhodné ju používať.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
-        <source>Unpause all folders</source>
-        <translation>Zrušiť pozastavenie všetkých priečinkov</translation>
+        <source>Resume all folders</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="365"/>
@@ -3643,13 +3645,13 @@ Nie je vhodné ju používať.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
-        <source>Unpause all synchronization</source>
-        <translation>Zrušiť pozastavenie všetkej synchronizácie</translation>
+        <source>Resume all synchronization</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
-        <source>Unpause synchronization</source>
-        <translation>Zrušiť pozastavenie synchronizácie</translation>
+        <source>Resume synchronization</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="609"/>
@@ -3695,7 +3697,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="786"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizuje sa %1 z %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="795"/>
@@ -3863,7 +3865,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="86"/>
         <source>Ser&amp;ver Address</source>
-        <translation type="unfinished"/>
+        <translation>Adresa servera</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="102"/>
@@ -4068,7 +4070,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
         <source>Updated local metadata</source>
-        <translation type="unfinished"/>
+        <translation>Aktualizované lokálne metadáta</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="53"/>
@@ -4110,7 +4112,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
         <source>updating local metadata</source>
-        <translation type="unfinished"/>
+        <translation>aktualizujú sa lokálne metadáta</translation>
     </message>
 </context>
 <context>
@@ -4171,7 +4173,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="33"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa otvoriť prehliadač</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
@@ -4181,7 +4183,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="55"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa otvoriť emailového klienta</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="56"/>

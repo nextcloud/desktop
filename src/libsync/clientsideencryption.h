@@ -10,7 +10,6 @@
 #include <QVector>
 #include <QMap>
 
-#include <openssl/rsa.h>
 #include <openssl/evp.h>
 
 #include "accountfwd.h"
@@ -48,7 +47,7 @@ namespace EncryptionHelper {
             const QByteArray& data
     );
 
-    QByteArray privateKeyToPem(const QSslKey key);
+    QByteArray privateKeyToPem(const QByteArray key);
 
     //TODO: change those two EVP_PKEY into QSslKey.
     QByteArray encryptStringAsymmetric(
@@ -88,6 +87,9 @@ public:
 
     void forgetSensitiveData();
 
+public slots:
+    void slotRequestMnemonic();
+
 private slots:
     void folderEncryptedStatusFetched(const QMap<QString, bool> &values);
     void folderEncryptedStatusError(int error);
@@ -99,6 +101,7 @@ private slots:
 signals:
     void initializationFinished();
     void mnemonicGenerated(const QString& mnemonic);
+    void showMnemonic(const QString& mnemonic);
 
 private:
     void getPrivateKeyFromServer();
@@ -119,7 +122,8 @@ private:
     QMap<QString, bool> _folder2encryptedStatus;
 
 public:
-    QSslKey _privateKey;
+    //QSslKey _privateKey;
+    QByteArray _privateKey;
     QSslKey _publicKey;
     QSslCertificate _certificate;
     QString _mnemonic;

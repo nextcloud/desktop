@@ -1,3 +1,10 @@
+#include <openssl/rsa.h>
+#include <openssl/evp.h>
+#include <openssl/pem.h>
+#include <openssl/err.h>
+#include <openssl/engine.h>
+
+
 #include "clientsideencryption.h"
 #include "account.h"
 #include "capabilities.h"
@@ -5,12 +12,6 @@
 #include "clientsideencryptionjobs.h"
 #include "theme.h"
 #include "creds/abstractcredentials.h"
-
-#include <openssl/rsa.h>
-#include <openssl/evp.h>
-#include <openssl/pem.h>
-#include <openssl/err.h>
-#include <openssl/engine.h>
 
 #include <map>
 
@@ -389,10 +390,9 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     return result;
 }
 
-QByteArray privateKeyToPem(const QSslKey key) {
+QByteArray privateKeyToPem(const QByteArray key) {
     BIO *privateKeyBio = BIO_new(BIO_s_mem());
-    QByteArray privateKeyPem = key.toPem();
-    BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
+    BIO_write(privateKeyBio, key.constData(), key.size());
     EVP_PKEY *pkey = PEM_read_bio_PrivateKey(privateKeyBio, NULL, NULL, NULL);
 
     BIO *pemBio = BIO_new(BIO_s_mem());
@@ -693,7 +693,8 @@ void ClientSideEncryption::privateKeyFetched(Job *incoming) {
         return;
     }
 
-    _privateKey = QSslKey(readJob->binaryData(), QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
+    //_privateKey = QSslKey(readJob->binaryData(), QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
+    _privateKey = readJob->binaryData();
 
     if (_privateKey.isNull()) {
         getPrivateKeyFromServer();
@@ -722,7 +723,7 @@ void ClientSideEncryption::mnemonicKeyFetched(QKeychain::Job *incoming) {
     if (readJob->error() != NoError || readJob->textData().length() == 0) {
         _certificate = QSslCertificate();
         _publicKey = QSslKey();
-        _privateKey = QSslKey();
+        _privateKey = QByteArray();
         getPublicKeyFromServer();
         return;
     }
@@ -744,7 +745,7 @@ void ClientSideEncryption::writePrivateKey() {
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
     job->setKey(kck);
-    job->setBinaryData(_privateKey.toPem());
+    job->setBinaryData(_privateKey);
     connect(job, &WritePasswordJob::finished, [this](Job *incoming) {
         Q_UNUSED(incoming);
         qCInfo(lcCse()) << "Private key stored in keychain";
@@ -790,7 +791,7 @@ void ClientSideEncryption::writeMnemonic() {
 
 void ClientSideEncryption::forgetSensitiveData()
 {
-    _privateKey = QSslKey();
+    _privateKey = QByteArray();
     _certificate = QSslCertificate();
     _publicKey = QSslKey();
     _mnemonic = QString();
@@ -806,6 +807,10 @@ void ClientSideEncryption::forgetSensitiveData()
     startDeleteJob(user + e2e_private);
     startDeleteJob(user + e2e_cert);
     startDeleteJob(user + e2e_mnemonic);
+}
+
+void ClientSideEncryption::slotRequestMnemonic() {
+    emit showMnemonic(_mnemonic);
 }
 
 bool ClientSideEncryption::hasPrivateKey() const
@@ -854,7 +859,8 @@ void ClientSideEncryption::generateKeyPair()
         return;
     }
     QByteArray key = BIO2ByteArray(privKey);
-    _privateKey = QSslKey(key, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
+    //_privateKey = QSslKey(key, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
+    _privateKey = key;
 
     qCInfo(lcCse()) << "Keys generated correctly, sending to server.";
     generateCSR(localKeyPair);
@@ -1020,9 +1026,10 @@ void ClientSideEncryption::decryptPrivateKey(const QByteArray &key) {
             qCInfo(lcCse()) << "Generated key:" << pass;
 
             QByteArray privateKey = EncryptionHelper::decryptPrivateKey(pass, key2);
-            _privateKey = QSslKey(privateKey, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
+            //_privateKey = QSslKey(privateKey, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
+            _privateKey = privateKey;
 
-            qCInfo(lcCse()) << "Private key: " << _privateKey.toPem();
+            qCInfo(lcCse()) << "Private key: " << _privateKey;
 
             if (!_privateKey.isNull()) {
                 writePrivateKey();
@@ -1032,7 +1039,7 @@ void ClientSideEncryption::decryptPrivateKey(const QByteArray &key) {
             }
         } else {
             _mnemonic = QString();
-            _privateKey = QSslKey();
+            _privateKey = QByteArray();
             qCInfo(lcCse()) << "Cancelled";
             break;
         }
@@ -1221,7 +1228,7 @@ QByteArray FolderMetadata::encryptMetadataKey(const QByteArray& data) const {
 QByteArray FolderMetadata::decryptMetadataKey(const QByteArray& encryptedMetadata) const
 {
     BIO *privateKeyBio = BIO_new(BIO_s_mem());
-    QByteArray privateKeyPem = _account->e2e()->_privateKey.toPem();
+    QByteArray privateKeyPem = _account->e2e()->_privateKey;
     BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
     EVP_PKEY *key = PEM_read_bio_PrivateKey(privateKeyBio, NULL, NULL, NULL);
 

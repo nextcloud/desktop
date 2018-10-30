@@ -3,11 +3,11 @@
 set -xe
 shopt -s extglob
 
-PPA=ppa:nextcloud-devs/client-alpha
-PPA_BETA=ppa:nextcloud-devs/client-beta
+PPA=ppa:nextcloud-devs/client-beta
+PPA_BETA=ppa:nextcloud-devs/client-alpha
 
-OBS_PROJECT=home:ivaradi:alpha
-OBS_PROJECT_BETA=home:ivaradi:beta
+OBS_PROJECT=home:ivaradi:beta
+OBS_PROJECT_BETA=home:ivaradi:alpha
 OBS_PACKAGE=nextcloud-client
 
 pull_request=${DRONE_PULL_REQUEST:=master}
@@ -39,9 +39,9 @@ echo "$kind" > kind
 kind="release"
 
 if test "$kind" = "beta"; then
-    repo=nextcloud-devs/client-beta
-else
     repo=nextcloud-devs/client-alpha
+else
+    repo=nextcloud-devs/client-beta
 fi
 
 origsourceopt=""
@@ -52,7 +52,7 @@ if ! wget http://ppa.launchpad.net/${repo}/ubuntu/pool/main/n/nextcloud-client/n
     origsourceopt="-sa"
 fi
 
-for distribution in xenial artful bionic stable; do
+for distribution in xenial bionic cosmic stable; do
     rm -rf nextcloud-client_${basever}
     cp -a ${DRONE_WORKSPACE} nextcloud-client_${basever}
 

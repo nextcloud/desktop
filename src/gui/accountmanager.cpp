@@ -25,6 +25,7 @@
 #include <QNetworkAccessManager>
 #include <QMessageBox>
 #include "clientsideencryption.h"
+#include "ui_mnemonicdialog.h"
 
 namespace {
 static const char urlC[] = "url";
@@ -335,16 +336,19 @@ AccountPtr AccountManager::createAccount()
 
 void AccountManager::displayMnemonic(const QString& mnemonic)
 {
-    QMessageBox msgBox;
-    msgBox.setText(tr("All 12 words together make a very strong password, "
-                      "letting only you view and make use of your encrypted files. "
-                      "Please write it down and keep it somewhere safe."));
-    msgBox.setDetailedText(mnemonic);
-    msgBox.setWindowTitle(tr("Make note of your 12 word encryption password"));
-    msgBox.setIcon(QMessageBox::Information);
-    msgBox.setStandardButtons(QMessageBox::Ok);
-
-    msgBox.exec();
+    QDialog *widget = new QDialog;
+    Ui_Dialog ui;
+    ui.setupUi(widget);
+    widget->setWindowTitle(tr("End to end encryption mnemonic"));
+    ui.label->setText(tr("To protect your Cryptocraphic Identity, we encrypt it with a mnemonic of 12 dictionary words."
+                         "Please note these down and keep them safe. "
+                         "They will be needed to add other devices to your account (like your mobile phone or laptop)."));
+    ui.textEdit->setText(mnemonic);
+    ui.textEdit->focusWidget();
+    ui.textEdit->selectAll();
+    ui.textEdit->setAlignment(Qt::AlignCenter);
+    widget->exec();
+    widget->resize(widget->sizeHint());
 }
 void AccountManager::shutdown()
 {

@@ -243,7 +243,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="656"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>Palvelin %1 on parhaillaan huoltotilassa.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="658"/>
@@ -253,12 +253,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="667"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Hankitaan valtuutus selaimelta. &lt;a href=&apos;%1&apos;&gt;Napsauta tästä&lt;/a&gt; avataksesi selaimen uudelleen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="671"/>
         <source>Connecting to %1...</source>
-        <translation type="unfinished"/>
+        <translation>Yhdistetään kohteeseen %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="674"/>
@@ -273,7 +273,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="785"/>
         <source>There are folders that were not synchronized because they are too big: </source>
-        <translation type="unfinished"/>
+        <translation>Havaittiin kansioita, joita ei synkronoitu, koska ne ovat kooltaan liian suuria:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="787"/>
@@ -373,7 +373,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="132"/>
         <source>Maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>Huoltotila</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="134"/>
@@ -388,7 +388,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="138"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Kysytään tilitietoja</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="140"/>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="168"/>
         <source>Quit ownCloud</source>
-        <translation type="unfinished"/>
+        <translation>Lopeta ownCloud</translation>
     </message>
 </context>
 <context>
@@ -763,7 +763,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="927"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
-These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
+These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore.
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
         <translation type="unfinished"/>
@@ -1389,7 +1389,7 @@ Kohteet, joiden poisto on sallittu, poistetaan, jos ne estävät kansion poistam
     <message>
         <location filename="../src/gui/issueswidget.ui" line="20"/>
         <source>List of issues</source>
-        <translation type="unfinished"/>
+        <translation>Lista ongelmista</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="34"/>
@@ -1411,7 +1411,7 @@ Kohteet, joiden poisto on sallittu, poistetaan, jos ne estävät kansion poistam
     <message>
         <location filename="../src/gui/issueswidget.ui" line="73"/>
         <source>Show warnings</source>
-        <translation type="unfinished"/>
+        <translation>Näytä varoitukset</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
@@ -1426,7 +1426,7 @@ Kohteet, joiden poisto on sallittu, poistetaan, jos ne estävät kansion poistam
     <message>
         <location filename="../src/gui/issueswidget.ui" line="155"/>
         <source>Copy the issues list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Kopioi ongelmalista leikepöydälle.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="158"/>
@@ -1446,7 +1446,7 @@ Kohteet, joiden poisto on sallittu, poistetaan, jos ne estävät kansion poistam
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="84"/>
         <source>Issue</source>
-        <translation type="unfinished"/>
+        <translation>Ongelma</translation>
     </message>
 </context>
 <context>
@@ -1686,7 +1686,7 @@ Kohteet, joiden poisto on sallittu, poistetaan, jos ne estävät kansion poistam
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="112"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Palvelimelta palautunut virhe: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
@@ -1701,12 +1701,12 @@ Kohteet, joiden poisto on sallittu, poistetaan, jos ne estävät kansion poistam
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>Vastaus palvelimelta ei sisältänyt kaikkia odotettuja kenttiä</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="125"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Kirjautumisvirhe&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="131"/>
@@ -1878,7 +1878,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="44"/>
         <source>Login in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Kirjaudu selaimellasi</translation>
     </message>
 </context>
 <context>
@@ -1956,7 +1956,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>The server reported the following error:</source>
-        <translation type="unfinished"/>
+        <translation>Palvelin ilmoitti seuraavan virheen:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2645,12 +2645,12 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="35"/>
         <source>Enter a name to create a new public link...</source>
-        <translation type="unfinished"/>
+        <translation>Anna nimi luodaksesi uuden julkisen linkin...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="42"/>
         <source>&amp;Create new</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Luo uusi</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="105"/>
@@ -2665,7 +2665,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="178"/>
         <source>Link properties:</source>
-        <translation type="unfinished"/>
+        <translation>Linkin ominaisuudet:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="220"/>
@@ -2680,7 +2680,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="20"/>
         <source>Anyone with the link has access to the file/folder</source>
-        <translation type="unfinished"/>
+        <translation>Kuka tahansa, jolla on linkki tiedostoon tai kansioon, on pääsy siihen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="117"/>
@@ -2701,12 +2701,12 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="93"/>
         <source>Link shares have been disabled</source>
-        <translation type="unfinished"/>
+        <translation>Linkkijaot on poistettu käytöstä</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="107"/>
         <source>Create public link share</source>
-        <translation type="unfinished"/>
+        <translation>Luo julkinen linkkijako</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
@@ -2717,17 +2717,17 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="163"/>
         <source>Open link in browser</source>
-        <translation type="unfinished"/>
+        <translation>Avaa linkki selaimessa</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopioi linkki leikepöydälle</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Copy link to clipboard (direct download)</source>
-        <translation type="unfinished"/>
+        <translation>Kopioi linkki leikepöydälle (suora lataus)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
@@ -2737,12 +2737,12 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="167"/>
         <source>Send link by email (direct download)</source>
-        <translation type="unfinished"/>
+        <translation>Lähetä linkki sähköpostitse (suora lataus)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="520"/>
         <source>Confirm Link Share Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Vahvista linkkijaon poistaminen</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="521"/>
@@ -2758,12 +2758,12 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <location filename="../src/gui/sharelinkwidget.cpp" line="63"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="544"/>
         <source>Public link</source>
-        <translation type="unfinished"/>
+        <translation>Julkinen linkki</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
         <source>Delete link share</source>
-        <translation type="unfinished"/>
+        <translation>Poista linkkijako</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="459"/>
@@ -2796,17 +2796,17 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="186"/>
         <source>The item is not shared with any users or groups</source>
-        <translation type="unfinished"/>
+        <translation>Tämä kohde ei ole jaettu yhdenkään käyttäjän tai ryhmän kanssa</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="235"/>
         <source>Open link in browser</source>
-        <translation type="unfinished"/>
+        <translation>Avaa linkki selaimessa</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="237"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopioi linkki leikepöydälle</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="239"/>
@@ -2821,7 +2821,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Jaoin jotain kanssasi</translation>
     </message>
 </context>
 <context>
@@ -2914,22 +2914,22 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="557"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Jaoin jotain kanssasi</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="565"/>
         <source>Share...</source>
-        <translation type="unfinished"/>
+        <translation>Jaa...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="567"/>
         <source>Copy private link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopioi yksityinen linkki leikepöydälle</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="568"/>
         <source>Send private link by email...</source>
-        <translation type="unfinished"/>
+        <translation>Lähetä yksityinen linkki sähköpostitse...</translation>
     </message>
 </context>
 <context>
@@ -3217,7 +3217,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="477"/>
         <source>Folder hierarchy is too deep</source>
-        <translation type="unfinished"/>
+        <translation>Kansiohierarkia on liian syvä</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="493"/>
@@ -3620,12 +3620,12 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="273"/>
         <location filename="../src/gui/owncloudgui.cpp" line="304"/>
         <source>Synchronization is paused</source>
-        <translation type="unfinished"/>
+        <translation>Synkronointi on keskeytetty</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="306"/>
         <source>Error during synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Virhe kesken synkronoinnin</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="314"/>
@@ -3634,7 +3634,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="360"/>
-        <source>Unpause all folders</source>
+        <source>Resume all folders</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3644,13 +3644,13 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="599"/>
-        <source>Unpause all synchronization</source>
-        <translation>Palauta kaikki synkronointi</translation>
+        <source>Resume all synchronization</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="601"/>
-        <source>Unpause synchronization</source>
-        <translation>Palauta synkronointi</translation>
+        <source>Resume synchronization</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="609"/>
@@ -3763,7 +3763,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="301"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Kysy vahvistus, ennen kuin s&amp;ynkronoidaan kansiot suurempia kuin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="318"/>
@@ -3835,17 +3835,17 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="36"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation type="unfinished"/>
+        <translation>Vaihda selaimeen jatkaaksesi.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occured while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Yhdistäessä tapahtui virhe. Yritä uudelleen.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Avaa selain uudelleen</translation>
     </message>
 </context>
 <context>
@@ -3864,7 +3864,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="86"/>
         <source>Ser&amp;ver Address</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Palvelimen osoite</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="102"/>
@@ -4172,7 +4172,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="33"/>
         <source>Could not open browser</source>
-        <translation type="unfinished"/>
+        <translation>Selainta ei voitu avata</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
