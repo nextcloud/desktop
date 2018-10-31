@@ -121,7 +121,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>Restart & Update</string>
+         <string>Restart and Update</string>
         </property>
        </widget>
       </item>
