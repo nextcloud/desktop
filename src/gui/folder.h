@@ -79,7 +79,7 @@ public:
         FolderDefinition *folder);
 
     /// The highest version in the settings that load() can read
-    static int maxSettingsVersion() { return 1; }
+    static int maxSettingsVersion() { return 2; }
 
     /// Ensure / as separator and trailing /.
     static QString prepareLocalPath(const QString &path);
@@ -234,6 +234,9 @@ public:
       * the backwards-compatible 'Folders' section in the config file.
       */
     void setSaveBackwardsCompatible(bool save);
+
+    /** Used to have placeholders: save in placeholder config section */
+    void setSaveInFoldersWithPlaceholders() { _saveInFoldersWithPlaceholders = true; }
 
     /**
      * Sets up this folder's folderWatcher if possible.
@@ -400,7 +403,16 @@ private:
      * on the *first* Folder instance that was configured for each local
      * path.
      */
-    bool _saveBackwardsCompatible;
+    bool _saveBackwardsCompatible = false;
+
+    /** Whether the folder should be saved in that settings group
+     *
+     * If it was read from there it had virtual files enabled at some
+     * point and might still have db entries or suffix-virtual files even
+     * if they are disabled right now. This flag ensures folders that
+     * were in that group once never go back.
+     */
+    bool _saveInFoldersWithPlaceholders = false;
 
     /**
      * Watches this folder's local directory for changes.
