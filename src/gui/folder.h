@@ -77,7 +77,7 @@ public:
         FolderDefinition *folder);
 
     /// The highest version in the settings that load() can read
-    static int maxSettingsVersion() { return 2; }
+    static int maxSettingsVersion() { return 1; }
 
     /// Ensure / as separator and trailing /.
     static QString prepareLocalPath(const QString &path);
