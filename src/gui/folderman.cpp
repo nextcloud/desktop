@@ -165,8 +165,11 @@ int FolderMan::setupFolders()
 {
     unloadAndDeleteAllFolders();
 
-    QStringList skipSettingsKeys;
-    backwardMigrationSettingsKeys(&skipSettingsKeys, &skipSettingsKeys);
+    QStringList skipSettingsKeys, deleteSettingsKeys;
+    backwardMigrationSettingsKeys(&deleteSettingsKeys, &skipSettingsKeys);
+    // deleteKeys should already have been deleted on application startup.
+    // We ignore them here just in case.
+    skipSettingsKeys += deleteSettingsKeys;
 
     auto settings = ConfigFile::settingsWithGroup(QLatin1String("Accounts"));
     const auto accountsWithSettings = settings->childGroups();

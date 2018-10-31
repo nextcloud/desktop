@@ -68,9 +68,22 @@ public:
     int setupFolders();
     int setupFoldersMigration();
 
-    /**
-     * Returns a list of keys that can't be read because they are from
-     * future versions.
+    /** Find folder setting keys that need to be ignored or deleted for being too new.
+     *
+     * The client has a maximum supported version for the folders lists (maxFoldersVersion
+     * in folderman.cpp) and a second maximum version for the contained folder configuration
+     * (FolderDefinition::maxSettingsVersion()). If a future client creates configurations
+     * with higher versions the older client will not be able to process them.
+     *
+     * Skipping or deleting these keys prevents accidents when switching from a newer
+     * client to an older one.
+     *
+     * This function scans through the settings and finds too-new entries that can be
+     * ignored (ignoreKeys) and entries that have to be deleted to keep going (deleteKeys).
+     *
+     * This data is used in Application::configVersionMigration() to backward-migrate
+     * future configurations (possibly with user confirmation for deletions) and in
+     * FolderMan::setupFolders() to know which too-new folder configurations to skip.
      */
     static void backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys);
 
