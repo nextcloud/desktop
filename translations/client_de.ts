@@ -1253,8 +1253,8 @@ Wenn diese Synchronisation fortgesetzt wird, werden Dateien eventuell von älter
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="33"/>
-        <source>Show &amp;Desktop Notifications</source>
-        <translation>Zeige &amp;Desktop-Benachrichtigungen</translation>
+        <source>Show Server &amp;Notifications</source>
+        <translation>Zeige &amp;Server-Benachrichtigungen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="43"/>
