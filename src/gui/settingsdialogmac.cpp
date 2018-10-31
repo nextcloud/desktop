@@ -167,6 +167,7 @@ void SettingsDialogMac::accountAdded(AccountState *s)
     _activitySettings[s]->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
 
     slotRefreshActivity(s);
+    setCurrentPanelIndex(0);
 }
 
 void SettingsDialogMac::accountRemoved(AccountState *s)
