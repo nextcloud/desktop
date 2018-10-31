@@ -72,21 +72,21 @@
          <string>For System Tray</string>
         </property>
         <property name="text">
-         <string>Use &amp;Monochrome Icons</string>
+         <string>Use Monochrome Icons</string>
         </property>
        </widget>
       </item>
       <item row="0" column="0">
        <widget class="QCheckBox" name="autostartCheckBox">
         <property name="text">
-         <string>&amp;Launch on System Startup</string>
+         <string>Launch on System Startup</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
        <widget class="QCheckBox" name="serverNotificationsCheckBox">
         <property name="text">
-         <string>Show Server &amp;Notifications</string>
+         <string>Show Server Notifications</string>
         </property>
        </widget>
       </item>
@@ -121,7 +121,7 @@
          </sizepolicy>
         </property>
         <property name="text">
-         <string>&amp;Restart &amp;&amp; Update</string>
+         <string>Restart & Update</string>
         </property>
        </widget>
       </item>
@@ -168,7 +168,7 @@
         <item>
          <widget class="QPushButton" name="ignoredFilesButton">
           <property name="text">
-           <string>Edit &amp;Ignored Files</string>
+           <string>Edit Ignored Files</string>
           </property>
          </widget>
         </item>
@@ -247,7 +247,7 @@
         <item>
          <widget class="QCheckBox" name="showInExplorerNavigationPaneCheckBox">
           <property name="text">
-           <string>Show sync folders in &amp;Explorer's Navigation Pane</string>
+           <string>Show sync folders in Explorer's Navigation Pane</string>
           </property>
          </widget>
         </item>
@@ -264,7 +264,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>S&amp;how crash reporter</string>
+           <string>Show crash reporter</string>
           </property>
          </widget>
         </item>
