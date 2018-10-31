@@ -473,16 +473,26 @@ int main(int argc, char **argv)
             auto caps = json.object().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
             qDebug() << "Server capabilities" << caps;
             account->setCapabilities(caps.toVariantMap());
+            account->setServerVersion(caps["core"].toObject()["status"].toObject()["version"].toString());
             loop.quit();
         });
         job->start();
-
         loop.exec();
 
         if (job->reply()->error() != QNetworkReply::NoError){
             std::cout<<"Error connecting to server\n";
             return EXIT_FAILURE;
         }
+
+        job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/user"));
+        QObject::connect(job, &JsonApiJob::jsonReceived, [&](const QJsonDocument &json) {
+            const QJsonObject data = json.object().value("ocs").toObject().value("data").toObject();
+            account->setDavUser(data.value("id").toString());
+            account->setDavDisplayName(data.value("display-name").toString());
+            loop.quit();
+        });
+        job->start();
+        loop.exec();
     }
 
     // much lower age than the default since this utility is usually made to be run right after a change in the tests

@@ -388,6 +388,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
     if (r->error() == QNetworkReply::NoError
         && !contentType.contains("application/xml; charset=utf-8")) {
         msg = tr("Server error: PROPFIND reply is not XML formatted!");
+
     }
     emit finished({httpCode, msg});
     deleteLater();

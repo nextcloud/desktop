@@ -165,8 +165,11 @@ int FolderMan::setupFolders()
 {
     unloadAndDeleteAllFolders();
 
-    QStringList skipSettingsKeys;
-    backwardMigrationSettingsKeys(&skipSettingsKeys, &skipSettingsKeys);
+    QStringList skipSettingsKeys, deleteSettingsKeys;
+    backwardMigrationSettingsKeys(&deleteSettingsKeys, &skipSettingsKeys);
+    // deleteKeys should already have been deleted on application startup.
+    // We ignore them here just in case.
+    skipSettingsKeys += deleteSettingsKeys;
 
     auto settings = ConfigFile::settingsWithGroup(QLatin1String("Accounts"));
     const auto accountsWithSettings = settings->childGroups();
@@ -189,22 +192,22 @@ int FolderMan::setupFolders()
 
         // The "backwardsCompatible" flag here is related to migrating old
         // database locations
-        auto process = [&](const QString &groupName, bool backwardsCompatible = false) {
+        auto process = [&](const QString &groupName, bool backwardsCompatible, bool foldersWithPlaceholders) {
             settings->beginGroup(groupName);
             if (skipSettingsKeys.contains(settings->group())) {
                 // Should not happen: bad container keys should have been deleted
                 qCWarning(lcFolderMan) << "Folder structure" << groupName << "is too new, ignoring";
             } else {
-                setupFoldersHelper(*settings, account, backwardsCompatible, skipSettingsKeys);
+                setupFoldersHelper(*settings, account, skipSettingsKeys, backwardsCompatible, foldersWithPlaceholders);
             }
             settings->endGroup();
         };
 
-        process(QStringLiteral("Folders"), true);
+        process(QStringLiteral("Folders"), true, false);
 
         // See Folder::saveToSettings for details about why these exists.
-        process(QStringLiteral("Multifolders"));
-        process(QStringLiteral("FoldersWithPlaceholders"));
+        process(QStringLiteral("Multifolders"), false, false);
+        process(QStringLiteral("FoldersWithPlaceholders"), false, true);
 
         settings->endGroup(); // <account>
     }
@@ -214,7 +217,7 @@ int FolderMan::setupFolders()
     return _folderMap.size();
 }
 
-void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account, bool backwardsCompatible, const QStringList &ignoreKeys)
+void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account, const QStringList &ignoreKeys, bool backwardsCompatible, bool foldersWithPlaceholders)
 {
     foreach (const auto &folderAlias, settings.childGroups()) {
         // Skip folders with too-new version
@@ -253,9 +256,10 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
             Folder *f = addFolderInternal(std::move(folderDefinition), account.data());
             if (f) {
                 // Migration: Mark folders that shall be saved in a backwards-compatible way
-                if (backwardsCompatible) {
+                if (backwardsCompatible)
                     f->setSaveBackwardsCompatible(true);
-                }
+                if (foldersWithPlaceholders)
+                    f->setSaveInFoldersWithPlaceholders();
                 scheduleFolder(f);
                 emit folderSyncStateChange(f);
             }
