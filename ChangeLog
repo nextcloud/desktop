@@ -9,18 +9,23 @@ version 2.5.1 (2018-??-??)
 * Sync: Fixed crash when aborting sync of large files with older servers
 * Sync: Don't error out if X-OC-MTime header is missing (#6797)
 * Discovery: Windows: Don't check if a server file name can be encoded (#6810)
+* Server Move: Fix too many starting slashes in the destination header (#6824)
 * Virtual Files: Renaming a virtual files also rename the file on the server (#6718)
 * Virtual Files: Disable the 'choose what to sync' in the new folder wizard when virtual files are selected
-* Virtual files: Wipe selective sync settings when enabled
-* Virtual files: Use theme to check for option availability
 * Account Settings: Add a context menu entry to enable or disable virtual files (#6725)
 * Account Settings: Fix progress being written in white when there are errors
 * GUI: Plug a few smaller memory leaks
+* Wizard: Reset the QSslConfiguration before checking the server (#6832)
 * Windows Shell Integration: No limit on the amount of selected files (#6780)
+* Windows Shell Integration: Make OCUtil helper lib static and link it statically against crt
 * Windows: Disable autostartCheckBox if autostart is configured system wide (#6816)
 * macOS: Fix icon name in Info.plist
 * macOS: Do not select ownCloud in Finder after installation (#6781)
 * macOS: Improve macdeployqt.py
+* Discovery: Include path in error message (#6826)
+* Database: Allow downgrade from 2.6
+* Migration from 2.4: fallback to move file by file if directory move failled (#6807)
+* owncloudcmd: Read server version and dav user id from the server (#6830)
 
 version 2.5.0 (2018-09-18)
 * Local discovery: Speed up by skipping directories without changes reported by the file system watcher.
