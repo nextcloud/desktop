@@ -631,7 +631,7 @@ void ShareUserLine::displayPermissions()
 
 //  edit is independent of reshare
     if (perm & SharePermissionShare)
-        _permissionReshare->setChecked(Qt::Checked);
+        _permissionReshare->setChecked(true);
 
     if(!_isFile){
         _permissionCreate->setChecked(perm & SharePermissionCreate);
