@@ -98,7 +98,7 @@ void OwncloudAdvancedSetupPage::setupCustomization()
 
 bool OwncloudAdvancedSetupPage::isComplete() const
 {
-    return !_checking && _localFolderValid;
+    return manualFolderConfig() || (!_checking && _localFolderValid);
 }
 
 void OwncloudAdvancedSetupPage::initializePage()
@@ -252,6 +252,10 @@ bool OwncloudAdvancedSetupPage::isConfirmBigFolderChecked() const
 
 bool OwncloudAdvancedSetupPage::validatePage()
 {
+    if (manualFolderConfig()) {
+        return true;
+    }
+
     if (!_created) {
         setErrorString(QString());
         _checking = true;
@@ -389,6 +393,8 @@ void OwncloudAdvancedSetupPage::setRadioChecked(QRadioButton *radio)
         _ui.rSelectiveSync->setCheckable(false);
     if (radio != _ui.rVirtualFileSync)
         _ui.rVirtualFileSync->setCheckable(false);
+
+    emit completeChanged();
 }
 
 } // namespace OCC
