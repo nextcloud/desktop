@@ -125,12 +125,12 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
        * This code should probably be in csync_exclude, but it does not have the fs parameter.
        * Keep it here for now */
       if (ctx->ignore_hidden_files && (fs->is_hidden)) {
-          qCDebug(lcUpdate, "file excluded because it is a hidden file: %s", fs->path.constData());
+          qCInfo(lcUpdate, "file excluded because it is a hidden file: %s", fs->path.constData());
           excluded = CSYNC_FILE_EXCLUDE_HIDDEN;
       }
   } else {
       /* File is ignored because it's matched by a user- or system exclude pattern. */
-      qCDebug(lcUpdate, "%s excluded  (%d)", fs->path.constData(), excluded);
+      qCInfo(lcUpdate, "%s excluded  (%d)", fs->path.constData(), excluded);
       if (excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
           return 1;
       }
@@ -155,7 +155,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
        */
       QTextEncoder encoder(localCodec, QTextCodec::ConvertInvalidToNull);
       if (encoder.fromUnicode(QString::fromUtf8(fs->path)).contains('\0')) {
-          qCDebug(lcUpdate, "cannot encode %s to local encoding %d",
+          qCInfo(lcUpdate, "cannot encode %s to local encoding %d",
               fs->path.constData(), localCodec->mibEnum());
           excluded = CSYNC_FILE_EXCLUDE_CANNOT_ENCODE;
       }
@@ -163,7 +163,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
 
   if (fs->type == ItemTypeFile ) {
     if (fs->modtime == 0) {
-      qCDebug(lcUpdate, "file: %s - mtime is zero!", fs->path.constData());
+      qCInfo(lcUpdate, "file: %s - mtime is zero!", fs->path.constData());
     }
   }
 
@@ -245,7 +245,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                   checksumIdentical = fs->checksumHeader == base._checksumHeader;
               }
               if (checksumIdentical) {
-                  qCDebug(lcUpdate, "NOTE: Checksums are identical, file did not actually change: %s", fs->path.constData());
+                  qCInfo(lcUpdate, "NOTE: Checksums are identical, file did not actually change: %s", fs->path.constData());
                   fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                   goto out;
               }
@@ -269,7 +269,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
            * The metadata comparison ensure that we fetch all the file id or permission when
            * upgrading owncloud
            */
-          qCDebug(lcUpdate, "Reading from database: %s", fs->path.constData());
+          qCInfo(lcUpdate, "Reading from database: %s", fs->path.constData());
           ctx->remote.read_from_db = true;
       }
       /* If it was remembered in the db that the remote dir has ignored files, store
@@ -280,7 +280,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
       }
       if (metadata_differ) {
           /* file id or permissions has changed. Which means we need to update them in the DB. */
-          qCDebug(lcUpdate, "Need to update metadata for: %s", fs->path.constData());
+          qCInfo(lcUpdate, "Need to update metadata for: %s", fs->path.constData());
           fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
       } else {
           fs->instruction = CSYNC_INSTRUCTION_NONE;
@@ -288,7 +288,7 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
   } else {
       /* check if it's a file and has been renamed */
       if (ctx->current == LOCAL_REPLICA) {
-          qCDebug(lcUpdate, "Checking for rename based on inode # %" PRId64 "", (uint64_t) fs->inode);
+          qCInfo(lcUpdate, "Checking for rename based on inode # %" PRId64 "", (uint64_t) fs->inode);
 
           OCC::SyncJournalFileRecord base;
           if(!ctx->statedb->getFileRecordByInode(fs->inode, &base)) {
@@ -315,13 +315,13 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                       _rel_to_abs(ctx, fs->path), base._checksumHeader,
                       ctx->callbacks.checksum_userdata);
               if (!fs->checksumHeader.isEmpty()) {
-                  qCDebug(lcUpdate, "checking checksum of potential rename %s %s <-> %s", fs->path.constData(), fs->checksumHeader.constData(), base._checksumHeader.constData());
+                  qCInfo(lcUpdate, "checking checksum of potential rename %s %s <-> %s", fs->path.constData(), fs->checksumHeader.constData(), base._checksumHeader.constData());
                   isRename = fs->checksumHeader == base._checksumHeader;
               }
           }
 
           if (isRename) {
-              qCDebug(lcUpdate, "pot rename detected based on inode # %" PRId64 "", (uint64_t) fs->inode);
+              qCInfo(lcUpdate, "pot rename detected based on inode # %" PRId64 "", (uint64_t) fs->inode);
               /* inode found so the file has been renamed */
               fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
               if (fs->type == ItemTypeDirectory) {
@@ -331,6 +331,8 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
           goto out;
 
       } else {
+          qCInfo(lcUpdate, "Checking for rename based on fileid %s", fs->file_id.constData());
+
           /* Remote Replica Rename check */
           fs->instruction = CSYNC_INSTRUCTION_NEW;
 
@@ -376,7 +378,8 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
                   return;
               }
 
-              qCDebug(lcUpdate, "remote rename detected based on fileid %s --> %s", qPrintable(base._path), qPrintable(fs->path.constData()));
+              qCInfo(lcUpdate, "remote rename detected based on fileid %s --> %s", base._path.constData(), fs->path.constData());
+
               fs->instruction = CSYNC_INSTRUCTION_EVAL_RENAME;
               done = true;
           };
@@ -484,11 +487,11 @@ int csync_walker(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> fs) {
       }
       break;
   case ItemTypeSoftLink:
-    qCDebug(lcUpdate, "symlink: %s - not supported", fs->path.constData());
+    qCInfo(lcUpdate, "symlink: %s - not supported", fs->path.constData());
     break;
   default:
+    qCInfo(lcUpdate, "item: %s - item type %d not iterated", fs->path.constData(), fs->type);
     return 0;
-    break;
   }
 
   rc = _csync_detect_update(ctx, std::move(fs));
@@ -511,7 +514,7 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
              * their correct etags again and we don't run into this case.
              */
             if (rec._etag == "_invalid_") {
-                qCDebug(lcUpdate, "%s selective sync excluded", rec._path.constData());
+                qCInfo(lcUpdate, "%s selective sync excluded", rec._path.constData());
                 skipbase = rec._path;
                 skipbase += '/';
                 return;
@@ -663,7 +666,21 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       goto error;
   }
 
-  while ((dirent = csync_vio_readdir(ctx, dh))) {
+  while (true) {
+    // Get the next item in the directory
+    errno = 0;
+    dirent = csync_vio_readdir(ctx, dh);
+    if (!dirent) {
+        if (errno != 0) {
+            // Note: Windows vio converts any error into EACCES
+            qCWarning(lcUpdate, "readdir failed for file in %s - errno %d", uri, errno);
+            goto error;
+        }
+
+        // Normal case: End of items in directory
+        break;
+    }
+
     /* Conversion error */
     if (dirent->path.isEmpty() && !dirent->original_path.isEmpty()) {
         ctx->status_code = CSYNC_STATUS_INVALID_CHARACTERS;
@@ -757,7 +774,7 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
   }
 
   csync_vio_closedir(ctx, dh);
-  qCDebug(lcUpdate, " <= Closing walk for %s with read_from_db %d", uri, read_from_db);
+  qCInfo(lcUpdate, " <= Closing walk for %s with read_from_db %d", uri, read_from_db);
 
   return rc;
 

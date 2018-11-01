@@ -361,6 +361,10 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         }
         if (map.contains("data-fingerprint")) {
             _dataFingerprint = map.value("data-fingerprint").toUtf8();
+            if (_dataFingerprint.isEmpty()) {
+                // Placeholder that means that the server supports the feature even if it did not set one.
+                _dataFingerprint = "[empty]";
+            }
         }
     } else {
         // Remove <webDAV-Url>/folder/ from <webDAV-Url>/folder/subfile.txt
@@ -377,13 +381,11 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         std::unique_ptr<csync_file_stat_t> file_stat(new csync_file_stat_t);
         file_stat->path = file.toUtf8();
         file_stat->size = -1;
-        file_stat->modtime = -1;
         propertyMapToFileStat(map, file_stat.get());
         if (file_stat->type == ItemTypeDirectory)
             file_stat->size = 0;
         if (file_stat->type == ItemTypeSkip
             || file_stat->size == -1
-            || file_stat->modtime == -1
             || file_stat->remotePerm.isNull()
             || file_stat->etag.isEmpty()
             || file_stat->file_id.isEmpty()) {
