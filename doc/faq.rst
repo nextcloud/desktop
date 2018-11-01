@@ -21,6 +21,25 @@ When a deeply nested directory is excluded from synchronization it will be
 listed with other ignored files and directories in the "Not synced" tab of
 the "Activity" pane.
 
+There Was A Warning About Changes In Synchronized Folders Not Being Tracked Reliably.
+-------------------------------------------------------------------------------------
+
+On linux when the synchronized folder contains very many subfolders the
+operating system may not allow for enough inotify watches to monitor the
+changes in all of them.
+
+In this case the client will not be able to immediately start the
+synchronization process when a file in one of the unmonitored folders changes.
+Instead, the client will show the warning and manually scan folders for changes
+in a regular interval (two hours by default).
+
+This problem can be solved by setting the fs.inotify.max_user_watches
+sysctl to a higher value. This can usually be done either temporarily::
+
+    echo 524288 > /proc/sys/fs/inotify/max_user_watches
+
+or permanently by adjusting ``/etc/sysctl.conf``.
+
 I Want To Move My Local Sync Folder
 -----------------------------------
 
