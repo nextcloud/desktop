@@ -60,7 +60,6 @@ THE SOFTWARE.
 #include <tlhelp32.h>
 #include <vector>
 #include <QFileInfo>
-#include <qmessagebox.h>
 
 
 
