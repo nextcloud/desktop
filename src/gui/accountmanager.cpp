@@ -52,7 +52,7 @@ AccountManager *AccountManager::instance()
 bool AccountManager::restore()
 {
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
-    if (settings->status() != QSettings::NoError) {
+    if (settings->status() != QSettings::NoError || !settings->isWritable()) {
         qCWarning(lcAccountManager) << "Could not read settings from" << settings->fileName()
                                     << settings->status();
         return false;
