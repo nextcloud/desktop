@@ -71,7 +71,7 @@ namespace {
         "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
         "                         (to be used with --logdir)\n"
         "  --logflush           : flush the log file after every write.\n"
-        "  --logdebug           : also output debug-level messages in the log (equivalent to setting the env var QT_LOGGING_RULES=\"qt.*=true;*.debug=true\").\n"
+        "  --logdebug           : also output debug-level messages in the log.\n"
         "  --confdir <dirname>  : Use the given configuration folder.\n";
 
     QString applicationTrPath()
@@ -125,7 +125,8 @@ Application::Application(int &argc, char **argv)
     setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
     auto confDir = ConfigFile().configPath();
-    if (!QFileInfo(confDir).exists()) {
+    if (confDir.endsWith('/')) confDir.chop(1);  // macOS 10.11.x does not like trailing slash for rename/move.
+    if (!QFileInfo(confDir).isDir()) {
         // Migrate from version <= 2.4
         setApplicationName(_theme->appNameGUI());
 #ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
@@ -136,6 +137,7 @@ Application::Application(int &argc, char **argv)
         // We need to use the deprecated QDesktopServices::storageLocation because of its Qt4
         // behavior of adding "data" to the path
         QString oldDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+        if (oldDir.endsWith('/')) oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
         QT_WARNING_POP
         setApplicationName(_theme->appName());
         if (QFileInfo(oldDir).isDir()) {
@@ -202,9 +204,8 @@ Application::Application(int &argc, char **argv)
     _theme->setSystrayUseMonoIcons(cfg.monoIcons());
     connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
 
-    FolderMan::instance()->setupFolders();
-    _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
-
+    // Setting up the gui class will allow tray notifications for the
+    // setup that follows, like folder setup
     _gui = new ownCloudGui(this);
     if (_showLogWindow) {
         _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
@@ -212,6 +213,9 @@ Application::Application(int &argc, char **argv)
 #if WITH_LIBCLOUDPROVIDERS
     _gui->setupCloudProviders();
 #endif
+
+    FolderMan::instance()->setupFolders();
+    _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
 
     // Enable word wrapping of QInputDialog (#4197)
     setStyleSheet("QInputDialog QLabel { qproperty-wordWrap:1; }");

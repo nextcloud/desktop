@@ -415,7 +415,7 @@
         <location filename="../src/gui/activitywidget.cpp" line="515"/>
         <location filename="../src/gui/activitywidget.cpp" line="563"/>
         <source>Server Activity</source>
-        <translation>Sunucu Etkinliği</translation>
+        <translation>Sunucu İşlemleri</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="522"/>
@@ -436,12 +436,12 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="606"/>
         <source>The server activity list has been copied to the clipboard.</source>
-        <translation>Sunucu etkinliği listesi panoya kopyalandı.</translation>
+        <translation>Sunucu işlemleri listesi panoya kopyalandı.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="610"/>
         <source>The sync activity list has been copied to the clipboard.</source>
-        <translation>Eşitleme etkinliği listesi panoya kopyalandı.</translation>
+        <translation>Eşitleme işlemi listesi panoya kopyalandı.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="613"/>
@@ -481,7 +481,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="88"/>
         <source>Copy the activity list to the clipboard.</source>
-        <translation>Etkinlik listesini panoya kopyala.</translation>
+        <translation>İşlem listesini panoya kopyala.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="135"/>
@@ -736,7 +736,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="414"/>
         <source>Sync Activity</source>
-        <translation>Eşitleme Etkinliği</translation>
+        <translation>Eşitleme İşlemi</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="640"/>
@@ -2526,7 +2526,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="109"/>
         <source>Activity</source>
-        <translation>Etkinlik</translation>
+        <translation>İşlem</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="118"/>
@@ -2554,7 +2554,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="97"/>
         <source>Activity</source>
-        <translation>Etkinlik</translation>
+        <translation>İşlem</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialogmac.cpp" line="111"/>
