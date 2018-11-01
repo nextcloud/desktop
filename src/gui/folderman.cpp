@@ -882,7 +882,8 @@ void FolderMan::slotServerVersionChanged(Account *account)
 void FolderMan::slotWatchedFileUnlocked(const QString &path)
 {
     if (Folder *f = folderForPath(path)) {
-        f->scheduleThisFolderSoon();
+        // Treat this equivalently to the file being reported by the file watcher
+        f->slotWatchedPathChanged(path);
     }
 }
 
