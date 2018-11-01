@@ -60,6 +60,7 @@ THE SOFTWARE.
 #include <tlhelp32.h>
 #include <vector>
 #include <QFileInfo>
+#include <qmessagebox.h>
 
 
 
@@ -243,12 +244,16 @@ QString QSFileName;
     if (DokanFileInfo->ProcessId == getExplorerID()) 
 	{
         QVariantMap error;
-
-        if (da == 1179776)		//< OpenFile
-            Vfs_windows::instance()->openFileAtPath(QSFileName, error);            
+		ConfigFile cfg;
+		QString file = cfg.defaultFileStreamLetterDrive() + ":" + QSFileName;
+		qDebug() << "Check for file exists() and isFile(): " << file;
+		QFileInfo fileInfo(file);
+		if (da == 1179776) { //< OpenFile
+			if (fileInfo.exists() && fileInfo.isFile())
+				Vfs_windows::instance()->openFileAtPath(QSFileName, error);
+		}
 		else if (da == 65536)	//< DeleteFile
-            Vfs_windows::instance()->deleteFileAtPath(QSFileName, error);            
-
+			Vfs_windows::instance()->deleteFileAtPath(QSFileName, error);
 	}
 }
 
