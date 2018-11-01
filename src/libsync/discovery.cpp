@@ -1219,7 +1219,10 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
 
 bool ProcessDirectoryJob::runLocalQuery()
 {
-    auto dh = csync_vio_local_opendir((_discoveryData->_localDir + _currentFolder._local).toUtf8());
+    QByteArray localPath = (_discoveryData->_localDir + _currentFolder._local).toUtf8();
+    if (localPath.endsWith('/')) // Happens if _currentFolder._local.isEmpty()
+        localPath.chop(1);
+    auto dh = csync_vio_local_opendir(localPath);
     if (!dh) {
         qCInfo(lcDisco) << "Error while opening directory" << (_discoveryData->_localDir + _currentFolder._local) << errno;
         QString errorString = tr("Error while opening directory %1").arg(_discoveryData->_localDir + _currentFolder._local);
