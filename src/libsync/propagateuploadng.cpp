@@ -313,7 +313,7 @@ void PropagateUploadFileNG::startNextChunk()
         return;
     }
 
-    auto device = new UploadDevice(&propagator()->_bandwidthManager);
+    auto device = std::make_unique<UploadDevice>(&propagator()->_bandwidthManager);
     const QString fileName = propagator()->getFilePath(_item->_file);
 
     if (!device->prepareAndOpen(fileName, _sent, _currentChunkSize)) {
@@ -336,13 +336,14 @@ void PropagateUploadFileNG::startNextChunk()
     QUrl url = chunkUrl(_currentChunk);
 
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
-    PUTFileJob *job = new PUTFileJob(propagator()->account(), url, device, headers, _currentChunk, this);
+    auto devicePtr = device.get(); // for connections later
+    PUTFileJob *job = new PUTFileJob(propagator()->account(), url, std::move(device), headers, _currentChunk, this);
     _jobs.append(job);
     connect(job, &PUTFileJob::finishedSignal, this, &PropagateUploadFileNG::slotPutFinished);
     connect(job, &PUTFileJob::uploadProgress,
         this, &PropagateUploadFileNG::slotUploadProgress);
     connect(job, &PUTFileJob::uploadProgress,
-        device, &UploadDevice::slotJobUploadProgress);
+        devicePtr, &UploadDevice::slotJobUploadProgress);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     job->start();
     propagator()->_activeJobList.append(this);
