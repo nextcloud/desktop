@@ -96,6 +96,40 @@ static chrono::milliseconds millisecondsValue(const QSettings &setting, const ch
     return chrono::milliseconds(setting.value(QLatin1String(key), qlonglong(defaultValue.count())).toLongLong());
 }
 
+
+bool copy_dir_recursive(QString from_dir, QString to_dir)
+{
+    QDir dir;
+    dir.setPath(from_dir);
+
+    from_dir += QDir::separator();
+    to_dir += QDir::separator();
+
+    foreach (QString copy_file, dir.entryList(QDir::Files)) {
+        QString from = from_dir + copy_file;
+        QString to = to_dir + copy_file;
+
+        if (QFile::copy(from, to) == false) {
+            return false;
+        }
+    }
+
+    foreach (QString copy_dir, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+        QString from = from_dir + copy_dir;
+        QString to = to_dir + copy_dir;
+
+        if (dir.mkpath(to) == false) {
+            return false;
+        }
+
+        if (copy_dir_recursive(from, to) == false) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 ConfigFile::ConfigFile()
 {
     // QDesktopServices uses the application name to create a config path
@@ -262,9 +296,26 @@ QVariant ConfigFile::getPolicySetting(const QString &setting, const QVariant &de
 QString ConfigFile::configPath() const
 {
     if (_confDir.isEmpty()) {
-        // On Unix, use the AppConfigLocation for the settings, that's configurable with the XDG_CONFIG_HOME env variable.
-        // On Windows, use AppDataLocation, that's where the roaming data is and where we should store the config file
-        _confDir = QStandardPaths::writableLocation(Utility::isWindows() ? QStandardPaths::AppDataLocation : QStandardPaths::AppConfigLocation);
+        if (!Utility::isWindows()) {
+            // On Unix, use the AppConfigLocation for the settings, that's configurable with the XDG_CONFIG_HOME env variable.
+            _confDir = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+        } else {
+            // On Windows, use AppDataLocation, that's where the roaming data is and where we should store the config file
+             auto newLocation = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+
+             // Check if this is the first time loading the new location
+             if (!QFileInfo(newLocation).isDir()) {
+                 // Migrate data to the new locations
+                 auto oldLocation = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+
+                 // Only migrate if the old location exists.
+                 if (QFileInfo(oldLocation).isDir()) {
+                     QDir().mkpath(newLocation);
+                     copy_dir_recursive(oldLocation, newLocation);
+                 }
+             }
+            _confDir = newLocation;
+        }
     }
     QString dir = _confDir;
 
