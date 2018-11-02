@@ -53,6 +53,7 @@ set(client_SRCS
     folderman.cpp
     folderstatusmodel.cpp
     folderstatusdelegate.cpp
+    folderstatusview.cpp
     folderwatcher.cpp
     folderwizard.cpp
     generalsettings.cpp

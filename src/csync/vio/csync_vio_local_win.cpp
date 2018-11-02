@@ -156,6 +156,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
           // might be error, check!
           int dwError = GetLastError();
           if (dwError != ERROR_NO_MORE_FILES) {
+              qCWarning(lcCSyncVIOLocal, "FindNextFile error %d", dwError);
               errno = EACCES; // no more files is fine. Otherwise EACCESS
           }
           return nullptr;

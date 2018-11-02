@@ -24,7 +24,6 @@
 #include <QNetworkAccessManager>
 #include <QPropertyAnimation>
 #include <QGraphicsPixmapItem>
-#include <QtSvg/QSvgRenderer>
 
 #include "QProgressIndicator.h"
 
@@ -278,12 +277,19 @@ QString OwncloudSetupPage::url() const
 bool OwncloudSetupPage::validatePage()
 {
     if (!_authTypeKnown) {
+        QString u = url();
+        QUrl qurl(u);
+        if (!qurl.isValid() || qurl.host().isEmpty()) {
+            setErrorString(tr("Invalid URL"), false);
+            return false;
+        }
+
         setErrorString(QString(), false);
         _checking = true;
         startSpinner();
         emit completeChanged();
 
-        emit determineAuthType(url());
+        emit determineAuthType(u);
         return false;
     } else {
         // connecting is running

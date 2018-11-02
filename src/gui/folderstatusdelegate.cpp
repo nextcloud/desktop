@@ -16,6 +16,7 @@
 
 #include "folderstatusdelegate.h"
 #include "folderstatusmodel.h"
+#include "folderstatusview.h"
 #include "folderman.h"
 #include "accountstate.h"
 #include <theme.h>
@@ -24,6 +25,7 @@
 #include <QFileIconProvider>
 #include <QPainter>
 #include <QApplication>
+#include <QMouseEvent>
 
 inline static QFont makeAliasFont(const QFont &normalFont)
 {
@@ -110,6 +112,10 @@ int FolderStatusDelegate::rootFolderHeightWithoutErrors(const QFontMetrics &fm, 
 void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
     const QModelIndex &index) const
 {
+    if (index.data(AddButton).toBool()) {
+        const_cast<QStyleOptionViewItem &>(option).showDecorationSelected = false;
+    }
+
     QStyledItemDelegate::paint(painter, option, index);
 
     auto textAlign = Qt::AlignLeft;
@@ -129,15 +135,15 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     int margin = subFm.height() / 4;
 
     if (index.data(AddButton).toBool()) {
-        QSize hint = sizeHint(option, index);
         QStyleOptionButton opt;
         static_cast<QStyleOption &>(opt) = option;
-        opt.state &= ~QStyle::State_Selected;
-        opt.state |= QStyle::State_Raised;
+        if (opt.state & QStyle::State_Enabled && opt.state & QStyle::State_MouseOver && index == _pressedIndex) {
+            opt.state |= QStyle::State_Sunken;
+        } else {
+            opt.state |= QStyle::State_Raised;
+        }
         opt.text = addFolderText();
-        opt.rect.setWidth(qMin(opt.rect.width(), hint.width()));
-        opt.rect.adjust(0, aliasMargin, 0, -aliasMargin);
-        opt.rect = QStyle::visualRect(option.direction, option.rect, opt.rect);
+        opt.rect = addButtonRect(option.rect, option.direction);
         painter->save();
         painter->setFont(qApp->font("QPushButton"));
         QApplication::style()->drawControl(QStyle::CE_PushButton, &opt, painter, option.widget);
@@ -352,6 +358,27 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 bool FolderStatusDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
     const QStyleOptionViewItem &option, const QModelIndex &index)
 {
+    switch (event->type()) {
+    case QEvent::MouseButtonPress:
+    case QEvent::MouseMove:
+        if (const QAbstractItemView *view = qobject_cast<const QAbstractItemView *>(option.widget)) {
+            QMouseEvent *me = static_cast<QMouseEvent *>(event);
+            QModelIndex index;
+            if (me->buttons()) {
+                index = view->indexAt(me->pos());
+            }
+            if (_pressedIndex != index) {
+                _pressedIndex = index;
+                view->viewport()->update();
+            }
+        }
+        break;
+    case QEvent::MouseButtonRelease:
+        _pressedIndex = QModelIndex();
+        break;
+    default:
+        break;
+    }
     return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 
@@ -372,6 +399,16 @@ QRect FolderStatusDelegate::optionsButtonRect(QRect within, Qt::LayoutDirection 
     QRect r(QPoint(within.right() - size.width() - margin,
                 within.top() + within.height() / 2 - size.height() / 2),
         size);
+    return QStyle::visualRect(direction, within, r);
+}
+
+QRect FolderStatusDelegate::addButtonRect(QRect within, Qt::LayoutDirection direction)
+{
+    QFontMetrics fm(qApp->font("QPushButton"));
+    QStyleOptionButton opt;
+    opt.text = addFolderText();
+    QSize size = QApplication::style()->sizeFromContents(QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text)).expandedTo(QApplication::globalStrut());
+    QRect r(QPoint(within.left(), within.top() + within.height() / 2 - size.height() / 2), size);
     return QStyle::visualRect(direction, within, r);
 }
 
