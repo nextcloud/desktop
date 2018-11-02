@@ -22,8 +22,8 @@
 namespace OCC {
 
 static const int Spacing = 6;
-static const int SlideDuration = 250;
-static const int SlideDistance = 200;
+static const int SlideDuration = 1000;
+static const int SlideDistance = 400;
 
 SlideShow::SlideShow(QWidget *parent) : QWidget(parent)
 {
