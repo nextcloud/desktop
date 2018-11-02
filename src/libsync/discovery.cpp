@@ -466,7 +466,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                 qCInfo(lcDisco) << "Local file does not exist anymore." << originalPath;
                 return;
             }
-            if (buf.modtime != base._modtime || buf.size != base._fileSize || buf.type != ItemTypeFile) {
+            if (buf.modtime != base._modtime || buf.size != base._fileSize || buf.type == ItemTypeDirectory) {
                 qCInfo(lcDisco) << "File has changed locally, not a rename." << originalPath;
                 return;
             }
