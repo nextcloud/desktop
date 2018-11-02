@@ -54,8 +54,9 @@ private:
 };
 
 WebFlowCredentials::WebFlowCredentials()
-    : _ready(false),
-      _credentialsValid(false)
+    : _ready(false)
+    , _credentialsValid(false)
+    , _keychainMigration(false)
 {
 
 }
@@ -67,6 +68,7 @@ WebFlowCredentials::WebFlowCredentials(const QString &user, const QString &passw
     , _clientSslCertificate(certificate)
     , _ready(true)
     , _credentialsValid(true)
+    , _keychainMigration(false)
 {
 
 }
@@ -260,7 +262,7 @@ void WebFlowCredentials::fetchFromKeychainHelper() {
     const QString kck = keychainKey(
         _account->url().toString(),
         _user,
-        _account->id());
+        _keychainMigration ? QString() : _account->id());
 
     ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
     job->setInsecureFallback(false);
@@ -273,6 +275,13 @@ void WebFlowCredentials::slotReadPasswordJobDone(Job *incomingJob) {
     QKeychain::ReadPasswordJob *job = static_cast<ReadPasswordJob *>(incomingJob);
     QKeychain::Error error = job->error();
 
+    // If we could not find the entry try the old entries
+    if (!_keychainMigration && error == QKeychain::EntryNotFound) {
+        _keychainMigration = true;
+        fetchFromKeychainHelper();
+        return;
+    }
+
     if (error == QKeychain::NoError) {
         _password = job->textData();
         _ready = true;
@@ -280,8 +289,22 @@ void WebFlowCredentials::slotReadPasswordJobDone(Job *incomingJob) {
     } else {
         _ready = false;
     }
-
     emit fetched();
+
+    // If keychain data was read from legacy location, wipe these entries and store new ones
+    if (_keychainMigration && _ready) {
+        _keychainMigration = false;
+        persist();
+        deleteOldKeychainEntries();
+        qCWarning(lcWebFlowCredentials) << "Migrated old keychain entries";
+    }
+}
+
+void WebFlowCredentials::deleteOldKeychainEntries() {
+    DeletePasswordJob *job = new DeletePasswordJob(Theme::instance()->appName());
+    job->setInsecureFallback(false);
+    job->setKey(keychainKey(_account->url().toString(), _user, QString()));
+    job->start();
 }
 
 }
