@@ -190,28 +190,6 @@
      </item>
     </layout>
    </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="slideImage">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>100</height>
-      </size>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../../theme.qrc">:/client/theme/colored/wizard-files.svg</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>false</bool>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
    <item row="6" column="0">
     <spacer name="verticalSpacer_4">
      <property name="orientation">
@@ -229,19 +207,13 @@
     </spacer>
    </item>
    <item row="2" column="0">
-    <widget class="QLabel" name="slideLabel">
+    <widget class="OCC::SlideShow" name="slideShow">
      <property name="font">
       <font>
        <pointsize>12</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
-     </property>
-     <property name="text">
-      <string>SlideshowLabel</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </item>
@@ -436,6 +408,11 @@
    <class>OCC::PostfixLineEdit</class>
    <extends>QLineEdit</extends>
    <header>wizard/postfixlineedit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>OCC::SlideShow</class>
+   <extends>QWidget</extends>
+   <header>wizard/slideshow.h</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -30,6 +30,7 @@
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudsetuppage.h"
 #include "wizard/owncloudconnectionmethoddialog.h"
+#include "wizard/slideshow.h"
 #include "theme.h"
 #include "account.h"
 #include "config.h"
@@ -79,18 +80,16 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     connect(_ui.createAccountButton, &QPushButton::clicked, this, &OwncloudSetupPage::slotGotoProviderList);
 
     _ui.login->hide();
-    _slideshow.append(qMakePair(QString("nextcloud"), tr("Keep your data secure and under your control")));
-    _slideshow.append(qMakePair(QString("files"), tr("Secure collaboration & file exchange")));
-    _slideshow.append(qMakePair(QString("groupware"), tr("Easy-to-use web mail, calendaring & contacts")));
-    _slideshow.append(qMakePair(QString("talk"), tr("Screensharing, online meetings & web conferences")));
+    _ui.slideShow->addSlide(Theme::hidpiFileName(":/client/theme/colored/wizard-nextcloud.png"), tr("Keep your data secure and under your control"));
+    _ui.slideShow->addSlide(Theme::hidpiFileName(":/client/theme/colored/wizard-files.png"), tr("Secure collaboration & file exchange"));
+    _ui.slideShow->addSlide(Theme::hidpiFileName(":/client/theme/colored/wizard-groupware.png"), tr("Easy-to-use web mail, calendaring & contacts"));
+    _ui.slideShow->addSlide(Theme::hidpiFileName(":/client/theme/colored/wizard-talk.png"), tr("Screensharing, online meetings & web conferences"));
+    connect(_ui.slideShow, &SlideShow::clicked, _ui.slideShow, &SlideShow::nextSlide);
+    _ui.slideShow->startShow(2500);
 
-    _ui.slideLabel->setStyleSheet(QString("color:%1;").arg(theme->wizardHeaderBackgroundColor().name()));
-    _currentSlide = -1;
-    nextSlide();
-
-    QTimer *timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(nextSlide()));
-    timer->start(2500);
+    QPalette pal = _ui.slideShow->palette();
+    pal.setColor(QPalette::WindowText, theme->wizardHeaderBackgroundColor());
+    _ui.slideShow->setPalette(pal);
 #else
     _ui.createAccountButton->hide();
     _ui.slideImage->hide();
@@ -100,20 +99,6 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
 #endif
     setStyleSheet(QString("background-color:%1; color:%2 QLabel { color:%2; } QSpacerItem { color: red; }").arg(theme->wizardHeaderBackgroundColor().name(), theme->wizardHeaderTitleColor().name()));
 }
-
-#ifdef WITH_PROVIDERS
-void OwncloudSetupPage::nextSlide()
-{
-    if (_currentSlide < _slideshow.length() - 1) {
-        _currentSlide++;
-    } else {
-        _currentSlide = 0;
-    }
-    QPixmap pixmap = QIcon(Theme::hidpiFileName(":/client/theme/colored/wizard-" + _slideshow.at(_currentSlide).first + ".svg")).pixmap(QSize(1024, 1024));
-    _ui.slideImage->setPixmap(pixmap.scaled(QSize(_ui.slideImage->size().height(), _ui.slideImage->size().height()), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    _ui.slideLabel->setText(_slideshow.at(_currentSlide).second);
-}
-#endif
 
 void OwncloudSetupPage::setServerUrl(const QString &newUrl)
 {
