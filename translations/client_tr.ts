@@ -4,42 +4,42 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="107"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos; üzerindeki değişiklikler denetleniyor</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="129"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>%1 / %2 eşitleniyor (%3 kaldı)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="134"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 / %2 eşitleniyor</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="141"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>%1 eşitleniyor (%2 kaldı)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="144"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 eşitleniyor</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="186"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme duraklatıldı</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="189"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleniyor</translation>
     </message>
 </context>
 <context>
@@ -47,12 +47,12 @@
     <message>
         <location filename="../src/gui/mnemonicdialog.ui" line="23"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Pencere</translation>
     </message>
     <message>
         <location filename="../src/gui/mnemonicdialog.ui" line="58"/>
         <source>Label</source>
-        <translation type="unfinished"/>
+        <translation>Etiket</translation>
     </message>
 </context>
 <context>
@@ -60,18 +60,18 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Could not make directories in trash</source>
-        <translation type="unfinished"/>
+        <translation>Çöp kutusunda klasörler oluşturulamadı</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="459"/>
         <location filename="../src/common/filesystembase.cpp" line="465"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;, &apos;%2&apos; üzerine taşınamadı</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>Bu platform üzerinde çöpe taşıma özelliği yok</translation>
     </message>
 </context>
 <context>
@@ -148,12 +148,12 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="342"/>
         <source>End to end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Uçtan uca şifreleme anımsatıcısı</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="343"/>
         <source>To protect your Cryptocraphic Identity, we encrypt it with a mnemonic of 12 dictionary words.Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>Şifreli kimliğiniz korunmak için 12 sözlük sözcüğünden oluşan bir anımsatıcı ile şifrelendi. Lütfen bu sözcükleri not ederek güvenli bir yerde saklayın. Bu bilgi hesabınıza başka aygıtlar (cep telefonu ya da bilgisayar) eklemek istediğinizde gerekir.</translation>
     </message>
 </context>
 <context>
@@ -233,12 +233,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="234"/>
         <source>Show E2E mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Uçtan uca şifreleme anımsatıcı görüntülensin:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="542"/>
         <source>Encrypt</source>
-        <translation type="unfinished"/>
+        <translation>Şifrele</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="583"/>
@@ -476,27 +476,27 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="131"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="179"/>
         <source>More information</source>
-        <translation type="unfinished"/>
+        <translation>Ayrıntılı bilgi alın</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="180"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Onayla</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="181"/>
         <source>Join</source>
-        <translation type="unfinished"/>
+        <translation>Katıl</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="198"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Tarayıcıyı Aç</translation>
     </message>
 </context>
 <context>
@@ -514,17 +514,17 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="56"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Onayla</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="182"/>
         <source>Synced </source>
-        <translation type="unfinished"/>
+        <translation>Eşitlenmiş</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="217"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Tüm yüklemeleri yinele</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="332"/>
@@ -624,12 +624,12 @@
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="992"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen uçtan uca şifreleme parolasını yazın:&lt;br&gt;&lt;br&gt;Kullanıcı:%2&lt;br&gt;Hesap:%3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1000"/>
         <source>Enter E2E passphrase</source>
-        <translation type="unfinished"/>
+        <translation>Uçtan uca şifreleme parolasını yazın</translation>
     </message>
 </context>
 <context>
@@ -678,7 +678,7 @@
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="392"/>
         <source>The server file discovery reply is missing data.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu dosya tarama yanıtında veri eksik.</translation>
     </message>
 </context>
 <context>
@@ -804,12 +804,12 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="1012"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>%1 klasörü oluşturulmuş ancak daha önce eşitleme dışı bırakılmış. Bu klasördeki veriler eşitlenmeyecek.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1015"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>%1 dosyası oluşturulmuş ancak daha önce eşitleme dışı bırakılmış. Bu dosyadaki veriler eşitlenmeyecek.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1026"/>
@@ -831,17 +831,17 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folder.cpp" line="1080"/>
         <source>Download new files?</source>
-        <translation type="unfinished"/>
+        <translation>Yeni dosyalar indirilsin mi?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1083"/>
         <source>Download new files</source>
-        <translation type="unfinished"/>
+        <translation>Yeni dosyaları indir</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1084"/>
         <source>Keep local files</source>
-        <translation type="unfinished"/>
+        <translation>Yerel dosyalar korunsun</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1076"/>
@@ -923,7 +923,7 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
     <message>
         <location filename="../src/gui/folderman.cpp" line="1220"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Eşitlendi, çakışmalar çözülüyor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1222"/>
@@ -1001,7 +1001,7 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="249"/>
         <source>Synchronized with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Yerel klasör ile eşitleniyor</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="296"/>
@@ -1092,22 +1092,22 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Uzak &apos;%1&apos; üzerindeki değişiklikler denetleniyor</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="923"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Yerel &apos;%1&apos; üzerindeki değişiklikler denetleniyor</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
         <source>↓ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↓ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>↑ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
@@ -1287,7 +1287,7 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Yasal bildirim</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
@@ -1302,7 +1302,7 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Su&amp;nucu Bildirimlerini Görüntüle</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="163"/>
@@ -1343,7 +1343,7 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
     <message>
         <location filename="../src/gui/generalsettings.ui" line="250"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Eşitleme Klasörleri Gezgin Panosunda Görüntülensin</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="267"/>
@@ -1369,7 +1369,7 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="49"/>
         <source>Server notifications that require attention.</source>
-        <translation type="unfinished"/>
+        <translation>İlgilenmeniz gereken sunucu bildirimleri.</translation>
     </message>
 </context>
 <context>
@@ -1377,14 +1377,16 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
     <message>
         <location filename="../src/gui/socketapi.cpp" line="520"/>
         <source>Sharing error</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşım sorunu</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="521"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Herkese açık bağlantı paylaşımı alınamadı ya da oluşturulamadı. Hata:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -1440,7 +1442,7 @@ Eşitlemeye normal şekilde devam edilirse tüm dosyalar daha eski bir dosya ile
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="126"/>
         <source>Remove all</source>
-        <translation type="unfinished"/>
+        <translation>Tümünü kaldır</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="93"/>
@@ -1497,27 +1499,27 @@ Silme izni verildiğinde bir klasörün silinmesini engelleyen ögeler silinir. 
     <message>
         <location filename="../src/gui/legalnotice.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Pencere</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="26"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Yasal bildirim</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="36"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>MetinEtiketi</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="58"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Kapat</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="27"/>
         <source>&lt;p&gt;Copyright 2017-2018 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Telif hakları 2017-2018 Nextcloud GmbH&lt;br /&gt;Telif hakları 2012-2018 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="30"/>

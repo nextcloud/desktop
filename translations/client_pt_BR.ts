@@ -4,42 +4,42 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="107"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Checando por alterações em &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="129"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando %1 de %2  (%3 restantes)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="134"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando %1 de %2</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="141"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando %1 (%2 faltantes)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="144"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando %1</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="186"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Sincronização pausada</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="189"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizando</translation>
     </message>
 </context>
 <context>
@@ -47,12 +47,12 @@
     <message>
         <location filename="../src/gui/mnemonicdialog.ui" line="23"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Diálogo</translation>
     </message>
     <message>
         <location filename="../src/gui/mnemonicdialog.ui" line="58"/>
         <source>Label</source>
-        <translation type="unfinished"/>
+        <translation>Etiqueta</translation>
     </message>
 </context>
 <context>
@@ -60,18 +60,18 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Could not make directories in trash</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível criar diretórios na lixeira</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="459"/>
         <location filename="../src/common/filesystembase.cpp" line="465"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Não pude mover &apos;%1&apos; para &apos;%2&apos;</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>Mover para a lixeira não está implementada nesta plataforma</translation>
     </message>
 </context>
 <context>
@@ -148,12 +148,12 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="342"/>
         <source>End to end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Mnemônico da criptografia de ponta-a-ponta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="343"/>
         <source>To protect your Cryptocraphic Identity, we encrypt it with a mnemonic of 12 dictionary words.Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>Para proteger sua identidade Criptográfica, nós a criptografamos com um mnemônico de 12 palavras de dicionário. Por favor, anote e mantenha-as seguras. Eles serão necessários para adicionar outros dispositivos à sua conta (como seu celular ou laptop).</translation>
     </message>
 </context>
 <context>
@@ -233,12 +233,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="234"/>
         <source>Show E2E mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar mnemônico E2E</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="542"/>
         <source>Encrypt</source>
-        <translation type="unfinished"/>
+        <translation>Criptografar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="583"/>
@@ -476,27 +476,27 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="131"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="179"/>
         <source>More information</source>
-        <translation type="unfinished"/>
+        <translation>Mais informações</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="180"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Aceitar</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="181"/>
         <source>Join</source>
-        <translation type="unfinished"/>
+        <translation>Juntar-se</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="198"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir Navegador</translation>
     </message>
 </context>
 <context>
@@ -514,17 +514,17 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="56"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Aceitar</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="182"/>
         <source>Synced </source>
-        <translation type="unfinished"/>
+        <translation>Sincronizado</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="217"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Retentar todos os envios</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="332"/>
@@ -624,12 +624,12 @@
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="992"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Insira a senha da criptografia de ponta-a-ponta:&lt;br&gt;&lt;br&gt;Usuário: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1000"/>
         <source>Enter E2E passphrase</source>
-        <translation type="unfinished"/>
+        <translation>Digite a senha E2E</translation>
     </message>
 </context>
 <context>
@@ -678,7 +678,7 @@
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="392"/>
         <source>The server file discovery reply is missing data.</source>
-        <translation type="unfinished"/>
+        <translation>Na resposta de descoberta do arquivo do servidor está faltando dados.</translation>
     </message>
 </context>
 <context>
@@ -804,12 +804,12 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="1012"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>A pasta %1 foi criada, mas foi excluída da sincronização anteriormente. Dados dentro dela não serão sincronizados.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1015"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo %1 foi criado, mas foi excluído da sincronização anteriormente. Não será sincronizado.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1026"/>
@@ -818,7 +818,11 @@
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>As alterações nas pastas sincronizadas não puderam ser rastreadas de maneira confiável.
+
+Isso significa que o cliente de sincronização pode não fazer upload de alterações locais imediatamente e em vez disso, apenas verificar alterações locais e enviá-las ocasionalmente (a cada duas horas, por padrão)..
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1071"/>
@@ -826,22 +830,25 @@ This means that the synchronization client might not upload local changes immedi
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Todos os arquivos na pasta de sincronização &apos;%1&apos; foram excluídos no servidor.
+Essas exclusões serão sincronizadas com sua pasta de sincronização local, tornando esses arquivos indisponíveis, a menos que você tenha o direito de restaurar. 
+Se decidir manter os arquivos, eles serão re-sincronizados com o servidor se você tiver direitos para fazê-lo.
+Se decidir excluir os arquivos eles ficarão indisponíveis, a menos que você seja o proprietário.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1080"/>
         <source>Download new files?</source>
-        <translation type="unfinished"/>
+        <translation>Baixar novos arquivos?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1083"/>
         <source>Download new files</source>
-        <translation type="unfinished"/>
+        <translation>Baixar novos arquivos</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1084"/>
         <source>Keep local files</source>
-        <translation type="unfinished"/>
+        <translation>Manter arquivos locais</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1076"/>
@@ -922,7 +929,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/folderman.cpp" line="1220"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Sincronização com sucesso, conflitos não resolvidos.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1222"/>
@@ -932,7 +939,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/folderman.cpp" line="1312"/>
         <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>A pasta local %1 contém um link simbólico. O destino do link contém uma pasta já sincronizada. Por favor escolha outro!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1228"/>
@@ -1000,7 +1007,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="249"/>
         <source>Synchronized with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizado com a pasta local</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="296"/>
@@ -1091,22 +1098,22 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Checando por alterações no remoto &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="923"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Verificação de alterações no local &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
         <source>↓ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↓ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>↑ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
@@ -1158,7 +1165,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="87"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Esse problema geralmente acontece quando os relógios inotify estão esgotados. Verifique o FAQ para detalhes.</translation>
     </message>
 </context>
 <context>
@@ -1286,7 +1293,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Nota legal</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
@@ -1301,7 +1308,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar &amp;Notificações do Servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="163"/>
@@ -1342,7 +1349,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/generalsettings.ui" line="250"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar pastas de sincronização no &amp;Painel de Navegação do Explorer</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="267"/>
@@ -1368,7 +1375,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="49"/>
         <source>Server notifications that require attention.</source>
-        <translation type="unfinished"/>
+        <translation>Notificações do servidor que exigem atenção.</translation>
     </message>
 </context>
 <context>
@@ -1376,14 +1383,16 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/socketapi.cpp" line="520"/>
         <source>Sharing error</source>
-        <translation type="unfinished"/>
+        <translation>Erro de compartilhamento</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="521"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível recuperar ou criar o compartilhamento de link público. Erro:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -1439,7 +1448,7 @@ Continuar a sincronização como normal fará com que todos os seus arquivos sej
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="126"/>
         <source>Remove all</source>
-        <translation type="unfinished"/>
+        <translation>Remover todos</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="93"/>
@@ -1496,32 +1505,32 @@ Itens onde a exclusão é permitida serão excluídos se eles evitarem que um di
     <message>
         <location filename="../src/gui/legalnotice.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Diálogo</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="26"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Nota legal</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="36"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="58"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Fechar</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="27"/>
         <source>&lt;p&gt;Copyright 2017-2018 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2018 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="30"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Licenciado sob a GNU General Public License (GPL) Versão 2.0 ou qualquer versão posterior.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1549,14 +1558,16 @@ Itens onde a exclusão é permitida serão excluídos se eles evitarem que um di
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
         <source>Permanently save logs</source>
-        <translation type="unfinished"/>
+        <translation>Salvar registros permanentemente</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="103"/>
         <source>When this option is enabled and no other logging is configured, logs will be written to a temporary folder and expire after a few hours. This setting persists across client restarts.
 
 Logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Quando essa opção está ativada e nenhum outro log está configurado, os logs serão gravados em uma pasta temporária e expiram após algumas horas. Essa configuração persiste nas reinicializações do cliente.
+
+Logs serão gravados em %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="115"/>
@@ -1959,22 +1970,22 @@ pode solicitar por privilégios adicionais durante o processo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="83"/>
         <source>Keep your data secure and under your control</source>
-        <translation type="unfinished"/>
+        <translation>Mantenha seus dados seguros e sob seu controle</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="84"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation type="unfinished"/>
+        <translation>Colaboração segura e troca de arquivo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="85"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation type="unfinished"/>
+        <translation>Webmail, calendário e contatos fáceis de usar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation type="unfinished"/>
+        <translation>Compartilhamento de tela, reuniões online e conferências via web</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="198"/>
@@ -1996,7 +2007,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="414"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível carregar o certificado. Senha errada?</translation>
     </message>
 </context>
 <context>
@@ -2201,7 +2212,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
         <source>File %1 can not be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo %1 não pode ser baixado porque a informação de criptografia está faltando.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="434"/>
@@ -2378,7 +2389,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="334"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo Removido (iniciar envio) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="684"/>
@@ -2597,7 +2608,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="162"/>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>Ícone</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="101"/>
@@ -2630,22 +2641,22 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="122"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Compartilhar link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="145"/>
         <source>Enable</source>
-        <translation type="unfinished"/>
+        <translation>Ativar</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="259"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Senha:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="383"/>
         <source>Expiration date:</source>
-        <translation type="unfinished"/>
+        <translation>Data de expiração:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="508"/>
@@ -2660,42 +2671,42 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="189"/>
         <source>Allow Editing</source>
-        <translation type="unfinished"/>
+        <translation>Permitir Edição</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="195"/>
         <source>Read only</source>
-        <translation type="unfinished"/>
+        <translation>Somente leitura</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="203"/>
         <source>Allow Upload &amp;&amp; Editing</source>
-        <translation type="unfinished"/>
+        <translation>Permitir Envio e Edição</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="208"/>
         <source>File Drop (Upload Only)</source>
-        <translation type="unfinished"/>
+        <translation>File Drop (Somente Upload)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="215"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Copiar link</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="228"/>
         <source>Password Protect</source>
-        <translation type="unfinished"/>
+        <translation>Proteger com Senha</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="245"/>
         <source>Expiration Date</source>
-        <translation type="unfinished"/>
+        <translation>Data de Expiração</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="265"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Descompartilhar</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="447"/>
@@ -2733,7 +2744,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="248"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Copiar link</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="258"/>
@@ -2756,7 +2767,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="114"/>
         <source>User name</source>
-        <translation type="unfinished"/>
+        <translation>Nome de usuário</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="155"/>
@@ -2766,22 +2777,22 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="388"/>
         <source>Can reshare</source>
-        <translation type="unfinished"/>
+        <translation>Pode recompartilhar</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="398"/>
         <source>Can create</source>
-        <translation type="unfinished"/>
+        <translation>Pode criar</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="404"/>
         <source>Can change</source>
-        <translation type="unfinished"/>
+        <translation>Pode alterar</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="410"/>
         <source>Can delete</source>
-        <translation type="unfinished"/>
+        <translation>Pode excluir</translation>
     </message>
 </context>
 <context>
@@ -2831,7 +2842,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="491"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>Compartilhamento do menu de contexto</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="612"/>
@@ -2858,18 +2869,18 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="653"/>
         <source>Resharing this file is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Não é permitido recompartilhar este arquivo</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="666"/>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
         <source>Copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copiar link público para a área de transferência</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="722"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Abrir no navegador</translation>
     </message>
 </context>
 <context>
@@ -3163,32 +3174,32 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="123"/>
         <source>Failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao carregar ou criar o arquivo de diário. Certifique-se de ter permissões de leitura e gravação na pasta de sincronização local.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="127"/>
         <source>Discovery step failed.</source>
-        <translation type="unfinished"/>
+        <translation>A etapa de descoberta falhou.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="136"/>
         <source>Permission denied.</source>
-        <translation type="unfinished"/>
+        <translation>Permissão negada.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="139"/>
         <source>File or directory not found:</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo ou diretório não encontrado:</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="142"/>
         <source>Tried to create a folder that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>Tentativa de criar uma pasta que já existe.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="145"/>
         <source>No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>Sem espaço disponível no servidor %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="154"/>
@@ -3359,7 +3370,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="341"/>
         <source>&lt;p&gt;This release was supplied by the Nextcloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Esta versão foi fornecida pela Nextcloud GmbH&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3367,12 +3378,12 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="122"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation type="unfinished"/>
+        <translation>Você foi deslogado de %1 como usuário %2. Logue-se novamente</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="139"/>
         <source>Please login with the user: %1</source>
-        <translation type="unfinished"/>
+        <translation>Por favor, faça o login com o usuário: %1</translation>
     </message>
 </context>
 <context>
@@ -3506,7 +3517,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="356"/>
         <source>Unresolved conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Conflitos não resolvidos</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="363"/>
@@ -3562,7 +3573,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="841"/>
         <source>Apps</source>
-        <translation type="unfinished"/>
+        <translation>Aplicativos</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="898"/>
@@ -3572,12 +3583,12 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="920"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Checando por alterações no remoto &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="923"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Checando por alterações no local &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="938"/>
@@ -3723,7 +3734,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Ocorreu um erro durante a conexão. Tente novamente.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
@@ -3747,22 +3758,22 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="66"/>
         <source>&lt;a href=&quot;https://docs.nextcloud.com/server/13/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Host your own server&lt;/span&gt;&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;https://docs.nextcloud.com/server/13/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Hospede seu próprio servidor&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="143"/>
         <source>Register with a provider</source>
-        <translation type="unfinished"/>
+        <translation>Registre-se com um provedor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="165"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Logar-se</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="241"/>
         <source>SlideshowLabel</source>
-        <translation type="unfinished"/>
+        <translation>SlideshowLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="316"/>
@@ -3814,22 +3825,22 @@ Não é aconselhável usá-la.</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="437"/>
         <source>%n day ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n dia atrás</numerusform><numerusform>%n dias atrás</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="439"/>
         <source>%n days ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n dia atrás</numerusform><numerusform>%n dias atrás</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="449"/>
         <source>%n hour ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n hora atrás</numerusform><numerusform>%n horas atrás</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="451"/>
         <source>%n hours ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n hora atrás</numerusform><numerusform>%n horas atrás</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="458"/>
@@ -3844,12 +3855,12 @@ Não é aconselhável usá-la.</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="464"/>
         <source>%n minute ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minuto atrás</numerusform><numerusform>%n minutos atrás</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="466"/>
         <source>%n minutes ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minuto atrás</numerusform><numerusform>%n minutos atrás</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="470"/>
@@ -3926,17 +3937,17 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="233"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>O cabeçalho do checksum está malformado.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="248"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>O cabeçalho do checksum continha um tipo de soma de verificação &apos;%1&apos; desconhecido</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo baixado não corresponde ao checksum, ele será retomado.</translation>
     </message>
 </context>
 <context>
@@ -3944,7 +3955,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/wizard/webview.ui" line="26"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulário</translation>
     </message>
 </context>
 <context>
@@ -3965,7 +3976,7 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="320"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Construído da revisão Git &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; em %3, %4 usando Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
