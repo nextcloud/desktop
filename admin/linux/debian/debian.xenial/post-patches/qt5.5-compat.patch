@@ -1,0 +1,40 @@
+--- nextcloud-client-2.4.0.orig/src/gui/wizard/owncloudoauthcredspage.cpp
++++ nextcloud-client-2.4.0/src/gui/wizard/owncloudoauthcredspage.cpp
+@@ -53,10 +53,8 @@ OwncloudOAuthCredsPage::OwncloudOAuthCredsPage()
+     _ui.openLinkButton->setContextMenuPolicy(Qt::CustomContextMenu);
+     QObject::connect(_ui.openLinkButton, &QWidget::customContextMenuRequested, [this](const QPoint &pos) {
+         auto menu = new QMenu(_ui.openLinkButton);
+-        menu->addAction(tr("Copy link to clipboard"), this, [this] {
+-            if (_asyncAuth)
+-                QApplication::clipboard()->setText(_asyncAuth->authorisationLink().toString(QUrl::FullyEncoded));
+-        });
++        auto action = menu->addAction(tr("Copy link to clipboard"));
++        connect(action, &QAction::triggered, this, &OwncloudOAuthCredsPage::copyLinkToClipboard);
+         menu->setAttribute(Qt::WA_DeleteOnClose);
+         menu->popup(_ui.openLinkButton->mapToGlobal(pos));
+     });
+@@ -131,4 +129,11 @@ bool OwncloudOAuthCredsPage::isComplete() const
+     return false; /* We can never go forward manually */
+ }
+ 
++void OwncloudOAuthCredsPage::copyLinkToClipboard()
++{
++    if (_asyncAuth)
++      QApplication::clipboard()->setText(_asyncAuth->authorisationLink().toString(QUrl::FullyEncoded));
++}
++
++
+ } // namespace OCC
+--- nextcloud-client-2.4.0.orig/src/gui/wizard/owncloudoauthcredspage.h
++++ nextcloud-client-2.4.0/src/gui/wizard/owncloudoauthcredspage.h
+@@ -57,6 +57,10 @@ public:
+     QString _refreshToken;
+     QScopedPointer<OAuth> _asyncAuth;
+     Ui_OwncloudOAuthCredsPage _ui;
++
++protected slots:
++    void copyLinkToClipboard();
++
+ };
+ 
+ } // namespace OCC
