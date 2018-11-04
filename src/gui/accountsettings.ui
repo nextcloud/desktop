@@ -117,7 +117,7 @@
     </layout>
    </item>
    <item row="2" column="0">
-    <widget class="QTreeView" name="_folderList">
+    <widget class="OCC::FolderStatusView" name="_folderList">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
@@ -274,6 +274,11 @@
    <class>SslButton</class>
    <extends>QToolButton</extends>
    <header>sslbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>OCC::FolderStatusView</class>
+   <extends>QTreeView</extends>
+   <header>folderstatusview.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

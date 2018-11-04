@@ -117,9 +117,13 @@
         <file>theme/white/state-warning-64.png</file>
         <file>theme/white/state-warning-128.png</file>
         <file>theme/white/state-warning-256.png</file>
-        <file>theme/colored/wizard-files.svg</file>
-        <file>theme/colored/wizard-groupware.svg</file>
-        <file>theme/colored/wizard-nextcloud.svg</file>
-        <file>theme/colored/wizard-talk.svg</file>
+        <file>theme/colored/wizard-files.png</file>
+        <file>theme/colored/wizard-files@2x.png</file>
+        <file>theme/colored/wizard-groupware.png</file>
+        <file>theme/colored/wizard-groupware@2x.png</file>
+        <file>theme/colored/wizard-nextcloud.png</file>
+        <file>theme/colored/wizard-nextcloud@2x.png</file>
+        <file>theme/colored/wizard-talk.png</file>
+        <file>theme/colored/wizard-talk@2x.png</file>
     </qresource>
 </RCC>

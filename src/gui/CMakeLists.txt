@@ -53,6 +53,7 @@ set(client_SRCS
     folderman.cpp
     folderstatusmodel.cpp
     folderstatusdelegate.cpp
+    folderstatusview.cpp
     folderwatcher.cpp
     folderwizard.cpp
     generalsettings.cpp
@@ -116,6 +117,7 @@ set(client_SRCS
     wizard/owncloudwizardresultpage.cpp
     wizard/webviewpage.cpp
     wizard/webview.cpp
+    wizard/slideshow.cpp
 )
 
 IF(NOT NO_SHIBBOLETH)
