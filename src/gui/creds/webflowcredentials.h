@@ -52,14 +52,8 @@ private slots:
     void slotAskFromUserCredentialsProvided(const QString &user, const QString &pass, const QString &host);
 
 private:
-    /** Reads data from keychain locations
-     *
-     * Goes through
-     *   slotReadClientCertPEMJobDone to
-     *   slotReadClientCertPEMJobDone to
-     *   slotReadJobDone
-     */
     void fetchFromKeychainHelper();
+    void deleteOldKeychainEntries();
 
     QString fetchUser();
 
@@ -70,6 +64,7 @@ private:
 
     bool _ready;
     bool _credentialsValid;
+    bool _keychainMigration;
 
     WebFlowCredentialsDialog *_askDialog;
 };
