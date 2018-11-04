@@ -207,7 +207,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="324"/>
         <source>Create virtual files for new files (Experimental)</source>
-        <translation type="unfinished"/>
+        <translation>สร้างไฟล์เสมือนสำหรับไฟล์ใหม่ (ขั้นทดลอง)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="426"/>
@@ -1399,7 +1399,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="57"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>คุณไม่สามารถปิดใช้งานระบบเริ่มต้นอัตโนมัติได้เนื่องจาก system-wide ได้ถูกเปิดใช้งานแล้ว</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="178"/>
