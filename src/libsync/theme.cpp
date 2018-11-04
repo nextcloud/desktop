@@ -358,7 +358,7 @@ QString Theme::about() const
 
 bool Theme::aboutShowCopyright() const
 {
-    return false;
+    return true;
 }
 
 #ifndef TOKEN_AUTH_ONLY
