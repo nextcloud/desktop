@@ -38,6 +38,16 @@ void LockWatcher::addFile(const QString &path)
     _watchedPaths.insert(path);
 }
 
+void LockWatcher::setCheckInterval(std::chrono::milliseconds interval)
+{
+    _timer.start(interval.count());
+}
+
+bool LockWatcher::contains(const QString &path)
+{
+    return _watchedPaths.contains(path);
+}
+
 void LockWatcher::checkFiles()
 {
     QSet<QString> unlocked;
