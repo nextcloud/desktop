@@ -16,6 +16,8 @@ if(SPHINX_FOUND)
     install(DIRECTORY ${SPHINX_PDF_DIR} DESTINATION ${APPLICATION_DOC_DIR} OPTIONAL)
     install(DIRECTORY ${SPHINX_QCH_DIR} DESTINATION ${APPLICATION_DOC_DIR} OPTIONAL)
 
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/conf.py" conf.py COPYONLY)
+
     if(WITH_DOC)
        add_custom_target(doc ALL DEPENDS doc-html COMMENT "Building documentation...")
     else(WITH_DOC)
