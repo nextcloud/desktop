@@ -454,7 +454,7 @@ void SocketApi::command_VERSION(const QString &, SocketListener *listener)
 
 void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketListener *listener)
 {
-    listener->sendMessage(QLatin1String("SHARE_MENU_TITLE:") + tr("Share with %1", "parameter is ownCloud").arg(Theme::instance()->appNameGUI()));
+    listener->sendMessage(QLatin1String("SHARE_MENU_TITLE:") + tr("Share with %1", "parameter is Nextcloud").arg(Theme::instance()->appNameGUI()));
 }
 
 // don't pull the share manager into socketapi unittests
