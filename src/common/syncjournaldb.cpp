@@ -277,6 +277,13 @@ bool SyncJournalDb::sqlFail(const QString &log, const SqlQuery &query)
 
 bool SyncJournalDb::checkConnect()
 {
+    if (autotestFailCounter >= 0) {
+        if (!autotestFailCounter--) {
+            qCInfo(lcDb) << "Error Simulated";
+            return false;
+        }
+    }
+
     if (_db.isOpen()) {
         // Unfortunately the sqlite isOpen check can return true even when the underlying storage
         // has become unavailable - and then some operations may cause crashes. See #6049
@@ -631,7 +638,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
     bool re = true;
 
     // check if the file_id column is there and create it if not
-    if (!checkConnect()) {
+    if (columns.isEmpty()) {
         return false;
     }
 
@@ -728,7 +735,10 @@ bool SyncJournalDb::updateMetadataTableStructure()
         commitInternal("update database structure: add contentChecksumTypeId col");
     }
 
-    if (!tableColumns("uploadinfo").contains("contentChecksum")) {
+    auto uploadInfoColumns = tableColumns("uploadinfo");
+    if (uploadInfoColumns.isEmpty())
+        return false;
+    if (!uploadInfoColumns.contains("contentChecksum")) {
         SqlQuery query(_db);
         query.prepare("ALTER TABLE uploadinfo ADD COLUMN contentChecksum TEXT;");
         if (!query.exec()) {
@@ -738,7 +748,10 @@ bool SyncJournalDb::updateMetadataTableStructure()
         commitInternal("update database structure: add contentChecksum col for uploadinfo");
     }
 
-    if (!tableColumns("conflicts").contains("basePath")) {
+    auto conflictsColumns = tableColumns("conflicts");
+    if (conflictsColumns.isEmpty())
+        return false;
+    if (!conflictsColumns.contains("basePath")) {
         SqlQuery query(_db);
         query.prepare("ALTER TABLE conflicts ADD COLUMN basePath TEXT;");
         if (!query.exec()) {
@@ -746,7 +759,6 @@ bool SyncJournalDb::updateMetadataTableStructure()
             re = false;
         }
     }
-
 
     return re;
 }
@@ -756,8 +768,7 @@ bool SyncJournalDb::updateErrorBlacklistTableStructure()
     auto columns = tableColumns("blacklist");
     bool re = true;
 
-    // check if the file_id column is there and create it if not
-    if (!checkConnect()) {
+    if (columns.isEmpty()) {
         return false;
     }
 

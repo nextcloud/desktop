@@ -56,6 +56,7 @@ owncloud_add_test(LocalDiscovery "syncenginetestutils.h")
 owncloud_add_test(RemoteDiscovery "syncenginetestutils.h")
 owncloud_add_test(Permissions "syncenginetestutils.h")
 owncloud_add_test(SelectiveSync "syncenginetestutils.h")
+owncloud_add_test(DatabaseError "syncenginetestutils.h")
 owncloud_add_test(LockedFiles "syncenginetestutils.h;../src/gui/lockwatcher.cpp")
 
 owncloud_add_test(FolderWatcher "${FolderWatcher_SRC}")

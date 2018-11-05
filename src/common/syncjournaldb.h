@@ -249,6 +249,13 @@ public:
      */
     void markVirtualFileForDownloadRecursively(const QByteArray &path);
 
+    /**
+     * Only used for auto-test:
+     * when positive, will decrease the counter for every database operation.
+     * reaching 0 makes the operation fails
+     */
+    int autotestFailCounter = -1;
+
 private:
     int getFileRecordCount();
     bool updateDatabaseStructure();
