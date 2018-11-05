@@ -1320,38 +1320,33 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Для системного Трея</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="67"/>
-        <source>&amp;Channel</source>
-        <translation>&amp;Канал</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="84"/>
+        <location filename="../src/gui/generalsettings.ui" line="97"/>
         <source>stable</source>
         <translation>стабильный</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="89"/>
+        <location filename="../src/gui/generalsettings.ui" line="102"/>
         <source>beta</source>
         <translation>бета</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="157"/>
+        <location filename="../src/gui/generalsettings.ui" line="228"/>
         <source>Advanced</source>
         <translation>Дополнительно</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="189"/>
+        <location filename="../src/gui/generalsettings.ui" line="260"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Спрашивать подтверждение перед синхронизацией каталогов размером больше чем</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="209"/>
+        <location filename="../src/gui/generalsettings.ui" line="280"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>МБ</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="233"/>
+        <location filename="../src/gui/generalsettings.ui" line="304"/>
         <source>Ask for confirmation before synchronizing external storages</source>
         <translation>Спрашивать подтверждение перед синхронизацией внешних хранилищ</translation>
     </message>
@@ -1371,42 +1366,52 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Использовать черно-белые иконки</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="165"/>
+        <location filename="../src/gui/generalsettings.ui" line="53"/>
+        <source>Version</source>
+        <translation>Версия</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="80"/>
+        <source>&amp;Update Channel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="186"/>
+        <source>•</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="236"/>
         <source>Edit &amp;Ignored Files</source>
         <translation>Редактировать &amp;Ignored файлы</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="244"/>
+        <location filename="../src/gui/generalsettings.ui" line="315"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
         <translation>Показать папки синхронизации в навигационной панели Проводника</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="261"/>
+        <location filename="../src/gui/generalsettings.ui" line="332"/>
         <source>S&amp;how crash reporter</source>
         <translation>Показать отчёты об ошибках</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="53"/>
-        <source>Updates</source>
-        <translation>Обновления</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="116"/>
+        <location filename="../src/gui/generalsettings.ui" line="129"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>&amp;Перезапуск и обновление</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="57"/>
+        <location filename="../src/gui/generalsettings.cpp" line="58"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Нельзя отключить автозапуск, так как включён общесистемный автозапуск.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="178"/>
+        <location filename="../src/gui/generalsettings.cpp" line="187"/>
         <source>Change update channel?</source>
         <translation>Изменить канал обновлений?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="179"/>
+        <location filename="../src/gui/generalsettings.cpp" line="188"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -1415,12 +1420,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Заметьте, что это задаёт лишь место, откуда берутся обновления, нет возможности их отката назад. Таким образом, переключение канала с беты на стабильный не будет выполнено немедленно, оно подразумевает ожидание, когда выйдет стабильная версия, которая будет более свежей, чем установленная в данный момент бета-версия.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="192"/>
+        <location filename="../src/gui/generalsettings.cpp" line="201"/>
         <source>Change update channel</source>
         <translation>Изменить канал обновлений</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="193"/>
+        <location filename="../src/gui/generalsettings.cpp" line="202"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -2724,12 +2729,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Основные</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="107"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="108"/>
         <source>Network</source>
         <translation>Сеть</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="213"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="214"/>
         <source>Account</source>
         <translation>Уч.запись</translation>
     </message>
@@ -2752,13 +2757,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Основные</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="116"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="117"/>
         <source>Network</source>
         <translation>Сеть</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="154"/>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="222"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="155"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="223"/>
         <source>Account</source>
         <translation>Уч.запись</translation>
     </message>

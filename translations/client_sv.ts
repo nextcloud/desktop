@@ -1313,38 +1313,33 @@ Om du fortsätter synkningen kommer alla dina filer återställas med en äldre 
         <translation>För  aktivitetsfältet</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="67"/>
-        <source>&amp;Channel</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="84"/>
+        <location filename="../src/gui/generalsettings.ui" line="97"/>
         <source>stable</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="89"/>
+        <location filename="../src/gui/generalsettings.ui" line="102"/>
         <source>beta</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="157"/>
+        <location filename="../src/gui/generalsettings.ui" line="228"/>
         <source>Advanced</source>
         <translation>Avancerad</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="189"/>
+        <location filename="../src/gui/generalsettings.ui" line="260"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Fråga innan synkronisering av mappar större än</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="209"/>
+        <location filename="../src/gui/generalsettings.ui" line="280"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="233"/>
+        <location filename="../src/gui/generalsettings.ui" line="304"/>
         <source>Ask for confirmation before synchronizing external storages</source>
         <translation>Fråga innan synkronisering av externa lagringsytor</translation>
     </message>
@@ -1364,54 +1359,64 @@ Om du fortsätter synkningen kommer alla dina filer återställas med en äldre 
         <translation>Använd &amp;monokroma ikoner</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="165"/>
+        <location filename="../src/gui/generalsettings.ui" line="53"/>
+        <source>Version</source>
+        <translation>Version</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="80"/>
+        <source>&amp;Update Channel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="186"/>
+        <source>•</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.ui" line="236"/>
         <source>Edit &amp;Ignored Files</source>
         <translation>Ändra &amp;ignorerade filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="244"/>
+        <location filename="../src/gui/generalsettings.ui" line="315"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="261"/>
+        <location filename="../src/gui/generalsettings.ui" line="332"/>
         <source>S&amp;how crash reporter</source>
         <translation>Visa krashrapporteraren</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="53"/>
-        <source>Updates</source>
-        <translation>Uppdateringar</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.ui" line="116"/>
+        <location filename="../src/gui/generalsettings.ui" line="129"/>
         <source>&amp;Restart &amp;&amp; Update</source>
         <translation>%Starta om &amp;&amp; Uppdatera</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="57"/>
+        <location filename="../src/gui/generalsettings.cpp" line="58"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="178"/>
+        <location filename="../src/gui/generalsettings.cpp" line="187"/>
         <source>Change update channel?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="179"/>
+        <location filename="../src/gui/generalsettings.cpp" line="188"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="192"/>
+        <location filename="../src/gui/generalsettings.cpp" line="201"/>
         <source>Change update channel</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="193"/>
+        <location filename="../src/gui/generalsettings.cpp" line="202"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
@@ -2710,12 +2715,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Allmänt</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="107"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="108"/>
         <source>Network</source>
         <translation>Nätverk</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="213"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="214"/>
         <source>Account</source>
         <translation>Konto</translation>
     </message>
@@ -2738,13 +2743,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Allmänt</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="116"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="117"/>
         <source>Network</source>
         <translation>Nätverk</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="154"/>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="222"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="155"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="223"/>
         <source>Account</source>
         <translation>Konto</translation>
     </message>
