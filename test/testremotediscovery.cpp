@@ -55,14 +55,16 @@ private slots:
         QTest::addColumn<int>("errorKind");
         QTest::addColumn<QString>("expectedErrorString");
 
-        QTest::newRow("404") << 404 << "File or directory not found: B";
-        QTest::newRow("500") << 500 << "An error occurred while opening a folder B: Internal Server Fake Error";
-        QTest::newRow("503") << 503 << "An error occurred while opening a folder B: Internal Server Fake Error";
+        QString httpErrorMessage = "Server replied with an error while reading directory 'B' : Internal Server Fake Error";
+
+        QTest::newRow("404") << 404 << httpErrorMessage;
+        QTest::newRow("500") << 500 << httpErrorMessage;
+        QTest::newRow("503") << 503 << httpErrorMessage;
         // 200 should be an error since propfind should return 207
-        QTest::newRow("200") << 200 << "An error occurred while opening a folder B: Internal Server Fake Error";
-        QTest::newRow("InvalidXML") << +InvalidXML << "An error occurred while opening a folder B: Unknown error";
-        QTest::newRow("MissingPermissions") << +MissingPermissions << "A HTTP transmission error happened. B: The server file discovery reply is missing data.";
-        QTest::newRow("Timeout") << +Timeout << "An error occurred while opening a folder B: Operation canceled";
+        QTest::newRow("200") << 200 << httpErrorMessage;
+        QTest::newRow("InvalidXML") << +InvalidXML << "error while reading directory 'B' : Unknown error";
+        QTest::newRow("MissingPermissions") << +MissingPermissions << "error while reading directory 'B' : The server file discovery reply is missing data.";
+        QTest::newRow("Timeout") << +Timeout << "error while reading directory 'B' : Operation canceled";
     }
 
 
