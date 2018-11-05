@@ -1149,8 +1149,6 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
 void ProcessDirectoryJob::dbError()
 {
     _discoveryData->fatalError(tr("Error while reading the database"));
-    _pendingAsyncJobs = -1; // We're finished, we don't want to emit finished again
-    emit finished();
 }
 
 void ProcessDirectoryJob::addVirtualFileSuffix(QString &str) const
@@ -1214,7 +1212,6 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
             }
             emit _discoveryData->fatalError(tr("Server replied with an error while reading directory '%1' : %2")
                 .arg(_currentFolder._server, results.errorMessage()));
-            emit finished();
         }
     });
     connect(serverJob, &DiscoverySingleDirectoryJob::firstDirectoryPermissions, this,
@@ -1248,7 +1245,6 @@ bool ProcessDirectoryJob::runLocalQuery()
             return true;
         }
         emit _discoveryData->fatalError(errorString);
-        emit finished();
         return false;
     }
     errno = 0;
@@ -1283,7 +1279,6 @@ bool ProcessDirectoryJob::runLocalQuery()
         // Note: Windows vio converts any error into EACCES
         qCWarning(lcDisco) << "readdir failed for file in " << _currentFolder._local << " - errno: " << errno;
         emit _discoveryData->fatalError(tr("Error while reading directory %1").arg(_discoveryData->_localDir + _currentFolder._local));
-        emit finished();
         return false;
     }
     return true;
