@@ -19,6 +19,7 @@
 #include <QDir>
 #include <QStringList>
 #include <QThread>
+#include <QtGlobal>
 #include <qmetaobject.h>
 
 #ifdef ZLIB_FOUND
@@ -33,6 +34,13 @@ static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, cons
     if (!logger->isNoop()) {
         logger->doLog(qFormatLogMessage(type, ctx, message));
     }
+
+#if defined(Q_OS_WIN)
+    // Make application terminate in a way that can be caught by the crash reporter
+    if(type == QtFatalMsg) {
+        Utility::crash();
+    }
+#endif
 }
 
 

@@ -87,6 +87,7 @@ public slots:
     void slotOpenOwnCloud();
     void slotOpenSettingsDialog();
     void slotHelp();
+    void slotAbout();
     void slotOpenPath(const QString &path);
     void slotAccountStateChanged();
     void slotTrayMessageIfServerUnsupported(Account *account);
@@ -108,7 +109,6 @@ private slots:
     void slotUnpauseAllFolders();
     void slotPauseAllFolders();
     void slotNewAccountWizard();
-    void slotAbout();
 
 private:
     void setPauseOnAllFoldersHelper(bool pause);

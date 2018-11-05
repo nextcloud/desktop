@@ -76,8 +76,8 @@ dlldata.c
 *.svclog
 *.scc
 
-# Mac OS X specific
-shell_integration/MacOSX/*.xcworkspace/xcuserdata/
+# macOS specific
+xcuserdata/
 **/.DS_Store
 
 # Visual C++ cache files

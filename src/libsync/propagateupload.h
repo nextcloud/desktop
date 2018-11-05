@@ -91,20 +91,19 @@ private:
     QElapsedTimer _requestTimer;
 
 public:
-    // Takes ownership of the device
-    explicit PUTFileJob(AccountPtr account, const QString &path, QIODevice *device,
+    explicit PUTFileJob(AccountPtr account, const QString &path, std::unique_ptr<QIODevice> device,
         const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = 0)
         : AbstractNetworkJob(account, path, parent)
-        , _device(device)
+        , _device(device.release())
         , _headers(headers)
         , _chunk(chunk)
     {
         _device->setParent(this);
     }
-    explicit PUTFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
+    explicit PUTFileJob(AccountPtr account, const QUrl &url, std::unique_ptr<QIODevice> device,
         const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = 0)
         : AbstractNetworkJob(account, QString(), parent)
-        , _device(device)
+        , _device(device.release())
         , _headers(headers)
         , _url(url)
         , _chunk(chunk)

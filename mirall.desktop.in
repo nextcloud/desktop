@@ -80,6 +80,21 @@ MimeType=application/vnd.@APPLICATION_EXECUTABLE@;
 
 
 # Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
+
+
+# Translations
 Comment[oc]=@APPLICATION_NAME@ sincronizacion del client
 Icon[oc]=@APPLICATION_EXECUTABLE@
 Name[oc]=@APPLICATION_NAME@ sincronizacion del client

@@ -541,7 +541,7 @@ void PropagateUploadFileNG::startNextChunk()
     _currentChunkOffset = _rangesToUpload.first().start;
     _currentChunkSize = qMin(propagator()->_chunkSize, _rangesToUpload.first().size);
 
-    auto device = new UploadDevice(&propagator()->_bandwidthManager);
+    auto device = std::make_unique<UploadDevice>(&propagator()->_bandwidthManager);
     const QString fileName = propagator()->getFilePath(_item->_file);
 
     if (!device->prepareAndOpen(fileName, _currentChunkOffset, _currentChunkSize)) {
@@ -563,13 +563,14 @@ void PropagateUploadFileNG::startNextChunk()
     QUrl url = chunkUrl(_currentChunkOffset);
 
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
-    PUTFileJob *job = new PUTFileJob(propagator()->account(), url, device, headers, 0, this);
+    auto devicePtr = device.get(); // for connections later
+    PUTFileJob *job = new PUTFileJob(propagator()->account(), url, std::move(device), headers, 0, this);
     _jobs.append(job);
     connect(job, &PUTFileJob::finishedSignal, this, &PropagateUploadFileNG::slotPutFinished);
     connect(job, &PUTFileJob::uploadProgress,
         this, &PropagateUploadFileNG::slotUploadProgress);
     connect(job, &PUTFileJob::uploadProgress,
-        device, &UploadDevice::slotJobUploadProgress);
+        devicePtr, &UploadDevice::slotJobUploadProgress);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     job->start();
     propagator()->_activeJobList.append(this);
@@ -581,7 +582,7 @@ void PropagateUploadFileNG::slotZsyncGenerationFinished(const QString &generated
         << "Finished generation of:" << generatedFileName
         << "size:" << FileSystem::getSize(generatedFileName);
 
-    auto device = new UploadDevice(&propagator()->_bandwidthManager);
+    auto device = std::make_unique<UploadDevice>(&propagator()->_bandwidthManager);
 
     if (!device->prepareAndOpen(generatedFileName, 0, FileSystem::getSize(generatedFileName))) {
         qCWarning(lcPropagateUpload) << "Could not prepare generated file: " << generatedFileName << device->errorString();
@@ -598,13 +599,14 @@ void PropagateUploadFileNG::slotZsyncGenerationFinished(const QString &generated
     qCDebug(lcPropagateUpload) << "Starting upload of .zsync";
 
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
-    PUTFileJob *job = new PUTFileJob(propagator()->account(), url, device, headers, 0, this);
+    auto devicePtr = device.get(); // for connections later
+    PUTFileJob *job = new PUTFileJob(propagator()->account(), url, std::move(device), headers, 0, this);
     _jobs.append(job);
     connect(job, &PUTFileJob::finishedSignal, this, &PropagateUploadFileNG::slotZsyncMetadataUploadFinished);
     connect(job, &PUTFileJob::uploadProgress,
         this, &PropagateUploadFileNG::slotUploadProgress);
     connect(job, &PUTFileJob::uploadProgress,
-        device, &UploadDevice::slotJobUploadProgress);
+        devicePtr, &UploadDevice::slotJobUploadProgress);
     job->start();
     propagator()->_activeJobList.append(this);
 

@@ -16,6 +16,7 @@
 #include "ui_generalsettings.h"
 
 #include "theme.h"
+#include "version.h"
 #include "configfile.h"
 #include "application.h"
 #include "configfile.h"
@@ -103,11 +104,19 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     if (theme->appName() != QLatin1String("ownCloud") && theme->appName() != QLatin1String("testpilotcloud") ) {
 #ifdef Q_OS_MAC
         // Because we don't have any statusString from the SparkleUpdater anyway we can hide the whole thing
-        _ui->updatesGroupBox->hide();
+        _ui->updaterWidget->hide();
 #else
         _ui->updateChannelLabel->hide();
         _ui->updateChannel->hide();
 #endif
+    }
+
+    _ui->versionLabel->setText("<a href='about'>" MIRALL_VERSION_STRING "</a>");
+    QObject::connect(_ui->versionLabel, &QLabel::linkActivated, this, &GeneralSettings::showAbout);
+
+    if (!theme->aboutShowCopyright()) {
+        _ui->copyrightLabelDotBefore->hide();
+        _ui->copyrightLabel->hide();
     }
 }
 
@@ -143,7 +152,7 @@ void GeneralSettings::slotUpdateInfo()
 {
     if (ConfigFile().skipUpdateCheck() || !Updater::instance()) {
         // updater disabled on compile
-        _ui->updatesGroupBox->setVisible(false);
+        _ui->updaterWidget->setVisible(false);
         return;
     }
 

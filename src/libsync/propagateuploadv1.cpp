@@ -90,7 +90,7 @@ void PropagateUploadFileV1::startNextChunk()
 
     QString path = _item->_file;
 
-    UploadDevice *device = new UploadDevice(&propagator()->_bandwidthManager);
+    auto device = std::make_unique<UploadDevice>(&propagator()->_bandwidthManager);
     qint64 chunkStart = 0;
     qint64 currentChunkSize = fileSize;
     bool isFinalChunk = false;
@@ -134,16 +134,16 @@ void PropagateUploadFileV1::startNextChunk()
         }
         // Soft error because this is likely caused by the user modifying his files while syncing
         abortWithError(SyncFileItem::SoftError, device->errorString());
-        delete device;
         return;
     }
 
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
-    PUTFileJob *job = new PUTFileJob(propagator()->account(), propagator()->_remoteFolder + path, device, headers, _currentChunk, this);
+    auto devicePtr = device.get(); // for connections later
+    PUTFileJob *job = new PUTFileJob(propagator()->account(), propagator()->_remoteFolder + path, std::move(device), headers, _currentChunk, this);
     _jobs.append(job);
     connect(job, &PUTFileJob::finishedSignal, this, &PropagateUploadFileV1::slotPutFinished);
     connect(job, &PUTFileJob::uploadProgress, this, &PropagateUploadFileV1::slotUploadProgress);
-    connect(job, &PUTFileJob::uploadProgress, device, &UploadDevice::slotJobUploadProgress);
+    connect(job, &PUTFileJob::uploadProgress, devicePtr, &UploadDevice::slotJobUploadProgress);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     if (isFinalChunk)
         adjustLastJobTimeout(job, fileSize);
