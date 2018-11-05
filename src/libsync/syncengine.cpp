@@ -573,6 +573,11 @@ void SyncEngine::slotNewItem(const SyncFileItemPtr &item)
 
 void SyncEngine::slotDiscoveryJobFinished()
 {
+    if (!_discoveryPhase) {
+        // There was an error that was already taken care of
+        return;
+    }
+
     qCInfo(lcEngine) << "#### Discovery end #################################################### " << _stopWatch.addLapTime(QLatin1String("Discovery Finished")) << "ms";
 
     // Sanity check
@@ -749,6 +754,9 @@ void SyncEngine::finalize(bool success)
     qCInfo(lcEngine) << "Sync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished")) << "ms";
     _stopWatch.stop();
 
+    if (_discoveryPhase) {
+        _discoveryPhase.take()->deleteLater();
+    }
     s_anySyncRunning = false;
     _syncRunning = false;
     emit finished(success);
