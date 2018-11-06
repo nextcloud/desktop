@@ -1212,13 +1212,13 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
 
 bool ProcessDirectoryJob::runLocalQuery()
 {
-    QByteArray localPath = (_discoveryData->_localDir + _currentFolder._local).toUtf8();
+    QString localPath = _discoveryData->_localDir + _currentFolder._local;
     if (localPath.endsWith('/')) // Happens if _currentFolder._local.isEmpty()
         localPath.chop(1);
     auto dh = csync_vio_local_opendir(localPath);
     if (!dh) {
-        qCInfo(lcDisco) << "Error while opening directory" << (_discoveryData->_localDir + _currentFolder._local) << errno;
-        QString errorString = tr("Error while opening directory %1").arg(_discoveryData->_localDir + _currentFolder._local);
+        qCInfo(lcDisco) << "Error while opening directory" << (localPath) << errno;
+        QString errorString = tr("Error while opening directory %1").arg(localPath);
         if (errno == EACCES) {
             errorString = tr("Directory not accessible on client, permission denied");
             if (_dirItem) {
@@ -1228,7 +1228,7 @@ bool ProcessDirectoryJob::runLocalQuery()
                 return false;
             }
         } else if (errno == ENOENT) {
-            errorString = tr("Directory not found: %1").arg(_discoveryData->_localDir + _currentFolder._local);
+            errorString = tr("Directory not found: %1").arg(localPath);
         } else if (errno == ENOTDIR) {
             // Not a directory..
             // Just consider it is empty
@@ -1268,7 +1268,7 @@ bool ProcessDirectoryJob::runLocalQuery()
     if (errno != 0) {
         // Note: Windows vio converts any error into EACCES
         qCWarning(lcDisco) << "readdir failed for file in " << _currentFolder._local << " - errno: " << errno;
-        emit _discoveryData->fatalError(tr("Error while reading directory %1").arg(_discoveryData->_localDir + _currentFolder._local));
+        emit _discoveryData->fatalError(tr("Error while reading directory %1").arg(localPath));
         return false;
     }
     return true;

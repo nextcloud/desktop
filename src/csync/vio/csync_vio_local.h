@@ -23,7 +23,7 @@
 
 struct csync_vio_handle_t;
 
-csync_vio_handle_t OCSYNC_EXPORT *csync_vio_local_opendir(const char *name);
+csync_vio_handle_t OCSYNC_EXPORT *csync_vio_local_opendir(const QString &name);
 int OCSYNC_EXPORT csync_vio_local_closedir(csync_vio_handle_t *dhandle);
 std::unique_ptr<csync_file_stat_t> OCSYNC_EXPORT csync_vio_local_readdir(csync_vio_handle_t *dhandle);
 
