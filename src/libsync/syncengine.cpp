@@ -320,15 +320,16 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
                 const bool isReadOnly = !item->_remotePerm.isNull() && !item->_remotePerm.hasPermission(RemotePermissions::CanWrite);
                 FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
             }
-
-            _journal->setFileRecordMetadata(item->toSyncJournalFileRecordWithInode(filePath));
+            auto rec = item->toSyncJournalFileRecordWithInode(filePath);
+            if (rec._checksumHeader.isEmpty())
+                rec._checksumHeader = prev._checksumHeader;
+            rec._serverHasIgnoredFiles |= prev._serverHasIgnoredFiles;
+            _journal->setFileRecord(rec);
 
             // This might have changed the shared flag, so we must notify SyncFileStatusTracker for example
             emit itemCompleted(item);
         } else {
-            // The local tree is walked first and doesn't have all the info from the server.
             // Update only outdated data from the disk.
-            // FIXME!  I think this is no longer the case so a setFileRecordMetadata should work
             _journal->updateLocalMetadata(item->_file, item->_modtime, item->_size, item->_inode);
         }
         _hasNoneFiles = true;

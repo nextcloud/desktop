@@ -63,9 +63,6 @@ public:
     bool listFilesInPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
     bool setFileRecord(const SyncJournalFileRecord &record);
 
-    /// Like setFileRecord, but preserves checksums
-    bool setFileRecordMetadata(const SyncJournalFileRecord &record);
-
     bool deleteFileRecord(const QString &filename, bool recursively = false);
     bool updateFileRecordChecksum(const QString &filename,
         const QByteArray &contentChecksum,

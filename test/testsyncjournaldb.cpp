@@ -81,7 +81,7 @@ private slots:
         record._fileId = "efg";
         record._remotePerm = RemotePermissions::fromDbValue("NV");
         record._fileSize = 289055;
-        _db.setFileRecordMetadata(record);
+        _db.setFileRecord(record);
         QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo"), &storedRecord));
         QVERIFY(storedRecord == record);
 

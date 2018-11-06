@@ -976,7 +976,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                 }
             }
             SyncJournalFileRecord record = _item->toSyncJournalFileRecordWithInode(propagator()->_localDir + _item->_file);
-            bool ok = propagator()->_journal->setFileRecordMetadata(record);
+            bool ok = propagator()->_journal->setFileRecord(record);
             if (!ok) {
                 status = _item->_status = SyncFileItem::FatalError;
                 _item->_errorString = tr("Error writing metadata to the database");
