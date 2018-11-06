@@ -93,9 +93,9 @@ static const char *win_reserved_words_n[] = { "CLOCK$", "$Recycle.Bin" };
  * @param file_name filename
  * @return true if file is reserved, false otherwise
  */
-bool csync_is_windows_reserved_word(const char *filename)
+bool csync_is_windows_reserved_word(const QStringRef &filename)
 {
-    size_t len_filename = strlen(filename);
+    size_t len_filename = filename.size();
 
     // Drive letters
     if (len_filename == 2 && filename[1] == ':') {
@@ -109,7 +109,7 @@ bool csync_is_windows_reserved_word(const char *filename)
 
     if (len_filename == 3 || (len_filename > 3 && filename[3] == '.')) {
         for (const char *word : win_reserved_words_3) {
-            if (c_strncasecmp(filename, word, 3) == 0) {
+            if (filename.left(3).compare(QLatin1String(word), Qt::CaseInsensitive) == 0) {
                 return true;
             }
         }
@@ -117,15 +117,14 @@ bool csync_is_windows_reserved_word(const char *filename)
 
     if (len_filename == 4 || (len_filename > 4 && filename[4] == '.')) {
         for (const char *word : win_reserved_words_4) {
-            if (c_strncasecmp(filename, word, 4) == 0) {
+            if (filename.left(4).compare(QLatin1String(word), Qt::CaseInsensitive) == 0) {
                 return true;
             }
         }
     }
 
     for (const char *word : win_reserved_words_n) {
-        size_t len_word = strlen(word);
-        if (len_word == len_filename && c_strncasecmp(filename, word, len_word) == 0) {
+        if (filename.compare(QLatin1String(word), Qt::CaseInsensitive) == 0) {
             return true;
         }
     }
@@ -133,43 +132,30 @@ bool csync_is_windows_reserved_word(const char *filename)
     return false;
 }
 
-static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const char *path, bool excludeConflictFiles)
+static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool excludeConflictFiles)
 {
-    const char *bname = NULL;
-    size_t blen = 0;
     int rc = -1;
     CSYNC_EXCLUDE_TYPE match = CSYNC_NOT_EXCLUDED;
 
     /* split up the path */
-    bname = strrchr(path, '/');
-    if (bname) {
-        bname += 1; // don't include the /
-    } else {
-        bname = path;
+    QStringRef bname(&path);
+    int lastSlash = path.lastIndexOf('/');
+    if (lastSlash >= 0) {
+        bname = path.midRef(lastSlash + 1);
     }
-    blen = strlen(bname);
 
+    size_t blen = bname.size();
     // 9 = strlen(".sync_.db")
     if (blen >= 9 && bname[0] == '.') {
-        rc = csync_fnmatch("._sync_*.db*", bname, 0);
-        if (rc == 0) {
-            match = CSYNC_FILE_SILENTLY_EXCLUDED;
-            goto out;
+        if (bname.contains(QLatin1String(".db"))) {
+            if (bname.startsWith(QLatin1String("._sync_"), Qt::CaseInsensitive)  // "._sync_*.db*"
+                || bname.startsWith(QLatin1String(".sync_"), Qt::CaseInsensitive) // ".sync_*.db*"
+                || bname.startsWith(QLatin1String(".csync_journal.db"), Qt::CaseInsensitive)) { // ".csync_journal.db*"
+                return CSYNC_FILE_SILENTLY_EXCLUDED;
+            }
         }
-        rc = csync_fnmatch(".sync_*.db*", bname, 0);
-        if (rc == 0) {
-            match = CSYNC_FILE_SILENTLY_EXCLUDED;
-            goto out;
-        }
-        rc = csync_fnmatch(".csync_journal.db*", bname, 0);
-        if (rc == 0) {
-            match = CSYNC_FILE_SILENTLY_EXCLUDED;
-            goto out;
-        }
-        rc = csync_fnmatch(".owncloudsync.log*", bname, 0);
-        if (rc == 0) {
-            match = CSYNC_FILE_SILENTLY_EXCLUDED;
-            goto out;
+        if (bname.startsWith(QLatin1String(".owncloudsync.log"), Qt::CaseInsensitive)) { // ".owncloudsync.log*"
+            return CSYNC_FILE_SILENTLY_EXCLUDED;
         }
     }
 
@@ -201,8 +187,8 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const char *path, bool excludeC
     }
 
     // Filter out characters not allowed in a filename on windows
-    for (const char *p = path; *p; p++) {
-        switch (*p) {
+    for (auto p : path) {
+        switch (p.unicode()) {
         case '\\':
         case ':':
         case '?':
@@ -221,14 +207,14 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const char *path, bool excludeC
 
     /* We create a Desktop.ini on Windows for the sidebar icon, make sure we don't sync it. */
     if (blen == 11 && path == bname) {
-        rc = csync_fnmatch("Desktop.ini", bname, 0);
+        rc = bname.compare(QLatin1String("Desktop.ini"), Qt::CaseInsensitive);
         if (rc == 0) {
             match = CSYNC_FILE_SILENTLY_EXCLUDED;
             goto out;
         }
     }
 
-    if (excludeConflictFiles && OCC::Utility::isConflictFile(bname)) {
+    if (excludeConflictFiles && OCC::Utility::isConflictFile(path)) {
         match = CSYNC_FILE_EXCLUDE_CONFLICT;
         goto out;
     }
@@ -375,10 +361,10 @@ bool ExcludedFiles::isExcluded(
         relativePath.chop(1);
     }
 
-    return fullPatternMatch(relativePath.toUtf8(), type) != CSYNC_NOT_EXCLUDED;
+    return fullPatternMatch(relativePath, type) != CSYNC_NOT_EXCLUDED;
 }
 
-CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, ItemType filetype) const
+CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, ItemType filetype) const
 {
     auto match = _csync_excluded_common(path, _excludeConflictFiles);
     if (match != CSYNC_NOT_EXCLUDED)
@@ -388,14 +374,11 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, ItemTy
 
     // Check the bname part of the path to see whether the full
     // regex should be run.
-
-    const char *bname = strrchr(path, '/');
-    if (bname) {
-        bname += 1; // don't include the /
-    } else {
-        bname = path;
+    QStringRef bnameStr(&path);
+    int lastSlash = path.lastIndexOf('/');
+    if (lastSlash >= 0) {
+        bnameStr = path.midRef(lastSlash + 1);
     }
-    QString bnameStr = QString::fromUtf8(bname);
 
     QRegularExpressionMatch m;
     if (filetype == ItemTypeDirectory) {
@@ -412,7 +395,7 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, ItemTy
     }
 
     // third capture: full path matching is triggered
-    QString pathStr = QString::fromUtf8(path);
+    QString pathStr = path;
 
     if (filetype == ItemTypeDirectory) {
         m = _fullTraversalRegexDir.match(pathStr);
@@ -429,15 +412,14 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const char *path, ItemTy
     return CSYNC_NOT_EXCLUDED;
 }
 
-CSYNC_EXCLUDE_TYPE ExcludedFiles::fullPatternMatch(const char *path, ItemType filetype) const
+CSYNC_EXCLUDE_TYPE ExcludedFiles::fullPatternMatch(const QString &p, ItemType filetype) const
 {
-    auto match = _csync_excluded_common(path, _excludeConflictFiles);
+    auto match = _csync_excluded_common(p, _excludeConflictFiles);
     if (match != CSYNC_NOT_EXCLUDED)
         return match;
     if (_allExcludes.isEmpty())
         return CSYNC_NOT_EXCLUDED;
 
-    QString p = QString::fromUtf8(path);
     QRegularExpressionMatch m;
     if (filetype == ItemTypeDirectory) {
         m = _fullRegexDir.match(p);

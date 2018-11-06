@@ -514,6 +514,11 @@ static void check_csync_bname_trigger(void **)
 
 static void check_csync_is_windows_reserved_word(void **)
 {
+    auto csync_is_windows_reserved_word = [](const char *fn) {
+        QString s = QString::fromLatin1(fn);
+        return ::csync_is_windows_reserved_word(&s);
+    };
+
     assert_true(csync_is_windows_reserved_word("CON"));
     assert_true(csync_is_windows_reserved_word("con"));
     assert_true(csync_is_windows_reserved_word("CON."));
