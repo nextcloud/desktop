@@ -71,14 +71,14 @@ void ProcessDirectoryJob::process()
     // For suffix-virtual files, the key will always be the base file name
     // without the suffix.
     //
-    std::set<QString> entriesNames; // sorted
-    QHash<QString, RemoteInfo> serverEntriesHash;
-    QHash<QString, LocalInfo> localEntriesHash;
-    QHash<QString, SyncJournalFileRecord> dbEntriesHash;
-
+    struct Entries {
+        SyncJournalFileRecord dbEntry;
+        RemoteInfo serverEntry;
+        LocalInfo localEntry;
+    };
+    std::map<QString, Entries> entries;
     for (auto &e : _serverNormalQueryEntries) {
-        entriesNames.insert(e.name);
-        serverEntriesHash[e.name] = std::move(e);
+        entries[e.name].serverEntry = std::move(e);
     }
     _serverNormalQueryEntries.clear();
 
@@ -88,22 +88,23 @@ void ProcessDirectoryJob::process()
         if (hasVirtualFileSuffix(name)) {
             e.isVirtualFile = true;
             chopVirtualFileSuffix(name);
-            if (localEntriesHash.contains(name))
-                continue; // If there is both a virtual file and a real file, we must keep the real file
+            auto &entry = entries[name];
+            // If there is both a virtual file and a real file, we must keep the real file
+            if (!entry.localEntry.isValid())
+                entry.localEntry = std::move(e);
+        } else {
+            entries[name].localEntry = std::move(e);
         }
-        entriesNames.insert(name);
-        localEntriesHash[name] = std::move(e);
     }
     _localNormalQueryEntries.clear();
 
     // fetch all the name from the DB
     auto pathU8 = _currentFolder._original.toUtf8();
     if (!_discoveryData->_statedb->listFilesInPath(pathU8, [&](const SyncJournalFileRecord &rec) {
-            auto name = pathU8.isEmpty() ? rec._path : QString::fromUtf8(rec._path.mid(pathU8.size() + 1));
+            auto name = pathU8.isEmpty() ? rec._path : QString::fromUtf8(rec._path.constData() + (pathU8.size() + 1));
             if (rec.isVirtualFile())
                 chopVirtualFileSuffix(name);
-            entriesNames.insert(name);
-            dbEntriesHash[name] = rec;
+            entries[name].dbEntry = rec;
         })) {
         dbError();
         return;
@@ -112,28 +113,26 @@ void ProcessDirectoryJob::process()
     //
     // Iterate over entries and process them
     //
-    for (const auto &f : entriesNames) {
-        auto localEntry = localEntriesHash.value(f);
-        auto serverEntry = serverEntriesHash.value(f);
-        SyncJournalFileRecord record = dbEntriesHash.value(f);
+    for (const auto &f : entries) {
+        const auto &e = f.second;
 
         PathTuple path;
-        path = _currentFolder.addName(f);
+        path = _currentFolder.addName(f.first);
 
         // If the file is virtual in the db, adjust path._original
-        if (record.isVirtualFile()) {
-            ASSERT(hasVirtualFileSuffix(record._path));
+        if (e.dbEntry.isVirtualFile()) {
+            ASSERT(hasVirtualFileSuffix(e.dbEntry._path));
             addVirtualFileSuffix(path._original);
-        } else if (localEntry.isVirtualFile) {
+        } else if (e.localEntry.isVirtualFile) {
             // We don't have a db entry - but it should be at this path
             addVirtualFileSuffix(path._original);
         }
 
         // If the file is virtual locally, adjust path._local
-        if (localEntry.isVirtualFile) {
-            ASSERT(hasVirtualFileSuffix(localEntry.name));
+        if (e.localEntry.isVirtualFile) {
+            ASSERT(hasVirtualFileSuffix(e.localEntry.name));
             addVirtualFileSuffix(path._local);
-        } else if (record.isVirtualFile() && _queryLocal == ParentNotChanged) {
+        } else if (e.dbEntry.isVirtualFile() && _queryLocal == ParentNotChanged) {
             addVirtualFileSuffix(path._local);
         }
 
@@ -141,15 +140,15 @@ void ProcessDirectoryJob::process()
         // For windows, the hidden state is also discovered within the vio
         // local stat function.
         // Recall file shall not be ignored (#4420)
-        bool isHidden = localEntry.isHidden || (f[0] == '.' && f != QLatin1String(".sys.admin#recall#"));
-        if (handleExcluded(path._target, localEntry.isDirectory || serverEntry.isDirectory, isHidden, localEntry.isSymLink))
+        bool isHidden = e.localEntry.isHidden || (f.first[0] == '.' && f.first != QLatin1String(".sys.admin#recall#"));
+        if (handleExcluded(path._target, e.localEntry.isDirectory || e.serverEntry.isDirectory, isHidden, e.localEntry.isSymLink))
             continue;
 
         if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original)) {
-            processBlacklisted(path, localEntry, record);
+            processBlacklisted(path, e.localEntry, e.dbEntry);
             continue;
         }
-        processFile(std::move(path), localEntry, serverEntry, record);
+        processFile(std::move(path), e.localEntry, e.serverEntry, e.dbEntry);
     }
     QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
 }
