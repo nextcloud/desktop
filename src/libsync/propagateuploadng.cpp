@@ -32,6 +32,7 @@
 #include <QDir>
 #include <cmath>
 #include <cstring>
+#include <memory>
 
 namespace OCC {
 
@@ -313,7 +314,7 @@ void PropagateUploadFileNG::startNextChunk()
         return;
     }
 
-    auto device = std::make_unique<UploadDevice>(&propagator()->_bandwidthManager);
+    auto device = std::unique_ptr<UploadDevice>(new UploadDevice(&propagator()->_bandwidthManager));
     const QString fileName = propagator()->getFilePath(_item->_file);
 
     if (!device->prepareAndOpen(fileName, _sent, _currentChunkSize)) {

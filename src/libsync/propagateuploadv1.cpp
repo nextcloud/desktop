@@ -32,6 +32,7 @@
 #include <QDir>
 #include <cmath>
 #include <cstring>
+#include <memory>
 
 namespace OCC {
 
@@ -90,7 +91,7 @@ void PropagateUploadFileV1::startNextChunk()
 
     QString path = _item->_file;
 
-    auto device = std::make_unique<UploadDevice>(&propagator()->_bandwidthManager);
+    auto device = std::unique_ptr<UploadDevice>(new UploadDevice(&propagator()->_bandwidthManager));
     qint64 chunkStart = 0;
     qint64 currentChunkSize = fileSize;
     bool isFinalChunk = false;
