@@ -58,7 +58,8 @@ public:
     PathComponents parentDirComponents() const {
         return PathComponents{mid(0, size() - 1)};
     }
-    PathComponents subComponents() const { return PathComponents{mid(1)}; }
+    PathComponents subComponents() const& { return PathComponents{mid(1)}; }
+    PathComponents subComponents() && { removeFirst(); return std::move(*this); }
     QString pathRoot() const { return first(); }
     QString fileName() const { return last(); }
 };
@@ -250,7 +251,7 @@ public:
         file->lastModified = modTime;
     }
 
-    FileInfo *find(const PathComponents &pathComponents, const bool invalidateEtags = false) {
+    FileInfo *find(PathComponents pathComponents, const bool invalidateEtags = false) {
         if (pathComponents.isEmpty()) {
             if (invalidateEtags)
                 etag = generateEtag();
@@ -259,7 +260,7 @@ public:
         QString childName = pathComponents.pathRoot();
         auto it = children.find(childName);
         if (it != children.end()) {
-            auto file = it->find(pathComponents.subComponents(), invalidateEtags);
+            auto file = it->find(std::move(pathComponents).subComponents(), invalidateEtags);
             if (file && invalidateEtags)
                 // Update parents on the way back
                 etag = file->etag;
@@ -319,7 +320,7 @@ public:
     bool isDir = true;
     bool isShared = false;
     OCC::RemotePermissions permissions; // When uset, defaults to everything
-    QDateTime lastModified = QDateTime::currentDateTime().addDays(-7);
+    QDateTime lastModified = QDateTime::currentDateTimeUtc().addDays(-7);
     QString etag = generateEtag();
     QByteArray fileId = generateFileId();
     QByteArray checksums;
@@ -332,8 +333,8 @@ public:
     QString parentPath;
 
 private:
-    FileInfo *findInvalidatingEtags(const PathComponents &pathComponents) {
-        return find(pathComponents, true);
+    FileInfo *findInvalidatingEtags(PathComponents pathComponents) {
+        return find(std::move(pathComponents), true);
     }
 
     friend inline QDebug operator<<(QDebug dbg, const FileInfo& fi) {
