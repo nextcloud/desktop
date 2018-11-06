@@ -295,15 +295,15 @@ void PropagateUploadFileNG::startNextChunk()
         auto headers = PropagateUploadFileCommon::headers();
 
         // "If-Match applies to the source, but we are interested in comparing the etag of the destination
-        auto ifMatch = headers.take("If-Match");
+        auto ifMatch = headers.take(QByteArrayLiteral("If-Match"));
         if (!ifMatch.isEmpty()) {
-            headers["If"] = "<" + QUrl::toPercentEncoding(destination, "/") + "> ([" + ifMatch + "])";
+            headers[QByteArrayLiteral("If")] = "<" + QUrl::toPercentEncoding(destination, "/") + "> ([" + ifMatch + "])";
         }
         if (!_transmissionChecksumHeader.isEmpty()) {
             qCInfo(lcPropagateUpload) << destination << _transmissionChecksumHeader;
             headers[checkSumHeaderC] = _transmissionChecksumHeader;
         }
-        headers["OC-Total-Length"] = QByteArray::number(fileSize);
+        headers[QByteArrayLiteral("OC-Total-Length")] = QByteArray::number(fileSize);
 
         auto job = new MoveJob(propagator()->account(), Utility::concatUrlPath(chunkUrl(), "/.file"),
             destination, headers, this);

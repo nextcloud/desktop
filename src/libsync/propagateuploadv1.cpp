@@ -85,8 +85,8 @@ void PropagateUploadFileV1::startNextChunk()
     }
     quint64 fileSize = _fileToUpload._size;
     auto headers = PropagateUploadFileCommon::headers();
-    headers["OC-Total-Length"] = QByteArray::number(fileSize);
-    headers["OC-Chunk-Size"] = QByteArray::number(quint64(chunkSize()));
+    headers[QByteArrayLiteral("OC-Total-Length")] = QByteArray::number(fileSize);
+    headers[QByteArrayLiteral("OC-Chunk-Size")] = QByteArray::number(quint64(chunkSize()));
 
     QString path = _fileToUpload._file;
 
@@ -101,7 +101,7 @@ void PropagateUploadFileV1::startNextChunk()
         qCInfo(lcPropagateUpload) << "Upload chunk" << sendingChunk << "of" << _chunkCount << "transferid(remote)=" << transid;
         path += QString("-chunking-%1-%2-%3").arg(transid).arg(_chunkCount).arg(sendingChunk);
 
-        headers["OC-Chunked"] = "1";
+        headers[QByteArrayLiteral("OC-Chunked")] = QByteArrayLiteral("1");
 
         chunkStart = chunkSize() * quint64(sendingChunk);
         currentChunkSize = chunkSize();
