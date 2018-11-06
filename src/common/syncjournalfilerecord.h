@@ -66,7 +66,7 @@ public:
     ItemType _type = ItemTypeSkip;
     QByteArray _etag;
     QByteArray _fileId;
-    qint64 _fileSize;
+    qint64 _fileSize = 0;
     RemotePermissions _remotePerm;
     bool _serverHasIgnoredFiles = false;
     QByteArray _checksumHeader;
