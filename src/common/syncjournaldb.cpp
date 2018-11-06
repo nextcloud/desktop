@@ -1821,6 +1821,10 @@ int SyncJournalDb::mapChecksumType(const QByteArray &checksumType)
         return 0;
     }
 
+    auto it =  _checksymTypeCache.find(checksumType);
+    if (it != _checksymTypeCache.end())
+        return *it;
+
     // Ensure the checksum type is in the db
     if (!_insertChecksumTypeQuery.initOrReset(QByteArrayLiteral("INSERT OR IGNORE INTO checksumtype (name) VALUES (?1)"), _db))
         return 0;
@@ -1841,7 +1845,9 @@ int SyncJournalDb::mapChecksumType(const QByteArray &checksumType)
         qCWarning(lcDb) << "No checksum type mapping found for" << checksumType;
         return 0;
     }
-    return _getChecksumTypeIdQuery.intValue(0);
+    auto value = _getChecksumTypeIdQuery.intValue(0);
+    _checksymTypeCache[checksumType] = value;
+    return value;
 }
 
 QByteArray SyncJournalDb::dataFingerprint()
