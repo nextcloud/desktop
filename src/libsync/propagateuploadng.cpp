@@ -504,17 +504,17 @@ void PropagateUploadFileNG::doFinalMove()
     auto headers = PropagateUploadFileCommon::headers();
 
     // "If-Match applies to the source, but we are interested in comparing the etag of the destination
-    auto ifMatch = headers.take("If-Match");
+    auto ifMatch = headers.take(QByteArrayLiteral("If-Match"));
     if (!ifMatch.isEmpty()) {
-        headers["If"] = "<" + destination.toUtf8() + "> ([" + ifMatch + "])";
+        headers[QByteArrayLiteral("If")] = "<" + destination.toUtf8() + "> ([" + ifMatch + "])";
     }
     if (!_transmissionChecksumHeader.isEmpty()) {
         headers[checkSumHeaderC] = _transmissionChecksumHeader;
     }
-    headers["OC-Total-Length"] = QByteArray::number(_bytesToUpload);
-    headers["OC-Total-File-Length"] = QByteArray::number(_item->_size);
+    headers[QByteArrayLiteral("OC-Total-Length")] = QByteArray::number(_bytesToUpload);
+    headers[QByteArrayLiteral("OC-Total-File-Length")] = QByteArray::number(_item->_size);
 
-    QUrl source = _zsyncSupported ? Utility::concatUrlPath(chunkUrl(), "/.file.zsync") : Utility::concatUrlPath(chunkUrl(), "/.file");
+    QUrl source = _zsyncSupported ? Utility::concatUrlPath(chunkUrl(), QStringLiteral("/.file.zsync")) : Utility::concatUrlPath(chunkUrl(), QStringLiteral("/.file"));
 
     auto job = new MoveJob(propagator()->account(), source, destination, headers, this);
     _jobs.append(job);

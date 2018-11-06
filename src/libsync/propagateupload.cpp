@@ -573,11 +573,11 @@ void PropagateUploadFileCommon::abortWithError(SyncFileItem::Status status, cons
 QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
 {
     QMap<QByteArray, QByteArray> headers;
-    headers["OC-Async"] = "1";
-    headers["Content-Type"] = "application/octet-stream";
-    headers["X-OC-Mtime"] = QByteArray::number(qint64(_item->_modtime));
+    headers[QByteArrayLiteral("OC-Async")] = QByteArrayLiteral("1");
+    headers[QByteArrayLiteral("Content-Type")] = QByteArrayLiteral("application/octet-stream");
+    headers[QByteArrayLiteral("X-OC-Mtime")] = QByteArray::number(qint64(_item->_modtime));
 
-    if (_item->_file.contains(".sys.admin#recall#")) {
+    if (_item->_file.contains(QLatin1String(".sys.admin#recall#"))) {
         // This is a file recall triggered by the admin.  Note: the
         // recall list file created by the admin and downloaded by the
         // client (.sys.admin#recall#) also falls into this category
@@ -594,21 +594,21 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
         && !_deleteExisting) {
         // We add quotes because the owncloud server always adds quotes around the etag, and
         //  csync_owncloud.c's owncloud_file_id always strips the quotes.
-        headers["If-Match"] = '"' + _item->_etag + '"';
+        headers[QByteArrayLiteral("If-Match")] = '"' + _item->_etag + '"';
     }
 
     // Set up a conflict file header pointing to the original file
     auto conflictRecord = propagator()->_journal->conflictRecord(_item->_file.toUtf8());
     if (conflictRecord.isValid()) {
-        headers["OC-Conflict"] = "1";
+        headers[QByteArrayLiteral("OC-Conflict")] = "1";
         if (!conflictRecord.initialBasePath.isEmpty())
-            headers["OC-ConflictInitialBasePath"] = conflictRecord.initialBasePath;
+            headers[QByteArrayLiteral("OC-ConflictInitialBasePath")] = conflictRecord.initialBasePath;
         if (!conflictRecord.baseFileId.isEmpty())
-            headers["OC-ConflictBaseFileId"] = conflictRecord.baseFileId;
+            headers[QByteArrayLiteral("OC-ConflictBaseFileId")] = conflictRecord.baseFileId;
         if (conflictRecord.baseModtime != -1)
-            headers["OC-ConflictBaseMtime"] = QByteArray::number(conflictRecord.baseModtime);
+            headers[QByteArrayLiteral("OC-ConflictBaseMtime")] = QByteArray::number(conflictRecord.baseModtime);
         if (!conflictRecord.baseEtag.isEmpty())
-            headers["OC-ConflictBaseEtag"] = conflictRecord.baseEtag;
+            headers[QByteArrayLiteral("OC-ConflictBaseEtag")] = conflictRecord.baseEtag;
     }
 
     return headers;
