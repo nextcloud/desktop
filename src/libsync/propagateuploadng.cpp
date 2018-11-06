@@ -37,6 +37,7 @@ extern "C" {
 
 #include <cmath>
 #include <cstring>
+#include <memory>
 
 namespace OCC {
 
@@ -541,7 +542,7 @@ void PropagateUploadFileNG::startNextChunk()
     _currentChunkOffset = _rangesToUpload.first().start;
     _currentChunkSize = qMin(propagator()->_chunkSize, _rangesToUpload.first().size);
 
-    auto device = std::make_unique<UploadDevice>(&propagator()->_bandwidthManager);
+    auto device = std::unique_ptr<UploadDevice>(new UploadDevice(&propagator()->_bandwidthManager));
     const QString fileName = propagator()->getFilePath(_item->_file);
 
     if (!device->prepareAndOpen(fileName, _currentChunkOffset, _currentChunkSize)) {
@@ -582,7 +583,7 @@ void PropagateUploadFileNG::slotZsyncGenerationFinished(const QString &generated
         << "Finished generation of:" << generatedFileName
         << "size:" << FileSystem::getSize(generatedFileName);
 
-    auto device = std::make_unique<UploadDevice>(&propagator()->_bandwidthManager);
+    auto device = std::unique_ptr<UploadDevice>(new UploadDevice(&propagator()->_bandwidthManager));
 
     if (!device->prepareAndOpen(generatedFileName, 0, FileSystem::getSize(generatedFileName))) {
         qCWarning(lcPropagateUpload) << "Could not prepare generated file: " << generatedFileName << device->errorString();
