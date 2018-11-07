@@ -113,7 +113,7 @@ static time_t FileTimeToUnixTime(FILETIME *filetime, DWORD *remainder)
     }
 }
 
-std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(CSYNC *ctx, csync_vio_handle_t *handle) {
+std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *handle, OCC::Vfs *vfs) {
 
   std::unique_ptr<csync_file_stat_t> file_stat;
   DWORD rem;
@@ -137,12 +137,12 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(CSYNC *ctx, csync_vio
   }
   auto path = c_utf8_from_locale(handle->ffd.cFileName);
   if (path == "." || path == "..")
-      return csync_vio_local_readdir(ctx, handle);
+      return csync_vio_local_readdir(handle, vfs);
 
   file_stat.reset(new csync_file_stat_t);
   file_stat->path = path;
 
-    if (ctx->vfs && ctx->vfs->statTypeVirtualFile(file_stat.get(), &handle->ffd)) {
+    if (vfs && vfs->statTypeVirtualFile(file_stat.get(), &handle->ffd)) {
       // all good
     } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
       // Detect symlinks, and treat junctions as symlinks too.
