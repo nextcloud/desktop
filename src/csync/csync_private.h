@@ -121,6 +121,17 @@ struct OCSYNC_EXPORT csync_s {
           auto it = find(key);
           return it != end() ? it->second.get() : nullptr;
       }
+      bool updateFile(const ByteArrayRef &key, csync_instructions_e instruction) const {
+          csync_file_stat_t *fs = findFile(key);
+          if(fs){
+            fs->instruction = instruction;
+            return true;
+          } else {
+              // add file?
+          }
+
+          return false;
+      }
       csync_file_stat_t *findFileMangledName(const ByteArrayRef &key) const {
           auto it = begin();
           while (it != end()) {
