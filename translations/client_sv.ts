@@ -1349,7 +1349,7 @@ Om du fortsätter synkningen kommer alla dina filer återställas med en äldre 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="250"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation type="unfinished"/>
+        <translation>Visa synkroniseringsmappar i &amp;utforskarens navigeringsfönster</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="267"/>
