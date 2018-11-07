@@ -152,6 +152,9 @@ private:
     QAction *_actionAbout;
     QAction *_actionQuit;
     QAction *_actionCrash;
+    QAction *_actionCrashEnforce;
+    QAction *_actionCrashFatal;
+
 
     QList<QAction *> _recentItemsActions;
     Application *_app;

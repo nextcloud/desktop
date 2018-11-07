@@ -660,6 +660,9 @@ void ownCloudGui::updateContextMenu()
 
     if (_actionCrash) {
         _contextMenu->addAction(_actionCrash);
+        _contextMenu->addAction(_actionCrashEnforce);
+        _contextMenu->addAction(_actionCrashFatal);
+
     }
 
     _contextMenu->addSeparator();
@@ -798,10 +801,16 @@ void ownCloudGui::setupActions()
     connect(_actionLogout, &QAction::triggered, this, &ownCloudGui::slotLogout);
 
     if (_app->debugMode()) {
-        _actionCrash = new QAction(tr("Crash now", "Only shows in debug mode to allow testing the crash handler"), this);
+        _actionCrash = new QAction("Crash now - Div by zero", this);
         connect(_actionCrash, &QAction::triggered, _app, &Application::slotCrash);
+        _actionCrashEnforce = new QAction("Crash now - ENFORCE()", this);
+        connect(_actionCrashEnforce, &QAction::triggered, _app, &Application::slotCrashEnforce);
+        _actionCrashFatal = new QAction("Crash now - qFatal", this);
+        connect(_actionCrashFatal, &QAction::triggered, _app, &Application::slotCrashFatal);
     } else {
         _actionCrash = 0;
+        _actionCrashEnforce = 0;
+        _actionCrashFatal = 0;
     }
 }
 
