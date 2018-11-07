@@ -30,7 +30,6 @@ if(NO_RENAME_EXTENSION)
 endif()
 
 set(csync_SRCS
-  csync.cpp
   csync_exclude.cpp
   csync_util.cpp
   csync_misc.cpp

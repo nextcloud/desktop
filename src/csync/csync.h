@@ -190,15 +190,7 @@ struct OCSYNC_EXPORT csync_file_stat_s {
     , error_status(CSYNC_STATUS_OK)
     , instruction(CSYNC_INSTRUCTION_NONE)
   { }
-
-  static std::unique_ptr<csync_file_stat_t> fromSyncJournalFileRecord(const OCC::SyncJournalFileRecord &rec);
 };
-
-/**
- * csync handle
- */
-typedef struct csync_s CSYNC;
-
 
 time_t OCSYNC_EXPORT oc_httpdate_parse( const char *date );
 
