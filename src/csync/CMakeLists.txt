@@ -32,7 +32,6 @@ endif()
 set(csync_SRCS
   csync_exclude.cpp
   csync_util.cpp
-  csync_misc.cpp
 
   std/c_alloc.c
   std/c_string.c
