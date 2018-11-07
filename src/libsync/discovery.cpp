@@ -394,7 +394,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             return;
         }
         // Turn new remote files into virtual files if the option is enabled.
-        if (!localEntry.isValid() && _discoveryData->_syncOptions._newFilesAreVirtual && item->_type == ItemTypeFile) {
+        auto vfs = _discoveryData->_syncOptions._vfs;
+        if (!localEntry.isValid() && vfs && vfs->mode() == Vfs::WithSuffix && item->_type == ItemTypeFile) {
             item->_type = ItemTypeVirtualFile;
             addVirtualFileSuffix(path._original);
         }
@@ -1151,12 +1152,15 @@ void ProcessDirectoryJob::dbError()
 
 void ProcessDirectoryJob::addVirtualFileSuffix(QString &str) const
 {
-    str.append(_discoveryData->_syncOptions._virtualFileSuffix);
+    if (auto vfs = _discoveryData->_syncOptions._vfs)
+        str.append(vfs->fileSuffix());
 }
 
 bool ProcessDirectoryJob::hasVirtualFileSuffix(const QString &str) const
 {
-    return str.endsWith(_discoveryData->_syncOptions._virtualFileSuffix);
+    if (auto vfs = _discoveryData->_syncOptions._vfs)
+        return str.endsWith(vfs->fileSuffix());
+    return false;
 }
 
 void ProcessDirectoryJob::chopVirtualFileSuffix(QString &str) const
@@ -1164,7 +1168,7 @@ void ProcessDirectoryJob::chopVirtualFileSuffix(QString &str) const
     bool hasSuffix = hasVirtualFileSuffix(str);
     ASSERT(hasSuffix);
     if (hasSuffix)
-        str.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
+        str.chop(_discoveryData->_syncOptions._vfs->fileSuffix().size());
 }
 
 DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
@@ -1246,7 +1250,7 @@ bool ProcessDirectoryJob::runLocalQuery()
         return false;
     }
     errno = 0;
-    while (auto dirent = csync_vio_local_readdir(dh)) {
+    while (auto dirent = csync_vio_local_readdir(dh, _discoveryData->_syncOptions._vfs)) {
         if (dirent->type == ItemTypeSkip)
             continue;
         LocalInfo i;
