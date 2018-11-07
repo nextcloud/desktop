@@ -45,8 +45,9 @@ private slots:
         fakeFolder.localModifier().insert("A/Y/y2");
         fakeFolder.localModifier().insert("B/b3");
         fakeFolder.remoteModifier().insert("C/c3");
-
+        fakeFolder.remoteModifier().appendByte("C/c1");
         tracker.addTouchedPath("A/X");
+
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, tracker.localDiscoveryPaths());
 
         tracker.startSyncPartialDiscovery();
