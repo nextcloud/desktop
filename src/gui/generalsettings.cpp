@@ -57,7 +57,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     QString about = Theme::instance()->about();
     _ui->aboutLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
     _ui->aboutLabel->setText(about);
-    _ui->aboutLabel->setWordWrap(true);
     _ui->aboutLabel->setOpenExternalLinks(true);
 
     // About legal notice
