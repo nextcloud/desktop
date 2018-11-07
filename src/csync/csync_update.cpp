@@ -546,6 +546,10 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
             st->instruction = CSYNC_INSTRUCTION_IGNORE;
         }
 
+        /*  check if it is offline */
+        if(ctx->statedb->getSyncMode(rec._path) != OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE)
+            return;
+
         /* store into result list. */
         files[rec._path] = std::move(st);
         ++count;

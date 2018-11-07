@@ -87,22 +87,26 @@ int csync_update(CSYNC *ctx) {
 
   /* update detection for local replica */
   QElapsedTimer timer;
-  timer.start();
-  ctx->current = LOCAL_REPLICA;
 
-  qCInfo(lcCSync, "## Starting local discovery ##");
+  /* we don't do local discovery if fuse is in use */
+  if(!ctx->fuseEnabled){
+      timer.start();
+      ctx->current = LOCAL_REPLICA;
 
-  rc = csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
-  if (rc < 0) {
-    if(ctx->status_code == CSYNC_STATUS_OK) {
-        ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
-    }
-    return rc;
+      qCInfo(lcCSync, "## Starting local discovery ##");
+
+      rc = csync_ftw(ctx, ctx->local.uri, csync_walker, MAX_DEPTH);
+      if (rc < 0) {
+        if(ctx->status_code == CSYNC_STATUS_OK) {
+            ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
+        }
+        return rc;
+      }
+
+      qCInfo(lcCSync) << "Update detection for local replica took" << timer.elapsed() / 1000.
+                      << "seconds walking" << ctx->local.files.size() << "files";
+      csync_memstat_check();
   }
-
-  qCInfo(lcCSync) << "Update detection for local replica took" << timer.elapsed() / 1000.
-                  << "seconds walking" << ctx->local.files.size() << "files";
-  csync_memstat_check();
 
   /* update detection for remote replica */
   timer.restart();
@@ -241,7 +245,8 @@ int csync_s::reinitialize() {
   remote.read_from_db = 0;
   read_remote_from_db = true;
 
-  local.files.clear();
+  //FUSE
+  //local.files.clear();
   remote.files.clear();
 
   renames.folder_renamed_from.clear();

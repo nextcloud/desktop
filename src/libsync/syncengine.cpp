@@ -756,97 +756,14 @@ void SyncEngine::csyncError(const QString &message)
     emit syncError(message, ErrorCategory::Normal);
 }
 
-void SyncEngine::startFuseSync()
+bool SyncEngine::startFuseSync()
 {
     if(_currentFusePath.isEmpty()){
         qCInfo(lcEngine) << "ERRRO: can not call fuse sync without knowing which file to look for!";
-        return;
-    }
-
-    if (_journal->exists()) {
-        QVector<SyncJournalDb::PollInfo> pollInfos = _journal->getPollInfos();
-        if (!pollInfos.isEmpty()) {
-            qCInfo(lcEngine) << "Finish Poll jobs before starting a sync";
-            CleanupPollsJob *job = new CleanupPollsJob(pollInfos, _account,
-                _journal, _localPath, this);
-            connect(job, &CleanupPollsJob::finished, this, &SyncEngine::startFuseSync);
-            connect(job, &CleanupPollsJob::aborted, this, &SyncEngine::slotCleanPollsJobAborted);
-            job->start();
-            return;
-        }
-    }
-
-    if (s_anySyncRunning || _syncRunning) {
-        ASSERT(false);
-        return;
-    }
-
-    s_anySyncRunning = true;
-    _syncRunning = true;
-    _anotherSyncNeeded = NoFollowUpSync;
-    _clearTouchedFilesTimer.stop();
-
-    _progressInfo->reset();
-
-    if (!QDir(_localPath).exists()) {
-        _anotherSyncNeeded = DelayedFollowUp;
-        // No _tr, it should only occur in non-mirall
-        csyncError("Unable to find local sync folder.");
-        finalize(false);
-        return;
-    }
-
-    // Check free size on disk first.
-    const qint64 minFree = criticalFreeSpaceLimit();
-    const qint64 freeBytes = Utility::freeDiskSpace(_localPath);
-    if (freeBytes >= 0) {
-        if (freeBytes < minFree) {
-            qCWarning(lcEngine()) << "Too little space available at" << _localPath << ". Have"
-                                  << freeBytes << "bytes and require at least" << minFree << "bytes";
-            _anotherSyncNeeded = DelayedFollowUp;
-            csyncError(tr("Only %1 are available, need at least %2 to start",
-                "Placeholders are postfixed with file sizes using Utility::octetsToString()")
-                           .arg(
-                               Utility::octetsToString(freeBytes),
-                               Utility::octetsToString(minFree)));
-            finalize(false);
-            return;
-        } else {
-            qCInfo(lcEngine) << "There are" << freeBytes << "bytes available at" << _localPath;
-        }
-    } else {
-        qCWarning(lcEngine) << "Could not determine free space available at" << _localPath;
-    }
-
-    _syncItemMap.clear();
-    _needsUpdate = false;
-
-    csync_resume(_csync_ctx.data());
-
-    if (!_journal->exists()) {
-        qCInfo(lcEngine) << "New sync (no sync journal exists)";
-    } else {
-        qCInfo(lcEngine) << "Sync with existing sync journal";
-    }
-
-    QString verStr("Using Qt ");
-    verStr.append(qVersion());
-
-    verStr.append(" SSL library ").append(QSslSocket::sslLibraryVersionString().toUtf8().data());
-    verStr.append(" on ").append(Utility::platformName());
-    qCInfo(lcEngine) << verStr;
-
-    // This creates the DB if it does not exist yet.
-    if (!_journal->isConnected()) {
-        qCWarning(lcEngine) << "No way to create a sync journal!";
-        csyncError(tr("Unable to open or create the local sync database. Make sure you have write access in the sync folder."));
-        finalize(false);
-        return;
-        // database creation error!
+        return false;
     }
 
     // FUSE options
-    _csync_ctx->fuseEnabled = true;
     _csync_ctx->fusePath = _currentFusePath;
     _csync_ctx->fuseInstuction = _fuseDiscoveryPaths.at(_currentFusePath);
 
@@ -860,75 +777,7 @@ void SyncEngine::startFuseSync()
         return shouldDiscoverLocally(path);
     };
 
-    bool ok;
-    auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-    if (ok) {
-        bool usingSelectiveSync = (!selectiveSyncBlackList.isEmpty());
-        qCInfo(lcEngine) << (usingSelectiveSync ? "Using Selective Sync" : "NOT Using Selective Sync");
-    } else {
-        qCWarning(lcEngine) << "Could not retrieve selective sync list from DB";
-        csyncError(tr("Unable to read the blacklist from the local database"));
-        finalize(false);
-        return;
-    }
-    csync_set_userdata(_csync_ctx.data(), this);
-
-    // Set up checksumming hook
-    _csync_ctx->callbacks.checksum_hook = &CSyncChecksumHook::hook;
-    _csync_ctx->callbacks.checksum_userdata = &_checksum_hook;
-
-    _stopWatch.start();
-    _progressInfo->_status = ProgressInfo::Starting;
-    emit transmissionProgress(*_progressInfo);
-
-    qCInfo(lcEngine) << "#### Discovery start ####################################################";
-    _progressInfo->_status = ProgressInfo::Discovery;
-    emit transmissionProgress(*_progressInfo);
-
-    // Usually the discovery runs in the background: We want to avoid
-    // stealing too much time from other processes that the user might
-    // be interacting with at the time.
-    _fuseThread.start(QThread::LowPriority);
-
-    _discoveryFuseThread = new DiscoveryMainThread(account());
-    _discoveryFuseThread->setParent(this);
-    connect(this, &SyncEngine::finished, _discoveryFuseThread.data(), &QObject::deleteLater);
-    qCInfo(lcEngine) << "Server" << account()->serverVersion()
-                     << (account()->isHttp2Supported() ? "Using HTTP/2" : "");
-    if (account()->rootEtagChangesNotOnlySubFolderEtags()) {
-        connect(_discoveryFuseThread.data(), &DiscoveryMainThread::etag, this, &SyncEngine::slotRootEtagReceived);
-    } else {
-        connect(_discoveryFuseThread.data(), &DiscoveryMainThread::etagConcatenation, this, &SyncEngine::slotRootEtagReceived);
-    }
-
-    DiscoveryJob *discoveryJob = new DiscoveryJob(_csync_ctx.data());
-    discoveryJob->_selectiveSyncBlackList = selectiveSyncBlackList;
-    discoveryJob->_selectiveSyncWhiteList =
-        _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok);
-    if (!ok) {
-        delete discoveryJob;
-        qCWarning(lcEngine) << "Unable to read selective sync list, aborting.";
-        csyncError(tr("Unable to read from the sync journal."));
-        finalize(false);
-        return;
-    }
-
-    discoveryJob->_syncOptions = _syncOptions;
-    discoveryJob->moveToThread(&_fuseThread);
-    connect(discoveryJob, &DiscoveryJob::finished, this, &SyncEngine::slotDiscoveryJobFinished);
-    connect(discoveryJob, &DiscoveryJob::folderDiscovered,
-        this, &SyncEngine::slotFolderDiscovered);
-
-    connect(discoveryJob, &DiscoveryJob::newBigFolder,
-        this, &SyncEngine::newBigFolder);
-
-
-    // This is used for the DiscoveryJob to be able to request the main thread/
-    // to read in directory contents.
-    _discoveryFuseThread->setupHooks(discoveryJob, _remotePath);
-
-    // Starts the update in a seperate thread
-    QMetaObject::invokeMethod(discoveryJob, "start", Qt::QueuedConnection);
+    return true;
 }
 
 void SyncEngine::startSync()
@@ -1015,8 +864,18 @@ void SyncEngine::startSync()
         // database creation error!
     }
 
-    // Disable fuse
-    _csync_ctx->fuseEnabled = false;
+    _csync_ctx->fuseEnabled = startFuseSync();
+
+    _journal->setSyncMode(QString("welcome.txt"), OCC::SyncJournalDb::SYNCMODE_OFFLINE);
+    _journal->setSyncModeDownload(QString("welcome.txt"), OCC::SyncJournalDb::SYNCMODE_DOWNLOADED_NO);
+    if(_csync_ctx->local.files.size() > 0){
+        _csync_ctx->fuseEnabled = true;
+        if(_csync_ctx->local.files.updateFile(ByteArrayRef("welcome.txt"), CSYNC_INSTRUCTION_SYNC)){
+            csync_file_stat_t *fs = _csync_ctx->local.files.findFile(ByteArrayRef("welcome.txt"));
+            if(fs)
+                qDebug() << "Found file!" << fs->path << "NEW instruction is " << fs->instruction;
+        }
+    }
 
     _csync_ctx->upload_conflict_files = _account->capabilities().uploadConflictFiles();
     _excludedFiles->setExcludeConflictFiles(!_account->capabilities().uploadConflictFiles());
