@@ -184,15 +184,7 @@ struct OCSYNC_EXPORT csync_file_stat_t {
     , is_hidden(false)
     , isE2eEncrypted(false)
   { }
-
-  static std::unique_ptr<csync_file_stat_t> fromSyncJournalFileRecord(const OCC::SyncJournalFileRecord &rec);
 };
-
-/**
- * csync handle
- */
-using CSYNC = struct csync_s;
-
 
 time_t OCSYNC_EXPORT oc_httpdate_parse( const char *date );
 
