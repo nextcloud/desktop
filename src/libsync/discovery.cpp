@@ -282,6 +282,8 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     auto item = SyncFileItem::fromSyncJournalFileRecord(dbEntry);
     item->_file = path._target;
     item->_originalFile = path._original;
+    item->_previousSize = dbEntry._fileSize;
+    item->_previousModtime = dbEntry._modtime;
 
     // The item shall only have this type if the db request for the virtual download
     // was successful (like: no conflicting remote remove etc). This decision is done
@@ -332,8 +334,6 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     item->_remotePerm = serverEntry.remotePerm;
     item->_type = serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile;
     item->_etag = serverEntry.etag;
-    item->_previousSize = localEntry.size;
-    item->_previousModtime = localEntry.modtime;
     item->_directDownloadUrl = serverEntry.directDownloadUrl;
     item->_directDownloadCookies = serverEntry.directDownloadCookies;
 
@@ -668,8 +668,6 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_checksumHeader.clear();
             item->_size = localEntry.size;
             item->_modtime = localEntry.modtime;
-            item->_previousSize = dbEntry._fileSize;
-            item->_previousModtime = dbEntry._modtime;
             _childModified = true;
 
             // Checksum comparison at this stage is only enabled for .eml files,
