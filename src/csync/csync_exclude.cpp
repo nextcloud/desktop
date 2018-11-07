@@ -29,7 +29,6 @@
 #include "c_utf8.h"
 
 #include "csync_exclude.h"
-#include "csync_misc.h"
 
 #include "common/utility.h"
 #include "../version.h"
