@@ -4,42 +4,42 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="107"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Söker efter ändringar i &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="129"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserar %1 av %2  (%3 kvar)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="134"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserar %1 av %2</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="141"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserar %1 (%2 kvar)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="144"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserar %1</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="186"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniseringen pausad</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="189"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserar</translation>
     </message>
 </context>
 <context>
@@ -47,12 +47,12 @@
     <message>
         <location filename="../src/gui/mnemonicdialog.ui" line="23"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Dialog</translation>
     </message>
     <message>
         <location filename="../src/gui/mnemonicdialog.ui" line="58"/>
         <source>Label</source>
-        <translation type="unfinished"/>
+        <translation>Etikett</translation>
     </message>
 </context>
 <context>
@@ -60,18 +60,18 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Could not make directories in trash</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte skapa mappar i papperskorgen</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="459"/>
         <location filename="../src/common/filesystembase.cpp" line="465"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte flytta &apos;%1&apos; till &apos;%2&apos;</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>Att flytta till papperskorgen är inte implementerat på denna plattform</translation>
     </message>
 </context>
 <context>
@@ -148,12 +148,12 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="342"/>
         <source>End to end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>End to end krypteringsord</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="343"/>
         <source>To protect your Cryptocraphic Identity, we encrypt it with a mnemonic of 12 dictionary words.Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>För att skydda din krypteringsidentitet, krypterar vi den med en mnemoteknisk av 12 ordlistor. Notera dessa krypteringsord och håll dem säkra. De kommer behövas för att lägga till andra enheter till ditt konto (t.ex. mobiltelefon eller dator).</translation>
     </message>
 </context>
 <context>
@@ -233,12 +233,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="234"/>
         <source>Show E2E mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Visa E2E krypteringsord</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="542"/>
         <source>Encrypt</source>
-        <translation type="unfinished"/>
+        <translation>Kryptera</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="583"/>
@@ -476,27 +476,27 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="131"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="179"/>
         <source>More information</source>
-        <translation type="unfinished"/>
+        <translation>Mer information</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="180"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Acceptera</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="181"/>
         <source>Join</source>
-        <translation type="unfinished"/>
+        <translation>Gå med</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="198"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Öppna webbläsare</translation>
     </message>
 </context>
 <context>
@@ -514,17 +514,17 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="56"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Acceptera</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="182"/>
         <source>Synced </source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserad</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="217"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Försök ladda upp igen</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="332"/>
@@ -624,12 +624,12 @@
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="992"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Ange dina end to end krypteringsord:&lt;br&gt;&lt;br&gt;Användare: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1000"/>
         <source>Enter E2E passphrase</source>
-        <translation type="unfinished"/>
+        <translation>Ange E2E krypteringsord</translation>
     </message>
 </context>
 <context>
@@ -804,12 +804,12 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="1012"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>Mappen %1 skapades men var tidigare exkluderad från synkronisering. Data i denna mapp kommer inte att synkroniseras.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1015"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>Filen %1 skapades men var tidigare exkluderad från synkronisering. Den kommer inte att synkroniseras.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1026"/>
@@ -818,7 +818,11 @@
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Ändringar i synkroniserade mappar kunde inte spåras på ett tillförlitligt sätt.
+
+Det betyder att synkroniseringsklienten inte kan ladda upp lokala ändringar omedelbart och kommer istället bara att söka efter lokala ändringar och ladda upp dem ibland (varannan timme som standard).
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1071"/>
@@ -826,22 +830,25 @@ This means that the synchronization client might not upload local changes immedi
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Alla filer i den synkade mappen &apos;%1&apos; raderades på servern.
+Dessa raderingar kommer att synkroniseras till din lokalt synkade mapp och göra filerna otillgängliga, om du inte har möjlighet att återställa.
+Om du vill behålla dessa filer kommer dom att synkroniseras till servern på nytt, om du har rättighet att göra det.
+Om du raderar filerna kommer dom att vara otillgängliga för dig, om du inte är ägaren.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1080"/>
         <source>Download new files?</source>
-        <translation type="unfinished"/>
+        <translation>Ladda ner nya filer?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1083"/>
         <source>Download new files</source>
-        <translation type="unfinished"/>
+        <translation>Ladda ner nya filer</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1084"/>
         <source>Keep local files</source>
-        <translation type="unfinished"/>
+        <translation>Behåll lokala filer</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1076"/>
@@ -922,7 +929,7 @@ Om du fortsätter synkningen kommer alla dina filer återställas med en äldre 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1220"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniseringen lyckades men olösta konflikter.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1222"/>
@@ -932,7 +939,7 @@ Om du fortsätter synkningen kommer alla dina filer återställas med en äldre 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1312"/>
         <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Den lokala mappen %1 innehåller en symbolisk länk. Länkens mål innehåller en redan synkroniserad mapp. Välj en annan mapp!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1228"/>
@@ -1000,7 +1007,7 @@ Om du fortsätter synkningen kommer alla dina filer återställas med en äldre 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="249"/>
         <source>Synchronized with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserad med lokal mapp</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="296"/>
@@ -1091,22 +1098,22 @@ Om du fortsätter synkningen kommer alla dina filer återställas med en äldre 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Söker efter ändringar i fjärrmappen &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="923"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Söker efter ändringar i lokal mapp &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
         <source>↓ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↓ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>↑ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
@@ -1158,7 +1165,7 @@ Om du fortsätter synkningen kommer alla dina filer återställas med en äldre 
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="87"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Detta problem händer oftast vid problem med inotify. Se FAQ för mer information.</translation>
     </message>
 </context>
 <context>
@@ -1286,7 +1293,7 @@ Om du fortsätter synkningen kommer alla dina filer återställas med en äldre 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Rättsligt meddelande</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
@@ -1301,7 +1308,7 @@ Om du fortsätter synkningen kommer alla dina filer återställas med en äldre 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Visa server&amp;notifieringar</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="163"/>
@@ -1342,7 +1349,7 @@ Om du fortsätter synkningen kommer alla dina filer återställas med en äldre 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="250"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation type="unfinished"/>
+        <translation>Visa synkroniseringsmappar i &amp;utforskarens navigeringsfönster</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="267"/>
@@ -1368,7 +1375,7 @@ Om du fortsätter synkningen kommer alla dina filer återställas med en äldre 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="49"/>
         <source>Server notifications that require attention.</source>
-        <translation type="unfinished"/>
+        <translation>Servernotifieringar som kräver uppmärksamhet.</translation>
     </message>
 </context>
 <context>
@@ -1376,14 +1383,16 @@ Om du fortsätter synkningen kommer alla dina filer återställas med en äldre 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="520"/>
         <source>Sharing error</source>
-        <translation type="unfinished"/>
+        <translation>Fel vid delning</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="521"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte hämta eller skapa den offentliga länkdelningen. Fel:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -1439,7 +1448,7 @@ Om du fortsätter synkningen kommer alla dina filer återställas med en äldre 
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="126"/>
         <source>Remove all</source>
-        <translation type="unfinished"/>
+        <translation>Ta bort alla</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="93"/>
@@ -1496,32 +1505,32 @@ Objekt som tillåter radering kommer tas bort om de förhindrar en mapp att tas 
     <message>
         <location filename="../src/gui/legalnotice.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Dialog</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="26"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Rättsligt meddelande</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="36"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Textetikett</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="58"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Stäng</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="27"/>
         <source>&lt;p&gt;Copyright 2017-2018 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2018 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="30"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Licenserad under GNU General Public License (GPL) Version 2.0 eller annan senare version.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1549,14 +1558,16 @@ Objekt som tillåter radering kommer tas bort om de förhindrar en mapp att tas 
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
         <source>Permanently save logs</source>
-        <translation type="unfinished"/>
+        <translation>Spara loggar permanent</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="103"/>
         <source>When this option is enabled and no other logging is configured, logs will be written to a temporary folder and expire after a few hours. This setting persists across client restarts.
 
 Logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>När det här alternativet är aktiverat och ingen annan loggning har konfigurerats kommer loggarna att skrivas till en tillfällig mapp och gå ut efter några timmar. Inställningen gäller även vid omstart av klienten.
+
+Loggar kommer att skrivas till %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="115"/>
@@ -1959,22 +1970,22 @@ ytterligare rättigheter under processen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="83"/>
         <source>Keep your data secure and under your control</source>
-        <translation type="unfinished"/>
+        <translation>Håll din data säker och under din kontroll</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="84"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation type="unfinished"/>
+        <translation>Säkert samarbete och filutbyte</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="85"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation type="unfinished"/>
+        <translation>Lättanvänd webmail, kalender och kontakter</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation type="unfinished"/>
+        <translation>Skärmdelning, onlinemöten och webbkonferenser</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="198"/>
@@ -1996,7 +2007,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="414"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte ladda certifikatet. Felaktigt lösenord?</translation>
     </message>
 </context>
 <context>
@@ -2201,7 +2212,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
         <source>File %1 can not be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>Fil %1 kan inte laddas ner eftersom krypteringsinformation fattas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="434"/>
@@ -2378,7 +2389,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="334"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Filen borttagen (starta uppladdning) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="684"/>
@@ -2597,7 +2608,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="162"/>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>Ikon</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="101"/>
@@ -2630,22 +2641,22 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="122"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Dela länk</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="145"/>
         <source>Enable</source>
-        <translation type="unfinished"/>
+        <translation>Aktivera</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="259"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Lösenord:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="383"/>
         <source>Expiration date:</source>
-        <translation type="unfinished"/>
+        <translation>Utgångsdatum:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="508"/>
@@ -2660,42 +2671,42 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="189"/>
         <source>Allow Editing</source>
-        <translation type="unfinished"/>
+        <translation>Tillåt redigering</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="195"/>
         <source>Read only</source>
-        <translation type="unfinished"/>
+        <translation>Läsbehörighet</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="203"/>
         <source>Allow Upload &amp;&amp; Editing</source>
-        <translation type="unfinished"/>
+        <translation>Tillåt uppladdning &amp;&amp; redigering</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="208"/>
         <source>File Drop (Upload Only)</source>
-        <translation type="unfinished"/>
+        <translation>Göm fillista (endast uppladdning)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="215"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Kopiera länk</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="228"/>
         <source>Password Protect</source>
-        <translation type="unfinished"/>
+        <translation>Lösenordsskydda</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="245"/>
         <source>Expiration Date</source>
-        <translation type="unfinished"/>
+        <translation>Utgångsdatum</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="265"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Sluta dela</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="447"/>
@@ -2733,7 +2744,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="248"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Kopiera länk</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="258"/>
@@ -2756,7 +2767,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="114"/>
         <source>User name</source>
-        <translation type="unfinished"/>
+        <translation>Användarnamn</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="155"/>
@@ -2766,22 +2777,22 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="388"/>
         <source>Can reshare</source>
-        <translation type="unfinished"/>
+        <translation>Kan dela vidare</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="398"/>
         <source>Can create</source>
-        <translation type="unfinished"/>
+        <translation>Kan skapa</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="404"/>
         <source>Can change</source>
-        <translation type="unfinished"/>
+        <translation>Kan ändra</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="410"/>
         <source>Can delete</source>
-        <translation type="unfinished"/>
+        <translation>Kan radera</translation>
     </message>
 </context>
 <context>
@@ -2831,7 +2842,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="491"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>Delningsmeny</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="612"/>
@@ -2858,18 +2869,18 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="653"/>
         <source>Resharing this file is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Dela vidare denna fil är inte tillåtet</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="666"/>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
         <source>Copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopiera publik länk till urklipp</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="722"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Öppna i webbläsare</translation>
     </message>
 </context>
 <context>
@@ -3163,7 +3174,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="123"/>
         <source>Failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Misslyckades med att ladda eller skapa journalfilen. Säkerställ att du har rättigheter att läsa och skriva i den lokala synkmappen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="127"/>
@@ -3173,22 +3184,22 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="136"/>
         <source>Permission denied.</source>
-        <translation type="unfinished"/>
+        <translation>Åtkomst nekad.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="139"/>
         <source>File or directory not found:</source>
-        <translation type="unfinished"/>
+        <translation>Fil eller mapp kunde inte hittas:</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="142"/>
         <source>Tried to create a folder that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>Försökte skapa en mapp som redan existerar.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="145"/>
         <source>No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>Inget tillgängligt utrymme på server %1 .</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="154"/>
@@ -3359,7 +3370,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="341"/>
         <source>&lt;p&gt;This release was supplied by the Nextcloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Denna release levererades av Nextcloud GmbH&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3367,12 +3378,12 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="122"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation type="unfinished"/>
+        <translation>Du har loggats ut från %1 som användare %2. Logga in igen</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="139"/>
         <source>Please login with the user: %1</source>
-        <translation type="unfinished"/>
+        <translation>Logga in som: %1</translation>
     </message>
 </context>
 <context>
@@ -3506,7 +3517,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="356"/>
         <source>Unresolved conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Olösta konflikter.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="363"/>
@@ -3562,7 +3573,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="841"/>
         <source>Apps</source>
-        <translation type="unfinished"/>
+        <translation>Appar</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="898"/>
@@ -3572,12 +3583,12 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="920"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Söker efter ändringar i fjärrmappen &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="923"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Söker efter ändringar i lokal mapp &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="938"/>
@@ -3723,7 +3734,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Ett fel inträffade vid anslutning. Försök igen.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
@@ -3747,17 +3758,17 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="66"/>
         <source>&lt;a href=&quot;https://docs.nextcloud.com/server/13/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Host your own server&lt;/span&gt;&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;https://docs.nextcloud.com/server/13/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Använd din egen server&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="143"/>
         <source>Register with a provider</source>
-        <translation type="unfinished"/>
+        <translation>Registrera hos en leverantör</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="165"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Logga in</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="241"/>
@@ -3926,17 +3937,17 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="233"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollsummans header är felformaterad.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="248"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Kontrollsummans header innehåller en okänd kontrollsumma av typ &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Den nedladdade filen stämmer inte med kontrollsumman, den kommer laddas om.</translation>
     </message>
 </context>
 <context>
@@ -3944,7 +3955,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/wizard/webview.ui" line="26"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formulär</translation>
     </message>
 </context>
 <context>
@@ -3965,7 +3976,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="320"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Byggd från Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; den %3, %4 med Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

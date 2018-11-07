@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Controleren op wijzigingen in &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="129"/>
@@ -60,7 +60,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Could not make directories in trash</source>
-        <translation type="unfinished"/>
+        <translation>Kon geen directories maken in de prullenbak</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="459"/>
@@ -71,7 +71,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>Verplaatsen naar de prullenbak wordt niet ondersteund op dit platform</translation>
     </message>
 </context>
 <context>
@@ -148,7 +148,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="342"/>
         <source>End to end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Begin-tot-eind versleutelingsmnemonic</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="343"/>
@@ -826,7 +826,10 @@ This means that the synchronization client might not upload local changes immedi
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Alle bestanden in de syncmap &apos;%1&apos; werden verwijderd van de server.
+Deze verwijderingen worden gesynchroniseerd naar uw lokale syncmap, waardoor deze bestanden niet meer beschikbaar zijn, tenzij u het recht hebt om ze te herstellen. 
+Als u de bestanden wilt behouden, worden ze opnieuw gesynchroniseerd met de server als u die autorisatie hebt.
+Als u de bestanden wilt verwijderen, worden ze niet beschikbaar, tenzij u de eigenaar bent.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1080"/>
@@ -1973,12 +1976,12 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="85"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation type="unfinished"/>
+        <translation>Eenvoudig te gebruiken webmail, agenda &amp; contacten</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation type="unfinished"/>
+        <translation>Schermdelen, online afspraken &amp; web conferenties</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="198"/>
