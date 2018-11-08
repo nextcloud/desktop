@@ -1163,7 +1163,7 @@ Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tut
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="87"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Questo problema si verifica di solito quando i controlli di inotify sono esauriti. Leggi le FAQ per i dettagli.</translation>
     </message>
 </context>
 <context>
