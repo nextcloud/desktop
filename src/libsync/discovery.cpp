@@ -1177,7 +1177,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
             if (!serverJob->_dataFingerprint.isEmpty() && _discoveryData->_dataFingerprint.isEmpty())
                 _discoveryData->_dataFingerprint = serverJob->_dataFingerprint;
             if (_localQueryDone)
-                process();
+                this->process();
         } else {
             if (results.errorCode() == 403) {
                 // 403 Forbidden can be sent by the server if the file firewall is active.
@@ -1186,7 +1186,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
                 if (_dirItem) {
                     _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
                     _dirItem->_errorString = results.errorMessage();
-                    emit finished();
+                    emit this->finished();
                     return;
                 }
             } else if (results.errorCode() == 503) {
@@ -1198,7 +1198,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
                 if (_dirItem) {
                     _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
                     _dirItem->_errorString = results.errorMessage();
-                    emit finished();
+                    emit this->finished();
                     return;
                 }
             }
