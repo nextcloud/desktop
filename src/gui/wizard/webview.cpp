@@ -137,7 +137,9 @@ void WebViewPageUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *reques
             password = part.mid(9);
         }
     }
-
+    if (!server.startsWith("http://") && !server.startsWith("https://")) {
+        server = "https://" + server;
+    }
     qCInfo(lcWizardWebiew()) << "Got user: " << user << ", server: " << server;
 
     emit urlCatched(user, password, server);
