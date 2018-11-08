@@ -21,9 +21,6 @@
 #include <sys/resource.h>
 #endif
 
-#include <openssl/conf.h>
-#include <openssl/err.h>
-
 #include "application.h"
 #include "theme.h"
 #include "common/utility.h"
@@ -51,10 +48,7 @@ int main(int argc, char **argv)
 {
     Q_INIT_RESOURCE(client);
 
-    /* Initialise the library */
-    ERR_load_crypto_strings();
-    OpenSSL_add_all_algorithms();
-    OPENSSL_config(NULL);
+    // OpenSSL 1.1.0: No explicit initialisation or de-initialisation is necessary.
 
 #ifdef Q_OS_WIN
 // If the font size ratio is set on Windows, we need to

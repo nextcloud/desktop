@@ -3,6 +3,7 @@
 #include <openssl/pem.h>
 #include <openssl/err.h>
 #include <openssl/engine.h>
+#include <openssl/rand.h>
 
 
 #include "clientsideencryption.h"
