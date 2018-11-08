@@ -29,7 +29,9 @@
 #include <QCoreApplication>
 #include <QJsonDocument>
 #include <QJsonObject>
+#ifndef TOKEN_AUTH_ONLY
 #include <QPainter>
+#endif
 
 #include "networkjobs.h"
 #include "account.h"
