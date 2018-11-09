@@ -85,8 +85,7 @@ void ProcessDirectoryJob::process()
     for (auto &e : _localNormalQueryEntries) {
         // Remove the virtual file suffix
         auto name = e.name;
-        if (hasVirtualFileSuffix(name)) {
-            e.isVirtualFile = true;
+        if (e.isVirtualFile && isVfsWithSuffix()) {
             chopVirtualFileSuffix(name);
             auto &entry = entries[name];
             // If there is both a virtual file and a real file, we must keep the real file
@@ -102,7 +101,7 @@ void ProcessDirectoryJob::process()
     auto pathU8 = _currentFolder._original.toUtf8();
     if (!_discoveryData->_statedb->listFilesInPath(pathU8, [&](const SyncJournalFileRecord &rec) {
             auto name = pathU8.isEmpty() ? rec._path : QString::fromUtf8(rec._path.constData() + (pathU8.size() + 1));
-            if (rec.isVirtualFile())
+            if (rec.isVirtualFile() && isVfsWithSuffix())
                 chopVirtualFileSuffix(name);
             entries[name].dbEntry = rec;
         })) {
@@ -119,21 +118,23 @@ void ProcessDirectoryJob::process()
         PathTuple path;
         path = _currentFolder.addName(f.first);
 
-        // If the file is virtual in the db, adjust path._original
-        if (e.dbEntry.isVirtualFile()) {
-            ASSERT(hasVirtualFileSuffix(e.dbEntry._path));
-            addVirtualFileSuffix(path._original);
-        } else if (e.localEntry.isVirtualFile) {
-            // We don't have a db entry - but it should be at this path
-            addVirtualFileSuffix(path._original);
-        }
+        if (isVfsWithSuffix()) {
+            // If the file is virtual in the db, adjust path._original
+            if (e.dbEntry.isVirtualFile()) {
+                ASSERT(hasVirtualFileSuffix(e.dbEntry._path));
+                addVirtualFileSuffix(path._original);
+            } else if (e.localEntry.isVirtualFile) {
+                // We don't have a db entry - but it should be at this path
+                addVirtualFileSuffix(path._original);
+            }
 
-        // If the file is virtual locally, adjust path._local
-        if (e.localEntry.isVirtualFile) {
-            ASSERT(hasVirtualFileSuffix(e.localEntry.name));
-            addVirtualFileSuffix(path._local);
-        } else if (e.dbEntry.isVirtualFile() && _queryLocal == ParentNotChanged) {
-            addVirtualFileSuffix(path._local);
+            // If the file is virtual locally, adjust path._local
+            if (e.localEntry.isVirtualFile) {
+                ASSERT(hasVirtualFileSuffix(e.localEntry.name));
+                addVirtualFileSuffix(path._local);
+            } else if (e.dbEntry.isVirtualFile() && _queryLocal == ParentNotChanged) {
+                addVirtualFileSuffix(path._local);
+            }
         }
 
         // If the filename starts with a . we consider it a hidden file
@@ -396,9 +397,10 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         }
         // Turn new remote files into virtual files if the option is enabled.
         auto vfs = _discoveryData->_syncOptions._vfs;
-        if (!localEntry.isValid() && vfs && vfs->mode() == Vfs::WithSuffix && item->_type == ItemTypeFile) {
+        if (!localEntry.isValid() && vfs && item->_type == ItemTypeFile) {
             item->_type = ItemTypeVirtualFile;
-            addVirtualFileSuffix(path._original);
+            if (isVfsWithSuffix())
+                addVirtualFileSuffix(path._original);
         }
         processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
     };
@@ -788,7 +790,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             // We must query the server to know if the etag has not changed
             _pendingAsyncJobs++;
             QString serverOriginalPath = originalPath;
-            if (base.isVirtualFile())
+            if (base.isVirtualFile() && isVfsWithSuffix())
                 chopVirtualFileSuffix(serverOriginalPath);
             auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
             connect(job, &RequestEtagJob::finishedWithResult, this, [=](const Result<QString> &etag) mutable {
@@ -890,7 +892,7 @@ void ProcessDirectoryJob::processFileFinalize(
     QueryMode recurseQueryLocal, QueryMode recurseQueryServer)
 {
     // Adjust target path for virtual-suffix files
-    if (item->_type == ItemTypeVirtualFile) {
+    if (item->_type == ItemTypeVirtualFile && isVfsWithSuffix()) {
         addVirtualFileSuffix(path._target);
         if (item->_instruction == CSYNC_INSTRUCTION_RENAME)
             addVirtualFileSuffix(item->_renameTarget);
@@ -1150,13 +1152,15 @@ void ProcessDirectoryJob::addVirtualFileSuffix(QString &str) const
 
 bool ProcessDirectoryJob::hasVirtualFileSuffix(const QString &str) const
 {
-    if (auto vfs = _discoveryData->_syncOptions._vfs)
-        return str.endsWith(vfs->fileSuffix());
-    return false;
+    if (!isVfsWithSuffix())
+        return false;
+    return str.endsWith(_discoveryData->_syncOptions._vfs->fileSuffix());
 }
 
 void ProcessDirectoryJob::chopVirtualFileSuffix(QString &str) const
 {
+    if (!isVfsWithSuffix())
+        return;
     bool hasSuffix = hasVirtualFileSuffix(str);
     ASSERT(hasSuffix);
     if (hasSuffix)
@@ -1266,6 +1270,7 @@ bool ProcessDirectoryJob::runLocalQuery()
         i.isDirectory = dirent->type == ItemTypeDirectory;
         i.isHidden = dirent->is_hidden;
         i.isSymLink = dirent->type == ItemTypeSoftLink;
+        i.isVirtualFile = dirent->type == ItemTypeVirtualFile;
         _localNormalQueryEntries.push_back(i);
     }
     csync_vio_local_closedir(dh);
@@ -1276,6 +1281,12 @@ bool ProcessDirectoryJob::runLocalQuery()
         return false;
     }
     return true;
+}
+
+bool ProcessDirectoryJob::isVfsWithSuffix() const
+{
+    auto vfs = _discoveryData->_syncOptions._vfs;
+    return vfs && vfs->mode() == Vfs::WithSuffix;
 }
 
 }
