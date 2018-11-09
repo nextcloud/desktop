@@ -235,13 +235,7 @@ public:
     void appendJob(PropagatorJob *job);
     void appendTask(const SyncFileItemPtr &item)
     {
-//        bool sync = false;
-//        if(SyncJournalDb::instance())
-//            if(SyncJournalDb::instance()->getSyncMode(item->_file) == SyncJournalDb::SyncMode::SYNCMODE_OFFLINE)
-//                sync = true;
-
-//        if(sync)
-             _tasksToDo.append(item);
+        _tasksToDo.append(item);
     }
 
     virtual bool scheduleSelfOrChild() Q_DECL_OVERRIDE;
