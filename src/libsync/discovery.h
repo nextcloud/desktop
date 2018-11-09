@@ -162,6 +162,9 @@ private:
     bool hasVirtualFileSuffix(const QString &str) const;
     void chopVirtualFileSuffix(QString &str) const;
 
+    /** Convenience to detect suffix-vfs modes */
+    bool isVfsWithSuffix() const;
+
     /** Start a remote discovery network job
      *
      * It fills _serverNormalQueryEntries and sets _serverQueryDone when done.
