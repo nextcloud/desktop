@@ -756,30 +756,6 @@ void SyncEngine::csyncError(const QString &message)
     emit syncError(message, ErrorCategory::Normal);
 }
 
-bool SyncEngine::startFuseSync()
-{
-    if(_currentFusePath.isEmpty()){
-        qCInfo(lcEngine) << "ERRRO: can not call fuse sync without knowing which file to look for!";
-        return false;
-    }
-
-    // FUSE options
-    _csync_ctx->fusePath = _currentFusePath;
-    _csync_ctx->fuseInstuction = _fuseDiscoveryPaths.at(_currentFusePath);
-
-    _csync_ctx->upload_conflict_files = _account->capabilities().uploadConflictFiles();
-    _excludedFiles->setExcludeConflictFiles(!_account->capabilities().uploadConflictFiles());
-
-    _csync_ctx->read_remote_from_db = true;
-
-    _lastLocalDiscoveryStyle = _localDiscoveryStyle;
-    _csync_ctx->should_discover_locally_fn = [this](const QByteArray &path) {
-        return shouldDiscoverLocally(path);
-    };
-
-    return true;
-}
-
 void SyncEngine::startSync()
 {
     if (_journal->exists()) {
@@ -796,8 +772,9 @@ void SyncEngine::startSync()
     }
 
     if (s_anySyncRunning || _syncRunning) {
-        ASSERT(false);
-        return;
+        csyncError("Restarting sync.");
+        finalize(false);
+        startSync();
     }
 
     s_anySyncRunning = true;
@@ -864,17 +841,9 @@ void SyncEngine::startSync()
         // database creation error!
     }
 
-    _csync_ctx->fuseEnabled = startFuseSync();
-
-    _journal->setSyncMode(QString("welcome.txt"), OCC::SyncJournalDb::SYNCMODE_OFFLINE);
-    _journal->setSyncModeDownload(QString("welcome.txt"), OCC::SyncJournalDb::SYNCMODE_DOWNLOADED_NO);
+    _csync_ctx->fuseEnabled = false;
     if(_csync_ctx->local.files.size() > 0){
         _csync_ctx->fuseEnabled = true;
-        if(_csync_ctx->local.files.updateFile(ByteArrayRef("welcome.txt"), CSYNC_INSTRUCTION_SYNC)){
-            csync_file_stat_t *fs = _csync_ctx->local.files.findFile(ByteArrayRef("welcome.txt"));
-            if(fs)
-                qDebug() << "Found file!" << fs->path << "NEW instruction is " << fs->instruction;
-        }
     }
 
     _csync_ctx->upload_conflict_files = _account->capabilities().uploadConflictFiles();
@@ -1111,8 +1080,6 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     // Re-init the csync context to free memory
     _csync_ctx->reinitialize();
     _localDiscoveryPaths.clear();
-    _fuseDiscoveryPaths.clear();
-    _currentFusePath.clear();
 
     // To announce the beginning of the sync
     emit aboutToPropagate(syncItems);
@@ -1257,8 +1224,6 @@ void SyncEngine::finalize(bool success)
     _renamedFolders.clear();
     _uniqueErrors.clear();
     _localDiscoveryPaths.clear();
-    _fuseDiscoveryPaths.clear();
-    _currentFusePath.clear();
     _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
 
     _clearTouchedFilesTimer.start();
@@ -1665,15 +1630,31 @@ AccountPtr SyncEngine::account() const
     return _account;
 }
 
-void SyncEngine::setCurrentFusePath(const QString &path){
-    _currentFusePath = path.toLatin1();
+int SyncEngine::localTreeSize(){
+    return !_csync_ctx.isNull()? static_cast<int>(_csync_ctx->local.files.size()) : 0;
 }
 
-void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> paths, std::map<QByteArray, csync_instructions_e> fusePaths)
+void SyncEngine::updateLocalFileTree(const QString &path, csync_instructions_e instruction){
+    if(!path.isEmpty()){
+        if(!_csync_ctx.isNull()){
+
+            _csync_ctx->fuseEnabled = true;
+
+            QByteArray localPath(_localPath.toLatin1());
+            if(_localPath.endsWith("/"))
+                localPath = localPath.remove(localPath.size() - 1, 1);
+
+            if(cysnc_update_file(_csync_ctx.data(), localPath, path.toLatin1(), instruction)){
+                qDebug() << "Added file to local file tree!";
+            }
+        }
+    }
+}
+
+void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> paths)
 {
     _localDiscoveryStyle = style;
     _localDiscoveryPaths = std::move(paths);
-    _fuseDiscoveryPaths = std::move(fusePaths);
 }
 
 bool SyncEngine::shouldDiscoverLocally(const QByteArray &path) const
