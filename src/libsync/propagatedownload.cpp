@@ -75,7 +75,7 @@ GETFileJob::GETFileJob(AccountPtr account, const QString &path, QIODevice *devic
     , _headers(headers)
     , _expectedEtagForResume(expectedEtagForResume)
     , _expectedContentLength(-1)
-    , _contentLength(0)
+    , _contentLength(-1)
     , _resumeStart(resumeStart)
     , _hasEmittedFinishedSignal(false)
 {
@@ -89,7 +89,7 @@ GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
     , _headers(headers)
     , _expectedEtagForResume(expectedEtagForResume)
     , _expectedContentLength(-1)
-    , _contentLength(0)
+    , _contentLength(-1)
     , _resumeStart(resumeStart)
     , _directDownloadUrl(url)
     , _hasEmittedFinishedSignal(false)

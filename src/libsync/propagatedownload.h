@@ -140,7 +140,7 @@ class OWNCLOUDSYNC_EXPORT GETFileJob : public GETJob
     QMap<QByteArray, QByteArray> _headers;
     QByteArray _expectedEtagForResume;
     qint64 _expectedContentLength;
-    quint64 _contentLength;
+    qint64 _contentLength;
     quint64 _resumeStart;
     QUrl _directDownloadUrl;
     bool _hasEmittedFinishedSignal;
@@ -181,7 +181,7 @@ public:
         return _resumeStart;
     }
 
-    quint64 contentLength() const { return _contentLength; }
+    qint64 contentLength() const { return _contentLength; }
     qint64 expectedContentLength() const { return _expectedContentLength; }
     void setExpectedContentLength(qint64 size) { _expectedContentLength = size; }
 
