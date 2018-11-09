@@ -611,10 +611,7 @@ QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
                     QVariantMap attribs;
                     attribs.insert(FileManager::FMFilePosixPermissions, (long long)perm);
                     fm.createDirectory(completePath, attribs, error);
-                }
-                else if (_fileListMap.value(path)->list.at(i)->type == ItemTypeFile)
-                {
-                    OCC::SyncWrapper::instance()->initSyncMode(_fileListMap.value(path)->list.at(i)->path);
+                } else if (_fileListMap.value(path)->list.at(i)->type == ItemTypeFile) {
                     QVariant fd;
                     unsigned long perm = ALLPERMS;
                     QVariantMap attribs;
@@ -623,6 +620,7 @@ QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
                     close(fd.toInt());
                 }
             }
+            OCC::SyncWrapper::instance()->updateLocalFileTree(_fileListMap.value(path)->list.at(i)->path, CSYNC_INSTRUCTION_NEW);
         }
     }
     //_fileListMap.remove(path);
@@ -632,6 +630,7 @@ QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
 
 #pragma mark File Contents
 
+<<<<<<< HEAD
 char * VfsMac::getProcessName(pid_t pid)
 {
    char pathBuffer [PROC_PIDPATHINFO_MAXSIZE];
@@ -671,8 +670,12 @@ bool VfsMac::openFileAtPath(QString path, int mode, QVariant &userData, QVariant
 
     //Sync.
     //TODO:  Avoid it running every single time a file is created
+
     // Sync.
-    OCC::SyncWrapper::instance()->openFileAtPath(prepareSync(path));
+//    QString filePath = OCC::SyncWrapper::instance()->initSyncMode(path);
+//    OCC::SyncWrapper::instance()->openFileAtPath(filePath);
+//    _syncDone.insert(filePath, false);
+
 
     QString p = rootPath_ + path;
     int fd = open(p.toLatin1().data(), mode);
@@ -686,7 +689,10 @@ bool VfsMac::openFileAtPath(QString path, int mode, QVariant &userData, QVariant
 
 void VfsMac::releaseFileAtPath(QString path, QVariant userData)
 {
-    OCC::SyncWrapper::instance()->releaseFileAtPath(prepareSync(path));
+    // Sync.
+//    QString filePath = OCC::SyncWrapper::instance()->initSyncMode(path);
+//    OCC::SyncWrapper::instance()->releaseFileAtPath(filePath);
+//    _syncDone.insert(filePath, false);
 
     long num = userData.toLongLong();
     int fd = num;
@@ -707,7 +713,10 @@ int VfsMac::readFileAtPath(QString path, QVariant userData, char *buffer, size_t
 
 int VfsMac::writeFileAtPath(QString path, QVariant userData, const char *buffer, size_t size, off_t offset, QVariantMap &error)
 {
-    OCC::SyncWrapper::instance()->writeFileAtPath(prepareSync(path));
+//    // Sync.
+//    QString filePath = OCC::SyncWrapper::instance()->initSyncMode(path);
+//    OCC::SyncWrapper::instance()->writeFileAtPath(filePath);
+//    _syncDone.insert(filePath, false);
 
     long num = userData.toLongLong();
     int fd = num;

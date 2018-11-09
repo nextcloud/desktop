@@ -609,22 +609,8 @@ bool Folder::reloadExcludes()
     return _engine->excludedFiles().reloadExcludeFiles();
 }
 
-void Folder::updateFuseDiscoveryPaths(const QString &path, csync_instructions_e instruction){
-    //insert or update key
-    _fuseDiscoveryPaths.emplace(path.toLatin1(), instruction);
-    _engine->setCurrentFusePath(path);
-}
-
-void Folder::startFuseSync()
-{
-    _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::FUSEFilesystem, {}, _fuseDiscoveryPaths);
-
-    for (auto &files : _fuseDiscoveryPaths){
-        qCDebug(lcFolder) << "selected path to sync: " << files.first;
-        qCDebug(lcFolder) << "path instruction: " << files.second;
-    }
-
-    startSync();
+void Folder::updateLocalFileTree(const QString &path, csync_instructions_e instruction){
+    _engine->updateLocalFileTree(path, instruction);
 }
 
 void Folder::startSync()
@@ -634,11 +620,14 @@ void Folder::startSync()
         return;
     }
 
-    bool fuse = _fuseDiscoveryPaths.size() > 0 ? true : false;
+    if (_engine->localTreeSize() == 0) {
+        qCCritical(lcFolder) << "Nothing to do yet...";
+        return;
+    }
 
     _csyncUnavail = false;
 
-    if(!fuse) _timeSinceLastSyncStart.start();
+    _timeSinceLastSyncStart.start();
     _syncResult.setStatus(SyncResult::SyncPrepare);
     emit syncStateChange();
 
@@ -656,40 +645,36 @@ void Folder::startSync()
     setDirtyNetworkLimits();
     setSyncOptions();
 
-    if(!fuse) {
-        static std::chrono::milliseconds fullLocalDiscoveryInterval = []() {
-            auto interval = ConfigFile().fullLocalDiscoveryInterval();
-            QByteArray env = qgetenv("OWNCLOUD_FULL_LOCAL_DISCOVERY_INTERVAL");
-            if (!env.isEmpty()) {
-                interval = std::chrono::milliseconds(env.toLongLong());
-            }
-            return interval;
-        }();
-
-        if (_folderWatcher && _folderWatcher->isReliable() && _timeSinceLastFullLocalDiscovery.isValid()
-            && (fullLocalDiscoveryInterval.count() < 0
-                   || _timeSinceLastFullLocalDiscovery.hasExpired(fullLocalDiscoveryInterval.count()))) {
-
-            qCInfo(lcFolder) << "Allowing local discovery to read from the database";
-            _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, _localDiscoveryPaths);
-
-            if (lcFolder().isDebugEnabled()) {
-                QByteArrayList paths;
-                for (auto &path : _localDiscoveryPaths)
-                    paths.append(path);
-                qCDebug(lcFolder) << "local discovery paths: " << paths;
-            }
-
-            _previousLocalDiscoveryPaths = std::move(_localDiscoveryPaths);
-        } else {
-            qCInfo(lcFolder) << "Forbidding local discovery to read from the database";
-            _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
-            _previousLocalDiscoveryPaths.clear();
+    static std::chrono::milliseconds fullLocalDiscoveryInterval = []() {
+        auto interval = ConfigFile().fullLocalDiscoveryInterval();
+        QByteArray env = qgetenv("OWNCLOUD_FULL_LOCAL_DISCOVERY_INTERVAL");
+        if (!env.isEmpty()) {
+            interval = std::chrono::milliseconds(env.toLongLong());
         }
+        return interval;
+    }();
+
+    if (_folderWatcher && _folderWatcher->isReliable() && _timeSinceLastFullLocalDiscovery.isValid()
+        && (fullLocalDiscoveryInterval.count() < 0
+               || _timeSinceLastFullLocalDiscovery.hasExpired(fullLocalDiscoveryInterval.count()))) {
+
+        qCInfo(lcFolder) << "Allowing local discovery to read from the database";
+        _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem);
+
+        if (lcFolder().isDebugEnabled()) {
+            QByteArrayList paths;
+            for (auto &path : _localDiscoveryPaths)
+                paths.append(path);
+            qCDebug(lcFolder) << "local discovery paths: " << paths;
+        }
+
+        _previousLocalDiscoveryPaths = std::move(_localDiscoveryPaths);
+    } else {
+        qCInfo(lcFolder) << "Forbidding local discovery to read from the database";
+        _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
+        _previousLocalDiscoveryPaths.clear();
     }
 
-
-    _fuseDiscoveryPaths.clear();
     _localDiscoveryPaths.clear();
 
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);

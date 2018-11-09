@@ -521,8 +521,6 @@ public:
      */
     bool removeExtendedAttribute(QString name, QString path, QVariantMap &error);
 
-    QString prepareSync(QString path);
-
     //~VfsMac();
     
     bool enableAllocate();

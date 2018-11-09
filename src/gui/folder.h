@@ -277,12 +277,7 @@ public slots:
       * Set local files and actions when it is known - triggered by FUSE operations
       *
       */
-    void updateFuseDiscoveryPaths(const QString &path, csync_instructions_e instruction);
-
-    /**
-      * Starts selecttive sync operation with _localDiscoveryPathsAndInstructions
-      */
-    void startFuseSync();
+    void updateLocalFileTree(const QString &path, csync_instructions_e instruction);
 
     int slotDiscardDownloadProgress();
     int downloadInfoCount();
