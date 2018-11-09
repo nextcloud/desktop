@@ -115,6 +115,9 @@ option(BUILD_CLIENT "BUILD_CLIENT" ON)
 # this option creates only libocsync and libowncloudsync (NOTE: BUILD_CLIENT needs to be on)
 option(BUILD_LIBRARIES_ONLY "BUILD_LIBRARIES_ONLY" OFF)
 
+# build the GUI component, when disabled only owncloudcmd is built
+option(BUILD_GUI "BUILD_GUI" ON)
+
 # When this option is enabled, 5xx errors are not added to the blacklist
 # Normally you don't want to enable this option because if a particular file
 # triggers a bug on the server, you want the file to be blacklisted.
