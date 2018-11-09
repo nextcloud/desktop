@@ -35,7 +35,7 @@ class GETFileJob : public AbstractNetworkJob
     QString _errorString;
     QByteArray _expectedEtagForResume;
     qint64 _expectedContentLength;
-    quint64 _contentLength;
+    qint64 _contentLength;
     quint64 _resumeStart;
     SyncFileItem::Status _errorStatus;
     QUrl _directDownloadUrl;
@@ -103,7 +103,7 @@ public:
     quint64 resumeStart() { return _resumeStart; }
     time_t lastModified() { return _lastModified; }
 
-    quint64 contentLength() const { return _contentLength; }
+    qint64 contentLength() const { return _contentLength; }
     qint64 expectedContentLength() const { return _expectedContentLength; }
     void setExpectedContentLength(qint64 size) { _expectedContentLength = size; }
 
