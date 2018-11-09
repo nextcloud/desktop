@@ -61,7 +61,7 @@ public:
 signals:
     void folderChanged();
     void openFolderAlias(const QString &);
-    void showIssuesList(const QString &folderAlias);
+    void showIssuesList(AccountState *account);
     void requesetMnemonic();
 
 public slots:
