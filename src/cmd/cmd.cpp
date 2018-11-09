@@ -28,7 +28,11 @@
 
 #include "account.h"
 #include "configfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
-#include "creds/httpcredentials.h"
+#ifdef TOKEN_AUTH_ONLY
+# include "creds/tokencredentials.h"
+#else
+# include "creds/httpcredentials.h"
+#endif
 #include "simplesslerrorhandler.h"
 #include "syncengine.h"
 #include "common/syncjournaldb.h"
@@ -130,6 +134,7 @@ QString queryPassword(const QString &user)
     return QString::fromStdString(s);
 }
 
+#ifndef TOKEN_AUTH_ONLY
 class HttpCredentialsText : public HttpCredentials
 {
 public:
@@ -161,6 +166,7 @@ public:
 private:
     bool _sslTrusted;
 };
+#endif /* TOKEN_AUTH_ONLY */
 
 void help()
 {
@@ -451,13 +457,18 @@ int main(int argc, char **argv)
 
     SimpleSslErrorHandler *sslErrorHandler = new SimpleSslErrorHandler;
 
+#ifdef TOKEN_AUTH_ONLY
+    TokenCredentials *cred = new TokenCredentials(user, password, "");
+    account->setCredentials(cred);
+#else
     HttpCredentialsText *cred = new HttpCredentialsText(user, password);
-
+    account->setCredentials(cred);
     if (options.trustSSL) {
         cred->setSSLTrusted(true);
     }
+#endif
+
     account->setUrl(url);
-    account->setCredentials(cred);
     account->setSslErrorHandler(sslErrorHandler);
 
     // Perform a call to get the capabilities.
