@@ -649,7 +649,7 @@ QImage AvatarJob::makeCircularAvatar(const QImage &baseAvatar)
 {
     int dim = baseAvatar.width();
 
-    QImage avatar(dim, dim, baseAvatar.format());
+    QImage avatar(dim, dim, QImage::Format_ARGB32);
     avatar.fill(Qt::transparent);
 
     QPainter painter(&avatar);
