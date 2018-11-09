@@ -818,9 +818,11 @@
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation>No se han podido rastrear los cambios en las carpetas sincronizadas de forma fiable.
+        <translation>Los cambios en las carpetas sincronizadas no se han podido rastrear de forma fiable.
 
-Esto significa que el cliente de sincronización podría no subir los cambios locales inmediatamente y en su lugar solo buscará los cambios locales y los subirá de forma ocasional (cada dos horas por defecto).</translation>
+Esto significa que el cliente de sincronización podría no subir los cambios locales inmediatamente, y en lugar de eso solo escaneará buscando cambios locales y los subirá ocasionalmente (cada dos horas por defecto).
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1071"/>
