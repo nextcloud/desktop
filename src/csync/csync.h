@@ -336,6 +336,16 @@ void OCSYNC_EXPORT csync_resume(CSYNC *ctx);
  */
 int  OCSYNC_EXPORT csync_abort_requested(CSYNC *ctx);
 
+/**
+ * @brief Add or update file to the local tree
+ *
+ * @param ctx           The csync context.
+ * @param uri           The local folder.
+ * @param key           File name.
+ * @param csync_instructions_e instructio for the file.
+ */
+bool OCSYNC_EXPORT cysnc_update_file(CSYNC *ctx, const char *uri, const QByteArray &key, csync_instructions_e instruction);
+
 time_t OCSYNC_EXPORT oc_httpdate_parse( const char *date );
 
 /**

@@ -24,6 +24,7 @@
 csync_vio_handle_t OCSYNC_EXPORT *csync_vio_local_opendir(const char *name);
 int OCSYNC_EXPORT csync_vio_local_closedir(csync_vio_handle_t *dhandle);
 std::unique_ptr<csync_file_stat_t> OCSYNC_EXPORT csync_vio_local_readdir(csync_vio_handle_t *dhandle);
+std::unique_ptr<csync_file_stat_t> OCSYNC_EXPORT csync_vio_local_readfile(csync_vio_handle_t *dhandle, const char *uri, const QByteArray &key);
 
 int OCSYNC_EXPORT csync_vio_local_stat(const char *uri, csync_file_stat_t *buf);
 

@@ -441,8 +441,7 @@ out:
 
   ctx->current_fs = fs.get();
 
-  qCInfo(lcUpdate, "file: %s, instruction: %s <<=", fs->path.constData(),
-      csync_instruction_str(fs->instruction));
+  qCInfo(lcUpdate) << "file:" << fs->path << "instruction: " << csync_instruction_str(fs->instruction);
 
   QByteArray path = fs->path;
   switch (ctx->current) {
@@ -548,7 +547,7 @@ static bool fill_tree_from_db(CSYNC *ctx, const char *uri)
 
         /*  check if it is offline */
         if(ctx->statedb->getSyncMode(rec._path) != OCC::SyncJournalDb::SyncMode::SYNCMODE_OFFLINE)
-            return;
+            st->instruction = CSYNC_INSTRUCTION_IGNORE;
 
         /* store into result list. */
         files[rec._path] = std::move(st);

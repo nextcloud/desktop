@@ -49,6 +49,7 @@
 #include "csync_exclude.h"
 #include "csync_macros.h"
 
+
 /**
  * How deep to scan directories.
  */
@@ -120,17 +121,6 @@ struct OCSYNC_EXPORT csync_s {
       csync_file_stat_t *findFile(const ByteArrayRef &key) const {
           auto it = find(key);
           return it != end() ? it->second.get() : nullptr;
-      }
-      bool updateFile(const ByteArrayRef &key, csync_instructions_e instruction) const {
-          csync_file_stat_t *fs = findFile(key);
-          if(fs){
-            fs->instruction = instruction;
-            return true;
-          } else {
-              // add file?
-          }
-
-          return false;
       }
       csync_file_stat_t *findFileMangledName(const ByteArrayRef &key) const {
           auto it = begin();
@@ -232,8 +222,6 @@ struct OCSYNC_EXPORT csync_s {
 
   /* fuse selective sync */
   bool fuseEnabled = false;
-  QByteArray fusePath = QByteArray();
-  csync_instructions_e fuseInstuction = CSYNC_INSTRUCTION_NONE;
 };
 
 void set_errno_from_http_errcode( int err );

@@ -90,6 +90,10 @@ std::unique_ptr<csync_file_stat_t> csync_vio_readdir(CSYNC *ctx, csync_vio_handl
   return NULL;
 }
 
+std::unique_ptr<csync_file_stat_t> csync_vio_readfile(csync_vio_handle_t *dhandle, const char *uri, const QByteArray &key) {
+  return csync_vio_local_readfile(dhandle, uri, key);
+}
+
 char *csync_vio_get_status_string(CSYNC *ctx) {
   if(ctx->error_string) {
     return ctx->error_string;

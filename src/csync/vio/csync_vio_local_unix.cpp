@@ -140,6 +140,62 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
   return file_stat;
 }
 
+std::unique_ptr<csync_file_stat_t> csync_vio_local_readfile(csync_vio_handle_t *dhandle, const char *uri,
+                                                            const QByteArray &key) {
+
+  dhandle_t *handle = NULL;
+
+  handle = (dhandle_t *) dhandle;
+  //struct _tdirent *dirent = NULL;
+  std::unique_ptr<csync_file_stat_t> file_stat;
+
+//  do {
+//      dirent = _treaddir(handle->dh);
+//      if (dirent == NULL)
+//          return {};
+//  } while (qstrcmp(dirent->d_name, ".") == 0 || qstrcmp(dirent->d_name, "..") == 0);
+
+  file_stat.reset(new csync_file_stat_t);
+  file_stat->path = key;
+  QByteArray fullPath = QByteArray() % const_cast<const char *>(handle->path) % '/' % QByteArray() % key;
+  if (file_stat->path.isNull()) {
+      file_stat->original_path = fullPath;
+      qCWarning(lcCSyncVIOLocal) << "Invalid characters in file/directory name, please rename:" << key << handle->path;
+  }
+
+  /* Check for availability of d_type, see manpage. */
+#if defined(_DIRENT_HAVE_D_TYPE) || defined(__APPLE__)
+//  switch (dirent->d_type) {
+//    case DT_FIFO:
+//    case DT_SOCK:
+//    case DT_CHR:
+//    case DT_BLK:
+//      break;
+//    case DT_DIR:
+//    case DT_REG:
+//      if (dirent->d_type == DT_DIR) {
+//        file_stat->type = ItemTypeDirectory;
+//      } else {
+//        file_stat->type = ItemTypeFile;
+//      }
+//      break;
+//    default:
+//      break;
+//  }
+  // TODO handle directories
+  file_stat->type = ItemTypeFile;
+#endif
+
+  if (file_stat->path.isNull())
+      return file_stat;
+
+  if (_csync_vio_local_stat_mb(fullPath.constData(), file_stat.get()) < 0) {
+      // Will get excluded by _csync_detect_update.
+      file_stat->type = ItemTypeSkip;
+  }
+  return file_stat;
+}
+
 
 int csync_vio_local_stat(const char *uri, csync_file_stat_t *buf)
 {

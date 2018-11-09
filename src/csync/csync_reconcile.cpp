@@ -458,19 +458,8 @@ void csync_reconcile_updates(CSYNC *ctx) {
       break;
   }
 
-  if(ctx->fuseEnabled){
-      for (auto &pair : *tree) {
-          if(pair.second.get()->path == ctx->fusePath){
-            _csync_merge_algorithm_visitor(pair.second.get(), ctx);
-            break;
-          }
-      }
-  }
-
-  if(!ctx->fuseEnabled){
-      for (auto &pair : *tree) {
-        _csync_merge_algorithm_visitor(pair.second.get(), ctx);
-      }
+  for (auto &pair : *tree) {
+    _csync_merge_algorithm_visitor(pair.second.get(), ctx);
   }
 }
 
