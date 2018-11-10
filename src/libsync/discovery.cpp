@@ -289,6 +289,10 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     // either in processFileAnalyzeRemoteInfo() or further down here.
     if (item->_type == ItemTypeVirtualFileDownload)
         item->_type = ItemTypeVirtualFile;
+    // Similarly db entries with a dehydration request denote a regular file
+    // until the request is processed.
+    if (item->_type == ItemTypeVirtualFileDehydration)
+        item->_type = ItemTypeFile;
 
     if (serverEntry.isValid()) {
         processFileAnalyzeRemoteInfo(item, path, localEntry, serverEntry, dbEntry);
@@ -424,10 +428,17 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         if (!base.isValid())
             return;
 
+        // Remote rename of a virtual file we have locally scheduled for download.
         if (base._type == ItemTypeVirtualFileDownload) {
-            // Remote rename of a virtual file we have locally scheduled
-            // for download. We just consider this NEW but mark it for download.
+            // We just consider this NEW but mark it for download.
             item->_type = ItemTypeVirtualFileDownload;
+            done = true;
+            return;
+        }
+
+        // Remote rename targets a file that shall be locally dehydrated.
+        if (base._type == ItemTypeVirtualFileDehydration) {
+            // Don't worry about the rename, just consider it DELETE + NEW(virtual)
             done = true;
             return;
         }
@@ -435,7 +446,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         // Some things prohibit rename detection entirely.
         // Since we don't do the same checks again in reconcile, we can't
         // just skip the candidate, but have to give up completely.
-        if (base._type != item->_type && base._type != ItemTypeVirtualFile) {
+        if (base.isDirectory() != item->isDirectory()) {
             qCInfo(lcDisco, "file types different, not a rename");
             done = true;
             return;
@@ -451,7 +462,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         QString originalPath = QString::fromUtf8(base._path);
 
         // Rename of a virtual file
-        if (base._type == ItemTypeVirtualFile && item->_type == ItemTypeFile) {
+        if (base.isVirtualFile() && item->_type == ItemTypeFile) {
             // Ignore if the base is a virtual files
             return;
         }
@@ -461,7 +472,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             return;
         }
 
-        if (item->_type == ItemTypeFile) {
+        if (!item->isDirectory()) {
             csync_file_stat_t buf;
             if (csync_vio_local_stat((_discoveryData->_localDir + originalPath).toUtf8(), &buf)) {
                 qCInfo(lcDisco) << "Local file does not exist anymore." << originalPath;
@@ -583,10 +594,16 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     if (!localEntry.isValid()) {
         if (_queryLocal == ParentNotChanged && dbEntry.isValid()) {
+            // Not modified locally (ParentNotChanged)
             if (noServerEntry) {
-                // Not modified locally (ParentNotChanged), but not on the server: Removed on the server.
+                // not on the server: Removed on the server, delete locally
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
+            } else if (dbEntry._type == ItemTypeVirtualFileDehydration) {
+                // dehydration requested
+                item->_direction = SyncFileItem::Down;
+                item->_instruction = CSYNC_INSTRUCTION_NEW;
+                item->_type = ItemTypeVirtualFileDehydration;
             }
         } else if (noServerEntry) {
             // Not locally, not on the server. The entry is stale!
@@ -622,8 +639,11 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     if (dbEntry.isValid()) {
         bool typeChange = localEntry.isDirectory != dbEntry.isDirectory();
-        if (localEntry.isVirtualFile) {
-            if (dbEntry._type == ItemTypeFile) {
+        if (!typeChange && localEntry.isVirtualFile) {
+            if (noServerEntry) {
+                item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+                item->_direction = SyncFileItem::Down;
+            } else if (!dbEntry.isVirtualFile()) {
                 // If we find what looks to be a spurious "abc.owncloud" the base file "abc"
                 // might have been renamed to that. Make sure that the base file is not
                 // deleted from the server.
@@ -634,16 +654,15 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                     item->_type = ItemTypeVirtualFile;
                 }
             }
-            if (noServerEntry) {
-                item->_instruction = CSYNC_INSTRUCTION_REMOVE;
-                item->_direction = SyncFileItem::Down;
-            }
         } else if (!typeChange && ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) || localEntry.isDirectory)) {
             // Local file unchanged.
-            ENFORCE(localEntry.isDirectory == dbEntry.isDirectory());
             if (noServerEntry) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
+            } else if (dbEntry._type == ItemTypeVirtualFileDehydration) {
+                item->_direction = SyncFileItem::Down;
+                item->_instruction = CSYNC_INSTRUCTION_NEW;
+                item->_type = ItemTypeVirtualFileDehydration;
             } else if (!serverModified && dbEntry._inode != localEntry.inode) {
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                 item->_direction = SyncFileItem::Down; // Does not matter
