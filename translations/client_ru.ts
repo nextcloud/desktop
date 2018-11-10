@@ -519,7 +519,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="182"/>
         <source>Synced </source>
-        <translation type="unfinished"/>
+        <translation>Синхронизировано</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="217"/>
@@ -804,12 +804,12 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="1012"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>Папка «%1» создана, но она ранее была исключена из синхронизации. Данные внутри этой папки не будут синхронизированы.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1015"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>Файл «%1» создан, но она ранее был исключён из синхронизации. Этот файл не будет синхронизирован.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1026"/>
@@ -826,7 +826,10 @@ This means that the synchronization client might not upload local changes immedi
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>На сервере удалены все файлы из синхронизируемого каталога «%1».
+При синхронизации будет выполнено удаление локальной копии файлов, что сделает их недоступными при отсутствии прав на восстановление удалённых файлов.
+При выборе «Сохранить файлы» и наличии соответствующих прав доступа, файлы будут повторно переданы на сервер.
+При выборе «Удалить файлы»,  файлы станут недоступны, кроме случая, когда вы являетесь их владельцем.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1080"/>
@@ -836,7 +839,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folder.cpp" line="1083"/>
         <source>Download new files</source>
-        <translation type="unfinished"/>
+        <translation>Загрузка новых файлов</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1084"/>
@@ -1089,12 +1092,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Проверка наличия изменений в «%1»</translation>
+        <translation>Проверка наличия изменений на сервере: «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="923"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Проверка наличия изменений в локальной папке «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
@@ -1381,7 +1384,9 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось получить или создать общий ресурс, доступный по ссылке. Описание ошибки:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -1493,7 +1498,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Диалог</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="26"/>
@@ -1508,7 +1513,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.ui" line="58"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Закрыть</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="27"/>
@@ -1546,7 +1551,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
         <source>Permanently save logs</source>
-        <translation type="unfinished"/>
+        <translation>Сохранять файлы журналов</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="103"/>
@@ -1915,7 +1920,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="49"/>
         <source>&amp;Email</source>
-        <translation>&amp;Почта</translation>
+        <translation>А&amp;дрес эл. почты</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="59"/>
@@ -1956,22 +1961,22 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="83"/>
         <source>Keep your data secure and under your control</source>
-        <translation type="unfinished"/>
+        <translation>Храните свои данные в безопасности и под своим контролем</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="84"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation type="unfinished"/>
+        <translation>Защищённая совместная работа и обмен файлами</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="85"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation type="unfinished"/>
+        <translation>Простые в использовании приложения для работы с почтой, календарями и контактами</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation type="unfinished"/>
+        <translation>Публикация экрана, онлайн общение и веб-конференции</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="198"/>
@@ -2198,12 +2203,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
         <source>File %1 can not be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>Файл «%1» не может быть загружен из-за отсутствия информации о применяемом шифровании.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="434"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>Файл «%1» не может быть загружен из-за локального конфликта имён!</translation>
+        <translation>Файл «%1» не может быть загружен из-за локального конфликта имён.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="484"/>
@@ -2354,7 +2359,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="214"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation>Невозможно загрузить файл %1, так как уже есть другой файл с тем же именем, отличающимся только регистром символов</translation>
+        <translation>Невозможно загрузить файл «%1», так как уже существует файл с тем же именем, но отличающимся только регистром символов</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="348"/>
@@ -2375,7 +2380,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="334"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Файл удалён (начало передачи) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="684"/>
@@ -2667,32 +2672,32 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="203"/>
         <source>Allow Upload &amp;&amp; Editing</source>
-        <translation type="unfinished"/>
+        <translation>Разрешить приём и редактирование</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="208"/>
         <source>File Drop (Upload Only)</source>
-        <translation type="unfinished"/>
+        <translation>Хранилище (только приём файлов)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="215"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Копировать ссылку</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="228"/>
         <source>Password Protect</source>
-        <translation type="unfinished"/>
+        <translation>Защитить паролем</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="245"/>
         <source>Expiration Date</source>
-        <translation type="unfinished"/>
+        <translation>Срок действия</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="265"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Закрыть доступ</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="447"/>
@@ -2730,7 +2735,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="248"/>
         <source>Copy link</source>
-        <translation>Скопировать ссылку</translation>
+        <translation>Копировать ссылку</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="258"/>
@@ -2855,7 +2860,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="653"/>
         <source>Resharing this file is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Повторное открытие доступа запрещено</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="666"/>
@@ -3160,7 +3165,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="123"/>
         <source>Failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось загрузить или создать файл журнала. Убедитесь в наличии прав на чтение и запись в локальную папку.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="127"/>
@@ -3170,22 +3175,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="136"/>
         <source>Permission denied.</source>
-        <translation type="unfinished"/>
+        <translation>Доступ запрещён.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="139"/>
         <source>File or directory not found:</source>
-        <translation type="unfinished"/>
+        <translation>Не найден файл или папка:</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="142"/>
         <source>Tried to create a folder that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>Попытка создать папку, которая уже существует.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="145"/>
         <source>No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>На сервере %1 отсутствует свободное место.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="154"/>
@@ -3369,7 +3374,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="139"/>
         <source>Please login with the user: %1</source>
-        <translation type="unfinished"/>
+        <translation>Войдите в систему под именем %1</translation>
     </message>
 </context>
 <context>
@@ -3432,7 +3437,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="780"/>
         <source>Settings...</source>
-        <translation>Настройки...</translation>
+        <translation>Параметры...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="782"/>
@@ -3559,7 +3564,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="841"/>
         <source>Apps</source>
-        <translation type="unfinished"/>
+        <translation>Приложения</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="898"/>
@@ -3569,12 +3574,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="920"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Проверка наличия изменений на сервере: «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="923"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Проверка наличия изменений в локальной папке «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="938"/>
@@ -3720,7 +3725,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка во время установления соединения, попробуйте ещё раз.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
@@ -3749,12 +3754,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="143"/>
         <source>Register with a provider</source>
-        <translation type="unfinished"/>
+        <translation>Зарегистрироваться у поставщика услуг</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="165"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Войти</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="241"/>
@@ -3811,22 +3816,22 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="437"/>
         <source>%n day ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>день назад</numerusform><numerusform>%n дня назад</numerusform><numerusform>%n дней назад</numerusform><numerusform>%n дней назад</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="439"/>
         <source>%n days ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>день назад</numerusform><numerusform>%n дня назад</numerusform><numerusform>%n дней назад</numerusform><numerusform>%n дней назад</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="449"/>
         <source>%n hour ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>час назад</numerusform><numerusform>%n часа назад</numerusform><numerusform>%n часов назад</numerusform><numerusform>%n часов назад</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="451"/>
         <source>%n hours ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>час назад</numerusform><numerusform>%n часа назад</numerusform><numerusform>%n часов назад</numerusform><numerusform>%n часов назад</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="458"/>
@@ -3841,12 +3846,12 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="464"/>
         <source>%n minute ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>минуту назад</numerusform><numerusform>%n минуты назад</numerusform><numerusform>%n минут назад</numerusform><numerusform>%n минут назад</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="466"/>
         <source>%n minutes ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>минуту назад</numerusform><numerusform>%n минуты назад</numerusform><numerusform>%n минут назад</numerusform><numerusform>%n минут назад</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="470"/>
@@ -3885,22 +3890,22 @@ It is not advisable to use it.</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="310"/>
         <source>%n year(s)</source>
-        <translation><numerusform>%n год</numerusform><numerusform>%n года</numerusform><numerusform>%n лет</numerusform><numerusform>%n лет</numerusform></translation>
+        <translation><numerusform>один год</numerusform><numerusform>%n года</numerusform><numerusform>%n лет</numerusform><numerusform>%n лет</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="311"/>
         <source>%n month(s)</source>
-        <translation><numerusform>%n месяц</numerusform><numerusform>%n месяца</numerusform><numerusform>%3 месяцев</numerusform><numerusform>%n месяцев</numerusform></translation>
+        <translation><numerusform>один месяц</numerusform><numerusform>%n месяца</numerusform><numerusform>%3 месяцев</numerusform><numerusform>%n месяцев</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="312"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n день</numerusform><numerusform>%n дня</numerusform><numerusform>%n дней</numerusform><numerusform>%n дней</numerusform></translation>
+        <translation><numerusform>один день</numerusform><numerusform>%n дня</numerusform><numerusform>%n дней</numerusform><numerusform>%n дней</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="313"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>%n час</numerusform><numerusform>%n часа</numerusform><numerusform>%n часов</numerusform><numerusform>%n часов</numerusform></translation>
+        <translation><numerusform>один час</numerusform><numerusform>%n часа</numerusform><numerusform>%n часов</numerusform><numerusform>%n часов</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="314"/>
@@ -3923,17 +3928,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/checksums.cpp" line="233"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>Неверная контрольная сумма заголовка.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="248"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Заголовок контрольной суммы содержит контрольную сумму неизвестного типа: «%1»</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Скаченный файл не соответствует контрольной сумме, операция будет возобновлена.</translation>
     </message>
 </context>
 <context>
@@ -3941,7 +3946,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/webview.ui" line="26"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Форма</translation>
     </message>
 </context>
 <context>
@@ -3962,7 +3967,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="320"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;Собрано из исходников Git версии &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; на %3, %4 с использованием библиотек Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

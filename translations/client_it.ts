@@ -819,7 +819,11 @@
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Le modifiche nelle cartelle sincronizzate non possono essere tracciate in modo affidabile.
+
+Questo significa che il client di sincronizzazione potrebbe non caricare le modifiche locali immediatamente e, invece, eseguirà solo la scansione delle modifiche locali e le caricherà occasionalmente (ogni due ore, in modo predefinito).
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1071"/>
@@ -1563,7 +1567,9 @@ Gli elementi per i quali è consentita l&apos;eliminazione, saranno eliminati se
         <source>When this option is enabled and no other logging is configured, logs will be written to a temporary folder and expire after a few hours. This setting persists across client restarts.
 
 Logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Se questa opzione è abilitata e non è configurato un altro sistema di scrittura dei log, i log saranno scritti in una cartella temporanea e scadranno dopo poche ore. Questa impostazione viene conservata in caso di riavvio del client.
+
+I log saranno scritti in %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="115"/>
