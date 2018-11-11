@@ -53,9 +53,9 @@ public:
     explicit FolderWizardLocalPath(const AccountPtr &account);
     ~FolderWizardLocalPath();
 
-    bool isComplete() const Q_DECL_OVERRIDE;
-    void initializePage() Q_DECL_OVERRIDE;
-    void cleanupPage() Q_DECL_OVERRIDE;
+    bool isComplete() const override;
+    void initializePage() override;
+    void cleanupPage() override;
 
     void setFolderMap(const Folder::Map &fm) { _folderMap = fm; }
 protected slots:
@@ -80,10 +80,10 @@ public:
     explicit FolderWizardRemotePath(const AccountPtr &account);
     ~FolderWizardRemotePath();
 
-    bool isComplete() const Q_DECL_OVERRIDE;
+    bool isComplete() const override;
 
-    void initializePage() Q_DECL_OVERRIDE;
-    void cleanupPage() Q_DECL_OVERRIDE;
+    void initializePage() override;
+    void cleanupPage() override;
 
 protected slots:
 
@@ -123,10 +123,10 @@ public:
     explicit FolderWizardSelectiveSync(const AccountPtr &account);
     ~FolderWizardSelectiveSync();
 
-    bool validatePage() Q_DECL_OVERRIDE;
+    bool validatePage() override;
 
-    void initializePage() Q_DECL_OVERRIDE;
-    void cleanupPage() Q_DECL_OVERRIDE;
+    void initializePage() override;
+    void cleanupPage() override;
 
 private:
     SelectiveSyncWidget *_selectiveSync;

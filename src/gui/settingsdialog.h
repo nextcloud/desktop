@@ -64,9 +64,9 @@ public slots:
     void slotAccountDisplayNameChanged();
 
 protected:
-    void reject() Q_DECL_OVERRIDE;
-    void accept() Q_DECL_OVERRIDE;
-    void changeEvent(QEvent *) Q_DECL_OVERRIDE;
+    void reject() override;
+    void accept() override;
+    void changeEvent(QEvent *) override;
 
 private slots:
     void accountAdded(AccountState *);

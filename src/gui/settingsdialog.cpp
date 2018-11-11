@@ -382,7 +382,7 @@ public:
     }
 
 
-    QWidget *createWidget(QWidget *parent) Q_DECL_OVERRIDE
+    QWidget *createWidget(QWidget *parent) override
     {
         auto toolbar = qobject_cast<QToolBar *>(parent);
         if (!toolbar) {

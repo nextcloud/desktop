@@ -35,10 +35,10 @@ class OwncloudAdvancedSetupPage : public QWizardPage
 public:
     OwncloudAdvancedSetupPage();
 
-    bool isComplete() const Q_DECL_OVERRIDE;
-    void initializePage() Q_DECL_OVERRIDE;
-    int nextId() const Q_DECL_OVERRIDE;
-    bool validatePage() Q_DECL_OVERRIDE;
+    bool isComplete() const override;
+    void initializePage() override;
+    int nextId() const override;
+    bool validatePage() override;
     QString localFolder() const;
     QStringList selectiveSyncBlacklist() const;
     bool isConfirmBigFolderChecked() const;

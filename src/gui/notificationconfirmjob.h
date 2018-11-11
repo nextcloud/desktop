@@ -50,7 +50,7 @@ public:
     /**
      * @brief Start the OCS request
      */
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
 signals:
 
@@ -62,7 +62,7 @@ signals:
     void jobFinished(QString reply, int replyCode);
 
 private slots:
-    bool finished() Q_DECL_OVERRIDE;
+    bool finished() override;
 
 private:
     QByteArray _verb;

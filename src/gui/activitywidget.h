@@ -58,7 +58,7 @@ class ActivityWidget : public QWidget
 public:
     explicit ActivityWidget(AccountState *accountState, QWidget *parent = nullptr);
     ~ActivityWidget();
-    QSize sizeHint() const Q_DECL_OVERRIDE { return ownCloudGui::settingsDialogSize(); }
+    QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
     void storeActivityList(QTextStream &ts);
 
     /**
@@ -131,7 +131,7 @@ public:
     explicit ActivitySettings(AccountState *accountState, QWidget *parent = nullptr);
 
     ~ActivitySettings();
-    QSize sizeHint() const Q_DECL_OVERRIDE { return ownCloudGui::settingsDialogSize(); }
+    QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
 
 public slots:
     void slotRefresh();
@@ -146,7 +146,7 @@ signals:
     void guiLog(const QString &, const QString &);
 
 private:
-    bool event(QEvent *e) Q_DECL_OVERRIDE;
+    bool event(QEvent *e) override;
 
     ActivityWidget *_activityWidget;
     QProgressIndicator *_progressIndicator;

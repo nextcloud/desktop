@@ -15,8 +15,8 @@ class WebViewPage : public AbstractCredentialsWizardPage
 public:
     WebViewPage(QWidget *parent = nullptr);
 
-    void initializePage() Q_DECL_OVERRIDE;
-    int nextId() const Q_DECL_OVERRIDE;
+    void initializePage() override;
+    int nextId() const override;
     bool isComplete() const override;
 
     AbstractCredentials* getCredentials() const override;

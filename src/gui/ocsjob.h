@@ -114,7 +114,7 @@ protected slots:
     /**
      * Start the OCS request
      */
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
 signals:
 
@@ -143,7 +143,7 @@ signals:
     void etagResponseHeaderReceived(const QByteArray &value, int statusCode);
 
 private slots:
-    bool finished() Q_DECL_OVERRIDE;
+    bool finished() override;
 
 private:
     QByteArray _verb;
