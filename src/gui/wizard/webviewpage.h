@@ -17,9 +17,9 @@ public:
 
     void initializePage() Q_DECL_OVERRIDE;
     int nextId() const Q_DECL_OVERRIDE;
-    bool isComplete() const;
+    bool isComplete() const override;
 
-    AbstractCredentials* getCredentials() const;
+    AbstractCredentials* getCredentials() const override;
     void setConnected();
 
 signals:

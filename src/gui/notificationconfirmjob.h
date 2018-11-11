@@ -62,7 +62,7 @@ signals:
     void jobFinished(QString reply, int replyCode);
 
 private slots:
-    virtual bool finished() Q_DECL_OVERRIDE;
+    bool finished() Q_DECL_OVERRIDE;
 
 private:
     QByteArray _verb;

@@ -54,7 +54,7 @@ public:
     }
 
 private:
-    bool operator<(const QTreeWidgetItem &other) const
+    bool operator<(const QTreeWidgetItem &other) const override
     {
         int column = treeWidget()->sortColumn();
         if (column == 1) {

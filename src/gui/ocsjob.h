@@ -143,7 +143,7 @@ signals:
     void etagResponseHeaderReceived(const QByteArray &value, int statusCode);
 
 private slots:
-    virtual bool finished() Q_DECL_OVERRIDE;
+    bool finished() Q_DECL_OVERRIDE;
 
 private:
     QByteArray _verb;

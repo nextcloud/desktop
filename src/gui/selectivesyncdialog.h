@@ -94,7 +94,7 @@ public:
     // Dialog for the whole account (Used from the wizard)
     explicit SelectiveSyncDialog(AccountPtr account, const QString &folder, const QStringList &blacklist, QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
 
-    virtual void accept() Q_DECL_OVERRIDE;
+    void accept() Q_DECL_OVERRIDE;
 
     QStringList createBlackList() const;
     QStringList oldBlackList() const;

@@ -37,7 +37,7 @@ class GeneralSettings : public QWidget
 public:
     explicit GeneralSettings(QWidget *parent = nullptr);
     ~GeneralSettings();
-    QSize sizeHint() const;
+    QSize sizeHint() const override;
 
 private slots:
     void saveMiscSettings();

@@ -45,7 +45,7 @@ signals:
      */
     void jobFinished(int statusCode, QByteArray reply);
 private slots:
-    virtual bool finished() Q_DECL_OVERRIDE;
+    bool finished() Q_DECL_OVERRIDE;
 };
 }
 

@@ -45,9 +45,9 @@ public:
     OwncloudSetupPage(QWidget *parent = nullptr);
     ~OwncloudSetupPage();
 
-    virtual bool isComplete() const Q_DECL_OVERRIDE;
-    virtual void initializePage() Q_DECL_OVERRIDE;
-    virtual int nextId() const Q_DECL_OVERRIDE;
+    bool isComplete() const Q_DECL_OVERRIDE;
+    void initializePage() Q_DECL_OVERRIDE;
+    int nextId() const Q_DECL_OVERRIDE;
     void setServerUrl(const QString &);
     void setAllowPasswordStorage(bool);
     bool validatePage() Q_DECL_OVERRIDE;
