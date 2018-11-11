@@ -265,7 +265,7 @@ void AccountSettings::slotOpenAccountWizard()
         qFatal("nope");
     }
 #endif
-    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), 0);
+    OwncloudSetupWizard::runWizard(qApp, SLOT(slotownCloudWizardDone(int)), nullptr);
 }
 
 void AccountSettings::slotToggleSignInState()
@@ -808,7 +808,7 @@ void AccountSettings::slotEnableCurrentFolder()
                 QWidget *parent = this;
                 Qt::WindowFlags flags = Qt::Sheet;
 #else
-                QWidget *parent = 0;
+                QWidget *parent = nullptr;
                 Qt::WindowFlags flags = Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint; // default flags
 #endif
                 QMessageBox msgbox(QMessageBox::Question, tr("Sync Running"),
@@ -1152,7 +1152,7 @@ void AccountSettings::slotDeleteAccount()
     }
 
     // Else it might access during destruction. This should be better handled by it having a QSharedPointer
-    _model->setAccountState(0);
+    _model->setAccountState(nullptr);
 
     auto manager = AccountManager::instance();
     manager->deleteAccount(_accountState);

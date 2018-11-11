@@ -83,7 +83,7 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
     }
 
     // Find the responsible QNAM if possible.
-    QNetworkAccessManager *sending_qnam = 0;
+    QNetworkAccessManager *sending_qnam = nullptr;
     QWeakPointer<QNetworkAccessManager> qnam_alive;
     if (Account *account = qobject_cast<Account *>(sender())) {
         // Since we go into an event loop, it's possible for the account's qnam

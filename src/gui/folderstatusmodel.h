@@ -41,7 +41,7 @@ class FolderStatusModel : public QAbstractItemModel
 public:
     enum {FileIdRole = Qt::UserRole+1};
 
-    FolderStatusModel(QObject *parent = 0);
+    FolderStatusModel(QObject *parent = nullptr);
     ~FolderStatusModel();
     void setAccountState(const AccountState *accountState);
 
@@ -59,7 +59,7 @@ public:
     struct SubFolderInfo
     {
         SubFolderInfo()
-            : _folder(0)
+            : _folder(nullptr)
             , _size(0)
             , _isExternal(false)
             , _fetched(false)

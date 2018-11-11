@@ -36,7 +36,7 @@ class ClientProxy : public QObject
 {
     Q_OBJECT
 public:
-    explicit ClientProxy(QObject *parent = 0);
+    explicit ClientProxy(QObject *parent = nullptr);
 
     static bool isUsingSystemDefault();
     static void lookupSystemProxyAsync(const QUrl &url, QObject *dst, const char *slot);

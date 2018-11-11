@@ -100,7 +100,7 @@ bool OCUpdater::performUpdate()
     if (!updateFile.isEmpty() && QFile(updateFile).exists()
         && !updateSucceeded() /* Someone might have run the updater manually between restarts */) {
         const QString name = Theme::instance()->appNameGUI();
-        if (QMessageBox::information(0, tr("New %1 Update Ready").arg(name),
+        if (QMessageBox::information(nullptr, tr("New %1 Update Ready").arg(name),
                 tr("A new update for %1 is about to be installed. The updater may ask\n"
                    "for additional privileges during the process.")
                     .arg(name),
@@ -320,8 +320,8 @@ void NSISUpdater::showDialog(const UpdateInfo &info)
     QDialog *msgBox = new QDialog;
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
 
-    QIcon infoIcon = msgBox->style()->standardIcon(QStyle::SP_MessageBoxInformation, 0, 0);
-    int iconSize = msgBox->style()->pixelMetric(QStyle::PM_MessageBoxIconSize, 0, 0);
+    QIcon infoIcon = msgBox->style()->standardIcon(QStyle::SP_MessageBoxInformation, nullptr, nullptr);
+    int iconSize = msgBox->style()->pixelMetric(QStyle::PM_MessageBoxIconSize, nullptr, nullptr);
 
     msgBox->setWindowIcon(infoIcon);
 

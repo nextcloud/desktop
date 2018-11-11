@@ -36,7 +36,7 @@ using namespace OCC;
 
 void warnSystray()
 {
-    QMessageBox::critical(0, qApp->translate("main.cpp", "System Tray not available"),
+    QMessageBox::critical(nullptr, qApp->translate("main.cpp", "System Tray not available"),
         qApp->translate("main.cpp", "%1 requires on a working system tray. "
                                     "If you are running XFCE, please follow "
                                     "<a href=\"http://docs.xfce.org/xfce/xfce4-panel/systray\">these instructions</a>. "

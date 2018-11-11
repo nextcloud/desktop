@@ -35,10 +35,10 @@ class SelectiveSyncWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SelectiveSyncWidget(AccountPtr account, QWidget *parent = 0);
+    explicit SelectiveSyncWidget(AccountPtr account, QWidget *parent = nullptr);
 
     /// Returns a list of blacklisted paths, each including the trailing /
-    QStringList createBlackList(QTreeWidgetItem *root = 0) const;
+    QStringList createBlackList(QTreeWidgetItem *root = nullptr) const;
 
     /** Returns the oldBlackList passed into setFolderInfo(), except that
      *  a "/" entry is expanded to all top-level folder names.
@@ -46,7 +46,7 @@ public:
     QStringList oldBlackList() const;
 
     // Estimates the total size of checked items (recursively)
-    qint64 estimatedSize(QTreeWidgetItem *root = 0);
+    qint64 estimatedSize(QTreeWidgetItem *root = nullptr);
 
     // oldBlackList is a list of excluded paths, each including a trailing /
     void setFolderInfo(const QString &folderPath, const QString &rootName,
@@ -89,10 +89,10 @@ class SelectiveSyncDialog : public QDialog
     Q_OBJECT
 public:
     // Dialog for a specific folder (used from the account settings button)
-    explicit SelectiveSyncDialog(AccountPtr account, Folder *folder, QWidget *parent = 0, Qt::WindowFlags f = 0);
+    explicit SelectiveSyncDialog(AccountPtr account, Folder *folder, QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
 
     // Dialog for the whole account (Used from the wizard)
-    explicit SelectiveSyncDialog(AccountPtr account, const QString &folder, const QStringList &blacklist, QWidget *parent = 0, Qt::WindowFlags f = 0);
+    explicit SelectiveSyncDialog(AccountPtr account, const QString &folder, const QStringList &blacklist, QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
 
     virtual void accept() Q_DECL_OVERRIDE;
 

@@ -387,7 +387,7 @@ public:
         auto toolbar = qobject_cast<QToolBar *>(parent);
         if (!toolbar) {
             // this means we are in the extention menu, no special action here
-            return 0;
+            return nullptr;
         }
 
         QToolButton *btn = new QToolButton(parent);

@@ -45,7 +45,7 @@ public:
 protected:
     static QString clientVersion();
     Updater()
-        : QObject(0)
+        : QObject(nullptr)
     {
     }
 

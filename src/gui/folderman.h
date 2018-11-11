@@ -323,7 +323,7 @@ private:
     bool _appRestartRequired;
 
     static FolderMan *_instance;
-    explicit FolderMan(QObject *parent = 0);
+    explicit FolderMan(QObject *parent = nullptr);
     friend class OCC::Application;
     friend class ::TestFolderMan;
 };

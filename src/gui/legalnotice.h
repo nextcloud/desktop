@@ -34,7 +34,7 @@ class LegalNotice : public QDialog
     Q_OBJECT
 
 public:
-    explicit LegalNotice(QDialog *parent = 0);
+    explicit LegalNotice(QDialog *parent = nullptr);
     ~LegalNotice();
 
 private:

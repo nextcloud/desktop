@@ -96,7 +96,7 @@ namespace {
 
 Application::Application(int &argc, char **argv)
     : SharedTools::QtSingleApplication(Theme::instance()->appName(), argc, argv)
-    , _gui(0)
+    , _gui(nullptr)
     , _theme(Theme::instance())
     , _helpOnly(false)
     , _versionOnly(false)
@@ -186,7 +186,7 @@ Application::Application(int &argc, char **argv)
         if (!AccountManager::instance()->restore()) {
             qCCritical(lcApplication) << "Could not read the account settings, quitting";
             QMessageBox::critical(
-                0,
+                nullptr,
                 tr("Error accessing the configuration file"),
                 tr("There was an error while accessing the configuration "
                    "file at %1.")

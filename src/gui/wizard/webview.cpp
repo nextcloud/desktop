@@ -22,7 +22,7 @@ class WebViewPageUrlRequestInterceptor : public QWebEngineUrlRequestInterceptor
 {
     Q_OBJECT
 public:
-    WebViewPageUrlRequestInterceptor(QObject *parent = 0);
+    WebViewPageUrlRequestInterceptor(QObject *parent = nullptr);
     void interceptRequest(QWebEngineUrlRequestInfo &info);
 };
 
@@ -30,7 +30,7 @@ class WebViewPageUrlSchemeHandler : public QWebEngineUrlSchemeHandler
 {
     Q_OBJECT
 public:
-    WebViewPageUrlSchemeHandler(QObject *parent = 0);
+    WebViewPageUrlSchemeHandler(QObject *parent = nullptr);
     void requestStarted(QWebEngineUrlRequestJob *request);
 
 Q_SIGNALS:

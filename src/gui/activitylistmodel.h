@@ -38,7 +38,7 @@ class ActivityListModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    explicit ActivityListModel(AccountState *accountState, QWidget *parent = 0);
+    explicit ActivityListModel(AccountState *accountState, QWidget *parent = nullptr);
 
     QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
     int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
