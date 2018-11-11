@@ -69,7 +69,7 @@ private:
     void drawSlide(QPainter *painter, int index);
 
     bool _reverse = false;
-    int _interval = 2500;
+    int _interval = 3500;
     int _currentIndex = 0;
     QPoint _pressPoint;
     QBasicTimer _timer;
