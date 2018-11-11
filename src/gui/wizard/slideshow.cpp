@@ -138,7 +138,7 @@ void SlideShow::mousePressEvent(QMouseEvent *event)
 
 void SlideShow::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (QLineF(_pressPoint, event->pos()).length() < QGuiApplication::styleHints()->startDragDistance())
+    if (!_animation && QLineF(_pressPoint, event->pos()).length() < QGuiApplication::styleHints()->startDragDistance())
         emit clicked();
 }
 
