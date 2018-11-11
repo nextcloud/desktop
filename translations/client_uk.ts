@@ -4,18 +4,18 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Could not make directories in trash</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо створити теку в смітнику</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="459"/>
         <location filename="../src/common/filesystembase.cpp" line="465"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося перемістити &apos;%1&apos; в &apos;%2&apos;</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>Переміщення в смітник неможливе на цій платформі</translation>
     </message>
 </context>
 <context>
@@ -202,12 +202,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="320"/>
         <source>Remove folder sync connection</source>
-        <translation type="unfinished"/>
+        <translation>Видалити синхронізацію теки</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="324"/>
         <source>Create virtual files for new files (Experimental)</source>
-        <translation type="unfinished"/>
+        <translation>Створити віртуальні файли для нових файлів (Експриментально)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="426"/>
@@ -217,17 +217,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="427"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Не вдалося створити локальну теку &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="480"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation type="unfinished"/>
+        <translation>Підтвердьте видалення синхронізації теки</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="487"/>
         <source>Remove Folder Sync Connection</source>
-        <translation type="unfinished"/>
+        <translation>Видалити синхронізацію теки</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="569"/>
@@ -262,12 +262,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="702"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер %1 наразі в режимі технічного обслуговування</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="704"/>
         <source>Signed out from %1.</source>
-        <translation type="unfinished"/>
+        <translation>Вийшов із %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="713"/>
@@ -317,7 +317,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="900"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Видалити з&apos;єднання</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="270"/>
@@ -397,7 +397,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="127"/>
         <source>Maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>Режим технічного обслуговування</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="129"/>
@@ -412,7 +412,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="133"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Запит облікових даних</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="135"/>
@@ -425,12 +425,12 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="140"/>
         <source>%1 on %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 на %2</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="142"/>
         <source>%1 on %2 (disconnected)</source>
-        <translation type="unfinished"/>
+        <translation>%1 на %2 (від&apos;єднаний)</translation>
     </message>
 </context>
 <context>
@@ -465,7 +465,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="610"/>
         <source>The sync activity list has been copied to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Список подій синхронізації скопійовано до буферу обміну.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="613"/>
@@ -606,7 +606,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="268"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Помилка доступу до файлу конфігурації</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="269"/>
@@ -647,7 +647,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1027"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Помилка запису метаданих до бази даних</translation>
     </message>
 </context>
 <context>
@@ -709,7 +709,7 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="152"/>
         <source>%1 should be a folder but is not.</source>
-        <translation type="unfinished"/>
+        <translation>%1 повинна бути текою, але нею не є.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="155"/>
@@ -1085,7 +1085,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Синхронізація %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="975"/>
@@ -2310,7 +2310,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="979"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Помилка запису метаданих до бази даних</translation>
     </message>
 </context>
 <context>
@@ -2358,7 +2358,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="945"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Помилка запису метаданих до бази даних</translation>
     </message>
 </context>
 <context>
@@ -2394,7 +2394,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="202"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Помилка запису метаданих до бази даних</translation>
     </message>
 </context>
 <context>
@@ -2426,7 +2426,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatorjobs.cpp" line="271"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="276"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Помилка запису метаданих до бази даних</translation>
     </message>
 </context>
 <context>
@@ -2447,7 +2447,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="152"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Помилка запису метаданих до бази даних</translation>
     </message>
 </context>
 <context>
@@ -2461,7 +2461,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateremotemove.cpp" line="174"/>
         <location filename="../src/libsync/propagateremotemove.cpp" line="180"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Помилка запису метаданих до бази даних</translation>
     </message>
 </context>
 <context>
@@ -2495,7 +2495,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="626"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Помилка запису метаданих до бази даних</translation>
     </message>
 </context>
 <context>
@@ -2865,12 +2865,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="248"/>
         <source>Download / View</source>
-        <translation type="unfinished"/>
+        <translation>Завантаження / Перегляд</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="255"/>
         <source>Download / View / Upload</source>
-        <translation type="unfinished"/>
+        <translation>Завантаження / Перегляд / Вивантаження</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="268"/>
@@ -3914,7 +3914,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="871"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізовано %1 з %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="880"/>
@@ -3924,7 +3924,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="883"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізація %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="901"/>

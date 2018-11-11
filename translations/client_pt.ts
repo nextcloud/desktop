@@ -1431,7 +1431,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/socketapi.cpp" line="519"/>
         <source>Sharing error</source>
-        <translation type="unfinished"/>
+        <translation>Erro de partilha</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="520"/>
@@ -1646,7 +1646,7 @@ Os itens onde é permitido a eliminação serão eliminados se estes impedirem a
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
         <source>Permanently save logs</source>
-        <translation type="unfinished"/>
+        <translation>Guardar registos permanentemente</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="103"/>
@@ -2271,7 +2271,7 @@ Não é aconselhada a sua utilização.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="261"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Ativar funcionalidades experimentais</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="262"/>
