@@ -267,6 +267,14 @@ public:
     bool setAttributes(QVariantMap attributes, QString path, QVariant userInfo, QVariantMap &error);
     
 #pragma mark File Contents
+
+    /*
+    * abstract Get Process name by Id.
+    * discussion Just returns proccess name.
+    * param pid
+    *
+    */
+   char *getProcessName(pid_t pid);
     
     /*!
      * abstract Opens the file at the given path for read/write.

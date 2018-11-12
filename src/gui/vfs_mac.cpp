@@ -621,8 +621,38 @@ QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
 
 #pragma mark File Contents
 
+char * VfsMac::getProcessName(pid_t pid)
+{
+   char pathBuffer [PROC_PIDPATHINFO_MAXSIZE];
+   proc_pidpath(pid, pathBuffer, sizeof(pathBuffer));
+
+   char nameBuffer[256];
+
+   int position = strlen(pathBuffer);
+   while(position >= 0 && pathBuffer[position] != ‘/’)
+   {
+       position--;
+   }
+
+   strcpy(nameBuffer, pathBuffer + position + 1);
+
+   return nameBuffer;
+}
+
 bool VfsMac::openFileAtPath(QString path, int mode, QVariant &userData, QVariantMap &error)
 {
+
+struct fuse_context *context = fuse_get_context();
+
+   QString nameBuffer = QString::fromLatin1(getProcessName(context->pid));
+
+   qDebug() << "JJDCname: " << nameBuffer;
+
+   if(nameBuffer != "Finder" && nameBuffer != "QuickLookSatellite")
+   {
+       qDebug() << "Push here sync algorithm";
+   }
+
     //Sync.
     
     
