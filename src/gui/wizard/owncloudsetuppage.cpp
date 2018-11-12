@@ -85,7 +85,7 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     _ui.slideShow->addSlide(Theme::hidpiFileName(":/client/theme/colored/wizard-groupware.png"), tr("Easy-to-use web mail, calendaring & contacts"));
     _ui.slideShow->addSlide(Theme::hidpiFileName(":/client/theme/colored/wizard-talk.png"), tr("Screensharing, online meetings & web conferences"));
     connect(_ui.slideShow, &SlideShow::clicked, _ui.slideShow, &SlideShow::nextSlide);
-    _ui.slideShow->startShow(2500);
+    _ui.slideShow->startShow();
 
     QPalette pal = _ui.slideShow->palette();
     pal.setColor(QPalette::WindowText, theme->wizardHeaderBackgroundColor());
