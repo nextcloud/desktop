@@ -611,8 +611,11 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             qCInfo(lcDisco) << "Stale DB entry";
             _discoveryData->_statedb->deleteFileRecord(path._original, true);
             return;
-        } else if (dbEntry._type == ItemTypeVirtualFile) {
+        } else if (dbEntry._type == ItemTypeVirtualFile && isVfsWithSuffix()) {
             // If the virtual file is removed, recreate it.
+            // This is a precaution since the suffix files don't look like the real ones
+            // and we don't want users to accidentally delete server data because they
+            // might not expect that deleting the placeholder will have a remote effect.
             item->_instruction = CSYNC_INSTRUCTION_NEW;
             item->_direction = SyncFileItem::Down;
             item->_type = ItemTypeVirtualFile;
@@ -644,7 +647,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             if (noServerEntry) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
-            } else if (!dbEntry.isVirtualFile()) {
+            } else if (!dbEntry.isVirtualFile() && isVfsWithSuffix()) {
                 // If we find what looks to be a spurious "abc.owncloud" the base file "abc"
                 // might have been renamed to that. Make sure that the base file is not
                 // deleted from the server.
@@ -668,7 +671,11 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                 item->_direction = SyncFileItem::Down; // Does not matter
             }
-        } else if (serverModified || dbEntry.isVirtualFile()) {
+        } else if (serverModified
+            // If a suffix-file changes we prefer to go into conflict mode - but in-place
+            // placeholders could be replaced by real files and should be a regular SYNC
+            // if there's no server change.
+            || (isVfsWithSuffix() && dbEntry.isVirtualFile())) {
             processFileConflict(item, path, localEntry, serverEntry, dbEntry);
         } else if (typeChange) {
             item->_instruction = CSYNC_INSTRUCTION_TYPE_CHANGE;
