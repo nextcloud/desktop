@@ -36,13 +36,13 @@ class OWNCLOUDSYNC_EXPORT EntityExistsJob : public AbstractNetworkJob
     Q_OBJECT
 public:
     explicit EntityExistsJob(AccountPtr account, const QString &path, QObject *parent = 0);
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
 signals:
     void exists(QNetworkReply *);
 
 private slots:
-    virtual bool finished() Q_DECL_OVERRIDE;
+    virtual bool finished() override;
 };
 
 /**
@@ -98,7 +98,7 @@ class OWNCLOUDSYNC_EXPORT LsColJob : public AbstractNetworkJob
 public:
     explicit LsColJob(AccountPtr account, const QString &path, QObject *parent = 0);
     explicit LsColJob(AccountPtr account, const QUrl &url, QObject *parent = 0);
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
     QHash<QString, ExtraFolderInfo> _folderInfos;
 
     /**
@@ -119,7 +119,7 @@ signals:
     void finishedWithoutError();
 
 private slots:
-    virtual bool finished() Q_DECL_OVERRIDE;
+    virtual bool finished() override;
 
 private:
     QList<QByteArray> _properties;
@@ -141,7 +141,7 @@ class OWNCLOUDSYNC_EXPORT PropfindJob : public AbstractNetworkJob
     Q_OBJECT
 public:
     explicit PropfindJob(AccountPtr account, const QString &path, QObject *parent = 0);
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
     /**
      * Used to specify which properties shall be retrieved.
@@ -159,7 +159,7 @@ signals:
     void finishedWithError(QNetworkReply *reply = 0);
 
 private slots:
-    virtual bool finished() Q_DECL_OVERRIDE;
+    virtual bool finished() override;
 
 private:
     QList<QByteArray> _properties;
@@ -183,7 +183,7 @@ public:
      */
     explicit AvatarJob(AccountPtr account, const QString &userId, int size, QObject *parent = 0);
 
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
     /** The retrieved avatar images don't have the circle shape by default */
     static QImage makeCircularAvatar(const QImage &baseAvatar);
@@ -196,7 +196,7 @@ signals:
     void avatarPixmap(const QImage &);
 
 private slots:
-    virtual bool finished() Q_DECL_OVERRIDE;
+    virtual bool finished() override;
 
 private:
     QUrl _avatarUrl;
@@ -217,7 +217,7 @@ class OWNCLOUDSYNC_EXPORT ProppatchJob : public AbstractNetworkJob
     Q_OBJECT
 public:
     explicit ProppatchJob(AccountPtr account, const QString &path, QObject *parent = 0);
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
     /**
      * Used to specify which properties shall be set.
@@ -235,7 +235,7 @@ signals:
     void finishedWithError();
 
 private slots:
-    virtual bool finished() Q_DECL_OVERRIDE;
+    virtual bool finished() override;
 
 private:
     QMap<QByteArray, QByteArray> _properties;
@@ -255,13 +255,13 @@ public:
     explicit MkColJob(AccountPtr account, const QString &path, QObject *parent = 0);
     explicit MkColJob(AccountPtr account, const QUrl &url,
         const QMap<QByteArray, QByteArray> &extraHeaders, QObject *parent = 0);
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
 signals:
     void finished(QNetworkReply::NetworkError);
 
 private slots:
-    virtual bool finished() Q_DECL_OVERRIDE;
+    virtual bool finished() override;
 };
 
 /**
@@ -273,7 +273,7 @@ class OWNCLOUDSYNC_EXPORT CheckServerJob : public AbstractNetworkJob
     Q_OBJECT
 public:
     explicit CheckServerJob(AccountPtr account, QObject *parent = 0);
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
     static QString version(const QJsonObject &info);
     static QString versionString(const QJsonObject &info);
@@ -300,8 +300,8 @@ signals:
     void timeout(const QUrl &url);
 
 private:
-    bool finished() Q_DECL_OVERRIDE;
-    void onTimedOut() Q_DECL_OVERRIDE;
+    bool finished() override;
+    void onTimedOut() override;
 private slots:
     virtual void metaDataChangedSlot();
     virtual void encryptedSlot();
@@ -330,13 +330,13 @@ class OWNCLOUDSYNC_EXPORT RequestEtagJob : public AbstractNetworkJob
     Q_OBJECT
 public:
     explicit RequestEtagJob(AccountPtr account, const QString &path, QObject *parent = 0);
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
 signals:
     void etagRetreived(const QString &etag);
 
 private slots:
-    virtual bool finished() Q_DECL_OVERRIDE;
+    virtual bool finished() override;
 };
 
 /**
@@ -374,10 +374,10 @@ public:
     void addRawHeader(const QByteArray &headerName, const QByteArray &value);
 
 public slots:
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
 protected:
-    bool finished() Q_DECL_OVERRIDE;
+    bool finished() override;
 signals:
 
     /**
@@ -449,7 +449,7 @@ public:
 signals:
     void finishedSignal(QNetworkReply *reply);
 private slots:
-    bool finished() Q_DECL_OVERRIDE;
+    bool finished() override;
 };
 
 /**

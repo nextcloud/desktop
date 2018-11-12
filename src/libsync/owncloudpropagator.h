@@ -186,7 +186,7 @@ public:
     }
     ~PropagateItemJob();
 
-    bool scheduleSelfOrChild() Q_DECL_OVERRIDE
+    bool scheduleSelfOrChild() override
     {
         if (_state != NotYetStarted) {
             return false;
@@ -238,15 +238,15 @@ public:
         _tasksToDo.append(item);
     }
 
-    virtual bool scheduleSelfOrChild() Q_DECL_OVERRIDE;
-    virtual JobParallelism parallelism() Q_DECL_OVERRIDE;
+    virtual bool scheduleSelfOrChild() override;
+    virtual JobParallelism parallelism() override;
 
     /*
      * Abort synchronously or asynchronously - some jobs
      * require to be finished without immediete abort (abort on job might
      * cause conflicts/duplicated files - owncloud/client/issues/5949)
      */
-    virtual void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE
+    virtual void abort(PropagatorJob::AbortType abortType) override
     {
         if (!_runningJobs.empty()) {
             _abortsCount = _runningJobs.size();
@@ -262,7 +262,7 @@ public:
         }
     }
 
-    qint64 committedDiskSpace() const Q_DECL_OVERRIDE;
+    qint64 committedDiskSpace() const override;
 
 private slots:
     void slotSubJobAbortFinished();
@@ -304,9 +304,9 @@ public:
         _subJobs.appendTask(item);
     }
 
-    virtual bool scheduleSelfOrChild() Q_DECL_OVERRIDE;
-    virtual JobParallelism parallelism() Q_DECL_OVERRIDE;
-    virtual void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE
+    virtual bool scheduleSelfOrChild() override;
+    virtual JobParallelism parallelism() override;
+    virtual void abort(PropagatorJob::AbortType abortType) override
     {
         if (_firstJob)
             // Force first job to abort synchronously
@@ -325,7 +325,7 @@ public:
     }
 
 
-    qint64 committedDiskSpace() const Q_DECL_OVERRIDE
+    qint64 committedDiskSpace() const override
     {
         return _subJobs.committedDiskSpace();
     }
@@ -350,7 +350,7 @@ public:
         : PropagateItemJob(propagator, item)
     {
     }
-    void start() Q_DECL_OVERRIDE
+    void start() override
     {
         SyncFileItem::Status status = _item->_status;
         done(status == SyncFileItem::NoStatus ? SyncFileItem::FileIgnored : status, _item->_errorString);

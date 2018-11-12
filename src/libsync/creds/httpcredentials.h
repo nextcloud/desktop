@@ -82,17 +82,17 @@ public:
     explicit HttpCredentials();
     HttpCredentials(const QString &user, const QString &password, const QSslCertificate &certificate = QSslCertificate(), const QSslKey &key = QSslKey());
 
-    QString authType() const Q_DECL_OVERRIDE;
-    QNetworkAccessManager *createQNAM() const Q_DECL_OVERRIDE;
-    bool ready() const Q_DECL_OVERRIDE;
-    void fetchFromKeychain() Q_DECL_OVERRIDE;
-    bool stillValid(QNetworkReply *reply) Q_DECL_OVERRIDE;
-    void persist() Q_DECL_OVERRIDE;
-    QString user() const Q_DECL_OVERRIDE;
+    QString authType() const override;
+    QNetworkAccessManager *createQNAM() const override;
+    bool ready() const override;
+    void fetchFromKeychain() override;
+    bool stillValid(QNetworkReply *reply) override;
+    void persist() override;
+    QString user() const override;
     // the password or token
     QString password() const;
-    void invalidateToken() Q_DECL_OVERRIDE;
-    void forgetSensitiveData() Q_DECL_OVERRIDE;
+    void invalidateToken() override;
+    void forgetSensitiveData() override;
     QString fetchUser();
     virtual bool sslIsTrusted() { return false; }
 
@@ -102,7 +102,7 @@ public:
     bool refreshAccessToken();
 
     // To fetch the user name as early as possible
-    void setAccount(Account *account) Q_DECL_OVERRIDE;
+    void setAccount(Account *account) override;
 
     // Whether we are using OAuth
     bool isUsingOAuth() const { return !_refreshToken.isNull(); }
