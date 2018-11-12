@@ -27,7 +27,7 @@
 #include <stdint.h>
 #include <QtCore/qglobal.h>
 #ifndef Q_FALLTHROUGH
-#define Q_FALLTHROUGH // Was added in Qt 5.8
+#define Q_FALLTHROUGH() // Was added in Qt 5.8
 #endif
 
 #define c_hashsize(n) ((uint8_t) 1 << (n))
