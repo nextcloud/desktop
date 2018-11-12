@@ -24,7 +24,7 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcCredentials, "nextcloud.sync.credentials", QtInfoMsg)
 
 AbstractCredentials::AbstractCredentials()
-    : _account(0)
+    : _account(nullptr)
     , _wasFetched(false)
 {
 }

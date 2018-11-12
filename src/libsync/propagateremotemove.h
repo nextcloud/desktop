@@ -30,9 +30,9 @@ class MoveJob : public AbstractNetworkJob
     QMap<QByteArray, QByteArray> _extraHeaders;
 
 public:
-    explicit MoveJob(AccountPtr account, const QString &path, const QString &destination, QObject *parent = 0);
+    explicit MoveJob(AccountPtr account, const QString &path, const QString &destination, QObject *parent = nullptr);
     explicit MoveJob(AccountPtr account, const QUrl &url, const QString &destination,
-        QMap<QByteArray, QByteArray> _extraHeaders, QObject *parent = 0);
+        QMap<QByteArray, QByteArray> _extraHeaders, QObject *parent = nullptr);
 
     void start() override;
     bool finished() override;

@@ -35,7 +35,7 @@ class OWNCLOUDSYNC_EXPORT EntityExistsJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit EntityExistsJob(AccountPtr account, const QString &path, QObject *parent = 0);
+    explicit EntityExistsJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
     void start() override;
 
 signals:
@@ -56,7 +56,7 @@ class OWNCLOUDSYNC_EXPORT DeleteApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit DeleteApiJob(AccountPtr account, const QString &path, QObject *parent = 0);
+    explicit DeleteApiJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
     void start() override;
 
 signals:
@@ -96,8 +96,8 @@ class OWNCLOUDSYNC_EXPORT LsColJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit LsColJob(AccountPtr account, const QString &path, QObject *parent = 0);
-    explicit LsColJob(AccountPtr account, const QUrl &url, QObject *parent = 0);
+    explicit LsColJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
+    explicit LsColJob(AccountPtr account, const QUrl &url, QObject *parent = nullptr);
     void start() override;
     QHash<QString, ExtraFolderInfo> _folderInfos;
 
@@ -140,7 +140,7 @@ class OWNCLOUDSYNC_EXPORT PropfindJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit PropfindJob(AccountPtr account, const QString &path, QObject *parent = 0);
+    explicit PropfindJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
     void start() override;
 
     /**
@@ -156,7 +156,7 @@ public:
 
 signals:
     void result(const QVariantMap &values);
-    void finishedWithError(QNetworkReply *reply = 0);
+    void finishedWithError(QNetworkReply *reply = nullptr);
 
 private slots:
     bool finished() override;
@@ -181,7 +181,7 @@ public:
      * @param userId The user for which to obtain the avatar
      * @param size The size of the avatar (square so size*size)
      */
-    explicit AvatarJob(AccountPtr account, const QString &userId, int size, QObject *parent = 0);
+    explicit AvatarJob(AccountPtr account, const QString &userId, int size, QObject *parent = nullptr);
 
     void start() override;
 
@@ -216,7 +216,7 @@ class OWNCLOUDSYNC_EXPORT ProppatchJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit ProppatchJob(AccountPtr account, const QString &path, QObject *parent = 0);
+    explicit ProppatchJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
     void start() override;
 
     /**
@@ -252,9 +252,9 @@ class OWNCLOUDSYNC_EXPORT MkColJob : public AbstractNetworkJob
     QMap<QByteArray, QByteArray> _extraHeaders;
 
 public:
-    explicit MkColJob(AccountPtr account, const QString &path, QObject *parent = 0);
+    explicit MkColJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
     explicit MkColJob(AccountPtr account, const QUrl &url,
-        const QMap<QByteArray, QByteArray> &extraHeaders, QObject *parent = 0);
+        const QMap<QByteArray, QByteArray> &extraHeaders, QObject *parent = nullptr);
     void start() override;
 
 signals:
@@ -272,7 +272,7 @@ class OWNCLOUDSYNC_EXPORT CheckServerJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit CheckServerJob(AccountPtr account, QObject *parent = 0);
+    explicit CheckServerJob(AccountPtr account, QObject *parent = nullptr);
     void start() override;
 
     static QString version(const QJsonObject &info);
@@ -329,7 +329,7 @@ class OWNCLOUDSYNC_EXPORT RequestEtagJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit RequestEtagJob(AccountPtr account, const QString &path, QObject *parent = 0);
+    explicit RequestEtagJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
     void start() override;
 
 signals:
@@ -358,7 +358,7 @@ class OWNCLOUDSYNC_EXPORT JsonApiJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit JsonApiJob(const AccountPtr &account, const QString &path, QObject *parent = 0);
+    explicit JsonApiJob(const AccountPtr &account, const QString &path, QObject *parent = nullptr);
 
     /**
      * @brief addQueryParams - add more parameters to the ocs call
@@ -415,7 +415,7 @@ public:
         WebViewFlow
     };
 
-    explicit DetermineAuthTypeJob(AccountPtr account, QObject *parent = 0);
+    explicit DetermineAuthTypeJob(AccountPtr account, QObject *parent = nullptr);
     void start();
 signals:
     void authType(AuthType);
@@ -440,11 +440,11 @@ class OWNCLOUDSYNC_EXPORT SimpleNetworkJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit SimpleNetworkJob(AccountPtr account, QObject *parent = 0);
+    explicit SimpleNetworkJob(AccountPtr account, QObject *parent = nullptr);
 
     QNetworkReply *startRequest(const QByteArray &verb, const QUrl &url,
         QNetworkRequest req = QNetworkRequest(),
-        QIODevice *requestBody = 0);
+        QIODevice *requestBody = nullptr);
 
 signals:
     void finishedSignal(QNetworkReply *reply);

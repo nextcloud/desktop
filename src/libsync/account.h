@@ -140,7 +140,7 @@ public:
     QNetworkReply *sendRawRequest(const QByteArray &verb,
         const QUrl &url,
         QNetworkRequest req = QNetworkRequest(),
-        QIODevice *data = 0);
+        QIODevice *data = nullptr);
 
     /** Create and start network job for a simple one-off request.
      *
@@ -149,7 +149,7 @@ public:
     SimpleNetworkJob *sendRequest(const QByteArray &verb,
         const QUrl &url,
         QNetworkRequest req = QNetworkRequest(),
-        QIODevice *data = 0);
+        QIODevice *data = nullptr);
 
     /** The ssl configuration during the first connection */
     QSslConfiguration getOrCreateSslConfig();
@@ -267,7 +267,7 @@ protected Q_SLOTS:
     void slotCredentialsAsked();
 
 private:
-    Account(QObject *parent = 0);
+    Account(QObject *parent = nullptr);
     void setSharedThis(AccountPtr sharedThis);
 
     QWeakPointer<Account> _sharedThis;

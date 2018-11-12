@@ -50,7 +50,7 @@ namespace {
 class HttpCredentialsAccessManager : public AccessManager
 {
 public:
-    HttpCredentialsAccessManager(const HttpCredentials *cred, QObject *parent = 0)
+    HttpCredentialsAccessManager(const HttpCredentials *cred, QObject *parent = nullptr)
         : AccessManager(parent)
         , _cred(cred)
     {

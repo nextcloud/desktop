@@ -52,11 +52,11 @@ public:
     // DOES NOT take ownership of the device.
     explicit GETFileJob(AccountPtr account, const QString &path, QFile *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-        quint64 resumeStart, QObject *parent = 0);
+        quint64 resumeStart, QObject *parent = nullptr);
     // For directDownloadUrl:
     explicit GETFileJob(AccountPtr account, const QUrl &url, QFile *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-        quint64 resumeStart, QObject *parent = 0);
+        quint64 resumeStart, QObject *parent = nullptr);
     virtual ~GETFileJob()
     {
         if (_bandwidthManager) {
