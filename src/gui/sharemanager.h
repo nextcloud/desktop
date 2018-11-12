@@ -57,7 +57,7 @@ public:
         const QString &path,
         const ShareType shareType,
         const Permissions permissions = SharePermissionDefault,
-        const QSharedPointer<Sharee> shareWith = QSharedPointer<Sharee>(NULL));
+        const QSharedPointer<Sharee> shareWith = QSharedPointer<Sharee>(nullptr));
 
     /**
      * The account the share is defined on.
@@ -234,7 +234,7 @@ class ShareManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit ShareManager(AccountPtr _account, QObject *parent = NULL);
+    explicit ShareManager(AccountPtr _account, QObject *parent = nullptr);
 
     /**
      * Tell the manager to create a link share

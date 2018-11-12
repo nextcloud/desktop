@@ -245,7 +245,7 @@ static QTreeWidgetItem *findFirstChild(QTreeWidgetItem *parent, const QString &t
             return child;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 void FolderWizardRemotePath::recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path)
@@ -534,7 +534,7 @@ void FolderWizardSelectiveSync::cleanupPage()
 FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
     : QWizard(parent)
     , _folderWizardSourcePage(new FolderWizardLocalPath(account))
-    , _folderWizardTargetPage(0)
+    , _folderWizardTargetPage(nullptr)
     , _folderWizardSelectiveSyncPage(new FolderWizardSelectiveSync(account))
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);

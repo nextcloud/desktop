@@ -382,12 +382,12 @@ public:
     }
 
 
-    QWidget *createWidget(QWidget *parent) Q_DECL_OVERRIDE
+    QWidget *createWidget(QWidget *parent) override
     {
         auto toolbar = qobject_cast<QToolBar *>(parent);
         if (!toolbar) {
             // this means we are in the extention menu, no special action here
-            return 0;
+            return nullptr;
         }
 
         QToolButton *btn = new QToolButton(parent);

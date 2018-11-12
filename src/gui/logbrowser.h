@@ -37,7 +37,7 @@ class LogWidget : public QPlainTextEdit
 {
     Q_OBJECT
 public:
-    explicit LogWidget(QWidget *parent = 0);
+    explicit LogWidget(QWidget *parent = nullptr);
 
 signals:
 };
@@ -50,14 +50,14 @@ class LogBrowser : public QDialog
 {
     Q_OBJECT
 public:
-    explicit LogBrowser(QWidget *parent = 0);
+    explicit LogBrowser(QWidget *parent = nullptr);
     ~LogBrowser();
 
     void setLogFile(const QString &, bool);
 
 protected:
-    void showEvent(QShowEvent *) Q_DECL_OVERRIDE;
-    void closeEvent(QCloseEvent *) Q_DECL_OVERRIDE;
+    void showEvent(QShowEvent *) override;
+    void closeEvent(QCloseEvent *) override;
 
 protected slots:
     void slotNewLog(const QString &msg);

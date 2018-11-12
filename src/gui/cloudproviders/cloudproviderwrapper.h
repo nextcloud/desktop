@@ -59,8 +59,8 @@ private:
     CloudProvidersAccountExporter *_cloudProviderAccount;
     QList<QPair<QString, QString>> *_recentlyChanged;
     bool _paused;
-    GMenu* _mainMenu = NULL;
-    GMenu* _recentMenu = NULL;
+    GMenu* _mainMenu = nullptr;
+    GMenu* _recentMenu = nullptr;
 };
 
 #endif // CLOUDPROVIDER_H

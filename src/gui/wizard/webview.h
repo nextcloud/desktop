@@ -20,7 +20,7 @@ class WebView : public QWidget
 {
     Q_OBJECT
 public:
-    WebView(QWidget *parent = 0);
+    WebView(QWidget *parent = nullptr);
     void setUrl(const QUrl &url);
 
 signals:

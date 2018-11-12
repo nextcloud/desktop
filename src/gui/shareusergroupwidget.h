@@ -59,7 +59,7 @@ public:
         const QString &localPath,
         SharePermissions maxSharingPermissions,
         const QString &privateLinkUrl,
-        QWidget *parent = 0);
+        QWidget *parent = nullptr);
     ~ShareUserGroupWidget();
 
 signals:
@@ -118,7 +118,7 @@ public:
     explicit ShareUserLine(QSharedPointer<Share> Share,
         SharePermissions maxSharingPermissions,
         bool isFile,
-        QWidget *parent = 0);
+        QWidget *parent = nullptr);
     ~ShareUserLine();
 
     QSharedPointer<Share> share() const;

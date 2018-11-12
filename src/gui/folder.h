@@ -99,7 +99,7 @@ class Folder : public QObject
     Q_OBJECT
 
 public:
-    Folder(const FolderDefinition &definition, AccountState *accountState, QObject *parent = 0L);
+    Folder(const FolderDefinition &definition, AccountState *accountState, QObject *parent = nullptr);
 
     ~Folder();
 

@@ -38,13 +38,13 @@ class ActivityListModel : public QAbstractListModel
 {
     Q_OBJECT
 public:
-    explicit ActivityListModel(AccountState *accountState, QWidget *parent = 0);
+    explicit ActivityListModel(AccountState *accountState, QWidget *parent = nullptr);
 
-    QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const Q_DECL_OVERRIDE;
+    QVariant data(const QModelIndex &index, int role) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    bool canFetchMore(const QModelIndex &) const Q_DECL_OVERRIDE;
-    void fetchMore(const QModelIndex &) Q_DECL_OVERRIDE;
+    bool canFetchMore(const QModelIndex &) const override;
+    void fetchMore(const QModelIndex &) override;
 
     ActivityList activityList() { return _finalList; }
     ActivityList errorsList() { return _notificationErrorsLists; }
