@@ -115,9 +115,9 @@ public:
 
     int _chunk;
 
-    virtual void start() override;
+    void start() override;
 
-    virtual bool finished() override
+    bool finished() override
     {
         qCInfo(lcPutJob) << "PUT of" << reply()->request().url().toString() << "FINISHED WITH STATUS"
                          << replyStatusString()

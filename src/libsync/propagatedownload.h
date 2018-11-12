@@ -64,8 +64,8 @@ public:
         }
     }
 
-    virtual void start() override;
-    virtual bool finished() override
+    void start() override;
+    bool finished() override
     {
         if (reply()->bytesAvailable()) {
             return false;

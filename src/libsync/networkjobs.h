@@ -42,7 +42,7 @@ signals:
     void exists(QNetworkReply *);
 
 private slots:
-    virtual bool finished() override;
+    bool finished() override;
 };
 
 /**
@@ -63,7 +63,7 @@ signals:
     void result(int httpCode);
 
 private slots:
-    virtual bool finished() override;
+    bool finished() override;
 };
 
 struct ExtraFolderInfo {
@@ -119,7 +119,7 @@ signals:
     void finishedWithoutError();
 
 private slots:
-    virtual bool finished() override;
+    bool finished() override;
 
 private:
     QList<QByteArray> _properties;
@@ -159,7 +159,7 @@ signals:
     void finishedWithError(QNetworkReply *reply = 0);
 
 private slots:
-    virtual bool finished() override;
+    bool finished() override;
 
 private:
     QList<QByteArray> _properties;
@@ -196,7 +196,7 @@ signals:
     void avatarPixmap(const QImage &);
 
 private slots:
-    virtual bool finished() override;
+    bool finished() override;
 
 private:
     QUrl _avatarUrl;
@@ -235,7 +235,7 @@ signals:
     void finishedWithError();
 
 private slots:
-    virtual bool finished() override;
+    bool finished() override;
 
 private:
     QMap<QByteArray, QByteArray> _properties;
@@ -261,7 +261,7 @@ signals:
     void finished(QNetworkReply::NetworkError);
 
 private slots:
-    virtual bool finished() override;
+    bool finished() override;
 };
 
 /**
@@ -336,7 +336,7 @@ signals:
     void etagRetreived(const QString &etag);
 
 private slots:
-    virtual bool finished() override;
+    bool finished() override;
 };
 
 /**

@@ -238,15 +238,15 @@ public:
         _tasksToDo.append(item);
     }
 
-    virtual bool scheduleSelfOrChild() override;
-    virtual JobParallelism parallelism() override;
+    bool scheduleSelfOrChild() override;
+    JobParallelism parallelism() override;
 
     /*
      * Abort synchronously or asynchronously - some jobs
      * require to be finished without immediete abort (abort on job might
      * cause conflicts/duplicated files - owncloud/client/issues/5949)
      */
-    virtual void abort(PropagatorJob::AbortType abortType) override
+    void abort(PropagatorJob::AbortType abortType) override
     {
         if (!_runningJobs.empty()) {
             _abortsCount = _runningJobs.size();
@@ -304,9 +304,9 @@ public:
         _subJobs.appendTask(item);
     }
 
-    virtual bool scheduleSelfOrChild() override;
-    virtual JobParallelism parallelism() override;
-    virtual void abort(PropagatorJob::AbortType abortType) override
+    bool scheduleSelfOrChild() override;
+    JobParallelism parallelism() override;
+    void abort(PropagatorJob::AbortType abortType) override
     {
         if (_firstJob)
             // Force first job to abort synchronously
