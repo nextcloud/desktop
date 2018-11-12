@@ -325,9 +325,20 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             if (rec._checksumHeader.isEmpty())
                 rec._checksumHeader = prev._checksumHeader;
             rec._serverHasIgnoredFiles |= prev._serverHasIgnoredFiles;
-            _journal->setFileRecord(rec);
 
-            // ### Update vfs metadata with Vfs::updateMetadata()
+            // Update on-disk virtual file metadata
+            if (item->_type == ItemTypeVirtualFile && _syncOptions._vfs) {
+                QString error;
+                if (!_syncOptions._vfs->updateMetadata(filePath, item->_modtime, item->_size, item->_fileId, &error)) {
+                    item->_instruction = CSYNC_INSTRUCTION_ERROR;
+                    item->_status = SyncFileItem::NormalError;
+                    item->_errorString = tr("Could not update virtual file metadata: %1").arg(error);
+                    return;
+                }
+            }
+
+            // Updating the db happens on success
+            _journal->setFileRecord(rec);
 
             // This might have changed the shared flag, so we must notify SyncFileStatusTracker for example
             emit itemCompleted(item);
