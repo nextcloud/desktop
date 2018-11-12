@@ -461,23 +461,19 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         // Now we know there is a sane rename candidate.
         QString originalPath = QString::fromUtf8(base._path);
 
-        // Rename of a virtual file
-        if (base.isVirtualFile() && item->_type == ItemTypeFile) {
-            // Ignore if the base is a virtual files
-            return;
-        }
-
         if (_discoveryData->_renamedItems.contains(originalPath)) {
             qCInfo(lcDisco, "folder already has a rename entry, skipping");
             return;
         }
 
-        if (!item->isDirectory()) {
+        if (!base.isDirectory()) {
             csync_file_stat_t buf;
             if (csync_vio_local_stat((_discoveryData->_localDir + originalPath).toUtf8(), &buf)) {
                 qCInfo(lcDisco) << "Local file does not exist anymore." << originalPath;
                 return;
             }
+            // NOTE: This prohibits some VFS renames from being detected since
+            // suffix-file size is different from the db size. That's ok, they'll DELETE+NEW.
             if (buf.modtime != base._modtime || buf.size != base._fileSize || buf.type == ItemTypeDirectory) {
                 qCInfo(lcDisco) << "File has changed locally, not a rename." << originalPath;
                 return;
@@ -487,6 +483,11 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                 qCInfo(lcDisco) << "Local directory does not exist anymore." << originalPath;
                 return;
             }
+        }
+
+        // Renames of virtuals are possible
+        if (base.isVirtualFile()) {
+            item->_type = ItemTypeVirtualFile;
         }
 
         bool wasDeletedOnServer = _discoveryData->findAndCancelDeletedJob(originalPath).first;
