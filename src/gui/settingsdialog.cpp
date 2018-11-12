@@ -93,10 +93,6 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _actionGroup->setExclusive(true);
     connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
 
-    foreach(auto ai, AccountManager::instance()->accounts()) {
-        accountAdded(ai.data());
-    }
-
     _actionBefore = new QAction(this);
     _toolBar->addAction(_actionBefore);
 
@@ -120,6 +116,10 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
+
+    foreach(auto ai, AccountManager::instance()->accounts()) {
+        accountAdded(ai.data());
+    }
 
     QTimer::singleShot(1, this, &SettingsDialog::showFirstPage);
 
