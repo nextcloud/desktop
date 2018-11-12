@@ -139,24 +139,26 @@ Folder::Folder(const FolderDefinition &definition,
             }
         }
     }
-    if (!_vfs) {
-        // ### error handling; possibly earlier than in the ctor
-        qFatal("Could not load any vfs plugin.");
+    if (_definition.virtualFilesMode != Vfs::Off) {
+        if (!_vfs) {
+            // ### error handling; possibly earlier than in the ctor
+            qFatal("Could not load any vfs plugin.");
+        }
+
+        VfsSetupParams vfsParams;
+        vfsParams.filesystemPath = path();
+        vfsParams.remotePath = remotePath();
+        vfsParams.account = _accountState->account();
+        vfsParams.journal = &_journal;
+        vfsParams.providerName = Theme::instance()->appNameGUI();
+        vfsParams.providerVersion = Theme::instance()->version();
+
+        connect(_vfs, &OCC::Vfs::beginHydrating, this, &Folder::slotHydrationStarts);
+        connect(_vfs, &OCC::Vfs::doneHydrating, this, &Folder::slotHydrationDone);
+
+        _vfs->registerFolder(vfsParams); // Do this always?
+        _vfs->start(vfsParams);
     }
-
-    VfsSetupParams vfsParams;
-    vfsParams.filesystemPath = path();
-    vfsParams.remotePath = remotePath();
-    vfsParams.account = _accountState->account();
-    vfsParams.journal = &_journal;
-    vfsParams.providerName = Theme::instance()->appNameGUI();
-    vfsParams.providerVersion = Theme::instance()->version();
-
-    connect(_vfs, &OCC::Vfs::beginHydrating, this, &Folder::slotHydrationStarts);
-    connect(_vfs, &OCC::Vfs::doneHydrating, this, &Folder::slotHydrationDone);
-
-    _vfs->registerFolder(vfsParams); // Do this always?
-    _vfs->start(vfsParams);
 }
 
 Folder::~Folder()
