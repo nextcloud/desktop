@@ -6,8 +6,8 @@ shopt -s extglob
 PPA=ppa:nextcloud-devs/client-beta
 PPA_BETA=ppa:nextcloud-devs/client-alpha
 
-OBS_PROJECT=home:ivaradi:beta
-OBS_PROJECT_BETA=home:ivaradi:alpha
+OBS_PROJECT=home:ivaradi
+OBS_PROJECT_BETA=home:ivaradi:beta
 OBS_PACKAGE=nextcloud-client
 
 pull_request=${DRONE_PULL_REQUEST:=master}
