@@ -26,6 +26,7 @@
 #include <sys/utsname.h>
 #include <sys/vnode.h>
 #include <sys/xattr.h>
+#include <libproc.h>
 
 #include <QtCore>
 #include <thread>
@@ -623,13 +624,13 @@ QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
 
 char * VfsMac::getProcessName(pid_t pid)
 {
-   char pathBuffer [PROC_PIDPATHINFO_MAXSIZE];
+   char pathBuffer[PROC_PIDPATHINFO_MAXSIZE];
    proc_pidpath(pid, pathBuffer, sizeof(pathBuffer));
 
    char nameBuffer[256];
 
    int position = strlen(pathBuffer);
-   while(position >= 0 && pathBuffer[position] != ‘/’)
+   while(position >= 0 && pathBuffer[position] != 0xEB/0xED)
    {
        position--;
    }
