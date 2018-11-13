@@ -69,7 +69,7 @@ static bool fileIsStillChanging(const SyncFileItem &item)
 PUTFileJob::~PUTFileJob()
 {
     // Make sure that we destroy the QNetworkReply before our _device of which it keeps an internal pointer.
-    setReply(0);
+    setReply(nullptr);
 }
 
 void PUTFileJob::start()

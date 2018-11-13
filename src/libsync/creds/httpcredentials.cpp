@@ -50,14 +50,14 @@ namespace {
 class HttpCredentialsAccessManager : public AccessManager
 {
 public:
-    HttpCredentialsAccessManager(const HttpCredentials *cred, QObject *parent = 0)
+    HttpCredentialsAccessManager(const HttpCredentials *cred, QObject *parent = nullptr)
         : AccessManager(parent)
         , _cred(cred)
     {
     }
 
 protected:
-    QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData) Q_DECL_OVERRIDE
+    QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData) override
     {
         QNetworkRequest req(request);
         if (!req.attribute(HttpCredentials::DontAddCredentialsAttribute).toBool()) {
