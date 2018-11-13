@@ -3,8 +3,8 @@
 set -xe
 shopt -s extglob
 
-PPA=ppa:nextcloud-devs/client-beta
-PPA_BETA=ppa:nextcloud-devs/client-alpha
+PPA=ppa:nextcloud-devs/client
+PPA_BETA=ppa:nextcloud-devs/client-beta
 
 OBS_PROJECT=home:ivaradi
 OBS_PROJECT_BETA=home:ivaradi:beta
