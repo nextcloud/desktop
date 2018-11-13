@@ -10,4 +10,5 @@ set(common_SOURCES
     ${CMAKE_CURRENT_LIST_DIR}/utility.cpp
     ${CMAKE_CURRENT_LIST_DIR}/remotepermissions.cpp
     ${CMAKE_CURRENT_LIST_DIR}/vfs.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/plugin.cpp
 )

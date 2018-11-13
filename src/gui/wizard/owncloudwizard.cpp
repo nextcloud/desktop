@@ -28,6 +28,8 @@
 #include "wizard/owncloudadvancedsetuppage.h"
 #include "wizard/owncloudwizardresultpage.h"
 
+#include "common/vfs.h"
+
 #include "QProgressIndicator.h"
 
 #include <QtCore>
@@ -256,16 +258,32 @@ AbstractCredentials *OwncloudWizard::getCredentials() const
 
 void OwncloudWizard::askExperimentalVirtualFilesFeature(const std::function<void(bool enable)> &callback)
 {
-    auto msgBox = new QMessageBox(
-        QMessageBox::Warning,
-        tr("Enable experimental feature?"),
-        tr("When the \"virtual files\" mode is enabled no files will be downloaded initially. "
-           "Instead, a tiny \"%1\" file will be created for each file that exists on the server. "
-           "The contents can be downloaded by running these files or by using their context menu."
-           "\n\n"
-           "This is a new, experimental mode. If you decide to use it, please report any "
-           "issues that come up.")
-            .arg(APPLICATION_DOTVIRTUALFILE_SUFFIX));
+    auto bestVfsMode = bestAvailableVfsMode();
+    QMessageBox *msgBox = nullptr;
+    if (bestVfsMode == Vfs::WindowsCfApi) {
+        msgBox = new QMessageBox(
+            QMessageBox::Warning,
+            tr("Enable experimental feature?"),
+            tr("When the \"virtual files\" mode is enabled no files will be downloaded initially. "
+               "Instead a placeholder file will be created for each file that exists on the server. "
+               "When a file is opened its contents will be downloaded automatically. "
+               "Alternatively files can be downloaded manually by using their context menu."
+               "\n\n"
+               "This is a new, experimental mode. If you decide to use it, please report any "
+               "issues that come up."));
+    } else {
+        ASSERT(bestVfsMode == Vfs::WithSuffix);
+        msgBox = new QMessageBox(
+            QMessageBox::Warning,
+            tr("Enable experimental feature?"),
+            tr("When the \"virtual files\" mode is enabled no files will be downloaded initially. "
+               "Instead, a tiny \"%1\" file will be created for each file that exists on the server. "
+               "The contents can be downloaded by running these files or by using their context menu."
+               "\n\n"
+               "This is a new, experimental mode. If you decide to use it, please report any "
+               "issues that come up.")
+                .arg(APPLICATION_DOTVIRTUALFILE_SUFFIX));
+    }
     msgBox->addButton(tr("Enable experimental mode"), QMessageBox::AcceptRole);
     msgBox->addButton(tr("Stay safe"), QMessageBox::RejectRole);
     connect(msgBox, &QMessageBox::finished, msgBox, [callback, msgBox](int result) {

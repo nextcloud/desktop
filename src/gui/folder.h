@@ -107,7 +107,11 @@ class Folder : public QObject
     Q_OBJECT
 
 public:
-    Folder(const FolderDefinition &definition, AccountState *accountState, QObject *parent = 0L);
+    /** Create a new Folder
+     *
+     * The vfs instance will be parented to this.
+     */
+    Folder(const FolderDefinition &definition, AccountState *accountState, Vfs *vfs, QObject *parent = 0L);
 
     ~Folder();
 

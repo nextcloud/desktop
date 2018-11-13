@@ -33,7 +33,6 @@
 #include "localdiscoverytracker.h"
 #include "csync_exclude.h"
 #include "common/vfs.h"
-#include "plugin.h"
 #include "creds/abstractcredentials.h"
 
 #include <QTimer>
@@ -52,7 +51,7 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcFolder, "gui.folder", QtInfoMsg)
 
 Folder::Folder(const FolderDefinition &definition,
-    AccountState *accountState,
+    AccountState *accountState, Vfs *vfs,
     QObject *parent)
     : QObject(parent)
     , _accountState(accountState)
@@ -62,6 +61,7 @@ Folder::Folder(const FolderDefinition &definition,
     , _consecutiveFollowUpSyncs(0)
     , _journal(_definition.absoluteJournalPath())
     , _fileLog(new SyncRunFileLog)
+    , _vfs(vfs)
 {
     _timeSinceLastSyncStart.start();
     _timeSinceLastSyncDone.start();
@@ -118,32 +118,26 @@ Folder::Folder(const FolderDefinition &definition,
     connect(_engine.data(), &SyncEngine::itemCompleted,
         _localDiscoveryTracker.data(), &LocalDiscoveryTracker::slotItemCompleted);
 
-    // TODO cfapi: Move to function. Is this platform-universal?
-    PluginLoader pluginLoader;
-    if (_definition.virtualFilesMode == Vfs::WindowsCfApi) {
-        _vfs = pluginLoader.create<Vfs>("vfs", "win", this);
-    }
-    if (_definition.virtualFilesMode == Vfs::WithSuffix) {
-        _vfs = pluginLoader.create<Vfs>("vfs", "suffix", this);
+    // Potentially upgrade suffix vfs to windows vfs
+    if (_definition.virtualFilesMode == Vfs::WithSuffix && _definition.upgradeVfsMode) {
+        if (auto winvfs = createVfsFromPlugin(Vfs::WindowsCfApi, this)) {
+            // Wipe the existing suffix files from fs and journal
+            SyncEngine::wipeVirtualFiles(path(), _journal, _vfs);
 
-        // Attempt to switch to winvfs mode?
-        if (_vfs && _definition.upgradeVfsMode) {
-            if (auto winvfs = pluginLoader.create<Vfs>("vfs", "win", this)) {
-                // Set "suffix" vfs options and wipe the existing suffix files
-                SyncEngine::wipeVirtualFiles(path(), _journal, _vfs);
-
-                // Then switch to winvfs mode
-                _vfs = winvfs;
-                _definition.virtualFilesMode = Vfs::WindowsCfApi;
-                saveToSettings();
-            }
+            // Then switch to winvfs mode
+            delete _vfs;
+            _vfs = winvfs;
+            _definition.virtualFilesMode = Vfs::WindowsCfApi;
+            saveToSettings();
         }
     }
+
+    // Initialize the vfs plugin
     if (_definition.virtualFilesMode != Vfs::Off) {
-        if (!_vfs) {
-            // ### error handling; possibly earlier than in the ctor
-            qFatal("Could not load any vfs plugin.");
-        }
+        ENFORCE(_vfs);
+        ENFORCE(_vfs->mode() == _definition.virtualFilesMode);
+
+        _vfs->setParent(this);
 
         VfsSetupParams vfsParams;
         vfsParams.filesystemPath = path();

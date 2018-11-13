@@ -19,26 +19,16 @@
 #include "plugin.h"
 
 #include "config.h"
-#include "logger.h"
 
 #include <QPluginLoader>
 #include <QDir>
+#include <QLoggingCategory>
 
 Q_LOGGING_CATEGORY(lcPluginLoader, "pluginLoader", QtInfoMsg)
 
 namespace OCC {
 
 PluginFactory::~PluginFactory() = default;
-
-QObject *PluginLoader::createInternal(const QString& type, const QString &name, QObject* parent)
-{
-    auto factory = load<PluginFactory>(type, name);
-    if (!factory) {
-        return nullptr;
-    } else {
-        return factory->create(parent);
-    }
-}
 
 QString PluginLoader::pluginName(const QString &type, const QString &name)
 {
@@ -48,12 +38,17 @@ QString PluginLoader::pluginName(const QString &type, const QString &name)
             .arg(name);
 }
 
-QObject *PluginLoader::loadPluginInternal(const QString& type, const QString &name)
+bool PluginLoader::isAvailable(const QString &type, const QString &name)
+{
+    QPluginLoader loader(pluginName(type, name));
+    return loader.load();
+}
+
+QObject *PluginLoader::load(const QString &type, const QString &name)
 {
     QString fileName = pluginName(type, name);
     QPluginLoader pluginLoader(fileName);
-    auto plugin = pluginLoader.load();
-    if(plugin) {
+    if (pluginLoader.load()) {
         qCInfo(lcPluginLoader) << "Loaded plugin" << fileName;
     } else {
         qCWarning(lcPluginLoader) << "Could not load plugin"
@@ -63,6 +58,16 @@ QObject *PluginLoader::loadPluginInternal(const QString& type, const QString &na
     }
 
     return pluginLoader.instance();
+}
+
+QObject *PluginLoader::create(const QString &type, const QString &name, QObject *parent)
+{
+    auto factory = qobject_cast<PluginFactory *>(load(type, name));
+    if (!factory) {
+        return nullptr;
+    } else {
+        return factory->create(parent);
+    }
 }
 
 }

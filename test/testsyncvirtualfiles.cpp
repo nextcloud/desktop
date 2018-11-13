@@ -8,7 +8,6 @@
 #include <QtTest>
 #include "syncenginetestutils.h"
 #include "common/vfs.h"
-#include "plugin.h"
 #include <syncengine.h>
 
 using namespace OCC;
@@ -63,7 +62,7 @@ void markForDehydration(FakeFolder &folder, const QByteArray &path)
 SyncOptions vfsSyncOptions()
 {
     SyncOptions options;
-    options._vfs = PluginLoader().create<Vfs>("vfs", "suffix");
+    options._vfs = createVfsFromPlugin(Vfs::WithSuffix, nullptr);
     return options;
 }
 

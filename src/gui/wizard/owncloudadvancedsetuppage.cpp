@@ -110,7 +110,7 @@ void OwncloudAdvancedSetupPage::initializePage()
         labelSizeHint.width(),
         qMax<int>(1.3 * labelSizeHint.height(), _progressIndi->height()));
 
-    if (!Theme::instance()->showVirtualFilesOption()) {
+    if (!Theme::instance()->showVirtualFilesOption() || bestAvailableVfsMode() == Vfs::Off) {
         // If the layout were wrapped in a widget, the auto-grouping of the
         // radio buttons no longer works and there are surprising margins.
         // Just manually hide the button and remove the layout.

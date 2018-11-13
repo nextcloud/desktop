@@ -17,7 +17,7 @@
 #include <QScopedPointer>
 
 #include "common/vfs.h"
-#include "plugin.h"
+#include "common/plugin.h"
 
 namespace OCC {
 

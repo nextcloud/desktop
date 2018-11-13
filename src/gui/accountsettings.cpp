@@ -418,8 +418,7 @@ void AccountSettings::slotFolderWizardAccepted()
         folderWizard->property("targetPath").toString());
 
     if (folderWizard->property("useVirtualFiles").toBool()) {
-        // ### Determine which vfs is available?
-        definition.virtualFilesMode = Vfs::WindowsCfApi;
+        definition.virtualFilesMode = bestAvailableVfsMode();
     }
 
     {
