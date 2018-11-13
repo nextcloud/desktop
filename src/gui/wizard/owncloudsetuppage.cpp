@@ -92,10 +92,9 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     _ui.slideShow->setPalette(pal);
 #else
     _ui.createAccountButton->hide();
-    _ui.slideImage->hide();
-    _ui.slideLabel->hide();
     _ui.loginButton->hide();
     _ui.installLink->hide();
+    _ui.slideShow->hide();
 #endif
     setStyleSheet(QString("background-color:%1; color:%2 QLabel { color:%2; } QSpacerItem { color: red; }").arg(theme->wizardHeaderBackgroundColor().name(), theme->wizardHeaderTitleColor().name()));
 }
