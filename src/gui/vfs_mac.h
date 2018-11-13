@@ -75,7 +75,6 @@ private:
     QPointer<OCC::DiscoveryFolderFileList> _remotefileListJob;
     
     QPointer<OCC::AccountState> accountState_;
-    QMap<QString, bool> _syncDone;
     int _counter = 0;
 
 #pragma mark Fuse operations.
@@ -543,7 +542,6 @@ public:
     
 public slots:
     void folderFileListFinish(OCC::DiscoveryDirectoryResult *dr);
-    void syncDone(QString, bool);
     
 signals:
     void FuseFileSystemDidMount(QVariantMap userInfo);
