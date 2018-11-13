@@ -17,6 +17,7 @@
  */
 
 #include "vfs.h"
+#include "plugin.h"
 
 using namespace OCC;
 
@@ -55,4 +56,39 @@ bool Vfs::modeFromString(const QString &str, Mode *mode)
         return true;
     }
     return false;
+}
+
+static QString modeToPluginName(Vfs::Mode mode)
+{
+    if (mode == Vfs::WithSuffix)
+        return "suffix";
+    if (mode == Vfs::WindowsCfApi)
+        return "win";
+    return QString();
+}
+
+bool OCC::isVfsPluginAvailable(Vfs::Mode mode)
+{
+    auto name = modeToPluginName(mode);
+    if (name.isEmpty())
+        return false;
+    return PluginLoader().load("vfs", name);
+}
+
+Vfs::Mode OCC::bestAvailableVfsMode()
+{
+    if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
+        return Vfs::WindowsCfApi;
+    } else if (isVfsPluginAvailable(Vfs::WithSuffix)) {
+        return Vfs::WithSuffix;
+    }
+    return Vfs::Off;
+}
+
+Vfs *OCC::createVfsFromPlugin(Vfs::Mode mode, QObject *parent)
+{
+    auto name = modeToPluginName(mode);
+    if (name.isEmpty())
+        return nullptr;
+    return qobject_cast<Vfs *>(PluginLoader().create("vfs", name, parent));
 }

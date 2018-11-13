@@ -23,7 +23,6 @@
 #include <qmutex.h>
 
 #include "common/utility.h"
-#include "logger.h"
 #include "owncloudlib.h"
 
 namespace OCC {

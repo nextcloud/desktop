@@ -259,7 +259,12 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                     qCInfo(lcFolderMan) << "Successfully migrated syncjournal database.";
                 }
 
-                Folder *f = addFolderInternal(folderDefinition, account.data());
+                Vfs *vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode, nullptr);
+                if (!vfs && folderDefinition.virtualFilesMode != Vfs::Off) {
+                    qCWarning(lcFolderMan) << "Could not load plugin for mode" << folderDefinition.virtualFilesMode;
+                }
+
+                Folder *f = addFolderInternal(folderDefinition, account.data(), vfs);
                 f->saveToSettings();
 
                 continue;
@@ -279,7 +284,13 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 SyncJournalDb::maybeMigrateDb(folderDefinition.localPath, folderDefinition.absoluteJournalPath());
             }
 
-            Folder *f = addFolderInternal(std::move(folderDefinition), account.data());
+            Vfs *vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode, nullptr);
+            if (!vfs && folderDefinition.virtualFilesMode != Vfs::Off) {
+                // TODO: Must do better error handling
+                qFatal("Could not load plugin");
+            }
+
+            Folder *f = addFolderInternal(std::move(folderDefinition), account.data(), vfs);
             if (f) {
                 // Migration: Mark folders that shall be saved in a backwards-compatible way
                 if (backwardsCompatible)
@@ -494,7 +505,8 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     folderDefinition.paused = paused;
     folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles();
 
-    folder = addFolderInternal(folderDefinition, accountState);
+    Vfs *vfs = nullptr;
+    folder = addFolderInternal(folderDefinition, accountState, vfs);
     if (folder) {
         QStringList blackList = settings.value(QLatin1String("blackList")).toStringList();
         if (!blackList.empty()) {
@@ -982,7 +994,13 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
         return nullptr;
     }
 
-    auto folder = addFolderInternal(definition, accountState);
+    Vfs *vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode, nullptr);
+    if (!vfs && folderDefinition.virtualFilesMode != Vfs::Off) {
+        qCWarning(lcFolderMan) << "Could not load plugin for mode" << folderDefinition.virtualFilesMode;
+        return 0;
+    }
+
+    auto folder = addFolderInternal(definition, accountState, vfs);
 
     // Migration: The first account that's configured for a local folder shall
     // be saved in a backwards-compatible way.
@@ -994,6 +1012,7 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
     folder->setSaveBackwardsCompatible(oneAccountOnly);
 
     if (folder) {
+        folder->setSaveBackwardsCompatible(oneAccountOnly);
         folder->saveToSettings();
         emit folderSyncStateChange(folder);
         emit folderListChanged(_folderMap);
@@ -1003,8 +1022,10 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
     return folder;
 }
 
-Folder *FolderMan::addFolderInternal(FolderDefinition folderDefinition,
-    AccountState *accountState)
+Folder *FolderMan::addFolderInternal(
+    FolderDefinition folderDefinition,
+    AccountState *accountState,
+    Vfs *vfs)
 {
     auto alias = folderDefinition.alias;
     int count = 0;
@@ -1015,7 +1036,7 @@ Folder *FolderMan::addFolderInternal(FolderDefinition folderDefinition,
         folderDefinition.alias = alias + QString::number(++count);
     }
 
-    auto folder = new Folder(folderDefinition, accountState, this);
+    auto folder = new Folder(folderDefinition, accountState, vfs, this);
 
     if (_navigationPaneHelper.showInExplorerNavigationPane() && folderDefinition.navigationPaneClsid.isNull()) {
         folder->setNavigationPaneClsid(QUuid::createUuid());

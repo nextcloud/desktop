@@ -18,13 +18,13 @@
 
 #pragma once
 
-#include "owncloudlib.h"
+#include "ocsynclib.h"
 #include <QObject>
 #include <QPluginLoader>
 
 namespace OCC {
 
-class OWNCLOUDSYNC_EXPORT PluginFactory
+class OCSYNC_EXPORT PluginFactory
 {
 public:
     ~PluginFactory();
@@ -35,32 +35,20 @@ template<class PLUGIN_CLASS>
 class DefaultPluginFactory : public PluginFactory
 {
 public:
-    QObject* create(QObject* parent) override
+    QObject* create(QObject *parent) override
     {
         return new PLUGIN_CLASS(parent);
     }
 };
 
-class OWNCLOUDSYNC_EXPORT PluginLoader
+class OCSYNC_EXPORT PluginLoader
 {
 public:
     static QString pluginName(const QString &type, const QString &name);
 
-    template<class PLUGIN_CLASS, typename ... Args>
-    PLUGIN_CLASS *create(Args&& ... args)
-    {
-        return qobject_cast<PLUGIN_CLASS*>(createInternal(std::forward<Args>(args)...));
-    }
-
-private:
-    template<class FACTORY_CLASS, typename ... Args>
-    FACTORY_CLASS *load(Args&& ... args)
-    {
-        return qobject_cast<FACTORY_CLASS*>(loadPluginInternal(std::forward<Args>(args)...));
-    }
-
-    QObject *loadPluginInternal(const QString& type, const QString &name);
-    QObject *createInternal(const QString& type, const QString &name, QObject* parent = nullptr);
+    bool isAvailable(const QString &type, const QString &name);
+    QObject *load(const QString &type, const QString &name);
+    QObject *create(const QString &type, const QString &name, QObject *parent = nullptr);
 };
 
 }

@@ -94,4 +94,8 @@ signals:
     void doneHydrating();
 };
 
+bool isVfsPluginAvailable(Vfs::Mode mode) OCSYNC_EXPORT;
+Vfs::Mode bestAvailableVfsMode() OCSYNC_EXPORT;
+Vfs *createVfsFromPlugin(Vfs::Mode mode, QObject *parent) OCSYNC_EXPORT;
+
 } // namespace OCC

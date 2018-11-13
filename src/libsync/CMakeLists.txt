@@ -33,7 +33,6 @@ set(libsync_SRCS
     networkjobs.cpp
     owncloudpropagator.cpp
     nextcloudtheme.cpp
-    plugin.cpp
     progressdispatcher.cpp
     propagatorjobs.cpp
     propagatedownload.cpp
