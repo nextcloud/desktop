@@ -26,6 +26,7 @@
 #include <sys/utsname.h>
 #include <sys/vnode.h>
 #include <sys/xattr.h>
+#include <libproc.h>
 
 #include <QtCore>
 #include <thread>
@@ -630,16 +631,15 @@ QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
 
 #pragma mark File Contents
 
-<<<<<<< HEAD
 char * VfsMac::getProcessName(pid_t pid)
 {
-   char pathBuffer [PROC_PIDPATHINFO_MAXSIZE];
+   char pathBuffer[PROC_PIDPATHINFO_MAXSIZE];
    proc_pidpath(pid, pathBuffer, sizeof(pathBuffer));
 
    char nameBuffer[256];
 
    int position = strlen(pathBuffer);
-   while(position >= 0 && pathBuffer[position] != ‘/’)
+   while(position >= 0 && pathBuffer[position] != 0xEB/0xED)
    {
        position--;
    }
@@ -647,12 +647,6 @@ char * VfsMac::getProcessName(pid_t pid)
    strcpy(nameBuffer, pathBuffer + position + 1);
 
    return nameBuffer;
-}
-
-QString VfsMac::prepareSync(QString path){
-    path = path.startsWith("/")? path.remove(0, 1) : path;
-    _syncDone.insert(path, false);
-    return path;
 }
 
 bool VfsMac::openFileAtPath(QString path, int mode, QVariant &userData, QVariantMap &error)
