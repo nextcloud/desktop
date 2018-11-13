@@ -34,12 +34,12 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="186"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizácia je pozastavená</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="189"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizuje sa</translation>
     </message>
 </context>
 <context>
@@ -52,7 +52,7 @@
     <message>
         <location filename="../src/gui/mnemonicdialog.ui" line="58"/>
         <source>Label</source>
-        <translation type="unfinished"/>
+        <translation>Štítok</translation>
     </message>
 </context>
 <context>
@@ -60,18 +60,18 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Could not make directories in trash</source>
-        <translation type="unfinished"/>
+        <translation>Nie je možné vytvárať adresáre v koši</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="459"/>
         <location filename="../src/common/filesystembase.cpp" line="465"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Nie je možne presunúť &apos;%1&apos; do &apos;%2&apos;</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>Presuúvanie do koša nie je na tejto platforme k dispozícii</translation>
     </message>
 </context>
 <context>
@@ -148,7 +148,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="342"/>
         <source>End to end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>End-to-end kódovanie mnemotechnické</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="343"/>
@@ -238,7 +238,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="542"/>
         <source>Encrypt</source>
-        <translation type="unfinished"/>
+        <translation>Zašifrovať</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="583"/>
@@ -476,27 +476,27 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="131"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="179"/>
         <source>More information</source>
-        <translation type="unfinished"/>
+        <translation>Viac informácií</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="180"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Prijať</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="181"/>
         <source>Join</source>
-        <translation type="unfinished"/>
+        <translation>Pripojiť</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="198"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Otvoriť prehliadač</translation>
     </message>
 </context>
 <context>
@@ -514,17 +514,17 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="56"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Prijať</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="182"/>
         <source>Synced </source>
-        <translation type="unfinished"/>
+        <translation>Zosynchronizované</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="217"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Zopakovať všetky nahrávania</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="332"/>
@@ -629,7 +629,7 @@
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1000"/>
         <source>Enter E2E passphrase</source>
-        <translation type="unfinished"/>
+        <translation>Zadajte E2E prístupovú frázu</translation>
     </message>
 </context>
 <context>
@@ -831,24 +831,26 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folder.cpp" line="1080"/>
         <source>Download new files?</source>
-        <translation type="unfinished"/>
+        <translation>Stiahnuť nové súbory?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1083"/>
         <source>Download new files</source>
-        <translation type="unfinished"/>
+        <translation>Stiahnuť nové súbory</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1084"/>
         <source>Keep local files</source>
-        <translation type="unfinished"/>
+        <translation>Ponechať lokálne súbory</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1076"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Všetky súbory vo vašej lokálnej synchronizovanom priečinku &apos;%1&apos; boli vymazané. Tieto súbory budú vymazané aj na serveri a teda už viac nebudú dostupné až kým ich neobnovíte.
+Ste si istí, že chcete tieto akcie synchronizovať so serverom?
+Ak to bol omyl a chcete si tieto súbory ponechať, budú opäť synchronizované zo servera.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1101"/>
@@ -918,7 +920,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1220"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizácia bola úspešná s nevyriešenými konfliktmi.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1222"/>
@@ -928,7 +930,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1312"/>
         <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Lokálny priečinok %1 obsahuje symbolický odkaz. Tento odkazuje na už zosynchronizovaný priečinok. Vyberte prosím niektorý iný.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1228"/>
@@ -1282,7 +1284,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Právne upozornenie</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
@@ -1292,12 +1294,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="72"/>
         <source>For System Tray</source>
-        <translation type="unfinished"/>
+        <translation>Pre oznamovaciu oblasť systémového panela</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Zobraziť &amp;hlásenia zo servera</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="163"/>
@@ -1307,7 +1309,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="195"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Požiadať o potvrdenie pred synchronizáciou zložiek väčších než</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="215"/>
@@ -1318,7 +1320,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="239"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Požiadajte o potvrdenie pred synchronizáciou externých úložísk</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
@@ -1343,7 +1345,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="267"/>
         <source>S&amp;how crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>Z&amp;obraziť hlásenia o pádoch</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
@@ -1364,7 +1366,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="49"/>
         <source>Server notifications that require attention.</source>
-        <translation type="unfinished"/>
+        <translation>Zobrazovať hlásenie, ktoré vyžadujú pozornosť.</translation>
     </message>
 </context>
 <context>
@@ -1372,14 +1374,16 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="520"/>
         <source>Sharing error</source>
-        <translation type="unfinished"/>
+        <translation>Chyba sprístupnenia</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="521"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Nie je možné získať alebo vytvoriť verejný odkaz pre sprístupnenie. Chyba:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -1387,12 +1391,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="100"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Zadajte prosím heslo %1:&lt;br&gt;&lt;br&gt;Používateľ: %2&lt;br&gt;Účet: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Čítanie z kľúčenky sa nepodarilo s chybou: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
@@ -1402,7 +1406,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Kliknite sem&lt;/a&gt; pre vyžiadanie hesla aplikácie z webového rozhrania.</translation>
     </message>
 </context>
 <context>
@@ -1415,7 +1419,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="20"/>
         <source>Global Ignore Settings</source>
-        <translation type="unfinished"/>
+        <translation>Globálne nastavenia pre ignorovanie</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="26"/>
@@ -1425,7 +1429,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="36"/>
         <source>Files Ignored by Patterns</source>
-        <translation type="unfinished"/>
+        <translation>Ignorovať súbory podľa masky</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="119"/>
@@ -1435,7 +1439,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="126"/>
         <source>Remove all</source>
-        <translation type="unfinished"/>
+        <translation>Odstrániť všetko</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="93"/>
@@ -1457,7 +1461,9 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation type="unfinished"/>
+        <translation>Súbory alebo priečinky vyhovujúce maske nebudu synchronizované.
+
+Položky u ktorých je povolené mazanie sa vymažú ak by bránili odstráneniu priečinka. Toto je užitočne napr. pre matadáta.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
@@ -1490,12 +1496,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Dialóg</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="26"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Právne upozornenie</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="36"/>
@@ -1505,7 +1511,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.ui" line="58"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Zatvoriť</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="27"/>
@@ -1742,7 +1748,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="112"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Chyba vrátená zo servera: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
@@ -1935,7 +1941,7 @@ môžu byť vyžadované dodatočné oprávnenia.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="44"/>
         <source>Login in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Prihlásenie sa v prehliadači</translation>
     </message>
 </context>
 <context>
@@ -1953,22 +1959,22 @@ môžu byť vyžadované dodatočné oprávnenia.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="83"/>
         <source>Keep your data secure and under your control</source>
-        <translation type="unfinished"/>
+        <translation>Majte svoje dáta pod vlastnou kontrolou a zabezpečené</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="84"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation type="unfinished"/>
+        <translation>Bezpečná spolupráca a výmena súborov</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="85"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation type="unfinished"/>
+        <translation>Ľahko použiteľné webové rozhranie pre poštu, kalendár a kontakty</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation type="unfinished"/>
+        <translation>Zdieľanie obrazovky, on-line schôdze a webové konferencie</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="198"/>
@@ -1990,7 +1996,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="414"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation type="unfinished"/>
+        <translation>Nie je možné načítať certifikát. Možno zlé heslo?</translation>
     </message>
 </context>
 <context>
@@ -2634,12 +2640,12 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="259"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Heslo:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="383"/>
         <source>Expiration date:</source>
-        <translation type="unfinished"/>
+        <translation>Dátum vypršania:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="508"/>
@@ -2654,47 +2660,47 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="189"/>
         <source>Allow Editing</source>
-        <translation type="unfinished"/>
+        <translation>Umožniť úpravy</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="195"/>
         <source>Read only</source>
-        <translation type="unfinished"/>
+        <translation>Len na čítanie</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="203"/>
         <source>Allow Upload &amp;&amp; Editing</source>
-        <translation type="unfinished"/>
+        <translation>Umožniť nahrávanie a úpravy</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="208"/>
         <source>File Drop (Upload Only)</source>
-        <translation type="unfinished"/>
+        <translation>Odovzdávanie súborov (len nahrávanie)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="215"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Kopírovať odkaz</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="228"/>
         <source>Password Protect</source>
-        <translation type="unfinished"/>
+        <translation>Chániť heslom</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="245"/>
         <source>Expiration Date</source>
-        <translation type="unfinished"/>
+        <translation>Dátum vypršania:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="265"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Zneprístupniť</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="447"/>
         <source>Confirm Link Share Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Potvrdzovať rušenie sprístupnenia</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="448"/>
@@ -2727,7 +2733,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="248"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Kopírovať odkaz</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="258"/>
@@ -2737,7 +2743,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="357"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Niečo som vám sprístupnil</translation>
     </message>
 </context>
 <context>
@@ -2750,7 +2756,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="114"/>
         <source>User name</source>
-        <translation type="unfinished"/>
+        <translation>Meno používateľa</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="155"/>
@@ -2760,22 +2766,22 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="388"/>
         <source>Can reshare</source>
-        <translation type="unfinished"/>
+        <translation>Môže sprístupniť aj iným</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="398"/>
         <source>Can create</source>
-        <translation type="unfinished"/>
+        <translation>Môže vytvárať</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="404"/>
         <source>Can change</source>
-        <translation type="unfinished"/>
+        <translation>Môže meniť</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="410"/>
         <source>Can delete</source>
-        <translation type="unfinished"/>
+        <translation>Môže odstraňovať</translation>
     </message>
 </context>
 <context>
@@ -2852,18 +2858,18 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="653"/>
         <source>Resharing this file is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Opätovné sprístupňovanie tohto súboru je zakázané</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="666"/>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
         <source>Copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Skopírovať verejný odkaz do schránky</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="722"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Otvoriť v prehliadači</translation>
     </message>
 </context>
 <context>
@@ -3081,7 +3087,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="157"/>
         <source>The mounted folder is temporarily not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>Pripojený priečinok je na serveri dočasne nedostupný</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="163"/>
@@ -3101,7 +3107,7 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="514"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>Súbor/priečinok je ignorovaný, pretože je skrytý</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="517"/>
@@ -3111,13 +3117,13 @@ Nie je vhodné ju používať.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="533"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Konflikt: Prevzatá verzia zo servera, lokálna kópia premenovaná a neodovzdaná.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="799"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation type="unfinished"/>
+        <translation>Je dostupných len %1, pre spustenie je potrebných aspoň %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="834"/>

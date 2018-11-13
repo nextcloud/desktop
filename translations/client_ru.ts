@@ -153,7 +153,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="343"/>
         <source>To protect your Cryptocraphic Identity, we encrypt it with a mnemonic of 12 dictionary words.Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>Для защиты личного идентификатора сквозного шифрования используется мнемофраза, состоящая из двенадцати слов. Мнемофразу следует записать и сохранить запись в надёжном месте, она потребуется для подключения к учётной записи ваших дополнительных устройств.</translation>
     </message>
 </context>
 <context>
@@ -524,7 +524,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="217"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Повторить передачу файлов на сервер</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="332"/>
@@ -678,7 +678,7 @@
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="392"/>
         <source>The server file discovery reply is missing data.</source>
-        <translation type="unfinished"/>
+        <translation>Сервер вернул ответ, не содержащих данных о файле.</translation>
     </message>
 </context>
 <context>
@@ -804,12 +804,12 @@
     <message>
         <location filename="../src/gui/folder.cpp" line="1012"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation>Папка «%1» создана, но она ранее была исключена из синхронизации. Данные внутри этой папки не будут синхронизированы.</translation>
+        <translation>Создана папка «%1» создана, но ранее она была исключена из синхронизации. Данные внутри этой папки не будут синхронизированы.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1015"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation>Файл «%1» создан, но она ранее был исключён из синхронизации. Этот файл не будет синхронизирован.</translation>
+        <translation>Создан файл «%1», но ранее он был исключён из синхронизации. Этот файл не будет синхронизирован.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1026"/>
@@ -818,7 +818,10 @@
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Невозможно надёжным способом отслеживать изменения в синхронизируемых папках.
+
+Это означает, что приложение для синхронизации не может выполнять синхронизацию локальных изменений с сервером немедленно. Вместо этого будет выполняться периодическое  (по умолчанию каждые два часа)  сканирование локальных папок и синхронизация обнаруженных изменений с сервером.
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1071"/>
@@ -1508,7 +1511,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.ui" line="36"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="58"/>
@@ -1518,12 +1521,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="27"/>
         <source>&lt;p&gt;Copyright 2017-2018 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Copyright 2017-2018 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;© Nextcloud GmbH, 2017-2018 &lt;br /&gt;© ownCloud GmbH, 2012-2018&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="30"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Лицензируется в соответствии со Стандартной Общественной Лицензией GNU (GPL) версии 2.0 или любой более поздней версией.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1795,7 +1798,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation>Загрузка версии %1. Пожалуйста, подождите...</translation>
+        <translation>Дождитесь окончания загрузки версии %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
@@ -1868,7 +1871,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="164"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Внимание:&lt;/strong&gt; Локальная папка не пуста. Выберите действие!&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Предупреждение:&lt;/strong&gt; Локальная папка не пуста, требуется выбор действия:&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="285"/>
@@ -1902,7 +1905,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation>Попробовать без шифрования через HTTP (не безопасно)</translation>
+        <translation>Попробовать без шифрования по протоколу HTTP (небезопасно)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
@@ -1943,7 +1946,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="44"/>
         <source>Login in your browser</source>
-        <translation>Вход в ваш браузер</translation>
+        <translation>Выполнить вход в браузере</translation>
     </message>
 </context>
 <context>
@@ -1976,7 +1979,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation>Публикация экрана, онлайн общение и веб-конференции</translation>
+        <translation>Доступ к изображению на экране, онлайн общение и веб-конференции</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="198"/>
@@ -2161,7 +2164,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="98"/>
         <source>Skip folders configuration</source>
-        <translation>Пропустить настройку каталогов</translation>
+        <translation>Пропустить настройку папок</translation>
     </message>
 </context>
 <context>
@@ -2187,7 +2190,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="140"/>
         <source>Invalid JSON reply from the poll URL</source>
-        <translation>Не правильный JSON ответ на сформированный URL</translation>
+        <translation>С опрашиваемого адреса получен неверный ответ в формате JSON</translation>
     </message>
 </context>
 <context>
@@ -2274,7 +2277,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="185"/>
         <source>Attention, possible case sensitivity clash with %1</source>
-        <translation>Внимание, возможен конфликт чувствительности к регистру с %1</translation>
+        <translation>Внимание, возможен конфликт чувствительности к регистру имён с «%1»</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="191"/>
@@ -2324,7 +2327,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="130"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation>Сервер ответил не правильным HTTP кодом. Ожидался 204, но получен &quot;%1 %2&quot;.</translation>
+        <translation>Сервер ответил неправильным кодом HTTP. Ожидался 204, но получен «%1 %2».</translation>
     </message>
 </context>
 <context>
@@ -2332,7 +2335,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="99"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>Сервер ответил не правильным HTTP кодом. Ожидался 201, но получен &quot;%1 %2&quot;.</translation>
+        <translation>Сервер ответил неправильным кодом HTTP . Ожидался 201, но получен «%1 %2».</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="151"/>
@@ -2345,7 +2348,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation>Сервер ответил не правильным HTTP кодом. Ожидался 201, но получен &quot;%1 %2&quot;.</translation>
+        <translation>Сервер ответил неправильным кодом HTTP. Ожидался 201, но получен «%1 %2».</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="166"/>
@@ -2359,7 +2362,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="214"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation>Невозможно загрузить файл «%1», так как уже существует файл с тем же именем, но отличающимся только регистром символов</translation>
+        <translation>Невозможно загрузить файл «%1», так как уже существует файл с тем же именем, но отличающимся регистром символов</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="348"/>
@@ -2369,13 +2372,13 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="362"/>
         <source>Local file changed during sync.</source>
-        <translation>Локальный файл изменился в процессе синхронизации.</translation>
+        <translation>Локальный файл был изменён во время синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
         <location filename="../src/libsync/propagateupload.cpp" line="602"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation>Закачка %1 превышает квоту для каталога</translation>
+        <translation>Передача «%1» на сервер превысит заданную для папки квоту</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="334"/>
@@ -2490,7 +2493,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation>Снимите выбор с удалённых папок, котрые вы не хотите синхронизировать.</translation>
+        <translation>Снимите отметки с папок, которые не нужно синхронизировать.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
@@ -2506,12 +2509,12 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="227"/>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="277"/>
         <source>No subfolders currently on the server.</source>
-        <translation>Нет подкаталогов на сервере на данный момент.</translation>
+        <translation>Сейчас на сервере нет вложенных папок.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="279"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation>Произошла ошибка во время загрузки списка подпапок.</translation>
+        <translation>Ошибка получения списка вложенных папок.</translation>
     </message>
 </context>
 <context>
@@ -2519,7 +2522,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/servernotificationhandler.cpp" line="150"/>
         <source>Dismiss</source>
-        <translation>Убрать</translation>
+        <translation>Отклонить</translation>
     </message>
 </context>
 <context>
@@ -2527,7 +2530,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
         <source>Settings</source>
-        <translation>Настройки</translation>
+        <translation>Параметры</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="204"/>
@@ -2547,7 +2550,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="227"/>
         <source>Account</source>
-        <translation>Уч.запись</translation>
+        <translation>Учётная запись</translation>
     </message>
 </context>
 <context>
@@ -2576,7 +2579,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/settingsdialogmac.cpp" line="138"/>
         <location filename="../src/gui/settingsdialogmac.cpp" line="231"/>
         <source>Account</source>
-        <translation>Уч.запись</translation>
+        <translation>Учётная запись</translation>
     </message>
 </context>
 <context>
@@ -2594,7 +2597,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="91"/>
         <source>ownCloud Path:</source>
-        <translation>Путь к OwnCloud:</translation>
+        <translation>Путь ownCloud:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="162"/>
@@ -2604,7 +2607,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="101"/>
         <source>%1 Sharing</source>
-        <translation>Вы поделились %1 </translation>
+        <translation>Предоставление общего доступа к «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="77"/>
@@ -2614,12 +2617,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="98"/>
         <source>Folder: %2</source>
-        <translation>Папка: %2</translation>
+        <translation>Папка: «%2»</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="191"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation>Невозможно предоставить общий доступ к файлу: нет разрешения на предоставление общего доступа.</translation>
+        <translation>Невозможно предоставить общий доступ: отсутствуют разрешения на предоставление общего доступа.</translation>
     </message>
 </context>
 <context>
@@ -2632,12 +2635,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="122"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>П&amp;редоставить доступ по ссылке</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="145"/>
         <source>Enable</source>
-        <translation>Включить</translation>
+        <translation>Использовать </translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="259"/>
@@ -2647,7 +2650,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="383"/>
         <source>Expiration date:</source>
-        <translation>Дата истечения:</translation>
+        <translation>Срок действия:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="508"/>
@@ -2833,7 +2836,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="491"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>Контекстное меню предоставления общего доступа</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="612"/>
@@ -2939,7 +2942,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="107"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Отпечаток&lt;/ h3&gt;</translation>
+        <translation>&lt;h3&gt;Отпечатки&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="111"/>
@@ -3170,7 +3173,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="127"/>
         <source>Discovery step failed.</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка на этапе поиска.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="136"/>
@@ -3361,7 +3364,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="341"/>
         <source>&lt;p&gt;This release was supplied by the Nextcloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Этот выпуск подготовлен Nextcloud GmbH&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3369,7 +3372,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="122"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation type="unfinished"/>
+        <translation>Выполнен выход пользователя %2 из системы %1. Войдите заново</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="139"/>
@@ -3382,7 +3385,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="302"/>
         <source>Please sign in</source>
-        <translation>Пожалуйста войдите в систему</translation>
+        <translation>Войдите в систему</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="348"/>
@@ -3392,7 +3395,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="366"/>
         <source>There are no sync folders configured.</source>
-        <translation>Нет настроенных каталогов для синхронизации</translation>
+        <translation>Синхронизация папок не настроена.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="375"/>
@@ -3508,7 +3511,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="356"/>
         <source>Unresolved conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Неразрешённые конфликты</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="363"/>
@@ -3749,7 +3752,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="66"/>
         <source>&lt;a href=&quot;https://docs.nextcloud.com/server/13/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Host your own server&lt;/span&gt;&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;https://docs.nextcloud.com/server/13/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Развернуть собственный сервер&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="143"/>
@@ -3764,7 +3767,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="241"/>
         <source>SlideshowLabel</source>
-        <translation type="unfinished"/>
+        <translation>SlideshowLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="316"/>
