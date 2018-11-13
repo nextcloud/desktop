@@ -358,17 +358,32 @@ void SettingsDialog::customizeStyle()
     }
 }
 
+static bool isDarkColor(const QColor &color)
+{
+    // account for different sensitivity of the human eye to certain colors
+    double treshold = 1.0 - (0.299 * color.red() + 0.587 * color.green() + 0.114 * color.blue()) / 255.0;
+    return treshold > 0.5;
+}
+
 QIcon SettingsDialog::createColorAwareIcon(const QString &name)
 {
-    QColor bg(palette().base().color());
+    QPalette pal = palette();
     QImage img(name);
-    // account for different sensitivity of the human eye to certain colors
-    double treshold = 1.0 - (0.299 * bg.red() + 0.587 * bg.green() + 0.114 * bg.blue()) / 255.0;
-    if (treshold > 0.5) {
-        img.invertPixels(QImage::InvertRgb);
-    }
+    QImage inverted(img);
+    inverted.invertPixels(QImage::InvertRgb);
 
-    return QIcon(QPixmap::fromImage(img));
+    QIcon icon;
+    if (isDarkColor(pal.color(QPalette::Base))) {
+        icon.addPixmap(QPixmap::fromImage(inverted));
+    } else {
+        icon.addPixmap(QPixmap::fromImage(img));
+    }
+    if (isDarkColor(pal.color(QPalette::HighlightedText))) {
+        icon.addPixmap(QPixmap::fromImage(img), QIcon::Normal, QIcon::On);
+    } else {
+        icon.addPixmap(QPixmap::fromImage(inverted), QIcon::Normal, QIcon::On);
+    }
+    return icon;
 }
 
 class ToolButtonAction : public QWidgetAction
