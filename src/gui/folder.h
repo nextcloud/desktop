@@ -386,6 +386,8 @@ private:
     void createGuiLog(const QString &filename, LogStatus status, int count,
         const QString &renameTarget = QString());
 
+    void startVfs();
+
     AccountStatePtr _accountState;
     FolderDefinition _definition;
     QString _canonicalLocalPath; // As returned with QFileInfo:canonicalFilePath.  Always ends with "/"

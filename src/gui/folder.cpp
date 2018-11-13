@@ -133,26 +133,8 @@ Folder::Folder(const FolderDefinition &definition,
     }
 
     // Initialize the vfs plugin
-    if (_definition.virtualFilesMode != Vfs::Off) {
-        ENFORCE(_vfs);
-        ENFORCE(_vfs->mode() == _definition.virtualFilesMode);
-
-        _vfs->setParent(this);
-
-        VfsSetupParams vfsParams;
-        vfsParams.filesystemPath = path();
-        vfsParams.remotePath = remotePath();
-        vfsParams.account = _accountState->account();
-        vfsParams.journal = &_journal;
-        vfsParams.providerName = Theme::instance()->appNameGUI();
-        vfsParams.providerVersion = Theme::instance()->version();
-
-        connect(_vfs, &OCC::Vfs::beginHydrating, this, &Folder::slotHydrationStarts);
-        connect(_vfs, &OCC::Vfs::doneHydrating, this, &Folder::slotHydrationDone);
-
-        _vfs->registerFolder(vfsParams); // Do this always?
-        _vfs->start(vfsParams);
-    }
+    if (_definition.virtualFilesMode != Vfs::Off)
+        startVfs();
 }
 
 Folder::~Folder()
@@ -472,6 +454,28 @@ void Folder::createGuiLog(const QString &filename, LogStatus status, int count,
     }
 }
 
+void Folder::startVfs()
+{
+    ENFORCE(_vfs);
+    ENFORCE(_vfs->mode() == _definition.virtualFilesMode);
+
+    _vfs->setParent(this);
+
+    VfsSetupParams vfsParams;
+    vfsParams.filesystemPath = path();
+    vfsParams.remotePath = remotePath();
+    vfsParams.account = _accountState->account();
+    vfsParams.journal = &_journal;
+    vfsParams.providerName = Theme::instance()->appNameGUI();
+    vfsParams.providerVersion = Theme::instance()->version();
+
+    connect(_vfs, &OCC::Vfs::beginHydrating, this, &Folder::slotHydrationStarts);
+    connect(_vfs, &OCC::Vfs::doneHydrating, this, &Folder::slotHydrationDone);
+
+    _vfs->registerFolder(vfsParams); // Do this always?
+    _vfs->start(vfsParams);
+}
+
 int Folder::slotDiscardDownloadProgress()
 {
     // Delete from journal and from filesystem.
@@ -579,10 +583,24 @@ void Folder::downloadVirtualFile(const QString &_relativepath)
 
 void Folder::setUseVirtualFiles(bool enabled)
 {
-    // ### must wipe virtual files, unload old plugin, load new one?
-    //_definition.useVirtualFiles = enabled;
-    if (enabled)
+    if (enabled && _definition.virtualFilesMode == Vfs::Off) {
+        _definition.virtualFilesMode = bestAvailableVfsMode();
+
+        _vfs = createVfsFromPlugin(_definition.virtualFilesMode, this);
+        startVfs();
+
         _saveInFoldersWithPlaceholders = true;
+    }
+    if (!enabled && _definition.virtualFilesMode != Vfs::Off) {
+        // TODO: Must wait for current sync to finish!
+        SyncEngine::wipeVirtualFiles(path(), _journal, _vfs);
+
+        _vfs->stop();
+        _vfs->unregisterFolder();
+        delete _vfs;
+
+        _definition.virtualFilesMode = Vfs::Off;
+    }
     saveToSettings();
 }
 
