@@ -1,5 +1,7 @@
-### TODO: Find plugins dynamically
 list(APPEND vfsPlugins "suffix")
+if(EXISTS "${CMAKE_CURRENT_LIST_DIR}/win")
+    list(APPEND vfsPlugins "win")
+endif()
 
 foreach(vfsPlugin ${vfsPlugins})
     message(STATUS "Add vfsPlugin in dir: ${vfsPlugin}")
