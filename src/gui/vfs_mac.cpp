@@ -616,11 +616,12 @@ QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
                     close(fd.toInt());
                 }
             }
-            OCC::SyncWrapper::instance()->initSyncMode(_fileListMap.value(path)->list.at(i)->path);
-            OCC::SyncWrapper::instance()->updateLocalFileTree(_fileListMap.value(path)->list.at(i)->path);
+            OCC::SyncWrapper::instance()->initSync(_fileListMap.value(path)->list.at(i)->path);
         }
     }
-    _fileListMap.remove(path);
+    //_fileListMap.remove(path);
+    OCC::SyncWrapper::instance()->startSync();
+
     return new QStringList (fm.contentsOfDirectoryAtPath(rootPath_ + path, error));
 }
 
@@ -628,21 +629,7 @@ QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
 
 char *VfsMac::getProcessName(pid_t pid)
 {
-    char pathBuffer [PROC_PIDPATHINFO_MAXSIZE];
-    proc_pidpath(pid, pathBuffer, sizeof(pathBuffer));
-    
-    char nameBuffer[256];
-    
-    int position = strlen(pathBuffer);
-    while(position >= 0 && pathBuffer[position] != '/')
-    {
-        position--;
-    }
-    
-    strcpy(nameBuffer, pathBuffer + position + 1);
-    
-    return nameBuffer;
-   /*char pathBuffer[PROC_PIDPATHINFO_MAXSIZE];
+   char pathBuffer[PROC_PIDPATHINFO_MAXSIZE];
    int ret = proc_pidpath(pid, pathBuffer, sizeof(pathBuffer));
 
    if (ret <= 0) {
@@ -670,13 +657,17 @@ char *VfsMac::getProcessName(pid_t pid)
    QString path1(QString::fromUtf8(pathBuffer));
    path1 = path1.mid(path1.lastIndexOf("/") + 1);
 
-   char nameBuffer[256];*/
+   char nameBuffer[256];
 
 //   int position = strlen(pathBuffer);
 //   while(position >= 0 && pathBuffer[position] != 0xEB/0xED)
 //   {
 //       position--;
 //   }
+
+//   strcpy(nameBuffer, pathBuffer + position + 1);
+
+   strcpy(nameBuffer, path1.toStdString().data());
 
 //   strcpy(nameBuffer, pathBuffer + position + 1);
 
@@ -696,12 +687,9 @@ bool VfsMac::openFileAtPath(QString path, int mode, QVariant &userData, QVariant
    if(nameBuffer != "Finder" && nameBuffer != "QuickLookSatellite" && nameBuffer != "mds")
    {
        qDebug() << "Push here sync algorithm";
-       OCC::SyncWrapper::instance()->openFileAtPath(path);
-       while(!OCC::SyncWrapper::instance()->syncDone(path))
-           qDebug() << "Syncing...";
+//       OCC::SyncWrapper::instance()->openFileAtPath(path);
+//       OCC::SyncWrapper::instance()->startSync();
    }
-    
-    qDebug() << "JJDC Process Id: " << context->pid << " Group Id: " << context->pid << " umask: " << context->umask  ;
 
     QString p = rootPath_ + path;
     int fd = open(p.toLatin1().data(), mode);
@@ -715,7 +703,7 @@ bool VfsMac::openFileAtPath(QString path, int mode, QVariant &userData, QVariant
 
 void VfsMac::releaseFileAtPath(QString path, QVariant userData)
 {
-    OCC::SyncWrapper::instance()->releaseFileAtPath(path);
+    //OCC::SyncWrapper::instance()->releaseFileAtPath(path);
 
     long num = userData.toLongLong();
     int fd = num;
@@ -736,7 +724,7 @@ int VfsMac::readFileAtPath(QString path, QVariant userData, char *buffer, size_t
 
 int VfsMac::writeFileAtPath(QString path, QVariant userData, const char *buffer, size_t size, off_t offset, QVariantMap &error)
 {
-    OCC::SyncWrapper::instance()->writeFileAtPath(path);
+    //OCC::SyncWrapper::instance()->writeFileAtPath(path);
 
     long num = userData.toLongLong();
     int fd = num;
