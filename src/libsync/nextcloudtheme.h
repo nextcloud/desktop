@@ -30,11 +30,11 @@ public:
     NextcloudTheme();
 
 #ifndef TOKEN_AUTH_ONLY
-    QVariant customMedia(CustomMediaType type) Q_DECL_OVERRIDE;
+    QVariant customMedia(CustomMediaType type) override;
 
-    QColor wizardHeaderBackgroundColor() const Q_DECL_OVERRIDE;
-    QColor wizardHeaderTitleColor() const Q_DECL_OVERRIDE;
-    QPixmap wizardHeaderLogo() const Q_DECL_OVERRIDE;
+    QColor wizardHeaderBackgroundColor() const override;
+    QColor wizardHeaderTitleColor() const override;
+    QPixmap wizardHeaderLogo() const override;
 #endif
 
 private:

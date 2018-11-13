@@ -20,7 +20,7 @@
 
 namespace OCC {
 
-ProgressDispatcher *ProgressDispatcher::_instance = 0;
+ProgressDispatcher *ProgressDispatcher::_instance = nullptr;
 
 QString Progress::asResultString(const SyncFileItem &item)
 {

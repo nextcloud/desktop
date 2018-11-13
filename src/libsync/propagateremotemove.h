@@ -30,12 +30,12 @@ class MoveJob : public AbstractNetworkJob
     QMap<QByteArray, QByteArray> _extraHeaders;
 
 public:
-    explicit MoveJob(AccountPtr account, const QString &path, const QString &destination, QObject *parent = 0);
+    explicit MoveJob(AccountPtr account, const QString &path, const QString &destination, QObject *parent = nullptr);
     explicit MoveJob(AccountPtr account, const QUrl &url, const QString &destination,
-        QMap<QByteArray, QByteArray> _extraHeaders, QObject *parent = 0);
+        QMap<QByteArray, QByteArray> _extraHeaders, QObject *parent = nullptr);
 
-    void start() Q_DECL_OVERRIDE;
-    bool finished() Q_DECL_OVERRIDE;
+    void start() override;
+    bool finished() override;
 
 signals:
     void finishedSignal();
@@ -55,9 +55,9 @@ public:
         : PropagateItemJob(propagator, item)
     {
     }
-    void start() Q_DECL_OVERRIDE;
-    void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE;
-    JobParallelism parallelism() Q_DECL_OVERRIDE { return _item->isDirectory() ? WaitForFinished : FullParallelism; }
+    void start() override;
+    void abort(PropagatorJob::AbortType abortType) override;
+    JobParallelism parallelism() override { return _item->isDirectory() ? WaitForFinished : FullParallelism; }
 
     /**
      * Rename the directory in the selective sync list
