@@ -36,12 +36,11 @@ read basever kind <<<$(admin/linux/debian/scripts/git2changelog.py /tmp/tmpchang
 cd "${DRONE_DIR}"
 
 echo "$kind" > kind
-kind="release"
 
 if test "$kind" = "beta"; then
-    repo=nextcloud-devs/client-alpha
-else
     repo=nextcloud-devs/client-beta
+else
+    repo=nextcloud-devs/client
 fi
 
 origsourceopt=""
