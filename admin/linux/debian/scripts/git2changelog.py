@@ -73,11 +73,13 @@ def collectEntries(baseCommit, baseVersion, kind):
         (commit, name, email, date, revdate, subject) = line.split("\t")
         revdate = datetime.datetime.utcfromtimestamp(long(revdate)).strftime("%Y%m%d.%H%M%S")
 
+        kind = "beta"
+
         if commit==newVersionCommit:
             result = processVersionTag(newVersionTag)
             if result:
                 newVersionOrigTag = lastVersionTag
-                (baseVersion, kind) = result
+                (baseVersion, _kind) = result
 
 
         version=getCommitVersion(commit)
@@ -88,7 +90,7 @@ def collectEntries(baseCommit, baseVersion, kind):
                 if result:
                     lastVersionTag = tag
                     lastCMAKEVersion = version
-                    (baseVersion, kind) = result
+                    (baseVersion, _kind) = result
 
         for tag in subprocess.check_output(["git", "tag",
                                             "--points-at",
@@ -132,7 +134,7 @@ if __name__ == "__main__":
     distribution = sys.argv[2]
 
     #entries = collectEntries("8aade24147b5313f8241a8b42331442b7f40eef9", "2.2.4", "release")
-    entries = collectEntries("f9b1c724d6ab5431e0cd56b7cd834f2dd48cebb1", "2.4.0", "release")
+    entries = collectEntries("f9b1c724d6ab5431e0cd56b7cd834f2dd48cebb1", "2.4.0", "beta")
 
 
     with open(sys.argv[1], "wt") as f:
