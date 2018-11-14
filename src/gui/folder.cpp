@@ -140,7 +140,8 @@ Folder::Folder(const FolderDefinition &definition,
 Folder::~Folder()
 {
     // TODO cfapi: unregister on wipe()? There should probably be a wipeForRemoval() where this cleanup is appropriate
-    _vfs->stop();
+    if (_vfs)
+        _vfs->stop();
 
     // Reset then engine first as it will abort and try to access members of the Folder
     _engine.reset();
@@ -246,7 +247,7 @@ bool Folder::isBusy() const
 
 bool Folder::isSyncRunning() const
 {
-    return _engine->isSyncRunning() || _vfs->isHydrating();
+    return _engine->isSyncRunning() || (_vfs && _vfs->isHydrating());
 }
 
 QString Folder::remotePath() const
@@ -592,6 +593,8 @@ void Folder::setUseVirtualFiles(bool enabled)
         _saveInFoldersWithPlaceholders = true;
     }
     if (!enabled && _definition.virtualFilesMode != Vfs::Off) {
+        ENFORCE(_vfs);
+
         // TODO: Must wait for current sync to finish!
         SyncEngine::wipeVirtualFiles(path(), _journal, _vfs);
 
