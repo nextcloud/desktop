@@ -146,13 +146,13 @@
 <context>
     <name>OCC::AccountManager</name>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="342"/>
+        <location filename="../src/gui/accountmanager.cpp" line="356"/>
         <source>End to end encryption mnemonic</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="343"/>
-        <source>To protect your Cryptocraphic Identity, we encrypt it with a mnemonic of 12 dictionary words.Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
+        <location filename="../src/gui/accountmanager.cpp" line="357"/>
+        <source>To protect your Cryptocraphic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -502,12 +502,12 @@
 <context>
     <name>OCC::ActivityWidget</name>
     <message>
-        <location filename="../src/gui/activitywidget.ui" line="78"/>
+        <location filename="../src/gui/activitywidget.ui" line="14"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.ui" line="200"/>
+        <location filename="../src/gui/activitywidget.ui" line="84"/>
         <source>TextLabel</source>
         <translation>TextLabel</translation>
     </message>
@@ -579,13 +579,13 @@
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="191"/>
-        <source>There was an error while accessing the configuration file at %1.</source>
-        <translation>There was an error while accessing the configuration file at %1.</translation>
+        <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="194"/>
-        <source>Quit ownCloud</source>
-        <translation>Quit ownCloud</translation>
+        <source>Quit %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -622,12 +622,12 @@
 <context>
     <name>OCC::ClientSideEncryption</name>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="992"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="993"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1000"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1001"/>
         <source>Enter E2E passphrase</source>
         <translation type="unfinished"/>
     </message>
@@ -930,11 +930,6 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Last Sync was successful.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1312"/>
-        <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder. Please pick another one!</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/folderman.cpp" line="1228"/>
         <source>Setup Error.</source>
         <translation>Setup Error.</translation>
@@ -970,40 +965,35 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>You have no permission to write to the selected folder!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1327"/>
+        <location filename="../src/gui/folderman.cpp" line="1318"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>There is already a sync from the server to this local folder. Please pick another local folder!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1287"/>
+        <location filename="../src/gui/folderman.cpp" line="1298"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1297"/>
+        <location filename="../src/gui/folderman.cpp" line="1304"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1305"/>
-        <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</translation>
     </message>
 </context>
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="46"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="48"/>
         <source>Add Folder Sync Connection</source>
         <translation>Add Folder Sync Connection</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="249"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="255"/>
         <source>Synchronized with local folder</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="296"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="302"/>
         <source>File</source>
         <translation>File</translation>
     </message>
@@ -1164,12 +1154,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="548"/>
+        <location filename="../src/gui/folderwizard.cpp" line="550"/>
         <source>Add Folder Sync Connection</source>
         <translation>Add Folder Sync Connection</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="550"/>
+        <location filename="../src/gui/folderwizard.cpp" line="552"/>
         <source>Add Sync Connection</source>
         <translation>Add Sync Connection</translation>
     </message>
@@ -1182,12 +1172,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <translation>Click to select a local folder to sync.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="72"/>
+        <location filename="../src/gui/folderwizard.cpp" line="74"/>
         <source>Enter the path to the local folder.</source>
         <translation>Enter the path to the local folder.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="133"/>
+        <location filename="../src/gui/folderwizard.cpp" line="135"/>
         <source>Select the source folder</source>
         <translation>Select the source folder</translation>
     </message>
@@ -1195,47 +1185,47 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="181"/>
+        <location filename="../src/gui/folderwizard.cpp" line="183"/>
         <source>Create Remote Folder</source>
         <translation>Create Remote Folder</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="182"/>
+        <location filename="../src/gui/folderwizard.cpp" line="184"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
         <translation>Enter the name of the new folder to be created below &apos;%1&apos;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="212"/>
+        <location filename="../src/gui/folderwizard.cpp" line="214"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Folder was successfully created on %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="223"/>
+        <location filename="../src/gui/folderwizard.cpp" line="225"/>
         <source>Authentication failed accessing %1</source>
         <translation>Authentication failed accessing %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="225"/>
+        <location filename="../src/gui/folderwizard.cpp" line="227"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Failed to create the folder on %1. Please check manually.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="234"/>
+        <location filename="../src/gui/folderwizard.cpp" line="236"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>Failed to list a folder. Error: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="315"/>
+        <location filename="../src/gui/folderwizard.cpp" line="317"/>
         <source>Choose this to sync the entire account</source>
         <translation>Choose this to sync the entire account</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="445"/>
+        <location filename="../src/gui/folderwizard.cpp" line="447"/>
         <source>This folder is already being synced.</source>
         <translation>This folder is already being synced.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="447"/>
+        <location filename="../src/gui/folderwizard.cpp" line="449"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
@@ -1934,14 +1924,19 @@ for additional privileges during the process.</translation>
 <context>
     <name>OCC::OwncloudOAuthCredsPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="43"/>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="45"/>
         <source>Connect to %1</source>
         <translation>Connect to %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="44"/>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
         <translation>Login in your browser</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="56"/>
+        <source>Copy link to clipboard</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1977,24 +1972,29 @@ for additional privileges during the process.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="198"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="182"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
         <translation>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="202"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="186"/>
         <source>This url is secure. You can use it.</source>
         <translation>This url is secure. You can use it.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="241"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="225"/>
         <source>&amp;Next &gt;</source>
         <translation>&amp;Next &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="414"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="283"/>
+        <source>Invalid URL</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="405"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation type="unfinished"/>
     </message>
@@ -2083,8 +2083,8 @@ It is not advisable to use it.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="508"/>
-        <source>creating folder on ownCloud: %1</source>
-        <translation>creating folder on ownCloud: %1</translation>
+        <source>creating folder on Nextcloud: %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="524"/>
@@ -2515,7 +2515,7 @@ It is not advisable to use it.</translation>
 <context>
     <name>OCC::ServerNotificationHandler</name>
     <message>
-        <location filename="../src/gui/servernotificationhandler.cpp" line="150"/>
+        <location filename="../src/gui/servernotificationhandler.cpp" line="153"/>
         <source>Dismiss</source>
         <translation>Dismiss</translation>
     </message>
@@ -2528,22 +2528,22 @@ It is not advisable to use it.</translation>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="204"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="211"/>
         <source>Activity</source>
         <translation>Activity</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="108"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="105"/>
         <source>General</source>
         <translation>General</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="114"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="111"/>
         <source>Network</source>
         <translation>Network</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="227"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="234"/>
         <source>Account</source>
         <translation>Account</translation>
     </message>
@@ -2825,8 +2825,8 @@ It is not advisable to use it.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="457"/>
         <source>Share with %1</source>
-        <comment>parameter is ownCloud</comment>
-        <translation>Share with %1</translation>
+        <comment>parameter is Nextcloud</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="491"/>
@@ -3358,19 +3358,19 @@ It is not advisable to use it.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="341"/>
-        <source>&lt;p&gt;This release was supplied by the Nextcloud GmbH&lt;/p&gt;</source>
+        <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="122"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="124"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="139"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="141"/>
         <source>Please login with the user: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -3760,22 +3760,17 @@ It is not advisable to use it.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="241"/>
-        <source>SlideshowLabel</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="316"/>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="288"/>
         <source>Ser&amp;ver Address</source>
         <translation>Ser&amp;ver Address</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="332"/>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="304"/>
         <source>https://...</source>
         <translation>https://...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="367"/>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="339"/>
         <source>Error Label</source>
         <translation>Error Label</translation>
     </message>
@@ -3950,12 +3945,12 @@ It is not advisable to use it.</translation>
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="42"/>
+        <location filename="../src/gui/main.cpp" line="39"/>
         <source>System Tray not available</source>
         <translation>System Tray not available</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="43"/>
+        <location filename="../src/gui/main.cpp" line="40"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</translation>
     </message>

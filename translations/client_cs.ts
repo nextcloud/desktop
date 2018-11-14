@@ -146,14 +146,14 @@
 <context>
     <name>OCC::AccountManager</name>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="342"/>
+        <location filename="../src/gui/accountmanager.cpp" line="356"/>
         <source>End to end encryption mnemonic</source>
         <translation>Mnemonická šifrování mezi koncovými body</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="343"/>
-        <source>To protect your Cryptocraphic Identity, we encrypt it with a mnemonic of 12 dictionary words.Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Pro ochranu vaší kryptografické identity ji šifrujeme pomocí mnemonické 12 slovy ze slovníku. Poznamenejte si je někam bezpečně. Budou potřebné pro přidání dalších zařízení k vašemu účtu (jako je mobilní telefon či notebook).</translation>
+        <location filename="../src/gui/accountmanager.cpp" line="357"/>
+        <source>To protect your Cryptocraphic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -502,12 +502,12 @@
 <context>
     <name>OCC::ActivityWidget</name>
     <message>
-        <location filename="../src/gui/activitywidget.ui" line="78"/>
+        <location filename="../src/gui/activitywidget.ui" line="14"/>
         <source>Form</source>
         <translation>Formulář</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.ui" line="200"/>
+        <location filename="../src/gui/activitywidget.ui" line="84"/>
         <source>TextLabel</source>
         <translation>Textový popisek</translation>
     </message>
@@ -579,13 +579,13 @@
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="191"/>
-        <source>There was an error while accessing the configuration file at %1.</source>
-        <translation>Došlo k chybě při přístupu k souboru s nastaveními %1.</translation>
+        <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="194"/>
-        <source>Quit ownCloud</source>
-        <translation>Ukončit ownCloud</translation>
+        <source>Quit %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -622,12 +622,12 @@
 <context>
     <name>OCC::ClientSideEncryption</name>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="992"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="993"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Zadejte heslovou frázi pro šifrování mezi koncovými body: &lt;br&gt;&lt;br&gt;Uživatel: %2&lt;br&gt;Účet: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1000"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1001"/>
         <source>Enter E2E passphrase</source>
         <translation>Zadejte E2E heslovou frázi</translation>
     </message>
@@ -936,11 +936,6 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
         <translation>Poslední synchronizace byla úspěšná.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1312"/>
-        <source>The local folder %1 contains a symbolic link. The link target contains an already synced folder. Please pick another one!</source>
-        <translation>Místní složka %1 obsahuje symbolický odkaz. Cíl odkazu obsahuje složku, která už byla synchronizována. Zvolte jinou!</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderman.cpp" line="1228"/>
         <source>Setup Error.</source>
         <translation>Chyba nastavení.</translation>
@@ -976,40 +971,35 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
         <translation>Nemáte oprávnění pro zápis do zvolené složky!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1327"/>
+        <location filename="../src/gui/folderman.cpp" line="1318"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Ze serveru se do tohoto umístění už synchronizuje. Zvolte jinou místní složku!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1287"/>
+        <location filename="../src/gui/folderman.cpp" line="1298"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Místní složka %1 už obsahuje podsložku použitou pro synchronizaci odesílání. Zvolte jinou!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1297"/>
+        <location filename="../src/gui/folderman.cpp" line="1304"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Místní složka %1 už obsahuje podsložku použitou pro synchronizaci odesílání. Zvolte jinou!</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1305"/>
-        <source>The local folder %1 is a symbolic link. The link target is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Místní složka %1 je symbolickým odkazem. Cíl odkazu je už obsažen ve složce, použité pro synchronizaci. Vyberte jinou!</translation>
     </message>
 </context>
 <context>
     <name>OCC::FolderStatusDelegate</name>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="46"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="48"/>
         <source>Add Folder Sync Connection</source>
         <translation>Přidat spojení synchronizace složky</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="249"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="255"/>
         <source>Synchronized with local folder</source>
         <translation>Synchronizováno s místní složkou</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusdelegate.cpp" line="296"/>
+        <location filename="../src/gui/folderstatusdelegate.cpp" line="302"/>
         <source>File</source>
         <translation>Soubor</translation>
     </message>
@@ -1170,12 +1160,12 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="548"/>
+        <location filename="../src/gui/folderwizard.cpp" line="550"/>
         <source>Add Folder Sync Connection</source>
         <translation>Přidat připojení pro synchronizaci složky</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="550"/>
+        <location filename="../src/gui/folderwizard.cpp" line="552"/>
         <source>Add Sync Connection</source>
         <translation>Přidat synchronizační připojení</translation>
     </message>
@@ -1188,12 +1178,12 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
         <translation>Kliknutím zvolíte místní složku k synchronizaci.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="72"/>
+        <location filename="../src/gui/folderwizard.cpp" line="74"/>
         <source>Enter the path to the local folder.</source>
         <translation>Zadejte popis umístění místní složky.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="133"/>
+        <location filename="../src/gui/folderwizard.cpp" line="135"/>
         <source>Select the source folder</source>
         <translation>Zvolte zdrojovou složku</translation>
     </message>
@@ -1201,47 +1191,47 @@ Pokračováním v synchronizaci způsobí přepsání všech vašich souborů st
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="181"/>
+        <location filename="../src/gui/folderwizard.cpp" line="183"/>
         <source>Create Remote Folder</source>
         <translation>Vytvořit složku na protějšku</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="182"/>
+        <location filename="../src/gui/folderwizard.cpp" line="184"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
         <translation>Níže zadejte název pro nově vytvářenou složku „%1“:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="212"/>
+        <location filename="../src/gui/folderwizard.cpp" line="214"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Složka byl úspěšně vytvořena na %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="223"/>
+        <location filename="../src/gui/folderwizard.cpp" line="225"/>
         <source>Authentication failed accessing %1</source>
         <translation>Chyba ověření při přístupu k %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="225"/>
+        <location filename="../src/gui/folderwizard.cpp" line="227"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Na %1 se nepodařilo vytvořit složku. Zkontrolujte to ručně.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="234"/>
+        <location filename="../src/gui/folderwizard.cpp" line="236"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>Chyba při vypsání složky. Chyba: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="315"/>
+        <location filename="../src/gui/folderwizard.cpp" line="317"/>
         <source>Choose this to sync the entire account</source>
         <translation>Zvolte toto k provedení synchronizace celého účtu</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="445"/>
+        <location filename="../src/gui/folderwizard.cpp" line="447"/>
         <source>This folder is already being synced.</source>
         <translation>Tato složka už je synchronizována.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="447"/>
+        <location filename="../src/gui/folderwizard.cpp" line="449"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Už synchronizujete složku &lt;i&gt;%1&lt;/i&gt;, ve které se složka &lt;i&gt;%2&lt;/i&gt; nachází.</translation>
     </message>
@@ -1944,14 +1934,19 @@ můžete být požádáni o dodatečná oprávnění.</translation>
 <context>
     <name>OCC::OwncloudOAuthCredsPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="43"/>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="45"/>
         <source>Connect to %1</source>
         <translation>Připojit k %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="44"/>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
         <translation>Přihlášení v prohlížeči</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="56"/>
+        <source>Copy link to clipboard</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1987,24 +1982,29 @@ můžete být požádáni o dodatečná oprávnění.</translation>
         <translation>Sdílení obrazovky, online schůzky a webové konference</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="198"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="182"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
         <translation>Tato adresa NENÍ bezpečná, protože není šifrovaná.
 Nedoporučuje se jí používat.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="202"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="186"/>
         <source>This url is secure. You can use it.</source>
         <translation>URL je bezpečná. Můžete ji použít.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="241"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="225"/>
         <source>&amp;Next &gt;</source>
         <translation>&amp;Následující &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="414"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="283"/>
+        <source>Invalid URL</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="405"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Certifikát není možné načíst. Nejspíš je chybné heslo?</translation>
     </message>
@@ -2093,8 +2093,8 @@ Nedoporučuje se jí používat.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="508"/>
-        <source>creating folder on ownCloud: %1</source>
-        <translation>vytvářím adresář na ownCloudu: %1</translation>
+        <source>creating folder on Nextcloud: %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="524"/>
@@ -2525,7 +2525,7 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>OCC::ServerNotificationHandler</name>
     <message>
-        <location filename="../src/gui/servernotificationhandler.cpp" line="150"/>
+        <location filename="../src/gui/servernotificationhandler.cpp" line="153"/>
         <source>Dismiss</source>
         <translation>Zamítnout</translation>
     </message>
@@ -2538,22 +2538,22 @@ Nedoporučuje se jí používat.</translation>
         <translation>Nastavení</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="204"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="211"/>
         <source>Activity</source>
         <translation>Aktivita</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="108"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="105"/>
         <source>General</source>
         <translation>Obecné</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="114"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="111"/>
         <source>Network</source>
         <translation>Síť</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="227"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="234"/>
         <source>Account</source>
         <translation>Účet</translation>
     </message>
@@ -2835,8 +2835,8 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="457"/>
         <source>Share with %1</source>
-        <comment>parameter is ownCloud</comment>
-        <translation>Sdílet s %1</translation>
+        <comment>parameter is Nextcloud</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="491"/>
@@ -3368,19 +3368,19 @@ Nedoporučuje se jí používat.</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="341"/>
-        <source>&lt;p&gt;This release was supplied by the Nextcloud GmbH&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Toto vydání bylo poskytnuto společností Nextcloud GmbH&lt;/p&gt;</translation>
+        <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>OCC::WebFlowCredentials</name>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="122"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="124"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
         <translation>Byli jste odhlášeni z %1 jako uživatel %2. Znovu se přihlaste</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="139"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="141"/>
         <source>Please login with the user: %1</source>
         <translation>Přihlaste se pomocí uživatele: %1</translation>
     </message>
@@ -3770,22 +3770,17 @@ Nedoporučuje se jí používat.</translation>
         <translation>Přihlásit</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="241"/>
-        <source>SlideshowLabel</source>
-        <translation>ŠtítekPrezentace</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="316"/>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="288"/>
         <source>Ser&amp;ver Address</source>
         <translation>Adresa ser&amp;veru</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="332"/>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="304"/>
         <source>https://...</source>
         <translation>https://...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="367"/>
+        <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="339"/>
         <source>Error Label</source>
         <translation>Popis chyby</translation>
     </message>
@@ -3960,12 +3955,12 @@ Nedoporučuje se jí používat.</translation>
 <context>
     <name>main.cpp</name>
     <message>
-        <location filename="../src/gui/main.cpp" line="42"/>
+        <location filename="../src/gui/main.cpp" line="39"/>
         <source>System Tray not available</source>
         <translation>Není k dispozici oznamovací oblast systémového panelu</translation>
     </message>
     <message>
-        <location filename="../src/gui/main.cpp" line="43"/>
+        <location filename="../src/gui/main.cpp" line="40"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
         <translation>%1 vyžaduje fungující oznamovací oblast systémového panelu. Pokud používáte XFCE, řiďte se &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;těmito pokyny&lt;/a&gt;. V ostatních případech nainstalujte do svého systému aplikaci pro oznamovací oblast syst. panelu, např. „trayer“, a zkuste to znovu.</translation>
     </message>
