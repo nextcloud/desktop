@@ -229,7 +229,7 @@ public:
      *
      * May be called several times.
      */
-    void registerFolderWatcher();
+	void registerFolderWatcher();
 
 signals:
     void syncStateChange();
@@ -393,7 +393,7 @@ private:
      *
      * Created by registerFolderWatcher(), triggers slotWatchedPathChanged()
      */
-    QScopedPointer<FolderWatcher> _folderWatcher;
+	QScopedPointer<FolderWatcher> _folderWatcher;
 
     /**
      * The paths that should be checked by the next local discovery.
@@ -402,11 +402,6 @@ private:
      * Also includes files that have had errors in the last sync run.
      */
     std::set<QByteArray> _localDiscoveryPaths;
-
-    /**
-     * The known local paths and instructions that should be checked by the next local discovery.
-     */
-    std::map<QByteArray, csync_instructions_e> _fuseDiscoveryPaths;
 
     /**
      * The paths that the current sync run used for local discovery.
