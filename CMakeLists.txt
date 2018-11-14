@@ -21,9 +21,6 @@ include(Warnings)
 
 # For config.h
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
-#include_directories(BEFORE
-#    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.17134.0/um"
-#    "C:/Program Files (x86)/Windows Kits/10/Include/10.0.17134.0/shared")
 # Allows includes based on src/ like #include "common/utility.h" or #include "csync/csync.h"
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/src
