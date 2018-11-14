@@ -99,7 +99,6 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
     connect(&_clearTouchedFilesTimer, &QTimer::timeout, this, &SyncEngine::slotClearTouchedFiles);
 
     _thread.setObjectName("SyncEngine_Thread");
-    _fuseThread.setObjectName("FUSE SyncEngine_Thread");
 }
 
 SyncEngine::~SyncEngine()
@@ -107,8 +106,6 @@ SyncEngine::~SyncEngine()
     abort();
     _thread.quit();
     _thread.wait();
-    _fuseThread.quit();
-    _fuseThread.wait();
     _excludedFiles.reset();
 }
 
@@ -1204,8 +1201,6 @@ void SyncEngine::finalize(bool success)
 {
     _thread.quit();
     _thread.wait();
-    _fuseThread.quit();
-    _fuseThread.wait();
 
     _csync_ctx->reinitialize();
     _journal->close();
