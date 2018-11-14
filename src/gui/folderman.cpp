@@ -687,7 +687,7 @@ void FolderMan::slotStartScheduledFolderSync()
     if (_currentSyncFolder) {
         // Safe to call several times, and necessary to try again if
         // the folder path didn't exist previously.
-        _currentSyncFolder->registerFolderWatcher();
+        //_currentSyncFolder->registerFolderWatcher();
         registerFolderWithSocketApi();
         _currentSyncFolder->startSync();
     }
@@ -887,7 +887,7 @@ Folder *FolderMan::addFolderInternal(FolderDefinition folderDefinition,
     connect(folder, &Folder::watchedFileChangedExternally,
         &folder->syncEngine().syncFileStatusTracker(), &SyncFileStatusTracker::slotPathTouched);
 
-    folder->registerFolderWatcher();
+    //folder->registerFolderWatcher();
     registerFolderWithSocketApi();
     return folder;
 }
