@@ -320,7 +320,7 @@ private slots:
     void slotScheduleThisFolder();
 
     /** Ensures that the next sync performs a full local discovery. */
-    void slotNextSyncFullLocalDiscovery();
+    //void slotNextSyncFullLocalDiscovery();
 
     /** Adjust sync result based on conflict data from IssuesWidget.
      *
@@ -365,7 +365,7 @@ private:
     QString _lastEtag;
     QElapsedTimer _timeSinceLastSyncDone;
     QElapsedTimer _timeSinceLastSyncStart;
-    QElapsedTimer _timeSinceLastFullLocalDiscovery;
+    //QElapsedTimer _timeSinceLastFullLocalDiscovery;
     std::chrono::milliseconds _lastSyncDuration;
 
     /// The number of syncs that failed in a row.

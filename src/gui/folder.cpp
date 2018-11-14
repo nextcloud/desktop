@@ -93,7 +93,7 @@ Folder::Folder(const FolderDefinition &definition,
         this, &Folder::slotAboutToRemoveAllFiles);
     connect(_engine.data(), &SyncEngine::aboutToRestoreBackup,
         this, &Folder::slotAboutToRestoreBackup);
-    connect(_engine.data(), &SyncEngine::transmissionProgress, this, &Folder::slotTransmissionProgress);
+    connect(_engine.data(), &SyncEngine::transmissionProgress, this, &Folder::slotTransmissionProgress, Qt::DirectConnection);
     connect(_engine.data(), &SyncEngine::itemCompleted,
         this, &Folder::slotItemCompleted);
     connect(_engine.data(), &SyncEngine::newBigFolder,
@@ -675,8 +675,9 @@ void Folder::startSync()
 //        _previousLocalDiscoveryPaths.clear();
 //    }
 
+    _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem);
     if (_engine->localTreeSize() > 0){
-        _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem);
+        _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::FUSEFilesystem);
     } else {
         _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
     }
@@ -826,9 +827,9 @@ void Folder::slotSyncFinished(bool success)
     if ((_syncResult.status() == SyncResult::Success
             || _syncResult.status() == SyncResult::Problem)
         && success) {
-        if (_engine->lastLocalDiscoveryStyle() == LocalDiscoveryStyle::FilesystemOnly) {
-            _timeSinceLastFullLocalDiscovery.start();
-        }
+//        if (_engine->lastLocalDiscoveryStyle() == LocalDiscoveryStyle::FilesystemOnly) {
+//            _timeSinceLastFullLocalDiscovery.start();
+//        }
 
         qCDebug(lcFolder) << "Sync success, forgetting last sync's local discovery path list";
     } else {
@@ -940,9 +941,10 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
     }
 
     // notify this file 'got' synced - true to stop
-    _journal.syncStatusChanged(item->_file, true);
-
-    _syncResult.processCompletedItem(item);
+    _journal.setSyncMode(item->_file, SyncJournalDb::SyncMode::SYNCMODE_ONLINE);
+    _journal.setSyncModeDownload(item->_file, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES);
+    _journal.emitSyncStatusChanged(item->_file, true);
+    qCWarning(lcFolder) << "INFO: " << item->_file << " SYNC IS DONE - SYNC MODE is "<< _journal.getSyncModeDownload(item->_file);
 
     _fileLog->logItem(*item);
     emit ProgressDispatcher::instance()->itemCompleted(alias(), item);
@@ -994,10 +996,10 @@ void Folder::slotScheduleThisFolder()
     FolderMan::instance()->scheduleFolder();
 }
 
-void Folder::slotNextSyncFullLocalDiscovery()
-{
-    _timeSinceLastFullLocalDiscovery.invalidate();
-}
+//void Folder::slotNextSyncFullLocalDiscovery()
+//{
+//    _timeSinceLastFullLocalDiscovery.invalidate();
+//}
 
 void Folder::slotFolderConflicts(const QString &folder, const QStringList &conflictPaths)
 {

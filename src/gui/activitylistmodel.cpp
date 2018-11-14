@@ -295,14 +295,14 @@ void ActivityListModel::fetchMore(const QModelIndex &)
 {
     if (_accountState->isConnected()) {
         _activityLists = ActivityList();
-        startFetchJob();
+        //startFetchJob();
     }
 }
 
 void ActivityListModel::slotRefreshActivity()
 {
     _activityLists.clear();
-    startFetchJob();
+    //startFetchJob();
 }
 
 void ActivityListModel::slotRemoveAccount()

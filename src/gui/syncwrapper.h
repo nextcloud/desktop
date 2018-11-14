@@ -3,9 +3,10 @@
 
 #include <QObject>
 #include <QMap>
-#include "common/syncjournaldb.h"
 
-#include <csync.h>
+#include "common/syncjournaldb.h"
+#include "folderman.h"
+#include "csync.h"
 
 namespace OCC {
 
@@ -16,40 +17,39 @@ public:
     static SyncWrapper *instance();
     ~SyncWrapper() {}
 
-    void openFileAtPath(const QString path);
-    void releaseFileAtPath(const QString path);
-    void writeFileAtPath(const QString path);
     bool syncDone(const QString path);
-
-    void updateLocalFileTree(const QString &path, csync_instructions_e instruction = CSYNC_INSTRUCTION_NONE);
-    void initSyncMode(const QString path);
-    void initSync(const QString path, csync_instructions_e instruction = CSYNC_INSTRUCTION_SYNC);
-    void startSync();
-
-private:
-    QDateTime lastAccess(const QString path);
-    int updateLastAccess(const QString path);
-
-    QString removeSlash(QString path);
-
-    void sync(const QString path, csync_instructions_e instruction);
-    int syncMode(const QString path);
-
-    int syncModeDownload(const QString path);
-    bool shouldSync(const QString path);
-
-    QMap<QString, bool> _syncDone;
+    int initSyncMode(const QString path);
 
 public slots:
     void updateSyncQueue(const QString path, bool syncing);
+    void openFileAtPath(const QString path);
+    void releaseFileAtPath(const QString path);
+    void writeFileAtPath(const QString path);
 
 signals:
-    void syncDone(QString, bool);
+    void syncFinish(const QString &, bool);
+    void startSyncForFolder();
 
 private:
     SyncWrapper() {
-        connect(SyncJournalDb::instance(), &SyncJournalDb::syncStatusChanged, this, &SyncWrapper::updateSyncQueue);
+        _syncJournalDb = SyncJournalDb::instance();
+        _folderMan = FolderMan::instance();
+        _folder = FolderMan::instance()->currentSyncFolder();
+        connect(_syncJournalDb, &SyncJournalDb::syncStatusChanged, this, &SyncWrapper::updateSyncQueue, Qt::DirectConnection);
+        connect(_syncJournalDb, &SyncJournalDb::syncStatusChanged, this, &SyncWrapper::syncFinish, Qt::DirectConnection);
+        connect(this, &SyncWrapper::startSyncForFolder, _folder, &Folder::startSync, Qt::DirectConnection);
     }
+
+
+    QString removeSlash(QString path);
+    bool shouldSync(const QString path);
+    void sync(const QString path, csync_instructions_e instruction = CSYNC_INSTRUCTION_SYNC);
+
+    QMap<QString, bool> _syncDone;
+
+    SyncJournalDb *_syncJournalDb;
+    FolderMan *_folderMan;
+    Folder *_folder;
 };
 }
 

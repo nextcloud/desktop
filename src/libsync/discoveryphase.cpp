@@ -654,7 +654,8 @@ csync_vio_handle_t *DiscoveryJob::remote_vio_opendir_hook(const char *url,
         discoveryJob->_vioMutex.lock();
         const QString qurl = QString::fromUtf8(url);
         emit discoveryJob->doOpendirSignal(qurl, directoryResult.data());
-        discoveryJob->_vioWaitCondition.wait(&discoveryJob->_vioMutex, ULONG_MAX); // FIXME timeout?
+        // TODO - timing out...
+        discoveryJob->_vioWaitCondition.wait(&discoveryJob->_vioMutex, 5000);
         discoveryJob->_vioMutex.unlock();
 
         qCDebug(lcDiscovery) << discoveryJob << url << "...Returned from main thread";

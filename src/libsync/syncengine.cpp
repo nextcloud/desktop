@@ -98,7 +98,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
     _clearTouchedFilesTimer.setInterval(30 * 1000);
     connect(&_clearTouchedFilesTimer, &QTimer::timeout, this, &SyncEngine::slotClearTouchedFiles);
 
-    _thread.setObjectName("SyncEngine_Thread");
+    _thread.setObjectName("Discovery_Thread");
 }
 
 SyncEngine::~SyncEngine()
@@ -770,8 +770,9 @@ void SyncEngine::startSync()
 
     if (s_anySyncRunning || _syncRunning) {
         csyncError("Restarting sync.");
-        finalize(false);
-        startSync();
+//        finalize(false);
+//        startSync();
+        return;
     }
 
     s_anySyncRunning = true;
@@ -884,7 +885,7 @@ void SyncEngine::startSync()
     _thread.start(QThread::LowPriority);
 
     _discoveryMainThread = new DiscoveryMainThread(account());
-    _discoveryMainThread->setParent(this);
+    //_discoveryMainThread->setParent(this);
     connect(this, &SyncEngine::finished, _discoveryMainThread.data(), &QObject::deleteLater);
     qCInfo(lcEngine) << "Server" << account()->serverVersion()
                      << (account()->isHttp2Supported() ? "Using HTTP/2" : "");
@@ -1076,7 +1077,7 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
 
     // Re-init the csync context to free memory
     _csync_ctx->reinitialize();
-    _localDiscoveryPaths.clear();
+    //_localDiscoveryPaths.clear();
 
     // To announce the beginning of the sync
     emit aboutToPropagate(syncItems);
@@ -1218,7 +1219,7 @@ void SyncEngine::finalize(bool success)
     _temporarilyUnavailablePaths.clear();
     _renamedFolders.clear();
     _uniqueErrors.clear();
-    _localDiscoveryPaths.clear();
+    //_localDiscoveryPaths.clear();
     _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
 
     _clearTouchedFilesTimer.start();
@@ -1648,8 +1649,9 @@ void SyncEngine::updateLocalFileTree(const QString &path, csync_instructions_e i
 
 void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> paths)
 {
+    Q_UNUSED(paths);
     _localDiscoveryStyle = style;
-    _localDiscoveryPaths = std::move(paths);
+    //_localDiscoveryPaths = std::move(paths);
 }
 
 bool SyncEngine::shouldDiscoverLocally(const QByteArray &path) const
@@ -1660,22 +1662,22 @@ bool SyncEngine::shouldDiscoverLocally(const QByteArray &path) const
     if (_localDiscoveryStyle == LocalDiscoveryStyle::FUSEFilesystem)
         return false;
 
-    auto it = _localDiscoveryPaths.lower_bound(path);
-    if (it == _localDiscoveryPaths.end() || !it->startsWith(path))
-        return false;
+//    auto it = _localDiscoveryPaths.lower_bound(path);
+//    if (it == _localDiscoveryPaths.end() || !it->startsWith(path))
+//        return false;
 
     // maybe an exact match or an empty path?
-    if (it->size() == path.size() || path.isEmpty())
-        return true;
+//    if (it->size() == path.size() || path.isEmpty())
+//        return true;
 
-    // check for a prefix + / match
-    forever {
-        if (it->size() > path.size() && it->at(path.size()) == '/')
-            return true;
-        ++it;
-        if (it == _localDiscoveryPaths.end() || !it->startsWith(path))
-            return false;
-    }
+//    // check for a prefix + / match
+//    forever {
+//        if (it->size() > path.size() && it->at(path.size()) == '/')
+//            return true;
+//        ++it;
+//        if (it == _localDiscoveryPaths.end() || !it->startsWith(path))
+//            return false;
+//    }
     return false;
 }
 

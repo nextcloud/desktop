@@ -33,8 +33,6 @@
 
 #include <sys/ioctl.h>
 
-#include "syncwrapper.h"
-
 class InternalVfsMac : public QObject
 {
 private:
@@ -103,6 +101,13 @@ VfsMac::VfsMac(QString rootPath, bool isThreadSafe, OCC::AccountState *accountSt
     _remotefileListJob->setParent(this);
     connect(this, &VfsMac::startRemoteFileListJob, _remotefileListJob, &OCC::DiscoveryFolderFileList::doGetFolderContent);
     connect(_remotefileListJob, &OCC::DiscoveryFolderFileList::gotDataSignal, this, &VfsMac::folderFileListFinish);
+
+    // "talk" to the sync engine
+    _syncWrapper = OCC::SyncWrapper::instance();
+    connect(this, &VfsMac::openFile, _syncWrapper, &OCC::SyncWrapper::openFileAtPath, Qt::DirectConnection);
+    connect(this, &VfsMac::releaseFile, _syncWrapper, &OCC::SyncWrapper::releaseFileAtPath, Qt::DirectConnection);
+    connect(this, &VfsMac::writeFile, _syncWrapper, &OCC::SyncWrapper::writeFileAtPath, Qt::DirectConnection);
+    connect(_syncWrapper, &OCC::SyncWrapper::syncFinish, this, &VfsMac::slotSyncFinish, Qt::DirectConnection);
 }
 
 bool VfsMac::enableAllocate() {
@@ -573,6 +578,10 @@ void VfsMac::folderFileListFinish(OCC::DiscoveryDirectoryResult *dr)
     {
         QString ruta = dr->path;
         _fileListMap.insert(dr->path, dr);
+
+        _mutex.lock();
+        _dirCondition.wakeAll();
+        _mutex.unlock();
     }
     else
         qDebug() << "Error al obtener los resultados, viene nulo";
@@ -580,12 +589,12 @@ void VfsMac::folderFileListFinish(OCC::DiscoveryDirectoryResult *dr)
 
 QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
 {
+    _mutex.lock();
     emit startRemoteFileListJob(path);
-    
-    while (!_fileListMap.contains(path))
-    {
-        qDebug() << Q_FUNC_INFO << "looking for " << path << "in: " << _fileListMap.keys();
-    }
+    _dirCondition.wait(&_mutex);
+    _mutex.unlock();
+
+    qDebug() << Q_FUNC_INFO << "DONE looking for " << path << "in: " << _fileListMap.keys();
     
     if(_fileListMap.value(path)->code != 0)
     {
@@ -616,17 +625,26 @@ QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
                     close(fd.toInt());
                 }
             }
-            OCC::SyncWrapper::instance()->initSync(_fileListMap.value(path)->list.at(i)->path);
+            // update file tree here?
         }
     }
     _fileListMap.remove(path);
-    OCC::SyncWrapper::instance()->startSync();
+
     return new QStringList (fm.contentsOfDirectoryAtPath(rootPath_ + path, error));
 }
 
 #pragma mark File Contents
 
-char *VfsMac::getProcessName(pid_t pid)
+void VfsMac::slotSyncFinish(const QString &path, bool status){
+    Q_UNUSED(path);
+    Q_UNUSED(status);
+
+    _mutex.lock();
+    _syncCondition.wakeAll();
+    _mutex.unlock();
+}
+
+char * VfsMac::getProcessName(pid_t pid)
 {
     char pathBuffer [PROC_PIDPATHINFO_MAXSIZE];
     proc_pidpath(pid, pathBuffer, sizeof(pathBuffer));
@@ -647,20 +665,16 @@ char *VfsMac::getProcessName(pid_t pid)
 bool VfsMac::openFileAtPath(QString path, int mode, QVariant &userData, QVariantMap &error)
 {
    struct fuse_context *context = fuse_get_context();
-
    QString nameBuffer = QString::fromLatin1(getProcessName(context->pid));
-
    qDebug() << "JJDCname: " << nameBuffer;
 
    if(nameBuffer != "Finder" && nameBuffer != "QuickLookSatellite" && nameBuffer != "mds")
    {
-       qDebug() << "Push here sync algorithm";
-       OCC::SyncWrapper::instance()->openFileAtPath(path);
-       while(!OCC::SyncWrapper::instance()->syncDone(path))
-           qDebug() << "Syncing...";
+       _mutex.lock();
+       emit openFile(path);
+       _syncCondition.wait(&_mutex);
+       _mutex.unlock();
    }
-    
-    qDebug() << "JJDC Process Id: " << context->pid << " Group Id: " << context->pid << " umask: " << context->umask  ;
 
     QString p = rootPath_ + path;
     int fd = open(p.toLatin1().data(), mode);
@@ -674,7 +688,16 @@ bool VfsMac::openFileAtPath(QString path, int mode, QVariant &userData, QVariant
 
 void VfsMac::releaseFileAtPath(QString path, QVariant userData)
 {
-    //OCC::SyncWrapper::instance()->releaseFileAtPath(path);
+//    struct fuse_context *context = fuse_get_context();
+//    QString nameBuffer = QString::fromLatin1(getProcessName(context->pid));
+//    qDebug() << "JJDCname: " << nameBuffer;
+//    if(nameBuffer != "Finder" && nameBuffer != "QuickLookSatellite" && nameBuffer != "mds")
+//    {
+//        _mutex.lock();
+//        emit releaseFile(path);
+//        _syncCondition.wait(&_mutex);
+//        _mutex.unlock();
+//    }
 
     long num = userData.toLongLong();
     int fd = num;
@@ -695,7 +718,16 @@ int VfsMac::readFileAtPath(QString path, QVariant userData, char *buffer, size_t
 
 int VfsMac::writeFileAtPath(QString path, QVariant userData, const char *buffer, size_t size, off_t offset, QVariantMap &error)
 {
-    //OCC::SyncWrapper::instance()->writeFileAtPath(path);
+    struct fuse_context *context = fuse_get_context();
+    QString nameBuffer = QString::fromLatin1(getProcessName(context->pid));
+    qDebug() << "JJDCname: " << nameBuffer;
+    if(nameBuffer != "Finder" && nameBuffer != "QuickLookSatellite" && nameBuffer != "mds")
+    {
+        _mutex.lock();
+        emit writeFile(path);
+        _syncCondition.wait(&_mutex);
+        _mutex.unlock();
+    }
 
     long num = userData.toLongLong();
     int fd = num;
