@@ -167,13 +167,16 @@ void VfsMac::mountAtPath(QString mountPath, QStringList options, bool shouldFore
 
 void VfsMac::unmount() {
     if (internal_.data() != nullptr && internal_->status() == GMUserFileSystem_MOUNTED) {
-        QStringList args;
-        args << "-v" << internal_->mountPath();
-        QProcess *defaultsProcess = new QProcess();
-        defaultsProcess->start("/sbin/umount", args);
-        defaultsProcess->waitForFinished();
-        defaultsProcess->close();
-        defaultsProcess->deleteLater();
+        int ret = ::unmount(internal_->mountPath().toLatin1().data(), 0);
+        if (ret != 0)
+        {
+            QVariantMap userData = errorWithCode(errno);
+            QString description = userData.value("localizedDescription").toString() + " " + tr("Unable to unmount an existing 'dead' filesystem.");
+            userData.insert("localizedDescription", description);
+            emit FuseFileSystemMountFailed(userData);
+            return;
+        }
+        //fuse_unmount(internal_->mountPath().toLatin1(), nullptr);
     }
 }
 
@@ -617,16 +620,29 @@ QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
             OCC::SyncWrapper::instance()->updateLocalFileTree(_fileListMap.value(path)->list.at(i)->path);
         }
     }
-    //_fileListMap.remove(path);
-    
+    _fileListMap.remove(path);
     return new QStringList (fm.contentsOfDirectoryAtPath(rootPath_ + path, error));
 }
 
 #pragma mark File Contents
 
-char * VfsMac::getProcessName(pid_t pid)
+char *VfsMac::getProcessName(pid_t pid)
 {
-   char pathBuffer[PROC_PIDPATHINFO_MAXSIZE];
+    char pathBuffer [PROC_PIDPATHINFO_MAXSIZE];
+    proc_pidpath(pid, pathBuffer, sizeof(pathBuffer));
+    
+    char nameBuffer[256];
+    
+    int position = strlen(pathBuffer);
+    while(position >= 0 && pathBuffer[position] != '/')
+    {
+        position--;
+    }
+    
+    strcpy(nameBuffer, pathBuffer + position + 1);
+    
+    return nameBuffer;
+   /*char pathBuffer[PROC_PIDPATHINFO_MAXSIZE];
    int ret = proc_pidpath(pid, pathBuffer, sizeof(pathBuffer));
 
    if (ret <= 0) {
@@ -654,7 +670,7 @@ char * VfsMac::getProcessName(pid_t pid)
    QString path1(QString::fromUtf8(pathBuffer));
    path1 = path1.mid(path1.lastIndexOf("/") + 1);
 
-   char nameBuffer[256];
+   char nameBuffer[256];*/
 
 //   int position = strlen(pathBuffer);
 //   while(position >= 0 && pathBuffer[position] != 0xEB/0xED)
@@ -664,9 +680,9 @@ char * VfsMac::getProcessName(pid_t pid)
 
 //   strcpy(nameBuffer, pathBuffer + position + 1);
 
-   strcpy(nameBuffer, path1.toStdString().data());
+  // strcpy(nameBuffer, path1.toStdString().data());
 
-   return nameBuffer;
+   //return nameBuffer;
 }
 
 bool VfsMac::openFileAtPath(QString path, int mode, QVariant &userData, QVariantMap &error)
@@ -677,13 +693,15 @@ bool VfsMac::openFileAtPath(QString path, int mode, QVariant &userData, QVariant
 
    qDebug() << "JJDCname: " << nameBuffer;
 
-   if(nameBuffer != "Finder" && nameBuffer != "QuickLookSatellite" && nameBuffer != "")
+   if(nameBuffer != "Finder" && nameBuffer != "QuickLookSatellite" && nameBuffer != "mds")
    {
        qDebug() << "Push here sync algorithm";
        OCC::SyncWrapper::instance()->openFileAtPath(path);
        while(!OCC::SyncWrapper::instance()->syncDone(path))
            qDebug() << "Syncing...";
    }
+    
+    qDebug() << "JJDC Process Id: " << context->pid << " Group Id: " << context->pid << " umask: " << context->umask  ;
 
     QString p = rootPath_ + path;
     int fd = open(p.toLatin1().data(), mode);
@@ -1730,7 +1748,7 @@ void VfsMac::mount(QVariantMap args)
     }
     ret = fuse_main(argc, (char **)argv, &fusefm_oper, this);
     
-    if (internal_.data()!=nullptr && internal_->status() == GMUserFileSystem_MOUNTING) {
+    if (internal_ && internal_->status() == GMUserFileSystem_MOUNTING) {
         // If we returned from fuse_main while we still think we are
         // mounting then an error must have occurred during mount.
         QString description = QString("Internal FUSE error (rc=%1) while attempting to mount the file system. "
@@ -1739,7 +1757,7 @@ void VfsMac::mount(QVariantMap args)
         QVariantMap userData = errorWithCode(errno);
         userData.insert("localizedDescription", QVariant(userData.value("localizedDescription").toString() + description));
         emit FuseFileSystemMountFailed(userData);
-    } else if (internal_.data()!=nullptr)
+    } else if (internal_)
         internal_->setStatus(GMUserFileSystem_NOT_MOUNTED);
 }
 

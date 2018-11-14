@@ -49,12 +49,16 @@ void VfsMacController::didMount(QVariantMap userInfo)
 void VfsMacController::didUnmount(QVariantMap userInfo) {
     qDebug() << "Got didUnmount notification.";
     
-    QApplication::quit();
+    if(closedExternally)
+        QApplication::quit();
+    closedExternally = true;
 }
 
 void VfsMacController::unmount()
 {
-    fs_->unmount();
+    closedExternally=false;
+    if(fs_)
+        fs_->unmount();
 }
 
 void VfsMacController::slotquotaUpdated(qint64 total, qint64 used)
@@ -77,9 +81,9 @@ VfsMacController::VfsMacController(QString rootPath, QString mountPath, OCC::Acc
     qi_ = new OCC::QuotaInfo(accountState, this);
     
     connect(qi_, &OCC::QuotaInfo::quotaUpdated, this, &VfsMacController::slotquotaUpdated);
-    connect(fs_.data(), &VfsMac::FuseFileSystemDidMount, this, didMount);
-    connect(fs_.data(), &VfsMac::FuseFileSystemMountFailed, this, mountFailed);
-    connect(fs_.data(), &VfsMac::FuseFileSystemDidUnmount, this, didUnmount);
+    connect(fs_.data(), &VfsMac::FuseFileSystemDidMount, this, &VfsMacController::didMount);
+    connect(fs_.data(), &VfsMac::FuseFileSystemMountFailed, this, &VfsMacController::mountFailed);
+    connect(fs_.data(), &VfsMac::FuseFileSystemDidUnmount, this, &VfsMacController::didUnmount);
     
     qi_->setActive(true);
     
@@ -102,7 +106,17 @@ VfsMacController::VfsMacController(QString rootPath, QString mountPath, OCC::Acc
     fs_->mountAtPath(mountPath, options);
 }
 
-/*VfsMacController::~VfsMacController()
+VfsMacController::~VfsMacController()
 {
-    //fs_->unmount();
-}*/
+    if(qi_)
+    {
+        disconnect(qi_, &OCC::QuotaInfo::quotaUpdated, this, &VfsMacController::slotquotaUpdated);
+        delete(qi_);
+    }
+    if(fs_)
+    {
+        disconnect(fs_.data(), &VfsMac::FuseFileSystemDidMount, this, &VfsMacController::didMount);
+        disconnect(fs_.data(), &VfsMac::FuseFileSystemMountFailed, this, &VfsMacController::mountFailed);
+        disconnect(fs_.data(), &VfsMac::FuseFileSystemDidUnmount, this, &VfsMacController::didUnmount);
+    }
+}
