@@ -81,7 +81,7 @@ public:
     void setIgnoreHiddenFiles(bool ignore) { _csync_ctx->ignore_hidden_files = ignore; }
 
     ExcludedFiles &excludedFiles() { return *_excludedFiles; }
-    Utility::StopWatch &stopWatch() { return _stopWatch; }
+    //Utility::StopWatch &stopWatch() { return _stopWatch; }
     SyncFileStatusTracker &syncFileStatusTracker() { return *_syncFileStatusTracker; }
 
     /* Returns whether another sync is needed to complete the sync */
@@ -239,7 +239,6 @@ private:
     QString _remoteRootEtag;
     SyncJournalDb *_journal;
     QPointer<DiscoveryMainThread> _discoveryMainThread;
-    QPointer<DiscoveryMainThread> _discoveryFuseThread;
     QSharedPointer<OwncloudPropagator> _propagator;
 
     // After a sync, only the syncdb entries whose filenames appear in this
@@ -314,7 +313,7 @@ private:
     /** The kind of local discovery the last sync run used */
     LocalDiscoveryStyle _lastLocalDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
     LocalDiscoveryStyle _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
-    std::set<QByteArray> _localDiscoveryPaths;
+    //std::set<QByteArray> _localDiscoveryPaths;
 };
 }
 
