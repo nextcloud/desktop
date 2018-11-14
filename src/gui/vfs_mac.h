@@ -67,7 +67,7 @@ class VfsMac : public QObject
     Q_OBJECT
     
 private:
-    QPointer<InternalVfsMac> internal_;
+    QSharedPointer<InternalVfsMac> internal_;
     QString rootPath_;
     qint64 usedQuota_;
     qint64 totalQuota_;

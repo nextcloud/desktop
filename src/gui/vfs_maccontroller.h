@@ -36,19 +36,19 @@ class VfsMacController: public QObject
     Q_OBJECT
 public:
     explicit VfsMacController(QString rootPath, QString mountPath, OCC::AccountState *accountState, QObject *parent);
-    //~LoopbackController();
+    ~VfsMacController();
     
 public slots:
     void slotquotaUpdated(qint64 total, qint64 used);
     void unmount();
+    void mountFailed (QVariantMap userInfo);
+    void didMount(QVariantMap userInfo);
+    void didUnmount (QVariantMap userInfo);
     
 private:
     QScopedPointer<VfsMac> fs_;
-    OCC::QuotaInfo* qi_;
-private slots:
-    static void mountFailed (QVariantMap userInfo);
-    static void didMount(QVariantMap userInfo);
-    static void didUnmount (QVariantMap userInfo);
+    OCC::QuotaInfo *qi_;
+    bool closedExternally = true;
 };
 
 
