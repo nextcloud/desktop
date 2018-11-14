@@ -23,6 +23,8 @@ public:
 
     void updateLocalFileTree(const QString &path, csync_instructions_e instruction = CSYNC_INSTRUCTION_NONE);
     void initSyncMode(const QString path);
+    void initSync(const QString path, csync_instructions_e instruction = CSYNC_INSTRUCTION_SYNC);
+    void startSync();
 
 private:
     QDateTime lastAccess(const QString path);

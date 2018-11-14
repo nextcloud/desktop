@@ -616,11 +616,11 @@ QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
                     close(fd.toInt());
                 }
             }
-            OCC::SyncWrapper::instance()->initSyncMode(_fileListMap.value(path)->list.at(i)->path);
-            OCC::SyncWrapper::instance()->updateLocalFileTree(_fileListMap.value(path)->list.at(i)->path);
+            OCC::SyncWrapper::instance()->initSync(_fileListMap.value(path)->list.at(i)->path);
         }
     }
     _fileListMap.remove(path);
+    OCC::SyncWrapper::instance()->startSync();
     return new QStringList (fm.contentsOfDirectoryAtPath(rootPath_ + path, error));
 }
 
@@ -642,47 +642,6 @@ char *VfsMac::getProcessName(pid_t pid)
     strcpy(nameBuffer, pathBuffer + position + 1);
     
     return nameBuffer;
-   /*char pathBuffer[PROC_PIDPATHINFO_MAXSIZE];
-   int ret = proc_pidpath(pid, pathBuffer, sizeof(pathBuffer));
-
-   if (ret <= 0) {
-       fprintf(stderr, "PID %d: proc_pidpath ();\n", pid);
-       fprintf(stderr, "    %s\n", strerror(errno));
-   } else {
-       printf("proc %d: %s\n", pid, pathBuffer);
-
-   }
-
-   struct proc_bsdinfo info;
-   proc_pidinfo(pid, PROC_PIDTBSDINFO, 0, &info, sizeof(info));
-
-   char name[2*MAXCOMLEN];
-   proc_name(pid, name, sizeof(name));
-
-   // proc_pidpath(pid, buffer, buffersize)
-   char path[PROC_PIDPATHINFO_MAXSIZE];
-   proc_pidpath(pid, path, sizeof(path));
-
-   printf("%d\t%d\t%-15s\t%s\tproc_name=%s\tpath=%s\n",
-          info.pbi_pid, info.pbi_ppid, info.pbi_comm, info.pbi_name,
-          name, path);
-
-   QString path1(QString::fromUtf8(pathBuffer));
-   path1 = path1.mid(path1.lastIndexOf("/") + 1);
-
-   char nameBuffer[256];*/
-
-//   int position = strlen(pathBuffer);
-//   while(position >= 0 && pathBuffer[position] != 0xEB/0xED)
-//   {
-//       position--;
-//   }
-
-//   strcpy(nameBuffer, pathBuffer + position + 1);
-
-  // strcpy(nameBuffer, path1.toStdString().data());
-
-   //return nameBuffer;
 }
 
 bool VfsMac::openFileAtPath(QString path, int mode, QVariant &userData, QVariantMap &error)
@@ -715,7 +674,7 @@ bool VfsMac::openFileAtPath(QString path, int mode, QVariant &userData, QVariant
 
 void VfsMac::releaseFileAtPath(QString path, QVariant userData)
 {
-    OCC::SyncWrapper::instance()->releaseFileAtPath(path);
+    //OCC::SyncWrapper::instance()->releaseFileAtPath(path);
 
     long num = userData.toLongLong();
     int fd = num;
@@ -736,7 +695,7 @@ int VfsMac::readFileAtPath(QString path, QVariant userData, char *buffer, size_t
 
 int VfsMac::writeFileAtPath(QString path, QVariant userData, const char *buffer, size_t size, off_t offset, QVariantMap &error)
 {
-    OCC::SyncWrapper::instance()->writeFileAtPath(path);
+    //OCC::SyncWrapper::instance()->writeFileAtPath(path);
 
     long num = userData.toLongLong();
     int fd = num;

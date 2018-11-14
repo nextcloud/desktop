@@ -48,6 +48,24 @@ void SyncWrapper::sync(const QString path, csync_instructions_e instruction){
     initSyncMode(path);
     updateLocalFileTree(path, instruction);
     _syncDone.insert(path, false);
+    initSync(removeSlash(path), CSYNC_INSTRUCTION_SYNC);
+}
+
+void SyncWrapper::releaseFileAtPath(const QString path){
+    initSync(removeSlash(path), CSYNC_INSTRUCTION_EVAL);
+}
+
+void SyncWrapper::writeFileAtPath(const QString path){
+    initSync(removeSlash(path), CSYNC_INSTRUCTION_NEW);
+}
+
+void SyncWrapper::initSync(const QString path, csync_instructions_e instruction){
+    initSyncMode(path);
+    updateLocalFileTree(path, instruction);
+    _syncDone.insert(path, false);
+}
+
+void SyncWrapper::startSync(){
     OCC::FolderMan::instance()->currentSyncFolder()->startSync();
 }
 
