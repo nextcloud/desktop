@@ -107,7 +107,7 @@ bool RequestEtagJob::finished()
         emit etagRetrieved(etag);
         emit finishedWithResult(etag);
     } else {
-        emit finishedWithResult({ httpCode, errorString() });
+        emit finishedWithResult(HttpError{ httpCode, errorString() });
     }
     return true;
 }
