@@ -20,52 +20,14 @@
 
 #include "config.h"
 
-#include <QPluginLoader>
-#include <QDir>
-#include <QLoggingCategory>
-
-Q_LOGGING_CATEGORY(lcPluginLoader, "pluginLoader", QtInfoMsg)
-
 namespace OCC {
 
 PluginFactory::~PluginFactory() = default;
 
-QString PluginLoader::pluginName(const QString &type, const QString &name)
+QString pluginFileName(const QString &type, const QString &name)
 {
     return QString(QLatin1String("%1sync_%2_%3"))
             .arg(APPLICATION_EXECUTABLE, type, name);
-}
-
-bool PluginLoader::isAvailable(const QString &type, const QString &name)
-{
-    QPluginLoader loader(pluginName(type, name));
-    return loader.load();
-}
-
-QObject *PluginLoader::load(const QString &type, const QString &name)
-{
-    QString fileName = pluginName(type, name);
-    QPluginLoader pluginLoader(fileName);
-    if (pluginLoader.load()) {
-        qCInfo(lcPluginLoader) << "Loaded plugin" << fileName;
-    } else {
-        qCWarning(lcPluginLoader) << "Could not load plugin"
-                                  << fileName <<":"
-                                  << pluginLoader.errorString()
-                                  << "from" << QDir::currentPath();
-    }
-
-    return pluginLoader.instance();
-}
-
-QObject *PluginLoader::create(const QString &type, const QString &name, QObject *parent)
-{
-    auto factory = qobject_cast<PluginFactory *>(load(type, name));
-    if (!factory) {
-        return nullptr;
-    } else {
-        return factory->create(parent);
-    }
 }
 
 }
