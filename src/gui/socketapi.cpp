@@ -626,33 +626,11 @@ void SocketApi::command_REPLACE_VIRTUAL_FILE(const QString &filesArg, SocketList
 {
     QStringList files = filesArg.split(QLatin1Char('\x1e')); // Record Separator
 
-    QSet<Folder *> toSync;
     for (const auto &file : files) {
         auto data = FileData::get(file);
-        if (!data.folder)
-            continue;
-        auto journal = data.folder->journalDb();
-        auto markForDehydration = [&](SyncJournalFileRecord rec) {
-            if (rec._type != ItemTypeFile)
-                return;
-            rec._type = ItemTypeVirtualFileDehydration;
-            journal->setFileRecord(rec);
-            toSync.insert(data.folder);
-        };
-
-        QFileInfo fi(file);
-        if (fi.isDir()) {
-            journal->getFilesBelowPath(data.folderRelativePath.toUtf8(), markForDehydration);
-            continue;
-        }
-        auto record = data.journalRecord();
-        if (!record.isValid() || record._type != ItemTypeFile)
-            continue;
-        markForDehydration(record);
+        if (data.folder)
+            data.folder->dehydrateFile(data.folderRelativePath);
     }
-
-    for (const auto folder : toSync)
-        FolderMan::instance()->scheduleFolder(folder);
 }
 
 void SocketApi::emailPrivateLink(const QString &link)

@@ -578,6 +578,34 @@ void Folder::downloadVirtualFile(const QString &_relativepath)
     slotScheduleThisFolder();
 }
 
+void Folder::dehydrateFile(const QString &_relativepath)
+{
+    qCInfo(lcFolder) << "Dehydrating file: " << _relativepath;
+    auto relativepath = _relativepath.toUtf8();
+
+    auto markForDehydration = [&](SyncJournalFileRecord rec) {
+        if (rec._type != ItemTypeFile)
+            return;
+        rec._type = ItemTypeVirtualFileDehydration;
+        _journal.setFileRecord(rec);
+        _localDiscoveryTracker->addTouchedPath(relativepath);
+    };
+
+    SyncJournalFileRecord record;
+    _journal.getFileRecord(relativepath, &record);
+    if (!record.isValid())
+        return;
+    if (record._type == ItemTypeFile) {
+        markForDehydration(record);
+    } else if (record._type == ItemTypeDirectory) {
+        _journal.getFilesBelowPath(relativepath, markForDehydration);
+    } else {
+        qCWarning(lcFolder) << "Invalid existing record " << record._type << " for file " << _relativepath;
+    }
+
+    // Schedule a sync (Folder man will start the sync in a few ms)
+    slotScheduleThisFolder();
+}
 
 void Folder::setUseVirtualFiles(bool enabled)
 {

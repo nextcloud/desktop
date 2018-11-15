@@ -305,9 +305,17 @@ public slots:
 
     /**
      * Mark a virtual file as being ready for download, and start a sync.
-     * relativePath is the patch to the file (including the extension)
+     * relativepath is the path to the file (including the extension)
      */
     void downloadVirtualFile(const QString &relativepath);
+
+    /**
+     * Turn a regular file into a dehydrated placeholder.
+     *
+     * relativepath is the path to the file
+     * It's allowed to pass a path to a folder: all contained files will be dehydrated.
+     */
+    void dehydrateFile(const QString &relativepath);
 
     /** Ensures that the next sync performs a full local discovery. */
     void slotNextSyncFullLocalDiscovery();
