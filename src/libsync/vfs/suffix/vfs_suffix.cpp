@@ -69,7 +69,7 @@ bool VfsSuffix::updateMetadata(const QString &filePath, time_t modtime, quint64,
 
 void VfsSuffix::createPlaceholder(const QString &syncFolder, const SyncFileItemPtr &item)
 {
-    // NOTE: Other places might depend on contents of placeholder files (like csync_update)
+    // The concrete shape of the placeholder is also used in isDehydratedPlaceholder() below
     QString fn = syncFolder + item->_file;
     QFile file(fn);
     file.open(QFile::ReadWrite | QFile::Truncate);
