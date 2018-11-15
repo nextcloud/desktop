@@ -368,8 +368,8 @@ void PropagateDownloadFile::start()
         // TODO: Could dehydrate without wiping the file entirely
         auto fn = propagator()->getFilePath(_item->_file);
         qCDebug(lcPropagateDownload) << "dehydration: wiping base file" << fn;
-        QFile::remove(fn);
         propagator()->_journal->deleteFileRecord(_item->_file);
+        QFile::remove(fn);
 
         if (vfs && vfs->mode() == Vfs::WithSuffix) {
             // Normally new suffix-virtual files already have the suffix included in the path
