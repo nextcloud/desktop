@@ -303,7 +303,7 @@ private:
      *  does not set an account on the new folder.
       */
     Folder *addFolderInternal(FolderDefinition folderDefinition,
-        AccountState *accountState, Vfs *vfs);
+        AccountState *accountState, std::unique_ptr<Vfs> vfs);
 
     /* unloads a folder object, does not delete it */
     void unloadFolder(Folder *);

@@ -51,7 +51,7 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcFolder, "gui.folder", QtInfoMsg)
 
 Folder::Folder(const FolderDefinition &definition,
-    AccountState *accountState, Vfs *vfs,
+    AccountState *accountState, std::unique_ptr<Vfs> vfs,
     QObject *parent)
     : QObject(parent)
     , _accountState(accountState)
@@ -61,7 +61,7 @@ Folder::Folder(const FolderDefinition &definition,
     , _consecutiveFollowUpSyncs(0)
     , _journal(_definition.absoluteJournalPath())
     , _fileLog(new SyncRunFileLog)
-    , _vfs(vfs)
+    , _vfs(vfs.release())
 {
     _timeSinceLastSyncStart.start();
     _timeSinceLastSyncDone.start();
@@ -120,13 +120,12 @@ Folder::Folder(const FolderDefinition &definition,
 
     // Potentially upgrade suffix vfs to windows vfs
     if (_definition.virtualFilesMode == Vfs::WithSuffix && _definition.upgradeVfsMode) {
-        if (auto winvfs = createVfsFromPlugin(Vfs::WindowsCfApi, this)) {
+        if (auto winvfs = createVfsFromPlugin(Vfs::WindowsCfApi)) {
             // Wipe the existing suffix files from fs and journal
-            SyncEngine::wipeVirtualFiles(path(), _journal, _vfs);
+            SyncEngine::wipeVirtualFiles(path(), _journal, _vfs.data());
 
             // Then switch to winvfs mode
-            delete _vfs;
-            _vfs = winvfs;
+            _vfs.reset(winvfs.release());
             _definition.virtualFilesMode = Vfs::WindowsCfApi;
             saveToSettings();
         }
@@ -460,8 +459,6 @@ void Folder::startVfs()
     ENFORCE(_vfs);
     ENFORCE(_vfs->mode() == _definition.virtualFilesMode);
 
-    _vfs->setParent(this);
-
     VfsSetupParams vfsParams;
     vfsParams.filesystemPath = path();
     vfsParams.remotePath = remotePath();
@@ -470,8 +467,8 @@ void Folder::startVfs()
     vfsParams.providerName = Theme::instance()->appNameGUI();
     vfsParams.providerVersion = Theme::instance()->version();
 
-    connect(_vfs, &OCC::Vfs::beginHydrating, this, &Folder::slotHydrationStarts);
-    connect(_vfs, &OCC::Vfs::doneHydrating, this, &Folder::slotHydrationDone);
+    connect(_vfs.data(), &OCC::Vfs::beginHydrating, this, &Folder::slotHydrationStarts);
+    connect(_vfs.data(), &OCC::Vfs::doneHydrating, this, &Folder::slotHydrationDone);
 
     _vfs->registerFolder(vfsParams); // Do this always?
     _vfs->start(vfsParams);
@@ -587,7 +584,7 @@ void Folder::setUseVirtualFiles(bool enabled)
     if (enabled && _definition.virtualFilesMode == Vfs::Off) {
         _definition.virtualFilesMode = bestAvailableVfsMode();
 
-        _vfs = createVfsFromPlugin(_definition.virtualFilesMode, this);
+        _vfs.reset(createVfsFromPlugin(_definition.virtualFilesMode).release());
         startVfs();
 
         _saveInFoldersWithPlaceholders = true;
@@ -596,11 +593,11 @@ void Folder::setUseVirtualFiles(bool enabled)
         ENFORCE(_vfs);
 
         // TODO: Must wait for current sync to finish!
-        SyncEngine::wipeVirtualFiles(path(), _journal, _vfs);
+        SyncEngine::wipeVirtualFiles(path(), _journal, _vfs.data());
 
         _vfs->stop();
         _vfs->unregisterFolder();
-        delete _vfs;
+        _vfs.reset(nullptr);
 
         _definition.virtualFilesMode = Vfs::Off;
     }
@@ -792,7 +789,7 @@ void Folder::setSyncOptions()
     opt._newBigFolderSizeLimit = newFolderLimit.first ? newFolderLimit.second * 1000LL * 1000LL : -1; // convert from MB to B
     opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
     opt._moveFilesToTrash = cfgFile.moveToTrash();
-    opt._vfs = _vfs;
+    opt._vfs = _vfs.data();
 
     QByteArray chunkSizeEnv = qgetenv("OWNCLOUD_CHUNK_SIZE");
     if (!chunkSizeEnv.isEmpty()) {

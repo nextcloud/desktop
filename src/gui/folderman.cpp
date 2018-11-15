@@ -250,13 +250,13 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 SyncJournalDb::maybeMigrateDb(folderDefinition.localPath, folderDefinition.absoluteJournalPath());
             }
 
-            Vfs *vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode, nullptr);
+            auto vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode);
             if (!vfs && folderDefinition.virtualFilesMode != Vfs::Off) {
                 // TODO: Must do better error handling
                 qFatal("Could not load plugin");
             }
 
-            Folder *f = addFolderInternal(std::move(folderDefinition), account.data(), vfs);
+            Folder *f = addFolderInternal(std::move(folderDefinition), account.data(), std::move(vfs));
             if (f) {
                 // Migration: Mark folders that shall be saved in a backwards-compatible way
                 if (backwardsCompatible)
@@ -471,8 +471,7 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
     folderDefinition.paused = paused;
     folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles();
 
-    Vfs *vfs = nullptr;
-    folder = addFolderInternal(folderDefinition, accountState, vfs);
+    folder = addFolderInternal(folderDefinition, accountState, std::unique_ptr<Vfs>());
     if (folder) {
         QStringList blackList = settings.value(QLatin1String("blackList")).toStringList();
         if (!blackList.empty()) {
@@ -959,13 +958,13 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
         return 0;
     }
 
-    Vfs *vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode, nullptr);
+    auto vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode);
     if (!vfs && folderDefinition.virtualFilesMode != Vfs::Off) {
         qCWarning(lcFolderMan) << "Could not load plugin for mode" << folderDefinition.virtualFilesMode;
         return 0;
     }
 
-    auto folder = addFolderInternal(definition, accountState, vfs);
+    auto folder = addFolderInternal(definition, accountState, std::move(vfs));
 
     // Migration: The first account that's configured for a local folder shall
     // be saved in a backwards-compatible way.
@@ -991,7 +990,7 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
 Folder *FolderMan::addFolderInternal(
     FolderDefinition folderDefinition,
     AccountState *accountState,
-    Vfs *vfs)
+    std::unique_ptr<Vfs> vfs)
 {
     auto alias = folderDefinition.alias;
     int count = 0;
@@ -1002,7 +1001,7 @@ Folder *FolderMan::addFolderInternal(
         folderDefinition.alias = alias + QString::number(++count);
     }
 
-    auto folder = new Folder(folderDefinition, accountState, vfs, this);
+    auto folder = new Folder(folderDefinition, accountState, std::move(vfs), this);
 
     qCInfo(lcFolderMan) << "Adding folder to Folder Map " << folder << folder->alias();
     _folderMap[folder->alias()] = folder;

@@ -17,6 +17,8 @@
 #include <QScopedPointer>
 #include <QSharedPointer>
 
+#include <memory>
+
 #include "ocsynclib.h"
 #include "result.h"
 
@@ -163,6 +165,6 @@ OCSYNC_EXPORT bool isVfsPluginAvailable(Vfs::Mode mode);
 OCSYNC_EXPORT Vfs::Mode bestAvailableVfsMode();
 
 /// Create a VFS instance for the mode, returns nullptr on failure.
-OCSYNC_EXPORT Vfs *createVfsFromPlugin(Vfs::Mode mode, QObject *parent);
+OCSYNC_EXPORT std::unique_ptr<Vfs> createVfsFromPlugin(Vfs::Mode mode);
 
 } // namespace OCC
