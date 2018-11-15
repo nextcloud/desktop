@@ -365,11 +365,11 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
     if (!_ignoredFirst) {
         // This is a sanity check, if we haven't _ignoredFirst then it means we never received any directoryListingIteratedSlot
         // which means somehow the server XML was bogus
-        emit finished({ 0, tr("Server error: PROPFIND reply is not XML formatted!") });
+        emit finished(HttpError{ 0, tr("Server error: PROPFIND reply is not XML formatted!") });
         deleteLater();
         return;
     } else if (!_error.isEmpty()) {
-        emit finished({ 0, _error });
+        emit finished(HttpError{ 0, _error });
         deleteLater();
         return;
     }
@@ -390,7 +390,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
         msg = tr("Server error: PROPFIND reply is not XML formatted!");
 
     }
-    emit finished({httpCode, msg});
+    emit finished(HttpError{ httpCode, msg });
     deleteLater();
 }
 }

@@ -98,7 +98,7 @@ public:
 signals:
     void firstDirectoryPermissions(RemotePermissions);
     void etag(const QString &);
-    void finished(const Result<QVector<RemoteInfo>> &result);
+    void finished(const HttpResult<QVector<RemoteInfo>> &result);
 private slots:
     void directoryListingIteratedSlot(QString, const QMap<QString, QString> &);
     void lsJobFinishedWithoutErrorSlot();

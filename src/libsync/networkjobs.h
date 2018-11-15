@@ -17,7 +17,7 @@
 #define NETWORKJOBS_H
 
 #include "abstractnetworkjob.h"
-#include "result.h"
+#include "common/result.h"
 #include <QUrlQuery>
 #include <functional>
 
@@ -25,6 +25,15 @@ class QUrl;
 class QJsonObject;
 
 namespace OCC {
+
+struct HttpError
+{
+    int code; // HTTP error code
+    QString message;
+};
+
+template <typename T>
+using HttpResult = Result<T, HttpError>;
 
 /**
  * @brief The EntityExistsJob class
@@ -305,7 +314,7 @@ public:
 
 signals:
     void etagRetreived(const QString &etag);
-    void finishedWithResult(const Result<QString> &etag);
+    void finishedWithResult(const HttpResult<QString> &etag);
 
 private slots:
     virtual bool finished() Q_DECL_OVERRIDE;

@@ -514,10 +514,10 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             // we need to make a request to the server to know that the original file is deleted on the server
             _pendingAsyncJobs++;
             auto job = new RequestEtagJob(_discoveryData->_account, originalPath, this);
-            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const Result<QString> &etag) mutable {
+            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QString> &etag) mutable {
                 _pendingAsyncJobs--;
                 QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
-                if (etag.errorCode() != 404 ||
+                if (etag || etag.error().code != 404 ||
                     // Somehow another item claimed this original path, consider as if it existed
                     _discoveryData->_renamedItems.contains(originalPath)) {
                     // If the file exist or if there is another error, consider it is a new file.
@@ -820,7 +820,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             if (base.isVirtualFile() && isVfsWithSuffix())
                 chopVirtualFileSuffix(serverOriginalPath);
             auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
-            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const Result<QString> &etag) mutable {
+            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QString> &etag) mutable {
                 if (!etag || (*etag != base._etag && !item->isDirectory()) || _discoveryData->_renamedItems.contains(originalPath)) {
                     qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
                     // Can't be a rename, leave it as a new.
@@ -1212,17 +1212,17 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
             if (_localQueryDone)
                 this->process();
         } else {
-            if (results.errorCode() == 403) {
+            if (results.error().code == 403) {
                 // 403 Forbidden can be sent by the server if the file firewall is active.
                 // A file or directory should be ignored and sync must continue. See #3490
                 qCWarning(lcDisco, "Directory access Forbidden (File Firewall?)");
                 if (_dirItem) {
                     _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
-                    _dirItem->_errorString = results.errorMessage();
+                    _dirItem->_errorString = results.error().message;
                     emit this->finished();
                     return;
                 }
-            } else if (results.errorCode() == 503) {
+            } else if (results.error().code == 503) {
                 // The server usually replies with the custom "503 Storage not available"
                 // if some path is temporarily unavailable. But in some cases a standard 503
                 // is returned too. Thus we can't distinguish the two and will treat any
@@ -1230,13 +1230,13 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
                 qCWarning(lcDisco(), "Storage was not available!");
                 if (_dirItem) {
                     _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
-                    _dirItem->_errorString = results.errorMessage();
+                    _dirItem->_errorString = results.error().message;
                     emit this->finished();
                     return;
                 }
             }
             emit _discoveryData->fatalError(tr("Server replied with an error while reading directory '%1' : %2")
-                .arg(_currentFolder._server, results.errorMessage()));
+                .arg(_currentFolder._server, results.error().message));
         }
     });
     connect(serverJob, &DiscoverySingleDirectoryJob::firstDirectoryPermissions, this,
