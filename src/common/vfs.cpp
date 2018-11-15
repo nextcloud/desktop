@@ -19,6 +19,9 @@
 #include "vfs.h"
 #include "plugin.h"
 
+#include <QPluginLoader>
+#include <QLoggingCategory>
+
 using namespace OCC;
 
 Vfs::Vfs(QObject* parent)
@@ -69,7 +72,7 @@ bool OCC::isVfsPluginAvailable(Vfs::Mode mode)
     auto name = modeToPluginName(mode);
     if (name.isEmpty())
         return false;
-    return PluginLoader().load("vfs", name);
+    return QPluginLoader(pluginFileName("vfs", name)).load();
 }
 
 Vfs::Mode OCC::bestAvailableVfsMode()
@@ -82,10 +85,34 @@ Vfs::Mode OCC::bestAvailableVfsMode()
     return Vfs::Off;
 }
 
+Q_LOGGING_CATEGORY(lcPlugin, "plugins", QtInfoMsg)
+
 Vfs *OCC::createVfsFromPlugin(Vfs::Mode mode, QObject *parent)
 {
     auto name = modeToPluginName(mode);
     if (name.isEmpty())
         return nullptr;
-    return qobject_cast<Vfs *>(PluginLoader().create("vfs", name, parent));
+
+    auto pluginPath = pluginFileName("vfs", name);
+    QPluginLoader loader(pluginPath);
+    auto plugin = loader.instance();
+    if (!plugin) {
+        qCWarning(lcPlugin) << "Could not load plugin" << pluginPath << loader.errorString();
+        return nullptr;
+    }
+
+    auto factory = qobject_cast<PluginFactory *>(plugin);
+    if (!factory) {
+        qCWarning(lcPlugin) << "Plugin" << pluginPath << "does not implement PluginFactory";
+        return nullptr;
+    }
+
+    auto vfs = qobject_cast<Vfs *>(factory->create(parent));
+    if (!vfs) {
+        qCWarning(lcPlugin) << "Plugin" << pluginPath << "does not create a Vfs instance";
+        return nullptr;
+    }
+
+    qCInfo(lcPlugin) << "Created VFS instance from plugin" << pluginPath;
+    return vfs;
 }

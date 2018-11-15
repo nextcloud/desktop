@@ -20,7 +20,6 @@
 
 #include "ocsynclib.h"
 #include <QObject>
-#include <QPluginLoader>
 
 namespace OCC {
 
@@ -41,15 +40,8 @@ public:
     }
 };
 
-class OCSYNC_EXPORT PluginLoader
-{
-public:
-    static QString pluginName(const QString &type, const QString &name);
-
-    bool isAvailable(const QString &type, const QString &name);
-    QObject *load(const QString &type, const QString &name);
-    QObject *create(const QString &type, const QString &name, QObject *parent = nullptr);
-};
+/// Return the expected name of a plugin, for use with QPluginLoader
+QString pluginFileName(const QString &type, const QString &name);
 
 }
 
