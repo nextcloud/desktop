@@ -18,6 +18,7 @@
 #include <QSharedPointer>
 
 #include "ocsynclib.h"
+#include "result.h"
 
 typedef struct csync_file_stat_s csync_file_stat_t;
 
@@ -80,7 +81,7 @@ public:
         WindowsCfApi,
     };
     static QString modeToString(Mode mode);
-    static bool modeFromString(const QString &str, Mode *mode);
+    static Optional<Mode> modeFromString(const QString &str);
 
 public:
     Vfs(QObject* parent = nullptr);

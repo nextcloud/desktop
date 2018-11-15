@@ -1237,7 +1237,9 @@ bool FolderDefinition::load(QSettings &settings, const QString &alias,
     folder->virtualFilesMode = Vfs::Off;
     QString vfsModeString = settings.value(QStringLiteral("virtualFilesMode")).toString();
     if (!vfsModeString.isEmpty()) {
-        if (!Vfs::modeFromString(vfsModeString, &folder->virtualFilesMode)) {
+        if (auto mode = Vfs::modeFromString(vfsModeString)) {
+            folder->virtualFilesMode = *mode;
+        } else {
             qCWarning(lcFolder) << "Unknown virtualFilesMode:" << vfsModeString << "assuming 'off'";
         }
     } else if (settings.value(QLatin1String("usePlaceholders")).toBool()) {
