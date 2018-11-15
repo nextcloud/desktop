@@ -87,7 +87,7 @@ Vfs::Mode OCC::bestAvailableVfsMode()
 
 Q_LOGGING_CATEGORY(lcPlugin, "plugins", QtInfoMsg)
 
-Vfs *OCC::createVfsFromPlugin(Vfs::Mode mode, QObject *parent)
+std::unique_ptr<Vfs> OCC::createVfsFromPlugin(Vfs::Mode mode)
 {
     auto name = modeToPluginName(mode);
     if (name.isEmpty())
@@ -107,7 +107,7 @@ Vfs *OCC::createVfsFromPlugin(Vfs::Mode mode, QObject *parent)
         return nullptr;
     }
 
-    auto vfs = qobject_cast<Vfs *>(factory->create(parent));
+    auto vfs = std::unique_ptr<Vfs>(qobject_cast<Vfs *>(factory->create(nullptr)));
     if (!vfs) {
         qCWarning(lcPlugin) << "Plugin" << pluginPath << "does not create a Vfs instance";
         return nullptr;

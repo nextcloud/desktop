@@ -28,6 +28,7 @@
 #include <QUuid>
 #include <set>
 #include <chrono>
+#include <memory>
 
 class QThread;
 class QSettings;
@@ -102,10 +103,8 @@ class Folder : public QObject
 
 public:
     /** Create a new Folder
-     *
-     * The vfs instance will be parented to this.
      */
-    Folder(const FolderDefinition &definition, AccountState *accountState, Vfs *vfs, QObject *parent = nullptr);
+    Folder(const FolderDefinition &definition, AccountState *accountState, std::unique_ptr<Vfs> vfs, QObject *parent = nullptr);
 
     ~Folder();
 
@@ -444,7 +443,7 @@ private:
     /**
      * The vfs mode instance (created by plugin) to use. Null means no vfs.
      */
-    Vfs *_vfs = nullptr;
+    QScopedPointer<Vfs> _vfs;
 };
 }
 

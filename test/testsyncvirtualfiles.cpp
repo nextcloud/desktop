@@ -62,7 +62,8 @@ void markForDehydration(FakeFolder &folder, const QByteArray &path)
 SyncOptions vfsSyncOptions()
 {
     SyncOptions options;
-    options._vfs = createVfsFromPlugin(Vfs::WithSuffix, nullptr);
+    // leak here
+    options._vfs = createVfsFromPlugin(Vfs::WithSuffix).release();
     return options;
 }
 
