@@ -25,6 +25,8 @@
 #include <QByteArray>
 #include <QFutureWatcher>
 
+#include <memory>
+
 class QFile;
 
 namespace OCC {
@@ -82,6 +84,7 @@ class OCSYNC_EXPORT ComputeChecksum : public QObject
     Q_OBJECT
 public:
     explicit ComputeChecksum(QObject *parent = 0);
+    ~ComputeChecksum();
 
     /**
      * Sets the checksum type to be used. The default is empty.
@@ -129,7 +132,7 @@ private:
     QByteArray _checksumType;
 
     // The convenience wrapper may open a file and must close it too
-    QFile *_file = nullptr;
+    std::unique_ptr<QFile> _file;
 
     // watcher for the checksum calculation thread
     QFutureWatcher<QByteArray> _watcher;
