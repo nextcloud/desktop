@@ -208,6 +208,10 @@ ComputeChecksum::ComputeChecksum(QObject *parent)
 {
 }
 
+ComputeChecksum::~ComputeChecksum()
+{
+}
+
 void ComputeChecksum::setChecksumType(const QByteArray &type)
 {
     _checksumType = type;
@@ -221,13 +225,13 @@ QByteArray ComputeChecksum::checksumType() const
 void ComputeChecksum::start(const QString &filePath)
 {
     qCInfo(lcChecksums) << "Computing" << checksumType() << "checksum of" << filePath << "in a thread";
-    _file = new QFile(filePath, this);
+    _file.reset(new QFile(filePath));
     if (!_file->open(QIODevice::ReadOnly)) {
         qCWarning(lcChecksums) << "Could not open file" << filePath << "for reading to compute a checksum" << _file->errorString();
         emit done(QByteArray(), QByteArray());
         return;
     }
-    start(_file);
+    start(_file.get());
 }
 
 void ComputeChecksum::start(QIODevice *device)
@@ -286,8 +290,7 @@ QByteArray ComputeChecksum::computeNow(QIODevice *device, const QByteArray &chec
 void ComputeChecksum::slotCalculationDone()
 {
     // Close the file and delete the instance
-    if (_file)
-        delete _file;
+    _file.reset(nullptr);
 
     QByteArray checksum = _watcher.future().result();
     if (!checksum.isNull()) {
