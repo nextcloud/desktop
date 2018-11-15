@@ -153,7 +153,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="357"/>
         <source>To protect your Cryptocraphic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>Şifreli kimliğiniz korunmak için 12 sözlük sözcüğünden oluşan bir anımsatıcı ile şifrelendi. Lütfen bu sözcükleri not ederek güvenli bir yerde saklayın. Bu bilgi hesabınıza başka aygıtlar (cep telefonu ya da bilgisayar) eklemek istediğinizde gerekir.</translation>
     </message>
 </context>
 <context>
@@ -580,12 +580,12 @@
     <message>
         <location filename="../src/gui/application.cpp" line="191"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation type="unfinished"/>
+        <translation>%1 üzerindeki yapılandırma dosyasına erişilirken bir sorun çıktı. Lütfen kullanıcı hesabınızın yapılandırma dosyasına erişme izinlerinin olduğundan emin olun.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="194"/>
         <source>Quit %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 Uygulamasından Çık</translation>
     </message>
 </context>
 <context>
@@ -1946,7 +1946,7 @@ güncelleyici başka izinler isteyebilir.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="56"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantıyı panoya kopyala</translation>
     </message>
 </context>
 <context>
@@ -1982,29 +1982,29 @@ güncelleyici başka izinler isteyebilir.</translation>
         <translation>Ekran paylaşımı, çevrimiçi görüşmeler ve web toplantıları</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="182"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="181"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
         <translation>Bu adres şifrelenmediğinden güvenli DEĞİL.
 Kullanmanız önerilmez.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="186"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="185"/>
         <source>This url is secure. You can use it.</source>
         <translation>Bu adres güvenli. Kullanabilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="225"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="224"/>
         <source>&amp;Next &gt;</source>
         <translation>&amp;Sonraki &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="283"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="282"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>Adres Geçersiz</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="405"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="404"/>
         <source>Could not load certificate. Maybe wrong password?</source>
         <translation>Sertifika yüklenemedi. Parola yanlış olabilir mi?</translation>
     </message>
@@ -2094,7 +2094,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="508"/>
         <source>creating folder on Nextcloud: %1</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud üzerinde klasör oluşturuluyor: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="524"/>
@@ -2836,7 +2836,7 @@ Kullanmanız önerilmez.</translation>
         <location filename="../src/gui/socketapi.cpp" line="457"/>
         <source>Share with %1</source>
         <comment>parameter is Nextcloud</comment>
-        <translation type="unfinished"/>
+        <translation>%1 ile paylaş</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="491"/>
@@ -3369,7 +3369,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="341"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Bu sürüm %1 tarafından hazırlanmıştır&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

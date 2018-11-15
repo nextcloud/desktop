@@ -1363,7 +1363,7 @@ Vertu viss um að ekkert annað forrit sé ekki að nota hana.</translation>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="49"/>
         <source>Server notifications that require attention.</source>
-        <translation type="unfinished"/>
+        <translation>Tilkynningar frá þjóni sem krefjast athugunar.</translation>
     </message>
 </context>
 <context>
@@ -1801,12 +1801,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 útgáfa %2 er tiltæk. Endurræstu forritið til að hefja uppfærslu.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>%1 útgáfa %2 er tiltæk. Notaðu uppfærslutól kerfisins til að setja hana upp.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
@@ -1884,7 +1884,7 @@ aðgerð til að leysa málið!&lt;/small&gt;&lt;/p&gt;</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mistókst að tengjast uppgefnu vistfangi örugga þjónsins. Hvað viltu gera í framhaldinu?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
@@ -1904,7 +1904,7 @@ aðgerð til að leysa málið!&lt;/small&gt;&lt;/p&gt;</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="34"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Mistókst að tengjast vistfangi örugga þjónsins á &lt;em&gt;%1&lt;/em&gt;. Hvað viltu gera í framhaldinu?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -1940,7 +1940,7 @@ aðgerð til að leysa málið!&lt;/small&gt;&lt;/p&gt;</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="56"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Afrita tengil á klippispjald</translation>
     </message>
 </context>
 <context>
@@ -1976,7 +1976,7 @@ aðgerð til að leysa málið!&lt;/small&gt;&lt;/p&gt;</translation>
         <translation>Skjádeiling, netfundir og vefráðstefnur</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="182"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="181"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
         <translation>Þessi tenging er EKKI örugg því hún er ekki dulrituð. 
@@ -1984,24 +1984,24 @@ Ekki er mælt með því að hún sé notuð.
 .</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="186"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="185"/>
         <source>This url is secure. You can use it.</source>
         <translation>Þessi slóð er örugg. Þú getur notað hana.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="225"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="224"/>
         <source>&amp;Next &gt;</source>
         <translation>&amp;Næsta &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="283"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="282"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>Ógild slóð</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="405"/>
+        <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="404"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation type="unfinished"/>
+        <translation>Gat ekki hlaðið inn skilríki. Kannski rangt lykilorð?</translation>
     </message>
 </context>
 <context>
@@ -2090,7 +2090,7 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="508"/>
         <source>creating folder on Nextcloud: %1</source>
-        <translation type="unfinished"/>
+        <translation>bý til möppu á Nextcloud: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="524"/>
@@ -2834,12 +2834,12 @@ Ekki er mælt með því að hún sé notuð.
         <location filename="../src/gui/socketapi.cpp" line="457"/>
         <source>Share with %1</source>
         <comment>parameter is Nextcloud</comment>
-        <translation type="unfinished"/>
+        <translation>Deila með %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="491"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>Deila í samhengisvalmynd</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="612"/>
@@ -3191,12 +3191,12 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="142"/>
         <source>Tried to create a folder that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>Reyndi að búa til möppu sem þegar er til staðar.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="145"/>
         <source>No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>Ekkert pláss er tiltækt á %1 þjóninum.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="154"/>
@@ -3221,17 +3221,17 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="486"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Skráin er á listanum yfir skrár sem á að hunsa.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="490"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Skráarheiti sem enda á punkti eru ekki nothæf á þessu skráakerfi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="500"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Skráarheiti sem innihalda stafinn &apos;%1&apos; eru ekki nothæf á þessu skráakerfi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="503"/>
@@ -3375,12 +3375,12 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="124"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation type="unfinished"/>
+        <translation>Þú hefur verið skráður út af %1 sem notandinn %2. Skráðu þig aftur inn</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="141"/>
         <source>Please login with the user: %1</source>
-        <translation type="unfinished"/>
+        <translation>Skráðu þig inn með notandanafninu: %1</translation>
     </message>
 </context>
 <context>
