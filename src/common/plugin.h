@@ -31,13 +31,13 @@ public:
     virtual QObject* create(QObject* parent) = 0;
 };
 
-template<class PLUGIN_CLASS>
+template<class PluginClass>
 class DefaultPluginFactory : public PluginFactory
 {
 public:
     QObject* create(QObject *parent) override
     {
-        return new PLUGIN_CLASS(parent);
+        return new PluginClass(parent);
     }
 };
 

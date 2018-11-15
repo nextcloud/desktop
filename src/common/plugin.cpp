@@ -33,9 +33,7 @@ PluginFactory::~PluginFactory() = default;
 QString PluginLoader::pluginName(const QString &type, const QString &name)
 {
     return QString(QLatin1String("%1sync_%2_%3"))
-            .arg(APPLICATION_EXECUTABLE)
-            .arg(type)
-            .arg(name);
+            .arg(APPLICATION_EXECUTABLE, type, name);
 }
 
 bool PluginLoader::isAvailable(const QString &type, const QString &name)
