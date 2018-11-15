@@ -97,9 +97,9 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="sharedWith">
+    <widget class="OCC::ElidedLabel" name="sharedWith">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+      <sizepolicy hsizetype="Ignored" vsizetype="Maximum">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -204,6 +204,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>OCC::ElidedLabel</class>
+   <extends>QLabel</extends>
+   <header>elidedlabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../client.qrc"/>
  </resources>

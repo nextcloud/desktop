@@ -371,10 +371,8 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
 {
     _ui->setupUi(this);
 
-    QString sharedWithText(share->getShareWith()->format());
-    QFontMetrics metrics(_ui->sharedWith->font());
-    QString elidedText = metrics.elidedText(sharedWithText, Qt::ElideRight, _ui->sharedWith->width());
-    _ui->sharedWith->setText(elidedText);
+    _ui->sharedWith->setElideMode(Qt::ElideRight);
+    _ui->sharedWith->setText(share->getShareWith()->format());
 
     // adds permissions
     // can edit permission
