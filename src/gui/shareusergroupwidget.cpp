@@ -187,6 +187,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
 
     auto newViewPort = new QWidget(scrollArea);
     auto layout = new QVBoxLayout(newViewPort);
+    layout->setContentsMargins(0, 0, 0, 0);
     QSize minimumSize = newViewPort->sizeHint();
     int x = 0;
 
