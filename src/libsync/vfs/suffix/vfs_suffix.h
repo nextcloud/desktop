@@ -21,13 +21,9 @@
 
 namespace OCC {
 
-class VfsSuffixPrivate;
-
 class VfsSuffix : public Vfs
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(VfsSuffix)
-    const QScopedPointer<VfsSuffixPrivate> d_ptr;
 
 public:
     explicit VfsSuffix(QObject *parent = nullptr);
