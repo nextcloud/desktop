@@ -42,20 +42,17 @@ QString Vfs::modeToString(Mode mode)
     return QStringLiteral("off");
 }
 
-bool Vfs::modeFromString(const QString &str, Mode *mode)
+Optional<Vfs::Mode> Vfs::modeFromString(const QString &str)
 {
     // Note: Strings are used for config and must be stable
-    *mode = Off;
     if (str == "off") {
-        return true;
+        return Off;
     } else if (str == "suffix") {
-        *mode = WithSuffix;
-        return true;
+        return WithSuffix;
     } else if (str == "wincfapi") {
-        *mode = WindowsCfApi;
-        return true;
+        return WindowsCfApi;
     }
-    return false;
+    return {};
 }
 
 static QString modeToPluginName(Vfs::Mode mode)
