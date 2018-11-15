@@ -21,13 +21,8 @@
 
 namespace OCC {
 
-class VfsSuffixPrivate
-{
-};
-
 VfsSuffix::VfsSuffix(QObject *parent)
     : Vfs(parent)
-    , d_ptr(new VfsSuffixPrivate)
 {
 }
 
