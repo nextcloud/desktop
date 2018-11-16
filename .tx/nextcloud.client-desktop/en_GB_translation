@@ -199,5 +199,6 @@ X-GNOME-Autostart-Delay=3
 
 # Translations
 Comment[en_GB]=@APPLICATION_NAME@ desktop synchronisation client
+Icon[en_GB]=@APPLICATION_ICON_NAME@
 Name[en_GB]=@APPLICATION_NAME@ desktop sync client 
 GenericName[en_GB]=Folder Sync
