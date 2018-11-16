@@ -292,39 +292,12 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="confirmPassword">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>18</width>
-          <height>26</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>18</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="autoFillBackground">
-         <bool>false</bool>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
+       <widget class="QToolButton" name="confirmPassword">
         <property name="icon">
          <iconset resource="../../client.qrc">
           <normaloff>:/client/resources/confirm.svg</normaloff>:/client/resources/confirm.svg</iconset>
         </property>
-        <property name="flat">
+        <property name="autoRaise">
          <bool>true</bool>
         </property>
        </widget>
@@ -413,33 +386,12 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="confirmExpirationDate">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>18</width>
-          <height>26</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>18</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
+       <widget class="QToolButton" name="confirmExpirationDate">
         <property name="icon">
          <iconset resource="../../client.qrc">
           <normaloff>:/client/resources/confirm.svg</normaloff>:/client/resources/confirm.svg</iconset>
         </property>
-        <property name="flat">
+        <property name="autoRaise">
          <bool>true</bool>
         </property>
        </widget>
