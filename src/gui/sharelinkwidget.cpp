@@ -58,17 +58,15 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     , _unshareLinkAction(nullptr)
 {
     _ui->setupUi(this);
+
+    QSizePolicy sp = _ui->shareLinkToolButton->sizePolicy();
+    sp.setRetainSizeWhenHidden(true);
+    _ui->shareLinkToolButton->setSizePolicy(sp);
     _ui->shareLinkToolButton->hide();
 
     //Is this a file or folder?
     QFileInfo fi(localPath);
     _isFile = fi.isFile();
-
-    // the following progress indicator widgets are added to layouts which makes them
-    // automatically deleted once the dialog dies.
-    _pi_indicator = new QProgressIndicator();
-    _ui->horizontalLayout->insertWidget(1, _pi_indicator, Qt::AlignCenter);
-    _ui->indicatorWidget->hide();
 
     connect(_ui->enableShareLink, &QCheckBox::toggled, this, &ShareLinkWidget::slotCreateOrDeleteShareLink);
     connect(_ui->lineEdit_password, &QLineEdit::returnPressed, this, &ShareLinkWidget::slotCreatePassword);
@@ -87,18 +85,17 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
         sharingPossible = false;
     }
 
-    if (!sharingPossible)
-        _ui->shareLinkWidget->hide();
-    else
-        _ui->shareLinkWidget->show();
+    _ui->createShareButton->setVisible(sharingPossible);
+    _ui->enableShareLink->setVisible(sharingPossible);
+    _ui->shareLinkToolButton->setVisible(sharingPossible);
 
     // Older servers don't support multiple public link shares
     if (!_account->capabilities().sharePublicLinkMultiple()) {
         _namesSupported = false;
     }
 
-    _ui->passwordShareProperty->hide();
-    _ui->expirationShareProperty->hide();
+    togglePasswordOptions(false);
+    toggleExpireDateOptions(false);
     _ui->calendar->setMinimumDate(QDate::currentDate().addDays(1));
 
     // check if the file is already inside of a synced folder
@@ -139,12 +136,12 @@ ShareLinkWidget::~ShareLinkWidget()
 }
 
 void ShareLinkWidget::toggleAnimation(bool start){
-    if(start && !_pi_indicator->isAnimated())
-        _pi_indicator->startAnimation();
-    else
-        _pi_indicator->stopAnimation();
-
-    _ui->indicatorWidget->setVisible(start);
+    if (start) {
+        if (!_ui->progressIndicator->isAnimated())
+            _ui->progressIndicator->startAnimation();
+    } else {
+        _ui->progressIndicator->stopAnimation();
+    }
 }
 
 void ShareLinkWidget::getShares()
@@ -231,7 +228,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         if(_linkShare->isPasswordSet()){
             _passwordProtectLinkAction->setChecked(true);
             _ui->lineEdit_password->setPlaceholderText("********");
-            _ui->passwordShareProperty->show();
+            showPasswordOptions(true);
         }
 
         // If password is enforced then don't allow users to disable it
@@ -247,7 +244,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         if(_linkShare->getExpireDate().isValid()){
             _ui->calendar->setDate(_linkShare->getExpireDate());
             _expirationDateLinkAction->setChecked(true);
-            _ui->expirationShareProperty->show();
+            showExpireDateOptions(true);
         }
 
 
@@ -401,7 +398,7 @@ void ShareLinkWidget::slotCreateShareRequiresPassword(const QString &message)
 {
     toggleAnimation(true);
 
-    _ui->passwordShareProperty->show();
+    showPasswordOptions(true);
     if (!message.isEmpty()) {
         _ui->errorLabel->setText(message);
         _ui->errorLabel->show();
@@ -412,9 +409,16 @@ void ShareLinkWidget::slotCreateShareRequiresPassword(const QString &message)
     togglePasswordOptions(true);
 }
 
+void ShareLinkWidget::showPasswordOptions(bool show)
+{
+    _ui->passwordLabel->setVisible(show);
+    _ui->lineEdit_password->setVisible(show);
+    _ui->confirmPassword->setVisible(show);
+}
+
 void ShareLinkWidget::togglePasswordOptions(bool enable)
 {
-    _ui->passwordShareProperty->setVisible(enable);
+    showPasswordOptions(enable);
 
     if(enable) {
         _ui->lineEdit_password->setFocus();
@@ -425,9 +429,17 @@ void ShareLinkWidget::togglePasswordOptions(bool enable)
     }
 }
 
+void ShareLinkWidget::showExpireDateOptions(bool show)
+{
+    _ui->expirationLabel->setVisible(show);
+    _ui->calendar->setVisible(show);
+    _ui->confirmExpirationDate->setVisible(show);
+}
+
 void ShareLinkWidget::toggleExpireDateOptions(bool enable)
 {
-    _ui->expirationShareProperty->setVisible(enable);
+    showExpireDateOptions(enable);
+
     if (enable) {
         const QDate date = QDate::currentDate().addDays(1);
         _ui->calendar->setDate(date);
