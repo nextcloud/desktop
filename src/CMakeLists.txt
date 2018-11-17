@@ -4,7 +4,11 @@ endif()
 
 set(synclib_NAME ${APPLICATION_EXECUTABLE}sync)
 
-find_package(Qt5 5.6 COMPONENTS Core Network Xml Concurrent WebEngineWidgets WebEngine REQUIRED)
+if (NOT BUILD_CMD_ONLY)
+find_package(Qt5 5.6 COMPONENTS Core Network Xml Concurrent Gui WebEngineWidgets WebEngine REQUIRED)
+else()
+find_package(Qt5 5.6 COMPONENTS Core Network Xml Concurrent Gui REQUIRED)
+endif()
 if (Qt5Core_VERSION VERSION_LESS 5.9.0)
 message(STATUS "For HTTP/2 support, compile with Qt 5.9 or higher.")
 endif()
@@ -47,7 +51,9 @@ include_directories(
 add_subdirectory(csync)
 add_subdirectory(libsync)
 if (NOT BUILD_LIBRARIES_ONLY)
-    add_subdirectory(gui)
+    if (NOT BUILD_CMD_ONLY)
+        add_subdirectory(gui)
+    endif()
     add_subdirectory(cmd)
 
     if (WITH_CRASHREPORTER)
