@@ -2,9 +2,6 @@
 <ui version="4.0">
  <class>OCC::ShareUserLine</class>
  <widget class="QWidget" name="OCC::ShareUserLine">
-  <property name="enabled">
-   <bool>true</bool>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,35 +11,17 @@
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+   <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="minimumSize">
-   <size>
-    <width>350</width>
-    <height>45</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>16777215</width>
-    <height>46</height>
-   </size>
-  </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,3,2,2,2">
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,2,2,2">
    <property name="spacing">
     <number>5</number>
-   </property>
-   <property name="sizeConstraint">
-    <enum>QLayout::SetFixedSize</enum>
    </property>
    <property name="leftMargin">
     <number>5</number>
@@ -70,29 +49,8 @@
        <height>40</height>
       </size>
      </property>
-     <property name="sizeIncrement">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <property name="acceptDrops">
-      <bool>false</bool>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="scaledContents">
-      <bool>false</bool>
-     </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <property name="indent">
-      <number>0</number>
      </property>
     </widget>
    </item>
@@ -104,38 +62,13 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>100</width>
-       <height>26</height>
-      </size>
-     </property>
      <property name="text">
       <string>User name</string>
      </property>
      <property name="textFormat">
       <enum>Qt::PlainText</enum>
      </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
     </widget>
-   </item>
-   <item>
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeType">
-      <enum>QSizePolicy::Expanding</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>50</width>
-       <height>15</height>
-      </size>
-     </property>
-    </spacer>
    </item>
    <item>
     <widget class="QCheckBox" name="permissionsEdit">
@@ -145,12 +78,6 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
      <property name="text">
       <string>can edit</string>
      </property>
@@ -158,21 +85,6 @@
    </item>
    <item>
     <widget class="QToolButton" name="permissionToolButton">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>26</width>
-       <height>26</height>
-      </size>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
      <property name="icon">
       <iconset resource="../../client.qrc">
        <normaloff>:/client/resources/more.svg</normaloff>:/client/resources/more.svg</iconset>
@@ -181,21 +93,6 @@
    </item>
    <item>
     <widget class="QToolButton" name="deleteShareButton">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="minimumSize">
-      <size>
-       <width>26</width>
-       <height>26</height>
-      </size>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
      <property name="icon">
       <iconset theme="user-trash">
        <normaloff>.</normaloff>.</iconset>
