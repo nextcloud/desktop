@@ -209,6 +209,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         }
     }
 
+    scrollArea->setFrameShape(x > 3 ? QFrame::StyledPanel : QFrame::NoFrame);
     scrollArea->setVisible(!shares.isEmpty());
     scrollArea->setFixedHeight(height);
     scrollArea->setWidget(newViewPort);
@@ -225,6 +226,7 @@ void ShareUserGroupWidget::slotAdjustScrollWidgetSize()
     if (count > 0 && count <= 3) {
         scrollArea->setFixedHeight(scrollArea->widget()->sizeHint().height());
     }
+    scrollArea->setFrameShape(count > 3 ? QFrame::StyledPanel : QFrame::NoFrame);
 }
 
 void ShareUserGroupWidget::slotPrivateLinkShare()
