@@ -3462,7 +3462,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1738"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>该文件在服务器上不可用</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="148"/>
