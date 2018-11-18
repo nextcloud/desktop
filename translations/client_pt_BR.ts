@@ -152,8 +152,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="357"/>
-        <source>To protect your Cryptocraphic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Para proteger sua Identidade Criptográfica, criptografamos com um mnemônico de 12 palavras. Por favor, anote e mantenha-as em segurança. Eles serão necessários para adicionar outros dispositivos à sua conta (como seu celular ou laptop).</translation>
+        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
