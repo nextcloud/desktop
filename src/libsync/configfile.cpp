@@ -842,11 +842,19 @@ void ConfigFile::setupDefaultExcludeFilePaths(ExcludedFiles &excludedFiles)
 {
     ConfigFile cfg;
     QString systemList = cfg.excludeFile(ConfigFile::SystemScope);
-    qCInfo(lcConfigFile) << "Adding system ignore list to csync:" << systemList;
-    excludedFiles.addExcludeFilePath(systemList);
-
     QString userList = cfg.excludeFile(ConfigFile::UserScope);
-    if (QFile::exists(userList)) {
+
+    if (!QFile::exists(userList)) {
+        qCInfo(lcConfigFile) << "User defined ignore list does not exist:" << userList;
+        if (!QFile::copy(systemList, userList)) {
+            qCInfo(lcConfigFile) << "Could not copy over default list to:" << userList;
+        }
+    }
+
+    if (!QFile::exists(userList)) {
+        qCInfo(lcConfigFile) << "Adding system ignore list to csync:" << systemList;
+        excludedFiles.addExcludeFilePath(systemList);
+    } else {
         qCInfo(lcConfigFile) << "Adding user defined ignore list to csync:" << userList;
         excludedFiles.addExcludeFilePath(userList);
     }
