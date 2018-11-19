@@ -291,18 +291,28 @@ void ActivityListModel::combineActivityLists()
     endInsertRows();
 }
 
+bool ActivityListModel::canFetchActivities() const {
+    return _accountState->isConnected() && _accountState->account()->capabilities().hasActivities();
+}
+
 void ActivityListModel::fetchMore(const QModelIndex &)
 {
-    if (_accountState->isConnected()) {
-        _activityLists = ActivityList();
+    _activityLists = ActivityList();
+    if (canFetchActivities()) {
         startFetchJob();
+    } else {
+        combineActivityLists();
     }
 }
 
 void ActivityListModel::slotRefreshActivity()
 {
     _activityLists.clear();
-    startFetchJob();
+    if (canFetchActivities()) {
+        startFetchJob();
+    } else {
+        combineActivityLists();
+    }
 }
 
 void ActivityListModel::slotRemoveAccount()

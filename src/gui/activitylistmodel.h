@@ -67,6 +67,7 @@ signals:
 private:
     void startFetchJob();
     void combineActivityLists();
+    bool canFetchActivities() const;
 
     ActivityList _activityLists;
     ActivityList _syncFileItemLists;

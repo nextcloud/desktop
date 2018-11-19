@@ -59,6 +59,9 @@ public:
     /// returns true if the capabilities are loaded already.
     bool isValid() const;
 
+    /// return true if the activity app is enabled
+    bool hasActivities() const;
+
     /**
      * Returns the checksum types the server understands.
      *
