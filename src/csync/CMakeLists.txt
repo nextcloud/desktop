@@ -67,7 +67,7 @@ target_include_directories(
   PUBLIC ${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/std
 )
 
-find_package(SQLite3 3.8.0 REQUIRED)
+find_package(SQLite3 3.9.0 REQUIRED)
 if (USE_OUR_OWN_SQLITE3)
     # make sure that the path for the local sqlite3 is before the system one
     target_include_directories("${csync_NAME}" BEFORE PRIVATE ${SQLITE3_INCLUDE_DIR})
