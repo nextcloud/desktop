@@ -124,7 +124,7 @@ public:
      * Particularly useful when switching off vfs mode or switching to a
      * different kind of vfs.
      */
-    static void wipeVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs *vfs);
+    static void wipeVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs);
 
 signals:
     // During update, before reconcile

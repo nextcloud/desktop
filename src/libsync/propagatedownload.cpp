@@ -360,7 +360,7 @@ void PropagateDownloadFile::start()
     _stopwatch.start();
 
     auto &syncOptions = propagator()->syncOptions();
-    auto vfs = syncOptions._vfs;
+    auto &vfs = syncOptions._vfs;
 
     // For virtual files just create the file and be done
     if (_item->_type == ItemTypeVirtualFileDehydration) {
@@ -371,17 +371,20 @@ void PropagateDownloadFile::start()
         propagator()->_journal->deleteFileRecord(_item->_file);
         QFile::remove(fn);
 
-        if (vfs && vfs->mode() == Vfs::WithSuffix) {
+        if (vfs->mode() == Vfs::WithSuffix) {
             // Normally new suffix-virtual files already have the suffix included in the path
             // but for dehydrations that isn't the case. Adjust it here.
             _item->_file.append(vfs->fileSuffix());
         }
     }
+    if (vfs->mode() == Vfs::Off && _item->_type == ItemTypeVirtualFile) {
+        qCWarning(lcPropagateDownload) << "ignored virtual file type of" << _item->_file;
+        _item->_type = ItemTypeFile;
+    }
     if (_item->_type == ItemTypeVirtualFile) {
         auto fn = propagator()->getFilePath(_item->_file);
         qCDebug(lcPropagateDownload) << "creating virtual file" << fn;
 
-        ASSERT(vfs);
         vfs->createPlaceholder(propagator()->_localDir, _item);
         updateMetadata(false);
         return;
@@ -998,9 +1001,7 @@ void PropagateDownloadFile::downloadFinished()
     }
 
     // Make the file a hydrated placeholder if possible
-    if (auto vfs = propagator()->syncOptions()._vfs) {
-        vfs->convertToPlaceholder(fn, _item);
-    }
+    propagator()->syncOptions()._vfs->convertToPlaceholder(fn, _item);
 
     FileSystem::setFileHidden(fn, false);
 

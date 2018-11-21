@@ -58,6 +58,13 @@ Optional<Vfs::Mode> Vfs::modeFromString(const QString &str)
     return {};
 }
 
+VfsOff::VfsOff(QObject *parent)
+    : Vfs(parent)
+{
+}
+
+VfsOff::~VfsOff() = default;
+
 static QString modeToPluginName(Vfs::Mode mode)
 {
     if (mode == Vfs::WithSuffix)
@@ -69,6 +76,8 @@ static QString modeToPluginName(Vfs::Mode mode)
 
 bool OCC::isVfsPluginAvailable(Vfs::Mode mode)
 {
+    if (mode == Vfs::Off)
+        return true;
     auto name = modeToPluginName(mode);
     if (name.isEmpty())
         return false;
@@ -89,6 +98,9 @@ Q_LOGGING_CATEGORY(lcPlugin, "plugins", QtInfoMsg)
 
 std::unique_ptr<Vfs> OCC::createVfsFromPlugin(Vfs::Mode mode)
 {
+    if (mode == Vfs::Off)
+        return std::unique_ptr<Vfs>(new VfsOff);
+
     auto name = modeToPluginName(mode);
     if (name.isEmpty())
         return nullptr;

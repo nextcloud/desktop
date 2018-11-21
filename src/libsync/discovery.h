@@ -62,9 +62,9 @@ public:
         , _queryServer(queryServer)
         , _queryLocal(queryLocal)
         , _discoveryData(data)
-
     {
     }
+
     void start();
     /** Start up to nbJobs, return the number of job started; emit finished() when done */
     int processSubJobs(int nbJobs);

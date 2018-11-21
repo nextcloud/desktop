@@ -119,10 +119,11 @@ Folder::Folder(const FolderDefinition &definition,
         _localDiscoveryTracker.data(), &LocalDiscoveryTracker::slotItemCompleted);
 
     // Potentially upgrade suffix vfs to windows vfs
+    ENFORCE(_vfs);
     if (_definition.virtualFilesMode == Vfs::WithSuffix && _definition.upgradeVfsMode) {
         if (auto winvfs = createVfsFromPlugin(Vfs::WindowsCfApi)) {
             // Wipe the existing suffix files from fs and journal
-            SyncEngine::wipeVirtualFiles(path(), _journal, _vfs.data());
+            SyncEngine::wipeVirtualFiles(path(), _journal, *_vfs);
 
             // Then switch to winvfs mode
             _vfs.reset(winvfs.release());
@@ -132,15 +133,13 @@ Folder::Folder(const FolderDefinition &definition,
     }
 
     // Initialize the vfs plugin
-    if (_definition.virtualFilesMode != Vfs::Off)
-        startVfs();
+    startVfs();
 }
 
 Folder::~Folder()
 {
     // TODO cfapi: unregister on wipe()? There should probably be a wipeForRemoval() where this cleanup is appropriate
-    if (_vfs)
-        _vfs->stop();
+    _vfs->stop();
 
     // Reset then engine first as it will abort and try to access members of the Folder
     _engine.reset();
@@ -246,7 +245,7 @@ bool Folder::isBusy() const
 
 bool Folder::isSyncRunning() const
 {
-    return _engine->isSyncRunning() || (_vfs && _vfs->isHydrating());
+    return _engine->isSyncRunning() || _vfs->isHydrating();
 }
 
 QString Folder::remotePath() const
@@ -609,27 +608,28 @@ void Folder::dehydrateFile(const QString &_relativepath)
 
 void Folder::setUseVirtualFiles(bool enabled)
 {
+    Vfs::Mode newMode = _definition.virtualFilesMode;
     if (enabled && _definition.virtualFilesMode == Vfs::Off) {
-        _definition.virtualFilesMode = bestAvailableVfsMode();
-
-        _vfs.reset(createVfsFromPlugin(_definition.virtualFilesMode).release());
-        startVfs();
-
-        _saveInFoldersWithPlaceholders = true;
+        newMode = bestAvailableVfsMode();
+    } else if (!enabled && _definition.virtualFilesMode != Vfs::Off) {
+        newMode = Vfs::Off;
     }
-    if (!enabled && _definition.virtualFilesMode != Vfs::Off) {
-        ENFORCE(_vfs);
 
+    if (newMode != _definition.virtualFilesMode) {
         // TODO: Must wait for current sync to finish!
-        SyncEngine::wipeVirtualFiles(path(), _journal, _vfs.data());
+        SyncEngine::wipeVirtualFiles(path(), _journal, *_vfs);
 
         _vfs->stop();
         _vfs->unregisterFolder();
-        _vfs.reset(nullptr);
 
-        _definition.virtualFilesMode = Vfs::Off;
+        _vfs.reset(createVfsFromPlugin(newMode).release());
+        startVfs();
+
+        _definition.virtualFilesMode = newMode;
+        if (newMode != Vfs::Off)
+            _saveInFoldersWithPlaceholders = true;
+        saveToSettings();
     }
-    saveToSettings();
 }
 
 void Folder::saveToSettings() const
@@ -817,7 +817,7 @@ void Folder::setSyncOptions()
     opt._newBigFolderSizeLimit = newFolderLimit.first ? newFolderLimit.second * 1000LL * 1000LL : -1; // convert from MB to B
     opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
     opt._moveFilesToTrash = cfgFile.moveToTrash();
-    opt._vfs = _vfs.data();
+    opt._vfs = _vfs;
 
     QByteArray chunkSizeEnv = qgetenv("OWNCLOUD_CHUNK_SIZE");
     if (!chunkSizeEnv.isEmpty()) {

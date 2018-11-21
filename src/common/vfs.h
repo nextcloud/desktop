@@ -91,7 +91,7 @@ public:
 
     virtual Mode mode() const = 0;
 
-    /// For WithSuffix modes: what's the suffix (including the dot)?
+    /// For WithSuffix modes: the suffix (including the dot)
     virtual QString fileSuffix() const = 0;
 
 
@@ -156,6 +156,35 @@ signals:
     void beginHydrating();
     /// Emitted when the hydration ends
     void doneHydrating();
+};
+
+/// Implementation of Vfs for Vfs::Off mode - does nothing
+class OCSYNC_EXPORT VfsOff : public Vfs
+{
+    Q_OBJECT
+
+public:
+    VfsOff(QObject* parent = nullptr);
+    virtual ~VfsOff();
+
+    Mode mode() const override { return Vfs::Off; }
+
+    QString fileSuffix() const override { return QString(); }
+
+    void registerFolder(const VfsSetupParams &) override {}
+    void start(const VfsSetupParams &) override {}
+    void stop() override {}
+    void unregisterFolder() override {}
+
+
+    bool isHydrating() const override { return false; }
+
+    bool updateMetadata(const QString &, time_t, quint64, const QByteArray &, QString *) override { return true; }
+    void createPlaceholder(const QString &, const SyncFileItemPtr &) override {}
+    void convertToPlaceholder(const QString &, const SyncFileItemPtr &) override {}
+
+    bool isDehydratedPlaceholder(const QString &) override { return false; }
+    bool statTypeVirtualFile(csync_file_stat_t *, void *) override { return false; }
 };
 
 /// Check whether the plugin for the mode is available.

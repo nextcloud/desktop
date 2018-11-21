@@ -122,7 +122,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
 
   // Override type for virtual files if desired
   if (vfs) {
-      // Directly modifiest file_stat->type.
+      // Directly modifies file_stat->type.
       // We can ignore the return value since we're done here anyway.
       vfs->statTypeVirtualFile(file_stat.get(), nullptr);
   }

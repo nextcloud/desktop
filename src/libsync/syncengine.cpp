@@ -477,12 +477,10 @@ void SyncEngine::startSync()
 
     _lastLocalDiscoveryStyle = _localDiscoveryStyle;
 
-    if (_syncOptions._vfs && _syncOptions._vfs->mode() == Vfs::WithSuffix) {
-        if (_syncOptions._vfs->fileSuffix().isEmpty()) {
-            syncError(tr("Using virtual files with suffix, but suffix is not set"));
-            finalize(false);
-            return;
-        }
+    if (_syncOptions._vfs->mode() == Vfs::WithSuffix && _syncOptions._vfs->fileSuffix().isEmpty()) {
+        syncError(tr("Using virtual files with suffix, but suffix is not set"));
+        finalize(false);
+        return;
     }
 
     bool ok;
@@ -938,7 +936,7 @@ bool SyncEngine::shouldDiscoverLocally(const QString &path) const
     return false;
 }
 
-void SyncEngine::wipeVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs *vfs)
+void SyncEngine::wipeVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs)
 {
     qCInfo(lcEngine) << "Wiping virtual files inside" << localPath;
     journal.getFilesBelowPath(QByteArray(), [&](const SyncJournalFileRecord &rec) {
@@ -951,7 +949,7 @@ void SyncEngine::wipeVirtualFiles(const QString &localPath, SyncJournalDb &journ
         // If the local file is a dehydrated placeholder, wipe it too.
         // Otherwise leave it to allow the next sync to have a new-new conflict.
         QString localFile = localPath + rec._path;
-        if (QFile::exists(localFile) && vfs && vfs->isDehydratedPlaceholder(localFile)) {
+        if (QFile::exists(localFile) && vfs.isDehydratedPlaceholder(localFile)) {
             qCDebug(lcEngine) << "Removing local dehydrated placeholder" << rec._path;
             QFile::remove(localFile);
         }

@@ -454,9 +454,9 @@ private:
     QScopedPointer<LocalDiscoveryTracker> _localDiscoveryTracker;
 
     /**
-     * The vfs mode instance (created by plugin) to use. Null means no vfs.
+     * The vfs mode instance (created by plugin) to use. Never null.
      */
-    QScopedPointer<Vfs> _vfs;
+    QSharedPointer<Vfs> _vfs;
 };
 }
 

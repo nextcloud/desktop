@@ -62,8 +62,7 @@ void markForDehydration(FakeFolder &folder, const QByteArray &path)
 SyncOptions vfsSyncOptions()
 {
     SyncOptions options;
-    // leak here
-    options._vfs = createVfsFromPlugin(Vfs::WithSuffix).release();
+    options._vfs.reset(createVfsFromPlugin(Vfs::WithSuffix).release());
     return options;
 }
 
@@ -435,7 +434,7 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
 
         // Switch off new files becoming virtual files
-        syncOptions._vfs = nullptr;
+        syncOptions._vfs.reset(new VfsOff);
         fakeFolder.syncEngine().setSyncOptions(syncOptions);
 
         // A sync that doesn't do remote discovery will wipe the placeholder, but not redownload
@@ -772,7 +771,7 @@ private slots:
 
         // Now wipe the virtuals
 
-        SyncEngine::wipeVirtualFiles(fakeFolder.localPath(), fakeFolder.syncJournal(), fakeFolder.syncEngine().syncOptions()._vfs);
+        SyncEngine::wipeVirtualFiles(fakeFolder.localPath(), fakeFolder.syncJournal(), *fakeFolder.syncEngine().syncOptions()._vfs);
 
         QVERIFY(!fakeFolder.currentLocalState().find("f1.owncloud"));
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1.owncloud"));
