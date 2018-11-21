@@ -1237,8 +1237,9 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
     settings.setValue(QLatin1String(versionC), maxSettingsVersion());
 
     settings.setValue(QStringLiteral("virtualFilesMode"), Vfs::modeToString(folder.virtualFilesMode));
-    if (folder.virtualFilesMode == Vfs::WithSuffix)
-        settings.setValue(QLatin1String("usePlaceholders"), true); // to support older versions
+
+    // to support older versions: there usePlaceholders means suffix placeholders
+    settings.setValue(QLatin1String("usePlaceholders"), folder.virtualFilesMode == Vfs::WithSuffix);
 
     // Happens only on Windows when the explorer integration is enabled.
     if (!folder.navigationPaneClsid.isNull())
