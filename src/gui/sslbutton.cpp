@@ -141,7 +141,7 @@ QMenu *SslButton::buildCertMenu(QMenu *parent, const QSslCertificate &cert,
 
     // create label first
     QLabel *label = new QLabel(parent);
-    label->setStyleSheet(QLatin1String("QLabel { padding: 8px; background-color: #fff; }"));
+    label->setStyleSheet(QLatin1String("QLabel { padding: 8px; }"));
     label->setTextFormat(Qt::RichText);
     label->setText(details);
 
