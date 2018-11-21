@@ -16,6 +16,7 @@
 
 #include "owncloudlib.h"
 #include <QString>
+#include <QSharedPointer>
 #include <chrono>
 #include "common/vfs.h"
 
@@ -26,6 +27,10 @@ namespace OCC {
  */
 struct SyncOptions
 {
+    SyncOptions()
+        : _vfs(new VfsOff)
+    {}
+
     /** Maximum size (in Bytes) a folder can have without asking for confirmation.
      * -1 means infinite */
     qint64 _newBigFolderSizeLimit = -1;
@@ -36,8 +41,8 @@ struct SyncOptions
     /** If remotely deleted files are needed to move to trash */
     bool _moveFilesToTrash = false;
 
-    /** Create a virtual file for new files instead of downloading */
-    Vfs *_vfs = nullptr;
+    /** Create a virtual file for new files instead of downloading. May not be null */
+    QSharedPointer<Vfs> _vfs;
 
     /** The initial un-adjusted chunk size in bytes for chunked uploads, both
      * for old and new chunking algorithm, which classifies the item to be chunked

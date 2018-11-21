@@ -399,8 +399,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             return;
         }
         // Turn new remote files into virtual files if the option is enabled.
-        auto vfs = _discoveryData->_syncOptions._vfs;
-        if (!localEntry.isValid() && vfs && item->_type == ItemTypeFile) {
+        auto &vfs = _discoveryData->_syncOptions._vfs;
+        if (!localEntry.isValid() && vfs->mode() != Vfs::Off && item->_type == ItemTypeFile) {
             item->_type = ItemTypeVirtualFile;
             if (isVfsWithSuffix())
                 addVirtualFileSuffix(path._original);
@@ -1181,8 +1181,7 @@ void ProcessDirectoryJob::dbError()
 
 void ProcessDirectoryJob::addVirtualFileSuffix(QString &str) const
 {
-    if (auto vfs = _discoveryData->_syncOptions._vfs)
-        str.append(vfs->fileSuffix());
+    str.append(_discoveryData->_syncOptions._vfs->fileSuffix());
 }
 
 bool ProcessDirectoryJob::hasVirtualFileSuffix(const QString &str) const
@@ -1281,7 +1280,7 @@ bool ProcessDirectoryJob::runLocalQuery()
         return false;
     }
     errno = 0;
-    while (auto dirent = csync_vio_local_readdir(dh, _discoveryData->_syncOptions._vfs)) {
+    while (auto dirent = csync_vio_local_readdir(dh, _discoveryData->_syncOptions._vfs.data())) {
         if (dirent->type == ItemTypeSkip)
             continue;
         LocalInfo i;
@@ -1320,8 +1319,7 @@ bool ProcessDirectoryJob::runLocalQuery()
 
 bool ProcessDirectoryJob::isVfsWithSuffix() const
 {
-    auto vfs = _discoveryData->_syncOptions._vfs;
-    return vfs && vfs->mode() == Vfs::WithSuffix;
+    return _discoveryData->_syncOptions._vfs->mode() == Vfs::WithSuffix;
 }
 
 }

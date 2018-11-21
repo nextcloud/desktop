@@ -77,7 +77,7 @@ bool DiscoveryPhase::isInSelectiveSyncBlackList(const QString &path) const
 void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePermissions remotePerm,
     std::function<void(bool)> callback)
 {
-    if (_syncOptions._confirmExternalStorage && !_syncOptions._vfs
+    if (_syncOptions._confirmExternalStorage && _syncOptions._vfs->mode() == Vfs::Off
         && remotePerm.hasPermission(RemotePermissions::IsMounted)) {
         // external storage.
 
@@ -100,7 +100,7 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
     }
 
     auto limit = _syncOptions._newBigFolderSizeLimit;
-    if (limit < 0 || _syncOptions._vfs) {
+    if (limit < 0 || _syncOptions._vfs->mode() != Vfs::Off) {
         // no limit, everything is allowed;
         return callback(false);
     }

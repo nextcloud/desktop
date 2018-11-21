@@ -285,7 +285,7 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
             }
 
             auto vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode);
-            if (!vfs && folderDefinition.virtualFilesMode != Vfs::Off) {
+            if (!vfs) {
                 // TODO: Must do better error handling
                 qFatal("Could not load plugin");
             }
@@ -994,7 +994,7 @@ Folder *FolderMan::addFolder(AccountState *accountState, const FolderDefinition 
     }
 
     auto vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode);
-    if (!vfs && folderDefinition.virtualFilesMode != Vfs::Off) {
+    if (!vfs) {
         qCWarning(lcFolderMan) << "Could not load plugin for mode" << folderDefinition.virtualFilesMode;
         return 0;
     }

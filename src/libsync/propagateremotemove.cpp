@@ -90,8 +90,8 @@ void PropagateRemoteMove::start()
 
     QString source = propagator()->_remoteFolder + _item->_file;
     QString destination = QDir::cleanPath(propagator()->account()->davUrl().path() + propagator()->_remoteFolder + _item->_renameTarget);
-    auto vfs = propagator()->syncOptions()._vfs;
-    if (vfs && vfs->mode() == Vfs::WithSuffix
+    auto &vfs = propagator()->syncOptions()._vfs;
+    if (vfs->mode() == Vfs::WithSuffix
         && (_item->_type == ItemTypeVirtualFile || _item->_type == ItemTypeVirtualFileDownload)) {
         const auto suffix = vfs->fileSuffix();
         ASSERT(source.endsWith(suffix) && destination.endsWith(suffix));
