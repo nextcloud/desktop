@@ -4,17 +4,17 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="107"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Проверавам измене у „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="129"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизујем %1 од %2 (преостало %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="134"/>
@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="403"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation>Сервер је одговорио &quot;%1 %2&quot; на &quot;%3 %4&quot;</translation>
+        <translation>Сервер је одговорио „%1 %2“ на „%3 %4“</translation>
     </message>
 </context>
 <context>
@@ -580,7 +580,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="191"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation type="unfinished"/>
+        <translation>Догодила се грешка приликом учитавања фајла са подешавањима са %1. Проверите да ли корисник има приступ овом фајлу.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="194"/>
@@ -624,7 +624,7 @@
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="993"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Унесите Вашу лозинку за шифровање са краја на крај:&lt;br&gt;&lt;br&gt;Корисник: %2&lt;br&gt;Налог: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1001"/>
@@ -740,32 +740,32 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="383"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 и још %n други фајл је ажуриран.</numerusform><numerusform>%1 и још %n друга фајла су ажурирани.</numerusform><numerusform>%1 и још %n других фајлова су ажурирани.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="390"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 је преименован у %2, а још %n фајл је такође преименован.</numerusform><numerusform>%1 је преименован у %2, а још %n фајла су такође преименована.</numerusform><numerusform>%1 је преименован у %2, а још %n фајлова је такође преименовано.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="397"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 је померен у %2, а још %n фајл је такође померен.</numerusform><numerusform>%1 је померен у %2, а још %n фајла су такође померена.</numerusform><numerusform>%1 је померен у %2, а још %n фајлова је такође померено.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="404"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 и још %n фајл имају конфликте.</numerusform><numerusform>%1 и још %n друга фајла имају конфликте.</numerusform><numerusform>%1 и још %n других фајлова имају конфликте.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="406"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation type="unfinished"/>
+        <translation>%1 има конфликт приликом синхронизације. Проверите конфликтни фајл!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="411"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 и још %n фајл није синхронизован због грешке. Погледајте записник за детаље.</numerusform><numerusform>%1 и још %n фајла нису синхронизовани због грешке. Погледајте записник за детаље.</numerusform><numerusform>%1 и још %n фајлова нису синхронизовани због грешке. Погледајте записник за детаље.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="413"/>
@@ -922,7 +922,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1220"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизација је била успешна, има неразрешених конфликата.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1222"/>
@@ -967,17 +967,17 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1318"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Већ постоји синхронизација са сервера у ову локалну фасциклу. Одаберите другу локалну фасциклу!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1298"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Локална фасцикла %1 већ садржи фасциклу која се користи за синхронизацију. Одаберите неку другу!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1304"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>Локална фасцикла %1 је већ унутар фасцикле која се користи за синхронизацију. Одаберите неку другу!</translation>
     </message>
 </context>
 <context>
@@ -990,7 +990,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="255"/>
         <source>Synchronized with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Синхронизовано са локалном фасциклом</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="302"/>
@@ -1020,7 +1020,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="186"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Грешка у учитавању листе фолдера са сервера.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="237"/>
@@ -1081,22 +1081,22 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Проверавам измене удаљено у „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="923"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Проверавам измене локално у „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
         <source>↓ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↓ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>↑ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
@@ -1135,7 +1135,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
         <source>Waiting for %n other folder(s)...</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Чекам на преосталу %n фасциклу...</numerusform><numerusform>Чекам на преостале %n фасцикле...</numerusform><numerusform>Чекам на преосталих %n фасцикли...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1108"/>
@@ -1276,7 +1276,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Правно обавештење</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
@@ -1286,12 +1286,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="72"/>
         <source>For System Tray</source>
-        <translation type="unfinished"/>
+        <translation>За системску палету</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Прикажи &amp;обавештења са сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="163"/>
@@ -1301,7 +1301,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="195"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Питај за потврду пре синхронизације фасцикли већих од</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="215"/>
@@ -1312,7 +1312,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="239"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Питај за потврду пре синхронизације спољашњих складишта</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
@@ -1337,7 +1337,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="267"/>
         <source>S&amp;how crash reporter</source>
-        <translation type="unfinished"/>
+        <translation>П&amp;рикажи извештавач о грешкама</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="20"/>
@@ -1358,7 +1358,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="49"/>
         <source>Server notifications that require attention.</source>
-        <translation type="unfinished"/>
+        <translation>Обавештења са сервера која захтевају пажњу.</translation>
     </message>
 </context>
 <context>
@@ -1366,7 +1366,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="520"/>
         <source>Sharing error</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом дељења</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="521"/>
@@ -1429,7 +1429,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="126"/>
         <source>Remove all</source>
-        <translation type="unfinished"/>
+        <translation>Обриши све</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="93"/>
@@ -1484,12 +1484,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Дијалог</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="26"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Правно обавештење</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="36"/>
@@ -1499,7 +1499,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.ui" line="58"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Затвори</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="27"/>
@@ -2042,7 +2042,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>The server reported the following error:</source>
-        <translation type="unfinished"/>
+        <translation>Сервер је пријавио следећу грешку:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -2191,7 +2191,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="972"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом упису мета података у базу података</translation>
     </message>
 </context>
 <context>
@@ -2214,7 +2214,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="488"/>
         <source>Free space on disk is less than %1</source>
-        <translation type="unfinished"/>
+        <translation>Слободан простор на диску је мањи од %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="602"/>
@@ -2244,7 +2244,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="938"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом упису мета података у базу података</translation>
     </message>
 </context>
 <context>
@@ -2280,7 +2280,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="203"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом упису мета података у базу података</translation>
     </message>
 </context>
 <context>
@@ -2312,7 +2312,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом упису мета података у базу података</translation>
     </message>
 </context>
 <context>
@@ -2333,7 +2333,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="151"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом упису мета података у базу података</translation>
     </message>
 </context>
 <context>
@@ -2347,7 +2347,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagateremotemove.cpp" line="166"/>
         <location filename="../src/libsync/propagateremotemove.cpp" line="172"/>
         <source>Error writing metadata to the database</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом упису мета података у базу података</translation>
     </message>
 </context>
 <context>
@@ -2820,7 +2820,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="625"/>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
         <source>Share...</source>
-        <translation type="unfinished"/>
+        <translation>Подели...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
@@ -3075,7 +3075,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="166"/>
         <source>Error while reading folder.</source>
-        <translation type="unfinished"/>
+        <translation>Грешка приликом учитавања фасцикле</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="242"/>
@@ -3156,7 +3156,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="139"/>
         <source>File or directory not found:</source>
-        <translation type="unfinished"/>
+        <translation>Датотека или директоријум нису пронађени:</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="142"/>
@@ -3438,7 +3438,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="233"/>
         <source>Unsupported Server Version</source>
-        <translation type="unfinished"/>
+        <translation>Неподржана верзија сервера</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="234"/>
@@ -3529,7 +3529,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>New account...</source>
-        <translation type="unfinished"/>
+        <translation>Нови налог...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="794"/>
@@ -3782,7 +3782,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/utility.cpp" line="443"/>
         <source>in the future</source>
-        <translation type="unfinished"/>
+        <translation>у будућности</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="437"/>
@@ -3807,7 +3807,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/utility.cpp" line="458"/>
         <source>now</source>
-        <translation type="unfinished"/>
+        <translation>сада</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="460"/>
