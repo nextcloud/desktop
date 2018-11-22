@@ -1740,7 +1740,7 @@ Les fichiers de log seront écrits dans %1</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="389"/>
         <source>Get update</source>
-        <translation>Obtenir la mise à jour</translation>
+        <translation>Télécharger la version</translation>
     </message>
 </context>
 <context>
