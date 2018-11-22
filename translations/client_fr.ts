@@ -153,7 +153,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="357"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>Pour protéger votre identité cryptographique, nous la cryptons avec une mnémonique de 12 mots du dictionnaire. Veuillez les noter et les garder en sécurité. Ils seront nécessaires pour ajouter d’autres appareils à votre compte (comme votre téléphone portable ou votre ordinateur portable).</translation>
     </message>
 </context>
 <context>
@@ -1635,7 +1635,7 @@ Les journaux seront écrits dans %1.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="354"/>
         <source>Get update</source>
-        <translation>Obtenir la mise à jour</translation>
+        <translation>Télécharger la version</translation>
     </message>
 </context>
 <context>
