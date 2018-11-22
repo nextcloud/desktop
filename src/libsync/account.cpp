@@ -294,7 +294,7 @@ QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, 
 
 SimpleNetworkJob *Account::sendRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
 {
-    auto job = new SimpleNetworkJob(sharedFromThis(), this);
+    auto job = new SimpleNetworkJob(sharedFromThis());
     job->startRequest(verb, url, req, data);
     return job;
 }
@@ -621,7 +621,7 @@ void Account::fetchDirectEditors(const QUrl &directEditingURL, const QString &di
     if (!directEditingURL.isEmpty() &&
         (directEditingETag.isEmpty() || directEditingETag != _lastDirectEditingETag)) {
             // Fetch the available editors and their mime types
-            auto *job = new JsonApiJob(sharedFromThis(), QLatin1String("ocs/v2.php/apps/files/api/v1/directEditing"), this);
+            auto *job = new JsonApiJob(sharedFromThis(), QLatin1String("ocs/v2.php/apps/files/api/v1/directEditing"));
             QObject::connect(job, &JsonApiJob::jsonReceived, this, &Account::slotDirectEditingRecieved);
             job->start();
     }
