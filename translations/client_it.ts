@@ -354,7 +354,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="651"/>
         <source>%1 of %2 in use</source>
-        <translation>%1% di %2 in uso</translation>
+        <translation>%1 di %2 in uso</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="660"/>
