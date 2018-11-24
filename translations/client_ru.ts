@@ -29,7 +29,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="144"/>
         <source>Syncing %1</source>
-        <translation>Синхронизация %1</translation>
+        <translation>Синхронизация «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="186"/>
@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="403"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation>Сервер ответил от &quot;%1 %2&quot; до &quot;%3 %4&quot;</translation>
+        <translation>Сервер ответил от «%1 %2» до «%3 %4»</translation>
     </message>
 </context>
 <context>
@@ -268,7 +268,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="672"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
-        <translation>&lt;p&gt;Не удалось создать локальную папку: &lt;i&gt;%1&lt;/i&gt;.</translation>
+        <translation>&lt;p&gt;Не удалось создать локальную папку: &lt;i&gt;«%1»&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="725"/>
@@ -298,12 +298,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="931"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation>%1 как &lt;i&gt;%2&lt;/i&gt;</translation>
+        <translation>%1 под именем &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="937"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation>Сервер версии %1 устарел и не поддерживается! Продолжайте на свой страх и риск.</translation>
+        <translation>Сервер версии %1 устарел и не поддерживается. Продолжайте на свой страх и риск.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="939"/>
@@ -405,12 +405,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="891"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>%1 (%3%) из %2 используется. Некоторые папки, включая сетевые или общие, могут иметь свои собственные ограничения.</translation>
+        <translation>Используется %1 (%3%) из %2. Некоторые папки, включая сетевые или общие, могут иметь свои собственные ограничения.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="892"/>
         <source>%1 of %2 in use</source>
-        <translation>%1 из %2 используется</translation>
+        <translation>Используется %1 из %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="901"/>
@@ -598,7 +598,7 @@
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation>Введите имя пользователя и пароль для &apos;%1&apos; в %2.</translation>
+        <translation>Введите имя пользователя и пароль для «1» на %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -951,7 +951,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1240"/>
         <source>%1 (Sync is paused)</source>
-        <translation>%! (синхронизация приостановлена)</translation>
+        <translation>%1 (синхронизация приостановлена)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1248"/>
@@ -1050,19 +1050,19 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="965"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
-        <translation>, &apos;%1&apos;</translation>
+        <translation>, «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="968"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
-        <translation>&apos;%1&apos;</translation>
+        <translation>«%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation>Синхронизация %1</translation>
+        <translation>Синхронизация «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="994"/>
@@ -1124,12 +1124,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1047"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>%1 из %2, файл %3 из %4</translation>
+        <translation>%1 из %2, %3 из %4 файлов(а)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1054"/>
         <source>file %1 of %2</source>
-        <translation>файл %1 из %2</translation>
+        <translation>%1 из %2 файлов(а)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1100"/>
@@ -1231,7 +1231,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="449"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Каталог &lt;i&gt;%1&lt;/i&gt; уже настроен для синхронизации, и он является родительским для каталога &lt;i&gt;%2&lt;/i&gt;.</translation>
+        <translation>Каталог &lt;i&gt;«%1»&lt;/i&gt; уже настроен для синхронизации, и он является родительским для каталога &lt;i&gt;«%2»&lt;/i&gt;.</translation>
     </message>
 </context>
 <context>
@@ -1851,12 +1851,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="156"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation>%1 каталог &apos;%2&apos; синхронизирован с локальным каталогом &apos;%3&apos;</translation>
+        <translation>%1 каталог «%2» синхронизирован с локальной папкой «%3»</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="159"/>
         <source>Sync the folder &apos;%1&apos;</source>
-        <translation>Синхронизация папки &apos;%1&apos;</translation>
+        <translation>Синхронизация папки «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="164"/>
@@ -2094,12 +2094,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="524"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation>Удалённый каталог %1 успешно создан.</translation>
+        <translation>Папка «%1» на сервере успешно создана.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="526"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation>Удалённый каталог %1 уже существует. Подключение к нему для синхронизации.</translation>
+        <translation>Папка «%1» уже существует на сервере. Выполняется подключение для синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="528"/>
@@ -2131,7 +2131,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="564"/>
         <source>Successfully connected to %1!</source>
-        <translation>Соединение с  %1 установлено успешно!</translation>
+        <translation>Соединение с %1 успешно установлено.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="571"/>
@@ -2151,7 +2151,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="633"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Локальный каталог синхронизации %1 успешно создан!&lt;/b&gt;&lt;/font&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Локальная папка синхронизации «%1»  успешно создана.&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
@@ -2221,7 +2221,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="488"/>
         <source>Free space on disk is less than %1</source>
-        <translation>Свободное место на диске меньше, чем %1</translation>
+        <translation>Свободного места на диске меньше чем %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="602"/>
@@ -2236,12 +2236,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="662"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
-        <translation>Скачанный файл пуст, хотя сервер заявил, что он должен быть %1.</translation>
+        <translation>Скачанный файл пуст, хотя сервер сообщил, что его размер должен составлять %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="847"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation>Файл «%1» не может быть сохранён из-за локального конфликта имён!</translation>
+        <translation>Файл «%1» не может быть сохранён по причине локального конфликта имён.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="882"/>
@@ -3732,7 +3732,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="66"/>
         <source>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Host your own server&lt;/span&gt;&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Развернуть собственный сервер&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="143"/>
