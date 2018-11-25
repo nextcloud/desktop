@@ -35,6 +35,10 @@ void SyncWrapper::writeFileAtPath(const QString path){
     sync(removeSlash(path), CSYNC_INSTRUCTION_NEW);
 }
 
+void SyncWrapper::updateFileTree(const QString path){
+    _folder->updateLocalFileTree(removeSlash(path), CSYNC_INSTRUCTION_SYNC);
+}
+
 void SyncWrapper::sync(const QString path, csync_instructions_e instruction){
     int result = 1;
     if(_syncJournalDb->getSyncMode(path) == SyncJournalDb::SyncMode::SYNCMODE_ONLINE){

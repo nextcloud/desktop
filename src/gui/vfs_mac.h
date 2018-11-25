@@ -565,6 +565,7 @@ signals:
     void openFile(const QString path);
     void releaseFile(const QString path);
     void writeFile(const QString path);
+    void addToFileTree(const QString path);
 };
 
 #endif
