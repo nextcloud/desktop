@@ -107,6 +107,7 @@ VfsMac::VfsMac(QString rootPath, bool isThreadSafe, OCC::AccountState *accountSt
     connect(this, &VfsMac::openFile, _syncWrapper, &OCC::SyncWrapper::openFileAtPath, Qt::DirectConnection);
     connect(this, &VfsMac::releaseFile, _syncWrapper, &OCC::SyncWrapper::releaseFileAtPath, Qt::DirectConnection);
     connect(this, &VfsMac::writeFile, _syncWrapper, &OCC::SyncWrapper::writeFileAtPath, Qt::DirectConnection);
+    connect(this, &VfsMac::addToFileTree, _syncWrapper, &OCC::SyncWrapper::updateFileTree, Qt::DirectConnection);
     connect(_syncWrapper, &OCC::SyncWrapper::syncFinish, this, &VfsMac::slotSyncFinish, Qt::DirectConnection);
 }
 
@@ -688,16 +689,13 @@ bool VfsMac::openFileAtPath(QString path, int mode, QVariant &userData, QVariant
 
 void VfsMac::releaseFileAtPath(QString path, QVariant userData)
 {
-//    struct fuse_context *context = fuse_get_context();
-//    QString nameBuffer = QString::fromLatin1(getProcessName(context->pid));
-//    qDebug() << "JJDCname: " << nameBuffer;
-//    if(nameBuffer != "Finder" && nameBuffer != "QuickLookSatellite" && nameBuffer != "mds")
-//    {
-//        _mutex.lock();
-//        emit releaseFile(path);
-//        _syncCondition.wait(&_mutex);
-//        _mutex.unlock();
-//    }
+    struct fuse_context *context = fuse_get_context();
+    QString nameBuffer = QString::fromLatin1(getProcessName(context->pid));
+    qDebug() << "JJDCname: " << nameBuffer;
+    if(nameBuffer == "Finder")
+    {
+        emit addToFileTree(path);
+    }
 
     long num = userData.toLongLong();
     int fd = num;
