@@ -327,6 +327,62 @@ private slots:
         QVERIFY(checkElements());
     }
 
+    void testPinState()
+    {
+        auto make = [&](const QByteArray &path, PinState state) {
+            _db.setPinStateForPath(path, state);
+        };
+        auto get = [&](const QByteArray &path) {
+            return _db.pinStateForPath(path);
+        };
+
+        // Make a thrice-nested setup
+        make("local", PinState::AlwaysLocal);
+        make("online", PinState::OnlineOnly);
+        make("unspec", PinState::Unspecified);
+        for (auto base : {"local/", "online/", "unspec/"}) {
+            make(QByteArray(base) + "unspec", PinState::Unspecified);
+            make(QByteArray(base) + "local", PinState::AlwaysLocal);
+            make(QByteArray(base) + "online", PinState::OnlineOnly);
+
+            for (auto base2 : {"local/", "online/", "unspec/"}) {
+                make(QByteArray(base) + base2 + "/unspec", PinState::Unspecified);
+                make(QByteArray(base) + base2 + "/local", PinState::AlwaysLocal);
+                make(QByteArray(base) + base2 + "/online", PinState::OnlineOnly);
+            }
+        }
+
+        // Baseline direct checks
+        QCOMPARE(get("local"), PinState::AlwaysLocal);
+        QCOMPARE(get("online"), PinState::OnlineOnly);
+        QCOMPARE(get("unspec"), PinState::Unspecified);
+        QCOMPARE(get("nonexistant"), PinState::Unspecified);
+        QCOMPARE(get("online/local"), PinState::AlwaysLocal);
+        QCOMPARE(get("local/online"), PinState::OnlineOnly);
+        QCOMPARE(get("unspec/local"), PinState::AlwaysLocal);
+        QCOMPARE(get("unspec/online"), PinState::OnlineOnly);
+        QCOMPARE(get("unspec/unspec"), PinState::Unspecified);
+        QCOMPARE(get("unspec/nonexistant"), PinState::Unspecified);
+
+        // Inheriting checks, level 1
+        QCOMPARE(get("local/unspec"), PinState::AlwaysLocal);
+        QCOMPARE(get("local/nonexistant"), PinState::AlwaysLocal);
+        QCOMPARE(get("online/unspec"), PinState::OnlineOnly);
+        QCOMPARE(get("online/nonexistant"), PinState::OnlineOnly);
+
+        // Inheriting checks, level 2
+        QCOMPARE(get("local/unspec/unspec"), PinState::AlwaysLocal);
+        QCOMPARE(get("local/local/unspec"), PinState::AlwaysLocal);
+        QCOMPARE(get("local/local/nonexistant"), PinState::AlwaysLocal);
+        QCOMPARE(get("local/online/unspec"), PinState::OnlineOnly);
+        QCOMPARE(get("local/online/nonexistant"), PinState::OnlineOnly);
+        QCOMPARE(get("online/unspec/unspec"), PinState::OnlineOnly);
+        QCOMPARE(get("online/local/unspec"), PinState::AlwaysLocal);
+        QCOMPARE(get("online/local/nonexistant"), PinState::AlwaysLocal);
+        QCOMPARE(get("online/online/unspec"), PinState::OnlineOnly);
+        QCOMPARE(get("online/online/nonexistant"), PinState::OnlineOnly);
+    }
+
 private:
     SyncJournalDb _db;
 };

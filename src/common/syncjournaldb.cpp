@@ -463,6 +463,15 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("Create table datafingerprint", createQuery);
     }
 
+    // create the flags table.
+    createQuery.prepare("CREATE TABLE IF NOT EXISTS flags ("
+                        "path TEXT PRIMARY KEY,"
+                        "pinState INTEGER"
+                        ");");
+    if (!createQuery.exec()) {
+        return sqlFail("Create table flags", createQuery);
+    }
+
     // create the conflicts table.
     createQuery.prepare("CREATE TABLE IF NOT EXISTS conflicts("
                         "path TEXT PRIMARY KEY,"
@@ -1978,6 +1987,48 @@ void SyncJournalDb::markVirtualFileForDownloadRecursively(const QByteArray &path
     static_assert(ItemTypeDirectory == 2, "");
     query.prepare("UPDATE metadata SET md5='_invalid_' WHERE (" IS_PREFIX_PATH_OF("?1", "path") " OR " IS_PREFIX_PATH_OR_EQUAL("path", "?1") ") AND type == 2;");
     query.bindValue(1, path);
+    query.exec();
+}
+
+PinState SyncJournalDb::pinStateForPath(const QByteArray &path)
+{
+    QMutexLocker lock(&_mutex);
+    if (!checkConnect())
+        return PinState::Unspecified;
+
+    auto &query = _getPinStateQuery;
+    ASSERT(query.initOrReset(QByteArrayLiteral(
+            "SELECT pinState FROM flags WHERE"
+            " " IS_PREFIX_PATH_OR_EQUAL("path", "?1")
+            " AND pinState is not null AND pinState != 0"
+            " ORDER BY length(path) DESC;"),
+        _db));
+    query.bindValue(1, path);
+    query.exec();
+
+    if (!query.next())
+        return PinState::Unspecified;
+
+    return static_cast<PinState>(query.intValue(0));
+}
+
+void SyncJournalDb::setPinStateForPath(const QByteArray &path, PinState state)
+{
+    QMutexLocker lock(&_mutex);
+    if (!checkConnect())
+        return;
+
+    auto &query = _setPinStateQuery;
+    ASSERT(query.initOrReset(QByteArrayLiteral(
+            // If we had sqlite >=3.24.0 everywhere this could be an upsert,
+            // making further flags columns easy
+            //"INSERT INTO flags(path, pinState) VALUES(?1, ?2)"
+            //" ON CONFLICT(path) DO UPDATE SET pinState=?2;"),
+            // Simple version that doesn't work nicely with multiple columns:
+            "INSERT OR REPLACE INTO flags(path, pinState) VALUES(?1, ?2);"),
+        _db));
+    query.bindValue(1, path);
+    query.bindValue(2, static_cast<int>(state));
     query.exec();
 }
 
