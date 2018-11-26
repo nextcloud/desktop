@@ -156,7 +156,6 @@ IF( APPLE )
     list(APPEND client_SRCS vfs_mac.cpp)
     list(APPEND client_SRCS fileManager.mm)
     list(APPEND client_SRCS vfs_maccontroller.cpp)
-    list(APPEND client_SRCS syncwrapper.cpp)
 
     if(SPARKLE_FOUND AND BUILD_UPDATER)
        # Define this, we need to check in updater.cpp
@@ -170,6 +169,10 @@ ENDIF()
 
 IF( WIN32 )
     list(APPEND client_SRCS vfs_windows.cpp)
+ENDIF()
+
+IF( WIN32 OR APPLE )
+	list(APPEND client_SRCS syncwrapper.cpp)
 ENDIF()
 
 
