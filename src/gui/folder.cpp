@@ -120,7 +120,9 @@ Folder::Folder(const FolderDefinition &definition,
 
     // Potentially upgrade suffix vfs to windows vfs
     ENFORCE(_vfs);
-    if (_definition.virtualFilesMode == Vfs::WithSuffix && _definition.upgradeVfsMode) {
+    if (_definition.virtualFilesMode == Vfs::WithSuffix
+        && _definition.upgradeVfsMode
+        && isVfsPluginAvailable(Vfs::WindowsCfApi)) {
         if (auto winvfs = createVfsFromPlugin(Vfs::WindowsCfApi)) {
             // Wipe the existing suffix files from fs and journal
             SyncEngine::wipeVirtualFiles(path(), _journal, *_vfs);
@@ -619,7 +621,7 @@ void Folder::dehydrateFile(const QString &_relativepath)
     slotScheduleThisFolder();
 }
 
-void Folder::setUseVirtualFiles(bool enabled)
+void Folder::setSupportsVirtualFiles(bool enabled)
 {
     Vfs::Mode newMode = _definition.virtualFilesMode;
     if (enabled && _definition.virtualFilesMode == Vfs::Off) {
@@ -645,6 +647,17 @@ void Folder::setUseVirtualFiles(bool enabled)
     }
 }
 
+bool Folder::newFilesAreVirtual() const
+{
+    return _definition.newFilesAreVirtual;
+}
+
+void Folder::setNewFilesAreVirtual(bool enabled)
+{
+    _definition.newFilesAreVirtual = enabled;
+    saveToSettings();
+}
+
 void Folder::saveToSettings() const
 {
     // Remove first to make sure we don't get duplicates
@@ -659,7 +672,7 @@ void Folder::saveToSettings() const
         return other != this && other->cleanPath() == this->cleanPath();
     });
 
-    if (useVirtualFiles() || _saveInFoldersWithPlaceholders) {
+    if (supportsVirtualFiles() || _saveInFoldersWithPlaceholders) {
         // If virtual files are enabled or even were enabled at some point,
         // save the folder to a group that will not be read by older (<2.5.0) clients.
         // The name is from when virtual files were called placeholders.
@@ -828,6 +841,7 @@ void Folder::setSyncOptions()
     opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
     opt._moveFilesToTrash = cfgFile.moveToTrash();
     opt._vfs = _vfs;
+    opt._newFilesAreVirtual = _definition.newFilesAreVirtual;
 
     QByteArray chunkSizeEnv = qgetenv("OWNCLOUD_CHUNK_SIZE");
     if (!chunkSizeEnv.isEmpty()) {
@@ -1187,7 +1201,7 @@ void Folder::registerFolderWatcher()
     _folderWatcher->startNotificatonTest(path() + QLatin1String(".owncloudsync.log"));
 }
 
-bool Folder::useVirtualFiles() const
+bool Folder::supportsVirtualFiles() const
 {
     return _definition.virtualFilesMode != Vfs::Off;
 }
@@ -1234,11 +1248,10 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
     settings.setValue(QLatin1String("paused"), folder.paused);
     settings.setValue(QLatin1String("ignoreHiddenFiles"), folder.ignoreHiddenFiles);
     settings.setValue(QLatin1String(versionC), maxSettingsVersion());
+    settings.setValue(QLatin1String("usePlaceholders"), folder.newFilesAreVirtual);
 
     settings.setValue(QStringLiteral("virtualFilesMode"), Vfs::modeToString(folder.virtualFilesMode));
 
-    // to support older versions: there usePlaceholders means suffix placeholders
-    settings.setValue(QLatin1String("usePlaceholders"), folder.virtualFilesMode == Vfs::WithSuffix);
 
     // Happens only on Windows when the explorer integration is enabled.
     if (!folder.navigationPaneClsid.isNull())
@@ -1259,17 +1272,17 @@ bool FolderDefinition::load(QSettings &settings, const QString &alias,
     folder->paused = settings.value(QLatin1String("paused")).toBool();
     folder->ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), QVariant(true)).toBool();
     folder->navigationPaneClsid = settings.value(QLatin1String("navigationPaneClsid")).toUuid();
+    folder->newFilesAreVirtual = settings.value(QLatin1String("usePlaceholders")).toBool();
 
-    folder->virtualFilesMode = Vfs::Off;
+    folder->virtualFilesMode = Vfs::WithSuffix;
     QString vfsModeString = settings.value(QStringLiteral("virtualFilesMode")).toString();
     if (!vfsModeString.isEmpty()) {
         if (auto mode = Vfs::modeFromString(vfsModeString)) {
             folder->virtualFilesMode = *mode;
         } else {
-            qCWarning(lcFolder) << "Unknown virtualFilesMode:" << vfsModeString << "assuming 'off'";
+            qCWarning(lcFolder) << "Unknown virtualFilesMode:" << vfsModeString << "assuming 'suffix'";
         }
-    } else if (settings.value(QLatin1String("usePlaceholders")).toBool()) {
-        folder->virtualFilesMode = Vfs::WithSuffix;
+    } else {
         folder->upgradeVfsMode = true;
     }
 

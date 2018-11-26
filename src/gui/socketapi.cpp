@@ -1003,10 +1003,10 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
                 }
             }
         }
-        if (hasVirtualFile || (hasDir && syncFolder->useVirtualFiles()))
+        if (hasVirtualFile || (hasDir && syncFolder->supportsVirtualFiles()))
             listener->sendMessage(QLatin1String("MENU_ITEM:DOWNLOAD_VIRTUAL_FILE::") + tr("Download file(s)", "", files.size()));
 
-        if ((hasNormalFiles || hasDir) && syncFolder->useVirtualFiles())
+        if ((hasNormalFiles || hasDir) && syncFolder->supportsVirtualFiles())
             listener->sendMessage(QLatin1String("MENU_ITEM:REPLACE_VIRTUAL_FILE::") + tr("Replace file(s) by virtual file", "", files.size()));
     }
 
