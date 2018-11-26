@@ -63,6 +63,7 @@ SyncOptions vfsSyncOptions()
 {
     SyncOptions options;
     options._vfs.reset(createVfsFromPlugin(Vfs::WithSuffix).release());
+    options._newFilesAreVirtual = true;
     return options;
 }
 
@@ -418,71 +419,26 @@ private slots:
         QVERIFY(!dbRecord(fakeFolder, "A/a1.owncloud").isValid());
     }
 
-    // Check what happens if vfs mode is disabled
-    void testSwitchOfVfs()
+    void testNewFilesNotVirtual()
     {
-        QSKIP("Does not work with the new discovery because the way we simulate the old client does not work");
         FakeFolder fakeFolder{ FileInfo() };
         SyncOptions syncOptions = vfsSyncOptions();
         fakeFolder.syncEngine().setSyncOptions(syncOptions);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        // Create a virtual file
         fakeFolder.remoteModifier().mkdir("A");
         fakeFolder.remoteModifier().insert("A/a1");
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
 
-        // Switch off new files becoming virtual files
-        syncOptions._vfs.reset(new VfsOff);
+        syncOptions._newFilesAreVirtual = false;
         fakeFolder.syncEngine().setSyncOptions(syncOptions);
 
-        // A sync that doesn't do remote discovery will wipe the placeholder, but not redownload
+        // Create a new remote file, it'll not be virtual
+        fakeFolder.remoteModifier().insert("A/a2");
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(!fakeFolder.currentLocalState().find("A/a1.owncloud"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
-        QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
-        QVERIFY(!fakeFolder.currentRemoteState().find("A/a1.owncloud"));
-
-        // But with a remote discovery the virtual files will be removed and
-        // the remote files will be downloaded.
-        fakeFolder.syncJournal().forceRemoteDiscoveryNextSync();
-        QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.currentLocalState().find("A/a1"));
-        QVERIFY(!fakeFolder.currentLocalState().find("A/a1.owncloud"));
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-    }
-
-    // Older versions may leave db entries for foo and foo.owncloud
-    void testOldVersion2()
-    {
-        QSKIP("Does not work with the new discovery because the way we simulate the old client does not work");
-        FakeFolder fakeFolder{ FileInfo() };
-
-        // Sync a file
-        fakeFolder.remoteModifier().mkdir("A");
-        fakeFolder.remoteModifier().insert("A/a1");
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-
-        // Create the virtual file too
-        // In the wild, the new version would create the virtual file and the db entry
-        // while the old version would download the plain file.
-        fakeFolder.localModifier().insert("A/a1.owncloud");
-        auto &db = fakeFolder.syncJournal();
-        SyncJournalFileRecord rec;
-        db.getFileRecord(QByteArray("A/a1"), &rec);
-        rec._type = ItemTypeVirtualFile;
-        rec._path = "A/a1.owncloud";
-        db.setFileRecord(rec);
-
-        fakeFolder.syncEngine().setSyncOptions(vfsSyncOptions());
-
-        // Check that a sync removes the virtual file and its db entry
-        QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(!fakeFolder.currentLocalState().find("A/a1.owncloud"));
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        QVERIFY(!dbRecord(fakeFolder, "A/a1.owncloud").isValid());
+        QVERIFY(fakeFolder.currentLocalState().find("A/a2"));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/a2.owncloud"));
     }
 
     void testDownloadRecursive()

@@ -100,7 +100,7 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
     }
 
     auto limit = _syncOptions._newBigFolderSizeLimit;
-    if (limit < 0 || _syncOptions._vfs->mode() != Vfs::Off) {
+    if (limit < 0 || (_syncOptions._vfs->mode() != Vfs::Off && _syncOptions._newFilesAreVirtual)) {
         // no limit, everything is allowed;
         return callback(false);
     }

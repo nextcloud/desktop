@@ -69,11 +69,12 @@ public:
     bool ignoreHiddenFiles;
     /// Which virtual files setting the folder uses
     Vfs::Mode virtualFilesMode = Vfs::Off;
+    /// Whether new files are virtual
+    bool newFilesAreVirtual = false;
     /// The CLSID where this folder appears in registry for the Explorer navigation pane entry.
     QUuid navigationPaneClsid;
 
-    /// Whether this suffix-vfs should be migrated to a better
-    /// vfs plugin if possible
+    /// Whether the vfs mode shall silently be updated if possible
     bool upgradeVfsMode = false;
 
     /// Saves the folder definition, creating a new settings group.
@@ -255,9 +256,18 @@ public:
      */
     void registerFolderWatcher();
 
-    /** virtual files of some kind are enabled */
-    bool useVirtualFiles() const;
-    void setUseVirtualFiles(bool enabled);
+    /** virtual files of some kind are enabled
+     *
+     * This is independent of whether new files will be virtual. It's possible to have this enabled
+     * and never have an automatic virtual file. But when it's on, the shell context menu will allow
+     * users to make existing files virtual.
+     */
+    bool supportsVirtualFiles() const;
+    void setSupportsVirtualFiles(bool enabled);
+
+    /** whether new remote files shall become virtual locally */
+    bool newFilesAreVirtual() const;
+    void setNewFilesAreVirtual(bool enabled);
 
 signals:
     void syncStateChange();

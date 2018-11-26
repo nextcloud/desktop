@@ -299,7 +299,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     QAction *ac = menu->addAction(tr("Open folder"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotOpenCurrentFolder);
 
-    if (!ui->_folderList->isExpanded(index) && !folder->useVirtualFiles()) {
+    if (!ui->_folderList->isExpanded(index) && !folder->newFilesAreVirtual()) {
         ac = menu->addAction(tr("Choose what to sync"));
         ac->setEnabled(folderConnected);
         connect(ac, &QAction::triggered, this, &AccountSettings::doExpand);
@@ -320,21 +320,21 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     ac = menu->addAction(tr("Remove folder sync connection"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotRemoveCurrentFolder);
 
-    if (Theme::instance()->showVirtualFilesOption() || folder->useVirtualFiles()) {
+    if (Theme::instance()->showVirtualFilesOption() || folder->newFilesAreVirtual()) {
         ac = menu->addAction(tr("Create virtual files for new files (Experimental)"));
         ac->setCheckable(true);
-        ac->setChecked(folder->useVirtualFiles());
+        ac->setChecked(folder->newFilesAreVirtual());
         connect(ac, &QAction::toggled, this, [folder, this](bool checked) {
             if (!checked) {
                 if (folder)
-                    folder->setUseVirtualFiles(false);
+                    folder->setNewFilesAreVirtual(false);
                 // Make sure the size is recomputed as the virtual file indicator changes
                 ui->_folderList->doItemsLayout();
                 return;
             }
             OwncloudWizard::askExperimentalVirtualFilesFeature([folder, this](bool enable) {
                 if (enable && folder)
-                    folder->setUseVirtualFiles(enable);
+                    folder->setNewFilesAreVirtual(enable);
 
                 // Also wipe selective sync settings
                 bool ok = false;
@@ -419,6 +419,8 @@ void AccountSettings::slotFolderWizardAccepted()
 
     if (folderWizard->property("useVirtualFiles").toBool()) {
         definition.virtualFilesMode = bestAvailableVfsMode();
+        if (definition.virtualFilesMode != Vfs::Off)
+            definition.newFilesAreVirtual = true;
     }
 
     {

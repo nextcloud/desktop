@@ -617,6 +617,8 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
             folderDefinition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
             if (_ocWizard->useVirtualFileSync()) {
                 folderDefinition.virtualFilesMode = bestAvailableVfsMode();
+                if (folderDefinition.virtualFilesMode != Vfs::Off)
+                    folderDefinition.newFilesAreVirtual = true;
             }
             if (folderMan->navigationPaneHelper().showInExplorerNavigationPane())
                 folderDefinition.navigationPaneClsid = QUuid::createUuid();

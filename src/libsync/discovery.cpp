@@ -400,8 +400,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             return;
         }
         // Turn new remote files into virtual files if the option is enabled.
-        auto &vfs = _discoveryData->_syncOptions._vfs;
-        if (!localEntry.isValid() && vfs->mode() != Vfs::Off && item->_type == ItemTypeFile) {
+        auto &opts = _discoveryData->_syncOptions;
+        if (!localEntry.isValid() && opts._vfs->mode() != Vfs::Off && opts._newFilesAreVirtual && item->_type == ItemTypeFile) {
             item->_type = ItemTypeVirtualFile;
             if (isVfsWithSuffix())
                 addVirtualFileSuffix(path._original);

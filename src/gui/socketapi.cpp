@@ -787,10 +787,10 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
                 }
             }
         }
-        if (hasVirtualFile || (hasDir && folder->useVirtualFiles()))
+        if (hasVirtualFile || (hasDir && folder->supportsVirtualFiles()))
             listener->sendMessage(QLatin1String("MENU_ITEM:DOWNLOAD_VIRTUAL_FILE::") + tr("Download file(s)", "", files.size()));
 
-        if ((hasNormalFiles || hasDir) && folder->useVirtualFiles())
+        if ((hasNormalFiles || hasDir) && folder->supportsVirtualFiles())
             listener->sendMessage(QLatin1String("MENU_ITEM:REPLACE_VIRTUAL_FILE::") + tr("Replace file(s) by virtual file", "", files.size()));
     }
 
