@@ -81,6 +81,7 @@ private:
     QPointer<OCC::AccountState> accountState_;
     int _counter = 0;
 
+	// To sync
     OCC::SyncWrapper *_syncWrapper;
     QMutex _mutex;
     QWaitCondition _syncCondition;
@@ -552,7 +553,7 @@ public:
 public slots:
     void folderFileListFinish(OCC::DiscoveryDirectoryResult *dr);
 
-    // notify syncing is done
+    // To sync: notify syncing is done
     void slotSyncFinish(const QString &path, bool status);
 
 signals:
@@ -561,7 +562,7 @@ signals:
     void FuseFileSystemDidUnmount(QVariantMap userInfo);
     void startRemoteFileListJob(QString path);
 
-    // propagate FUSE operations to the sync engine
+    // To sync: propagate FUSE operations to the sync engine
     void openFile(const QString path);
     void releaseFile(const QString path);
     void writeFile(const QString path);
