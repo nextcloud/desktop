@@ -23,6 +23,10 @@
 #include "accountstate.h"
 #include "configfile.h"
 
+#include <QMutex>
+#include <QWaitCondition>
+#include "syncwrapper.h"
+
 namespace OCC {
 
 class Vfs_windows : public QObject
@@ -54,6 +58,12 @@ private:
 	QPointer<OCC::DiscoveryFolderFileList> _remotefileListJob;
 	QString rootPath_;
 
+	// To sync
+	OCC::SyncWrapper *_syncWrapper;
+    QMutex _mutex;
+    QWaitCondition _syncCondition;
+    QWaitCondition _dirCondition;
+
 signals:
 	void startRemoteFileListJob(QString path);
 
@@ -82,6 +92,13 @@ signals:
 	void getOperationFindStreams(QString, QString, QString);
 		//< void getOperationUmounted(QString, QString, QString);
 		//< void getOperationMounted(QString, QString, QString);
+
+	// To sync: propagate FUSE operations to the sync engine
+    void openFile(const QString path);
+    void releaseFile(const QString path);
+    void writeFile(const QString path);
+    void deleteFile(const QString path);
+    void addToFileTree(const QString path);
 
 private slots:
 
@@ -112,6 +129,9 @@ private slots:
 
 public slots:
 	void folderFileListFinish(OCC::DiscoveryDirectoryResult *dr);
+
+	// To sync: notify syncing is done
+    void slotSyncFinish(const QString &path, bool status);
 };
 
 } // namespace OCC
