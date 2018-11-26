@@ -88,13 +88,10 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &SettingsDialog::accountRemoved);
 
+
     _actionGroup = new QActionGroup(this);
     _actionGroup->setExclusive(true);
     connect(_actionGroup, &QActionGroup::triggered, this, &SettingsDialog::slotSwitchPage);
-
-    foreach(auto ai, AccountManager::instance()->accounts()) {
-        accountAdded(ai.data());
-    }
 
     _actionBefore = new QAction(this);
     _toolBar->addAction(_actionBefore);
@@ -119,6 +116,10 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
+
+    foreach(auto ai, AccountManager::instance()->accounts()) {
+        accountAdded(ai.data());
+    }
 
     QTimer::singleShot(1, this, &SettingsDialog::showFirstPage);
 
@@ -188,6 +189,15 @@ void SettingsDialog::showActivityPage()
     }
 }
 
+void SettingsDialog::showIssuesList(AccountState *account) {
+    for (auto it = _actionGroupWidgets.begin(); it != _actionGroupWidgets.end(); ++it) {
+        if (it.value() == _activitySettings[account]) {
+            it.key()->activate(QAction::ActionEvent::Trigger);
+            break;
+        }
+    }
+}
+
 void SettingsDialog::activityAdded(AccountState *s){
     _ui->stack->addWidget(_activitySettings[s]);
     connect(_activitySettings[s], &ActivitySettings::guiLog, _gui,
@@ -246,6 +256,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotFoldersChanged);
     connect(accountSettings, &AccountSettings::openFolderAlias,
         _gui, &ownCloudGui::slotFolderOpenAction);
+    connect(accountSettings, &AccountSettings::showIssuesList, this, &SettingsDialog::showIssuesList);
     connect(s->account().data(), &Account::accountChangedAvatar, this, &SettingsDialog::slotAccountAvatarChanged);
     connect(s->account().data(), &Account::accountChangedDisplayName, this, &SettingsDialog::slotAccountDisplayNameChanged);
 
@@ -347,17 +358,32 @@ void SettingsDialog::customizeStyle()
     }
 }
 
+static bool isDarkColor(const QColor &color)
+{
+    // account for different sensitivity of the human eye to certain colors
+    double treshold = 1.0 - (0.299 * color.red() + 0.587 * color.green() + 0.114 * color.blue()) / 255.0;
+    return treshold > 0.5;
+}
+
 QIcon SettingsDialog::createColorAwareIcon(const QString &name)
 {
-    QColor bg(palette().base().color());
+    QPalette pal = palette();
     QImage img(name);
-    // account for different sensitivity of the human eye to certain colors
-    double treshold = 1.0 - (0.299 * bg.red() + 0.587 * bg.green() + 0.114 * bg.blue()) / 255.0;
-    if (treshold > 0.5) {
-        img.invertPixels(QImage::InvertRgb);
-    }
+    QImage inverted(img);
+    inverted.invertPixels(QImage::InvertRgb);
 
-    return QIcon(QPixmap::fromImage(img));
+    QIcon icon;
+    if (isDarkColor(pal.color(QPalette::Base))) {
+        icon.addPixmap(QPixmap::fromImage(inverted));
+    } else {
+        icon.addPixmap(QPixmap::fromImage(img));
+    }
+    if (isDarkColor(pal.color(QPalette::HighlightedText))) {
+        icon.addPixmap(QPixmap::fromImage(img), QIcon::Normal, QIcon::On);
+    } else {
+        icon.addPixmap(QPixmap::fromImage(inverted), QIcon::Normal, QIcon::On);
+    }
+    return icon;
 }
 
 class ToolButtonAction : public QWidgetAction
@@ -371,12 +397,12 @@ public:
     }
 
 
-    QWidget *createWidget(QWidget *parent) Q_DECL_OVERRIDE
+    QWidget *createWidget(QWidget *parent) override
     {
         auto toolbar = qobject_cast<QToolBar *>(parent);
         if (!toolbar) {
             // this means we are in the extention menu, no special action here
-            return 0;
+            return nullptr;
         }
 
         QToolButton *btn = new QToolButton(parent);

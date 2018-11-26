@@ -85,17 +85,16 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     _ui.slideShow->addSlide(Theme::hidpiFileName(":/client/theme/colored/wizard-groupware.png"), tr("Easy-to-use web mail, calendaring & contacts"));
     _ui.slideShow->addSlide(Theme::hidpiFileName(":/client/theme/colored/wizard-talk.png"), tr("Screensharing, online meetings & web conferences"));
     connect(_ui.slideShow, &SlideShow::clicked, _ui.slideShow, &SlideShow::nextSlide);
-    _ui.slideShow->startShow(2500);
+    _ui.slideShow->startShow();
 
     QPalette pal = _ui.slideShow->palette();
     pal.setColor(QPalette::WindowText, theme->wizardHeaderBackgroundColor());
     _ui.slideShow->setPalette(pal);
 #else
     _ui.createAccountButton->hide();
-    _ui.slideImage->hide();
-    _ui.slideLabel->hide();
     _ui.loginButton->hide();
     _ui.installLink->hide();
+    _ui.slideShow->hide();
 #endif
     setStyleSheet(QString("background-color:%1; color:%2 QLabel { color:%2; } QSpacerItem { color: red; }").arg(theme->wizardHeaderBackgroundColor().name(), theme->wizardHeaderTitleColor().name()));
 }

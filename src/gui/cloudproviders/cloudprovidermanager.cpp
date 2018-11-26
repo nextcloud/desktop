@@ -45,7 +45,7 @@ CloudProviderManager::CloudProviderManager(QObject *parent) : QObject(parent)
 {
     _map = new QMap<QString, CloudProviderWrapper*>();
     QString busName = QString(LIBCLOUDPROVIDERS_DBUS_BUS_NAME);
-    g_bus_own_name (G_BUS_TYPE_SESSION, busName.toAscii().data(), G_BUS_NAME_OWNER_FLAGS_NONE, on_bus_acquired, NULL, NULL, this, NULL);
+    g_bus_own_name (G_BUS_TYPE_SESSION, busName.toAscii().data(), G_BUS_NAME_OWNER_FLAGS_NONE, on_bus_acquired, nullptr, nullptr, this, nullptr);
 }
 
 void CloudProviderManager::slotFolderListChanged(const Folder::Map &folderMap)

@@ -57,7 +57,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     QString about = Theme::instance()->about();
     _ui->aboutLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextBrowserInteraction);
     _ui->aboutLabel->setText(about);
-    _ui->aboutLabel->setWordWrap(true);
     _ui->aboutLabel->setOpenExternalLinks(true);
 
     // About legal notice
@@ -132,7 +131,7 @@ void GeneralSettings::slotUpdateInfo()
     // Note: the sparkle-updater is not an OCUpdater
     OCUpdater *updater = qobject_cast<OCUpdater *>(Updater::instance());
     if (ConfigFile().skipUpdateCheck()) {
-        updater = 0; // don't show update info if updates are disabled
+        updater = nullptr; // don't show update info if updates are disabled
     }
 
     if (updater) {

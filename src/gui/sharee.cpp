@@ -231,7 +231,7 @@ QVariant ShareeModel::data(const QModelIndex &index, int role) const
 QSharedPointer<Sharee> ShareeModel::getSharee(int at)
 {
     if (at < 0 || at > _sharees.size()) {
-        return QSharedPointer<Sharee>(NULL);
+        return QSharedPointer<Sharee>(nullptr);
     }
 
     return _sharees.at(at);

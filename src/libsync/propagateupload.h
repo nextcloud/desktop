@@ -42,13 +42,13 @@ public:
     /** Reads the data from the file and opens the device */
     bool prepareAndOpen(const QString &fileName, qint64 start, qint64 size);
 
-    qint64 writeData(const char *, qint64) Q_DECL_OVERRIDE;
-    qint64 readData(char *data, qint64 maxlen) Q_DECL_OVERRIDE;
-    bool atEnd() const Q_DECL_OVERRIDE;
-    qint64 size() const Q_DECL_OVERRIDE;
-    qint64 bytesAvailable() const Q_DECL_OVERRIDE;
-    bool isSequential() const Q_DECL_OVERRIDE;
-    bool seek(qint64 pos) Q_DECL_OVERRIDE;
+    qint64 writeData(const char *, qint64) override;
+    qint64 readData(char *data, qint64 maxlen) override;
+    bool atEnd() const override;
+    qint64 size() const override;
+    qint64 bytesAvailable() const override;
+    bool isSequential() const override;
+    bool seek(qint64 pos) override;
 
     void setBandwidthLimited(bool);
     bool isBandwidthLimited() { return _bandwidthLimited; }
@@ -93,7 +93,7 @@ private:
 public:
     // Takes ownership of the device
     explicit PUTFileJob(AccountPtr account, const QString &path, QIODevice *device,
-        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = 0)
+        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = nullptr)
         : AbstractNetworkJob(account, path, parent)
         , _device(device)
         , _headers(headers)
@@ -102,7 +102,7 @@ public:
         _device->setParent(this);
     }
     explicit PUTFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
-        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = 0)
+        const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent = nullptr)
         : AbstractNetworkJob(account, QString(), parent)
         , _device(device)
         , _headers(headers)
@@ -115,9 +115,9 @@ public:
 
     int _chunk;
 
-    virtual void start() Q_DECL_OVERRIDE;
+    void start() override;
 
-    virtual bool finished() Q_DECL_OVERRIDE
+    bool finished() override
     {
         qCInfo(lcPutJob) << "PUT of" << reply()->request().url().toString() << "FINISHED WITH STATUS"
                          << replyStatusString()
@@ -174,8 +174,8 @@ public:
     {
     }
 
-    void start() Q_DECL_OVERRIDE;
-    bool finished() Q_DECL_OVERRIDE;
+    void start() override;
+    bool finished() override;
 
 signals:
     void finishedSignal();
@@ -232,7 +232,7 @@ public:
         : PropagateItemJob(propagator, item)
         , _finished(false)
         , _deleteExisting(false)
-        , _uploadEncryptedHelper(0)
+        , _uploadEncryptedHelper(nullptr)
         , _uploadingEncrypted(false)
     {
     }
@@ -246,12 +246,12 @@ public:
     void setDeleteExisting(bool enabled);
 
     /* start should setup the file, path and size that will be send to the server */
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
     void setupEncryptedFile(const QString& path, const QString& filename, quint64 size);
     void setupUnencryptedFile();
     void startUploadFile();
     void callUnlockFolder();
-    bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return _item->_size < propagator()->smallFileSize(); }
+    bool isLikelyFinishedQuickly() override { return _item->_size < propagator()->smallFileSize(); }
 
 private slots:
     void slotComputeContentChecksum();
@@ -352,9 +352,9 @@ public:
     {
     }
 
-    void doStartUpload() Q_DECL_OVERRIDE;
+    void doStartUpload() override;
 public slots:
-    void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE;
+    void abort(PropagatorJob::AbortType abortType) override;
 private slots:
     void startNextChunk();
     void slotPutFinished();
@@ -398,13 +398,13 @@ public:
     {
     }
 
-    void doStartUpload() Q_DECL_OVERRIDE;
+    void doStartUpload() override;
 
 private:
     void startNewUpload();
     void startNextChunk();
 public slots:
-    void abort(AbortType abortType) Q_DECL_OVERRIDE;
+    void abort(AbortType abortType) override;
 private slots:
     void slotPropfindFinished();
     void slotPropfindFinishedWithError();

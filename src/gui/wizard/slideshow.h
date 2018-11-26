@@ -59,17 +59,17 @@ signals:
     void currentSlideChanged(int index);
 
 protected:
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
-    void paintEvent(QPaintEvent *event);
-    void timerEvent(QTimerEvent *event);
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
+    void timerEvent(QTimerEvent *event) override;
 
 private:
     void maybeRestartTimer();
     void drawSlide(QPainter *painter, int index);
 
     bool _reverse = false;
-    int _interval = 2500;
+    int _interval = 3500;
     int _currentIndex = 0;
     QPoint _pressPoint;
     QBasicTimer _timer;

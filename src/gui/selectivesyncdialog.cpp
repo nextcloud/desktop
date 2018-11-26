@@ -54,7 +54,7 @@ public:
     }
 
 private:
-    bool operator<(const QTreeWidgetItem &other) const
+    bool operator<(const QTreeWidgetItem &other) const override
     {
         int column = treeWidget()->sortColumn();
         if (column == 1) {
@@ -139,7 +139,7 @@ static QTreeWidgetItem *findFirstChild(QTreeWidgetItem *parent, const QString &t
             return child;
         }
     }
-    return 0;
+    return nullptr;
 }
 
 void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path, qint64 size)
@@ -431,7 +431,7 @@ qint64 SelectiveSyncWidget::estimatedSize(QTreeWidgetItem *root)
 SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder *folder, QWidget *parent, Qt::WindowFlags f)
     : QDialog(parent, f)
     , _folder(folder)
-    , _okButton(0) // defined in init()
+    , _okButton(nullptr) // defined in init()
 {
     bool ok;
     init(account);
@@ -448,7 +448,7 @@ SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder *folder, QWi
 SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, const QString &folder,
     const QStringList &blacklist, QWidget *parent, Qt::WindowFlags f)
     : QDialog(parent, f)
-    , _folder(0)
+    , _folder(nullptr)
 {
     init(account);
     _selectiveSync->setFolderInfo(folder, folder, blacklist);

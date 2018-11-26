@@ -22,16 +22,16 @@ class WebViewPageUrlRequestInterceptor : public QWebEngineUrlRequestInterceptor
 {
     Q_OBJECT
 public:
-    WebViewPageUrlRequestInterceptor(QObject *parent = 0);
-    void interceptRequest(QWebEngineUrlRequestInfo &info);
+    WebViewPageUrlRequestInterceptor(QObject *parent = nullptr);
+    void interceptRequest(QWebEngineUrlRequestInfo &info) override;
 };
 
 class WebViewPageUrlSchemeHandler : public QWebEngineUrlSchemeHandler
 {
     Q_OBJECT
 public:
-    WebViewPageUrlSchemeHandler(QObject *parent = 0);
-    void requestStarted(QWebEngineUrlRequestJob *request);
+    WebViewPageUrlSchemeHandler(QObject *parent = nullptr);
+    void requestStarted(QWebEngineUrlRequestJob *request) override;
 
 Q_SIGNALS:
     void urlCatched(QString user, QString pass, QString host);
@@ -137,7 +137,9 @@ void WebViewPageUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *reques
             password = part.mid(9);
         }
     }
-
+    if (!server.startsWith("http://") && !server.startsWith("https://")) {
+        server = "https://" + server;
+    }
     qCInfo(lcWizardWebiew()) << "Got user: " << user << ", server: " << server;
 
     emit urlCatched(user, password, server);

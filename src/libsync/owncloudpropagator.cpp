@@ -334,7 +334,7 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
             job->setDeleteExistingFolder(deleteExisting);
             return job;
         } else {
-            PropagateUploadFileCommon *job = 0;
+            PropagateUploadFileCommon *job = nullptr;
             if (item->_size > syncOptions()._initialChunkSize && account()->capabilities().chunkingNg()) {
                 // Item is above _initialChunkSize, thus will be classified as to be chunked
                 job = new PropagateUploadFileNG(this, item);
@@ -354,9 +354,9 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
     case CSYNC_INSTRUCTION_ERROR:
         return new PropagateIgnoreJob(this, item);
     default:
-        return 0;
+        return nullptr;
     }
-    return 0;
+    return nullptr;
 }
 
 quint64 OwncloudPropagator::smallFileSize()

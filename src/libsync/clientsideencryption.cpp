@@ -3,6 +3,7 @@
 #include <openssl/pem.h>
 #include <openssl/err.h>
 #include <openssl/engine.h>
+#include <openssl/rand.h>
 
 
 #include "clientsideencryption.h"
@@ -149,7 +150,7 @@ QByteArray encryptPrivateKey(
     }
 
     /* Initialise the decryption operation. */
-    if(!EVP_EncryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL)) {
+    if(!EVP_EncryptInit_ex(ctx, EVP_aes_256_gcm(), nullptr, nullptr, nullptr)) {
         qCInfo(lcCse()) << "Error initializing context with aes_256";
         handleErrors();
     }
@@ -158,13 +159,13 @@ QByteArray encryptPrivateKey(
     EVP_CIPHER_CTX_set_padding(ctx, 0);
 
     /* Set IV length. */
-    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), NULL)) {
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), nullptr)) {
         qCInfo(lcCse()) << "Error setting iv length";
         handleErrors();
     }
 
     /* Initialise key and IV */
-    if(!EVP_EncryptInit_ex(ctx, NULL, NULL, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
+    if(!EVP_EncryptInit_ex(ctx, nullptr, nullptr, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
         qCInfo(lcCse()) << "Error initialising key and iv";
         handleErrors();
     }
@@ -241,21 +242,21 @@ QByteArray decryptPrivateKey(const QByteArray& key, const QByteArray& data) {
     }
 
     /* Initialise the decryption operation. */
-    if(!EVP_DecryptInit_ex(ctx, EVP_aes_256_gcm(), NULL, NULL, NULL)) {
+    if(!EVP_DecryptInit_ex(ctx, EVP_aes_256_gcm(), nullptr, nullptr, nullptr)) {
         qCInfo(lcCse()) << "Error initialising context with aes 256";
         EVP_CIPHER_CTX_free(ctx);
         return QByteArray();
     }
 
     /* Set IV length. Not necessary if this is 12 bytes (96 bits) */
-    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), NULL)) {
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), nullptr)) {
         qCInfo(lcCse()) << "Error setting IV size";
         EVP_CIPHER_CTX_free(ctx);
         return QByteArray();
     }
 
     /* Initialise key and IV */
-    if(!EVP_DecryptInit_ex(ctx, NULL, NULL, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
+    if(!EVP_DecryptInit_ex(ctx, nullptr, nullptr, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
         qCInfo(lcCse()) << "Error initialising key and iv";
         EVP_CIPHER_CTX_free(ctx);
         return QByteArray();
@@ -330,21 +331,21 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     }
 
     /* Initialise the decryption operation. */
-    if(!EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
+    if(!EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), nullptr, nullptr, nullptr)) {
         qCInfo(lcCse()) << "Error initialising context with aes 128";
         EVP_CIPHER_CTX_free(ctx);
         return QByteArray();
     }
 
     /* Set IV length. Not necessary if this is 12 bytes (96 bits) */
-    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), NULL)) {
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), nullptr)) {
         qCInfo(lcCse()) << "Error setting IV size";
         EVP_CIPHER_CTX_free(ctx);
         return QByteArray();
     }
 
     /* Initialise key and IV */
-    if(!EVP_DecryptInit_ex(ctx, NULL, NULL, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
+    if(!EVP_DecryptInit_ex(ctx, nullptr, nullptr, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
         qCInfo(lcCse()) << "Error initialising key and iv";
         EVP_CIPHER_CTX_free(ctx);
         return QByteArray();
@@ -393,10 +394,10 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
 QByteArray privateKeyToPem(const QByteArray key) {
     BIO *privateKeyBio = BIO_new(BIO_s_mem());
     BIO_write(privateKeyBio, key.constData(), key.size());
-    EVP_PKEY *pkey = PEM_read_bio_PrivateKey(privateKeyBio, NULL, NULL, NULL);
+    EVP_PKEY *pkey = PEM_read_bio_PrivateKey(privateKeyBio, nullptr, nullptr, nullptr);
 
     BIO *pemBio = BIO_new(BIO_s_mem());
-    PEM_write_bio_PKCS8PrivateKey(pemBio, pkey, NULL, NULL, 0, NULL, NULL);
+    PEM_write_bio_PKCS8PrivateKey(pemBio, pkey, nullptr, nullptr, 0, nullptr, nullptr);
     QByteArray pem = BIO2ByteArray(pemBio);
 
     BIO_free_all(privateKeyBio);
@@ -418,7 +419,7 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     }
 
     /* Initialise the decryption operation. */
-    if(!EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
+    if(!EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), nullptr, nullptr, nullptr)) {
         qCInfo(lcCse()) << "Error initializing context with aes_128";
         handleErrors();
         return {};
@@ -428,14 +429,14 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
     EVP_CIPHER_CTX_set_padding(ctx, 0);
 
     /* Set IV length. */
-    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), NULL)) {
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), nullptr)) {
         qCInfo(lcCse()) << "Error setting iv length";
         handleErrors();
         return {};
     }
 
     /* Initialise key and IV */
-    if(!EVP_EncryptInit_ex(ctx, NULL, NULL, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
+    if(!EVP_EncryptInit_ex(ctx, nullptr, nullptr, (unsigned char *)key.constData(), (unsigned char *)iv.constData())) {
         qCInfo(lcCse()) << "Error initialising key and iv";
         handleErrors();
         return {};
@@ -522,7 +523,7 @@ QByteArray decryptStringAsymmetric(EVP_PKEY *privateKey, const QByteArray& data)
     }
 
     size_t outlen = 0;
-    err = EVP_PKEY_decrypt(ctx, NULL, &outlen,  (unsigned char *)data.constData(), data.size());
+    err = EVP_PKEY_decrypt(ctx, nullptr, &outlen,  (unsigned char *)data.constData(), data.size());
     if (err <= 0) {
         qCInfo(lcCseDecryption()) << "Could not determine the buffer length";
         handleErrors();
@@ -583,7 +584,7 @@ QByteArray encryptStringAsymmetric(EVP_PKEY *publicKey, const QByteArray& data) 
     }
 
     size_t outLen = 0;
-    if (EVP_PKEY_encrypt(ctx, NULL, &outLen, (unsigned char *)data.constData(), data.size()) != 1) {
+    if (EVP_PKEY_encrypt(ctx, nullptr, &outLen, (unsigned char *)data.constData(), data.size()) != 1) {
         qCInfo(lcCse()) << "Error retrieving the size of the encrypted data";
         exit(1);
     } else {
@@ -833,7 +834,7 @@ void ClientSideEncryption::generateKeyPair()
     EVP_PKEY *localKeyPair = nullptr;
 
     // Init RSA
-    EVP_PKEY_CTX *ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, NULL);
+    EVP_PKEY_CTX *ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, nullptr);
 
     if(EVP_PKEY_keygen_init(ctx) <= 0) {
         qCInfo(lcCse()) << "Couldn't initialize the key generator";
@@ -854,7 +855,7 @@ void ClientSideEncryption::generateKeyPair()
     qCInfo(lcCse()) << "Storing keys locally";
 
     BIO *privKey = BIO_new(BIO_s_mem());
-    if (PEM_write_bio_PrivateKey(privKey, localKeyPair, NULL, NULL, 0, NULL, NULL) <= 0) {
+    if (PEM_write_bio_PrivateKey(privKey, localKeyPair, nullptr, nullptr, 0, nullptr, nullptr) <= 0) {
         qCInfo(lcCse()) << "Could not read private key from bio.";
         return;
     }
@@ -1217,7 +1218,7 @@ QByteArray FolderMetadata::encryptMetadataKey(const QByteArray& data) const {
     BIO *publicKeyBio = BIO_new(BIO_s_mem());
     QByteArray publicKeyPem = _account->e2e()->_publicKey.toPem();
     BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
-    EVP_PKEY *publicKey = PEM_read_bio_PUBKEY(publicKeyBio, NULL, NULL, NULL);
+    EVP_PKEY *publicKey = PEM_read_bio_PUBKEY(publicKeyBio, nullptr, nullptr, nullptr);
 
     // The metadata key is binary so base64 encode it first
     auto ret = EncryptionHelper::encryptStringAsymmetric(publicKey, data.toBase64());
@@ -1230,7 +1231,7 @@ QByteArray FolderMetadata::decryptMetadataKey(const QByteArray& encryptedMetadat
     BIO *privateKeyBio = BIO_new(BIO_s_mem());
     QByteArray privateKeyPem = _account->e2e()->_privateKey;
     BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
-    EVP_PKEY *key = PEM_read_bio_PrivateKey(privateKeyBio, NULL, NULL, NULL);
+    EVP_PKEY *key = PEM_read_bio_PrivateKey(privateKeyBio, nullptr, nullptr, nullptr);
 
     // Also base64 decode the result
     QByteArray decryptResult = EncryptionHelper::decryptStringAsymmetric(
@@ -1381,7 +1382,7 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
     }
 
     /* Initialise the decryption operation. */
-    if(!EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
+    if(!EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), nullptr, nullptr, nullptr)) {
         qCInfo(lcCse()) << "Could not init cipher";
         return false;
     }
@@ -1389,13 +1390,13 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
     EVP_CIPHER_CTX_set_padding(ctx, 0);
 
     /* Set IV length. */
-    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), NULL)) {
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN, iv.size(), nullptr)) {
         qCInfo(lcCse()) << "Could not set iv length";
         return false;
     }
 
     /* Initialise key and IV */
-    if(!EVP_EncryptInit_ex(ctx, NULL, NULL, (const unsigned char *)key.constData(), (const unsigned char *)iv.constData())) {
+    if(!EVP_EncryptInit_ex(ctx, nullptr, nullptr, (const unsigned char *)key.constData(), (const unsigned char *)iv.constData())) {
         qCInfo(lcCse()) << "Could not set key and iv";
         return false;
     }
@@ -1466,7 +1467,7 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
     }
 
     /* Initialise the decryption operation. */
-    if(!EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), NULL, NULL, NULL)) {
+    if(!EVP_DecryptInit_ex(ctx, EVP_aes_128_gcm(), nullptr, nullptr, nullptr)) {
         qCInfo(lcCse()) << "Could not init cipher";
         return false;
     }
@@ -1474,13 +1475,13 @@ bool EncryptionHelper::fileDecryption(const QByteArray &key, const QByteArray& i
     EVP_CIPHER_CTX_set_padding(ctx, 0);
 
     /* Set IV length. */
-    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,  iv.size(), NULL)) {
+    if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_GCM_SET_IVLEN,  iv.size(), nullptr)) {
         qCInfo(lcCse()) << "Could not set iv length";
         return false;
     }
 
     /* Initialise key and IV */
-    if(!EVP_DecryptInit_ex(ctx, NULL, NULL, (const unsigned char *) key.constData(), (const unsigned char *) iv.constData())) {
+    if(!EVP_DecryptInit_ex(ctx, nullptr, nullptr, (const unsigned char *) key.constData(), (const unsigned char *) iv.constData())) {
         qCInfo(lcCse()) << "Could not set key and iv";
         return false;
     }

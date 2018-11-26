@@ -53,15 +53,15 @@ class AccountSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit AccountSettings(AccountState *accountState, QWidget *parent = 0);
+    explicit AccountSettings(AccountState *accountState, QWidget *parent = nullptr);
     ~AccountSettings();
-    QSize sizeHint() const Q_DECL_OVERRIDE { return ownCloudGui::settingsDialogSize(); }
+    QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
     bool canEncryptOrDecrypt(const FolderStatusModel::SubFolderInfo* folderInfo);
 
 signals:
     void folderChanged();
     void openFolderAlias(const QString &);
-    void showIssuesList(const QString &folderAlias);
+    void showIssuesList(AccountState *account);
     void requesetMnemonic();
 
 public slots:
@@ -122,7 +122,7 @@ protected slots:
 private:
     void showConnectionLabel(const QString &message,
         QStringList errors = QStringList());
-    bool event(QEvent *) Q_DECL_OVERRIDE;
+    bool event(QEvent *) override;
     void createAccountToolbox();
 
     /// Returns the alias of the selected folder, empty string if none

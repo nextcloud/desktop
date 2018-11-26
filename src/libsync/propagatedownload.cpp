@@ -80,7 +80,7 @@ GETFileJob::GETFileJob(AccountPtr account, const QString &path, QFile *device,
     , _bandwidthLimited(false)
     , _bandwidthChoked(false)
     , _bandwidthQuota(0)
-    , _bandwidthManager(0)
+    , _bandwidthManager(nullptr)
     , _hasEmittedFinishedSignal(false)
     , _lastModified()
 {
@@ -100,7 +100,7 @@ GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, QFile *device,
     , _bandwidthLimited(false)
     , _bandwidthChoked(false)
     , _bandwidthQuota(0)
-    , _bandwidthManager(0)
+    , _bandwidthManager(nullptr)
     , _hasEmittedFinishedSignal(false)
     , _lastModified()
 {

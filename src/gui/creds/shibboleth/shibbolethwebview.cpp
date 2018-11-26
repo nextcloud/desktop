@@ -47,7 +47,7 @@ public:
             settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
         }
     }
-    QString userAgentForUrl(const QUrl &url) const
+    QString userAgentForUrl(const QUrl &url) const override
     {
         return QWebPage::userAgentForUrl(url) + " " + Utility::userAgentString();
     }

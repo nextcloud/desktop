@@ -31,7 +31,7 @@ extern "C" {
 
 using namespace OCC;
 
-GSimpleActionGroup *actionGroup = NULL;
+GSimpleActionGroup *actionGroup = nullptr;
 
 static
 gchar* qstring_to_gchar(const QString &string)
@@ -55,7 +55,7 @@ CloudProviderWrapper::CloudProviderWrapper(QObject *parent, Folder *folder, Clou
     gchar* folderName = qstring_to_gchar(folder->shortGuiLocalPath());
     gchar* folderPath = qstring_to_gchar(folder->cleanPath());
     cloud_providers_account_exporter_set_name (_cloudProviderAccount, folderName);
-    cloud_providers_account_exporter_set_icon (_cloudProviderAccount, g_icon_new_for_string(APPLICATION_ICON_NAME, NULL));
+    cloud_providers_account_exporter_set_icon (_cloudProviderAccount, g_icon_new_for_string(APPLICATION_ICON_NAME, nullptr));
     cloud_providers_account_exporter_set_path (_cloudProviderAccount, folderPath);
     cloud_providers_account_exporter_set_status (_cloudProviderAccount, CLOUD_PROVIDERS_ACCOUNT_STATUS_IDLE);
     cloud_providers_account_exporter_set_menu_model (_cloudProviderAccount, getMenuModel());
@@ -163,7 +163,7 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
                 g_menu_append_item(_recentMenu, item);
             }
         } else {
-            item = g_menu_item_new("No recently changed files", NULL);
+            item = g_menu_item_new("No recently changed files", nullptr);
             g_menu_append_item(_recentMenu, item);
         }
     }
@@ -223,20 +223,20 @@ GMenuModel* CloudProviderWrapper::getMenuModel() {
     section = g_menu_new();
     item = g_menu_item_new("Open website", "cloudprovider.openwebsite");
     g_menu_append_item(section, item);
-    g_menu_append_section(_mainMenu, NULL, G_MENU_MODEL(section));
+    g_menu_append_section(_mainMenu, nullptr, G_MENU_MODEL(section));
 
     _recentMenu = g_menu_new();
-    item = g_menu_item_new("No recently changed files", NULL);
+    item = g_menu_item_new("No recently changed files", nullptr);
     g_menu_append_item(_recentMenu, item);
     section = g_menu_new();
     item = g_menu_item_new_submenu("Recently changed", G_MENU_MODEL(_recentMenu));
     g_menu_append_item(section, item);
-    g_menu_append_section(_mainMenu, NULL, G_MENU_MODEL(section));
+    g_menu_append_section(_mainMenu, nullptr, G_MENU_MODEL(section));
 
     section = g_menu_new();
     item = g_menu_item_new("Pause synchronization", "cloudprovider.pause");
     g_menu_append_item(section, item);
-    g_menu_append_section(_mainMenu, NULL, G_MENU_MODEL(section));
+    g_menu_append_section(_mainMenu, nullptr, G_MENU_MODEL(section));
 
     section = g_menu_new();
     item = g_menu_item_new("Help", "cloudprovider.openhelp");
@@ -247,7 +247,7 @@ GMenuModel* CloudProviderWrapper::getMenuModel() {
     g_menu_append_item(section, item);
     item = g_menu_item_new("Quit sync client", "cloudprovider.quit");
     g_menu_append_item(section, item);
-    g_menu_append_section(_mainMenu, NULL, G_MENU_MODEL(section));
+    g_menu_append_section(_mainMenu, nullptr, G_MENU_MODEL(section));
 
     return G_MENU_MODEL(_mainMenu);
 }
@@ -318,15 +318,15 @@ activate_action_pause (GSimpleAction *action,
 }
 
 static GActionEntry actions[] = {
-    { "openwebsite",  activate_action_open, NULL, NULL, NULL, {0,0,0}},
-    { "quit",  activate_action_open, NULL, NULL, NULL, {0,0,0}},
-    { "logout",  activate_action_open, NULL, NULL, NULL, {0,0,0}},
-    { "openfolder",  activate_action_open, NULL, NULL, NULL, {0,0,0}},
-    { "showfile",  activate_action_open, "s", NULL, NULL, {0,0,0}},
-    { "openhelp",  activate_action_open, NULL, NULL, NULL, {0,0,0}},
-    { "opensettings",  activate_action_open, NULL, NULL, NULL, {0,0,0}},
-    { "openrecentfile",  activate_action_openrecentfile, "s", NULL, NULL, {0,0,0}},
-    { "pause",  activate_action_pause, NULL, "false", NULL, {0,0,0}}
+    { "openwebsite",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
+    { "quit",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
+    { "logout",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
+    { "openfolder",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
+    { "showfile",  activate_action_open, "s", nullptr, nullptr, {0,0,0}},
+    { "openhelp",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
+    { "opensettings",  activate_action_open, nullptr, nullptr, nullptr, {0,0,0}},
+    { "openrecentfile",  activate_action_openrecentfile, "s", nullptr, nullptr, {0,0,0}},
+    { "pause",  activate_action_pause, nullptr, "false", nullptr, {0,0,0}}
 };
 
 GActionGroup* CloudProviderWrapper::getActionGroup()

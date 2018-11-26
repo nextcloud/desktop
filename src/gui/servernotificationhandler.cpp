@@ -128,6 +128,9 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
                 link.setScheme(ai->account()->url().scheme());
                 link.setHost(ai->account()->url().host());
             }
+            if (link.port() == -1) {
+                link.setPort(ai->account()->url().port());
+            }
         }
         a._link = link;
         a._dateTime = QDateTime::fromString(json.value("datetime").toString(), Qt::ISODate);

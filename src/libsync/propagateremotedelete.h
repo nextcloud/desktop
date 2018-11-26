@@ -27,11 +27,11 @@ class DeleteJob : public AbstractNetworkJob
     Q_OBJECT
     QUrl _url; // Only used if the constructor taking a url is taken.
 public:
-    explicit DeleteJob(AccountPtr account, const QString &path, QObject *parent = 0);
-    explicit DeleteJob(AccountPtr account, const QUrl &url, QObject *parent = 0);
+    explicit DeleteJob(AccountPtr account, const QString &path, QObject *parent = nullptr);
+    explicit DeleteJob(AccountPtr account, const QUrl &url, QObject *parent = nullptr);
 
-    void start() Q_DECL_OVERRIDE;
-    bool finished() Q_DECL_OVERRIDE;
+    void start() override;
+    bool finished() override;
 
 signals:
     void finishedSignal();
@@ -51,11 +51,11 @@ public:
         : PropagateItemJob(propagator, item)
     {
     }
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
     void createDeleteJob(const QString &filename);
-    void abort(PropagatorJob::AbortType abortType) Q_DECL_OVERRIDE;
+    void abort(PropagatorJob::AbortType abortType) override;
 
-    bool isLikelyFinishedQuickly() Q_DECL_OVERRIDE { return !_item->isDirectory(); }
+    bool isLikelyFinishedQuickly() override { return !_item->isDirectory(); }
 
 private slots:
     void slotDeleteJobFinished();

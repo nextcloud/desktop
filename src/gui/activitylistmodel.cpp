@@ -150,16 +150,12 @@ int ActivityListModel::rowCount(const QModelIndex &) const
     return _finalList.count();
 }
 
-// current strategy: Fetch 100 items per Account
-// ATTENTION: This method is const and thus it is not possible to modify
-// the _activityLists hash or so. Doesn't make it easier...
 bool ActivityListModel::canFetchMore(const QModelIndex &) const
 {
-    if (_activityLists.count() == 0)
-        return true;
-
+    // We need to be connected to be able to fetch more
     if (_accountState && _accountState->isConnected()) {
-        if (_activityLists.count() == 0 && !_currentlyFetching) {
+        // If the fetching is reported to be done or we are currently fetching we can't fetch more
+        if (!_doneFetching && !_currentlyFetching) {
             return true;
         }
     }
@@ -177,8 +173,8 @@ void ActivityListModel::startFetchJob()
         this, &ActivityListModel::slotActivitiesReceived);
 
     QUrlQuery params;
-    params.addQueryItem(QLatin1String("page"), QLatin1String("0"));
-    params.addQueryItem(QLatin1String("pagesize"), QLatin1String("100"));
+    params.addQueryItem(QLatin1String("start"), QString::number(_currentItem));
+    params.addQueryItem(QLatin1String("count"), QString::number(100));
     job->addQueryParams(params);
 
     _currentlyFetching = true;
@@ -192,10 +188,16 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
 
     ActivityList list;
     auto ast = _accountState;
-    if (!ast)
+    if (!ast) {
         return;
+    }
 
-    _currentlyFetching = 0;
+    if (activities.size() == 0) {
+        _doneFetching = true;
+    }
+
+    _currentlyFetching = false;
+    _currentItem += activities.size();
 
     foreach (auto activ, activities) {
         auto json = activ.toObject();
@@ -212,7 +214,7 @@ void ActivityListModel::slotActivitiesReceived(const QJsonDocument &json, int st
         list.append(a);
     }
 
-    _activityLists = list;
+    _activityLists.append(list);
 
     emit activityJobStatusCode(statusCode);
 
@@ -234,6 +236,7 @@ void ActivityListModel::addNotificationToActivityList(Activity activity) {
 void ActivityListModel::removeActivityFromActivityList(int row) {
     Activity activity =  _finalList.at(row);
     removeActivityFromActivityList(activity);
+    combineActivityLists();
 }
 
 void ActivityListModel::addSyncFileItemToActivityList(Activity activity) {
@@ -291,18 +294,32 @@ void ActivityListModel::combineActivityLists()
     endInsertRows();
 }
 
+bool ActivityListModel::canFetchActivities() const {
+    return _accountState->isConnected() && _accountState->account()->capabilities().hasActivities();
+}
+
 void ActivityListModel::fetchMore(const QModelIndex &)
 {
-    if (_accountState->isConnected()) {
-        _activityLists = ActivityList();
+    if (canFetchActivities()) {
         startFetchJob();
+    } else {
+        _doneFetching = true;
+        combineActivityLists();
     }
 }
 
 void ActivityListModel::slotRefreshActivity()
 {
     _activityLists.clear();
-    startFetchJob();
+    _doneFetching = false;
+    _currentItem = 0;
+
+    if (canFetchActivities()) {
+        startFetchJob();
+    } else {
+        _doneFetching = true;
+        combineActivityLists();
+    }
 }
 
 void ActivityListModel::slotRemoveAccount()
@@ -310,5 +327,7 @@ void ActivityListModel::slotRemoveAccount()
     _finalList.clear();
     _activityLists.clear();
     _currentlyFetching = false;
+    _doneFetching = false;
+    _currentItem = 0;
 }
 }

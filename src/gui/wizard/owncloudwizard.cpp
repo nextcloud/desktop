@@ -41,7 +41,7 @@ Q_LOGGING_CATEGORY(lcWizard, "nextcloud.gui.wizard", QtInfoMsg)
 
 OwncloudWizard::OwncloudWizard(QWidget *parent)
     : QWizard(parent)
-    , _account(0)
+    , _account(nullptr)
     , _setupPage(new OwncloudSetupPage(this))
     , _httpCredsPage(new OwncloudHttpCredsPage(this))
     , _browserCredsPage(new OwncloudOAuthCredsPage)
@@ -50,7 +50,7 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 #endif
     , _advancedSetupPage(new OwncloudAdvancedSetupPage)
     , _resultPage(new OwncloudWizardResultPage)
-    , _credentialsPage(0)
+    , _credentialsPage(nullptr)
     , _webViewPage(new WebViewPage(this))
     , _setupLog()
     , _registration(false)
@@ -262,7 +262,7 @@ AbstractCredentials *OwncloudWizard::getCredentials() const
         return _credentialsPage->getCredentials();
     }
 
-    return 0;
+    return nullptr;
 }
 
 } // end namespace

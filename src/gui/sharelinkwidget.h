@@ -52,7 +52,7 @@ public:
         const QString &sharePath,
         const QString &localPath,
         SharePermissions maxSharingPermissions,
-        QWidget *parent = 0);
+        QWidget *parent = nullptr);
     ~ShareLinkWidget();
     void getShares();
     void toggleButton(bool show);
@@ -83,9 +83,11 @@ private slots:
 private:
     void displayError(const QString &errMsg);
 
+    void showPasswordOptions(bool show);
     void togglePasswordOptions(bool enable);
     void setPassword(const QString &password);
 
+    void showExpireDateOptions(bool show);
     void toggleExpireDateOptions(bool enable);
     void setExpireDate(const QDate &date);
 
@@ -104,8 +106,6 @@ private:
     QString _sharePath;
     QString _localPath;
     QString _shareUrl;
-
-    QProgressIndicator *_pi_indicator;
 
     ShareManager *_manager;
     QSharedPointer<LinkShare> _linkShare;

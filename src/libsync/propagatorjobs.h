@@ -39,7 +39,7 @@ public:
         : PropagateItemJob(propagator, item)
     {
     }
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
 private:
     bool removeRecursively(const QString &path);
@@ -60,7 +60,7 @@ public:
         , _deleteExistingFile(false)
     {
     }
-    void start() Q_DECL_OVERRIDE;
+    void start() override;
 
     /**
      * Whether an existing file with the same name may be deleted before
@@ -86,7 +86,7 @@ public:
         : PropagateItemJob(propagator, item)
     {
     }
-    void start() Q_DECL_OVERRIDE;
-    JobParallelism parallelism() Q_DECL_OVERRIDE { return _item->isDirectory() ? WaitForFinished : FullParallelism; }
+    void start() override;
+    JobParallelism parallelism() override { return _item->isDirectory() ? WaitForFinished : FullParallelism; }
 };
 }

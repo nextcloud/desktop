@@ -37,7 +37,7 @@
 
 namespace OCC {
 
-Theme *Theme::_instance = 0;
+Theme *Theme::_instance = nullptr;
 
 Theme *Theme::instance()
 {
@@ -201,7 +201,7 @@ QString Theme::hidpiFileName(const QString &fileName, QPaintDevice *dev)
 #endif
 
 Theme::Theme()
-    : QObject(0)
+    : QObject(nullptr)
     , _mono(false)
 {
 }

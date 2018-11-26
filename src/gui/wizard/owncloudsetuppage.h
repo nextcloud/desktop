@@ -42,15 +42,15 @@ class OwncloudSetupPage : public QWizardPage
 {
     Q_OBJECT
 public:
-    OwncloudSetupPage(QWidget *parent = 0);
+    OwncloudSetupPage(QWidget *parent = nullptr);
     ~OwncloudSetupPage();
 
-    virtual bool isComplete() const Q_DECL_OVERRIDE;
-    virtual void initializePage() Q_DECL_OVERRIDE;
-    virtual int nextId() const Q_DECL_OVERRIDE;
+    bool isComplete() const override;
+    void initializePage() override;
+    int nextId() const override;
     void setServerUrl(const QString &);
     void setAllowPasswordStorage(bool);
-    bool validatePage() Q_DECL_OVERRIDE;
+    bool validatePage() override;
     QString url() const;
     QString localFolder() const;
     void setRemoteFolder(const QString &remoteFolder);

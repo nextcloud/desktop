@@ -528,7 +528,7 @@ void DiscoveryMainThread::singleDirectoryJobResultSlot()
 
     qCDebug(lcDiscovery) << "Have" << _currentDiscoveryDirectoryResult->list.size() << "results for " << _currentDiscoveryDirectoryResult->path;
 
-    _currentDiscoveryDirectoryResult = 0; // the sync thread owns it now
+    _currentDiscoveryDirectoryResult = nullptr; // the sync thread owns it now
 
     if (!_firstFolderProcessed) {
         _firstFolderProcessed = true;
@@ -549,7 +549,7 @@ void DiscoveryMainThread::singleDirectoryJobFinishedWithErrorSlot(int csyncErrno
 
     _currentDiscoveryDirectoryResult->code = csyncErrnoCode;
     _currentDiscoveryDirectoryResult->msg = msg;
-    _currentDiscoveryDirectoryResult = 0; // the sync thread owns it now
+    _currentDiscoveryDirectoryResult = nullptr; // the sync thread owns it now
 
     _discoveryJob->_vioMutex.lock();
     _discoveryJob->_vioWaitCondition.wakeAll();
@@ -598,7 +598,7 @@ void DiscoveryMainThread::slotGetSizeFinishedWithError()
 
     qCWarning(lcDiscovery) << "Error getting the size of the directory";
     // just let let the discovery job continue then
-    _currentGetSizeResult = 0;
+    _currentGetSizeResult = nullptr;
     QMutexLocker locker(&_discoveryJob->_vioMutex);
     _discoveryJob->_vioWaitCondition.wakeAll();
 }
@@ -611,7 +611,7 @@ void DiscoveryMainThread::slotGetSizeResult(const QVariantMap &map)
 
     *_currentGetSizeResult = map.value(QLatin1String("size")).toLongLong();
     qCDebug(lcDiscovery) << "Size of folder:" << *_currentGetSizeResult;
-    _currentGetSizeResult = 0;
+    _currentGetSizeResult = nullptr;
     QMutexLocker locker(&_discoveryJob->_vioMutex);
     _discoveryJob->_vioWaitCondition.wakeAll();
 }
@@ -630,13 +630,13 @@ void DiscoveryMainThread::abort()
         if (_discoveryJob->_vioMutex.tryLock()) {
             _currentDiscoveryDirectoryResult->msg = tr("Aborted by the user"); // Actually also created somewhere else by sync engine
             _currentDiscoveryDirectoryResult->code = EIO;
-            _currentDiscoveryDirectoryResult = 0;
+            _currentDiscoveryDirectoryResult = nullptr;
             _discoveryJob->_vioWaitCondition.wakeAll();
             _discoveryJob->_vioMutex.unlock();
         }
     }
     if (_currentGetSizeResult) {
-        _currentGetSizeResult = 0;
+        _currentGetSizeResult = nullptr;
         QMutexLocker locker(&_discoveryJob->_vioMutex);
         _discoveryJob->_vioWaitCondition.wakeAll();
     }
@@ -666,12 +666,12 @@ csync_vio_handle_t *DiscoveryJob::remote_vio_opendir_hook(const char *url,
             errno = directoryResult->code;
             // save the error string to the context
             discoveryJob->_csync_ctx->error_string = qstrdup(directoryResult->msg.toUtf8().constData());
-            return NULL;
+            return nullptr;
         }
 
         return directoryResult.take();
     }
-    return NULL;
+    return nullptr;
 }
 
 
@@ -687,7 +687,7 @@ std::unique_ptr<csync_file_stat_t> DiscoveryJob::remote_vio_readdir_hook(csync_v
             return file_stat;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void DiscoveryJob::remote_vio_closedir_hook(csync_vio_handle_t *dhandle, void *userdata)
@@ -719,10 +719,10 @@ void DiscoveryJob::start()
     _lastUpdateProgressCallbackCall.invalidate();
     int ret = csync_update(_csync_ctx);
 
-    _csync_ctx->callbacks.checkSelectiveSyncNewFolderHook = 0;
-    _csync_ctx->callbacks.checkSelectiveSyncBlackListHook = 0;
-    _csync_ctx->callbacks.update_callback = 0;
-    _csync_ctx->callbacks.update_callback_userdata = 0;
+    _csync_ctx->callbacks.checkSelectiveSyncNewFolderHook = nullptr;
+    _csync_ctx->callbacks.checkSelectiveSyncBlackListHook = nullptr;
+    _csync_ctx->callbacks.update_callback = nullptr;
+    _csync_ctx->callbacks.update_callback_userdata = nullptr;
 
     emit finished(ret);
     deleteLater();

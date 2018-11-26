@@ -13,13 +13,13 @@ class WebViewPage : public AbstractCredentialsWizardPage
 {
     Q_OBJECT
 public:
-    WebViewPage(QWidget *parent = 0);
+    WebViewPage(QWidget *parent = nullptr);
 
-    void initializePage() Q_DECL_OVERRIDE;
-    int nextId() const Q_DECL_OVERRIDE;
-    bool isComplete() const;
+    void initializePage() override;
+    int nextId() const override;
+    bool isComplete() const override;
 
-    AbstractCredentials* getCredentials() const;
+    AbstractCredentials* getCredentials() const override;
     void setConnected();
 
 signals:

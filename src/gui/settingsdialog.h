@@ -48,7 +48,7 @@ class SettingsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit SettingsDialog(ownCloudGui *gui, QWidget *parent = 0);
+    explicit SettingsDialog(ownCloudGui *gui, QWidget *parent = nullptr);
     ~SettingsDialog();
 
     void addAccount(const QString &title, QWidget *widget);
@@ -56,7 +56,7 @@ public:
 public slots:
     void showFirstPage();
     void showActivityPage();
-//    void showIssuesList(const QString &folderAlias);
+    void showIssuesList(AccountState *account);
     void slotSwitchPage(QAction *action);
     void slotRefreshActivity(AccountState *accountState);
     void slotRefreshActivityAccountStateSender();
@@ -64,9 +64,9 @@ public slots:
     void slotAccountDisplayNameChanged();
 
 protected:
-    void reject() Q_DECL_OVERRIDE;
-    void accept() Q_DECL_OVERRIDE;
-    void changeEvent(QEvent *) Q_DECL_OVERRIDE;
+    void reject() override;
+    void accept() override;
+    void changeEvent(QEvent *) override;
 
 private slots:
     void accountAdded(AccountState *);
