@@ -2369,14 +2369,32 @@ void ShowUsage() {
 	// clang-format on
 }
 
+void Vfs_windows::slotSyncFinish(const QString &path, bool status)
+{
+    Q_UNUSED(path);
+    Q_UNUSED(status);
+
+    _mutex.lock();
+    _syncCondition.wakeAll();
+    _mutex.unlock();
+}
+
 void Vfs_windows::openFileAtPath(QString path, QVariantMap &error)
 {
     qDebug() << " path: " << path;
+    _mutex.lock();
+    emit openFile(path);
+    _syncCondition.wait(&_mutex);
+    _mutex.unlock();
 }
 
 void Vfs_windows::deleteFileAtPath(QString path, QVariantMap &error)
 {
     qDebug() << " path: " << path;
+    _mutex.lock();
+    emit deleteFile(path);
+    _syncCondition.wait(&_mutex);
+    _mutex.unlock();
 }
 
 void Vfs_windows::startDeleteDirectoryAtPath(QString path, QVariantMap &error)
@@ -2398,14 +2416,17 @@ qDebug() << Q_FUNC_INFO << " path: " << path;
 	
 qDebug() << Q_FUNC_INFO << " rootPath: " << rootPath_;
 
+	_mutex.lock();
 	emit startRemoteFileListJob(path);
+	_dirCondition.wait(&_mutex);
+	_mutex.unlock();
 
-	qDebug() << Q_FUNC_INFO << " paso1: " << rootPath_;
-	while (!_fileListMap.contains(path)) {
+	//qDebug() << Q_FUNC_INFO << " paso1: " << rootPath_;
+	//while (!_fileListMap.contains(path)) {
 
-		if( !_fileListMap.keys().isEmpty() )
-			qDebug() << Q_FUNC_INFO << " ERROR paso buscado" << path << "keys" << _fileListMap.keys();
-	}
+	//	if( !_fileListMap.keys().isEmpty() )
+	//		qDebug() << Q_FUNC_INFO << " ERROR paso buscado" << path << "keys" << _fileListMap.keys();
+	//}
 
 	if (_fileListMap.value(path)->code != 0)
 	{
@@ -2452,6 +2473,11 @@ void Vfs_windows::folderFileListFinish(OCC::DiscoveryDirectoryResult *dr)
 	{
 		QString ruta = dr->path;
 		_fileListMap.insert(dr->path, dr);
+
+		
+        _mutex.lock();
+        _dirCondition.wakeAll();
+        _mutex.unlock();
 	}
 	else
 		qDebug() << "Error in obtaining the results, comes null";
@@ -2467,6 +2493,15 @@ Vfs_windows::Vfs_windows(AccountState *accountState_)
 	_remotefileListJob->setParent(this);
 	connect(this, &Vfs_windows::startRemoteFileListJob, _remotefileListJob, &OCC::DiscoveryFolderFileList::doGetFolderContent);
 	connect(_remotefileListJob, &OCC::DiscoveryFolderFileList::gotDataSignal, this, &Vfs_windows::folderFileListFinish);
+
+	// "talk" to the sync engine
+    _syncWrapper = OCC::SyncWrapper::instance();
+    connect(this, &Vfs_windows::openFile, _syncWrapper, &OCC::SyncWrapper::openFileAtPath, Qt::DirectConnection);
+    connect(this, &Vfs_windows::releaseFile, _syncWrapper, &OCC::SyncWrapper::releaseFileAtPath, Qt::DirectConnection);
+    connect(this, &Vfs_windows::writeFile, _syncWrapper, &OCC::SyncWrapper::writeFileAtPath, Qt::DirectConnection);
+    connect(this, &Vfs_windows::deleteFile, _syncWrapper, &OCC::SyncWrapper::deleteFileAtPath, Qt::DirectConnection);
+    connect(this, &Vfs_windows::addToFileTree, _syncWrapper, &OCC::SyncWrapper::updateFileTree, Qt::DirectConnection);
+    connect(_syncWrapper, &OCC::SyncWrapper::syncFinish, this, &Vfs_windows::slotSyncFinish, Qt::DirectConnection);
 
 //< Examples catch signals ...
 	/*connect(this, SIGNAL(getOperationCreateFile(QString, QString, QString)), SLOT(slotCatchOperationCreateFile(QString, QString, QString)));
