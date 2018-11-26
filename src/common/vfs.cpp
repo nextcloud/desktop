@@ -18,6 +18,7 @@
 
 #include "vfs.h"
 #include "plugin.h"
+#include "version.h"
 
 #include <QPluginLoader>
 #include <QLoggingCategory>
@@ -74,6 +75,8 @@ static QString modeToPluginName(Vfs::Mode mode)
     return QString();
 }
 
+Q_LOGGING_CATEGORY(lcPlugin, "plugins", QtInfoMsg)
+
 bool OCC::isVfsPluginAvailable(Vfs::Mode mode)
 {
     if (mode == Vfs::Off)
@@ -81,7 +84,30 @@ bool OCC::isVfsPluginAvailable(Vfs::Mode mode)
     auto name = modeToPluginName(mode);
     if (name.isEmpty())
         return false;
-    return QPluginLoader(pluginFileName("vfs", name)).load();
+    auto pluginPath = pluginFileName("vfs", name);
+    QPluginLoader loader(pluginPath);
+
+    auto basemeta = loader.metaData();
+    if (basemeta.isEmpty() || !basemeta.contains("IID")) {
+        qCDebug(lcPlugin) << "Plugin doesn't exist" << pluginPath;
+        return false;
+    }
+    if (basemeta["IID"].toString() != "org.owncloud.PluginFactory") {
+        qCWarning(lcPlugin) << "Plugin has wrong IID" << pluginPath << basemeta["IID"];
+        return false;
+    }
+
+    auto metadata = basemeta["MetaData"].toObject();
+    if (metadata["type"].toString() != "vfs") {
+        qCWarning(lcPlugin) << "Plugin has wrong type" << pluginPath << metadata["type"];
+        return false;
+    }
+    if (metadata["version"].toString() != MIRALL_VERSION_STRING) {
+        qCWarning(lcPlugin) << "Plugin has wrong version" << pluginPath << metadata["version"];
+        return false;
+    }
+
+    return true;
 }
 
 Vfs::Mode OCC::bestAvailableVfsMode()
@@ -94,8 +120,6 @@ Vfs::Mode OCC::bestAvailableVfsMode()
     return Vfs::Off;
 }
 
-Q_LOGGING_CATEGORY(lcPlugin, "plugins", QtInfoMsg)
-
 std::unique_ptr<Vfs> OCC::createVfsFromPlugin(Vfs::Mode mode)
 {
     if (mode == Vfs::Off)
@@ -104,8 +128,13 @@ std::unique_ptr<Vfs> OCC::createVfsFromPlugin(Vfs::Mode mode)
     auto name = modeToPluginName(mode);
     if (name.isEmpty())
         return nullptr;
-
     auto pluginPath = pluginFileName("vfs", name);
+
+    if (!isVfsPluginAvailable(mode)) {
+        qCWarning(lcPlugin) << "Could not load plugin: not existant or bad metadata" << pluginPath;
+        return nullptr;
+    }
+
     QPluginLoader loader(pluginPath);
     auto plugin = loader.instance();
     if (!plugin) {

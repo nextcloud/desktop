@@ -51,7 +51,7 @@ public:
 class SuffixVfsPluginFactory : public QObject, public DefaultPluginFactory<VfsSuffix>
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID "org.owncloud.PluginFactory")
+    Q_PLUGIN_METADATA(IID "org.owncloud.PluginFactory" FILE "vfspluginmetadata.json")
     Q_INTERFACES(OCC::PluginFactory)
 };
 
