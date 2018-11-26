@@ -25,6 +25,7 @@ public slots:
     void openFileAtPath(const QString path);
     void releaseFileAtPath(const QString path);
     void writeFileAtPath(const QString path);
+    void deleteFileAtPath(const QString path);
     void updateFileTree(const QString path);
 
 signals:

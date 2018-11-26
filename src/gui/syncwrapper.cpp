@@ -1,6 +1,5 @@
 #include "syncwrapper.h"
 #include "socketapi.h"
-#include "vfs_mac.h"
 
 namespace OCC {
 
@@ -25,6 +24,11 @@ void SyncWrapper::updateSyncQueue(const QString path, bool syncing) {
 
 void SyncWrapper::openFileAtPath(const QString path){
     sync(removeSlash(path), CSYNC_INSTRUCTION_SYNC);
+}
+
+void SyncWrapper::deleteFileAtPath(const QString path)
+{
+    sync(removeSlash(path), CSYNC_INSTRUCTION_REMOVE);
 }
 
 void SyncWrapper::releaseFileAtPath(const QString path){
@@ -60,7 +64,10 @@ void SyncWrapper::sync(const QString path, csync_instructions_e instruction){
        _syncJournalDb->updateLastAccess(path);
 
        if(shouldSync(path)){
-           emit startSyncForFolder();
+           _folderMan->terminateSyncProcess();
+           _folderMan->scheduleFolder();
+           _folderMan->scheduleFolderNext();
+           //emit startSyncForFolder();
        } else {
            emit syncFinish(path, true);
        }
