@@ -86,7 +86,7 @@ public:
     static Optional<Mode> modeFromString(const QString &str);
 
 public:
-    Vfs(QObject* parent = nullptr);
+    explicit Vfs(QObject* parent = nullptr);
     virtual ~Vfs();
 
     virtual Mode mode() const = 0;
