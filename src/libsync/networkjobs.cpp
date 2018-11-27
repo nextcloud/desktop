@@ -852,56 +852,21 @@ void DetermineAuthTypeJob::start()
     // Don't send cookies, we can't determine the auth type if we're logged in
     req.setAttribute(QNetworkRequest::CookieLoadControlAttribute, QNetworkRequest::Manual);
 
-    // Start two parallel requests, one determines whether it's a shib server
-    // and the other checks the HTTP auth method.
-    auto get = _account->sendRequest("GET", _account->davUrl(), req);
     auto propfind = _account->sendRequest("PROPFIND", _account->davUrl(), req);
-    get->setTimeout(30 * 1000);
     propfind->setTimeout(30 * 1000);
-    get->setIgnoreCredentialFailure(true);
     propfind->setIgnoreCredentialFailure(true);
-
-    connect(get, &AbstractNetworkJob::redirected, this, [this, get](QNetworkReply *, const QUrl &target, int) {
-#ifndef NO_SHIBBOLETH
-        QRegExp shibbolethyWords("SAML|wayf");
-        shibbolethyWords.setCaseSensitivity(Qt::CaseInsensitive);
-        if (target.toString().contains(shibbolethyWords)) {
-            _resultGet = Shibboleth;
-            get->setFollowRedirects(false);
-        }
-#else
-        Q_UNUSED(this)
-        Q_UNUSED(get)
-        Q_UNUSED(target)
-#endif
-    });
-    connect(get, &SimpleNetworkJob::finishedSignal, this, [this]() {
-        _getDone = true;
-        checkBothDone();
-    });
     connect(propfind, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
         auto authChallenge = reply->rawHeader("WWW-Authenticate").toLower();
+        auto result = Basic;
         if (authChallenge.contains("bearer ")) {
-            _resultPropfind = OAuth;
+            result = OAuth;
         } else if (authChallenge.isEmpty()) {
             qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
         }
-        _propfindDone = true;
-        checkBothDone();
+        qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << _account->davUrl() << "is" << result;
+        emit this->authType(result);
+        this->deleteLater();
     });
-}
-
-void DetermineAuthTypeJob::checkBothDone()
-{
-    if (!_getDone || !_propfindDone)
-        return;
-    auto result = _resultPropfind;
-    // OAuth > Shib > Basic
-    if (_resultGet == Shibboleth && result != OAuth)
-        result = Shibboleth;
-    qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << _account->davUrl() << "is" << result;
-    emit authType(result);
-    deleteLater();
 }
 
 SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, QObject *parent)

@@ -23,7 +23,6 @@
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudwizard.h"
 #include "creds/httpcredentialsgui.h"
-#include "creds/credentialsfactory.h"
 
 namespace OCC {
 
@@ -67,7 +66,7 @@ void OwncloudOAuthCredsPage::initializePage()
 {
     OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
     Q_ASSERT(ocWizard);
-    ocWizard->account()->setCredentials(CredentialsFactory::create("http"));
+    ocWizard->account()->setCredentials(new HttpCredentialsGui);
     _asyncAuth.reset(new OAuth(ocWizard->account().data(), this));
     connect(_asyncAuth.data(), &OAuth::result, this, &OwncloudOAuthCredsPage::asyncAuthResult, Qt::QueuedConnection);
     _asyncAuth->start();

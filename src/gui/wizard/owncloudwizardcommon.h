@@ -36,7 +36,6 @@ namespace WizardCommon {
     enum Pages {
         Page_ServerSetup,
         Page_HttpCreds,
-        Page_ShibbolethCreds,
         Page_OAuthCreds,
         Page_AdvancedSetup,
         Page_Result

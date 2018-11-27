@@ -68,7 +68,7 @@ Linux with system dependencies
 ------------------------------
 1. Build sources from e.g. a github checkout with dependencies provided by your linux distribution. While this allows more freedom for development, it does not exactly represent what we ship as packages. See above for how to recreate packages from source.
 
-  * Debian/Ubuntu: ``apt install qtdeclarative5-dev libinotifytools-dev qt5keychain-dev libqt5webkit5-dev python-sphinx libsqlite3-dev``
+  * Debian/Ubuntu: ``apt install qtdeclarative5-dev libinotifytools-dev qt5keychain-dev python-sphinx libsqlite3-dev``
 
 2. Follow the :ref:`generic-build-instructions`, starting with step 1.
 
@@ -167,7 +167,7 @@ follow `Windows Installer Build (Cross-Compile)`_ instead.
 
 7. Build the client::
 
-     cmake -G "MinGW Makefiles" -DNO_SHIBBOLETH=1 ../client
+     cmake -G "MinGW Makefiles" ../client
      mingw32-make
 
    .. note:: You can try using ninja to build in parallel using
@@ -253,7 +253,7 @@ To build the most up-to-date version of the client:
 
 3. Configure the client build::
 
-     cmake -DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/  -DNO_SHIBBOLETH=1 ..
+     cmake -DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/ ..
 
 .. note:: For Linux builds (using QT5 libraries via build-dep) a typical setting is ``-DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1/`` - version number may vary. For Linux builds using system dependencies -DCMAKE_PREFIX_PATH is not needed.
 

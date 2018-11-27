@@ -17,8 +17,7 @@
 #include "sslerrordialog.h"
 #include "proxyauthhandler.h"
 #include <theme.h>
-#include <creds/credentialsfactory.h>
-#include <creds/abstractcredentials.h>
+#include <creds/httpcredentialsgui.h>
 #include <cookiejar.h>
 #include <QSettings>
 #include <QDir>
@@ -26,7 +25,6 @@
 
 namespace {
 static const char urlC[] = "url";
-static const char authTypeC[] = "authType";
 static const char userC[] = "user";
 static const char httpUserC[] = "http_user";
 static const char davUserC[] = "dav_user";
@@ -226,7 +224,6 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
         Q_FOREACH (QString key, acc->_settingsMap.keys()) {
             settings.setValue(key, acc->_settingsMap.value(key));
         }
-        settings.setValue(QLatin1String(authTypeC), acc->_credentials->authType());
 
         // HACK: Save http_user also as user
         if (acc->_settingsMap.contains(httpUserC))
@@ -266,44 +263,29 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 
     auto acc = createAccount();
 
-    QString authType = settings.value(QLatin1String(authTypeC)).toString();
-
-    // There was an account-type saving bug when 'skip folder config' was used
-    // See #5408. This attempts to fix up the "dummy" authType
-    if (authType == QLatin1String("dummy")) {
-        if (settings.contains(QLatin1String("http_user"))) {
-            authType = "http";
-        } else if (settings.contains(QLatin1String("shibboleth_shib_user"))) {
-            authType = "shibboleth";
-        }
-    }
-
     QString overrideUrl = Theme::instance()->overrideServerUrl();
     QString forceAuth = Theme::instance()->forceConfigAuthType();
     if (!forceAuth.isEmpty() && !overrideUrl.isEmpty()) {
         // If forceAuth is set, this might also mean the overrideURL has changed.
         // See enterprise issues #1126
         acc->setUrl(overrideUrl);
-        authType = forceAuth;
     } else {
         acc->setUrl(urlConfig.toUrl());
     }
-
-    qCInfo(lcAccountManager) << "Account for" << acc->url() << "using auth type" << authType;
 
     acc->_serverVersion = settings.value(QLatin1String(serverVersionC)).toString();
     acc->_davUser = settings.value(QLatin1String(davUserC)).toString();
 
     // We want to only restore settings for that auth type and the user value
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
-    QString authTypePrefix = authType + "_";
+    QString authTypePrefix = "http_";
     Q_FOREACH (QString key, settings.childKeys()) {
         if (!key.startsWith(authTypePrefix))
             continue;
         acc->_settingsMap.insert(key, settings.value(key));
     }
 
-    acc->setCredentials(CredentialsFactory::create(authType));
+    acc->setCredentials(new HttpCredentialsGui);
 
     // now the server cert, it is in the general group
     settings.beginGroup(QLatin1String("General"));

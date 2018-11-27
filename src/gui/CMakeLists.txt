@@ -99,7 +99,6 @@ set(client_SRCS
     servernotificationhandler.cpp
     guiutility.cpp
     elidedlabel.cpp
-    creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/oauth.cpp
     wizard/postfixlineedit.cpp
@@ -113,15 +112,6 @@ set(client_SRCS
     wizard/owncloudwizard.cpp
     wizard/owncloudwizardresultpage.cpp
 )
-
-IF(NOT NO_SHIBBOLETH)
-    list(APPEND client_SRCS
-        creds/shibbolethcredentials.cpp
-        creds/shibboleth/shibbolethwebview.cpp
-        creds/shibboleth/shibbolethuserjob.cpp
-        wizard/owncloudshibbolethcredspage.cpp
-    )
-endif()
 
 set(updater_SRCS
     updater/ocupdater.cpp
@@ -305,11 +295,6 @@ endif()
 if (APPLE)
     find_package(Qt5 COMPONENTS MacExtras)
     target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::MacExtras)
-endif()
-
-if (NOT NO_SHIBBOLETH)
-    find_package(Qt5 COMPONENTS WebKitWidgets)
-    target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::WebKitWidgets)
 endif()
 
 if(WITH_CRASHREPORTER)

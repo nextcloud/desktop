@@ -34,8 +34,6 @@
 #include "filesystem.h"
 #include "owncloudgui.h"
 
-#include "creds/credentialsfactory.h"
-#include "creds/abstractcredentials.h"
 #include "creds/dummycredentials.h"
 
 namespace OCC {
@@ -85,17 +83,6 @@ bool OwncloudSetupWizard::bringWizardToFrontIfVisible()
         return false;
     }
 
-    if (wiz->_ocWizard->currentId() == WizardCommon::Page_ShibbolethCreds) {
-        // Try to find if there is a browser open and raise that instead (Issue #6105)
-        const auto allWindow = qApp->topLevelWidgets();
-        auto it = std::find_if(allWindow.cbegin(), allWindow.cend(), [](QWidget *w)
-            { return QLatin1String(w->metaObject()->className()) == QLatin1String("OCC::ShibbolethWebView"); });
-        if (it != allWindow.cend()) {
-            ownCloudGui::raiseDialog(*it);
-            return true;
-        }
-    }
-
     ownCloudGui::raiseDialog(wiz->_ocWizard);
     return true;
 }
@@ -103,7 +90,7 @@ bool OwncloudSetupWizard::bringWizardToFrontIfVisible()
 void OwncloudSetupWizard::startWizard()
 {
     AccountPtr account = AccountManager::createAccount();
-    account->setCredentials(CredentialsFactory::create("dummy"));
+    account->setCredentials(new DummyCredentials);
     account->setUrl(Theme::instance()->overrideServerUrl());
     _ocWizard->setAccount(account);
     _ocWizard->setOCUrl(account->url().toString());
@@ -186,7 +173,7 @@ void OwncloudSetupWizard::slotFindServer()
     AccountPtr account = _ocWizard->account();
 
     // Set fake credentials before we check what credential it actually is.
-    account->setCredentials(CredentialsFactory::create("dummy"));
+    account->setCredentials(new DummyCredentials);
 
     // Determining the actual server URL can be a multi-stage process
     // 1. Check url/status.php with CheckServerJob
@@ -409,7 +396,7 @@ void OwncloudSetupWizard::slotAuthError()
     }
 
     _ocWizard->show();
-    if (_ocWizard->currentId() == WizardCommon::Page_ShibbolethCreds || _ocWizard->currentId() == WizardCommon::Page_OAuthCreds) {
+    if (_ocWizard->currentId() == WizardCommon::Page_OAuthCreds) {
         _ocWizard->back();
     }
     _ocWizard->displayError(errorMsg, _ocWizard->currentId() == WizardCommon::Page_ServerSetup && checkDowngradeAdvised(reply));
