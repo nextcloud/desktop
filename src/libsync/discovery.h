@@ -18,6 +18,7 @@
 #include "discoveryphase.h"
 #include "syncfileitem.h"
 #include "common/asserts.h"
+#include "common/syncjournaldb.h"
 
 class ExcludedFiles;
 
@@ -177,6 +178,9 @@ private:
       */
     bool runLocalQuery();
 
+    /** Retrieve and cache directory pin state */
+    PinState directoryPinState();
+
     QueryMode _queryServer;
     QueryMode _queryLocal;
 
@@ -216,6 +220,7 @@ private:
     PathTuple _currentFolder;
     bool _childModified = false; // the directory contains modified item what would prevent deletion
     bool _childIgnored = false; // The directory contains ignored item that would prevent deletion
+    Optional<PinState> _pinStateCache; // The directories pin-state, once retrieved, see directoryPinState()
 
 signals:
     void finished();
