@@ -67,6 +67,7 @@ signals:
 private:
     void startFetchJob();
     void combineActivityLists();
+    bool canFetchActivities() const;
 
     ActivityList _activityLists;
     ActivityList _syncFileItemLists;
@@ -74,7 +75,9 @@ private:
     ActivityList _notificationErrorsLists;
     ActivityList _finalList;
     AccountState *_accountState;
-    bool _currentlyFetching = true;
+    bool _currentlyFetching = false;
+    bool _doneFetching = false;
+    int _currentItem = 0;
 };
 }
 #endif // ACTIVITYLISTMODEL_H

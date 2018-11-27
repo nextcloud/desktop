@@ -143,7 +143,7 @@ void SyncRunFileLog::start(const QString &folderPath)
 
 
     if (!exists) {
-        _out << folderPath.toLatin1() << endl;
+        _out << folderPath << endl;
         // We are creating a new file, add the note.
         _out << "# timestamp | duration | file | instruction | dir | modtime | etag | "
                 "size | fileId | status | errorString | http result code | "

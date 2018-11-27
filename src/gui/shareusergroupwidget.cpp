@@ -87,7 +87,7 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     connect(_manager, &ShareManager::shareCreated, this, &ShareUserGroupWidget::getShares);
     connect(_manager, &ShareManager::serverError, this, &ShareUserGroupWidget::displayError);
     connect(_ui->shareeLineEdit, &QLineEdit::returnPressed, this, &ShareUserGroupWidget::slotLineEditReturn);
-    connect(_ui->confirmShare, &QPushButton::clicked, this, &ShareUserGroupWidget::slotLineEditReturn);
+    connect(_ui->confirmShare, &QAbstractButton::clicked, this, &ShareUserGroupWidget::slotLineEditReturn);
     //TODO connect(_ui->privateLinkText, &QLabel::linkActivated, this, &ShareUserGroupWidget::slotPrivateLinkShare);
 
     // By making the next two QueuedConnections we can override
@@ -187,8 +187,9 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
 
     auto newViewPort = new QWidget(scrollArea);
     auto layout = new QVBoxLayout(newViewPort);
-    QSize minimumSize = newViewPort->sizeHint();
+    layout->setContentsMargins(0, 0, 0, 0);
     int x = 0;
+    int height = 0;
 
     foreach (const auto &share, shares) {
         // We don't handle link shares, only TypeUser or TypeGroup
@@ -204,22 +205,13 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
 
         x++;
         if (x <= 3) {
-            minimumSize = newViewPort->sizeHint();
-        } else {
-            minimumSize.rwidth() = qMax(newViewPort->sizeHint().width(), minimumSize.width());
+            height = newViewPort->sizeHint().height();
         }
     }
 
-    if (!layout->isEmpty()) {
-        _parentScrollArea->setVisible(true);
-        layout->addStretch(1);
-    } else {
-        _parentScrollArea->setVisible(false);
-    }
-
-    minimumSize.rwidth() += layout->spacing();
-    minimumSize.rheight() += layout->spacing();
-    scrollArea->setMinimumSize(minimumSize);
+    scrollArea->setFrameShape(x > 3 ? QFrame::StyledPanel : QFrame::NoFrame);
+    scrollArea->setVisible(!shares.isEmpty());
+    scrollArea->setFixedHeight(height);
     scrollArea->setWidget(newViewPort);
 
     _disableCompleterActivated = false;
@@ -229,14 +221,12 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
 void ShareUserGroupWidget::slotAdjustScrollWidgetSize()
 {
     QScrollArea *scrollArea = _parentScrollArea;
-    if (scrollArea->findChildren<ShareUserLine *>().count() <= 3 &&
-            scrollArea->findChildren<ShareUserLine *>().count() > 0) {
-        auto minimumSize = scrollArea->widget()->sizeHint();
-        auto spacing = scrollArea->widget()->layout()->spacing();
-        minimumSize.rwidth() += spacing;
-        minimumSize.rheight() += spacing;
-        scrollArea->setMinimumSize(minimumSize);
+    int count = scrollArea->findChildren<ShareUserLine *>().count();
+    scrollArea->setVisible(count > 0);
+    if (count > 0 && count <= 3) {
+        scrollArea->setFixedHeight(scrollArea->widget()->sizeHint().height());
     }
+    scrollArea->setFrameShape(count > 3 ? QFrame::StyledPanel : QFrame::NoFrame);
 }
 
 void ShareUserGroupWidget::slotPrivateLinkShare()
@@ -269,15 +259,8 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex &index)
     // model proxying the _completerModel
     auto sharee = qvariant_cast<QSharedPointer<Sharee>>(index.data(Qt::UserRole));
     if (sharee.isNull()) {
-        _parentScrollArea->setVisible(false);
         return;
     }
-
-    /*
-     * Add spinner to the bottom of the widget list
-     */
-    auto viewPort = _parentScrollArea->widget();
-    auto layout = qobject_cast<QVBoxLayout *>(viewPort->layout());
 
 // TODO Progress Indicator where should it go?
 //    auto indicator = new QProgressIndicator(viewPort);
@@ -312,11 +295,6 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex &index)
 
     _ui->shareeLineEdit->setEnabled(false);
     _ui->shareeLineEdit->setText(QString());
-
-    if(layout->isEmpty())
-        _parentScrollArea->setVisible(false);
-    else
-        _parentScrollArea->setVisible(true);
 }
 
 void ShareUserGroupWidget::slotCompleterHighlighted(const QModelIndex &index)
@@ -370,10 +348,8 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
 {
     _ui->setupUi(this);
 
-    QString sharedWithText(share->getShareWith()->format());
-    QFontMetrics metrics(_ui->sharedWith->font());
-    QString elidedText = metrics.elidedText(sharedWithText, Qt::ElideRight, _ui->sharedWith->width());
-    _ui->sharedWith->setText(elidedText);
+    _ui->sharedWith->setElideMode(Qt::ElideRight);
+    _ui->sharedWith->setText(share->getShareWith()->format());
 
     // adds permissions
     // can edit permission
