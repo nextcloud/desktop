@@ -1653,7 +1653,7 @@ Les journaux seront écrits dans %1.</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="29"/>
         <source>No Proxy</source>
-        <translation>Pas de serveur proxy</translation>
+        <translation>Aucun serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="42"/>
@@ -1683,7 +1683,7 @@ Les journaux seront écrits dans %1.</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation>Bande passante de téléchargement</translation>
+        <translation>Bande passante de réception</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="196"/>
@@ -1712,7 +1712,7 @@ Les journaux seront écrits dans %1.</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="269"/>
         <source>Upload Bandwidth</source>
-        <translation>Bande passante de téléversement</translation>
+        <translation>Bande passante d&apos;émission</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="253"/>
@@ -3823,7 +3823,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="458"/>
         <source>now</source>
-        <translation>maintenant</translation>
+        <translation>A l&apos;instant</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="460"/>

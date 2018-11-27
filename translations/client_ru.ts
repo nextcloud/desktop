@@ -496,7 +496,7 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="198"/>
         <source>Open Browser</source>
-        <translation>Открыть браузер</translation>
+        <translation>Открыть файловый менеджер</translation>
     </message>
 </context>
 <context>
