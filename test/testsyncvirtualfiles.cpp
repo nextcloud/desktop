@@ -739,6 +739,61 @@ private slots:
         QVERIFY(fakeFolder.currentRemoteState().find("A/a3.owncloud")); // regular upload
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
+
+    void testNewVirtuals()
+    {
+        FakeFolder fakeFolder{ FileInfo() };
+        SyncOptions syncOptions = vfsSyncOptions();
+        syncOptions._newFilesAreVirtual = true;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        auto setPin = [&] (const QByteArray &path, PinState state) {
+            fakeFolder.syncJournal().setPinStateForPath(path, state);
+        };
+
+        fakeFolder.remoteModifier().mkdir("local");
+        fakeFolder.remoteModifier().mkdir("online");
+        fakeFolder.remoteModifier().mkdir("unspec");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        setPin("local", PinState::AlwaysLocal);
+        setPin("online", PinState::OnlineOnly);
+
+        // Test 1: root is OnlineOnly
+        fakeFolder.remoteModifier().insert("file1");
+        fakeFolder.remoteModifier().insert("online/file1");
+        fakeFolder.remoteModifier().insert("local/file1");
+        fakeFolder.remoteModifier().insert("unspec/file1");
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.currentLocalState().find("file1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("online/file1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("local/file1"));
+        QVERIFY(fakeFolder.currentLocalState().find("unspec/file1.owncloud"));
+
+        // Test 2: root is AlwaysLocal
+        syncOptions._newFilesAreVirtual = false;
+        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+
+        fakeFolder.remoteModifier().insert("file2");
+        fakeFolder.remoteModifier().insert("online/file2");
+        fakeFolder.remoteModifier().insert("local/file2");
+        fakeFolder.remoteModifier().insert("unspec/file2");
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.currentLocalState().find("file2"));
+        QVERIFY(fakeFolder.currentLocalState().find("online/file2.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("local/file2"));
+        QVERIFY(fakeFolder.currentLocalState().find("unspec/file2"));
+
+        // file1 is unchanged
+        QVERIFY(fakeFolder.currentLocalState().find("file1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("online/file1.owncloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("local/file1"));
+        QVERIFY(fakeFolder.currentLocalState().find("unspec/file1.owncloud"));
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncVirtualFiles)
