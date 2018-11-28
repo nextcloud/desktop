@@ -586,7 +586,7 @@ skráakerfið eða sameignarmöppur, gætu verið með önnur takmörk.</transla
     <message>
         <location filename="../src/gui/application.cpp" line="191"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation type="unfinished"/>
+        <translation>Það kom upp villa við að nálgast stillingaskrána á %1. Gakktu úr skugga um að notandinn hafi heimild til að vinna með skrána.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="194"/>
@@ -2207,7 +2207,7 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
         <source>File %1 can not be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>Ekki var hægt að sækja %1 skrána því dulritunarupplýsingar vantar.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="434"/>

@@ -1798,12 +1798,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 верзија %2 доступна. Рестартујте апликацију да започнете ажурирање.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Нова %1 верзија %2 доступна. Искористите системску алатку за ажурирања да је инсталирате.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
@@ -1856,7 +1856,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="164"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="285"/>
@@ -2201,7 +2201,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
         <source>File %1 can not be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 се не може преузети јер недостају подаци о шифровању.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="434"/>
@@ -2211,7 +2211,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="484"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation type="unfinished"/>
+        <translation>Преузимање ће смањити слободно место на диску испод границе</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="488"/>
@@ -2231,7 +2231,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="662"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>Преузети фајл је празан иако је сервер рекао да треба да је %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="847"/>
@@ -2259,7 +2259,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="301"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Фајл или фасцикла је уклоњена из дељења које је само за читање, али повраћај није успео: %1</translation>
     </message>
 </context>
 <context>
@@ -2357,7 +2357,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="214"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Фајл %1 се не може отпремити јер постоји други фајл, чије се име разликује само у великим и малим словима</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="348"/>
@@ -2373,12 +2373,12 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
         <location filename="../src/libsync/propagateupload.cpp" line="602"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>Отпремање %1 премашује квоту фасцикле</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="334"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Фајл уклоњен (започето отпремање) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="684"/>
@@ -2401,17 +2401,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="448"/>
         <source>Unexpected return code from server (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Неочекивани повратни код са сервера (%1)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="455"/>
         <source>Missing File ID from server</source>
-        <translation type="unfinished"/>
+        <translation>ID фајла недостаје са сервера</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="469"/>
         <source>Missing ETag from server</source>
-        <translation type="unfinished"/>
+        <translation>ETag фајла недостаје са сервера</translation>
     </message>
 </context>
 <context>
@@ -2442,7 +2442,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="20"/>
         <source>Proxy authentication required</source>
-        <translation type="unfinished"/>
+        <translation>Захтева се провера идентитета преко проксија</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="26"/>
@@ -2457,7 +2457,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="43"/>
         <source>The proxy server needs a username and password.</source>
-        <translation type="unfinished"/>
+        <translation>За прокси сервер требају корисничко име и лозинка.</translation>
     </message>
     <message>
         <location filename="../src/gui/proxyauthdialog.ui" line="50"/>
@@ -2509,7 +2509,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="279"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>Десила се грешка приликом учитавања листе подфасцикли</translation>
     </message>
 </context>
 <context>
@@ -2592,7 +2592,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="123"/>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>Икона</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="101"/>
@@ -2620,22 +2620,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="46"/>
         <source>&amp;Share link</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Подели везу</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="89"/>
         <source>Enable</source>
-        <translation type="unfinished"/>
+        <translation>Укључи</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="118"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Лозинка:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="158"/>
         <source>Expiration date:</source>
-        <translation type="unfinished"/>
+        <translation>Датум истека:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="226"/>
@@ -2650,47 +2650,47 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="186"/>
         <source>Allow Editing</source>
-        <translation type="unfinished"/>
+        <translation>Дозволи мењање</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="192"/>
         <source>Read only</source>
-        <translation type="unfinished"/>
+        <translation>Само за читање</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
         <source>Allow Upload &amp;&amp; Editing</source>
-        <translation type="unfinished"/>
+        <translation>Дозволи отпремање и мењање</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="205"/>
         <source>File Drop (Upload Only)</source>
-        <translation type="unfinished"/>
+        <translation>Превлачење фајлова (само за отпремање)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="212"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Копирај везу</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="225"/>
         <source>Password Protect</source>
-        <translation type="unfinished"/>
+        <translation>Заштита лозинком</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="242"/>
         <source>Expiration Date</source>
-        <translation type="unfinished"/>
+        <translation>Датум истека</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="262"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Укини дељење</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="459"/>
         <source>Confirm Link Share Deletion</source>
-        <translation type="unfinished"/>
+        <translation>Потврдите брисање везе дељења</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="460"/>
@@ -2705,7 +2705,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="483"/>
         <source>Public link</source>
-        <translation type="unfinished"/>
+        <translation>Јавна веза</translation>
     </message>
 </context>
 <context>
@@ -2718,7 +2718,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="238"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Копирај везу</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="248"/>
@@ -2728,7 +2728,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="335"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Поделио сам нешто са Вама</translation>
     </message>
 </context>
 <context>
@@ -2736,7 +2736,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="66"/>
         <source>User name</source>
-        <translation type="unfinished"/>
+        <translation>Корисничко име</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="82"/>
@@ -2746,22 +2746,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="364"/>
         <source>Can reshare</source>
-        <translation type="unfinished"/>
+        <translation>Може да дели даље</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="374"/>
         <source>Can create</source>
-        <translation type="unfinished"/>
+        <translation>Може да креира унутар дељења</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="380"/>
         <source>Can change</source>
-        <translation type="unfinished"/>
+        <translation>Може да мења садржај унутар дељења</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="386"/>
         <source>Can delete</source>
-        <translation type="unfinished"/>
+        <translation>Може да брише садржај унутар дељења</translation>
     </message>
 </context>
 <context>
@@ -2806,17 +2806,17 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="457"/>
         <source>Share with %1</source>
         <comment>parameter is Nextcloud</comment>
-        <translation type="unfinished"/>
+        <translation>Подели са %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="491"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>Контекстни мени дељења</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="612"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>Поделио сам нешто са Вама</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="625"/>
@@ -2828,28 +2828,28 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Copy private link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Копирај приватну везу у оставу</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="628"/>
         <source>Send private link by email...</source>
-        <translation type="unfinished"/>
+        <translation>Пошаљи приватну везу е-поштом...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="653"/>
         <source>Resharing this file is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Поновно дељење није дозвољено</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="666"/>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
         <source>Copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Копирај јавну везу у оставу</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="722"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Отвори у веб читачу</translation>
     </message>
 </context>
 <context>
@@ -2984,7 +2984,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="65"/>
         <source>Untrusted Certificate</source>
-        <translation type="unfinished"/>
+        <translation>Сертификат није од поверења</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="132"/>
@@ -3072,7 +3072,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="163"/>
         <source>An error occurred while opening a folder</source>
-        <translation type="unfinished"/>
+        <translation>Догодила се грешка приликом отварања фасцикле</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="166"/>
@@ -3082,17 +3082,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="242"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (прескочено због раније грешке, покушавам поново за %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="514"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>Фајл/фасцикла је игнорисан зато што је скривен.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="517"/>
         <source>Folder hierarchy is too deep</source>
-        <translation type="unfinished"/>
+        <translation>Хијерархија фасцикли је предубока</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="533"/>

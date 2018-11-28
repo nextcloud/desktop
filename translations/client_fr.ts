@@ -1341,7 +1341,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/generalsettings.ui" line="250"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation>Afficher les dossiers à synchroniser dans le panneau de navigation de l&apos;&amp;Explorateur</translation>
+        <translation>Afficher les dossiers synchronisés dans le panneau de navigation de l&apos;&amp;Explorateur de fichiers</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="267"/>

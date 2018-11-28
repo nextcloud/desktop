@@ -293,7 +293,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="904"/>
         <source>%1 in use</source>
-        <translation>Использовано %1</translation>
+        <translation>Используется %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="931"/>
