@@ -608,6 +608,7 @@ void SyncEngine::slotStartDiscovery()
     }
     if (!invalidFilenamePattern.isEmpty())
         _discoveryPhase->_invalidFilenameRx = QRegExp(invalidFilenamePattern);
+    _discoveryPhase->_serverBlacklistedFiles = _account->capabilities().blacklistedFiles();
     _discoveryPhase->_ignoreHiddenFiles = ignoreHiddenFiles();
 
     connect(_discoveryPhase.data(), &DiscoveryPhase::itemDiscovered, this, &SyncEngine::slotItemDiscovered);

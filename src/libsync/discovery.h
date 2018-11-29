@@ -116,8 +116,10 @@ private:
      */
     void process();
 
-    // return true if the file is excluded
-    bool handleExcluded(const QString &path, bool isDirectory, bool isHidden, bool isSymlink);
+    // return true if the file is excluded.
+    // path is the full relative path of the file. localName is the base name of the local entry.
+    bool handleExcluded(const QString &path, const QString &localName, bool isDirectory,
+        bool isHidden, bool isSymlink);
 
     /** Reconcile local/remote/db information for a single item.
      *

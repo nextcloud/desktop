@@ -208,6 +208,11 @@ bool Capabilities::uploadConflictFiles() const
     return _capabilities[QStringLiteral("uploadConflictFiles")].toBool();
 }
 
+QStringList Capabilities::blacklistedFiles() const
+{
+    return _capabilities["files"].toMap()["blacklisted_files"].toStringList();
+}
+
 /*-------------------------------------------------------------------------------------*/
 
 // Direct Editing
