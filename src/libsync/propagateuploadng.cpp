@@ -290,8 +290,8 @@ void PropagateUploadFileNG::startNextChunk()
 
         // Finish with a MOVE
         // If we changed the file name, we must store the changed filename in the remote folder, not the original one.
-        QString destination = QDir::cleanPath(propagator()->account()->url().path() + QLatin1Char('/')
-            + propagator()->account()->davPath() + propagator()->_remoteFolder + _fileToUpload._file);
+        QString destination = QDir::cleanPath(propagator()->account()->davUrl().path()
+            + propagator()->_remoteFolder + _fileToUpload._file);
         auto headers = PropagateUploadFileCommon::headers();
 
         // "If-Match applies to the source, but we are interested in comparing the etag of the destination
