@@ -1211,11 +1211,12 @@ QVariantMap b_error;
 		if (m_Vfs_windows)
 		{
 			QSFileName.replace("\\", "/");
-			if (QSFileName.compare("/") != 0)
-				{
+
+			//if (QSFileName.compare("/") != 0)
+				//{
 				QStringList *contents = m_Vfs_windows->contentsOfDirectoryAtPath(QSFileName, b_error);
 				qDebug() << Q_FUNC_INFO << " FileName: " << QSFileName;
-				}
+				//}
 		}
 		else
 		{
@@ -2161,15 +2162,11 @@ static NTSTATUS DOKAN_CALLBACK  MirrorDokanGetDiskFreeSpace(
 	PULONGLONG TotalNumberOfFreeBytes, PDOKAN_FILE_INFO DokanFileInfo) {
 	UNREFERENCED_PARAMETER(DokanFileInfo);
 
-
-	qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " 1";
-
-	/*
 	*FreeBytesAvailable = (ULONGLONG)(512 * 1024 * 1024);
 	*TotalNumberOfBytes = 9223372036854775807;
 	*TotalNumberOfFreeBytes = 9223372036854775807;
-	*/
-
+	
+	/*
 	// @Capacity
 	*TotalNumberOfBytes = getTotalNumberOfBytes();
 
@@ -2182,10 +2179,11 @@ static NTSTATUS DOKAN_CALLBACK  MirrorDokanGetDiskFreeSpace(
 	qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " 3";
 
 	// @Free space
-	*FreeBytesAvailable = (ULONGLONG)(*TotalNumberOfBytes - *TotalNumberOfFreeBytes); /// *1024 * 1024 * 10;
+	*FreeBytesAvailable = getFreeBytesAvailable();
+	//*FreeBytesAvailable = (ULONGLONG)(*TotalNumberOfBytes - *TotalNumberOfFreeBytes); /// *1024 * 1024 * 10;
 
 	qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " 4";
-
+	*/
 
 	return STATUS_SUCCESS;
 }
@@ -2794,7 +2792,7 @@ qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " INIT ::upDrive rootDirectory: " <
 
 	ZeroMemory(dokanOptions, sizeof(DOKAN_OPTIONS));
 	dokanOptions->Version = DOKAN_VERSION;
-	dokanOptions->ThreadCount = 500;			// < Set by file stream support, 
+	dokanOptions->ThreadCount = 5;			// < Set by file stream support, 
 												// < recompile DokanLib DOKAN_MAX_THREAD 501
 												// < update dokanc.h
 
