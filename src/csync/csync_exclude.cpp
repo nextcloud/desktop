@@ -247,7 +247,7 @@ void ExcludedFiles::setExcludeConflictFiles(bool onoff)
     _excludeConflictFiles = onoff;
 }
 
-void ExcludedFiles::addManualExclude(const QByteArray &expr)
+void ExcludedFiles::addManualExclude(const QString &expr)
 {
     _manualExcludes.append(expr);
     _allExcludes.append(expr);
@@ -290,7 +290,7 @@ bool ExcludedFiles::reloadExcludeFiles()
             if (line.isEmpty() || line.startsWith('#'))
                 continue;
             csync_exclude_expand_escapes(line);
-            _allExcludes.append(line);
+            _allExcludes.append(QString::fromUtf8(line));
         }
     }
     _allExcludes.append(_manualExcludes);
@@ -631,7 +631,7 @@ void ExcludedFiles::prepare()
         auto &fullFileDir = removeExcluded ? fullFileDirRemove : fullFileDirKeep;
         auto &fullDir = removeExcluded ? fullDirRemove : fullDirKeep;
 
-        auto regexExclude = convertToRegexpSyntax(QString::fromUtf8(exclude), _wildcardsMatchSlash);
+        auto regexExclude = convertToRegexpSyntax(exclude, _wildcardsMatchSlash);
         if (!fullPath) {
             regexAppend(bnameFileDir, bnameDir, regexExclude, matchDirOnly);
         } else {

@@ -102,7 +102,7 @@ public:
      * Primarily used in tests. Patterns added this way are preserved when
      * reloadExcludeFiles() is called.
      */
-    void addManualExclude(const QByteArray &expr);
+    void addManualExclude(const QString &expr);
 
     /**
      * Removes all manually added exclude patterns.
@@ -207,10 +207,10 @@ private:
     QSet<QString> _excludeFiles;
 
     /// Exclude patterns added with addManualExclude()
-    QList<QByteArray> _manualExcludes;
+    QStringList _manualExcludes;
 
     /// List of all active exclude patterns
-    QList<QByteArray> _allExcludes;
+    QStringList _allExcludes;
 
     /// see prepare()
     QRegularExpression _bnameTraversalRegexFile;
