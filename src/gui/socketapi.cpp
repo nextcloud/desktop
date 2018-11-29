@@ -652,6 +652,7 @@ void SocketApi::command_REPLACE_VIRTUAL_FILE(const QString &filesArg, SocketList
         if (!FileSystem::rename(file, file + suffix)) {
             qCWarning(lcSocketApi) << "Unable to rename " << file;
         }
+        folder->slotWatchedPathChanged(file); // make sure it is in the _localDiscoveryTracker list
         FolderMan::instance()->scheduleFolder(folder);
     }
 }
