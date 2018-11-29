@@ -288,8 +288,8 @@ void PropagateUploadFileNG::startNextChunk()
         _finished = true;
 
         // Finish with a MOVE
-        QString destination = QDir::cleanPath(propagator()->account()->url().path() + QLatin1Char('/')
-            + propagator()->account()->davPath() + propagator()->_remoteFolder + _item->_file);
+        QString destination = QDir::cleanPath(propagator()->account()->davUrl().path()
+            + propagator()->_remoteFolder + _item->_file);
         auto headers = PropagateUploadFileCommon::headers();
 
         // "If-Match applies to the source, but we are interested in comparing the etag of the destination
