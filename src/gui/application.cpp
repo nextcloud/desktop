@@ -20,6 +20,7 @@
 #include <random>
 
 #include "config.h"
+#include "common/asserts.h"
 #include "account.h"
 #include "accountstate.h"
 #include "connectionvalidator.h"
@@ -422,6 +423,18 @@ void Application::slotCrash()
 {
     Utility::crash();
 }
+
+void Application::slotCrashEnforce()
+{
+    ENFORCE(1==0);
+}
+
+
+void Application::slotCrashFatal()
+{
+    qFatal("la Qt fatale");
+}
+
 
 void Application::slotownCloudWizardDone(int res)
 {

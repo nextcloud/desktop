@@ -55,6 +55,9 @@ AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, 
     , _path(path)
     , _redirectCount(0)
 {
+    // Since we hold a QSharedPointer to the account, this makes no sense. (issue #6893)
+    ASSERT(account != parent);
+
     _timer.setSingleShot(true);
     _timer.setInterval((httpTimeout ? httpTimeout : 300) * 1000); // default to 5 minutes.
     connect(&_timer, &QTimer::timeout, this, &AbstractNetworkJob::slotTimeout);

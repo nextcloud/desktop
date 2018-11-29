@@ -25,6 +25,10 @@
 #define _C_JHASH_H
 
 #include <stdint.h>
+#include <QtCore/qglobal.h>
+#ifndef Q_FALLTHROUGH
+#define Q_FALLTHROUGH() // Was added in Qt 5.8
+#endif
 
 #define c_hashsize(n) ((uint8_t) 1 << (n))
 #define c_hashmask(n) (xhashsize(n) - 1)
@@ -207,30 +211,29 @@ static inline uint64_t c_jhash64(const uint8_t *k, uint64_t length, uint64_t int
   /* handle the last 23 bytes */
   c += length;
   switch(len) {
-#pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
-    case 23: c+=((uint64_t)k[22]<<56);
-    case 22: c+=((uint64_t)k[21]<<48);
-    case 21: c+=((uint64_t)k[20]<<40);
-    case 20: c+=((uint64_t)k[19]<<32);
-    case 19: c+=((uint64_t)k[18]<<24);
-    case 18: c+=((uint64_t)k[17]<<16);
-    case 17: c+=((uint64_t)k[16]<<8);
+    case 23: c+=((uint64_t)k[22]<<56); Q_FALLTHROUGH();
+    case 22: c+=((uint64_t)k[21]<<48); Q_FALLTHROUGH();
+    case 21: c+=((uint64_t)k[20]<<40); Q_FALLTHROUGH();
+    case 20: c+=((uint64_t)k[19]<<32); Q_FALLTHROUGH();
+    case 19: c+=((uint64_t)k[18]<<24); Q_FALLTHROUGH();
+    case 18: c+=((uint64_t)k[17]<<16); Q_FALLTHROUGH();
+    case 17: c+=((uint64_t)k[16]<<8);  Q_FALLTHROUGH();
     /* the first byte of c is reserved for the length */
-    case 16: b+=((uint64_t)k[15]<<56);
-    case 15: b+=((uint64_t)k[14]<<48);
-    case 14: b+=((uint64_t)k[13]<<40);
-    case 13: b+=((uint64_t)k[12]<<32);
-    case 12: b+=((uint64_t)k[11]<<24);
-    case 11: b+=((uint64_t)k[10]<<16);
-    case 10: b+=((uint64_t)k[ 9]<<8);
-    case  9: b+=((uint64_t)k[ 8]);
-    case  8: a+=((uint64_t)k[ 7]<<56);
-    case  7: a+=((uint64_t)k[ 6]<<48);
-    case  6: a+=((uint64_t)k[ 5]<<40);
-    case  5: a+=((uint64_t)k[ 4]<<32);
-    case  4: a+=((uint64_t)k[ 3]<<24);
-    case  3: a+=((uint64_t)k[ 2]<<16);
-    case  2: a+=((uint64_t)k[ 1]<<8);
+    case 16: b+=((uint64_t)k[15]<<56); Q_FALLTHROUGH();
+    case 15: b+=((uint64_t)k[14]<<48); Q_FALLTHROUGH();
+    case 14: b+=((uint64_t)k[13]<<40); Q_FALLTHROUGH();
+    case 13: b+=((uint64_t)k[12]<<32); Q_FALLTHROUGH();
+    case 12: b+=((uint64_t)k[11]<<24); Q_FALLTHROUGH();
+    case 11: b+=((uint64_t)k[10]<<16); Q_FALLTHROUGH();
+    case 10: b+=((uint64_t)k[ 9]<<8);  Q_FALLTHROUGH();
+    case  9: b+=((uint64_t)k[ 8]);     Q_FALLTHROUGH();
+    case  8: a+=((uint64_t)k[ 7]<<56); Q_FALLTHROUGH();
+    case  7: a+=((uint64_t)k[ 6]<<48); Q_FALLTHROUGH();
+    case  6: a+=((uint64_t)k[ 5]<<40); Q_FALLTHROUGH();
+    case  5: a+=((uint64_t)k[ 4]<<32); Q_FALLTHROUGH();
+    case  4: a+=((uint64_t)k[ 3]<<24); Q_FALLTHROUGH();
+    case  3: a+=((uint64_t)k[ 2]<<16); Q_FALLTHROUGH();
+    case  2: a+=((uint64_t)k[ 1]<<8);  Q_FALLTHROUGH();
     case  1: a+=((uint64_t)k[ 0]);
     /* case 0: nothing left to add */
   }

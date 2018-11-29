@@ -95,17 +95,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="259"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="262"/>
         <source>Connection timed out</source>
         <translation>Povezava je časovno potekla</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="261"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="264"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>Neznana napaka: odziv strežnika je bil izbrisan</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="413"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="416"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>Strežnik je odgovoril &quot;%1 %2&quot; v &quot;%3 %4&quot;</translation>
     </message>
@@ -579,42 +579,42 @@
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="122"/>
+        <location filename="../src/gui/application.cpp" line="123"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="124"/>
+        <location filename="../src/gui/application.cpp" line="125"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="130"/>
+        <location filename="../src/gui/application.cpp" line="131"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="137"/>
+        <location filename="../src/gui/application.cpp" line="138"/>
         <source>Quit</source>
         <translation>Končaj</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="138"/>
+        <location filename="../src/gui/application.cpp" line="139"/>
         <source>Continue</source>
         <translation>Nadaljuj</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="267"/>
+        <location filename="../src/gui/application.cpp" line="268"/>
         <source>Error accessing the configuration file</source>
         <translation>Napaka dostopa do nastavitvene datoteke</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="268"/>
+        <location filename="../src/gui/application.cpp" line="269"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Med dostopom do nastavitvene datoteke na %1 je prišlo do napake.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="271"/>
+        <location filename="../src/gui/application.cpp" line="272"/>
         <source>Quit ownCloud</source>
         <translation>Končaj ownCloud</translation>
     </message>
@@ -911,92 +911,92 @@ Z nadaljevanjem usklajevanja bodo vse trenutne datoteke prepisane s starejšimi 
         <translation>Obstaja starejši dnevnik usklajevanja &apos;%1&apos;, vendar ga ni mogoče odstraniti. Preverite, ali je datoteka v uporabi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1091"/>
+        <location filename="../src/gui/folderman.cpp" line="1092"/>
         <source> (backup)</source>
         <translation>(varnostna kopija)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1096"/>
+        <location filename="../src/gui/folderman.cpp" line="1097"/>
         <source> (backup %1)</source>
         <translation>(varnostna kopija %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1274"/>
+        <location filename="../src/gui/folderman.cpp" line="1275"/>
         <source>Undefined State.</source>
         <translation>Nedoločeno stanje.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1277"/>
+        <location filename="../src/gui/folderman.cpp" line="1278"/>
         <source>Waiting to start syncing.</source>
         <translation>Čakanje začetek usklajevanja</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1280"/>
+        <location filename="../src/gui/folderman.cpp" line="1281"/>
         <source>Preparing for sync.</source>
         <translation>Poteka priprava za usklajevanje.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1283"/>
+        <location filename="../src/gui/folderman.cpp" line="1284"/>
         <source>Sync is running.</source>
         <translation>Usklajevanje je v teku.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1288"/>
+        <location filename="../src/gui/folderman.cpp" line="1289"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1290"/>
+        <location filename="../src/gui/folderman.cpp" line="1291"/>
         <source>Last Sync was successful.</source>
         <translation>Zadnje usklajevanje je bilo uspešno končano.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1296"/>
+        <location filename="../src/gui/folderman.cpp" line="1297"/>
         <source>Setup Error.</source>
         <translation>Napaka nastavitve.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1299"/>
+        <location filename="../src/gui/folderman.cpp" line="1300"/>
         <source>User Abort.</source>
         <translation>Uporabniška prekinitev.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1302"/>
+        <location filename="../src/gui/folderman.cpp" line="1303"/>
         <source>Sync is paused.</source>
         <translation>Usklajevanje je začasno v premoru.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1308"/>
+        <location filename="../src/gui/folderman.cpp" line="1309"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (usklajevanje je v premoru)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1316"/>
+        <location filename="../src/gui/folderman.cpp" line="1317"/>
         <source>No valid folder selected!</source>
         <translation>Ni izbrane veljavne mape!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1326"/>
+        <location filename="../src/gui/folderman.cpp" line="1327"/>
         <source>The selected path is not a folder!</source>
         <translation>Izbrana pot ni mapa!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1330"/>
+        <location filename="../src/gui/folderman.cpp" line="1331"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Ni ustreznih dovoljenj za pisanje v izbrano mapo!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1386"/>
+        <location filename="../src/gui/folderman.cpp" line="1387"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Za to krajevno pot je že ustvarjeno mesto za usklajevanje. Izbrati je treba drugo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1366"/>
+        <location filename="../src/gui/folderman.cpp" line="1367"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Krajevna mapa %1 že vključuje mapo, ki je določena za usklajevanje. Izbrati je treba drugo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1372"/>
+        <location filename="../src/gui/folderman.cpp" line="1373"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Krajevna mapa %1 je že v določena za usklajevanje. Izbrati je treba drugo.</translation>
     </message>
@@ -2358,17 +2358,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Prejeta datoteka je prazna, čeprav je na strežniku velikosti %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="841"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="843"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>Datoteke %1 ni mogoče shraniti zaradi neskladja z imenom obstoječe datoteke!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="876"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="878"/>
         <source>File has changed since discovery</source>
         <translation>Datoteka je bila spremenjena po usklajevanju seznama datotek</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="943"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="945"/>
         <source>Error writing metadata to the database</source>
         <translation>Napaka zapisovanja metapodatkov v podatkovno zbirko</translation>
     </message>
@@ -2513,27 +2513,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUploadFileNG</name>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="413"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="414"/>
         <source>The local file was removed during sync.</source>
         <translation>Krajevna datoteka je bila med usklajevanjem odstranjena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="424"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="425"/>
         <source>Local file changed during sync.</source>
         <translation>Krajevna datoteka je bila med usklajevanjem spremenjena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="460"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="461"/>
         <source>Unexpected return code from server (%1)</source>
         <translation>Napaka: nepričakovan odziv s strežnika (%1).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="467"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="468"/>
         <source>Missing File ID from server</source>
         <translation>Na strežniku manjka ID datoteke</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadng.cpp" line="481"/>
+        <location filename="../src/libsync/propagateuploadng.cpp" line="482"/>
         <source>Missing ETag from server</source>
         <translation>Na strežniku manjka ETag datoteke</translation>
     </message>
@@ -2541,22 +2541,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUploadFileV1</name>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="216"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="217"/>
         <source>Poll URL missing</source>
         <translation>Preveri manjkajoči naslov URL</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="240"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="241"/>
         <source>The local file was removed during sync.</source>
         <translation>Krajevna datoteka je bila med usklajevanjem odstranjena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="251"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="252"/>
         <source>Local file changed during sync.</source>
         <translation>Krajevna datoteka je bila med usklajevanjem spremenjena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadv1.cpp" line="265"/>
+        <location filename="../src/libsync/propagateuploadv1.cpp" line="266"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
         <translation>Strežnik ne sprejme zadnjega paketa (ni navedene e-oznake)</translation>
     </message>
@@ -2725,7 +2725,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Omrežje</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialog.cpp" line="214"/>
+        <location filename="../src/gui/settingsdialog.cpp" line="219"/>
         <source>Account</source>
         <translation>Račun</translation>
     </message>
@@ -2753,8 +2753,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Omrežje</translation>
     </message>
     <message>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="155"/>
-        <location filename="../src/gui/settingsdialogmac.cpp" line="223"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="160"/>
+        <location filename="../src/gui/settingsdialogmac.cpp" line="228"/>
         <source>Account</source>
         <translation>Račun</translation>
     </message>
@@ -3729,15 +3729,15 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="389"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="698"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="795"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="701"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="798"/>
         <source>Log in...</source>
         <translation>Prijava ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="393"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="690"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="797"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="693"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="800"/>
         <source>Log out</source>
         <translation>Odjava</translation>
     </message>
@@ -3767,27 +3767,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="778"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>Unknown status</source>
         <translation>Neznano stanje</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="780"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="783"/>
         <source>Settings...</source>
         <translation>Nastavitve ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="782"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="785"/>
         <source>Details...</source>
         <translation>Podrobnosti ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="788"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="791"/>
         <source>Help</source>
         <translation>Pomoč</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="792"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="795"/>
         <source>Quit %1</source>
         <translation>Končaj %1</translation>
     </message>
@@ -3863,89 +3863,83 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Ustavi usklajevanje vseh map</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="669"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="672"/>
         <source>Unpause all synchronization</source>
         <translation>Nadaljuj usklajevanje vsega</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="671"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="674"/>
         <source>Unpause synchronization</source>
         <translation>Nadaljuj usklajevanje</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="679"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="682"/>
         <source>Pause all synchronization</source>
         <translation>Ustavi vse usklajevanje</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="681"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="684"/>
         <source>Pause synchronization</source>
         <translation>Ustavi usklajevanje</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="688"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="691"/>
         <source>Log out of all accounts</source>
         <translation>Odjavi vse račune</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="696"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="699"/>
         <source>Log in to all accounts...</source>
         <translation>Prijavi z vsemi računi ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="781"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="784"/>
         <source>New account...</source>
         <translation>Nov račun ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="790"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="1150"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="793"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="1159"/>
         <source>About %1</source>
         <translation>O %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="801"/>
-        <source>Crash now</source>
-        <comment>Only shows in debug mode to allow testing the crash handler</comment>
-        <translation>Sesuj zdaj</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="817"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="826"/>
         <source>No items synced recently</source>
         <translation>Ni nedavno usklajenih predmetov</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="839"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="848"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="842"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="851"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="857"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="866"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Poteka usklajevanje %1 od %2  (preostaja %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="862"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="871"/>
         <source>Syncing %1 of %2</source>
         <translation>Poteka usklajevanje %1 od %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="871"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="880"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Usklajevanje %1 (%2 do konca)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="874"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="883"/>
         <source>Syncing %1</source>
         <translation>Usklajevanje %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="892"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="901"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
