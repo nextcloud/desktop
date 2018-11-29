@@ -164,4 +164,9 @@ QString Capabilities::zsyncSupportedVersion() const
 {
     return _capabilities[QStringLiteral("dav")].toMap()[QStringLiteral("zsync")].toString();
 }
+
+QStringList Capabilities::blacklistedFiles() const
+{
+    return _capabilities["files"].toMap()["blacklisted_files"].toStringList();
+}
 }

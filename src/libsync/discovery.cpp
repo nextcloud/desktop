@@ -142,7 +142,9 @@ void ProcessDirectoryJob::process()
         // local stat function.
         // Recall file shall not be ignored (#4420)
         bool isHidden = e.localEntry.isHidden || (f.first[0] == '.' && f.first != QLatin1String(".sys.admin#recall#"));
-        if (handleExcluded(path._target, e.localEntry.isDirectory || e.serverEntry.isDirectory, isHidden, e.localEntry.isSymLink))
+        if (handleExcluded(path._target, e.localEntry.name,
+                e.localEntry.isDirectory || e.serverEntry.isDirectory, isHidden,
+                e.localEntry.isSymLink))
             continue;
 
         if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original)) {
@@ -154,7 +156,7 @@ void ProcessDirectoryJob::process()
     QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
 }
 
-bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, bool isHidden, bool isSymlink)
+bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &localName, bool isDirectory, bool isHidden, bool isSymlink)
 {
     auto excluded = _discoveryData->_excludes->traversalPatternMatch(path, isDirectory ? ItemTypeDirectory : ItemTypeFile);
 
@@ -168,6 +170,11 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, 
     }
     if (excluded == CSYNC_NOT_EXCLUDED && _discoveryData->_ignoreHiddenFiles && isHidden) {
         excluded = CSYNC_FILE_EXCLUDE_HIDDEN;
+    }
+    if (excluded == CSYNC_NOT_EXCLUDED && !localName.isEmpty()
+            && _discoveryData->_serverBlacklistedFiles.contains(localName)) {
+        excluded = CSYNC_FILE_EXCLUDE_SERVER_BLACKLISTED;
+        isInvalidPattern = true;
     }
 
     auto localCodec = QTextCodec::codecForLocale();
@@ -248,6 +255,9 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, bool isDirectory, 
         break;
         case CSYNC_FILE_EXCLUDE_CANNOT_ENCODE:
             item->_errorString = tr("The filename cannot be encoded on your file system.");
+            break;
+        case CSYNC_FILE_EXCLUDE_SERVER_BLACKLISTED:
+            item->_errorString = tr("The filename is blacklisted on the server.");
             break;
         }
     }

@@ -118,6 +118,11 @@ public:
     QString invalidFilenameRegex() const;
 
     /**
+     * return the list of filename that should not be uploaded
+     */
+    QStringList blacklistedFiles() const;
+
+    /**
      * Whether conflict files should remain local (default) or should be uploaded.
      */
     bool uploadConflictFiles() const;

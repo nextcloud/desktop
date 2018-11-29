@@ -184,7 +184,25 @@ private slots:
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
     }
 
+    // Tests the behavior of invalid filename detection
+    void testServerBlacklist()
+    {
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
+        fakeFolder.syncEngine().account()->setCapabilities({ { "files",
+            QVariantMap { { "blacklisted_files", QVariantList { ".foo", "bar" } } } } });
+        fakeFolder.localModifier().insert("C/.foo");
+        fakeFolder.localModifier().insert("C/bar");
+        fakeFolder.localModifier().insert("C/moo");
+        fakeFolder.localModifier().insert("C/.moo");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentRemoteState().find("C/moo"));
+        QVERIFY(fakeFolder.currentRemoteState().find("C/.moo"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("C/.foo"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("C/bar"));
+    }
 };
 
 QTEST_GUILESS_MAIN(TestLocalDiscovery)
