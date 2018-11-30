@@ -22,10 +22,6 @@ add_cmocka_test(check_std_c_alloc std_tests/check_std_c_alloc.c ${TEST_TARGET_LI
 add_cmocka_test(check_std_c_jhash std_tests/check_std_c_jhash.c ${TEST_TARGET_LIBRARIES})
 add_cmocka_test(check_std_c_str std_tests/check_std_c_str.c ${TEST_TARGET_LIBRARIES})
 
-
-# csync tests
-add_cmocka_test(check_csync_exclude csync_tests/check_csync_exclude.cpp ${TEST_TARGET_LIBRARIES})
-
 # vio
 add_cmocka_test(check_vio_ext vio_tests/check_vio_ext.cpp ${TEST_TARGET_LIBRARIES})
 

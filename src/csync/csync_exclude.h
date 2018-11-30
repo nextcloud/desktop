@@ -227,8 +227,11 @@ private:
 
     void prepare();
 
+    static QString extractBnameTrigger(const QString &exclude, bool wildcardsMatchSlash);
+    static QString convertToRegexpSyntax(QString exclude, bool wildcardsMatchSlash);
 
     QString _localPath;
+
     /// Files to load excludes from
     QMap<BasePathString, QStringList> _excludeFiles;
 
@@ -262,7 +265,7 @@ private:
      */
     Version _clientVersion;
 
-    friend class ExcludedFilesTest;
+    friend class TestExcludedFiles;
 };
 
 #endif /* _CSYNC_EXCLUDE_H */
