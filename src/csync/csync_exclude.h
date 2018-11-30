@@ -203,6 +203,9 @@ private:
      */
     void prepare();
 
+    static QString extractBnameTrigger(const QString &exclude, bool wildcardsMatchSlash);
+    static QString convertToRegexpSyntax(QString exclude, bool wildcardsMatchSlash);
+
     /// Files to load excludes from
     QSet<QString> _excludeFiles;
 
@@ -236,7 +239,7 @@ private:
      */
     Version _clientVersion;
 
-    friend class ExcludedFilesTest;
+    friend class TestExcludedFiles;
 };
 
 #endif /* _CSYNC_EXCLUDE_H */
