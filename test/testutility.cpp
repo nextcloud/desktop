@@ -212,6 +212,26 @@ private slots:
         QFETCH(QString, output);
         QCOMPARE(sanitizeForFileName(input), output);
     }
+
+    void testNormalizeEtag()
+    {
+        QByteArray str;
+
+#define CHECK_NORMALIZE_ETAG(TEST, EXPECT) \
+    str = OCC::Utility::normalizeEtag(TEST); \
+    QCOMPARE(str.constData(), EXPECT); \
+
+        CHECK_NORMALIZE_ETAG("foo", "foo");
+        CHECK_NORMALIZE_ETAG("\"foo\"", "foo");
+        CHECK_NORMALIZE_ETAG("\"nar123\"", "nar123");
+        CHECK_NORMALIZE_ETAG("", "");
+        CHECK_NORMALIZE_ETAG("\"\"", "");
+
+        /* Test with -gzip (all combinaison) */
+        CHECK_NORMALIZE_ETAG("foo-gzip", "foo");
+        CHECK_NORMALIZE_ETAG("\"foo\"-gzip", "foo");
+        CHECK_NORMALIZE_ETAG("\"foo-gzip\"", "foo");
+    }
 };
 
 QTEST_GUILESS_MAIN(TestUtility)
