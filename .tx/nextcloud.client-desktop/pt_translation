@@ -198,6 +198,6 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Comment[pt_PT]=@APPLICATION_NAME@ - Cliente de Sincronização da Área de Trabalho
 Name[pt_PT]=@APPLICATION_NAME@ - Cliente de Sincronização da Área de Trabalho
+Comment[pt_PT]=@APPLICATION_NAME@ - Cliente de Sincronização da Área de Trabalho
 GenericName[pt_PT]=Sincronização de Pasta
