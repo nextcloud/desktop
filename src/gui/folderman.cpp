@@ -653,7 +653,13 @@ void FolderMan::startScheduledSyncSoon()
     msDelay = qMax(1ll, msDelay - msSinceLastSync);
 
     qCInfo(lcFolderMan) << "Starting the next scheduled sync in" << (msDelay / 1000) << "seconds";
-    _startScheduledSyncTimer.start(msDelay);
+
+	// called by FUSE from a different thread
+    if (thread() != QThread::currentThread())
+        slotStartScheduledFolderSync();
+    else
+		_startScheduledSyncTimer.start(msDelay);
+
 }
 
 /*
