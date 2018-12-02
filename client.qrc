@@ -1,14 +1,5 @@
 <RCC>
     <qresource prefix="/client">
-        <file>resources/dialog-close.png</file>
-        <file>resources/dialog-ok.png</file>
-        <file>resources/dialog-cancel.png</file>
-        <file>resources/folder-sync.png</file>
-        <file>resources/folder-sync@2x.png</file>
-        <file>resources/task-ongoing.png</file>
-        <file>resources/view-refresh.png</file>
-        <file>resources/warning.png</file>
-        <file>resources/warning@2x.png</file>
         <file>resources/settings.png</file>
         <file>resources/settings@2x.png</file>
         <file>resources/activity.png</file>
@@ -26,7 +17,6 @@
         <file>resources/bell.svg</file>
         <file>resources/link.svg</file>
         <file>resources/files.svg</file>
-        <file>resources/folder-grey.png</file>
         <file>resources/state-error.svg</file>
         <file>resources/state-warning.svg</file>
         <file>resources/folder.svg</file>
