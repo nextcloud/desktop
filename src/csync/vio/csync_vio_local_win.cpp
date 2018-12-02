@@ -41,81 +41,84 @@ Q_LOGGING_CATEGORY(lcCSyncVIOLocal, "sync.csync.vio_local", QtInfoMsg)
  * directory functions
  */
 
-typedef struct dhandle_s {
-  WIN32_FIND_DATA ffd;
-  HANDLE hFind;
-  int firstFind;
-  mbchar_t *path; // Always ends with '\'
+typedef struct dhandle_s
+{
+    WIN32_FIND_DATA ffd;
+    HANDLE hFind;
+    int firstFind;
+    mbchar_t *path; // Always ends with '\'
 } dhandle_t;
 
 static int _csync_vio_local_stat_mb(const mbchar_t *uri, csync_file_stat_t *buf);
 
-csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
-  dhandle_t *handle = NULL;
-  mbchar_t *dirname = NULL;
+csync_vio_handle_t *csync_vio_local_opendir(const char *name)
+{
+    dhandle_t *handle = NULL;
+    mbchar_t *dirname = NULL;
 
-  handle = (dhandle_t*)c_malloc(sizeof(dhandle_t));
+    handle = (dhandle_t *)c_malloc(sizeof(dhandle_t));
 
-  // the file wildcard has to be attached
-  int len_name = strlen(name);
-  if( len_name ) {
-      char *h = NULL;
+    // the file wildcard has to be attached
+    int len_name = strlen(name);
+    if (len_name) {
+        char *h = NULL;
 
-      // alloc an enough large buffer to take the name + '/*' + the closing zero.
-      h = (char*)c_malloc(len_name+3);
-      strncpy( h, name, 1+len_name);
-      strncat(h, "/*", 2);
+        // alloc an enough large buffer to take the name + '/*' + the closing zero.
+        h = (char *)c_malloc(len_name + 3);
+        strncpy(h, name, 1 + len_name);
+        strncat(h, "/*", 2);
 
-      dirname = c_utf8_path_to_locale(h);
-      SAFE_FREE(h);
-  }
+        dirname = c_utf8_path_to_locale(h);
+        SAFE_FREE(h);
+    }
 
-  if( dirname ) {
-      handle->hFind = FindFirstFile(dirname, &(handle->ffd));
-  }
+    if (dirname) {
+        handle->hFind = FindFirstFile(dirname, &(handle->ffd));
+    }
 
-  if (!dirname || handle->hFind == INVALID_HANDLE_VALUE) {
-      c_free_locale_string(dirname);
-      int retcode = GetLastError();
-      if( retcode == ERROR_FILE_NOT_FOUND ) {
-          errno = ENOENT;
-      } else {
-          errno = EACCES;
-      }
-      SAFE_FREE(handle);
-      return NULL;
-  }
+    if (!dirname || handle->hFind == INVALID_HANDLE_VALUE) {
+        c_free_locale_string(dirname);
+        int retcode = GetLastError();
+        if (retcode == ERROR_FILE_NOT_FOUND) {
+            errno = ENOENT;
+        } else {
+            errno = EACCES;
+        }
+        SAFE_FREE(handle);
+        return NULL;
+    }
 
-  handle->firstFind = 1; // Set a flag that there first fileinfo is available.
+    handle->firstFind = 1; // Set a flag that there first fileinfo is available.
 
-  dirname[std::wcslen(dirname) - 1] = L'\0'; // remove the *
-  handle->path = dirname;
+    dirname[std::wcslen(dirname) - 1] = L'\0'; // remove the *
+    handle->path = dirname;
 
-  return (csync_vio_handle_t *) handle;
+    return (csync_vio_handle_t *)handle;
 }
 
-int csync_vio_local_closedir(csync_vio_handle_t *dhandle) {
-  dhandle_t *handle = NULL;
-  int rc = -1;
+int csync_vio_local_closedir(csync_vio_handle_t *dhandle)
+{
+    dhandle_t *handle = NULL;
+    int rc = -1;
 
-  if (dhandle == NULL) {
-    errno = EBADF;
-    return -1;
-  }
+    if (dhandle == NULL) {
+        errno = EBADF;
+        return -1;
+    }
 
-  handle = (dhandle_t *) dhandle;
-  // FindClose returns non-zero on success
-  if( FindClose(handle->hFind) != 0 ) {
-      rc = 0;
-  } else {
-      // error case, set errno
-      errno = EBADF;
-  }
+    handle = (dhandle_t *)dhandle;
+    // FindClose returns non-zero on success
+    if (FindClose(handle->hFind) != 0) {
+        rc = 0;
+    } else {
+        // error case, set errno
+        errno = EBADF;
+    }
 
-  c_free_locale_string(handle->path);
-  SAFE_FREE(handle);
+    c_free_locale_string(handle->path);
+    SAFE_FREE(handle);
 
-  return rc;
+    return rc;
 }
 
 
@@ -125,63 +128,62 @@ static time_t FileTimeToUnixTime(FILETIME *filetime, DWORD *remainder)
     t <<= 32;
     t += (UINT32)filetime->dwLowDateTime;
     t -= 116444736000000000LL;
-    if (t < 0)
-    {
-        if (remainder) *remainder = 9999999 - (-t - 1) % 10000000;
+    if (t < 0) {
+        if (remainder)
+            *remainder = 9999999 - (-t - 1) % 10000000;
         return -1 - ((-t - 1) / 10000000);
-    }
-    else
-    {
-        if (remainder) *remainder = t % 10000000;
+    } else {
+        if (remainder)
+            *remainder = t % 10000000;
         return t / 10000000;
     }
 }
 
-std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
+std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *dhandle)
+{
+    dhandle_t *handle = NULL;
+    std::unique_ptr<csync_file_stat_t> file_stat;
+    DWORD rem;
 
-  dhandle_t *handle = NULL;
-  std::unique_ptr<csync_file_stat_t> file_stat;
-  DWORD rem;
+    handle = (dhandle_t *)dhandle;
 
-  handle = (dhandle_t *) dhandle;
+    errno = 0;
 
-  errno = 0;
+    // the win32 functions get the first valid entry with the opendir
+    // thus we must not jump to next entry if it was the first find.
+    if (handle->firstFind) {
+        handle->firstFind = 0;
+    } else {
+        if (FindNextFile(handle->hFind, &(handle->ffd)) == 0) {
+            // might be error, check!
+            int dwError = GetLastError();
+            if (dwError != ERROR_NO_MORE_FILES) {
+                errno = EACCES; // no more files is fine. Otherwise EACCESS
+            }
+            return nullptr;
+        }
+    }
+    auto path = c_utf8_from_locale(handle->ffd.cFileName);
+    if (path == "." || path == "..")
+        return csync_vio_local_readdir(dhandle);
 
-  // the win32 functions get the first valid entry with the opendir
-  // thus we must not jump to next entry if it was the first find.
-  if( handle->firstFind ) {
-      handle->firstFind = 0;
-  } else {
-      if( FindNextFile(handle->hFind, &(handle->ffd)) == 0 ) {
-          // might be error, check!
-          int dwError = GetLastError();
-          if (dwError != ERROR_NO_MORE_FILES) {
-              errno = EACCES; // no more files is fine. Otherwise EACCESS
-          }
-          return nullptr;
-      }
-  }
-  auto path = c_utf8_from_locale(handle->ffd.cFileName);
-  if (path == "." || path == "..")
-      return csync_vio_local_readdir(dhandle);
+    file_stat.reset(new csync_file_stat_t);
+    file_stat->path = path;
 
-  file_stat.reset(new csync_file_stat_t);
-  file_stat->path = path;
-
-  if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
-      // Detect symlinks, and treat junctions as symlinks too.
-      if (handle->ffd.dwReserved0 == IO_REPARSE_TAG_SYMLINK
-          || handle->ffd.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT) {
-          file_stat->type = ItemTypeSoftLink;
-      } else {
-          // The SIS and DEDUP reparse points should be treated as
-          // regular files. We don't know about the other ones yet,
-          // but will also treat them normally for now.
-          file_stat->type = ItemTypeFile;
-      }
+    if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
+        // Detect symlinks, and treat junctions as symlinks too.
+        if (handle->ffd.dwReserved0 == IO_REPARSE_TAG_SYMLINK
+            || handle->ffd.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT) {
+            file_stat->type = ItemTypeSoftLink;
+        } else {
+            // The SIS and DEDUP reparse points should be treated as
+            // regular files. We don't know about the other ones yet,
+            // but will also treat them normally for now.
+            file_stat->type = ItemTypeFile;
+        }
     } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DEVICE
-                || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE
-                || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_TEMPORARY) {
+        || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE
+        || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_TEMPORARY) {
         file_stat->type = ItemTypeSkip;
     } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
         file_stat->type = ItemTypeDirectory;
@@ -190,11 +192,11 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
     }
 
     /* Check for the hidden flag */
-    if( handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN ) {
+    if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) {
         file_stat->is_hidden = true;
     }
 
-    file_stat->size = (handle->ffd.nFileSizeHigh * ((int64_t)(MAXDWORD)+1)) + handle->ffd.nFileSizeLow;
+    file_stat->size = (handle->ffd.nFileSizeHigh * ((int64_t)(MAXDWORD) + 1)) + handle->ffd.nFileSizeLow;
     file_stat->modtime = FileTimeToUnixTime(&handle->ffd.ftLastWriteTime, &rem);
 
     std::wstring fullPath;
@@ -211,7 +213,8 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
 }
 
 std::unique_ptr<csync_file_stat_t> csync_vio_local_readfile(csync_vio_handle_t *dhandle, const char *uri,
-    const QByteArray &key) {
+    const QByteArray &key)
+{
     dhandle_t *handle = NULL;
 
     handle = (dhandle_t *)dhandle;
@@ -219,7 +222,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readfile(csync_vio_handle_t *
 
     std::unique_ptr<csync_file_stat_t> file_stat;
 
-	// the win32 functions get the first valid entry with the opendir
+    // the win32 functions get the first valid entry with the opendir
     // thus we must not jump to next entry if it was the first find.
     if (handle->firstFind) {
         handle->firstFind = 0;
@@ -234,8 +237,9 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readfile(csync_vio_handle_t *
         }
     }
     auto path = c_utf8_from_locale(handle->ffd.cFileName);
-    if (path == "." || path == ".." || path != key)
+    if (path != key) {
         return csync_vio_local_readfile(dhandle, uri, key);
+    } 
 
     file_stat.reset(new csync_file_stat_t);
     file_stat->path = path;
@@ -302,17 +306,17 @@ static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf
     BY_HANDLE_FILE_INFORMATION fileInfo;
     ULARGE_INTEGER FileIndex;
 
-    h = CreateFileW( wuri, 0, FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
-                     NULL, OPEN_EXISTING,
-                     FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT,
-                     NULL );
-    if( h == INVALID_HANDLE_VALUE ) {
+    h = CreateFileW(wuri, 0, FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
+        NULL, OPEN_EXISTING,
+        FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS | FILE_FLAG_OPEN_REPARSE_POINT,
+        NULL);
+    if (h == INVALID_HANDLE_VALUE) {
         qCCritical(lcCSyncVIOLocal, "CreateFileW failed on %ls", wuri);
         errno = GetLastError();
         return -1;
     }
 
-    if(!GetFileInformationByHandle( h, &fileInfo ) ) {
+    if (!GetFileInformationByHandle(h, &fileInfo)) {
         qCCritical(lcCSyncVIOLocal, "GetFileInformationByHandle failed on %ls", wuri);
         errno = GetLastError();
         CloseHandle(h);
@@ -325,7 +329,7 @@ static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf
     FileIndex.QuadPart &= 0x0000FFFFFFFFFFFF;
     /* printf("Index: %I64i\n", FileIndex.QuadPart); */
     buf->inode = FileIndex.QuadPart;
-    buf->size = (fileInfo.nFileSizeHigh * ((int64_t)(MAXDWORD)+1)) + fileInfo.nFileSizeLow;
+    buf->size = (fileInfo.nFileSizeHigh * ((int64_t)(MAXDWORD) + 1)) + fileInfo.nFileSizeLow;
 
     DWORD rem;
     buf->modtime = FileTimeToUnixTime(&fileInfo.ftLastWriteTime, &rem);
