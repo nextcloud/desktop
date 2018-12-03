@@ -483,11 +483,11 @@ void Application::setupLogging()
     logger->setLogExpire(_logExpire);
     logger->setLogFlush(_logFlush);
     logger->setLogDebug(_logDebug);
+    logger->enterNextLogFile();
     if (!logger->isLoggingToFile() && ConfigFile().automaticLogDir()) {
         logger->setupTemporaryFolderLogDir();
+        logger->enterNextLogFile();
     }
-
-    logger->enterNextLogFile();
 
     qCInfo(lcApplication) << QString::fromLatin1("################## %1 locale:[%2] ui_lang:[%3] version:[%4] os:[%5]").arg(_theme->appName()).arg(QLocale::system().name()).arg(property("ui_lang").toString()).arg(_theme->version()).arg(Utility::platformName());
 }
