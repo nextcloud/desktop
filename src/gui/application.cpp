@@ -502,8 +502,12 @@ void Application::slotParseMessage(const QString &msg, QObject *)
     if (msg.startsWith(QLatin1String("MSG_PARSEOPTIONS:"))) {
         const int lengthOfMsgPrefix = 17;
         QStringList options = msg.mid(lengthOfMsgPrefix).split(QLatin1Char('|'));
+        _showLogWindow = false;
         parseOptions(options);
         setupLogging();
+        if (_showLogWindow) {
+            _gui->slotToggleLogBrowser(); // _showLogWindow is set in parseOptions.
+        }
     } else if (msg.startsWith(QLatin1String("MSG_SHOWSETTINGS"))) {
         qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
         if (_startedAt.elapsed() < 10 * 1000) {
