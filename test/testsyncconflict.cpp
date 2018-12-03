@@ -114,7 +114,8 @@ private slots:
                     conflictMap[baseFileId] = conflictFile;
                     [&] {
                         QVERIFY(!baseFileId.isEmpty());
-                        QCOMPARE(request.rawHeader("OC-ConflictInitialBasePath"), Utility::conflictFileBaseName(conflictFile.toUtf8()));
+                        QCOMPARE(request.rawHeader("OC-ConflictInitialBasePath"),
+                                 Utility::conflictFileBaseNameFromPattern(conflictFile.toUtf8()));
                     }();
                 }
             }
@@ -164,7 +165,8 @@ private slots:
                     conflictMap[baseFileId] = conflictFile;
                     [&] {
                         QVERIFY(!baseFileId.isEmpty());
-                        QCOMPARE(request.rawHeader("OC-ConflictInitialBasePath"), Utility::conflictFileBaseName(conflictFile.toUtf8()));
+                        QCOMPARE(request.rawHeader("OC-ConflictInitialBasePath"),
+                                 Utility::conflictFileBaseNameFromPattern(conflictFile.toUtf8()));
                     }();
                 }
             }
