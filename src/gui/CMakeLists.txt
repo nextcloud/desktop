@@ -99,7 +99,6 @@ set(client_SRCS
     servernotificationhandler.cpp
     guiutility.cpp
     elidedlabel.cpp
-    creds/credentialsfactory.cpp
     creds/httpcredentialsgui.cpp
     creds/oauth.cpp
     wizard/postfixlineedit.cpp
@@ -113,15 +112,6 @@ set(client_SRCS
     wizard/owncloudwizard.cpp
     wizard/owncloudwizardresultpage.cpp
 )
-
-IF(NOT NO_SHIBBOLETH)
-    list(APPEND client_SRCS
-        creds/shibbolethcredentials.cpp
-        creds/shibboleth/shibbolethwebview.cpp
-        creds/shibboleth/shibbolethuserjob.cpp
-        wizard/owncloudshibbolethcredspage.cpp
-    )
-endif()
 
 set(updater_SRCS
     updater/ocupdater.cpp
@@ -137,9 +127,16 @@ IF( APPLE )
     list(APPEND client_SRCS systray.mm)
 
     if(SPARKLE_FOUND)
-       # Define this, we need to check in updater.cpp
-       add_definitions( -DHAVE_SPARKLE )
-       list(APPEND updater_SRCS updater/sparkleupdater_mac.mm)
+        # Define this, we need to check in updater.cpp
+        add_definitions(-DHAVE_SPARKLE)
+        list(APPEND updater_SRCS updater/sparkleupdater_mac.mm updater/sparkleupdater.h)
+        list(APPEND updater_DEPS ${SPARKLE_LIBRARY})
+
+        # Sparkle.framework is installed from here because macdeployqt's CopyFramework breaks on this bundle
+        # as its logic is tightly tailored around Qt5 frameworks
+        install(DIRECTORY "${SPARKLE_LIBRARY}"
+                DESTINATION "${OWNCLOUD_OSX_BUNDLE}/Contents/Frameworks" USE_SOURCE_PERMISSIONS)
+
    endif()
 ENDIF()
 
@@ -221,7 +218,7 @@ if(APPLE)
     file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${theme_dir}/colored/*-${APPLICATION_ICON_NAME}-sidebar*")
     MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
 endif()
-ecm_add_app_icon(final_src ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASE "${APPLICATION_ICON_NAME}")
+ecm_add_app_icon(final_src ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")
 
 if(UNIX AND NOT APPLE)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE")
@@ -268,15 +265,12 @@ else()
 endif()
 
 add_library(updater STATIC ${updater_SRCS})
-target_link_libraries(updater ${synclib_NAME} Qt5::Widgets Qt5::Network Qt5::Xml)
+target_link_libraries(updater ${synclib_NAME} ${updater_DEPS} Qt5::Widgets Qt5::Network Qt5::Xml)
 target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY  ${BIN_OUTPUT_DIRECTORY}
 )
-# Only relevant for Linux? On OS X it by default properly checks in the bundle directory next to the exe
-set_target_properties( ${APPLICATION_EXECUTABLE} PROPERTIES
-	INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
 target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::Widgets Qt5::Network Qt5::Xml)
 target_link_libraries( ${APPLICATION_EXECUTABLE} ${synclib_NAME} )
@@ -301,11 +295,6 @@ endif()
 if (APPLE)
     find_package(Qt5 COMPONENTS MacExtras)
     target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::MacExtras)
-endif()
-
-if (NOT NO_SHIBBOLETH)
-    find_package(Qt5 COMPONENTS WebKitWidgets)
-    target_link_libraries( ${APPLICATION_EXECUTABLE} Qt5::WebKitWidgets)
 endif()
 
 if(WITH_CRASHREPORTER)

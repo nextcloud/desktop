@@ -389,7 +389,7 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${BUILD_PATH}\bin\${APPLICATION_EXECUTABLE}"
    File "${BUILD_PATH}\bin\${APPLICATION_CMD_EXECUTABLE}"
    File "${BUILD_PATH}\bin\lib${APPLICATION_SHORTNAME}sync.dll"
-   File "${BUILD_PATH}\bin\libocsync.dll"
+   File "${BUILD_PATH}\bin\lib${APPLICATION_SHORTNAME}_csync.dll"
 
    File "${BUILD_PATH}\src\gui\client*.qm"
    ; Make sure only to copy qt, not qt_help, etc
@@ -407,6 +407,8 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${IMAGEFORMATS_DLL_PATH}\qgif.dll"
    File "${IMAGEFORMATS_DLL_PATH}\qjpeg.dll"
    File "${IMAGEFORMATS_DLL_PATH}\qico.dll"
+   File "${IMAGEFORMATS_DLL_PATH}\qsvg.dll"
+   ; PNG is built in Qt
 
    SetOutPath "$INSTDIR\sqldrivers"
    File "${SQLITE_DLL_PATH}\qsqlite.dll"
@@ -424,6 +426,7 @@ Section "${APPLICATION_NAME}" SEC_APPLICATION
    File "${QT_DLL_PATH}\Qt5Gui.dll"
    File "${QT_DLL_PATH}\Qt5Network.dll"
    File "${QT_DLL_PATH}\Qt5PrintSupport.dll"
+   File "${QT_DLL_PATH}\Qt5Svg.dll"
    File "${QT_DLL_PATH}\Qt5Qml.dll"
    File "${QT_DLL_PATH}\Qt5Sql.dll"
    File "${QT_DLL_PATH}\Qt5WebKit.dll"

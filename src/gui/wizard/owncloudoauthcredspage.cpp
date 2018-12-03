@@ -13,6 +13,8 @@
  */
 
 #include <QVariant>
+#include <QMenu>
+#include <QClipboard>
 
 #include "wizard/owncloudoauthcredspage.h"
 #include "theme.h"
@@ -21,7 +23,6 @@
 #include "wizard/owncloudwizardcommon.h"
 #include "wizard/owncloudwizard.h"
 #include "creds/httpcredentialsgui.h"
-#include "creds/credentialsfactory.h"
 
 namespace OCC {
 
@@ -45,8 +46,19 @@ OwncloudOAuthCredsPage::OwncloudOAuthCredsPage()
 
     connect(_ui.openLinkButton, &QCommandLinkButton::clicked, [this] {
         _ui.errorLabel->hide();
+        qobject_cast<OwncloudWizard *>(wizard())->account()->clearCookieJar(); // #6574
         if (_asyncAuth)
             _asyncAuth->openBrowser();
+    });
+    _ui.openLinkButton->setContextMenuPolicy(Qt::CustomContextMenu);
+    QObject::connect(_ui.openLinkButton, &QWidget::customContextMenuRequested, [this](const QPoint &pos) {
+        auto menu = new QMenu(_ui.openLinkButton);
+        menu->addAction(tr("Copy link to clipboard"), this, [this] {
+            if (_asyncAuth)
+                QApplication::clipboard()->setText(_asyncAuth->authorisationLink().toString(QUrl::FullyEncoded));
+        });
+        menu->setAttribute(Qt::WA_DeleteOnClose);
+        menu->popup(_ui.openLinkButton->mapToGlobal(pos));
     });
 }
 
@@ -54,7 +66,7 @@ void OwncloudOAuthCredsPage::initializePage()
 {
     OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
     Q_ASSERT(ocWizard);
-    ocWizard->account()->setCredentials(CredentialsFactory::create("http"));
+    ocWizard->account()->setCredentials(new HttpCredentialsGui);
     _asyncAuth.reset(new OAuth(ocWizard->account().data(), this));
     connect(_asyncAuth.data(), &OAuth::result, this, &OwncloudOAuthCredsPage::asyncAuthResult, Qt::QueuedConnection);
     _asyncAuth->start();

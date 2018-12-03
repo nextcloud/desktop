@@ -87,6 +87,7 @@ public slots:
     void slotOpenOwnCloud();
     void slotOpenSettingsDialog();
     void slotHelp();
+    void slotAbout();
     void slotOpenPath(const QString &path);
     void slotAccountStateChanged();
     void slotTrayMessageIfServerUnsupported(Account *account);
@@ -124,14 +125,19 @@ private:
     // tray's menu
     QScopedPointer<QMenu> _contextMenu;
 
-    // Manually tracking whether the context menu is visible, but only works
-    // on OSX because aboutToHide is not reliable everywhere.
-    bool _contextMenuVisibleOsx;
+    // Manually tracking whether the context menu is visible via aboutToShow
+    // and aboutToHide. Unfortunately aboutToHide isn't reliable everywhere
+    // so this only gets used with _workaroundManualVisibility (when the tray's
+    // isVisible() is unreliable)
+    bool _contextMenuVisibleManual = false;
 
     QMenu *_recentActionsMenu;
     QVector<QMenu *> _accountMenus;
-    bool _qdbusmenuWorkaround;
-    QTimer _workaroundBatchTrayUpdate;
+    bool _workaroundShowAndHideTray = false;
+    bool _workaroundNoAboutToShowUpdate = false;
+    bool _workaroundFakeDoubleClick = false;
+    bool _workaroundManualVisibility = false;
+    QTimer _delayedTrayUpdateTimer;
     QMap<QString, QPointer<ShareDialog>> _shareDialogs;
 
     QAction *_actionLogin;
@@ -143,8 +149,12 @@ private:
     QAction *_actionEstimate;
     QAction *_actionRecent;
     QAction *_actionHelp;
+    QAction *_actionAbout;
     QAction *_actionQuit;
     QAction *_actionCrash;
+    QAction *_actionCrashEnforce;
+    QAction *_actionCrashFatal;
+
 
     QList<QAction *> _recentItemsActions;
     Application *_app;

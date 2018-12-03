@@ -24,6 +24,7 @@
 #include <QDateTime>
 #include <QTimer>
 #include "accountfwd.h"
+#include "common/asserts.h"
 
 class QUrl;
 
@@ -89,6 +90,9 @@ public:
      * Warning: Needs to call reply()->readAll().
      */
     QString errorStringParsingBody(QByteArray *body = 0);
+
+    /** Make a new request */
+    void retry();
 
     /** static variable the HTTP timeout (in seconds). If set to 0, the default will be used
      */

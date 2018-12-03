@@ -182,6 +182,48 @@ private slots:
         QVERIFY(waitForPathChanged(old_file));
         QVERIFY(waitForPathChanged(new_file));
     }
+
+    void testRenameDirectorySameBase() {
+        QString old_file(_rootPath+"/a1/b1");
+        QString new_file(_rootPath+"/a1/brename");
+        QVERIFY(QFile::exists(old_file));
+        mv(old_file, new_file);
+        QVERIFY(QFile::exists(new_file));
+
+        QVERIFY(waitForPathChanged(old_file));
+        QVERIFY(waitForPathChanged(new_file));
+
+        // Verify that further notifications end up with the correct paths
+
+        QString file(_rootPath+"/a1/brename/c1/random.bin");
+        touch(file);
+        QVERIFY(waitForPathChanged(file));
+
+        QString dir(_rootPath+"/a1/brename/newfolder");
+        mkdir(dir);
+        QVERIFY(waitForPathChanged(dir));
+    }
+
+    void testRenameDirectoryDifferentBase() {
+        QString old_file(_rootPath+"/a1/brename");
+        QString new_file(_rootPath+"/bren");
+        QVERIFY(QFile::exists(old_file));
+        mv(old_file, new_file);
+        QVERIFY(QFile::exists(new_file));
+
+        QVERIFY(waitForPathChanged(old_file));
+        QVERIFY(waitForPathChanged(new_file));
+
+        // Verify that further notifications end up with the correct paths
+
+        QString file(_rootPath+"/bren/c1/random.bin");
+        touch(file);
+        QVERIFY(waitForPathChanged(file));
+
+        QString dir(_rootPath+"/bren/newfolder2");
+        mkdir(dir);
+        QVERIFY(waitForPathChanged(dir));
+    }
 };
 
 #ifdef Q_OS_MAC

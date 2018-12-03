@@ -68,6 +68,25 @@ public:
     int setupFolders();
     int setupFoldersMigration();
 
+    /** Find folder setting keys that need to be ignored or deleted for being too new.
+     *
+     * The client has a maximum supported version for the folders lists (maxFoldersVersion
+     * in folderman.cpp) and a second maximum version for the contained folder configuration
+     * (FolderDefinition::maxSettingsVersion()). If a future client creates configurations
+     * with higher versions the older client will not be able to process them.
+     *
+     * Skipping or deleting these keys prevents accidents when switching from a newer
+     * client to an older one.
+     *
+     * This function scans through the settings and finds too-new entries that can be
+     * ignored (ignoreKeys) and entries that have to be deleted to keep going (deleteKeys).
+     *
+     * This data is used in Application::configVersionMigration() to backward-migrate
+     * future configurations (possibly with user confirmation for deletions) and in
+     * FolderMan::setupFolders() to know which too-new folder configurations to skip.
+     */
+    static void backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys);
+
     OCC::Folder::Map map();
 
     /** Adds a folder for an account, ensures the journal is gone and saves it in the settings.
@@ -132,11 +151,9 @@ public:
      *
      * Note that different accounts are allowed to sync to the same folder.
      *
-     * \a forNewDirectory is internal and is used for recursion.
-     *
      * @returns an empty string if it is allowed, or an error if it is not allowed
      */
-    QString checkPathValidityForNewFolder(const QString &path, const QUrl &serverUrl = QUrl(), bool forNewDirectory = false) const;
+    QString checkPathValidityForNewFolder(const QString &path, const QUrl &serverUrl = QUrl()) const;
 
     /**
      * Attempts to find a non-existing, acceptable path for creating a new sync folder.
@@ -298,7 +315,7 @@ private:
     // restarts the application (Linux only)
     void restartApplication();
 
-    void setupFoldersHelper(QSettings &settings, AccountStatePtr account, bool backwardsCompatible);
+    void setupFoldersHelper(QSettings &settings, AccountStatePtr account, const QStringList &ignoreKeys, bool backwardsCompatible, bool foldersWithPlaceholders);
 
     QSet<Folder *> _disabledFolders;
     Folder::Map _folderMap;
@@ -306,6 +323,9 @@ private:
     Folder *_currentSyncFolder;
     QPointer<Folder> _lastSyncFolder;
     bool _syncEnabled;
+
+    /// Folder aliases from the settings that weren't read
+    QSet<QString> _additionalBlockedFolderAliases;
 
     /// Starts regular etag query jobs
     QTimer _etagPollTimer;

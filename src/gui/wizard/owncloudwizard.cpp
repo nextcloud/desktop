@@ -22,9 +22,6 @@
 #include "wizard/owncloudsetuppage.h"
 #include "wizard/owncloudhttpcredspage.h"
 #include "wizard/owncloudoauthcredspage.h"
-#ifndef NO_SHIBBOLETH
-#include "wizard/owncloudshibbolethcredspage.h"
-#endif
 #include "wizard/owncloudadvancedsetuppage.h"
 #include "wizard/owncloudwizardresultpage.h"
 
@@ -46,9 +43,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     , _setupPage(new OwncloudSetupPage(this))
     , _httpCredsPage(new OwncloudHttpCredsPage(this))
     , _browserCredsPage(new OwncloudOAuthCredsPage)
-#ifndef NO_SHIBBOLETH
-    , _shibbolethCredsPage(new OwncloudShibbolethCredsPage)
-#endif
     , _advancedSetupPage(new OwncloudAdvancedSetupPage)
     , _resultPage(new OwncloudWizardResultPage)
     , _credentialsPage(0)
@@ -58,9 +52,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     setPage(WizardCommon::Page_ServerSetup, _setupPage);
     setPage(WizardCommon::Page_HttpCreds, _httpCredsPage);
     setPage(WizardCommon::Page_OAuthCreds, _browserCredsPage);
-#ifndef NO_SHIBBOLETH
-    setPage(WizardCommon::Page_ShibbolethCreds, _shibbolethCredsPage);
-#endif
     setPage(WizardCommon::Page_AdvancedSetup, _advancedSetupPage);
     setPage(WizardCommon::Page_Result, _resultPage);
 
@@ -74,9 +65,6 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
     connect(_setupPage, &OwncloudSetupPage::determineAuthType, this, &OwncloudWizard::determineAuthType);
     connect(_httpCredsPage, &OwncloudHttpCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
     connect(_browserCredsPage, &OwncloudOAuthCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
-#ifndef NO_SHIBBOLETH
-    connect(_shibbolethCredsPage, &OwncloudShibbolethCredsPage::connectToOCUrl, this, &OwncloudWizard::connectToOCUrl);
-#endif
     connect(_advancedSetupPage, &OwncloudAdvancedSetupPage::createLocalAndRemoteFolders,
         this, &OwncloudWizard::createLocalAndRemoteFolders);
 
@@ -158,12 +146,6 @@ void OwncloudWizard::successfulStep()
         _browserCredsPage->setConnected();
         break;
 
-#ifndef NO_SHIBBOLETH
-    case WizardCommon::Page_ShibbolethCreds:
-        _shibbolethCredsPage->setConnected();
-        break;
-#endif
-
     case WizardCommon::Page_AdvancedSetup:
         _advancedSetupPage->directoriesCreated();
         break;
@@ -180,12 +162,7 @@ void OwncloudWizard::successfulStep()
 void OwncloudWizard::setAuthType(DetermineAuthTypeJob::AuthType type)
 {
     _setupPage->setAuthType(type);
-#ifndef NO_SHIBBOLETH
-    if (type == DetermineAuthTypeJob::Shibboleth) {
-        _credentialsPage = _shibbolethCredsPage;
-    } else
-#endif
-        if (type == DetermineAuthTypeJob::OAuth) {
+    if (type == DetermineAuthTypeJob::OAuth) {
         _credentialsPage = _browserCredsPage;
     } else { // try Basic auth even for "Unknown"
         _credentialsPage = _httpCredsPage;

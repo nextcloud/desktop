@@ -90,7 +90,10 @@ QString Account::davUser() const
 
 void Account::setDavUser(const QString &newDavUser)
 {
+    if (_davUser == newDavUser)
+        return;
     _davUser = newDavUser;
+    emit wantsAccountSaved(this);
 }
 
 #ifndef TOKEN_AUTH_ONLY
@@ -259,7 +262,7 @@ QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, 
 
 SimpleNetworkJob *Account::sendRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
 {
-    auto job = new SimpleNetworkJob(sharedFromThis(), this);
+    auto job = new SimpleNetworkJob(sharedFromThis());
     job->startRequest(verb, url, req, data);
     return job;
 }
@@ -463,7 +466,8 @@ bool Account::serverVersionUnsupported() const
         // not detected yet, assume it is fine.
         return false;
     }
-    return serverVersionInt() < makeServerVersion(9, 1, 0);
+    // Older version which is not "end of life" according to https://github.com/owncloud/core/wiki/Maintenance-and-Release-Schedule
+    return serverVersionInt() < makeServerVersion(10, 0, 0) || serverVersion().endsWith("Nextcloud");
 }
 
 void Account::setServerVersion(const QString &version)
@@ -475,11 +479,6 @@ void Account::setServerVersion(const QString &version)
     auto oldServerVersion = _serverVersion;
     _serverVersion = version;
     emit serverVersionChanged(this, oldServerVersion, version);
-}
-
-bool Account::rootEtagChangesNotOnlySubFolderEtags()
-{
-    return (serverVersionInt() >= makeServerVersion(8, 1, 0));
 }
 
 void Account::setNonShib(bool nonShib)

@@ -13,7 +13,7 @@
  */
 
 #include "creds/abstractcredentials.h"
-#include "creds/credentialsfactory.h"
+#include "creds/dummycredentials.h"
 #include "account.h"
 #include "wizard/owncloudwizard.h"
 
@@ -28,10 +28,8 @@ void AbstractCredentialsWizardPage::cleanupPage()
 
     AccountPtr account = static_cast<OwncloudWizard *>(wizard())->account();
     AbstractCredentials *creds = account->credentials();
-    if (creds) {
-        if (!creds->inherits("DummyCredentials")) {
-            account->setCredentials(CredentialsFactory::create("dummy"));
-        }
+    if (creds && !qobject_cast<DummyCredentials *>(creds)) {
+        account->setCredentials(new DummyCredentials);
     }
 }
 }

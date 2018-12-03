@@ -69,41 +69,27 @@ QString OWNCLOUDSYNC_EXPORT createDownloadTmpFileName(const QString &previous)
 GETFileJob::GETFileJob(AccountPtr account, const QString &path, QFile *device,
     const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
     quint64 resumeStart, QObject *parent)
-    : AbstractNetworkJob(account, path, parent)
+    : GETJob(account, path, parent)
     , _device(device)
     , _headers(headers)
     , _expectedEtagForResume(expectedEtagForResume)
     , _resumeStart(resumeStart)
-    , _errorStatus(SyncFileItem::NoStatus)
-    , _bandwidthLimited(false)
-    , _bandwidthChoked(false)
-    , _bandwidthQuota(0)
-    , _bandwidthManager(0)
     , _hasEmittedFinishedSignal(false)
-    , _lastModified()
 {
 }
 
 GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, QFile *device,
     const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
     quint64 resumeStart, QObject *parent)
-
-    : AbstractNetworkJob(account, url.toEncoded(), parent)
+    : GETJob(account, url.toEncoded(), parent)
     , _device(device)
     , _headers(headers)
     , _expectedEtagForResume(expectedEtagForResume)
     , _resumeStart(resumeStart)
-    , _errorStatus(SyncFileItem::NoStatus)
     , _directDownloadUrl(url)
-    , _bandwidthLimited(false)
-    , _bandwidthChoked(false)
-    , _bandwidthQuota(0)
-    , _bandwidthManager(0)
     , _hasEmittedFinishedSignal(false)
-    , _lastModified()
 {
 }
-
 
 void GETFileJob::start()
 {
@@ -147,6 +133,7 @@ void GETFileJob::newReplyHook(QNetworkReply *reply)
 
     connect(reply, &QNetworkReply::metaDataChanged, this, &GETFileJob::slotMetaDataChanged);
     connect(reply, &QIODevice::readyRead, this, &GETFileJob::slotReadyRead);
+    connect(reply, &QNetworkReply::finished, this, &GETFileJob::slotReadyRead);
     connect(reply, &QNetworkReply::downloadProgress, this, &GETFileJob::downloadProgress);
 }
 
@@ -158,13 +145,23 @@ void GETFileJob::slotMetaDataChanged()
 
     int httpStatus = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
-    // Ignore redirects
-    if (httpStatus == 301 || httpStatus == 302 || httpStatus == 303 || httpStatus == 307 || httpStatus == 308)
+    if (httpStatus == 301 || httpStatus == 302 || httpStatus == 303 || httpStatus == 307
+        || httpStatus == 308 || httpStatus == 401) {
+        // Redirects and auth failures (oauth token renew) are handled by AbstractNetworkJob and
+        // will end up restarting the job. We do not want to process further data from the initial
+        // request. newReplyHook() will reestablish signal connections for the follow-up request.
+        bool ok = disconnect(reply(), &QNetworkReply::finished, this, &GETFileJob::slotReadyRead)
+            && disconnect(reply(), &QNetworkReply::readyRead, this, &GETFileJob::slotReadyRead);
+        ASSERT(ok);
         return;
+    }
 
     // If the status code isn't 2xx, don't write the reply body to the file.
     // For any error: handle it when the job is finished, not here.
     if (httpStatus / 100 != 2) {
+        // Disable the buffer limit, as we don't limit the bandwidth for error messages.
+        // (We are only going to do a readAll() at the end.)
+        reply()->setReadBufferSize(0);
         _device->close();
         return;
     }
@@ -229,24 +226,24 @@ void GETFileJob::slotMetaDataChanged()
     _saveBodyToFile = true;
 }
 
-void GETFileJob::setBandwidthManager(BandwidthManager *bwm)
+void GETJob::setBandwidthManager(BandwidthManager *bwm)
 {
     _bandwidthManager = bwm;
 }
 
-void GETFileJob::setChoked(bool c)
+void GETJob::setChoked(bool c)
 {
     _bandwidthChoked = c;
     QMetaObject::invokeMethod(this, "slotReadyRead", Qt::QueuedConnection);
 }
 
-void GETFileJob::setBandwidthLimited(bool b)
+void GETJob::setBandwidthLimited(bool b)
 {
     _bandwidthLimited = b;
     QMetaObject::invokeMethod(this, "slotReadyRead", Qt::QueuedConnection);
 }
 
-void GETFileJob::giveBandwidthQuota(qint64 q)
+void GETJob::giveBandwidthQuota(qint64 q)
 {
     _bandwidthQuota = q;
     qCDebug(lcGetJob) << "Got" << q << "bytes";
@@ -268,7 +265,7 @@ void GETFileJob::slotReadyRead()
     int bufferSize = qMin(1024 * 8ll, reply()->bytesAvailable());
     QByteArray buffer(bufferSize, Qt::Uninitialized);
 
-    while (reply()->bytesAvailable() > 0) {
+    while (reply()->bytesAvailable() > 0 && _saveBodyToFile) {
         if (_bandwidthChoked) {
             qCWarning(lcGetJob) << "Download choked";
             break;
@@ -292,7 +289,7 @@ void GETFileJob::slotReadyRead()
             return;
         }
 
-        if (_device->isOpen() && _saveBodyToFile) {
+        if (_device->isOpen()) {
             qint64 w = _device->write(buffer.constData(), r);
             if (w != r) {
                 _errorString = _device->errorString();
@@ -304,7 +301,7 @@ void GETFileJob::slotReadyRead()
         }
     }
 
-    if (reply()->isFinished() && reply()->bytesAvailable() == 0) {
+    if (reply()->isFinished() && (reply()->bytesAvailable() == 0 || !_saveBodyToFile)) {
         qCDebug(lcGetJob) << "Actually finished!";
         if (_bandwidthManager) {
             _bandwidthManager->unregisterDownloadJob(this);
@@ -321,7 +318,7 @@ void GETFileJob::slotReadyRead()
     }
 }
 
-void GETFileJob::onTimedOut()
+void GETJob::onTimedOut()
 {
     qCWarning(lcGetJob) << "Timeout" << (reply() ? reply()->request().url() : path());
     if (!reply())
@@ -331,7 +328,7 @@ void GETFileJob::onTimedOut()
     reply()->abort();
 }
 
-QString GETFileJob::errorString() const
+QString GETJob::errorString() const
 {
     if (!_errorString.isEmpty()) {
         return _errorString;
@@ -351,23 +348,15 @@ void PropagateDownloadFile::start()
     if (_item->_type == ItemTypeVirtualFile) {
         auto fn = propagator()->getFilePath(_item->_file);
         qCDebug(lcPropagateDownload) << "creating virtual file" << fn;
+
+        // NOTE: Other places might depend on contents of placeholder files (like csync_update)
         QFile file(fn);
         file.open(QFile::ReadWrite | QFile::Truncate);
         file.write(" ");
         file.close();
+        FileSystem::setModTime(fn, _item->_modtime);
         updateMetadata(false);
         return;
-    }
-
-    // If we want to download something that used to be a virtual file,
-    // wipe the virtual file and proceed with a normal download
-    if (_item->_type == ItemTypeVirtualFileDownload) {
-        auto virtualFile = propagator()->addVirtualFileSuffix(_item->_file);
-        auto fn = propagator()->getFilePath(virtualFile);
-        qCDebug(lcPropagateDownload) << "Downloading file that used to be a virtual file" << fn;
-        QFile::remove(fn);
-        propagator()->_journal->deleteFileRecord(virtualFile);
-        _item->_type = ItemTypeFile;
     }
 
     if (_deleteExisting) {
@@ -435,7 +424,6 @@ void PropagateDownloadFile::startDownload()
     propagator()->reportProgress(*_item, 0);
 
     QString tmpFileName;
-    QByteArray expectedEtagForResume;
     const SyncJournalDb::DownloadInfo progressInfo = propagator()->_journal->getDownloadInfo(_item->_file);
     if (progressInfo._valid) {
         // if the etag has changed meanwhile, remove the already downloaded part.
@@ -444,7 +432,7 @@ void PropagateDownloadFile::startDownload()
             propagator()->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
         } else {
             tmpFileName = progressInfo._tmpfile;
-            expectedEtagForResume = progressInfo._etag;
+            _expectedEtagForResume = progressInfo._etag;
         }
     }
 
@@ -502,13 +490,60 @@ void PropagateDownloadFile::startDownload()
         propagator()->_journal->commit("download file start");
     }
 
+    if (_item->_remotePerm.hasPermission(RemotePermissions::HasZSyncMetadata) && isZsyncPropagationEnabled(propagator(), _item)) {
+        if (_item->_previousSize) {
+            // Retrieve zsync metadata file from the server
+            qCInfo(lcZsyncGet) << "Retrieving zsync metadata for:" << _item->_file;
+            QNetworkRequest req;
+            req.setPriority(QNetworkRequest::LowPriority);
+            QUrl zsyncUrl = zsyncMetadataUrl(propagator(), _item->_file);
+            auto job = propagator()->account()->sendRequest("GET", zsyncUrl, req);
+            connect(job, &SimpleNetworkJob::finishedSignal, this, &PropagateDownloadFile::slotZsyncGetMetaFinished);
+            return;
+        }
+        qCInfo(lcZsyncGet) << "No local copy of:" << _item->_file;
+    }
+
+    startFullDownload();
+}
+
+
+void PropagateDownloadFile::slotZsyncGetMetaFinished(QNetworkReply *reply)
+{
+    int httpStatusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    if (httpStatusCode / 100 != 2) {
+        /* Fall back to full download */
+        qCWarning(lcZsyncGet) << "Failed to retrieve zsync metadata for:" << _item->_file;
+        startFullDownload();
+        return;
+    }
+
+    QByteArray zsyncData = reply->readAll();
+    _expectedEtagForResume = getEtagFromReply(reply);
+    qCInfo(lcZsyncGet) << "Retrieved zsync metadata for:" << _item->_file << "size:" << zsyncData.size()
+                       << "etag:" << _expectedEtagForResume;
+
+    QMap<QByteArray, QByteArray> headers;
+    _job = new GETFileZsyncJob(propagator(), _item, propagator()->_remoteFolder + _item->_file,
+        &_tmpFile, headers, _expectedEtagForResume, zsyncData, this);
+    connect(_job.data(), &GETJob::finishedSignal, this, &PropagateDownloadFile::slotGetFinished);
+    connect(qobject_cast<GETFileZsyncJob *>(_job.data()), &GETFileZsyncJob::overallDownloadProgress,
+        this, &PropagateDownloadFile::slotDownloadProgress);
+    _job->setBandwidthManager(&propagator()->_bandwidthManager);
+    propagator()->_activeJobList.append(this);
+    _job->start();
+    _isDeltaSyncDownload = true;
+}
+
+void PropagateDownloadFile::startFullDownload()
+{
     QMap<QByteArray, QByteArray> headers;
 
     if (_item->_directDownloadUrl.isEmpty()) {
         // Normal job, download from oC instance
         _job = new GETFileJob(propagator()->account(),
             propagator()->_remoteFolder + _item->_file,
-            &_tmpFile, headers, expectedEtagForResume, _resumeStart, this);
+            &_tmpFile, headers, _expectedEtagForResume, _resumeStart, this);
     } else {
         // We were provided a direct URL, use that one
         qCInfo(lcPropagateDownload) << "directDownloadUrl given for " << _item->_file << _item->_directDownloadUrl;
@@ -520,11 +555,12 @@ void PropagateDownloadFile::startDownload()
         QUrl url = QUrl::fromUserInput(_item->_directDownloadUrl);
         _job = new GETFileJob(propagator()->account(),
             url,
-            &_tmpFile, headers, expectedEtagForResume, _resumeStart, this);
+            &_tmpFile, headers, _expectedEtagForResume, _resumeStart, this);
     }
     _job->setBandwidthManager(&propagator()->_bandwidthManager);
-    connect(_job.data(), &GETFileJob::finishedSignal, this, &PropagateDownloadFile::slotGetFinished);
-    connect(_job.data(), &GETFileJob::downloadProgress, this, &PropagateDownloadFile::slotDownloadProgress);
+    connect(_job.data(), &GETJob::finishedSignal, this, &PropagateDownloadFile::slotGetFinished);
+    connect(qobject_cast<GETFileJob *>(_job.data()), &GETFileJob::downloadProgress,
+        this, &PropagateDownloadFile::slotDownloadProgress);
     propagator()->_activeJobList.append(this);
     _job->start();
 }
@@ -547,8 +583,30 @@ void PropagateDownloadFile::slotGetFinished()
 {
     propagator()->_activeJobList.removeOne(this);
 
-    GETFileJob *job = _job;
+    GETJob *job = _job;
     ASSERT(job);
+
+    SyncFileItem::Status status = job->errorStatus();
+
+    // Needed because GETFileZsyncJob may emit finishedSignal without any further network activity
+    if (!job->reply()) {
+        if (status == SyncFileItem::Success) {
+            _tmpFile.close();
+            _tmpFile.flush();
+            downloadFinished();
+            return;
+        }
+
+        FileSystem::remove(_tmpFile.fileName());
+        if (status != SyncFileItem::NoStatus) {
+            done(status, job->errorString());
+            return;
+        }
+
+        ASSERT(false, "Download slot finished, but there was no reply!");
+        done(SyncFileItem::FatalError, tr("Download slot finished, but there was no reply!"));
+        return;
+    }
 
     _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     _item->_responseTimeStamp = job->responseTimestamp();
@@ -639,7 +697,7 @@ void PropagateDownloadFile::slotGetFinished()
     const QByteArray sizeHeader("Content-Length");
     quint64 bodySize = job->reply()->rawHeader(sizeHeader).toULongLong();
 
-    if (!job->reply()->rawHeader(sizeHeader).isEmpty() && _tmpFile.size() > 0 && bodySize == 0) {
+    if (!_isDeltaSyncDownload && !job->reply()->rawHeader(sizeHeader).isEmpty() && _tmpFile.size() > 0 && bodySize == 0) {
         // Strange bug with broken webserver or webfirewall https://github.com/owncloud/client/issues/3373#issuecomment-122672322
         // This happened when trying to resume a file. The Content-Range header was files, Content-Length was == 0
         qCDebug(lcPropagateDownload) << bodySize << _item->_size << _tmpFile.size() << job->resumeStart();
@@ -648,7 +706,7 @@ void PropagateDownloadFile::slotGetFinished()
         return;
     }
 
-    if (bodySize > 0 && bodySize != _tmpFile.size() - job->resumeStart()) {
+    if (!_isDeltaSyncDownload && bodySize > 0 && bodySize != _tmpFile.size() - job->resumeStart()) {
         qCDebug(lcPropagateDownload) << bodySize << _tmpFile.size() << job->resumeStart();
         propagator()->_anotherSyncNeeded = true;
         done(SyncFileItem::SoftError, tr("The file could not be downloaded completely."));
@@ -671,10 +729,11 @@ void PropagateDownloadFile::slotGetFinished()
     // the database yet!)
     if (job->reply()->rawHeader("OC-Conflict") == "1") {
         _conflictRecord.path = _item->_file.toUtf8();
+        _conflictRecord.initialBasePath = job->reply()->rawHeader("OC-ConflictInitialBasePath");
         _conflictRecord.baseFileId = job->reply()->rawHeader("OC-ConflictBaseFileId");
-        _conflictRecord.baseEtag = _job->reply()->rawHeader("OC-ConflictBaseEtag");
+        _conflictRecord.baseEtag = job->reply()->rawHeader("OC-ConflictBaseEtag");
 
-        auto mtimeHeader = _job->reply()->rawHeader("OC-ConflictBaseMtime");
+        auto mtimeHeader = job->reply()->rawHeader("OC-ConflictBaseMtime");
         if (!mtimeHeader.isEmpty())
             _conflictRecord.baseModtime = mtimeHeader.toLongLong();
 
@@ -791,7 +850,9 @@ namespace { // Anonymous namespace for the recall feature
     static void preserveGroupOwnership(const QString &fileName, const QFileInfo &fi)
     {
 #ifdef Q_OS_UNIX
-        chown(fileName.toLocal8Bit().constData(), -1, fi.groupId());
+        if (chown(fileName.toLocal8Bit().constData(), -1, fi.groupId()) != 0) {
+            qCWarning(lcPropagateDownload) << "Unable to chown" << fileName << "to previous group owner" << strerror(errno);
+        }
 #else
         Q_UNUSED(fileName);
         Q_UNUSED(fi);
@@ -829,6 +890,7 @@ void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumTy
 
 void PropagateDownloadFile::downloadFinished()
 {
+    ASSERT(!_tmpFile.isOpen());
     QString fn = propagator()->getFilePath(_item->_file);
 
     // In case of file name clash, report an error
@@ -917,6 +979,17 @@ void PropagateDownloadFile::downloadFinished()
     if (_conflictRecord.isValid())
         propagator()->_journal->setConflictRecord(_conflictRecord);
 
+    // If we downloaded something that used to be a virtual file,
+    // wipe the virtual file and its db entry now that we're done.
+    if (_item->_type == ItemTypeVirtualFileDownload) {
+        auto virtualFile = propagator()->addVirtualFileSuffix(_item->_file);
+        auto fn = propagator()->getFilePath(virtualFile);
+        qCDebug(lcPropagateDownload) << "Download of previous virtual file finished" << fn;
+        QFile::remove(fn);
+        propagator()->_journal->deleteFileRecord(virtualFile);
+        _item->_type = ItemTypeFile;
+    }
+
     updateMetadata(isConflict);
 }
 
@@ -950,6 +1023,7 @@ void PropagateDownloadFile::slotDownloadProgress(qint64 received, qint64)
     if (!_job)
         return;
     _downloadProgress = received;
+
     propagator()->reportProgress(*_item, _resumeStart + received);
 }
 

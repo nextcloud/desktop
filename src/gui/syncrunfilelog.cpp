@@ -93,7 +93,7 @@ QString SyncRunFileLog::instructionToStr(csync_instructions_e inst)
 
 void SyncRunFileLog::start(const QString &folderPath)
 {
-    const qint64 logfileMaxSize = 1024 * 1024; // 1MiB
+    const qint64 logfileMaxSize = 10 * 1024 * 1024; // 10MiB
 
     // Note; this name is ignored in csync_exclude.c
     const QString filename = folderPath + QLatin1String(".owncloudsync.log");

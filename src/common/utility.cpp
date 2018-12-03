@@ -190,6 +190,16 @@ QByteArray Utility::userAgentString()
     return re.toLatin1();
 }
 
+bool Utility::hasSystemLaunchOnStartup(const QString &appName)
+{
+#if defined(Q_OS_WIN)
+    return hasSystemLaunchOnStartup_private(appName);
+#else
+    Q_UNUSED(appName)
+    return false;
+#endif
+}
+
 bool Utility::hasLaunchOnStartup(const QString &appName)
 {
     return hasLaunchOnStartup_private(appName);

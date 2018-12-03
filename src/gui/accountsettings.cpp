@@ -33,6 +33,7 @@
 #include "creds/httpcredentialsgui.h"
 #include "tooltipupdater.h"
 #include "filesystem.h"
+#include "wizard/owncloudwizard.h"
 
 #include <math.h>
 
@@ -96,7 +97,7 @@ protected:
             auto pos = folderList->mapFromGlobal(QCursor::pos());
             auto index = folderList->indexAt(pos);
             if (model->classify(index) == FolderStatusModel::RootFolder
-                && (FolderStatusDelegate::errorsListRect(folderList->visualRect(index)).contains(pos)
+                && (FolderStatusDelegate::errorsListRect(folderList->visualRect(index), index).contains(pos)
                     || FolderStatusDelegate::optionsButtonRect(folderList->visualRect(index),folderList->layoutDirection()).contains(pos))) {
                 shape = Qt::PointingHandCursor;
             }
@@ -162,7 +163,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     QAction *syncNowWithRemoteDiscovery = new QAction(this);
     syncNowWithRemoteDiscovery->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_F6));
-    connect(syncNowWithRemoteDiscovery, &QAction::triggered, this, &AccountSettings::slotScheduleCurrentFolderForceRemoteDiscovery);
+    connect(syncNowWithRemoteDiscovery, &QAction::triggered, this, &AccountSettings::slotScheduleCurrentFolderForceFullDiscovery);
     addAction(syncNowWithRemoteDiscovery);
 
 
@@ -287,6 +288,9 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     bool folderPaused = _model->data(index, FolderStatusDelegate::FolderSyncPaused).toBool();
     bool folderConnected = _model->data(index, FolderStatusDelegate::FolderAccountConnected).toBool();
     auto folderMan = FolderMan::instance();
+    QPointer<Folder> folder = folderMan->folder(alias);
+    if (!folder)
+        return;
 
     QMenu *menu = new QMenu(tv);
 
@@ -295,7 +299,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     QAction *ac = menu->addAction(tr("Open folder"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotOpenCurrentFolder);
 
-    if (!ui->_folderList->isExpanded(index)) {
+    if (!ui->_folderList->isExpanded(index) && !folder->useVirtualFiles()) {
         ac = menu->addAction(tr("Choose what to sync"));
         ac->setEnabled(folderConnected);
         connect(ac, &QAction::triggered, this, &AccountSettings::doExpand);
@@ -303,7 +307,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
     if (!folderPaused) {
         ac = menu->addAction(tr("Force sync now"));
-        if (folderMan->currentSyncFolder() == folderMan->folder(alias)) {
+        if (folderMan->currentSyncFolder() == folder) {
             ac->setText(tr("Restart sync"));
         }
         ac->setEnabled(folderConnected);
@@ -315,6 +319,39 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
     ac = menu->addAction(tr("Remove folder sync connection"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotRemoveCurrentFolder);
+
+    if (Theme::instance()->showVirtualFilesOption() || folder->useVirtualFiles()) {
+        ac = menu->addAction(tr("Create virtual files for new files (Experimental)"));
+        ac->setCheckable(true);
+        ac->setChecked(folder->useVirtualFiles());
+        connect(ac, &QAction::toggled, this, [folder, this](bool checked) {
+            if (!checked) {
+                if (folder)
+                    folder->setUseVirtualFiles(false);
+                // Make sure the size is recomputed as the virtual file indicator changes
+                ui->_folderList->doItemsLayout();
+                return;
+            }
+            OwncloudWizard::askExperimentalVirtualFilesFeature([folder, this](bool enable) {
+                if (enable && folder)
+                    folder->setUseVirtualFiles(enable);
+
+                // Also wipe selective sync settings
+                bool ok = false;
+                auto oldBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+                folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
+                for (const auto &entry : oldBlacklist) {
+                    folder->journalDb()->avoidReadFromDbOnNextSync(entry);
+                }
+                FolderMan::instance()->scheduleFolder(folder);
+
+                // Make sure the size is recomputed as the virtual file indicator changes
+                ui->_folderList->doItemsLayout();
+            });
+        });
+    }
+
+
     menu->popup(tv->mapToGlobal(pos));
 }
 
@@ -340,7 +377,7 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
             slotCustomContextMenuRequested(pos);
             return;
         }
-        if (FolderStatusDelegate::errorsListRect(tv->visualRect(indx)).contains(pos)) {
+        if (FolderStatusDelegate::errorsListRect(tv->visualRect(indx), indx).contains(pos)) {
             emit showIssuesList(_model->data(indx, FolderStatusDelegate::FolderAliasRole).toString());
             return;
         }
@@ -359,6 +396,7 @@ void AccountSettings::slotAddFolder()
     folderMan->setSyncEnabled(false); // do not start more syncs.
 
     FolderWizard *folderWizard = new FolderWizard(_accountState->account(), this);
+    folderWizard->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(folderWizard, &QDialog::accepted, this, &AccountSettings::slotFolderWizardAccepted);
     connect(folderWizard, &QDialog::rejected, this, &AccountSettings::slotFolderWizardRejected);
@@ -563,10 +601,12 @@ void AccountSettings::slotScheduleCurrentFolder()
     }
 }
 
-void AccountSettings::slotScheduleCurrentFolderForceRemoteDiscovery()
+void AccountSettings::slotScheduleCurrentFolderForceFullDiscovery()
 {
     FolderMan *folderMan = FolderMan::instance();
     if (auto folder = folderMan->folder(selectedFolderAlias())) {
+        folder->slotWipeErrorBlacklist();
+        folder->slotNextSyncFullLocalDiscovery();
         folder->journalDb()->forceRemoteDiscoveryNextSync();
         folderMan->scheduleFolder(folder);
     }
@@ -581,6 +621,8 @@ void AccountSettings::slotForceSyncCurrentFolder()
             folderMan->terminateSyncProcess();
             folderMan->scheduleFolder(current);
         }
+
+        selectedFolder->slotWipeErrorBlacklist(); // issue #6757
 
         // Insert the selected folder at the front of the queue
         folderMan->scheduleFolderNext(selectedFolder);
@@ -651,7 +693,7 @@ void AccountSettings::slotAccountStateChanged()
         if (state == AccountState::Connected) {
             QStringList errors;
             if (account->serverVersionUnsupported()) {
-                errors << tr("The server version %1 is old and unsupported! Proceed at your own risk.").arg(account->serverVersion());
+                errors << tr("The server version %1 is unsupported! Proceed at your own risk.").arg(account->serverVersion());
             }
             showConnectionLabel(tr("Connected to %1.").arg(serverWithUser), errors);
         } else if (state == AccountState::ServiceUnavailable) {
@@ -695,9 +737,6 @@ void AccountSettings::slotAccountStateChanged()
             if (ui->_folderList->isExpanded(_model->index(i)))
                 ui->_folderList->setExpanded(_model->index(i), false);
         }
-    } else if (_model->isDirty()) {
-        // If we connect and have pending changes, show the list.
-        doExpand();
     }
 
     // Disabling expansion of folders might require hiding the selective
@@ -756,8 +795,6 @@ AccountSettings::~AccountSettings()
 
 void AccountSettings::refreshSelectiveSyncStatus()
 {
-    bool shouldBeVisible = _model->isDirty() && _accountState->isConnected();
-
     QString msg;
     int cnt = 0;
     foreach (Folder *folder, FolderMan::instance()->map().values()) {
@@ -788,10 +825,20 @@ void AccountSettings::refreshSelectiveSyncStatus()
         }
     }
 
+    // Some selective sync ui (either normal editing or big folder) will show
+    // if this variable ends up true.
+    bool shouldBeVisible = false;
+
     if (msg.isEmpty()) {
+        // Show the ui if the model is dirty only
+        shouldBeVisible = _model->isDirty() && _accountState->isConnected();
+
         ui->selectiveSyncButtons->setVisible(true);
         ui->bigFolderUi->setVisible(false);
     } else {
+        // There's a reason the big folder ui should be shown
+        shouldBeVisible = _accountState->isConnected();
+
         ConfigFile cfg;
         QString info = !cfg.confirmExternalStorage()
             ? tr("There are folders that were not synchronized because they are too big: ")
@@ -802,7 +849,6 @@ void AccountSettings::refreshSelectiveSyncStatus()
         ui->selectiveSyncNotification->setText(info + msg);
         ui->selectiveSyncButtons->setVisible(false);
         ui->bigFolderUi->setVisible(true);
-        shouldBeVisible = true;
     }
 
     ui->selectiveSyncApply->setEnabled(_model->isDirty() || !msg.isEmpty());
@@ -812,6 +858,7 @@ void AccountSettings::refreshSelectiveSyncStatus()
         if (shouldBeVisible) {
             ui->selectiveSyncStatus->setMaximumHeight(0);
             ui->selectiveSyncStatus->setVisible(true);
+            doExpand();
         }
         auto anim = new QPropertyAnimation(ui->selectiveSyncStatus, "maximumHeight", ui->selectiveSyncStatus);
         anim->setEndValue(shouldBeVisible ? hint.height() : 0);

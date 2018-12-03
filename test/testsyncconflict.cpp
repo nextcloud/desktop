@@ -64,6 +64,13 @@ bool expectAndWipeConflict(FileModifier &local, FileInfo state, const QString pa
     return false;
 }
 
+SyncJournalFileRecord dbRecord(FakeFolder &folder, const QString &path)
+{
+    SyncJournalFileRecord record;
+    folder.syncJournal().getFileRecord(path, &record);
+    return record;
+}
+
 class TestSyncConflict : public QObject
 {
     Q_OBJECT
@@ -100,11 +107,15 @@ private slots:
         QMap<QByteArray, QString> conflictMap;
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (op == QNetworkAccessManager::PutOperation) {
-                auto baseFileId = request.rawHeader("OC-ConflictBaseFileId");
-                if (!baseFileId.isEmpty()) {
+                if (request.rawHeader("OC-Conflict") == "1") {
+                    auto baseFileId = request.rawHeader("OC-ConflictBaseFileId");
                     auto components = request.url().toString().split('/');
                     QString conflictFile = components.mid(components.size() - 2).join('/');
                     conflictMap[baseFileId] = conflictFile;
+                    [&] {
+                        QVERIFY(!baseFileId.isEmpty());
+                        QCOMPARE(request.rawHeader("OC-ConflictInitialBasePath"), Utility::conflictFileBaseName(conflictFile.toUtf8()));
+                    }();
                 }
             }
             return nullptr;
@@ -146,11 +157,15 @@ private slots:
         QMap<QByteArray, QString> conflictMap;
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (op == QNetworkAccessManager::PutOperation) {
-                auto baseFileId = request.rawHeader("OC-ConflictBaseFileId");
-                if (!baseFileId.isEmpty()) {
+                if (request.rawHeader("OC-Conflict") == "1") {
+                    auto baseFileId = request.rawHeader("OC-ConflictBaseFileId");
                     auto components = request.url().toString().split('/');
                     QString conflictFile = components.mid(components.size() - 2).join('/');
                     conflictMap[baseFileId] = conflictFile;
+                    [&] {
+                        QVERIFY(!baseFileId.isEmpty());
+                        QCOMPARE(request.rawHeader("OC-ConflictInitialBasePath"), Utility::conflictFileBaseName(conflictFile.toUtf8()));
+                    }();
                 }
             }
             return nullptr;
@@ -165,6 +180,7 @@ private slots:
         ConflictRecord conflictRecord;
         conflictRecord.path = conflictName.toUtf8();
         conflictRecord.baseFileId = a1FileId;
+        conflictRecord.initialBasePath = "A/a1";
         fakeFolder.syncJournal().setConflictRecord(conflictRecord);
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -216,6 +232,7 @@ private slots:
         auto conflictRecord = fakeFolder.syncJournal().conflictRecord("A/a1 (conflicted copy 1234)");
         QVERIFY(conflictRecord.isValid());
         QCOMPARE(conflictRecord.baseFileId, fakeFolder.remoteModifier().find("A/a1")->fileId);
+        QCOMPARE(conflictRecord.initialBasePath, QByteArray("A/a1"));
 
         // Now with server headers
         QObject parent;
@@ -227,6 +244,7 @@ private slots:
                 reply->setRawHeader("OC-ConflictBaseFileId", a2FileId);
                 reply->setRawHeader("OC-ConflictBaseMtime", "1234");
                 reply->setRawHeader("OC-ConflictBaseEtag", "etag");
+                reply->setRawHeader("OC-ConflictInitialBasePath", "A/original");
                 return reply;
             }
             return nullptr;
@@ -239,6 +257,7 @@ private slots:
         QCOMPARE(conflictRecord.baseFileId, a2FileId);
         QCOMPARE(conflictRecord.baseModtime, 1234);
         QCOMPARE(conflictRecord.baseEtag, QByteArray("etag"));
+        QCOMPARE(conflictRecord.initialBasePath, QByteArray("A/original"));
     }
 
     // Check that conflict records are removed when the file is gone
@@ -587,6 +606,30 @@ private slots:
         QVERIFY(fakeFolder.syncEngine().isAnotherSyncNeeded() == ImmediateFollowUp);
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    // Test what happens if we remove entries both on the server, and locally
+    void testRemoveRemove()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        fakeFolder.remoteModifier().remove("A");
+        fakeFolder.localModifier().remove("A");
+        fakeFolder.remoteModifier().remove("B/b1");
+        fakeFolder.localModifier().remove("B/b1");
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        auto expectedState = fakeFolder.currentLocalState();
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.currentLocalState(), expectedState);
+        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+
+        QVERIFY(dbRecord(fakeFolder, "B/b2").isValid());
+
+        QVERIFY(!dbRecord(fakeFolder, "B/b1").isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/a1").isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A").isValid());
     }
 };
 

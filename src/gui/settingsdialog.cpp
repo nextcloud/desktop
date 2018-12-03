@@ -103,6 +103,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _toolBar->addAction(generalAction);
     GeneralSettings *generalSettings = new GeneralSettings;
     _ui->stack->addWidget(generalSettings);
+    QObject::connect(generalSettings, &GeneralSettings::showAbout, gui, &ownCloudGui::slotAbout);
 
     QAction *networkAction = createColorAwareAction(QLatin1String(":/client/resources/network.png"), tr("Network"));
     _actionGroup->addAction(networkAction);
@@ -133,6 +134,11 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     showLogWindow->setShortcut(QKeySequence("F12"));
     connect(showLogWindow, &QAction::triggered, gui, &ownCloudGui::slotToggleLogBrowser);
     addAction(showLogWindow);
+
+    QAction *showLogWindow2 = new QAction(this);
+    showLogWindow2->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));
+    connect(showLogWindow2, &QAction::triggered, gui, &ownCloudGui::slotToggleLogBrowser);
+    addAction(showLogWindow2);
 
     customizeStyle();
 
@@ -229,6 +235,7 @@ void SettingsDialog::accountAdded(AccountState *s)
     _actionGroup->addAction(accountAction);
     _actionGroupWidgets.insert(accountAction, accountSettings);
     _actionForAccount.insert(s->account().data(), accountAction);
+    accountAction->trigger();
 
     connect(accountSettings, &AccountSettings::folderChanged, _gui, &ownCloudGui::slotFoldersChanged);
     connect(accountSettings, &AccountSettings::openFolderAlias,

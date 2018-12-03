@@ -20,6 +20,7 @@
 #include <random>
 
 #include "config.h"
+#include "common/asserts.h"
 #include "account.h"
 #include "accountstate.h"
 #include "connectionvalidator.h"
@@ -72,7 +73,7 @@ namespace {
         "  --logexpire <hours>  : removes logs older than <hours> hours.\n"
         "                         (to be used with --logdir)\n"
         "  --logflush           : flush the log file after every write.\n"
-        "  --logdebug           : also output debug-level messages in the log (equivalent to setting the env var QT_LOGGING_RULES=\"qt.*=true;*.debug=true\").\n"
+        "  --logdebug           : also output debug-level messages in the log.\n"
         "  --confdir <dirname>  : Use the given configuration folder.\n";
 
     QString applicationTrPath()
@@ -94,6 +95,66 @@ namespace {
 }
 
 // ----------------------------------------------------------------------------------
+
+bool Application::configVersionMigration()
+{
+    QStringList deleteKeys, ignoreKeys;
+    AccountManager::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
+    FolderMan::backwardMigrationSettingsKeys(&deleteKeys, &ignoreKeys);
+
+    ConfigFile configFile;
+
+    // Did the client version change?
+    // (The client version is adjusted further down)
+    bool versionChanged = configFile.clientVersionString() != MIRALL_VERSION_STRING;
+
+    // We want to message the user either for destructive changes,
+    // or if we're ignoring something and the client version changed.
+    bool warningMessage = !deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged);
+
+    if (!versionChanged && !warningMessage)
+        return true;
+
+    const auto backupFile = configFile.backup();
+
+    if (warningMessage) {
+        QString boldMessage;
+        if (!deleteKeys.isEmpty()) {
+            boldMessage = tr("Continuing will mean <b>deleting these settings</b>.");
+        } else {
+            boldMessage = tr("Continuing will mean <b>ignoring these settings</b>.");
+        }
+
+        QMessageBox box(
+            QMessageBox::Warning,
+            APPLICATION_SHORTNAME,
+            tr("Some settings were configured in newer versions of this client and "
+               "use features that are not available in this version.<br>"
+               "<br>"
+               "%1<br>"
+               "<br>"
+               "The current configuration file was already backed up to <i>%2</i>.")
+                .arg(boldMessage, backupFile));
+        box.addButton(tr("Quit"), QMessageBox::AcceptRole);
+        auto continueBtn = box.addButton(tr("Continue"), QMessageBox::DestructiveRole);
+
+        box.exec();
+        if (box.clickedButton() != continueBtn) {
+            QTimer::singleShot(0, qApp, SLOT(quit()));
+            return false;
+        }
+
+        auto settings = ConfigFile::settingsWithGroup("foo");
+        settings->endGroup();
+
+        // Wipe confusing keys from the future, ignore the others
+        for (const auto &badKey : deleteKeys)
+            settings->remove(badKey);
+    }
+
+    configFile.setClientVersionString(MIRALL_VERSION_STRING);
+    return true;
+}
 
 Application::Application(int &argc, char **argv)
     : SharedTools::QtSingleApplication(Theme::instance()->appName(), argc, argv)
@@ -125,8 +186,7 @@ Application::Application(int &argc, char **argv)
     setWindowIcon(_theme->applicationIcon());
     setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
-    auto confDir = ConfigFile().configPath();
-    if (!QFileInfo(confDir).exists()) {
+    if (!ConfigFile().exists()) {
         // Migrate from version <= 2.4
         setApplicationName(_theme->appNameGUI());
 #ifndef QT_WARNING_DISABLE_DEPRECATED // Was added in Qt 5.9
@@ -137,12 +197,27 @@ Application::Application(int &argc, char **argv)
         // We need to use the deprecated QDesktopServices::storageLocation because of its Qt4
         // behavior of adding "data" to the path
         QString oldDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+        if (oldDir.endsWith('/')) oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
         QT_WARNING_POP
         setApplicationName(_theme->appName());
         if (QFileInfo(oldDir).isDir()) {
+            auto confDir = ConfigFile().configPath();
+            if (confDir.endsWith('/')) confDir.chop(1);  // macOS 10.11.x does not like trailing slash for rename/move.
             qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
+
             if (!QFile::rename(oldDir, confDir)) {
-                qCWarning(lcApplication) << "Failed to move the old config file to its new location (" << oldDir << "to" << confDir << ")";
+                qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
+
+                // Try to move the files one by one
+                if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
+                    const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
+                    qCInfo(lcApplication) << "Will move the individual files" << filesList;
+                    for (const auto &name : filesList) {
+                        if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
+                            qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
+                        }
+                    }
+                }
             } else {
 #ifndef Q_OS_WIN
                 // Create a symbolic link so a downgrade of the client would still find the config.
@@ -168,8 +243,12 @@ Application::Application(int &argc, char **argv)
     setupLogging();
     setupTranslations();
 
-    // The timeout is initialized with an environment variable, if not, override with the value from the config
+    if (!configVersionMigration()) {
+        return;
+    }
+
     ConfigFile cfg;
+    // The timeout is initialized with an environment variable, if not, override with the value from the config
     if (!AbstractNetworkJob::httpTimeout)
         AbstractNetworkJob::httpTimeout = cfg.timeout();
 
@@ -345,6 +424,18 @@ void Application::slotCrash()
     Utility::crash();
 }
 
+void Application::slotCrashEnforce()
+{
+    ENFORCE(1==0);
+}
+
+
+void Application::slotCrashFatal()
+{
+    qFatal("la Qt fatale");
+}
+
+
 void Application::slotownCloudWizardDone(int res)
 {
     AccountManager *accountMan = AccountManager::instance();
@@ -476,20 +567,12 @@ void Application::parseOptions(const QStringList &options)
 
 // Helpers for displaying messages. Note that there is no console on Windows.
 #ifdef Q_OS_WIN
-// Format as <pre> HTML
-static inline void toHtml(QString &t)
+static void displayHelpText(const QString &t) // No console on Windows.
 {
-    t.replace(QLatin1Char('&'), QLatin1String("&amp;"));
-    t.replace(QLatin1Char('<'), QLatin1String("&lt;"));
-    t.replace(QLatin1Char('>'), QLatin1String("&gt;"));
-    t.insert(0, QLatin1String("<html><pre>"));
-    t.append(QLatin1String("</pre></html>"));
-}
-
-static void displayHelpText(QString t) // No console on Windows.
-{
-    toHtml(t);
-    QMessageBox::information(0, Theme::instance()->appNameGUI(), t);
+    QString spaces(80, ' '); // Add a line of non-wrapped space to make the messagebox wide enough.
+    QString text = QLatin1String("<qt><pre style='white-space:pre-wrap'>")
+        + t.toHtmlEscaped() + QLatin1String("</pre><pre>") + spaces + QLatin1String("</pre></qt>");
+    QMessageBox::information(0, Theme::instance()->appNameGUI(), text);
 }
 
 #else

@@ -129,7 +129,7 @@ Logging to a Temporary Directory
 
 1. Open the ownCloud Desktop Client.
 
-2. Press F12 on your keyboard.
+2. Press F12 or Ctrl-L or Cmd+L on your keyboard.
 
   The Log Output window opens.
 

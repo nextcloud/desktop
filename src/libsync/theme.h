@@ -203,6 +203,7 @@ public:
      * About dialog contents
      */
     virtual QString about() const;
+    virtual bool aboutShowCopyright() const;
 
     /**
      * Define if the systray icons should be using mono design
@@ -347,6 +348,15 @@ public:
      * important dependency versions.
      */
     virtual QString versionSwitchOutput() const;
+
+
+    /**
+     * @brief Whether to show the option to create folders using "virtual files".
+     *
+     * By default, the options are not shown unless experimental options are
+     * manually enabled in the configuration file.
+     */
+    virtual bool showVirtualFilesOption() const;
 
 protected:
 #ifndef TOKEN_AUTH_ONLY

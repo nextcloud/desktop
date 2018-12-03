@@ -210,6 +210,10 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             : QStringList();
     case FolderStatusDelegate::FolderErrorMsg:
         return f->syncResult().errorStrings();
+    case FolderStatusDelegate::FolderInfoMsg:
+        return f->useVirtualFiles()
+            ? QStringList(tr("New files are being created as virtual files."))
+            : QStringList();
     case FolderStatusDelegate::SyncRunning:
         return f->syncResult().status() == SyncResult::SyncRunning;
     case FolderStatusDelegate::HeaderRole:
@@ -357,6 +361,8 @@ int FolderStatusModel::rowCount(const QModelIndex &parent) const
     }
     auto info = infoForIndex(parent);
     if (!info)
+        return 0;
+    if (info->_folder && info->_folder->useVirtualFiles())
         return 0;
     if (info->hasLabel())
         return 1;
@@ -513,6 +519,9 @@ bool FolderStatusModel::hasChildren(const QModelIndex &parent) const
     if (!info)
         return false;
 
+    if (info->_folder && info->_folder->useVirtualFiles())
+        return false;
+
     if (!info->_fetched)
         return true;
 
@@ -536,6 +545,10 @@ bool FolderStatusModel::canFetchMore(const QModelIndex &parent) const
         return false;
     if (info->_hasError) {
         // Keep showing the error to the user, it will be hidden when the account reconnects
+        return false;
+    }
+    if (info->_folder && info->_folder->useVirtualFiles()) {
+        // Selective sync is hidden in that case
         return false;
     }
     return true;
@@ -740,10 +753,11 @@ void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply *r)
     if (parentInfo) {
         qCDebug(lcFolderStatus) << r->errorString();
         parentInfo->_lastErrorString = r->errorString();
+        auto error = r->error();
 
         parentInfo->resetSubs(this, idx);
 
-        if (r->error() == QNetworkReply::ContentNotFoundError) {
+        if (error == QNetworkReply::ContentNotFoundError) {
             parentInfo->_fetched = true;
         } else {
             ASSERT(!parentInfo->hasLabel());
@@ -809,7 +823,7 @@ void FolderStatusModel::slotApplySelectiveSync()
         auto oldBlackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
         if (!ok) {
             qCWarning(lcFolderStatus) << "Could not read selective sync list from db.";
-            return;
+            continue;
         }
         QStringList blackList = createBlackList(&_folders[i], oldBlackList);
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
@@ -842,6 +856,8 @@ void FolderStatusModel::slotApplySelectiveSync()
             foreach (const auto &it, changes) {
                 folder->journalDb()->avoidReadFromDbOnNextSync(it);
             }
+            // Also make sure we see the local file that had been ignored before
+            folder->slotNextSyncFullLocalDiscovery();
             FolderMan::instance()->scheduleFolder(folder);
         }
     }
@@ -1155,6 +1171,8 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         foreach (const auto &it, undecidedList) {
             folder->journalDb()->avoidReadFromDbOnNextSync(it);
         }
+        // Also make sure we see the local file that had been ignored before
+        folder->slotNextSyncFullLocalDiscovery();
         FolderMan::instance()->scheduleFolder(folder);
     }
 
@@ -1226,7 +1244,11 @@ bool FolderStatusModel::SubFolderInfo::hasLabel() const
 void FolderStatusModel::SubFolderInfo::resetSubs(FolderStatusModel *model, QModelIndex index)
 {
     _fetched = false;
-    delete _fetchingJob;
+    if (_fetchingJob) {
+        disconnect(_fetchingJob, nullptr, model, nullptr);
+        _fetchingJob->deleteLater();
+        _fetchingJob.clear();
+    }
     if (hasLabel()) {
         model->beginRemoveRows(index, 0, 0);
         _fetchingLabel = false;

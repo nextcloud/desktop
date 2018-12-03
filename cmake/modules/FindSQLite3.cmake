@@ -26,6 +26,7 @@ find_path(SQLITE3_INCLUDE_DIR
         sqlite3.h
     PATHS
         ${_SQLITE3_INCLUDEDIR}
+        ${SQLITE3_INCLUDE_DIRS}
 )
 
 find_library(SQLITE3_LIBRARY
@@ -33,6 +34,7 @@ find_library(SQLITE3_LIBRARY
         sqlite3 sqlite3-0
     PATHS
         ${_SQLITE3_LIBDIR}
+        ${SQLITE3_LIBRARIES}
 )
 
 set(SQLITE3_INCLUDE_DIRS

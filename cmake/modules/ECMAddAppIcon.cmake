@@ -8,8 +8,8 @@
 #
 #  ecm_add_app_icon(<sources_var>
 #                   ICONS <icon> [<icon> [...]]
-#                   [SIDEBAR_ICONS <icon> [<icon> [...]] # Since 5.4x
-#                   [OUTFILE_BASE <name>]) # Since 5.4x
+#                   [SIDEBAR_ICONS <icon> [<icon> [...]] # Since 5.49
+#                   [OUTFILE_BASENAME <name>]) # Since 5.49
 #                   )
 #
 # The given icons, whose names must match the pattern::
@@ -27,20 +27,21 @@
 #
 # ``SIDEBAR_ICONS`` can be used to add Mac OS X sidebar
 # icons to the generated iconset. They are used when a folder monitored by the
-# application is dragged into Finder's sidebar. Since 5.4x.
+# application is dragged into Finder's sidebar. Since 5.49.
 #
-# ``OUTFILE_BASE`` will be used as the basename for the icon file. If
-# you specify it, the icon file will be called ``<OUTFILE_BASE>.icns`` on Mac OS X
-# and ``<OUTFILE_BASE>.ico`` on Windows. If you don't specify it, it defaults
-# to ``<sources_var>.<ext>``. Since 5.4x.
+# ``OUTFILE_BASENAME`` will be used as the basename for the icon file. If
+# you specify it, the icon file will be called ``<OUTFILE_BASENAME>.icns`` on Mac OS X
+# and ``<OUTFILE_BASENAME>.ico`` on Windows. If you don't specify it, it defaults
+# to ``<sources_var>.<ext>``. Since 5.49.
 #
 #
 # Windows notes
 #    * Icons are compiled into the executable using a resource file.
 #    * Icons may not show up in Windows Explorer if the executable
 #      target does not have the ``WIN32_EXECUTABLE`` property set.
-#    * The tool png2ico is required. See :find-module:`FindPng2Ico`.
-#    * Supported sizes: 16, 32, 48, 64, 128.
+#    * One of the tools png2ico (See :find-module:`FindPng2Ico`) or
+#      icotool (see :find-module:`FindIcoTool`) is required.
+#    * Supported sizes: 16, 24, 32, 48, 64, 128, 256, 512 and 1024.
 #
 # Mac OS X notes
 #    * The executable target must have the ``MACOSX_BUNDLE`` property set.
@@ -101,7 +102,7 @@ include(CMakeParseArguments)
 
 function(ecm_add_app_icon appsources)
     set(options)
-    set(oneValueArgs OUTFILE_BASE)
+    set(oneValueArgs OUTFILE_BASENAME)
     set(multiValueArgs ICONS SIDEBAR_ICONS)
     cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
@@ -140,7 +141,7 @@ function(ecm_add_app_icon appsources)
 
     _ecm_add_app_icon_categorize_icons("${ARG_ICONS}" "icons" "16;32;48;64;128;256;512;1024")
     if(ARG_SIDEBAR_ICONS)
-        _ecm_add_app_icon_categorize_icons("${ARG_SIDEBAR_ICONS}" "sidebar_icons" "16;18;32;36;64")
+        _ecm_add_app_icon_categorize_icons("${ARG_SIDEBAR_ICONS}" "sidebar_icons" "16;32;64;128;256")
     endif()
 
     set(mac_icons
@@ -179,8 +180,8 @@ function(ecm_add_app_icon appsources)
         message(AUTHOR_WARNING "No icons suitable for use on Windows provided")
     endif()
 
-    if (ARG_OUTFILE_BASE)
-        set (_outfilebasename "${ARG_OUTFILE_BASE}")
+    if (ARG_OUTFILE_BASENAME)
+        set (_outfilebasename "${ARG_OUTFILE_BASENAME}")
     else()
         set (_outfilebasename "${appsources}")
     endif()
@@ -213,7 +214,7 @@ function(ecm_add_app_icon appsources)
         endfunction()
 
         if (IcoTool_FOUND)
-            set(icotool_args "-c -o \"${_outfilename}.ico\"")
+            list(APPEND icotool_args "-c" "-o" "${_outfilename}.ico")
 
             # According to https://stackoverflow.com/a/40851713/2886832
             # Windows always chooses the first icon above 255px, all other ones will be ignored
@@ -297,6 +298,9 @@ function(ecm_add_app_icon appsources)
                 list(APPEND iconset_icons
                             "${_outfilename}.iconset/${type}_${sizename}.png")
             endmacro()
+
+            # List of supported sizes and filenames taken from:
+            # https://developer.apple.com/library/content/documentation/GraphicsAnimation/Conceptual/HighResolutionOSX/Optimizing/Optimizing.html#//apple_ref/doc/uid/TP40012302-CH7-SW4
             foreach(size 16 32 128 256 512)
                 math(EXPR double_size "2 * ${size}")
                 foreach(file ${icons_at_${size}px})
@@ -307,14 +311,25 @@ function(ecm_add_app_icon appsources)
                 endforeach()
             endforeach()
 
-            foreach(size 16 18 32)
-                math(EXPR double_size "2 * ${size}")
-                foreach(file ${sidebar_icons_at_${size}px})
-                    copy_icon("${file}" "${size}x${size}" "sidebar")
-                endforeach()
-                foreach(file ${sidebar_icons_at_${double_size}px})
-                    copy_icon("${file}" "${size}x${size}@2x" "sidebar")
-                endforeach()
+            # List of supported sizes and filenames taken from:
+            # https://developer.apple.com/library/content/documentation/General/Conceptual/ExtensibilityPG/Finder.html#//apple_ref/doc/uid/TP40014214-CH15-SW15
+            foreach(file ${sidebar_icons_at_16px})
+                copy_icon("${file}" "16x16" "sidebar")
+            endforeach()
+            foreach(file ${sidebar_icons_at_32px})
+                copy_icon("${file}" "16x16@2x" "sidebar")
+            endforeach()
+            foreach(file ${sidebar_icons_at_32px})
+                copy_icon("${file}" "18x18" "sidebar")
+            endforeach()
+            foreach(file ${sidebar_icons_at_64px})
+                copy_icon("${file}" "18x18@2x" "sidebar")
+            endforeach()
+            foreach(file ${sidebar_icons_at_128px})
+                copy_icon("${file}" "32x32" "sidebar")
+            endforeach()
+            foreach(file ${sidebar_icons_at_256px})
+                copy_icon("${file}" "32x32@2x" "sidebar")
             endforeach()
 
             # generate .icns icon file

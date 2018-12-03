@@ -16,8 +16,10 @@
 
 #include "configfile.h"
 #include "theme.h"
+#include "version.h"
 #include "common/utility.h"
 #include "common/asserts.h"
+#include "version.h"
 
 #include "creds/abstractcredentials.h"
 
@@ -58,6 +60,7 @@ static const char optionalDesktopNoficationsC[] = "optionalDesktopNotifications"
 static const char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
 static const char updateCheckIntervalC[] = "updateCheckInterval";
+static const char updateChannelC[] = "updateChannel";
 static const char geometryC[] = "geometry";
 static const char timeoutC[] = "timeout";
 static const char chunkSizeC[] = "chunkSize";
@@ -66,6 +69,7 @@ static const char maxChunkSizeC[] = "maxChunkSize";
 static const char targetChunkUploadDurationC[] = "targetChunkUploadDuration";
 static const char automaticLogDirC[] = "logToTemporaryLogDir";
 static const char showExperimentalOptionsC[] = "showExperimentalOptions";
+static const char clientVersionC[] = "clientVersion";
 
 static const char proxyHostC[] = "Proxy/host";
 static const char proxyTypeC[] = "Proxy/type";
@@ -83,6 +87,9 @@ static const char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
 static const char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
 static const char confirmExternalStorageC[] = "confirmExternalStorage";
 static const char moveToTrashC[] = "moveToTrash";
+
+static const char deltaSyncEnabledC[] = "DeltaSync/enabled";
+static const char deltaSyncMinimumFileSizeC[] = "DeltaSync/minFileSize";
 
 static const char maxLogLinesC[] = "Logging/maxLogLines";
 
@@ -341,6 +348,28 @@ QString ConfigFile::excludeFileFromSystem()
     return fi.absoluteFilePath();
 }
 
+QString ConfigFile::backup() const
+{
+    QString baseFile = configFile();
+    auto versionString = clientVersionString();
+    if (!versionString.isEmpty())
+        versionString.prepend('_');
+    QString backupFile =
+        QString("%1.backup_%2%3")
+            .arg(baseFile)
+            .arg(QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss"))
+            .arg(versionString);
+
+    // If this exact file already exists it's most likely that a backup was
+    // already done. (two backup calls directly after each other, potentially
+    // even with source alterations in between!)
+    if (!QFile::exists(backupFile)) {
+        QFile f(baseFile);
+        f.copy(backupFile);
+    }
+    return backupFile;
+}
+
 QString ConfigFile::configFile() const
 {
     return configPath() + Theme::instance()->configFileName();
@@ -514,6 +543,28 @@ void ConfigFile::setSkipUpdateCheck(bool skip, const QString &connection)
 
     settings.setValue(QLatin1String(skipUpdateCheckC), QVariant(skip));
     settings.sync();
+}
+
+QString ConfigFile::updateChannel() const
+{
+    QString defaultUpdateChannel = QStringLiteral("stable");
+    QString suffix = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
+    if (suffix.startsWith("daily")
+        || suffix.startsWith("nightly")
+        || suffix.startsWith("alpha")
+        || suffix.startsWith("rc")
+        || suffix.startsWith("beta")) {
+        defaultUpdateChannel = QStringLiteral("beta");
+    }
+
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(updateChannelC), defaultUpdateChannel).toString();
+}
+
+void ConfigFile::setUpdateChannel(const QString &channel)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(updateChannelC), channel);
 }
 
 int ConfigFile::maxLogLines() const
@@ -697,6 +748,28 @@ void ConfigFile::setMoveToTrash(bool isChecked)
     setValue(moveToTrashC, isChecked);
 }
 
+bool ConfigFile::deltaSyncEnabled() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(deltaSyncEnabledC), false).toBool(); // default to false
+}
+
+void ConfigFile::setDeltaSyncEnabled(bool enabled)
+{
+    setValue(deltaSyncEnabledC, enabled);
+}
+
+quint64 ConfigFile::deltaSyncMinFileSize() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(deltaSyncMinimumFileSizeC), 10 * 1024 * 1024).toLongLong(); // default to 10 MiB
+}
+
+void ConfigFile::setDeltaSyncMinFileSize(quint64 bytes)
+{
+    setValue(deltaSyncMinimumFileSizeC, bytes);
+}
+
 bool ConfigFile::promptDeleteFiles() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
@@ -778,6 +851,18 @@ void ConfigFile::setCertificatePasswd(const QString &cPasswd)
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(certPasswd), cPasswd);
     settings.sync();
+}
+
+QString ConfigFile::clientVersionString() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(clientVersionC), QString()).toString();
+}
+
+void ConfigFile::setClientVersionString(const QString &version)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(clientVersionC), version);
 }
 
 Q_GLOBAL_STATIC(QString, g_configFileName)

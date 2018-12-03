@@ -86,7 +86,7 @@ int OwncloudPropagator::maximumActiveTransferJob()
         // disable parallelism when there is a network limit.
         return 1;
     }
-    return qMin(3, qCeil(hardMaximumActiveJob() / 2.));
+    return qMin(3, qCeil(_syncOptions._parallelNetworkJobs / 2.));
 }
 
 /* The maximum number of active jobs in parallel  */
@@ -94,12 +94,7 @@ int OwncloudPropagator::hardMaximumActiveJob()
 {
     if (!_syncOptions._parallelNetworkJobs)
         return 1;
-    static int max = qgetenv("OWNCLOUD_MAX_PARALLEL").toUInt();
-    if (max)
-        return max;
-    if (_account->isHttp2Supported())
-        return 20;
-    return 6; // (Qt cannot do more anyway)
+    return _syncOptions._parallelNetworkJobs;
 }
 
 PropagateItemJob::~PropagateItemJob()
@@ -224,9 +219,12 @@ static void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
 
 void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &errorString)
 {
+    // Duplicate calls to done() are a logic error
+    ENFORCE(_state != Finished);
+    _state = Finished;
+
     _item->_status = statusArg;
 
-    _state = Finished;
     if (_item->_isRestoration) {
         if (_item->_status == SyncFileItem::Success
             || _item->_status == SyncFileItem::Conflict) {
@@ -631,6 +629,11 @@ void OwncloudPropagator::scheduleNextJobImpl()
     }
 }
 
+void OwncloudPropagator::reportFileTotal(const SyncFileItem &item, quint64 newSize)
+{
+    emit updateFileTotal(item, newSize);
+}
+
 void OwncloudPropagator::reportProgress(const SyncFileItem &item, quint64 bytes)
 {
     emit progress(item, bytes);
@@ -695,6 +698,7 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
     ConflictRecord conflictRecord;
     conflictRecord.path = conflictFileName.toUtf8();
     conflictRecord.baseModtime = item->_previousModtime;
+    conflictRecord.initialBasePath = item->_file.toUtf8();
 
     SyncJournalFileRecord baseRecord;
     if (_journal->getFileRecord(item->_originalFile, &baseRecord) && baseRecord.isValid()) {
@@ -837,7 +841,7 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
     // Delete the job and remove it from our list of jobs.
     subJob->deleteLater();
     int i = _runningJobs.indexOf(subJob);
-    ASSERT(i >= 0);
+    ENFORCE(i >= 0); // should only happen if this function is called more than once
     _runningJobs.remove(i);
 
     // Any sub job error will cause the whole composite to fail. This is important
@@ -972,7 +976,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                 }
             }
             SyncJournalFileRecord record = _item->toSyncJournalFileRecordWithInode(propagator()->_localDir + _item->_file);
-            bool ok = propagator()->_journal->setFileRecordMetadata(record);
+            bool ok = propagator()->_journal->setFileRecord(record);
             if (!ok) {
                 status = _item->_status = SyncFileItem::FatalError;
                 _item->_errorString = tr("Error writing metadata to the database");

@@ -51,7 +51,7 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
 
     registerField(QLatin1String("OCSyncFromScratch"), _ui.cbSyncFromScratch);
 
-    _ui.resultLayout->addWidget(_progressIndi);
+    _ui.errorScrollContents->layout()->addWidget(_progressIndi);
     stopSpinner();
     setupCustomization();
 
@@ -98,14 +98,19 @@ void OwncloudAdvancedSetupPage::setupCustomization()
 
 bool OwncloudAdvancedSetupPage::isComplete() const
 {
-    return !_checking && _localFolderValid;
+    return manualFolderConfig() || (!_checking && _localFolderValid);
 }
 
 void OwncloudAdvancedSetupPage::initializePage()
 {
     WizardCommon::initErrorLabel(_ui.errorLabel);
 
-    if (!ConfigFile().showExperimentalOptions()) {
+    auto labelSizeHint = _ui.errorLabel->minimumSizeHint();
+    _ui.errorScroll->setMinimumSize(
+        labelSizeHint.width(),
+        qMax<int>(1.3 * labelSizeHint.height(), _progressIndi->height()));
+
+    if (!Theme::instance()->showVirtualFilesOption()) {
         // If the layout were wrapped in a widget, the auto-grouping of the
         // radio buttons no longer works and there are surprising margins.
         // Just manually hide the button and remove the layout.
@@ -137,6 +142,7 @@ void OwncloudAdvancedSetupPage::initializePage()
 
     if (Theme::instance()->wizardSelectiveSyncDefaultNothing()) {
         _selectiveSyncBlacklist = QStringList("/");
+        setRadioChecked(_ui.rSelectiveSync);
         QTimer::singleShot(0, this, &OwncloudAdvancedSetupPage::slotSelectiveSyncClicked);
     }
 
@@ -181,8 +187,6 @@ void OwncloudAdvancedSetupPage::updateStatus()
     }
 
     _ui.syncModeLabel->setText(t);
-    _ui.syncModeLabel->setFixedHeight(_ui.syncModeLabel->sizeHint().height());
-    wizard()->resize(wizard()->sizeHint());
     setErrorString(errorStr);
     emit completeChanged();
 }
@@ -195,14 +199,12 @@ bool OwncloudAdvancedSetupPage::dataChanged()
 
 void OwncloudAdvancedSetupPage::startSpinner()
 {
-    _ui.resultLayout->setEnabled(true);
     _progressIndi->setVisible(true);
     _progressIndi->startAnimation();
 }
 
 void OwncloudAdvancedSetupPage::stopSpinner()
 {
-    _ui.resultLayout->setEnabled(false);
     _progressIndi->setVisible(false);
     _progressIndi->stopAnimation();
 }
@@ -250,6 +252,10 @@ bool OwncloudAdvancedSetupPage::isConfirmBigFolderChecked() const
 
 bool OwncloudAdvancedSetupPage::validatePage()
 {
+    if (manualFolderConfig()) {
+        return true;
+    }
+
     if (!_created) {
         setErrorString(QString());
         _checking = true;
@@ -387,6 +393,8 @@ void OwncloudAdvancedSetupPage::setRadioChecked(QRadioButton *radio)
         _ui.rSelectiveSync->setCheckable(false);
     if (radio != _ui.rVirtualFileSync)
         _ui.rVirtualFileSync->setCheckable(false);
+
+    emit completeChanged();
 }
 
 } // namespace OCC

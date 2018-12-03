@@ -60,10 +60,8 @@ public:
     bool getFileRecordByInode(quint64 inode, SyncJournalFileRecord *rec);
     bool getFileRecordsByFileId(const QByteArray &fileId, const std::function<void(const SyncJournalFileRecord &)> &rowCallback);
     bool getFilesBelowPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
+    bool listFilesInPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
     bool setFileRecord(const SyncJournalFileRecord &record);
-
-    /// Like setFileRecord, but preserves checksums
-    bool setFileRecordMetadata(const SyncJournalFileRecord &record);
 
     bool deleteFileRecord(const QString &filename, bool recursively = false);
     bool updateFileRecordChecksum(const QString &filename,
@@ -108,7 +106,7 @@ public:
         }
         int _chunk;
         int _transferid;
-        quint64 _size; //currently unused
+        qint64 _size;
         qint64 _modtime;
         int _errorCount;
         bool _valid;
@@ -195,9 +193,6 @@ public:
      */
     void forceRemoteDiscoveryNextSync();
 
-    bool postSyncCleanup(const QSet<QString> &filepathsToKeep,
-        const QSet<QString> &prefixesToKeep);
-
     /* Because sqlite transactions are really slow, we encapsulate everything in big transactions
      * Commit will actually commit the transaction and create a new one.
      */
@@ -252,6 +247,19 @@ public:
      */
     void clearFileTable();
 
+    /**
+     * Set the 'ItemTypeVirtualFileDownload' to all the files that have the ItemTypeVirtualFile flag
+     * within the directory specified path path
+     */
+    void markVirtualFileForDownloadRecursively(const QByteArray &path);
+
+    /**
+     * Only used for auto-test:
+     * when positive, will decrease the counter for every database operation.
+     * reaching 0 makes the operation fails
+     */
+    int autotestFailCounter = -1;
+
 private:
     int getFileRecordCount();
     bool updateDatabaseStructure();
@@ -275,6 +283,7 @@ private:
     SqlDatabase _db;
     QString _dbFile;
     QMutex _mutex; // Public functions are protected with the mutex.
+    QMap<QByteArray, int> _checksymTypeCache;
     int _transaction;
     bool _metadataTableIsEmpty;
 
@@ -283,6 +292,7 @@ private:
     SqlQuery _getFileRecordQueryByFileId;
     SqlQuery _getFilesBelowPathQuery;
     SqlQuery _getAllFilesQuery;
+    SqlQuery _listFilesInPathQuery;
     SqlQuery _setFileRecordQuery;
     SqlQuery _setFileRecordChecksumQuery;
     SqlQuery _setFileRecordLocalMetadataQuery;

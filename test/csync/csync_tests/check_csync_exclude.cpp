@@ -37,25 +37,15 @@ class ExcludedFilesTest
 {
 public:
 
-static int setup(void **state) {
-    CSYNC *csync;
-
-    csync = new CSYNC("/tmp/check_csync1", new OCC::SyncJournalDb(""));
+static int setup(void **) {
     excludedFiles = new ExcludedFiles;
     excludedFiles->setWildcardsMatchSlash(false);
-    csync->exclude_traversal_fn = excludedFiles->csyncTraversalMatchFun();
-
-    *state = csync;
     return 0;
 }
 
-static int setup_init(void **state) {
-    CSYNC *csync;
-
-    csync = new CSYNC("/tmp/check_csync1", new OCC::SyncJournalDb(""));
+static int setup_init(void **) {
     excludedFiles = new ExcludedFiles;
     excludedFiles->setWildcardsMatchSlash(false);
-    csync->exclude_traversal_fn = excludedFiles->csyncTraversalMatchFun();
 
     excludedFiles->addExcludeFilePath(EXCLUDE_LIST_FILE);
     assert_true(excludedFiles->reloadExcludeFiles());
@@ -68,26 +58,18 @@ static int setup_init(void **state) {
     excludedFiles->addManualExclude("latex/*/*.tex.tmp");
 
     assert_true(excludedFiles->reloadExcludeFiles());
-
-    *state = csync;
     return 0;
 }
 
-static int teardown(void **state) {
-    CSYNC *csync = (CSYNC*)*state;
+static int teardown(void **) {
     int rc;
 
-    auto statedb = csync->statedb;
-    delete csync;
-    delete statedb;
     delete excludedFiles;
 
     rc = system("rm -rf /tmp/check_csync1");
     assert_int_equal(rc, 0);
     rc = system("rm -rf /tmp/check_csync2");
     assert_int_equal(rc, 0);
-
-    *state = NULL;
 
     return 0;
 }
@@ -532,6 +514,11 @@ static void check_csync_bname_trigger(void **)
 
 static void check_csync_is_windows_reserved_word(void **)
 {
+    auto csync_is_windows_reserved_word = [](const char *fn) {
+        QString s = QString::fromLatin1(fn);
+        return ::csync_is_windows_reserved_word(&s);
+    };
+
     assert_true(csync_is_windows_reserved_word("CON"));
     assert_true(csync_is_windows_reserved_word("con"));
     assert_true(csync_is_windows_reserved_word("CON."));

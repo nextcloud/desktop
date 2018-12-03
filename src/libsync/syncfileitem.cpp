@@ -54,7 +54,7 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
 
 SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRecord &rec)
 {
-    SyncFileItemPtr item(new SyncFileItem);
+    auto item = SyncFileItemPtr::create();
     item->_file = rec._path;
     item->_inode = rec._inode;
     item->_modtime = rec._modtime;

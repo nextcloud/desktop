@@ -32,7 +32,8 @@
 
 #include "common/c_jhash.h"
 #include "csync_util.h"
-#include "vio/csync_vio.h"
+
+#include <QtCore/QLoggingCategory>
 
 Q_LOGGING_CATEGORY(lcCSyncUtils, "sync.csync.utils", QtInfoMsg)
 
@@ -194,6 +195,6 @@ time_t oc_httpdate_parse( const char *date ) {
 
 bool csync_is_collision_safe_hash(const QByteArray &checksum_header)
 {
-    return checksum_header.startsWith("SHA1:")
+    return checksum_header.startsWith("SHA")
         || checksum_header.startsWith("MD5:");
 }

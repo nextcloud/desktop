@@ -16,15 +16,12 @@ IF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD|NetBSD|OpenBSD")
     )
 ENDIF(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD|NetBSD|OpenBSD")
 
-if(SPARKLE_FOUND AND NOT BUILD_LIBRARIES_ONLY)
-    list (APPEND OS_SPECIFIC_LINK_LIBRARIES ${SPARKLE_LIBRARY})
-endif()
-
 set(libsync_SRCS
     account.cpp
     bandwidthmanager.cpp
     capabilities.cpp
     cookiejar.cpp
+    discovery.cpp
     discoveryphase.cpp
     filesystem.cpp
     logger.cpp
@@ -36,7 +33,9 @@ set(libsync_SRCS
     owncloudtheme.cpp
     progressdispatcher.cpp
     propagatorjobs.cpp
+    propagatecommonzsync.cpp
     propagatedownload.cpp
+    propagatedownloadzsync.cpp
     propagateupload.cpp
     propagateuploadv1.cpp
     propagateuploadng.cpp
@@ -60,6 +59,40 @@ if(TOKEN_AUTH_ONLY)
 else()
     set (libsync_SRCS ${libsync_SRCS} creds/httpcredentials.cpp)
 endif()
+
+## begin zsync
+
+include_directories( ${CMAKE_SOURCE_DIR}/src/3rdparty/zsync/c )
+
+set( libsync_SRCS
+    ${libsync_SRCS}
+    ../3rdparty/zsync/c/librcksum/hash.c
+    ../3rdparty/zsync/c/librcksum/md4.c
+    ../3rdparty/zsync/c/librcksum/range.c
+    ../3rdparty/zsync/c/librcksum/rsum.c
+    ../3rdparty/zsync/c/librcksum/state.c
+    ../3rdparty/zsync/c/libzsync/sha1.c
+    ../3rdparty/zsync/c/libzsync/zsync.c
+    ../3rdparty/zsync/c/libzsync/zsyncfile.c
+    ../3rdparty/zsync/c/progress.c
+)
+
+if ( WIN32 )
+    # ntohs
+    list(APPEND OS_SPECIFIC_LINK_LIBRARIES
+        ws2_32
+    )
+    # ensure size_t is 64 bits
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_FILE_OFFSET_BITS=64")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_FILE_OFFSET_BITS=64")
+endif()
+
+set_source_files_properties( ../3rdparty/zsync/c/libzsync/zsync.c
+    PROPERTIES COMPILE_FLAGS -DVERSION=\\"0.6.3\\" )
+set_source_files_properties( ../3rdparty/zsync/c/libzsync/zsyncfile.c
+    PROPERTIES COMPILE_FLAGS "-DVERSION=\\\"0.6.3\\\" -DSIZEOF_OFF_T=8" )
+
+## end zsync
 
 # These headers are installed for libowncloudsync to be used by 3rd party apps
 set(owncloudsync_HEADERS
@@ -90,7 +123,7 @@ ENDIF(NOT APPLE)
 
 add_library(${synclib_NAME} SHARED ${libsync_SRCS})
 target_link_libraries(${synclib_NAME}
-    ocsync
+    "${csync_NAME}"
     ${OS_SPECIFIC_LINK_LIBRARIES}
     Qt5::Core Qt5::Network
 )
@@ -122,8 +155,6 @@ set_target_properties( ${synclib_NAME}  PROPERTIES
 	SOVERSION ${MIRALL_SOVERSION}
 	RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_DIRECTORY}
 )
-set_target_properties( ${synclib_NAME} PROPERTIES
-	INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE};${CMAKE_INSTALL_RPATH}" )
 
 if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     install(TARGETS ${synclib_NAME}
@@ -133,10 +164,6 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE)
     )
 else()
     install(TARGETS ${synclib_NAME} DESTINATION ${OWNCLOUD_OSX_BUNDLE}/Contents/MacOS)
-    if (SPARKLE_FOUND)
-        install(DIRECTORY "${SPARKLE_LIBRARY}"
-	        DESTINATION "${OWNCLOUD_OSX_BUNDLE}/Contents/Frameworks" USE_SOURCE_PERMISSIONS)
-    endif (SPARKLE_FOUND)
 endif()
 
 

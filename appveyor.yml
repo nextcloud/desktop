@@ -3,6 +3,7 @@ version: '{build}-{branch}'
 branches:
   only:
     - master
+    - 2.5
 
 clone_depth: 50
 
@@ -16,6 +17,8 @@ init:
 
 install:
 - ps: |
+    git submodule update --init --recursive
+
     #use cmd to silence powershell behaviour for stderr
     & cmd /C "git clone -q --depth=1 git://anongit.kde.org/craftmaster.git C:\CraftMaster\CraftMaster 2>&1"
 

@@ -39,12 +39,16 @@ public:
     ~GeneralSettings();
     QSize sizeHint() const;
 
+signals:
+    void showAbout();
+
 private slots:
     void saveMiscSettings();
     void slotToggleLaunchOnStartup(bool);
     void slotToggleOptionalDesktopNotifications(bool);
     void slotShowInExplorerNavigationPane(bool);
     void slotUpdateInfo();
+    void slotUpdateChannelChanged(int index);
     void slotIgnoreFilesEditor();
     void loadMiscSettings();
 

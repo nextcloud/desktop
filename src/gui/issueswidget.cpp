@@ -190,8 +190,10 @@ void IssuesWidget::addItem(QTreeWidgetItem *item)
         return;
 
     int count = _ui->_treeWidget->topLevelItemCount();
-    if (count >= maxIssueCount)
+    if (count >= maxIssueCount) {
+        delete item;
         return;
+    }
 
     _ui->_treeWidget->setSortingEnabled(false);
     _reenableSorting.start();
@@ -261,7 +263,7 @@ void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &p
             if (!QFileInfo(f->path() + ProtocolItem::extraData(item).path).exists())
                 return true;
 
-            auto path = QFileInfo(ProtocolItem::extraData(item).path).dir().path().toUtf8();
+            auto path = QFileInfo(ProtocolItem::extraData(item).path).dir().path();
             if (path == ".")
                 path.clear();
 

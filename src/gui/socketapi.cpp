@@ -382,7 +382,7 @@ void SocketApi::processShareRequest(const QString &localFile, SocketListener *li
             return;
         }
 
-        auto &remotePath = fileData.accountRelativePath;
+        auto &remotePath = fileData.serverRelativePath;
 
         // Can't share root folder
         if (remotePath == "/") {
@@ -560,7 +560,7 @@ void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFile, SocketListene
         return;
 
     AccountPtr account = fileData.folder->accountState()->account();
-    auto job = new GetOrCreatePublicLinkShare(account, fileData.accountRelativePath, [](const QString &url) { copyUrlToClipboard(url); }, this);
+    auto job = new GetOrCreatePublicLinkShare(account, fileData.serverRelativePath, [](const QString &url) { copyUrlToClipboard(url); }, this);
     job->run();
 }
 
@@ -579,8 +579,8 @@ void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFile, const std::f
 
     fetchPrivateLinkUrl(
         fileData.folder->accountState()->account(),
-        fileData.accountRelativePath,
-        record.numericFileId(),
+        fileData.serverRelativePath,
+        record.legacyDeriveNumericFileId(),
         this,
         targetFun);
 }
@@ -611,13 +611,48 @@ void SocketApi::command_DOWNLOAD_VIRTUAL_FILE(const QString &filesArg, SocketLis
     auto suffix = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
 
     for (const auto &file : files) {
-        if (!file.endsWith(suffix))
+        if (!file.endsWith(suffix) && !QFileInfo(file).isDir())
             continue;
         QString relativePath;
         auto folder = FolderMan::instance()->folderForPath(file, &relativePath);
         if (folder) {
             folder->downloadVirtualFile(relativePath);
         }
+    }
+}
+
+/* Go over all the files ans replace them by a virtual file */
+void SocketApi::command_REPLACE_VIRTUAL_FILE(const QString &filesArg, SocketListener *)
+{
+    QStringList files = filesArg.split(QLatin1Char('\x1e')); // Record Separator
+    auto suffix = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
+
+    for (const auto &file : files) {
+        QString relativePath;
+        auto folder = FolderMan::instance()->folderForPath(file, &relativePath);
+        if (!folder)
+            continue;
+        if (file.endsWith(suffix))
+            continue;
+        QFileInfo fi(file);
+        if (fi.isDir()) {
+            folder->journalDb()->getFilesBelowPath(relativePath.toUtf8(), [&](const SyncJournalFileRecord &rec) {
+                if (rec._type != ItemTypeFile || rec._path.endsWith(APPLICATION_DOTVIRTUALFILE_SUFFIX))
+                    return;
+                QString file = folder->path() + '/' + QString::fromUtf8(rec._path);
+                if (!FileSystem::rename(file, file + suffix)) {
+                    qCWarning(lcSocketApi) << "Unable to rename " << file;
+                }
+            });
+            continue;
+        }
+        SyncJournalFileRecord record;
+        if (!folder->journalDb()->getFileRecord(relativePath, &record) || !record.isValid())
+            continue;
+        if (!FileSystem::rename(file, file + suffix)) {
+            qCWarning(lcSocketApi) << "Unable to rename " << file;
+        }
+        FolderMan::instance()->scheduleFolder(folder);
     }
 }
 
@@ -765,8 +800,11 @@ SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
     if (!data.folder)
         return data;
 
-    data.accountRelativePath = QDir(data.folder->remotePath()).filePath(data.folderRelativePath);
-
+    data.serverRelativePath = QDir(data.folder->remotePath()).filePath(data.folderRelativePath);
+    QString virtualFileExt = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
+    if (data.serverRelativePath.endsWith(virtualFileExt)) {
+        data.serverRelativePath.chop(virtualFileExt.size());
+    }
     return data;
 }
 
@@ -872,12 +910,23 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
     if (folder) {
         auto virtualFileSuffix = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
         bool hasVirtualFile = false;
+        bool hasNormalFiles = false;
+        bool hasDir = false;
         for (const auto &file : files) {
-            if (file.endsWith(virtualFileSuffix))
+            if (QFileInfo(file).isDir()) {
+                hasDir = true;
+            } else if (file.endsWith(virtualFileSuffix)) {
                 hasVirtualFile = true;
+            } else if (!hasNormalFiles) {
+                bool isOnTheServer = FileData::get(file).journalRecord().isValid();
+                hasNormalFiles = isOnTheServer;
+            }
         }
-        if (hasVirtualFile)
+        if (hasVirtualFile || (hasDir && folder->useVirtualFiles()))
             listener->sendMessage(QLatin1String("MENU_ITEM:DOWNLOAD_VIRTUAL_FILE::") + tr("Download file(s)", "", files.size()));
+
+        if ((hasNormalFiles || hasDir) && folder->useVirtualFiles())
+            listener->sendMessage(QLatin1String("MENU_ITEM:REPLACE_VIRTUAL_FILE::") + tr("Replace file(s) by virtual file", "", files.size()));
     }
 
     listener->sendMessage(QString("GET_MENU_ITEMS:END"));

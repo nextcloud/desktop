@@ -72,6 +72,8 @@ public slots:
     // TODO: this should not be public
     void slotownCloudWizardDone(int);
     void slotCrash();
+    void slotCrashEnforce();
+    void slotCrashFatal();
     /**
      * Will download a virtual file, and open the result.
      * The argument is the filename of the virtual file (including the extension)
@@ -99,6 +101,12 @@ protected slots:
 
 private:
     void setHelp();
+
+    /**
+     * Maybe a newer version of the client was used with this config file:
+     * if so, backup, confirm with user and remove the config that can't be read.
+     */
+    bool configVersionMigration();
 
     QPointer<ownCloudGui> _gui;
 

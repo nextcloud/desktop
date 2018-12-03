@@ -5,48 +5,15 @@ project(client)
 
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
+include("${CMAKE_CURRENT_LIST_DIR}/THEME.cmake")
 
-set(OEM_THEME_DIR "" CACHE STRING "Define directory containing a custom theme")
-if ( EXISTS ${OEM_THEME_DIR}/OEM.cmake )
-     include ( ${OEM_THEME_DIR}/OEM.cmake )
-else ()
-     include ( ${CMAKE_SOURCE_DIR}/OWNCLOUD.cmake )
-endif()
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
-# Default suffix if the theme doesn't define one
-if(NOT DEFINED APPLICATION_VIRTUALFILE_SUFFIX)
-    set(APPLICATION_VIRTUALFILE_SUFFIX "${APPLICATION_SHORTNAME}_virtual" CACHE STRING "Virtual file suffix (not including the .)")
-endif()
-
-# need this logic to not mess with re/uninstallations via macosx.pkgproj
-if(${APPLICATION_REV_DOMAIN} STREQUAL "com.owncloud.desktopclient")
-    set(APPLICATION_REV_DOMAIN_INSTALLER "com.ownCloud.client")
-else()
-    set(APPLICATION_REV_DOMAIN_INSTALLER ${APPLICATION_REV_DOMAIN})
-endif()
-
-# For usage in XML files we preprocess
-string(REPLACE "&" "&amp;" APPLICATION_NAME_XML_ESCAPED "${APPLICATION_NAME}")
-string(REPLACE "<" "&lt;" APPLICATION_NAME_XML_ESCAPED "${APPLICATION_NAME_XML_ESCAPED}")
-string(REPLACE ">" "&gt;" APPLICATION_NAME_XML_ESCAPED "${APPLICATION_NAME_XML_ESCAPED}")
-
-if (NOT DEFINED LINUX_PACKAGE_SHORTNAME)
-    set(LINUX_PACKAGE_SHORTNAME "${APPLICATION_SHORTNAME}")
-endif()
-
-if (NOT DEFINED PACKAGE)
-    set(PACKAGE "${LINUX_PACKAGE_SHORTNAME}-client")
-endif()
-
-set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules )
-
-if(NOT CRASHREPORTER_EXECUTABLE)
-    set(CRASHREPORTER_EXECUTABLE "${APPLICATION_EXECUTABLE}_crash_reporter")
-endif()
+set(synclib_NAME "${APPLICATION_EXECUTABLE}sync")
+set(csync_NAME "${APPLICATION_EXECUTABLE}_csync")
 
 include(Warnings)
 
-include(${CMAKE_SOURCE_DIR}/VERSION.cmake)
 # For config.h
 include_directories(BEFORE ${CMAKE_CURRENT_BINARY_DIR})
 # Allows includes based on src/ like #include "common/utility.h" or #include "csync/csync.h"
@@ -148,30 +115,15 @@ option(BUILD_CLIENT "BUILD_CLIENT" ON)
 # this option creates only libocsync and libowncloudsync (NOTE: BUILD_CLIENT needs to be on)
 option(BUILD_LIBRARIES_ONLY "BUILD_LIBRARIES_ONLY" OFF)
 
+# build the GUI component, when disabled only owncloudcmd is built
+option(BUILD_GUI "BUILD_GUI" ON)
+
 # When this option is enabled, 5xx errors are not added to the blacklist
 # Normally you don't want to enable this option because if a particular file
 # triggers a bug on the server, you want the file to be blacklisted.
 option(OWNCLOUD_5XX_NO_BLACKLIST "OWNCLOUD_5XX_NO_BLACKLIST" OFF)
 if(OWNCLOUD_5XX_NO_BLACKLIST)
     add_definitions(-DOWNCLOUD_5XX_NO_BLACKLIST=1)
-endif()
-
-# When this option is enabled, a rename that is not allowed will be renamed back
-# do the original as a restoration step.  Withut this option, the restoration will
-# re-download the file instead.
-# The default is off because we don't want to rename the files back behind the user's back
-# Added for IL issue #550
-option(OWNCLOUD_RESTORE_RENAME "OWNCLOUD_RESTORE_RENAME" OFF)
-if(OWNCLOUD_RESTORE_RENAME)
-    add_definitions(-DOWNCLOUD_RESTORE_RENAME=1)
-endif()
-
-# Disable shibboleth.
-# So the client can be built without QtWebKit
-option(NO_SHIBBOLETH "Build without Shibboleth support. Allow to build the client without QtWebKit" OFF)
-if(NO_SHIBBOLETH)
-   message("Compiling without shibboleth")
-   add_definitions(-DNO_SHIBBOLETH=1)
 endif()
 
 if(APPLE)

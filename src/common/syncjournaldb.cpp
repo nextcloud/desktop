@@ -24,6 +24,7 @@
 #include <QUrl>
 #include <QDir>
 #include <sqlite3.h>
+#include <cstring>
 
 #include "common/syncjournaldb.h"
 #include "version.h"
@@ -58,7 +59,7 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._type = static_cast<ItemType>(query.intValue(3));
     rec._etag = query.baValue(4);
     rec._fileId = query.baValue(5);
-    rec._remotePerm = RemotePermissions(query.baValue(6).constData());
+    rec._remotePerm = RemotePermissions::fromDbValue(query.baValue(6));
     rec._fileSize = query.int64Value(7);
     rec._serverHasIgnoredFiles = (query.intValue(8) > 0);
     rec._checksumHeader = query.baValue(9);
@@ -276,6 +277,13 @@ bool SyncJournalDb::sqlFail(const QString &log, const SqlQuery &query)
 
 bool SyncJournalDb::checkConnect()
 {
+    if (autotestFailCounter >= 0) {
+        if (!autotestFailCounter--) {
+            qCInfo(lcDb) << "Error Simulated";
+            return false;
+        }
+    }
+
     if (_db.isOpen()) {
         // Unfortunately the sqlite isOpen check can return true even when the underlying storage
         // has become unavailable - and then some operations may cause crashes. See #6049
@@ -339,6 +347,15 @@ bool SyncJournalDb::checkConnect()
     if (!pragma1.exec()) {
         return sqlFail("Set PRAGMA case_sensitivity", pragma1);
     }
+
+    sqlite3_create_function(_db.sqliteDb(), "parent_hash", 1, SQLITE_UTF8 | SQLITE_DETERMINISTIC, nullptr,
+                                [] (sqlite3_context *ctx,int, sqlite3_value **argv) {
+                                    auto text = reinterpret_cast<const char*>(sqlite3_value_text(argv[0]));
+                                    const char *end = std::strrchr(text, '/');
+                                    if (!end) end = text;
+                                    sqlite3_result_int64(ctx, c_jhash64(reinterpret_cast<const uint8_t*>(text),
+                                                                        end - text, 0));
+                                }, nullptr, nullptr);
 
     /* Because insert is so slow, we do everything in a transaction, and only need one call to commit */
     startTransaction();
@@ -514,11 +531,12 @@ bool SyncJournalDb::checkConnect()
             forceRemoteDiscovery = true;
         }
 
-        // There was a bug in versions <2.3.0 that could lead to stale
-        // local files and a remote discovery will fix them.
-        // See #5190 #5242.
-        if (major == 2 && minor < 3) {
-            qCInfo(lcDb) << "upgrade form client < 2.3.0 detected! forcing remote discovery";
+        // - There was a bug in versions <2.3.0 that could lead to stale
+        //   local files and a remote discovery will fix them.
+        //   See #5190 #5242.
+        // - New remote HasZSyncMetadata permission added, invalidate cache
+        if (major == 2 && minor < 5) {
+            qCInfo(lcDb) << "upgrade from client < 2.5.0 detected! forcing remote discovery";
             forceRemoteDiscovery = true;
         }
 
@@ -620,7 +638,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
     bool re = true;
 
     // check if the file_id column is there and create it if not
-    if (!checkConnect()) {
+    if (columns.isEmpty()) {
         return false;
     }
 
@@ -678,6 +696,16 @@ bool SyncJournalDb::updateMetadataTableStructure()
         commitInternal("update database structure: add path index");
     }
 
+    if (1) {
+        SqlQuery query(_db);
+        query.prepare("CREATE INDEX IF NOT EXISTS metadata_parent ON metadata(parent_hash(path));");
+        if (!query.exec()) {
+            sqlFail("updateMetadataTableStructure: create index parent", query);
+            re = false;
+        }
+        commitInternal("update database structure: add parent index");
+    }
+
     if (columns.indexOf("ignoredChildrenRemote") == -1) {
         SqlQuery query(_db);
         query.prepare("ALTER TABLE metadata ADD COLUMN ignoredChildrenRemote INT;");
@@ -707,7 +735,10 @@ bool SyncJournalDb::updateMetadataTableStructure()
         commitInternal("update database structure: add contentChecksumTypeId col");
     }
 
-    if (!tableColumns("uploadinfo").contains("contentChecksum")) {
+    auto uploadInfoColumns = tableColumns("uploadinfo");
+    if (uploadInfoColumns.isEmpty())
+        return false;
+    if (!uploadInfoColumns.contains("contentChecksum")) {
         SqlQuery query(_db);
         query.prepare("ALTER TABLE uploadinfo ADD COLUMN contentChecksum TEXT;");
         if (!query.exec()) {
@@ -717,6 +748,17 @@ bool SyncJournalDb::updateMetadataTableStructure()
         commitInternal("update database structure: add contentChecksum col for uploadinfo");
     }
 
+    auto conflictsColumns = tableColumns("conflicts");
+    if (conflictsColumns.isEmpty())
+        return false;
+    if (!conflictsColumns.contains("basePath")) {
+        SqlQuery query(_db);
+        query.prepare("ALTER TABLE conflicts ADD COLUMN basePath TEXT;");
+        if (!query.exec()) {
+            sqlFail("updateMetadataTableStructure: add basePath column", query);
+            re = false;
+        }
+    }
 
     return re;
 }
@@ -726,8 +768,7 @@ bool SyncJournalDb::updateErrorBlacklistTableStructure()
     auto columns = tableColumns("blacklist");
     bool re = true;
 
-    // check if the file_id column is there and create it if not
-    if (!checkConnect()) {
+    if (columns.isEmpty()) {
         return false;
     }
 
@@ -805,11 +846,6 @@ QVector<QByteArray> SyncJournalDb::tableColumns(const QByteArray &table)
 qint64 SyncJournalDb::getPHash(const QByteArray &file)
 {
     int64_t h;
-
-    if (file.isEmpty()) {
-        return -1;
-    }
-
     int len = file.length();
 
     h = c_jhash64((uint8_t *)file.data(), len, 0);
@@ -1072,52 +1108,35 @@ bool SyncJournalDb::getFilesBelowPath(const QByteArray &path, const std::functio
     return true;
 }
 
-bool SyncJournalDb::postSyncCleanup(const QSet<QString> &filepathsToKeep,
-    const QSet<QString> &prefixesToKeep)
+bool SyncJournalDb::listFilesInPath(const QByteArray& path,
+                                    const std::function<void (const SyncJournalFileRecord &)>& rowCallback)
 {
     QMutexLocker locker(&_mutex);
 
-    if (!checkConnect()) {
+    if (_metadataTableIsEmpty)
+        return true;
+
+    if (!checkConnect())
         return false;
-    }
 
-    SqlQuery query(_db);
-    query.prepare("SELECT phash, path FROM metadata order by path");
-
-    if (!query.exec()) {
+    if (!_listFilesInPathQuery.initOrReset(QByteArrayLiteral(
+            GET_FILE_RECORD_QUERY " WHERE parent_hash(path) = ?1 ORDER BY path||'/' ASC"), _db))
         return false;
-    }
 
-    QByteArrayList superfluousItems;
+    _listFilesInPathQuery.bindValue(1, getPHash(path));
 
-    while (query.next()) {
-        const QString file = query.baValue(1);
-        bool keep = filepathsToKeep.contains(file);
-        if (!keep) {
-            foreach (const QString &prefix, prefixesToKeep) {
-                if (file.startsWith(prefix)) {
-                    keep = true;
-                    break;
-                }
-            }
+    if (!_listFilesInPathQuery.exec())
+        return false;
+
+    while (_listFilesInPathQuery.next()) {
+        SyncJournalFileRecord rec;
+        fillFileRecordFromGetQuery(rec, _listFilesInPathQuery);
+        if (!rec._path.startsWith(path) || rec._path.indexOf("/", path.size() + 1) > 0) {
+            qWarning(lcDb) << "hash collision " << path << rec._path;
+            continue;
         }
-        if (!keep) {
-            superfluousItems.append(query.baValue(0));
-        }
+        rowCallback(rec);
     }
-
-    if (superfluousItems.count()) {
-        QByteArray sql = "DELETE FROM metadata WHERE phash in (" + superfluousItems.join(",") + ")";
-        qCInfo(lcDb) << "Sync Journal cleanup for" << superfluousItems;
-        SqlQuery delQuery(_db);
-        delQuery.prepare(sql);
-        if (!delQuery.exec()) {
-            return false;
-        }
-    }
-
-    // Incorporate results back into main DB
-    walCheckpoint();
 
     return true;
 }
@@ -1196,29 +1215,6 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
     _setFileRecordLocalMetadataQuery.bindValue(3, modtime);
     _setFileRecordLocalMetadataQuery.bindValue(4, size);
     return _setFileRecordLocalMetadataQuery.exec();
-}
-
-bool SyncJournalDb::setFileRecordMetadata(const SyncJournalFileRecord &record)
-{
-    SyncJournalFileRecord existing;
-    if (!getFileRecord(record._path, &existing))
-        return false;
-
-    // If there's no existing record, just insert the new one.
-    if (!existing.isValid()) {
-        return setFileRecord(record);
-    }
-
-    // Update the metadata on the existing record.
-    existing._inode = record._inode;
-    existing._modtime = record._modtime;
-    existing._type = record._type;
-    existing._etag = record._etag;
-    existing._fileId = record._fileId;
-    existing._remotePerm = record._remotePerm;
-    existing._fileSize = record._fileSize;
-    existing._serverHasIgnoredFiles = record._serverHasIgnoredFiles;
-    return setFileRecord(existing);
 }
 
 static void toDownloadInfo(SqlQuery &query, SyncJournalDb::DownloadInfo *res)
@@ -1825,6 +1821,10 @@ int SyncJournalDb::mapChecksumType(const QByteArray &checksumType)
         return 0;
     }
 
+    auto it =  _checksymTypeCache.find(checksumType);
+    if (it != _checksymTypeCache.end())
+        return *it;
+
     // Ensure the checksum type is in the db
     if (!_insertChecksumTypeQuery.initOrReset(QByteArrayLiteral("INSERT OR IGNORE INTO checksumtype (name) VALUES (?1)"), _db))
         return 0;
@@ -1845,7 +1845,9 @@ int SyncJournalDb::mapChecksumType(const QByteArray &checksumType)
         qCWarning(lcDb) << "No checksum type mapping found for" << checksumType;
         return 0;
     }
-    return _getChecksumTypeIdQuery.intValue(0);
+    auto value = _getChecksumTypeIdQuery.intValue(0);
+    _checksymTypeCache[checksumType] = value;
+    return value;
 }
 
 QByteArray SyncJournalDb::dataFingerprint()
@@ -1895,13 +1897,14 @@ void SyncJournalDb::setConflictRecord(const ConflictRecord &record)
     auto &query = _setConflictRecordQuery;
     ASSERT(query.initOrReset(QByteArrayLiteral(
                           "INSERT OR REPLACE INTO conflicts "
-                          "(path, baseFileId, baseModtime, baseEtag) "
-                          "VALUES (?1, ?2, ?3, ?4);"),
+                          "(path, baseFileId, baseModtime, baseEtag, basePath) "
+                          "VALUES (?1, ?2, ?3, ?4, ?5);"),
         _db));
     query.bindValue(1, record.path);
     query.bindValue(2, record.baseFileId);
     query.bindValue(3, record.baseModtime);
     query.bindValue(4, record.baseEtag);
+    query.bindValue(5, record.initialBasePath);
     ASSERT(query.exec());
 }
 
@@ -1913,7 +1916,7 @@ ConflictRecord SyncJournalDb::conflictRecord(const QByteArray &path)
     if (!checkConnect())
         return entry;
     auto &query = _getConflictRecordQuery;
-    ASSERT(query.initOrReset(QByteArrayLiteral("SELECT baseFileId, baseModtime, baseEtag FROM conflicts WHERE path=?1;"), _db));
+    ASSERT(query.initOrReset(QByteArrayLiteral("SELECT baseFileId, baseModtime, baseEtag, basePath FROM conflicts WHERE path=?1;"), _db));
     query.bindValue(1, path);
     ASSERT(query.exec());
     if (!query.next())
@@ -1923,6 +1926,7 @@ ConflictRecord SyncJournalDb::conflictRecord(const QByteArray &path)
     entry.baseFileId = query.baValue(0);
     entry.baseModtime = query.int64Value(1);
     entry.baseEtag = query.baValue(2);
+    entry.initialBasePath = query.baValue(3);
     return entry;
 }
 
@@ -1975,6 +1979,25 @@ void SyncJournalDb::clearFileTable()
     QMutexLocker lock(&_mutex);
     SqlQuery query(_db);
     query.prepare("DELETE FROM metadata;");
+    query.exec();
+}
+
+void SyncJournalDb::markVirtualFileForDownloadRecursively(const QByteArray &path)
+{
+    QMutexLocker lock(&_mutex);
+    if (!checkConnect())
+        return;
+
+    static_assert(ItemTypeVirtualFile == 4 && ItemTypeVirtualFileDownload == 5, "");
+    SqlQuery query("UPDATE metadata SET type=5 WHERE " IS_PREFIX_PATH_OF("?1", "path") " AND type=4;", _db);
+    query.bindValue(1, path);
+    query.exec();
+
+    // We also must make sure we do not read the files from the database (same logic as in avoidReadFromDbOnNextSync)
+    // This includes all the parents up to the root, but also all the directory within the selected dir.
+    static_assert(ItemTypeDirectory == 2, "");
+    query.prepare("UPDATE metadata SET md5='_invalid_' WHERE (" IS_PREFIX_PATH_OF("?1", "path") " OR " IS_PREFIX_PATH_OR_EQUAL("path", "?1") ") AND type == 2;");
+    query.bindValue(1, path);
     query.exec();
 }
 

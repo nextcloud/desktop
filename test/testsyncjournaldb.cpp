@@ -57,7 +57,7 @@ private slots:
         record._type = ItemTypeDirectory;
         record._etag = "789789";
         record._fileId = "abcd";
-        record._remotePerm = RemotePermissions("RW");
+        record._remotePerm = RemotePermissions::fromDbValue("RW");
         record._fileSize = 213089055;
         record._checksumHeader = "MD5:mychecksum";
         QVERIFY(_db.setFileRecord(record));
@@ -79,9 +79,9 @@ private slots:
         record._type = ItemTypeFile;
         record._etag = "789FFF";
         record._fileId = "efg";
-        record._remotePerm = RemotePermissions("NV");
+        record._remotePerm = RemotePermissions::fromDbValue("NV");
         record._fileSize = 289055;
-        _db.setFileRecordMetadata(record);
+        _db.setFileRecord(record);
         QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo"), &storedRecord));
         QVERIFY(storedRecord == record);
 
@@ -96,7 +96,7 @@ private slots:
         {
             SyncJournalFileRecord record;
             record._path = "foo-checksum";
-            record._remotePerm = RemotePermissions("RW");
+            record._remotePerm = RemotePermissions::fromDbValue(" ");
             record._checksumHeader = "MD5:mychecksum";
             record._modtime = Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc());
             QVERIFY(_db.setFileRecord(record));
@@ -117,7 +117,7 @@ private slots:
         {
             SyncJournalFileRecord record;
             record._path = "foo-nochecksum";
-            record._remotePerm = RemotePermissions("RWN");
+            record._remotePerm = RemotePermissions();
             record._modtime = Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc());
 
             QVERIFY(_db.setFileRecord(record));
@@ -176,11 +176,15 @@ private slots:
 
         // Typical 8-digit padded id
         record._fileId = "00000001abcd";
-        QCOMPARE(record.numericFileId(), QByteArray("00000001"));
+        QCOMPARE(record.legacyDeriveNumericFileId(), QByteArray("00000001"));
+
+        // Typical 8-digit padded id with instanceid that starts with a digit
+        record._fileId = "00000001999";
+        QCOMPARE(record.legacyDeriveNumericFileId(), QByteArray("00000001"));
 
         // When the numeric id overflows the 8-digit boundary
         record._fileId = "123456789ocidblaabcd";
-        QCOMPARE(record.numericFileId(), QByteArray("123456789"));
+        QCOMPARE(record.legacyDeriveNumericFileId(), QByteArray("123456789"));
     }
 
     void testConflictRecord()

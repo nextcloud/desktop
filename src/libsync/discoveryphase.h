@@ -19,34 +19,63 @@
 #include <QStringList>
 #include <csync.h>
 #include <QMap>
+#include <QSet>
 #include "networkjobs.h"
 #include <QMutex>
 #include <QWaitCondition>
 #include <QLinkedList>
 #include <deque>
 #include "syncoptions.h"
+#include "syncfileitem.h"
+
+class ExcludedFiles;
 
 namespace OCC {
 
+enum class LocalDiscoveryStyle {
+    FilesystemOnly, //< read all local data from the filesystem
+    DatabaseAndFilesystem, //< read from the db, except for listed paths
+};
+
+
 class Account;
+class SyncJournalDb;
+class ProcessDirectoryJob;
 
 /**
- * The Discovery Phase was once called "update" phase in csync terms.
- * Its goal is to look at the files in one of the remote and check compared to the db
- * if the files are new, or changed.
+ * Represent all the meta-data about a file in the server
  */
-
-struct DiscoveryDirectoryResult
+struct RemoteInfo
 {
-    QString path;
-    QString msg;
-    int code;
-    std::deque<std::unique_ptr<csync_file_stat_t>> list;
-    DiscoveryDirectoryResult()
-        : code(EIO)
-    {
-    }
+    /** FileName of the entry (this does not contains any directory or path, just the plain name */
+    QString name;
+    QByteArray etag;
+    QByteArray fileId;
+    QByteArray checksumHeader;
+    OCC::RemotePermissions remotePerm;
+    time_t modtime = 0;
+    int64_t size = 0;
+    bool isDirectory = false;
+    bool isValid() const { return !name.isNull(); }
+
+    QString directDownloadUrl;
+    QString directDownloadCookies;
 };
+
+struct LocalInfo
+{
+    /** FileName of the entry (this does not contains any directory or path, just the plain name */
+    QString name;
+    time_t modtime = 0;
+    int64_t size = 0;
+    uint64_t inode = 0;
+    bool isDirectory = false;
+    bool isHidden = false;
+    bool isVirtualFile = false;
+    bool isSymLink = false;
+    bool isValid() const { return !name.isNull(); }
+};
+
 
 /**
  * @brief The DiscoverySingleDirectoryJob class
@@ -64,24 +93,20 @@ public:
     void setIsRootPath() { _isRootPath = true; }
     void start();
     void abort();
-    std::deque<std::unique_ptr<csync_file_stat_t>> &&takeResults() { return std::move(_results); }
 
     // This is not actually a network job, it is just a job
 signals:
     void firstDirectoryPermissions(RemotePermissions);
-    void etagConcatenation(const QString &);
     void etag(const QString &);
-    void finishedWithResult();
-    void finishedWithError(int csyncErrnoCode, const QString &msg);
+    void finished(const Result<QVector<RemoteInfo>> &result);
 private slots:
     void directoryListingIteratedSlot(QString, const QMap<QString, QString> &);
     void lsJobFinishedWithoutErrorSlot();
     void lsJobFinishedWithErrorSlot(QNetworkReply *);
 
 private:
-    std::deque<std::unique_ptr<csync_file_stat_t>> _results;
+    QVector<RemoteInfo> _results;
     QString _subPath;
-    QString _etagConcatenation;
     QString _firstEtag;
     AccountPtr _account;
     // The first result is for the directory itself and need to be ignored.
@@ -99,110 +124,65 @@ public:
     QByteArray _dataFingerprint;
 };
 
-// Lives in main thread. Deleted by the SyncEngine
-class DiscoveryJob;
-class DiscoveryMainThread : public QObject
+class DiscoveryPhase : public QObject
 {
     Q_OBJECT
 
-    QPointer<DiscoveryJob> _discoveryJob;
-    QPointer<DiscoverySingleDirectoryJob> _singleDirJob;
-    QString _pathPrefix; // remote path
-    AccountPtr _account;
-    DiscoveryDirectoryResult *_currentDiscoveryDirectoryResult;
-    qint64 *_currentGetSizeResult;
-    bool _firstFolderProcessed;
+    ProcessDirectoryJob *_currentRootJob = nullptr;
 
-public:
-    DiscoveryMainThread(AccountPtr account)
-        : QObject()
-        , _account(account)
-        , _currentDiscoveryDirectoryResult(0)
-        , _currentGetSizeResult(0)
-        , _firstFolderProcessed(false)
-    {
-    }
-    void abort();
+    friend class ProcessDirectoryJob;
+    QMap<QString, SyncFileItemPtr> _deletedItem;
+    QMap<QString, ProcessDirectoryJob *> _queuedDeletedDirectories;
+    QMap<QString, QString> _renamedItems; // map source -> destinations
+    int _currentlyActiveJobs = 0;
 
-    QByteArray _dataFingerprint;
+    void scheduleMoreJobs();
 
+    bool isInSelectiveSyncBlackList(const QString &path) const;
 
-public slots:
-    // From DiscoveryJob:
-    void doOpendirSlot(const QString &url, DiscoveryDirectoryResult *);
-    void doGetSizeSlot(const QString &path, qint64 *result);
+    // Check if the new folder should be deselected or not.
+    // May be async. "Return" via the callback, true if the item is blacklisted
+    void checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp,
+        std::function<void(bool)> callback);
 
-    // From Job:
-    void singleDirectoryJobResultSlot();
-    void singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, const QString &msg);
-    void singleDirectoryJobFirstDirectoryPermissionsSlot(RemotePermissions);
-
-    void slotGetSizeFinishedWithError();
-    void slotGetSizeResult(const QVariantMap &);
-signals:
-    void etag(const QString &);
-    void etagConcatenation(const QString &);
-
-public:
-    void setupHooks(DiscoveryJob *discoveryJob, const QString &pathPrefix);
-};
-
-/**
- * @brief The DiscoveryJob class
- *
- * Lives in the other thread, deletes itself in !start()
- *
- * @ingroup libsync
- */
-class DiscoveryJob : public QObject
-{
-    Q_OBJECT
-    friend class DiscoveryMainThread;
-    CSYNC *_csync_ctx;
-    QElapsedTimer _lastUpdateProgressCallbackCall;
+    /** Given an original path, return the target path obtained when renaming is done.
+     *
+     * Note that it only considers parent directory renames. So if A/B got renamed to C/D,
+     * checking A/B/file would yield C/D/file, but checking A/B would yield A/B.
+     */
+    QString adjustRenamedPath(const QString &original) const;
 
     /**
-     * return true if the given path should be ignored,
-     * false if the path should be synced
+     * Check if there is already a job to delete that item.
+     * If that's not the case, return { false, QByteArray() }.
+     * If there is such a job, cancel that job and return true and the old etag
+     * This is useful to detect if a file has been renamed to something else.
      */
-    bool isInSelectiveSyncBlackList(const QByteArray &path) const;
-    static int isInSelectiveSyncBlackListCallback(void *, const QByteArray &);
-    bool checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp);
-    static int checkSelectiveSyncNewFolderCallback(void *data, const QByteArray &path, RemotePermissions rm);
-
-    // Just for progress
-    static void update_job_update_callback(bool local,
-        const char *dirname,
-        void *userdata);
-
-    // For using QNAM to get the directory listings
-    static csync_vio_handle_t *remote_vio_opendir_hook(const char *url,
-        void *userdata);
-    static std::unique_ptr<csync_file_stat_t> remote_vio_readdir_hook(csync_vio_handle_t *dhandle,
-        void *userdata);
-    static void remote_vio_closedir_hook(csync_vio_handle_t *dhandle,
-        void *userdata);
-    QMutex _vioMutex;
-    QWaitCondition _vioWaitCondition;
-
+    QPair<bool, QByteArray> findAndCancelDeletedJob(const QString &originalPath);
 
 public:
-    explicit DiscoveryJob(CSYNC *ctx, QObject *parent = 0)
-        : QObject(parent)
-        , _csync_ctx(ctx)
-    {
-    }
+    // input
+    QString _localDir; // absolute path to the local directory. ends with '/'
+    QString _remoteFolder; // remote folder, ends with '/'
+    SyncJournalDb *_statedb;
+    AccountPtr _account;
+    SyncOptions _syncOptions;
     QStringList _selectiveSyncBlackList;
     QStringList _selectiveSyncWhiteList;
-    SyncOptions _syncOptions;
-    Q_INVOKABLE void start();
-signals:
-    void finished(int result);
-    void folderDiscovered(bool local, QString folderUrl);
+    ExcludedFiles *_excludes;
+    QRegExp _invalidFilenameRx; // FIXME: maybe move in ExcludedFiles
+    bool _ignoreHiddenFiles = false;
+    std::function<bool(const QString &)> _shouldDiscoverLocaly;
 
-    // After the discovery job has been woken up again (_vioWaitCondition)
-    void doOpendirSignal(QString url, DiscoveryDirectoryResult *);
-    void doGetSizeSignal(const QString &path, qint64 *result);
+    void startJob(ProcessDirectoryJob *);
+
+    // output
+    QByteArray _dataFingerprint;
+
+signals:
+    void fatalError(const QString &errorString);
+    void itemDiscovered(const SyncFileItemPtr &item);
+    void finished();
 
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);

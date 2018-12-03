@@ -31,6 +31,7 @@
 #include "theme.h"
 #include "filesystem.h"
 #include "localdiscoverytracker.h"
+#include "csync_exclude.h"
 
 #include "creds/abstractcredentials.h"
 
@@ -42,6 +43,8 @@
 #include <QMessageBox>
 #include <QPushButton>
 
+static const char versionC[] = "version";
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFolder, "gui.folder", QtInfoMsg)
@@ -52,13 +55,11 @@ Folder::Folder(const FolderDefinition &definition,
     : QObject(parent)
     , _accountState(accountState)
     , _definition(definition)
-    , _csyncUnavail(false)
     , _lastSyncDuration(0)
     , _consecutiveFailingSyncs(0)
     , _consecutiveFollowUpSyncs(0)
     , _journal(_definition.absoluteJournalPath())
     , _fileLog(new SyncRunFileLog)
-    , _saveBackwardsCompatible(false)
 {
     _timeSinceLastSyncStart.start();
     _timeSinceLastSyncDone.start();
@@ -87,13 +88,10 @@ Folder::Folder(const FolderDefinition &definition,
 
     connect(_engine.data(), &SyncEngine::started, this, &Folder::slotSyncStarted, Qt::QueuedConnection);
     connect(_engine.data(), &SyncEngine::finished, this, &Folder::slotSyncFinished, Qt::QueuedConnection);
-    connect(_engine.data(), &SyncEngine::csyncUnavailable, this, &Folder::slotCsyncUnavailable, Qt::QueuedConnection);
 
     //direct connection so the message box is blocking the sync.
     connect(_engine.data(), &SyncEngine::aboutToRemoveAllFiles,
         this, &Folder::slotAboutToRemoveAllFiles);
-    connect(_engine.data(), &SyncEngine::aboutToRestoreBackup,
-        this, &Folder::slotAboutToRestoreBackup);
     connect(_engine.data(), &SyncEngine::transmissionProgress, this, &Folder::slotTransmissionProgress);
     connect(_engine.data(), &SyncEngine::itemCompleted,
         this, &Folder::slotItemCompleted);
@@ -517,14 +515,28 @@ void Folder::downloadVirtualFile(const QString &_relativepath)
     _journal.getFileRecord(relativepath, &record);
     if (!record.isValid())
         return;
-    record._type = ItemTypeVirtualFileDownload;
-    _journal.setFileRecord(record);
-
-    // Make sure we go over that file during the discovery
-    _journal.avoidReadFromDbOnNextSync(relativepath);
+    if (record._type == ItemTypeVirtualFile) {
+        record._type = ItemTypeVirtualFileDownload;
+        _journal.setFileRecord(record);
+        // Make sure we go over that file during the discovery
+        _journal.avoidReadFromDbOnNextSync(relativepath);
+    } else if (record._type == ItemTypeDirectory) {
+        _journal.markVirtualFileForDownloadRecursively(relativepath);
+    } else {
+        qCWarning(lcFolder) << "Invalid existing record " << record._type << " for file " << _relativepath;
+    }
 
     // Schedule a sync (Folder man will start the sync in a few ms)
     slotScheduleThisFolder();
+}
+
+
+void Folder::setUseVirtualFiles(bool enabled)
+{
+    _definition.useVirtualFiles = enabled;
+    if (enabled)
+        _saveInFoldersWithPlaceholders = true;
+    saveToSettings();
 }
 
 void Folder::saveToSettings() const
@@ -544,9 +556,9 @@ void Folder::saveToSettings() const
         }
     }
 
-    if (_definition.useVirtualFiles) {
-        // If virtual files are enabled, save the folder to a group
-        // that will not be read by older (<2.5.0) clients.
+    if (_definition.useVirtualFiles || _saveInFoldersWithPlaceholders) {
+        // If virtual files are enabled or even were enabled at some point,
+        // save the folder to a group that will not be read by older (<2.5.0) clients.
         // The name is from when virtual files were called placeholders.
         settingsGroup = QStringLiteral("FoldersWithPlaceholders");
     } else if (_saveBackwardsCompatible || oneAccountOnly) {
@@ -561,6 +573,8 @@ void Folder::saveToSettings() const
     }
 
     settings->beginGroup(settingsGroup);
+    // Note: Each of these groups might have a "version" tag, but that's
+    //       currently unused.
     FolderDefinition::save(*settings, _definition);
 
     settings->sync();
@@ -649,7 +663,6 @@ void Folder::startSync(const QStringList &pathList)
         qCCritical(lcFolder) << "ERROR csync is still running and new sync requested.";
         return;
     }
-    _csyncUnavail = false;
 
     _timeSinceLastSyncStart.start();
     _syncResult.setStatus(SyncResult::SyncPrepare);
@@ -733,6 +746,9 @@ void Folder::setSyncOptions()
         opt._maxChunkSize = cfgFile.maxChunkSize();
     }
 
+    int maxParallel = qgetenv("OWNCLOUD_MAX_PARALLEL").toUInt();
+    opt._parallelNetworkJobs = maxParallel ? maxParallel : _accountState->account()->isHttp2Supported() ? 20 : 6;
+
     // Previously min/max chunk size values didn't exist, so users might
     // have setups where the chunk size exceeds the new min/max default
     // values. To cope with this, adjust min/max to always include the
@@ -746,6 +762,9 @@ void Folder::setSyncOptions()
     } else {
         opt._targetChunkUploadDuration = cfgFile.targetChunkUploadDuration();
     }
+
+    opt._deltaSyncEnabled = cfgFile.deltaSyncEnabled();
+    opt._deltaSyncMinFileSize = cfgFile.deltaSyncMinFileSize();
 
     _engine->setSyncOptions(opt);
 }
@@ -785,11 +804,6 @@ void Folder::slotSyncStarted()
     emit syncStateChange();
 }
 
-void Folder::slotCsyncUnavailable()
-{
-    _csyncUnavail = true;
-}
-
 void Folder::slotSyncFinished(bool success)
 {
     qCInfo(lcFolder) << "Client version" << qPrintable(Theme::instance()->version())
@@ -810,9 +824,6 @@ void Folder::slotSyncFinished(bool success)
 
     if (syncError) {
         _syncResult.setStatus(SyncResult::Error);
-    } else if (_csyncUnavail) {
-        _syncResult.setStatus(SyncResult::Error);
-        qCWarning(lcFolder) << "csync not available.";
     } else if (_syncResult.foundFilesNotSynced()) {
         _syncResult.setStatus(SyncResult::Problem);
     } else if (_definition.paused) {
@@ -1094,28 +1105,6 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, bool *cancel
     }
 }
 
-void Folder::slotAboutToRestoreBackup(bool *restore)
-{
-    QString msg =
-        tr("This sync would reset the files to an earlier time in the sync folder '%1'.\n"
-           "This might be because a backup was restored on the server.\n"
-           "Continuing the sync as normal will cause all your files to be overwritten by an older "
-           "file in an earlier state. "
-           "Do you want to keep your local most recent files as conflict files?");
-    QMessageBox msgBox(QMessageBox::Warning, tr("Backup detected"),
-        msg.arg(shortGuiLocalPath()));
-    msgBox.setWindowFlags(msgBox.windowFlags() | Qt::WindowStaysOnTopHint);
-    msgBox.addButton(tr("Normal Synchronisation"), QMessageBox::DestructiveRole);
-    QPushButton *keepBtn = msgBox.addButton(tr("Keep Local Files as Conflict"), QMessageBox::AcceptRole);
-
-    if (msgBox.exec() == -1) {
-        *restore = true;
-        return;
-    }
-    *restore = msgBox.clickedButton() == keepBtn;
-}
-
-
 void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
 {
     settings.beginGroup(FolderMan::escapeAlias(folder.alias));
@@ -1125,6 +1114,7 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
     settings.setValue(QLatin1String("paused"), folder.paused);
     settings.setValue(QLatin1String("ignoreHiddenFiles"), folder.ignoreHiddenFiles);
     settings.setValue(QLatin1String("usePlaceholders"), folder.useVirtualFiles);
+    settings.setValue(QLatin1String(versionC), maxSettingsVersion());
 
     // Happens only on Windows when the explorer integration is enabled.
     if (!folder.navigationPaneClsid.isNull())

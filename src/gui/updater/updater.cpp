@@ -23,6 +23,7 @@
 #include "theme.h"
 #include "common/utility.h"
 #include "version.h"
+#include "configfile.h"
 
 #include "config.h"
 
@@ -38,6 +39,31 @@ Updater *Updater::instance()
         _instance = create();
     }
     return _instance;
+}
+
+QUrl Updater::updateUrl()
+{
+    QUrl updateBaseUrl(QString::fromLocal8Bit(qgetenv("OCC_UPDATE_URL")));
+    if (updateBaseUrl.isEmpty()) {
+        updateBaseUrl = QUrl(QLatin1String(APPLICATION_UPDATE_URL));
+    }
+    if (!updateBaseUrl.isValid() || updateBaseUrl.host() == ".") {
+        return QUrl();
+    }
+
+    auto urlQuery = getQueryParams();
+
+#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
+    urlQuery.addQueryItem(QLatin1String("sparkle"), QLatin1String("true"));
+#endif
+
+#if defined(Q_OS_WIN)
+    urlQuery.addQueryItem(QLatin1String("msi"), QLatin1String("true"));
+#endif
+
+    updateBaseUrl.setQuery(urlQuery);
+
+    return updateBaseUrl;
 }
 
 QUrlQuery Updater::getQueryParams()
@@ -65,14 +91,10 @@ QUrlQuery Updater::getQueryParams()
 
     QString suffix = QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION_SUFFIX));
     query.addQueryItem(QLatin1String("versionsuffix"), suffix);
-    if (suffix.startsWith("daily")
-            || suffix.startsWith("nightly")
-            || suffix.startsWith("alpha")
-            || suffix.startsWith("rc")
-            || suffix.startsWith("beta")) {
-        query.addQueryItem(QLatin1String("channel"), "beta");
-        // FIXME: Provide a checkbox in UI to enable regular versions to switch
-        // to beta channel
+
+    auto channel = ConfigFile().updateChannel();
+    if (channel != "stable") {
+        query.addQueryItem(QLatin1String("channel"), channel);
     }
 
     return query;
@@ -99,30 +121,20 @@ QString Updater::getSystemInfo()
 // To test, cmake with -DAPPLICATION_UPDATE_URL="http://127.0.0.1:8080/test.rss"
 Updater *Updater::create()
 {
-    QUrl updateBaseUrl(QString::fromLocal8Bit(qgetenv("OCC_UPDATE_URL")));
-    if (updateBaseUrl.isEmpty()) {
-        updateBaseUrl = QUrl(QLatin1String(APPLICATION_UPDATE_URL));
-    }
-    if (!updateBaseUrl.isValid() || updateBaseUrl.host() == ".") {
+    auto url = updateUrl();
+    if (url.isEmpty()) {
         qCWarning(lcUpdater) << "Not a valid updater URL, will not do update check";
         return 0;
     }
 
-    auto urlQuery = getQueryParams();
-
 #if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
-    urlQuery.addQueryItem(QLatin1String("sparkle"), QLatin1String("true"));
-#endif
-
-    updateBaseUrl.setQuery(urlQuery);
-
-#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
-    return new SparkleUpdater(updateBaseUrl.toString());
+    return new SparkleUpdater(url);
 #elif defined(Q_OS_WIN32)
-    // the best we can do is notify about updates
-    return new NSISUpdater(updateBaseUrl);
+    // Also for MSI
+    return new NSISUpdater(url);
 #else
-    return new PassiveUpdateNotifier(QUrl(updateBaseUrl));
+    // the best we can do is notify about updates
+    return new PassiveUpdateNotifier(url);
 #endif
 }
 

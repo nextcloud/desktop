@@ -255,7 +255,8 @@ private slots:
             } else if(item->_file == "Y/Z/d3") {
                 QVERIFY(item->_status != SyncFileItem::Success);
             }
-            QVERIFY(item->_file != "Y/Z/d9"); // we should have aborted the sync before d9 starts
+            // We do not know about the other files - maybe the sync was aborted,
+            // maybe they finished before the error caused the abort.
         }
     }
 
@@ -432,19 +433,19 @@ private slots:
 
         // Disable parallel uploads
         SyncOptions syncOptions;
-        syncOptions._parallelNetworkJobs = false;
+        syncOptions._parallelNetworkJobs = 0;
         fakeFolder.syncEngine().setSyncOptions(syncOptions);
 
         // Produce an error based on upload size
         int remoteQuota = 1000;
         int n507 = 0, nPUT = 0;
-        auto parent = new QObject;
+        QObject parent;
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (op == QNetworkAccessManager::PutOperation) {
                 nPUT++;
                 if (request.rawHeader("OC-Total-Length").toInt() > remoteQuota) {
                     n507++;
-                    return new FakeErrorReply(op, request, parent, 507);
+                    return new FakeErrorReply(op, request, &parent, 507);
                 }
             }
             return nullptr;
@@ -647,6 +648,33 @@ private slots:
 
         QTextCodec::setCodecForLocale(utf8Locale);
 #endif
+    }
+
+    // Aborting has had bugs when there are parallel upload jobs
+    void testUploadV1Multiabort()
+    {
+        FakeFolder fakeFolder{ FileInfo{} };
+        SyncOptions options;
+        options._initialChunkSize = 10;
+        options._maxChunkSize = 10;
+        options._minChunkSize = 10;
+        fakeFolder.syncEngine().setSyncOptions(options);
+
+        QObject parent;
+        int nPUT = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::PutOperation) {
+                ++nPUT;
+                return new FakeHangingReply(op, request, &parent);
+            }
+            return nullptr;
+        });
+
+        fakeFolder.localModifier().insert("file", 100, 'W');
+        QTimer::singleShot(100, &fakeFolder.syncEngine(), [&]() { fakeFolder.syncEngine().abort(); });
+        QVERIFY(!fakeFolder.syncOnce());
+
+        QCOMPARE(nPUT, 3);
     }
 };
 

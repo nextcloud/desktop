@@ -17,6 +17,7 @@
 #define NETWORKJOBS_H
 
 #include "abstractnetworkjob.h"
+#include "result.h"
 #include <QUrlQuery>
 #include <functional>
 
@@ -304,6 +305,7 @@ public:
 
 signals:
     void etagRetreived(const QString &etag);
+    void finishedWithResult(const Result<QString> &etag);
 
 private slots:
     virtual bool finished() Q_DECL_OVERRIDE;
@@ -371,7 +373,6 @@ public:
     enum AuthType {
         Basic, // also the catch-all fallback for backwards compatibility reasons
         OAuth,
-        Shibboleth
     };
 
     explicit DetermineAuthTypeJob(AccountPtr account, QObject *parent = 0);
@@ -380,13 +381,7 @@ signals:
     void authType(AuthType);
 
 private:
-    void checkBothDone();
-
     AccountPtr _account;
-    AuthType _resultGet = Basic;
-    AuthType _resultPropfind = Basic;
-    bool _getDone = false;
-    bool _propfindDone = false;
 };
 
 /**

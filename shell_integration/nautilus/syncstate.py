@@ -28,10 +28,8 @@ import time
 
 from gi.repository import GObject, Nautilus
 
-# Please do not touch the following line.
-# The reason is that we use a script to adopt this file for branding
-# by replacing this line with the branding app name. If the following
-# line is changed, the script can not match the pattern and fails.
+# Note: setappname.sh will search and replace 'ownCloud' on this file to update this line and other
+# occurrences of the name
 appname = 'ownCloud'
 
 print("Initializing "+appname+"-client-nautilus extension")
@@ -178,7 +176,7 @@ class SocketConnect(GObject.GObject):
 socketConnect = SocketConnect()
 
 
-class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
+class MenuExtension_ownCloud(GObject.GObject, Nautilus.MenuProvider):
     def __init__(self):
         GObject.GObject.__init__(self)
 
@@ -235,7 +233,7 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
     def ask_for_menu_items(self, files):
         record_separator = '\x1e'
         filesstring = record_separator.join(files)
-        socketConnect.sendCommand('GET_MENU_ITEMS:{}\n'.format(filesstring))
+        socketConnect.sendCommand(u'GET_MENU_ITEMS:{}\n'.format(filesstring))
 
         done = False
         start = time.time()
@@ -295,8 +293,8 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
         # and we definitely don't want to show them for IGNORED.
         shareable = False
         state = entry['state']
-        state_ok = state.startswith('OK')
-        state_sync = state.startswith('SYNC')
+        state_ok = state and state.startswith('OK')
+        state_sync = state and state.startswith('SYNC')
         if state_ok:
             shareable = True
         elif state_sync and isDir:
@@ -346,7 +344,7 @@ class MenuExtension(GObject.GObject, Nautilus.MenuProvider):
         socketConnect.sendCommand(action + ":" + filename + "\n")
 
 
-class SyncStateExtension(GObject.GObject, Nautilus.InfoProvider):
+class SyncStateExtension_ownCloud(GObject.GObject, Nautilus.InfoProvider):
     def __init__(self):
         GObject.GObject.__init__(self)
 

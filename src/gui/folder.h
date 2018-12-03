@@ -22,8 +22,6 @@
 #include "common/syncjournaldb.h"
 #include "networkjobs.h"
 
-#include <csync.h>
-
 #include <QObject>
 #include <QStringList>
 #include <QUuid>
@@ -77,6 +75,9 @@ public:
     /// Reads a folder definition from a settings group with the name 'alias'.
     static bool load(QSettings &settings, const QString &alias,
         FolderDefinition *folder);
+
+    /// The highest version in the settings that load() can read
+    static int maxSettingsVersion() { return 2; }
 
     /// Ensure / as separator and trailing /.
     static QString prepareLocalPath(const QString &path);
@@ -232,12 +233,19 @@ public:
       */
     void setSaveBackwardsCompatible(bool save);
 
+    /** Used to have placeholders: save in placeholder config section */
+    void setSaveInFoldersWithPlaceholders() { _saveInFoldersWithPlaceholders = true; }
+
     /**
      * Sets up this folder's folderWatcher if possible.
      *
      * May be called several times.
      */
     void registerFolderWatcher();
+
+    /** new files are downloaded as virtual files */
+    bool useVirtualFiles() { return _definition.useVirtualFiles; }
+    void setUseVirtualFiles(bool enabled);
 
 signals:
     void syncStateChange();
@@ -263,8 +271,6 @@ public slots:
 
     // connected to the corresponding signals in the SyncEngine
     void slotAboutToRemoveAllFiles(SyncFileItem::Direction, bool *);
-    void slotAboutToRestoreBackup(bool *);
-
 
     /**
       * Starts a sync operation
@@ -291,6 +297,9 @@ public slots:
      */
     void downloadVirtualFile(const QString &relativepath);
 
+    /** Ensures that the next sync performs a full local discovery. */
+    void slotNextSyncFullLocalDiscovery();
+
 private slots:
     void slotSyncStarted();
     void slotSyncFinished(bool);
@@ -298,8 +307,6 @@ private slots:
     /** Adds a error message that's not tied to a specific item.
      */
     void slotSyncError(const QString &message, ErrorCategory category = ErrorCategory::Normal);
-
-    void slotCsyncUnavailable();
 
     void slotTransmissionProgress(const ProgressInfo &pi);
     void slotItemCompleted(const SyncFileItemPtr &);
@@ -318,9 +325,6 @@ private slots:
      *  FolderMan.
      */
     void slotScheduleThisFolder();
-
-    /** Ensures that the next sync performs a full local discovery. */
-    void slotNextSyncFullLocalDiscovery();
 
     /** Adjust sync result based on conflict data from IssuesWidget.
      *
@@ -363,7 +367,6 @@ private:
 
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;
-    bool _csyncUnavail;
     QPointer<RequestEtagJob> _requestEtagJob;
     QString _lastEtag;
     QElapsedTimer _timeSinceLastSyncDone;
@@ -393,7 +396,16 @@ private:
      * on the *first* Folder instance that was configured for each local
      * path.
      */
-    bool _saveBackwardsCompatible;
+    bool _saveBackwardsCompatible = false;
+
+    /** Whether the folder should be saved in that settings group
+     *
+     * If it was read from there it had virtual files enabled at some
+     * point and might still have db entries or suffix-virtual files even
+     * if they are disabled right now. This flag ensures folders that
+     * were in that group once never go back.
+     */
+    bool _saveInFoldersWithPlaceholders = false;
 
     /**
      * Watches this folder's local directory for changes.

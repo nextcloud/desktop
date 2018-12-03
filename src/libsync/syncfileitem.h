@@ -23,6 +23,8 @@
 
 #include <csync.h>
 
+#include <owncloudlib.h>
+
 namespace OCC {
 
 class SyncFileItem;
@@ -33,14 +35,16 @@ typedef QSharedPointer<SyncFileItem> SyncFileItemPtr;
  * @brief The SyncFileItem class
  * @ingroup libsync
  */
-class SyncFileItem
+class OWNCLOUDSYNC_EXPORT SyncFileItem
 {
+    Q_GADGET
 public:
     enum Direction {
         None = 0,
         Up,
         Down
     };
+    Q_ENUM(Direction)
 
     enum Status { // stored in 4 bits
         NoStatus,
@@ -81,6 +85,7 @@ public:
          */
         BlacklistedError
     };
+    Q_ENUM(Status)
 
     SyncJournalFileRecord toSyncJournalFileRecordWithInode(const QString &localFileName);
 

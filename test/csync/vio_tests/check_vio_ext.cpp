@@ -24,9 +24,11 @@
 #include <errno.h>
 #include <stdio.h>
 
-#include "csync_private.h"
+#include "csync.h"
 #include "std/c_utf8.h"
-#include "vio/csync_vio.h"
+#include "std/c_alloc.h"
+#include "std/c_string.h"
+#include "vio/csync_vio_local.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -44,7 +46,6 @@
 static mbchar_t wd_buffer[WD_BUFFER_SIZE];
 
 typedef struct {
-    CSYNC *csync;
     char  *result;
     char *ignored_dir;
 } statevar;
@@ -97,10 +98,6 @@ static int setup_testenv(void **state) {
     statevar *mystate = (statevar*)malloc( sizeof(statevar) );
     mystate->result = NULL;
 
-    mystate->csync = new CSYNC("/tmp/check_csync1", new OCC::SyncJournalDb(""));
-
-    mystate->csync->current = LOCAL_REPLICA;
-
     *state = mystate;
     return 0;
 }
@@ -118,15 +115,9 @@ static void output( const char *text )
 }
 
 static int teardown(void **state) {
-    statevar *sv = (statevar*) *state;
-    CSYNC *csync = sv->csync;
     int rc;
 
     output("================== Tearing down!\n");
-
-    auto statedb = csync->statedb;
-    delete csync;
-    delete statedb;
 
     rc = _tchdir(wd_buffer);
     assert_int_equal(rc, 0);
@@ -134,7 +125,8 @@ static int teardown(void **state) {
     rc = wipe_testdir();
     assert_int_equal(rc, 0);
 
-    *state = NULL;
+    SAFE_FREE(((statevar*)*state)->result);
+    SAFE_FREE(*state);
     return 0;
 }
 
@@ -188,7 +180,6 @@ static void traverse_dir(void **state, const char *dir, int *cnt)
     csync_vio_handle_t *dh;
     std::unique_ptr<csync_file_stat_t> dirent;
     statevar *sv = (statevar*) *state;
-    CSYNC *csync = sv->csync;
     char *subdir;
     char *subdir_out;
     int rc;
@@ -202,10 +193,10 @@ static void traverse_dir(void **state, const char *dir, int *cnt)
     const char *format_str = "%s C:%s";
 #endif
 
-    dh = csync_vio_opendir(csync, dir);
+    dh = csync_vio_local_opendir(dir);
     assert_non_null(dh);
 
-    while( (dirent = csync_vio_readdir(csync, dh)) ) {
+    while( (dirent = csync_vio_local_readdir(dh)) ) {
         assert_non_null(dirent.get());
         if (!dirent->original_path.isEmpty()) {
             sv->ignored_dir = c_strdup(dirent->original_path);
@@ -250,7 +241,7 @@ static void traverse_dir(void **state, const char *dir, int *cnt)
         SAFE_FREE(subdir_out);
     }
 
-    rc = csync_vio_closedir(csync, dh);
+    rc = csync_vio_local_closedir(dh);
     assert_int_equal(rc, 0);
 
 }
@@ -419,6 +410,8 @@ static void check_readdir_longtree(void **state)
     assert_int_equal(files_cnt, 0);
     /* and compare. */
     assert_string_equal( sv->result, result);
+
+    SAFE_FREE(result);
 }
 
 // https://github.com/owncloud/client/issues/3128 https://github.com/owncloud/client/issues/2777

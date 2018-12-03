@@ -45,6 +45,7 @@ namespace {
     const char clientCertificatePEMC[] = "_clientCertificatePEM";
     const char clientKeyPEMC[] = "_clientKeyPEM";
     const char authenticationFailedC[] = "owncloud-authentication-failed";
+    const char needRetryC[] = "owncloud-need-retry";
 } // ns
 
 class HttpCredentialsAccessManager : public AccessManager
@@ -84,8 +85,15 @@ protected:
             req.setSslConfiguration(sslConfiguration);
         }
 
+        auto *reply = AccessManager::createRequest(op, req, outgoingData);
 
-        return AccessManager::createRequest(op, req, outgoingData);
+        if (_cred->_isRenewingOAuthToken) {
+            // We know this is going to fail, but we have no way to queue it there, so we will
+            // simply restart the job after the failure.
+            reply->setProperty(needRetryC, true);
+        }
+
+        return reply;
     }
 
 private:
@@ -103,12 +111,6 @@ static void addSettingsToJob(Account *account, QKeychain::Job *job)
     job->setSettings(settings.release());
 }
 
-HttpCredentials::HttpCredentials()
-    : _ready(false)
-    , _keychainMigration(false)
-{
-}
-
 // From wizard
 HttpCredentials::HttpCredentials(const QString &user, const QString &password, const QSslCertificate &certificate, const QSslKey &key)
     : _user(user)
@@ -117,6 +119,7 @@ HttpCredentials::HttpCredentials(const QString &user, const QString &password, c
     , _clientSslKey(key)
     , _clientSslCertificate(certificate)
     , _keychainMigration(false)
+    , _retryOnKeyChainError(false)
 {
 }
 
@@ -219,6 +222,21 @@ void HttpCredentials::deleteOldKeychainEntries()
 
 void HttpCredentials::slotReadClientCertPEMJobDone(QKeychain::Job *incoming)
 {
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+    Q_ASSERT(!incoming->insecureFallback()); // If insecureFallback is set, the next test would be pointless
+    if (_retryOnKeyChainError && (incoming->error() == QKeychain::NoBackendAvailable
+            || incoming->error() == QKeychain::OtherError)) {
+        // Could be that the backend was not yet available. Wait some extra seconds.
+        // (Issues #4274 and #6522)
+        // (For kwallet, the error is OtherError instead of NoBackendAvailable, maybe a bug in QtKeychain)
+        qCInfo(lcHttpCredentials) << "Backend unavailable (yet?) Retrying in a few seconds." << incoming->errorString();
+        QTimer::singleShot(10000, this, &HttpCredentials::fetchFromKeychainHelper);
+        _retryOnKeyChainError = false;
+        return;
+    }
+    _retryOnKeyChainError = false;
+#endif
+
     // Store PEM in memory
     ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incoming);
     if (readJob->error() == NoError && readJob->binaryData().length() > 0) {
@@ -351,6 +369,7 @@ bool HttpCredentials::refreshAccessToken()
     QString basicAuth = QString("%1:%2").arg(
         Theme::instance()->oauthClientId(), Theme::instance()->oauthClientSecret());
     req.setRawHeader("Authorization", "Basic " + basicAuth.toUtf8().toBase64());
+    req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
 
     auto requestBody = new QBuffer;
     QUrlQuery arguments(QString("grant_type=refresh_token&refresh_token=%1").arg(_refreshToken));
@@ -363,11 +382,12 @@ bool HttpCredentials::refreshAccessToken()
         QJsonParseError jsonParseError;
         QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
         QString accessToken = json["access_token"].toString();
-        if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError || json.isEmpty()) {
-            // Network error maybe?
+        if (jsonParseError.error != QJsonParseError::NoError || json.isEmpty()) {
+            // Invalid or empty JSON: Network error maybe?
             qCWarning(lcHttpCredentials) << "Error while refreshing the token" << reply->errorString() << jsonData << jsonParseError.errorString();
         } else if (accessToken.isEmpty()) {
-            // The token is no longer valid.
+            // If the json was valid, but the reply did not contain an access token, the token
+            // is considered expired. (Usually the HTTP reply code is 400)
             qCDebug(lcHttpCredentials) << "Expired refresh token. Logging out";
             _refreshToken.clear();
         } else {
@@ -376,8 +396,15 @@ bool HttpCredentials::refreshAccessToken()
             _refreshToken = json["refresh_token"].toString();
             persist();
         }
+        _isRenewingOAuthToken = false;
+        for (const auto &job : _retryQueue) {
+            if (job)
+                job->retry();
+        }
+        _retryQueue.clear();
         emit fetched();
     });
+    _isRenewingOAuthToken = true;
     return true;
 }
 
@@ -505,7 +532,27 @@ void HttpCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator *a
     // Thus, if we reach this signal, those credentials were invalid and we terminate.
     qCWarning(lcHttpCredentials) << "Stop request: Authentication failed for " << reply->url().toString();
     reply->setProperty(authenticationFailedC, true);
-    reply->close();
+
+    if (_isRenewingOAuthToken) {
+        reply->setProperty(needRetryC, true);
+    } else if (isUsingOAuth() && !reply->property(needRetryC).toBool()) {
+        reply->setProperty(needRetryC, true);
+        qCInfo(lcHttpCredentials) << "Refreshing token";
+        refreshAccessToken();
+    }
+}
+
+bool HttpCredentials::retryIfNeeded(AbstractNetworkJob *job)
+{
+    auto *reply = job->reply();
+    if (!reply || !reply->property(needRetryC).toBool())
+        return false;
+    if (_isRenewingOAuthToken) {
+        _retryQueue.append(job);
+    } else {
+        job->retry();
+    }
+    return true;
 }
 
 } // namespace OCC

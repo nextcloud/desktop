@@ -470,6 +470,11 @@ private slots:
         {
             resetCounters();
             local.setContents("AM/a2m", 'C');
+            // We must change the modtime for it is likely that it did not change between sync.
+            // (Previous version of the client (<=2.5) would not need this because it was always doing
+            // checksum comparison for all renames. But newer version no longer does it if the file is
+            // renamed because the parent folder is renamed)
+            local.setModTime("AM/a2m", QDateTime::currentDateTimeUtc().addDays(3));
             local.rename("AM", "A2");
             remote.setContents("BM/b2m", 'C');
             remote.rename("BM", "B2");
@@ -575,6 +580,87 @@ private slots:
             // BUG: This doesn't behave right
             //QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         }
+    }
+
+    // https://github.com/owncloud/client/issues/6629#issuecomment-402450691
+    // When a file is moved and the server mtime was not in sync, the local mtime should be kept
+    void testMoveAndMTimeChange()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        int nPUT = 0;
+        int nDELETE = 0;
+        int nGET = 0;
+        int nMOVE = 0;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *) {
+            if (op == QNetworkAccessManager::PutOperation)
+                ++nPUT;
+            if (op == QNetworkAccessManager::DeleteOperation)
+                ++nDELETE;
+            if (op == QNetworkAccessManager::GetOperation)
+                ++nGET;
+            if (req.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE")
+                ++nMOVE;
+            return nullptr;
+        });
+
+        // Changing the mtime on the server (without invalidating the etag)
+        fakeFolder.remoteModifier().find("A/a1")->lastModified = QDateTime::currentDateTimeUtc().addSecs(-50000);
+        fakeFolder.remoteModifier().find("A/a2")->lastModified = QDateTime::currentDateTimeUtc().addSecs(-40000);
+
+        // Move a few files
+        fakeFolder.remoteModifier().rename("A/a1", "A/a1_server_renamed");
+        fakeFolder.localModifier().rename("A/a2", "A/a2_local_renamed");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 0);
+        QCOMPARE(nPUT, 0);
+        QCOMPARE(nMOVE, 1);
+        QCOMPARE(nDELETE, 0);
+
+        // Another sync should do nothing
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(nGET, 0);
+        QCOMPARE(nPUT, 0);
+        QCOMPARE(nMOVE, 1);
+        QCOMPARE(nDELETE, 0);
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    // Test for https://github.com/owncloud/client/issues/6694
+    void testInvertFolderHierarchy()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        fakeFolder.remoteModifier().mkdir("A/Empty");
+        fakeFolder.remoteModifier().mkdir("A/Empty/Foo");
+        fakeFolder.remoteModifier().mkdir("C/AllEmpty");
+        fakeFolder.remoteModifier().mkdir("C/AllEmpty/Bar");
+        QVERIFY(fakeFolder.syncOnce());
+
+        // "Empty" is after "A", alphabetically
+        fakeFolder.localModifier().rename("A/Empty", "Empty");
+        fakeFolder.localModifier().rename("A", "Empty/A");
+
+        // "AllEmpty" is before "C", alphabetically
+        fakeFolder.localModifier().rename("C/AllEmpty", "AllEmpty");
+        fakeFolder.localModifier().rename("C", "AllEmpty/C");
+
+        auto expectedState = fakeFolder.currentLocalState();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), expectedState);
+        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+
+        /* FIXME - likely addressed by ogoffart's sync code refactor
+        // Now, the revert, but "crossed"
+        fakeFolder.localModifier().rename("Empty/A", "A");
+        fakeFolder.localModifier().rename("AllEmpty/C", "C");
+        fakeFolder.localModifier().rename("Empty", "C/Empty");
+        fakeFolder.localModifier().rename("AllEmpty", "A/AllEmpty");
+        expectedState = fakeFolder.currentLocalState();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), expectedState);
+        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+        */
     }
 };
 

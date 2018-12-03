@@ -13,13 +13,12 @@
  */
 
 #include "discoveryphase.h"
+#include "discovery.h"
 
 #include "account.h"
 #include "common/asserts.h"
 #include "common/checksums.h"
 
-#include <csync_private.h>
-#include <csync_rename.h>
 #include <csync_exclude.h>
 
 #include <QLoggingCategory>
@@ -60,7 +59,7 @@ static bool findPathInList(const QStringList &list, const QString &path)
     return pathSlash.startsWith(*it);
 }
 
-bool DiscoveryJob::isInSelectiveSyncBlackList(const QByteArray &path) const
+bool DiscoveryPhase::isInSelectiveSyncBlackList(const QString &path) const
 {
     if (_selectiveSyncBlackList.isEmpty()) {
         // If there is no black list, everything is allowed
@@ -68,29 +67,17 @@ bool DiscoveryJob::isInSelectiveSyncBlackList(const QByteArray &path) const
     }
 
     // Block if it is in the black list
-    if (findPathInList(_selectiveSyncBlackList, QString::fromUtf8(path))) {
+    if (findPathInList(_selectiveSyncBlackList, path)) {
         return true;
-    }
-
-    // Also try to adjust the path if there was renames
-    if (csync_rename_count(_csync_ctx)) {
-        QByteArray adjusted = csync_rename_adjust_parent_path_source(_csync_ctx, path);
-        if (adjusted != path) {
-            return findPathInList(_selectiveSyncBlackList, QString::fromUtf8(adjusted));
-        }
     }
 
     return false;
 }
 
-int DiscoveryJob::isInSelectiveSyncBlackListCallback(void *data, const QByteArray &path)
+void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePermissions remotePerm,
+    std::function<void(bool)> callback)
 {
-    return static_cast<DiscoveryJob *>(data)->isInSelectiveSyncBlackList(path);
-}
-
-bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString &path, RemotePermissions remotePerm)
-{
-    if (_syncOptions._confirmExternalStorage
+    if (_syncOptions._confirmExternalStorage && !_syncOptions._newFilesAreVirtual
         && remotePerm.hasPermission(RemotePermissions::IsMounted)) {
         // external storage.
 
@@ -100,155 +87,112 @@ bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString &path, RemotePermis
         // Only allow it if the white list contains exactly this path (not parents)
         // We want to ask confirmation for external storage even if the parents where selected
         if (_selectiveSyncWhiteList.contains(path + QLatin1Char('/'))) {
-            return false;
+            return callback(false);
         }
 
         emit newBigFolder(path, true);
-        return true;
+        return callback(true);
     }
 
     // If this path or the parent is in the white list, then we do not block this file
     if (findPathInList(_selectiveSyncWhiteList, path)) {
-        return false;
+        return callback(false);
     }
 
     auto limit = _syncOptions._newBigFolderSizeLimit;
-    if (limit < 0) {
+    if (limit < 0 || _syncOptions._newFilesAreVirtual) {
         // no limit, everything is allowed;
-        return false;
+        return callback(false);
     }
 
-    // Go in the main thread to do a PROPFIND to know the size of this folder
-    qint64 result = -1;
-
-    {
-        QMutexLocker locker(&_vioMutex);
-        emit doGetSizeSignal(path, &result);
-        _vioWaitCondition.wait(&_vioMutex);
-    }
-
-    if (result >= limit) {
-        // we tell the UI there is a new folder
-        emit newBigFolder(path, false);
-        return true;
-    } else {
-        // it is not too big, put it in the white list (so we will not do more query for the children)
-        // and and do not block.
-        auto p = path;
-        if (!p.endsWith(QLatin1Char('/'))) {
-            p += QLatin1Char('/');
-        }
-        _selectiveSyncWhiteList.insert(std::upper_bound(_selectiveSyncWhiteList.begin(),
-                                           _selectiveSyncWhiteList.end(), p),
-            p);
-
-        return false;
-    }
-}
-
-int DiscoveryJob::checkSelectiveSyncNewFolderCallback(void *data, const QByteArray &path, RemotePermissions remotePerm)
-{
-    return static_cast<DiscoveryJob *>(data)->checkSelectiveSyncNewFolder(QString::fromUtf8(path), remotePerm);
-}
-
-
-void DiscoveryJob::update_job_update_callback(bool local,
-    const char *dirUrl,
-    void *userdata)
-{
-    DiscoveryJob *updateJob = static_cast<DiscoveryJob *>(userdata);
-    if (updateJob) {
-        // Don't wanna overload the UI
-        if (!updateJob->_lastUpdateProgressCallbackCall.isValid()) {
-            updateJob->_lastUpdateProgressCallbackCall.start(); // first call
-        } else if (updateJob->_lastUpdateProgressCallbackCall.elapsed() < 200) {
-            return;
+    // do a PROPFIND to know the size of this folder
+    auto propfindJob = new PropfindJob(_account, _remoteFolder + path, this);
+    propfindJob->setProperties(QList<QByteArray>() << "resourcetype"
+                                                   << "http://owncloud.org/ns:size");
+    QObject::connect(propfindJob, &PropfindJob::finishedWithError,
+        this, [=] { return callback(false); });
+    QObject::connect(propfindJob, &PropfindJob::result, this, [=](const QVariantMap &values) {
+        auto result = values.value(QLatin1String("size")).toLongLong();
+        if (result >= limit) {
+            // we tell the UI there is a new folder
+            emit newBigFolder(path, false);
+            return callback(true);
         } else {
-            updateJob->_lastUpdateProgressCallbackCall.start();
+            // it is not too big, put it in the white list (so we will not do more query for the children)
+            // and and do not block.
+            auto p = path;
+            if (!p.endsWith(QLatin1Char('/')))
+                p += QLatin1Char('/');
+            _selectiveSyncWhiteList.insert(
+                std::upper_bound(_selectiveSyncWhiteList.begin(), _selectiveSyncWhiteList.end(), p),
+                p);
+            return callback(false);
         }
-
-        QByteArray pPath(dirUrl);
-        int indx = pPath.lastIndexOf('/');
-        if (indx > -1) {
-            const QString path = QUrl::fromPercentEncoding(pPath.mid(indx + 1));
-            emit updateJob->folderDiscovered(local, path);
-        }
-    }
+    });
+    propfindJob->start();
 }
 
-// Only use for error cases! It will always set an error errno
-int get_errno_from_http_errcode(int err, const QString &reason)
+/* Given a path on the remote, give the path as it is when the rename is done */
+QString DiscoveryPhase::adjustRenamedPath(const QString &original) const
 {
-    int new_errno = EIO;
-
-    switch (err) {
-    case 401: /* Unauthorized */
-    case 402: /* Payment Required */
-    case 407: /* Proxy Authentication Required */
-    case 405:
-        new_errno = EPERM;
-        break;
-    case 301: /* Moved Permanently */
-    case 303: /* See Other */
-    case 404: /* Not Found */
-    case 410: /* Gone */
-        new_errno = ENOENT;
-        break;
-    case 408: /* Request Timeout */
-    case 504: /* Gateway Timeout */
-        new_errno = EAGAIN;
-        break;
-    case 423: /* Locked */
-        new_errno = EACCES;
-        break;
-    case 403: /* Forbidden */
-        new_errno = ERRNO_FORBIDDEN;
-        break;
-    case 400: /* Bad Request */
-    case 409: /* Conflict */
-    case 411: /* Length Required */
-    case 412: /* Precondition Failed */
-    case 414: /* Request-URI Too Long */
-    case 415: /* Unsupported Media Type */
-    case 424: /* Failed Dependency */
-    case 501: /* Not Implemented */
-        new_errno = EINVAL;
-        break;
-    case 507: /* Insufficient Storage */
-        new_errno = ENOSPC;
-        break;
-    case 206: /* Partial Content */
-    case 300: /* Multiple Choices */
-    case 302: /* Found */
-    case 305: /* Use Proxy */
-    case 306: /* (Unused) */
-    case 307: /* Temporary Redirect */
-    case 406: /* Not Acceptable */
-    case 416: /* Requested Range Not Satisfiable */
-    case 417: /* Expectation Failed */
-    case 422: /* Unprocessable Entity */
-    case 500: /* Internal Server Error */
-    case 502: /* Bad Gateway */
-    case 505: /* HTTP Version Not Supported */
-        new_errno = EIO;
-        break;
-    case 503: /* Service Unavailable */
-        // https://github.com/owncloud/core/pull/26145/files
-        if (reason == "Storage not available" || reason == "Storage is temporarily not available") {
-            new_errno = ERRNO_STORAGE_UNAVAILABLE;
-        } else {
-            new_errno = ERRNO_SERVICE_UNAVAILABLE;
+    int slashPos = original.size();
+    while ((slashPos = original.lastIndexOf('/', slashPos - 1)) > 0) {
+        auto it = _renamedItems.constFind(original.left(slashPos));
+        if (it != _renamedItems.constEnd()) {
+            return *it + original.mid(slashPos);
         }
-        break;
-    case 413: /* Request Entity too Large */
-        new_errno = EFBIG;
-        break;
-    default:
-        new_errno = EIO;
     }
-    return new_errno;
+    return original;
 }
 
+QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &originalPath)
+{
+    bool result = false;
+    QByteArray oldEtag;
+    auto it = _deletedItem.find(originalPath);
+    if (it != _deletedItem.end()) {
+        ENFORCE((*it)->_instruction == CSYNC_INSTRUCTION_REMOVE
+            // re-creation of virtual files count as a delete
+             || ((*it)->_type == ItemTypeVirtualFile && (*it)->_instruction == CSYNC_INSTRUCTION_NEW));
+        (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
+        result = true;
+        oldEtag = (*it)->_etag;
+    }
+    if (auto *otherJob = _queuedDeletedDirectories.take(originalPath)) {
+        oldEtag = otherJob->_dirItem->_etag;
+        delete otherJob;
+        result = true;
+    }
+    return { result, oldEtag };
+}
+
+void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
+{
+    ENFORCE(!_currentRootJob);
+    connect(job, &ProcessDirectoryJob::finished, this, [this, job] {
+        ENFORCE(_currentRootJob == sender());
+        _currentRootJob = nullptr;
+        if (job->_dirItem)
+            emit itemDiscovered(job->_dirItem);
+        job->deleteLater();
+        if (!_queuedDeletedDirectories.isEmpty()) {
+            auto nextJob = _queuedDeletedDirectories.take(_queuedDeletedDirectories.firstKey());
+            startJob(nextJob);
+        } else {
+            emit finished();
+        }
+    });
+    _currentRootJob = job;
+    job->start();
+}
+
+void DiscoveryPhase::scheduleMoreJobs()
+{
+    auto limit = qMax(1, _syncOptions._parallelNetworkJobs);
+    if (_currentRootJob && _currentlyActiveJobs < limit) {
+        _currentRootJob->processSubJobs(limit - _currentlyActiveJobs);
+    }
+}
 
 DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &account, const QString &path, QObject *parent)
     : QObject(parent)
@@ -274,7 +218,8 @@ void DiscoverySingleDirectoryJob::start()
           << "http://owncloud.org/ns:downloadURL"
           << "http://owncloud.org/ns:dDC"
           << "http://owncloud.org/ns:permissions"
-          << "http://owncloud.org/ns:checksums";
+          << "http://owncloud.org/ns:checksums"
+          << "http://owncloud.org/ns:zsync";
     if (_isRootPath)
         props << "http://owncloud.org/ns:data-fingerprint";
     if (_account->serverVersionInt() >= Account::makeServerVersion(10, 0, 0)) {
@@ -300,50 +245,55 @@ void DiscoverySingleDirectoryJob::abort()
     }
 }
 
-static void propertyMapToFileStat(const QMap<QString, QString> &map, csync_file_stat_t *file_stat)
+static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInfo &result)
 {
     for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
         QString property = it.key();
         QString value = it.value();
         if (property == "resourcetype") {
-            if (value.contains("collection")) {
-                file_stat->type = ItemTypeDirectory;
-            } else {
-                file_stat->type = ItemTypeFile;
-            }
+            result.isDirectory = value.contains("collection");
         } else if (property == "getlastmodified") {
-            file_stat->modtime = oc_httpdate_parse(value.toUtf8());
+            result.modtime = oc_httpdate_parse(value.toUtf8());
         } else if (property == "getcontentlength") {
             // See #4573, sometimes negative size values are returned
             bool ok = false;
             qlonglong ll = value.toLongLong(&ok);
             if (ok && ll >= 0) {
-                file_stat->size = ll;
+                result.size = ll;
             } else {
-                file_stat->size = 0;
+                result.size = 0;
             }
         } else if (property == "getetag") {
-            file_stat->etag = Utility::normalizeEtag(value.toUtf8());
+            result.etag = Utility::normalizeEtag(value.toUtf8());
         } else if (property == "id") {
-            file_stat->file_id = value.toUtf8();
+            result.fileId = value.toUtf8();
         } else if (property == "downloadURL") {
-            file_stat->directDownloadUrl = value.toUtf8();
+            result.directDownloadUrl = value;
         } else if (property == "dDC") {
-            file_stat->directDownloadCookies = value.toUtf8();
+            result.directDownloadCookies = value;
         } else if (property == "permissions") {
-            file_stat->remotePerm = RemotePermissions(value);
+            result.remotePerm = RemotePermissions::fromServerString(value);
         } else if (property == "checksums") {
-            file_stat->checksumHeader = findBestChecksum(value.toUtf8());
+            result.checksumHeader = findBestChecksum(value.toUtf8());
         } else if (property == "share-types" && !value.isEmpty()) {
             // Since QMap is sorted, "share-types" is always after "permissions".
-            if (file_stat->remotePerm.isNull()) {
+            if (result.remotePerm.isNull()) {
                 qWarning() << "Server returned a share type, but no permissions?";
+                // Empty permissions will cause a sync failure
             } else {
                 // S means shared with me.
                 // But for our purpose, we want to know if the file is shared. It does not matter
                 // if we are the owner or not.
                 // Piggy back on the persmission field
-                file_stat->remotePerm.setPermission(RemotePermissions::IsShared);
+                result.remotePerm.setPermission(RemotePermissions::IsShared);
+            }
+        } else if (property == "zsync" && value.toUtf8() == "true") {
+            // Since QMap is sorted, "zsync" is always after "permissions".
+            if (result.remotePerm.isNull()) {
+                qWarning() << "Server returned no permissions";
+                // Empty permissions will cause a sync failure
+            } else {
+                result.remotePerm.setPermission(RemotePermissions::HasZSyncMetadata);
             }
         }
     }
@@ -355,51 +305,43 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         // The first entry is for the folder itself, we should process it differently.
         _ignoredFirst = true;
         if (map.contains("permissions")) {
-            RemotePermissions perm(map.value("permissions"));
+            auto perm = RemotePermissions::fromServerString(map.value("permissions"));
             emit firstDirectoryPermissions(perm);
             _isExternalStorage = perm.hasPermission(RemotePermissions::IsMounted);
         }
         if (map.contains("data-fingerprint")) {
             _dataFingerprint = map.value("data-fingerprint").toUtf8();
+            if (_dataFingerprint.isEmpty()) {
+                // Placeholder that means that the server supports the feature even if it did not set one.
+                _dataFingerprint = "[empty]";
+            }
         }
     } else {
-        // Remove <webDAV-Url>/folder/ from <webDAV-Url>/folder/subfile.txt
-        file.remove(0, _lsColJob->reply()->request().url().path().length());
-        // remove trailing slash
-        while (file.endsWith('/')) {
-            file.chop(1);
-        }
-        // remove leading slash
-        while (file.startsWith('/')) {
-            file = file.remove(0, 1);
-        }
 
-        std::unique_ptr<csync_file_stat_t> file_stat(new csync_file_stat_t);
-        file_stat->path = file.toUtf8();
-        file_stat->size = -1;
-        file_stat->modtime = -1;
-        propertyMapToFileStat(map, file_stat.get());
-        if (file_stat->type == ItemTypeDirectory)
-            file_stat->size = 0;
-        if (file_stat->type == ItemTypeSkip
-            || file_stat->size == -1
-            || file_stat->modtime == -1
-            || file_stat->remotePerm.isNull()
-            || file_stat->etag.isEmpty()
-            || file_stat->file_id.isEmpty()) {
+        RemoteInfo result;
+        int slash = file.lastIndexOf('/');
+        result.name = file.mid(slash + 1);
+        result.size = -1;
+        propertyMapToRemoteInfo(map, result);
+        if (result.isDirectory)
+            result.size = 0;
+        if (result.size == -1
+            || result.remotePerm.isNull()
+            || result.etag.isEmpty()
+            || result.fileId.isEmpty()) {
             _error = tr("The server file discovery reply is missing data.");
             qCWarning(lcDiscovery)
-                << "Missing properties:" << file << file_stat->type << file_stat->size
-                << file_stat->modtime << file_stat->remotePerm.toString()
-                << file_stat->etag << file_stat->file_id;
+                << "Missing properties:" << file << result.isDirectory << result.size
+                << result.modtime << result.remotePerm.toString()
+                << result.etag << result.fileId;
         }
 
-        if (_isExternalStorage && file_stat->remotePerm.hasPermission(RemotePermissions::IsMounted)) {
+        if (_isExternalStorage && result.remotePerm.hasPermission(RemotePermissions::IsMounted)) {
             /* All the entries in a external storage have 'M' in their permission. However, for all
                purposes in the desktop client, we only need to know about the mount points.
                So replace the 'M' by a 'm' for every sub entries in an external storage */
-            file_stat->remotePerm.unsetPermission(RemotePermissions::IsMounted);
-            file_stat->remotePerm.setPermission(RemotePermissions::IsMountedSub);
+            result.remotePerm.unsetPermission(RemotePermissions::IsMounted);
+            result.remotePerm.setPermission(RemotePermissions::IsMountedSub);
         }
 
         QStringRef fileRef(&file);
@@ -407,13 +349,11 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         if (slashPos > -1) {
             fileRef = file.midRef(slashPos + 1);
         }
-        _results.push_back(std::move(file_stat));
+        _results.push_back(std::move(result));
     }
 
     //This works in concerto with the RequestEtagJob and the Folder object to check if the remote folder changed.
     if (map.contains("getetag")) {
-        _etagConcatenation += map.value("getetag");
-
         if (_firstEtag.isEmpty()) {
             _firstEtag = map.value("getetag"); // for directory itself
         }
@@ -425,17 +365,16 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
     if (!_ignoredFirst) {
         // This is a sanity check, if we haven't _ignoredFirst then it means we never received any directoryListingIteratedSlot
         // which means somehow the server XML was bogus
-        emit finishedWithError(ERRNO_WRONG_CONTENT, QLatin1String("Server error: PROPFIND reply is not XML formatted!"));
+        emit finished({ 0, tr("Server error: PROPFIND reply is not XML formatted!") });
         deleteLater();
         return;
     } else if (!_error.isEmpty()) {
-        emit finishedWithError(ERRNO_WRONG_CONTENT, _error);
+        emit finished({ 0, _error });
         deleteLater();
         return;
     }
     emit etag(_firstEtag);
-    emit etagConcatenation(_etagConcatenation);
-    emit finishedWithResult();
+    emit finished(_results);
     deleteLater();
 }
 
@@ -445,284 +384,13 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
     int httpCode = r->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     QString httpReason = r->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
     QString msg = r->errorString();
-    int errnoCode = EIO; // Something went wrong
     qCWarning(lcDiscovery) << "LSCOL job error" << r->errorString() << httpCode << r->error();
-    if (httpCode != 0 && httpCode != 207) {
-        errnoCode = get_errno_from_http_errcode(httpCode, httpReason);
-    } else if (r->error() != QNetworkReply::NoError) {
-        errnoCode = EIO;
-    } else if (!contentType.contains("application/xml; charset=utf-8")) {
-        msg = QLatin1String("Server error: PROPFIND reply is not XML formatted!");
-        errnoCode = ERRNO_WRONG_CONTENT;
-    } else {
-        // Default keep at EIO, see above
+    if (r->error() == QNetworkReply::NoError
+        && !contentType.contains("application/xml; charset=utf-8")) {
+        msg = tr("Server error: PROPFIND reply is not XML formatted!");
+
     }
-
-    emit finishedWithError(errnoCode == 0 ? EIO : errnoCode, msg);
-    deleteLater();
-}
-
-void DiscoveryMainThread::setupHooks(DiscoveryJob *discoveryJob, const QString &pathPrefix)
-{
-    _discoveryJob = discoveryJob;
-    _pathPrefix = pathPrefix;
-
-    connect(discoveryJob, &DiscoveryJob::doOpendirSignal,
-        this, &DiscoveryMainThread::doOpendirSlot,
-        Qt::QueuedConnection);
-    connect(discoveryJob, &DiscoveryJob::doGetSizeSignal,
-        this, &DiscoveryMainThread::doGetSizeSlot,
-        Qt::QueuedConnection);
-}
-
-// Coming from owncloud_opendir -> DiscoveryJob::vio_opendir_hook -> doOpendirSignal
-void DiscoveryMainThread::doOpendirSlot(const QString &subPath, DiscoveryDirectoryResult *r)
-{
-    QString fullPath = _pathPrefix;
-    if (!_pathPrefix.endsWith('/')) {
-        fullPath += '/';
-    }
-    fullPath += subPath;
-    // remove trailing slash
-    while (fullPath.endsWith('/')) {
-        fullPath.chop(1);
-    }
-
-    _discoveryJob->update_job_update_callback(/*local=*/false, subPath.toUtf8(), _discoveryJob);
-
-    // Result gets written in there
-    _currentDiscoveryDirectoryResult = r;
-    _currentDiscoveryDirectoryResult->path = fullPath;
-
-    // Schedule the DiscoverySingleDirectoryJob
-    _singleDirJob = new DiscoverySingleDirectoryJob(_account, fullPath, this);
-    QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::finishedWithResult,
-        this, &DiscoveryMainThread::singleDirectoryJobResultSlot);
-    QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::finishedWithError,
-        this, &DiscoveryMainThread::singleDirectoryJobFinishedWithErrorSlot);
-    QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::firstDirectoryPermissions,
-        this, &DiscoveryMainThread::singleDirectoryJobFirstDirectoryPermissionsSlot);
-    QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::etagConcatenation,
-        this, &DiscoveryMainThread::etagConcatenation);
-    QObject::connect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::etag,
-        this, &DiscoveryMainThread::etag);
-
-    if (!_firstFolderProcessed) {
-        _singleDirJob->setIsRootPath();
-    }
-
-    _singleDirJob->start();
-}
-
-
-void DiscoveryMainThread::singleDirectoryJobResultSlot()
-{
-    if (!_currentDiscoveryDirectoryResult) {
-        return; // possibly aborted
-    }
-
-    _currentDiscoveryDirectoryResult->list = _singleDirJob->takeResults();
-    _currentDiscoveryDirectoryResult->code = 0;
-
-    qCDebug(lcDiscovery) << "Have" << _currentDiscoveryDirectoryResult->list.size() << "results for " << _currentDiscoveryDirectoryResult->path;
-
-    _currentDiscoveryDirectoryResult = 0; // the sync thread owns it now
-
-    if (!_firstFolderProcessed) {
-        _firstFolderProcessed = true;
-        _dataFingerprint = _singleDirJob->_dataFingerprint;
-    }
-
-    _discoveryJob->_vioMutex.lock();
-    _discoveryJob->_vioWaitCondition.wakeAll();
-    _discoveryJob->_vioMutex.unlock();
-}
-
-void DiscoveryMainThread::singleDirectoryJobFinishedWithErrorSlot(int csyncErrnoCode, const QString &msg)
-{
-    if (!_currentDiscoveryDirectoryResult) {
-        return; // possibly aborted
-    }
-    qCDebug(lcDiscovery) << csyncErrnoCode << msg;
-
-    _currentDiscoveryDirectoryResult->code = csyncErrnoCode;
-    _currentDiscoveryDirectoryResult->msg = msg;
-    _currentDiscoveryDirectoryResult = 0; // the sync thread owns it now
-
-    _discoveryJob->_vioMutex.lock();
-    _discoveryJob->_vioWaitCondition.wakeAll();
-    _discoveryJob->_vioMutex.unlock();
-}
-
-void DiscoveryMainThread::singleDirectoryJobFirstDirectoryPermissionsSlot(RemotePermissions p)
-{
-    // Should be thread safe since the sync thread is blocked
-    if (_discoveryJob->_csync_ctx->remote.root_perms.isNull()) {
-        qCDebug(lcDiscovery) << "Permissions for root dir:" << p.toString();
-        _discoveryJob->_csync_ctx->remote.root_perms = p;
-    }
-}
-
-void DiscoveryMainThread::doGetSizeSlot(const QString &path, qint64 *result)
-{
-    QString fullPath = _pathPrefix;
-    if (!_pathPrefix.endsWith('/')) {
-        fullPath += '/';
-    }
-    fullPath += path;
-    // remove trailing slash
-    while (fullPath.endsWith('/')) {
-        fullPath.chop(1);
-    }
-
-    _currentGetSizeResult = result;
-
-    // Schedule the DiscoverySingleDirectoryJob
-    auto propfindJob = new PropfindJob(_account, fullPath, this);
-    propfindJob->setProperties(QList<QByteArray>() << "resourcetype"
-                                                   << "http://owncloud.org/ns:size");
-    QObject::connect(propfindJob, &PropfindJob::finishedWithError,
-        this, &DiscoveryMainThread::slotGetSizeFinishedWithError);
-    QObject::connect(propfindJob, &PropfindJob::result,
-        this, &DiscoveryMainThread::slotGetSizeResult);
-    propfindJob->start();
-}
-
-void DiscoveryMainThread::slotGetSizeFinishedWithError()
-{
-    if (!_currentGetSizeResult) {
-        return; // possibly aborted
-    }
-
-    qCWarning(lcDiscovery) << "Error getting the size of the directory";
-    // just let let the discovery job continue then
-    _currentGetSizeResult = 0;
-    QMutexLocker locker(&_discoveryJob->_vioMutex);
-    _discoveryJob->_vioWaitCondition.wakeAll();
-}
-
-void DiscoveryMainThread::slotGetSizeResult(const QVariantMap &map)
-{
-    if (!_currentGetSizeResult) {
-        return; // possibly aborted
-    }
-
-    *_currentGetSizeResult = map.value(QLatin1String("size")).toLongLong();
-    qCDebug(lcDiscovery) << "Size of folder:" << *_currentGetSizeResult;
-    _currentGetSizeResult = 0;
-    QMutexLocker locker(&_discoveryJob->_vioMutex);
-    _discoveryJob->_vioWaitCondition.wakeAll();
-}
-
-
-// called from SyncEngine
-void DiscoveryMainThread::abort()
-{
-    if (_singleDirJob) {
-        disconnect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::finishedWithError, this, nullptr);
-        disconnect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::firstDirectoryPermissions, this, nullptr);
-        disconnect(_singleDirJob.data(), &DiscoverySingleDirectoryJob::finishedWithResult, this, nullptr);
-        _singleDirJob->abort();
-    }
-    if (_currentDiscoveryDirectoryResult) {
-        if (_discoveryJob->_vioMutex.tryLock()) {
-            _currentDiscoveryDirectoryResult->msg = tr("Aborted by the user"); // Actually also created somewhere else by sync engine
-            _currentDiscoveryDirectoryResult->code = EIO;
-            _currentDiscoveryDirectoryResult = 0;
-            _discoveryJob->_vioWaitCondition.wakeAll();
-            _discoveryJob->_vioMutex.unlock();
-        }
-    }
-    if (_currentGetSizeResult) {
-        _currentGetSizeResult = 0;
-        QMutexLocker locker(&_discoveryJob->_vioMutex);
-        _discoveryJob->_vioWaitCondition.wakeAll();
-    }
-}
-
-csync_vio_handle_t *DiscoveryJob::remote_vio_opendir_hook(const char *url,
-    void *userdata)
-{
-    DiscoveryJob *discoveryJob = static_cast<DiscoveryJob *>(userdata);
-    if (discoveryJob) {
-        qCDebug(lcDiscovery) << discoveryJob << url << "Calling into main thread...";
-
-        QScopedPointer<DiscoveryDirectoryResult> directoryResult(new DiscoveryDirectoryResult());
-        directoryResult->code = EIO;
-
-        discoveryJob->_vioMutex.lock();
-        const QString qurl = QString::fromUtf8(url);
-        emit discoveryJob->doOpendirSignal(qurl, directoryResult.data());
-        discoveryJob->_vioWaitCondition.wait(&discoveryJob->_vioMutex, ULONG_MAX); // FIXME timeout?
-        discoveryJob->_vioMutex.unlock();
-
-        qCDebug(lcDiscovery) << discoveryJob << url << "...Returned from main thread";
-
-        // Upon awakening from the _vioWaitCondition, iterator should be a valid iterator.
-        if (directoryResult->code != 0) {
-            qCDebug(lcDiscovery) << directoryResult->code << "when opening" << url << "msg=" << directoryResult->msg;
-            errno = directoryResult->code;
-            // save the error string to the context
-            discoveryJob->_csync_ctx->error_string = qstrdup(directoryResult->msg.toUtf8().constData());
-            return NULL;
-        }
-
-        return directoryResult.take();
-    }
-    return NULL;
-}
-
-
-std::unique_ptr<csync_file_stat_t> DiscoveryJob::remote_vio_readdir_hook(csync_vio_handle_t *dhandle,
-    void *userdata)
-{
-    DiscoveryJob *discoveryJob = static_cast<DiscoveryJob *>(userdata);
-    if (discoveryJob) {
-        DiscoveryDirectoryResult *directoryResult = static_cast<DiscoveryDirectoryResult *>(dhandle);
-        if (!directoryResult->list.empty()) {
-            auto file_stat = std::move(directoryResult->list.front());
-            directoryResult->list.pop_front();
-            return file_stat;
-        }
-    }
-    return NULL;
-}
-
-void DiscoveryJob::remote_vio_closedir_hook(csync_vio_handle_t *dhandle, void *userdata)
-{
-    DiscoveryJob *discoveryJob = static_cast<DiscoveryJob *>(userdata);
-    if (discoveryJob) {
-        DiscoveryDirectoryResult *directoryResult = static_cast<DiscoveryDirectoryResult *>(dhandle);
-        QString path = directoryResult->path;
-        qCDebug(lcDiscovery) << discoveryJob << path;
-        // just deletes the struct and the iterator, the data itself is owned by the SyncEngine/DiscoveryMainThread
-        delete directoryResult;
-    }
-}
-
-void DiscoveryJob::start()
-{
-    _selectiveSyncBlackList.sort();
-    _selectiveSyncWhiteList.sort();
-    _csync_ctx->callbacks.update_callback_userdata = this;
-    _csync_ctx->callbacks.update_callback = update_job_update_callback;
-    _csync_ctx->callbacks.checkSelectiveSyncBlackListHook = isInSelectiveSyncBlackListCallback;
-    _csync_ctx->callbacks.checkSelectiveSyncNewFolderHook = checkSelectiveSyncNewFolderCallback;
-
-    _csync_ctx->callbacks.remote_opendir_hook = remote_vio_opendir_hook;
-    _csync_ctx->callbacks.remote_readdir_hook = remote_vio_readdir_hook;
-    _csync_ctx->callbacks.remote_closedir_hook = remote_vio_closedir_hook;
-    _csync_ctx->callbacks.vio_userdata = this;
-
-    _lastUpdateProgressCallbackCall.invalidate();
-    int ret = csync_update(_csync_ctx);
-
-    _csync_ctx->callbacks.checkSelectiveSyncNewFolderHook = 0;
-    _csync_ctx->callbacks.checkSelectiveSyncBlackListHook = 0;
-    _csync_ctx->callbacks.update_callback = 0;
-    _csync_ctx->callbacks.update_callback_userdata = 0;
-
-    emit finished(ret);
+    emit finished({httpCode, msg});
     deleteLater();
 }
 }

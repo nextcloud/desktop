@@ -206,8 +206,6 @@ int OwncloudSetupPage::nextId() const
         return WizardCommon::Page_HttpCreds;
     case DetermineAuthTypeJob::OAuth:
         return WizardCommon::Page_OAuthCreds;
-    case DetermineAuthTypeJob::Shibboleth:
-        return WizardCommon::Page_ShibbolethCreds;
     }
     return WizardCommon::Page_HttpCreds;
 }
@@ -221,12 +219,19 @@ QString OwncloudSetupPage::url() const
 bool OwncloudSetupPage::validatePage()
 {
     if (!_authTypeKnown) {
+        QString u = url();
+        QUrl qurl(u);
+        if (!qurl.isValid() || qurl.host().isEmpty()) {
+            setErrorString(tr("Invalid URL"), false);
+            return false;
+        }
+
         setErrorString(QString(), false);
         _checking = true;
         startSpinner();
         emit completeChanged();
 
-        emit determineAuthType(url());
+        emit determineAuthType(u);
         return false;
     } else {
         // connecting is running

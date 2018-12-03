@@ -15,33 +15,133 @@
 
 #include "owncloudpropagator.h"
 #include "networkjobs.h"
+#include "propagatecommonzsync.h"
 
 #include <QBuffer>
 #include <QFile>
 
 namespace OCC {
 
+class GETJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+protected:
+    QByteArray _etag;
+    time_t _lastModified = 0;
+    QString _errorString;
+    SyncFileItem::Status _errorStatus = SyncFileItem::NoStatus;
+    bool _bandwidthLimited = false; // if _bandwidthQuota will be used
+    bool _bandwidthChoked = false; // if download is paused (won't read on readyRead())
+    qint64 _bandwidthQuota = 0;
+    QPointer<BandwidthManager> _bandwidthManager = nullptr;
+
+public:
+    GETJob(AccountPtr account, const QString &path, QObject *parent = 0)
+        : AbstractNetworkJob(account, path, parent)
+    {
+    }
+
+    ~GETJob()
+    {
+        if (_bandwidthManager) {
+            _bandwidthManager->unregisterDownloadJob(this);
+        }
+    }
+
+    virtual qint64 currentDownloadPosition() = 0;
+    virtual quint64 resumeStart() { return 0; }
+
+    QByteArray &etag() { return _etag; }
+    time_t lastModified() { return _lastModified; }
+
+    void setErrorString(const QString &s) { _errorString = s; }
+    QString errorString() const;
+    SyncFileItem::Status errorStatus() { return _errorStatus; }
+    void setErrorStatus(const SyncFileItem::Status &s) { _errorStatus = s; }
+    void setBandwidthManager(BandwidthManager *bwm);
+    void setChoked(bool c);
+    void setBandwidthLimited(bool b);
+    void giveBandwidthQuota(qint64 q);
+    void onTimedOut();
+
+signals:
+    void finishedSignal();
+};
+
 /**
- * @brief The GETFileJob class
+ * @brief Downloads the zsync metadata and uses the original file as a seed, then downloads needed ranges via GET
  * @ingroup libsync
  */
-class GETFileJob : public AbstractNetworkJob
+class GETFileZsyncJob : public GETJob
+{
+    Q_OBJECT
+    QFile *_device;
+    SyncFileItemPtr _item;
+    OwncloudPropagator *_propagator;
+    QMap<QByteArray, QByteArray> _headers;
+    QByteArray _expectedEtagForResume;
+    bool _hasEmittedFinishedSignal;
+    QByteArray _zsyncData;
+    int _nrange = 0;
+    int _current = 0;
+    off_t _pos = 0;
+    off_t _received = 0;
+    /* these must be in this order so the destructors are done in the right order */
+    zsync_unique_ptr<struct zsync_state> _zs = nullptr;
+    zsync_unique_ptr<struct zsync_receiver> _zr = nullptr;
+
+    /** Byte ranges that need to be received.
+     *
+     * As returned by zsync_needed_byte_ranges()
+     *
+     * That means: [begin0, end0, begin1, end1, ...]
+     * where begin and end are *inclusive* and the last
+     * end may very well exceed the total file size.
+     */
+    zsync_unique_ptr<off_t> _zbyterange = nullptr;
+
+public:
+    // DOES NOT take ownership of the device.
+    GETFileZsyncJob(OwncloudPropagator *propagator, SyncFileItemPtr &item, const QString &path, QFile *device,
+        const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
+        const QByteArray &zsyncData, QObject *parent = 0);
+
+    qint64 currentDownloadPosition() override;
+
+    void start() override;
+    bool finished() override;
+
+private:
+    void seedFinished(void *zs);
+    void seedFailed(const QString &errorString);
+
+    void startCurrentRange(quint64 start = 0, quint64 end = 0);
+
+private slots:
+    void slotReadyRead();
+    void slotMetaDataChanged();
+
+public slots:
+    void slotOverallDownloadProgress(qint64, qint64);
+
+signals:
+    void overallDownloadProgress(qint64, qint64);
+};
+
+
+/**
+ * @brief Downloads the remote file via GET
+ * @ingroup libsync
+ */
+class GETFileJob : public GETJob
 {
     Q_OBJECT
     QFile *_device;
     QMap<QByteArray, QByteArray> _headers;
-    QString _errorString;
     QByteArray _expectedEtagForResume;
     quint64 _resumeStart;
-    SyncFileItem::Status _errorStatus;
     QUrl _directDownloadUrl;
-    QByteArray _etag;
-    bool _bandwidthLimited; // if _bandwidthQuota will be used
-    bool _bandwidthChoked; // if download is paused (won't read on readyRead())
-    qint64 _bandwidthQuota;
-    QPointer<BandwidthManager> _bandwidthManager;
     bool _hasEmittedFinishedSignal;
-    time_t _lastModified;
 
     /// Will be set to true once we've seen a 2xx response header
     bool _saveBodyToFile = false;
@@ -55,22 +155,15 @@ public:
     explicit GETFileJob(AccountPtr account, const QUrl &url, QFile *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
         quint64 resumeStart, QObject *parent = 0);
-    virtual ~GETFileJob()
-    {
-        if (_bandwidthManager) {
-            _bandwidthManager->unregisterDownloadJob(this);
-        }
-    }
 
-    virtual void start() Q_DECL_OVERRIDE;
-    virtual bool finished() Q_DECL_OVERRIDE
+    qint64 currentDownloadPosition() Q_DECL_OVERRIDE;
+
+    void start() Q_DECL_OVERRIDE;
+    bool finished() Q_DECL_OVERRIDE
     {
-        if (reply()->bytesAvailable()) {
+        if (_saveBodyToFile && reply()->bytesAvailable()) {
             return false;
         } else {
-            if (_bandwidthManager) {
-                _bandwidthManager->unregisterDownloadJob(this);
-            }
             if (!_hasEmittedFinishedSignal) {
                 emit finishedSignal();
             }
@@ -81,31 +174,17 @@ public:
 
     void newReplyHook(QNetworkReply *reply) override;
 
-    void setBandwidthManager(BandwidthManager *bwm);
-    void setChoked(bool c);
-    void setBandwidthLimited(bool b);
-    void giveBandwidthQuota(qint64 q);
-    qint64 currentDownloadPosition();
+    quint64 resumeStart() Q_DECL_OVERRIDE
+    {
+        return _resumeStart;
+    }
 
-    QString errorString() const;
-    void setErrorString(const QString &s) { _errorString = s; }
-
-    SyncFileItem::Status errorStatus() { return _errorStatus; }
-    void setErrorStatus(const SyncFileItem::Status &s) { _errorStatus = s; }
-
-    void onTimedOut() Q_DECL_OVERRIDE;
-
-    QByteArray &etag() { return _etag; }
-    quint64 resumeStart() { return _resumeStart; }
-    time_t lastModified() { return _lastModified; }
-
-
-signals:
-    void finishedSignal();
-    void downloadProgress(qint64, qint64);
 private slots:
     void slotReadyRead();
     void slotMetaDataChanged();
+
+signals:
+    void downloadProgress(qint64, qint64);
 };
 
 /**
@@ -116,39 +195,54 @@ private slots:
 
 \code{.unparsed}
   start()
-    |
+    +
     | deleteExistingFolder() if enabled
     |
     +--> mtime and size identical?
     |    then compute the local checksum
-    |                               done?-> conflictChecksumComputed()
-    |                                              |
-    |                         checksum differs?    |
-    +-> startDownload() <--------------------------+
-          |                                        |
-          +-> run a GETFileJob                     | checksum identical?
-                                                   |
-      done?-> slotGetFinished()                    |
-                |                                  |
-                +-> validate checksum header       |
-                                                   |
-      done?-> transmissionChecksumValidated()      |
-                |                                  |
-                +-> compute the content checksum   |
-                                                   |
-      done?-> contentChecksumComputed()            |
-                |                                  |
-                +-> downloadFinished()             |
-                       |                           |
-    +------------------+                           |
-    |                                              |
-    +-> updateMetadata() <-------------------------+
+    |                               done?+> conflictChecksumComputed()
+    |                                                                +
+    |                         checksum differs?                      |
+    +-> startDownload() <--------------------------------------------+
+        +                                                            |
+        +-> isZsyncPropagationEnabled()?                             |
+            +                                                        |
+            +-+ yes +> local file exists?                            |
+            |            +                                           |
+            |            +-+ yes +------> run a GETFIleZsyncJob      |
+            |            |                                           |
+            +            +        done? +------------+               |
+            no           no                          |               |
+            +            +                           |               |
+            |            v                           |               |
+            +-> startFullDownload()                  |               |
+                      +                              |               |
+                      +-> run a GETFileJob           |               | checksum identical?
+                                                     |               |
+                  done?+> slotGetFinished() <--------+               |
+                            +                                        |
+                            +-> validate checksum header             |
+                                                                     |
+                  done?+> transmissionChecksumValidated()            |
+                            +                                        |
+                            +-> compute the content checksum         |
+                                                                     |
+                  done?+> contentChecksumComputed()                  |
+                            +                                        |
+                            +-> downloadFinished()                   |
+                                   +                                 |
+                +------------------+                                 |
+                |                                                    |
+                +-> updateMetadata() <-------------------------------+
 
 \endcode
  */
 class PropagateDownloadFile : public PropagateItemJob
 {
     Q_OBJECT
+    QByteArray _expectedEtagForResume;
+    bool _isDeltaSyncDownload = false;
+
 public:
     PropagateDownloadFile(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
         : PropagateItemJob(propagator, item)
@@ -180,8 +274,11 @@ private slots:
     void conflictChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum);
     /// Called to start downloading the remote file
     void startDownload();
-    /// Called when the GETFileJob finishes
+    void startFullDownload();
+    /// Called when the GETJob finishes
     void slotGetFinished();
+    /// Called when the we have finished getting the zsync metadata file
+    void slotZsyncGetMetaFinished(QNetworkReply *reply);
     /// Called when the download's checksum header was validated
     void transmissionChecksumValidated(const QByteArray &checksumType, const QByteArray &checksum);
     /// Called when the download's checksum computation is done
@@ -199,7 +296,7 @@ private:
 
     quint64 _resumeStart;
     qint64 _downloadProgress;
-    QPointer<GETFileJob> _job;
+    QPointer<GETJob> _job;
     QFile _tmpFile;
     bool _deleteExisting;
     ConflictRecord _conflictRecord;

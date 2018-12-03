@@ -32,6 +32,7 @@
 #include <QDir>
 #include <cmath>
 #include <cstring>
+#include <memory>
 
 namespace OCC {
 
@@ -43,7 +44,7 @@ void PropagateUploadFileV1::doStartUpload()
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
 
-    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime
+    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime && progressInfo._size == qint64(_item->_size)
         && (progressInfo._contentChecksum == _item->_checksumHeader || progressInfo._contentChecksum.isEmpty() || _item->_checksumHeader.isEmpty())) {
         _startChunk = progressInfo._chunk;
         _transferId = progressInfo._transferid;
@@ -59,6 +60,7 @@ void PropagateUploadFileV1::doStartUpload()
         pi._modtime = _item->_modtime;
         pi._errorCount = 0;
         pi._contentChecksum = _item->_checksumHeader;
+        pi._size = _item->_size;
         propagator()->_journal->setUploadInfo(_item->_file, pi);
         propagator()->_journal->commit("Upload info");
     }
@@ -84,12 +86,12 @@ void PropagateUploadFileV1::startNextChunk()
     }
     quint64 fileSize = _item->_size;
     auto headers = PropagateUploadFileCommon::headers();
-    headers["OC-Total-Length"] = QByteArray::number(fileSize);
-    headers["OC-Chunk-Size"] = QByteArray::number(quint64(chunkSize()));
+    headers[QByteArrayLiteral("OC-Total-Length")] = QByteArray::number(fileSize);
+    headers[QByteArrayLiteral("OC-Chunk-Size")] = QByteArray::number(quint64(chunkSize()));
 
     QString path = _item->_file;
 
-    UploadDevice *device = new UploadDevice(&propagator()->_bandwidthManager);
+    auto device = std::unique_ptr<UploadDevice>(new UploadDevice(&propagator()->_bandwidthManager));
     qint64 chunkStart = 0;
     qint64 currentChunkSize = fileSize;
     bool isFinalChunk = false;
@@ -100,7 +102,7 @@ void PropagateUploadFileV1::startNextChunk()
         qCInfo(lcPropagateUpload) << "Upload chunk" << sendingChunk << "of" << _chunkCount << "transferid(remote)=" << transid;
         path += QString("-chunking-%1-%2-%3").arg(transid).arg(_chunkCount).arg(sendingChunk);
 
-        headers["OC-Chunked"] = "1";
+        headers[QByteArrayLiteral("OC-Chunked")] = QByteArrayLiteral("1");
 
         chunkStart = chunkSize() * quint64(sendingChunk);
         currentChunkSize = chunkSize();
@@ -133,16 +135,16 @@ void PropagateUploadFileV1::startNextChunk()
         }
         // Soft error because this is likely caused by the user modifying his files while syncing
         abortWithError(SyncFileItem::SoftError, device->errorString());
-        delete device;
         return;
     }
 
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
-    PUTFileJob *job = new PUTFileJob(propagator()->account(), propagator()->_remoteFolder + path, device, headers, _currentChunk, this);
+    auto devicePtr = device.get(); // for connections later
+    PUTFileJob *job = new PUTFileJob(propagator()->account(), propagator()->_remoteFolder + path, std::move(device), headers, _currentChunk, this);
     _jobs.append(job);
     connect(job, &PUTFileJob::finishedSignal, this, &PropagateUploadFileV1::slotPutFinished);
     connect(job, &PUTFileJob::uploadProgress, this, &PropagateUploadFileV1::slotUploadProgress);
-    connect(job, &PUTFileJob::uploadProgress, device, &UploadDevice::slotJobUploadProgress);
+    connect(job, &PUTFileJob::uploadProgress, devicePtr, &UploadDevice::slotJobUploadProgress);
     connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     if (isFinalChunk)
         adjustLastJobTimeout(job, fileSize);
@@ -285,6 +287,7 @@ void PropagateUploadFileV1::slotPutFinished()
         pi._modtime = _item->_modtime;
         pi._errorCount = 0; // successful chunk upload resets
         pi._contentChecksum = _item->_checksumHeader;
+        pi._size = _item->_size;
         propagator()->_journal->setUploadInfo(_item->_file, pi);
         propagator()->_journal->commit("Upload info");
         startNextChunk();
@@ -308,8 +311,6 @@ void PropagateUploadFileV1::slotPutFinished()
         // Normally Owncloud 6 always puts X-OC-MTime
         qCWarning(lcPropagateUpload) << "Server does not support X-OC-MTime" << job->reply()->rawHeader("X-OC-MTime");
         // Well, the mtime was not set
-        done(SyncFileItem::SoftError, "Server does not support X-OC-MTime");
-        return;
     }
 
     finalize();

@@ -80,12 +80,12 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     addAction(closeDialogAction);
     // People perceive this as a Window, so also make Ctrl+W work
     QAction *closeWindowAction = new QAction(this);
-    closeWindowAction->setShortcut(QKeySequence("Ctrl+W"));
+    closeWindowAction->setShortcut(QKeySequence("Ctrl+W")); // on macOS Ctrl is Cmd
     connect(closeWindowAction, &QAction::triggered, this, &SettingsDialogMac::close);
     addAction(closeWindowAction);
     // People perceive this as a Window, so also make Ctrl+H work
     QAction *hideWindowAction = new QAction(this);
-    hideWindowAction->setShortcut(QKeySequence("Ctrl+H"));
+    hideWindowAction->setShortcut(QKeySequence("Ctrl+H")); // on macOS Ctrl is Cmd
     connect(hideWindowAction, &QAction::triggered, this, &SettingsDialogMac::hide);
     addAction(hideWindowAction);
 
@@ -110,6 +110,7 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     QIcon generalIcon = MacStandardIcon::icon(MacStandardIcon::PreferencesGeneral);
     GeneralSettings *generalSettings = new GeneralSettings;
     addPreferencesPanel(generalIcon, tr("General"), generalSettings);
+    QObject::connect(generalSettings, &GeneralSettings::showAbout, gui, &ownCloudGui::slotAbout);
 
     QIcon networkIcon = MacStandardIcon::icon(MacStandardIcon::Network);
     NetworkSettings *networkSettings = new NetworkSettings;
@@ -119,6 +120,11 @@ SettingsDialogMac::SettingsDialogMac(ownCloudGui *gui, QWidget *parent)
     showLogWindow->setShortcut(QKeySequence("F12"));
     connect(showLogWindow, &QAction::triggered, gui, &ownCloudGui::slotToggleLogBrowser);
     addAction(showLogWindow);
+
+    QAction *showLogWindow2 = new QAction(this);
+    showLogWindow2->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_L));  // on macOS Ctrl is Cmd
+    connect(showLogWindow2, &QAction::triggered, gui, &ownCloudGui::slotToggleLogBrowser);
+    addAction(showLogWindow2);
 
     ConfigFile cfg;
     cfg.restoreGeometry(this);
@@ -166,6 +172,7 @@ void SettingsDialogMac::accountAdded(AccountState *s)
     connect(s, &AccountState::isConnectedChanged, this, &SettingsDialogMac::slotRefreshActivityAccountStateSender);
 
     slotRefreshActivity(s);
+    setCurrentPanelIndex(0);
 }
 
 void SettingsDialogMac::accountRemoved(AccountState *s)
