@@ -243,16 +243,12 @@ QString QSFileName;
     if (DokanFileInfo->ProcessId == getExplorerID()) 
 	{
         QVariantMap error;
-		ConfigFile cfg;
-		QString file = cfg.defaultFileStreamLetterDrive() + ":" + QSFileName;
-		qDebug() << "Check for file exists() and isFile(): " << file;
-		QFileInfo fileInfo(file);
-		if (da == 1179776) { //< OpenFile
-			if (fileInfo.exists() && fileInfo.isFile())
-				Vfs_windows::instance()->openFileAtPath(QSFileName, error);
-		}
+
+        if (da == 1179776)		//< OpenFile
+            Vfs_windows::instance()->openFileAtPath(QSFileName, error);            
 		else if (da == 65536)	//< DeleteFile
-			Vfs_windows::instance()->deleteFileAtPath(QSFileName, error);
+            Vfs_windows::instance()->deleteFileAtPath(QSFileName, error);            
+
 	}
 }
 
@@ -1211,7 +1207,6 @@ QVariantMap b_error;
 		if (m_Vfs_windows)
 		{
 			QSFileName.replace("\\", "/");
-
 			//if (QSFileName.compare("/") != 0)
 				//{
 				QStringList *contents = m_Vfs_windows->contentsOfDirectoryAtPath(QSFileName, b_error);
@@ -2162,6 +2157,10 @@ static NTSTATUS DOKAN_CALLBACK  MirrorDokanGetDiskFreeSpace(
 	PULONGLONG TotalNumberOfFreeBytes, PDOKAN_FILE_INFO DokanFileInfo) {
 	UNREFERENCED_PARAMETER(DokanFileInfo);
 
+
+	qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " 1";
+
+	
 	*FreeBytesAvailable = (ULONGLONG)(512 * 1024 * 1024);
 	*TotalNumberOfBytes = 9223372036854775807;
 	*TotalNumberOfFreeBytes = 9223372036854775807;
@@ -2179,8 +2178,7 @@ static NTSTATUS DOKAN_CALLBACK  MirrorDokanGetDiskFreeSpace(
 	qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " 3";
 
 	// @Free space
-	*FreeBytesAvailable = getFreeBytesAvailable();
-	//*FreeBytesAvailable = (ULONGLONG)(*TotalNumberOfBytes - *TotalNumberOfFreeBytes); /// *1024 * 1024 * 10;
+	*FreeBytesAvailable = (ULONGLONG)(*TotalNumberOfBytes - *TotalNumberOfFreeBytes); /// *1024 * 1024 * 10;
 
 	qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " 4";
 	*/
