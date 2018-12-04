@@ -23,7 +23,6 @@ public:
       Parse XML object from DOM element.
      */
     static UpdateInfo parseElement(const QDomElement &element, bool *ok);
-    static UpdateInfo parseFile(const QString &filename, bool *ok);
     static UpdateInfo parseString(const QString &xml, bool *ok);
 
 private:
