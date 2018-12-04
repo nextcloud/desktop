@@ -82,34 +82,6 @@ UpdateInfo UpdateInfo::parseElement(const QDomElement &element, bool *ok)
     return result;
 }
 
-UpdateInfo UpdateInfo::parseFile(const QString &filename, bool *ok)
-{
-    QFile file(filename);
-    if (!file.open(QIODevice::ReadOnly)) {
-        qCCritical(lcUpdater) << "Unable to open file '" << filename << "'";
-        if (ok)
-            *ok = false;
-        return UpdateInfo();
-    }
-
-    QString errorMsg;
-    int errorLine = 0, errorCol = 0;
-    QDomDocument doc;
-    if (!doc.setContent(&file, false, &errorMsg, &errorLine, &errorCol)) {
-        qCCritical(lcUpdater) << errorMsg << " at " << errorLine << "," << errorCol;
-        if (ok)
-            *ok = false;
-        return UpdateInfo();
-    }
-
-    bool documentOk = false;
-    UpdateInfo c = parseElement(doc.documentElement(), &documentOk);
-    if (ok) {
-        *ok = documentOk;
-    }
-    return c;
-}
-
 UpdateInfo UpdateInfo::parseString(const QString &xml, bool *ok)
 {
     QString errorMsg;
