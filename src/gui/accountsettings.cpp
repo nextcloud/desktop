@@ -34,6 +34,7 @@
 #include "tooltipupdater.h"
 #include "filesystem.h"
 #include "wizard/owncloudwizard.h"
+#include "guiutility.h"
 
 #include <math.h>
 
@@ -267,13 +268,28 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         QMenu *menu = new QMenu(tv);
         menu->setAttribute(Qt::WA_DeleteOnClose);
 
-        QAction *ac = menu->addAction(tr("Open folder"));
+        QAction *ac = menu->addAction(tr("Open local folder"));
         connect(ac, &QAction::triggered, this, &AccountSettings::slotOpenCurrentLocalSubFolder);
 
         QString fileName = _model->data(index, FolderStatusDelegate::FolderPathRole).toString();
         if (!QFile::exists(fileName)) {
             ac->setEnabled(false);
         }
+
+        ac = menu->addAction(tr("Open folder in browser"));
+        auto info = _model->infoForIndex(index);
+        ASSERT(info);
+        QString path = info->_folder->remotePath();
+        if (!path.endsWith(QLatin1Char('/'))) {
+                path += QLatin1Char('/');
+        }
+        path += info->_path;
+        connect(ac, &QAction::triggered, this, [this, path]{
+            fetchPrivateLinkUrl(_accountState->account(), path, {}, this, [](const QString &url) {
+                Utility::openBrowser(url, nullptr);
+            });
+        });
+
 
         menu->popup(tv->mapToGlobal(pos));
         return;
