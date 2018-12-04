@@ -37,6 +37,7 @@ SslButton::SslButton(QWidget *parent)
     _menu = new QMenu(this);
     QObject::connect(_menu, &QMenu::aboutToShow,
         this, &SslButton::slotUpdateMenu);
+    setMenu(_menu);
 }
 
 static QString addCertDetailsField(const QString &key, const QString &value)
@@ -171,11 +172,9 @@ void SslButton::updateAccountState(AccountState *accountState)
         setIcon(QIcon(QLatin1String(":/client/resources/lock-https.png")));
         QSslCipher cipher = account->_sessionCipher;
         setToolTip(tr("This connection is encrypted using %1 bit %2.\n").arg(cipher.usedBits()).arg(cipher.name()));
-        setMenu(_menu);
     } else {
         setIcon(QIcon(QLatin1String(":/client/resources/lock-http.png")));
         setToolTip(tr("This connection is NOT secure as it is not encrypted.\n"));
-        setMenu(0);
     }
 }
 
@@ -188,6 +187,8 @@ void SslButton::slotUpdateMenu()
     }
 
     AccountPtr account = _accountState->account();
+
+    _menu->addAction(tr("Server version: %1").arg(account->serverVersion()))->setEnabled(false);
 
     if (account->isHttp2Supported()) {
         _menu->addAction("HTTP/2")->setEnabled(false);
@@ -239,6 +240,8 @@ void SslButton::slotUpdateMenu()
             _menu->addMenu(buildCertMenu(_menu, it.previous(), account->approvedCerts(), i, systemCerts));
             i++;
         }
+    } else {
+        _menu->addAction(tr("The connection is not secure"))->setEnabled(false);
     }
 }
 
