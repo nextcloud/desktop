@@ -141,19 +141,19 @@ void OCUpdater::backgroundCheckForUpdate()
 
 QString OCUpdater::statusString() const
 {
-    QString updateVersion = _updateInfo.version();
+    QString updateVersion = _updateInfo.versionString();
 
     switch (downloadState()) {
     case Downloading:
-        return tr("Downloading version %1. Please wait...").arg(updateVersion);
+        return tr("Downloading %1. Please wait...").arg(updateVersion);
     case DownloadComplete:
-        return tr("%1 version %2 available. Restart application to start the update.").arg(Theme::instance()->appNameGUI(), updateVersion);
+        return tr("%1 available. Restart application to start the update.").arg(Theme::instance()->appNameGUI(), updateVersion);
     case DownloadFailed:
         return tr("Could not download update. Please click <a href='%1'>here</a> to download the update manually.").arg(_updateInfo.web());
     case DownloadTimedOut:
         return tr("Could not check for new updates.");
     case UpdateOnlyAvailableThroughSystem:
-        return tr("New %1 version %2 available. Please use the system's update tool to install it.").arg(Theme::instance()->appNameGUI(), updateVersion);
+        return tr("New %1 available. Please use the system's update tool to install it.").arg(updateVersion);
     case CheckingServer:
         return tr("Checking update server...");
     case Unknown:
