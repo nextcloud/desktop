@@ -46,8 +46,8 @@ Rem ****************************************************************************
 
 rem Reference: https://ss64.com/nt/start.html
 
-echo "* git fetch originl at %PROJECT_PATH%/desktop/."
-start "git fetch origin" /D "%PROJECT_PATH%/desktop/" /B /wait git fetch origin
+echo "* git pull at %PROJECT_PATH%/desktop/."
+start "git pull" /D "%PROJECT_PATH%/desktop/" /B /wait git pull
 
 echo "* git checkout %TAG% at %PROJECT_PATH%/desktop/."
 start "git checkout %TAG%" /D "%PROJECT_PATH%/desktop/" /B /wait git checkout %TAG%
