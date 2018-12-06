@@ -1,6 +1,6 @@
 = Appendix A: Building the Client
 
-This section explains how to build xref:https://owncloud.org/download/#owncloud-desktop-client[the ownCloud Client] from source for all major platforms. 
+This section explains how to build link:https://owncloud.org/download/#owncloud-desktop-client[the ownCloud Client] from source for all major platforms.
 You should read this section if you want to develop for the desktop client.
 Build instructions are subject to change as development proceeds.
 
@@ -22,12 +22,12 @@ The xref:generic-build-instructions[generic build instructions] pull the latest 
 [[linux]]
 == Linux
 
-For the published desktop clients we link against QT5 dependencies from our own repositories so that we can have the same versions on all distributions. 
-This chapter shows you how to build the client yourself with this setup. 
+For the published desktop clients we link against QT5 dependencies from our own repositories so that we can have the same versions on all distributions.
+This chapter shows you how to build the client yourself with this setup.
 If you want to use the QT5 dependencies from your system, see the next chapter.
 
-You may wish to use source packages for your Linux distribution, as these give you the exact sources from which the binary packages are built. 
-These are hosted on the http://software.opensuse.org/download/package?project=isv:ownCloud:desktop&package=owncloud-client[ownCloud repository from OBS]. 
+You may wish to use source packages for your Linux distribution, as these give you the exact sources from which the binary packages are built.
+These are hosted on the http://software.opensuse.org/download/package?project=isv:ownCloud:desktop&package=owncloud-client[ownCloud repository from OBS].
 Go to the http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/[Index of repositories] to see all the Linux client repositories.
 
 [NOTE]
@@ -41,8 +41,8 @@ echo 'deb-src http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/D
 ....
 ====
 
-Install the dependencies using the following commands for your specific Linux distribution. 
-Make sure the repositories for source packages are enabled. 
+Install the dependencies using the following commands for your specific Linux distribution.
+Make sure the repositories for source packages are enabled.
 These are:
 
 [options="header"]
@@ -58,8 +58,8 @@ Follow the xref:generic-build-instructions[generic build instructions], starting
 [[linux-with-system-dependencies]]
 == Linux with System Dependencies
 
-Build sources from a GitHub checkout with dependencies provided by your Linux distribution. 
-While this allows more freedom for development, it does not exactly represent what we ship as packages. 
+Build sources from a GitHub checkout with dependencies provided by your Linux distribution.
+While this allows more freedom for development, it does not exactly represent what we ship as packages.
 See above for how to recreate packages from source.
 
 [NOTE]
@@ -79,11 +79,11 @@ Follow the xref:generic-build-instructions[generic build instructions], starting
 [[macos]]
 == macOS
 
-In addition to needing Xcode (along with the command line tools), developing in the macOS environment requires extra dependencies. 
-You can install these dependencies through http://www.macports.org[MacPorts] or http://mxcl.github.com/homebrew/[Homebrew]. 
+In addition to needing Xcode (along with the command line tools), developing in the macOS environment requires extra dependencies.
+You can install these dependencies through http://www.macports.org[MacPorts] or http://mxcl.github.com/homebrew/[Homebrew].
 These dependencies are required only on the build machine, because non-standard libs are deployed in the app bundle.
 
-The tested and preferred way to develop in this environment is through the use of http://mxcl.github.com/homebrew/[HomeBrew]. 
+The tested and preferred way to develop in this environment is through the use of http://mxcl.github.com/homebrew/[HomeBrew].
 The ownCloud team has its own repository containing non-standard recipes.
 To set up your build environment for development using http://mxcl.github.com/homebrew/[HomeBrew]:
 
@@ -104,14 +104,14 @@ same install prefix as later while building the client e.g., `-DCMAKE_INSTALL_PR
 
 [NOTE]
 ====
-Contrary to earlier versions, version 1.7 and later are packaged as a `pkg` installer. 
+Contrary to earlier versions, version 1.7 and later are packaged as a `pkg` installer.
 Do not call `make package` at any time when compiling for OS X, as this will build a disk image, which will not work correctly.
 ====
 
 [[windows-development-build]]
 == Windows Development Build
 
-If you want to test some changes and deploy them locally, you can build natively on Windows using xref:http://www.mingw.org/[MinGW]. 
+If you want to test some changes and deploy them locally, you can build natively on Windows using xref:http://www.mingw.org/[MinGW].
 If you want to generate an installer for deployment, please follow link:[Windows Installer Build (Cross-Compile)] instead.
 
 . Get the required dependencies
@@ -175,7 +175,7 @@ The ownCloud binary will appear in the `bin` directory.
 [[windows-installer-build-cross-compile]]
 == Windows Installer Build (Cross-Compile)
 
-Due to the large number of dependencies, building the client installer for Windows is *currently only officially supported on openSUSE*, by using the MinGW cross compiler. 
+Due to the large number of dependencies, building the client installer for Windows is *currently only officially supported on openSUSE*, by using the MinGW cross compiler.
 You can set up any currently supported version of openSUSE in a virtual machine if you do not have it installed already.
 
 In order to make setup simple, you can use the provided Dockerfile to build your own image.
@@ -188,15 +188,15 @@ cd admin/win/docker
 docker build . -t owncloud-client-win32:<version>
 ....
 +
-Replace `<version>` by the version of the client you are building, e.g., for the release of the client that this document describes. 
+Replace `<version>` by the version of the client you are building, e.g., for the release of the client that this document describes.
 If you do not wish to use docker, you can run the commands in `RUN` manually in a shell, e.g., to create your own build environment in a virtual machine.
 +
-Docker images are specific to releases. 
-Newer releases may have different dependencies, and thus require a later version of the docker image! 
+Docker images are specific to releases.
+Newer releases may have different dependencies, and thus require a later version of the docker image!
 Always pick the docker image fitting your release of ownCloud client!
 
 
-[start=2] 
+[start=2]
 . From within the source tree Run the docker instance:
 +
 [source,console]
@@ -205,7 +205,7 @@ docker run -v "$PWD:/home/user/client" owncloud-client-win32:<version> \
    /home/user/client/admin/win/docker/build.sh client/  $(id -u)
 ....
 +
-It will run the build, create an NSIS based installer, as well as run tests. 
+It will run the build, create an NSIS based installer, as well as run tests.
 You will find the resulting binary in an newly created `build-win32` subfolder.
 +
 If you do not wish to use docker, and ran the `RUN` commands above in a virtual machine, you can run the indented commands in the lower section of `build.sh` manually in your source tree.
@@ -262,7 +262,7 @@ cd client-build
 cmake -DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/  -DNO_SHIBBOLETH=1 ..
 ....
 +
-For Linux builds (using QT5 libraries via build-dep) a typical setting is `-DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1/` - version number may vary. 
+For Linux builds (using QT5 libraries via build-dep) a typical setting is `-DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1/` - version number may vary.
 For Linux builds using system dependencies `-DCMAKE_PREFIX_PATH` is not needed.
 You must use absolute paths for the `include` and `library` directories.
 +
