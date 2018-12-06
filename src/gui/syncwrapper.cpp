@@ -64,9 +64,9 @@ void SyncWrapper::sync(const QString path, csync_instructions_e instruction){
        _syncJournalDb->updateLastAccess(path);
 
        if(shouldSync(path)){
-           _folderMan->terminateSyncProcess();
+           //_folderMan->terminateSyncProcess();
            _folderMan->scheduleFolder();
-           _folderMan->scheduleFolderNext();
+           //_folderMan->scheduleFolderNext();
            //emit startSyncForFolder();
        } else {
            emit syncFinish(path, true);
