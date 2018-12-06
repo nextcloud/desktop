@@ -198,6 +198,6 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Comment[nb_NO]=@APPLICATION_NAME@ klient for synkroinisering
 Name[nb_NO]=@APPLICATION_NAME@ klient for synkroinisering
+Comment[nb_NO]=@APPLICATION_NAME@ klient for synkroinisering
 GenericName[nb_NO]=Mappe synkroinisering

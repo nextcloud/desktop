@@ -140,7 +140,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="403"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation>Сервер ответил от «%1 %2» до «%3 %4»</translation>
+        <translation>На запрос «%3 %4» от сервера получен ответ «%1 %2» </translation>
     </message>
 </context>
 <context>
@@ -293,7 +293,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="904"/>
         <source>%1 in use</source>
-        <translation>Использовано %1</translation>
+        <translation>Используется %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="931"/>
@@ -496,7 +496,7 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="198"/>
         <source>Open Browser</source>
-        <translation>Открыть браузер</translation>
+        <translation>Открыть файловый менеджер</translation>
     </message>
 </context>
 <context>
@@ -519,7 +519,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="182"/>
         <source>Synced </source>
-        <translation>Синхронизировано</translation>
+        <translation>Синхронизировано </translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="217"/>
@@ -1941,7 +1941,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="56"/>
         <source>Copy link to clipboard</source>
-        <translation>Копировать ссылку в буфер обмена</translation>
+        <translation>Скопировать ссылку в буфер обмена</translation>
     </message>
 </context>
 <context>
@@ -2675,7 +2675,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="212"/>
         <source>Copy link</source>
-        <translation>Копировать ссылку</translation>
+        <translation>Скопировать ссылку</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="225"/>
@@ -2718,12 +2718,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="52"/>
         <source>Share with users or groups ...</source>
-        <translation>Поделиться с пользователями или группами ...</translation>
+        <translation>Введите имя пользователя или группы…</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="238"/>
         <source>Copy link</source>
-        <translation>Копировать ссылку</translation>
+        <translation>Скопировать ссылку</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="248"/>
@@ -2827,13 +2827,13 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="625"/>
         <location filename="../src/gui/socketapi.cpp" line="655"/>
         <source>Share...</source>
-        <translation>Поделиться...</translation>
+        <translation>Общий доступ…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="627"/>
         <location filename="../src/gui/socketapi.cpp" line="672"/>
         <source>Copy private link to clipboard</source>
-        <translation>Копировать приватную ссылку в буфер обмена...</translation>
+        <translation>Скопировать закрытую ссылку в буфер обмена</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="628"/>
@@ -3572,7 +3572,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="943"/>
         <source>Syncing %1 of %2</source>
-        <translation>Синхронизирую %1 из %2</translation>
+        <translation>Синхронизация %1 из %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="952"/>
@@ -3814,7 +3814,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/common/utility.cpp" line="458"/>
         <source>now</source>
-        <translation>сейчас</translation>
+        <translation>только что</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="460"/>

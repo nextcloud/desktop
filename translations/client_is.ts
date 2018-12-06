@@ -586,12 +586,12 @@ skráakerfið eða sameignarmöppur, gætu verið með önnur takmörk.</transla
     <message>
         <location filename="../src/gui/application.cpp" line="191"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation type="unfinished"/>
+        <translation>Það kom upp villa við að nálgast stillingaskrána á %1. Gakktu úr skugga um að notandinn hafi heimild til að vinna með skrána.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="194"/>
         <source>Quit %1</source>
-        <translation type="unfinished"/>
+        <translation>Hætta í %1</translation>
     </message>
 </context>
 <context>
@@ -630,12 +630,12 @@ skráakerfið eða sameignarmöppur, gætu verið með önnur takmörk.</transla
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="993"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Settu inn lykilorð fyrir enda-í-enda dulritun:&lt;br&gt;&lt;br&gt;Notandi: %2&lt;br&gt;Aðgangur: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1001"/>
         <source>Enter E2E passphrase</source>
-        <translation type="unfinished"/>
+        <translation>Settu inn EíE-lykilorð</translation>
     </message>
 </context>
 <context>
@@ -2207,7 +2207,7 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
         <source>File %1 can not be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>Ekki var hægt að sækja %1 skrána því dulritunarupplýsingar vantar.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="434"/>
@@ -3116,7 +3116,7 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="834"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Mistókst að opna eða búa til atvikaskrána. Gakktu úr skugga um að þú hafir les- og skrifheimildir í staðværu samstillingarmöppunni á tölvunni.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1347"/>
@@ -3151,7 +3151,7 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="123"/>
         <source>Failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Mistókst að hlaða inn eða búa til atvikaskrána. Gakktu úr skugga um að þú hafir les- og skrifheimildir í staðværu samstillingarmöppunni á tölvunni.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="127"/>
@@ -3347,7 +3347,7 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/libsync/theme.cpp" line="341"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Þessi útgáfa var gefin út af %1&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3494,7 +3494,7 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="356"/>
         <source>Unresolved conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Óleystir árekstrar</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="363"/>
@@ -3711,7 +3711,7 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="46"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Villa kom upp við tengingu. Endilega reyndu aftur.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
@@ -3735,7 +3735,7 @@ Ekki er mælt með því að hún sé notuð.
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="66"/>
         <source>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Host your own server&lt;/span&gt;&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Hýstu þinn eigin þjón&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="143"/>

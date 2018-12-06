@@ -198,6 +198,6 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Comment[hr]=klijent za sinkronizaciju računala
 Name[hr]=sinkronizacija računala
+Comment[hr]=klijent za sinkronizaciju računala
 GenericName[hr]=Sinkronizacija mapa

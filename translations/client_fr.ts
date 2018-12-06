@@ -519,7 +519,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="182"/>
         <source>Synced </source>
-        <translation>Synchronisé</translation>
+        <translation>Synchronisé </translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="217"/>
@@ -1341,7 +1341,7 @@ Continuer la synchronisation comme d&apos;habitude fera en sorte que tous les fi
     <message>
         <location filename="../src/gui/generalsettings.ui" line="250"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation>Afficher les dossiers à synchroniser dans le panneau de navigation de l&apos;&amp;Explorateur</translation>
+        <translation>Afficher les dossiers synchronisés dans le panneau de navigation de l&apos;&amp;Explorateur de fichiers</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="267"/>
@@ -1653,7 +1653,7 @@ Les journaux seront écrits dans %1.</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="29"/>
         <source>No Proxy</source>
-        <translation>Pas de serveur proxy</translation>
+        <translation>Aucun serveur proxy</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="42"/>
@@ -1683,7 +1683,7 @@ Les journaux seront écrits dans %1.</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation>Bande passante de téléchargement</translation>
+        <translation>Bande passante de réception</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="196"/>
@@ -1712,7 +1712,7 @@ Les journaux seront écrits dans %1.</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="269"/>
         <source>Upload Bandwidth</source>
-        <translation>Bande passante de téléversement</translation>
+        <translation>Bande passante d&apos;émission</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="253"/>
@@ -3394,7 +3394,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="424"/>
         <source>Log in...</source>
-        <translation>Connexion...</translation>
+        <translation>Connexion en cours ...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="428"/>
@@ -3823,7 +3823,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="458"/>
         <source>now</source>
-        <translation>maintenant</translation>
+        <translation>A l&apos;instant</translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="460"/>

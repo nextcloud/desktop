@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Comment[gl]=@APPLICATION_NAME@ cliente de sincronización para escritorio
 Icon[gl]=@APPLICATION_ICON_NAME@
-Name[gl]=@APPLICATION_NAME@ cliente de sincr escritorio
-GenericName[gl]=Sincr. de cartafol
+Name[gl]=@APPLICATION_NAME@ cliente de sincronización para escritorio
+Comment[gl]=@APPLICATION_NAME@ cliente de sincronización para escritorio
+GenericName[gl]=Sincronización de cartafol

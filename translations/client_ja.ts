@@ -1933,7 +1933,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="56"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>リンクをクリップボードにコピーする</translation>
     </message>
 </context>
 <context>
@@ -1987,7 +1987,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="282"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>無効なURL</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="404"/>
@@ -2080,7 +2080,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="508"/>
         <source>creating folder on Nextcloud: %1</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud上にフォルダを作成中：%1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="524"/>
@@ -2802,7 +2802,7 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/socketapi.cpp" line="457"/>
         <source>Share with %1</source>
         <comment>parameter is Nextcloud</comment>
-        <translation type="unfinished"/>
+        <translation>%1 と共有</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="491"/>
