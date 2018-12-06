@@ -192,9 +192,11 @@ if(BUILD_SHELL_INTEGRATION)
     add_subdirectory(shell_integration)
 endif()
 
-if(UNIT_TESTING)
+include(CTest)
+if(BUILD_TESTING)
+    enable_testing()
     add_subdirectory(test)
-endif(UNIT_TESTING)
+endif()
 
 configure_file(config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 configure_file(version.h.in ${CMAKE_CURRENT_BINARY_DIR}/version.h)
