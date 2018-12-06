@@ -1,6 +1,6 @@
 name: desktop
 title: Desktop Client
 version: latest
-start_page: ROOT:introduction.adoc
+start_page: ROOT:index.adoc
 nav:
 - modules/ROOT/nav.adoc
