@@ -484,10 +484,6 @@ void DiscoveryMainThread::doOpendirSlot(const QString &subPath, DiscoveryDirecto
         fullPath += '/';
     }
     fullPath += subPath;
-    // remove trailing slash
-    while (fullPath.endsWith('/')) {
-        fullPath.chop(1);
-    }
 
     _discoveryJob->update_job_update_callback(/*local=*/false, subPath.toUtf8(), _discoveryJob);
 
