@@ -13,3 +13,5 @@ set_target_properties("${synclib_NAME}_vfs_suffix" PROPERTIES
     AUTOMOC TRUE
 )
 
+INSTALL(TARGETS "${synclib_NAME}_vfs_suffix" LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}/plugins")
+
