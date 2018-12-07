@@ -573,17 +573,17 @@
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="190"/>
+        <location filename="../src/gui/application.cpp" line="192"/>
         <source>Error accessing the configuration file</source>
         <translation>Yapılandırma dosyasına erişilirken sorun çıktı</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="191"/>
+        <location filename="../src/gui/application.cpp" line="193"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
         <translation>%1 üzerindeki yapılandırma dosyasına erişilirken bir sorun çıktı. Lütfen kullanıcı hesabınızın yapılandırma dosyasına erişme izinlerinin olduğundan emin olun.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="194"/>
+        <location filename="../src/gui/application.cpp" line="196"/>
         <source>Quit %1</source>
         <translation>%1 Uygulamasından Çık</translation>
     </message>
