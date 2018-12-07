@@ -60,7 +60,7 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
     QList<QPair<QString, bool>> deleted;
     bool success = FileSystem::removeRecursively(
         absolute,
-        [this, &deleted](const QString &path, bool isDir) {
+        [&deleted](const QString &path, bool isDir) {
             // by prepending, a folder deletion may be followed by content deletions
             deleted.prepend(qMakePair(path, isDir));
         },
