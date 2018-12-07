@@ -211,7 +211,7 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     QVector<AccountStatePtr> problemAccounts;
     auto setStatusText = [&](const QString &text) {
         // Don't overwrite the status if we're currently syncing
-        if (FolderMan::instance()->currentSyncFolder())
+        if (FolderMan::instance()->isAnySyncRunning())
             return;
         _actionStatus->setText(text);
     };

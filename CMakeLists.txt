@@ -3,6 +3,11 @@ set(CMAKE_CXX_STANDARD 14)
 
 project(client)
 
+if(UNIT_TESTING)
+    include(CTest)
+    enable_testing()
+endif()
+
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 include("${CMAKE_CURRENT_LIST_DIR}/THEME.cmake")
@@ -158,8 +163,9 @@ if( WIN32 )
 add_definitions( -D__USE_MINGW_ANSI_STDIO=1 )
 add_definitions( -DNOMINMAX )
 # Get APIs from from Vista onwards.
-add_definitions( -D_WIN32_WINNT=0x0600)
-add_definitions( -DWINVER=0x0600)
+add_definitions(-D_WIN32_WINNT=0x0600)
+add_definitions(-DWINVER=0x0600)
+add_definitions(-DNTDDI_VERSION=0x0A000003)
 endif( WIN32 )
 
 if (APPLE)
@@ -187,8 +193,6 @@ if(BUILD_SHELL_INTEGRATION)
 endif()
 
 if(UNIT_TESTING)
-    include(CTest)
-    enable_testing()
     add_subdirectory(test)
 endif(UNIT_TESTING)
 

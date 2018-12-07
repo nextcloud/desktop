@@ -211,7 +211,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     case FolderStatusDelegate::FolderErrorMsg:
         return f->syncResult().errorStrings();
     case FolderStatusDelegate::FolderInfoMsg:
-        return f->useVirtualFiles()
+        return f->newFilesAreVirtual()
             ? QStringList(tr("New files are being created as virtual files."))
             : QStringList();
     case FolderStatusDelegate::SyncRunning:
@@ -362,7 +362,7 @@ int FolderStatusModel::rowCount(const QModelIndex &parent) const
     auto info = infoForIndex(parent);
     if (!info)
         return 0;
-    if (info->_folder && info->_folder->useVirtualFiles())
+    if (info->_folder && info->_folder->newFilesAreVirtual())
         return 0;
     if (info->hasLabel())
         return 1;
@@ -519,7 +519,7 @@ bool FolderStatusModel::hasChildren(const QModelIndex &parent) const
     if (!info)
         return false;
 
-    if (info->_folder && info->_folder->useVirtualFiles())
+    if (info->_folder && info->_folder->newFilesAreVirtual())
         return false;
 
     if (!info->_fetched)
@@ -547,7 +547,7 @@ bool FolderStatusModel::canFetchMore(const QModelIndex &parent) const
         // Keep showing the error to the user, it will be hidden when the account reconnects
         return false;
     }
-    if (info->_folder && info->_folder->useVirtualFiles()) {
+    if (info->_folder && info->_folder->newFilesAreVirtual()) {
         // Selective sync is hidden in that case
         return false;
     }
@@ -1072,9 +1072,9 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
     } else if (state == SyncResult::NotYetStarted) {
         FolderMan *folderMan = FolderMan::instance();
         int pos = folderMan->scheduleQueue().indexOf(f);
-        if (folderMan->currentSyncFolder()
-            && folderMan->currentSyncFolder() != f) {
-            pos += 1;
+        for (auto other : folderMan->map()) {
+            if (other != f && other->isSyncRunning())
+                pos += 1;
         }
         QString message;
         if (pos <= 0) {

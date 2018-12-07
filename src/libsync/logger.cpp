@@ -26,6 +26,10 @@
 #include <zlib.h>
 #endif
 
+#ifdef Q_OS_WIN
+#include <io.h> // for stdout
+#endif
+
 namespace OCC {
 
 static void mirallLogCatcher(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
@@ -161,7 +165,7 @@ void Logger::setLogFile(const QString &name)
 
     bool openSucceeded = false;
     if (name == QLatin1String("-")) {
-        openSucceeded = _logFile.open(1, QIODevice::WriteOnly);
+        openSucceeded = _logFile.open(stdout, QIODevice::WriteOnly);
     } else {
         _logFile.setFileName(name);
         openSucceeded = _logFile.open(QIODevice::WriteOnly);

@@ -189,5 +189,15 @@ bool FileSystem::removeRecursively(const QString &path, const std::function<void
     return allRemoved;
 }
 
+bool FileSystem::getInode(const QString &filename, quint64 *inode)
+{
+    csync_file_stat_t fs;
+    if (csync_vio_local_stat(filename.toUtf8().constData(), &fs) == 0) {
+        *inode = fs.inode;
+        return true;
+    }
+    return false;
+}
+
 
 } // namespace OCC

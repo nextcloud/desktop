@@ -196,7 +196,8 @@ static void traverse_dir(void **state, const char *dir, int *cnt)
     dh = csync_vio_local_opendir(dir);
     assert_non_null(dh);
 
-    while( (dirent = csync_vio_local_readdir(dh)) ) {
+    OCC::Vfs *vfs = nullptr;
+    while( (dirent = csync_vio_local_readdir(dh, vfs)) ) {
         assert_non_null(dirent.get());
         if (!dirent->original_path.isEmpty()) {
             sv->ignored_dir = c_strdup(dirent->original_path);

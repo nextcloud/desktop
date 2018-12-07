@@ -25,6 +25,10 @@
 #include <QByteArray>
 #include <QFutureWatcher>
 
+#include <memory>
+
+class QFile;
+
 namespace OCC {
 
 /**
@@ -65,10 +69,10 @@ OCSYNC_EXPORT bool uploadChecksumEnabled();
 OCSYNC_EXPORT QByteArray contentChecksumType();
 
 // Exported functions for the tests.
-QByteArray OCSYNC_EXPORT calcMd5(const QString &fileName);
-QByteArray OCSYNC_EXPORT calcSha1(const QString &fileName);
+QByteArray OCSYNC_EXPORT calcMd5(QIODevice *device);
+QByteArray OCSYNC_EXPORT calcSha1(QIODevice *device);
 #ifdef ZLIB_FOUND
-QByteArray OCSYNC_EXPORT calcAdler32(const QString &fileName);
+QByteArray OCSYNC_EXPORT calcAdler32(QIODevice *device);
 #endif
 
 /**
@@ -80,6 +84,7 @@ class OCSYNC_EXPORT ComputeChecksum : public QObject
     Q_OBJECT
 public:
     explicit ComputeChecksum(QObject *parent = 0);
+    ~ComputeChecksum();
 
     /**
      * Sets the checksum type to be used. The default is empty.
@@ -89,16 +94,33 @@ public:
     QByteArray checksumType() const;
 
     /**
+     * Computes the checksum for given device.
+     *
+     * done() is emitted when the calculation finishes.
+     *
+     * Does not take ownership of the device.
+     * Does not call open() on the device.
+     */
+    void start(QIODevice *device);
+
+    /**
      * Computes the checksum for the given file path.
      *
      * done() is emitted when the calculation finishes.
+     *
+     * Convenience wrapper for start(QIODevice*) above.
      */
     void start(const QString &filePath);
 
     /**
      * Computes the checksum synchronously.
      */
-    static QByteArray computeNow(const QString &filePath, const QByteArray &checksumType);
+    static QByteArray computeNow(QIODevice *device, const QByteArray &checksumType);
+
+    /**
+     * Computes the checksum synchronously on file. Convenience wrapper for computeNow().
+     */
+    static QByteArray computeNowOnFile(const QString &filePath, const QByteArray &checksumType);
 
 signals:
     void done(const QByteArray &checksumType, const QByteArray &checksum);
@@ -108,6 +130,9 @@ private slots:
 
 private:
     QByteArray _checksumType;
+
+    // The convenience wrapper may open a file and must close it too
+    std::unique_ptr<QFile> _file;
 
     // watcher for the checksum calculation thread
     QFutureWatcher<QByteArray> _watcher;
@@ -124,11 +149,21 @@ public:
     explicit ValidateChecksumHeader(QObject *parent = 0);
 
     /**
-     * Check a file's actual checksum against the provided checksumHeader
+     * Check a device's actual checksum against the provided checksumHeader
      *
      * If no checksum is there, or if a correct checksum is there, the signal validated()
      * will be emitted. In case of any kind of error, the signal validationFailed() will
      * be emitted.
+     *
+     * Does not take ownership of the device.
+     * Does not call open() on the device.
+     */
+    void start(QIODevice *device, const QByteArray &checksumHeader);
+
+    /**
+     * Same as above but opening a file by path.
+     *
+     * Convenience function for start(QIODevice*) above
      */
     void start(const QString &filePath, const QByteArray &checksumHeader);
 
@@ -140,6 +175,8 @@ private slots:
     void slotChecksumCalculated(const QByteArray &checksumType, const QByteArray &checksum);
 
 private:
+    ComputeChecksum *prepareStart(const QByteArray &checksumHeader);
+
     QByteArray _expectedChecksumType;
     QByteArray _expectedChecksum;
 };

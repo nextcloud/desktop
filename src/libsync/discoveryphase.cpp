@@ -77,7 +77,7 @@ bool DiscoveryPhase::isInSelectiveSyncBlackList(const QString &path) const
 void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePermissions remotePerm,
     std::function<void(bool)> callback)
 {
-    if (_syncOptions._confirmExternalStorage && !_syncOptions._newFilesAreVirtual
+    if (_syncOptions._confirmExternalStorage && _syncOptions._vfs->mode() == Vfs::Off
         && remotePerm.hasPermission(RemotePermissions::IsMounted)) {
         // external storage.
 
@@ -100,7 +100,7 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
     }
 
     auto limit = _syncOptions._newBigFolderSizeLimit;
-    if (limit < 0 || _syncOptions._newFilesAreVirtual) {
+    if (limit < 0 || (_syncOptions._vfs->mode() != Vfs::Off && _syncOptions._newFilesAreVirtual)) {
         // no limit, everything is allowed;
         return callback(false);
     }
@@ -365,11 +365,11 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
     if (!_ignoredFirst) {
         // This is a sanity check, if we haven't _ignoredFirst then it means we never received any directoryListingIteratedSlot
         // which means somehow the server XML was bogus
-        emit finished({ 0, tr("Server error: PROPFIND reply is not XML formatted!") });
+        emit finished(HttpError{ 0, tr("Server error: PROPFIND reply is not XML formatted!") });
         deleteLater();
         return;
     } else if (!_error.isEmpty()) {
-        emit finished({ 0, _error });
+        emit finished(HttpError{ 0, _error });
         deleteLater();
         return;
     }
@@ -390,7 +390,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
         msg = tr("Server error: PROPFIND reply is not XML formatted!");
 
     }
-    emit finished({httpCode, msg});
+    emit finished(HttpError{ httpCode, msg });
     deleteLater();
 }
 }

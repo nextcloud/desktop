@@ -21,18 +21,21 @@
 #include "progressdispatcher.h"
 #include "common/syncjournaldb.h"
 #include "networkjobs.h"
+#include "syncoptions.h"
 
 #include <QObject>
 #include <QStringList>
 #include <QUuid>
 #include <set>
 #include <chrono>
+#include <memory>
 
 class QThread;
 class QSettings;
 
 namespace OCC {
 
+class Vfs;
 class SyncEngine;
 class AccountState;
 class SyncRunFileLog;
@@ -64,10 +67,15 @@ public:
     bool paused;
     /// whether the folder syncs hidden files
     bool ignoreHiddenFiles;
-    /// New files are downloaded as virtual files
-    bool useVirtualFiles = false;
+    /// Which virtual files setting the folder uses
+    Vfs::Mode virtualFilesMode = Vfs::Off;
+    /// Whether new files are virtual
+    bool newFilesAreVirtual = false;
     /// The CLSID where this folder appears in registry for the Explorer navigation pane entry.
     QUuid navigationPaneClsid;
+
+    /// Whether the vfs mode shall silently be updated if possible
+    bool upgradeVfsMode = false;
 
     /// Saves the folder definition, creating a new settings group.
     static void save(QSettings &settings, const FolderDefinition &folder);
@@ -101,7 +109,9 @@ class Folder : public QObject
     Q_OBJECT
 
 public:
-    Folder(const FolderDefinition &definition, AccountState *accountState, QObject *parent = 0L);
+    /** Create a new Folder
+     */
+    Folder(const FolderDefinition &definition, AccountState *accountState, std::unique_ptr<Vfs> vfs, QObject *parent = 0L);
 
     ~Folder();
 
@@ -170,13 +180,16 @@ public:
      */
     virtual bool isBusy() const;
 
+    /** True if the folder is currently synchronizing */
+    bool isSyncRunning() const;
+
     /**
      * return the last sync result with error message and status
      */
     SyncResult syncResult() const;
 
     /**
-      * This is called if the sync folder definition is removed. Do cleanups here.
+      * This is called when the sync folder definition is removed. Do cleanups here.
       */
     virtual void wipe();
 
@@ -243,9 +256,18 @@ public:
      */
     void registerFolderWatcher();
 
-    /** new files are downloaded as virtual files */
-    bool useVirtualFiles() { return _definition.useVirtualFiles; }
-    void setUseVirtualFiles(bool enabled);
+    /** virtual files of some kind are enabled
+     *
+     * This is independent of whether new files will be virtual. It's possible to have this enabled
+     * and never have an automatic virtual file. But when it's on, the shell context menu will allow
+     * users to make existing files virtual.
+     */
+    bool supportsVirtualFiles() const;
+    void setSupportsVirtualFiles(bool enabled);
+
+    /** whether new remote files shall become virtual locally */
+    bool newFilesAreVirtual() const;
+    void setNewFilesAreVirtual(bool enabled);
 
 signals:
     void syncStateChange();
@@ -293,9 +315,17 @@ public slots:
 
     /**
      * Mark a virtual file as being ready for download, and start a sync.
-     * relativePath is the patch to the file (including the extension)
+     * relativepath is the path to the file (including the extension)
      */
     void downloadVirtualFile(const QString &relativepath);
+
+    /**
+     * Turn a regular file into a dehydrated placeholder.
+     *
+     * relativepath is the path to the file
+     * It's allowed to pass a path to a folder: all contained files will be dehydrated.
+     */
+    void dehydrateFile(const QString &relativepath);
 
     /** Ensures that the next sync performs a full local discovery. */
     void slotNextSyncFullLocalDiscovery();
@@ -339,7 +369,19 @@ private slots:
     /** Warn users about an unreliable folder watcher */
     void slotWatcherUnreliable(const QString &message);
 
+    /** Aborts any running sync and blocks it until hydration is finished.
+     *
+     * Hydration circumvents the regular SyncEngine and both mustn't be running
+     * at the same time.
+     */
+    void slotHydrationStarts();
+
+    /** Unblocks normal sync operation */
+    void slotHydrationDone();
+
 private:
+    void connectSyncRoot();
+
     bool reloadExcludes();
 
     void showSyncResultPopup();
@@ -360,6 +402,8 @@ private:
 
     void createGuiLog(const QString &filename, LogStatus status, int count,
         const QString &renameTarget = QString());
+
+    void startVfs();
 
     AccountStatePtr _accountState;
     FolderDefinition _definition;
@@ -418,6 +462,11 @@ private:
      * Keeps track of locally dirty files so we can skip local discovery sometimes.
      */
     QScopedPointer<LocalDiscoveryTracker> _localDiscoveryTracker;
+
+    /**
+     * The vfs mode instance (created by plugin) to use. Never null.
+     */
+    QSharedPointer<Vfs> _vfs;
 };
 }
 

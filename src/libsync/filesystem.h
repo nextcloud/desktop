@@ -64,6 +64,11 @@ namespace FileSystem {
     qint64 OWNCLOUDSYNC_EXPORT getSize(const QString &filename);
 
     /**
+     * @brief Retrieve a file inode with csync
+     */
+    bool OWNCLOUDSYNC_EXPORT getInode(const QString &filename, quint64 *inode);
+
+    /**
      * @brief Check if \a fileName has changed given previous size and mtime
      *
      * Nonexisting files are covered through mtime: they have an mtime of -1.

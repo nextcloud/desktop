@@ -15,6 +15,7 @@
 #include "syncfileitem.h"
 #include "common/syncjournalfilerecord.h"
 #include "common/utility.h"
+#include "filesystem.h"
 
 #include <QLoggingCategory>
 #include "csync/vio/csync_vio_local.h"
@@ -36,17 +37,15 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     rec._serverHasIgnoredFiles = _serverHasIgnoredFiles;
     rec._checksumHeader = _checksumHeader;
 
-    // Go through csync vio just to get the inode.
-    csync_file_stat_t fs;
-    if (csync_vio_local_stat(localFileName.toUtf8().constData(), &fs) == 0) {
-        rec._inode = fs.inode;
-        qCDebug(lcFileItem) << localFileName << "Retrieved inode " << _inode << "(previous item inode: " << _inode << ")";
+    // Update the inode if possible
+    rec._inode = _inode;
+    if (FileSystem::getInode(localFileName, &rec._inode)) {
+        qCDebug(lcFileItem) << localFileName << "Retrieved inode " << rec._inode << "(previous item inode: " << _inode << ")";
     } else {
         // use the "old" inode coming with the item for the case where the
         // filesystem stat fails. That can happen if the the file was removed
         // or renamed meanwhile. For the rename case we still need the inode to
         // detect the rename though.
-        rec._inode = _inode;
         qCWarning(lcFileItem) << "Failed to query the 'inode' for file " << localFileName;
     }
     return rec;

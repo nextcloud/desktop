@@ -167,3 +167,4 @@ else()
 endif()
 
 
+add_subdirectory(vfs)

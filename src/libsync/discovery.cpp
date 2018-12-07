@@ -85,8 +85,7 @@ void ProcessDirectoryJob::process()
     for (auto &e : _localNormalQueryEntries) {
         // Remove the virtual file suffix
         auto name = e.name;
-        if (hasVirtualFileSuffix(name)) {
-            e.isVirtualFile = true;
+        if (e.isVirtualFile && isVfsWithSuffix()) {
             chopVirtualFileSuffix(name);
             auto &entry = entries[name];
             // If there is both a virtual file and a real file, we must keep the real file
@@ -102,7 +101,7 @@ void ProcessDirectoryJob::process()
     auto pathU8 = _currentFolder._original.toUtf8();
     if (!_discoveryData->_statedb->listFilesInPath(pathU8, [&](const SyncJournalFileRecord &rec) {
             auto name = pathU8.isEmpty() ? rec._path : QString::fromUtf8(rec._path.constData() + (pathU8.size() + 1));
-            if (rec.isVirtualFile())
+            if (rec.isVirtualFile() && isVfsWithSuffix())
                 chopVirtualFileSuffix(name);
             entries[name].dbEntry = rec;
         })) {
@@ -119,21 +118,23 @@ void ProcessDirectoryJob::process()
         PathTuple path;
         path = _currentFolder.addName(f.first);
 
-        // If the file is virtual in the db, adjust path._original
-        if (e.dbEntry.isVirtualFile()) {
-            ASSERT(hasVirtualFileSuffix(e.dbEntry._path));
-            addVirtualFileSuffix(path._original);
-        } else if (e.localEntry.isVirtualFile) {
-            // We don't have a db entry - but it should be at this path
-            addVirtualFileSuffix(path._original);
-        }
+        if (isVfsWithSuffix()) {
+            // If the file is virtual in the db, adjust path._original
+            if (e.dbEntry.isVirtualFile()) {
+                ASSERT(hasVirtualFileSuffix(e.dbEntry._path));
+                addVirtualFileSuffix(path._original);
+            } else if (e.localEntry.isVirtualFile) {
+                // We don't have a db entry - but it should be at this path
+                addVirtualFileSuffix(path._original);
+            }
 
-        // If the file is virtual locally, adjust path._local
-        if (e.localEntry.isVirtualFile) {
-            ASSERT(hasVirtualFileSuffix(e.localEntry.name));
-            addVirtualFileSuffix(path._local);
-        } else if (e.dbEntry.isVirtualFile() && _queryLocal == ParentNotChanged) {
-            addVirtualFileSuffix(path._local);
+            // If the file is virtual locally, adjust path._local
+            if (e.localEntry.isVirtualFile) {
+                ASSERT(hasVirtualFileSuffix(e.localEntry.name));
+                addVirtualFileSuffix(path._local);
+            } else if (e.dbEntry.isVirtualFile() && _queryLocal == ParentNotChanged) {
+                addVirtualFileSuffix(path._local);
+            }
         }
 
         // If the filename starts with a . we consider it a hidden file
@@ -288,6 +289,10 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     // either in processFileAnalyzeRemoteInfo() or further down here.
     if (item->_type == ItemTypeVirtualFileDownload)
         item->_type = ItemTypeVirtualFile;
+    // Similarly db entries with a dehydration request denote a regular file
+    // until the request is processed.
+    if (item->_type == ItemTypeVirtualFileDehydration)
+        item->_type = ItemTypeFile;
 
     if (serverEntry.isValid()) {
         processFileAnalyzeRemoteInfo(item, path, localEntry, serverEntry, dbEntry);
@@ -314,7 +319,7 @@ static bool computeLocalChecksum(const QByteArray &header, const QString &path, 
     auto type = parseChecksumHeaderType(header);
     if (!type.isEmpty()) {
         // TODO: compute async?
-        QByteArray checksum = ComputeChecksum::computeNow(path, type);
+        QByteArray checksum = ComputeChecksum::computeNowOnFile(path, type);
         if (!checksum.isEmpty()) {
             item->_checksumHeader = makeChecksumHeader(type, checksum);
             return true;
@@ -395,9 +400,11 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             return;
         }
         // Turn new remote files into virtual files if the option is enabled.
-        if (!localEntry.isValid() && _discoveryData->_syncOptions._newFilesAreVirtual && item->_type == ItemTypeFile) {
+        auto &opts = _discoveryData->_syncOptions;
+        if (!localEntry.isValid() && opts._vfs->mode() != Vfs::Off && opts._newFilesAreVirtual && item->_type == ItemTypeFile) {
             item->_type = ItemTypeVirtualFile;
-            addVirtualFileSuffix(path._original);
+            if (isVfsWithSuffix())
+                addVirtualFileSuffix(path._original);
         }
         processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
     };
@@ -421,10 +428,17 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         if (!base.isValid())
             return;
 
+        // Remote rename of a virtual file we have locally scheduled for download.
         if (base._type == ItemTypeVirtualFileDownload) {
-            // Remote rename of a virtual file we have locally scheduled
-            // for download. We just consider this NEW but mark it for download.
+            // We just consider this NEW but mark it for download.
             item->_type = ItemTypeVirtualFileDownload;
+            done = true;
+            return;
+        }
+
+        // Remote rename targets a file that shall be locally dehydrated.
+        if (base._type == ItemTypeVirtualFileDehydration) {
+            // Don't worry about the rename, just consider it DELETE + NEW(virtual)
             done = true;
             return;
         }
@@ -432,7 +446,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         // Some things prohibit rename detection entirely.
         // Since we don't do the same checks again in reconcile, we can't
         // just skip the candidate, but have to give up completely.
-        if (base._type != item->_type && base._type != ItemTypeVirtualFile) {
+        if (base.isDirectory() != item->isDirectory()) {
             qCInfo(lcDisco, "file types different, not a rename");
             done = true;
             return;
@@ -447,23 +461,19 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         // Now we know there is a sane rename candidate.
         QString originalPath = QString::fromUtf8(base._path);
 
-        // Rename of a virtual file
-        if (base._type == ItemTypeVirtualFile && item->_type == ItemTypeFile) {
-            // Ignore if the base is a virtual files
-            return;
-        }
-
         if (_discoveryData->_renamedItems.contains(originalPath)) {
             qCInfo(lcDisco, "folder already has a rename entry, skipping");
             return;
         }
 
-        if (item->_type == ItemTypeFile) {
+        if (!base.isDirectory()) {
             csync_file_stat_t buf;
             if (csync_vio_local_stat((_discoveryData->_localDir + originalPath).toUtf8(), &buf)) {
                 qCInfo(lcDisco) << "Local file does not exist anymore." << originalPath;
                 return;
             }
+            // NOTE: This prohibits some VFS renames from being detected since
+            // suffix-file size is different from the db size. That's ok, they'll DELETE+NEW.
             if (buf.modtime != base._modtime || buf.size != base._fileSize || buf.type == ItemTypeDirectory) {
                 qCInfo(lcDisco) << "File has changed locally, not a rename." << originalPath;
                 return;
@@ -473,6 +483,11 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                 qCInfo(lcDisco) << "Local directory does not exist anymore." << originalPath;
                 return;
             }
+        }
+
+        // Renames of virtuals are possible
+        if (base.isVirtualFile()) {
+            item->_type = ItemTypeVirtualFile;
         }
 
         bool wasDeletedOnServer = _discoveryData->findAndCancelDeletedJob(originalPath).first;
@@ -499,10 +514,10 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             // we need to make a request to the server to know that the original file is deleted on the server
             _pendingAsyncJobs++;
             auto job = new RequestEtagJob(_discoveryData->_account, originalPath, this);
-            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const Result<QString> &etag) mutable {
+            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QString> &etag) mutable {
                 _pendingAsyncJobs--;
                 QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
-                if (etag.errorCode() != 404 ||
+                if (etag || etag.error().code != 404 ||
                     // Somehow another item claimed this original path, consider as if it existed
                     _discoveryData->_renamedItems.contains(originalPath)) {
                     // If the file exist or if there is another error, consider it is a new file.
@@ -580,18 +595,27 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     if (!localEntry.isValid()) {
         if (_queryLocal == ParentNotChanged && dbEntry.isValid()) {
+            // Not modified locally (ParentNotChanged)
             if (noServerEntry) {
-                // Not modified locally (ParentNotChanged), but not on the server: Removed on the server.
+                // not on the server: Removed on the server, delete locally
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
+            } else if (dbEntry._type == ItemTypeVirtualFileDehydration) {
+                // dehydration requested
+                item->_direction = SyncFileItem::Down;
+                item->_instruction = CSYNC_INSTRUCTION_NEW;
+                item->_type = ItemTypeVirtualFileDehydration;
             }
         } else if (noServerEntry) {
             // Not locally, not on the server. The entry is stale!
             qCInfo(lcDisco) << "Stale DB entry";
             _discoveryData->_statedb->deleteFileRecord(path._original, true);
             return;
-        } else if (dbEntry._type == ItemTypeVirtualFile) {
+        } else if (dbEntry._type == ItemTypeVirtualFile && isVfsWithSuffix()) {
             // If the virtual file is removed, recreate it.
+            // This is a precaution since the suffix files don't look like the real ones
+            // and we don't want users to accidentally delete server data because they
+            // might not expect that deleting the placeholder will have a remote effect.
             item->_instruction = CSYNC_INSTRUCTION_NEW;
             item->_direction = SyncFileItem::Down;
             item->_type = ItemTypeVirtualFile;
@@ -619,8 +643,11 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     if (dbEntry.isValid()) {
         bool typeChange = localEntry.isDirectory != dbEntry.isDirectory();
-        if (localEntry.isVirtualFile) {
-            if (dbEntry._type == ItemTypeFile) {
+        if (!typeChange && localEntry.isVirtualFile) {
+            if (noServerEntry) {
+                item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+                item->_direction = SyncFileItem::Down;
+            } else if (!dbEntry.isVirtualFile() && isVfsWithSuffix()) {
                 // If we find what looks to be a spurious "abc.owncloud" the base file "abc"
                 // might have been renamed to that. Make sure that the base file is not
                 // deleted from the server.
@@ -631,21 +658,24 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                     item->_type = ItemTypeVirtualFile;
                 }
             }
-            if (noServerEntry) {
-                item->_instruction = CSYNC_INSTRUCTION_REMOVE;
-                item->_direction = SyncFileItem::Down;
-            }
         } else if (!typeChange && ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) || localEntry.isDirectory)) {
             // Local file unchanged.
-            ENFORCE(localEntry.isDirectory == dbEntry.isDirectory());
             if (noServerEntry) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
+            } else if (dbEntry._type == ItemTypeVirtualFileDehydration) {
+                item->_direction = SyncFileItem::Down;
+                item->_instruction = CSYNC_INSTRUCTION_NEW;
+                item->_type = ItemTypeVirtualFileDehydration;
             } else if (!serverModified && dbEntry._inode != localEntry.inode) {
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                 item->_direction = SyncFileItem::Down; // Does not matter
             }
-        } else if (serverModified || dbEntry.isVirtualFile()) {
+        } else if (serverModified
+            // If a suffix-file changes we prefer to go into conflict mode - but in-place
+            // placeholders could be replaced by real files and should be a regular SYNC
+            // if there's no server change.
+            || (isVfsWithSuffix() && dbEntry.isVirtualFile())) {
             processFileConflict(item, path, localEntry, serverEntry, dbEntry);
         } else if (typeChange) {
             item->_instruction = CSYNC_INSTRUCTION_TYPE_CHANGE;
@@ -787,10 +817,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             // We must query the server to know if the etag has not changed
             _pendingAsyncJobs++;
             QString serverOriginalPath = originalPath;
-            if (base.isVirtualFile())
+            if (base.isVirtualFile() && isVfsWithSuffix())
                 chopVirtualFileSuffix(serverOriginalPath);
             auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
-            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const Result<QString> &etag) mutable {
+            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QString> &etag) mutable {
                 if (!etag || (*etag != base._etag && !item->isDirectory()) || _discoveryData->_renamedItems.contains(originalPath)) {
                     qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
                     // Can't be a rename, leave it as a new.
@@ -889,7 +919,7 @@ void ProcessDirectoryJob::processFileFinalize(
     QueryMode recurseQueryLocal, QueryMode recurseQueryServer)
 {
     // Adjust target path for virtual-suffix files
-    if (item->_type == ItemTypeVirtualFile) {
+    if (item->_type == ItemTypeVirtualFile && isVfsWithSuffix()) {
         addVirtualFileSuffix(path._target);
         if (item->_instruction == CSYNC_INSTRUCTION_RENAME)
             addVirtualFileSuffix(item->_renameTarget);
@@ -1143,20 +1173,24 @@ void ProcessDirectoryJob::dbError()
 
 void ProcessDirectoryJob::addVirtualFileSuffix(QString &str) const
 {
-    str.append(_discoveryData->_syncOptions._virtualFileSuffix);
+    str.append(_discoveryData->_syncOptions._vfs->fileSuffix());
 }
 
 bool ProcessDirectoryJob::hasVirtualFileSuffix(const QString &str) const
 {
-    return str.endsWith(_discoveryData->_syncOptions._virtualFileSuffix);
+    if (!isVfsWithSuffix())
+        return false;
+    return str.endsWith(_discoveryData->_syncOptions._vfs->fileSuffix());
 }
 
 void ProcessDirectoryJob::chopVirtualFileSuffix(QString &str) const
 {
+    if (!isVfsWithSuffix())
+        return;
     bool hasSuffix = hasVirtualFileSuffix(str);
     ASSERT(hasSuffix);
     if (hasSuffix)
-        str.chop(_discoveryData->_syncOptions._virtualFileSuffix.size());
+        str.chop(_discoveryData->_syncOptions._vfs->fileSuffix().size());
 }
 
 DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
@@ -1177,17 +1211,17 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
             if (_localQueryDone)
                 this->process();
         } else {
-            if (results.errorCode() == 403) {
+            if (results.error().code == 403) {
                 // 403 Forbidden can be sent by the server if the file firewall is active.
                 // A file or directory should be ignored and sync must continue. See #3490
                 qCWarning(lcDisco, "Directory access Forbidden (File Firewall?)");
                 if (_dirItem) {
                     _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
-                    _dirItem->_errorString = results.errorMessage();
+                    _dirItem->_errorString = results.error().message;
                     emit this->finished();
                     return;
                 }
-            } else if (results.errorCode() == 503) {
+            } else if (results.error().code == 503) {
                 // The server usually replies with the custom "503 Storage not available"
                 // if some path is temporarily unavailable. But in some cases a standard 503
                 // is returned too. Thus we can't distinguish the two and will treat any
@@ -1195,13 +1229,13 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
                 qCWarning(lcDisco(), "Storage was not available!");
                 if (_dirItem) {
                     _dirItem->_instruction = CSYNC_INSTRUCTION_IGNORE;
-                    _dirItem->_errorString = results.errorMessage();
+                    _dirItem->_errorString = results.error().message;
                     emit this->finished();
                     return;
                 }
             }
             emit _discoveryData->fatalError(tr("Server replied with an error while reading directory '%1' : %2")
-                .arg(_currentFolder._server, results.errorMessage()));
+                .arg(_currentFolder._server, results.error().message));
         }
     });
     connect(serverJob, &DiscoverySingleDirectoryJob::firstDirectoryPermissions, this,
@@ -1238,7 +1272,7 @@ bool ProcessDirectoryJob::runLocalQuery()
         return false;
     }
     errno = 0;
-    while (auto dirent = csync_vio_local_readdir(dh)) {
+    while (auto dirent = csync_vio_local_readdir(dh, _discoveryData->_syncOptions._vfs.data())) {
         if (dirent->type == ItemTypeSkip)
             continue;
         LocalInfo i;
@@ -1262,6 +1296,7 @@ bool ProcessDirectoryJob::runLocalQuery()
         i.isDirectory = dirent->type == ItemTypeDirectory;
         i.isHidden = dirent->is_hidden;
         i.isSymLink = dirent->type == ItemTypeSoftLink;
+        i.isVirtualFile = dirent->type == ItemTypeVirtualFile;
         _localNormalQueryEntries.push_back(i);
     }
     csync_vio_local_closedir(dh);
@@ -1272,6 +1307,11 @@ bool ProcessDirectoryJob::runLocalQuery()
         return false;
     }
     return true;
+}
+
+bool ProcessDirectoryJob::isVfsWithSuffix() const
+{
+    return _discoveryData->_syncOptions._vfs->mode() == Vfs::WithSuffix;
 }
 
 }

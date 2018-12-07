@@ -602,7 +602,11 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
             folderDefinition.localPath = localFolder;
             folderDefinition.targetPath = FolderDefinition::prepareTargetPath(_remoteFolder);
             folderDefinition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
-            folderDefinition.useVirtualFiles = _ocWizard->useVirtualFileSync();
+            if (_ocWizard->useVirtualFileSync()) {
+                folderDefinition.virtualFilesMode = bestAvailableVfsMode();
+                if (folderDefinition.virtualFilesMode != Vfs::Off)
+                    folderDefinition.newFilesAreVirtual = true;
+            }
             if (folderMan->navigationPaneHelper().showInExplorerNavigationPane())
                 folderDefinition.navigationPaneClsid = QUuid::createUuid();
 

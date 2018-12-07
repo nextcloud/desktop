@@ -90,8 +90,10 @@ void PropagateRemoteMove::start()
 
     QString source = propagator()->_remoteFolder + _item->_file;
     QString destination = QDir::cleanPath(propagator()->account()->davUrl().path() + propagator()->_remoteFolder + _item->_renameTarget);
-    if (_item->_type == ItemTypeVirtualFile || _item->_type == ItemTypeVirtualFileDownload) {
-        auto suffix = propagator()->syncOptions()._virtualFileSuffix;
+    auto &vfs = propagator()->syncOptions()._vfs;
+    if (vfs->mode() == Vfs::WithSuffix
+        && (_item->_type == ItemTypeVirtualFile || _item->_type == ItemTypeVirtualFileDownload)) {
+        const auto suffix = vfs->fileSuffix();
         ASSERT(source.endsWith(suffix) && destination.endsWith(suffix));
         if (source.endsWith(suffix) && destination.endsWith(suffix)) {
             source.chop(suffix.size());
@@ -162,6 +164,7 @@ void PropagateRemoteMove::finalize()
     record._path = _item->_renameTarget.toUtf8();
     if (oldRecord.isValid()) {
         record._checksumHeader = oldRecord._checksumHeader;
+        record._type = oldRecord._type;
         if (record._fileSize != oldRecord._fileSize) {
             qCWarning(lcPropagateRemoteMove) << "File sizes differ on server vs sync journal: " << record._fileSize << oldRecord._fileSize;
 

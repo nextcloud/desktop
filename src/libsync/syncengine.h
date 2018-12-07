@@ -119,6 +119,13 @@ public:
     /** Access the last sync run's local discovery style */
     LocalDiscoveryStyle lastLocalDiscoveryStyle() const { return _lastLocalDiscoveryStyle; }
 
+    /** Removes all virtual file db entries and dehydrated local placeholders.
+     *
+     * Particularly useful when switching off vfs mode or switching to a
+     * different kind of vfs.
+     */
+    static void wipeVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs);
+
 signals:
     // During update, before reconcile
     void rootEtag(QString);

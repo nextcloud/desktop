@@ -588,11 +588,6 @@ QString OwncloudPropagator::getFilePath(const QString &tmp_file_name) const
     return _localDir + tmp_file_name;
 }
 
-QString OwncloudPropagator::addVirtualFileSuffix(const QString &fileName) const
-{
-    return fileName + _syncOptions._virtualFileSuffix;
-}
-
 void OwncloudPropagator::scheduleNextJob()
 {
     QTimer::singleShot(0, this, &OwncloudPropagator::scheduleNextJobImpl);

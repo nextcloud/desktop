@@ -22,7 +22,7 @@
 
 namespace OCC {
 
-class GETJob : public AbstractNetworkJob
+class OWNCLOUDSYNC_EXPORT GETJob : public AbstractNetworkJob
 {
     Q_OBJECT
 protected:
@@ -133,12 +133,14 @@ signals:
  * @brief Downloads the remote file via GET
  * @ingroup libsync
  */
-class GETFileJob : public GETJob
+class OWNCLOUDSYNC_EXPORT GETFileJob : public GETJob
 {
     Q_OBJECT
-    QFile *_device;
+    QIODevice *_device;
     QMap<QByteArray, QByteArray> _headers;
     QByteArray _expectedEtagForResume;
+    qint64 _expectedContentLength;
+    qint64 _contentLength;
     quint64 _resumeStart;
     QUrl _directDownloadUrl;
     bool _hasEmittedFinishedSignal;
@@ -148,11 +150,11 @@ class GETFileJob : public GETJob
 
 public:
     // DOES NOT take ownership of the device.
-    explicit GETFileJob(AccountPtr account, const QString &path, QFile *device,
+    explicit GETFileJob(AccountPtr account, const QString &path, QIODevice *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
         quint64 resumeStart, QObject *parent = 0);
     // For directDownloadUrl:
-    explicit GETFileJob(AccountPtr account, const QUrl &url, QFile *device,
+    explicit GETFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
         quint64 resumeStart, QObject *parent = 0);
 
@@ -178,6 +180,10 @@ public:
     {
         return _resumeStart;
     }
+
+    qint64 contentLength() const { return _contentLength; }
+    qint64 expectedContentLength() const { return _expectedContentLength; }
+    void setExpectedContentLength(qint64 size) { _expectedContentLength = size; }
 
 private slots:
     void slotReadyRead();

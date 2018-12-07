@@ -1,7 +1,5 @@
 /*
- * libcsync -- a library to sync a directory with another
- *
- * Copyright (c) 2008-2013 by Andreas Schneider <asn@cryptomilk.org>
+ * Copyright (C) by Dominik Schmidt <dschmidt@owncloud.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,18 +16,18 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef _CSYNC_VIO_LOCAL_H
-#define _CSYNC_VIO_LOCAL_H
+#include "plugin.h"
 
-struct csync_vio_handle_t;
+#include "config.h"
+
 namespace OCC {
-class Vfs;
+
+PluginFactory::~PluginFactory() = default;
+
+QString pluginFileName(const QString &type, const QString &name)
+{
+    return QString(QLatin1String("%1sync_%2_%3"))
+            .arg(APPLICATION_EXECUTABLE, type, name);
 }
 
-csync_vio_handle_t OCSYNC_EXPORT *csync_vio_local_opendir(const QString &name);
-int OCSYNC_EXPORT csync_vio_local_closedir(csync_vio_handle_t *dhandle);
-std::unique_ptr<csync_file_stat_t> OCSYNC_EXPORT csync_vio_local_readdir(csync_vio_handle_t *dhandle, OCC::Vfs *vfs);
-
-int OCSYNC_EXPORT csync_vio_local_stat(const char *uri, csync_file_stat_t *buf);
-
-#endif /* _CSYNC_VIO_LOCAL_H */
+}

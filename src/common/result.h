@@ -14,21 +14,16 @@
 
 #pragma once
 
+#include "asserts.h"
+
 namespace OCC {
 
 /**
- * A Result of type T, or an Error that contains a code and a string
- *
- * The code is an HTTP error code.
- **/
-template <typename T>
+ * A Result of type T, or an Error
+ */
+template <typename T, typename Error>
 class Result
 {
-    struct Error
-    {
-        QString string;
-        int code;
-    };
     union {
         T _result;
         Error _error;
@@ -38,12 +33,16 @@ class Result
 public:
     Result(T value)
         : _result(std::move(value))
-        , _isError(false){};
-    Result(int code, QString str)
-        : _error({ std::move(str), code })
+        , _isError(false)
+    {
+    }
+    // TODO: This doesn't work if T and Error are too similar
+    Result(Error error)
+        : _error(std::move(error))
         , _isError(true)
     {
     }
+
     ~Result()
     {
         if (_isError)
@@ -62,14 +61,31 @@ public:
         ASSERT(!_isError);
         return std::move(_result);
     }
-    QString errorMessage() const
+    const Error &error() const &
     {
         ASSERT(_isError);
-        return _error.string;
+        return _error;
     }
-    int errorCode() const
+    Error error() &&
     {
-        return _isError ? _error.code : 0;
+        ASSERT(_isError);
+        return std::move(_error);
+    }
+};
+
+namespace detail {
+struct OptionalNoErrorData{};
+}
+
+template <typename T>
+class Optional : public Result<T, detail::OptionalNoErrorData>
+{
+public:
+    using Result<T, detail::OptionalNoErrorData>::Result;
+
+    Optional()
+        : Optional(detail::OptionalNoErrorData{})
+    {
     }
 };
 
