@@ -19,7 +19,12 @@ set_package_properties(DolphinVcs PROPERTIES
     PURPOSE "Provides plugin interfaces for Dolphin."
 )
 
+set(KDE_INSTALL_DIRS_NO_DEPRECATED TRUE)
 include(KDEInstallDirs)
+# kcoreaddons_add_plugin uses deprecated VAR PLUGIN_INSTALL_DIR
+# when that is fixed and you want to remove this workaround,
+# you need to _require_ the new enough kcoreaddons
+set(PLUGIN_INSTALL_DIR "${KDE_INSTALL_PLUGINDIR}")
 include(KDECMakeSettings)
 include(KDECompilerSettings)
 include(ECMMarkNonGuiExecutable)
