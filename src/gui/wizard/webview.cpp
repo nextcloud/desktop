@@ -1,5 +1,6 @@
 #include "webview.h"
 
+#include <QWebEngineCertificateError>
 #include <QWebEnginePage>
 #include <QWebEngineProfile>
 #include <QWebEngineUrlRequestInterceptor>
