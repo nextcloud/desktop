@@ -2288,12 +2288,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="269"/>
         <source>Enable experimental mode</source>
-        <translation type="unfinished"/>
+        <translation>Deneysel modu etkinleştir</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="270"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Güvenli kal</translation>
     </message>
 </context>
 <context>
@@ -2340,7 +2340,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="484"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation type="unfinished"/>
+        <translation>Dosya indirimi boş disk alanını belirlenen limitin altına düşürecektir.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="488"/>
@@ -2486,7 +2486,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="176"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>%1 karşı tarafa yüklenemez, aynı isimde dosya mevcut</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="283"/>
@@ -2507,7 +2507,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateupload.cpp" line="187"/>
         <location filename="../src/libsync/propagateupload.cpp" line="542"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>%1 karşı tarafa yüklenmesi klasörün kotası aşıyor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="626"/>
@@ -2535,12 +2535,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="468"/>
         <source>Missing File ID from server</source>
-        <translation type="unfinished"/>
+        <translation>Dosya ID sunucuda eksik</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="482"/>
         <source>Missing ETag from server</source>
-        <translation type="unfinished"/>
+        <translation>ETag sunucuda eksik</translation>
     </message>
 </context>
 <context>
@@ -2675,7 +2675,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Senkronize etmek istemediğiniz uzak klasörlerin seçimini kaldırın</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
@@ -2837,7 +2837,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="225"/>
         <source>Upload only (File Drop)</source>
-        <translation type="unfinished"/>
+        <translation>Sadece karşı tarafa yükle (Dosya bırak)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="238"/>
@@ -2857,12 +2857,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="35"/>
         <source>Enter a name to create a new public link...</source>
-        <translation type="unfinished"/>
+        <translation>Yeni bir genel link oluşturmak için isim girin</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="42"/>
         <source>&amp;Create new</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Yeni oluştur</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="105"/>
@@ -2877,22 +2877,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="199"/>
         <source>Recipients can view or download contents.</source>
-        <translation type="unfinished"/>
+        <translation>Alıcılar içeriği görüntüleyebilir ve indirebilir</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="248"/>
         <source>Download / View</source>
-        <translation type="unfinished"/>
+        <translation>İndir / Görüntüle</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="255"/>
         <source>Download / View / Upload</source>
-        <translation type="unfinished"/>
+        <translation>İndir / Görüntüle / Karşı tarafa yükle</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="268"/>
         <source>Recipients can view, download, edit, delete and upload contents.</source>
-        <translation type="unfinished"/>
+        <translation>Alıcılar içerik görüntüleyebilir, düzenleyebilir, silebilir ve karşı tarafa yükleyebilir.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="20"/>
@@ -2913,12 +2913,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="94"/>
         <source>Link shares have been disabled</source>
-        <translation type="unfinished"/>
+        <translation>Link paylaşma devre dışı bırakıldı</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="108"/>
         <source>Create public link share</source>
-        <translation type="unfinished"/>
+        <translation>Herkese açık bağlantı paylaşımı oluştur</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
@@ -2929,7 +2929,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Open link in browser</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantıyı tarayıcıda aç</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
@@ -3018,7 +3018,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="241"/>
         <source>Open link in browser</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantıyı tarayıcıda aç</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="243"/>
