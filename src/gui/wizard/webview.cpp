@@ -10,6 +10,7 @@
 #include <QProgressBar>
 #include <QLoggingCategory>
 #include <QLocale>
+#include <QWebEngineCertificateError>
 
 #include "common/utility.h"
 
