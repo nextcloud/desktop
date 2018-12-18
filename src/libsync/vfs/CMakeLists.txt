@@ -1,4 +1,8 @@
-file(GLOB vfsPlugins RELATIVE ${CMAKE_CURRENT_LIST_DIR} "*")
+# Globbing for plugins has a problem with in-source builds
+# that create directories for the build.
+#file(GLOB vfsPlugins RELATIVE ${CMAKE_CURRENT_LIST_DIR} "*")
+
+SET(vfsPlugins "suffix;win")
 
 foreach(vfsPlugin ${vfsPlugins})
     if(NOT IS_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/${vfsPlugin}")
