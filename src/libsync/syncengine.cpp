@@ -510,7 +510,11 @@ void SyncEngine::startSync()
     _discoveryPhase->_excludes = _excludedFiles.data();
     _discoveryPhase->_statedb = _journal;
     _discoveryPhase->_localDir = _localPath;
+    if (!_discoveryPhase->_localDir.endsWith('/'))
+        _discoveryPhase->_localDir+='/';
     _discoveryPhase->_remoteFolder = _remotePath;
+    if (!_discoveryPhase->_remoteFolder.endsWith('/'))
+        _discoveryPhase->_remoteFolder+='/';
     _discoveryPhase->_syncOptions = _syncOptions;
     _discoveryPhase->_shouldDiscoverLocaly = [this](const QString &s) { return shouldDiscoverLocally(s); };
     _discoveryPhase->_selectiveSyncBlackList = selectiveSyncBlackList;
