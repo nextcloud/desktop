@@ -2490,12 +2490,12 @@ Vfs_windows::Vfs_windows(AccountState *accountState_)
 
 	// "talk" to the sync engine
     _syncWrapper = OCC::SyncWrapper::instance();
-    connect(this, &Vfs_windows::openFile, _syncWrapper, &OCC::SyncWrapper::openFileAtPath, Qt::DirectConnection);
-    connect(this, &Vfs_windows::releaseFile, _syncWrapper, &OCC::SyncWrapper::releaseFileAtPath, Qt::DirectConnection);
-    connect(this, &Vfs_windows::writeFile, _syncWrapper, &OCC::SyncWrapper::writeFileAtPath, Qt::DirectConnection);
-    connect(this, &Vfs_windows::deleteFile, _syncWrapper, &OCC::SyncWrapper::deleteFileAtPath, Qt::DirectConnection);
-    connect(this, &Vfs_windows::addToFileTree, _syncWrapper, &OCC::SyncWrapper::updateFileTree, Qt::DirectConnection);
-    connect(_syncWrapper, &OCC::SyncWrapper::syncFinish, this, &Vfs_windows::slotSyncFinish, Qt::DirectConnection);
+    connect(this, &Vfs_windows::openFile, _syncWrapper, &OCC::SyncWrapper::openFileAtPath, Qt::QueuedConnection);
+    connect(this, &Vfs_windows::releaseFile, _syncWrapper, &OCC::SyncWrapper::releaseFileAtPath, Qt::QueuedConnection);
+    connect(this, &Vfs_windows::writeFile, _syncWrapper, &OCC::SyncWrapper::writeFileAtPath, Qt::QueuedConnection);
+    connect(this, &Vfs_windows::deleteFile, _syncWrapper, &OCC::SyncWrapper::deleteFileAtPath, Qt::QueuedConnection);
+    connect(this, &Vfs_windows::addToFileTree, _syncWrapper, &OCC::SyncWrapper::updateFileTree, Qt::QueuedConnection);
+    connect(_syncWrapper, &OCC::SyncWrapper::syncFinish, this, &Vfs_windows::slotSyncFinish, Qt::QueuedConnection);
 
 //< Examples catch signals ...
 	/*connect(this, SIGNAL(getOperationCreateFile(QString, QString, QString)), SLOT(slotCatchOperationCreateFile(QString, QString, QString)));
