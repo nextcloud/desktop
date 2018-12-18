@@ -107,6 +107,13 @@ bool OCC::isVfsPluginAvailable(Vfs::Mode mode)
         return false;
     }
 
+    // Attempting to load the plugin is essential as it could have dependencies that
+    // can't be resolved and thus not be available after all.
+    if (!loader.load()) {
+        qCWarning(lcPlugin) << "Plugin failed to load:" << loader.errorString();
+        return false;
+    }
+
     return true;
 }
 
