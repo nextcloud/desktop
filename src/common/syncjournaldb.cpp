@@ -107,22 +107,13 @@ QString SyncJournalDb::makeDbName(const QString &localPath,
     const QString &remotePath,
     const QString &user)
 {
-    QString journalPath = QLatin1String("._sync_");
+    QString journalPath = QLatin1String(".sync_");
 
     QString key = QString::fromUtf8("%1@%2:%3").arg(user, remoteUrl.toString(), remotePath);
 
     QByteArray ba = QCryptographicHash::hash(key.toUtf8(), QCryptographicHash::Md5);
     journalPath.append(ba.left(6).toHex());
     journalPath.append(".db");
-
-    // If the journal doesn't exist and we can't create a file
-    // at that location, try again with a journal name that doesn't
-    // have the ._ prefix.
-    //
-    // The disadvantage of that filename is that it will only be ignored
-    // by client versions >2.3.2.
-    //
-    // See #5633: "._*" is often forbidden on samba shared folders.
 
     // If it exists already, the path is clearly usable
     QFile file(QDir(localPath).filePath(journalPath));
@@ -138,19 +129,8 @@ QString SyncJournalDb::makeDbName(const QString &localPath,
         return journalPath;
     }
 
-    // Can we create it if we drop the underscore?
-    QString alternateJournalPath = journalPath.mid(2).prepend(".");
-    QFile file2(QDir(localPath).filePath(alternateJournalPath));
-    if (file2.open(QIODevice::ReadWrite)) {
-        // The alternative worked, use it
-        qCInfo(lcDb) << "Using alternate database path" << alternateJournalPath;
-        file2.close();
-        file2.remove();
-        return alternateJournalPath;
-    }
-
-    // Neither worked, just keep the original and throw errors later
-    qCWarning(lcDb) << "Could not find a writable database path" << file.fileName();
+    // Error during creation, just keep the original and throw errors later
+    qCWarning(lcDb) << "Could not find a writable database path" << file.fileName() << file.errorString();
     return journalPath;
 }
 

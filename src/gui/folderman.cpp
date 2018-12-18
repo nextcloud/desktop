@@ -236,12 +236,13 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                 folderDefinition.journalPath = defaultJournalPath;
             }
 
-            // Migration: ._ files sometimes don't work
-            // So if the configured journalPath is the default one ("._sync_*.db")
+            // Migration: ._ files sometimes can't be created.
+            // So if the configured journalPath has a dot-underscore ("._sync_*.db")
             // but the current default doesn't have the underscore, switch to the
-            // new default. See SyncJournalDb::makeDbName().
+            // new default if no db exists yet.
             if (folderDefinition.journalPath.startsWith("._sync_")
-                && defaultJournalPath.startsWith(".sync_")) {
+                && defaultJournalPath.startsWith(".sync_")
+                && !QFile::exists(folderDefinition.absoluteJournalPath())) {
                 folderDefinition.journalPath = defaultJournalPath;
             }
 

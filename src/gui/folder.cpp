@@ -731,7 +731,7 @@ void Folder::wipe()
     // Delete files that have been partially downloaded.
     slotDiscardDownloadProgress();
 
-    //Unregister the socket API so it does not keep the ._sync_journal file open
+    //Unregister the socket API so it does not keep the .sync_journal file open
     FolderMan::instance()->socketApi()->slotUnregisterPath(alias());
     _journal.close(); // close the sync journal
 

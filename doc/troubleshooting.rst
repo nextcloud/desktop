@@ -55,8 +55,8 @@ Identifying Basic Functionality Problems
 ---------------------
 
 If you see this error message stop your client, delete the
-``._sync_xxxxxxx.db`` file, and then restart your client.
-There is a  hidden ``._sync_xxxxxxx.db`` file inside the folder of every account
+``.sync_xxxxxxx.db`` file, and then restart your client.
+There is a  hidden ``.sync_xxxxxxx.db`` file inside the folder of every account
 configured on your client. 
 
 .. NOTE::

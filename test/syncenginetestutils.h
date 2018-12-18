@@ -1134,7 +1134,7 @@ public:
         _account->setDavDisplayName("fakename");
         _account->setServerVersion("10.0.0");
 
-        _journalDb.reset(new OCC::SyncJournalDb(localPath() + "._sync_test.db"));
+        _journalDb.reset(new OCC::SyncJournalDb(localPath() + ".sync_test.db"));
         _syncEngine.reset(new OCC::SyncEngine(_account, localPath(), "", _journalDb.get()));
         // Ignore temporary files from the download. (This is in the default exclude list, but we don't load it)
         _syncEngine->excludedFiles().addManualExclude("]*.~*");
