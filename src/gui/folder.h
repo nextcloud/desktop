@@ -84,8 +84,14 @@ public:
     static bool load(QSettings &settings, const QString &alias,
         FolderDefinition *folder);
 
-    /// The highest version in the settings that load() can read
-    static int maxSettingsVersion() { return 2; }
+    /** The highest version in the settings that load() can read
+     *
+     * Version 1: initial version (default if value absent in settings)
+     * Version 2: introduction of metadata_parent hash in 2.6.0
+     *            (version remains readable by 2.5.1)
+     * Version 3: introduction of new windows vfs mode in 2.6.0
+     */
+    static int maxSettingsVersion() { return 3; }
 
     /// Ensure / as separator and trailing /.
     static QString prepareLocalPath(const QString &path);

@@ -1248,11 +1248,16 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
     settings.setValue(QLatin1String("targetPath"), folder.targetPath);
     settings.setValue(QLatin1String("paused"), folder.paused);
     settings.setValue(QLatin1String("ignoreHiddenFiles"), folder.ignoreHiddenFiles);
-    settings.setValue(QLatin1String(versionC), maxSettingsVersion());
     settings.setValue(QLatin1String("usePlaceholders"), folder.newFilesAreVirtual);
 
     settings.setValue(QStringLiteral("virtualFilesMode"), Vfs::modeToString(folder.virtualFilesMode));
 
+    // Ensure new vfs modes won't be attempted by older clients
+    if (folder.virtualFilesMode == Vfs::WindowsCfApi) {
+        settings.setValue(QLatin1String(versionC), 3);
+    } else {
+        settings.setValue(QLatin1String(versionC), 2);
+    }
 
     // Happens only on Windows when the explorer integration is enabled.
     if (!folder.navigationPaneClsid.isNull())
