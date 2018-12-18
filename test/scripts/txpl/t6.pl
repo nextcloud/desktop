@@ -61,7 +61,7 @@ sub getETagFromJournal($$)
 {
     my ($name,$num) = @_;
 
-    my $sql = "sqlite3 " . localDir() . "._sync_*.db \"SELECT md5 FROM metadata WHERE path='$name';\"";
+    my $sql = "sqlite3 " . localDir() . ".sync_*.db \"SELECT md5 FROM metadata WHERE path='$name';\"";
     open(my $fh, '-|', $sql) or die $!;
     my $etag  = <$fh>;
     close $fh;
