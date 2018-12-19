@@ -29,6 +29,14 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(QWidget *parent)
     connect(_webView, &WebView::urlCatched, this, &WebFlowCredentialsDialog::urlCatched);
 }
 
+void WebFlowCredentialsDialog::closeEvent(QCloseEvent* e) {
+    Q_UNUSED(e);
+
+    // Force calling WebView::~WebView() earlier so that _profile and _page are
+    // deleted in the correct order.
+    delete _webView;
+}
+
 void WebFlowCredentialsDialog::setUrl(const QUrl &url) {
     _webView->setUrl(url);
 }

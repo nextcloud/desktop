@@ -105,6 +105,19 @@ void WebView::setUrl(const QUrl &url) {
     _page->setUrl(url);
 }
 
+WebView::~WebView() {
+    /*
+     * The Qt implmentation deletes children in the order they are added to the
+     * object tree, so in this case _page is deleted after _profile, which
+     * violates the assumption that _profile should exist longer than
+     * _page [1]. Here I delete _page manually so that _profile can be safely
+     * deleted later.
+     *
+     * [1] https://doc.qt.io/qt-5/qwebenginepage.html#QWebEnginePage-1
+     */
+    delete _page;
+}
+
 WebViewPageUrlRequestInterceptor::WebViewPageUrlRequestInterceptor(QObject *parent)
     : QWebEngineUrlRequestInterceptor(parent) {
 
