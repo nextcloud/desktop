@@ -181,7 +181,7 @@ private:
     bool runLocalQuery();
 
     /** Retrieve and cache directory pin state */
-    PinState directoryPinState();
+    Optional<PinState> directoryPinState();
 
     QueryMode _queryServer;
     QueryMode _queryLocal;

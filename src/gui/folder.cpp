@@ -649,13 +649,13 @@ void Folder::setSupportsVirtualFiles(bool enabled)
 
 bool Folder::newFilesAreVirtual() const
 {
-    return _definition.newFilesAreVirtual;
+    auto pinState = _journal.rawPinStateForPath("");
+    return pinState && *pinState == PinState::OnlineOnly;
 }
 
 void Folder::setNewFilesAreVirtual(bool enabled)
 {
-    _definition.newFilesAreVirtual = enabled;
-    saveToSettings();
+    _journal.setPinStateForPath("", enabled ? PinState::OnlineOnly : PinState::AlwaysLocal);
 }
 
 void Folder::saveToSettings() const
@@ -691,7 +691,11 @@ void Folder::saveToSettings() const
     settings->beginGroup(settingsGroup);
     // Note: Each of these groups might have a "version" tag, but that's
     //       currently unused.
+    settings->beginGroup(FolderMan::escapeAlias(_definition.alias));
     FolderDefinition::save(*settings, _definition);
+
+    // Technically redundant, just for older clients
+    settings->setValue(QLatin1String("usePlaceholders"), newFilesAreVirtual());
 
     settings->sync();
     qCInfo(lcFolder) << "Saved folder" << _definition.alias << "to settings, status" << settings->status();
@@ -841,7 +845,6 @@ void Folder::setSyncOptions()
     opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
     opt._moveFilesToTrash = cfgFile.moveToTrash();
     opt._vfs = _vfs;
-    opt._newFilesAreVirtual = _definition.newFilesAreVirtual;
 
     QByteArray chunkSizeEnv = qgetenv("OWNCLOUD_CHUNK_SIZE");
     if (!chunkSizeEnv.isEmpty()) {
@@ -1241,13 +1244,11 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, bool *cancel
 
 void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
 {
-    settings.beginGroup(FolderMan::escapeAlias(folder.alias));
     settings.setValue(QLatin1String("localPath"), folder.localPath);
     settings.setValue(QLatin1String("journalPath"), folder.journalPath);
     settings.setValue(QLatin1String("targetPath"), folder.targetPath);
     settings.setValue(QLatin1String("paused"), folder.paused);
     settings.setValue(QLatin1String("ignoreHiddenFiles"), folder.ignoreHiddenFiles);
-    settings.setValue(QLatin1String("usePlaceholders"), folder.newFilesAreVirtual);
 
     settings.setValue(QStringLiteral("virtualFilesMode"), Vfs::modeToString(folder.virtualFilesMode));
 
@@ -1263,13 +1264,11 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
         settings.setValue(QLatin1String("navigationPaneClsid"), folder.navigationPaneClsid);
     else
         settings.remove(QLatin1String("navigationPaneClsid"));
-    settings.endGroup();
 }
 
 bool FolderDefinition::load(QSettings &settings, const QString &alias,
     FolderDefinition *folder)
 {
-    settings.beginGroup(alias);
     folder->alias = FolderMan::unescapeAlias(alias);
     folder->localPath = settings.value(QLatin1String("localPath")).toString();
     folder->journalPath = settings.value(QLatin1String("journalPath")).toString();
@@ -1277,7 +1276,6 @@ bool FolderDefinition::load(QSettings &settings, const QString &alias,
     folder->paused = settings.value(QLatin1String("paused")).toBool();
     folder->ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), QVariant(true)).toBool();
     folder->navigationPaneClsid = settings.value(QLatin1String("navigationPaneClsid")).toUuid();
-    folder->newFilesAreVirtual = settings.value(QLatin1String("usePlaceholders")).toBool();
 
     folder->virtualFilesMode = Vfs::WithSuffix;
     QString vfsModeString = settings.value(QStringLiteral("virtualFilesMode")).toString();
@@ -1290,8 +1288,6 @@ bool FolderDefinition::load(QSettings &settings, const QString &alias,
     } else {
         folder->upgradeVfsMode = true;
     }
-
-    settings.endGroup();
 
     // Old settings can contain paths with native separators. In the rest of the
     // code we assum /, so clean it up now.
