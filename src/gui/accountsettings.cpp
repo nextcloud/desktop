@@ -435,8 +435,6 @@ void AccountSettings::slotFolderWizardAccepted()
 
     if (folderWizard->property("useVirtualFiles").toBool()) {
         definition.virtualFilesMode = bestAvailableVfsMode();
-        if (definition.virtualFilesMode != Vfs::Off)
-            definition.newFilesAreVirtual = true;
     }
 
     {
@@ -469,6 +467,9 @@ void AccountSettings::slotFolderWizardAccepted()
 
     Folder *f = folderMan->addFolder(_accountState, definition);
     if (f) {
+        if (definition.virtualFilesMode != Vfs::Off && folderWizard->property("useVirtualFiles").toBool())
+            f->setNewFilesAreVirtual(true);
+
         f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, selectiveSyncBlackList);
 
         // The user already accepted the selective sync dialog. everything is in the white list

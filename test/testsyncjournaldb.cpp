@@ -331,56 +331,76 @@ private slots:
     {
         auto make = [&](const QByteArray &path, PinState state) {
             _db.setPinStateForPath(path, state);
+            auto pinState = _db.rawPinStateForPath(path);
+            QVERIFY(pinState);
+            QCOMPARE(*pinState, state);
         };
-        auto get = [&](const QByteArray &path) {
-            return _db.pinStateForPath(path);
+        auto get = [&](const QByteArray &path) -> PinState {
+            auto state = _db.effectivePinStateForPath(path);
+            if (!state) {
+                QTest::qFail("couldn't read pin state", __FILE__, __LINE__);
+                return PinState::Inherited;
+            }
+            return *state;
         };
 
         // Make a thrice-nested setup
         make("local", PinState::AlwaysLocal);
         make("online", PinState::OnlineOnly);
-        make("unspec", PinState::Unspecified);
-        for (auto base : {"local/", "online/", "unspec/"}) {
-            make(QByteArray(base) + "unspec", PinState::Unspecified);
+        make("inherit", PinState::Inherited);
+        for (auto base : {"local/", "online/", "inherit/"}) {
+            make(QByteArray(base) + "inherit", PinState::Inherited);
             make(QByteArray(base) + "local", PinState::AlwaysLocal);
             make(QByteArray(base) + "online", PinState::OnlineOnly);
 
-            for (auto base2 : {"local/", "online/", "unspec/"}) {
-                make(QByteArray(base) + base2 + "/unspec", PinState::Unspecified);
+            for (auto base2 : {"local/", "online/", "inherit/"}) {
+                make(QByteArray(base) + base2 + "/inherit", PinState::Inherited);
                 make(QByteArray(base) + base2 + "/local", PinState::AlwaysLocal);
                 make(QByteArray(base) + base2 + "/online", PinState::OnlineOnly);
             }
         }
 
-        // Baseline direct checks
+        // Baseline direct checks (the fallback for unset root pinstate is AlwaysLocal)
         QCOMPARE(get("local"), PinState::AlwaysLocal);
         QCOMPARE(get("online"), PinState::OnlineOnly);
-        QCOMPARE(get("unspec"), PinState::Unspecified);
-        QCOMPARE(get("nonexistant"), PinState::Unspecified);
+        QCOMPARE(get("inherit"), PinState::AlwaysLocal);
+        QCOMPARE(get("nonexistant"), PinState::AlwaysLocal);
         QCOMPARE(get("online/local"), PinState::AlwaysLocal);
         QCOMPARE(get("local/online"), PinState::OnlineOnly);
-        QCOMPARE(get("unspec/local"), PinState::AlwaysLocal);
-        QCOMPARE(get("unspec/online"), PinState::OnlineOnly);
-        QCOMPARE(get("unspec/unspec"), PinState::Unspecified);
-        QCOMPARE(get("unspec/nonexistant"), PinState::Unspecified);
+        QCOMPARE(get("inherit/local"), PinState::AlwaysLocal);
+        QCOMPARE(get("inherit/online"), PinState::OnlineOnly);
+        QCOMPARE(get("inherit/inherit"), PinState::AlwaysLocal);
+        QCOMPARE(get("inherit/nonexistant"), PinState::AlwaysLocal);
 
         // Inheriting checks, level 1
-        QCOMPARE(get("local/unspec"), PinState::AlwaysLocal);
+        QCOMPARE(get("local/inherit"), PinState::AlwaysLocal);
         QCOMPARE(get("local/nonexistant"), PinState::AlwaysLocal);
-        QCOMPARE(get("online/unspec"), PinState::OnlineOnly);
+        QCOMPARE(get("online/inherit"), PinState::OnlineOnly);
         QCOMPARE(get("online/nonexistant"), PinState::OnlineOnly);
 
         // Inheriting checks, level 2
-        QCOMPARE(get("local/unspec/unspec"), PinState::AlwaysLocal);
-        QCOMPARE(get("local/local/unspec"), PinState::AlwaysLocal);
+        QCOMPARE(get("local/inherit/inherit"), PinState::AlwaysLocal);
+        QCOMPARE(get("local/local/inherit"), PinState::AlwaysLocal);
         QCOMPARE(get("local/local/nonexistant"), PinState::AlwaysLocal);
-        QCOMPARE(get("local/online/unspec"), PinState::OnlineOnly);
+        QCOMPARE(get("local/online/inherit"), PinState::OnlineOnly);
         QCOMPARE(get("local/online/nonexistant"), PinState::OnlineOnly);
-        QCOMPARE(get("online/unspec/unspec"), PinState::OnlineOnly);
-        QCOMPARE(get("online/local/unspec"), PinState::AlwaysLocal);
+        QCOMPARE(get("online/inherit/inherit"), PinState::OnlineOnly);
+        QCOMPARE(get("online/local/inherit"), PinState::AlwaysLocal);
         QCOMPARE(get("online/local/nonexistant"), PinState::AlwaysLocal);
-        QCOMPARE(get("online/online/unspec"), PinState::OnlineOnly);
+        QCOMPARE(get("online/online/inherit"), PinState::OnlineOnly);
         QCOMPARE(get("online/online/nonexistant"), PinState::OnlineOnly);
+
+        // Check changing the root pin state
+        make("", PinState::OnlineOnly);
+        QCOMPARE(get("local"), PinState::AlwaysLocal);
+        QCOMPARE(get("online"), PinState::OnlineOnly);
+        QCOMPARE(get("inherit"), PinState::OnlineOnly);
+        QCOMPARE(get("nonexistant"), PinState::OnlineOnly);
+        make("", PinState::AlwaysLocal);
+        QCOMPARE(get("local"), PinState::AlwaysLocal);
+        QCOMPARE(get("online"), PinState::OnlineOnly);
+        QCOMPARE(get("inherit"), PinState::AlwaysLocal);
+        QCOMPARE(get("nonexistant"), PinState::AlwaysLocal);
     }
 
 private:

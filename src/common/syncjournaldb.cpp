@@ -1990,24 +1990,47 @@ void SyncJournalDb::markVirtualFileForDownloadRecursively(const QByteArray &path
     query.exec();
 }
 
-PinState SyncJournalDb::pinStateForPath(const QByteArray &path)
+Optional<PinState> SyncJournalDb::rawPinStateForPath(const QByteArray &path)
 {
     QMutexLocker lock(&_mutex);
     if (!checkConnect())
-        return PinState::Unspecified;
+        return {};
 
-    auto &query = _getPinStateQuery;
+    auto &query = _getRawPinStateQuery;
+    ASSERT(query.initOrReset(QByteArrayLiteral(
+            "SELECT pinState FROM flags WHERE path == ?1;"),
+        _db));
+    query.bindValue(1, path);
+    query.exec();
+
+    // no-entry means Inherited
+    if (!query.next())
+        return PinState::Inherited;
+
+    return static_cast<PinState>(query.intValue(0));
+}
+
+Optional<PinState> SyncJournalDb::effectivePinStateForPath(const QByteArray &path)
+{
+    QMutexLocker lock(&_mutex);
+    if (!checkConnect())
+        return {};
+
+    auto &query = _getEffectivePinStateQuery;
     ASSERT(query.initOrReset(QByteArrayLiteral(
             "SELECT pinState FROM flags WHERE"
-            " " IS_PREFIX_PATH_OR_EQUAL("path", "?1")
+            // explicitly allow "" to represent the root path
+            // (it'd be great if paths started with a / and "/" could be the root)
+            " (" IS_PREFIX_PATH_OR_EQUAL("path", "?1") " OR path == '')"
             " AND pinState is not null AND pinState != 0"
             " ORDER BY length(path) DESC;"),
         _db));
     query.bindValue(1, path);
     query.exec();
 
+    // If the root path has no setting, assume AlwaysLocal
     if (!query.next())
-        return PinState::Unspecified;
+        return PinState::AlwaysLocal;
 
     return static_cast<PinState>(query.intValue(0));
 }

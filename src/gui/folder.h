@@ -69,18 +69,16 @@ public:
     bool ignoreHiddenFiles;
     /// Which virtual files setting the folder uses
     Vfs::Mode virtualFilesMode = Vfs::Off;
-    /// Whether new files are virtual
-    bool newFilesAreVirtual = false;
     /// The CLSID where this folder appears in registry for the Explorer navigation pane entry.
     QUuid navigationPaneClsid;
 
     /// Whether the vfs mode shall silently be updated if possible
     bool upgradeVfsMode = false;
 
-    /// Saves the folder definition, creating a new settings group.
+    /// Saves the folder definition into the current settings group.
     static void save(QSettings &settings, const FolderDefinition &folder);
 
-    /// Reads a folder definition from a settings group with the name 'alias'.
+    /// Reads a folder definition from the current settings group.
     static bool load(QSettings &settings, const QString &alias,
         FolderDefinition *folder);
 
@@ -271,7 +269,10 @@ public:
     bool supportsVirtualFiles() const;
     void setSupportsVirtualFiles(bool enabled);
 
-    /** whether new remote files shall become virtual locally */
+    /** whether new remote files shall become virtual locally
+     *
+     * This is the root folder pin state and can be overridden by explicit subfolder pin states.
+     */
     bool newFilesAreVirtual() const;
     void setNewFilesAreVirtual(bool enabled);
 
@@ -432,7 +433,7 @@ private:
     /// Reset when no follow-up is requested.
     int _consecutiveFollowUpSyncs;
 
-    SyncJournalDb _journal;
+    mutable SyncJournalDb _journal;
 
     QScopedPointer<SyncRunFileLog> _fileLog;
 

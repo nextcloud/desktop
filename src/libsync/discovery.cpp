@@ -411,10 +411,14 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         }
         // Turn new remote files into virtual files if the option is enabled.
         auto &opts = _discoveryData->_syncOptions;
+        if (!directoryPinState()) {
+            dbError();
+            return;
+        }
         if (!localEntry.isValid()
             && item->_type == ItemTypeFile
             && opts._vfs->mode() != Vfs::Off
-            && directoryPinState() == PinState::OnlineOnly) {
+            && *directoryPinState() == PinState::OnlineOnly) {
             item->_type = ItemTypeVirtualFile;
             if (isVfsWithSuffix())
                 addVirtualFileSuffix(path._original);
@@ -1323,17 +1327,14 @@ bool ProcessDirectoryJob::runLocalQuery()
     return true;
 }
 
-PinState ProcessDirectoryJob::directoryPinState()
+Optional<PinState> ProcessDirectoryJob::directoryPinState()
 {
-    if (_pinStateCache)
-        return *_pinStateCache;
-
-    // Get the path's pinstate and anchor to the root option
-    _pinStateCache = _discoveryData->_statedb->pinStateForPath(_currentFolder._original.toUtf8());
-    if (*_pinStateCache == PinState::Unspecified)
-        _pinStateCache = _discoveryData->_syncOptions._newFilesAreVirtual ? PinState::OnlineOnly : PinState::AlwaysLocal;
-
-    return *_pinStateCache;
+    if (!_pinStateCache) {
+        _pinStateCache = _discoveryData->_statedb->effectivePinStateForPath(
+                _currentFolder._original.toUtf8());
+        // don't cache db errors, just retry next time
+    }
+    return _pinStateCache;
 }
 
 bool ProcessDirectoryJob::isVfsWithSuffix() const

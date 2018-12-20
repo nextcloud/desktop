@@ -28,6 +28,7 @@
 #include "common/utility.h"
 #include "common/ownsql.h"
 #include "common/syncjournalfilerecord.h"
+#include "common/result.h"
 
 namespace OCC {
 class SyncJournalFileRecord;
@@ -35,7 +36,7 @@ class SyncJournalFileRecord;
 /** Determines whether files should be available locally or not
  *
  * For new remote files the file's PinState is calculated by looking for
- * the closest parent folder that isn't Unspecified.
+ * the closest parent folder that isn't Inherited.
  *
  * TODO: It seems to make sense to also store per-file PinStates.
  * Maybe these could communicate intent, similar to ItemTypeVirtualFileDownload
@@ -43,7 +44,7 @@ class SyncJournalFileRecord;
  */
 enum class PinState {
     /// Inherit the PinState of the parent directory (default)
-    Unspecified = 0,
+    Inherited = 0,
     /// Download file and keep it updated.
     AlwaysLocal = 1,
     /// File shall be virtual locally.
@@ -272,15 +273,35 @@ public:
     void markVirtualFileForDownloadRecursively(const QByteArray &path);
 
     /**
-     * Gets the PinState for the path.
+     * Gets the PinState for the path without considering parents.
      *
-     * If the exact path has no entry or has an unspecified state,
-     * the state is inherited through the parent.
+     * If a path has no explicit PinState "Inherited" is returned.
+     *
+     * It's valid to use the root path "".
+     *
+     * Returns none on db error.
      */
-    PinState pinStateForPath(const QByteArray &path);
+    Optional<PinState> rawPinStateForPath(const QByteArray &path);
+
+    /**
+     * Gets the PinState for the path after inheriting from parents.
+     *
+     * If the exact path has no entry or has an Inherited state,
+     * the state of the closest parent path is returned.
+     *
+     * It's valid to use the root path "".
+     *
+     * Never returns PinState::Inherited. If the root is "Inherited"
+     * or there's an error, "AlwaysLocal" is returned.
+     *
+     * Returns none on db error.
+     */
+    Optional<PinState> effectivePinStateForPath(const QByteArray &path);
 
     /**
      * Sets a path's pin state.
+     *
+     * It's valid to use the root path "".
      */
     void setPinStateForPath(const QByteArray &path, PinState state);
 
@@ -347,7 +368,8 @@ private:
     SqlQuery _getConflictRecordQuery;
     SqlQuery _setConflictRecordQuery;
     SqlQuery _deleteConflictRecordQuery;
-    SqlQuery _getPinStateQuery;
+    SqlQuery _getRawPinStateQuery;
+    SqlQuery _getEffectivePinStateQuery;
     SqlQuery _setPinStateQuery;
 
     /* Storing etags to these folders, or their parent folders, is filtered out.

@@ -228,6 +228,7 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
         settings.endGroup();
 
         FolderDefinition folderDefinition;
+        settings.beginGroup(folderAlias);
         if (FolderDefinition::load(settings, folderAlias, &folderDefinition)) {
             auto defaultJournalPath = folderDefinition.defaultJournalPath(account->account());
 
@@ -259,15 +260,23 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
 
             Folder *f = addFolderInternal(std::move(folderDefinition), account.data(), std::move(vfs));
             if (f) {
+                // Migrate the old "usePlaceholders" setting to the root folder pin state
+                if (settings.value(QLatin1String(versionC), 1).toInt() == 1
+                    && settings.value(QLatin1String("usePlaceholders"), false).toBool()) {
+                    f->setNewFilesAreVirtual(true);
+                }
+
                 // Migration: Mark folders that shall be saved in a backwards-compatible way
                 if (backwardsCompatible)
                     f->setSaveBackwardsCompatible(true);
                 if (foldersWithPlaceholders)
                     f->setSaveInFoldersWithPlaceholders();
+
                 scheduleFolder(f);
                 emit folderSyncStateChange(f);
             }
         }
+        settings.endGroup();
     }
 }
 
