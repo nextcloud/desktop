@@ -306,6 +306,13 @@ public:
     void setPinStateForPath(const QByteArray &path, PinState state);
 
     /**
+     * Wipes pin states for a path and below.
+     *
+     * Used when the user asks a subtree to have a particular pin state.
+     */
+    void wipePinStateForPathAndBelow(const QByteArray &path);
+
+    /**
      * Only used for auto-test:
      * when positive, will decrease the counter for every database operation.
      * reaching 0 makes the operation fails
@@ -371,6 +378,7 @@ private:
     SqlQuery _getRawPinStateQuery;
     SqlQuery _getEffectivePinStateQuery;
     SqlQuery _setPinStateQuery;
+    SqlQuery _wipePinStateQuery;
 
     /* Storing etags to these folders, or their parent folders, is filtered out.
      *

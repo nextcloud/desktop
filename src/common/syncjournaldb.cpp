@@ -2055,6 +2055,20 @@ void SyncJournalDb::setPinStateForPath(const QByteArray &path, PinState state)
     query.exec();
 }
 
+void SyncJournalDb::wipePinStateForPathAndBelow(const QByteArray &path)
+{
+    QMutexLocker lock(&_mutex);
+    if (!checkConnect())
+        return;
+
+    auto &query = _wipePinStateQuery;
+    ASSERT(query.initOrReset(QByteArrayLiteral(
+            "DELETE FROM flags WHERE " IS_PREFIX_PATH_OR_EQUAL("?1", "path") ";"),
+        _db));
+    query.bindValue(1, path);
+    query.exec();
+}
+
 void SyncJournalDb::commit(const QString &context, bool startTrans)
 {
     QMutexLocker lock(&_mutex);
