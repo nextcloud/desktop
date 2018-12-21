@@ -336,6 +336,14 @@ private slots:
             }
             return *state;
         };
+        auto getRaw = [&](const QByteArray &path) -> PinState {
+            auto state = _db.rawPinStateForPath(path);
+            if (!state) {
+                QTest::qFail("couldn't read pin state", __FILE__, __LINE__);
+                return PinState::Inherited;
+            }
+            return *state;
+        };
 
         // Make a thrice-nested setup
         make("local", PinState::AlwaysLocal);
@@ -394,6 +402,14 @@ private slots:
         QCOMPARE(get("online"), PinState::OnlineOnly);
         QCOMPARE(get("inherit"), PinState::AlwaysLocal);
         QCOMPARE(get("nonexistant"), PinState::AlwaysLocal);
+
+        // Wiping
+        QCOMPARE(getRaw("local/local"), PinState::AlwaysLocal);
+        _db.wipePinStateForPathAndBelow("local/local");
+        QCOMPARE(getRaw("local"), PinState::AlwaysLocal);
+        QCOMPARE(getRaw("local/local"), PinState::Inherited);
+        QCOMPARE(getRaw("local/local/local"), PinState::Inherited);
+        QCOMPARE(getRaw("local/local/online"), PinState::Inherited);
     }
 
 private:
