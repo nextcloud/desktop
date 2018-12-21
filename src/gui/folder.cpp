@@ -912,12 +912,12 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
     if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_NEW) {
 //        if (_folderWatcher)
 //            _folderWatcher->addPath(path() + item->_file);
-        updateLocalFileTree(item->_file, item->_instruction);
+        //updateLocalFileTree(item->_file, item->_instruction);
     }
     if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
 //        if (_folderWatcher)
 //            _folderWatcher->removePath(path() + item->_file);
-        updateLocalFileTree(item->_file, item->_instruction);
+        //updateLocalFileTree(item->_file, item->_instruction);
     }
 
     // Success and failure of sync items adjust what the next sync is
@@ -936,7 +936,7 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
 //            qCDebug(lcFolder) << "local discovery: wiped" << item->_file;
     } else {
         //_localDiscoveryPaths.insert(item->_file.toUtf8());
-        updateLocalFileTree(item->_file, item->_instruction);
+        //updateLocalFileTree(item->_file, item->_instruction);
         qCDebug(lcFolder) << "local discovery: inserted" << item->_file << "due to sync failure";
     }
 

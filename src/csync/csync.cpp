@@ -52,7 +52,6 @@
 
 Q_LOGGING_CATEGORY(lcCSync, "sync.csync.csync", QtInfoMsg)
 
-
 csync_s::csync_s(const char *localUri, OCC::SyncJournalDb *statedb)
   : statedb(statedb)
 {
@@ -355,114 +354,117 @@ bool cysnc_update_file(CSYNC *ctx, const char *uri, const QByteArray &key, csync
         dh = csync_vio_opendir(ctx, uri);
         if(dh){
             newfile = csync_vio_readfile(dh, uri, key);
-            newfile->instruction = instruction;
+            if (newfile) {
+            
+				newfile->instruction = instruction;
 
-            // csync_walker job
+				// csync_walker job
 
-            /* Conversion error */
-            if (newfile->path.isEmpty() && !newfile->original_path.isEmpty()) {
-                ctx->status_code = CSYNC_STATUS_INVALID_CHARACTERS;
-                ctx->error_string = c_strdup(newfile->original_path);
-                newfile->original_path.clear();
-                if (dh != nullptr) {
-                  csync_vio_closedir(ctx, dh);
-                }
-                return false;
-            }
+				/* Conversion error */
+				if (newfile->path.isEmpty() && !newfile->original_path.isEmpty()) {
+					ctx->status_code = CSYNC_STATUS_INVALID_CHARACTERS;
+					ctx->error_string = c_strdup(newfile->original_path);
+					newfile->original_path.clear();
+					if (dh != nullptr) {
+					  csync_vio_closedir(ctx, dh);
+					}
+					return false;
+				}
 
-            // At this point dirent->path only contains the file name.
-            filename = newfile->path;
-            if (filename.isEmpty()) {
-              ctx->status_code = CSYNC_STATUS_READDIR_ERROR;
-              if (dh != nullptr) {
-                csync_vio_closedir(ctx, dh);
-              }
-              return false;
-            }
+				// At this point dirent->path only contains the file name.
+				filename = newfile->path;
+				if (filename.isEmpty()) {
+				  ctx->status_code = CSYNC_STATUS_READDIR_ERROR;
+				  if (dh != nullptr) {
+					csync_vio_closedir(ctx, dh);
+				  }
+				  return false;
+				}
 
-            if (uri[0] == '\0') {
-                fullpath = filename;
-            } else {
-                fullpath = QByteArray() % uri % '/' % filename;
-            }
+				if (uri[0] == '\0') {
+					fullpath = filename;
+				} else {
+					fullpath = QByteArray() % uri % '/' % filename;
+				}
 
-            /* if the filename starts with a . we consider it a hidden file
-             * For windows, the hidden state is also discovered within the vio
-             * local stat function.
-             */
-            if( filename[0] == '.' ) {
-                if (filename != ".sys.admin#recall#") { /* recall file shall not be ignored (#4420) */
-                    newfile->is_hidden = true;
-                }
-            }
+				/* if the filename starts with a . we consider it a hidden file
+				 * For windows, the hidden state is also discovered within the vio
+				 * local stat function.
+				 */
+				if( filename[0] == '.' ) {
+					if (filename != ".sys.admin#recall#") { /* recall file shall not be ignored (#4420) */
+						newfile->is_hidden = true;
+					}
+				}
 
-            // Now process to have a relative path to the sync root for the local replica, or to the data root on the remote.
-            newfile->path = fullpath;
-            if (ctx->current == LOCAL_REPLICA) {
-                ASSERT(newfile->path.startsWith(ctx->local.uri)); // path is relative to uri
-                // "len + 1" to include the slash in-between.
-                newfile->path = newfile->path.mid(strlen(ctx->local.uri) + 1);
-            }
+				// Now process to have a relative path to the sync root for the local replica, or to the data root on the remote.
+				newfile->path = fullpath;
+				if (ctx->current == LOCAL_REPLICA) {
+					ASSERT(newfile->path.startsWith(ctx->local.uri)); // path is relative to uri
+					// "len + 1" to include the slash in-between.
+					newfile->path = newfile->path.mid(strlen(ctx->local.uri) + 1);
+				}
 
-            previous_fs = ctx->current_fs;
-            bool recurse = newfile->type == ItemTypeDirectory;
+				previous_fs = ctx->current_fs;
+				bool recurse = newfile->type == ItemTypeDirectory;
 
-            /* Call walker for the  file */
-            int rc = csync_walker(ctx, std::move(newfile));
-            /* this function may update ctx->current and ctx->read_from_db */
+				/* Call walker for the  file */
+				int rc = csync_walker(ctx, std::move(newfile));
+				/* this function may update ctx->current and ctx->read_from_db */
 
-            if (rc < 0) {
-              if (CSYNC_STATUS_IS_OK(ctx->status_code)) {
-                  ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
-                  return false;
-              }
-              if (dh != nullptr) {
-                csync_vio_closedir(ctx, dh);
-              }
-              return false;
-            }
-
-
-            // if it is a folder look into the files
-            // CSYNC *ctx, const char *uri, const QByteArray &key, csync_instructions_e instruction
-            if (recurse && rc == 0 && instruction != CSYNC_INSTRUCTION_IGNORE) {
-              rc = cysnc_update_file(ctx, uri, key, instruction);
-              if (!rc) {
-                ctx->current_fs = previous_fs;
-                if (dh != nullptr) {
-                  csync_vio_closedir(ctx, dh);
-                }
-                return false;
-              }
-
-              if (ctx->current_fs && !ctx->current_fs->child_modified
-                  && ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL) {
-                  if (ctx->current == REMOTE_REPLICA) {
-                      ctx->current_fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-                  } else {
-                      ctx->current_fs->instruction = CSYNC_INSTRUCTION_NONE;
-                  }
-              }
-
-              if (ctx->current_fs && previous_fs && ctx->current_fs->has_ignored_files) {
-                  /* If a directory has ignored files, put the flag on the parent directory as well */
-                  previous_fs->has_ignored_files = ctx->current_fs->has_ignored_files;
-              }
-            }
-
-            if (ctx->current_fs && previous_fs && ctx->current_fs->child_modified) {
-                /* If a directory has modified files, put the flag on the parent directory as well */
-                previous_fs->child_modified = ctx->current_fs->child_modified;
-            }
-
-            ctx->current_fs = previous_fs;
-            ctx->remote.read_from_db = read_from_db;
-
-            csync_vio_closedir(ctx, dh);
-            qCDebug(lcCSync, " <= Closing walk for %s with read_from_db %d", uri, read_from_db);
+				if (rc < 0) {
+				  if (CSYNC_STATUS_IS_OK(ctx->status_code)) {
+					  ctx->status_code = csync_errno_to_status(errno, CSYNC_STATUS_UPDATE_ERROR);
+					  return false;
+				  }
+				  if (dh != nullptr) {
+					csync_vio_closedir(ctx, dh);
+				  }
+				  return false;
+				}
 
 
-            return true;
+				// if it is a folder look into the files
+				// CSYNC *ctx, const char *uri, const QByteArray &key, csync_instructions_e instruction
+				if (recurse && rc == 0 && instruction != CSYNC_INSTRUCTION_IGNORE) {
+				  rc = cysnc_update_file(ctx, uri, key, instruction);
+				  if (!rc) {
+					ctx->current_fs = previous_fs;
+					if (dh != nullptr) {
+					  csync_vio_closedir(ctx, dh);
+					}
+					return false;
+				  }
+
+				  if (ctx->current_fs && !ctx->current_fs->child_modified
+					  && ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL) {
+					  if (ctx->current == REMOTE_REPLICA) {
+						  ctx->current_fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+					  } else {
+						  ctx->current_fs->instruction = CSYNC_INSTRUCTION_NONE;
+					  }
+				  }
+
+				  if (ctx->current_fs && previous_fs && ctx->current_fs->has_ignored_files) {
+					  /* If a directory has ignored files, put the flag on the parent directory as well */
+					  previous_fs->has_ignored_files = ctx->current_fs->has_ignored_files;
+				  }
+				}
+
+				if (ctx->current_fs && previous_fs && ctx->current_fs->child_modified) {
+					/* If a directory has modified files, put the flag on the parent directory as well */
+					previous_fs->child_modified = ctx->current_fs->child_modified;
+				}
+
+				ctx->current_fs = previous_fs;
+				ctx->remote.read_from_db = read_from_db;
+
+				csync_vio_closedir(ctx, dh);
+				qCDebug(lcCSync, " <= Closing walk for %s with read_from_db %d", uri, read_from_db);
+
+
+				return true;
+			}
         }
 
     }

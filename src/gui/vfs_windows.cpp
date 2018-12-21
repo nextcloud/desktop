@@ -61,8 +61,8 @@ THE SOFTWARE.
 #include <vector>
 #include <QFileInfo>
 
-
-
+#include <QMessageBox>
+#include <QStandardPaths>
 
 namespace OCC {
 
@@ -245,10 +245,15 @@ QString QSFileName;
         QVariantMap error;
 
         if (da == 1179776)		//< OpenFile
-            Vfs_windows::instance()->openFileAtPath(QSFileName, error);            
+			{
+            QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+            Vfs_windows::instance()->openFileAtPath(QSFileName, error);
+			}
 		else if (da == 65536)	//< DeleteFile
-            Vfs_windows::instance()->deleteFileAtPath(QSFileName, error);            
-
+			{
+            QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+            Vfs_windows::instance()->deleteFileAtPath(QSFileName, error);
+			}
 	}
 }
 
@@ -2377,11 +2382,15 @@ void Vfs_windows::slotSyncFinish(const QString &path, bool status)
 
 void Vfs_windows::openFileAtPath(QString path, QVariantMap &error)
 {
-    qDebug() << Q_FUNC_INFO << " path: " << path;
+qDebug() << Q_FUNC_INFO << " 1 path: " << path;
     _mutex.lock();
+qDebug() << Q_FUNC_INFO << " 2 path: " << path;
     emit openFile(path);
+qDebug() << Q_FUNC_INFO << " 3 path: " << path;
     _syncCondition.wait(&_mutex);
+qDebug() << Q_FUNC_INFO << " 4 path: " << path;
     _mutex.unlock();
+qDebug() << Q_FUNC_INFO << " 5 path: " << path;
 }
 
 void Vfs_windows::deleteFileAtPath(QString path, QVariantMap &error)
