@@ -605,26 +605,19 @@ void SocketApi::copyUrlToClipboard(const QString &link)
     QApplication::clipboard()->setText(link);
 }
 
-void SocketApi::command_DOWNLOAD_VIRTUAL_FILE(const QString &filesArg, SocketListener *)
+void SocketApi::command_MAKE_AVAILABLE_LOCALLY(const QString &filesArg, SocketListener *)
 {
     QStringList files = filesArg.split(QLatin1Char('\x1e')); // Record Separator
 
     for (const auto &file : files) {
         auto data = FileData::get(file);
-        auto record = data.journalRecord();
-        if (!record.isValid())
-            continue;
-        bool isDir = QFileInfo(data.localPath).isDir();
-        if (record._type != ItemTypeVirtualFile && !isDir)
-            continue;
         if (!data.folder)
             continue;
 
-        // For directories, update their pin state so new files are available locally too
-        if (isDir) {
-            data.folder->journalDb()->setPinStateForPath(
-                    data.folderRelativePath.toUtf8(), PinState::AlwaysLocal);
-        }
+        // Update the pin state on all items
+        auto pinPath = data.folderRelativePathNoVfsSuffix().toUtf8();
+        data.folder->journalDb()->wipePinStateForPathAndBelow(pinPath);
+        data.folder->journalDb()->setPinStateForPath(pinPath, PinState::AlwaysLocal);
 
         // Trigger the recursive download
         data.folder->downloadVirtualFile(data.folderRelativePath);
@@ -632,7 +625,7 @@ void SocketApi::command_DOWNLOAD_VIRTUAL_FILE(const QString &filesArg, SocketLis
 }
 
 /* Go over all the files and replace them by a virtual file */
-void SocketApi::command_REPLACE_VIRTUAL_FILE(const QString &filesArg, SocketListener *)
+void SocketApi::command_MAKE_ONLINE_ONLY(const QString &filesArg, SocketListener *)
 {
     QStringList files = filesArg.split(QLatin1Char('\x1e')); // Record Separator
 
@@ -641,11 +634,10 @@ void SocketApi::command_REPLACE_VIRTUAL_FILE(const QString &filesArg, SocketList
         if (!data.folder)
             continue;
 
-        // For directories, update the pin state so new files are available online-only
-        if (QFileInfo(data.localPath).isDir()) {
-            data.folder->journalDb()->setPinStateForPath(
-                    data.folderRelativePath.toUtf8(), PinState::OnlineOnly);
-        }
+        // Update the pin state on all items
+        auto pinPath = data.folderRelativePathNoVfsSuffix().toUtf8();
+        data.folder->journalDb()->wipePinStateForPathAndBelow(pinPath);
+        data.folder->journalDb()->setPinStateForPath(pinPath, PinState::OnlineOnly);
 
         // Trigger recursive dehydration
         data.folder->dehydrateFile(data.folderRelativePath);
@@ -804,6 +796,16 @@ SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
     return data;
 }
 
+QString SocketApi::FileData::folderRelativePathNoVfsSuffix() const
+{
+    auto result = folderRelativePath;
+    QString virtualFileExt = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
+    if (result.endsWith(virtualFileExt)) {
+        result.chop(virtualFileExt.size());
+    }
+    return result;
+}
+
 SyncFileStatus SocketApi::FileData::syncFileStatus() const
 {
     if (!folder)
@@ -902,27 +904,36 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         }
     }
 
-    // Virtual file download action
-    if (folder) {
-        bool hasVirtualFile = false;
-        bool hasNormalFiles = false;
-        bool hasDir = false;
+    // File availability actions
+    if (folder && folder->supportsVirtualFiles()) {
+        bool hasAlwaysLocal = false;
+        bool hasOnlineOnly = false;
         for (const auto &file : files) {
-            if (QFileInfo(file).isDir()) {
-                hasDir = true;
-            } else if (!hasVirtualFile || !hasNormalFiles) {
-                auto record = FileData::get(file).journalRecord();
-                if (record.isValid()) {
-                    hasVirtualFile |= record._type == ItemTypeVirtualFile;
-                    hasNormalFiles |= record._type == ItemTypeFile;
-                }
+            auto path = FileData::get(file).folderRelativePathNoVfsSuffix();
+            auto pinState = folder->journalDb()->effectivePinStateForPath(path.toUtf8());
+            if (!pinState) {
+                // db error
+                hasAlwaysLocal = true;
+                hasOnlineOnly = true;
+            } else if (*pinState == PinState::AlwaysLocal) {
+                hasAlwaysLocal = true;
+            } else if (*pinState == PinState::OnlineOnly) {
+                hasOnlineOnly = true;
             }
         }
-        if (hasVirtualFile || (hasDir && folder->supportsVirtualFiles()))
-            listener->sendMessage(QLatin1String("MENU_ITEM:DOWNLOAD_VIRTUAL_FILE::") + tr("Keep updated locally, download if necessary", "", files.size()));
 
-        if ((hasNormalFiles || hasDir) && folder->supportsVirtualFiles())
-            listener->sendMessage(QLatin1String("MENU_ITEM:REPLACE_VIRTUAL_FILE::") + tr("Make available on demand, clear local data", "", files.size()));
+        // TODO: Should be a submenu, should use menu item checkmarks where available, should use icons
+        if (hasAlwaysLocal && !hasOnlineOnly) {
+            listener->sendMessage(QLatin1String("MENU_ITEM:CURRENT_PIN:d:") + tr("Currently available locally"));
+            listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_ONLINE_ONLY::") + tr("Make available online only"));
+        } else if (hasOnlineOnly && !hasAlwaysLocal) {
+            listener->sendMessage(QLatin1String("MENU_ITEM:CURRENT_PIN:d:") + tr("Currently available online only"));
+            listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_AVAILABLE_LOCALLY::") + tr("Make available locally"));
+        } else if (hasOnlineOnly && hasAlwaysLocal) {
+            listener->sendMessage(QLatin1String("MENU_ITEM:CURRENT_PIN:d:") + tr("Current availability is mixed"));
+            listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_AVAILABLE_LOCALLY::") + tr("Make all available locally"));
+            listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_ONLINE_ONLY::") + tr("Make all available online only"));
+        }
     }
 
     listener->sendMessage(QString("GET_MENU_ITEMS:END"));
