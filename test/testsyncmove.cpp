@@ -650,7 +650,6 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), expectedState);
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
 
-        /* FIXME - likely addressed by ogoffart's sync code refactor
         // Now, the revert, but "crossed"
         fakeFolder.localModifier().rename("Empty/A", "A");
         fakeFolder.localModifier().rename("AllEmpty/C", "C");
@@ -660,7 +659,16 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), expectedState);
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
-        */
+
+        // Reverse on remote
+        fakeFolder.remoteModifier().rename("A/AllEmpty", "AllEmpty");
+        fakeFolder.remoteModifier().rename("C/Empty", "Empty");
+        fakeFolder.remoteModifier().rename("C", "AllEmpty/C");
+        fakeFolder.remoteModifier().rename("A", "Empty/A");
+        expectedState = fakeFolder.currentRemoteState();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), expectedState);
+        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
     }
 };
 

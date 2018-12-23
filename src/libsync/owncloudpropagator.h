@@ -503,6 +503,10 @@ public:
     bool createConflict(const SyncFileItemPtr &item,
         PropagatorCompositeJob *composite, QString *error);
 
+
+    QMap<QString, QString> _renamedDirectories;
+    QString adjustRenamedPath(const QString &original) const;
+
 private slots:
 
     void abortTimeout()
