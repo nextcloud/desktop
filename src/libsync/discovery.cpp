@@ -283,7 +283,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                               << " | fileid: " << dbEntry._fileId << "//" << serverEntry.fileId
                               << " | inode: " << dbEntry._inode << "/" << localEntry.inode << "/";
 
-    if (_discoveryData->_renamedItems.contains(path._original)) {
+    if (_discoveryData->isRenamed(path._original)) {
         qCDebug(lcDisco) << "Ignoring renamed";
         return; // Ignore this.
     }
@@ -490,7 +490,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         // Now we know there is a sane rename candidate.
         QString originalPath = QString::fromUtf8(base._path);
 
-        if (_discoveryData->_renamedItems.contains(originalPath)) {
+        if (_discoveryData->isRenamed(originalPath)) {
             qCInfo(lcDisco, "folder already has a rename entry, skipping");
             return;
         }
@@ -522,8 +522,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         bool wasDeletedOnServer = _discoveryData->findAndCancelDeletedJob(originalPath).first;
 
         auto postProcessRename = [this, item, base, originalPath](PathTuple &path) {
-            auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath);
-            _discoveryData->_renamedItems.insert(originalPath, path._target);
+            auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Up);
+            _discoveryData->_renamedItemsRemote.insert(originalPath, path._target);
             item->_modtime = base._modtime;
             item->_inode = base._inode;
             item->_instruction = CSYNC_INSTRUCTION_RENAME;
@@ -548,7 +548,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                 QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
                 if (etag || etag.error().code != 404 ||
                     // Somehow another item claimed this original path, consider as if it existed
-                    _discoveryData->_renamedItems.contains(originalPath)) {
+                    _discoveryData->isRenamed(originalPath)) {
                     // If the file exist or if there is another error, consider it is a new file.
                     postProcessServerNew();
                     return;
@@ -810,7 +810,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         }
     }
     auto originalPath = QString::fromUtf8(base._path);
-    if (isMove && _discoveryData->_renamedItems.contains(originalPath))
+    if (isMove && _discoveryData->isRenamed(originalPath))
         isMove = false;
 
     //Check local permission if we are allowed to put move the file here
@@ -825,8 +825,8 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
 
         auto processRename = [item, originalPath, base, this](PathTuple &path) {
-            auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath);
-            _discoveryData->_renamedItems.insert(originalPath, path._target);
+            auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
+            _discoveryData->_renamedItemsLocal.insert(originalPath, path._target);
             item->_renameTarget = path._target;
             path._server = adjustedOriginalPath;
             item->_file = path._server;
@@ -853,7 +853,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 chopVirtualFileSuffix(serverOriginalPath);
             auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
             connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QString> &etag) mutable {
-                if (!etag || (*etag != base._etag && !item->isDirectory()) || _discoveryData->_renamedItems.contains(originalPath)) {
+                if (!etag || (*etag != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
                     qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
                     // Can't be a rename, leave it as a new.
                     postProcessLocalNew();
