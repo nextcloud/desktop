@@ -198,4 +198,6 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
+Icon[ko]=@APPLICATION_ICON_NAME@
 Comment[ko]=@APPLICATION_NAME@ 데스크톱 동기화 클라이언트
+GenericName[ko]=폴더 동기화
