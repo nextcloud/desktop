@@ -670,6 +670,48 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), expectedState);
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
     }
+
+    void testDeepHierarchy_data()
+    {
+        QTest::addColumn<bool>("local");
+        QTest::newRow("remote") << false;
+        QTest::newRow("local") << true;
+    }
+
+    void testDeepHierarchy()
+    {
+        QFETCH(bool, local);
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        auto &modifier = local ? fakeFolder.localModifier() : fakeFolder.remoteModifier();
+
+        modifier.mkdir("FolA");
+        modifier.mkdir("FolA/FolB");
+        modifier.mkdir("FolA/FolB/FolC");
+        modifier.mkdir("FolA/FolB/FolC/FolD");
+        modifier.mkdir("FolA/FolB/FolC/FolD/FolE");
+        modifier.insert("FolA/FileA.txt");
+        modifier.insert("FolA/FolB/FileB.txt");
+        modifier.insert("FolA/FolB/FolC/FileC.txt");
+        modifier.insert("FolA/FolB/FolC/FolD/FileD.txt");
+        modifier.insert("FolA/FolB/FolC/FolD/FolE/FileE.txt");
+        QVERIFY(fakeFolder.syncOnce());
+
+        modifier.insert("FolA/FileA2.txt");
+        modifier.insert("FolA/FolB/FileB2.txt");
+        modifier.insert("FolA/FolB/FolC/FileC2.txt");
+        modifier.insert("FolA/FolB/FolC/FolD/FileD2.txt");
+        modifier.insert("FolA/FolB/FolC/FolD/FolE/FileE2.txt");
+        modifier.rename("FolA", "FolA_Renamed");
+        modifier.rename("FolA_Renamed/FolB", "FolB_Renamed");
+        modifier.rename("FolB_Renamed/FolC", "FolA");
+        modifier.rename("FolA/FolD", "FolA/FolD_Renamed");
+        modifier.mkdir("FolB_Renamed/New");
+        modifier.rename("FolA/FolD_Renamed/FolE", "FolB_Renamed/New/FolE");
+        auto expected = local ? fakeFolder.currentLocalState() : fakeFolder.currentRemoteState();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), expected);
+        QCOMPARE(fakeFolder.currentRemoteState(), expected);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncMove)

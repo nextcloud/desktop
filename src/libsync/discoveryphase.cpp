@@ -132,11 +132,10 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
     propfindJob->start();
 }
 
-
 /* Given a path on the remote, give the path as it is when the rename is done */
-QString DiscoveryPhase::adjustRenamedPath(const QString &original) const
+QString DiscoveryPhase::adjustRenamedPath(const QString &original, SyncFileItem::Direction d) const
 {
-    return OCC::adjustRenamedPath(_renamedItems, original);
+    return OCC::adjustRenamedPath(d == SyncFileItem::Down ? _renamedItemsRemote : _renamedItemsLocal, original);
 }
 
 QString adjustRenamedPath(const QMap<QString, QString> renamedItems, const QString original)
