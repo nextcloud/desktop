@@ -26,6 +26,7 @@
 #include "common/utility.h"
 #include "account.h"
 #include "common/asserts.h"
+#include "discoveryphase.h"
 
 #ifdef Q_OS_WIN
 #include <windef.h>
@@ -725,6 +726,11 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
     }
 
     return true;
+}
+
+QString OwncloudPropagator::adjustRenamedPath(const QString &original) const
+{
+    return OCC::adjustRenamedPath(_renamedDirectories, original);
 }
 
 // ================================================================================

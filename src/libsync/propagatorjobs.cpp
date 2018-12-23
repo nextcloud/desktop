@@ -198,7 +198,7 @@ void PropagateLocalRename::start()
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    QString existingFile = propagator()->getFilePath(_item->_file);
+    QString existingFile = propagator()->getFilePath(propagator()->adjustRenamedPath(_item->_file));
     QString targetFile = propagator()->getFilePath(_item->_renameTarget);
 
     // if the file is a file underneath a moved dir, the _item->file is equal
@@ -250,6 +250,7 @@ void PropagateLocalRename::start()
             return;
         }
     } else {
+        propagator()->_renamedDirectories.insert(oldFile, _item->_renameTarget);
         if (!PropagateRemoteMove::adjustSelectiveSync(propagator()->_journal, oldFile, _item->_renameTarget)) {
             done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
             return;

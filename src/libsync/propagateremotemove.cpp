@@ -78,17 +78,18 @@ void PropagateRemoteMove::start()
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    qCDebug(lcPropagateRemoteMove) << _item->_file << _item->_renameTarget;
+    QString origin = propagator()->adjustRenamedPath(_item->_file);
+    qCDebug(lcPropagateRemoteMove) << origin << _item->_renameTarget;
 
     QString targetFile(propagator()->getFilePath(_item->_renameTarget));
 
-    if (_item->_file == _item->_renameTarget) {
+    if (origin == _item->_renameTarget) {
         // The parent has been renamed already so there is nothing more to do.
         finalize();
         return;
     }
 
-    QString source = propagator()->_remoteFolder + _item->_file;
+    QString source = propagator()->_remoteFolder + origin;
     QString destination = QDir::cleanPath(propagator()->account()->davUrl().path() + propagator()->_remoteFolder + _item->_renameTarget);
     auto &vfs = propagator()->syncOptions()._vfs;
     if (vfs->mode() == Vfs::WithSuffix
@@ -179,6 +180,7 @@ void PropagateRemoteMove::finalize()
     }
 
     if (_item->isDirectory()) {
+        propagator()->_renamedDirectories.insert(_item->_file, _item->_renameTarget);
         if (!adjustSelectiveSync(propagator()->_journal, _item->_file, _item->_renameTarget)) {
             done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
             return;
