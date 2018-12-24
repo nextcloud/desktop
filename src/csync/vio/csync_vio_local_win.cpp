@@ -294,15 +294,18 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readfile(csync_vio_handle_t *
         file_stat->size = (ffd.nFileSizeHigh * ((int64_t)(MAXDWORD) + 1)) + ffd.nFileSizeLow;
         file_stat->modtime = FileTimeToUnixTime(&ffd.ftLastWriteTime, &rem);
 
-        //std::wstring fullPath;
-        //fullPath.reserve(std::wcslen(handle->path) + std::wcslen(handle->ffd.cFileName));
-        //fullPath += handle->path; // path always ends with '\', by construction
-        //fullPath += handle->ffd.cFileName;
+        std::string fullpath(uri);
+        fullpath.append("/");
+        fullpath.append(path);
 
-        //if (_csync_vio_local_stat_mb(fullPath.data(), file_stat.get()) < 0) {
-        //    // Will get excluded by _csync_detect_update.
-        //    file_stat->type = ItemTypeSkip;
-        //}
+		int wstrsize = MultiByteToWideChar(CP_UTF8, 0, &fullpath[0], (int)fullpath.size(), NULL, 0);
+        std::wstring wstrPath(wstrsize, 0);
+        MultiByteToWideChar(CP_UTF8, 0, &fullpath[0], (int)fullpath.size(), &wstrPath[0], wstrsize);
+
+        if (_csync_vio_local_stat_mb(wstrPath.data(), file_stat.get()) < 0) {
+            // will get excluded by _csync_detect_update.
+            file_stat->type = ItemTypeSkip;
+        }
  
     //}
 
