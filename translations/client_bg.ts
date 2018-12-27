@@ -1344,7 +1344,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="99"/>
         <source>Updates</source>
-        <translation type="unfinished"/>
+        <translation>Актуализации</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="124"/>
@@ -1788,7 +1788,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>Could not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Проверката за актуализации не може да бъде извършена.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
@@ -1813,7 +1813,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Няма налични актуализации. Ползвате последната версия.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="178"/>

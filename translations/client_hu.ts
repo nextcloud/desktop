@@ -878,7 +878,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="274"/>
         <source>Could not reset folder state</source>
-        <translation type="unfinished"/>
+        <translation>A mappa állapotát nem lehet visszállítani</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="275"/>
@@ -1031,7 +1031,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation type="unfinished"/>
+        <translation>Megoldhatatlan konfliktus adódott. Klikk a részletekért.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="930"/>
@@ -1888,7 +1888,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation type="unfinished"/>
+        <translation>Kliens oldali TLS tanúsítvány beállítása</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="34"/>
@@ -1924,7 +1924,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Belépés a böngészőbe</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="56"/>
@@ -1942,7 +1942,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="55"/>
         <source>Setup %1 server</source>
-        <translation type="unfinished"/>
+        <translation>Szerver %1 beállítása</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="83"/>
@@ -2269,7 +2269,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="191"/>
         <source>could not create folder %1</source>
-        <translation type="unfinished"/>
+        <translation>nem lehet létrehozni a %1 mappát</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="203"/>
@@ -2393,7 +2393,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="448"/>
         <source>Unexpected return code from server (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Nem várt visszatérési érték a szervertől (%1)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="455"/>
@@ -3064,7 +3064,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="163"/>
         <source>An error occurred while opening a folder</source>
-        <translation type="unfinished"/>
+        <translation>Hiba történt a mappa megnyitása közben</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="166"/>
@@ -3215,7 +3215,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="520"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>A fájlnevet nem lehet kódolni a fájlrendszereden.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="529"/>
@@ -3559,7 +3559,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="943"/>
         <source>Syncing %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Szinkronizáció %1 / %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="952"/>
