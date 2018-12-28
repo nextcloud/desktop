@@ -4093,7 +4093,7 @@ Es ist nicht ratsam, sie zu benutzen.</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="89"/>
         <source>Sync is paused</source>
-        <translation>Synchronisierung wurde angehalten</translation>
+        <translation>Synchronisierung ist angehalten.</translation>
     </message>
 </context>
 <context>

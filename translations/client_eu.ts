@@ -2577,7 +2577,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="92"/>
         <source>share label</source>
-        <translation type="unfinished"/>
+        <translation>partekatu etiketa</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="67"/>
@@ -3701,7 +3701,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Berrireki nabigatzailea</translation>
     </message>
 </context>
 <context>
@@ -3966,7 +3966,7 @@ Ez da gomendagarria erabltzea.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="44"/>
         <source>Ignored</source>
-        <translation type="unfinished"/>
+        <translation>Ezikusia</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="46"/>

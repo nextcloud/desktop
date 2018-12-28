@@ -2780,7 +2780,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="259"/>
         <source>Login Error</source>
-        <translation>Login fel</translation>
+        <translation>Inloggningsfel</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="259"/>
