@@ -35,7 +35,7 @@ also the server has to be kept up-to-date by your sysadmin.
 Starting with version 2.5.0, the client will show a warning message if you
 connect to an outdated or unsupported server:
 
-.. image:: https://owncloud.org/wp-content/uploads/2018/09/ownCloud-unsupported-version-warning-message.png
+.. image:: images/oc-unsupported-version-warning-message.png
 
 **Because earlier versions are not maintained anymore, only ownCloud 10.0.0 or
 higher is supported.** So if you encounter such a message, you should ask your
