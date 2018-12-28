@@ -351,7 +351,8 @@ bool cysnc_update_file(CSYNC *ctx, const char *uri, const QByteArray &key, csync
         QByteArray fullpath;
         int read_from_db = 0;
 
-        dh = csync_vio_opendir(ctx, uri);
+        ctx->current = LOCAL_REPLICA;
+		dh = csync_vio_opendir(ctx, uri);
         if(dh){
             newfile = csync_vio_readfile(dh, uri, key);
             if (newfile) {
@@ -462,6 +463,7 @@ bool cysnc_update_file(CSYNC *ctx, const char *uri, const QByteArray &key, csync
 				csync_vio_closedir(ctx, dh);
 				qCDebug(lcCSync, " <= Closing walk for %s with read_from_db %d", uri, read_from_db);
 
+				ctx->current = REMOTE_REPLICA;
 
 				return true;
 			}
