@@ -872,7 +872,7 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
     <message>
         <location filename="../src/gui/folder.cpp" line="1106"/>
         <source>Backup detected</source>
-        <translation>Detectouse unha copia de seguridade</translation>
+        <translation>Detectouse unha copia de seguranza</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1109"/>
