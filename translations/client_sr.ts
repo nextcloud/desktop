@@ -818,7 +818,11 @@
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Промене у синхронизованим фасциклама се не могу пратити прецизно.
+
+Ово значи да синхронизациони клијент неће вршити отпремање чим се деси локална промена и да ће, уместо тога, радити скенирање локалних измена и тек отпремати их са времена на време (подразумевано је свака два сата).
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1071"/>
