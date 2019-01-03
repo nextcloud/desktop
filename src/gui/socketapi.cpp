@@ -266,8 +266,10 @@ void SocketApi::slotNewConnection()
 
     foreach (Folder *f, FolderMan::instance()->map()) {
         if (f->canSync()) {
-            QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
-            listener.sendMessage(message);
+            QString message_mirror = buildRegisterPathMessage(removeTrailingSlash(f->path()));
+            QString message_fs = buildRegisterFsMessage();
+            listener.sendMessage(message_mirror);
+            listener.sendMessage(message_fs);
         }
     }
 }
@@ -317,9 +319,11 @@ void SocketApi::slotRegisterPath(const QString &alias)
 
     Folder *f = FolderMan::instance()->folder(alias);
     if (f) {
-        QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
+        QString message_mirror = buildRegisterPathMessage(removeTrailingSlash(f->path()));
+        QString message_fs = buildRegisterFsMessage();
         foreach (auto &listener, _listeners) {
-            listener.sendMessage(message);
+            listener.sendMessage(message_mirror);
+            listener.sendMessage(message_fs);
         }
     }
 
@@ -719,6 +723,10 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
 
     // If sharing is globally disabled, do not show any sharing entries.
     // If there is no permission to share for this file, add a disabled entry saying so
+    
+    listener->sendMessage(QLatin1String("MENU_ITEM:OFFLINE_DOWNLOAD_MODE") + flagString + tr("0ff line"));
+    listener->sendMessage(QLatin1String("MENU_ITEM:ONLINE_DOWNLOAD_MODE") + flagString + tr("On line"));
+    
     if (isOnTheServer && !record._remotePerm.isNull() && !record._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
         listener->sendMessage(QLatin1String("MENU_ITEM:DISABLED:d:") + tr("Resharing this file is not allowed"));
     } else {
@@ -801,7 +809,46 @@ QString SocketApi::buildRegisterPathMessage(const QString &path)
     message.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
     return message;
 }
+    
+QString SocketApi::buildRegisterFsMessage()
+{
+    ConfigFile cfg;
+    QString path;
+#if defined(Q_OS_WIN)
+    path=QLatin1String("REGISTER_DRIVEFS:");
+    path.append(cfg.defaultFileStreamLetterDrive().toUpper());
+return path;    
+#elif defined(Q_OS_MAC)
+    path = cfg.defaultFileStreamSyncPath();
+#endif
+    QFileInfo fi(path);
+    QString message = QLatin1String("REGISTER_DRIVEFS:");
+    message.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
+    return message;
+}
 
+//< Mac callback for ContextMenu Online option
+void SocketApi::command_ONLINE_DOWNLOAD_MODE(const QString& path, SocketListener* listener)
+{
+    qDebug() << "\n" << Q_FUNC_INFO << "ONLINE_DOWNLOAD_MODE";
+    SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_ONLINE);
+    
+    //< Example
+    SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+    SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
+}
+
+//< Mac callback for ContextMenu Offline option
+void SocketApi::command_OFFLINE_DOWNLOAD_MODE(const QString& path, SocketListener* listener)
+{
+    qDebug() << "\n" << Q_FUNC_INFO << "OFFLINE_DOWNLOAD_MODE";
+    SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_OFFLINE);
+    //< Example
+    SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+    SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
+}
+
+//< Windows callback for ContextMenu option
 void SocketApi::command_SET_DOWNLOAD_MODE(const QString& argument, SocketListener* listener)
 {
     qDebug() << Q_FUNC_INFO << " argument: " << argument;
@@ -880,6 +927,7 @@ void SocketApi::command_SET_DOWNLOAD_MODE(const QString& argument, SocketListene
 
     }
 
+//< Windows & Mac callback for ContextMenu status option
 void SocketApi::command_GET_DOWNLOAD_MODE(const QString& localFile, SocketListener* listener)
     {
         QString downloadMode = "ONLINE";

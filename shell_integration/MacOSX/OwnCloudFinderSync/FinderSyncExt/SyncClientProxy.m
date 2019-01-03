@@ -113,9 +113,15 @@
 	} else if( [[chunks objectAtIndex:0] isEqualToString:@"UPDATE_VIEW"] ) {
 		NSString *path = [chunks objectAtIndex:1];
 		[_delegate reFetchFileNameCacheForPath:path];
+	} else if( [[chunks objectAtIndex:0] isEqualToString:@"GET_DOWNLOAD_MODE"] ) {
+		NSString *mode = [chunks objectAtIndex:1];
+		[_delegate setDownloadMode:mode];
 	} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"REGISTER_PATH"] ) {
 		NSString *path = [chunks objectAtIndex:1];
 		[_delegate registerPath:path];
+	} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"REGISTER_DRIVEFS"] ) {
+		NSString *path = [chunks objectAtIndex:1];
+		[_delegate registerFs:path];
 	} else if( [[chunks objectAtIndex:0 ] isEqualToString:@"UNREGISTER_PATH"] ) {
 		NSString *path = [chunks objectAtIndex:1];
 		[_delegate unregisterPath:path];

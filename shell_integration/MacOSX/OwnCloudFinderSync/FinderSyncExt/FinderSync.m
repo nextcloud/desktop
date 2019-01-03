@@ -76,6 +76,10 @@
 	}
 
 	NSString* normalizedPath = [[url path] decomposedStringWithCanonicalMapping];
+	if([normalizedPath containsString: _fs_path]) {
+		[_syncClientProxy askForIcon:normalizedPath isDirectory:isDir];
+		normalizedPath = [normalizedPath stringByReplacingOccurrencesOfString: _fs_path withString: _mirror_path];
+	}
 	[_syncClientProxy askForIcon:normalizedPath isDirectory:isDir];
 }
 
@@ -117,9 +121,16 @@
 
 	NSString *paths = [self selectedPathsSeparatedByRecordSeparator];
 	// calling this IPC calls us back from client with several MENU_ITEM entries and then our askOnSocket returns again
+    if([paths containsString:_fs_path]) {
+        paths = [paths stringByReplacingOccurrencesOfString:_fs_path withString:_mirror_path];
+    }
+    
 	[_syncClientProxy askOnSocket:paths query:@"GET_MENU_ITEMS"];
 
 	id contextMenuTitle = [_strings objectForKey:@"CONTEXT_MENU_TITLE"];
+    
+    [_syncClientProxy askOnSocket:paths query:@"GET_DOWNLOAD_MODE"];
+
 	if (contextMenuTitle && !onlyRootsSelected) {
 		NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
 		NSMenu *subMenu = [[NSMenu alloc] initWithTitle:@""];
@@ -134,12 +145,22 @@
 			NSMenuItem *actionItem = [subMenu addItemWithTitle:[item valueForKey:@"text"]
 														action:@selector(subMenuActionClicked:)
 												 keyEquivalent:@""];
+
+			NSString *command = [[_menuItems objectAtIndex:idx] valueForKey:@"command"];
+            if(shouldBeChecked && [command isEqualToString:@"OFFLINE_DOWNLOAD_MODE"]) {
+                actionItem.state = NSOnState;
+            } else if(!shouldBeChecked && [command isEqualToString:@"ONLINE_DOWNLOAD_MODE"]) {
+                actionItem.state = NSOnState;
+            } else {
+                actionItem.state = NSOffState;
+            }
 			[actionItem setTag:idx];
 			[actionItem setTarget:self];
 			NSString *flags = [item valueForKey:@"flags"]; // e.g. "d"
 			if ([flags rangeOfString:@"d"].location != NSNotFound) {
 				[actionItem setEnabled:false];
 			}
+
 			idx++;
 		}
 		return menu;
@@ -147,10 +168,14 @@
 	return nil;
 }
 
-- (void)subMenuActionClicked:(id)sender {
+- (void)subMenuActionClicked:(id)sender
+{
 	long idx = [(NSMenuItem*)sender tag];
 	NSString *command = [[_menuItems objectAtIndex:idx] valueForKey:@"command"];
 	NSString *paths = [self selectedPathsSeparatedByRecordSeparator];
+	if([paths containsString: _fs_path]) {
+        paths = [paths stringByReplacingOccurrencesOfString: _fs_path withString: _mirror_path];
+    }
 	[_syncClientProxy askOnSocket:paths query:command];
 }
 
@@ -159,7 +184,21 @@
 - (void)setResultForPath:(NSString*)path result:(NSString*)result
 {
 	NSString *normalizedPath = [path decomposedStringWithCanonicalMapping];
+	if([normalizedPath containsString: _mirror_path]) {
+        [[FIFinderSyncController defaultController] setBadgeIdentifier:result forURL:[NSURL fileURLWithPath:normalizedPath]];
+        normalizedPath = [normalizedPath stringByReplacingOccurrencesOfString: _mirror_path withString: _fs_path];
+    }
+
 	[[FIFinderSyncController defaultController] setBadgeIdentifier:result forURL:[NSURL fileURLWithPath:normalizedPath]];
+}
+
+- (void)setDownloadMode:(NSString *)mode
+{
+    if( [mode isEqualToString:@"OFFLINE"] ) {
+        shouldBeChecked = true;
+    } else {
+        shouldBeChecked = false;
+    }
 }
 
 - (void)reFetchFileNameCacheForPath:(NSString*)path
@@ -170,12 +209,21 @@
 {
 	assert(_registeredDirectories);
 	[_registeredDirectories addObject:[NSURL fileURLWithPath:path]];
+	_mirror_path = path;
+}
+
+- (void)registerFs:(NSString*)path
+{
+	assert(_registeredDirectories);
+	[_registeredDirectories addObject:[NSURL fileURLWithPath:path]];
+	_fs_path = path;
 	[FIFinderSyncController defaultController].directoryURLs = _registeredDirectories;
 }
 
 - (void)unregisterPath:(NSString*)path
 {
 	[_registeredDirectories removeObject:[NSURL fileURLWithPath:path]];
+	[_registeredDirectories removeObject:[NSURL fileURLWithPath:_fs_path]];
 	[FIFinderSyncController defaultController].directoryURLs = _registeredDirectories;
 }
 
@@ -188,7 +236,9 @@
 {
 	_menuItems = [[NSMutableArray alloc] init];
 }
-- (void)addMenuItem:(NSDictionary *)item {
+
+- (void)addMenuItem:(NSDictionary *)item
+{
 	[_menuItems addObject:item];
 }
 
@@ -206,4 +256,3 @@
 }
 
 @end
-

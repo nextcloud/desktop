@@ -17,8 +17,10 @@
 
 @protocol SyncClientProxyDelegate <NSObject>
 - (void)setResultForPath:(NSString*)path result:(NSString*)result;
+- (void)setDownloadMode:(NSString*)mode;
 - (void)reFetchFileNameCacheForPath:(NSString*)path;
 - (void)registerPath:(NSString*)path;
+- (void)registerFs:(NSString*)path;
 - (void)unregisterPath:(NSString*)path;
 - (void)setString:(NSString*)key value:(NSString*)value;
 - (void)resetMenuItems;

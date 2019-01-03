@@ -22,8 +22,11 @@
 	SyncClientProxy *_syncClientProxy;
 	NSMutableSet *_registeredDirectories;
 	NSString *_shareMenuTitle;
+	NSString *_mirror_path;
+	NSString *_fs_path;
 	NSMutableDictionary *_strings;
 	NSMutableArray *_menuItems;
+	Boolean shouldBeChecked;
 }
 
 @end
