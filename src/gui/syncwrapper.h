@@ -34,24 +34,16 @@ signals:
 
 private:
     SyncWrapper() {
-        _syncJournalDb = SyncJournalDb::instance();
-        _folderMan = FolderMan::instance();
-        _folder = FolderMan::instance()->currentSyncFolder();
-        connect(_syncJournalDb, &SyncJournalDb::syncStatusChanged, this, &SyncWrapper::updateSyncQueue, Qt::DirectConnection);
-        connect(_syncJournalDb, &SyncJournalDb::syncStatusChanged, this, &SyncWrapper::syncFinish, Qt::DirectConnection);
-        connect(this, &SyncWrapper::startSyncForFolder, _folder, &Folder::startSync, Qt::DirectConnection);
+        connect(SyncJournalDb::instance(), &SyncJournalDb::syncStatusChanged, this, &SyncWrapper::updateSyncQueue, Qt::DirectConnection);
+        connect(SyncJournalDb::instance(), &SyncJournalDb::syncStatusChanged, this, &SyncWrapper::syncFinish, Qt::DirectConnection);
+        connect(this, &SyncWrapper::startSyncForFolder, FolderMan::instance()->currentSyncFolder(), &Folder::startSync, Qt::DirectConnection);
     }
-
 
     QString removeSlash(QString path);
     bool shouldSync(const QString path);
     void sync(const QString path, csync_instructions_e instruction = CSYNC_INSTRUCTION_SYNC);
 
     QMap<QString, bool> _syncDone;
-
-    SyncJournalDb *_syncJournalDb;
-    FolderMan *_folderMan;
-    Folder *_folder;
 };
 }
 

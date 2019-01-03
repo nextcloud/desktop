@@ -40,32 +40,32 @@ void SyncWrapper::writeFileAtPath(const QString path){
 }
 
 void SyncWrapper::updateFileTree(const QString path){
-    _folder->updateLocalFileTree(removeSlash(path), CSYNC_INSTRUCTION_SYNC);
+    FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(removeSlash(path), CSYNC_INSTRUCTION_SYNC);
 }
 
 void SyncWrapper::sync(const QString path, csync_instructions_e instruction){
     int result = 1;
-    if(_syncJournalDb->getSyncMode(path) == SyncJournalDb::SyncMode::SYNCMODE_ONLINE){
-        result = _syncJournalDb->setSyncMode(path, SyncJournalDb::SyncMode::SYNCMODE_OFFLINE);
-    } else if(_syncJournalDb->getSyncMode(path) == SyncJournalDb::SyncMode::SYNCMODE_NONE) {
-       result = _syncJournalDb->setSyncMode(path, SyncJournalDb::SyncMode::SYNCMODE_ONLINE);
+    if (SyncJournalDb::instance()->getSyncMode(path) == SyncJournalDb::SyncMode::SYNCMODE_ONLINE) {
+        result = SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SyncMode::SYNCMODE_OFFLINE);
+    } else if (SyncJournalDb::instance()->getSyncMode(path) == SyncJournalDb::SyncMode::SYNCMODE_NONE) {
+        result = SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SyncMode::SYNCMODE_ONLINE);
     }
 
     if(result == 0)
         qCWarning(lcSyncWrapper) << "Couldn't change file SYNCMODE.";
 
-   result = _syncJournalDb->setSyncModeDownload(path, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO);
+   result = SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO);
    if(result == 0)
         qCWarning(lcSyncWrapper) << "Couldn't set file to SYNCMODE_DOWNLOADED_NO.";
 
    if(result == 1){
-       _folder->updateLocalFileTree(path, instruction);
+       FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(path, instruction);
        _syncDone.insert(path, false);
-       _syncJournalDb->updateLastAccess(path);
+       SyncJournalDb::instance()->updateLastAccess(path);
 
        if(shouldSync(path)){
            //_folderMan->terminateSyncProcess();
-           _folderMan->scheduleFolder();
+           FolderMan::instance()->scheduleFolder();
            //_folderMan->scheduleFolderNext();
            //emit startSyncForFolder();
        } else {
@@ -76,7 +76,7 @@ void SyncWrapper::sync(const QString path, csync_instructions_e instruction){
 
 bool SyncWrapper::shouldSync(const QString path){
     // Checks sync mode
-    if(_syncJournalDb->getSyncMode(path) == SyncJournalDb::SyncMode::SYNCMODE_NONE)
+    if (SyncJournalDb::instance()->getSyncMode(path) == SyncJournalDb::SyncMode::SYNCMODE_NONE)
         return false;
 
     // checks if file is cached
