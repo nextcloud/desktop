@@ -48,7 +48,7 @@ class SocketApi : public QObject
     Q_OBJECT
 
 public:
-    explicit SocketApi(QObject *parent = nullptr);
+    explicit SocketApi(QObject *parent = 0);
     virtual ~SocketApi();
 
 public slots:
@@ -115,6 +115,9 @@ private:
     Q_INVOKABLE void command_OPEN(const QString &localFile, SocketListener *listener);
 #endif
 
+    Q_INVOKABLE void command_ONLINE_DOWNLOAD_MODE(const QString &localFile, SocketListener *listener);
+    Q_INVOKABLE void command_OFFLINE_DOWNLOAD_MODE(const QString &localFile, SocketListener *listener);
+
     // Fetch the private link and call targetFun
     void fetchPrivateLinkUrlHelper(const QString &localFile, const std::function<void(const QString &url)> &targetFun);
 
@@ -138,6 +141,8 @@ private:
     DirectEditor* getDirectEditorForLocalFile(const QString &localFile);
 
     QString buildRegisterPathMessage(const QString &path);
+    QString buildRegisterFsMessage();
+
     Q_INVOKABLE void command_SET_DOWNLOAD_MODE(const QString& argument, SocketListener* listener);
     Q_INVOKABLE void command_GET_DOWNLOAD_MODE(const QString& localFile, SocketListener* listener);
 

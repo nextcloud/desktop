@@ -1014,10 +1014,10 @@ void Folder::slotScheduleThisFolder()
     FolderMan::instance()->scheduleFolder(this);
 }
 
-//void Folder::slotNextSyncFullLocalDiscovery()
-//{
-//    _timeSinceLastFullLocalDiscovery.invalidate();
-//}
+void Folder::slotNextSyncFullLocalDiscovery()
+{
+    _timeSinceLastFullLocalDiscovery.invalidate();
+}
 
 void Folder::slotFolderConflicts(const QString &folder, const QStringList &conflictPaths)
 {

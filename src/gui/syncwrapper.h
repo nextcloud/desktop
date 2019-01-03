@@ -30,13 +30,13 @@ public slots:
 
 signals:
     void syncFinish(const QString &, bool);
-    void startSyncForFolder();
+    //void startSyncForFolder(Folder *f);
 
 private:
     SyncWrapper() {
         connect(SyncJournalDb::instance(), &SyncJournalDb::syncStatusChanged, this, &SyncWrapper::updateSyncQueue, Qt::DirectConnection);
         connect(SyncJournalDb::instance(), &SyncJournalDb::syncStatusChanged, this, &SyncWrapper::syncFinish, Qt::DirectConnection);
-        connect(this, &SyncWrapper::startSyncForFolder, FolderMan::instance()->currentSyncFolder(), &Folder::startSync, Qt::DirectConnection);
+        //connect(this, &SyncWrapper::startSyncForFolder, FolderMan::instance()->currentSyncFolder(), &Folder::startSync, Qt::DirectConnection);
     }
 
     QString removeSlash(QString path);

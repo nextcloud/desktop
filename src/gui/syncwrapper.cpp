@@ -65,7 +65,7 @@ void SyncWrapper::sync(const QString path, csync_instructions_e instruction){
 
        if(shouldSync(path)){
            //_folderMan->terminateSyncProcess();
-           FolderMan::instance()->scheduleFolder();
+           FolderMan::instance()->scheduleFolder(FolderMan::instance()->currentSyncFolder());
            //_folderMan->scheduleFolderNext();
            //emit startSyncForFolder();
        } else {
