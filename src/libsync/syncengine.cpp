@@ -431,15 +431,16 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         item->_size = file->size;
         item->_checksumHeader = file->checksumHeader;
         item->_type = file->type;
-    } else {
-        if (instruction != CSYNC_INSTRUCTION_NONE) {
-            qCWarning(lcEngine) << "ERROR: Instruction" << item->_instruction << "vs" << instruction << "for" << fileUtf8;
-            ASSERT(false);
-            // Set instruction to NONE for safety.
-            file->instruction = item->_instruction = instruction = CSYNC_INSTRUCTION_NONE;
-            return -1; // should lead to treewalk error
-        }
-    }
+	}
+    //} else {
+    //    if (instruction != CSYNC_INSTRUCTION_NONE) {
+    //        qCWarning(lcEngine) << "ERROR: Instruction" << item->_instruction << "vs" << instruction << "for" << fileUtf8;
+    //        ASSERT(false);
+    //        // Set instruction to NONE for safety.
+    //        file->instruction = item->_instruction = instruction = CSYNC_INSTRUCTION_NONE;
+    //        return -1; // should lead to treewalk error
+    //    }
+    //}
 
     if (!file->file_id.isEmpty()) {
         item->_fileId = file->file_id;

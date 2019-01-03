@@ -296,8 +296,9 @@ static int _csync_detect_update(CSYNC *ctx, std::unique_ptr<csync_file_stat_t> f
               return -1;
           }
 
-          // Default to NEW unless we're sure it's a rename.
-          fs->instruction = CSYNC_INSTRUCTION_NEW;
+          // Default to NEW unless we're sure it's a rename or fuse is telling otherwise
+   //       if (fs->instruction != CSYNC_INSTRUCTION_SYNC)
+			//fs->instruction = CSYNC_INSTRUCTION_NEW;
 
           bool isRename =
               base.isValid() && base._type == fs->type
