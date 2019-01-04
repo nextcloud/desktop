@@ -171,7 +171,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="79"/>
         <source>Storage space: ...</source>
-        <translation>Memora spaco: ...</translation>
+        <translation>Konserveja spaco: ...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="152"/>
@@ -353,12 +353,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1091"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
-        <translation>Kelkaj dosierujoj ne sinkroniĝis, ĉar ili estas konservataj en fora memoro:</translation>
+        <translation>Kelkaj dosierujoj ne sinkroniĝis, ĉar ili estas konservataj en ekstera konservejo:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1092"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
-        <translation>Kelkaj dosierujoj ne sinkroniĝis, ĉar ili estas tro grandaj âù konservataj en fora memoro:</translation>
+        <translation>Kelkaj dosierujoj ne sinkroniĝis, ĉar ili estas tro grandaj âù konservataj en ekstera konservejo:</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1138"/>
@@ -415,7 +415,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="901"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation>Ĉi-momente estas neniu informo pri diskospaco.</translation>
+        <translation>Ĉi-momente estas neniu informo pri konservejospaco.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="967"/>
@@ -793,7 +793,7 @@
         <location filename="../src/gui/folder.cpp" line="956"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation>Dosierujo el fora memoro estis aldonita.
+        <translation>Dosierujo el ekstera konservejo estis aldonita.
 </translation>
     </message>
     <message>
@@ -1319,7 +1319,7 @@ Se vi plu sinkronigas, la sinkronigo anstataŭigos ĉiujn viajn dosierojn per an
     <message>
         <location filename="../src/gui/generalsettings.ui" line="239"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation>Demandi antaŭ ol sinkronigi dosierujon el fora memoro</translation>
+        <translation>Demandi antaŭ ol sinkronigi dosierujon el ekstera konservejo</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
@@ -1605,7 +1605,7 @@ Protokoloj estos skribataj al %1.</translation>
     <message>
         <location filename="../src/libsync/logger.cpp" line="163"/>
         <source>&lt;nobr&gt;File &apos;%1&apos;&lt;br/&gt;cannot be opened for writing.&lt;br/&gt;&lt;br/&gt;The log output can &lt;b&gt;not&lt;/b&gt; be saved!&lt;/nobr&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;nobr&gt;Dosiero „%1“&lt;br/&gt;ne eblis malfermiĝi.&lt;br/&gt;&lt;br/&gt;La eligo de la protokolo &lt;b&gt;ne&lt;/b&gt; povas esti konservita!&lt;/nobr&gt;</translation>
     </message>
 </context>
 <context>
@@ -1613,27 +1613,27 @@ Protokoloj estos skribataj al %1.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="332"/>
         <source>New Version Available</source>
-        <translation type="unfinished"/>
+        <translation>Nova versio disponeblas</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="338"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Nova versio de la kliento %1 disponeblas.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; elŝuteblas. La instalita versio estas %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="352"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Preterpasi tiun version</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="353"/>
         <source>Skip this time</source>
-        <translation type="unfinished"/>
+        <translation>Preterpasi momente</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="354"/>
         <source>Get update</source>
-        <translation type="unfinished"/>
+        <translation>Ĝisdatigi</translation>
     </message>
 </context>
 <context>
@@ -1641,107 +1641,107 @@ Protokoloj estos skribataj al %1.</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Elektilo</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="23"/>
         <source>Proxy Settings</source>
-        <translation type="unfinished"/>
+        <translation>Agordoj pri prokurilo</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="29"/>
         <source>No Proxy</source>
-        <translation type="unfinished"/>
+        <translation>Neniu prokurilo</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
-        <translation type="unfinished"/>
+        <translation>Uzi la sisteman prokurilon</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation type="unfinished"/>
+        <translation>Specifi permane prokurilon kiel</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
         <source>Host</source>
-        <translation type="unfinished"/>
+        <translation>Gastigo</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="100"/>
         <source>:</source>
-        <translation type="unfinished"/>
+        <translation>:</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="131"/>
         <source>Proxy server requires authentication</source>
-        <translation type="unfinished"/>
+        <translation>Tiu prokurilo postulas aŭtentigon</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="190"/>
         <source>Download Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Elŝuta retkapacito</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="196"/>
         <location filename="../src/gui/networksettings.ui" line="275"/>
         <source>Limit to</source>
-        <translation type="unfinished"/>
+        <translation>Limigi al</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="241"/>
         <location filename="../src/gui/networksettings.ui" line="320"/>
         <source>KBytes/s</source>
-        <translation type="unfinished"/>
+        <translation>Kbajtoj/s</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="203"/>
         <location filename="../src/gui/networksettings.ui" line="292"/>
         <source>No limit</source>
-        <translation type="unfinished"/>
+        <translation>Senlima</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="250"/>
         <location filename="../src/gui/networksettings.ui" line="282"/>
         <source>Limit to 3/4 of estimated bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Limigi al 3/4 de la taksita retkapacito</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="269"/>
         <source>Upload Bandwidth</source>
-        <translation type="unfinished"/>
+        <translation>Alŝuta retkapacito</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="253"/>
         <location filename="../src/gui/networksettings.ui" line="285"/>
         <source>Limit automatically</source>
-        <translation type="unfinished"/>
+        <translation>Aŭtomate limigi</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="37"/>
         <source>Hostname of proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Gastigonomo de la prokurila servilo</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="38"/>
         <source>Username for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Uzantnomo por la prokurila servilo</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="39"/>
         <source>Password for proxy server</source>
-        <translation type="unfinished"/>
+        <translation>Pasvorto por la prokurila servilo</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="41"/>
         <source>HTTP(S) proxy</source>
-        <translation type="unfinished"/>
+        <translation>HTTP(S)-prokurilo</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="42"/>
         <source>SOCKS5 proxy</source>
-        <translation type="unfinished"/>
+        <translation>SOCKS5-prokurilo</translation>
     </message>
 </context>
 <context>
@@ -1749,32 +1749,32 @@ Protokoloj estos skribataj al %1.</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="112"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Eraro ricevita el la servilo: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Eraro okazis dum aliro al la ĵetona generilo: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Ne eblis analizi la JSON-datumojn ricevitajn el la servilo: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>La respondo el la servilo ne enhavis ĉiujn atenditajn kampojn</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="125"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Ensaluta eraro&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="131"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Neĝusta uzanto&lt;/h1&gt;&lt;p&gt;Vi ensalutis kiel uzanto &lt;em&gt;%1&lt;/em&gt;, sed vi devas ensaluti kiel uzanto &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Bv. elsaluti el %3 en alia langeto, poste &lt;a href=&apos;%4&apos;&gt;alklaku ĉi tie&lt;/a&gt; kaj ensaluti kiel uzanto %2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1782,58 +1782,58 @@ Protokoloj estos skribataj al %1.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="103"/>
         <source>New %1 Update Ready</source>
-        <translation type="unfinished"/>
+        <translation>Nova ĝisdatigo por %1 pretas</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="104"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation type="unfinished"/>
+        <translation>Nova ĝisdatigo por %1 ekinstaliĝos. La ĝisdatigilo eble petos pliajn permesojn dum la instalado.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Elŝutanta version %1. Bv. atendi...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Ne eblis elŝuti la ĝisdatigon. Bv. alklaki &lt;a href=&apos;%1&apos;&gt;ĉi tie&lt;/a&gt; por elŝuti la ĝisdatigon permane.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>Could not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Ne eblis kontroli, ĉu estas novaj ĝisdatigoj.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation type="unfinished"/>
+        <translation>%1 je versio %2 disponeblas. Restartigu la aplikaĵon por ekĝisdatigi.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>%1 je versio %2 disponeblas. Bv. uzi la sisteman ĝisdatigilon por instali ĝin.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>Checking update server...</source>
-        <translation type="unfinished"/>
+        <translation>Kontrolante la servilon pri ĝisdatigoj...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation type="unfinished"/>
+        <translation>Stato pri ĝisdatigoj estas nekonata: ne eblis kontroli, ĉu estas novaj ĝisdatigoj.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation type="unfinished"/>
+        <translation>Neniu ĝisdatigo disponeblas. Via instalaĵo ĝisdatas.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="178"/>
         <source>Update Check</source>
-        <translation type="unfinished"/>
+        <translation>Kontrolo pri ĝisdatigoj</translation>
     </message>
 </context>
 <context>
@@ -1841,43 +1841,43 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="48"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Konekto al %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="49"/>
         <source>Setup local folder options</source>
-        <translation type="unfinished"/>
+        <translation>Agordi opciojn de la loka dosierujo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="58"/>
         <source>Connect...</source>
-        <translation type="unfinished"/>
+        <translation>Konektante...</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="156"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Dosierujo %1 „%2“ sinkronigas al loka dosierujo „%3“</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="159"/>
         <source>Sync the folder &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronigi la dosierujon „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="164"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Averto:&lt;/strong&gt; la loka dosierujo ne malplenas. Elekti tion, kion vi volas fari!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="285"/>
         <source>Local Sync Folder</source>
-        <translation type="unfinished"/>
+        <translation>Loka sinkroniga dosierujo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="324"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="345"/>
         <source>(%1)</source>
-        <translation type="unfinished"/>
+        <translation>(%1)</translation>
     </message>
 </context>
 <context>
@@ -1885,32 +1885,32 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="14"/>
         <source>Connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Konekto malsukcesis</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ne eblis konekti al servilo per specifita sekuriga adreso. Kion vi volas fari?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation type="unfinished"/>
+        <translation>Elekti malsaman retadreson</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation type="unfinished"/>
+        <translation>Reprovi sed per neĉifrita konekto (HTTP): tio ne estas sekura</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
         <source>Configure client-side TLS certificate</source>
-        <translation type="unfinished"/>
+        <translation>Agordi ĉeklientan TLS-atestilon</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="34"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ne eblis konekti al servilo per specifita sekuriga adreso &lt;em&gt;%1&lt;/em&gt;. Kion vi volas fari?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -1918,17 +1918,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="49"/>
         <source>&amp;Email</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Retposadreso</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="59"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Konekti al %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="60"/>
         <source>Enter user credentials</source>
-        <translation type="unfinished"/>
+        <translation>Entajpi akreditlojn de uzanto</translation>
     </message>
 </context>
 <context>
@@ -1936,17 +1936,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="45"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Konekti al %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Ensaluti pere de via retumilo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="56"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopii ligilon al tondujo</translation>
     </message>
 </context>
 <context>
@@ -1954,58 +1954,59 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="54"/>
         <source>Connect to %1</source>
-        <translation type="unfinished"/>
+        <translation>Konekti al %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="55"/>
         <source>Setup %1 server</source>
-        <translation type="unfinished"/>
+        <translation>Agordi la servilon %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="83"/>
         <source>Keep your data secure and under your control</source>
-        <translation type="unfinished"/>
+        <translation>Konservu viajn datumojn sekuraj kaj sub via kontrolo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="84"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation type="unfinished"/>
+        <translation>Sekura kunlaborado kaj dosiera interŝanĝo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="85"/>
         <source>Easy-to-use web mail, calendaring &amp; contacts</source>
-        <translation type="unfinished"/>
+        <translation>Faciluza enreta retpoŝtilo, kalendaro kaj kontaktaro</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="86"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation type="unfinished"/>
+        <translation>Ekrandividado, retkunsidoj kaj reta konferencoj</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="181"/>
         <source>This url is NOT secure as it is not encrypted.
 It is not advisable to use it.</source>
-        <translation type="unfinished"/>
+        <translation>Tiu ĉi retadreso NE estas sekura, ĉar ĝi ne estas ĉifrita.
+Uzi ĝin ne konsilindas.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="185"/>
         <source>This url is secure. You can use it.</source>
-        <translation type="unfinished"/>
+        <translation>Tiu ĉi retadreso estas sekura. Vi povas uzi ĝin.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="224"/>
         <source>&amp;Next &gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Sekva &gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="282"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>Nevalida retadreso</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="404"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation type="unfinished"/>
+        <translation>Ne eblis ŝargi atestilon. Ĉu neĝusta pasvorto?</translation>
     </message>
 </context>
 <context>
@@ -2013,149 +2014,149 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="250"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;Sukcese konektita al %1: %2 je versio %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="280"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
-        <translation type="unfinished"/>
+        <translation>Malsukcesis konekti al %1 ĉe %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="315"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Eltempiĝo dum konekto al %1 ĉe %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="334"/>
         <source>Trying to connect to %1 at %2...</source>
-        <translation type="unfinished"/>
+        <translation>Konektante al %1 ĉe %2...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="385"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>La aŭtentiga peto al la servilo alidirektis al „%1“. La retadreso eraras; la servilo estas misagordita.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
         <source>There was an invalid response to an authenticated webdav request</source>
-        <translation type="unfinished"/>
+        <translation>Nevalida respondo al aŭtentigita „webdav“-peto</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Aliro nepermesata de la servilo. Por kontroli, ĉu vi rajtas pri aliro, &lt;a href=&quot;%1&quot;&gt;alklaku ĉi tie&lt;/a&gt; por iri al la servo pere de via retumilo.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="278"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>Nevalida retadreso</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>The server reported the following error:</source>
-        <translation type="unfinished"/>
+        <translation>La servilo raportis la jenan eraron:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Sinkroniga dosierujo loka %1 jam ekzistas, agordante ĝin por la sinkronigo.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="455"/>
         <source>Creating local sync folder %1...</source>
-        <translation type="unfinished"/>
+        <translation>Kreado de sinkroniga dosierujo loka %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="459"/>
         <source>ok</source>
-        <translation type="unfinished"/>
+        <translation>bone</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="461"/>
         <source>failed.</source>
-        <translation type="unfinished"/>
+        <translation>malsukcesis.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="463"/>
         <source>Could not create local folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Ne eblis krei lokan dosierujon %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="489"/>
         <source>No remote folder specified!</source>
-        <translation type="unfinished"/>
+        <translation>Neniu fora dosierujo specifita!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="495"/>
         <source>Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Eraro: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="508"/>
         <source>creating folder on Nextcloud: %1</source>
-        <translation type="unfinished"/>
+        <translation>kreado de dosierujo ĉe Nextcloud: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="524"/>
         <source>Remote folder %1 created successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Fora dosierujo %1 sukcese kreita</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="526"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
-        <translation type="unfinished"/>
+        <translation>La fora dosierujo %1 jam ekzistas. Konektante.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="528"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="530"/>
         <source>The folder creation resulted in HTTP error code %1</source>
-        <translation type="unfinished"/>
+        <translation>Dosieruja kreado ricevis HTTP-eraran kodon %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="532"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Kreo de fora dosierujo malsukcesis, ĉar la akreditiloj ne ĝustas!&lt;br/&gt;Bv. antaŭeniri kaj kontroli viajn akreditilojn.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="536"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Kreado de fora dosierujo malsukcesis, eble ĉar la akreditiloj ne ĝustas.&lt;/font&gt;&lt;br/&gt;Bv. antaŭeniri kaj kontroli viajn akreditilojn.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="541"/>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="542"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Kreado de fora dosierujo %1 malsukcesis kun eraro &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="559"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
-        <translation type="unfinished"/>
+        <translation>Sinkroniga konekto el %1 al fora dosierujo %2 agordiĝis.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="564"/>
         <source>Successfully connected to %1!</source>
-        <translation type="unfinished"/>
+        <translation>Sukcese konektita al %1!</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="571"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation type="unfinished"/>
+        <translation>Konekto al %1 ne eblis. Bv. rekontroli.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="585"/>
         <source>Folder rename failed</source>
-        <translation type="unfinished"/>
+        <translation>Dosieruja alinomado malsukcesis.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="586"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>Ne eblas forigi kaj savkopii la dosierujon, ĉar tiu dosierujo aŭ iu dosiero ene de ĝi estas malfermita en alia programo. Bv. malfermi la dosierujon aŭ dosieron kaj reprovi, aŭ nuligu la agordojn.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="633"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Loka sinkroniga dosierujo %1 sukcese kreita!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
 </context>
 <context>
@@ -2163,12 +2164,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="89"/>
         <source>%1 Connection Wizard</source>
-        <translation type="unfinished"/>
+        <translation>Asistilo pri konekto %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="98"/>
         <source>Skip folders configuration</source>
-        <translation type="unfinished"/>
+        <translation>Preterpasi agordon de dosierujoj</translation>
     </message>
 </context>
 <context>
@@ -2176,17 +2177,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="36"/>
         <source>Everything set up!</source>
-        <translation type="unfinished"/>
+        <translation>Ĉio estas agordita!</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="40"/>
         <source>Open Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>Malfermi lokan dosierujon</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizardresultpage.cpp" line="48"/>
         <source>Open %1 in Browser</source>
-        <translation type="unfinished"/>
+        <translation>Malfermi %1 per la retumilo</translation>
     </message>
 </context>
 <context>
