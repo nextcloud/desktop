@@ -198,7 +198,5 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Icon[de_DE]=@APPLICATION_ICON_NAME@
-Name[de_DE]=@APPLICATION_NAME@ Client zur Desktop-Synchronisation
-Comment[de_DE]=@APPLICATION_NAME@ Client zur Desktop-Synchronisation
-GenericName[de_DE]=Synchronisationsordner
+Icon[sv]=@APPLICATION_ICON_NAME@
+GenericName[sv]=Mappsynkronisering

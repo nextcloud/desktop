@@ -253,12 +253,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="591"/>
         <source>Restart sync</source>
-        <translation>Prøv synkronisering igjen</translation>
+        <translation>Synkroniser på ny</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="600"/>
         <source>Remove folder sync connection</source>
-        <translation>Fjern tilkobling for mappe-synkronisering</translation>
+        <translation>Fjern tilkobling for synkronisering av mappe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="671"/>
@@ -273,7 +273,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="725"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation>Bekreft fjerning av tilkobling for mappe-synkronisering</translation>
+        <translation>Bekreft fjerning av tilkobling for synkronisering av mappe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="732"/>
@@ -542,7 +542,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
         <source>This server probably requires a SSL client certificate.</source>
-        <translation>Denne serveren krever sannsynligvis et SSL-klientsertifikat</translation>
+        <translation>Denne serveren krever et SSL klient sertifikat.</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -573,17 +573,17 @@
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="190"/>
+        <location filename="../src/gui/application.cpp" line="192"/>
         <source>Error accessing the configuration file</source>
         <translation>Feil ved lesing av konfigurasjonsfil</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="191"/>
+        <location filename="../src/gui/application.cpp" line="193"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="194"/>
+        <location filename="../src/gui/application.cpp" line="196"/>
         <source>Quit %1</source>
         <translation type="unfinished"/>
     </message>
@@ -637,7 +637,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="47"/>
         <source>No ownCloud account configured</source>
-        <translation>Ingen ownCloud-konter konfigurert</translation>
+        <translation>Ingen Nextcloud-konter konfigurert</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="282"/>
@@ -765,12 +765,12 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="411"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 og %n andre filer kunne ikke synkroniseres pga. feil. Se loggen for detaljer.</numerusform><numerusform>%1 og %n andre filer kunne ikke synkroniseres pga. feil. Se loggen for detaljer.</numerusform></translation>
+        <translation><numerusform>%1 og %n andre filer kunne ikke synkroniseres pga. feil. Se loggen for detaljer.</numerusform><numerusform>%1 og %n andre filer kunne ikke synkroniseres på grunn av feil. Se logg for detaljer.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="413"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation>%1 kunne ikke synkroniseres pga. en feil. Se loggen for detaljer.</translation>
+        <translation>%1 kunne ikke synkroniseres på grunn av en feil. Se logg for detaljer.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="421"/>
@@ -2586,7 +2586,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="67"/>
         <source>ownCloud Path:</source>
-        <translation>ownCloud-sti:</translation>
+        <translation>Nextcloud-sti:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="123"/>
