@@ -2887,7 +2887,7 @@ Uzi ĝin ne konsilindas.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="93"/>
         <source>Organizational Unit (OU):</source>
-        <translation>Organiza ero („OU“):</translation>
+        <translation>Organiza unuo („OU“):</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="94"/>
@@ -2927,7 +2927,7 @@ Uzi ĝin ne konsilindas.</translation>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="107"/>
         <source>&lt;h3&gt;Fingerprints&lt;/h3&gt;</source>
-        <translation>&lt;h3&gt;Fingropremaĵoj&lt;/h3&gt;</translation>
+        <translation>&lt;h3&gt;Fingrospuroj&lt;/h3&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="111"/>
@@ -2998,62 +2998,62 @@ Uzi ĝin ne konsilindas.</translation>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="132"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation type="unfinished"/>
+        <translation>Ne eblas konekte sekura al &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
         <source>with Certificate %1</source>
-        <translation type="unfinished"/>
+        <translation>kun atestilo %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="175"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="177"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="179"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;ne specifita&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="180"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="200"/>
         <source>Organization: %1</source>
-        <translation type="unfinished"/>
+        <translation>Organizaĵo:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="181"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="201"/>
         <source>Unit: %1</source>
-        <translation type="unfinished"/>
+        <translation>Unuo: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="182"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="202"/>
         <source>Country: %1</source>
-        <translation type="unfinished"/>
+        <translation>Lando: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="189"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>MD5-fingrospuro: &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="190"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation type="unfinished"/>
+        <translation>SHA1-fingrospuro: &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="192"/>
         <source>Effective Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ekvalida dato: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="193"/>
         <source>Expiration Date: %1</source>
-        <translation type="unfinished"/>
+        <translation>Limdato: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
         <source>Issuer: %1</source>
-        <translation type="unfinished"/>
+        <translation>Eldonanto: %1</translation>
     </message>
 </context>
 <context>
@@ -3061,173 +3061,173 @@ Uzi ĝin ne konsilindas.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="120"/>
         <source>Success.</source>
-        <translation type="unfinished"/>
+        <translation>Sukcese.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="130"/>
         <source>A network connection timeout happened.</source>
-        <translation type="unfinished"/>
+        <translation>Retkonekta eltempiĝis.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="133"/>
         <source>A HTTP transmission error happened.</source>
-        <translation type="unfinished"/>
+        <translation>Eraro de HTTP-transsendo okazis.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="157"/>
         <source>The mounted folder is temporarily not available on the server</source>
-        <translation type="unfinished"/>
+        <translation>La muntita dosierujo estas portempe nedisponebla ĉe la servilo</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="163"/>
         <source>An error occurred while opening a folder</source>
-        <translation type="unfinished"/>
+        <translation>Eraro okazis dum malfermo de dosierujo</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="166"/>
         <source>Error while reading folder.</source>
-        <translation type="unfinished"/>
+        <translation>Eraro dum legado de dosierujo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="242"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (preterpasita pro antaŭa eraro, reprovo je %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="514"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
-        <translation type="unfinished"/>
+        <translation>Dosiero aŭ dosierujo estas ignorita, ĉar ĝi estas kaŝita.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="517"/>
         <source>Folder hierarchy is too deep</source>
-        <translation type="unfinished"/>
+        <translation>Hierarĥio de dosierujoj tro profundas</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="533"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Konflikto: la versio ĉe la servilo estis elŝutita, le loka kopio estis alinomita kaj ne alŝutita.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="799"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation type="unfinished"/>
+        <translation>Nur disponeblas %1, bezono de almenaŭ %2 por eki</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="834"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ne eblas malfermi aŭ krei lokan sinkronigan datumbazon. Certigu, ke vi rajtas aliri al la sinkroniga dosierujo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1347"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
-        <translation type="unfinished"/>
+        <translation>Ne permesita, ĉar vi ne rajtas aldoni patran dosierujon</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1354"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation type="unfinished"/>
+        <translation>Ne permesita, ĉar vi ne rajtas aldoni dosierojn en tiu ĉi dosierujo</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1687"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation type="unfinished"/>
+        <translation>Diskospaco ne sufiĉas: elŝutoj, kiuj reduktos liberan spacon sub %1, ne okazis.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1694"/>
         <source>There is insufficient space available on the server for some uploads.</source>
-        <translation type="unfinished"/>
+        <translation>La servilo ne plu havas sufiĉan spacon por iuj alŝutoj.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="148"/>
         <source>CSync unspecified error.</source>
-        <translation type="unfinished"/>
+        <translation>„CSync“-eraro ne specifita.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="151"/>
         <source>Aborted by the user</source>
-        <translation type="unfinished"/>
+        <translation>Haltigita de la uzanto</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="123"/>
         <source>Failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation type="unfinished"/>
+        <translation>Ne eblas malfermi aŭ krei protokolan dosieron. Certigu, ke vi rajtas aliri al la sinkroniga dosierujo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="127"/>
         <source>Discovery step failed.</source>
-        <translation type="unfinished"/>
+        <translation>Malkovra etapo malsukcesis.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="136"/>
         <source>Permission denied.</source>
-        <translation type="unfinished"/>
+        <translation>Ne permesata.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="139"/>
         <source>File or directory not found:</source>
-        <translation type="unfinished"/>
+        <translation>Dosiero aŭ dosierujo ne trovita:</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="142"/>
         <source>Tried to create a folder that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>Provo krei dosierujon, kiu jam ekzistas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="145"/>
         <source>No space on %1 server available.</source>
-        <translation type="unfinished"/>
+        <translation>Ne plu estas spaco ĉe la servilo %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="154"/>
         <source>The service is temporarily unavailable</source>
-        <translation type="unfinished"/>
+        <translation>La servo dumtempe ne disponeblas</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="160"/>
         <source>Access is forbidden</source>
-        <translation type="unfinished"/>
+        <translation>Aliro estas malpermesata</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="171"/>
         <source>An internal error number %1 occurred.</source>
-        <translation type="unfinished"/>
+        <translation>Interna eraro n-ro %1 okazis.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="483"/>
         <source>Symbolic links are not supported in syncing.</source>
-        <translation type="unfinished"/>
+        <translation>Simbolajn ligilojn ne subtenas la sinkronigo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="486"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Dosiero estas en la listo de ignoritaj dosieroj.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="490"/>
         <source>File names ending with a period are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Dosieroj finantaj per punkto ne eblas en tiu ĉi dosiersistemo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="500"/>
         <source>File names containing the character &apos;%1&apos; are not supported on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Dosieroj enhavantaj la signon „%1“ ne eblas en tiu ĉi dosiersistemo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="503"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Tiu ĉi dosiernomo ne estas permesata en tiu ĉi dosiersistemo.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="508"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Dosiernomo enhavas spacojn je sia fino.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="511"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>Dosiernomo tro longas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="520"/>
