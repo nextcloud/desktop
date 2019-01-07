@@ -1,11 +1,10 @@
 site:
-  title: ownCloud Client Documentation
+  title: ownCloud Desktop Client Documentation
 
 content:
   sources:
-  - url: https://github.com/owncloud/client.git
-    branches:
-    - master-antora
+  - url: .
+    branches: HEAD
     start_path: docs/
 
 ui:
@@ -16,3 +15,4 @@ ui:
 output:
   clean: true
   dir: public
+
