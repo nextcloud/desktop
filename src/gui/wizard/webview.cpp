@@ -138,6 +138,13 @@ void WebViewPageUrlSchemeHandler::requestStarted(QWebEngineUrlRequestJob *reques
             password = part.mid(9);
         }
     }
+
+    user = QUrl::fromPercentEncoding(user.toUtf8());
+    password = QUrl::fromPercentEncoding(password.toUtf8());
+
+    user = user.replace(QChar('+'), QChar(' '));
+    password = password.replace(QChar('+'), QChar(' '));
+
     if (!server.startsWith("http://") && !server.startsWith("https://")) {
         server = "https://" + server;
     }
