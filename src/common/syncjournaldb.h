@@ -316,6 +316,13 @@ public:
     void wipePinStateForPathAndBelow(const QByteArray &path);
 
     /**
+     * Returns list of all paths with their pin state as in the db.
+     *
+     * Returns nothing on db error.
+     */
+    Optional<QVector<QPair<QByteArray, PinState>>> rawPinStates();
+
+    /**
      * Only used for auto-test:
      * when positive, will decrease the counter for every database operation.
      * reaching 0 makes the operation fails

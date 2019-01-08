@@ -352,7 +352,12 @@ private slots:
             return *state;
         };
 
+        _db.wipePinStateForPathAndBelow("");
+        auto list = _db.rawPinStates();
+        QCOMPARE(list->size(), 0);
+
         // Make a thrice-nested setup
+        make("", PinState::AlwaysLocal);
         make("local", PinState::AlwaysLocal);
         make("online", PinState::OnlineOnly);
         make("inherit", PinState::Inherited);
@@ -362,11 +367,14 @@ private slots:
             make(QByteArray(base) + "online", PinState::OnlineOnly);
 
             for (auto base2 : {"local/", "online/", "inherit/"}) {
-                make(QByteArray(base) + base2 + "/inherit", PinState::Inherited);
-                make(QByteArray(base) + base2 + "/local", PinState::AlwaysLocal);
-                make(QByteArray(base) + base2 + "/online", PinState::OnlineOnly);
+                make(QByteArray(base) + base2 + "inherit", PinState::Inherited);
+                make(QByteArray(base) + base2 + "local", PinState::AlwaysLocal);
+                make(QByteArray(base) + base2 + "online", PinState::OnlineOnly);
             }
         }
+
+        list = _db.rawPinStates();
+        QCOMPARE(list->size(), 4 + 9 + 27);
 
         // Baseline direct checks (the fallback for unset root pinstate is AlwaysLocal)
         QCOMPARE(get("local"), PinState::AlwaysLocal);
@@ -417,12 +425,16 @@ private slots:
         QCOMPARE(getRaw("local/local"), PinState::Inherited);
         QCOMPARE(getRaw("local/local/local"), PinState::Inherited);
         QCOMPARE(getRaw("local/local/online"), PinState::Inherited);
+        list = _db.rawPinStates();
+        QCOMPARE(list->size(), 4 + 9 + 27 - 4);
 
         // Wiping everything
         _db.wipePinStateForPathAndBelow("");
         QCOMPARE(getRaw(""), PinState::Inherited);
         QCOMPARE(getRaw("local"), PinState::Inherited);
         QCOMPARE(getRaw("online"), PinState::Inherited);
+        list = _db.rawPinStates();
+        QCOMPARE(list->size(), 0);
     }
 
 private:

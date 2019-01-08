@@ -2086,6 +2086,22 @@ void SyncJournalDb::wipePinStateForPathAndBelow(const QByteArray &path)
     query.exec();
 }
 
+Optional<QVector<QPair<QByteArray, PinState>>> SyncJournalDb::rawPinStates()
+{
+    QMutexLocker lock(&_mutex);
+    if (!checkConnect())
+        return {};
+
+    SqlQuery query("SELECT path, pinState FROM flags;", _db);
+    query.exec();
+
+    QVector<QPair<QByteArray, PinState>> result;
+    while (query.next()) {
+        result.append({ query.baValue(0), static_cast<PinState>(query.intValue(1)) });
+    }
+    return result;
+}
+
 void SyncJournalDb::commit(const QString &context, bool startTrans)
 {
     QMutexLocker lock(&_mutex);
