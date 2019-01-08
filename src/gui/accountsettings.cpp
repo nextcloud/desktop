@@ -315,7 +315,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     QAction *ac = menu->addAction(tr("Open folder"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotOpenCurrentFolder);
 
-    if (!ui->_folderList->isExpanded(index) && !folder->newFilesAreVirtual()) {
+    if (!ui->_folderList->isExpanded(index) && !folder->supportsVirtualFiles()) {
         ac = menu->addAction(tr("Choose what to sync"));
         ac->setEnabled(folderConnected);
         connect(ac, &QAction::triggered, this, &AccountSettings::doExpand);
