@@ -1990,14 +1990,17 @@ void SyncJournalDb::markVirtualFileForDownloadRecursively(const QByteArray &path
         return;
 
     static_assert(ItemTypeVirtualFile == 4 && ItemTypeVirtualFileDownload == 5, "");
-    SqlQuery query("UPDATE metadata SET type=5 WHERE " IS_PREFIX_PATH_OF("?1", "path") " AND type=4;", _db);
+    SqlQuery query("UPDATE metadata SET type=5 WHERE "
+                   "(" IS_PREFIX_PATH_OF("?1", "path") " OR ?1 == '') "
+                   "AND type=4;", _db);
     query.bindValue(1, path);
     query.exec();
 
     // We also must make sure we do not read the files from the database (same logic as in avoidReadFromDbOnNextSync)
     // This includes all the parents up to the root, but also all the directory within the selected dir.
     static_assert(ItemTypeDirectory == 2, "");
-    query.prepare("UPDATE metadata SET md5='_invalid_' WHERE (" IS_PREFIX_PATH_OF("?1", "path") " OR " IS_PREFIX_PATH_OR_EQUAL("path", "?1") ") AND type == 2;");
+    query.prepare("UPDATE metadata SET md5='_invalid_' WHERE "
+                  "(" IS_PREFIX_PATH_OF("?1", "path") " OR ?1 == '' OR " IS_PREFIX_PATH_OR_EQUAL("path", "?1") ") AND type == 2;");
     query.bindValue(1, path);
     query.exec();
 }
@@ -2075,7 +2078,9 @@ void SyncJournalDb::wipePinStateForPathAndBelow(const QByteArray &path)
 
     auto &query = _wipePinStateQuery;
     ASSERT(query.initOrReset(QByteArrayLiteral(
-            "DELETE FROM flags WHERE " IS_PREFIX_PATH_OR_EQUAL("?1", "path") ";"),
+            "DELETE FROM flags WHERE "
+            // Allow "" to delete everything
+            " (" IS_PREFIX_PATH_OR_EQUAL("?1", "path") " OR ?1 == '');"),
         _db));
     query.bindValue(1, path);
     query.exec();

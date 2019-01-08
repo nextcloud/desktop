@@ -417,6 +417,12 @@ private slots:
         QCOMPARE(getRaw("local/local"), PinState::Inherited);
         QCOMPARE(getRaw("local/local/local"), PinState::Inherited);
         QCOMPARE(getRaw("local/local/online"), PinState::Inherited);
+
+        // Wiping everything
+        _db.wipePinStateForPathAndBelow("");
+        QCOMPARE(getRaw(""), PinState::Inherited);
+        QCOMPARE(getRaw("local"), PinState::Inherited);
+        QCOMPARE(getRaw("online"), PinState::Inherited);
     }
 
 private:

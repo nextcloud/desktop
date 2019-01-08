@@ -323,6 +323,8 @@ public slots:
     /**
      * Mark a virtual file as being ready for download, and start a sync.
      * relativepath is the path to the file (including the extension)
+     * Passing a folder means that all contained virtual items shall be downloaded.
+     * A relative path of "" downloads everything.
      */
     void downloadVirtualFile(const QString &relativepath);
 
@@ -331,6 +333,7 @@ public slots:
      *
      * relativepath is the path to the file
      * It's allowed to pass a path to a folder: all contained files will be dehydrated.
+     * A relative path of "" dehydrates everything.
      */
     void dehydrateFile(const QString &relativepath);
 

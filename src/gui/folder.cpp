@@ -562,14 +562,14 @@ void Folder::downloadVirtualFile(const QString &_relativepath)
     // Set in the database that we should download the file
     SyncJournalFileRecord record;
     _journal.getFileRecord(relativepath, &record);
-    if (!record.isValid())
+    if (!record.isValid() && !relativepath.isEmpty())
         return;
     if (record._type == ItemTypeVirtualFile) {
         record._type = ItemTypeVirtualFileDownload;
         _journal.setFileRecord(record);
         // Make sure we go over that file during the discovery
         _journal.avoidReadFromDbOnNextSync(relativepath);
-    } else if (record._type == ItemTypeDirectory) {
+    } else if (record._type == ItemTypeDirectory || relativepath.isEmpty()) {
         _journal.markVirtualFileForDownloadRecursively(relativepath);
     } else {
         qCWarning(lcFolder) << "Invalid existing record " << record._type << " for file " << _relativepath;
@@ -594,11 +594,11 @@ void Folder::dehydrateFile(const QString &_relativepath)
 
     SyncJournalFileRecord record;
     _journal.getFileRecord(relativepath, &record);
-    if (!record.isValid())
+    if (!record.isValid() && !relativepath.isEmpty())
         return;
     if (record._type == ItemTypeFile) {
         markForDehydration(record);
-    } else if (record._type == ItemTypeDirectory) {
+    } else if (record._type == ItemTypeDirectory || relativepath.isEmpty()) {
         _journal.getFilesBelowPath(relativepath, markForDehydration);
     } else {
         qCWarning(lcFolder) << "Invalid existing record " << record._type << " for file " << _relativepath;

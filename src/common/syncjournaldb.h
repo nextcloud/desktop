@@ -269,6 +269,8 @@ public:
     /**
      * Set the 'ItemTypeVirtualFileDownload' to all the files that have the ItemTypeVirtualFile flag
      * within the directory specified path path
+     *
+     * The path "" marks everything.
      */
     void markVirtualFileForDownloadRecursively(const QByteArray &path);
 
@@ -309,6 +311,7 @@ public:
      * Wipes pin states for a path and below.
      *
      * Used when the user asks a subtree to have a particular pin state.
+     * The path "" wipes every entry.
      */
     void wipePinStateForPathAndBelow(const QByteArray &path);
 
