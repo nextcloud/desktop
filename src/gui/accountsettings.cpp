@@ -336,35 +336,27 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     ac = menu->addAction(tr("Remove folder sync connection"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotRemoveCurrentFolder);
 
-    if ((Theme::instance()->showVirtualFilesOption() && folder->supportsVirtualFiles()) || folder->newFilesAreVirtual()) {
-        ac = menu->addAction(tr("Create virtual files for new files (Experimental)"));
+    if (folder->supportsVirtualFiles()) {
+        auto availabilityMenu = menu->addMenu(tr("Availability"));
+        ac = availabilityMenu->addAction(tr("Local"));
+        ac->setCheckable(true);
+        ac->setChecked(!folder->newFilesAreVirtual());
+        connect(ac, &QAction::triggered, this, [this]() { slotSetCurrentFolderAvailability(PinState::AlwaysLocal); });
+
+        ac = availabilityMenu->addAction(tr("Online only"));
         ac->setCheckable(true);
         ac->setChecked(folder->newFilesAreVirtual());
-        connect(ac, &QAction::toggled, this, [folder, this](bool checked) {
-            if (!checked) {
-                if (folder)
-                    folder->setNewFilesAreVirtual(false);
-                // Make sure the size is recomputed as the virtual file indicator changes
-                ui->_folderList->doItemsLayout();
-                return;
-            }
-            OwncloudWizard::askExperimentalVirtualFilesFeature([folder, this](bool enable) {
-                if (enable && folder)
-                    folder->setNewFilesAreVirtual(enable);
+        connect(ac, &QAction::triggered, this, [this]() { slotSetCurrentFolderAvailability(PinState::OnlineOnly); });
 
-                // Also wipe selective sync settings
-                bool ok = false;
-                auto oldBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-                folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
-                for (const auto &entry : oldBlacklist) {
-                    folder->journalDb()->avoidReadFromDbOnNextSync(entry);
-                }
-                FolderMan::instance()->scheduleFolder(folder);
+        ac = menu->addAction(tr("Disable virtual file support..."));
+        connect(ac, &QAction::triggered, this, &AccountSettings::slotDisableVfsCurrentFolder);
+    }
 
-                // Make sure the size is recomputed as the virtual file indicator changes
-                ui->_folderList->doItemsLayout();
-            });
-        });
+    if (Theme::instance()->showVirtualFilesOption()
+        && !folder->supportsVirtualFiles()
+        && bestAvailableVfsMode() != Vfs::Off) {
+        ac = menu->addAction(tr("Enable virtual file support (experimental)..."));
+        connect(ac, &QAction::triggered, this, &AccountSettings::slotEnableVfsCurrentFolder);
     }
 
 
@@ -539,6 +531,102 @@ void AccountSettings::slotOpenCurrentLocalSubFolder()
     QString fileName = _model->data(selected, FolderStatusDelegate::FolderPathRole).toString();
     QUrl url = QUrl::fromLocalFile(fileName);
     QDesktopServices::openUrl(url);
+}
+
+void AccountSettings::slotEnableVfsCurrentFolder()
+{
+    FolderMan *folderMan = FolderMan::instance();
+    QPointer<Folder> folder = folderMan->folder(selectedFolderAlias());
+    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
+    if (!selected.isValid() || !folder)
+        return;
+
+    OwncloudWizard::askExperimentalVirtualFilesFeature([folder, this](bool enable) {
+        if (!enable || !folder)
+            return;
+
+        qCInfo(lcAccountSettings) << "Enabling vfs support for folder" << folder->path();
+
+        // Wipe selective sync blacklist
+        bool ok = false;
+        auto oldBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
+        for (const auto &entry : oldBlacklist) {
+            folder->journalDb()->avoidReadFromDbOnNextSync(entry);
+        }
+
+        // Change the folder vfs mode and load the plugin
+        folder->setSupportsVirtualFiles(true);
+
+        // Wipe pin states to be sure
+        folder->journalDb()->wipePinStateForPathAndBelow("");
+        folder->journalDb()->setPinStateForPath("", PinState::OnlineOnly);
+
+        FolderMan::instance()->scheduleFolder(folder);
+
+        // Update the ui: no selective sync, vfs indicator; size changed
+        ui->_folderList->doItemsLayout();
+    });
+}
+
+void AccountSettings::slotDisableVfsCurrentFolder()
+{
+    FolderMan *folderMan = FolderMan::instance();
+    QPointer<Folder> folder = folderMan->folder(selectedFolderAlias());
+    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
+    if (!selected.isValid() || !folder)
+        return;
+
+    auto msgBox = new QMessageBox(
+        QMessageBox::Question,
+        tr("Disable virtual file support?"),
+        tr("This action will disable virtual file support. As a consequence contents of folders that "
+           "are currently marked as 'available online only' will be downloaded."
+           "\n\n"
+           "The only advantage of disabling virtual file support is that the selective sync feature "
+           "will become available again."));
+    msgBox->addButton(tr("Disable support"), QMessageBox::AcceptRole);
+    msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
+    connect(msgBox, &QMessageBox::finished, msgBox, [this, msgBox, folder](int result) {
+        msgBox->deleteLater();
+        if (result != QMessageBox::AcceptRole || !folder)
+            return;
+
+        qCInfo(lcAccountSettings) << "Disabling vfs support for folder" << folder->path();
+
+        // Also wipes virtual files, schedules remote discovery
+        folder->setSupportsVirtualFiles(false);
+
+        // Wipe pin states and selective sync db
+        folder->journalDb()->wipePinStateForPathAndBelow("");
+        folder->journalDb()->setPinStateForPath("", PinState::AlwaysLocal);
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
+
+        FolderMan::instance()->scheduleFolder(folder);
+
+        // Update the ui: no selective sync, vfs indicator; size changed
+        ui->_folderList->doItemsLayout();
+    });
+    msgBox->open();
+}
+
+void AccountSettings::slotSetCurrentFolderAvailability(PinState state)
+{
+    FolderMan *folderMan = FolderMan::instance();
+    QPointer<Folder> folder = folderMan->folder(selectedFolderAlias());
+    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
+    if (!selected.isValid() || !folder)
+        return;
+
+    // similar to socket api: set pin state, wipe sub pin-states and sync
+    folder->journalDb()->wipePinStateForPathAndBelow("");
+    folder->journalDb()->setPinStateForPath("", state);
+
+    if (state == PinState::AlwaysLocal) {
+        folder->downloadVirtualFile("");
+    } else {
+        folder->dehydrateFile("");
+    }
 }
 
 void AccountSettings::showConnectionLabel(const QString &message, QStringList errors)

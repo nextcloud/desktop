@@ -78,6 +78,9 @@ protected slots:
     void slotRemoveCurrentFolder();
     void slotOpenCurrentFolder(); // sync folder
     void slotOpenCurrentLocalSubFolder(); // selected subfolder in sync folder
+    void slotEnableVfsCurrentFolder();
+    void slotDisableVfsCurrentFolder();
+    void slotSetCurrentFolderAvailability(PinState state);
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();
     void slotDeleteAccount();

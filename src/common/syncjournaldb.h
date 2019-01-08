@@ -279,6 +279,7 @@ public:
      *
      * If a path has no explicit PinState "Inherited" is returned.
      *
+     * The path should not have a trailing slash.
      * It's valid to use the root path "".
      *
      * Returns none on db error.
@@ -291,6 +292,7 @@ public:
      * If the exact path has no entry or has an Inherited state,
      * the state of the closest parent path is returned.
      *
+     * The path should not have a trailing slash.
      * It's valid to use the root path "".
      *
      * Never returns PinState::Inherited. If the root is "Inherited"
@@ -303,6 +305,7 @@ public:
     /**
      * Sets a path's pin state.
      *
+     * The path should not have a trailing slash.
      * It's valid to use the root path "".
      */
     void setPinStateForPath(const QByteArray &path, PinState state);
@@ -311,6 +314,7 @@ public:
      * Wipes pin states for a path and below.
      *
      * Used when the user asks a subtree to have a particular pin state.
+     * The path should not have a trailing slash.
      * The path "" wipes every entry.
      */
     void wipePinStateForPathAndBelow(const QByteArray &path);
@@ -319,6 +323,7 @@ public:
      * Returns list of all paths with their pin state as in the db.
      *
      * Returns nothing on db error.
+     * Note that this will have an entry for "".
      */
     Optional<QVector<QPair<QByteArray, PinState>>> rawPinStates();
 
