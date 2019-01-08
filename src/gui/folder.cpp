@@ -1278,16 +1278,19 @@ bool FolderDefinition::load(QSettings &settings, const QString &alias,
     folder->ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), QVariant(true)).toBool();
     folder->navigationPaneClsid = settings.value(QLatin1String("navigationPaneClsid")).toUuid();
 
-    folder->virtualFilesMode = Vfs::WithSuffix;
+    folder->virtualFilesMode = Vfs::Off;
     QString vfsModeString = settings.value(QStringLiteral("virtualFilesMode")).toString();
     if (!vfsModeString.isEmpty()) {
         if (auto mode = Vfs::modeFromString(vfsModeString)) {
             folder->virtualFilesMode = *mode;
         } else {
-            qCWarning(lcFolder) << "Unknown virtualFilesMode:" << vfsModeString << "assuming 'suffix'";
+            qCWarning(lcFolder) << "Unknown virtualFilesMode:" << vfsModeString << "assuming 'off'";
         }
     } else {
-        folder->upgradeVfsMode = true;
+        if (settings.value(QLatin1String("usePlaceholders")).toBool()) {
+            folder->virtualFilesMode = Vfs::WithSuffix;
+            folder->upgradeVfsMode = true; // maybe winvfs is available?
+        }
     }
 
     // Old settings can contain paths with native separators. In the rest of the
