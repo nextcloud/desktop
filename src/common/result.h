@@ -43,6 +43,52 @@ public:
     {
     }
 
+    Result(Result &&other)
+        : _isError(other._isError)
+    {
+        if (_isError) {
+            new (&_error) Error(std::move(other._error));
+        } else {
+            new (&_result) T(std::move(other._result));
+        }
+    }
+
+    Result(const Result &other)
+        : _isError(other._isError)
+    {
+        if (_isError) {
+            new (&_error) Error(other._error);
+        } else {
+            new (&_result) T(other._result);
+        }
+    }
+
+    Result &operator=(Result &&other)
+    {
+        if (&other != this) {
+            _isError = other._isError;
+            if (_isError) {
+                new (&_error) Error(std::move(other._error));
+            } else {
+                new (&_result) T(std::move(other._result));
+            }
+        }
+        return *this;
+    }
+
+    Result &operator=(const Result &other)
+    {
+        if (&other != this) {
+            _isError = other._isError;
+            if (_isError) {
+                new (&_error) Error(other._error);
+            } else {
+                new (&_result) T(other._result);
+            }
+        }
+        return *this;
+    }
+
     ~Result()
     {
         if (_isError)
@@ -50,7 +96,9 @@ public:
         else
             _result.~T();
     }
+
     explicit operator bool() const { return !_isError; }
+
     const T &operator*() const &
     {
         ASSERT(!_isError);
@@ -61,6 +109,13 @@ public:
         ASSERT(!_isError);
         return std::move(_result);
     }
+
+    const T *operator->() const
+    {
+        ASSERT(!_isError);
+        return &_result;
+    }
+
     const Error &error() const &
     {
         ASSERT(_isError);
