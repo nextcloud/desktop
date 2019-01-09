@@ -174,9 +174,6 @@ if (APPLE)
         ../3rdparty/qtmacgoodies/src/macstandardicon.mm
         ../3rdparty/qtmacgoodies/src/macwindow.mm
         )
-    # We want to access Cocoa specific structures in the code above
-    # and need the platform plugin interface for that - which is private.
-    include_directories(${Qt5Gui_PRIVATE_INCLUDE_DIRS})
 endif()
 
 if(NOT WIN32)
@@ -293,10 +290,18 @@ target_link_libraries( ${APPLICATION_EXECUTABLE} ${OS_SPECIFIC_LINK_LIBRARIES} )
 target_include_directories(${APPLICATION_EXECUTABLE} PRIVATE
     ${CMAKE_SOURCE_DIR}/src/3rdparty/QProgressIndicator
     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtlockedfile
-    ${CMAKE_SOURCE_DIR}/src/3rdparty/qtmacgoodies/src
     ${CMAKE_SOURCE_DIR}/src/3rdparty/qtsingleapplication
     ${CMAKE_CURRENT_BINARY_DIR}
 )
+
+if (APPLE)
+    target_include_directories(${APPLICATION_EXECUTABLE} PRIVATE
+        ${CMAKE_SOURCE_DIR}/src/3rdparty/qtmacgoodies/src
+    )
+    # We want to access Cocoa specific structures in the code above
+    # and need the platform plugin interface for that - which is private.
+    target_link_libraries(${APPLICATION_EXECUTABLE} Qt5::GuiPrivate) # not actually a library. Will pull in includes
+endif()
 
 ## handle DBUS for Fdo notifications
 if( UNIX AND NOT APPLE )
