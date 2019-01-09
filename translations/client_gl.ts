@@ -895,7 +895,7 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
     <message>
         <location filename="../src/gui/folderman.cpp" line="275"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Atopouse un diario de sincronización antigo en «%1» máis non pode ser retirado. Asegúrese de que non o está a usar ningunha aplicación.</translation>
+        <translation>Atopouse un diario de sincronización antigo en «%1» máis non pode ser retirado. Asegúrese de que non o está a usar ningún aplicativo.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1023"/>
@@ -1406,7 +1406,7 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Prema aquí&lt;/a&gt; para solicitar un contrasinal de aplicación dende a interface web.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Prema aquí&lt;/a&gt; para solicitar un contrasinal de aplicativo dende a interface web.</translation>
     </message>
 </context>
 <context>
@@ -1811,7 +1811,7 @@ actualización pode pedir privilexios adicionais durante o procedemento.</transl
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
         <source>%1 version %2 available. Restart application to start the update.</source>
-        <translation>Está dispoñíbel %1 versión %2. Reinicie a aplicación para comezar a actualización.</translation>
+        <translation>Está dispoñíbel %1 versión %2. Reinicie o aplicativon para comezar a actualización.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
@@ -3557,7 +3557,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="841"/>
         <source>Apps</source>
-        <translation>Aplicacións</translation>
+        <translation>Aplicativos</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="898"/>
@@ -3947,7 +3947,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/main.cpp" line="40"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation>%1 require dunha área de notificación. Se está executando XFCE, siga  &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;estas instrucións&lt;/a&gt;. Senón, instale unha aplicación de área de notificación como «trayer» e ténteo de novo.</translation>
+        <translation>%1 require dunha área de notificación. Se está executando XFCE, siga  &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;estas instrucións&lt;/a&gt;. Senón, instale un aplicativo de área de notificación como «trayer» e ténteo de novo.</translation>
     </message>
 </context>
 <context>
