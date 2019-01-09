@@ -1,7 +1,19 @@
 ChangeLog
 =========
 
-version 2.5.1 (2018-11-??)
+version 2.5.2 (2019-02-??)
+* Sqlite: Update version to 3.26.0 for OSX and Windows
+* Sync: Fix duplicate slashes in destination of MOVE operation (#6904)
+* Sync: Fix file unlocking triggering too many syncs (#6822)
+* GUI: Increase default size of ignore list editor (#6641)
+* GUI: Fix background color of SSL info button (#871)
+* GUI: Ctrl-L and Cmd-L open the log window (F12 is sometimes taken)
+* Vfs: Fix problem with dehydrating a file on OSX (#6844)
+* Vfs: Do not show settings window when opening a virtual file (#6764)
+* Fix potential crash when deleting an account (#6893)
+* Fix potential crash triggered during password dialog
+
+version 2.5.1 (2018-11-09)
 * OAuth2: Refresh the token without aborting the sync (#6814)
 * OAuth2: Fix migration from BasicAuth when the server uses LDAP
 * Linux: FolderWatcher: fix paths after dir renames (#6808)
