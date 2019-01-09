@@ -248,14 +248,14 @@ QVariant ConfigFile::getPolicySetting(const QString &setting, const QVariant &de
     if (Utility::isWindows()) {
         // check for policies first and return immediately if a value is found.
         QSettings userPolicy(QString::fromLatin1("HKEY_CURRENT_USER\\Software\\Policies\\%1\\%2")
-                                 .arg(APPLICATION_VENDOR, Theme::instance()->appName()),
+                                 .arg(APPLICATION_VENDOR, Theme::instance()->appNameGUI()),
             QSettings::NativeFormat);
         if (userPolicy.contains(setting)) {
             return userPolicy.value(setting);
         }
 
         QSettings machinePolicy(QString::fromLatin1("HKEY_LOCAL_MACHINE\\Software\\Policies\\%1\\%2")
-                                    .arg(APPLICATION_VENDOR, APPLICATION_NAME),
+                                    .arg(APPLICATION_VENDOR, Theme::instance()->appNameGUI()),
             QSettings::NativeFormat);
         if (machinePolicy.contains(setting)) {
             return machinePolicy.value(setting);
@@ -615,7 +615,7 @@ QVariant ConfigFile::getValue(const QString &param, const QString &group,
         systemSetting = systemSettings.value(param, defaultValue);
     } else { // Windows
         QSettings systemSettings(QString::fromLatin1("HKEY_LOCAL_MACHINE\\Software\\%1\\%2")
-                                     .arg(APPLICATION_VENDOR, Theme::instance()->appName()),
+                                     .arg(APPLICATION_VENDOR, Theme::instance()->appNameGUI()),
             QSettings::NativeFormat);
         if (!group.isEmpty()) {
             systemSettings.beginGroup(group);
