@@ -82,21 +82,6 @@ void ProcessDirectoryJob::process()
     }
     _serverNormalQueryEntries.clear();
 
-    for (auto &e : _localNormalQueryEntries) {
-        // Remove the virtual file suffix
-        auto name = e.name;
-        if (e.isVirtualFile && isVfsWithSuffix()) {
-            chopVirtualFileSuffix(name);
-            auto &entry = entries[name];
-            // If there is both a virtual file and a real file, we must keep the real file
-            if (!entry.localEntry.isValid())
-                entry.localEntry = std::move(e);
-        } else {
-            entries[name].localEntry = std::move(e);
-        }
-    }
-    _localNormalQueryEntries.clear();
-
     // fetch all the name from the DB
     auto pathU8 = _currentFolder._original.toUtf8();
     if (!_discoveryData->_statedb->listFilesInPath(pathU8, [&](const SyncJournalFileRecord &rec) {
@@ -108,6 +93,21 @@ void ProcessDirectoryJob::process()
         dbError();
         return;
     }
+
+    for (auto &e : _localNormalQueryEntries) {
+        // Normally for vfs-suffix files the local entries need the suffix removed.
+        // However, don't do it if "foo.owncloud" exists on the server or in the db
+        // (as a non-virtual file): we don't want to create two entries.
+        auto name = e.name;
+        if (e.isVirtualFile && isVfsWithSuffix() && entries.find(name) == entries.end()) {
+            chopVirtualFileSuffix(name);
+            // If there is both a virtual file and a real file, we must keep the real file
+            if (entries[name].localEntry.isValid())
+                continue;
+        }
+        entries[name].localEntry = std::move(e);
+    }
+    _localNormalQueryEntries.clear();
 
     //
     // Iterate over entries and process them
@@ -123,7 +123,7 @@ void ProcessDirectoryJob::process()
             if (e.dbEntry.isVirtualFile()) {
                 ASSERT(hasVirtualFileSuffix(e.dbEntry._path));
                 addVirtualFileSuffix(path._original);
-            } else if (e.localEntry.isVirtualFile) {
+            } else if (e.localEntry.isVirtualFile && !e.dbEntry.isValid()) {
                 // We don't have a db entry - but it should be at this path
                 addVirtualFileSuffix(path._original);
             }
@@ -303,6 +303,18 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     // until the request is processed.
     if (item->_type == ItemTypeVirtualFileDehydration)
         item->_type = ItemTypeFile;
+
+    // VFS suffixed files on the server are ignored
+    if (isVfsWithSuffix()) {
+        if (hasVirtualFileSuffix(serverEntry.name)
+            || (localEntry.isVirtualFile && !dbEntry.isVirtualFile() && hasVirtualFileSuffix(dbEntry._path))) {
+            item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+            item->_errorString = tr("File has extension reserved for virtual files.");
+            _childIgnored = true;
+            emit _discoveryData->itemDiscovered(item);
+            return;
+        }
+    }
 
     if (serverEntry.isValid()) {
         processFileAnalyzeRemoteInfo(item, path, localEntry, serverEntry, dbEntry);
@@ -673,6 +685,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                     item->_direction = SyncFileItem::Down;
                     item->_instruction = CSYNC_INSTRUCTION_NEW;
                     item->_type = ItemTypeVirtualFile;
+                } else {
+                    qCInfo(lcDisco) << "Virtual file with non-virtual db entry, ignoring:" << item->_file;
+                    item->_instruction = CSYNC_INSTRUCTION_IGNORE;
                 }
             }
         } else if (!typeChange && ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) || localEntry.isDirectory)) {

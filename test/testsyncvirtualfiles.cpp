@@ -742,8 +742,7 @@ private slots:
     void testNewVirtuals()
     {
         FakeFolder fakeFolder{ FileInfo() };
-        SyncOptions syncOptions = vfsSyncOptions(fakeFolder);
-        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+        fakeFolder.syncEngine().setSyncOptions(vfsSyncOptions(fakeFolder));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         auto setPin = [&] (const QByteArray &path, PinState state) {
@@ -790,6 +789,50 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("online/file1.owncloud"));
         QVERIFY(fakeFolder.currentLocalState().find("local/file1"));
         QVERIFY(fakeFolder.currentLocalState().find("unspec/file1.owncloud"));
+    }
+
+    // Check what happens if vfs-suffixed files exist on the server or in the db
+    void testSuffixOnServerOrDb()
+    {
+        FakeFolder fakeFolder{ FileInfo() };
+
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        auto cleanup = [&]() {
+            completeSpy.clear();
+        };
+        cleanup();
+
+        // file1.owncloud is happily synced with Vfs::Off
+        fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().insert("A/file1.owncloud");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        cleanup();
+
+        // Enable suffix vfs
+        fakeFolder.syncEngine().setSyncOptions(vfsSyncOptions(fakeFolder));
+
+        // Local changes of suffixed file do nothing
+        fakeFolder.localModifier().appendByte("A/file1.owncloud");
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(itemInstruction(completeSpy, "A/file1.owncloud", CSYNC_INSTRUCTION_IGNORE));
+        cleanup();
+
+        // Remote don't do anything either
+        fakeFolder.remoteModifier().appendByte("A/file1.owncloud");
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(itemInstruction(completeSpy, "A/file1.owncloud", CSYNC_INSTRUCTION_IGNORE));
+        cleanup();
+
+        // New files with a suffix aren't propagated downwards in the first place
+        fakeFolder.remoteModifier().insert("A/file2.owncloud");
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(itemInstruction(completeSpy, "A/file2.owncloud", CSYNC_INSTRUCTION_IGNORE));
+        QVERIFY(fakeFolder.currentRemoteState().find("A/file2.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/file2"));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/file2.owncloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("A/file2.owncloud.owncloud"));
+        cleanup();
     }
 };
 
