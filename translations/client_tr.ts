@@ -4,18 +4,18 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Could not make directories in trash</source>
-        <translation type="unfinished"/>
+        <translation>Çöpte klasör oluşturulamaz.</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="459"/>
         <location filename="../src/common/filesystembase.cpp" line="465"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>%1, %2 ye taşınamadı.</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>Çöp kutusuna taşıma işlemi platformda sağlanmıyor.</translation>
     </message>
 </context>
 <context>
@@ -102,12 +102,12 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="264"/>
         <source>Unknown error: network reply was deleted</source>
-        <translation type="unfinished"/>
+        <translation>Bilinmeyen hata: ağdan gelen yanıt silindi</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="416"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
-        <translation type="unfinished"/>
+        <translation>sunucu &quot;%1 %2&quot; tarafından &quot;%3 %4&quot; tarafına cevap verdi.</translation>
     </message>
 </context>
 <context>
@@ -145,7 +145,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="212"/>
         <source>Apply manual changes</source>
-        <translation type="unfinished"/>
+        <translation>Değişiklikleri manuel uygula</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="260"/>
@@ -207,7 +207,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="324"/>
         <source>Create virtual files for new files (Experimental)</source>
-        <translation type="unfinished"/>
+        <translation>Yeni dosyaları sanal olarak oluştur (deneysel)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="426"/>
@@ -262,7 +262,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="702"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu %1 bakım modunda.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="704"/>
@@ -272,12 +272,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="713"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation type="unfinished"/>
+        <translation>Yetkilendirme tarayıcıdan alınıyor. Tarayıcıyı yeniden açmak için &lt;a href=&apos;%1&apos;&gt;tıklayın.&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="717"/>
         <source>Connecting to %1...</source>
-        <translation type="unfinished"/>
+        <translation>Bağlanılıyor, %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="720"/>
@@ -364,7 +364,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="696"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu versiyonu %1 desteklenmiyor! Sorumluluk size ait.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="726"/>
@@ -397,7 +397,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="127"/>
         <source>Maintenance mode</source>
-        <translation type="unfinished"/>
+        <translation>Bakım modu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="129"/>
@@ -412,7 +412,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="133"/>
         <source>Asking Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Kimlik bilgileri alma</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="135"/>
@@ -553,7 +553,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation type="unfinished"/>
+        <translation>Sertifika &amp; Anahtar (pkcs12) :</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
@@ -581,12 +581,12 @@
     <message>
         <location filename="../src/gui/application.cpp" line="123"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Devam etmek &lt;b&gt;bu ayarları silmek anlamına gelir&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="125"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Devam etmek &lt;b&gt;bu ayarları iptal etmek anlamına gelir&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="131"/>
@@ -606,12 +606,12 @@
     <message>
         <location filename="../src/gui/application.cpp" line="268"/>
         <source>Error accessing the configuration file</source>
-        <translation type="unfinished"/>
+        <translation>Konfigürasyon dosyasına erişimde hata</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="269"/>
         <source>There was an error while accessing the configuration file at %1.</source>
-        <translation type="unfinished"/>
+        <translation>Konfigürasyon dosyası %1 satirina erişimde hata</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="272"/>
@@ -804,28 +804,30 @@
         <location filename="../src/gui/folder.cpp" line="969"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
-        <translation type="unfinished"/>
+        <translation>%1 MB dan büyük yeni klasör eklendi: %2
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="972"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation type="unfinished"/>
+        <translation>Harici depolama ünitesinden bir klasör eklendi.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="973"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>İndirmek isterseniz, lütfen &quot;Ayarlar&quot; bölümünden seçin.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1028"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>%1 klasörü yaratıldı ama daha önce senkronizasyondan hariç tutuldu. İçerik senkronize edilmeyecek.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1031"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>%1 dosyası yaratıldı ama daha önce senkronizasyondan hariç tutuldu, senkronize edilmeyecek.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1042"/>
@@ -834,7 +836,11 @@
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Senkronize edilen klasörlerdeki değişiklikler tam olarak izlenemedi.
+
+Bu yüzden senkronizasyon yerel değişiklikler anlık olarak karşı tarafa yükleyemeyecek ve sadece yereldeki değişimler taranacak ve belli periyotlarda karşı tarafa yükleyecek (varsayılan ayar 2 saatte bir).
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
@@ -842,14 +848,19 @@ This means that the synchronization client might not upload local changes immedi
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Senkronizasyon klasörlerinden &apos;%1&apos; klasörü, sunucudan silindi.
+Bu silinmeler yereldeki klasörlerinize de senkronizasyonla yansıyacak, geri yükleme hakkınız olmadığı sürece dosyalar kullanım dışıdır.
+Dosyalar silinmesin istiyorsanız, yetkiniz olduğu sürece sunucu ile tekrar senkronize olacaklardır.
+Silmeye karar verdiyseniz, sahibi olana kadar dosyalar kullanım dışıdır.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1092"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Senkronizasyon klasörlerinden &apos;%1&apos; içindeki tüm dosyalar, yerelden silindi. Bu silinmeler sunucuya senkronizasyonla yansıyacak, geri yüklenmediği sürece dosyalar kullanım dışıdır.
+Bu işlemlerin sunucuda da gerçekleşmesini istiyor musunuz?
+Eğer istenmeden bu durum gerçekleştiyse ve dosyaları tutmak istiyorsanız, dosyalar sunucudan tekrar senkronize edilecektir.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1096"/>
@@ -934,7 +945,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1289"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>Senkronizasyon başarılıydı, çözüm gerektiren eşleşmeler var.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1291"/>
@@ -979,7 +990,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1387"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Yerel klasörde bir sunucu senkronizasyonu zaten mevcut. Lütfen başka bir yerel klasör seçin!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1367"/>
@@ -1047,27 +1058,27 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="209"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation type="unfinished"/>
+        <translation>Çözüm gereken eşleşmeler var. Detaylar için tıklayın.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
         <source>New files are being created as virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Yeni dosyalar sanal olarak yaratıldı.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="900"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Uzaktaki &apos;%1&apos; için değişiklikler kontrol ediliyor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="904"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Yereldeki &apos;%1&apos; için değişiklikler kontrol ediliyor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="911"/>
         <source>Reconciling changes</source>
-        <translation type="unfinished"/>
+        <translation>Değişikliklerin bağlama kavuşturulması</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="946"/>
@@ -1165,7 +1176,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="92"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Bu problem genellikle &quot;inotfy&quot; yoğunlaştığında meydana gelir . SSS üzerinden detayları inceleyin.</translation>
     </message>
 </context>
 <context>
@@ -1252,7 +1263,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="489"/>
         <source>Use virtual files instead of downloading content immediately (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>İçeriği hemen indirmek yerine sanal dosyaları kullan (deneysel)</translation>
     </message>
 </context>
 <context>
@@ -1311,12 +1322,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="97"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>stabil</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="102"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>beta</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="228"/>
@@ -1337,7 +1348,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="304"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation type="unfinished"/>
+        <translation>Harici depolamalardan senkronizasyon yapmadan onay al</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="26"/>
@@ -1362,12 +1373,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
         <source>&amp;Update Channel</source>
-        <translation type="unfinished"/>
+        <translation>Kanal &amp;Güncelle</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="186"/>
         <source>•</source>
-        <translation type="unfinished"/>
+        <translation>•</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="236"/>
@@ -1377,7 +1388,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="315"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Explorer Navigasyon Panelinde senkronizasyon klasörülerini göster</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="332"/>
@@ -1392,12 +1403,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="58"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Otomatik başlatmayı kapatamazsınız, çünkü sistem bütününde aktif edildi.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="187"/>
         <source>Change update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Güncelleme kanalı değiştirilsin mi?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="188"/>
@@ -1409,7 +1420,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="201"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Güncelleme kanalını değiştir</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="202"/>
@@ -1422,14 +1433,16 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/socketapi.cpp" line="519"/>
         <source>Sharing error</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşma hatası</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="520"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Genel link paylaşımı getirilemedi veya yaratılamadı. Hata:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -1437,7 +1450,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="100"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>%1, lütfen şifrenizi girin:&lt;br&gt;&lt;br&gt;Kullanıcı: %2&lt;br&gt;Hesap: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
@@ -1452,7 +1465,8 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="157"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation type="unfinished"/>
+        <translation>Web arayüzünden app şifrenizi talep etmek için&lt;a href=&quot;%1&quot;&gt;lütfen tıklayınız&lt;/a&gt; 
+</translation>
     </message>
 </context>
 <context>
@@ -1542,7 +1556,7 @@ Bir dizinin silinmesine engel oluyorsa silmeye izin verilen yerlerdeki ögeler s
     <message>
         <location filename="../src/gui/issueswidget.ui" line="20"/>
         <source>List of issues</source>
-        <translation type="unfinished"/>
+        <translation>Sorunlar listesi</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="34"/>
@@ -1553,7 +1567,7 @@ Bir dizinin silinmesine engel oluyorsa silmeye izin verilen yerlerdeki ögeler s
         <location filename="../src/gui/issueswidget.ui" line="42"/>
         <location filename="../src/gui/issueswidget.ui" line="61"/>
         <source>&lt;no filter&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;no filter&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="50"/>
@@ -1564,27 +1578,28 @@ Bir dizinin silinmesine engel oluyorsa silmeye izin verilen yerlerdeki ögeler s
     <message>
         <location filename="../src/gui/issueswidget.ui" line="73"/>
         <source>Show warnings</source>
-        <translation type="unfinished"/>
+        <translation>Uyarıları göster</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="83"/>
         <source>Show ignored files</source>
-        <translation type="unfinished"/>
+        <translation>Yoksayılan dosyaları göster</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="137"/>
         <source>There were too many issues. Not all will be visible here.</source>
-        <translation type="unfinished"/>
+        <translation>Çok fazla sorun mevcut. Hepsi burada görünmeyecek.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="147"/>
         <source>There were conflicts. Check the documentation on how to resolve them.</source>
-        <translation type="unfinished"/>
+        <translation>Eşleşmemeler mevcut. Nasıl çözüleceğini dokümantasyondan kontrol edin.
+</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="180"/>
         <source>Copy the issues list to the clipboard.</source>
-        <translation type="unfinished"/>
+        <translation>Sorun listesini panoya kopyala.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="183"/>
@@ -1604,12 +1619,12 @@ Bir dizinin silinmesine engel oluyorsa silmeye izin verilen yerlerdeki ögeler s
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="94"/>
         <source>Issue</source>
-        <translation type="unfinished"/>
+        <translation>Sorun</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="126"/>
         <source>There were conflicts. &lt;a href=&quot;%1&quot;&gt;Check the documentation on how to resolve them.&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Eşleşmemeler mevcut. &lt;a href=&quot;%1&quot;&gt;Nasıl çözüleceğini dokümantasyondan kontrol edin.&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -1632,12 +1647,12 @@ Bir dizinin silinmesine engel oluyorsa silmeye izin verilen yerlerdeki ögeler s
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
         <source>&amp;Capture debug messages</source>
-        <translation type="unfinished"/>
+        <translation>Debug mesajlarını &amp;yakala</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
         <source>Permanently save logs</source>
-        <translation type="unfinished"/>
+        <translation>Log kayıtlarını kalıcı sakla</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="103"/>
@@ -1861,32 +1876,32 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Sunucudan hata döndü: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&apos;token&apos; endpoint erişimi sırasında hata meydana geldi: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Sunucudan gelen JSON okunabilir hale getirilemedi: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="124"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>Sunucudan gelen yanıt beklenen tüm alanları içermiyor</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="128"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Sisteme giriş hatası&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="134"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Yanlış kullanıcı&lt;/h1&gt;&lt;p&gt;Sisteme giriş yapmış olan kullanıcı&lt;em&gt;%1&lt;/em&gt;, ama giriş yapması gereken kullanıcı &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Lütfen, başka bir sekmedeki %3 üzerinden sistemden çıkın, sonra &lt;a href=&apos;%4&apos;&gt;buraya tıklayın &lt;/a&gt; ve %2 olarak giriş yapın&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2053,12 +2068,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Tarayıcından giriş yap</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="57"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Linki panoya kopyala</translation>
     </message>
 </context>
 <context>
@@ -2098,7 +2113,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="346"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation type="unfinished"/>
+        <translation>Sertifika yüklenemedi. Şifreniz yanlış olabilir mi?</translation>
     </message>
 </context>
 <context>
@@ -2146,7 +2161,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="298"/>
         <source>The server reported the following error:</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu şu hatayı bildirdi:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="453"/>
@@ -2261,7 +2276,7 @@ Kullanmanız önerilmez.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="261"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Deneysel özelliği etkinleştirilsin mi?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="262"/>
@@ -2273,12 +2288,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="269"/>
         <source>Enable experimental mode</source>
-        <translation type="unfinished"/>
+        <translation>Deneysel modu etkinleştir</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="270"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Güvenli kal</translation>
     </message>
 </context>
 <context>
@@ -2325,7 +2340,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="484"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation type="unfinished"/>
+        <translation>Dosya indirimi boş disk alanını belirlenen limitin altına düşürecektir.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="488"/>
@@ -2471,7 +2486,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="176"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>%1 karşı tarafa yüklenemez, aynı isimde dosya mevcut</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="283"/>
@@ -2492,7 +2507,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateupload.cpp" line="187"/>
         <location filename="../src/libsync/propagateupload.cpp" line="542"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>%1 karşı tarafa yüklenmesi klasörün kotası aşıyor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="626"/>
@@ -2520,12 +2535,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="468"/>
         <source>Missing File ID from server</source>
-        <translation type="unfinished"/>
+        <translation>Dosya ID sunucuda eksik</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="482"/>
         <source>Missing ETag from server</source>
-        <translation type="unfinished"/>
+        <translation>ETag sunucuda eksik</translation>
     </message>
 </context>
 <context>
@@ -2660,7 +2675,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Senkronize etmek istemediğiniz uzak klasörlerin seçimini kaldırın</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
@@ -2822,7 +2837,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="225"/>
         <source>Upload only (File Drop)</source>
-        <translation type="unfinished"/>
+        <translation>Sadece karşı tarafa yükle (Dosya bırak)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="238"/>
@@ -2842,12 +2857,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="35"/>
         <source>Enter a name to create a new public link...</source>
-        <translation type="unfinished"/>
+        <translation>Yeni bir genel link oluşturmak için isim girin</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="42"/>
         <source>&amp;Create new</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Yeni oluştur</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="105"/>
@@ -2862,22 +2877,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="199"/>
         <source>Recipients can view or download contents.</source>
-        <translation type="unfinished"/>
+        <translation>Alıcılar içeriği görüntüleyebilir ve indirebilir</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="248"/>
         <source>Download / View</source>
-        <translation type="unfinished"/>
+        <translation>İndir / Görüntüle</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="255"/>
         <source>Download / View / Upload</source>
-        <translation type="unfinished"/>
+        <translation>İndir / Görüntüle / Karşı tarafa yükle</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="268"/>
         <source>Recipients can view, download, edit, delete and upload contents.</source>
-        <translation type="unfinished"/>
+        <translation>Alıcılar içerik görüntüleyebilir, düzenleyebilir, silebilir ve karşı tarafa yükleyebilir.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="20"/>
@@ -2898,12 +2913,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="94"/>
         <source>Link shares have been disabled</source>
-        <translation type="unfinished"/>
+        <translation>Link paylaşma devre dışı bırakıldı</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="108"/>
         <source>Create public link share</source>
-        <translation type="unfinished"/>
+        <translation>Herkese açık bağlantı paylaşımı oluştur</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="169"/>
@@ -2914,12 +2929,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="164"/>
         <source>Open link in browser</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantıyı tarayıcıda aç</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Linki panoya kopyala</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
@@ -3003,12 +3018,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="241"/>
         <source>Open link in browser</source>
-        <translation type="unfinished"/>
+        <translation>Bağlantıyı tarayıcıda aç</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="243"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Linki panoya kopyala</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="245"/>
@@ -3901,12 +3916,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="848"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Uzaktaki &apos;%1&apos; için değişiklikler kontrol ediliyor.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="851"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Yereldeki &apos;%1&apos; için değişiklikler kontrol ediliyor.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="866"/>

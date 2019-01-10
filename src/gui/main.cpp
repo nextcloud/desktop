@@ -122,8 +122,7 @@ int main(int argc, char **argv)
             QString msg = args.join(QLatin1String("|"));
             if (!app.sendMessage(QLatin1String("MSG_PARSEOPTIONS:") + msg))
                 return -1;
-        }
-        if (!app.sendMessage(QLatin1String("MSG_SHOWSETTINGS"))) {
+        } else if (!app.sendMessage(QLatin1String("MSG_SHOWSETTINGS"))) {
             return -1;
         }
         return 0;

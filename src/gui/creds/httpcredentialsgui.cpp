@@ -56,9 +56,7 @@ void HttpCredentialsGui::askFromUserAsync()
             _asyncAuth->start();
             emit authorisationLinkChanged();
         } else if (type == DetermineAuthTypeJob::Basic) {
-            // Show the dialog
-            // We will re-enter the event loop, so better wait the next iteration
-            QMetaObject::invokeMethod(this, "showDialog", Qt::QueuedConnection);
+            showDialog();
         } else {
             // Shibboleth?
             qCWarning(lcHttpCredentialsGui) << "Bad http auth type:" << type;
@@ -73,8 +71,7 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
 {
     switch (r) {
     case OAuth::NotSupported:
-        // We will re-enter the event loop, so better wait the next iteration
-        QMetaObject::invokeMethod(this, "showDialog", Qt::QueuedConnection);
+        showDialog();
         _asyncAuth.reset(0);
         return;
     case OAuth::Error:
@@ -116,24 +113,27 @@ void HttpCredentialsGui::showDialog()
             + QLatin1String("<br>");
     }
 
-    QInputDialog dialog;
-    dialog.setWindowTitle(tr("Enter Password"));
-    dialog.setLabelText(msg);
-    dialog.setTextValue(_previousPassword);
-    dialog.setTextEchoMode(QLineEdit::Password);
-    if (QLabel *dialogLabel = dialog.findChild<QLabel *>()) {
+    QInputDialog *dialog = new QInputDialog();
+    dialog->setAttribute(Qt::WA_DeleteOnClose, true);
+    dialog->setWindowTitle(tr("Enter Password"));
+    dialog->setLabelText(msg);
+    dialog->setTextValue(_previousPassword);
+    dialog->setTextEchoMode(QLineEdit::Password);
+    if (QLabel *dialogLabel = dialog->findChild<QLabel *>()) {
         dialogLabel->setOpenExternalLinks(true);
         dialogLabel->setTextFormat(Qt::RichText);
     }
 
-    bool ok = dialog.exec();
-    if (ok) {
-        _password = dialog.textValue();
-        _refreshToken.clear();
-        _ready = true;
-        persist();
-    }
-    emit asked();
+    dialog->open();
+    connect(dialog, &QDialog::finished, this, [this, dialog](int result) {
+        if (result == QDialog::Accepted) {
+            _password = dialog->textValue();
+            _refreshToken.clear();
+            _ready = true;
+            persist();
+        }
+        emit asked();
+    });
 }
 
 QString HttpCredentialsGui::requestAppPasswordText(const Account *account)
