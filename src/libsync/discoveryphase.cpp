@@ -186,6 +186,18 @@ void DiscoveryPhase::startJob(ProcessDirectoryJob *job)
     job->start();
 }
 
+void DiscoveryPhase::setSelectiveSyncBlackList(const QStringList &list)
+{
+    _selectiveSyncBlackList = list;
+    std::sort(_selectiveSyncBlackList.begin(), _selectiveSyncBlackList.end());
+}
+
+void DiscoveryPhase::setSelectiveSyncWhiteList(const QStringList &list)
+{
+    _selectiveSyncWhiteList = list;
+    std::sort(_selectiveSyncWhiteList.begin(), _selectiveSyncWhiteList.end());
+}
+
 void DiscoveryPhase::scheduleMoreJobs()
 {
     auto limit = qMax(1, _syncOptions._parallelNetworkJobs);
