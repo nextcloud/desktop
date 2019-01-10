@@ -1,6 +1,49 @@
 ChangeLog
 =========
 
+version 2.6.0 (2019-04-??)
+(last update on db866afb6088acddbdb6e130354b021e2c4b2844)
+* Sync: Introduce experimental capability to sync file deltas. (#179)
+* Sync: Rewrote discovery code for performance improvements and better maintainability.
+* Sync: Don't abort on 503 errors (#5088, #5859)
+* Sync: Fix downloading of files when the database is used for local discovery
+* Sync: Better detection of complex renames
+* Sync: Handle blacklisted_files server capability (#434)
+* Sync: Fix sync progress when virtual files are created (#6933)
+* Sync: Fix issue with a folder being renamed into another renamed folder (#6694)
+* Sync: Reduce client-triggered touch ignore duration from 15s to 3s
+* Sync: Fix file attribute propagation when propagating conflicts
+* Sync: Fix local discovery when removing a selective sync exclusion
+* Sync: Fix detection of case-only renames on Windows
+* Sync: Fix race conditions in the linux folder watcher (#7068)
+* Vfs: Introduce experimental native virtual files mode for Windows 10.
+* Vfs: Improvements to UI around marking folders as available locally or online only.
+* Vfs: The online-only/available-locally flag applies to new remote files now.
+* Vfs: Introduce actions and warning text for switching vfs on and off.
+* Vfs: Cannot be used with selective sync at the same time.
+* Vfs: Can now be fully enabled or disabled.
+* Vfs: Suffix mode ignores remote files with the suffix (#6953)
+* GUI: Added action to open folder in browser to selective sync context menu (#6471)
+* GUI: Add server version info to SSL info button (#6628)
+* GUI: Allow log window of running client to be opened via command line
+* GUI: Introduce conflict resolution actions to right-click menu of conflicts and files in read-only directories (#6252)
+* GUI: Update sooner when user resolves a conflict (#7073)
+* Client certs: Fix storage of large certs in older Windows versions (#6776)
+* Updater: Show a nicer version string In the "available update" notification (#6602)
+* Updater: Set correct state on network error (#3933)
+* DB: Database path for new folders now starts with ".sync_", avoiding the "._" (#5904)
+* File hashes: Add support for SHA256 and SHA3
+* Log: Don't write to logdir if --logfile is passed (#6909)
+* Log: Make --logfile - work on Windows
+* Doc: Migrate the documentation to Antora (#6785)
+* Doc: Update Windows build instructions
+* Build: Fix KDEInstallDirs deprecation warnings (#6922)
+* Build: Fixes for compiling on "remarkable" tablet (#6870)
+* Build: Add PLUGINDIR variable for finding vfs plugins (#7027)
+* Remove support for Shibboleth auth (#6451)
+* Several performance optimizations
+* Many test improvements (like #6358)
+
 version 2.5.4 (2019-03-xx)
 * Crash fix: Infinite recursion for bad paths on Windows (#7041)
 * Crash fix: SocketApi mustn't send if readyRead happens after disconnected (#7044)
