@@ -135,6 +135,10 @@ class DiscoveryPhase : public QObject
     QMap<QString, QString> _renamedItems; // map source -> destinations
     int _currentlyActiveJobs = 0;
 
+    // both must contain a sorted list
+    QStringList _selectiveSyncBlackList;
+    QStringList _selectiveSyncWhiteList;
+
     void scheduleMoreJobs();
 
     bool isInSelectiveSyncBlackList(const QString &path) const;
@@ -166,8 +170,6 @@ public:
     SyncJournalDb *_statedb;
     AccountPtr _account;
     SyncOptions _syncOptions;
-    QStringList _selectiveSyncBlackList;
-    QStringList _selectiveSyncWhiteList;
     ExcludedFiles *_excludes;
     QRegExp _invalidFilenameRx; // FIXME: maybe move in ExcludedFiles
     QStringList _serverBlacklistedFiles; // The blacklist from the capabilities
@@ -175,6 +177,9 @@ public:
     std::function<bool(const QString &)> _shouldDiscoverLocaly;
 
     void startJob(ProcessDirectoryJob *);
+
+    void setSelectiveSyncBlackList(const QStringList &list);
+    void setSelectiveSyncWhiteList(const QStringList &list);
 
     // output
     QByteArray _dataFingerprint;
