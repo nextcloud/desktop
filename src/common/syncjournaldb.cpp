@@ -327,6 +327,18 @@ bool SyncJournalDb::checkConnect()
         }
     }
 
+    // Set locking mode to avoid issues with WAL on Windows
+    static QByteArray locking_mode_env = qgetenv("OWNCLOUD_SQLITE_LOCKING_MODE");
+    if (locking_mode_env.isEmpty())
+        locking_mode_env = "EXCLUSIVE";
+    pragma1.prepare("PRAGMA locking_mode=" + locking_mode_env + ";");
+    if (!pragma1.exec()) {
+        return sqlFail("Set PRAGMA locking_mode", pragma1);
+    } else {
+        pragma1.next();
+        qCInfo(lcDb) << "sqlite3 locking_mode=" << pragma1.stringValue(0);
+    }
+
     pragma1.prepare("PRAGMA journal_mode=" + _journalMode + ";");
     if (!pragma1.exec()) {
         return sqlFail("Set PRAGMA journal_mode", pragma1);
