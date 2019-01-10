@@ -39,6 +39,7 @@ public:
 	~Vfs_windows();
 	void upDrive(QString, QString);
 	void downDrive(WCHAR DriveLetter);
+	bool removeDir(const QString &);
 
 	void DsetTotalNumberOfBytes(unsigned long long n);// { m_TotalNumberOfBytes = n; }
 	unsigned long long DgetTotalNumberOfBytes();// { return m_TotalNumberOfBytes; }
@@ -47,7 +48,14 @@ public:
 	unsigned long long DgetTotalNumberOfFreeBytes();// { return m_TotalNumberOfFreeBytes; }
 
 	QStringList* contentsOfDirectoryAtPath(QString path, QVariantMap &error);
+
+	void createFileAtPath(QString path, QVariantMap &error);
+	void moveFileAtPath(QString path, QString npath,QVariantMap &error);
+	void createDirectoryAtPath(QString path, QVariantMap &error);
+	void moveDirectoryAtPath(QString path, QString npath, QVariantMap &error);
+
     void openFileAtPath(QString path, QVariantMap &error);
+	void writeFileAtPath(QString path, QVariantMap &error);
     void deleteFileAtPath(QString path, QVariantMap &error);
     void startDeleteDirectoryAtPath(QString path, QVariantMap &error);
     void endDeleteDirectoryAtPath(QString path, QVariantMap &error);

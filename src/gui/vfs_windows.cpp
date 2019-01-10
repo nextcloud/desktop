@@ -225,6 +225,9 @@ static DWORD getExplorerID()
     }
 }
 
+
+//static int toyDentro = 0;
+
 static void determinesTypeOfOperation(LPCWSTR FileName, PDOKAN_FILE_INFO DokanFileInfo, DWORD DesiredAccess)
 {
 
@@ -240,20 +243,23 @@ QString QSFileName;
     if (da == 1048576 || da == 128 || da == 1048704 || da == 131200 || da == 1048577 || da == 1179785 || da == 1048705) 
         return;
 
-    if (DokanFileInfo->ProcessId == getExplorerID()) 
+	//if(DokanFileInfo->ProcessId != ((ULONG)GetCurrentProcess()))
+	if (DokanFileInfo->ProcessId == getExplorerID())
 	{
         QVariantMap error;
 
-        if (da == 1179776)		//< OpenFile
-			{
-            QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-            Vfs_windows::instance()->openFileAtPath(QSFileName, error);
-			}
+		if (da == 1179776)		//< OpenFile
+		{
+			//toyDentro = 1;
+			QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+			Vfs_windows::instance()->openFileAtPath(QSFileName, error);
+			//toyDentro = 0;
+		}
 		else if (da == 65536)	//< DeleteFile
-			{
-            QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-            Vfs_windows::instance()->deleteFileAtPath(QSFileName, error);
-			}
+		{
+			QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+			Vfs_windows::instance()->deleteFileAtPath(QSFileName, error);
+		}
 	}
 }
 
@@ -365,8 +371,11 @@ MirrorCreateFile(LPCWSTR FileName, PDOKAN_IO_SECURITY_CONTEXT SecurityContext,
 		m_Vfs_windows = Vfs_windows::instance();
 		if(m_Vfs_windows)
 			{
-			if(QSFileName.compare("\\") != 0)
-				m_Vfs_windows->getOperationCreateFile(QSFileName, QString("MirrorCreateFile"), QString("InProcess..."));
+			if (QSFileName.compare("\\") != 0)
+				{
+				//qDebug() << Q_FUNC_INFO << " FileName: " << QSFileName;
+				//m_Vfs_windows->getOperationCreateFile(QSFileName, QString("MirrorCreateFile"), QString("InProcess..."));
+				}
 			}
 		else
 			{
@@ -497,6 +506,9 @@ MirrorCreateFile(LPCWSTR FileName, PDOKAN_IO_SECURITY_CONTEXT SecurityContext,
 
 	if (creationDisposition == CREATE_NEW) {
 		DbgPrint(L"\tCREATE_NEW\n");
+		/*QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+		QVariantMap error;
+		Vfs_windows::instance()->openFileAtPath(QSFileName, error);*/
 	}
 	else if (creationDisposition == OPEN_ALWAYS) {
 		DbgPrint(L"\tOPEN_ALWAYS\n");
@@ -506,6 +518,9 @@ MirrorCreateFile(LPCWSTR FileName, PDOKAN_IO_SECURITY_CONTEXT SecurityContext,
 	}
 	else if (creationDisposition == OPEN_EXISTING) {
 		DbgPrint(L"\tOPEN_EXISTING\n");
+		/*QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+		QVariantMap error;
+		Vfs_windows::instance()->openFileAtPath(QSFileName, error);*/
 	}
 	else if (creationDisposition == TRUNCATE_EXISTING) {
 		DbgPrint(L"\tTRUNCATE_EXISTING\n");
@@ -606,6 +621,19 @@ MirrorCreateFile(LPCWSTR FileName, PDOKAN_IO_SECURITY_CONTEXT SecurityContext,
 					return STATUS_OBJECT_NAME_COLLISION;
 			}
 		}
+
+		if ((status == STATUS_SUCCESS) && (QSFileName.compare("\\") != 0) && (DokanFileInfo->ProcessId != ((ULONG)GetCurrentProcess())))
+		{
+			if (creationDisposition == CREATE_NEW) 
+					{
+						//DbgPrint(L"\tFCREATE_NEW\n");
+						QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+						qDebug() << Q_FUNC_INFO << " Prepare CREATE_NEW D Explorer via: " << QSFileName;
+						QVariantMap error;
+						Vfs_windows::instance()->createDirectoryAtPath(QSFileName, error);
+						//Vfs_windows::instance()->createFileAtPath(QSFileName, error);
+					}
+		}
 	}
 	else {
 		// It is a create file request
@@ -683,10 +711,104 @@ MirrorCreateFile(LPCWSTR FileName, PDOKAN_IO_SECURITY_CONTEXT SecurityContext,
 					status = STATUS_OBJECT_NAME_COLLISION;
 				}
 			}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+			if ((status == STATUS_SUCCESS) && (QSFileName.compare("\\") != 0) && (DokanFileInfo->ProcessId != ((ULONG)GetCurrentProcess()) ))
+			{
+				if (creationDisposition == CREATE_NEW) {
+					//DbgPrint(L"\tFCREATE_NEW\n");
+					QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+					qDebug() << Q_FUNC_INFO << " Prepare CREATE_NEW F Explorer via: " << QSFileName;
+					QVariantMap error;
+					Vfs_windows::instance()->createFileAtPath(QSFileName, error);
+				}
+				else if (creationDisposition == OPEN_ALWAYS) {
+					DbgPrint(L"\tFOPEN_ALWAYS\n");
+				}
+				else if (creationDisposition == CREATE_ALWAYS) {
+					DbgPrint(L"\tFCREATE_ALWAYS\n");
+					if (error == 0 && creationDisposition == 2 && DesiredAccess == 1507743)
+					{
+						QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+						qDebug() << Q_FUNC_INFO << " 2 Prepare CREATE_NEW F CMD-copy via: " << QSFileName;
+						QVariantMap error;
+						Vfs_windows::instance()->createFileAtPath(QSFileName, error);
+					}
+
+					qDebug() << Q_FUNC_INFO << " OPEN_ALWAYS FileName: " << QSFileName << " error: " << error << " creationDisposition: " << creationDisposition << " DesiredAccess: " << DesiredAccess;
+				}
+				else if (creationDisposition == OPEN_EXISTING) {
+					DbgPrint(L"\tFOPEN_EXISTING\n");
+					qDebug() << Q_FUNC_INFO << " OPEN_EXISTING FileName: " << QSFileName << " error: " << error << " creationDisposition: " << creationDisposition << " DesiredAccess: " << DesiredAccess;
+				}
+				else if (creationDisposition == TRUNCATE_EXISTING) {
+					DbgPrint(L"\tFTRUNCATE_EXISTING\n");
+					qDebug() << Q_FUNC_INFO << " TRUNCATE_EXISTING FileName: " << QSFileName << " error: " << error << " creationDisposition: " << creationDisposition << " DesiredAccess: " << DesiredAccess;
+				}
+				else {
+					DbgPrint(L"\tFUNKNOWN creationDisposition!\n");
+					qDebug() << Q_FUNC_INFO << " UNKNOWN creationDisposition! FileName: " << QSFileName << " error: " << error << " creationDisposition: " << creationDisposition << " DesiredAccess: " << DesiredAccess;
+				}
+			}
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 		}
 	}
-
+	
 	DbgPrint(L"\n");
+
+	/*
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
+	if ((status == STATUS_SUCCESS) && (QSFileName.compare("\\") != 0) && (DokanFileInfo->ProcessId != ((ULONG)GetCurrentProcess())))
+	{
+		if (creationDisposition == CREATE_NEW) {
+			//DbgPrint(L"\tFCREATE_NEW\n");
+			qDebug() << Q_FUNC_INFO << " Prepare CREATE_NEW Explorer via: " << QSFileName;
+			QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+			QVariantMap error;
+			if (DokanFileInfo->IsDirectory)
+				Vfs_windows::instance()->createDirectoryAtPath(QSFileName, error);
+			else
+				Vfs_windows::instance()->createFileAtPath(QSFileName, error);
+		}
+		else if (creationDisposition == OPEN_ALWAYS) {
+			DbgPrint(L"\tFOPEN_ALWAYS\n");
+		}
+		else if (creationDisposition == CREATE_ALWAYS) {
+			DbgPrint(L"\tFCREATE_ALWAYS\n");
+			if (error == 0 && creationDisposition == 2 && DesiredAccess == 1507743)
+			{
+				qDebug() << Q_FUNC_INFO << " 2 Prepare CREATE_NEW CMD-copy via: " << QSFileName;
+				QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+				QVariantMap error;
+				if (DokanFileInfo->IsDirectory)
+					Vfs_windows::instance()->createDirectoryAtPath(QSFileName, error);
+				else
+					Vfs_windows::instance()->createFileAtPath(QSFileName, error);
+
+				//Vfs_windows::instance()->createFileAtPath(QSFileName, error);
+			}
+
+			qDebug() << Q_FUNC_INFO << " OPEN_ALWAYS FileName: " << QSFileName << " error: " << error << " creationDisposition: " << creationDisposition << " DesiredAccess: " << DesiredAccess;
+		}
+		else if (creationDisposition == OPEN_EXISTING) {
+			DbgPrint(L"\tFOPEN_EXISTING\n");
+			qDebug() << Q_FUNC_INFO << " OPEN_EXISTING FileName: " << QSFileName << " error: " << error << " creationDisposition: " << creationDisposition << " DesiredAccess: " << DesiredAccess;
+
+		}
+		else if (creationDisposition == TRUNCATE_EXISTING) {
+			DbgPrint(L"\tFTRUNCATE_EXISTING\n");
+			qDebug() << Q_FUNC_INFO << " TRUNCATE_EXISTING FileName: " << QSFileName << " error: " << error << " creationDisposition: " << creationDisposition << " DesiredAccess: " << DesiredAccess;
+		}
+		else {
+			DbgPrint(L"\tFUNKNOWN creationDisposition!\n");
+			qDebug() << Q_FUNC_INFO << " UNKNOWN creationDisposition! FileName: " << QSFileName << " error: " << error << " creationDisposition: " << creationDisposition << " DesiredAccess: " << DesiredAccess;
+		}
+	}
+	//////////////////////////////////////////////////////////////////////////////////////////////////////
+	*/
+
 	return status;
 }
 
@@ -712,8 +834,11 @@ static void DOKAN_CALLBACK MirrorCloseFile(LPCWSTR FileName,
 		m_Vfs_windows = Vfs_windows::instance();
 		if (m_Vfs_windows)
 		{
-			if(QSFileName.compare("\\") != 0)
-				m_Vfs_windows->getOperationCloseFile(QSFileName, QString("MirrorCloseFile"), QString("InProcess..."));
+			if (QSFileName.compare("\\") != 0)
+			{
+				//qDebug() << Q_FUNC_INFO << " FileName: " << QSFileName;
+				//m_Vfs_windows->getOperationCloseFile(QSFileName, QString("MirrorCloseFile"), QString("InProcess..."));
+			}
 		}
 		else
 		{
@@ -758,8 +883,11 @@ static void DOKAN_CALLBACK MirrorCleanup(LPCWSTR FileName,
 		m_Vfs_windows = Vfs_windows::instance();
 		if (m_Vfs_windows)
 		{
-			if(QSFileName.compare("\\") != 0)
-				m_Vfs_windows->getOperationCleanup(QSFileName, QString("MirrorCleanup"), QString("InProcess..."));
+			if (QSFileName.compare("\\") != 0)
+			{
+				//qDebug() << Q_FUNC_INFO << " FileName: " << QSFileName;
+				//m_Vfs_windows->getOperationCleanup(QSFileName, QString("MirrorCleanup"), QString("InProcess..."));
+			}
 		}
 		else
 		{
@@ -808,6 +936,7 @@ static void DOKAN_CALLBACK MirrorCleanup(LPCWSTR FileName,
 	}
 }
 
+
 static NTSTATUS DOKAN_CALLBACK MirrorReadFile(LPCWSTR FileName, LPVOID Buffer,
 	DWORD BufferLength,
 	LPDWORD ReadLength,
@@ -831,8 +960,30 @@ QMutexLocker lockerMirrorReadFile(&_mutexMirrorReadFile);
 		m_Vfs_windows = Vfs_windows::instance();
 		if (m_Vfs_windows)
 		{
-			if(QSFileName.compare("\\") != 0)
-				m_Vfs_windows->getOperationReadFile(QSFileName, QString("MirrorReadFile"), QString("InProcess..."));
+			if (QSFileName.compare("\\") != 0)
+			{
+				//m_Vfs_windows->getOperationReadFile(QSFileName, QString("MirrorReadFile"), QString("InProcess..."));
+				if (DokanFileInfo->ProcessId != ((ULONG)GetCurrentProcess()))
+				{
+
+					//qDebug() << " YYY openFileAtPath  Offset: " << Offset << " BufferLength: " << BufferLength << " ReadLength:" << *ReadLength;
+
+					//int notw = (int)*ReadLength;
+					//if (((notw + Offset) == BufferLength) && !QSFileName.contains("Zone.Identifier") && (QSFileName.count(QLatin1Char('.')) <= 2))
+					if ((Offset == 0) && (QSFileName.count(QLatin1Char('.')) <= 2) && (DokanFileInfo->ProcessId != getExplorerID()) && (BufferLength == 8192))
+					{
+						qDebug() << " ZZZ openFileAtPath  Offset: " << Offset << " BufferLength: " << BufferLength << " ReadLength:" << *ReadLength;
+						/*DWORD BufferLength,
+							LPDWORD ReadLength,
+							LONGLONG Offset,*/
+						//toyDentro = 1;
+						QVariantMap error;
+						QString QSFileNametoReal = QSFileName;
+						QSFileNametoReal.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+						Vfs_windows::instance()->openFileAtPath(QSFileNametoReal, error);
+					}
+				}
+			}
 		}
 		else
 		{
@@ -840,6 +991,7 @@ QMutexLocker lockerMirrorReadFile(&_mutexMirrorReadFile);
 		return 0;	
 		}
 	lockerMirrorReadFile.unlock();
+
 
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;	
 
@@ -884,6 +1036,37 @@ QMutexLocker lockerMirrorReadFile(&_mutexMirrorReadFile);
 
 	}
 	else {
+
+		/*QMutexLocker lockerMirrorReadFile(&_mutexMirrorReadFile);
+				Vfs_windows *m_Vfs_windows = NULL;
+				m_Vfs_windows = Vfs_windows::instance();
+				if (m_Vfs_windows)
+				{
+					if (QSFileName.compare("\\") != 0)
+					{
+						//m_Vfs_windows->getOperationReadFile(QSFileName, QString("MirrorReadFile"), QString("InProcess..."));
+						if (DokanFileInfo->ProcessId != ((ULONG)GetCurrentProcess()))
+						{
+							int notw = (int)*ReadLength;
+							if (((notw + Offset) == BufferLength) && !QSFileName.contains("Zone.Identifier"))
+							{
+								QVariantMap error;
+								QString QSFileNametoReal = QSFileName;
+								QSFileNametoReal.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+								Vfs_windows::instance()->openFileAtPath(QSFileNametoReal, error);
+							}
+						}
+					}
+				}
+				else
+				{
+				lockerMirrorReadFile.unlock();
+				return 0;
+				}
+			lockerMirrorReadFile.unlock();
+*/
+		
+
 		DbgPrint(L"\tByte to read: %d, Byte read %d, offset %d\n\n", BufferLength,
 			*ReadLength, offset);
 	}
@@ -911,14 +1094,18 @@ static NTSTATUS DOKAN_CALLBACK MirrorWriteFile(LPCWSTR FileName, LPCVOID Buffer,
 
 
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
-
+/*	QVariantMap error;
 	QMutexLocker lockerMirrorWriteFile(&_mutexMirrorWriteFile);
 		Vfs_windows *m_Vfs_windows = NULL;
 		m_Vfs_windows = Vfs_windows::instance();
 		if (m_Vfs_windows)
 		{
-			if(QSFileName.compare("\\") != 0)
-				m_Vfs_windows->getOperationWriteFile(QSFileName, QString("MirrorWriteFile"), QString("InProcess..."));
+			if (QSFileName.compare("\\") != 0)
+				{
+				QString QSFileNameToWriteFuse = QSFileName;
+				QSFileNameToWriteFuse.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+				Vfs_windows::instance()->writeFileAtPath(QSFileNameToWriteFuse, error);
+				}
 		}
 		else
 		{
@@ -926,6 +1113,8 @@ static NTSTATUS DOKAN_CALLBACK MirrorWriteFile(LPCWSTR FileName, LPCVOID Buffer,
 		return 0;	
 		}
 	lockerMirrorWriteFile.unlock();
+*/
+
 
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;	
 
@@ -1032,6 +1221,30 @@ static NTSTATUS DOKAN_CALLBACK MirrorWriteFile(LPCWSTR FileName, LPCVOID Buffer,
 	// close the file when it is reopened
 	if (opened)
 		CloseHandle(handle);
+
+	QVariantMap error;
+	QMutexLocker lockerMirrorWriteFile(&_mutexMirrorWriteFile);
+	Vfs_windows *m_Vfs_windows = NULL;
+	m_Vfs_windows = Vfs_windows::instance();
+	if (m_Vfs_windows)
+	{
+		if (QSFileName.compare("\\") != 0)
+		{
+			;
+			int notw = (int)NumberOfBytesToWrite;
+			if( ((notw + Offset) == fileSize) && !QSFileName.contains("Zone.Identifier") )
+			{
+				QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+				Vfs_windows::instance()->writeFileAtPath(QSFileName, error);
+			}
+		}
+	}
+	else
+	{
+		lockerMirrorWriteFile.unlock();
+		return 0;
+	}
+	lockerMirrorWriteFile.unlock();
 
 	return STATUS_SUCCESS;
 }
@@ -1424,10 +1637,14 @@ MirrorMoveFile(LPCWSTR FileName, // existing file name
 	//< Capture MoveFile Virtual File System Operation
 
 	QString QSFileName;
+	QString QSNewFileName;
+
 #ifdef UNICODE
 	QSFileName = QString::fromWCharArray(FileName);
+	QSNewFileName = QString::fromWCharArray(NewFileName);
 #else
 	QSFileName = QString::fromLocal8Bit(FileName);
+	QSNewFileName = QString::fromLocal8Bit(NewFileName);
 #endif
 	
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
@@ -1437,8 +1654,8 @@ MirrorMoveFile(LPCWSTR FileName, // existing file name
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
-		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationMoveFile(QSFileName, QString("MirrorMoveFile"), QString("InProcess..."));
+		//if (QSFileName.compare("\\") != 0)
+		//	m_Vfs_windows->getOperationMoveFile(QSFileName, QString("MirrorMoveFile"), QString("InProcess..."));
 	}
 	else
 	{
@@ -1502,6 +1719,23 @@ MirrorMoveFile(LPCWSTR FileName, // existing file name
 	free(renameInfo);
 
 	if (result) {
+		if (QSFileName.compare("\\") != 0)
+		{
+			if (DokanFileInfo->IsDirectory)
+			{
+				QVariantMap error;
+				QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+				QSNewFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+				Vfs_windows::instance()->moveDirectoryAtPath(QSFileName, QSNewFileName, error);
+			}
+			else
+			{
+				QVariantMap error;
+				QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+				QSNewFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+				Vfs_windows::instance()->moveFileAtPath(QSFileName, QSNewFileName, error);
+			}
+		}
 		return STATUS_SUCCESS;
 	}
 	else {
@@ -2372,6 +2606,8 @@ void ShowUsage() {
 
 void Vfs_windows::slotSyncFinish(const QString &path, bool status)
 {
+	//qDebug() << " openFileAtPath   void Vfs_windows::slotSyncFinish " << path;
+
     Q_UNUSED(path);
     Q_UNUSED(status);
 
@@ -2380,26 +2616,88 @@ void Vfs_windows::slotSyncFinish(const QString &path, bool status)
     _mutex.unlock();
 }
 
+void Vfs_windows::createFileAtPath(QString path, QVariantMap &error)
+{
+	qDebug() << " createFile: " << path;
+}
+
+void Vfs_windows::moveFileAtPath(QString path, QString npath, QVariantMap &error)
+{
+	qDebug() << " moveFile from: " << path << " to: " << npath;
+}
+
+void Vfs_windows::createDirectoryAtPath(QString path, QVariantMap &error)
+{
+	qDebug() << " createDirectory: " << path;
+}
+
+void Vfs_windows::moveDirectoryAtPath(QString path, QString npath, QVariantMap &error)
+{
+	qDebug() << " moveDirectory from: " << path << " to: " << npath;
+}
+
+
 void Vfs_windows::openFileAtPath(QString path, QVariantMap &error)
 {
-qDebug() << Q_FUNC_INFO << " 1 path: " << path;
+	qDebug() << " drive FS starting synchronization: " << path;
+
+	//if (toyDentro)
+		//return;
+
+//qDebug() << " drive FS starting synchronization: " << path;
+
+//qDebug() << Q_FUNC_INFO << " 1 path: " << path;
     _mutex.lock();
-qDebug() << Q_FUNC_INFO << " 2 path: " << path;
+//toyDentro = 1;
+//qDebug() << Q_FUNC_INFO << " 2 path: " << path;
     emit openFile(path);
-qDebug() << Q_FUNC_INFO << " 3 path: " << path;
+//qDebug() << Q_FUNC_INFO << " 3 path: " << path;
     _syncCondition.wait(&_mutex);
-qDebug() << Q_FUNC_INFO << " 4 path: " << path;
+//qDebug() << Q_FUNC_INFO << " 4 path: " << path;
+//toyDentro = 0;
     _mutex.unlock();
+/*qDebug() << Q_FUNC_INFO << " 5 path: " << path;
+
+qDebug() << " drive FS finish synchronization: " << path;
+qDebug() << " drive FS openFile: " << path;
+*/
+}
+
+void Vfs_windows::writeFileAtPath(QString path, QVariantMap &error)
+{
+
+qDebug() << " drive FS starting synchronization: " << path;
+
+qDebug() << Q_FUNC_INFO << " 1 path: " << path;
+	_mutex.lock();
+qDebug() << Q_FUNC_INFO << " 2 path: " << path;
+	emit writeFile(path);
+qDebug() << Q_FUNC_INFO << " 3 path: " << path;
+	_syncCondition.wait(&_mutex);
+qDebug() << Q_FUNC_INFO << " 4 path: " << path;
+	_mutex.unlock();
 qDebug() << Q_FUNC_INFO << " 5 path: " << path;
+
+qDebug() << " drive FS finish synchronization: " << path;
+qDebug() << " drive FS writeFile: " << path;
 }
 
 void Vfs_windows::deleteFileAtPath(QString path, QVariantMap &error)
 {
-    qDebug() << " path: " << path;
-    _mutex.lock();
-    emit deleteFile(path);
-    _syncCondition.wait(&_mutex);
-    _mutex.unlock();
+qDebug() << " drive FS starting synchronization: " << path;
+
+qDebug() << Q_FUNC_INFO << " 1 path: " << path;
+	_mutex.lock();
+qDebug() << Q_FUNC_INFO << " 2 path: " << path;
+	emit deleteFile(path);
+qDebug() << Q_FUNC_INFO << " 3 path: " << path;
+	_syncCondition.wait(&_mutex);
+qDebug() << Q_FUNC_INFO << " 4 path: " << path;
+	_mutex.unlock();
+qDebug() << Q_FUNC_INFO << " 5 path: " << path;
+
+qDebug() << " drive FS finish synchronization: " << path;
+qDebug() << " drive FS deleteFile: " << path;
 }
 
 void Vfs_windows::startDeleteDirectoryAtPath(QString path, QVariantMap &error)
@@ -2496,6 +2794,7 @@ Vfs_windows::Vfs_windows(AccountState *accountState_)
 	_remotefileListJob->setParent(this);
 	connect(this, &Vfs_windows::startRemoteFileListJob, _remotefileListJob, &OCC::DiscoveryFolderFileList::doGetFolderContent);
 	connect(_remotefileListJob, &OCC::DiscoveryFolderFileList::gotDataSignal, this, &Vfs_windows::folderFileListFinish);
+
 
 	// "talk" to the sync engine
     _syncWrapper = OCC::SyncWrapper::instance();
@@ -2746,6 +3045,12 @@ unsigned long long Vfs_windows::DgetTotalNumberOfFreeBytes()
 	qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " bResult: " << bResult;
 }*/
 
+bool Vfs_windows::removeDir(const QString &dirPath)
+{
+	QDir dir(dirPath);
+	return dir.removeRecursively();
+}
+
 // hardkode letter drive
 void Vfs_windows::downDrive(WCHAR DriveLetter)
 {
@@ -2797,7 +3102,7 @@ qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " INIT ::upDrive rootDirectory: " <
 
 	ZeroMemory(dokanOptions, sizeof(DOKAN_OPTIONS));
 	dokanOptions->Version = DOKAN_VERSION;
-	dokanOptions->ThreadCount = 5;			// < Set by file stream support, 
+	dokanOptions->ThreadCount = 500;			// < Set by file stream support, 
 												// < recompile DokanLib DOKAN_MAX_THREAD 501
 												// < update dokanc.h
 
