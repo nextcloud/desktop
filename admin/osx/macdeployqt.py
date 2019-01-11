@@ -352,7 +352,7 @@ def FixLibraryInstallPath(library_path, library):
     FixInstallPath(library_path, library, new_path)
   else:
     print "Fix as system library: [%s]" % library_path
-    print "We currently don't need this and it's most likely an error if this code path is hit. Exiting…"
+    print "We currently don't need this and it's most likely an error if this code path is hit. Exiting."
     sys.exit(53)
     FixInstallPath(library_path, library, system_library)
 
