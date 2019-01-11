@@ -42,6 +42,8 @@ protected:
 	~NCContextMenu();
 
 private:
+	// Reference count of component.
+	long m_cRef;
 
 	// The name of the selected file.
 	wchar_t m_szSelectedFile[MAX_PATH];
@@ -53,6 +55,9 @@ private:
 	std::wstring m_selectedFiles;
 	NCClientInterface::ContextMenuInfo m_info;
 
+	// The method that handles the "display" verb.
+	void OnVerbDisplayFileName(HWND hWnd);
+
 	/// @brief changes the 
 	/// @param hWnd
 	void OnDriveMenuOnline(HWND hWnd);
@@ -60,6 +65,14 @@ private:
 	/// @brief 
 	/// @param hWnd
 	void OnDriveMenuOffline(HWND hWnd);
+
+	PWSTR m_pszMenuText;
+	PCSTR m_pszVerb;
+	PCWSTR m_pwszVerb;
+	PCSTR m_pszVerbCanonicalName;
+	PCWSTR m_pwszVerbCanonicalName;
+	PCSTR m_pszVerbHelpText;
+	PCWSTR m_pwszVerbHelpText;
 };
 	
 #endif //NCCONTEXTMENU_H

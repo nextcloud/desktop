@@ -42,31 +42,24 @@ NCClientInterface::ContextMenuInfo NCClientInterface::FetchInfo(const std::wstri
     if (!socket.Connect(pipename)) {
         return {};
     }
-    socket.SendMsg(L"GET_STRINGS:CONTEXT_MENU_TITLE\n");
-    socket.SendMsg((L"GET_MENU_ITEMS:" + files + L"\n").data());
+    socket.SendMsg(L"SHARE_MENU_TITLE\n");
 
     ContextMenuInfo info;
     std::wstring response;
     int sleptCount = 0;
     while (sleptCount < 5) {
         if (socket.ReadLine(&response)) {
-            if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
+			if (StringUtil::begins_with(response, wstring(L"REGISTER_DRIVEFS:"))) {
+				wstring responsePath = response.substr(17); // length of REGISTER_DRIVEFS:
+				info._defaultFileStreamLetterDrive = responsePath;
+				//setLetterDrive(responsePath);
+			}
+			else if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
                 wstring responsePath = response.substr(14); // length of REGISTER_PATH
                 info.watchedDirectories.push_back(responsePath);
             }
-            else if (StringUtil::begins_with(response, wstring(L"STRING:"))) {
-                wstring stringName, stringValue;
-                if (!StringUtil::extractChunks(response, stringName, stringValue))
-                    continue;
-                if (stringName == L"CONTEXT_MENU_TITLE")
-                    info.contextMenuTitle = move(stringValue);
-            } else if (StringUtil::begins_with(response, wstring(L"MENU_ITEM:"))) {
-                wstring commandName, flags, title;
-                if (!StringUtil::extractChunks(response, commandName, flags, title))
-                    continue;
-                info.menuItems.push_back({ commandName, flags, title });
-            } else if (StringUtil::begins_with(response, wstring(L"GET_MENU_ITEMS:END"))) {
-                break; // Stop once we completely received the last sent request
+            else if (StringUtil::begins_with(response, wstring(L"SHARE_MENU_TITLE:"))) {
+                info.shareMenuTitle = response.substr(17); // length of SHARE_MENU_TITLE:
             }
             else if (StringUtil::begins_with(response, wstring(L"STREAM_SUBMENU_TITLE:"))) {
                 info.streamSubMenuTitle = response.substr(21);
@@ -100,7 +93,12 @@ void NCClientInterface::SendRequest(const wchar_t *verb, const std::wstring &pat
         return;
     }
 
-    socket.SendMsg((verb + (L":" + path + L"\n")).data());
+    //socket.SendMsg((verb + (L":" + path + L"\n")).data());
+    wchar_t msg[SOCK_BUFFER] = { 0 };
+    if (SUCCEEDED(StringCchPrintf(msg, SOCK_BUFFER, L"SHARE:%s\n", path.c_str())))
+    {
+        socket.SendMsg(msg);
+    }
 }
 
 void OCClientInterface::SetDownloadMode(const std::wstring &path, bool online)
