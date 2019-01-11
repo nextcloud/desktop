@@ -672,7 +672,7 @@ void Folder::startSync(const QStringList &pathList)
     _syncResult.setStatus(SyncResult::SyncPrepare);
     emit syncStateChange();
 
-    qCInfo(lcFolder) << "*** Start syncing " << remoteUrl().toString() << " - client version"
+    qCInfo(lcFolder) << "*** Start syncing " << remoteUrl().toString() << " -" << APPLICATION_NAME << "client version"
                      << qPrintable(Theme::instance()->version());
 
     _fileLog->start(path());
