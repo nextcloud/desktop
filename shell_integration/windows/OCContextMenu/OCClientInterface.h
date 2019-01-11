@@ -45,21 +45,18 @@ class OCClientInterface
 public:
     struct ContextMenuInfo {
         std::vector<std::wstring> watchedDirectories;
-        std::wstring contextMenuTitle;
-        struct MenuItem
-        {
-            std::wstring command, flags, title;
-        };
+        std::wstring shareMenuTitle;
         std::wstring streamSubMenuTitle;
         std::wstring streamOfflineItemTitle;
         std::wstring streamOnlineItemTitle;
-        std::vector<MenuItem> menuItems;
-    };
-    static ContextMenuInfo FetchInfo(const std::wstring &files);
-    static void SendRequest(const wchar_t *verb, const std::wstring &path);
+		std::wstring _defaultFileStreamLetterDrive;
 
+    };
+    static ContextMenuInfo FetchInfo();
+    static void ShareObject(const std::wstring &path);
     static void SetDownloadMode(const std::wstring &path, bool online);
-    static std::wstring GetDownloadMode(const std::wstring &path);
+	static std::wstring GetDownloadMode(const std::wstring &path);
+
 };
 
 #endif //ABSTRACTSOCKETHANDLER_H

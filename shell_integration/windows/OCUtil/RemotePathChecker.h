@@ -40,8 +40,11 @@ public:
     ~RemotePathChecker();
     std::shared_ptr<const std::vector<std::wstring>> WatchedDirectories() const;
     bool IsMonitoredPath(const wchar_t* filePath, int* state);
+	void setLetterDrive(std::wstring str);
+	std::wstring getLetterDrive();
 
 private:
+	std::wstring _defaultFileStreamLetterDrive;
     FileState _StrToFileState(const std::wstring &str);
     std::mutex _mutex;
     std::atomic<bool> _stop;
