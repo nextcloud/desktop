@@ -25,6 +25,7 @@ from glob import glob
 from distutils.version import LooseVersion
 
 bundle_dir = sys.argv[1]
+dsyms_dir = os.path.realpath(os.path.join(bundle_dir, '..', os.path.basename(bundle_dir)+'_symbols'))
 qmake_path = sys.argv[2]
 
 def QueryQMake(attrib):
@@ -239,8 +240,30 @@ def FixBinary(path):
   for library in broken_libs['libs']:
     FixLibraryInstallPath(library, path)
 
+
+def CopyDSYM(dep):
+    frameworkString = '.framework'
+    pos = dep.rfind(frameworkString)
+    dsym_path = dep + ".dSYM"
+    if pos > -1:
+      frameworkPath = dep[:pos+len(frameworkString)]
+      dsym_path = frameworkPath + ".dSYM"
+
+    if os.path.exists(dsym_path):
+      new_dsym_path = os.path.join(dsyms_dir, os.path.basename(dsym_path))
+      print("CopyDSYM: [%s]" % dsym_path)
+      args = ['rm', '-rf', os.path.join(dsyms_dir, os.path.basename(dsym_path))]
+      commands.append(args)
+      args = ['cp', '-R', dsym_path, dsyms_dir]
+      commands.append(args)
+    else:
+      print("CopyDSYM: no .dSYM found.")
+
+
+
 def CopyLibrary(path):
   print "CopyLibrary:", path
+  CopyDSYM(path)
   new_path = os.path.join(binary_dir, os.path.basename(path))
   args = ['ditto', '--arch=x86_64', path, new_path]
   commands.append(args)
@@ -250,6 +273,7 @@ def CopyLibrary(path):
 
 def CopyPlugin(path, subdir):
   print "CopyPlugin:", path, subdir
+  CopyDSYM(path)
   new_path = os.path.join(plugins_dir, subdir, os.path.basename(path))
   args = ['mkdir', '-p', os.path.dirname(new_path)]
   commands.append(args)
@@ -261,6 +285,7 @@ def CopyPlugin(path, subdir):
 
 def CopyFramework(source_dylib):
   print "CopyFramework:", source_dylib
+  CopyDSYM(source_dylib)
   parts = source_dylib.split(os.sep)
   for i, part in enumerate(parts):
     matchObj = re.match(r'(\w+\.framework)', part)
@@ -326,6 +351,9 @@ def FixLibraryInstallPath(library_path, library):
     new_path = '@executable_path/../MacOS/%s' % os.path.basename(library_path)
     FixInstallPath(library_path, library, new_path)
   else:
+    print "Fix as system library: [%s]" % library_path
+    print "We currently don't need this and it's most likely an error if this code path is hit. Exiting…"
+    sys.exit(53)
     FixInstallPath(library_path, library, system_library)
 
 def FixFrameworkInstallPath(library_path, library):
@@ -346,9 +374,29 @@ def FindQtPlugin(name):
         return os.path.join(path, name)
   raise CouldNotFindQtPluginError(name)
 
+
+def runCommand(command):
+  p = subprocess.Popen(command)
+  os.waitpid(p.pid, 0)
+
+def runCommandDebug(command):
+  print "Run command: %s" % command
+  runCommand(command)
+
+if 'ENABLE_CRASHREPORTS' in os.environ and os.environ['ENABLE_CRASHREPORTS'] == 'true':
+  print "Crashreports enabled. Dump symbols of our own binaries."
+  for binary in binaries:
+    print("Create .dSYM for [binary]")
+    dsym_path = binary+'.dSYM'
+    runCommandDebug(['dsymutil', binary])
+    runCommandDebug(['rm', '-rf', os.path.join(dsyms_dir, os.path.basename(dsym_path))])
+    runCommandDebug(['mv', dsym_path, dsyms_dir])
+else:
+  print "Crashreports disabled."
+
+
 for binary in binaries:
   FixBinary(binary)
-
 
 if LooseVersion(qt_version) >= LooseVersion("5.10.0"):
   QT_PLUGINS.append('styles/libqmacstyle.dylib')
@@ -368,7 +416,6 @@ if len(sys.argv) <= 2:
     print ' '.join(command)
 
 for command in commands:
-  p = subprocess.Popen(command)
-  os.waitpid(p.pid, 0)
+  runCommand(command)
 
 WriteQtConf()
