@@ -175,30 +175,6 @@ void OwncloudSetupPage::initializePage()
     }
 }
 
-bool OwncloudSetupPage::urlHasChanged()
-{
-    bool change = false;
-    const QChar slash('/');
-
-    QUrl currentUrl(url());
-    QUrl initialUrl(_oCUrl);
-
-    QString currentPath = currentUrl.path();
-    QString initialPath = initialUrl.path();
-
-    // add a trailing slash.
-    if (!currentPath.endsWith(slash))
-        currentPath += slash;
-    if (!initialPath.endsWith(slash))
-        initialPath += slash;
-
-    if (currentUrl.host() != initialUrl.host() || currentUrl.port() != initialUrl.port() || currentPath != initialPath) {
-        change = true;
-    }
-
-    return change;
-}
-
 int OwncloudSetupPage::nextId() const
 {
     switch (_authType) {
