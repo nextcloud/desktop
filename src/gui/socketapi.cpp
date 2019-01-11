@@ -849,8 +849,20 @@ void SocketApi::command_OFFLINE_DOWNLOAD_MODE(const QString& path, SocketListene
 }
 
 //< Windows callback for ContextMenu option
-void SocketApi::command_SET_DOWNLOAD_MODE(const QString& argument, SocketListener* listener)
+void SocketApi::command_SET_DOWNLOAD_MODE(const QString &argumentC, SocketListener *listener)
 {
+	QString argument = argumentC;
+
+#if defined(Q_OS_WIN)
+        char Letter[2];
+        Letter[0] = argument.toStdString().c_str()[0];
+        Letter[1] = 0;
+        ConfigFile Cfg;
+
+    if (!QString(Letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+        argument.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+#endif
+
     qDebug() << Q_FUNC_INFO << " argument: " << argument;
 
     #if defined(Q_OS_WIN)
@@ -888,16 +900,16 @@ void SocketApi::command_SET_DOWNLOAD_MODE(const QString& argument, SocketListene
 
             if (*pc == '0')     //< OffLine
             {
-        qDebug() << "\n" << Q_FUNC_INFO << " *pc is 0";
+        qDebug() << "\n" << Q_FUNC_INFO << " *pc is 0 OffLine";
             SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_OFFLINE);
 
             //< Example
             SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
             SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
             }
-            else if (*pc == '1')    //< Online
+            else if (*pc == '1')    //< OnLine
             {
-        qDebug() << "\n" << Q_FUNC_INFO << " *pc is 1";
+        qDebug() << "\n" << Q_FUNC_INFO << " *pc is 1 Online";
             SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_ONLINE);
 
             //< Example
@@ -928,8 +940,23 @@ void SocketApi::command_SET_DOWNLOAD_MODE(const QString& argument, SocketListene
     }
 
 //< Windows & Mac callback for ContextMenu status option
-void SocketApi::command_GET_DOWNLOAD_MODE(const QString& localFile, SocketListener* listener)
+void SocketApi::command_GET_DOWNLOAD_MODE(const QString& localFileC, SocketListener* listener)
     {
+
+	QString localFile = localFileC;
+
+#if defined(Q_OS_WIN)
+        char Letter[2];
+        Letter[0] = localFile.toStdString().c_str()[0];
+        Letter[1] = 0;
+        ConfigFile Cfg;
+
+        if (!QString(Letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+            localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+#endif
+
+		qDebug() << Q_FUNC_INFO << "  :::BD localFile_0: " << localFile;
+
         QString downloadMode = "ONLINE";
 
         //< Iterate paths from SyncMode table.
@@ -938,12 +965,15 @@ void SocketApi::command_GET_DOWNLOAD_MODE(const QString& localFile, SocketListen
 
         foreach(item, list)
         {
-            qDebug() << Q_FUNC_INFO << " localFile: " << localFile << " item: " << item;
+            qDebug() << Q_FUNC_INFO << "  :::BD localFile: " << localFile << " item: " << item;
             if (item.compare(localFile) == 0)
             {
             SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
             if (m == SyncJournalDb::SYNCMODE_OFFLINE)
+				{
                 downloadMode = "OFFLINE";
+                qDebug() << Q_FUNC_INFO << "  :::BD item: " << item << " isOFFLINE";
+				}
             break;
             }
         }
