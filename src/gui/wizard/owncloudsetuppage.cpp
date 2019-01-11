@@ -371,27 +371,7 @@ void OwncloudSetupPage::slotCertificateAccepted()
             &_ocWizard->_clientSslCertificate,
             &_ocWizard->_clientSslCaCertificates,
             addCertDial->getCertificatePasswd().toLocal8Bit())) {
-        AccountPtr acc = _ocWizard->account();
-
-        // to re-create the session ticket because we added a key/cert
-        acc->setSslConfiguration(QSslConfiguration());
-        QSslConfiguration sslConfiguration = acc->getOrCreateSslConfig();
-
-        // We're stuffing the certificate into the configuration form here. Later the
-        // cert will come via the HttpCredentials
-        sslConfiguration.setLocalCertificate(_ocWizard->_clientSslCertificate);
-        sslConfiguration.setPrivateKey(_ocWizard->_clientSslKey);
-
-        // Be sure to merge the CAs
-        auto ca = sslConfiguration.systemCaCertificates();
-        ca.append(_ocWizard->_clientSslCaCertificates);
-        sslConfiguration.setCaCertificates(ca);
-
-        acc->setSslConfiguration(sslConfiguration);
-
-        // Make sure TCP connections get re-established
-        acc->networkAccessManager()->clearAccessCache();
-
+        // The SSL cert gets added to the QSslConfiguration in checkServer()
         addCertDial->reinit(); // FIXME: Why not just have this only created on use?
         validatePage();
     } else {
