@@ -6,6 +6,7 @@ version 2.5.2 (2019-02-??)
 * Crash fix: When deleting an account (#6893)
 * Crash fix: During password dialog
 * Sqlite: Update version to 3.26.0 for OSX and Windows
+* Wizard: Fix setting up accounts with SSL client certs (#6911)
 * Sync: Fix duplicate slashes in destination of MOVE operation (#6904)
 * Sync: Fix file unlocking triggering too many syncs (#6822)
 * GUI: Increase default size of ignore list editor (#6641)
