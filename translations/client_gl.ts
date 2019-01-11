@@ -2498,7 +2498,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
         <source>Loading ...</source>
-        <translation>Cargando ...</translation>
+        <translation>Cargando...</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
@@ -2728,7 +2728,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="52"/>
         <source>Share with users or groups ...</source>
-        <translation>Compartir con usuarios ou grupos ...</translation>
+        <translation>Compartir con usuarios ou grupos...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="238"/>
