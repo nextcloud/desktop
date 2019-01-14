@@ -24,6 +24,8 @@ import sys
 from glob import glob
 from distutils.version import LooseVersion
 
+print("Deploying (Qt) dependencies and fixing library paths...")
+
 bundle_dir = sys.argv[1]
 dsyms_dir = os.path.realpath(os.path.join(bundle_dir, '..', os.path.basename(bundle_dir)+'_symbols'))
 qmake_path = sys.argv[2]

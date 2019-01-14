@@ -356,3 +356,7 @@ if(NOT BUILD_OWNCLOUD_OSX_BUNDLE AND NOT WIN32)
     endif(SharedMimeInfo_FOUND)
 endif()
 
+if(BUILD_OWNCLOUD_OSX_BUNDLE)
+  get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
+  add_custom_target(macdeployqt "${CMAKE_SOURCE_DIR}/admin/osx/macdeployqt.py" "${CMAKE_INSTALL_PREFIX}/${OWNCLOUD_OSX_BUNDLE}" "${QT_QMAKE_EXECUTABLE}")
+endif()
