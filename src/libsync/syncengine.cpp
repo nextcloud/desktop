@@ -1634,17 +1634,12 @@ int SyncEngine::localTreeSize(){
 void SyncEngine::updateLocalFileTree(const QString &path, csync_instructions_e instruction){
     if(!path.isEmpty()){
         if(!_csync_ctx.isNull()){
-
             _csync_ctx->fuseEnabled = true;
-
             QByteArray localPath(_localPath.toLatin1());
-            if(_localPath.endsWith("/"))
-                localPath = localPath.remove(localPath.size() - 1, 1);
-
             QString fileKey = QFileInfo(path).fileName();
-
+            qDebug() << "About to add file to local file tree!" << localPath << path;
             if (cysnc_update_file(_csync_ctx.data(), localPath, path.toLatin1(), instruction)) {
-                qDebug() << "Added file to local file tree!";
+                qDebug() << "Added file to local file tree!" << localPath << path;
             }
         }
     }

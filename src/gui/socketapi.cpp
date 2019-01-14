@@ -51,6 +51,7 @@
 #include <QMessageBox>
 
 #include <QClipboard>
+#include <QFileInfo>
 
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
@@ -377,7 +378,6 @@ void SocketApi::broadcastMessage(const QString &msg, bool doWait)
 void SocketApi::processShareRequest(const QString &localFile, SocketListener *listener, ShareDialogStartPage startPage)
 {
     auto theme = Theme::instance();
-
     auto fileData = FileData::get(localFile);
     auto shareFolder = fileData.folder;
     if (!shareFolder) {
@@ -894,7 +894,11 @@ void SocketApi::command_SET_DOWNLOAD_MODE(const QString &argumentC, SocketListen
         QQ[l]   = *pq;
         QQ[l+1] = 0;
 
+		// fixpath
         QString path = QString(QQ);
+        //qDebug() << "Path:" << path;
+        //path = path.right(path.size()-3);
+        //qDebug() << "FIXED Path:" << path;
 
         qDebug() << "\n" << Q_FUNC_INFO << " QQ==" <<QQ<< "==";
 

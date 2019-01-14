@@ -22,11 +22,18 @@ public:
 
 public slots:
     void updateSyncQueue(const QString path, bool syncing);
-    void openFileAtPath(const QString path);
-    void releaseFileAtPath(const QString path);
-    void writeFileAtPath(const QString path);
-    void deleteFileAtPath(const QString path);
     void updateFileTree(const QString path);
+
+    void createFileAtPath(const QString path);
+    void deleteFileAtPath(const QString path); 
+    void moveFileAtPath(const QString path);
+    void openFileAtPath(const QString path);
+
+	void releaseFileAtPath(const QString path);
+    void writeFileAtPath(const QString path);
+
+	void createDirectoryAtPath(const QString path);
+    void moveDirectoryAtPath(const QString path);
 
 signals:
     void syncFinish(const QString &, bool);
@@ -39,7 +46,7 @@ private:
         connect(this, &SyncWrapper::startSyncForFolder, FolderMan::instance()->currentSyncFolder(), &Folder::startSync, Qt::DirectConnection);
     }
 
-    QString removeSlash(QString path);
+    QString getRelativePath(QString path);
     bool shouldSync(const QString path);
     void sync(const QString path, csync_instructions_e instruction = CSYNC_INSTRUCTION_SYNC);
 

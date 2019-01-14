@@ -102,11 +102,16 @@ signals:
 		//< void getOperationMounted(QString, QString, QString);
 
 	// To sync: propagate FUSE operations to the sync engine
+    void addToFileTree(const QString path);
+    void createFile(const QString path);
+    void deleteFile(const QString path);
+    void moveFile(const QString path);
     void openFile(const QString path);
     void releaseFile(const QString path);
     void writeFile(const QString path);
-    void deleteFile(const QString path);
-    void addToFileTree(const QString path);
+    
+	void createDirectory(const QString path);
+    void moveDirectory(const QString path);
 
 private slots:
 
