@@ -1209,104 +1209,122 @@ void SocketApi::command_OFFLINE_DOWNLOAD_MODE(const QString &path, SocketListene
 //< Windows callback for ContextMenu option
 void SocketApi::command_SET_DOWNLOAD_MODE(const QString& argument, SocketListener* listener)
 {
-    qDebug() << Q_FUNC_INFO << " argument: " << argument;
+	qDebug() << Q_FUNC_INFO << " argument: " << argument;
 
-    #if defined(Q_OS_WIN)
-        //< Parser on type string: (for get path and type: 0 or 1).
-        //< "C:\\Users\\USERNAME\\DIR_LOCAL\\Mi unidad\\Mi unidad\\b6.txt|1"
-        std::string m_alias = argument.toLocal8Bit().constData();
-        char *pc = (char*)m_alias.c_str();
+#if defined(Q_OS_WIN)
+	//< Parser on type string: (for get path and type: 0 or 1).
+	//< "C:\\Users\\USERNAME\\DIR_LOCAL\\Mi unidad\\Mi unidad\\b6.txt|1"
+	std::string m_alias = argument.toLocal8Bit().constData();
+	char* pc = (char*)m_alias.c_str();
 
-        while (*pc != NULL)
-            pc++;
-        pc--;
-        char *pq = pc;
-        char *pw = pq -= 2;
-        pq = (char*)m_alias.c_str();
-        char QQ[300]; int l = 0;
-        while (pq != pw)
-            {
-            if (l < 300) {
-                QQ[l++] = *pq;
-            }
-            else
-                {
-                qDebug() << "\n" << Q_FUNC_INFO << " QQ is very small for enter value";
-                break;
-                }
-            pq++;
-            }
+	while (*pc != NULL)
+		pc++;
+	pc--;
+	char* pq = pc;
+	char* pw = pq -= 2;
+	pq = (char*)m_alias.c_str();
+	char QQ[300]; int l = 0;
+	while (pq != pw)
+	{
+		if (l < 300) {
+			QQ[l++] = *pq;
+		}
+		else
+		{
+			qDebug() << "\n" << Q_FUNC_INFO << " QQ is very small for enter value";
+			break;
+		}
+		pq++;
+	}
 
-        QQ[l]   = *pq;
-        QQ[l+1] = 0;
+	QQ[l] = *pq;
+	QQ[l + 1] = 0;
 
-        QString path = QString(QQ);
+	QString path = QString(QQ);
+	QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
+	path.replace(0, relative_prefix.length(), QString(""));
+	path.replace("\\", "/");
 
-        qDebug() << "\n" << Q_FUNC_INFO << " QQ==" <<QQ<< "==";
+	qDebug() << "\n" << Q_FUNC_INFO << " QQ==" << QQ << "==";
 
-            if (*pc == '0')     //< OffLine
-            {
-        qDebug() << "\n" << Q_FUNC_INFO << " *pc is 0";
-            SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_OFFLINE);
+	if (*pc == '0')     //< OffLine
+	{
+		qDebug() << "\n" << Q_FUNC_INFO << " *pc is 0";
+		SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_OFFLINE);
 
-            //< Example
-            SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
-            SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
-            }
-            else if (*pc == '1')    //< Online
-            {
-        qDebug() << "\n" << Q_FUNC_INFO << " *pc is 1";
-            SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_ONLINE);
+		//< Example
+		SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+		SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
+	}
+	else if (*pc == '1')    //< Online
+	{
+		qDebug() << "\n" << Q_FUNC_INFO << " *pc is 1";
+		SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_ONLINE);
 
-            //< Example
-            SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
-            SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
-            }
+		//< Example
+		SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+		SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
+	}
 #endif
 
-    qDebug() << "\n" << Q_FUNC_INFO << " Show paths BD INIT";
+	qDebug() << "\n" << Q_FUNC_INFO << " Show paths BD INIT";
 
-        //< Show paths from SyncMode table.
-        QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
-            QString item;
-            foreach(item, list)
-                {
+	//< Show paths from SyncMode table.
+	QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
+	QString item;
+	foreach(item, list)
+	{
 
-                SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
+		SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
 
-                if(m == SyncJournalDb::SYNCMODE_ONLINE) 
-                    qDebug() << Q_FUNC_INFO << " :::BD " << item << " ONLINE";
-    
-                if(m == SyncJournalDb::SYNCMODE_OFFLINE) 
-                    qDebug() << Q_FUNC_INFO << " :::BD " << item << " OFFLINE";
-                }
+		if (m == SyncJournalDb::SYNCMODE_ONLINE)
+			qDebug() << " :::BD " << item << " ONLINE";
 
-    qDebug() << "\n" << Q_FUNC_INFO << " Show paths BD END";
+		if (m == SyncJournalDb::SYNCMODE_OFFLINE)
+			qDebug() << " :::BD " << item << " OFFLINE";
+	}
 
+	qDebug() << "\n" << Q_FUNC_INFO << " Show paths BD END";
 }
 
-void SocketApi::command_GET_DOWNLOAD_MODE(const QString& localFile, SocketListener* listener)
+//< Windows & Mac callback for ContextMenu status option
+void SocketApi::command_GET_DOWNLOAD_MODE(const QString& localFileC, SocketListener* listener)
 {
+	QString localFile = localFileC;
+
+#if defined(Q_OS_WIN)
+        char Letter[2];
+        Letter[0] = localFile.toStdString().c_str()[0];
+        Letter[1] = 0;
+        ConfigFile Cfg;
+
+        if (!QString(Letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+            localFile.replace(0, 3, QString(""));
+        localFile.replace("\\", "/");
+#endif
+
+	qDebug() << Q_FUNC_INFO << " localFile_0: " << localFile;
+
     QString downloadMode = "ONLINE";
 
     //< Iterate paths from SyncMode table.
     QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
     QString item;
 
-    foreach(item, list)
-    {
-        qDebug() << Q_FUNC_INFO << " localFile: " << localFile << " item: " << item;
-        if (item.compare(localFile) == 0)
-        {
-        SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
-        if (m == SyncJournalDb::SYNCMODE_OFFLINE)
-            downloadMode = "OFFLINE";
-        break;
+    foreach(item, list) {
+        qDebug() << "  :::BD localFile: " << localFile << " item: " << item;
+        if (item.compare(localFile) == 0) {
+			SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
+			if (m == SyncJournalDb::SYNCMODE_OFFLINE) {
+				downloadMode = "OFFLINE";
+				qDebug() << "  :::BD item: " << item << " isOFFLINE";
+			}
+			break;
         }
     }
-
     listener->sendMessage(QLatin1String("GET_DOWNLOAD_MODE:") + downloadMode);
 }
+
 } // namespace OCC
 
 #include "socketapi.moc"
