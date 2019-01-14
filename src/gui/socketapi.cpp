@@ -896,9 +896,9 @@ void SocketApi::command_SET_DOWNLOAD_MODE(const QString &argumentC, SocketListen
 
 		// fixpath
         QString path = QString(QQ);
-        //qDebug() << "Path:" << path;
-        //path = path.right(path.size()-3);
-        //qDebug() << "FIXED Path:" << path;
+        QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
+        path.replace(0, relative_prefix.length(), QString(""));
+        path.replace("\\","/");
 
         qDebug() << "\n" << Q_FUNC_INFO << " QQ==" <<QQ<< "==";
 
@@ -933,10 +933,10 @@ void SocketApi::command_SET_DOWNLOAD_MODE(const QString &argumentC, SocketListen
                 SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
 
                 if(m == SyncJournalDb::SYNCMODE_ONLINE) 
-                    qDebug() << Q_FUNC_INFO << " :::BD " << item << " ONLINE";
+                    qDebug() << " :::BD " << item << " ONLINE";
     
                 if(m == SyncJournalDb::SYNCMODE_OFFLINE) 
-                    qDebug() << Q_FUNC_INFO << " :::BD " << item << " OFFLINE";
+                    qDebug() << " :::BD " << item << " OFFLINE";
                 }
 
     qDebug() << "\n" << Q_FUNC_INFO << " Show paths BD END";
@@ -956,10 +956,11 @@ void SocketApi::command_GET_DOWNLOAD_MODE(const QString& localFileC, SocketListe
         ConfigFile Cfg;
 
         if (!QString(Letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
-            localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+            localFile.replace(0, 3, QString(""));
+        localFile.replace("\\", "/");
 #endif
 
-		qDebug() << Q_FUNC_INFO << "  :::BD localFile_0: " << localFile;
+		qDebug() << Q_FUNC_INFO << " localFile_0: " << localFile;
 
         QString downloadMode = "ONLINE";
 
@@ -969,14 +970,14 @@ void SocketApi::command_GET_DOWNLOAD_MODE(const QString& localFileC, SocketListe
 
         foreach(item, list)
         {
-            qDebug() << Q_FUNC_INFO << "  :::BD localFile: " << localFile << " item: " << item;
+            qDebug() << "  :::BD localFile: " << localFile << " item: " << item;
             if (item.compare(localFile) == 0)
             {
             SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
             if (m == SyncJournalDb::SYNCMODE_OFFLINE)
 				{
                 downloadMode = "OFFLINE";
-                qDebug() << Q_FUNC_INFO << "  :::BD item: " << item << " isOFFLINE";
+                qDebug() << "  :::BD item: " << item << " isOFFLINE";
 				}
             break;
             }
