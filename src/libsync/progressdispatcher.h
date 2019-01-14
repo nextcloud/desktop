@@ -63,7 +63,7 @@ public:
          * Emitted once when done
          *
          * Except when SyncEngine jumps directly to finalize() without going
-         * through slotFinished().
+         * through slotPropagationFinished().
          */
         Done
     };
