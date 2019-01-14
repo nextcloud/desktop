@@ -970,14 +970,17 @@ void SyncEngine::abort()
     if (_propagator)
         qCInfo(lcEngine) << "Aborting sync";
 
-    // Aborts the discovery phase job
-    if (_discoveryPhase) {
-        // Should take care to delete all children jobs
-        _discoveryPhase.take()->deleteLater();
-    }
-    // For the propagator
     if (_propagator) {
+        // If we're already in the propagation phase, aborting that is sufficient
         _propagator->abort();
+    } else if (_discoveryPhase) {
+        // Delete the discovery and all child jobs after ensuring
+        // it can't finish and start the propagator
+        disconnect(_discoveryPhase.data(), 0, this, 0);
+        _discoveryPhase.take()->deleteLater();
+
+        syncError(tr("Aborted"));
+        finalize(false);
     }
 }
 
