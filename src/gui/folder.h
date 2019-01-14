@@ -276,6 +276,13 @@ public:
     bool newFilesAreVirtual() const;
     void setNewFilesAreVirtual(bool enabled);
 
+    /** Whether user desires a switch that couldn't be executed yet, see member */
+    bool isVfsOnOffSwitchPending() const { return _vfsOnOffPending; }
+    void setVfsOnOffSwitchPending(bool pending) { _vfsOnOffPending = pending; }
+
+    /** Whether this folder should show selective sync ui */
+    bool supportsSelectiveSync() const;
+
 signals:
     void syncStateChange();
     void syncStarted();
@@ -460,6 +467,14 @@ private:
      * were in that group once never go back.
      */
     bool _saveInFoldersWithPlaceholders = false;
+
+    /** Whether a vfs mode switch is pending
+     *
+     * When the user desires that vfs be switched on/off but it hasn't been
+     * executed yet (syncs are still running), some options should be hidden,
+     * disabled or different.
+     */
+    bool _vfsOnOffPending = false;
 
     /**
      * Watches this folder's local directory for changes.

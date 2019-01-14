@@ -645,6 +645,11 @@ void Folder::setNewFilesAreVirtual(bool enabled)
     _journal.setPinStateForPath("", enabled ? PinState::OnlineOnly : PinState::AlwaysLocal);
 }
 
+bool Folder::supportsSelectiveSync() const
+{
+    return !supportsVirtualFiles() && !isVfsOnOffSwitchPending();
+}
+
 void Folder::saveToSettings() const
 {
     // Remove first to make sure we don't get duplicates
@@ -1207,7 +1212,7 @@ void Folder::registerFolderWatcher()
 
 bool Folder::supportsVirtualFiles() const
 {
-    return _definition.virtualFilesMode != Vfs::Off;
+    return _definition.virtualFilesMode != Vfs::Off && !isVfsOnOffSwitchPending();
 }
 
 void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, bool *cancel)

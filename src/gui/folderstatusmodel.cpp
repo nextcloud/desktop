@@ -362,7 +362,7 @@ int FolderStatusModel::rowCount(const QModelIndex &parent) const
     auto info = infoForIndex(parent);
     if (!info)
         return 0;
-    if (info->_folder && info->_folder->supportsVirtualFiles())
+    if (info->_folder && !info->_folder->supportsSelectiveSync())
         return 0;
     if (info->hasLabel())
         return 1;
@@ -519,7 +519,7 @@ bool FolderStatusModel::hasChildren(const QModelIndex &parent) const
     if (!info)
         return false;
 
-    if (info->_folder && info->_folder->supportsVirtualFiles())
+    if (info->_folder && !info->_folder->supportsSelectiveSync())
         return false;
 
     if (!info->_fetched)
@@ -547,7 +547,7 @@ bool FolderStatusModel::canFetchMore(const QModelIndex &parent) const
         // Keep showing the error to the user, it will be hidden when the account reconnects
         return false;
     }
-    if (info->_folder && info->_folder->supportsVirtualFiles()) {
+    if (info->_folder && !info->_folder->supportsSelectiveSync()) {
         // Selective sync is hidden in that case
         return false;
     }
