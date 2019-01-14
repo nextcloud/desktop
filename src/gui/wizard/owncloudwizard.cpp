@@ -246,6 +246,8 @@ void OwncloudWizard::askExperimentalVirtualFilesFeature(const std::function<void
                "When a file is opened its contents will be downloaded automatically. "
                "Alternatively files can be downloaded manually by using their context menu."
                "\n\n"
+               "Switching to this mode will abort any currently running synchronization."
+               "\n\n"
                "This is a new, experimental mode. If you decide to use it, please report any "
                "issues that come up."));
     } else {
@@ -256,6 +258,8 @@ void OwncloudWizard::askExperimentalVirtualFilesFeature(const std::function<void
             tr("When the \"virtual files\" mode is enabled no files will be downloaded initially. "
                "Instead, a tiny \"%1\" file will be created for each file that exists on the server. "
                "The contents can be downloaded by running these files or by using their context menu."
+               "\n\n"
+               "Switching to this mode will abort any currently running synchronization."
                "\n\n"
                "This is a new, experimental mode. If you decide to use it, please report any "
                "issues that come up.")

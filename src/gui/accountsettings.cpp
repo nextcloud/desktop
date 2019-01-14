@@ -354,7 +354,8 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
     if (Theme::instance()->showVirtualFilesOption()
         && !folder->supportsVirtualFiles()
-        && bestAvailableVfsMode() != Vfs::Off) {
+        && bestAvailableVfsMode() != Vfs::Off
+        && !folder->isVfsOnOffSwitchPending()) {
         ac = menu->addAction(tr("Enable virtual file support (experimental)..."));
         connect(ac, &QAction::triggered, this, &AccountSettings::slotEnableVfsCurrentFolder);
     }
@@ -545,27 +546,43 @@ void AccountSettings::slotEnableVfsCurrentFolder()
         if (!enable || !folder)
             return;
 
-        qCInfo(lcAccountSettings) << "Enabling vfs support for folder" << folder->path();
+        // It is unsafe to switch on vfs while a sync is running - wait if necessary.
+        auto connection = std::make_shared<QMetaObject::Connection>();
+        auto switchVfsOn = [folder, connection, this]() {
+            if (*connection)
+                QObject::disconnect(*connection);
 
-        // Wipe selective sync blacklist
-        bool ok = false;
-        auto oldBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
-        for (const auto &entry : oldBlacklist) {
-            folder->journalDb()->avoidReadFromDbOnNextSync(entry);
+            qCInfo(lcAccountSettings) << "Enabling vfs support for folder" << folder->path();
+
+            // Wipe selective sync blacklist
+            bool ok = false;
+            auto oldBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+            folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
+            for (const auto &entry : oldBlacklist) {
+                folder->journalDb()->avoidReadFromDbOnNextSync(entry);
+            }
+
+            // Change the folder vfs mode and load the plugin
+            folder->setSupportsVirtualFiles(true);
+            folder->setVfsOnOffSwitchPending(false);
+
+            // Wipe pin states to be sure
+            folder->journalDb()->wipePinStateForPathAndBelow("");
+            folder->journalDb()->setPinStateForPath("", PinState::OnlineOnly);
+
+            FolderMan::instance()->scheduleFolder(folder);
+
+            ui->_folderList->doItemsLayout();
+        };
+
+        if (folder->isSyncRunning()) {
+            *connection = connect(folder, &Folder::syncFinished, this, switchVfsOn);
+            folder->setVfsOnOffSwitchPending(true);
+            folder->slotTerminateSync();
+            ui->_folderList->doItemsLayout();
+        } else {
+            switchVfsOn();
         }
-
-        // Change the folder vfs mode and load the plugin
-        folder->setSupportsVirtualFiles(true);
-
-        // Wipe pin states to be sure
-        folder->journalDb()->wipePinStateForPathAndBelow("");
-        folder->journalDb()->setPinStateForPath("", PinState::OnlineOnly);
-
-        FolderMan::instance()->scheduleFolder(folder);
-
-        // Update the ui: no selective sync, vfs indicator; size changed
-        ui->_folderList->doItemsLayout();
     });
 }
 
@@ -584,7 +601,9 @@ void AccountSettings::slotDisableVfsCurrentFolder()
            "are currently marked as 'available online only' will be downloaded."
            "\n\n"
            "The only advantage of disabling virtual file support is that the selective sync feature "
-           "will become available again."));
+           "will become available again."
+           "\n\n"
+           "This action will abort any currently running synchronization."));
     msgBox->addButton(tr("Disable support"), QMessageBox::AcceptRole);
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
     connect(msgBox, &QMessageBox::finished, msgBox, [this, msgBox, folder](int result) {
@@ -592,20 +611,36 @@ void AccountSettings::slotDisableVfsCurrentFolder()
         if (result != QMessageBox::AcceptRole || !folder)
             return;
 
-        qCInfo(lcAccountSettings) << "Disabling vfs support for folder" << folder->path();
+        // It is unsafe to switch off vfs while a sync is running - wait if necessary.
+        auto connection = std::make_shared<QMetaObject::Connection>();
+        auto switchVfsOff = [folder, connection, this]() {
+            if (*connection)
+                QObject::disconnect(*connection);
 
-        // Also wipes virtual files, schedules remote discovery
-        folder->setSupportsVirtualFiles(false);
+            qCInfo(lcAccountSettings) << "Disabling vfs support for folder" << folder->path();
 
-        // Wipe pin states and selective sync db
-        folder->journalDb()->wipePinStateForPathAndBelow("");
-        folder->journalDb()->setPinStateForPath("", PinState::AlwaysLocal);
-        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
+            // Also wipes virtual files, schedules remote discovery
+            folder->setSupportsVirtualFiles(false);
+            folder->setVfsOnOffSwitchPending(false);
 
-        FolderMan::instance()->scheduleFolder(folder);
+            // Wipe pin states and selective sync db
+            folder->journalDb()->wipePinStateForPathAndBelow("");
+            folder->journalDb()->setPinStateForPath("", PinState::AlwaysLocal);
+            folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
 
-        // Update the ui: no selective sync, vfs indicator; size changed
-        ui->_folderList->doItemsLayout();
+            FolderMan::instance()->scheduleFolder(folder);
+
+            ui->_folderList->doItemsLayout();
+        };
+
+        if (folder->isSyncRunning()) {
+            *connection = connect(folder, &Folder::syncFinished, this, switchVfsOff);
+            folder->setVfsOnOffSwitchPending(true);
+            folder->slotTerminateSync();
+            ui->_folderList->doItemsLayout();
+        } else {
+            switchVfsOff();
+        }
     });
     msgBox->open();
 }
