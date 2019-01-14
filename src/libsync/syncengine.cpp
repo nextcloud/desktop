@@ -617,7 +617,7 @@ void SyncEngine::slotStartDiscovery()
         syncError(errorString);
         finalize(false);
     });
-    connect(_discoveryPhase.data(), &DiscoveryPhase::finished, this, &SyncEngine::slotDiscoveryJobFinished);
+    connect(_discoveryPhase.data(), &DiscoveryPhase::finished, this, &SyncEngine::slotDiscoveryFinished);
 
     auto discoveryJob = new ProcessDirectoryJob(SyncFileItemPtr(), ProcessDirectoryJob::NormalQuery, ProcessDirectoryJob::NormalQuery,
         _discoveryPhase.data(), _discoveryPhase.data());
@@ -660,7 +660,7 @@ void SyncEngine::slotNewItem(const SyncFileItemPtr &item)
     _progressInfo->adjustTotalsForFile(*item);
 }
 
-void SyncEngine::slotDiscoveryJobFinished()
+void SyncEngine::slotDiscoveryFinished()
 {
     if (!_discoveryPhase) {
         // There was an error that was already taken care of
@@ -749,7 +749,7 @@ void SyncEngine::slotDiscoveryJobFinished()
         this, &SyncEngine::slotItemCompleted);
     connect(_propagator.data(), &OwncloudPropagator::progress,
         this, &SyncEngine::slotProgress);
-    connect(_propagator.data(), &OwncloudPropagator::finished, this, &SyncEngine::slotFinished, Qt::QueuedConnection);
+    connect(_propagator.data(), &OwncloudPropagator::finished, this, &SyncEngine::slotPropagationFinished, Qt::QueuedConnection);
     connect(_propagator.data(), &OwncloudPropagator::seenLockedFile, this, &SyncEngine::seenLockedFile);
     connect(_propagator.data(), &OwncloudPropagator::touchedFile, this, &SyncEngine::slotAddTouchedFile);
     connect(_propagator.data(), &OwncloudPropagator::insufficientLocalStorage, this, &SyncEngine::slotInsufficientLocalStorage);
@@ -811,7 +811,7 @@ void SyncEngine::slotItemCompleted(const SyncFileItemPtr &item)
     emit itemCompleted(item);
 }
 
-void SyncEngine::slotFinished(bool success)
+void SyncEngine::slotPropagationFinished(bool success)
 {
     if (_propagator->_anotherSyncNeeded && _anotherSyncNeeded == NoFollowUpSync) {
         _anotherSyncNeeded = ImmediateFollowUp;
