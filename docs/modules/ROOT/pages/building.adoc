@@ -93,8 +93,6 @@ To set up your build environment for development using http://mxcl.github.com/ho
 . Add the ownCloud repository using the command `brew tap owncloud/owncloud`
 . Install a Qt5 version, ideally from from 5.10.1, using the command `brew install qt5`.
 . Install any missing dependencies, using the command: `brew install $(brew deps owncloud-client)`.
-
-[start=7]
 . Install qtkeychain by running `git clone https://github.com/frankosterfeld/qtkeychain.git`. Make sure you make the
 same install prefix as later while building the client e.g., `-DCMAKE_INSTALL_PREFIX=/Path/to/client/../install`.
 . For compilation of the client, follow the xref:generic-build-instructions[generic build instructions].
