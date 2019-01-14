@@ -65,6 +65,8 @@ private:
     void startSpinner();
     void stopSpinner();
     QUrl serverUrl() const;
+    qint64 availableLocalSpace() const;
+    QString checkLocalSpace(qint64 remoteSize) const;
 
     Ui_OwncloudAdvancedSetupPage _ui;
     bool _checking;
@@ -73,6 +75,8 @@ private:
     QProgressIndicator *_progressIndi;
     QString _remoteFolder;
     QStringList _selectiveSyncBlacklist;
+    qint64 _rSize;
+    qint64 _rSelectedSize;
 };
 
 } // namespace OCC

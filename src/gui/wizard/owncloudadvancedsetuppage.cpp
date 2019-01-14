@@ -17,6 +17,7 @@
 #include <QFileDialog>
 #include <QUrl>
 #include <QTimer>
+#include <QStorageInfo>
 
 #include "QProgressIndicator.h"
 
@@ -169,10 +170,21 @@ void OwncloudAdvancedSetupPage::updateStatus()
         _ui.resolutionWidget->setVisible(false);
     }
 
+    QString lfreeSpaceStr = Utility::octetsToString(availableLocalSpace());
+    _ui.lFreeSpace->setText(QString(tr("Free space: %1")).arg(lfreeSpaceStr));
+
     _ui.syncModeLabel->setText(t);
     _ui.syncModeLabel->setFixedHeight(_ui.syncModeLabel->sizeHint().height());
     wizard()->resize(wizard()->sizeHint());
+
+    qint64 rSpace = _ui.rSyncEverything->isChecked() ? _rSize : _rSelectedSize;
+
+    QString spaceError = checkLocalSpace(rSpace);
+    if (!spaceError.isEmpty()) {
+        errorStr = spaceError;
+    }
     setErrorString(errorStr);
+
     emit completeChanged();
 }
 
@@ -288,6 +300,10 @@ void OwncloudAdvancedSetupPage::slotSelectFolder()
         wizard()->setProperty("localFolder", dir);
         updateStatus();
     }
+
+    qint64 rSpace = _ui.rSyncEverything->isChecked() ? _rSize : _rSelectedSize;
+    QString errorStr = checkLocalSpace(rSpace);
+    setErrorString(errorStr);
 }
 
 void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
@@ -322,6 +338,11 @@ void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
             auto s = dlg->estimatedSize();
             if (s > 0) {
                 _ui.lSelectiveSyncSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(s)));
+
+                _rSelectedSize = s;
+                QString errorStr = checkLocalSpace(_rSelectedSize);
+                setErrorString(errorStr);
+
             } else {
                 _ui.lSelectiveSyncSizeLabel->setText(QString());
             }
@@ -338,11 +359,30 @@ void OwncloudAdvancedSetupPage::slotSyncEverythingClicked()
     _ui.lSelectiveSyncSizeLabel->setText(QString());
     _ui.rSyncEverything->setChecked(true);
     _selectiveSyncBlacklist.clear();
+
+    QString errorStr = checkLocalSpace(_rSize);
+    setErrorString(errorStr);
 }
 
 void OwncloudAdvancedSetupPage::slotQuotaRetrieved(const QVariantMap &result)
 {
-    _ui.lSyncEverythingSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(result["size"].toDouble())));
+    _rSize = result["size"].toDouble();
+    _ui.lSyncEverythingSizeLabel->setText(tr("(%1)").arg(Utility::octetsToString(_rSize)));
+}
+
+qint64 OwncloudAdvancedSetupPage::availableLocalSpace() const
+{
+    QString localDir = localFolder();
+    QString path = !QDir(localDir).exists() && localDir.contains(QDir::homePath()) ?
+                QDir::homePath() : localDir;
+    QStorageInfo storage(QDir::toNativeSeparators(path));
+
+    return storage.bytesAvailable();
+}
+
+QString OwncloudAdvancedSetupPage::checkLocalSpace(qint64 remoteSize) const
+{
+    return (availableLocalSpace()>remoteSize) ? QString() : tr("There is no enough free space in the local folder!");
 }
 
 } // namespace OCC
