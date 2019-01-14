@@ -848,7 +848,7 @@ Se decide eliminar os ficheiros, non poderá dispor deles a non ser que sexa o p
     <message>
         <location filename="../src/gui/folder.cpp" line="1084"/>
         <source>Keep local files</source>
-        <translation>Manter os ficheiros locales</translation>
+        <translation>Manter os ficheiros locais</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1076"/>
@@ -882,7 +882,7 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
     <message>
         <location filename="../src/gui/folder.cpp" line="1110"/>
         <source>Keep Local Files as Conflict</source>
-        <translation>Mantener os ficheiros locales en caso de conflito</translation>
+        <translation>Mantener os ficheiros locais en caso de conflito</translation>
     </message>
 </context>
 <context>

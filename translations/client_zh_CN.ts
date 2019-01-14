@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="107"/>
         <source>%1 (%2, %3)</source>
-        <translation>%1 (%2, %3)</translation>
+        <translation>%1（%2，%3）</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
@@ -368,7 +368,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1139"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;你确定要删除账号的连接？ &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; 这 &lt;b&gt;不会&lt;/b&gt; 删除任何文件&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;你确定要删除账号&lt;i&gt;%1&lt;/i&gt;的连接？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意：&lt;/b&gt; 这 &lt;b&gt;不会&lt;/b&gt; 删除任何文件。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1145"/>
@@ -400,12 +400,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="726"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;你确定要停止文件夹同步？ &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; 这 &lt;b&gt;不会&lt;/b&gt; 删除任何文件&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;你确定要停止文件夹&lt;i&gt;%1&lt;/i&gt;同步？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意：&lt;/b&gt; 这 &lt;b&gt;不会&lt;/b&gt; 删除任何文件。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="891"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>%1 (%3%) of %2 使用中。一些文件夹，例如网络挂载的和共享的文件夹，可能有不同的限制。</translation>
+        <translation>%1 （%3%） of %2 使用中。一些文件夹，例如网络挂载的和共享的文件夹，可能有不同的限制。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="892"/>
@@ -547,7 +547,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12) :</source>
-        <translation>证书与密匙 (pkcs12)：</translation>
+        <translation>证书与密匙（pkcs12）：</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="51"/>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation>证书文件 (*.p12 *.pfx)</translation>
+        <translation>证书文件（*.p12 *.pfx）</translation>
     </message>
 </context>
 <context>
@@ -892,12 +892,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1023"/>
         <source> (backup)</source>
-        <translation> (备份)</translation>
+        <translation>（备份）</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1028"/>
         <source> (backup %1)</source>
-        <translation> (备份 %1)</translation>
+        <translation>（备份 %1）</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1206"/>
@@ -947,7 +947,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1240"/>
         <source>%1 (Sync is paused)</source>
-        <translation>%1 (同步已暂停)</translation>
+        <translation>%1（同步已暂停）</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1248"/>
@@ -1015,7 +1015,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="157"/>
         <source>%1 (%2)</source>
         <extracomment>Example text: &quot;File.txt (23KB)&quot;</extracomment>
-        <translation>%1 (%2)</translation>
+        <translation>%1（%2）</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="186"/>
@@ -1102,7 +1102,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
-        <translation>%1 %2 (%3 / %4)</translation>
+        <translation>%1 %2（%3 / %4）</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1020"/>
@@ -1114,7 +1114,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1039"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>剩余: %5，%1 / %2, 文件数量 %3 / %4</translation>
+        <translation>剩余：%5，%1 / %2, 文件数量 %3 / %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1047"/>
@@ -1135,7 +1135,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
         <source>Waiting for %n other folder(s)...</source>
-        <translation><numerusform>等待 %n 个其他文件(文件夹)</numerusform></translation>
+        <translation><numerusform>等待 %n 个其他文件（文件夹）</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1108"/>
@@ -1212,7 +1212,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="236"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation>列表失败。错误: %1</translation>
+        <translation>列表失败。错误：%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="317"/>
@@ -1388,7 +1388,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation>获取密钥链失败，错误: &apos;%1&apos;</translation>
+        <translation>获取密钥链失败，错误：&apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
@@ -1513,7 +1513,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="30"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;根据 GNU 通用公共许可证 (GPL) 2.0 版或任何更高版本授权。&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;根据 GNU 通用公共许可证（GPL）2.0 版或任何更高版本授权。&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1740,7 +1740,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="112"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>服务器返回错误:&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>服务器返回错误：&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
@@ -1891,7 +1891,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation>以未加密 HTTP 方式重试 (不安全)</translation>
+        <translation>以未加密 HTTP 方式重试（不安全）</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
@@ -2004,7 +2004,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="250"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>&lt;font color=&quot;green&quot;&gt;成功连接到 %1：%2 版本 %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>&lt;font color=&quot;green&quot;&gt;成功连接到 %1：%2 版本 %3（%4）&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="280"/>
@@ -2267,7 +2267,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="170"/>
         <source>could not delete file %1, error: %2</source>
-        <translation>不能删除文件 %1, 错误: %2</translation>
+        <translation>不能删除文件 %1，错误：%2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="185"/>
@@ -2378,7 +2378,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="334"/>
         <source>File Removed (start upload) %1</source>
-        <translation>文件已删除 (开始上传) %1</translation>
+        <translation>文件已删除（开始上传）%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="684"/>
@@ -2434,7 +2434,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="265"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation>服务器未确认上一分块。(找不到 E-tag)</translation>
+        <translation>服务器未确认上一分块。（找不到 E-tag）</translation>
     </message>
 </context>
 <context>
@@ -2695,7 +2695,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="460"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;你真的想删除公开共享链接 &lt;i&gt;%1&lt;/i&gt;？注意: 此操作无法撤销.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;你真的想删除公开共享链接 &lt;i&gt;%1&lt;/i&gt;？注意：此操作无法撤销。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="467"/>
@@ -2872,12 +2872,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="92"/>
         <source>Organization (O):</source>
-        <translation>组织 (O)：</translation>
+        <translation>组织（O）：</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="93"/>
         <source>Organizational Unit (OU):</source>
-        <translation>单位 (OU)：</translation>
+        <translation>单位（OU）：</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="94"/>
@@ -2937,7 +2937,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="136"/>
         <source>%1 (self-signed)</source>
-        <translation>%1 (自签署)</translation>
+        <translation>%1（自签署）</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="138"/>
@@ -2989,7 +2989,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="132"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
-        <translation>无法安全连接到 &lt;i&gt;%1&lt;/i&gt;: </translation>
+        <translation>无法安全连接到 &lt;i&gt;%1&lt;/i&gt;：</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="166"/>
@@ -3019,17 +3019,17 @@ It is not advisable to use it.</source>
         <location filename="../src/gui/sslerrordialog.cpp" line="182"/>
         <location filename="../src/gui/sslerrordialog.cpp" line="202"/>
         <source>Country: %1</source>
-        <translation>国家: %1</translation>
+        <translation>国家：%1</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="189"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>MD5指纹: &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>MD5指纹：&lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="190"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>SHA1指纹: &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>SHA1指纹：&lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="192"/>
@@ -3326,7 +3326,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="54"/>
         <source>%1: %2</source>
-        <translation>%1: %2</translation>
+        <translation>%1：%2</translation>
     </message>
 </context>
 <context>
@@ -3334,7 +3334,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="336"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;版本 %1。详情请见 &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;版本 %1。详情请见 &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="341"/>
@@ -3365,7 +3365,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="348"/>
         <source>Folder %1: %2</source>
-        <translation>文件夹 %1: %2</translation>
+        <translation>文件夹 %1：%2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="366"/>
@@ -3460,12 +3460,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="286"/>
         <source>Disconnected from accounts:</source>
-        <translation>已断开账户: </translation>
+        <translation>已断开账户：</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="288"/>
         <source>Account %1: %2</source>
-        <translation>账户 %1: %2</translation>
+        <translation>账户 %1：%2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="303"/>
@@ -3531,7 +3531,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="781"/>
         <source>New account...</source>
-        <translation>新账号……</translation>
+        <translation>新账号…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="794"/>
@@ -3562,7 +3562,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="938"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation>同步 %2 中的 %1 (剩余 %3)</translation>
+        <translation>同步 %2 中的 %1（剩余 %3）</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="943"/>
@@ -3572,7 +3572,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="952"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation>同步 %1 (剩余 %2)</translation>
+        <translation>同步 %1（剩余 %2）</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="955"/>
@@ -3582,7 +3582,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="973"/>
         <source>%1 (%2, %3)</source>
-        <translation>%1 (%2, %3)</translation>
+        <translation>%1（%2, %3）</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="358"/>
@@ -3621,12 +3621,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="206"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation>开始全新同步 (将清空本地文件夹！)</translation>
+        <translation>开始全新同步（将清空本地文件夹！）</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="301"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation>询问确认，若同步 (^z) 文件夹大于</translation>
+        <translation>询问确认，若同步文件夹大于</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="318"/>
@@ -3742,7 +3742,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="288"/>
         <source>Ser&amp;ver Address</source>
-        <translation>服务器地址 (&amp;v)</translation>
+        <translation>服务器地址</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="304"/>
@@ -3835,7 +3835,7 @@ It is not advisable to use it.</source>
         <location filename="../src/libsync/syncresult.cpp" line="145"/>
         <source>%1: %2</source>
         <extracomment>this displays an error string (%2) for a file %1</extracomment>
-        <translation>%1: %2</translation>
+        <translation>%1：%2</translation>
     </message>
 </context>
 <context>
