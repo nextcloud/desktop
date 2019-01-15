@@ -71,8 +71,6 @@ signals:
     void determineAuthType(const QString &);
 
 private:
-    bool urlHasChanged();
-
     Ui_OwncloudSetupPage _ui;
 
     QString _oCUrl;

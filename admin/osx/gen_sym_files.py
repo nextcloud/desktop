@@ -13,6 +13,7 @@ if len(sys.argv) < 4:
 
 dump_symsPath = sys.argv[1]
 bundlePath = sys.argv[2]
+dsymsPath = os.path.realpath(os.path.join(bundlePath, '..', os.path.basename(bundlePath)+'_symbols'))
 outPath = sys.argv[3]
 macOsDir = os.path.join(bundlePath, 'Contents', 'MacOS')
 pluginsDir = os.path.join(bundlePath, 'Contents', 'PlugIns')
@@ -31,7 +32,7 @@ def extractDeps(macho):
         if m:
             path = resolvePath(m.group(0))
             if not os.path.exists(path):
-                logging.warning("Non-existant file found in dependencies, ignoring: [%s]", path)
+                logging.warning("Non-existant file found in dependencies of %s, ignoring: [%s]", macho, path)
                 continue
             deps.append(path)
     return deps
@@ -48,11 +49,26 @@ def findDeps():
             deps += extractDeps(path)
     return sorted(set(deps))
 
+def dumpSymsDSYMOptions(dep):
+    frameworkString = '.framework'
+    pos = dep.rfind(frameworkString)
+    dsymPath = dep + ".dSYM"
+    if pos > -1:
+      frameworkPath = dep[:pos+len(frameworkString)]
+      dsymPath = frameworkPath + ".dSYM"
+
+    dsymPath = os.path.join(dsymsPath, os.path.basename(dsymPath))
+    if os.path.exists(dsymPath):
+      return ['-g', dsymPath]
+
+    return []
+
 def dumpSyms(deps):
     for dep in deps:
         print("Generating symbols for [%s]" % dep)
         with open('temp.sym', 'w') as temp:
-            subprocess.check_call([dump_symsPath, dep], stdout=temp)
+            command = [dump_symsPath] + dumpSymsDSYMOptions(dep) + [dep]
+            subprocess.check_call(command, stdout=temp)
         with open('temp.sym', 'r') as temp:
             header = temp.readline()
             fields = header.split()

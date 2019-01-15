@@ -136,11 +136,23 @@ void OwncloudSetupWizard::slotCheckServer(const QString &urlString)
     }
     AccountPtr account = _ocWizard->account();
     account->setUrl(url);
+
     // Reset the proxy which might had been determined previously in ConnectionValidator::checkServerAndAuth()
     // when there was a previous account.
     account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::NoProxy));
+
     // And also reset the QSslConfiguration, for the same reason (#6832)
-    account->setSslConfiguration({});
+    // Here the client certificate is added, if any. Later it'll be in HttpCredentials
+    account->setSslConfiguration(QSslConfiguration());
+    auto sslConfiguration = account->getOrCreateSslConfig(); // let Account set defaults
+    if (!_ocWizard->_clientSslCertificate.isNull()) {
+        sslConfiguration.setLocalCertificate(_ocWizard->_clientSslCertificate);
+        sslConfiguration.setPrivateKey(_ocWizard->_clientSslKey);
+    }
+    account->setSslConfiguration(sslConfiguration);
+
+    // Make sure TCP connections get re-established
+    account->networkAccessManager()->clearAccessCache();
 
     // Lookup system proxy in a thread https://github.com/owncloud/client/issues/2993
     if (ClientProxy::isUsingSystemDefault()) {
