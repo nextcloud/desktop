@@ -238,22 +238,54 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readfile(csync_vio_handle_t *
     //    }
     //}
 
-	WIN32_FIND_DATA ffd;
-    DWORD rem;
-    HANDLE hFind = INVALID_HANDLE_VALUE;
-    DWORD dwError = 0;
-	TCHAR szName[MAX_PATH];
+	//WIN32_FIND_DATA ffd;
+ //   DWORD rem;
+ //   HANDLE hFind = INVALID_HANDLE_VALUE;
+ //   DWORD dwError = 0;
+	//TCHAR szName[MAX_PATH];
+ //   QByteArray fullPath(uri + "/" + key);
 
-	_tcscpy(szName, CA2T(key.constData()));
-    qDebug() << "** looking for " << szName;
+	//_tcscpy(szName, CA2T(fullPath.constData()));
+ //   qDebug() << "** looking for " << szName;
 
-	hFind = FindFirstFile(szName, &ffd);
-    if (hFind == INVALID_HANDLE_VALUE) {
-        printf("No file found!\n");
-        return nullptr;
-    } 
+	DWORD rem;
+	dhandle_t *handle = NULL;
+    mbchar_t *dirnameAndFile = NULL;
+    
+    handle = (dhandle_t *)c_malloc(sizeof(dhandle_t));
 
-    auto path = c_utf8_from_locale(ffd.cFileName);
+    //const char *fullPath = std::string(uri + std::string("/") + key.constData()).c_str();
+    int len_name = strlen(uri);
+    if (len_name) {
+        char *buffer = NULL;
+
+        // alloc an enough large buffer to take the name + '/*' + the closing zero.
+        buffer = (char *)c_malloc(len_name + 2 + key.size());
+        strncpy(buffer, uri, 1 + len_name);
+        strncat(buffer, "/", 1);
+        strncat(buffer, key.constData(), key.size());
+
+        dirnameAndFile = c_utf8_path_to_locale(buffer);
+        SAFE_FREE(buffer);
+    }
+
+    if (dirnameAndFile) {
+        handle->hFind = FindFirstFile(dirnameAndFile, &(handle->ffd));
+    }
+
+	if (!dirnameAndFile || handle->hFind == INVALID_HANDLE_VALUE) {
+        c_free_locale_string(dirnameAndFile);
+        int retcode = GetLastError();
+        if (retcode == ERROR_FILE_NOT_FOUND) {
+            errno = ENOENT;
+        } else {
+            errno = EACCES;
+        }
+        SAFE_FREE(handle);
+        return NULL;
+    }
+
+    auto path = c_utf8_from_locale(handle->ffd.cFileName);
 
   //  if (path != key) {
   //      qDebug() << "** looking for " << key;
@@ -265,10 +297,10 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readfile(csync_vio_handle_t *
         file_stat.reset(new csync_file_stat_t);
         file_stat->path = path;
 
-        if (ffd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
+        if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
             // Detect symlinks, and treat junctions as symlinks too.
-            if (ffd.dwReserved0 == IO_REPARSE_TAG_SYMLINK
-                || ffd.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT) {
+            if (handle->ffd.dwReserved0 == IO_REPARSE_TAG_SYMLINK
+                || handle->ffd.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT) {
                 file_stat->type = ItemTypeSoftLink;
             } else {
                 // The SIS and DEDUP reparse points should be treated as
@@ -276,23 +308,23 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readfile(csync_vio_handle_t *
                 // but will also treat them normally for now.
                 file_stat->type = ItemTypeFile;
             }
-        } else if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DEVICE
-            || ffd.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE
-            || ffd.dwFileAttributes & FILE_ATTRIBUTE_TEMPORARY) {
+        } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DEVICE
+            || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE
+            || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_TEMPORARY) {
             file_stat->type = ItemTypeSkip;
-        } else if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+        } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
             file_stat->type = ItemTypeDirectory;
         } else {
             file_stat->type = ItemTypeFile;
         }
 
         /* Check for the hidden flag */
-        if (ffd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) {
+        if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN) {
             file_stat->is_hidden = true;
         }
 
-        file_stat->size = (ffd.nFileSizeHigh * ((int64_t)(MAXDWORD) + 1)) + ffd.nFileSizeLow;
-        file_stat->modtime = FileTimeToUnixTime(&ffd.ftLastWriteTime, &rem);
+        file_stat->size = (handle->ffd.nFileSizeHigh * ((int64_t)(MAXDWORD) + 1)) + handle->ffd.nFileSizeLow;
+        file_stat->modtime = FileTimeToUnixTime(&handle->ffd.ftLastWriteTime, &rem);
 
         //std::string fullpath(uri);
         //fullpath.append("/");

@@ -353,11 +353,16 @@ bool cysnc_update_file(CSYNC *ctx, const char *uri, const QByteArray &key, csync
 
         ctx->current = LOCAL_REPLICA;
 		dh = csync_vio_opendir(ctx, uri);
+        qDebug() << "Trying to open " << uri;
+
         if(dh){
             newfile = csync_vio_readfile(dh, uri, key);
+            qDebug() << "new file key: " << key;
+
             if (newfile) {
             
 				newfile->instruction = instruction;
+                qDebug() << "new file created: " << newfile->path;
 
 				// csync_walker job
 

@@ -1635,14 +1635,20 @@ void SyncEngine::updateLocalFileTree(const QString &path, csync_instructions_e i
     if(!path.isEmpty()){
         if(!_csync_ctx.isNull()){
             _csync_ctx->fuseEnabled = true;
-            QByteArray localPath(_localPath.toLatin1());
-            QString fileKey = QFileInfo(path).fileName();
+
+            QString absolutePath = QFileInfo(path).absolutePath();
+            QString fileName = QFileInfo(path).fileName();
+
+            QByteArray localPath(absolutePath.toLatin1());
             if (localPath.endsWith("/"))
                 localPath.chop(1);
 
-            qDebug() << "About to add file to local file tree!" << localPath << path;
+			qDebug() << "path: " << path;
+            qDebug() << "absolutePath: " << absolutePath;
+            qDebug() << "fileName: " << fileName;
+            qDebug() << "Local Path: " << localPath;
 
-            if (cysnc_update_file(_csync_ctx.data(), localPath, path.toLatin1(), instruction)) {
+            if (cysnc_update_file(_csync_ctx.data(), localPath, fileName.toLatin1(), instruction)) {
                 qDebug() << "Added file to local file tree!" << localPath << path;
             }
         }
