@@ -42,8 +42,6 @@
 #include <errno.h>
 
 #ifdef __MINGW32__
-#define EDQUOT 0
-#define ENODATA 0
 #ifndef S_IRGRP
 #define S_IRGRP 0
 #endif
@@ -74,10 +72,6 @@
 #include <fcntl.h>
 #endif
 
-#ifndef ENODATA
-#define ENODATA EPIPE
-#endif
-
 
 #ifdef _WIN32
 typedef struct stat64 csync_stat_t;
@@ -88,10 +82,6 @@ typedef struct stat csync_stat_t;
 
 #ifndef O_NOATIME
 #define O_NOATIME 0
-#endif
-
-#ifndef ENODATA
-#define ENODATA EBADF
 #endif
 
 #if !defined(HAVE_ASPRINTF)

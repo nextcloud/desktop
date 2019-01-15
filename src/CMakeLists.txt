@@ -14,6 +14,7 @@ if(NOT TOKEN_AUTH_ONLY)
     find_package(Qt5Keychain REQUIRED)
 endif()
 
+# TODO: Mingw64 7.3 might also need to be excluded here as it seems to not automatically link libssp
 if(NOT MSVC)
   if(NOT (CMAKE_SYSTEM_PROCESSOR MATCHES "^(alpha|parisc|hppa)") AND NOT CMAKE_CROSSCOMPILING)
     if((CMAKE_CXX_COMPILER_ID MATCHES "GNU") AND (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.9))
