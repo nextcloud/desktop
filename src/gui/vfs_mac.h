@@ -554,7 +554,7 @@ public slots:
     void folderFileListFinish(OCC::DiscoveryDirectoryResult *dr);
 
     // To sync: notify syncing is done
-    void slotSyncFinish(const QString &path, bool status);
+    void slotSyncFinish();
 
 signals:
     void FuseFileSystemDidMount(QVariantMap userInfo);
@@ -564,9 +564,8 @@ signals:
 
     // To sync: propagate FUSE operations to the sync engine
     void openFile(const QString path);
-    void releaseFile(const QString path);
     void writeFile(const QString path);
-    void addToFileTree(const QString path);
+    void deleteFile(const QString path);
 };
 
 #endif

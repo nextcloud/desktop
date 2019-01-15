@@ -2604,13 +2604,8 @@ void ShowUsage() {
 	// clang-format on
 }
 
-void Vfs_windows::slotSyncFinish(const QString &path, bool status)
+void Vfs_windows::slotSyncFinish()
 {
-	//qDebug() << " openFileAtPath   void Vfs_windows::slotSyncFinish " << path;
-
-    Q_UNUSED(path);
-    Q_UNUSED(status);
-
     _mutex.lock();
     _syncCondition.wakeAll();
     _mutex.unlock();
@@ -2618,100 +2613,66 @@ void Vfs_windows::slotSyncFinish(const QString &path, bool status)
 
 void Vfs_windows::createFileAtPath(QString path, QVariantMap &error)
 {
-	qDebug() << " createFile: " << path;
-    //emit createFile(path);
+	qDebug() << "FUSE createFile: " << path;
+    emit createFile(path);
 }
 
 void Vfs_windows::moveFileAtPath(QString path, QString npath, QVariantMap &error)
 {
-	qDebug() << " moveFile from: " << path << " to: " << npath;
+	qDebug() << "FUSE moveFile from: " << path << " to: " << npath;
     //emit moveFile(path);
 }
 
 void Vfs_windows::createDirectoryAtPath(QString path, QVariantMap &error)
 {
-	qDebug() << " createDirectory: " << path;
+	qDebug() << "FUSE createDirectory: " << path;
     //emit createDirectory(path);
 }
 
 void Vfs_windows::moveDirectoryAtPath(QString path, QString npath, QVariantMap &error)
 {
-	qDebug() << " moveDirectory from: " << path << " to: " << npath;
+	qDebug() << "FUSE moveDirectory from: " << path << " to: " << npath;
     //emit moveDirectory(path);
 }
 
 
 void Vfs_windows::openFileAtPath(QString path, QVariantMap &error)
 {
-	qDebug() << " drive FS starting synchronization: " << path;
+	qDebug() << "FUSE openFileAtPath: " << path;
 
-	//if (toyDentro)
-		//return;
-
-//qDebug() << " drive FS starting synchronization: " << path;
-
-//qDebug() << Q_FUNC_INFO << " 1 path: " << path;
-    _mutex.lock();
-//toyDentro = 1;
-//qDebug() << Q_FUNC_INFO << " 2 path: " << path;
+	_mutex.lock();
     emit openFile(path);
-//qDebug() << Q_FUNC_INFO << " 3 path: " << path;
     _syncCondition.wait(&_mutex);
-//qDebug() << Q_FUNC_INFO << " 4 path: " << path;
-//toyDentro = 0;
     _mutex.unlock();
-/*qDebug() << Q_FUNC_INFO << " 5 path: " << path;
-
-qDebug() << " drive FS finish synchronization: " << path;
-qDebug() << " drive FS openFile: " << path;
-*/
+    
+	qDebug() << "FUSE END openFileAtPath: " << path;
 }
 
 void Vfs_windows::writeFileAtPath(QString path, QVariantMap &error)
 {
-
-qDebug() << " drive FS starting synchronization: " << path;
-
-qDebug() << Q_FUNC_INFO << " 1 path: " << path;
+	qDebug() << "FUSE writeFileAtPath: " << path;
 	_mutex.lock();
-qDebug() << Q_FUNC_INFO << " 2 path: " << path;
 	emit writeFile(path);
-qDebug() << Q_FUNC_INFO << " 3 path: " << path;
 	_syncCondition.wait(&_mutex);
-qDebug() << Q_FUNC_INFO << " 4 path: " << path;
 	_mutex.unlock();
-qDebug() << Q_FUNC_INFO << " 5 path: " << path;
 
-qDebug() << " drive FS finish synchronization: " << path;
-qDebug() << " drive FS writeFile: " << path;
+	qDebug() << "FUSE END writeFileAtPath: " << path;
 }
 
 void Vfs_windows::deleteFileAtPath(QString path, QVariantMap &error)
 {
-qDebug() << " drive FS starting synchronization: " << path;
-
-qDebug() << Q_FUNC_INFO << " 1 path: " << path;
-	_mutex.lock();
-qDebug() << Q_FUNC_INFO << " 2 path: " << path;
-	emit deleteFile(path);
-qDebug() << Q_FUNC_INFO << " 3 path: " << path;
-	_syncCondition.wait(&_mutex);
-qDebug() << Q_FUNC_INFO << " 4 path: " << path;
-	_mutex.unlock();
-qDebug() << Q_FUNC_INFO << " 5 path: " << path;
-
-qDebug() << " drive FS finish synchronization: " << path;
-qDebug() << " drive FS deleteFile: " << path;
+    qDebug() << "FUSE deleteFileAtPath: " << path;
 }
 
 void Vfs_windows::startDeleteDirectoryAtPath(QString path, QVariantMap &error)
 {
-    qDebug() << " path: " << path;
+    qDebug() << "FUSE startDeleteDirectoryAtPath: " << path;
 }
 
 void Vfs_windows::endDeleteDirectoryAtPath(QString path, QVariantMap &error)
 {
-    qDebug() << " path: " << path;
+	qDebug() << "FUSE endDeleteDirectoryAtPath: " << path;
+	emit deleteFile(path);
 }
 
 QStringList *Vfs_windows::contentsOfDirectoryAtPath(QString path, QVariantMap &error)

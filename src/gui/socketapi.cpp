@@ -834,8 +834,8 @@ void SocketApi::command_ONLINE_DOWNLOAD_MODE(const QString& path, SocketListener
     SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_ONLINE);
     
     //< Example
-    SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
-    SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
+    //SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+    //SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
 }
 
 //< Mac callback for ContextMenu Offline option
@@ -844,8 +844,8 @@ void SocketApi::command_OFFLINE_DOWNLOAD_MODE(const QString& path, SocketListene
     qDebug() << "\n" << Q_FUNC_INFO << "OFFLINE_DOWNLOAD_MODE";
     SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_OFFLINE);
     //< Example
-    SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
-    SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
+    //SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+    //SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
 }
 
 //< Windows callback for ContextMenu option

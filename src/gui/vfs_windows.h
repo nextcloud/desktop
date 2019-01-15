@@ -144,7 +144,7 @@ public slots:
 	void folderFileListFinish(OCC::DiscoveryDirectoryResult *dr);
 
 	// To sync: notify syncing is done
-    void slotSyncFinish(const QString &path, bool status);
+    void slotSyncFinish();
 };
 
 } // namespace OCC

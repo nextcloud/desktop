@@ -17,11 +17,8 @@ public:
     static SyncWrapper *instance();
     ~SyncWrapper() {}
 
-    bool syncDone(const QString path);
-    int initSyncMode(const QString path);
-
 public slots:
-    void updateSyncQueue(const QString path, bool syncing);
+    //void updateSyncQueue();
     void updateFileTree(const QString path);
 
     void createFileAtPath(const QString path);
@@ -36,21 +33,21 @@ public slots:
     void moveDirectoryAtPath(const QString path);
 
 signals:
-    void syncFinish(const QString &, bool);
-    void startSyncForFolder();
+    void syncFinish();
+	//void startSyncForFolder();
 
 private:
     SyncWrapper() {
-        connect(SyncJournalDb::instance(), &SyncJournalDb::syncStatusChanged, this, &SyncWrapper::updateSyncQueue, Qt::DirectConnection);
         connect(SyncJournalDb::instance(), &SyncJournalDb::syncStatusChanged, this, &SyncWrapper::syncFinish, Qt::DirectConnection);
-        connect(this, &SyncWrapper::startSyncForFolder, FolderMan::instance()->currentSyncFolder(), &Folder::startSync, Qt::DirectConnection);
+        //connect(SyncJournalDb::instance(), &SyncJournalDb::syncStatusChanged, this, &SyncWrapper::updateSyncQueue, Qt::DirectConnection);
+        //connect(this, &SyncWrapper::startSyncForFolder, FolderMan::instance()->currentSyncFolder(), &Folder::startSync, Qt::DirectConnection);
     }
 
     QString getRelativePath(QString path);
     bool shouldSync(const QString path);
-    void sync(const QString path, csync_instructions_e instruction = CSYNC_INSTRUCTION_SYNC);
+    void sync(const QString path, csync_instructions_e instruction = CSYNC_INSTRUCTION_NEW);
 
-    QMap<QString, bool> _syncDone;
+    //QMap<QString, bool> _syncDone;
 };
 }
 
