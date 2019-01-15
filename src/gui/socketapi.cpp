@@ -908,8 +908,11 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
     if (folder && folder->supportsVirtualFiles()) {
         bool hasAlwaysLocal = false;
         bool hasOnlineOnly = false;
+        bool hasHydratedOnlineOnly = false;
+        bool hasDehydratedOnlineOnly = false;
         for (const auto &file : files) {
-            auto path = FileData::get(file).folderRelativePathNoVfsSuffix();
+            auto fileData = FileData::get(file);
+            auto path = fileData.folderRelativePathNoVfsSuffix();
             auto pinState = folder->journalDb()->effectivePinStateForPath(path.toUtf8());
             if (!pinState) {
                 // db error
@@ -919,20 +922,52 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
                 hasAlwaysLocal = true;
             } else if (*pinState == PinState::OnlineOnly) {
                 hasOnlineOnly = true;
+                auto record = fileData.journalRecord();
+                if (record._type == ItemTypeFile)
+                    hasHydratedOnlineOnly = true;
+                if (record.isVirtualFile())
+                    hasDehydratedOnlineOnly = true;
             }
         }
 
+        auto makePinContextMenu = [listener](QString currentState, QString availableLocally, QString onlineOnly) {
+            listener->sendMessage(QLatin1String("MENU_ITEM:CURRENT_PIN:d:") + currentState);
+            if (!availableLocally.isEmpty())
+                listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_AVAILABLE_LOCALLY::") + availableLocally);
+            if (!onlineOnly.isEmpty())
+                listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_ONLINE_ONLY::") + onlineOnly);
+        };
+
         // TODO: Should be a submenu, should use menu item checkmarks where available, should use icons
-        if (hasAlwaysLocal && !hasOnlineOnly) {
-            listener->sendMessage(QLatin1String("MENU_ITEM:CURRENT_PIN:d:") + tr("Currently available locally"));
-            listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_ONLINE_ONLY::") + tr("Make available online only"));
-        } else if (hasOnlineOnly && !hasAlwaysLocal) {
-            listener->sendMessage(QLatin1String("MENU_ITEM:CURRENT_PIN:d:") + tr("Currently available online only"));
-            listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_AVAILABLE_LOCALLY::") + tr("Make available locally"));
-        } else if (hasOnlineOnly && hasAlwaysLocal) {
-            listener->sendMessage(QLatin1String("MENU_ITEM:CURRENT_PIN:d:") + tr("Current availability is mixed"));
-            listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_AVAILABLE_LOCALLY::") + tr("Make all available locally"));
-            listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_ONLINE_ONLY::") + tr("Make all available online only"));
+        if (hasAlwaysLocal) {
+            if (!hasOnlineOnly) {
+                makePinContextMenu(
+                    tr("Currently available locally"),
+                    QString(),
+                    tr("Make available online only"));
+            } else { // local + online
+                makePinContextMenu(
+                    tr("Current availability is mixed"),
+                    tr("Make all available locally"),
+                    tr("Make all available online only"));
+            }
+        } else if (hasOnlineOnly) {
+            if (hasDehydratedOnlineOnly && !hasHydratedOnlineOnly) {
+                makePinContextMenu(
+                    tr("Currently available online only"),
+                    tr("Make available locally"),
+                    QString());
+            } else if (hasHydratedOnlineOnly && !hasDehydratedOnlineOnly) {
+                makePinContextMenu(
+                    tr("Currently available, but marked online only"),
+                    tr("Make available locally"),
+                    tr("Make available online only"));
+            } else { // hydrated + dehydrated
+                makePinContextMenu(
+                    tr("Some currently available, all marked online only"),
+                    tr("Make available locally"),
+                    tr("Make available online only"));
+            }
         }
     }
 
