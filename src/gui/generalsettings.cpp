@@ -109,7 +109,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
 #endif
     }
 
-    _ui->versionLabel->setText("<a href='about'>" MIRALL_VERSION_STRING "</a>");
+    _ui->versionLabel->setText(QStringLiteral("<a href='%1'>%1</a>").arg(MIRALL_VERSION_STRING));
     QObject::connect(_ui->versionLabel, &QLabel::linkActivated, this, &GeneralSettings::showAbout);
 
     if (!theme->aboutShowCopyright()) {
