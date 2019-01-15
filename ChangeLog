@@ -1,11 +1,11 @@
 ChangeLog
 =========
 
-version 2.5.2 (2019-02-??)
+version 2.5.2 (2019-01-??)
 * Crash fix: On OSX when opening settings dialog (#6930)
 * Crash fix: When deleting an account (#6893)
 * Crash fix: During password dialog
-* Sqlite: Update version to 3.26.0 for OSX and Windows
+* SyncJournalDB: Change sqlite3 locking_mode to "exclusive" (#6881)
 * Wizard: Fix setting up accounts with SSL client certs (#6911)
 * Sync: Fix duplicate slashes in destination of MOVE operation (#6904)
 * Sync: Fix file unlocking triggering too many syncs (#6822)
@@ -14,6 +14,8 @@ version 2.5.2 (2019-02-??)
 * GUI: Ctrl-L and Cmd-L open the log window (F12 is sometimes taken)
 * Vfs: Fix problem with dehydrating a file on OSX (#6844)
 * Vfs: Do not show settings window when opening a virtual file (#6764)
+* Settings: Fix lookup of system override settings (e.g. from HKEY_LOCAL_MACHINE)
+* macOS: New "make macdeployqt" target instead of deploying Qt on "make install"
 
 version 2.5.1 (2018-11-09)
 * OAuth2: Refresh the token without aborting the sync (#6814)
