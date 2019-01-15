@@ -153,7 +153,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="357"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>为了保护你的加密身份，我们用 12 个助记词对其进行了加密。请将它们抄下来并妥善保管。在你向账户添加其他设备（手机或笔记本电脑）时需要用到。</translation>
+        <translation>为了保护您的加密身份，我们用 12 个助记词对其进行了加密。请将它们抄下来并妥善保管。在您向账户添加其他设备（手机或笔记本电脑）时需要用到。</translation>
     </message>
 </context>
 <context>
@@ -368,7 +368,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1139"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;你确定要删除账号&lt;i&gt;%1&lt;/i&gt;的连接？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意：&lt;/b&gt; 这 &lt;b&gt;不会&lt;/b&gt; 删除任何文件。&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;您确定要删除账号&lt;i&gt;%1&lt;/i&gt;的连接？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意：&lt;/b&gt; 这 &lt;b&gt;不会&lt;/b&gt; 删除任何文件。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1145"/>
@@ -400,7 +400,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="726"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;你确定要停止文件夹&lt;i&gt;%1&lt;/i&gt;同步？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意：&lt;/b&gt; 这 &lt;b&gt;不会&lt;/b&gt; 删除任何文件。&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;您确定要停止文件夹&lt;i&gt;%1&lt;/i&gt;同步？&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意：&lt;/b&gt; 这 &lt;b&gt;不会&lt;/b&gt; 删除任何文件。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="891"/>
@@ -603,12 +603,12 @@
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;User:</source>
-        <translation>用户名 (&amp;U)：</translation>
+        <translation>&amp;用户名：</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="38"/>
         <source>&amp;Password:</source>
-        <translation>密码 (&amp;P)：</translation>
+        <translation>&amp;密码：</translation>
     </message>
 </context>
 <context>
@@ -962,7 +962,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1262"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>你没有写入所选文件夹的权限！</translation>
+        <translation>您没有写入所选文件夹的权限！</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1318"/>
@@ -1120,7 +1120,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1047"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>%1 of %2, file %3 of %4</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1054"/>
@@ -1227,7 +1227,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="449"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>你已经在同步 &lt;i&gt;%1&lt;/i&gt;，&lt;i&gt;%2&lt;/i&gt; 是它的一个子文件夹。</translation>
+        <translation>您已经在同步 &lt;i&gt;%1&lt;/i&gt;，&lt;i&gt;%2&lt;/i&gt; 是它的一个子文件夹。</translation>
     </message>
 </context>
 <context>
@@ -1353,7 +1353,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="124"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>重启并更新 (&amp;R)</translation>
+        <translation>重启并更新</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="49"/>
@@ -1531,7 +1531,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="78"/>
         <source>&amp;Find</source>
-        <translation>查找 (&amp;F)</translation>
+        <translation>&amp;查找</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
@@ -1563,7 +1563,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="122"/>
         <source>S&amp;ave</source>
-        <translation>保存 (&amp;S)</translation>
+        <translation>保存</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="123"/>
@@ -1765,7 +1765,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="131"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;错误的用户&lt;/h1&gt;&lt;p&gt;你必须登录用户&lt;em&gt;%2&lt;/em&gt;，但你登录了用户&lt;em&gt;%1&lt;/em&gt;。&lt;br&gt;请在另一个标签中注销%3，然后&lt;a href=&apos;%4&apos;&gt;点击这里&lt;/a&gt;登录用户%2&lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;错误的用户&lt;/h1&gt;&lt;p&gt;您必须登录用户&lt;em&gt;%2&lt;/em&gt;，但您登录了用户&lt;em&gt;%1&lt;/em&gt;。&lt;br&gt;请在另一个标签中注销%3，然后&lt;a href=&apos;%4&apos;&gt;点击这里&lt;/a&gt;登录用户%2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1784,7 +1784,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation>正在下载版本 %1，请稍候（“稍后”和“稍候”请分清楚，OK？）...</translation>
+        <translation>正在下载版本 %1，请稍候...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
@@ -1830,45 +1830,55 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::OwncloudAdvancedSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="48"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="49"/>
         <source>Connect to %1</source>
         <translation>连接到 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="49"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="50"/>
         <source>Setup local folder options</source>
         <translation>设置本地文件夹</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="58"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="59"/>
         <source>Connect...</source>
         <translation>连接...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="156"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="157"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
         <translation>%1 文件夹 &apos;%2&apos; 将被同步到本地文件夹 &apos;%3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="159"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="160"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>同步文件夹 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="164"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="165"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;警告：&lt;/strong&gt; 本地目录非空。选择一个操作！&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="285"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="174"/>
+        <source>Free space: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="297"/>
         <source>Local Sync Folder</source>
         <translation>本地同步文件夹</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="324"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="345"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="340"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="370"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="385"/>
+        <source>There is no enough free space in the local folder!</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1955,7 +1965,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="83"/>
         <source>Keep your data secure and under your control</source>
-        <translation>保持你的数据安全可控</translation>
+        <translation>保持您的数据安全可控</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="84"/>
@@ -1981,12 +1991,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="184"/>
         <source>This url is secure. You can use it.</source>
-        <translation>此地址是安全的。您可以使用它</translation>
+        <translation>此地址是安全的。您可以使用它。</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="223"/>
         <source>&amp;Next &gt;</source>
-        <translation>下一步 (&amp;N) &gt;</translation>
+        <translation>&amp;下一步 &gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="281"/>
@@ -2024,7 +2034,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="385"/>
         <source>The authenticated request to the server was redirected to &apos;%1&apos;. The URL is bad, the server is misconfigured.</source>
-        <translation>被发送到服务器的认证请求被重定向到&apos;%1&apos;。此URL无效，服务器配置错误。</translation>
+        <translation>被发送到服务器的认证请求被重定向到&apos;%1&apos;。此 URL 无效，服务器配置错误。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="407"/>
@@ -2131,7 +2141,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="571"/>
         <source>Connection to %1 could not be established. Please check again.</source>
-        <translation>无法建立到 %1的链接，请稍后重试（这里“稍后”用对了，赞！）。</translation>
+        <translation>无法建立到 %1 的链接，请稍后重试。</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="585"/>
@@ -2406,12 +2416,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="455"/>
         <source>Missing File ID from server</source>
-        <translation>服务器端文件 ID缺失</translation>
+        <translation>服务器端文件 ID 缺失</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="469"/>
         <source>Missing ETag from server</source>
-        <translation>服务器端ETag缺失</translation>
+        <translation>服务器端 ETag 缺失</translation>
     </message>
 </context>
 <context>
@@ -2695,7 +2705,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="460"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;你真的想删除公开共享链接 &lt;i&gt;%1&lt;/i&gt;？注意：此操作无法撤销。&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;您真的想删除公开共享链接 &lt;i&gt;%1&lt;/i&gt;？注意：此操作无法撤销。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="467"/>
@@ -2774,7 +2784,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/shibbolethcredentials.cpp" line="259"/>
         <source>You must sign in as user %1</source>
-        <translation>你必须以用户&apos;%1&apos;身份登录</translation>
+        <translation>您必须以用户&apos;%1&apos;身份登录</translation>
     </message>
 </context>
 <context>
@@ -2787,7 +2797,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
         <source>SSL Chipher Debug View</source>
-        <translation>查看SSL加密调试信息</translation>
+        <translation>查看 SSL 加密调试信息</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
@@ -3024,12 +3034,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="189"/>
         <source>Fingerprint (MD5): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>MD5指纹：&lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>MD5 指纹：&lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="190"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>SHA1指纹：&lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation>SHA1 指纹：&lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="192"/>
@@ -3113,12 +3123,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1347"/>
         <source>Not allowed because you don&apos;t have permission to add parent folder</source>
-        <translation>你没有权限增加父目录</translation>
+        <translation>您没有权限增加父目录</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1354"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>你没有权限增加文件</translation>
+        <translation>您没有权限增加文件</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1687"/>
@@ -3274,7 +3284,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1332"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>你没有权限增加子目录</translation>
+        <translation>您没有权限增加子目录</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1379"/>
@@ -3599,73 +3609,74 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="32"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="81"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="134"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="253"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="358"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="388"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="414"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="100"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="205"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="235"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="294"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="386"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="395"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="421"/>
         <source>TextLabel</source>
         <translation>文本标签</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="91"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
         <source>Server</source>
         <translation>服务器</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="203"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="354"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;当该选项被勾选，当前目录的内容将被删除，并开始同步服务器内容。&lt;/p&gt;&lt;p&gt;如果本地内容要被上传到服务器，不要勾选该选项。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="206"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="357"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
         <translation>开始全新同步（将清空本地文件夹！）</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="301"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
         <translation>询问确认，若同步文件夹大于</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="318"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="165"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="327"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
-        <translation>在同步外部存储时，询问确认 (&amp;x)</translation>
+        <translation>在同步外部存储时，询问确认</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="351"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="198"/>
         <source>Choose what to sync</source>
         <translation>选择同步内容</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="150"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
         <source>&amp;Local Folder</source>
-        <translation>本地文件夹 (&amp;L)</translation>
+        <translation>本地文件夹</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="285"/>
         <source>pbSelectLocalFolder</source>
         <translation>pbSelectLocalFolder</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="193"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="344"/>
         <source>&amp;Keep local data</source>
-        <translation>保留本地数据 (&amp;K)</translation>
+        <translation>保留本地数据</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="243"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
         <source>S&amp;ync everything from server</source>
-        <translation>同步服务器的所有内容 (&amp;S)</translation>
+        <translation>同步服务器的所有内容</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="395"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="402"/>
         <source>Status message</source>
         <translation>状态信息</translation>
     </message>
@@ -3680,12 +3691,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="73"/>
         <source>&amp;Username</source>
-        <translation>用户名 (&amp;U)</translation>
+        <translation>用户名</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
         <source>&amp;Password</source>
-        <translation>密码 (&amp;P)</translation>
+        <translation>&amp;密码</translation>
     </message>
 </context>
 <context>
@@ -3727,7 +3738,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="66"/>
         <source>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Host your own server&lt;/span&gt;&lt;/a&gt;</source>
-        <translation>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;托管你自己的服务器&lt;/span&gt;&lt;/a&gt;</translation>
+        <translation>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;托管您自己的服务器&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="143"/>
@@ -3932,7 +3943,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/main.cpp" line="40"/>
         <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &apos;trayer&apos; and try again.</source>
-        <translation>%1 依赖于系统托盘程序。如果你在运行 XFCE，请按 &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;这个指南（英文）&lt;/a&gt; 来设置。否则，请安装一个系统托盘程序，比如 trayer，然后再试。</translation>
+        <translation>%1 依赖于系统托盘程序。如果您在运行 XFCE，请按 &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;这个指南&lt;/a&gt; 来设置。否则，请安装一个系统托盘程序，比如 trayer，然后再试。</translation>
     </message>
 </context>
 <context>
@@ -4106,7 +4117,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="59"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation>启动email客户端并创建新消息时发生错误。是不是没有设定默认的email客户端？</translation>
+        <translation>启动电子邮件客户端并创建新消息时发生错误。是不是没有设定默认的电子邮件客户端？</translation>
     </message>
 </context>
 </TS>

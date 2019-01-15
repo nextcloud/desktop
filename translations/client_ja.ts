@@ -1826,45 +1826,55 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::OwncloudAdvancedSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="48"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="49"/>
         <source>Connect to %1</source>
         <translation>%1 に接続中</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="49"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="50"/>
         <source>Setup local folder options</source>
         <translation>ローカルフォルダーのオプションのセットアップ</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="58"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="59"/>
         <source>Connect...</source>
         <translation>接続...</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="156"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="157"/>
         <source>%1 folder &apos;%2&apos; is synced to local folder &apos;%3&apos;</source>
         <translation>%1 フォルダー &apos;%2&apos; はローカルフォルダー &apos;%3&apos; と同期しています</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="159"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="160"/>
         <source>Sync the folder &apos;%1&apos;</source>
         <translation>&apos;%1&apos; フォルダーを同期</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="164"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="165"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;警告:&lt;/strong&gt; ローカルフォルダーは空ではありません。解決方法を選択してください！&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="285"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="174"/>
+        <source>Free space: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="297"/>
         <source>Local Sync Folder</source>
         <translation>ローカル同期フォルダー</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="324"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="345"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="340"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="370"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="385"/>
+        <source>There is no enough free space in the local folder!</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3595,73 +3605,74 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="32"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="81"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="134"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="253"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="358"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="388"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="414"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="100"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="205"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="235"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="294"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="386"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="395"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="421"/>
         <source>TextLabel</source>
         <translation>テキストラベル</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="91"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
         <source>Server</source>
         <translation>サーバー</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="203"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="354"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;チェックした場合、ローカルフォルダー内に存在するコンテンツはサーバーからクリーンな同期を開始するために削除されます。&lt;/p&gt;&lt;p&gt;もしローカルのコンテンツをサーバーのフォルダーにアップロードするなら、チェックしないでください。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="206"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="357"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
         <translation>クリーン同期を開始(ローカルフォルダーは削除されます！)(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="301"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
         <translation>指定された容量以上のフォルダーは同期前に確認する</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="318"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="165"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="327"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
         <translation>外部ストレージと同期する前に確認する(&amp;X)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="351"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="198"/>
         <source>Choose what to sync</source>
         <translation>同期フォルダーを選択</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="150"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="251"/>
         <source>&amp;Local Folder</source>
         <translation>ローカルフォルダー(&amp;L)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="285"/>
         <source>pbSelectLocalFolder</source>
         <translation>pbSelectLocalFolder</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="193"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="344"/>
         <source>&amp;Keep local data</source>
         <translation>ローカルデータを保持(&amp;K)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="243"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
         <source>S&amp;ync everything from server</source>
         <translation>サーバーからすべてのファイルを同期する(&amp;Y)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="395"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="402"/>
         <source>Status message</source>
         <translation>状態メッセージ</translation>
     </message>
