@@ -42,22 +42,23 @@ QString SyncWrapper::getRelativePath(QString path)
 
     if (localPath.startsWith('/'))
         localPath.remove(0, 1);
-	
+
     Folder *folderForPath = FolderMan::instance()->folderForPath(localPath);
 
-	QString folderRelativePath("");
+    QString folderRelativePath("");
     if (folderForPath)
         folderRelativePath = localPath.mid(folderForPath->cleanPath().length() + 1);
 
-	qDebug() << "Path: " << path;
+    qDebug() << "Path: " << path;
     qDebug() << "Folder Relative Path: " << folderRelativePath;
 
-	return folderRelativePath;
+    return folderRelativePath;
 }
 
-void SyncWrapper::updateSyncQueue(const QString path, bool syncing) {
-    _syncDone.insert(path, syncing);
-}
+//void SyncWrapper::updateSyncQueue(const QString path, bool syncing)
+//{
+//    _syncDone.insert(path, syncing);
+//}
 
 void SyncWrapper::updateFileTree(const QString path)
 {
@@ -91,7 +92,7 @@ void SyncWrapper::writeFileAtPath(const QString path)
 
 void SyncWrapper::openFileAtPath(const QString path)
 {
-    sync(path, CSYNC_INSTRUCTION_SYNC);
+    sync(path, CSYNC_INSTRUCTION_NEW);
 }
 
 void SyncWrapper::createDirectoryAtPath(const QString path)
@@ -104,46 +105,34 @@ void SyncWrapper::moveDirectoryAtPath(const QString path)
     sync(path, CSYNC_INSTRUCTION_NEW);
 }
 
-void SyncWrapper::sync(const QString path, csync_instructions_e instruction){
+void SyncWrapper::sync(const QString path, csync_instructions_e instruction)
+{
     int result = 1;
     QString folderRelativePath = getRelativePath(path);
     if (!folderRelativePath.isEmpty()) {
-        if (SyncJournalDb::instance()->getSyncMode(folderRelativePath) == SyncJournalDb::SyncMode::SYNCMODE_ONLINE) {
-            result = SyncJournalDb::instance()->setSyncMode(folderRelativePath, SyncJournalDb::SyncMode::SYNCMODE_OFFLINE);
-        } else if (SyncJournalDb::instance()->getSyncMode(folderRelativePath) == SyncJournalDb::SyncMode::SYNCMODE_NONE) {
-            result = SyncJournalDb::instance()->setSyncMode(folderRelativePath, SyncJournalDb::SyncMode::SYNCMODE_ONLINE);
-		}
+        SyncJournalDb::instance()->updateLastAccess(folderRelativePath);
+        if (shouldSync(folderRelativePath)) {
 
-		if(result == 0)
-			qCWarning(lcSyncWrapper) << "Couldn't change file SYNCMODE.";
+			//Prepare to sync
+            result = SyncJournalDb::instance()->setSyncModeDownload(folderRelativePath, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO);
+            if (result == 0)
+                qCWarning(lcSyncWrapper) << "Couldn't set file to SYNCMODE_DOWNLOADED_NO.";
 
-	   result = SyncJournalDb::instance()->setSyncModeDownload(folderRelativePath, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO);
-	   if(result == 0)
-			qCWarning(lcSyncWrapper) << "Couldn't set file to SYNCMODE_DOWNLOADED_NO.";
-
-	   if(result == 1){
-            FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(path, instruction);
-            _syncDone.insert(folderRelativePath, false);
-
-  		    //fix path
-
-			SyncJournalDb::instance()->updateLastAccess(folderRelativePath);
-
-			if (shouldSync(folderRelativePath)) {
-				//_folderMan->terminateSyncProcess();
+            if (result == 1) {
+                FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(path, instruction);
+                //_syncDone.insert(folderRelativePath, false);
 				FolderMan::instance()->scheduleFolder();
-				//_folderMan->scheduleFolderNext();
-				//emit startSyncForFolder();
-			} else {
-				emit syncFinish(folderRelativePath, true);
-			}
+            }
+        } else {
+            emit syncFinish();
 		}
-	 }
+    }
 }
 
-bool SyncWrapper::shouldSync(const QString path){
+bool SyncWrapper::shouldSync(const QString path)
+{
     // Checks sync mode
-    if (SyncJournalDb::instance()->getSyncMode(path) == SyncJournalDb::SyncMode::SYNCMODE_NONE)
+    if (SyncJournalDb::instance()->getSyncMode(path) != SyncJournalDb::SyncMode::SYNCMODE_OFFLINE)
         return false;
 
     // checks if file is cached
@@ -151,5 +140,4 @@ bool SyncWrapper::shouldSync(const QString path){
 
     return true;
 }
-
 }
