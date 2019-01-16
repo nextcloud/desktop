@@ -2613,66 +2613,55 @@ void Vfs_windows::slotSyncFinish()
 
 void Vfs_windows::createFileAtPath(QString path, QVariantMap &error)
 {
-	qDebug() << "FUSE createFile: " << path;
-    emit createFile(path);
+    emit addToFileTree(path);
 }
 
 void Vfs_windows::moveFileAtPath(QString path, QString npath, QVariantMap &error)
 {
-	qDebug() << "FUSE moveFile from: " << path << " to: " << npath;
-    //emit moveFile(path);
+    //TODO: remove old path
+	emit move(npath);
 }
 
 void Vfs_windows::createDirectoryAtPath(QString path, QVariantMap &error)
 {
-	qDebug() << "FUSE createDirectory: " << path;
-    //emit createDirectory(path);
+    emit addToFileTree(path);
 }
 
 void Vfs_windows::moveDirectoryAtPath(QString path, QString npath, QVariantMap &error)
 {
-	qDebug() << "FUSE moveDirectory from: " << path << " to: " << npath;
-    //emit moveDirectory(path);
+	//TODO remove old path
+    emit move(npath);
 }
 
 
 void Vfs_windows::openFileAtPath(QString path, QVariantMap &error)
 {
-	qDebug() << "FUSE openFileAtPath: " << path;
-
 	_mutex.lock();
     emit openFile(path);
     _syncCondition.wait(&_mutex);
     _mutex.unlock();
-    
-	qDebug() << "FUSE END openFileAtPath: " << path;
 }
 
 void Vfs_windows::writeFileAtPath(QString path, QVariantMap &error)
 {
-	qDebug() << "FUSE writeFileAtPath: " << path;
 	_mutex.lock();
 	emit writeFile(path);
 	_syncCondition.wait(&_mutex);
 	_mutex.unlock();
-
-	qDebug() << "FUSE END writeFileAtPath: " << path;
 }
 
 void Vfs_windows::deleteFileAtPath(QString path, QVariantMap &error)
 {
-    qDebug() << "FUSE deleteFileAtPath: " << path;
+    emit deleteItem(path);
 }
 
 void Vfs_windows::startDeleteDirectoryAtPath(QString path, QVariantMap &error)
 {
-    qDebug() << "FUSE startDeleteDirectoryAtPath: " << path;
 }
 
 void Vfs_windows::endDeleteDirectoryAtPath(QString path, QVariantMap &error)
 {
-	qDebug() << "FUSE endDeleteDirectoryAtPath: " << path;
-	emit deleteFile(path);
+	emit deleteItem(path);
 }
 
 QStringList *Vfs_windows::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
@@ -2726,6 +2715,7 @@ qDebug() << Q_FUNC_INFO << " rootPath: " << rootPath_;
 		}
            }
        }
+       emit addToFileTree(completePath);
         //qDebug() << Q_FUNC_INFO << "results: " << r->name << r->type;
    }
 	
@@ -2760,24 +2750,16 @@ Vfs_windows::Vfs_windows(AccountState *accountState_)
 	connect(this, &Vfs_windows::startRemoteFileListJob, _remotefileListJob, &OCC::DiscoveryFolderFileList::doGetFolderContent);
 	connect(_remotefileListJob, &OCC::DiscoveryFolderFileList::gotDataSignal, this, &Vfs_windows::folderFileListFinish);
 
-
 	// "talk" to the sync engine
     _syncWrapper = OCC::SyncWrapper::instance();
     connect(this, &Vfs_windows::addToFileTree, _syncWrapper, &OCC::SyncWrapper::updateFileTree, Qt::QueuedConnection);
     connect(_syncWrapper, &OCC::SyncWrapper::syncFinish, this, &Vfs_windows::slotSyncFinish, Qt::QueuedConnection);
 
-    connect(this, &Vfs_windows::createFile, _syncWrapper, &OCC::SyncWrapper::createFileAtPath, Qt::QueuedConnection);
-    connect(this, &Vfs_windows::deleteFile, _syncWrapper, &OCC::SyncWrapper::deleteFileAtPath, Qt::QueuedConnection);
-    connect(this, &Vfs_windows::moveFile, _syncWrapper, &OCC::SyncWrapper::moveFileAtPath, Qt::QueuedConnection);
-    connect(this, &Vfs_windows::openFile, _syncWrapper, &OCC::SyncWrapper::openFileAtPath, Qt::QueuedConnection);
-
-    connect(this, &Vfs_windows::releaseFile, _syncWrapper, &OCC::SyncWrapper::releaseFileAtPath, Qt::QueuedConnection);
+	connect(this, &Vfs_windows::openFile, _syncWrapper, &OCC::SyncWrapper::openFileAtPath, Qt::QueuedConnection);
     connect(this, &Vfs_windows::writeFile, _syncWrapper, &OCC::SyncWrapper::writeFileAtPath, Qt::QueuedConnection);
+    connect(this, &Vfs_windows::deleteItem, _syncWrapper, &OCC::SyncWrapper::deleteItemAtPath, Qt::QueuedConnection);
+    connect(this, &Vfs_windows::move, _syncWrapper, &OCC::SyncWrapper::moveItemAtPath, Qt::QueuedConnection);
     
-    connect(this, &Vfs_windows::createDirectory, _syncWrapper, &OCC::SyncWrapper::createDirectoryAtPath, Qt::QueuedConnection);
-    connect(this, &Vfs_windows::moveDirectory, _syncWrapper, &OCC::SyncWrapper::moveDirectoryAtPath, Qt::QueuedConnection);
-    
-
 //< Examples catch signals ...
 	/*connect(this, SIGNAL(getOperationCreateFile(QString, QString, QString)), SLOT(slotCatchOperationCreateFile(QString, QString, QString)));
 	connect(this, SIGNAL(getOperationCleanup(QString, QString, QString)), SLOT(slotCatchOperationCleanup(QString, QString, QString)));

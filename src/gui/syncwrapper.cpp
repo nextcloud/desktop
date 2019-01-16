@@ -62,20 +62,21 @@ QString SyncWrapper::getRelativePath(QString path)
 
 void SyncWrapper::updateFileTree(const QString path)
 {
-    FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(path, CSYNC_INSTRUCTION_SYNC);
+    if (SyncJournalDb::instance()->getSyncMode(getRelativePath(path)) != SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
+        SyncJournalDb::instance()->setSyncMode(getRelativePath(path), SyncJournalDb::SyncMode::SYNCMODE_ONLINE);
+		FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(path, CSYNC_INSTRUCTION_IGNORE);
+    } else {
+        FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(path, CSYNC_INSTRUCTION_NEW);
+	}
 }
 
-void SyncWrapper::createFileAtPath(const QString path)
+void SyncWrapper::openFileAtPath(const QString path)
 {
+	SyncJournalDb::instance()->updateLastAccess(getRelativePath(path));
     sync(path, CSYNC_INSTRUCTION_NEW);
 }
 
-void SyncWrapper::deleteFileAtPath(const QString path)
-{
-    sync(path, CSYNC_INSTRUCTION_NEW);
-}
-
-void SyncWrapper::moveFileAtPath(const QString path)
+void SyncWrapper::writeFileAtPath(const QString path)
 {
     sync(path, CSYNC_INSTRUCTION_NEW);
 }
@@ -85,22 +86,12 @@ void SyncWrapper::releaseFileAtPath(const QString path)
     sync(path, CSYNC_INSTRUCTION_NEW);
 }
 
-void SyncWrapper::writeFileAtPath(const QString path)
+void SyncWrapper::deleteItemAtPath(const QString path)
 {
     sync(path, CSYNC_INSTRUCTION_NEW);
 }
 
-void SyncWrapper::openFileAtPath(const QString path)
-{
-    sync(path, CSYNC_INSTRUCTION_NEW);
-}
-
-void SyncWrapper::createDirectoryAtPath(const QString path)
-{
-    sync(path, CSYNC_INSTRUCTION_NEW);
-}
-
-void SyncWrapper::moveDirectoryAtPath(const QString path)
+void SyncWrapper::moveItemAtPath(const QString path)
 {
     sync(path, CSYNC_INSTRUCTION_NEW);
 }
@@ -110,9 +101,7 @@ void SyncWrapper::sync(const QString path, csync_instructions_e instruction)
     int result = 1;
     QString folderRelativePath = getRelativePath(path);
     if (!folderRelativePath.isEmpty()) {
-        SyncJournalDb::instance()->updateLastAccess(folderRelativePath);
         if (shouldSync(folderRelativePath)) {
-
 			//Prepare to sync
             result = SyncJournalDb::instance()->setSyncModeDownload(folderRelativePath, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO);
             if (result == 0)

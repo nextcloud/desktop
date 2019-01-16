@@ -562,10 +562,13 @@ signals:
     void FuseFileSystemDidUnmount(QVariantMap userInfo);
     void startRemoteFileListJob(QString path);
 
-    // To sync: propagate FUSE operations to the sync engine
+	// To sync: propagate FUSE operations to the sync engine
+    void addToFileTree(const QString path);
     void openFile(const QString path);
-    void writeFile(const QString path);
-    void deleteFile(const QString path);
+    void releaseFile(const QString path);
+    void deleteItem(const QString path);
+    void move(const QString path);
+    
 };
 
 #endif

@@ -21,16 +21,11 @@ public slots:
     //void updateSyncQueue();
     void updateFileTree(const QString path);
 
-    void createFileAtPath(const QString path);
-    void deleteFileAtPath(const QString path); 
-    void moveFileAtPath(const QString path);
     void openFileAtPath(const QString path);
-
-	void releaseFileAtPath(const QString path);
     void writeFileAtPath(const QString path);
-
-	void createDirectoryAtPath(const QString path);
-    void moveDirectoryAtPath(const QString path);
+	void releaseFileAtPath(const QString path);
+    void deleteItemAtPath(const QString path);
+    void moveItemAtPath(const QString path);
 
 signals:
     void syncFinish();

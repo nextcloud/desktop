@@ -908,8 +908,8 @@ void SocketApi::command_SET_DOWNLOAD_MODE(const QString &argumentC, SocketListen
             SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_OFFLINE);
 
             //< Example
-            SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
-            SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
+            //SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+            //SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
             }
             else if (*pc == '1')    //< OnLine
             {
@@ -917,8 +917,8 @@ void SocketApi::command_SET_DOWNLOAD_MODE(const QString &argumentC, SocketListen
             SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_ONLINE);
 
             //< Example
-            SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
-            SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
+            //SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+            //SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
             }
 #endif
 

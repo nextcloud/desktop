@@ -935,9 +935,15 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
 //        if (_previousLocalDiscoveryPaths.erase(item->_file.toUtf8()))
 //            qCDebug(lcFolder) << "local discovery: wiped" << item->_file;
 
-		_journal.setSyncModeDownload(item->_file, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES);
-		_journal.updateLastAccess(item->_file);
-		qCDebug(lcFolder) << "Sync successed for file: " << item->_file;
+		if (item->_status != SyncFileItem::FileIgnored) {
+			_journal.setSyncModeDownload(item->_file, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES);
+			_journal.updateLastAccess(item->_file);
+            qCDebug(lcFolder) << "Sync successed for file: " << item->_file;
+        } else {
+            _journal.setSyncModeDownload(item->_file, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO);
+            qCDebug(lcFolder) << "file IGNORED because is ONLINE: " << item->_file;    
+		}
+		
 
 
     } else {
