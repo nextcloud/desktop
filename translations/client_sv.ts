@@ -1872,7 +1872,7 @@ ytterligare rättigheter under processen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="174"/>
         <source>Free space: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ledigt utrymme: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="297"/>
@@ -1888,7 +1888,7 @@ ytterligare rättigheter under processen.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="385"/>
         <source>There is no enough free space in the local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Det finns inte tillräckligt med ledigt utrymme i den lokala mappen!</translation>
     </message>
 </context>
 <context>
@@ -3749,7 +3749,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="66"/>
         <source>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Host your own server&lt;/span&gt;&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;https://docs.nextcloud.com/server/15/admin_manual/installation/index.html#installation&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Använd din egen server&lt;/span&gt;&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="143"/>

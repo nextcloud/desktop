@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="107"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
@@ -66,12 +66,12 @@
         <location filename="../src/common/filesystembase.cpp" line="459"/>
         <location filename="../src/common/filesystembase.cpp" line="465"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko perkelti &quot;%1&quot; į &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>Perkėlimas į šiukšlinę šioje platformoje nėra įgyvendintas</translation>
     </message>
 </context>
 <context>
@@ -476,12 +476,12 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="131"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="179"/>
         <source>More information</source>
-        <translation type="unfinished"/>
+        <translation>Daugiau informacijos</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="180"/>
@@ -831,12 +831,12 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folder.cpp" line="1080"/>
         <source>Download new files?</source>
-        <translation type="unfinished"/>
+        <translation>Atsisiųsti naujus failus?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1083"/>
         <source>Download new files</source>
-        <translation type="unfinished"/>
+        <translation>Atsisiųsti naujus failus</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1084"/>
@@ -1094,12 +1094,12 @@ Jei tęsite sinchronizavimą, Jūsų ankstesni failai bus perrašyti senesniais.
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
         <source>↓ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↓ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>↑ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
@@ -1280,7 +1280,7 @@ Jei tęsite sinchronizavimą, Jūsų ankstesni failai bus perrašyti senesniais.
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Teisinis pranešimas</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
@@ -1495,7 +1495,7 @@ Elementai, kuriuose galimas trynimas, bus ištrinti, jei jie apsaugos direktorij
     <message>
         <location filename="../src/gui/legalnotice.ui" line="26"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Teisinis pranešimas</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="36"/>
@@ -1505,7 +1505,7 @@ Elementai, kuriuose galimas trynimas, bus ištrinti, jei jie apsaugos direktorij
     <message>
         <location filename="../src/gui/legalnotice.ui" line="58"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Užverti</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="27"/>
@@ -1865,7 +1865,7 @@ papildomų teisių.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="174"/>
         <source>Free space: %1</source>
-        <translation type="unfinished"/>
+        <translation>Laisva vieta: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="297"/>
@@ -1950,7 +1950,7 @@ papildomų teisių.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="56"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopijuoti nuorodą į iškarpinę</translation>
     </message>
 </context>
 <context>
@@ -2005,12 +2005,12 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="281"/>
         <source>Invalid URL</source>
-        <translation type="unfinished"/>
+        <translation>Neteisingas URL</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="403"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko įkelti liudijimo. Galbūt, neteisingas slaptažodis?</translation>
     </message>
 </context>
 <context>
@@ -2606,7 +2606,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="123"/>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>Piktograma</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="101"/>
@@ -2644,7 +2644,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="118"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Slaptažodis:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="158"/>
@@ -2684,7 +2684,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="212"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Kopijuoti nuorodą</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="225"/>
@@ -2719,7 +2719,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="483"/>
         <source>Public link</source>
-        <translation type="unfinished"/>
+        <translation>Viešoji nuoroda</translation>
     </message>
 </context>
 <context>
@@ -2732,7 +2732,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="238"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Kopijuoti nuorodą</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="248"/>
@@ -2801,7 +2801,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="93"/>
         <source>SSL Chipher Debug View</source>
-        <translation type="unfinished"/>
+        <translation>SSL šifro derinimo rodinys</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
@@ -2858,12 +2858,12 @@ Patariama jo nenaudoti.</translation>
         <location filename="../src/gui/socketapi.cpp" line="666"/>
         <location filename="../src/gui/socketapi.cpp" line="668"/>
         <source>Copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopijuoti viešąją nuorodą į iškarpinę</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="722"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Atverti naršyklėje</translation>
     </message>
 </context>
 <context>
@@ -3172,12 +3172,12 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="139"/>
         <source>File or directory not found:</source>
-        <translation type="unfinished"/>
+        <translation>Failas ar katalogas nerastas:</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="142"/>
         <source>Tried to create a folder that already exists.</source>
-        <translation type="unfinished"/>
+        <translation>Bandyta sukurti aplanką, kuris jau yra.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="145"/>
@@ -3916,17 +3916,17 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/common/checksums.cpp" line="233"/>
         <source>The checksum header is malformed.</source>
-        <translation type="unfinished"/>
+        <translation>Kontrolinės sumos antraštė yra netaisyklinga.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="248"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Kontrolinės sumos antraštėje buvo nežinomas kontrolinės sumos tipas &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Atsisiųstas failas neatitinka kontrolinės sumos, jis bus pratęstas.</translation>
     </message>
 </context>
 <context>
