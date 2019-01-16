@@ -105,9 +105,8 @@ VfsMac::VfsMac(QString rootPath, bool isThreadSafe, OCC::AccountState *accountSt
     // "talk" to the sync engine
     _syncWrapper = OCC::SyncWrapper::instance();
     connect(this, &VfsMac::openFile, _syncWrapper, &OCC::SyncWrapper::openFileAtPath, Qt::QueuedConnection);
-    connect(this, &VfsMac::releaseFile, _syncWrapper, &OCC::SyncWrapper::releaseFileAtPath, Qt::QueuedConnection);
+    connect(this, &VfsMac::deleteFile, _syncWrapper, &OCC::SyncWrapper::deleteFileAtPath, Qt::QueuedConnection);
     connect(this, &VfsMac::writeFile, _syncWrapper, &OCC::SyncWrapper::writeFileAtPath, Qt::QueuedConnection);
-    connect(this, &VfsMac::addToFileTree, _syncWrapper, &OCC::SyncWrapper::updateFileTree, Qt::QueuedConnection);
     connect(_syncWrapper, &OCC::SyncWrapper::syncFinish, this, &VfsMac::slotSyncFinish, Qt::QueuedConnection);
 }
 
@@ -636,10 +635,7 @@ QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
 
 #pragma mark File Contents
 
-void VfsMac::slotSyncFinish(const QString &path, bool status){
-    Q_UNUSED(path);
-    Q_UNUSED(status);
-
+void VfsMac::slotSyncFinish(){
     _mutex.lock();
     _syncCondition.wakeAll();
     _mutex.unlock();
@@ -692,9 +688,11 @@ void VfsMac::releaseFileAtPath(QString path, QVariant userData)
     struct fuse_context *context = fuse_get_context();
     QString nameBuffer = QString::fromLatin1(getProcessName(context->pid));
     qDebug() << "JJDCname: " << nameBuffer;
+
     if(nameBuffer == "Finder")
     {
-        emit addToFileTree(path);
+        qDebug() << "FUSE releaseFileAtPath: " << path;
+        //emit writeFile(path);
     }
 
     long num = userData.toLongLong();
@@ -721,10 +719,8 @@ int VfsMac::writeFileAtPath(QString path, QVariant userData, const char *buffer,
     qDebug() << "JJDCname: " << nameBuffer;
     if(nameBuffer != "Finder" && nameBuffer != "QuickLookSatellite" && nameBuffer != "mds")
     {
-        _mutex.lock();
-        emit writeFile(path);
-        _syncCondition.wait(&_mutex);
-        _mutex.unlock();
+        qDebug() << "FUSE writeFileAtPath: " << path;
+        //emit writeFile(path);
     }
 
     long num = userData.toLongLong();
