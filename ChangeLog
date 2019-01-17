@@ -2,7 +2,8 @@ ChangeLog
 =========
 
 version 2.5.2 (2019-01-??)
-* Crash fix: On OSX when opening settings dialog (#6930)
+* Crash fix: macOS: When opening settings dialog (#6930)
+* Crash fix: macOS: While app is in background
 * Crash fix: When deleting an account (#6893)
 * Crash fix: During password dialog
 * SyncJournalDB: Change sqlite3 locking_mode to "exclusive" (#6881)
