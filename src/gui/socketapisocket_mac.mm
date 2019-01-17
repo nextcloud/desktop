@@ -83,7 +83,9 @@ public:
 
 - (void)connectionDidDie:(NSNotification*)notification
 {
-#pragma unused(notification)
+    // The NSConnectionDidDieNotification docs say to disconnect from NSConnection here
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
     if (_wrapper) {
         _wrapper->disconnectRemote();
         emit _wrapper->q_ptr->disconnected();
