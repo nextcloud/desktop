@@ -2624,7 +2624,6 @@ void Vfs_windows::moveFileAtPath(QString path, QString npath, QVariantMap &error
 
 void Vfs_windows::createDirectoryAtPath(QString path, QVariantMap &error)
 {
-    emit addToFileTree(path);
 }
 
 void Vfs_windows::moveDirectoryAtPath(QString path, QString npath, QVariantMap &error)
@@ -2715,7 +2714,8 @@ qDebug() << Q_FUNC_INFO << " rootPath: " << rootPath_;
 		}
            }
        }
-       emit addToFileTree(completePath);
+       if (_fileListMap.value(path)->list.at(i)->type == ItemTypeFile)
+           emit addToFileTree(completePath);
         //qDebug() << Q_FUNC_INFO << "results: " << r->name << r->type;
    }
 	
