@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="107"/>
         <source>%1 (%2, %3)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2, %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
@@ -29,17 +29,17 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="144"/>
         <source>Syncing %1</source>
-        <translation type="unfinished"/>
+        <translation>Συγχρονισμός %1</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="186"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Παύση συγχρονισμού</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="189"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Γίνεται συγχρονισμός</translation>
     </message>
 </context>
 <context>
@@ -47,12 +47,12 @@
     <message>
         <location filename="../src/gui/mnemonicdialog.ui" line="23"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Παράθυρο διαλόγου</translation>
     </message>
     <message>
         <location filename="../src/gui/mnemonicdialog.ui" line="58"/>
         <source>Label</source>
-        <translation type="unfinished"/>
+        <translation>Ετικέτα</translation>
     </message>
 </context>
 <context>
@@ -238,7 +238,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="542"/>
         <source>Encrypt</source>
-        <translation type="unfinished"/>
+        <translation>Κρυπτογράφηση</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="583"/>
@@ -476,27 +476,27 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="131"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="179"/>
         <source>More information</source>
-        <translation type="unfinished"/>
+        <translation>Περισσότερες πληροφορίες</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="180"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Αποδοχή</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="181"/>
         <source>Join</source>
-        <translation type="unfinished"/>
+        <translation>Συμμετοχή</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="198"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Άνοιγμα Περιηγητή</translation>
     </message>
 </context>
 <context>
@@ -514,12 +514,12 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="56"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Αποδοχή</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="182"/>
         <source>Synced </source>
-        <translation type="unfinished"/>
+        <translation>Συγχρονίστηκε</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="217"/>
@@ -629,7 +629,7 @@
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1001"/>
         <source>Enter E2E passphrase</source>
-        <translation type="unfinished"/>
+        <translation>Εισάγετε κωδικό E2E</translation>
     </message>
 </context>
 <context>
@@ -831,17 +831,17 @@ If you decide to delete the files, they will be unavailable to you, unless you a
     <message>
         <location filename="../src/gui/folder.cpp" line="1080"/>
         <source>Download new files?</source>
-        <translation type="unfinished"/>
+        <translation>Λήψη νέων αρχείων;</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1083"/>
         <source>Download new files</source>
-        <translation type="unfinished"/>
+        <translation>Λήψη νέων αρχείων</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1084"/>
         <source>Keep local files</source>
-        <translation type="unfinished"/>
+        <translation>Διατήρηση τοπικών αρχείων</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1076"/>
@@ -1091,12 +1091,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
         <source>↓ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↓ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>↑ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
@@ -1276,7 +1276,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Νομική ειδοποίηση</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
@@ -1366,7 +1366,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="520"/>
         <source>Sharing error</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα διαμοιρασμού</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="521"/>
@@ -1429,7 +1429,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="126"/>
         <source>Remove all</source>
-        <translation type="unfinished"/>
+        <translation>Αφαίρεση όλων</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="93"/>
@@ -1486,12 +1486,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Παράθυρο διαλόγου</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="26"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Νομική ειδοποίηση</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="36"/>
@@ -1501,7 +1501,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.ui" line="58"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Κλείσιμο</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="27"/>
@@ -2602,7 +2602,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="123"/>
         <source>Icon</source>
-        <translation type="unfinished"/>
+        <translation>Εικονίδιο</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="101"/>
@@ -2635,17 +2635,17 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="89"/>
         <source>Enable</source>
-        <translation type="unfinished"/>
+        <translation>Ενεργοποίηση</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="118"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Συνθηματικό :</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="158"/>
         <source>Expiration date:</source>
-        <translation type="unfinished"/>
+        <translation>Ημερομηνία λήξης:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="226"/>
@@ -2660,12 +2660,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="186"/>
         <source>Allow Editing</source>
-        <translation type="unfinished"/>
+        <translation>Να επιτρέπεται η επεξεργασία</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="192"/>
         <source>Read only</source>
-        <translation type="unfinished"/>
+        <translation>Μόνο για ανάγνωση</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="200"/>
@@ -2680,22 +2680,22 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="212"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Αντιγραφή συνδέσμου</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="225"/>
         <source>Password Protect</source>
-        <translation type="unfinished"/>
+        <translation>Προστασία με συνθηματικό</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="242"/>
         <source>Expiration Date</source>
-        <translation type="unfinished"/>
+        <translation>Ημερομηνία λήξης</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="262"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Αναίρεση διαμοιρασμού</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="459"/>
@@ -2728,7 +2728,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="238"/>
         <source>Copy link</source>
-        <translation type="unfinished"/>
+        <translation>Αντιγραφή συνδέσμου</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="248"/>
@@ -2746,7 +2746,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="66"/>
         <source>User name</source>
-        <translation type="unfinished"/>
+        <translation>Όνομα χρήστη</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="82"/>
@@ -2756,12 +2756,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="364"/>
         <source>Can reshare</source>
-        <translation type="unfinished"/>
+        <translation>Δυνατότητα να διαμοιραστεί ξανά</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="374"/>
         <source>Can create</source>
-        <translation type="unfinished"/>
+        <translation>Δυνατότητα δημιουργίας</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="380"/>
@@ -2771,7 +2771,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="386"/>
         <source>Can delete</source>
-        <translation type="unfinished"/>
+        <translation>Μπορεί να διαγράψει</translation>
     </message>
 </context>
 <context>
@@ -2859,7 +2859,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="722"/>
         <source>Open in browser</source>
-        <translation type="unfinished"/>
+        <translation>Άνοιγμα στον περιηγητή</translation>
     </message>
 </context>
 <context>
@@ -3168,7 +3168,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="139"/>
         <source>File or directory not found:</source>
-        <translation type="unfinished"/>
+        <translation>Το αρχείο ή ο κατάλογος δεν βρέθηκε:</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="142"/>
@@ -3552,7 +3552,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="841"/>
         <source>Apps</source>
-        <translation type="unfinished"/>
+        <translation>Εφαρμογές</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="898"/>
@@ -3748,7 +3748,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="165"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Σύνδεση</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="288"/>
@@ -3930,7 +3930,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/webview.ui" line="26"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Φόρμα</translation>
     </message>
 </context>
 <context>

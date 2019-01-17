@@ -328,12 +328,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="954"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation>Obtenndo autorización dende o navegador. &lt;a href=&apos;%1&apos;&gt;Prema aquí&lt;/a&gt; para volver abrir o navegador.</translation>
+        <translation>Obtendo autorización dende o navegador. &lt;a href=&apos;%1&apos;&gt;Prema aquí&lt;/a&gt; para volver abrir o navegador.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="958"/>
         <source>Connecting to %1...</source>
-        <translation>Connectando con %1...</translation>
+        <translation>Conectando con %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="961"/>
@@ -745,12 +745,12 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="390"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>%1 foi renomeado a %2 e outro ficheiro tamén foi renomeado.</numerusform><numerusform>%1 foi renomeado a %2 e outros %n ficheiro tamén foron renomeados.</numerusform></translation>
+        <translation><numerusform>%1 foi renomeado a %2 e outro ficheiro tamén foi renomeado.</numerusform><numerusform>%1 foi renomeado a %2 e outros %n ficheiros tamén foron renomeados.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="397"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>%1 foi movido a %2 e outro ficheiro tamén foi movido.</numerusform><numerusform>%1 foi movido a %2 e outros %n ficheiros tamén foron movido.</numerusform></translation>
+        <translation><numerusform>%1 foi movido a %2 e outro ficheiro tamén foi movido.</numerusform><numerusform>%1 foi movido a %2 e outros %n ficheiros tamén foron movidos.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="404"/>
@@ -1143,12 +1143,12 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1102"/>
         <source>Waiting for %n other folder(s)...</source>
-        <translation><numerusform>Agardando por outro cartafol...</numerusform><numerusform>Agardando por outros %n cartafoles...</numerusform></translation>
+        <translation><numerusform>Agardando por outro cartafol…</numerusform><numerusform>Agardando por outros %n cartafoles…</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1108"/>
         <source>Preparing to sync...</source>
-        <translation>Preparando para sincronizar...</translation>
+        <translation>Preparando para sincronizar…</translation>
     </message>
 </context>
 <context>
@@ -1463,8 +1463,7 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>Os ficheiros ou cartafoles que coincidan cun patrón non se sincronizarán.
 
-Os elementos onde se permite a eliminación eliminaranse se impiden que se elimine un directorio. Isto é útil para os metadatos.
-</translation>
+Os elementos onde se permite a eliminación eliminaranse se impiden que se elimine un directorio. Isto é útil para os metadatos.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
@@ -1816,8 +1815,7 @@ actualización pode pedir privilexios adicionais durante o procedemento.</transl
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="151"/>
         <source>New %1 version %2 available. Please use the system&apos;s update tool to install it.</source>
-        <translation>Está dispoñíbel unha nova versión (%2) de %1. Use a ferramenta de actualización do seu sistema para instalala.
-</translation>
+        <translation>Está dispoñíbel unha nova versión (%2) de %1. Use a ferramenta de actualización do seu sistema para instalala.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
@@ -2068,8 +2066,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="297"/>
         <source>The server reported the following error:</source>
-        <translation>O servidor informou o seguinte erro:
-</translation>
+        <translation>O servidor informou o seguinte erro:</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="452"/>
@@ -3107,7 +3104,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="242"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
-        <translation>%1 (omitido debido ao erro anterior, tentándoo de novo en %2)</translation>
+        <translation>%1 (omitido por mor do erro anterior, tentándoo de novo en %2)</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="514"/>
@@ -3840,7 +3837,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="460"/>
         <source>Less than a minute ago</source>
-        <translation>Hai menos dun minuto</translation>
+        <translation>Vai menos dun minuto</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="464"/>

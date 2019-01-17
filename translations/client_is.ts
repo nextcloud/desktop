@@ -1865,7 +1865,7 @@ aðgerð til að leysa málið!&lt;/small&gt;&lt;/p&gt;</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="174"/>
         <source>Free space: %1</source>
-        <translation type="unfinished"/>
+        <translation>Laust pláss: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="297"/>
