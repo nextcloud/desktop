@@ -729,7 +729,45 @@ private slots:
         // There was 5 inserts
         QCOMPARE(counter.nGET, local ? 0 : 5);
         QCOMPARE(counter.nPUT, local ? 5 : 0);
+    }
 
+    void renameOnBothSides()
+    {
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        OperationCounter counter;
+        fakeFolder.setServerOverride(counter.functor());
+
+        // Test that renaming a file within a directory that was renamed on the other side actually do a rename.
+
+        // 1) move the folder alphabeticaly before
+        fakeFolder.remoteModifier().rename("A/a1", "A/a1m");
+        fakeFolder.localModifier().rename("A", "_A");
+        fakeFolder.localModifier().rename("B/b1", "B/b1m");
+        fakeFolder.remoteModifier().rename("B", "_B");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentRemoteState());
+        QVERIFY(fakeFolder.currentRemoteState().find("_A/a1m"));
+        QVERIFY(fakeFolder.currentRemoteState().find("_B/b1m"));
+        QCOMPARE(counter.nDELETE, 0);
+        QCOMPARE(counter.nGET, 0);
+        QCOMPARE(counter.nPUT, 0);
+        QCOMPARE(counter.nMOVE, 2);
+        counter.reset();
+
+        // 2) move alphabetically after
+        fakeFolder.remoteModifier().rename("_A/a2", "_A/a2m");
+        fakeFolder.localModifier().rename("_B/b2", "_B/b2m");
+        fakeFolder.localModifier().rename("_A", "S/A");
+        fakeFolder.remoteModifier().rename("_B", "S/B");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentRemoteState(), fakeFolder.currentRemoteState());
+        QVERIFY(fakeFolder.currentRemoteState().find("S/A/a2m"));
+        QVERIFY(fakeFolder.currentRemoteState().find("S/B/b2m"));
+        QCOMPARE(counter.nDELETE, 0);
+        QCOMPARE(counter.nGET, 0);
+        QCOMPARE(counter.nPUT, 0);
+        QCOMPARE(counter.nMOVE, 2);
     }
 };
 
