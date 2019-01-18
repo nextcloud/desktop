@@ -26,7 +26,6 @@
 #include <QMutex>
 #include <QWaitCondition>
 #include "syncwrapper.h"
-typedef QList<QPair<QString, QString> > QLinHeaderList;
 
 namespace OCC {
 
@@ -34,7 +33,6 @@ class Vfs_windows : public QObject
 {
     Q_OBJECT
 public:
-	QLinHeaderList _syncFiles;
 	static Vfs_windows* instance();
 
 	Vfs_windows(AccountState *);

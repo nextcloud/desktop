@@ -2669,9 +2669,6 @@ void Vfs_windows::openFileAtPath(QString path, QVariantMap &error)
     emit openFile(path);
     _syncCondition.wait(&_mutex);
 /////////////////
-	QPair<QString, QString> q(path, "SYNC");
-	_syncFiles.append(q);
-	
 	QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
 	char fgv[5];
 	fgv[0] = 'X';
