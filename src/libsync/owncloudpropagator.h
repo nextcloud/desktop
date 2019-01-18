@@ -503,7 +503,7 @@ public:
     bool createConflict(const SyncFileItemPtr &item,
         PropagatorCompositeJob *composite, QString *error);
 
-
+    // Map original path (as in the DB) to target final path
     QMap<QString, QString> _renamedDirectories;
     QString adjustRenamedPath(const QString &original) const;
 
