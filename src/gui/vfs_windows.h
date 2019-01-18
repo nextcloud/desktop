@@ -22,6 +22,7 @@
 #include "discoveryphase.h"
 #include "accountstate.h"
 #include "configfile.h"
+#include <QString>
 
 namespace OCC {
 
@@ -29,6 +30,7 @@ class Vfs_windows : public QObject
 {
     Q_OBJECT
 public:
+	QLinHeaderList _syncFiles;
 	static Vfs_windows* instance();
 
 	Vfs_windows(AccountState *);
@@ -37,11 +39,11 @@ public:
 	void downDrive(WCHAR DriveLetter);
 	bool removeDir(const QString &);
 
-	void DsetTotalNumberOfBytes(unsigned long long n);// { m_TotalNumberOfBytes = n; }
-	unsigned long long DgetTotalNumberOfBytes();// { return m_TotalNumberOfBytes; }
+	void DsetTotalNumberOfBytes(unsigned long long n);
+	unsigned long long DgetTotalNumberOfBytes();
 
-	void DsetTotalNumberOfFreeBytes(unsigned long long n);// { m_TotalNumberOfFreeBytes = n; }
-	unsigned long long DgetTotalNumberOfFreeBytes();// { return m_TotalNumberOfFreeBytes; }
+	void DsetTotalNumberOfFreeBytes(unsigned long long n);
+	unsigned long long DgetTotalNumberOfFreeBytes();
 
 	QStringList* contentsOfDirectoryAtPath(QString path, QVariantMap &error);
 
@@ -50,11 +52,11 @@ public:
 	void createDirectoryAtPath(QString path, QVariantMap &error);
 	void moveDirectoryAtPath(QString path, QString npath, QVariantMap &error);
 
-    void openFileAtPath(QString path, QVariantMap &error);
+	void openFileAtPath(QString path, QVariantMap &error);
 	void writeFileAtPath(QString path, QVariantMap &error);
-    void deleteFileAtPath(QString path, QVariantMap &error);
-    void startDeleteDirectoryAtPath(QString path, QVariantMap &error);
-    void endDeleteDirectoryAtPath(QString path, QVariantMap &error);
+	void deleteFileAtPath(QString path, QVariantMap &error);
+	void startDeleteDirectoryAtPath(QString path, QVariantMap &error);
+	void endDeleteDirectoryAtPath(QString path, QVariantMap &error);
 
 private:
 	static Vfs_windows *_instance;
@@ -90,34 +92,6 @@ signals:
 	void getOperationFindStreams(QString, QString, QString);
 		//< void getOperationUmounted(QString, QString, QString);
 		//< void getOperationMounted(QString, QString, QString);
-
-private slots:
-
-//< Examples catch signals ...
-	void slotCatchOperationCreateFile(QString, QString, QString);
-	void slotCatchOperationCleanup(QString, QString, QString);
-	void slotCatchOperationCloseFile(QString, QString, QString);
-	void slotCatchOperationReadFile(QString, QString, QString);
-	void slotCatchOperationWriteFile(QString, QString, QString);
-	void slotCatchOperationFlushFileBuffers(QString, QString, QString);
-	void slotCatchOperationGetFileInformation(QString, QString, QString);
-	void slotCatchOperationFindFiles(QString, QString, QString);
-	void slotCatchOperationFindFilesWithPattern(QString, QString, QString);
-	void slotCatchOperationSetFileAttributes(QString, QString, QString);
-	void slotCatchOperationSetFileTime(QString, QString, QString);
-	void slotCatchOperationDeleteFile(QString, QString, QString);
-	void slotCatchOperationDeleteDirectory(QString, QString, QString);
-	void slotCatchOperationMoveFile(QString, QString, QString);
-	void slotCatchOperationSetEndOfFile(QString, QString, QString);
-	void slotCatchOperationSetAllocationSize(QString, QString, QString);
-	void slotCatchOperationLockFile(QString, QString, QString);
-	void slotCatchOperationUnlockFile(QString, QString, QString);
-	void slotCatchOperationGetFileSecurity(QString, QString, QString);
-	void slotCatchOperationSetFileSecurity(QString, QString, QString);
-	void slotCatchOperationGetDiskFreeSpace(QString, QString, QString);
-	void slotCatchOperationGetVolumeInformation(QString, QString, QString);
-	void slotCatchOperationFindStreams(QString, QString, QString);
-
 public slots:
 	void folderFileListFinish(OCC::DiscoveryDirectoryResult *dr);
 };
