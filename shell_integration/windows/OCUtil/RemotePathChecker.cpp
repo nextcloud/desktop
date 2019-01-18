@@ -72,23 +72,12 @@ void RemotePathChecker::workerThreadLoop()
 
         std::wstring response;
         while (!_stop && socket.ReadLine(&response)) {
-			if (StringUtil::begins_with(response, wstring(L"REGISTER_DRIVEFS:"))) {
-				wstring responsePath = response.substr(17); // length of REGISTER_DRIVEFS:
-				setLetterDrive(responsePath);
-			}else if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
+			if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
                 wstring responsePath = response.substr(14); // length of REGISTER_PATH:
 
                 auto sharedPtrCopy = atomic_load(&_watchedDirectories);
                 auto vectorCopy = make_shared<vector<wstring>>(*sharedPtrCopy);
                 vectorCopy->push_back(responsePath);
-
-					std::wstring FileStreamLetterDrive = getLetterDrive();
-					std::transform(
-					FileStreamLetterDrive.begin(), FileStreamLetterDrive.end(),
-					FileStreamLetterDrive.begin(),
-					towupper);
-					FileStreamLetterDrive.append(L":\\");
-				vectorCopy->push_back(FileStreamLetterDrive);
 
 				atomic_store(&_watchedDirectories, shared_ptr<const vector<wstring>>(vectorCopy));
 
@@ -96,7 +85,6 @@ void RemotePathChecker::workerThreadLoop()
                 // to the user, but at least reload the root dir so that any shortcut to the root
                 // is updated without the user needing to refresh.
                 SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, responsePath.data(), NULL);
-				SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, FileStreamLetterDrive.data(), NULL);
             } else if (StringUtil::begins_with(response, wstring(L"UNREGISTER_PATH:"))) {
                 wstring responsePath = response.substr(16); // length of UNREGISTER_PATH:
 
@@ -210,6 +198,8 @@ bool RemotePathChecker::IsMonitoredPath(const wchar_t* filePath, int* state)
     }
 
     auto path = std::wstring(filePath);
+    _pending.push(filePath);
+
 
     auto it = _cache.find(path);
     if (it != _cache.end()) {
@@ -223,16 +213,6 @@ bool RemotePathChecker::IsMonitoredPath(const wchar_t* filePath, int* state)
     lock.unlock();
     SetEvent(_newQueries);
     return false;
-}
-
-void RemotePathChecker::setLetterDrive(std::wstring str)
-{
-	_defaultFileStreamLetterDrive = str;
-}
-
-std::wstring RemotePathChecker::getLetterDrive()
-{
-	return _defaultFileStreamLetterDrive;
 }
 
 RemotePathChecker::FileState RemotePathChecker::_StrToFileState(const std::wstring &str)

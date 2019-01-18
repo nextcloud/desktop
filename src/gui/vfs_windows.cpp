@@ -64,37 +64,15 @@ THE SOFTWARE.
 #include <QMessageBox>
 #include <QStandardPaths>
 
+#include <shlobj_core.h>
+
 namespace OCC {
 
-	QMutex _mutexMirrorCreateFile;
-	QMutex _mutexMirrorCleanup;
-	QMutex _mutexMirrorCloseFile;
-	QMutex _mutexMirrorReadFile;
-	QMutex _mutexMirrorWriteFile;
-	QMutex _mutexMirrorFlushFileBuffers;
-	QMutex _mutexMirrorGetFileInformation;
 	QMutex _mutexMirrorFindFiles;
-	QMutex _mutexMirrorSetFileAttributes;
-	QMutex _mutexMirrorSetFileTime;
-	QMutex _mutexMirrorDeleteFile;
-	QMutex _mutexMirrorDeleteDirectory;
-	QMutex _mutexMirrorMoveFile;
-	QMutex _mutexMirrorSetEndOfFile;
-	QMutex _mutexMirrorSetAllocationSize;
-	QMutex _mutexMirrorLockFile;
-	QMutex _mutexMirrorUnlockFile;
-	QMutex _mutexMirrorGetFileSecurity;
-	QMutex _mutexMirrorSetFileSecurity;
-	QMutex _mutexMirrorDokanGetDiskFreeSpace;
-	QMutex _mutexMirrorGetVolumeInformation;
-	QMutex _mutexMirrorUnmounted;
-	QMutex _mutexMirrorFindStreams;
-	QMutex _mutexMirrorMounted;
 
 	Vfs_windows* Vfs_windows::_instance = 0;
 	static DWORD explorer_process_pid = 0;
 	static int i_deleted = 0;
-
 
 //#define WIN10_ENABLE_LONG_PATH
 #ifdef WIN10_ENABLE_LONG_PATH
@@ -364,28 +342,6 @@ MirrorCreateFile(LPCWSTR FileName, PDOKAN_IO_SECURITY_CONTEXT SecurityContext,
 			QSFileName = QString::fromLocal8Bit(FileName);
 		#endif
 
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
-
-	QMutexLocker lockerMirrorCreateFile(&_mutexMirrorCreateFile);
-		Vfs_windows *m_Vfs_windows = NULL;
-		m_Vfs_windows = Vfs_windows::instance();
-		if(m_Vfs_windows)
-			{
-			if (QSFileName.compare("\\") != 0)
-				{
-				//qDebug() << Q_FUNC_INFO << " FileName: " << QSFileName;
-				//m_Vfs_windows->getOperationCreateFile(QSFileName, QString("MirrorCreateFile"), QString("InProcess..."));
-				}
-			}
-		else
-			{
-			lockerMirrorCreateFile.unlock();
-			return 0;
-			}
-	lockerMirrorCreateFile.unlock();
-
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
-
 	WCHAR filePath[DOKAN_MAX_PATH];
 	HANDLE handle;
 	DWORD fileAttr;
@@ -631,7 +587,6 @@ MirrorCreateFile(LPCWSTR FileName, PDOKAN_IO_SECURITY_CONTEXT SecurityContext,
 						qDebug() << Q_FUNC_INFO << " Prepare CREATE_NEW D Explorer via: " << QSFileName;
 						QVariantMap error;
 						Vfs_windows::instance()->createDirectoryAtPath(QSFileName, error);
-						//Vfs_windows::instance()->createFileAtPath(QSFileName, error);
 					}
 		}
 	}
@@ -829,8 +784,7 @@ static void DOKAN_CALLBACK MirrorCloseFile(LPCWSTR FileName,
 
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 
-	QMutexLocker lockerMirrorCloseFile(&_mutexMirrorCloseFile);
-		Vfs_windows *m_Vfs_windows = NULL;
+		/*Vfs_windows *m_Vfs_windows = NULL;
 		m_Vfs_windows = Vfs_windows::instance();
 		if (m_Vfs_windows)
 		{
@@ -842,10 +796,12 @@ static void DOKAN_CALLBACK MirrorCloseFile(LPCWSTR FileName,
 		}
 		else
 		{
-		lockerMirrorCloseFile.unlock();
+		//lockerMirrorCloseFile.unlock();
 		return;	
 		}
-	lockerMirrorCloseFile.unlock();
+	//lockerMirrorCloseFile.unlock();
+
+		*/
 
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 
@@ -878,7 +834,8 @@ static void DOKAN_CALLBACK MirrorCleanup(LPCWSTR FileName,
 
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 	
-	QMutexLocker lockerMirrorCleanup(&_mutexMirrorCleanup);
+		/*
+	//QMutexLocker lockerMirrorCleanup(&_mutexMirrorCleanup);
 		Vfs_windows *m_Vfs_windows = NULL;
 		m_Vfs_windows = Vfs_windows::instance();
 		if (m_Vfs_windows)
@@ -891,11 +848,11 @@ static void DOKAN_CALLBACK MirrorCleanup(LPCWSTR FileName,
 		}
 		else
 		{
-		lockerMirrorCleanup.unlock();
+		//lockerMirrorCleanup.unlock();
 		return;	
 		}
-	lockerMirrorCleanup.unlock();
-
+	//lockerMirrorCleanup.unlock();
+		*/
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 
 
@@ -936,6 +893,7 @@ static void DOKAN_CALLBACK MirrorCleanup(LPCWSTR FileName,
 	}
 }
 
+//static int toyDentro = 0;
 
 static NTSTATUS DOKAN_CALLBACK MirrorReadFile(LPCWSTR FileName, LPVOID Buffer,
 	DWORD BufferLength,
@@ -954,8 +912,10 @@ static NTSTATUS DOKAN_CALLBACK MirrorReadFile(LPCWSTR FileName, LPVOID Buffer,
 
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 
+	//if (toyDentro)
+		//return STATUS_SUCCESS;
 
-QMutexLocker lockerMirrorReadFile(&_mutexMirrorReadFile);
+//QMutexLocker lockerMirrorReadFile(&_mutexMirrorReadFile);
 		Vfs_windows *m_Vfs_windows = NULL;
 		m_Vfs_windows = Vfs_windows::instance();
 		if (m_Vfs_windows)
@@ -972,11 +932,12 @@ QMutexLocker lockerMirrorReadFile(&_mutexMirrorReadFile);
 					//if (((notw + Offset) == BufferLength) && !QSFileName.contains("Zone.Identifier") && (QSFileName.count(QLatin1Char('.')) <= 2))
 					if ((Offset == 0) && (QSFileName.count(QLatin1Char('.')) <= 2) && (DokanFileInfo->ProcessId != getExplorerID()) && (BufferLength == 8192))
 					{
+						//toyDentro = 1;
 						qDebug() << " ZZZ openFileAtPath  Offset: " << Offset << " BufferLength: " << BufferLength << " ReadLength:" << *ReadLength;
 						/*DWORD BufferLength,
 							LPDWORD ReadLength,
 							LONGLONG Offset,*/
-						//toyDentro = 1;
+						
 						QVariantMap error;
 						QString QSFileNametoReal = QSFileName;
 						QSFileNametoReal.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
@@ -987,10 +948,10 @@ QMutexLocker lockerMirrorReadFile(&_mutexMirrorReadFile);
 		}
 		else
 		{
-		lockerMirrorReadFile.unlock();
+		//lockerMirrorReadFile.unlock();
 		return 0;	
 		}
-	lockerMirrorReadFile.unlock();
+	//lockerMirrorReadFile.unlock();
 
 
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;	
@@ -1223,7 +1184,7 @@ static NTSTATUS DOKAN_CALLBACK MirrorWriteFile(LPCWSTR FileName, LPCVOID Buffer,
 		CloseHandle(handle);
 
 	QVariantMap error;
-	QMutexLocker lockerMirrorWriteFile(&_mutexMirrorWriteFile);
+	//QMutexLocker lockerMirrorWriteFile(&_mutexMirrorWriteFile);
 	Vfs_windows *m_Vfs_windows = NULL;
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
@@ -1241,10 +1202,10 @@ static NTSTATUS DOKAN_CALLBACK MirrorWriteFile(LPCWSTR FileName, LPCVOID Buffer,
 	}
 	else
 	{
-		lockerMirrorWriteFile.unlock();
+		//lockerMirrorWriteFile.unlock();
 		return 0;
 	}
-	lockerMirrorWriteFile.unlock();
+	//lockerMirrorWriteFile.unlock();
 
 	return STATUS_SUCCESS;
 }
@@ -1265,20 +1226,25 @@ MirrorFlushFileBuffers(LPCWSTR FileName, PDOKAN_FILE_INFO DokanFileInfo) {
 
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 
-	QMutexLocker lockerMirrorFlushFileBuffers(&_mutexMirrorFlushFileBuffers);
+		/*
+	//QMutexLocker lockerMirrorFlushFileBuffers(&_mutexMirrorFlushFileBuffers);
 		Vfs_windows *m_Vfs_windows = NULL;
 		m_Vfs_windows = Vfs_windows::instance();
 		if (m_Vfs_windows)
 		{
-			if(QSFileName.compare("\\") != 0)
-				m_Vfs_windows->getOperationFlushFileBuffers(QSFileName, QString("MirrorFlushFileBuffers"), QString("InProcess..."));
+			if (QSFileName.compare("\\") != 0)
+			{
+
+			}
+				//m_Vfs_windows->getOperationFlushFileBuffers(QSFileName, QString("MirrorFlushFileBuffers"), QString("InProcess..."));
 		}
 		else
 		{
-		lockerMirrorFlushFileBuffers.unlock();
+		//lockerMirrorFlushFileBuffers.unlock();
 		return 0;	
 		}
-	lockerMirrorFlushFileBuffers.unlock();
+		*/
+	//lockerMirrorFlushFileBuffers.unlock();
 
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 
@@ -1319,20 +1285,23 @@ static NTSTATUS DOKAN_CALLBACK MirrorGetFileInformation(
 
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 
-	QMutexLocker lockerMirrorGetFileInformation(&_mutexMirrorGetFileInformation);
-		Vfs_windows *m_Vfs_windows = NULL;
+	//QMutexLocker lockerMirrorGetFileInformation(&_mutexMirrorGetFileInformation);
+		/*Vfs_windows *m_Vfs_windows = NULL;
 		m_Vfs_windows = Vfs_windows::instance();
 		if (m_Vfs_windows)
 		{
 			if(QSFileName.compare("\\") != 0)
-				m_Vfs_windows->getOperationGetFileInformation(QSFileName, QString("MirrorGetFileInformation"), QString("InProcess..."));
+				{
+				}
+				//m_Vfs_windows->getOperationGetFileInformation(QSFileName, QString("MirrorGetFileInformation"), QString("InProcess..."));
 		}
 		else
 		{
-		lockerMirrorGetFileInformation.unlock();
+		//lockerMirrorGetFileInformation.unlock();
 		return 0;	
 		}
-	lockerMirrorGetFileInformation.unlock();
+		*/
+	//lockerMirrorGetFileInformation.unlock();
 
 
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
@@ -1402,10 +1371,13 @@ static NTSTATUS DOKAN_CALLBACK MirrorGetFileInformation(
 	return STATUS_SUCCESS;
 }
 
+
 static NTSTATUS DOKAN_CALLBACK
 MirrorFindFiles(LPCWSTR FileName,
 	PFillFindData FillFindData, // function pointer
 	PDOKAN_FILE_INFO DokanFileInfo) {
+
+
 
 	//< Capture FindFiles Virtual File System Operation
 
@@ -1416,8 +1388,10 @@ MirrorFindFiles(LPCWSTR FileName,
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
 
-
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
+
+
+
 QVariantMap b_error;
 	QMutexLocker lockerMirrorFindFiles(&_mutexMirrorFindFiles);
 		Vfs_windows *m_Vfs_windows = NULL;
@@ -1425,11 +1399,14 @@ QVariantMap b_error;
 		if (m_Vfs_windows)
 		{
 			QSFileName.replace("\\", "/");
-			//if (QSFileName.compare("/") != 0)
-				//{
+
+			qDebug() << " gfds QSFileName: " << QSFileName << "DokanFileInfo->ProcessId : " << DokanFileInfo->ProcessId << " GetCurrentProcess(): " << (ULONG)GetCurrentProcess() << " getExplorerID(): " << getExplorerID();
+
+			//if (DokanFileInfo->ProcessId != getExplorerID())
+			//{
 				QStringList *contents = m_Vfs_windows->contentsOfDirectoryAtPath(QSFileName, b_error);
 				qDebug() << Q_FUNC_INFO << " FileName: " << QSFileName;
-				//}
+			//}
 		}
 		else
 		{
@@ -1437,6 +1414,7 @@ QVariantMap b_error;
 		return 0;	
 		}
 	lockerMirrorFindFiles.unlock();
+
 	
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 
@@ -1503,21 +1481,26 @@ MirrorDeleteFile(LPCWSTR FileName, PDOKAN_FILE_INFO DokanFileInfo) {
 
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 
-	QMutexLocker lockerMirrorDeleteFile(&_mutexMirrorDeleteFile);
+		/*
+	//QMutexLocker lockerMirrorDeleteFile(&_mutexMirrorDeleteFile);
 		Vfs_windows *m_Vfs_windows = NULL;
 		m_Vfs_windows = Vfs_windows::instance();
 		if (m_Vfs_windows)
 		{
 			if(QSFileName.compare("\\") != 0)
-				m_Vfs_windows->getOperationDeleteFile(QSFileName, QString("MirrorDeleteFile"), QString("InProcess..."));
+				{ 
+				}
+				//m_Vfs_windows->getOperationDeleteFile(QSFileName, QString("MirrorDeleteFile"), QString("InProcess..."));
 		}
 		else
 		{
-		lockerMirrorDeleteFile.unlock();
+		//lockerMirrorDeleteFile.unlock();
 		return 0;
 		}
-	lockerMirrorDeleteFile.unlock();
+	///lockerMirrorDeleteFile.unlock();
 	
+		*/
+
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 
 	WCHAR filePath[DOKAN_MAX_PATH];
@@ -1559,20 +1542,26 @@ MirrorDeleteDirectory(LPCWSTR FileName, PDOKAN_FILE_INFO DokanFileInfo) {
 
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 
-	QMutexLocker lockerMirrorDeleteDirectory(&_mutexMirrorDeleteDirectory);
+		/*
+	//QMutexLocker lockerMirrorDeleteDirectory(&_mutexMirrorDeleteDirectory);
 		Vfs_windows *m_Vfs_windows = NULL;
 		m_Vfs_windows = Vfs_windows::instance();
 		if (m_Vfs_windows)
 		{
-			if(QSFileName.compare("\\") != 0)
-				m_Vfs_windows->getOperationDeleteDirectory(QSFileName, QString("MirrorDeleteDirectory"), QString("InProcess..."));
+			if (QSFileName.compare("\\") != 0)
+			{
+
+			}
+				//m_Vfs_windows->getOperationDeleteDirectory(QSFileName, QString("MirrorDeleteDirectory"), QString("InProcess..."));
 		}
 		else
 		{
-		lockerMirrorDeleteDirectory.unlock();
+		//lockerMirrorDeleteDirectory.unlock();
 		return 0;
 		}
-	lockerMirrorDeleteDirectory.unlock();
+	//lockerMirrorDeleteDirectory.unlock();
+
+		*/
 
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 	
@@ -1649,7 +1638,7 @@ MirrorMoveFile(LPCWSTR FileName, // existing file name
 	
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 
-	QMutexLocker lockerMirrorMoveFile(&_mutexMirrorMoveFile);
+	//QMutexLocker lockerMirrorMoveFile(&_mutexMirrorMoveFile);
 	Vfs_windows *m_Vfs_windows = NULL;
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
@@ -1659,10 +1648,10 @@ MirrorMoveFile(LPCWSTR FileName, // existing file name
 	}
 	else
 	{
-		lockerMirrorMoveFile.unlock();
+		//lockerMirrorMoveFile.unlock();
 		return 0;
 	}
-	lockerMirrorMoveFile.unlock();
+	//lockerMirrorMoveFile.unlock();
 
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 
@@ -1761,20 +1750,25 @@ static NTSTATUS DOKAN_CALLBACK MirrorLockFile(LPCWSTR FileName,
 	
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 
-	QMutexLocker lockerMirrorLockFile(&_mutexMirrorLockFile);
+	/*
+	//QMutexLocker lockerMirrorLockFile(&_mutexMirrorLockFile);
 	Vfs_windows *m_Vfs_windows = NULL;
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
 		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationLockFile(QSFileName, QString("MirrorLockFile"), QString("InProcess..."));
+		{
+		}
+			//m_Vfs_windows->getOperationLockFile(QSFileName, QString("MirrorLockFile"), QString("InProcess..."));
 	}
 	else
 	{
-		lockerMirrorLockFile.unlock();
+		//lockerMirrorLockFile.unlock();
 		return 0;
 	}
-	lockerMirrorLockFile.unlock();
+	//lockerMirrorLockFile.unlock();
+
+	*/
 
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 
@@ -1822,20 +1816,25 @@ static NTSTATUS DOKAN_CALLBACK MirrorSetEndOfFile(
 	
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 
-	QMutexLocker lockerMirrorSetEndOfFile(&_mutexMirrorSetEndOfFile);
+	/*
+	//QMutexLocker lockerMirrorSetEndOfFile(&_mutexMirrorSetEndOfFile);
 	Vfs_windows *m_Vfs_windows = NULL;
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
 		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationSetEndOfFile(QSFileName, QString("MirrorSetEndOfFile"), QString("InProcess..."));
+		{
+
+		}
+			//m_Vfs_windows->getOperationSetEndOfFile(QSFileName, QString("MirrorSetEndOfFile"), QString("InProcess..."));
 	}
 	else
 	{
-		lockerMirrorSetEndOfFile.unlock();
+		//lockerMirrorSetEndOfFile.unlock();
 		return 0;
 	}
-	lockerMirrorSetEndOfFile.unlock();
+	*/
+	//lockerMirrorSetEndOfFile.unlock();
 
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 
@@ -1885,21 +1884,24 @@ static NTSTATUS DOKAN_CALLBACK MirrorSetAllocationSize(
 	
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 
-	QMutexLocker lockerMirrorSetAllocationSize(&_mutexMirrorSetAllocationSize);
+	/*
+	//QMutexLocker lockerMirrorSetAllocationSize(&_mutexMirrorSetAllocationSize);
 	Vfs_windows *m_Vfs_windows = NULL;
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
 		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationSetAllocationSize(QSFileName, QString("MirrorSetAllocationSize"), QString("InProcess..."));
+		{
+		}
+			//m_Vfs_windows->getOperationSetAllocationSize(QSFileName, QString("MirrorSetAllocationSize"), QString("InProcess..."));
 	}
 	else
 	{
-		lockerMirrorSetAllocationSize.unlock();
+		//lockerMirrorSetAllocationSize.unlock();
 		return 0;
 	}
-	lockerMirrorSetAllocationSize.unlock();
-
+	//lockerMirrorSetAllocationSize.unlock();
+	*/
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 
 
@@ -1957,20 +1959,25 @@ static NTSTATUS DOKAN_CALLBACK MirrorSetFileAttributes(
 	
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 
-	QMutexLocker lockerMirrorSetFileAttributes(&_mutexMirrorSetFileAttributes);
+	/*
+	//QMutexLocker lockerMirrorSetFileAttributes(&_mutexMirrorSetFileAttributes);
 	Vfs_windows *m_Vfs_windows = NULL;
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
 		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationSetFileAttributes(QSFileName, QString("MirrorSetFileAttributes"), QString("InProcess..."));
+		{
+
+		}
+			//m_Vfs_windows->getOperationSetFileAttributes(QSFileName, QString("MirrorSetFileAttributes"), QString("InProcess..."));
 	}
 	else
 	{
-		lockerMirrorSetFileAttributes.unlock();
+		//lockerMirrorSetFileAttributes.unlock();
 		return 0;
 	}
-	lockerMirrorSetFileAttributes.unlock();
+	//lockerMirrorSetFileAttributes.unlock();
+	*/
 
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 
@@ -2016,20 +2023,24 @@ MirrorSetFileTime(LPCWSTR FileName, CONST FILETIME *CreationTime,
 	
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 
-	QMutexLocker lockerMirrorSetFileTime(&_mutexMirrorSetFileTime);
-	Vfs_windows *m_Vfs_windows = NULL;
+	//QMutexLocker lockerMirrorSetFileTime(&_mutexMirrorSetFileTime);
+	/*Vfs_windows *m_Vfs_windows = NULL;
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
 		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationSetFileTime(QSFileName, QString("MirrorSetFileTime"), QString("InProcess..."));
+		{
+
+		}
+			//m_Vfs_windows->getOperationSetFileTime(QSFileName, QString("MirrorSetFileTime"), QString("InProcess..."));
 	}
 	else
 	{
-		lockerMirrorSetFileTime.unlock();
+		//lockerMirrorSetFileTime.unlock();
 		return 0;
 	}
-	lockerMirrorSetFileTime.unlock();
+	*/
+	//lockerMirrorSetFileTime.unlock();
 
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 
@@ -2073,21 +2084,23 @@ MirrorUnlockFile(LPCWSTR FileName, LONGLONG ByteOffset, LONGLONG Length,
 	
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 
-	QMutexLocker lockerMirrorUnlockFile(&_mutexMirrorUnlockFile);
-	Vfs_windows *m_Vfs_windows = NULL;
+	//QMutexLocker lockerMirrorUnlockFile(&_mutexMirrorUnlockFile);
+	/*Vfs_windows *m_Vfs_windows = NULL;
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
 		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationUnlockFile(QSFileName, QString("MirrorUnlockFile"), QString("InProcess..."));
+		{
+		}
+			//m_Vfs_windows->getOperationUnlockFile(QSFileName, QString("MirrorUnlockFile"), QString("InProcess..."));
 	}
 	else
 	{
-		lockerMirrorUnlockFile.unlock();
+		//lockerMirrorUnlockFile.unlock();
 		return 0;
 	}
-	lockerMirrorUnlockFile.unlock();
-
+	//lockerMirrorUnlockFile.unlock();
+	*/
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 
 
@@ -2136,20 +2149,24 @@ static NTSTATUS DOKAN_CALLBACK MirrorGetFileSecurity(
 	
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 
-	QMutexLocker lockerMirrorGetFileSecurity(&_mutexMirrorGetFileSecurity);
-	Vfs_windows *m_Vfs_windows = NULL;
+	//QMutexLocker lockerMirrorGetFileSecurity(&_mutexMirrorGetFileSecurity);
+	/*Vfs_windows *m_Vfs_windows = NULL;
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
 		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationGetFileSecurity(QSFileName, QString("MirrorGetFileSecurity"), QString("InProcess..."));
+		{
+
+		}
+			//m_Vfs_windows->getOperationGetFileSecurity(QSFileName, QString("MirrorGetFileSecurity"), QString("InProcess..."));
 	}
 	else
 	{
-		lockerMirrorGetFileSecurity.unlock();
+		//lockerMirrorGetFileSecurity.unlock();
 		return 0;
 	}
-	lockerMirrorGetFileSecurity.unlock();
+	*/
+	//lockerMirrorGetFileSecurity.unlock();
 
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 
@@ -2247,20 +2264,24 @@ static NTSTATUS DOKAN_CALLBACK MirrorSetFileSecurity(
 	
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 
-	QMutexLocker lockerMirrorSetFileSecurity(&_mutexMirrorSetFileSecurity);
-	Vfs_windows *m_Vfs_windows = NULL;
+	//QMutexLocker lockerMirrorSetFileSecurity(&_mutexMirrorSetFileSecurity);
+	/*Vfs_windows *m_Vfs_windows = NULL;
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
 		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationSetFileSecurity(QSFileName, QString("MirrorSetFileSecurity"), QString("InProcess..."));
+		{
+
+		}
+			//m_Vfs_windows->getOperationSetFileSecurity(QSFileName, QString("MirrorSetFileSecurity"), QString("InProcess..."));
 	}
 	else
 	{
-		lockerMirrorSetFileSecurity.unlock();
+		//lockerMirrorSetFileSecurity.unlock();
 		return 0;
 	}
-	lockerMirrorSetFileSecurity.unlock();
+	*/
+	//lockerMirrorSetFileSecurity.unlock();
 
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 
@@ -2296,19 +2317,20 @@ static NTSTATUS DOKAN_CALLBACK MirrorGetVolumeInformation(
 
 //qDebug() << Q_FUNC_INFO << " 1";
 
-	QMutexLocker lockerMirrorGetVolumeInformation(&_mutexMirrorGetVolumeInformation);
-	Vfs_windows *m_Vfs_windows = NULL;
+	//QMutexLocker lockerMirrorGetVolumeInformation(&_mutexMirrorGetVolumeInformation);
+	/*Vfs_windows *m_Vfs_windows = NULL;
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
-			m_Vfs_windows->getOperationCreateFile(QString("VolumeInformation"), QString("MirrorGetVolumeInformation"), QString("InProcess..."));
+			//m_Vfs_windows->getOperationCreateFile(QString("VolumeInformation"), QString("MirrorGetVolumeInformation"), QString("InProcess..."));
 	}
 	else
 	{
-		lockerMirrorGetVolumeInformation.unlock();
+		//lockerMirrorGetVolumeInformation.unlock();
 		return 0;
 	}
-	lockerMirrorGetVolumeInformation.unlock();
+	*/
+	//lockerMirrorGetVolumeInformation.unlock();
 
 //qDebug() << Q_FUNC_INFO << " 2";
 
@@ -2484,20 +2506,25 @@ MirrorFindStreams(LPCWSTR FileName, PFillFindStreamData FillFindStreamData,
 	
 //qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 
-	QMutexLocker lockerMirrorFindStreams(&_mutexMirrorFindStreams);
+	/*
+	//QMutexLocker lockerMirrorFindStreams(&_mutexMirrorFindStreams);
 	Vfs_windows *m_Vfs_windows = NULL;
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
 		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationFindStreams(QSFileName, QString("MirrorFindStreams"), QString("InProcess..."));
+		{
+
+		}
+			//m_Vfs_windows->getOperationFindStreams(QSFileName, QString("MirrorFindStreams"), QString("InProcess..."));
 	}
 	else
 	{
-		lockerMirrorFindStreams.unlock();
+		//lockerMirrorFindStreams.unlock();
 		return 0;
 	}
-	lockerMirrorFindStreams.unlock();
+	*/
+	//lockerMirrorFindStreams.unlock();
 
 //qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 
@@ -2609,11 +2636,15 @@ void Vfs_windows::slotSyncFinish()
     _mutex.lock();
     _syncCondition.wakeAll();
     _mutex.unlock();
+
+/////////////////
+	SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, QString("X:/").toStdWString().data(), NULL);
+/////////////////
 }
 
 void Vfs_windows::createFileAtPath(QString path, QVariantMap &error)
 {
-    emit addToFileTree(path);
+	emit addToFileTree(path);
 }
 
 void Vfs_windows::moveFileAtPath(QString path, QString npath, QVariantMap &error)
@@ -2629,15 +2660,35 @@ void Vfs_windows::createDirectoryAtPath(QString path, QVariantMap &error)
 void Vfs_windows::moveDirectoryAtPath(QString path, QString npath, QVariantMap &error)
 {
 	//TODO remove old path
-    emit move(npath);
+	emit move(npath);
 }
-
 
 void Vfs_windows::openFileAtPath(QString path, QVariantMap &error)
 {
 	_mutex.lock();
     emit openFile(path);
     _syncCondition.wait(&_mutex);
+/////////////////
+	QPair<QString, QString> q(path, "SYNC");
+	_syncFiles.append(q);
+	
+	QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
+	char fgv[5];
+	fgv[0] = 'X';
+	fgv[1] = ':';
+	fgv[2] = '\\';
+	fgv[3] = 0;
+	//fgv[4] = 0;
+
+	path.replace(0, relative_prefix.length(), fgv);
+
+	// SI ESTA EN LA RAIZ SE VA ASI
+	// 01-16 14:04:25:827 [ debug default ] 5928 OCC::Vfs_windows::openFileAtPath:  gbh path:  "X:\\0706075.pdf"
+
+	qDebug() << " gbh path: " << path;
+	SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, path.toStdWString().data(), NULL);
+	SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, QString("X:/").toStdWString().data(), NULL);
+/////////////////
     _mutex.unlock();
 }
 
@@ -2665,7 +2716,7 @@ void Vfs_windows::endDeleteDirectoryAtPath(QString path, QVariantMap &error)
 
 QStringList *Vfs_windows::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
 {
-qDebug() << Q_FUNC_INFO << " path: " << path;
+qDebug() << "gfds path: " << path;
 
 	ConfigFile cfgFile;
 	rootPath_ = cfgFile.defaultFileStreamMirrorPath();
@@ -2714,8 +2765,8 @@ qDebug() << Q_FUNC_INFO << " rootPath: " << rootPath_;
 		}
            }
        }
-       if (_fileListMap.value(path)->list.at(i)->type == ItemTypeFile)
-           emit addToFileTree(completePath);
+	   if (_fileListMap.value(path)->list.at(i)->type == ItemTypeFile)
+		   emit addToFileTree(completePath);
         //qDebug() << Q_FUNC_INFO << "results: " << r->name << r->type;
    }
 	
@@ -2759,147 +2810,6 @@ Vfs_windows::Vfs_windows(AccountState *accountState_)
     connect(this, &Vfs_windows::writeFile, _syncWrapper, &OCC::SyncWrapper::writeFileAtPath, Qt::QueuedConnection);
     connect(this, &Vfs_windows::deleteItem, _syncWrapper, &OCC::SyncWrapper::deleteItemAtPath, Qt::QueuedConnection);
     connect(this, &Vfs_windows::move, _syncWrapper, &OCC::SyncWrapper::moveItemAtPath, Qt::QueuedConnection);
-    
-//< Examples catch signals ...
-	/*connect(this, SIGNAL(getOperationCreateFile(QString, QString, QString)), SLOT(slotCatchOperationCreateFile(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationCleanup(QString, QString, QString)), SLOT(slotCatchOperationCleanup(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationCloseFile(QString, QString, QString)), SLOT(slotCatchOperationWriteFile(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationReadFile(QString, QString, QString)), SLOT(slotCatchOperationReadFile(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationWriteFile(QString, QString, QString)), SLOT(slotCatchOperationWriteFile(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationFlushFileBuffers(QString, QString, QString)), SLOT(slotCatchOperationFlushFileBuffers(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationGetFileInformation(QString, QString, QString)), SLOT(slotCatchOperationGetFileInformation(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationFindFiles(QString, QString, QString)), SLOT(slotCatchOperationFindFiles(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationFindFilesWithPattern(QString, QString, QString)), SLOT(slotCatchOperationFindFilesWithPattern(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationSetFileAttributes(QString, QString, QString)), SLOT(slotCatchOperationSetFileAttributes(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationSetFileTime(QString, QString, QString)), SLOT(slotCatchOperationSetFileTime(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationDeleteFile(QString, QString, QString)), SLOT(slotCatchOperationDeleteFile(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationDeleteDirectory(QString, QString, QString)), SLOT(slotCatchOperationDeleteDirectory(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationMoveFile(QString, QString, QString)), SLOT(slotCatchOperationMoveFile(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationSetEndOfFile(QString, QString, QString)), SLOT(slotCatchOperationSetEndOfFile(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationSetAllocationSize(QString, QString, QString)), SLOT(slotCatchOperationSetAllocationSize(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationLockFile(QString, QString, QString)), SLOT(slotCatchOperationLockFile(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationUnlockFile(QString, QString, QString)), SLOT(slotCatchOperationUnlockFile(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationGetFileSecurity(QString, QString, QString)), SLOT(slotCatchOperationGetFileSecurity(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationSetFileSecurity(QString, QString, QString)), SLOT(slotCatchOperationSetFileSecurity(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationGetDiskFreeSpace(QString, QString, QString)), SLOT(slotCatchOperationGetDiskFreeSpace(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationGetVolumeInformation(QString, QString, QString)), SLOT(slotCatchOperationGetVolumeInformation(QString, QString, QString)));
-	connect(this, SIGNAL(getOperationFindStreams(QString, QString, QString)), SLOT(slotCatchOperationFindStreams(QString, QString, QString)));*/
-}
-
-void Vfs_windows::slotCatchOperationCreateFile(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationCleanup(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationCloseFile(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationReadFile(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationWriteFile(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-
-void Vfs_windows::slotCatchOperationFlushFileBuffers(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationGetFileInformation(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationFindFiles(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationFindFilesWithPattern(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationSetFileAttributes(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationSetFileTime(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationDeleteFile(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationDeleteDirectory(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationMoveFile(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationSetEndOfFile(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationSetAllocationSize(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationLockFile(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationUnlockFile(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationGetFileSecurity(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationSetFileSecurity(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationGetDiskFreeSpace(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationGetVolumeInformation(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationFindStreams(QString a, QString b, QString c)
-{
-	qDebug() <<  Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
 }
 
 Vfs_windows::~Vfs_windows()

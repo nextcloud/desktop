@@ -54,10 +54,15 @@
 #include <QFileInfo>
 
 
+#include "configfile.h"
 #if QT_VERSION >= QT_VERSION_CHECK(5, 0, 0)
 #include <QStandardPaths>
 #endif
 
+#include "vfs_windows.h"
+
+#include <shlobj_core.h>
+#include <windows.h>
 
 // This is the version that is returned when the client asks for the VERSION.
 // The first number should be changed if there is an incompatible change that breaks old clients.
@@ -73,18 +78,18 @@ static inline QString removeTrailingSlash(QString path)
 
 static QString buildMessage(const QString &verb, const QString &path, const QString &status = QString())
 {
-    QString msg(verb);
+	QString msg(verb);
 
-    if (!status.isEmpty()) {
-        msg.append(QLatin1Char(':'));
-        msg.append(status);
-    }
-    if (!path.isEmpty()) {
-        msg.append(QLatin1Char(':'));
-        QFileInfo fi(path);
-        msg.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
-    }
-    return msg;
+	if (!status.isEmpty()) {
+		msg.append(QLatin1Char(':'));
+		msg.append(status);
+	}
+	if (!path.isEmpty()) {
+		msg.append(QLatin1Char(':'));
+		QFileInfo fi(path);
+		msg.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
+	}
+	return msg;
 }
 
 namespace OCC {
@@ -129,29 +134,29 @@ public:
     {
     }
 
-    void sendMessage(const QString &message, bool doWait = false) const
-    {
-        qCInfo(lcSocketApi) << "Sending SocketAPI message -->" << message << "to" << socket;
-        QString localMessage = message;
-        if (!localMessage.endsWith(QLatin1Char('\n'))) {
-            localMessage.append(QLatin1Char('\n'));
-        }
+	void sendMessage(const QString &message, bool doWait = false) const
+	{
+		qCInfo(lcSocketApi) << "Sending SocketAPI message -->" << message << "to" << socket;
+		QString localMessage = message;
+		if (!localMessage.endsWith(QLatin1Char('\n'))) {
+			localMessage.append(QLatin1Char('\n'));
+		}
 
-        QByteArray bytesToSend = localMessage.toUtf8();
-        qint64 sent = socket->write(bytesToSend);
-        if (doWait) {
-            socket->waitForBytesWritten(1000);
-        }
-        if (sent != bytesToSend.length()) {
-            qCWarning(lcSocketApi) << "Could not send all data on socket for " << localMessage;
-        }
-    }
+		QByteArray bytesToSend = localMessage.toUtf8();
+		qint64 sent = socket->write(bytesToSend);
+		if (doWait) {
+			socket->waitForBytesWritten(1000);
+		}
+		if (sent != bytesToSend.length()) {
+			qCWarning(lcSocketApi) << "Could not send all data on socket for " << localMessage;
+		}
+	}
 
-    void sendMessageIfDirectoryMonitored(const QString &message, uint systemDirectoryHash) const
-    {
-        if (_monitoredDirectoriesBloomFilter.isHashMaybeStored(systemDirectoryHash))
-            sendMessage(message, false);
-    }
+	void sendMessageIfDirectoryMonitored(const QString &message, uint systemDirectoryHash) const
+	{
+		if (_monitoredDirectoriesBloomFilter.isHashMaybeStored(systemDirectoryHash))
+			sendMessage(message, false);
+	}
 
     void registerMonitoredDirectory(uint systemDirectoryHash)
     {
@@ -249,30 +254,30 @@ SocketApi::~SocketApi()
 
 void SocketApi::slotNewConnection()
 {
-    // Note that on macOS this is not actually a line-based QIODevice, it's a SocketApiSocket which is our
-    // custom message based macOS IPC.
-    QIODevice *socket = _localServer.nextPendingConnection();
+	// Note that on macOS this is not actually a line-based QIODevice, it's a SocketApiSocket which is our
+	// custom message based macOS IPC.
+	QIODevice *socket = _localServer.nextPendingConnection();
 
-    if (!socket) {
-        return;
-    }
-    qCInfo(lcSocketApi) << "New connection" << socket;
-    connect(socket, &QIODevice::readyRead, this, &SocketApi::slotReadSocket);
-    connect(socket, SIGNAL(disconnected()), this, SLOT(onLostConnection()));
-    connect(socket, &QObject::destroyed, this, &SocketApi::slotSocketDestroyed);
-    ASSERT(socket->readAll().isEmpty());
+	if (!socket) {
+		return;
+	}
+	qCInfo(lcSocketApi) << "New connection" << socket;
+	connect(socket, &QIODevice::readyRead, this, &SocketApi::slotReadSocket);
+	connect(socket, SIGNAL(disconnected()), this, SLOT(onLostConnection()));
+	connect(socket, &QObject::destroyed, this, &SocketApi::slotSocketDestroyed);
+	ASSERT(socket->readAll().isEmpty());
 
-    _listeners.append(SocketListener(socket));
-    SocketListener &listener = _listeners.last();
+	_listeners.append(SocketListener(socket));
+	SocketListener &listener = _listeners.last();
 
-    foreach (Folder *f, FolderMan::instance()->map()) {
-        if (f->canSync()) {
-            QString message_mirror = buildRegisterPathMessage(removeTrailingSlash(f->path()));
-            QString message_fs = buildRegisterFsMessage();
-            listener.sendMessage(message_mirror);
-            listener.sendMessage(message_fs);
-        }
-    }
+	foreach(Folder *f, FolderMan::instance()->map()) {
+		if (f->canSync()) {
+			QString message_mirror = buildRegisterPathMessage(removeTrailingSlash(f->path()));
+			QString message_fs = buildRegisterFsMessage();
+			listener.sendMessage(message_mirror);
+			listener.sendMessage(message_fs);
+		}
+	}
 }
 
 void SocketApi::onLostConnection()
@@ -314,70 +319,86 @@ void SocketApi::slotReadSocket()
 
 void SocketApi::slotRegisterPath(const QString &alias)
 {
-    // Make sure not to register twice to each connected client
-    if (_registeredAliases.contains(alias))
-        return;
+	// Make sure not to register twice to each connected client
+	if (_registeredAliases.contains(alias))
+		return;
 
-    Folder *f = FolderMan::instance()->folder(alias);
-    if (f) {
-        QString message_mirror = buildRegisterPathMessage(removeTrailingSlash(f->path()));
-        QString message_fs = buildRegisterFsMessage();
-        foreach (auto &listener, _listeners) {
-            listener.sendMessage(message_mirror);
-            listener.sendMessage(message_fs);
-        }
-    }
+	Folder *f = FolderMan::instance()->folder(alias);
+	if (f) {
+		QString message_mirror = buildRegisterPathMessage(removeTrailingSlash(f->path()));
+		QString message_fs = buildRegisterFsMessage();
+		foreach(auto &listener, _listeners) {
+			listener.sendMessage(message_mirror);
+			listener.sendMessage(message_fs);
+		}
+	}
 
-    _registeredAliases.insert(alias);
+	_registeredAliases.insert(alias);
 }
 
 void SocketApi::slotUnregisterPath(const QString &alias)
 {
-    if (!_registeredAliases.contains(alias))
-        return;
+	if (!_registeredAliases.contains(alias))
+		return;
 
-    Folder *f = FolderMan::instance()->folder(alias);
-    if (f)
-        broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), removeTrailingSlash(f->path()), QString()), true);
+	Folder *f = FolderMan::instance()->folder(alias);
+	if (f)
+		broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), QString("X:/"), QString()), true);
 
-    _registeredAliases.remove(alias);
+	_registeredAliases.remove(alias);
 }
 
 void SocketApi::slotUpdateFolderView()
 {
-    if (_listeners.isEmpty()) {
-        return;
-    }
+	if (_listeners.isEmpty()) {
+		return;
+	}
 
-    Folder *f = FolderMan::instance()->currentSyncFolder();
-    if (f) {
-        // do only send UPDATE_VIEW for a couple of status
-        if (f->syncResult().status() == SyncResult::SyncPrepare
-            || f->syncResult().status() == SyncResult::Success
-            || f->syncResult().status() == SyncResult::Paused
-            || f->syncResult().status() == SyncResult::Problem
-            || f->syncResult().status() == SyncResult::Error
-            || f->syncResult().status() == SyncResult::SetupError) {
-            QString rootPath = removeTrailingSlash(f->path());
-            broadcastStatusPushMessage(rootPath, f->syncEngine().syncFileStatusTracker().fileStatus(""));
+	Folder *f = FolderMan::instance()->currentSyncFolder();
+	if (f) {
+		// do only send UPDATE_VIEW for a couple of status
+		if (f->syncResult().status() == SyncResult::SyncPrepare
+			|| f->syncResult().status() == SyncResult::Success
+			|| f->syncResult().status() == SyncResult::Paused
+			|| f->syncResult().status() == SyncResult::Problem
+			|| f->syncResult().status() == SyncResult::Error
+			|| f->syncResult().status() == SyncResult::SetupError) {
+			QString rootPath = removeTrailingSlash(f->path());
+			broadcastStatusPushMessage(QString("X:/"), f->syncEngine().syncFileStatusTracker().fileStatus(""));
 
-            broadcastMessage(buildMessage(QLatin1String("UPDATE_VIEW"), rootPath));
-        } else {
-            qCDebug(lcSocketApi) << "Not sending UPDATE_VIEW for" << f->alias() << "because status() is" << f->syncResult().status();
-        }
-    }
+			broadcastMessage(buildMessage(QLatin1String("UPDATE_VIEW"), QString("X:/")));
+		}
+		else {
+			qCDebug(lcSocketApi) << "Not sending UPDATE_VIEW for" << f->alias() << "because status() is" << f->syncResult().status();
+		}
+	}
 }
 
 void SocketApi::broadcastMessage(const QString &msg, bool doWait)
 {
-    foreach (auto &listener, _listeners) {
-        listener.sendMessage(msg, doWait);
-    }
+	foreach(auto &listener, _listeners) {
+		listener.sendMessage(msg, doWait);
+	}
 }
 
-void SocketApi::processShareRequest(const QString &localFile, SocketListener *listener, ShareDialogStartPage startPage)
+void SocketApi::processShareRequest(const QString &localFileC, SocketListener *listener, ShareDialogStartPage startPage)
 {
+	QString localFile = localFileC;
+	qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
+
+	OCC::ConfigFile Cfg;
+	char letter[2];
+	letter[0] = localFile.toStdString().c_str()[0];
+	letter[1] = 0;
+
+	if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+		localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+
+	qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+
+
     auto theme = Theme::instance();
+
     auto fileData = FileData::get(localFile);
     auto shareFolder = fileData.folder;
     if (!shareFolder) {
@@ -417,12 +438,38 @@ void SocketApi::processShareRequest(const QString &localFile, SocketListener *li
 
 void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus)
 {
-    QString msg = buildMessage(QLatin1String("STATUS"), systemPath, fileStatus.toSocketAPIString());
+	QString msg = buildMessage(QLatin1String("STATUS"), systemPath, fileStatus.toSocketAPIString());
     Q_ASSERT(!systemPath.endsWith('/'));
-    uint directoryHash = qHash(systemPath.left(systemPath.lastIndexOf('/')));
+	QString Letter("X://");
+	uint directoryHash = qHash(systemPath.left(Letter.lastIndexOf('/')));
     foreach (auto &listener, _listeners) {
-        listener.sendMessageIfDirectoryMonitored(msg, directoryHash);
-    }
+		QPair<QString, QString> yyy;
+		QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
+		QString systemPath2 = systemPath;
+		systemPath2.replace(0, relative_prefix.length(), QString("X:"));
+		QString msg2 = buildMessage(QLatin1String("STATUS"), systemPath2, fileStatus.toSocketAPIString());
+
+		QString hjy("");
+		foreach(yyy, OCC::Vfs_windows::instance()->_syncFiles)
+		{
+			if ((yyy.first == msg) && (yyy.second == QString("SYNC")))
+			{
+				hjy = msg;
+				break;
+			}
+		}
+		if (!hjy.isEmpty())
+			{
+				qDebug() << " gbh msg2: " << msg2;
+				listener.sendMessageIfDirectoryMonitored(msg2, directoryHash);
+			}
+		else
+			{
+				QString msg3 = buildMessage(QLatin1String("STATUS"), systemPath2, QString("NOP"));
+				qDebug() << " gbh msg3: " << msg3;
+				listener.sendMessageIfDirectoryMonitored(msg3, directoryHash);
+			}
+		}
 }
 
 void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString &argument, SocketListener *listener)
@@ -433,38 +480,65 @@ void SocketApi::command_RETRIEVE_FOLDER_STATUS(const QString &argument, SocketLi
 
 void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argument, SocketListener *listener)
 {
-    QString statusString;
+	QString statusString;
 
-    auto fileData = FileData::get(argument);
-    if (!fileData.folder) {
-        // this can happen in offline mode e.g.: nothing to worry about
-        statusString = QLatin1String("NOP");
-    } else {
+	auto fileData = FileData::get(argument);
+	if (!fileData.folder) {
+		// this can happen in offline mode e.g.: nothing to worry about
+		statusString = QLatin1String("NOP");
+	}
+	else {
 		QString systemPath = QDir::cleanPath(argument);
-        if (systemPath.endsWith(QLatin1Char('/'))) {
-            systemPath.truncate(systemPath.length() - 1);
-            qCWarning(lcSocketApi) << "Removed trailing slash for directory: " << systemPath << "Status pushes won't have one.";
-        }
-        // The user probably visited this directory in the file shell.
-        // Let the listener know that it should now send status pushes for sibblings of this file.
+		if (systemPath.endsWith(QLatin1Char('/'))) {
+			systemPath.truncate(systemPath.length() - 1);
+			qCWarning(lcSocketApi) << "Removed trailing slash for directory: " << systemPath << "Status pushes won't have one.";
+		}
+		// The user probably visited this directory in the file shell.
+		// Let the listener know that it should now send status pushes for sibblings of this file.
 		QString directory = fileData.localPath.left(fileData.localPath.lastIndexOf('/'));
-        listener->registerMonitoredDirectory(qHash(directory));
+		listener->registerMonitoredDirectory(qHash(QString("X://")));
 
 		SyncFileStatus fileStatus = fileData.syncFileStatus();
-        statusString = fileStatus.toSocketAPIString();
-    }
+		statusString = fileStatus.toSocketAPIString();
+	}
 
-    const QString message = QLatin1String("STATUS:") % statusString % QLatin1Char(':') % QDir::toNativeSeparators(argument);
-    listener->sendMessage(message);
+	const QString message = QLatin1String("STATUS:") % statusString % QLatin1Char(':') % QDir::toNativeSeparators(argument);
+	listener->sendMessage(message);
 }
 
-void SocketApi::command_SHARE(const QString &localFile, SocketListener *listener)
+void SocketApi::command_SHARE(const QString &localFileC, SocketListener *listener)
 {
+	QString localFile = localFileC;
+	qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
+
+	OCC::ConfigFile Cfg;
+	char letter[2];
+	letter[0] = localFile.toStdString().c_str()[0];
+	letter[1] = 0;
+
+	if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+		localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+
+	qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+
     processShareRequest(localFile, listener, ShareDialogStartPage::UsersAndGroups);
 }
 
-void SocketApi::command_MANAGE_PUBLIC_LINKS(const QString &localFile, SocketListener *listener)
+void SocketApi::command_MANAGE_PUBLIC_LINKS(const QString &localFileC, SocketListener *listener)
 {
+	QString localFile = localFileC;
+	qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
+
+	OCC::ConfigFile Cfg;
+	char letter[2];
+	letter[0] = localFile.toStdString().c_str()[0];
+	letter[1] = 0;
+
+	if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+		localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+
+	qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+
     processShareRequest(localFile, listener, ShareDialogStartPage::PublicLinks);
 }
 
@@ -473,8 +547,21 @@ void SocketApi::command_VERSION(const QString &, SocketListener *listener)
     listener->sendMessage(QLatin1String("VERSION:" MIRALL_VERSION_STRING ":" MIRALL_SOCKET_API_VERSION));
 }
 
-void SocketApi::command_SHARE_STATUS(const QString &localFile, SocketListener *listener)
+void SocketApi::command_SHARE_STATUS(const QString &localFileC, SocketListener *listener)
 {
+	QString localFile = localFileC;
+	qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
+
+	OCC::ConfigFile Cfg;
+	char letter[2];
+	letter[0] = localFile.toStdString().c_str()[0];
+	letter[1] = 0;
+
+	if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+		localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+
+	qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+
     Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
 
     if (!shareFolder) {
@@ -586,8 +673,22 @@ private slots:
         success(share->getLink().toString());
     }
 
-    void serverError(int code, const QString &message)
+    void serverError(int code, const QString &messageC)
     {
+		QString message = messageC;
+		qDebug() << Q_FUNC_INFO << " 1 kkkk message: " << message;
+
+		OCC::ConfigFile Cfg;
+		char letter[2];
+		letter[0] = message.toStdString().c_str()[0];
+		letter[1] = 0;
+
+		if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+			message.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+
+		qDebug() << Q_FUNC_INFO << " 2 kkkk message: " << message;
+
+
         qCWarning(lcPublicLink) << "Share fetch/create error" << code << message;
         QMessageBox::warning(
             0,
@@ -599,8 +700,21 @@ private slots:
     }
 
 private:
-    void success(const QString &link)
+    void success(const QString &linkC)
     {
+		QString link = linkC;
+		qDebug() << Q_FUNC_INFO << " 1 kkkk link: " << link;
+
+		OCC::ConfigFile Cfg;
+		char letter[2];
+		letter[0] = link.toStdString().c_str()[0];
+		letter[1] = 0;
+
+		if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+			link.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+
+		qDebug() << Q_FUNC_INFO << " 2 kkkk link: " << link;
+
         _targetFun(link);
         deleteLater();
     }
@@ -628,8 +742,21 @@ public:
 
 #endif
 
-void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFile, SocketListener *)
+void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFileC, SocketListener *)
 {
+	QString localFile = localFileC;
+	qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
+
+	OCC::ConfigFile Cfg;
+	char letter[2];
+	letter[0] = localFile.toStdString().c_str()[0];
+	letter[1] = 0;
+
+	if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+		localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+
+	qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+
     auto fileData = FileData::get(localFile);
     if (!fileData.folder)
         return;
@@ -640,8 +767,21 @@ void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFile, SocketListene
 }
 
 // Fetches the private link url asynchronously and then calls the target slot
-void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFile, const std::function<void(const QString &url)> &targetFun)
+void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFileC, const std::function<void(const QString &url)> &targetFun)
 {
+	QString localFile = localFileC;
+	qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
+
+	OCC::ConfigFile Cfg;
+	char letter[2];
+	letter[0] = localFile.toStdString().c_str()[0];
+	letter[1] = 0;
+
+	if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+		localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+
+	qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+
     auto fileData = FileData::get(localFile);
     if (!fileData.folder) {
         qCWarning(lcSocketApi) << "Unknown path" << localFile;
@@ -660,41 +800,133 @@ void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFile, const std::f
         targetFun);
 }
 
-void SocketApi::command_COPY_PRIVATE_LINK(const QString &localFile, SocketListener *)
+void SocketApi::command_COPY_PRIVATE_LINK(const QString &localFileC, SocketListener *)
 {
+	QString localFile = localFileC;
+	qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
+
+	OCC::ConfigFile Cfg;
+	char letter[2];
+	letter[0] = localFile.toStdString().c_str()[0];
+	letter[1] = 0;
+
+	if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+		localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+
+	qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+
     fetchPrivateLinkUrlHelper(localFile, &SocketApi::copyUrlToClipboard);
 }
 
-void SocketApi::command_EMAIL_PRIVATE_LINK(const QString &localFile, SocketListener *)
+void SocketApi::command_EMAIL_PRIVATE_LINK(const QString &localFileC, SocketListener *)
 {
+	QString localFile = localFileC;
+	qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
+
+	OCC::ConfigFile Cfg;
+	char letter[2];
+	letter[0] = localFile.toStdString().c_str()[0];
+	letter[1] = 0;
+
+	if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+		localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+
+	qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+
     fetchPrivateLinkUrlHelper(localFile, &SocketApi::emailPrivateLink);
 }
 
-void SocketApi::command_OPEN_PRIVATE_LINK(const QString &localFile, SocketListener *)
+void SocketApi::command_OPEN_PRIVATE_LINK(const QString &localFileC, SocketListener *)
 {
+	QString localFile = localFileC;
+	qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
+
+	OCC::ConfigFile Cfg;
+	char letter[2];
+	letter[0] = localFile.toStdString().c_str()[0];
+	letter[1] = 0;
+
+	if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+		localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+
+	qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+
     fetchPrivateLinkUrlHelper(localFile, &SocketApi::openPrivateLink);
 }
 
-void SocketApi::copyUrlToClipboard(const QString &link)
+void SocketApi::copyUrlToClipboard(const QString &linkC)
 {
+	QString link = linkC;
+	qDebug() << Q_FUNC_INFO << " 1 kkkk link: " << link;
+
+	OCC::ConfigFile Cfg;
+	char letter[2];
+	letter[0] = link.toStdString().c_str()[0];
+	letter[1] = 0;
+
+	if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+		link.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+
+	qDebug() << Q_FUNC_INFO << " 2 kkkk link: " << link;
+
     QApplication::clipboard()->setText(link);
 }
 
-void SocketApi::emailPrivateLink(const QString &link)
+void SocketApi::emailPrivateLink(const QString &linkC)
 {
+	QString link = linkC;
+	qDebug() << Q_FUNC_INFO << " 1 kkkk link: " << link;
+
+	OCC::ConfigFile Cfg;
+	char letter[2];
+	letter[0] = link.toStdString().c_str()[0];
+	letter[1] = 0;
+
+	if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+		link.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+
+	qDebug() << Q_FUNC_INFO << " 2 kkkk link: " << link;
+
     Utility::openEmailComposer(
         tr("I shared something with you"),
         link,
         0);
 }
 
-void OCC::SocketApi::openPrivateLink(const QString &link)
+void OCC::SocketApi::openPrivateLink(const QString &linkC)
 {
+	QString link = linkC;
+	qDebug() << Q_FUNC_INFO << " 1 kkkk link: " << link;
+
+	OCC::ConfigFile Cfg;
+	char letter[2];
+	letter[0] = link.toStdString().c_str()[0];
+	letter[1] = 0;
+
+	if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+		link.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+
+	qDebug() << Q_FUNC_INFO << " 2 kkkk link: " << link;
+
     Utility::openBrowser(link, nullptr);
 }
 
-void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *listener)
+void SocketApi::command_GET_STRINGS(const QString &argumentC, SocketListener *listener)
 {
+	QString argument = argumentC;
+	qDebug() << Q_FUNC_INFO << " 1 kkkk argument: " << argument;
+
+	OCC::ConfigFile Cfg;
+	char letter[2];
+	letter[0] = argument.toStdString().c_str()[0];
+	letter[1] = 0;
+
+	if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+		argument.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+
+	qDebug() << Q_FUNC_INFO << " 2 kkkk argument: " << argument;
+
+
     static std::array<std::pair<const char *, QString>, 5> strings { {
         { "SHARE_MENU_TITLE", tr("Share...") },
         { "CONTEXT_MENU_TITLE", Theme::instance()->appNameGUI() },
@@ -754,8 +986,22 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
     //listener->sendMessage(QLatin1String("MENU_ITEM:EMAIL_PRIVATE_LINK") + flagString + tr("Send private link by email..."));
 }
 
-SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
+SocketApi::FileData SocketApi::FileData::get(const QString &localFileC)
 {
+
+	QString localFile = localFileC;
+	qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
+
+	OCC::ConfigFile Cfg;
+	char letter[2];
+	letter[0] = localFile.toStdString().c_str()[0];
+	letter[1] = 0;
+
+	if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+		localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+
+	qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+
     FileData data;
 
     data.localPath = QDir::cleanPath(localFile);
@@ -788,8 +1034,21 @@ SyncJournalFileRecord SocketApi::FileData::journalRecord() const
     return record;
 }
 
-void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListener *listener)
+void SocketApi::command_GET_MENU_ITEMS(const QString &argumentC, OCC::SocketListener *listener)
 {
+	QString argument = argumentC;
+	qDebug() << Q_FUNC_INFO << " 1 kkkk argument: " << argument;
+
+	OCC::ConfigFile Cfg;
+	char letter[2];
+	letter[0] = argument.toStdString().c_str()[0];
+	letter[1] = 0;
+
+	if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+		argument.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+
+	qDebug() << Q_FUNC_INFO << " 2 kkkk argument: " << argument;
+
     listener->sendMessage(QString("GET_MENU_ITEMS:BEGIN"));
     bool hasSeveralFiles = argument.contains(QLatin1Char('\x1e')); // Record Separator
     FileData fileData = hasSeveralFiles ? FileData{} : FileData::get(argument);
@@ -802,12 +1061,13 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
     listener->sendMessage(QString("GET_MENU_ITEMS:END"));
 }
 
-QString SocketApi::buildRegisterPathMessage(const QString &path)
+QString SocketApi::buildRegisterPathMessage(const QString &pathC)
 {
-    QFileInfo fi(path);
-    QString message = QLatin1String("REGISTER_PATH:");
-    message.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
-    return message;
+	QString path("X:/");
+	QFileInfo fi(path);
+	QString message = QLatin1String("REGISTER_PATH:");
+	message.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
+	return message;
 }
     
 QString SocketApi::buildRegisterFsMessage()
@@ -854,136 +1114,136 @@ void SocketApi::command_SET_DOWNLOAD_MODE(const QString &argumentC, SocketListen
 	QString argument = argumentC;
 
 #if defined(Q_OS_WIN)
-        char Letter[2];
-        Letter[0] = argument.toStdString().c_str()[0];
-        Letter[1] = 0;
-        ConfigFile Cfg;
+	char Letter[2];
+	Letter[0] = argument.toStdString().c_str()[0];
+	Letter[1] = 0;
+	ConfigFile Cfg;
 
-    if (!QString(Letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
-        argument.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+	if (!QString(Letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+		argument.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
 #endif
 
-    qDebug() << Q_FUNC_INFO << " argument: " << argument;
+	qDebug() << Q_FUNC_INFO << " argument: " << argument;
 
-    #if defined(Q_OS_WIN)
-        //< Parser on type string: (for get path and type: 0 or 1).
-        //< "C:\\Users\\USERNAME\\DIR_LOCAL\\Mi unidad\\Mi unidad\\b6.txt|1"
-        std::string m_alias = argument.toLocal8Bit().constData();
-        char *pc = (char*)m_alias.c_str();
+#if defined(Q_OS_WIN)
+	//< Parser on type string: (for get path and type: 0 or 1).
+	//< "C:\\Users\\USERNAME\\DIR_LOCAL\\Mi unidad\\Mi unidad\\b6.txt|1"
+	std::string m_alias = argument.toLocal8Bit().constData();
+	char *pc = (char*)m_alias.c_str();
 
-        while (*pc != NULL)
-            pc++;
-        pc--;
-        char *pq = pc;
-        char *pw = pq -= 2;
-        pq = (char*)m_alias.c_str();
-        char QQ[300]; int l = 0;
-        while (pq != pw)
-            {
-            if (l < 300) {
-                QQ[l++] = *pq;
-            }
-            else
-                {
-                qDebug() << "\n" << Q_FUNC_INFO << " QQ is very small for enter value";
-                break;
-                }
-            pq++;
-            }
+	while (*pc != NULL)
+		pc++;
+	pc--;
+	char *pq = pc;
+	char *pw = pq -= 2;
+	pq = (char*)m_alias.c_str();
+	char QQ[300]; int l = 0;
+	while (pq != pw)
+	{
+		if (l < 300) {
+			QQ[l++] = *pq;
+		}
+		else
+		{
+			qDebug() << "\n" << Q_FUNC_INFO << " QQ is very small for enter value";
+			break;
+		}
+		pq++;
+	}
 
-        QQ[l]   = *pq;
-        QQ[l+1] = 0;
+	QQ[l] = *pq;
+	QQ[l + 1] = 0;
 
-		// fixpath
-        QString path = QString(QQ);
-        QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
-        path.replace(0, relative_prefix.length(), QString(""));
-        path.replace("\\","/");
+	// fixpath
+	QString path = QString(QQ);
+	QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
+	path.replace(0, relative_prefix.length(), QString(""));
+	path.replace("\\", "/");
 
-        qDebug() << "\n" << Q_FUNC_INFO << " QQ==" <<QQ<< "==";
+	qDebug() << "\n" << Q_FUNC_INFO << " QQ==" << QQ << "==";
 
-            if (*pc == '0')     //< OffLine
-            {
-        qDebug() << "\n" << Q_FUNC_INFO << " *pc is 0 OffLine";
-            SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_OFFLINE);
+	if (*pc == '0')     //< OffLine
+	{
+		qDebug() << "\n" << Q_FUNC_INFO << " *pc is 0 OffLine";
+		SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_OFFLINE);
 
-            //< Example
-            //SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
-            //SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
-            }
-            else if (*pc == '1')    //< OnLine
-            {
-        qDebug() << "\n" << Q_FUNC_INFO << " *pc is 1 Online";
-            SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_ONLINE);
+		//< Example
+		//SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+		//SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
+	}
+	else if (*pc == '1')    //< OnLine
+	{
+		qDebug() << "\n" << Q_FUNC_INFO << " *pc is 1 Online";
+		SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_ONLINE);
 
-            //< Example
-            //SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
-            //SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
-            }
+		//< Example
+		//SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
+		//SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
+	}
 #endif
 
-    qDebug() << "\n" << Q_FUNC_INFO << " Show paths BD INIT";
+	qDebug() << "\n" << Q_FUNC_INFO << " Show paths BD INIT";
 
-        //< Show paths from SyncMode table.
-        QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
-            QString item;
-            foreach(item, list)
-                {
+	//< Show paths from SyncMode table.
+	QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
+	QString item;
+	foreach(item, list)
+	{
 
-                SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
+		SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
 
-                if(m == SyncJournalDb::SYNCMODE_ONLINE) 
-                    qDebug() << " :::BD " << item << " ONLINE";
-    
-                if(m == SyncJournalDb::SYNCMODE_OFFLINE) 
-                    qDebug() << " :::BD " << item << " OFFLINE";
-                }
+		if (m == SyncJournalDb::SYNCMODE_ONLINE)
+			qDebug() << " :::BD " << item << " ONLINE";
 
-    qDebug() << "\n" << Q_FUNC_INFO << " Show paths BD END";
+		if (m == SyncJournalDb::SYNCMODE_OFFLINE)
+			qDebug() << " :::BD " << item << " OFFLINE";
+	}
 
-    }
+	qDebug() << "\n" << Q_FUNC_INFO << " Show paths BD END";
+
+}
 
 //< Windows & Mac callback for ContextMenu status option
 void SocketApi::command_GET_DOWNLOAD_MODE(const QString& localFileC, SocketListener* listener)
-    {
+{
 
 	QString localFile = localFileC;
 
 #if defined(Q_OS_WIN)
-        char Letter[2];
-        Letter[0] = localFile.toStdString().c_str()[0];
-        Letter[1] = 0;
-        ConfigFile Cfg;
+	char Letter[2];
+	Letter[0] = localFile.toStdString().c_str()[0];
+	Letter[1] = 0;
+	ConfigFile Cfg;
 
-        if (!QString(Letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
-            localFile.replace(0, 3, QString(""));
-        localFile.replace("\\", "/");
+	if (!QString(Letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
+		localFile.replace(0, 3, QString(""));
+	localFile.replace("\\", "/");
 #endif
 
-		qDebug() << Q_FUNC_INFO << " localFile_0: " << localFile;
+	qDebug() << Q_FUNC_INFO << " localFile_0: " << localFile;
 
-        QString downloadMode = "ONLINE";
+	QString downloadMode = "ONLINE";
 
-        //< Iterate paths from SyncMode table.
-        QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
-        QString item;
+	//< Iterate paths from SyncMode table.
+	QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
+	QString item;
 
-        foreach(item, list)
-        {
-            qDebug() << "  :::BD localFile: " << localFile << " item: " << item;
-            if (item.compare(localFile) == 0)
-            {
-            SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
-            if (m == SyncJournalDb::SYNCMODE_OFFLINE)
-				{
-                downloadMode = "OFFLINE";
-                qDebug() << "  :::BD item: " << item << " isOFFLINE";
-				}
-            break;
-            }
-        }
-        listener->sendMessage(QLatin1String("GET_DOWNLOAD_MODE:") + downloadMode);
-    }
+	foreach(item, list)
+	{
+		qDebug() << "  :::BD localFile: " << localFile << " item: " << item;
+		if (item.compare(localFile) == 0)
+		{
+			SyncJournalDb::SyncMode m = SyncJournalDb::instance()->getSyncMode(item);
+			if (m == SyncJournalDb::SYNCMODE_OFFLINE)
+			{
+				downloadMode = "OFFLINE";
+				qDebug() << "  :::BD item: " << item << " isOFFLINE";
+			}
+			break;
+		}
+	}
+	listener->sendMessage(QLatin1String("GET_DOWNLOAD_MODE:") + downloadMode);
+}
 } // namespace OCC
 
 #include "socketapi.moc"
