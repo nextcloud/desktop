@@ -495,10 +495,12 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             return;
         }
 
+        QString originalPathAdjusted = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Up);
+
         if (!base.isDirectory()) {
             csync_file_stat_t buf;
-            if (csync_vio_local_stat((_discoveryData->_localDir + originalPath).toUtf8(), &buf)) {
-                qCInfo(lcDisco) << "Local file does not exist anymore." << originalPath;
+            if (csync_vio_local_stat((_discoveryData->_localDir + originalPathAdjusted).toUtf8(), &buf)) {
+                qCInfo(lcDisco) << "Local file does not exist anymore." << originalPathAdjusted;
                 return;
             }
             // NOTE: This prohibits some VFS renames from being detected since
@@ -508,8 +510,8 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                 return;
             }
         } else {
-            if (!QFileInfo(_discoveryData->_localDir + originalPath).isDir()) {
-                qCInfo(lcDisco) << "Local directory does not exist anymore." << originalPath;
+            if (!QFileInfo(_discoveryData->_localDir + originalPathAdjusted).isDir()) {
+                qCInfo(lcDisco) << "Local directory does not exist anymore." << originalPathAdjusted;
                 return;
             }
         }
@@ -848,7 +850,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         } else {
             // We must query the server to know if the etag has not changed
             _pendingAsyncJobs++;
-            QString serverOriginalPath = originalPath;
+            QString serverOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
             if (base.isVirtualFile() && isVfsWithSuffix())
                 chopVirtualFileSuffix(serverOriginalPath);
             auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
