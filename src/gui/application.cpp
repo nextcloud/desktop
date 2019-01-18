@@ -381,7 +381,7 @@ void Application::slotAccountStateAdded(AccountState *accountState)
 
     //< For cron delete dir/files online. Execute each 60000 msec
     _cronDeleteOnlineFiles = new QTimer(this);
-    //connect(_cronDeleteOnlineFiles, SIGNAL(timeout()), this, SLOT(slotDeleteOnlineFiles()));
+    connect(_cronDeleteOnlineFiles, SIGNAL(timeout()), this, SLOT(slotDeleteOnlineFiles()));
     _cronDeleteOnlineFiles->start(60000);
 
     /* See SocketApi::command_SET_DOWNLOAD_MODE
