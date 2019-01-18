@@ -133,7 +133,7 @@ class DiscoveryPhase : public QObject
     friend class ProcessDirectoryJob;
     QMap<QString, SyncFileItemPtr> _deletedItem;
     QMap<QString, ProcessDirectoryJob *> _queuedDeletedDirectories;
-    // map source -> destinations
+    // map source (original path) -> destinations (current server or local path)
     QMap<QString, QString> _renamedItemsRemote;
     QMap<QString, QString> _renamedItemsLocal;
     bool isRenamed(const QString &p) { return _renamedItemsLocal.contains(p) || _renamedItemsRemote.contains(p); }
