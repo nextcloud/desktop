@@ -1268,8 +1268,8 @@ MirrorFlushFileBuffers(LPCWSTR FileName, PDOKAN_FILE_INFO DokanFileInfo) {
 		m_Vfs_windows = Vfs_windows::instance();
 		if (m_Vfs_windows)
 		{
-			if(QSFileName.compare("\\") != 0)
-				m_Vfs_windows->getOperationFlushFileBuffers(QSFileName, QString("MirrorFlushFileBuffers"), QString("InProcess..."));
+			//if(QSFileName.compare("\\") != 0)
+				//m_Vfs_windows->getOperationFlushFileBuffers(QSFileName, QString("MirrorFlushFileBuffers"), QString("InProcess..."));
 		}
 		else
 		{
@@ -1322,8 +1322,8 @@ static NTSTATUS DOKAN_CALLBACK MirrorGetFileInformation(
 		m_Vfs_windows = Vfs_windows::instance();
 		if (m_Vfs_windows)
 		{
-			if(QSFileName.compare("\\") != 0)
-				m_Vfs_windows->getOperationGetFileInformation(QSFileName, QString("MirrorGetFileInformation"), QString("InProcess..."));
+			//if(QSFileName.compare("\\") != 0)
+				//m_Vfs_windows->getOperationGetFileInformation(QSFileName, QString("MirrorGetFileInformation"), QString("InProcess..."));
 		}
 		else
 		{
@@ -1506,8 +1506,8 @@ MirrorDeleteFile(LPCWSTR FileName, PDOKAN_FILE_INFO DokanFileInfo) {
 		m_Vfs_windows = Vfs_windows::instance();
 		if (m_Vfs_windows)
 		{
-			if(QSFileName.compare("\\") != 0)
-				m_Vfs_windows->getOperationDeleteFile(QSFileName, QString("MirrorDeleteFile"), QString("InProcess..."));
+			//if(QSFileName.compare("\\") != 0)
+				//m_Vfs_windows->getOperationDeleteFile(QSFileName, QString("MirrorDeleteFile"), QString("InProcess..."));
 		}
 		else
 		{
@@ -1562,8 +1562,8 @@ MirrorDeleteDirectory(LPCWSTR FileName, PDOKAN_FILE_INFO DokanFileInfo) {
 		m_Vfs_windows = Vfs_windows::instance();
 		if (m_Vfs_windows)
 		{
-			if(QSFileName.compare("\\") != 0)
-				m_Vfs_windows->getOperationDeleteDirectory(QSFileName, QString("MirrorDeleteDirectory"), QString("InProcess..."));
+			//if(QSFileName.compare("\\") != 0)
+				//m_Vfs_windows->getOperationDeleteDirectory(QSFileName, QString("MirrorDeleteDirectory"), QString("InProcess..."));
 		}
 		else
 		{
@@ -1764,8 +1764,8 @@ static NTSTATUS DOKAN_CALLBACK MirrorLockFile(LPCWSTR FileName,
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
-		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationLockFile(QSFileName, QString("MirrorLockFile"), QString("InProcess..."));
+		//if (QSFileName.compare("\\") != 0)
+			//m_Vfs_windows->getOperationLockFile(QSFileName, QString("MirrorLockFile"), QString("InProcess..."));
 	}
 	else
 	{
@@ -1825,8 +1825,8 @@ static NTSTATUS DOKAN_CALLBACK MirrorSetEndOfFile(
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
-		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationSetEndOfFile(QSFileName, QString("MirrorSetEndOfFile"), QString("InProcess..."));
+		//if (QSFileName.compare("\\") != 0)
+			//m_Vfs_windows->getOperationSetEndOfFile(QSFileName, QString("MirrorSetEndOfFile"), QString("InProcess..."));
 	}
 	else
 	{
@@ -1888,8 +1888,8 @@ static NTSTATUS DOKAN_CALLBACK MirrorSetAllocationSize(
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
-		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationSetAllocationSize(QSFileName, QString("MirrorSetAllocationSize"), QString("InProcess..."));
+		//if (QSFileName.compare("\\") != 0)
+			//m_Vfs_windows->getOperationSetAllocationSize(QSFileName, QString("MirrorSetAllocationSize"), QString("InProcess..."));
 	}
 	else
 	{
@@ -1960,8 +1960,8 @@ static NTSTATUS DOKAN_CALLBACK MirrorSetFileAttributes(
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
-		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationSetFileAttributes(QSFileName, QString("MirrorSetFileAttributes"), QString("InProcess..."));
+		//if (QSFileName.compare("\\") != 0)
+			//m_Vfs_windows->getOperationSetFileAttributes(QSFileName, QString("MirrorSetFileAttributes"), QString("InProcess..."));
 	}
 	else
 	{
@@ -2019,8 +2019,8 @@ MirrorSetFileTime(LPCWSTR FileName, CONST FILETIME *CreationTime,
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
-		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationSetFileTime(QSFileName, QString("MirrorSetFileTime"), QString("InProcess..."));
+		//if (QSFileName.compare("\\") != 0)
+			//m_Vfs_windows->getOperationSetFileTime(QSFileName, QString("MirrorSetFileTime"), QString("InProcess..."));
 	}
 	else
 	{
@@ -2076,8 +2076,8 @@ MirrorUnlockFile(LPCWSTR FileName, LONGLONG ByteOffset, LONGLONG Length,
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
-		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationUnlockFile(QSFileName, QString("MirrorUnlockFile"), QString("InProcess..."));
+		//if (QSFileName.compare("\\") != 0)
+			//m_Vfs_windows->getOperationUnlockFile(QSFileName, QString("MirrorUnlockFile"), QString("InProcess..."));
 	}
 	else
 	{
@@ -2139,8 +2139,8 @@ static NTSTATUS DOKAN_CALLBACK MirrorGetFileSecurity(
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
-		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationGetFileSecurity(QSFileName, QString("MirrorGetFileSecurity"), QString("InProcess..."));
+		//if (QSFileName.compare("\\") != 0)
+			//m_Vfs_windows->getOperationGetFileSecurity(QSFileName, QString("MirrorGetFileSecurity"), QString("InProcess..."));
 	}
 	else
 	{
@@ -2250,8 +2250,8 @@ static NTSTATUS DOKAN_CALLBACK MirrorSetFileSecurity(
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
-		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationSetFileSecurity(QSFileName, QString("MirrorSetFileSecurity"), QString("InProcess..."));
+		//if (QSFileName.compare("\\") != 0)
+			//m_Vfs_windows->getOperationSetFileSecurity(QSFileName, QString("MirrorSetFileSecurity"), QString("InProcess..."));
 	}
 	else
 	{
@@ -2299,7 +2299,7 @@ static NTSTATUS DOKAN_CALLBACK MirrorGetVolumeInformation(
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
-			m_Vfs_windows->getOperationCreateFile(QString("VolumeInformation"), QString("MirrorGetVolumeInformation"), QString("InProcess..."));
+			//m_Vfs_windows->getOperationCreateFile(QString("VolumeInformation"), QString("MirrorGetVolumeInformation"), QString("InProcess..."));
 	}
 	else
 	{
@@ -2487,8 +2487,8 @@ MirrorFindStreams(LPCWSTR FileName, PFillFindStreamData FillFindStreamData,
 	m_Vfs_windows = Vfs_windows::instance();
 	if (m_Vfs_windows)
 	{
-		if (QSFileName.compare("\\") != 0)
-			m_Vfs_windows->getOperationFindStreams(QSFileName, QString("MirrorFindStreams"), QString("InProcess..."));
+		//if (QSFileName.compare("\\") != 0)
+			//m_Vfs_windows->getOperationFindStreams(QSFileName, QString("MirrorFindStreams"), QString("InProcess..."));
 	}
 	else
 	{
@@ -2847,121 +2847,121 @@ Vfs_windows::Vfs_windows(AccountState *accountState_)
 	connect(this, SIGNAL(getOperationFindStreams(QString, QString, QString)), SLOT(slotCatchOperationFindStreams(QString, QString, QString)));*/
 }
 
-void Vfs_windows::slotCatchOperationCreateFile(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationCleanup(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationCloseFile(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationReadFile(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationWriteFile(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-
-void Vfs_windows::slotCatchOperationFlushFileBuffers(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationGetFileInformation(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationFindFiles(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationFindFilesWithPattern(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationSetFileAttributes(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationSetFileTime(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationDeleteFile(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationDeleteDirectory(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationMoveFile(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationSetEndOfFile(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationSetAllocationSize(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationLockFile(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationUnlockFile(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationGetFileSecurity(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationSetFileSecurity(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationGetDiskFreeSpace(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationGetVolumeInformation(QString a, QString b, QString c)
-{
-	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
-
-void Vfs_windows::slotCatchOperationFindStreams(QString a, QString b, QString c)
-{
-	qDebug() <<  Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
-}
+//void Vfs_windows::slotCatchOperationCreateFile(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationCleanup(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationCloseFile(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationReadFile(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationWriteFile(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//
+//void Vfs_windows::slotCatchOperationFlushFileBuffers(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationGetFileInformation(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationFindFiles(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationFindFilesWithPattern(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationSetFileAttributes(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationSetFileTime(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationDeleteFile(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationDeleteDirectory(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationMoveFile(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationSetEndOfFile(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationSetAllocationSize(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationLockFile(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationUnlockFile(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationGetFileSecurity(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationSetFileSecurity(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationGetDiskFreeSpace(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationGetVolumeInformation(QString a, QString b, QString c)
+//{
+//	qDebug() << Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
+//
+//void Vfs_windows::slotCatchOperationFindStreams(QString a, QString b, QString c)
+//{
+//	qDebug() <<  Q_FUNC_INFO << " path: " << a << " oper: " << b << " type: " << c;
+//}
 
 Vfs_windows::~Vfs_windows()
 {

@@ -58,26 +58,7 @@ OCContextMenu::~OCContextMenu(void)
 
 void OCContextMenu::OnVerbDisplayFileName(HWND hWnd)
 {
-	OCClientInterface::ContextMenuInfo info = OCClientInterface::FetchInfo();
-
-	std::wstring FileStreamLetterDrive = info._defaultFileStreamLetterDrive;
-	std::transform(
-		FileStreamLetterDrive.begin(), FileStreamLetterDrive.end(),
-		FileStreamLetterDrive.begin(),
-		towupper);
-	FileStreamLetterDrive.append(L":\\");
-	std::wstring str23 = info.watchedDirectories.begin()->c_str();
-	str23.append((wchar_t*)L"\\");
-
-	if ((m_szSelectedFile[0] == towlower(FileStreamLetterDrive.c_str()[0])) ||
-		(m_szSelectedFile[0] == towupper(FileStreamLetterDrive.c_str()[0]))
-		)
-	{
-		std::wstring ws1(m_szSelectedFile);
-		ws1.replace(0, 3, str23);
-		wcscpy_s(m_szSelectedFile, ws1.size()+1, (wchar_t*) ws1.c_str());
-	}
-
+    OCClientInterface::ContextMenuInfo info = OCClientInterface::FetchInfo();
     OCClientInterface::ShareObject(std::wstring(m_szSelectedFile));
 }
 
@@ -172,8 +153,6 @@ void InsertSeperator(HMENU hMenu, UINT indexMenu)
 
 IFACEMETHODIMP OCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT idCmdFirst, UINT idCmdLast, UINT uFlags)
 {
-
-
 	//< Comment for file streaming test.
 	/*
     // If uFlags include CMF_DEFAULTONLY then we should not do anything.
@@ -185,18 +164,10 @@ IFACEMETHODIMP OCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
 
     OCClientInterface::ContextMenuInfo info = OCClientInterface::FetchInfo();
 
-	std::wstring FileStreamLetterDrive = info._defaultFileStreamLetterDrive;
-	std::transform(
-		FileStreamLetterDrive.begin(), FileStreamLetterDrive.end(),
-		FileStreamLetterDrive.begin(),
-		towupper);
-	FileStreamLetterDrive.append(L":\\");
-
 	bool skip = true;
     size_t selectedFileLength = wcslen(m_szSelectedFile);
     for (const std::wstring path : info.watchedDirectories) {
-        if (StringUtil::isDescendantOf(m_szSelectedFile, selectedFileLength, path) ||
-			StringUtil::isDescendantOf(m_szSelectedFile, selectedFileLength, FileStreamLetterDrive)) {
+        if (StringUtil::isDescendantOf(m_szSelectedFile, selectedFileLength, path)){ 
             skip = false;
             break;
         }
@@ -209,28 +180,12 @@ IFACEMETHODIMP OCContextMenu::QueryContextMenu(HMENU hMenu, UINT indexMenu, UINT
     InsertSeperator(hMenu, indexMenu);
     indexMenu++;
 
-    
-    /*assert(!info.shareMenuTitle.empty());
-    MENUITEMINFO mii = { sizeof(mii) };
-    mii.fMask = MIIM_STRING | MIIM_FTYPE | MIIM_ID | MIIM_STATE;
-    mii.wID = idCmdFirst + IDM_SHARE;
-    mii.fType = MFT_STRING;
-    mii.dwTypeData = &info.shareMenuTitle[0];
-    mii.fState = MFS_ENABLED;
-    
-    if (!InsertMenuItem(hMenu, indexMenu, TRUE, &mii))
-    {
-        return HRESULT_FROM_WIN32(GetLastError());
-    }
-    */
-	
-
 	// Query the download mode 
 	std::wstring downloadMode = OCClientInterface::GetDownloadMode(m_szSelectedFile);
 	bool checkOnlineItem = downloadMode == L"ONLINE";
 	bool checkOfflineItem = downloadMode == L"OFFLINE";
 
-    // Insert the drive online|offline submenu
+    // Insert the drive Online|Offline submenu
     {
         // Create the submenu
         HMENU hDriveSubMenu = CreateMenu();

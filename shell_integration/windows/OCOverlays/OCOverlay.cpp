@@ -135,17 +135,6 @@ IFACEMETHODIMP OCOverlay::IsMemberOf(PCWSTR pwszPath, DWORD dwAttrib)
         return MAKE_HRESULT(S_FALSE, 0, 0);
     }
 
-	//< @ JP 12-2018 For Icons on drive 'X', File Streamming
-	if ((pwszPath[0] == towlower(checker->getLetterDrive().c_str()[0])) ||
-		(pwszPath[0] == towupper(checker->getLetterDrive().c_str()[0])))
-	{
-		std::wstring ws1(pwszPath);
-		std::wstring str2 = watchedDirectories->begin()->c_str();
-		str2.append(L"\\");
-		ws1.replace(0, 3, str2);
-		pwszPath = ws1.c_str();
-	}
-
     bool watched = false;
     size_t pathLength = wcslen(pwszPath);
     for (auto it = watchedDirectories->begin(); it != watchedDirectories->end(); ++it) {
