@@ -409,10 +409,14 @@ void Application::slotAccountStateAdded(AccountState *accountState)
         qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " Bad up drive";
 #endif
 
-	//< For cron delete dir/files online. Execute each 60000 msec
-	_cronDeleteOnlineFiles = new QTimer(this);
+    //< For cron delete dir/files online. Execute each 60000 msec
+
+		//< Uncomment for test "Clean local folder" case.
+ 	/*_cronDeleteOnlineFiles = new QTimer(this);
 	connect(_cronDeleteOnlineFiles, SIGNAL(timeout()), this, SLOT(slotDeleteOnlineFiles()));
 	_cronDeleteOnlineFiles->start(60000);
+	*/
+	
 
 	/* See SocketApi::command_SET_DOWNLOAD_MODE
 	//< Dummy example; Not uncomment
@@ -779,74 +783,84 @@ bool removeDirs(const QString & dirName)
 
 void Application::slotDeleteOnlineFiles()
 {
+    qDebug() << Q_FUNC_INFO << " clfCase 00:";
 
-	qDebug() << Q_FUNC_INFO << " 00:";
-	
-	qDebug() << Q_FUNC_INFO << " 01: " << SyncJournalDb::instance()->databaseFilePath();
+    qDebug() << Q_FUNC_INFO << " 01: " << SyncJournalDb::instance()->databaseFilePath();
 
-	
-	//< Get paths SyncMode table.
-	QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
 
-	if (!list.empty())
-	{
-		qDebug() << Q_FUNC_INFO << " 02";
+    //< Get paths SyncMode table.
+    QList<QString> list = SyncJournalDb::instance()->getSyncModePaths();
 
-		QString item;
-		foreach(item, list)
-		{
-			qDebug() << Q_FUNC_INFO << " 03";
-			qint64 m_secondsSinceLastAccess = SyncJournalDb::instance()->secondsSinceLastAccess(item);
-			SyncJournalDb::SyncMode mode = SyncJournalDb::instance()->getSyncMode(item);
+    if (!list.empty())
+    {
+        qDebug() << Q_FUNC_INFO << " clfCase 02";
 
-			qDebug() << Q_FUNC_INFO << " 04";
+        QString item;
+        foreach(item, list)
+        {
+            qDebug() << Q_FUNC_INFO << " 03";
+            qint64 m_secondsSinceLastAccess = SyncJournalDb::instance()->secondsSinceLastAccess(item);
+            SyncJournalDb::SyncMode mode = SyncJournalDb::instance()->getSyncMode(item);
 
-			SyncJournalDb::SyncModeDownload down = SyncJournalDb::instance()->getSyncModeDownload(item);
+            qDebug() << Q_FUNC_INFO << " 04";
 
-			qDebug() << Q_FUNC_INFO << " 05";
+            SyncJournalDb::SyncModeDownload down = SyncJournalDb::instance()->getSyncModeDownload(item);
 
-			if (mode == SyncJournalDb::SyncMode::SYNCMODE_ONLINE)
-				qDebug() << "\n" << Q_FUNC_INFO << " item: " << item << " mode: " << "On line";
-			if (mode == SyncJournalDb::SyncMode::SYNCMODE_OFFLINE)
-				qDebug() << "\n" << Q_FUNC_INFO << " item: " << item << " mode: " << "Off line";
+            qDebug() << Q_FUNC_INFO << " 05";
 
-			if (down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO)
-				qDebug() << " downloaded: NO";
-			if (down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES)
-				qDebug() << " downloaded: YES";
+			if (mode == SyncJournalDb::SyncMode::SYNCMODE_ONLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NONE)
+                qDebug() << " clfCase item: " << item << " SYNCMODE_ONLINE - SYNCMODE_DOWNLOADED_NONE" << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
+            else if (mode == SyncJournalDb::SyncMode::SYNCMODE_OFFLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NONE)
+                qDebug() << " clfCase item: " << item << " SYNCMODE_OFFLINE - SYNCMODE_DOWNLOADED_NONE" << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
+            else if (mode == SyncJournalDb::SyncMode::SYNCMODE_ONLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO)
+                qDebug() << " clfCase item: " << item << " SYNCMODE_ONLINE - SYNCMODE_DOWNLOADED_NO" << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
+            else if (mode == SyncJournalDb::SyncMode::SYNCMODE_ONLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES)
+                qDebug() << " clfCase item: " << item << " SYNCMODE_ONLINE - SYNCMODE_DOWNLOADED_YES" << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
+            else if (mode == SyncJournalDb::SyncMode::SYNCMODE_OFFLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO)
+                qDebug() << " clfCase item: " << item << " SYNCMODE_OFFLINE - SYNCMODE_DOWNLOADED_NO" << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
+            else if (mode == SyncJournalDb::SyncMode::SYNCMODE_OFFLINE && down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES)
+                qDebug() << " clfCase item: " << item << " SYNCMODE_OFFLINE - SYNCMODE_DOWNLOADED_YES" << " secondsSinceLastAccess: " << m_secondsSinceLastAccess;
 
-			//< After 10' and assumption SYNCMODE_ONLINE = Online, SYNCMODE_ALWAYS = Offline.
-			if (m_secondsSinceLastAccess > 65 &&
-				(mode == SyncJournalDb::SyncMode::SYNCMODE_ONLINE) &&
-				(down == SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_YES)
-				)
-			{
-				qDebug() << Q_FUNC_INFO << " Prepare to delete file or dir ..." << item;
+            //< After 10' and assumption SYNCMODE_ONLINE = Online, SYNCMODE_ALWAYS = Offline.
+            if (m_secondsSinceLastAccess > 65 &&
+                (mode == SyncJournalDb::SyncMode::SYNCMODE_ONLINE)
+                )
+            {
+                QString relative_prefix;
 
-				QDir dir(item);
-				//< if is dir
-				if (dir.exists())
-				{
-					removeDirs(item);		//< Auxiliary function to remove folder contents
-				}
-				else
-				{
-					//< if is file
-					QFile file(item);
-					while (file.exists()) {
-						QFile::remove(item);	//< Remove	
-						QThread::msleep(100);
-					}
+				#if defined(Q_OS_WIN)
+					relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
+				#elif defined(Q_OS_MAC)
+					relative_prefix = QStandardPaths::writableLocation(QStandardPaths::DataLocation) + "/cachedFiles/";
+				#endif
 
-					QFile file2(item);			//< Create empty file
-					if (file2.open(QIODevice::ReadWrite))
-						file2.close();
-				}
-				SyncJournalDb::instance()->deleteSyncMode(item);
-			}
-		}
-	}
-	
+                QString realPathItem = relative_prefix.append(item);
+                qDebug() << " clfCase Prepare to delete file or dir ..." << item;
+
+                QDir dir(realPathItem);
+                //< if is dir
+                if (dir.exists())
+                {
+                    qDebug() << " clfCase remove dir ..." << realPathItem;
+                    removeDirs(realPathItem); //< Auxiliary function to remove folder contents
+                    SyncJournalDb::instance()->deleteFileRecord(item, true);
+                }
+                else
+                {
+                    qDebug() << " clfCase remove file ..." << realPathItem;
+
+                //< if is file
+                    QFile file(realPathItem);
+                    while (file.exists()) {
+                        QFile::remove(realPathItem); //< Remove
+                        QThread::msleep(100);
+                    }
+                SyncJournalDb::instance()->deleteFileRecord(item, false);
+                }
+                SyncJournalDb::instance()->deleteSyncMode(item);
+            }
+        }
+    }
 }
 
 bool Application::giveHelp()
