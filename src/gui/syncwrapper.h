@@ -21,6 +21,7 @@ public slots:
     //void updateSyncQueue();
     void updateFileTree(const QString path);
 
+	void createItemAtPath(const QString path);
     void openFileAtPath(const QString path);
     void writeFileAtPath(const QString path);
 	void releaseFileAtPath(const QString path);

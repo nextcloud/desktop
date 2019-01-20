@@ -77,6 +77,7 @@ signals:
 
 	// To sync: propagate FUSE operations to the sync engine
     void addToFileTree(const QString path);
+    void createItem(const QString path);
     void openFile(const QString path);
     void writeFile(const QString path);
     void deleteItem(const QString path);

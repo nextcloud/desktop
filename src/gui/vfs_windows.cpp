@@ -2644,7 +2644,7 @@ void Vfs_windows::slotSyncFinish()
 
 void Vfs_windows::createFileAtPath(QString path, QVariantMap &error)
 {
-	emit addToFileTree(path);
+    emit createItem(path);
 }
 
 void Vfs_windows::moveFileAtPath(QString path, QString npath, QVariantMap &error)
@@ -2655,6 +2655,7 @@ void Vfs_windows::moveFileAtPath(QString path, QString npath, QVariantMap &error
 
 void Vfs_windows::createDirectoryAtPath(QString path, QVariantMap &error)
 {
+    emit createItem(path);
 }
 
 void Vfs_windows::moveDirectoryAtPath(QString path, QString npath, QVariantMap &error)
@@ -2691,10 +2692,7 @@ void Vfs_windows::openFileAtPath(QString path, QVariantMap &error)
 
 void Vfs_windows::writeFileAtPath(QString path, QVariantMap &error)
 {
-	_mutex.lock();
 	emit writeFile(path);
-	_syncCondition.wait(&_mutex);
-	_mutex.unlock();
 }
 
 void Vfs_windows::deleteFileAtPath(QString path, QVariantMap &error)
@@ -2762,8 +2760,8 @@ qDebug() << Q_FUNC_INFO << " rootPath: " << rootPath_;
 		}
            }
        }
-	   if (_fileListMap.value(path)->list.at(i)->type == ItemTypeFile)
-		   emit addToFileTree(completePath);
+	   //if (_fileListMap.value(path)->list.at(i)->type == ItemTypeFile)
+	   emit addToFileTree(completePath);
         //qDebug() << Q_FUNC_INFO << "results: " << r->name << r->type;
    }
 	
@@ -2803,6 +2801,7 @@ Vfs_windows::Vfs_windows(AccountState *accountState_)
     connect(this, &Vfs_windows::addToFileTree, _syncWrapper, &OCC::SyncWrapper::updateFileTree, Qt::QueuedConnection);
     connect(_syncWrapper, &OCC::SyncWrapper::syncFinish, this, &Vfs_windows::slotSyncFinish, Qt::QueuedConnection);
 
+	connect(this, &Vfs_windows::createItem, _syncWrapper, &OCC::SyncWrapper::createItemAtPath, Qt::QueuedConnection);
 	connect(this, &Vfs_windows::openFile, _syncWrapper, &OCC::SyncWrapper::openFileAtPath, Qt::QueuedConnection);
     connect(this, &Vfs_windows::writeFile, _syncWrapper, &OCC::SyncWrapper::writeFileAtPath, Qt::QueuedConnection);
     connect(this, &Vfs_windows::deleteItem, _syncWrapper, &OCC::SyncWrapper::deleteItemAtPath, Qt::QueuedConnection);

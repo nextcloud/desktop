@@ -107,6 +107,7 @@ VfsMac::VfsMac(QString rootPath, bool isThreadSafe, OCC::AccountState *accountSt
     connect(this, &VfsMac::addToFileTree, _syncWrapper, &OCC::SyncWrapper::updateFileTree, Qt::QueuedConnection);
     connect(_syncWrapper, &OCC::SyncWrapper::syncFinish, this, &VfsMac::slotSyncFinish, Qt::QueuedConnection);
 
+	connect(this, &VfsMac::createItem, _syncWrapper, &OCC::SyncWrapper::createItemAtPath, Qt::QueuedConnection);
     connect(this, &VfsMac::openFile, _syncWrapper, &OCC::SyncWrapper::openFileAtPath, Qt::QueuedConnection);
     connect(this, &VfsMac::releaseFile, _syncWrapper, &OCC::SyncWrapper::releaseFileAtPath, Qt::QueuedConnection);
     connect(this, &VfsMac::deleteItem, _syncWrapper, &OCC::SyncWrapper::deleteItemAtPath, Qt::QueuedConnection);
@@ -496,6 +497,7 @@ bool VfsMac::createDirectoryAtPath(QString path, QVariantMap attributes, QVarian
 {
     QString p = rootPath_ + path;
     FileManager fm;
+    emit createItem(path);
     return fm.createDirectory(p, attributes, error);
 }
 
@@ -503,6 +505,7 @@ bool VfsMac::createFileAtPath(QString path, QVariantMap attributes, int flags, Q
 {
     QString p = rootPath_ + path;
     FileManager fm;
+    emit createItem(path);
     return fm.createFileAtPath(p, attributes, flags, userData, error);
 }
 
@@ -634,6 +637,7 @@ QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
                     close(fd.toInt());
                 }
             }
+            emit addToFileTree(completePath);
             // update file tree here?
         }
     }

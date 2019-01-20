@@ -50,6 +50,7 @@ QString SyncWrapper::getRelativePath(QString path)
         folderRelativePath = localPath.mid(folderForPath->cleanPath().length() + 1);
 
     qDebug() << "Path: " << path;
+    qDebug() << "Local Path: " << localPath;
     qDebug() << "Folder Relative Path: " << folderRelativePath;
 
     return folderRelativePath;
@@ -64,10 +65,15 @@ void SyncWrapper::updateFileTree(const QString path)
 {
     if (SyncJournalDb::instance()->getSyncMode(getRelativePath(path)) != SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
         SyncJournalDb::instance()->setSyncMode(getRelativePath(path), SyncJournalDb::SyncMode::SYNCMODE_ONLINE);
-		FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(path, CSYNC_INSTRUCTION_IGNORE);
+        FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(getRelativePath(path), CSYNC_INSTRUCTION_IGNORE);
     } else {
-        FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(path, CSYNC_INSTRUCTION_NEW);
+        FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(getRelativePath(path), CSYNC_INSTRUCTION_NEW);
 	}
+}
+
+void SyncWrapper::createItemAtPath(const QString path)
+{
+    sync(path, CSYNC_INSTRUCTION_NEW);
 }
 
 void SyncWrapper::openFileAtPath(const QString path)
@@ -120,9 +126,14 @@ void SyncWrapper::sync(const QString path, csync_instructions_e instruction)
 
 bool SyncWrapper::shouldSync(const QString path)
 {
+    if (SyncJournalDb::instance()->getSyncMode(path) != SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
+        SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SyncMode::SYNCMODE_OFFLINE);
+    }
+
+    FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(path, CSYNC_INSTRUCTION_NEW);
     // Checks sync mode
-    if (SyncJournalDb::instance()->getSyncMode(path) != SyncJournalDb::SyncMode::SYNCMODE_OFFLINE)
-        return false;
+    //if (SyncJournalDb::instance()->getSyncMode(path) != SyncJournalDb::SyncMode::SYNCMODE_OFFLINE)
+    //    return false;
 
     // checks if file is cached
     // checks last access
