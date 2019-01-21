@@ -46,6 +46,9 @@ public:
 
     bool isDehydratedPlaceholder(const QString &filePath) override;
     bool statTypeVirtualFile(csync_file_stat_t *stat, void *stat_data) override;
+
+public slots:
+    void fileStatusChanged(const QString &, SyncFileStatus) override {}
 };
 
 class SuffixVfsPluginFactory : public QObject, public DefaultPluginFactory<VfsSuffix>
