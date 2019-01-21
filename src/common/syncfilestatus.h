@@ -19,7 +19,7 @@
 #include <QObject>
 #include <QString>
 
-#include "owncloudlib.h"
+#include "ocsynclib.h"
 
 namespace OCC {
 
@@ -27,7 +27,7 @@ namespace OCC {
  * @brief The SyncFileStatus class
  * @ingroup libsync
  */
-class OWNCLOUDSYNC_EXPORT SyncFileStatus
+class OCSYNC_EXPORT SyncFileStatus
 {
 public:
     enum SyncFileStatusTag {

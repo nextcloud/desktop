@@ -47,7 +47,6 @@ set(libsync_SRCS
     propagatedownloadencrypted.cpp
     syncengine.cpp
     syncfileitem.cpp
-    syncfilestatus.cpp
     syncfilestatustracker.cpp
     localdiscoverytracker.cpp
     syncresult.cpp

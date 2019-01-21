@@ -18,7 +18,7 @@
 
 // #include "ownsql.h"
 #include "syncfileitem.h"
-#include "syncfilestatus.h"
+#include "common/syncfilestatus.h"
 #include <map>
 #include <QSet>
 

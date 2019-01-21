@@ -17,7 +17,7 @@
 #define SOCKETAPI_H
 
 #include "syncfileitem.h"
-#include "syncfilestatus.h"
+#include "common/syncfilestatus.h"
 #include "sharedialog.h" // for the ShareDialogStartPage
 #include "common/syncjournalfilerecord.h"
 
