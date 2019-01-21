@@ -20,7 +20,7 @@
 #include "common/syncjournalfilerecord.h"
 #include "discoveryphase.h"
 #include "creds/abstractcredentials.h"
-#include "syncfilestatus.h"
+#include "common/syncfilestatus.h"
 #include "csync_exclude.h"
 #include "filesystem.h"
 #include "propagateremotedelete.h"
