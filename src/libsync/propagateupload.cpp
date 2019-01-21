@@ -757,10 +757,8 @@ void PropagateUploadFileCommon::finalize()
     if (quotaIt != propagator()->_folderQuota.end())
         quotaIt.value() -= _fileToUpload._size;
 
-    // Update the database entry - use the local file, not the temporary one.
-    const auto filePath = propagator()->getFilePath(_item->_file);
-    const auto fileRecord = _item->toSyncJournalFileRecordWithInode(filePath);
-    if (!propagator()->_journal->setFileRecord(fileRecord)) {
+    // Update the database entry
+    if (!propagator()->updateMetadata(*_item)) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }

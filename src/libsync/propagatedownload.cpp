@@ -1041,7 +1041,7 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
 {
     QString fn = propagator()->getFilePath(_item->_file);
 
-    if (!propagator()->_journal->setFileRecord(_item->toSyncJournalFileRecordWithInode(fn))) {
+    if (!propagator()->updateMetadata(*_item)) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }
@@ -1053,6 +1053,7 @@ void PropagateDownloadFile::updateMetadata(bool isConflict)
     }
 
     propagator()->_journal->commit("download file start2");
+
     done(isConflict ? SyncFileItem::Conflict : SyncFileItem::Success);
 
     // handle the special recall file
