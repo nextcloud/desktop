@@ -67,18 +67,18 @@ bool VfsSuffix::updateMetadata(const QString &filePath, time_t modtime, quint64,
     return true;
 }
 
-void VfsSuffix::createPlaceholder(const QString &syncFolder, const SyncFileItemPtr &item)
+void VfsSuffix::createPlaceholder(const QString &syncFolder, const SyncFileItem &item)
 {
     // The concrete shape of the placeholder is also used in isDehydratedPlaceholder() below
-    QString fn = syncFolder + item->_file;
+    QString fn = syncFolder + item._file;
     QFile file(fn);
     file.open(QFile::ReadWrite | QFile::Truncate);
     file.write(" ");
     file.close();
-    FileSystem::setModTime(fn, item->_modtime);
+    FileSystem::setModTime(fn, item._modtime);
 }
 
-void VfsSuffix::convertToPlaceholder(const QString &, const SyncFileItemPtr &)
+void VfsSuffix::convertToPlaceholder(const QString &, const SyncFileItem &)
 {
     // Nothing necessary
 }

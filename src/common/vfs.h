@@ -31,7 +31,6 @@ typedef QSharedPointer<Account> AccountPtr;
 class SyncJournalDb;
 class VfsPrivate;
 class SyncFileItem;
-typedef QSharedPointer<SyncFileItem> SyncFileItemPtr;
 
 /** Collection of parameters for initializing a Vfs instance. */
 struct OCSYNC_EXPORT VfsSetupParams
@@ -129,15 +128,18 @@ public:
     virtual bool updateMetadata(const QString &filePath, time_t modtime, quint64 size, const QByteArray &fileId, QString *error) = 0;
 
     /// Create a new dehydrated placeholder. Called from PropagateDownload.
-    virtual void createPlaceholder(const QString &syncFolder, const SyncFileItemPtr &item) = 0;
+    virtual void createPlaceholder(const QString &syncFolder, const SyncFileItem &item) = 0;
 
     /** Convert a new file to a hydrated placeholder.
      *
      * Some VFS integrations expect that every file, including those that have all
      * the remote data, are "placeholders". This function is called by PropagateDownload
      * to convert newly downloaded, fully hydrated files into placeholders.
+     *
+     * Implementations must make sure that calling this function on a file that already
+     * is a placeholder is acceptable.
      */
-    virtual void convertToPlaceholder(const QString &filename, const SyncFileItemPtr &item) = 0;
+    virtual void convertToPlaceholder(const QString &filename, const SyncFileItem &item) = 0;
 
     /// Determine whether the file at the given absolute path is a dehydrated placeholder.
     virtual bool isDehydratedPlaceholder(const QString &filePath) = 0;
@@ -180,8 +182,8 @@ public:
     bool isHydrating() const override { return false; }
 
     bool updateMetadata(const QString &, time_t, quint64, const QByteArray &, QString *) override { return true; }
-    void createPlaceholder(const QString &, const SyncFileItemPtr &) override {}
-    void convertToPlaceholder(const QString &, const SyncFileItemPtr &) override {}
+    void createPlaceholder(const QString &, const SyncFileItem &) override {}
+    void convertToPlaceholder(const QString &, const SyncFileItem &) override {}
 
     bool isDehydratedPlaceholder(const QString &) override { return false; }
     bool statTypeVirtualFile(csync_file_stat_t *, void *) override { return false; }

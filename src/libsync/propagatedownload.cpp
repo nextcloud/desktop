@@ -440,7 +440,7 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
         auto fn = propagator()->getFilePath(_item->_file);
         qCDebug(lcPropagateDownload) << "creating virtual file" << fn;
 
-        vfs->createPlaceholder(propagator()->_localDir, _item);
+        vfs->createPlaceholder(propagator()->_localDir, *_item);
         updateMetadata(false);
         return;
     }
@@ -1005,7 +1005,7 @@ void PropagateDownloadFile::downloadFinished()
     }
 
     // Make the file a hydrated placeholder if possible
-    propagator()->syncOptions()._vfs->convertToPlaceholder(fn, _item);
+    propagator()->syncOptions()._vfs->convertToPlaceholder(fn, *_item);
 
     FileSystem::setFileHidden(fn, false);
 
