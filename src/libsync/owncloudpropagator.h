@@ -514,8 +514,11 @@ public:
      *
      * Typically after a sync operation succeeded. Updates the inode from
      * the filesystem.
+     *
+     * Will also trigger a Vfs::convertToPlaceholder.
      */
-    bool updateMetadata(const SyncFileItem &item);
+    static bool updateMetadata(const SyncFileItem &item, const QString &localFolderPath, SyncJournalDb &journal, Vfs &vfs);
+    bool updateMetadata(const SyncFileItem &item); // convenience for the above
 
 private slots:
 
@@ -574,15 +577,17 @@ class CleanupPollsJob : public QObject
     AccountPtr _account;
     SyncJournalDb *_journal;
     QString _localPath;
+    QSharedPointer<Vfs> _vfs;
 
 public:
     explicit CleanupPollsJob(const QVector<SyncJournalDb::PollInfo> &pollInfos, AccountPtr account,
-        SyncJournalDb *journal, const QString &localPath, QObject *parent = 0)
+        SyncJournalDb *journal, const QString &localPath, const QSharedPointer<Vfs> &vfs, QObject *parent = 0)
         : QObject(parent)
         , _pollInfos(pollInfos)
         , _account(account)
         , _journal(journal)
         , _localPath(localPath)
+        , _vfs(vfs)
     {
     }
 

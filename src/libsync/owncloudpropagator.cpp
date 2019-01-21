@@ -733,11 +733,17 @@ QString OwncloudPropagator::adjustRenamedPath(const QString &original) const
     return OCC::adjustRenamedPath(_renamedDirectories, original);
 }
 
+bool OwncloudPropagator::updateMetadata(const SyncFileItem &item, const QString &localFolderPath, SyncJournalDb &journal, Vfs &vfs)
+{
+    QString fsPath = localFolderPath + item.destination();
+    vfs.convertToPlaceholder(fsPath, item);
+    auto record = item.toSyncJournalFileRecordWithInode(fsPath);
+    return journal.setFileRecord(record);
+}
+
 bool OwncloudPropagator::updateMetadata(const SyncFileItem &item)
 {
-    QString fsPath = getFilePath(item.destination());
-    auto record = item.toSyncJournalFileRecordWithInode(fsPath);
-    return _journal->setFileRecord(record);
+    return updateMetadata(item, _localDir, *_journal, *syncOptions()._vfs);
 }
 
 // ================================================================================
@@ -1030,9 +1036,7 @@ void CleanupPollsJob::slotPollFinished()
     } else if (job->_item->_status != SyncFileItem::Success) {
         qCWarning(lcCleanupPolls) << "There was an error with file " << job->_item->_file << job->_item->_errorString;
     } else {
-        // want to do Propagator::updateMetadata()
-        QString filesystemPath = _localPath + job->_item->_file;
-        if (!_journal->setFileRecord(job->_item->toSyncJournalFileRecordWithInode(filesystemPath))) {
+        if (!OwncloudPropagator::updateMetadata(*job->_item, _localPath, *_journal, *_vfs)) {
             qCWarning(lcCleanupPolls) << "database error";
             job->_item->_status = SyncFileItem::FatalError;
             job->_item->_errorString = tr("Error writing metadata to the database");
