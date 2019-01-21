@@ -468,8 +468,11 @@ void Folder::startVfs()
     vfsParams.providerName = Theme::instance()->appNameGUI();
     vfsParams.providerVersion = Theme::instance()->version();
 
-    connect(_vfs.data(), &OCC::Vfs::beginHydrating, this, &Folder::slotHydrationStarts);
-    connect(_vfs.data(), &OCC::Vfs::doneHydrating, this, &Folder::slotHydrationDone);
+    connect(_vfs.data(), &Vfs::beginHydrating, this, &Folder::slotHydrationStarts);
+    connect(_vfs.data(), &Vfs::doneHydrating, this, &Folder::slotHydrationDone);
+
+    connect(&_engine->syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
+            _vfs.data(), &Vfs::fileStatusChanged);
 
     _vfs->registerFolder(vfsParams); // Do this always?
     _vfs->start(vfsParams);
@@ -623,6 +626,9 @@ void Folder::setSupportsVirtualFiles(bool enabled)
 
         _vfs->stop();
         _vfs->unregisterFolder();
+
+        disconnect(_vfs.data(), 0, this, 0);
+        disconnect(&_engine->syncFileStatusTracker(), 0, _vfs.data(), 0);
 
         _vfs.reset(createVfsFromPlugin(newMode).release());
 

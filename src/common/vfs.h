@@ -21,6 +21,7 @@
 
 #include "ocsynclib.h"
 #include "result.h"
+#include "syncfilestatus.h"
 
 typedef struct csync_file_stat_s csync_file_stat_t;
 
@@ -153,6 +154,15 @@ public:
      */
     virtual bool statTypeVirtualFile(csync_file_stat_t *stat, void *stat_data) = 0;
 
+public slots:
+    /** Update in-sync state based on SyncFileStatusTracker signal.
+     *
+     * For some vfs plugins the icons aren't based on SocketAPI but rather on data shared
+     * via the vfs plugin. The connection to SyncFileStatusTracker allows both to be based
+     * on the same data.
+     */
+    virtual void fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus) = 0;
+
 signals:
     /// Emitted when a user-initiated hydration starts
     void beginHydrating();
@@ -187,6 +197,9 @@ public:
 
     bool isDehydratedPlaceholder(const QString &) override { return false; }
     bool statTypeVirtualFile(csync_file_stat_t *, void *) override { return false; }
+
+public slots:
+    void fileStatusChanged(const QString &, SyncFileStatus) override {}
 };
 
 /// Check whether the plugin for the mode is available.
