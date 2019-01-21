@@ -733,6 +733,13 @@ QString OwncloudPropagator::adjustRenamedPath(const QString &original) const
     return OCC::adjustRenamedPath(_renamedDirectories, original);
 }
 
+bool OwncloudPropagator::updateMetadata(const SyncFileItem &item)
+{
+    QString fsPath = getFilePath(item.destination());
+    auto record = item.toSyncJournalFileRecordWithInode(fsPath);
+    return _journal->setFileRecord(record);
+}
+
 // ================================================================================
 
 PropagatorJob::PropagatorJob(OwncloudPropagator *propagator)
@@ -976,9 +983,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                     _item->_fileId = mkdir->_item->_fileId;
                 }
             }
-            SyncJournalFileRecord record = _item->toSyncJournalFileRecordWithInode(propagator()->_localDir + _item->_file);
-            bool ok = propagator()->_journal->setFileRecord(record);
-            if (!ok) {
+            if (!propagator()->updateMetadata(*_item)) {
                 status = _item->_status = SyncFileItem::FatalError;
                 _item->_errorString = tr("Error writing metadata to the database");
                 qCWarning(lcDirectory) << "Error writing to the database for file" << _item->_file;
@@ -1025,7 +1030,9 @@ void CleanupPollsJob::slotPollFinished()
     } else if (job->_item->_status != SyncFileItem::Success) {
         qCWarning(lcCleanupPolls) << "There was an error with file " << job->_item->_file << job->_item->_errorString;
     } else {
-        if (!_journal->setFileRecord(job->_item->toSyncJournalFileRecordWithInode(_localPath + job->_item->_file))) {
+        // want to do Propagator::updateMetadata()
+        QString filesystemPath = _localPath + job->_item->_file;
+        if (!_journal->setFileRecord(job->_item->toSyncJournalFileRecordWithInode(filesystemPath))) {
             qCWarning(lcCleanupPolls) << "database error";
             job->_item->_status = SyncFileItem::FatalError;
             job->_item->_errorString = tr("Error writing metadata to the database");
@@ -1033,6 +1040,7 @@ void CleanupPollsJob::slotPollFinished()
             deleteLater();
             return;
         }
+        // TODO: Is syncfilestatustracker notified somehow?
     }
     // Continue with the next entry, or finish
     start();

@@ -622,7 +622,7 @@ void PropagateUploadFileCommon::finalize()
         quotaIt.value() -= _item->_size;
 
     // Update the database entry
-    if (!propagator()->_journal->setFileRecord(_item->toSyncJournalFileRecordWithInode(propagator()->getFilePath(_item->_file)))) {
+    if (!propagator()->updateMetadata(*_item)) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }

@@ -24,10 +24,10 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFileItem, "sync.fileitem", QtInfoMsg)
 
-SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QString &localFileName)
+SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QString &localFileName) const
 {
     SyncJournalFileRecord rec;
-    rec._path = _file.toUtf8();
+    rec._path = destination().toUtf8();
     rec._modtime = _modtime;
     rec._type = _type;
     rec._etag = _etag;

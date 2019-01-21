@@ -87,7 +87,7 @@ public:
     };
     Q_ENUM(Status)
 
-    SyncJournalFileRecord toSyncJournalFileRecordWithInode(const QString &localFileName);
+    SyncJournalFileRecord toSyncJournalFileRecordWithInode(const QString &localFileName) const;
 
     /** Creates a basic SyncFileItem from a DB record
      *

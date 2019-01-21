@@ -510,6 +510,13 @@ public:
     QMap<QString, QString> _renamedDirectories;
     QString adjustRenamedPath(const QString &original) const;
 
+    /** Update the database for an item.
+     *
+     * Typically after a sync operation succeeded. Updates the inode from
+     * the filesystem.
+     */
+    bool updateMetadata(const SyncFileItem &item);
+
 private slots:
 
     void abortTimeout()

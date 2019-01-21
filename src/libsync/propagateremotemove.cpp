@@ -161,20 +161,18 @@ void PropagateRemoteMove::finalize()
     // to the new record. It is not a problem to skip it here.
     propagator()->_journal->deleteFileRecord(_item->_originalFile);
 
-    SyncJournalFileRecord record = _item->toSyncJournalFileRecordWithInode(propagator()->getFilePath(_item->_renameTarget));
-    record._path = _item->_renameTarget.toUtf8();
+    SyncFileItem newItem(*_item);
     if (oldRecord.isValid()) {
-        record._checksumHeader = oldRecord._checksumHeader;
-        record._type = oldRecord._type;
-        if (record._fileSize != oldRecord._fileSize) {
-            qCWarning(lcPropagateRemoteMove) << "File sizes differ on server vs sync journal: " << record._fileSize << oldRecord._fileSize;
+        newItem._checksumHeader = oldRecord._checksumHeader;
+        newItem._type = oldRecord._type;
+        if (newItem._size != oldRecord._fileSize) {
+            qCWarning(lcPropagateRemoteMove) << "File sizes differ on server vs sync journal: " << newItem._size << oldRecord._fileSize;
 
             // the server might have claimed a different size, we take the old one from the DB
-            record._fileSize = oldRecord._fileSize;
+            newItem._size = oldRecord._fileSize;
         }
     }
-
-    if (!propagator()->_journal->setFileRecord(record)) {
+    if (!propagator()->updateMetadata(newItem)) {
         done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
         return;
     }
