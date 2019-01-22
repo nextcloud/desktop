@@ -44,6 +44,7 @@ public:
         SyncProgressItemString,
         WarningCount,
         SyncRunning,
+        SyncDate,
 
         AddButton // 1 = enabled; 2 = disabled
     };
