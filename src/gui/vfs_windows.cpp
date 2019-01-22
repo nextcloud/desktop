@@ -2681,13 +2681,24 @@ void Vfs_windows::openFileAtPath(QString path, QVariantMap &error)
 	path.replace(0, relative_prefix.length(), fgv);
 
 	// SI ESTA EN LA RAIZ SE VA ASI
-	// 01-16 14:04:25:827 [ debug default ] 5928 OCC::Vfs_windows::openFileAtPath:  gbh path:  "X:\\0706075.pdf"
+        // 01-16 14:04:25:827 [ debug default ] 5928 OCC::Vfs_windows::openFileAtPath:  gbh path:  "X:\\0706075.pdf"
 
-	qDebug() << " gbh path: " << path;
-	SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, path.toStdWString().data(), NULL);
-	SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, QString("X:/").toStdWString().data(), NULL);
-/////////////////
-    _mutex.unlock();
+
+        QString name = path;
+        path.replace("\\", "/");
+        name.replace("\\", "/");
+
+
+        int pos = name.lastIndexOf(QChar('/'));
+
+        qDebug() << " gbh path: " << path;
+        qDebug() << " gbh fgv: " << fgv;
+        qDebug() << " gbh name.left(pos): " << name.left(pos);
+
+        SHChangeNotify(SHCNE_UPDATEITEM, SHCNF_PATH | SHCNF_FLUSHNOWAIT, path.toStdWString().data(), NULL);
+        SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, name.left(pos).toStdWString().data(), NULL);
+        //	SHChangeNotify(SHCNE_UPDATEDIR, SHCNF_PATH | SHCNF_FLUSHNOWAIT, QString("X:/").toStdWString().data(), NULL);
+        _mutex.unlock();
 }
 
 void Vfs_windows::writeFileAtPath(QString path, QVariantMap &error)

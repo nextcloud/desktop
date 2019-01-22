@@ -375,9 +375,9 @@ void SocketApi::slotUpdateFolderView()
 
 #if defined(Q_OS_WIN)
 			ConfigFile Cfg;
-			QString FileStreamLetterDrive = Cfg.defaultFileStreamLetterDrive().toUpper().append(":/");
+			QString FileStreamLetterDrive = Cfg.defaultFileStreamLetterDrive().toUpper().append(":");
 			broadcastStatusPushMessage(FileStreamLetterDrive, f->syncEngine().syncFileStatusTracker().fileStatus(""));
-			broadcastMessage(buildMessage(QLatin1String("UPDATE_VIEW"), FileStreamLetterDrive));
+			broadcastMessage(buildMessage(QLatin1String("UPDATE_VIEW"), FileStreamLetterDrive.append("/")));
 #elif defined(Q_OS_MAC)
 			broadcastStatusPushMessage(rootPath, f->syncEngine().syncFileStatusTracker().fileStatus(""));
 			broadcastMessage(buildMessage(QLatin1String("UPDATE_VIEW"), rootPath));
@@ -398,8 +398,8 @@ void SocketApi::broadcastMessage(const QString &msg, bool doWait)
 void SocketApi::processShareRequest(const QString &localFileC, SocketListener *listener, ShareDialogStartPage startPage)
 {
     QString localFile = localFileC;
-    qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
 
+#if defined(Q_OS_WIN)
     OCC::ConfigFile Cfg;
     char letter[2];
     letter[0] = localFile.toStdString().c_str()[0];
@@ -407,9 +407,7 @@ void SocketApi::processShareRequest(const QString &localFileC, SocketListener *l
 
     if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
         localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-
-    qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
-
+#endif
 
     auto theme = Theme::instance();
 
@@ -524,8 +522,8 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argumentC, SocketLis
 void SocketApi::command_SHARE(const QString &localFileC, SocketListener *listener)
 {
     QString localFile = localFileC;
-    qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
-
+    
+#if defined(Q_OS_WIN)
     OCC::ConfigFile Cfg;
     char letter[2];
     letter[0] = localFile.toStdString().c_str()[0];
@@ -533,8 +531,7 @@ void SocketApi::command_SHARE(const QString &localFileC, SocketListener *listene
 
     if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
         localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-
-    qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+#endif
 
     processShareRequest(localFile, listener, ShareDialogStartPage::UsersAndGroups);
 }
@@ -542,8 +539,8 @@ void SocketApi::command_SHARE(const QString &localFileC, SocketListener *listene
 void SocketApi::command_MANAGE_PUBLIC_LINKS(const QString &localFileC, SocketListener *listener)
 {
     QString localFile = localFileC;
-    qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
-
+    
+#if defined(Q_OS_WIN)
     OCC::ConfigFile Cfg;
     char letter[2];
     letter[0] = localFile.toStdString().c_str()[0];
@@ -551,8 +548,7 @@ void SocketApi::command_MANAGE_PUBLIC_LINKS(const QString &localFileC, SocketLis
 
     if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
         localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-
-    qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+#endif
 
     processShareRequest(localFile, listener, ShareDialogStartPage::PublicLinks);
 }
@@ -565,8 +561,8 @@ void SocketApi::command_VERSION(const QString &, SocketListener *listener)
 void SocketApi::command_SHARE_STATUS(const QString &localFileC, SocketListener *listener)
 {
     QString localFile = localFileC;
-    qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
 
+#if defined(Q_OS_WIN)
     OCC::ConfigFile Cfg;
     char letter[2];
     letter[0] = localFile.toStdString().c_str()[0];
@@ -574,8 +570,7 @@ void SocketApi::command_SHARE_STATUS(const QString &localFileC, SocketListener *
 
     if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
         localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-
-    qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+#endif
 
     Folder *shareFolder = FolderMan::instance()->folderForPath(localFile);
 
@@ -691,8 +686,8 @@ private slots:
     void serverError(int code, const QString &messageC)
     {
         QString message = messageC;
-        qDebug() << Q_FUNC_INFO << " 1 kkkk message: " << message;
 
+#if defined(Q_OS_WIN)
         OCC::ConfigFile Cfg;
         char letter[2];
         letter[0] = message.toStdString().c_str()[0];
@@ -700,11 +695,9 @@ private slots:
 
         if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
             message.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+#endif
 
-        qDebug() << Q_FUNC_INFO << " 2 kkkk message: " << message;
-
-
-        qCWarning(lcPublicLink) << "Share fetch/create error" << code << message;
+		qCWarning(lcPublicLink) << "Share fetch/create error" << code << message;
         QMessageBox::warning(
             0,
             tr("Sharing error"),
@@ -718,8 +711,8 @@ private:
     void success(const QString &linkC)
     {
         QString link = linkC;
-        qDebug() << Q_FUNC_INFO << " 1 kkkk link: " << link;
 
+#if defined(Q_OS_WIN)
         OCC::ConfigFile Cfg;
         char letter[2];
         letter[0] = link.toStdString().c_str()[0];
@@ -727,8 +720,7 @@ private:
 
         if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
             link.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-
-        qDebug() << Q_FUNC_INFO << " 2 kkkk link: " << link;
+#endif
 
         _targetFun(link);
         deleteLater();
@@ -760,8 +752,8 @@ public:
 void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFileC, SocketListener *)
 {
     QString localFile = localFileC;
-    qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
 
+#if defined(Q_OS_WIN)
     OCC::ConfigFile Cfg;
     char letter[2];
     letter[0] = localFile.toStdString().c_str()[0];
@@ -769,8 +761,7 @@ void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFileC, SocketListen
 
     if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
         localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-
-    qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+#endif
 
     auto fileData = FileData::get(localFile);
     if (!fileData.folder)
@@ -785,8 +776,8 @@ void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFileC, SocketListen
 void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFileC, const std::function<void(const QString &url)> &targetFun)
 {
     QString localFile = localFileC;
-    qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
 
+#if defined(Q_OS_WIN)
     OCC::ConfigFile Cfg;
     char letter[2];
     letter[0] = localFile.toStdString().c_str()[0];
@@ -794,8 +785,7 @@ void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFileC, const std::
 
     if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
         localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-
-    qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+#endif
 
     auto fileData = FileData::get(localFile);
     if (!fileData.folder) {
@@ -818,8 +808,8 @@ void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFileC, const std::
 void SocketApi::command_COPY_PRIVATE_LINK(const QString &localFileC, SocketListener *)
 {
     QString localFile = localFileC;
-    qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
 
+#if defined(Q_OS_WIN)
     OCC::ConfigFile Cfg;
     char letter[2];
     letter[0] = localFile.toStdString().c_str()[0];
@@ -827,8 +817,7 @@ void SocketApi::command_COPY_PRIVATE_LINK(const QString &localFileC, SocketListe
 
     if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
         localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-
-    qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+#endif
 
     fetchPrivateLinkUrlHelper(localFile, &SocketApi::copyUrlToClipboard);
 }
@@ -836,8 +825,8 @@ void SocketApi::command_COPY_PRIVATE_LINK(const QString &localFileC, SocketListe
 void SocketApi::command_EMAIL_PRIVATE_LINK(const QString &localFileC, SocketListener *)
 {
     QString localFile = localFileC;
-    qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
 
+#if defined(Q_OS_WIN)
     OCC::ConfigFile Cfg;
     char letter[2];
     letter[0] = localFile.toStdString().c_str()[0];
@@ -845,8 +834,7 @@ void SocketApi::command_EMAIL_PRIVATE_LINK(const QString &localFileC, SocketList
 
     if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
         localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-
-    qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+#endif
 
     fetchPrivateLinkUrlHelper(localFile, &SocketApi::emailPrivateLink);
 }
@@ -854,8 +842,8 @@ void SocketApi::command_EMAIL_PRIVATE_LINK(const QString &localFileC, SocketList
 void SocketApi::command_OPEN_PRIVATE_LINK(const QString &localFileC, SocketListener *)
 {
     QString localFile = localFileC;
-    qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
 
+#if defined(Q_OS_WIN)
     OCC::ConfigFile Cfg;
     char letter[2];
     letter[0] = localFile.toStdString().c_str()[0];
@@ -863,8 +851,7 @@ void SocketApi::command_OPEN_PRIVATE_LINK(const QString &localFileC, SocketListe
 
     if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
         localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-
-    qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+#endif
 
     fetchPrivateLinkUrlHelper(localFile, &SocketApi::openPrivateLink);
 }
@@ -872,8 +859,8 @@ void SocketApi::command_OPEN_PRIVATE_LINK(const QString &localFileC, SocketListe
 void SocketApi::copyUrlToClipboard(const QString &linkC)
 {
     QString link = linkC;
-    qDebug() << Q_FUNC_INFO << " 1 kkkk link: " << link;
 
+#if defined(Q_OS_WIN)
     OCC::ConfigFile Cfg;
     char letter[2];
     letter[0] = link.toStdString().c_str()[0];
@@ -881,8 +868,7 @@ void SocketApi::copyUrlToClipboard(const QString &linkC)
 
     if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
         link.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-
-    qDebug() << Q_FUNC_INFO << " 2 kkkk link: " << link;
+#endif
 
     QApplication::clipboard()->setText(link);
 }
@@ -890,8 +876,8 @@ void SocketApi::copyUrlToClipboard(const QString &linkC)
 void SocketApi::emailPrivateLink(const QString &linkC)
 {
     QString link = linkC;
-    qDebug() << Q_FUNC_INFO << " 1 kkkk link: " << link;
 
+#if defined(Q_OS_WIN)
     OCC::ConfigFile Cfg;
     char letter[2];
     letter[0] = link.toStdString().c_str()[0];
@@ -899,8 +885,7 @@ void SocketApi::emailPrivateLink(const QString &linkC)
 
     if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
         link.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-
-    qDebug() << Q_FUNC_INFO << " 2 kkkk link: " << link;
+#endif
 
     Utility::openEmailComposer(
         tr("I shared something with you"),
@@ -911,8 +896,8 @@ void SocketApi::emailPrivateLink(const QString &linkC)
 void OCC::SocketApi::openPrivateLink(const QString &linkC)
 {
     QString link = linkC;
-    qDebug() << Q_FUNC_INFO << " 1 kkkk link: " << link;
 
+#if defined(Q_OS_WIN)
     OCC::ConfigFile Cfg;
     char letter[2];
     letter[0] = link.toStdString().c_str()[0];
@@ -920,8 +905,7 @@ void OCC::SocketApi::openPrivateLink(const QString &linkC)
 
     if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
         link.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-
-    qDebug() << Q_FUNC_INFO << " 2 kkkk link: " << link;
+#endif
 
     Utility::openBrowser(link, nullptr);
 }
@@ -929,8 +913,8 @@ void OCC::SocketApi::openPrivateLink(const QString &linkC)
 void SocketApi::command_GET_STRINGS(const QString &argumentC, SocketListener *listener)
 {
     QString argument = argumentC;
-    qDebug() << Q_FUNC_INFO << " 1 kkkk argument: " << argument;
 
+#if defined(Q_OS_WIN)
     OCC::ConfigFile Cfg;
     char letter[2];
     letter[0] = argument.toStdString().c_str()[0];
@@ -938,9 +922,7 @@ void SocketApi::command_GET_STRINGS(const QString &argumentC, SocketListener *li
 
     if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
         argument.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-
-    qDebug() << Q_FUNC_INFO << " 2 kkkk argument: " << argument;
-
+#endif
 
     static std::array<std::pair<const char *, QString>, 5> strings{ {
         { "SHARE_MENU_TITLE", tr("Share...") },
@@ -1004,8 +986,8 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
 SocketApi::FileData SocketApi::FileData::get(const QString &localFileC)
 {
     QString localFile = localFileC;
-    qDebug() << Q_FUNC_INFO << " 1 kkkk localFile: " << localFile;
 
+#if defined(Q_OS_WIN)
     OCC::ConfigFile Cfg;
     char letter[2];
     letter[0] = localFile.toStdString().c_str()[0];
@@ -1013,8 +995,7 @@ SocketApi::FileData SocketApi::FileData::get(const QString &localFileC)
 
     if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
         localFile.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-
-    qDebug() << Q_FUNC_INFO << " 2 kkkk localFile: " << localFile;
+#endif
 
     FileData data;
 
@@ -1051,8 +1032,8 @@ SyncJournalFileRecord SocketApi::FileData::journalRecord() const
 void SocketApi::command_GET_MENU_ITEMS(const QString &argumentC, OCC::SocketListener *listener)
 {
     QString argument = argumentC;
-    qDebug() << Q_FUNC_INFO << " 1 kkkk argument: " << argument;
 
+#if defined(Q_OS_WIN)
     OCC::ConfigFile Cfg;
     char letter[2];
     letter[0] = argument.toStdString().c_str()[0];
@@ -1060,8 +1041,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argumentC, OCC::SocketList
 
     if (!QString(letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
         argument.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-
-    qDebug() << Q_FUNC_INFO << " 2 kkkk argument: " << argument;
+#endif
 
     listener->sendMessage(QString("GET_MENU_ITEMS:BEGIN"));
     bool hasSeveralFiles = argument.contains(QLatin1Char('\x1e')); // Record Separator
@@ -1143,8 +1123,6 @@ void SocketApi::command_SET_DOWNLOAD_MODE(const QString &argumentC, SocketListen
     if (!QString(Letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
         argument.replace(0, 3, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
 #endif
-
-    qDebug() << Q_FUNC_INFO << " argument: " << argument;
 
 #if defined(Q_OS_WIN)
     //< Parser on type string: (for get path and type: 0 or 1).
