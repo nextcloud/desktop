@@ -340,11 +340,12 @@ int  OCSYNC_EXPORT csync_abort_requested(CSYNC *ctx);
  * @brief Add or update file to the local tree
  *
  * @param ctx           The csync context.
- * @param uri           The local folder.
- * @param key           File name.
+ * @param absolutePath  The local folder.
+ * @param relativePath  Path relative to the local folder..
+ * @param fileName      The file name.
  * @param csync_instructions_e instructio for the file.
  */
-bool OCSYNC_EXPORT cysnc_update_file(CSYNC *ctx, const char *uri, const QByteArray &key, csync_instructions_e instruction);
+bool OCSYNC_EXPORT cysnc_update_file(CSYNC *ctx, const char *absolutePath, const QByteArray &relativePath, const QByteArray &fileName, csync_instructions_e instruction);
 
 time_t OCSYNC_EXPORT oc_httpdate_parse( const char *date );
 

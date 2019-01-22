@@ -1636,20 +1636,25 @@ void SyncEngine::updateLocalFileTree(const QString &path, csync_instructions_e i
         if(!_csync_ctx.isNull()){
             _csync_ctx->fuseEnabled = true;
 
-            QString absolutePath = QFileInfo(path).absolutePath();
-            QString fileName = QFileInfo(path).fileName();
+			QString fullPath(QFileInfo(_localPath).absolutePath());
+            fullPath.append("/");
+            fullPath.append(path);
 
-            QByteArray localPath(absolutePath.toLatin1());
-            if (localPath.endsWith("/"))
-                localPath.chop(1);
+            QString absolutePath(QFileInfo(fullPath).absolutePath());
+            if (absolutePath.endsWith("/"))
+                absolutePath.chop(1);
 
-			qDebug() << "path: " << path;
+            QString relativePath(path);
+            QString fileName(QFileInfo(path).fileName());
+
+			qDebug() << "UPDATE LOCAL FILE TREE ######################################################";
+			qDebug() << "relativePath: " << relativePath;
             qDebug() << "absolutePath: " << absolutePath;
             qDebug() << "fileName: " << fileName;
-            qDebug() << "Local Path: " << localPath;
+            qDebug() << "######################################################";
 
-            if (cysnc_update_file(_csync_ctx.data(), localPath, fileName.toLatin1(), instruction)) {
-                qDebug() << "Added file to local file tree!" << localPath << path;
+            if (cysnc_update_file(_csync_ctx.data(), absolutePath.toLatin1(), relativePath.toLatin1(), fileName.toLatin1(), instruction)) {
+                qDebug() << "Added file to local file tree!" << absolutePath << fileName;
             }
         }
     }

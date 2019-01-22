@@ -667,6 +667,12 @@ int csync_ftw(CSYNC *ctx, const char *uri, csync_walker_fn fn,
       goto error;
   }
 
+  if (ctx->current == REMOTE_REPLICA) {
+      qDebug() << "ALL GOOD!";
+  } else {
+      qDebug() << "IT WILL BREAK!";
+  }
+
   while ((dirent = csync_vio_readdir(ctx, dh))) {
     /* Conversion error */
     if (dirent->path.isEmpty() && !dirent->original_path.isEmpty()) {

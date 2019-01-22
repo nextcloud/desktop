@@ -110,10 +110,19 @@ int csync_update(CSYNC *ctx) {
 
   /* update detection for remote replica */
   timer.restart();
-  ctx->current = REMOTE_REPLICA;
+
+  std::unordered_map<ByteArrayRef, std::unique_ptr<csync_file_stat_t>, ByteArrayRefHash>::iterator it = ctx->local.files.begin();
+  qDebug() << "LOCAL ######################################################";
+  while (it != ctx->local.files.end()) {
+    qDebug() << "localFile->file_id " << it->second->file_id;
+    qDebug() << "localFile->path " << it->second->path;
+    qDebug() << "localFile->instruction " << it->second->instruction;
+    it++;
+  }
+  qDebug() << "######################################################";
 
   qCInfo(lcCSync, "## Starting remote discovery ##");
-
+  ctx->current = REMOTE_REPLICA;
   rc = csync_ftw(ctx, "", csync_walker, MAX_DEPTH);
   if (rc < 0) {
       if(ctx->status_code == CSYNC_STATUS_OK) {
@@ -121,6 +130,16 @@ int csync_update(CSYNC *ctx) {
       }
       return rc;
   }
+
+  std::unordered_map<ByteArrayRef, std::unique_ptr<csync_file_stat_t>, ByteArrayRefHash>::iterator it2 = ctx->remote.files.begin();
+  qDebug() << "REMOTE ######################################################";
+  while (it2 != ctx->remote.files.end()) {
+      qDebug() << "remote->file_id " << it2->second->file_id;
+      qDebug() << "remote->path " << it2->second->path;
+      qDebug() << "remote->instruction " << it2->second->instruction;
+      it2++;
+  }
+  qDebug() << "######################################################";
 
 
   qCInfo(lcCSync) << "Update detection for remote replica took" << timer.elapsed() / 1000.
@@ -335,10 +354,23 @@ int  csync_abort_requested(CSYNC *ctx)
   }
 }
 
-bool cysnc_update_file(CSYNC *ctx, const char *uri, const QByteArray &key, csync_instructions_e instruction){
-    csync_file_stat_t *fs = ctx->local.files.findFile(key);
+bool cysnc_update_file(CSYNC *ctx, const char *absolutePath, const QByteArray &relativePath, const QByteArray &fileName, csync_instructions_e instruction)
+{
+    csync_file_stat_t *fs = ctx->local.files.findFile(relativePath);
     if(fs){
       fs->instruction = instruction;
+
+	  std::unordered_map<ByteArrayRef, std::unique_ptr<csync_file_stat_t>, ByteArrayRefHash>::iterator it = ctx->local.files.begin();
+      qDebug() << "FOUND FILE IN TREE ######################################################";
+      while (it != ctx->local.files.end()) {
+          qDebug() << "localFile->file_id " << it->second->file_id;
+          qDebug() << "localFile->path " << it->second->path;
+          qDebug() << "localFile->original_path " << it->second->original_path;
+          qDebug() << "localFile->instruction " << it->second->instruction;
+          it++;
+      }
+      qDebug() << "######################################################";
+
       return true;
 
     } else {
@@ -347,14 +379,14 @@ bool cysnc_update_file(CSYNC *ctx, const char *uri, const QByteArray &key, csync
         csync_file_stat_t *previous_fs = NULL;
         csync_vio_handle_t *dh = NULL;
         unsigned int depth = MAX_DEPTH;
-        QByteArray filename;
+        QByteArray filenameBuffer;
         QByteArray fullpath;
         int read_from_db = 0;
 
         ctx->current = LOCAL_REPLICA;
-		dh = csync_vio_opendir(ctx, uri);
+		dh = csync_vio_opendir(ctx, absolutePath);
         if(dh){
-            newfile = csync_vio_readfile(dh, uri, key);
+            newfile = csync_vio_readfile(dh, absolutePath, fileName);
 
             if (newfile) {
 				newfile->instruction = instruction;
@@ -373,8 +405,8 @@ bool cysnc_update_file(CSYNC *ctx, const char *uri, const QByteArray &key, csync
 				}
 
 				// At this point dirent->path only contains the file name.
-				filename = newfile->path;
-				if (filename.isEmpty()) {
+				filenameBuffer = newfile->path;
+                if (filenameBuffer.isEmpty()) {
 				  ctx->status_code = CSYNC_STATUS_READDIR_ERROR;
 				  if (dh != nullptr) {
 					csync_vio_closedir(ctx, dh);
@@ -382,18 +414,18 @@ bool cysnc_update_file(CSYNC *ctx, const char *uri, const QByteArray &key, csync
 				  return false;
 				}
 
-				if (uri[0] == '\0') {
-					fullpath = filename;
+				if (absolutePath[0] == '\0') {
+					fullpath = filenameBuffer;
 				} else {
-					fullpath = QByteArray() % uri % '/' % filename;
+                    fullpath = QByteArray() % absolutePath % '/' % filenameBuffer;
 				}
 
 				/* if the filename starts with a . we consider it a hidden file
 				 * For windows, the hidden state is also discovered within the vio
 				 * local stat function.
 				 */
-				if( filename[0] == '.' ) {
-					if (filename != ".sys.admin#recall#") { /* recall file shall not be ignored (#4420) */
+                 if (filenameBuffer[0] == '.') {
+					if (filenameBuffer != ".sys.admin#recall#") { /* recall file shall not be ignored (#4420) */
 						newfile->is_hidden = true;
 					}
 				}
@@ -428,7 +460,7 @@ bool cysnc_update_file(CSYNC *ctx, const char *uri, const QByteArray &key, csync
 				// if it is a folder look into the files
 				// CSYNC *ctx, const char *uri, const QByteArray &key, csync_instructions_e instruction
 				if (recurse && rc == 0 && instruction != CSYNC_INSTRUCTION_IGNORE) {
-				  rc = cysnc_update_file(ctx, uri, key, instruction);
+				  rc = cysnc_update_file(ctx, absolutePath, relativePath, fileName, instruction);
 				  if (!rc) {
 					ctx->current_fs = previous_fs;
 					if (dh != nullptr) {
@@ -461,9 +493,20 @@ bool cysnc_update_file(CSYNC *ctx, const char *uri, const QByteArray &key, csync
 				ctx->remote.read_from_db = read_from_db;
 
 				csync_vio_closedir(ctx, dh);
-				qCDebug(lcCSync, " <= Closing walk for %s with read_from_db %d", uri, read_from_db);
+				qCDebug(lcCSync, " <= Closing walk for %s with read_from_db %d", absolutePath, read_from_db);
 
 				ctx->current = REMOTE_REPLICA;
+
+				std::unordered_map<ByteArrayRef, std::unique_ptr<csync_file_stat_t>, ByteArrayRefHash>::iterator it = ctx->local.files.begin();
+                qDebug() << "AFTER ADDING LOCAL ######################################################";
+                while (it != ctx->local.files.end()) {
+                    qDebug() << "localFile->file_id " << it->second->file_id;
+                    qDebug() << "localFile->path " << it->second->path;
+                    qDebug() << "localFile->original_path " << it->second->original_path;
+                    qDebug() << "localFile->instruction " << it->second->instruction;
+                    it++;
+                }
+                qDebug() << "######################################################";
 
 				return true;
 			}
