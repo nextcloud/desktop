@@ -2533,7 +2533,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
         <source>Settings</source>
-        <translation>Configuració</translation>
+        <translation>Paràmetres</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="211"/>
