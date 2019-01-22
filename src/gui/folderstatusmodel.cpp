@@ -218,6 +218,8 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return f->syncResult().errorStrings();
     case FolderStatusDelegate::SyncRunning:
         return f->syncResult().status() == SyncResult::SyncRunning;
+    case FolderStatusDelegate::SyncDate:
+        return f->syncResult().syncTime();
     case FolderStatusDelegate::HeaderRole:
         return f->shortGuiRemotePathOrAppName();
     case FolderStatusDelegate::FolderAliasRole:
