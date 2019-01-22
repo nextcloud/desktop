@@ -61,11 +61,11 @@ QString SyncWrapper::getRelativePath(QString path)
 //    _syncDone.insert(path, syncing);
 //}
 
-void SyncWrapper::updateFileTree(const QString path)
+void SyncWrapper::updateFileTree(int type, const QString path)
 {
+	csync_instructions_e instruction = (type == 2) ? CSYNC_INSTRUCTION_NEW : CSYNC_INSTRUCTION_IGNORE;
     if (SyncJournalDb::instance()->getSyncMode(getRelativePath(path)) != SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
-        SyncJournalDb::instance()->setSyncMode(getRelativePath(path), SyncJournalDb::SyncMode::SYNCMODE_ONLINE);
-        FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(getRelativePath(path), CSYNC_INSTRUCTION_IGNORE);
+        FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(getRelativePath(path), instruction);
     } else {
         FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(getRelativePath(path), CSYNC_INSTRUCTION_NEW);
 	}
@@ -78,7 +78,6 @@ void SyncWrapper::createItemAtPath(const QString path)
 
 void SyncWrapper::openFileAtPath(const QString path)
 {
-	SyncJournalDb::instance()->updateLastAccess(getRelativePath(path));
     sync(path, CSYNC_INSTRUCTION_NEW);
 }
 
@@ -104,33 +103,33 @@ void SyncWrapper::moveItemAtPath(const QString path)
 
 void SyncWrapper::sync(const QString path, csync_instructions_e instruction)
 {
-    int result = 1;
     QString folderRelativePath = getRelativePath(path);
     if (!folderRelativePath.isEmpty()) {
-        if (shouldSync(folderRelativePath)) {
+
 			//Prepare to sync
-            result = SyncJournalDb::instance()->setSyncModeDownload(folderRelativePath, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO);
-            if (result == 0)
+			qCWarning(lcSyncWrapper) << "SyncWrapper::sync #########################################";
+            qCWarning(lcSyncWrapper) << "path: " << path;
+            qCWarning(lcSyncWrapper) << "relative path: " << folderRelativePath;
+            qCWarning(lcSyncWrapper) << "#########################################";
+
+            if (SyncJournalDb::instance()->updateLastAccess(folderRelativePath) == 0)
+                qCWarning(lcSyncWrapper) << "Couldn't update file to last access.";
+
+            if (SyncJournalDb::instance()->setSyncModeDownload(folderRelativePath, SyncJournalDb::SyncModeDownload::SYNCMODE_DOWNLOADED_NO) == 0)
                 qCWarning(lcSyncWrapper) << "Couldn't set file to SYNCMODE_DOWNLOADED_NO.";
 
-            if (result == 1) {
-                FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(path, instruction);
-                //_syncDone.insert(folderRelativePath, false);
-				FolderMan::instance()->scheduleFolder();
-            }
-        } else {
-            emit syncFinish();
-		}
-    }
+            FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(folderRelativePath, CSYNC_INSTRUCTION_NEW);
+            //_syncDone.insert(folderRelativePath, false);
+			FolderMan::instance()->scheduleFolder();
+
+    } else {
+        emit syncFinish();
+	}
 }
 
 bool SyncWrapper::shouldSync(const QString path)
 {
-    if (SyncJournalDb::instance()->getSyncMode(path) != SyncJournalDb::SyncMode::SYNCMODE_OFFLINE) {
-        SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SyncMode::SYNCMODE_OFFLINE);
-    }
-
-    FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(path, CSYNC_INSTRUCTION_NEW);
+    //FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(path, CSYNC_INSTRUCTION_NEW);
     // Checks sync mode
     //if (SyncJournalDb::instance()->getSyncMode(path) != SyncJournalDb::SyncMode::SYNCMODE_OFFLINE)
     //    return false;

@@ -19,7 +19,7 @@ public:
 
 public slots:
     //void updateSyncQueue();
-    void updateFileTree(const QString path);
+    void updateFileTree(int type, const QString path);
 
 	void createItemAtPath(const QString path);
     void openFileAtPath(const QString path);
