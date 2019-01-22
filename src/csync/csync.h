@@ -138,8 +138,23 @@ enum ItemType {
     ItemTypeSoftLink = 1,
     ItemTypeDirectory = 2,
     ItemTypeSkip = 3,
+
+    /** The file is a dehydrated placeholder, meaning data isn't available locally */
     ItemTypeVirtualFile = 4,
+
+    /** A ItemTypeVirtualFile that wants to be hydrated.
+     *
+     * Actions may put this in the db as a request to a future sync.
+     * For some vfs plugins the placeholder files on disk may be marked for
+     * dehydration (like with a file attribute) and then the local discovery
+     * will return this item type.
+     */
     ItemTypeVirtualFileDownload = 5,
+
+    /** A ItemTypeFile that wants to be dehydrated.
+     *
+     * May exist in db or local files, similar to ItemTypeVirtualFileDownload.
+     */
     ItemTypeVirtualFileDehydration = 6,
 };
 

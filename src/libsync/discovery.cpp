@@ -282,7 +282,8 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                               << " | checksum: " << dbEntry._checksumHeader << "//" << serverEntry.checksumHeader
                               << " | perm: " << dbEntry._remotePerm << "//" << serverEntry.remotePerm
                               << " | fileid: " << dbEntry._fileId << "//" << serverEntry.fileId
-                              << " | inode: " << dbEntry._inode << "/" << localEntry.inode << "/";
+                              << " | inode: " << dbEntry._inode << "/" << localEntry.inode << "/"
+                              << " | type: " << dbEntry._type << "/" << localEntry.type << "/" << (serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile);
 
     if (_discoveryData->isRenamed(path._original)) {
         qCDebug(lcDisco) << "Ignoring renamed";
@@ -326,7 +327,9 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     // server-side nothing has changed
     // NOTE: Normally setting the VirtualFileDownload flag means that local and
     // remote will be rediscovered. This is just a fallback.
-    if (_queryServer == ParentNotChanged && dbEntry._type == ItemTypeVirtualFileDownload) {
+    if (_queryServer == ParentNotChanged
+        && (dbEntry._type == ItemTypeVirtualFileDownload
+            || localEntry.type == ItemTypeVirtualFileDownload)) {
         item->_direction = SyncFileItem::Down;
         item->_instruction = CSYNC_INSTRUCTION_NEW;
         item->_type = ItemTypeVirtualFileDownload;
@@ -372,7 +375,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
             item->_size = serverEntry.size;
-        } else if (dbEntry._type == ItemTypeVirtualFileDownload) {
+        } else if (dbEntry._type == ItemTypeVirtualFileDownload || localEntry.type == ItemTypeVirtualFileDownload) {
             item->_direction = SyncFileItem::Down;
             item->_instruction = CSYNC_INSTRUCTION_NEW;
             item->_type = ItemTypeVirtualFileDownload;
@@ -698,7 +701,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             if (noServerEntry) {
                 item->_instruction = CSYNC_INSTRUCTION_REMOVE;
                 item->_direction = SyncFileItem::Down;
-            } else if (dbEntry._type == ItemTypeVirtualFileDehydration) {
+            } else if (dbEntry._type == ItemTypeVirtualFileDehydration || localEntry.type == ItemTypeVirtualFileDehydration) {
                 item->_direction = SyncFileItem::Down;
                 item->_instruction = CSYNC_INSTRUCTION_NEW;
                 item->_type = ItemTypeVirtualFileDehydration;
@@ -1332,7 +1335,8 @@ bool ProcessDirectoryJob::runLocalQuery()
         i.isDirectory = dirent->type == ItemTypeDirectory;
         i.isHidden = dirent->is_hidden;
         i.isSymLink = dirent->type == ItemTypeSoftLink;
-        i.isVirtualFile = dirent->type == ItemTypeVirtualFile;
+        i.isVirtualFile = dirent->type == ItemTypeVirtualFile || dirent->type == ItemTypeVirtualFileDownload;
+        i.type = dirent->type;
         _localNormalQueryEntries.push_back(i);
     }
     csync_vio_local_closedir(dh);

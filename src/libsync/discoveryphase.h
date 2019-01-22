@@ -69,6 +69,7 @@ struct LocalInfo
     time_t modtime = 0;
     int64_t size = 0;
     uint64_t inode = 0;
+    ItemType type = ItemTypeSkip;
     bool isDirectory = false;
     bool isHidden = false;
     bool isVirtualFile = false;
