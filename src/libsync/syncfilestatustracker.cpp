@@ -136,6 +136,8 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString &relativePath)
     // update the exclude list at runtime and doing it statically here removes
     // our ability to notify changes through the fileStatusChanged signal,
     // it's an acceptable compromize to treat all exclude types the same.
+    // Update: This extra check shouldn't hurt even though silently excluded files
+    // are now available via slotAddSilentlyExcluded().
     if (_syncEngine->excludedFiles().isExcluded(_syncEngine->localPath() + relativePath,
             _syncEngine->localPath(),
             _syncEngine->ignoreHiddenFiles())) {
@@ -164,6 +166,12 @@ void SyncFileStatusTracker::slotPathTouched(const QString &fileName)
     _dirtyPaths.insert(localPath);
 
     emit fileStatusChanged(fileName, SyncFileStatus::StatusSync);
+}
+
+void SyncFileStatusTracker::slotAddSilentlyExcluded(const QString &folderPath)
+{
+    _syncProblems[folderPath] = SyncFileStatus::StatusWarning;
+    emit fileStatusChanged(getSystemDestination(folderPath), resolveSyncAndErrorStatus(folderPath, NotShared));
 }
 
 void SyncFileStatusTracker::incSyncCountAndEmitStatusChanged(const QString &relativePath, SharedFlag sharedFlag)

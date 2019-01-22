@@ -99,6 +99,7 @@ signals:
     void firstDirectoryPermissions(RemotePermissions);
     void etag(const QString &);
     void finished(const HttpResult<QVector<RemoteInfo>> &result);
+
 private slots:
     void directoryListingIteratedSlot(QString, const QMap<QString, QString> &);
     void lsJobFinishedWithoutErrorSlot();
@@ -195,6 +196,12 @@ signals:
 
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);
+
+    /** For excluded items that don't show up in itemDiscovered()
+      *
+      * The path is relative to the sync folder, similar to item->_file
+      */
+    void silentlyExcluded(const QString &folderPath);
 };
 
 /// Implementation of DiscoveryPhase::adjustRenamedPath

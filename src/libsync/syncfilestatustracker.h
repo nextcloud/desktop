@@ -40,6 +40,8 @@ public:
 
 public slots:
     void slotPathTouched(const QString &fileName);
+    // path relative to folder
+    void slotAddSilentlyExcluded(const QString &folderPath);
 
 signals:
     void fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus);
