@@ -981,7 +981,8 @@ void SyncEngine::wipeVirtualFiles(const QString &localPath, SyncJournalDb &journ
 
     journal.forceRemoteDiscoveryNextSync();
 
-    // Postcondition: No ItemTypeVirtualFile / ItemTypeVirtualFileDownload left in the db
+    // Postcondition: No ItemTypeVirtualFile / ItemTypeVirtualFileDownload left in the db.
+    // But hydrated placeholders may still be around.
 }
 
 void SyncEngine::abort()
