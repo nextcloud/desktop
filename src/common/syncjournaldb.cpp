@@ -333,10 +333,18 @@ bool SyncJournalDb::checkConnect()
         qCInfo(lcDb) << "sqlite3 with temp_store =" << env_temp_store;
     }
 
-    pragma1.prepare("PRAGMA synchronous = 1;");
+    // With WAL journal the NORMAL sync mode is safe from corruption,
+    // otherwise use the standard FULL mode.
+    QByteArray synchronousMode = "FULL";
+    if (QString::fromUtf8(_journalMode).compare(QStringLiteral("wal"), Qt::CaseInsensitive) == 0)
+        synchronousMode = "NORMAL";
+    pragma1.prepare("PRAGMA synchronous = " + synchronousMode + ";");
     if (!pragma1.exec()) {
         return sqlFail("Set PRAGMA synchronous", pragma1);
+    } else {
+        qCInfo(lcDb) << "sqlite3 synchronous=" << synchronousMode;
     }
+
     pragma1.prepare("PRAGMA case_sensitive_like = ON;");
     if (!pragma1.exec()) {
         return sqlFail("Set PRAGMA case_sensitivity", pragma1);
