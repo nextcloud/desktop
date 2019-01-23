@@ -21,7 +21,7 @@
 
 namespace OCC {
 
-class VfsSuffix : public Vfs
+class VfsSuffix : public VfsDefaults
 {
     Q_OBJECT
 
@@ -32,8 +32,6 @@ public:
     Mode mode() const override;
     QString fileSuffix() const override;
 
-    void registerFolder(const VfsSetupParams &params) override;
-    void start(const VfsSetupParams &params) override;
     void stop() override;
     void unregisterFolder() override;
 

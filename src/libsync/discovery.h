@@ -48,6 +48,8 @@ class SyncJournalDb;
 class ProcessDirectoryJob : public QObject
 {
     Q_OBJECT
+
+    struct PathTuple;
 public:
     enum QueryMode {
         NormalQuery,
@@ -56,14 +58,30 @@ public:
         InBlackList // Do not query this folder because it is in the blacklist (remote entries only)
     };
     Q_ENUM(QueryMode)
-    explicit ProcessDirectoryJob(const SyncFileItemPtr &dirItem, QueryMode queryLocal, QueryMode queryServer,
-        DiscoveryPhase *data, QObject *parent)
+
+    /** For creating the root job
+     *
+     * The base pin state is used if the root dir's pin state can't be retrieved.
+     */
+    explicit ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, QObject *parent)
+        : QObject(parent)
+        , _discoveryData(data)
+    {
+        computePinState(basePinState);
+    }
+
+    /// For creating subjobs
+    explicit ProcessDirectoryJob(const PathTuple &path, const SyncFileItemPtr &dirItem,
+        QueryMode queryLocal, QueryMode queryServer,
+        ProcessDirectoryJob *parent)
         : QObject(parent)
         , _dirItem(dirItem)
         , _queryServer(queryServer)
         , _queryLocal(queryLocal)
-        , _discoveryData(data)
+        , _discoveryData(parent->_discoveryData)
+        , _currentFolder(path)
     {
+        computePinState(parent->_pinState);
     }
 
     void start();
@@ -180,11 +198,15 @@ private:
       */
     bool runLocalQuery();
 
-    /** Retrieve and cache directory pin state */
-    Optional<PinState> directoryPinState();
+    /** Sets _pinState
+     *
+     * If the folder exists locally its state is retrieved, otherwise the
+     * parent's pin state is inherited.
+     */
+    void computePinState(PinState parentState);
 
-    QueryMode _queryServer;
-    QueryMode _queryLocal;
+    QueryMode _queryServer = QueryMode::NormalQuery;
+    QueryMode _queryLocal = QueryMode::NormalQuery;
 
     // Holds entries that resulted from a NormalQuery
     QVector<RemoteInfo> _serverNormalQueryEntries;
@@ -222,7 +244,7 @@ private:
     PathTuple _currentFolder;
     bool _childModified = false; // the directory contains modified item what would prevent deletion
     bool _childIgnored = false; // The directory contains ignored item that would prevent deletion
-    Optional<PinState> _pinStateCache; // The directories pin-state, once retrieved, see directoryPinState()
+    PinState _pinState = PinState::Unspecified; // The directory's pin-state, see setParentPinState()
 
 signals:
     void finished();

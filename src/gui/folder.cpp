@@ -474,7 +474,6 @@ void Folder::startVfs()
     connect(&_engine->syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
             _vfs.data(), &Vfs::fileStatusChanged);
 
-    _vfs->registerFolder(vfsParams); // Do this always?
     _vfs->start(vfsParams);
 }
 

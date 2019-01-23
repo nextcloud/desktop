@@ -22,7 +22,7 @@
 namespace OCC {
 
 VfsSuffix::VfsSuffix(QObject *parent)
-    : Vfs(parent)
+    : VfsDefaults(parent)
 {
 }
 
@@ -38,14 +38,6 @@ Vfs::Mode VfsSuffix::mode() const
 QString VfsSuffix::fileSuffix() const
 {
     return QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
-}
-
-void VfsSuffix::registerFolder(const VfsSetupParams &)
-{
-}
-
-void VfsSuffix::start(const VfsSetupParams &)
-{
 }
 
 void VfsSuffix::stop()

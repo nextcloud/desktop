@@ -427,14 +427,10 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         }
         // Turn new remote files into virtual files if the option is enabled.
         auto &opts = _discoveryData->_syncOptions;
-        if (!directoryPinState()) {
-            dbError();
-            return;
-        }
         if (!localEntry.isValid()
             && item->_type == ItemTypeFile
             && opts._vfs->mode() != Vfs::Off
-            && *directoryPinState() == PinState::OnlineOnly) {
+            && _pinState != PinState::AlwaysLocal) {
             item->_type = ItemTypeVirtualFile;
             if (isVfsWithSuffix())
                 addVirtualFileSuffix(path._original);
@@ -981,8 +977,7 @@ void ProcessDirectoryJob::processFileFinalize(
     if (!checkPermissions(item))
         recurse = false;
     if (recurse) {
-        auto job = new ProcessDirectoryJob(item, recurseQueryLocal, recurseQueryServer, _discoveryData, this);
-        job->_currentFolder = path;
+        auto job = new ProcessDirectoryJob(path, item, recurseQueryLocal, recurseQueryServer, this);
         if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
             job->setParent(_discoveryData);
             _discoveryData->_queuedDeletedDirectories[path._original] = job;
@@ -1023,8 +1018,7 @@ void ProcessDirectoryJob::processBlacklisted(const PathTuple &path, const OCC::L
     qCInfo(lcDisco) << "Discovered (blacklisted) " << item->_file << item->_instruction << item->_direction << item->isDirectory();
 
     if (item->isDirectory() && item->_instruction != CSYNC_INSTRUCTION_IGNORE) {
-        auto job = new ProcessDirectoryJob(item, NormalQuery, InBlackList, _discoveryData, this);
-        job->_currentFolder = path;
+        auto job = new ProcessDirectoryJob(path, item, NormalQuery, InBlackList, this);
         connect(job, &ProcessDirectoryJob::finished, this, &ProcessDirectoryJob::subJobFinished);
         _queuedJobs.push_back(job);
     } else {
@@ -1349,19 +1343,18 @@ bool ProcessDirectoryJob::runLocalQuery()
     return true;
 }
 
-Optional<PinState> ProcessDirectoryJob::directoryPinState()
-{
-    if (!_pinStateCache) {
-        _pinStateCache = _discoveryData->_statedb->effectivePinStateForPath(
-                _currentFolder._original.toUtf8());
-        // don't cache db errors, just retry next time
-    }
-    return _pinStateCache;
-}
-
 bool ProcessDirectoryJob::isVfsWithSuffix() const
 {
     return _discoveryData->_syncOptions._vfs->mode() == Vfs::WithSuffix;
+}
+
+void ProcessDirectoryJob::computePinState(PinState parentState)
+{
+    _pinState = parentState;
+    if (_queryLocal != ParentDontExist) {
+        if (auto state = _discoveryData->_syncOptions._vfs->getPinState(_currentFolder._local)) // ouch! pin local or original?
+            _pinState = *state;
+    }
 }
 
 }

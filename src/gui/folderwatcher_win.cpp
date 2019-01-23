@@ -67,7 +67,10 @@ void WatcherThread::watchChanges(size_t fileNotifyBufferSize,
         SecureZeroMemory(pFileNotifyBuffer, fileNotifyBufferSize);
         if (!ReadDirectoryChangesW(_directory, (LPVOID)pFileNotifyBuffer,
                 fileNotifyBufferSize, true,
-                FILE_NOTIFY_CHANGE_FILE_NAME | FILE_NOTIFY_CHANGE_DIR_NAME | FILE_NOTIFY_CHANGE_LAST_WRITE,
+                FILE_NOTIFY_CHANGE_FILE_NAME
+                | FILE_NOTIFY_CHANGE_DIR_NAME
+                | FILE_NOTIFY_CHANGE_LAST_WRITE
+                | FILE_NOTIFY_CHANGE_ATTRIBUTES, // attributes are for vfs pin state changes
                 &dwBytesReturned,
                 &overlapped,
                 NULL)) {

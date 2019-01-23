@@ -29,27 +29,10 @@
 #include "common/ownsql.h"
 #include "common/syncjournalfilerecord.h"
 #include "common/result.h"
+#include "common/pinstate.h"
 
 namespace OCC {
 class SyncJournalFileRecord;
-
-/** Determines whether files should be available locally or not
- *
- * For new remote files the file's PinState is calculated by looking for
- * the closest parent folder that isn't Inherited.
- *
- * TODO: It seems to make sense to also store per-file PinStates.
- * Maybe these could communicate intent, similar to ItemTypeVirtualFileDownload
- * and ...FileDehydrate?
- */
-enum class PinState {
-    /// Inherit the PinState of the parent directory (default)
-    Inherited = 0,
-    /// Download file and keep it updated.
-    AlwaysLocal = 1,
-    /// File shall be virtual locally.
-    OnlineOnly = 2,
-};
 
 /**
  * @brief Class that handles the sync database

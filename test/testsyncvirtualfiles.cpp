@@ -59,12 +59,15 @@ void markForDehydration(FakeFolder &folder, const QByteArray &path)
     journal.avoidReadFromDbOnNextSync(record._path);
 }
 
-SyncOptions vfsSyncOptions(FakeFolder &fakeFolder)
+QSharedPointer<Vfs> setupVfs(FakeFolder &folder)
 {
-    SyncOptions options;
-    options._vfs.reset(createVfsFromPlugin(Vfs::WithSuffix).release());
-    fakeFolder.syncJournal().setPinStateForPath("", PinState::OnlineOnly);
-    return options;
+    auto suffixVfs = QSharedPointer<Vfs>(createVfsFromPlugin(Vfs::WithSuffix).release());
+    folder.switchToVfs(suffixVfs);
+
+    // Using this directly doesn't recursively unpin everything
+    folder.syncJournal().setPinStateForPath("", PinState::OnlineOnly);
+
+    return suffixVfs;
 }
 
 class TestSyncVirtualFiles : public QObject
@@ -85,7 +88,7 @@ private slots:
         QFETCH(bool, doLocalDiscovery);
 
         FakeFolder fakeFolder{ FileInfo() };
-        fakeFolder.syncEngine().setSyncOptions(vfsSyncOptions(fakeFolder));
+        setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
 
@@ -206,7 +209,7 @@ private slots:
     void testVirtualFileConflict()
     {
         FakeFolder fakeFolder{ FileInfo() };
-        fakeFolder.syncEngine().setSyncOptions(vfsSyncOptions(fakeFolder));
+        setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
 
@@ -277,7 +280,7 @@ private slots:
     void testWithNormalSync()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        fakeFolder.syncEngine().setSyncOptions(vfsSyncOptions(fakeFolder));
+        setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
 
@@ -313,7 +316,7 @@ private slots:
     void testVirtualFileDownload()
     {
         FakeFolder fakeFolder{ FileInfo() };
-        fakeFolder.syncEngine().setSyncOptions(vfsSyncOptions(fakeFolder));
+        setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
 
@@ -381,7 +384,7 @@ private slots:
     void testVirtualFileDownloadResume()
     {
         FakeFolder fakeFolder{ FileInfo() };
-        fakeFolder.syncEngine().setSyncOptions(vfsSyncOptions(fakeFolder));
+        setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
 
@@ -422,8 +425,7 @@ private slots:
     void testNewFilesNotVirtual()
     {
         FakeFolder fakeFolder{ FileInfo() };
-        SyncOptions syncOptions = vfsSyncOptions(fakeFolder);
-        fakeFolder.syncEngine().setSyncOptions(syncOptions);
+        setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         fakeFolder.remoteModifier().mkdir("A");
@@ -443,7 +445,7 @@ private slots:
     void testDownloadRecursive()
     {
         FakeFolder fakeFolder{ FileInfo() };
-        fakeFolder.syncEngine().setSyncOptions(vfsSyncOptions(fakeFolder));
+        setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // Create a virtual file for remote files
@@ -540,7 +542,7 @@ private slots:
     void testRenameToVirtual()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        fakeFolder.syncEngine().setSyncOptions(vfsSyncOptions(fakeFolder));
+        setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
 
@@ -578,7 +580,7 @@ private slots:
     void testRenameVirtual()
     {
         FakeFolder fakeFolder{ FileInfo() };
-        fakeFolder.syncEngine().setSyncOptions(vfsSyncOptions(fakeFolder));
+        setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
 
@@ -620,7 +622,7 @@ private slots:
     void testSyncDehydration()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        fakeFolder.syncEngine().setSyncOptions(vfsSyncOptions(fakeFolder));
+        setupVfs(fakeFolder);
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -697,7 +699,7 @@ private slots:
     void testWipeVirtualSuffixFiles()
     {
         FakeFolder fakeFolder{ FileInfo{} };
-        fakeFolder.syncEngine().setSyncOptions(vfsSyncOptions(fakeFolder));
+        setupVfs(fakeFolder);
 
         // Create a suffix-vfs baseline
 
@@ -733,7 +735,7 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("A/a3.owncloud"));
         QVERIFY(!fakeFolder.currentLocalState().find("A/B/b1.owncloud"));
 
-        fakeFolder.syncEngine().setSyncOptions(SyncOptions{});
+        fakeFolder.switchToVfs(QSharedPointer<Vfs>(new VfsOff));
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentRemoteState().find("A/a3.owncloud")); // regular upload
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -742,7 +744,7 @@ private slots:
     void testNewVirtuals()
     {
         FakeFolder fakeFolder{ FileInfo() };
-        fakeFolder.syncEngine().setSyncOptions(vfsSyncOptions(fakeFolder));
+        setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         auto setPin = [&] (const QByteArray &path, PinState state) {
@@ -757,6 +759,7 @@ private slots:
 
         setPin("local", PinState::AlwaysLocal);
         setPin("online", PinState::OnlineOnly);
+        setPin("unspec", PinState::Unspecified);
 
         // Test 1: root is OnlineOnly
         fakeFolder.remoteModifier().insert("file1");
@@ -782,7 +785,7 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("file2"));
         QVERIFY(fakeFolder.currentLocalState().find("online/file2.owncloud"));
         QVERIFY(fakeFolder.currentLocalState().find("local/file2"));
-        QVERIFY(fakeFolder.currentLocalState().find("unspec/file2"));
+        QVERIFY(fakeFolder.currentLocalState().find("unspec/file2.owncloud"));
 
         // file1 is unchanged
         QVERIFY(fakeFolder.currentLocalState().find("file1.owncloud"));
@@ -810,7 +813,7 @@ private slots:
         cleanup();
 
         // Enable suffix vfs
-        fakeFolder.syncEngine().setSyncOptions(vfsSyncOptions(fakeFolder));
+        setupVfs(fakeFolder);
 
         // Local changes of suffixed file do nothing
         fakeFolder.localModifier().appendByte("A/file1.owncloud");

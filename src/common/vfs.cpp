@@ -19,6 +19,7 @@
 #include "vfs.h"
 #include "plugin.h"
 #include "version.h"
+#include "syncjournaldb.h"
 
 #include <QPluginLoader>
 #include <QLoggingCategory>
@@ -59,8 +60,31 @@ Optional<Vfs::Mode> Vfs::modeFromString(const QString &str)
     return {};
 }
 
-VfsOff::VfsOff(QObject *parent)
+VfsDefaults::VfsDefaults(QObject *parent)
     : Vfs(parent)
+{
+}
+
+void VfsDefaults::start(const VfsSetupParams &params)
+{
+    _setupParams = params;
+}
+
+bool VfsDefaults::setPinState(const QString &folderPath, PinState state)
+{
+    auto path = folderPath.toUtf8();
+    _setupParams.journal->wipePinStateForPathAndBelow(path);
+    _setupParams.journal->setPinStateForPath(path, state);
+    return true;
+}
+
+Optional<PinState> VfsDefaults::getPinState(const QString &folderPath)
+{
+    return _setupParams.journal->effectivePinStateForPath(folderPath.toUtf8());
+}
+
+VfsOff::VfsOff(QObject *parent)
+    : VfsDefaults(parent)
 {
 }
 

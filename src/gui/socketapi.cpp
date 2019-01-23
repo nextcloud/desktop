@@ -619,9 +619,8 @@ void SocketApi::command_MAKE_AVAILABLE_LOCALLY(const QString &filesArg, SocketLi
             continue;
 
         // Update the pin state on all items
-        auto pinPath = data.folderRelativePathNoVfsSuffix().toUtf8();
-        data.folder->journalDb()->wipePinStateForPathAndBelow(pinPath);
-        data.folder->journalDb()->setPinStateForPath(pinPath, PinState::AlwaysLocal);
+        auto pinPath = data.folderRelativePathNoVfsSuffix();
+        data.folder->vfs().setPinState(pinPath, PinState::AlwaysLocal);
 
         // Trigger the recursive download
         data.folder->downloadVirtualFile(data.folderRelativePath);
@@ -639,9 +638,8 @@ void SocketApi::command_MAKE_ONLINE_ONLY(const QString &filesArg, SocketListener
             continue;
 
         // Update the pin state on all items
-        auto pinPath = data.folderRelativePathNoVfsSuffix().toUtf8();
-        data.folder->journalDb()->wipePinStateForPathAndBelow(pinPath);
-        data.folder->journalDb()->setPinStateForPath(pinPath, PinState::OnlineOnly);
+        auto pinPath = data.folderRelativePathNoVfsSuffix();
+        data.folder->vfs().setPinState(pinPath, PinState::OnlineOnly);
 
         // Trigger recursive dehydration
         data.folder->dehydrateFile(data.folderRelativePath);
@@ -917,7 +915,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         for (const auto &file : files) {
             auto fileData = FileData::get(file);
             auto path = fileData.folderRelativePathNoVfsSuffix();
-            auto pinState = folder->journalDb()->effectivePinStateForPath(path.toUtf8());
+            auto pinState = folder->vfs().getPinState(path);
             if (!pinState) {
                 // db error
                 hasAlwaysLocal = true;

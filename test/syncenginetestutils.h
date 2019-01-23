@@ -12,6 +12,7 @@
 #include "filesystem.h"
 #include "syncengine.h"
 #include "common/syncjournaldb.h"
+#include "common/vfs.h"
 #include "csync_exclude.h"
 #include <cstring>
 
@@ -1139,10 +1140,39 @@ public:
         // Ignore temporary files from the download. (This is in the default exclude list, but we don't load it)
         _syncEngine->excludedFiles().addManualExclude("]*.~*");
 
+        // Ensure we have a valid VfsOff instance "running"
+        switchToVfs(_syncEngine->syncOptions()._vfs);
+
         // A new folder will update the local file state database on first sync.
         // To have a state matching what users will encounter, we have to a sync
         // using an identical local/remote file tree first.
         syncOnce();
+    }
+
+    void switchToVfs(QSharedPointer<OCC::Vfs> vfs)
+    {
+        auto opts = _syncEngine->syncOptions();
+
+        opts._vfs->stop();
+        QObject::disconnect(_syncEngine.get(), 0, opts._vfs.data(), 0);
+
+        opts._vfs = vfs;
+        _syncEngine->setSyncOptions(opts);
+
+        OCC::VfsSetupParams vfsParams;
+        vfsParams.filesystemPath = localPath();
+        vfsParams.remotePath = "";
+        vfsParams.account = _account;
+        vfsParams.journal = _journalDb.get();
+        vfsParams.providerName = "OC-TEST";
+        vfsParams.providerVersion = "0.1";
+        vfsParams.enableShellIntegration = false;
+        QObject::connect(_syncEngine.get(), &QObject::destroyed, vfs.data(), [vfs]() {
+            vfs->stop();
+            vfs->unregisterFolder();
+        });
+
+        vfs->start(vfsParams);
     }
 
     OCC::AccountPtr account() const { return _account; }

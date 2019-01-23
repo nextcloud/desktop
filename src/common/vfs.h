@@ -22,6 +22,7 @@
 #include "ocsynclib.h"
 #include "result.h"
 #include "syncfilestatus.h"
+#include "pinstate.h"
 
 typedef struct csync_file_stat_s csync_file_stat_t;
 
@@ -48,7 +49,7 @@ struct OCSYNC_EXPORT VfsSetupParams
      *
      * Note: The journal must live at least until the Vfs::stop() call.
      */
-    SyncJournalDb *journal;
+    SyncJournalDb *journal = nullptr;
 
     /// Strings potentially passed on to the platform
     QString providerName;
@@ -101,14 +102,14 @@ public:
     virtual QString fileSuffix() const = 0;
 
 
-    /// Must be called at least once before start(). May make sense to merge with start().
-    virtual void registerFolder(const VfsSetupParams &params) = 0;
-
     /** Initializes interaction with the VFS provider.
      *
      * For example, the VFS provider might monitor files to be able to start a file
      * hydration (download of a file's remote contents) when the user wants to open
      * it.
+     *
+     * Usually some registration needs to be done with the backend. This function
+     * should take care of it if necessary.
      */
     virtual void start(const VfsSetupParams &params) = 0;
 
@@ -160,6 +161,24 @@ public:
      */
     virtual bool statTypeVirtualFile(csync_file_stat_t *stat, void *stat_data) = 0;
 
+    /** Sets the pin state for the item at a path.
+     *
+     * Usually this would forward to setting the pin state flag in the db table,
+     * but some vfs plugins will store the pin state in file attributes instead.
+     *
+     * folderPath is relative to the sync folder.
+     */
+    virtual bool setPinState(const QString &folderPath, PinState state) = 0;
+
+    /** Returns the pin state of an item at a path.
+     *
+     * Usually backed by the db's effectivePinState() function but some vfs
+     * plugins will override it to retrieve the state from elsewhere.
+     *
+     * folderPath is relative to the sync folder.
+     */
+    virtual Optional<PinState> getPinState(const QString &folderPath) = 0;
+
 public slots:
     /** Update in-sync state based on SyncFileStatusTracker signal.
      *
@@ -176,8 +195,27 @@ signals:
     void doneHydrating();
 };
 
+class OCSYNC_EXPORT VfsDefaults : public Vfs
+{
+public:
+    explicit VfsDefaults(QObject* parent = nullptr);
+
+    // stores the params
+    void start(const VfsSetupParams &params) override;
+
+    // use the journal to back the pinstates
+    bool setPinState(const QString &folderPath, PinState state) override;
+    Optional<PinState> getPinState(const QString &folderPath) override;
+
+    // access initial setup data
+    const VfsSetupParams &params() const { return _setupParams; }
+
+protected:
+    VfsSetupParams _setupParams;
+};
+
 /// Implementation of Vfs for Vfs::Off mode - does nothing
-class OCSYNC_EXPORT VfsOff : public Vfs
+class OCSYNC_EXPORT VfsOff : public VfsDefaults
 {
     Q_OBJECT
 
@@ -189,11 +227,8 @@ public:
 
     QString fileSuffix() const override { return QString(); }
 
-    void registerFolder(const VfsSetupParams &) override {}
-    void start(const VfsSetupParams &) override {}
     void stop() override {}
     void unregisterFolder() override {}
-
 
     bool isHydrating() const override { return false; }
 
