@@ -69,39 +69,46 @@ void SyncWrapper::updateFileTree(int type, const QString path)
     } else {
         FolderMan::instance()->currentSyncFolder()->updateLocalFileTree(getRelativePath(path), CSYNC_INSTRUCTION_NEW);
 	}
+
+	FolderMan::instance()->currentSyncFolder()->updateFuseCreatedFile(getRelativePath(path), true);
 }
 
 void SyncWrapper::createItemAtPath(const QString path)
 {
-    sync(path, CSYNC_INSTRUCTION_NEW);
+	FolderMan::instance()->currentSyncFolder()->updateFuseCreatedFile(getRelativePath(path), false);
+    sync(path, false, CSYNC_INSTRUCTION_NEW);
 }
 
 void SyncWrapper::openFileAtPath(const QString path)
 {
-    sync(path, CSYNC_INSTRUCTION_NEW);
+    sync(path, true, CSYNC_INSTRUCTION_NEW);
 }
 
 void SyncWrapper::writeFileAtPath(const QString path)
 {
-    sync(path, CSYNC_INSTRUCTION_NEW);
+	FolderMan::instance()->currentSyncFolder()->updateFuseCreatedFile(getRelativePath(path), false);
+    sync(path, false, CSYNC_INSTRUCTION_NEW);
 }
 
 void SyncWrapper::releaseFileAtPath(const QString path)
 {
-    sync(path, CSYNC_INSTRUCTION_NEW);
+	FolderMan::instance()->currentSyncFolder()->updateFuseCreatedFile(getRelativePath(path), false);
+    sync(path, false, CSYNC_INSTRUCTION_NEW);
 }
 
 void SyncWrapper::deleteItemAtPath(const QString path)
 {
-    sync(path, CSYNC_INSTRUCTION_NEW);
+	FolderMan::instance()->currentSyncFolder()->updateFuseCreatedFile(getRelativePath(path), false);
+    sync(path, false, CSYNC_INSTRUCTION_NEW);
 }
 
 void SyncWrapper::moveItemAtPath(const QString path)
 {
-    sync(path, CSYNC_INSTRUCTION_NEW);
+	FolderMan::instance()->currentSyncFolder()->updateFuseCreatedFile(getRelativePath(path), false);
+    sync(path, false, CSYNC_INSTRUCTION_NEW);
 }
 
-void SyncWrapper::sync(const QString path, csync_instructions_e instruction)
+void SyncWrapper::sync(const QString path, bool is_fuse_created_file, csync_instructions_e instruction)
 {
     QString folderRelativePath = getRelativePath(path);
     if (!folderRelativePath.isEmpty()) {

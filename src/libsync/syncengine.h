@@ -114,6 +114,8 @@ public:
     void setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QByteArray> paths = {});
 
     void updateLocalFileTree(const QString &path, csync_instructions_e instruction);
+	void updateFuseCreatedFile(const QString &path, bool is_fuse_created_file);
+
     int localTreeSize();
 
     /**

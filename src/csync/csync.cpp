@@ -366,6 +366,7 @@ bool cysnc_update_file(CSYNC *ctx, const char *absolutePath, const QByteArray &r
           qDebug() << "localFile->path " << it->second->path;
           qDebug() << "localFile->original_path " << it->second->original_path;
           qDebug() << "localFile->instruction " << it->second->instruction;
+		  qDebug() << "localFile->is_fuse_created_file " << it->second->is_fuse_created_file;
           it++;
       }
       qDebug() << "######################################################";
@@ -376,7 +377,7 @@ bool cysnc_update_file(CSYNC *ctx, const char *absolutePath, const QByteArray &r
 		qDebug() << "ADDING FILE TO TREE!! ######################################################" << absolutePath << relativePath << fileName;
         // do the whole process for a single file
         std::unique_ptr<csync_file_stat_t> newfile;
-        //csync_file_stat_t *previous_fs = NULL;
+        csync_file_stat_t *previous_fs = NULL;
         csync_vio_handle_t *dh = NULL;
         unsigned int depth = MAX_DEPTH;
         QByteArray filenameBuffer;
@@ -470,19 +471,19 @@ bool cysnc_update_file(CSYNC *ctx, const char *absolutePath, const QByteArray &r
 				//		return false;
 				//	}
 
-				  //if (ctx->current_fs && !ctx->current_fs->child_modified
-					 // && ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL) {
-					 // if (ctx->current == REMOTE_REPLICA) {
-						//  ctx->current_fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-					 // } else {
-						//  ctx->current_fs->instruction = CSYNC_INSTRUCTION_NONE;
-					 // }
-				  //}
+				//  if (ctx->current_fs && !ctx->current_fs->child_modified
+				//	  && ctx->current_fs->instruction == CSYNC_INSTRUCTION_EVAL) {
+				//	  if (ctx->current == REMOTE_REPLICA) {
+				//		  ctx->current_fs->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+				//	  } else {
+				//		  ctx->current_fs->instruction = CSYNC_INSTRUCTION_NONE;
+				//	  }
+				//  }
 
-				  //if (ctx->current_fs && previous_fs && ctx->current_fs->has_ignored_files) {
-					 // /* If a directory has ignored files, put the flag on the parent directory as well */
-					 // previous_fs->has_ignored_files = ctx->current_fs->has_ignored_files;
-				  //}
+				//  if (ctx->current_fs && previous_fs && ctx->current_fs->has_ignored_files) {
+				//	  /* If a directory has ignored files, put the flag on the parent directory as well */
+				//	  previous_fs->has_ignored_files = ctx->current_fs->has_ignored_files;
+				//  }
 				//}
 
 				//if (ctx->current_fs && previous_fs && ctx->current_fs->child_modified) {
@@ -516,6 +517,30 @@ bool cysnc_update_file(CSYNC *ctx, const char *absolutePath, const QByteArray &r
     }
 
     return false;
+}
+
+bool cysnc_update_is_fuse_created_file(CSYNC *ctx, const QByteArray &relativePath, bool is_fuse_created_file)
+{
+	if (ctx->local.files.findFile(relativePath)) {
+		ctx->local.files.findFile(relativePath)->is_fuse_created_file = is_fuse_created_file;
+
+		std::unordered_map<ByteArrayRef, std::unique_ptr<csync_file_stat_t>, ByteArrayRefHash>::iterator it = ctx->local.files.begin();
+		qDebug() << "cysnc_update_is_fuse_created_file ######################################################" << relativePath << ctx->local.files.findFile(relativePath)->is_fuse_created_file;
+		while (it != ctx->local.files.end()) {
+			qDebug() << "localFile->file_id " << it->second->file_id;
+			qDebug() << "localFile->path " << it->second->path;
+			qDebug() << "localFile->original_path " << it->second->original_path;
+			qDebug() << "localFile->instruction " << it->second->instruction;
+			qDebug() << "localFile->is_fuse_created_file " << it->second->is_fuse_created_file;
+			it++;
+		}
+		qDebug() << "######################################################";
+
+		return true;
+
+	}
+
+	return false;
 }
 
 std::unique_ptr<csync_file_stat_t> csync_file_stat_s::fromSyncJournalFileRecord(const OCC::SyncJournalFileRecord &rec)

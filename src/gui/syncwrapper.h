@@ -41,7 +41,7 @@ private:
 
     QString getRelativePath(QString path);
     bool shouldSync(const QString path);
-    void sync(const QString path, csync_instructions_e instruction = CSYNC_INSTRUCTION_NEW);
+    void sync(const QString path, bool is_fuse_created_file, csync_instructions_e instruction = CSYNC_INSTRUCTION_NEW);
 
     //QMap<QString, bool> _syncDone;
 };

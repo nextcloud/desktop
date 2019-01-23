@@ -302,7 +302,7 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                     is_conflict = false;
                 } else {
                     // If the size or mtime is different, it's definitely a conflict.
-                    is_conflict = ((other->size != cur->size) || (other->modtime != cur->modtime));
+                    is_conflict = ((other->size != cur->size) || (other->modtime != cur->modtime)) && !(cur->is_fuse_created_file);
 
                     // It could be a conflict even if size and mtime match!
                     //
@@ -355,13 +355,17 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                     // sizes and mtimes pops up when the local database is lost for
                     // whatever reason.
                 }
+
                 if (ctx->current == REMOTE_REPLICA) {
                     // If the files are considered equal, only update the DB with the etag from remote
                     cur->instruction = is_conflict ? CSYNC_INSTRUCTION_CONFLICT : CSYNC_INSTRUCTION_UPDATE_METADATA;
                     other->instruction = CSYNC_INSTRUCTION_NONE;
                 } else {
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
-                    other->instruction = is_conflict ? CSYNC_INSTRUCTION_CONFLICT : CSYNC_INSTRUCTION_UPDATE_METADATA;
+					if (is_conflict)
+						other->instruction = CSYNC_INSTRUCTION_CONFLICT;
+					else
+						other->instruction = !cur->is_fuse_created_file ? CSYNC_INSTRUCTION_UPDATE_METADATA : CSYNC_INSTRUCTION_SYNC;
                 }
 
                 break;

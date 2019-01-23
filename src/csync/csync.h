@@ -158,6 +158,7 @@ struct OCSYNC_EXPORT csync_file_stat_s {
   bool child_modified BITFIELD(1);
   bool has_ignored_files BITFIELD(1); // Specify that a directory, or child directory contains ignored files.
   bool is_hidden BITFIELD(1); // Not saved in the DB, only used during discovery for local files.
+  bool is_fuse_created_file BITFIELD(1); // File initially created by fuse,not touched by the user yet
 
   QByteArray path;
   QByteArray rename_path;
@@ -186,6 +187,7 @@ struct OCSYNC_EXPORT csync_file_stat_s {
     , child_modified(false)
     , has_ignored_files(false)
     , is_hidden(false)
+	, is_fuse_created_file(false)
     , error_status(CSYNC_STATUS_OK)
     , instruction(CSYNC_INSTRUCTION_NONE)
   { }
@@ -346,6 +348,8 @@ int  OCSYNC_EXPORT csync_abort_requested(CSYNC *ctx);
  * @param csync_instructions_e instructio for the file.
  */
 bool OCSYNC_EXPORT cysnc_update_file(CSYNC *ctx, const char *absolutePath, const QByteArray &relativePath, const QByteArray &fileName, csync_instructions_e instruction);
+
+bool OCSYNC_EXPORT cysnc_update_is_fuse_created_file(CSYNC *ctx, const QByteArray &relativePath, bool is_fuse_created_file);
 
 time_t OCSYNC_EXPORT oc_httpdate_parse( const char *date );
 

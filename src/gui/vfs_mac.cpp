@@ -637,7 +637,7 @@ QStringList *VfsMac::contentsOfDirectoryAtPath(QString path, QVariantMap &error)
                     close(fd.toInt());
                 }
             }
-            emit addToFileTree(completePath);
+            emit addToFileTree(_fileListMap.value(path)->list.at(i)->type, completePath);
             // update file tree here?
         }
     }

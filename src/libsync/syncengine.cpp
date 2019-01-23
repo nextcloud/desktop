@@ -595,6 +595,9 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         return re;
     }
     case CSYNC_INSTRUCTION_UPDATE_METADATA:
+		if (item->_file == "2019.txt")
+			qDebug() << "STOP HERE!";
+
         dir = SyncFileItem::None;
         // For directories, metadata-only updates will be done after all their files are propagated.
         if (!isDirectory) {
@@ -647,8 +650,9 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
                 _hasNoneFiles = true;
             }
 
-            // Technically we're done with this item.
-            return re;
+            // Technically we're done with this item if it is not fuse 0 byte file
+            //if(!file->is_fuse_created_file)
+				return re;
         }
         break;
     case CSYNC_INSTRUCTION_RENAME:
@@ -1654,7 +1658,30 @@ void SyncEngine::updateLocalFileTree(const QString &path, csync_instructions_e i
             qDebug() << "######################################################";
 
             if (cysnc_update_file(_csync_ctx.data(), absolutePath.toLatin1(), relativePath.toLatin1(), fileName.toLatin1(), instruction)) {
-                qDebug() << "Added file to local file tree!" << absolutePath << fileName;
+                qDebug() << "ADDED FILE TO TREE ######################################################" << relativePath << _csync_ctx->local.files.findFile(relativePath.toLatin1())->instruction;
+            }
+        }
+    }
+}
+
+void SyncEngine::updateFuseCreatedFile(const QString &path, bool is_fuse_created_file){
+    if(!path.isEmpty()){
+        if(!_csync_ctx.isNull()){
+            _csync_ctx->fuseEnabled = true;
+
+			QString fullPath(QFileInfo(_localPath).absolutePath());
+            fullPath.append("/");
+            fullPath.append(path);
+
+            QString absolutePath(QFileInfo(fullPath).absolutePath());
+            if (absolutePath.endsWith("/"))
+                absolutePath.chop(1);
+
+            QString relativePath(path);
+            QString fileName(QFileInfo(path).fileName());
+
+            if (cysnc_update_is_fuse_created_file(_csync_ctx.data(), relativePath.toLatin1(), is_fuse_created_file)) {
+                qDebug() << "UPDATED cysnc_update_is_fuse_created_fileL ######################################################" << relativePath << _csync_ctx->local.files.findFile(relativePath.toLatin1())->is_fuse_created_file;
             }
         }
     }

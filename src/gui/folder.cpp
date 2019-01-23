@@ -613,6 +613,10 @@ void Folder::updateLocalFileTree(const QString &path, csync_instructions_e instr
     _engine->updateLocalFileTree(path, instruction);
 }
 
+void Folder::updateFuseCreatedFile(const QString &path, bool is_fuse_created_file){
+    _engine->updateFuseCreatedFile(path, is_fuse_created_file);
+}
+
 void Folder::startSync()
 {
     if (isBusy()) {

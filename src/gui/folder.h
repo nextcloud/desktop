@@ -279,6 +279,8 @@ public slots:
       */
     void updateLocalFileTree(const QString &path, csync_instructions_e instruction);
 
+	void updateFuseCreatedFile(const QString & path, bool is_fuse_created_files);
+
     int slotDiscardDownloadProgress();
     int downloadInfoCount();
     int slotWipeErrorBlacklist();
