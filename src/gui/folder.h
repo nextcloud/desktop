@@ -205,6 +205,7 @@ public:
     // Used by the Socket API
     SyncJournalDb *journalDb() { return &_journal; }
     SyncEngine &syncEngine() { return *_engine; }
+    Vfs &vfs() { return *_vfs; }
 
     RequestEtagJob *etagJob() { return _requestEtagJob; }
     std::chrono::milliseconds msecSinceLastSync() const { return std::chrono::milliseconds(_timeSinceLastSyncDone.elapsed()); }

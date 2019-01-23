@@ -637,8 +637,8 @@ void SyncEngine::slotStartDiscovery()
     connect(_discoveryPhase.data(), &DiscoveryPhase::silentlyExcluded,
         _syncFileStatusTracker.data(), &SyncFileStatusTracker::slotAddSilentlyExcluded);
 
-    auto discoveryJob = new ProcessDirectoryJob(SyncFileItemPtr(), ProcessDirectoryJob::NormalQuery, ProcessDirectoryJob::NormalQuery,
-        _discoveryPhase.data(), _discoveryPhase.data());
+    auto discoveryJob = new ProcessDirectoryJob(
+        _discoveryPhase.data(), PinState::AlwaysLocal, _discoveryPhase.data());
     _discoveryPhase->startJob(discoveryJob);
     connect(discoveryJob, &ProcessDirectoryJob::etag, this, &SyncEngine::slotRootEtagReceived);
 }
