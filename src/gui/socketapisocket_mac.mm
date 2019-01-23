@@ -42,9 +42,13 @@ public:
     SocketApiSocketPrivate(NSDistantObject <ChannelProtocol> *remoteEnd);
     ~SocketApiSocketPrivate();
 
+    // release remoteEnd
+    void disconnectRemote();
+
     NSDistantObject <ChannelProtocol> *remoteEnd;
     LocalEnd *localEnd;
     QByteArray inBuffer;
+    bool isRemoteDisconnected = false;
 };
 
 class SocketApiServerPrivate
@@ -79,9 +83,13 @@ public:
 
 - (void)connectionDidDie:(NSNotification*)notification
 {
-#pragma unused(notification)
-    if (_wrapper)
+    // The NSConnectionDidDieNotification docs say to disconnect from NSConnection here
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+    if (_wrapper) {
+        _wrapper->disconnectRemote();
         emit _wrapper->q_ptr->disconnected();
+    }
 }
 @end
 
@@ -133,8 +141,11 @@ qint64 SocketApiSocket::readData(char *data, qint64 maxlen)
 
 qint64 SocketApiSocket::writeData(const char *data, qint64 len)
 {
+    Q_D(SocketApiSocket);
+    if (d->isRemoteDisconnected)
+        return -1;
+
     @try {
-        Q_D(SocketApiSocket);
         // FIXME: The NSConnection will make this block unless the function is marked as "oneway"
         // in the protocol. This isn't async and reduces our performances but this currectly avoids
         // a Mach queue deadlock during requests bursts of the legacy OwnCloudFinder extension.
@@ -143,6 +154,7 @@ qint64 SocketApiSocket::writeData(const char *data, qint64 len)
         return len;
     } @catch(NSException* e) {
         // connectionDidDie can be notified too late, also interpret any sending exception as a disconnection.
+        d->disconnectRemote();
         emit disconnected();
         return -1;
     }
@@ -174,10 +186,20 @@ SocketApiSocketPrivate::SocketApiSocketPrivate(NSDistantObject <ChannelProtocol>
 
 SocketApiSocketPrivate::~SocketApiSocketPrivate()
 {
-    [remoteEnd release];
+    disconnectRemote();
+
     // The DO vended localEnd might still be referenced by the connection
     localEnd.wrapper = nil;
     [localEnd release];
+}
+
+void SocketApiSocketPrivate::disconnectRemote()
+{
+    if (isRemoteDisconnected)
+        return;
+    isRemoteDisconnected = true;
+
+    [remoteEnd release];
 }
 
 SocketApiServer::SocketApiServer()
