@@ -128,6 +128,9 @@ public:
      *
      * Particularly useful when switching off vfs mode or switching to a
      * different kind of vfs.
+     *
+     * Note that *hydrated* placeholder files might still be left. These will
+     * get cleaned up by Vfs::unregisterFolder().
      */
     static void wipeVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs);
 
