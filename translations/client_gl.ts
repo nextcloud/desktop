@@ -856,7 +856,7 @@ Se decide eliminar os ficheiros, non poderá dispor deles a non ser que sexa o p
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
         <translation>Todos os ficheiros do cartafol de sincronización local «%1» foron eliminados.
-Estas eliminacións sincronizaranse co servidor, facendo que estes ficheiros non estean dispoñibles a menos que se restauren.
+Estas eliminacións sincronizaranse co servidor, facendo que estes ficheiros non estean dispoñíbeis a non ser que se restauren.
 Confirma que quere sincronizar estas accións co servidor?
 Se fose un accidente e decide manter os seus ficheiros, volverán ser sincronizados dende o servidor.</translation>
     </message>
@@ -865,7 +865,7 @@ Se fose un accidente e decide manter os seus ficheiros, volverán ser sincroniza
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation>Esta sincronización restablecerá os ficheiros a unha versión anterior no cartafol de sincronización «%1».
+        <translation>Esta sincronización restabelecerá os ficheiros a unha versión anterior no cartafol de sincronización «%1».
 Isto podería ser porque se restaurou unha copia de seguranza no servidor.
 Continuando a sincronización como normal fará que todos os seus ficheiros sexan substituídos por unha versión anterior. Quere manter os seus ficheiros máis recentes locais como ficheiros en conflito?</translation>
     </message>
