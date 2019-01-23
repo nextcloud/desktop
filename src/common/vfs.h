@@ -53,6 +53,12 @@ struct OCSYNC_EXPORT VfsSetupParams
     /// Strings potentially passed on to the platform
     QString providerName;
     QString providerVersion;
+
+    /** Whether native shell integration shall be enabled
+     *
+     * For some plugins that doesn't work well in tests.
+     */
+    bool enableShellIntegration = true;
 };
 
 /** Interface describing how to deal with virtual/placeholder files.
