@@ -157,9 +157,9 @@
 			[actionItem setTag:idx];
 			[actionItem setTarget:self];
 			NSString *flags = [item valueForKey:@"flags"]; // e.g. "d"
-			if ([flags rangeOfString:@"d"].location != NSNotFound) {
-				[actionItem setEnabled:false];
-			}
+			//if ([flags rangeOfString:@"d"].location != NSNotFound) {
+			//	[actionItem setEnabled:false];
+			//}
 
 			idx++;
 		}

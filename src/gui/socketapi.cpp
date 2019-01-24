@@ -59,10 +59,11 @@
 #include <QStandardPaths>
 #endif
 
+#if defined(Q_OS_WIN)
 #include "vfs_windows.h"
-
 #include <shlobj_core.h>
 #include <windows.h>
+#endif
 
 // This is the version that is returned when the client asks for the VERSION.
 // The first number should be changed if there is an incompatible change that breaks old clients.
@@ -1044,14 +1045,19 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argumentC, OCC::SocketList
 #endif
 
     listener->sendMessage(QString("GET_MENU_ITEMS:BEGIN"));
-    bool hasSeveralFiles = argument.contains(QLatin1Char('\x1e')); // Record Separator
+    auto flagString = QLatin1String(":d:");
+    listener->sendMessage(QLatin1String("MENU_ITEM:OFFLINE_DOWNLOAD_MODE") + flagString + tr("0ff line"));
+    listener->sendMessage(QLatin1String("MENU_ITEM:ONLINE_DOWNLOAD_MODE") + flagString + tr("On line"));
+    listener->sendMessage(QLatin1String("MENU_ITEM:SHARE") + flagString + tr("Share..."));
+    
+    /*bool hasSeveralFiles = argument.contains(QLatin1Char('\x1e')); // Record Separator
     FileData fileData = hasSeveralFiles ? FileData{} : FileData::get(argument);
     bool isOnTheServer = fileData.journalRecord().isValid();
     auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
     if (fileData.folder && fileData.folder->accountState()->isConnected()) {
         sendSharingContextMenuOptions(fileData, listener);
         listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
-    }
+    }*/
     listener->sendMessage(QString("GET_MENU_ITEMS:END"));
 }
 
@@ -1089,10 +1095,13 @@ QString SocketApi::buildRegisterFsMessage()
 //< Mac callback for ContextMenu Online option
 void SocketApi::command_ONLINE_DOWNLOAD_MODE(const QString &path, SocketListener *listener)
 {
-    qDebug() << "\n"
-             << Q_FUNC_INFO << "ONLINE_DOWNLOAD_MODE";
-    SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_ONLINE);
-
+    ConfigFile cfg;
+    QString relative_prefix = cfg.defaultFileStreamMirrorPath();
+    QString relative_path = path;
+    relative_path = relative_path.replace(0, relative_prefix.length(), QString(""));
+    
+    qDebug() << "\n" << Q_FUNC_INFO << "ONLINE_DOWNLOAD_MODE: " << relative_path;
+    SyncJournalDb::instance()->setSyncMode(relative_path, SyncJournalDb::SYNCMODE_ONLINE);
     //< Example
     //SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
     //SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
@@ -1101,9 +1110,13 @@ void SocketApi::command_ONLINE_DOWNLOAD_MODE(const QString &path, SocketListener
 //< Mac callback for ContextMenu Offline option
 void SocketApi::command_OFFLINE_DOWNLOAD_MODE(const QString &path, SocketListener *listener)
 {
-    qDebug() << "\n"
-             << Q_FUNC_INFO << "OFFLINE_DOWNLOAD_MODE";
-    SyncJournalDb::instance()->setSyncMode(path, SyncJournalDb::SYNCMODE_OFFLINE);
+    ConfigFile cfg;
+    QString relative_prefix = cfg.defaultFileStreamMirrorPath();
+    QString relative_path = path;
+    relative_path = relative_path.replace(0, relative_prefix.length(), QString(""));
+    
+    qDebug() << "\n" << Q_FUNC_INFO << "OFFLINE_DOWNLOAD_MODE: " << relative_path;
+    SyncJournalDb::instance()->setSyncMode(relative_path, SyncJournalDb::SYNCMODE_OFFLINE);
     //< Example
     //SyncJournalDb::instance()->setSyncModeDownload(path, SyncJournalDb::SYNCMODE_DOWNLOADED_YES); //< Set when file was downloaded
     //SyncJournalDb::instance()->updateLastAccess(path);  //< Set when file was opened or updated
@@ -1216,6 +1229,10 @@ void SocketApi::command_GET_DOWNLOAD_MODE(const QString &localFileC, SocketListe
     if (!QString(Letter).compare(Cfg.defaultFileStreamLetterDrive().toUpper()))
         localFile.replace(0, 3, QString(""));
     localFile.replace("\\", "/");
+#elif defined(Q_OS_MAC)
+    ConfigFile cfg;
+    QString relative_prefix = cfg.defaultFileStreamMirrorPath();
+    localFile = localFile.replace(0, relative_prefix.length(), QString(""));
 #endif
 
     qDebug() << Q_FUNC_INFO << " localFile_0: " << localFile;
