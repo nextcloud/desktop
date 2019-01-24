@@ -3643,7 +3643,7 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="357"/>
         <source>Start a &amp;clean sync (Erases the local folder!)</source>
-        <translation>Starta en %ren synkning (tar bort den lokala mappen!)</translation>
+        <translation>Starta en ren synkning (tar bort den lokala mappen!)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
