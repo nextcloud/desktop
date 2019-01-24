@@ -2666,11 +2666,30 @@ void Vfs_windows::moveDirectoryAtPath(QString path, QString npath, QVariantMap &
 
 void Vfs_windows::openFileAtPath(QString path, QVariantMap &error)
 {
+    QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
+    QString relative_path = path;
+    relative_path.replace(0, relative_prefix.length(), QString(""));
+
+		//< Alway ONLY FIRST >TIME when download file-open set SYNCMODE_ONLINE.
+    if (SyncJournalDb::instance()->getSyncMode(relative_path) == SyncJournalDb::SYNCMODE_NONE)
+        SyncJournalDb::instance()->setSyncMode(relative_path, SyncJournalDb::SYNCMODE_ONLINE);
+ 
+		//< Set when file was opened or updated
+    SyncJournalDb::instance()->updateLastAccess(relative_path);
+
+	if (SyncJournalDb::instance()->getSyncMode(relative_path) == SyncJournalDb::SYNCMODE_ONLINE)
+        qDebug() << " clfCase relative_path: " << relative_path << "SYNCMODE_ONLINE" \
+                 << " LastAccess: " << SyncJournalDb::instance()->secondsSinceLastAccess(relative_path);
+    else if (SyncJournalDb::instance()->getSyncMode(relative_path) == SyncJournalDb::SYNCMODE_ONLINE)
+        qDebug() << " clfCase relative_path: " << relative_path << "SYNCMODE_OFFLINE" \
+                 << " LastAccess: " << SyncJournalDb::instance()->secondsSinceLastAccess(relative_path);
+
+
+
 	_mutex.lock();
     emit openFile(path);
     _syncCondition.wait(&_mutex);
 /////////////////
-	QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
 	char fgv[5];
 	fgv[0] = 'X';
 	fgv[1] = ':';
@@ -2703,6 +2722,20 @@ void Vfs_windows::openFileAtPath(QString path, QVariantMap &error)
 
 void Vfs_windows::writeFileAtPath(QString path, QVariantMap &error)
 {
+    QString relative_prefix = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
+    QString relative_path = path;
+    relative_path.replace(0, relative_prefix.length(), QString(""));
+
+			//< Set when file was opened or updated
+    SyncJournalDb::instance()->updateLastAccess(relative_path);
+
+	if (SyncJournalDb::instance()->getSyncMode(relative_path) == SyncJournalDb::SYNCMODE_ONLINE)
+        qDebug() << " clfCase relative_path: " << relative_path << "SYNCMODE_ONLINE" \
+                 << " LastAccess: " << SyncJournalDb::instance()->secondsSinceLastAccess(relative_path);
+    else if (SyncJournalDb::instance()->getSyncMode(relative_path) == SyncJournalDb::SYNCMODE_ONLINE)
+        qDebug() << " clfCase relative_path: " << relative_path << "SYNCMODE_OFFLINE" \
+                 << " LastAccess: " << SyncJournalDb::instance()->secondsSinceLastAccess(relative_path);
+
 	emit writeFile(path);
 }
 
