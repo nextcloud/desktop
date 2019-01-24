@@ -624,8 +624,8 @@ void SocketApi::command_SHARE_MENU_TITLE(const QString &, SocketListener *listen
 {
     listener->sendMessage(QLatin1String("SHARE_MENU_TITLE:") + tr("Share with %1", "parameter is ownCloud").arg(Theme::instance()->appNameGUI()));
     listener->sendMessage(QLatin1String("STREAM_SUBMENU_TITLE:") + tr("Claro drive FS"));
-    listener->sendMessage(QLatin1String("STREAM_OFFLINE_ITEM_TITLE:") + tr("0ff line"));
-    listener->sendMessage(QLatin1String("STREAM_ONLINE_ITEM_TITLE:") + tr("On line"));
+    listener->sendMessage(QLatin1String("STREAM_OFFLINE_ITEM_TITLE:") + tr("Available offline"));
+    listener->sendMessage(QLatin1String("STREAM_ONLINE_ITEM_TITLE:") + tr("Online only"));
 }
 
 // don't pull the share manager into socketapi unittests
