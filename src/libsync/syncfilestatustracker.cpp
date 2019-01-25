@@ -89,7 +89,7 @@ SyncFileStatus::SyncFileStatusTag SyncFileStatusTracker::lookupProblem(const QSt
  * icon as the problem is most likely going to resolve itself quickly and
  * automatically.
  */
-static inline bool showErrorInSocketApi(const SyncFileItem &item)
+static inline bool hasErrorStatus(const SyncFileItem &item)
 {
     const auto status = item._status;
     return item._instruction == CSYNC_INSTRUCTION_ERROR
@@ -100,7 +100,7 @@ static inline bool showErrorInSocketApi(const SyncFileItem &item)
         || item._hasBlacklistEntry;
 }
 
-static inline bool showWarningInSocketApi(const SyncFileItem &item)
+static inline bool hasExcludedStatus(const SyncFileItem &item)
 {
     const auto status = item._status;
     return item._instruction == CSYNC_INSTRUCTION_IGNORE
@@ -141,7 +141,7 @@ SyncFileStatus SyncFileStatusTracker::fileStatus(const QString &relativePath)
     if (_syncEngine->excludedFiles().isExcluded(_syncEngine->localPath() + relativePath,
             _syncEngine->localPath(),
             _syncEngine->ignoreHiddenFiles())) {
-        return SyncFileStatus(SyncFileStatus::StatusWarning);
+        return SyncFileStatus(SyncFileStatus::StatusExcluded);
     }
 
     if (_dirtyPaths.contains(relativePath))
@@ -170,7 +170,7 @@ void SyncFileStatusTracker::slotPathTouched(const QString &fileName)
 
 void SyncFileStatusTracker::slotAddSilentlyExcluded(const QString &folderPath)
 {
-    _syncProblems[folderPath] = SyncFileStatus::StatusWarning;
+    _syncProblems[folderPath] = SyncFileStatus::StatusExcluded;
     emit fileStatusChanged(getSystemDestination(folderPath), resolveSyncAndErrorStatus(folderPath, NotShared));
 }
 
@@ -228,11 +228,11 @@ void SyncFileStatusTracker::slotAboutToPropagate(SyncFileItemVector &items)
         qCDebug(lcStatusTracker) << "Investigating" << item->destination() << item->_status << item->_instruction;
         _dirtyPaths.remove(item->destination());
 
-        if (showErrorInSocketApi(*item)) {
+        if (hasErrorStatus(*item)) {
             _syncProblems[item->_file] = SyncFileStatus::StatusError;
             invalidateParentPaths(item->destination());
-        } else if (showWarningInSocketApi(*item)) {
-            _syncProblems[item->_file] = SyncFileStatus::StatusWarning;
+        } else if (hasExcludedStatus(*item)) {
+            _syncProblems[item->_file] = SyncFileStatus::StatusExcluded;
         }
 
         SharedFlag sharedFlag = item->_remotePerm.hasPermission(RemotePermissions::IsShared) ? Shared : NotShared;
@@ -272,11 +272,11 @@ void SyncFileStatusTracker::slotItemCompleted(const SyncFileItemPtr &item)
 {
     qCDebug(lcStatusTracker) << "Item completed" << item->destination() << item->_status << item->_instruction;
 
-    if (showErrorInSocketApi(*item)) {
+    if (hasErrorStatus(*item)) {
         _syncProblems[item->_file] = SyncFileStatus::StatusError;
         invalidateParentPaths(item->destination());
-    } else if (showWarningInSocketApi(*item)) {
-        _syncProblems[item->_file] = SyncFileStatus::StatusWarning;
+    } else if (hasExcludedStatus(*item)) {
+        _syncProblems[item->_file] = SyncFileStatus::StatusExcluded;
     } else {
         _syncProblems.erase(item->_file);
     }

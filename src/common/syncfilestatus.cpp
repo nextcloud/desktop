@@ -70,6 +70,10 @@ QString SyncFileStatus::toSocketAPIString() const
     case StatusError:
         statusString = QLatin1String("ERROR");
         break;
+    case StatusExcluded:
+        // The protocol says IGNORE, but all implementations show a yellow warning sign.
+        statusString = QLatin1String("IGNORE");
+        break;
     }
     if (canBeShared && _shared) {
         statusString += QLatin1String("+SWM");
