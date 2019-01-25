@@ -562,11 +562,8 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
     if (!info || info->_fetched || info->_fetchingJob)
         return;
     info->resetSubs(this, parent);
-    QString path = info->_folder->remotePath();
+    QString path = info->_folder->remotePathTrailingSlash();
     if (info->_path != QLatin1String("/")) {
-        if (!path.endsWith(QLatin1Char('/'))) {
-            path += QLatin1Char('/');
-        }
         path += info->_path;
     }
     LsColJob *job = new LsColJob(_accountState->account(), path, this);

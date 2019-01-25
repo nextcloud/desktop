@@ -1161,7 +1161,7 @@ public:
 
         OCC::VfsSetupParams vfsParams;
         vfsParams.filesystemPath = localPath();
-        vfsParams.remotePath = "";
+        vfsParams.remotePath = "/";
         vfsParams.account = _account;
         vfsParams.journal = _journalDb.get();
         vfsParams.providerName = "OC-TEST";

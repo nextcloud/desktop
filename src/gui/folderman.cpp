@@ -1060,16 +1060,20 @@ QStringList FolderMan::findFileInLocalFolders(const QString &relPath, const Acco
 {
     QStringList re;
 
+    // We'll be comparing against Folder::remotePath which always starts with /
+    QString serverPath = relPath;
+    if (!serverPath.startsWith('/'))
+        serverPath.prepend('/');
+
     foreach (Folder *folder, this->map().values()) {
         if (acc != 0 && folder->accountState()->account() != acc) {
             continue;
         }
-        QString path = folder->cleanPath();
-        QString remRelPath;
-        // cut off the remote path from the server path.
-        remRelPath = relPath.mid(folder->remotePath().length());
-        path += "/";
-        path += remRelPath;
+        if (!serverPath.startsWith(folder->remotePath()))
+            continue;
+
+        QString path = folder->cleanPath() + '/';
+        path += serverPath.midRef(folder->remotePathTrailingSlash().length());
         if (QFile::exists(path)) {
             re.append(path);
         }

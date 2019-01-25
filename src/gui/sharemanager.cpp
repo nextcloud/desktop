@@ -37,9 +37,7 @@ static void updateFolder(const AccountPtr &account, const QString &path)
         if (path.startsWith(folderPath) && (path == folderPath || folderPath.endsWith('/') || path[folderPath.size()] == '/')) {
             // Workaround the fact that the server does not invalidate the etags of parent directories
             // when something is shared.
-            auto relative = path.midRef(folderPath.size());
-            if (relative.startsWith('/'))
-                relative = relative.mid(1);
+            auto relative = path.midRef(f->remotePathTrailingSlash().length());
             f->journalDb()->avoidReadFromDbOnNextSync(relative.toString());
 
             // Schedule a sync so it can update the remote permission flag and let the socket API

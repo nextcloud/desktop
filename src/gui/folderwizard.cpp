@@ -440,13 +440,10 @@ bool FolderWizardRemotePath::isComplete() const
         if (f->accountState()->account() != _account) {
             continue;
         }
-        QString curDir = f->remotePath();
-        if (!curDir.startsWith(QLatin1Char('/'))) {
-            curDir.prepend(QLatin1Char('/'));
-        }
+        QString curDir = f->remotePathTrailingSlash();
         if (QDir::cleanPath(dir) == QDir::cleanPath(curDir)) {
             warnStrings.append(tr("This folder is already being synced."));
-        } else if (dir.startsWith(curDir + QLatin1Char('/'))) {
+        } else if (dir.startsWith(curDir)) {
             warnStrings.append(tr("You are already syncing <i>%1</i>, which is a parent folder of <i>%2</i>.").arg(Utility::escape(curDir), Utility::escape(dir)));
         }
     }

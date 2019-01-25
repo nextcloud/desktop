@@ -256,6 +256,14 @@ QString Folder::remotePath() const
     return _definition.targetPath;
 }
 
+QString Folder::remotePathTrailingSlash() const
+{
+    QString result = remotePath();
+    if (!result.endsWith('/'))
+        result.append('/');
+    return result;
+}
+
 QUrl Folder::remoteUrl() const
 {
     return Utility::concatUrlPath(_accountState->account()->davUrl(), remotePath());
@@ -463,7 +471,7 @@ void Folder::startVfs()
 
     VfsSetupParams vfsParams;
     vfsParams.filesystemPath = path();
-    vfsParams.remotePath = remotePath();
+    vfsParams.remotePath = remotePathTrailingSlash();
     vfsParams.account = _accountState->account();
     vfsParams.journal = &_journal;
     vfsParams.providerName = Theme::instance()->appNameGUI();
@@ -1304,7 +1312,7 @@ bool FolderDefinition::load(QSettings &settings, const QString &alias,
     }
 
     // Old settings can contain paths with native separators. In the rest of the
-    // code we assum /, so clean it up now.
+    // code we assume /, so clean it up now.
     folder->localPath = prepareLocalPath(folder->localPath);
 
     // Target paths also have a convention

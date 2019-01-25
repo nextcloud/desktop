@@ -37,9 +37,16 @@ class SyncFileItem;
 /** Collection of parameters for initializing a Vfs instance. */
 struct OCSYNC_EXPORT VfsSetupParams
 {
-    /// The full path to the folder on the local filesystem
+    /** The full path to the folder on the local filesystem
+     *
+     * Always ends with /.
+     */
     QString filesystemPath;
-    /// The path to the synced folder on the account
+
+    /** The path to the synced folder on the account
+     *
+     * Always ends with /.
+     */
     QString remotePath;
 
     /// Account url, credentials etc for network calls
