@@ -194,8 +194,12 @@ public:
 
     /**
       * This is called when the sync folder definition is removed. Do cleanups here.
+      *
+      * It removes the database, among other things.
+      *
+      * The folder is not in a valid state afterwards!
       */
-    virtual void wipe();
+    virtual void wipeForRemoval();
 
     void setSyncState(SyncResult::Status state);
 

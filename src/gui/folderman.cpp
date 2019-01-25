@@ -1096,8 +1096,8 @@ void FolderMan::removeFolder(Folder *f)
         emit scheduleQueueChanged();
     }
 
-    f->wipe();
     f->setSyncPaused(true);
+    f->wipeForRemoval();
 
     // remove the folder configuration
     f->removeFromSettings();

@@ -140,8 +140,9 @@ Folder::Folder(const FolderDefinition &definition,
 
 Folder::~Folder()
 {
-    // TODO cfapi: unregister on wipe()? There should probably be a wipeForRemoval() where this cleanup is appropriate
-    _vfs->stop();
+    // If wipeForRemoval() was called the vfs has already shut down.
+    if (_vfs)
+        _vfs->stop();
 
     // Reset then engine first as it will abort and try to access members of the Folder
     _engine.reset();
@@ -735,19 +736,17 @@ void Folder::slotTerminateSync()
     }
 }
 
-// This removes the csync File database
-// This is needed to provide a clean startup again in case another
-// local folder is synced to the same ownCloud.
-void Folder::wipe()
+void Folder::wipeForRemoval()
 {
-    QString stateDbFile = _engine->journal()->databaseFilePath();
-
     // Delete files that have been partially downloaded.
     slotDiscardDownloadProgress();
 
-    //Unregister the socket API so it does not keep the .sync_journal file open
+    // Unregister the socket API so it does not keep the .sync_journal file open
     FolderMan::instance()->socketApi()->slotUnregisterPath(alias());
     _journal.close(); // close the sync journal
+
+    // Remove db and temporaries
+    QString stateDbFile = _engine->journal()->databaseFilePath();
 
     QFile file(stateDbFile);
     if (file.exists()) {
@@ -766,8 +765,9 @@ void Folder::wipe()
     QFile::remove(stateDbFile + "-wal");
     QFile::remove(stateDbFile + "-journal");
 
-    if (canSync())
-        FolderMan::instance()->socketApi()->slotRegisterPath(alias());
+    _vfs->stop();
+    _vfs->unregisterFolder();
+    _vfs.reset(nullptr); // warning: folder now in an invalid state
 }
 
 bool Folder::reloadExcludes()
