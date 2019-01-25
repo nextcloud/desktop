@@ -146,8 +146,15 @@ public:
      *
      * Implementations must make sure that calling this function on a file that already
      * is a placeholder is acceptable.
+     *
+     * replacesFile can optionally contain a filesystem path to a placeholder that this
+     * new placeholder shall supersede, for rename-replace actions with new downloads,
+     * for example.
      */
-    virtual void convertToPlaceholder(const QString &filename, const SyncFileItem &item) = 0;
+    virtual void convertToPlaceholder(
+        const QString &filename,
+        const SyncFileItem &item,
+        const QString &replacesFile = QString()) = 0;
 
     /// Determine whether the file at the given absolute path is a dehydrated placeholder.
     virtual bool isDehydratedPlaceholder(const QString &filePath) = 0;
@@ -234,7 +241,7 @@ public:
 
     bool updateMetadata(const QString &, time_t, quint64, const QByteArray &, QString *) override { return true; }
     void createPlaceholder(const QString &, const SyncFileItem &) override {}
-    void convertToPlaceholder(const QString &, const SyncFileItem &) override {}
+    void convertToPlaceholder(const QString &, const SyncFileItem &, const QString &) override {}
 
     bool isDehydratedPlaceholder(const QString &) override { return false; }
     bool statTypeVirtualFile(csync_file_stat_t *, void *) override { return false; }

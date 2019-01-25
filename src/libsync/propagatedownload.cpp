@@ -421,6 +421,7 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
     if (_item->_type == ItemTypeVirtualFileDehydration) {
         _item->_type = ItemTypeVirtualFile;
         // TODO: Could dehydrate without wiping the file entirely
+        // TODO: That would be useful as it could preserve file attributes (pins)
         auto fn = propagator()->getFilePath(_item->_file);
         qCDebug(lcPropagateDownload) << "dehydration: wiping base file" << fn;
         propagator()->_journal->deleteFileRecord(_item->_file);
@@ -987,6 +988,9 @@ void PropagateDownloadFile::downloadFinished()
     // Apply the remote permissions
     FileSystem::setFileReadOnlyWeak(_tmpFile.fileName(), !_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite));
 
+    // Make the file a hydrated placeholder if possible
+    propagator()->syncOptions()._vfs->convertToPlaceholder(_tmpFile.fileName(), *_item, fn);
+
     QString error;
     emit propagator()->touchedFile(fn);
     // The fileChanged() check is done above to generate better error messages.
@@ -1003,9 +1007,6 @@ void PropagateDownloadFile::downloadFinished()
         done(SyncFileItem::SoftError, error);
         return;
     }
-
-    // Make the file a hydrated placeholder if possible
-    propagator()->syncOptions()._vfs->convertToPlaceholder(fn, *_item);
 
     FileSystem::setFileHidden(fn, false);
 

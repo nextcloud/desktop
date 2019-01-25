@@ -70,7 +70,7 @@ void VfsSuffix::createPlaceholder(const QString &syncFolder, const SyncFileItem 
     FileSystem::setModTime(fn, item._modtime);
 }
 
-void VfsSuffix::convertToPlaceholder(const QString &, const SyncFileItem &)
+void VfsSuffix::convertToPlaceholder(const QString &, const SyncFileItem &, const QString &)
 {
     // Nothing necessary
 }
