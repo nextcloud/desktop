@@ -1127,8 +1127,8 @@ void FolderMan::removeFolder(Folder *f)
         emit scheduleQueueChanged();
     }
 
-    f->wipe();
     f->setSyncPaused(true);
+    f->wipeForRemoval();
 
     // remove the folder configuration
     f->removeFromSettings();
@@ -1253,7 +1253,7 @@ void FolderMan::slotWipeFolderForAccount(AccountState *accountState)
         }
 
         // wipe database
-        f->wipe();
+        f->wipeForRemoval();
 
         // wipe data
         QDir userFolder(f->path());
