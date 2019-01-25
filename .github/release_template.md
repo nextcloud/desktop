@@ -92,6 +92,9 @@ On Release Day (for final release):
 * [ ] Linux: Re-enable OBS publishing on the project after official release date and if all distros build (check for accidentially disabled packages too) 
 * [ ] Linux: Wait until everything is built and published, then disable publishing on project isv:ownCloud:desktop
 * [ ] Create git signed tag in client repository using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
+* [ ] Create same tag for MSI code
+* [ ] Create same tag for Windows toolchain
+* [ ] Create same tag (actually a symlink) for macOS toolchain
 * [ ] Create a (draft) release on https://github.com/owncloud/client/releases
 * [ ] Update https://owncloud.org/changelog/desktop-client/
 * [ ] Update https://owncloud.org/download/#owncloud-desktop-client -> Download ownCloud -> click open 'Desktop Client', edit win/mac/lin, each all three tabs "Production", "Technical Preview" [disabled], "Test pilot" enabled, edit the links.
