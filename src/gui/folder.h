@@ -51,11 +51,11 @@ class FolderDefinition
 public:
     /// The name of the folder in the ui and internally
     QString alias;
-    /// path on local machine
+    /// path on local machine (always trailing /)
     QString localPath;
     /// path to the journal, usually relative to localPath
     QString journalPath;
-    /// path on remote
+    /// path on remote (usually no trailing /, exception "/")
     QString targetPath;
     /// whether the folder is paused
     bool paused = false;
@@ -88,7 +88,7 @@ public:
     /// Ensure / as separator and trailing /.
     static QString prepareLocalPath(const QString &path);
 
-    /// Ensure starting / and no ending /.
+    /// Remove ending /, then ensure starting '/': so "/foo/bar" and "/".
     static QString prepareTargetPath(const QString &path);
 
     /// journalPath relative to localPath.
@@ -146,9 +146,14 @@ public:
     QString cleanPath() const;
 
     /**
-     * remote folder path
+     * remote folder path, usually without trailing /, exception "/"
      */
     QString remotePath() const;
+
+    /**
+     * remote folder path, always with a trailing /
+     */
+    QString remotePathTrailingSlash() const;
 
     void setNavigationPaneClsid(const QUuid &clsid) { _definition.navigationPaneClsid = clsid; }
     QUuid navigationPaneClsid() const { return _definition.navigationPaneClsid; }
