@@ -36,6 +36,7 @@ public:
         StatusWarning,
         StatusUpToDate,
         StatusError,
+        StatusExcluded,
     };
 
     SyncFileStatus();

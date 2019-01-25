@@ -222,19 +222,19 @@ private slots:
         fakeFolder.scheduleSync();
         fakeFolder.execUntilBeforePropagation();
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
-        QCOMPARE(statusSpy.statusOf("A/a1"), SyncFileStatus(SyncFileStatus::StatusWarning));
-        QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf("A/a1"), SyncFileStatus(SyncFileStatus::StatusExcluded));
+        QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusExcluded));
         QEXPECT_FAIL("", "csync will stop at ignored directories without traversing children, so we don't currently push the status for newly ignored children of an ignored directory.", Continue);
-        QCOMPARE(statusSpy.statusOf("B/b1"), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf("B/b1"), SyncFileStatus(SyncFileStatus::StatusExcluded));
 
         fakeFolder.execUntilFinished();
         verifyThatPushMatchesPull(fakeFolder, statusSpy);
-        QCOMPARE(statusSpy.statusOf("A/a1"), SyncFileStatus(SyncFileStatus::StatusWarning));
-        QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf("A/a1"), SyncFileStatus(SyncFileStatus::StatusExcluded));
+        QCOMPARE(statusSpy.statusOf("B"), SyncFileStatus(SyncFileStatus::StatusExcluded));
         QEXPECT_FAIL("", "csync will stop at ignored directories without traversing children, so we don't currently push the status for newly ignored children of an ignored directory.", Continue);
-        QCOMPARE(statusSpy.statusOf("B/b1"), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf("B/b1"), SyncFileStatus(SyncFileStatus::StatusExcluded));
         QEXPECT_FAIL("", "csync will stop at ignored directories without traversing children, so we don't currently push the status for newly ignored children of an ignored directory.", Continue);
-        QCOMPARE(statusSpy.statusOf("B/b2"), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(statusSpy.statusOf("B/b2"), SyncFileStatus(SyncFileStatus::StatusExcluded));
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus(""), SyncFileStatus(SyncFileStatus::StatusUpToDate));
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("A"), SyncFileStatus(SyncFileStatus::StatusUpToDate));
         statusSpy.clear();
@@ -271,12 +271,12 @@ private slots:
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus(""), SyncFileStatus(SyncFileStatus::StatusWarning));
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("A"), SyncFileStatus(SyncFileStatus::StatusWarning));
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("A/a1"), SyncFileStatus(SyncFileStatus::StatusError));
-        QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("B"), SyncFileStatus(SyncFileStatus::StatusWarning));
+        QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("B"), SyncFileStatus(SyncFileStatus::StatusExcluded));
 
         // Should still get the status for different casing on macOS and Windows.
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("a"), SyncFileStatus(Utility::fsCasePreserving() ? SyncFileStatus::StatusWarning : SyncFileStatus::StatusNone));
         QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("A/A1"), SyncFileStatus(Utility::fsCasePreserving() ? SyncFileStatus::StatusError : SyncFileStatus::StatusNone));
-        QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("b"), SyncFileStatus(Utility::fsCasePreserving() ? SyncFileStatus::StatusWarning : SyncFileStatus::StatusNone));
+        QCOMPARE(fakeFolder.syncEngine().syncFileStatusTracker().fileStatus("b"), SyncFileStatus(Utility::fsCasePreserving() ? SyncFileStatus::StatusExcluded : SyncFileStatus::StatusNone));
     }
 
     void parentsGetWarningStatusForError() {
