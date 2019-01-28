@@ -26,7 +26,7 @@ namespace OCC {
 //    CSYNC_INSTRUCTION_RENAME = 0x00000004, /* The file need to be renamed (RECONCILE) */
 //};
 
-Q_LOGGING_CATEGORY(lcSyncWrapper, "nextcloud.gui.wrapper", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcSyncWrapper, "nextcloud.gui.wrapper", QtInfoMsg);
 
 SyncWrapper *SyncWrapper::instance()
 {

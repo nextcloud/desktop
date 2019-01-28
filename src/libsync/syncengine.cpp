@@ -595,9 +595,6 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
         return re;
     }
     case CSYNC_INSTRUCTION_UPDATE_METADATA:
-		if (item->_file == "2019.txt")
-			qDebug() << "STOP HERE!";
-
         dir = SyncFileItem::None;
         // For directories, metadata-only updates will be done after all their files are propagated.
         if (!isDirectory) {
@@ -651,8 +648,7 @@ int SyncEngine::treewalkFile(csync_file_stat_t *file, csync_file_stat_t *other, 
             }
 
             // Technically we're done with this item if it is not fuse 0 byte file
-            //if(!file->is_fuse_created_file)
-				return re;
+			return re;
         }
         break;
     case CSYNC_INSTRUCTION_RENAME:
@@ -1085,6 +1081,13 @@ void SyncEngine::slotDiscoveryJobFinished(int discoveryResult)
     //_localDiscoveryPaths.clear();
 
     // To announce the beginning of the sync
+	qDebug() << "## ABOUT TO PROPAGATE #######";
+    for (SyncFileItemVector::iterator it = syncItems.begin(); it != syncItems.end(); ++it) {
+        qDebug() << "file: " << (*it)->_file;
+		qDebug() << "instruction: " << (*it)->_instruction;
+		qDebug() << "direction: " << (*it)->_direction;
+    }
+	qDebug() << "##############";
     emit aboutToPropagate(syncItems);
 
     // it's important to do this before ProgressInfo::start(), to announce start of new sync
@@ -1651,14 +1654,14 @@ void SyncEngine::updateLocalFileTree(const QString &path, csync_instructions_e i
             QString relativePath(path);
             QString fileName(QFileInfo(path).fileName());
 
-			qDebug() << "UPDATE LOCAL FILE TREE ######################################################";
+			qDebug() << "## UPDATE LOCAL FILE TREE ######################################################";
 			qDebug() << "relativePath: " << relativePath;
             qDebug() << "absolutePath: " << absolutePath;
             qDebug() << "fileName: " << fileName;
             qDebug() << "######################################################";
 
             if (cysnc_update_file(_csync_ctx.data(), absolutePath.toLatin1(), relativePath.toLatin1(), fileName.toLatin1(), instruction)) {
-                qDebug() << "ADDED FILE TO TREE ######################################################" << relativePath << _csync_ctx->local.files.findFile(relativePath.toLatin1())->instruction;
+                qDebug() << "## ADDED FILE TO TREE ######################################################" << relativePath << _csync_ctx->local.files.findFile(relativePath.toLatin1())->instruction;
             }
         }
     }
@@ -1681,7 +1684,7 @@ void SyncEngine::updateFuseCreatedFile(const QString &path, bool is_fuse_created
             QString fileName(QFileInfo(path).fileName());
 
             if (cysnc_update_is_fuse_created_file(_csync_ctx.data(), relativePath.toLatin1(), is_fuse_created_file)) {
-                qDebug() << "UPDATED cysnc_update_is_fuse_created_fileL ######################################################" << relativePath << _csync_ctx->local.files.findFile(relativePath.toLatin1())->is_fuse_created_file;
+                qDebug() << "## UPDATED cysnc_update_is_fuse_created_file ######################################################" << relativePath << _csync_ctx->local.files.findFile(relativePath.toLatin1())->is_fuse_created_file;
             }
         }
     }

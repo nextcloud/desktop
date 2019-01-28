@@ -359,22 +359,22 @@ bool cysnc_update_file(CSYNC *ctx, const char *absolutePath, const QByteArray &r
     if (ctx->local.files.findFile(relativePath)) {
       ctx->local.files.findFile(relativePath)->instruction = instruction;
 
-	  std::unordered_map<ByteArrayRef, std::unique_ptr<csync_file_stat_t>, ByteArrayRefHash>::iterator it = ctx->local.files.begin();
-      qDebug() << "FOUND FILE IN TREE ######################################################" << relativePath << ctx->local.files.findFile(relativePath)->instruction;
-      while (it != ctx->local.files.end()) {
-          qDebug() << "localFile->file_id " << it->second->file_id;
-          qDebug() << "localFile->path " << it->second->path;
-          qDebug() << "localFile->original_path " << it->second->original_path;
-          qDebug() << "localFile->instruction " << it->second->instruction;
-		  qDebug() << "localFile->is_fuse_created_file " << it->second->is_fuse_created_file;
-          it++;
-      }
-      qDebug() << "######################################################";
+	  //std::unordered_map<ByteArrayRef, std::unique_ptr<csync_file_stat_t>, ByteArrayRefHash>::iterator it = ctx->local.files.begin();
+      qDebug() << "## FOUND FILE IN TREE ######################################################" << relativePath << ctx->local.files.findFile(relativePath)->instruction;
+    //  while (it != ctx->local.files.end()) {
+    //      qDebug() << "localFile->file_id " << it->second->file_id;
+    //      qDebug() << "localFile->path " << it->second->path;
+    //      qDebug() << "localFile->original_path " << it->second->original_path;
+    //      qDebug() << "localFile->instruction " << it->second->instruction;
+		  //qDebug() << "localFile->is_fuse_created_file " << it->second->is_fuse_created_file;
+    //      it++;
+    //  }
+    //  qDebug() << "######################################################";
 
       return true;
 
     } else {
-		qDebug() << "ADDING FILE TO TREE!! ######################################################" << absolutePath << relativePath << fileName;
+		//qDebug() << "ADDING FILE TO TREE!! ######################################################" << absolutePath << relativePath << fileName;
         // do the whole process for a single file
         std::unique_ptr<csync_file_stat_t> newfile;
         csync_file_stat_t *previous_fs = NULL;
@@ -500,7 +500,7 @@ bool cysnc_update_file(CSYNC *ctx, const char *absolutePath, const QByteArray &r
 				ctx->current = REMOTE_REPLICA;
 
 				//std::unordered_map<ByteArrayRef, std::unique_ptr<csync_file_stat_t>, ByteArrayRefHash>::iterator it = ctx->local.files.begin();
-    //            qDebug() << "AFTER ADDING LOCAL ######################################################";
+                qDebug() << "## AFTER ADDING TO LOCAL ######################################################" << fullpath;
     //            while (it != ctx->local.files.end()) {
     //                qDebug() << "localFile->file_id " << it->second->file_id;
     //                qDebug() << "localFile->path " << it->second->path;
@@ -524,17 +524,17 @@ bool cysnc_update_is_fuse_created_file(CSYNC *ctx, const QByteArray &relativePat
 	if (ctx->local.files.findFile(relativePath)) {
 		ctx->local.files.findFile(relativePath)->is_fuse_created_file = is_fuse_created_file;
 
-		std::unordered_map<ByteArrayRef, std::unique_ptr<csync_file_stat_t>, ByteArrayRefHash>::iterator it = ctx->local.files.begin();
+		//std::unordered_map<ByteArrayRef, std::unique_ptr<csync_file_stat_t>, ByteArrayRefHash>::iterator it = ctx->local.files.begin();
 		qDebug() << "cysnc_update_is_fuse_created_file ######################################################" << relativePath << ctx->local.files.findFile(relativePath)->is_fuse_created_file;
-		while (it != ctx->local.files.end()) {
-			qDebug() << "localFile->file_id " << it->second->file_id;
-			qDebug() << "localFile->path " << it->second->path;
-			qDebug() << "localFile->original_path " << it->second->original_path;
-			qDebug() << "localFile->instruction " << it->second->instruction;
-			qDebug() << "localFile->is_fuse_created_file " << it->second->is_fuse_created_file;
-			it++;
-		}
-		qDebug() << "######################################################";
+		//while (it != ctx->local.files.end()) {
+		//	qDebug() << "localFile->file_id " << it->second->file_id;
+		//	qDebug() << "localFile->path " << it->second->path;
+		//	qDebug() << "localFile->original_path " << it->second->original_path;
+		//	qDebug() << "localFile->instruction " << it->second->instruction;
+		//	qDebug() << "localFile->is_fuse_created_file " << it->second->is_fuse_created_file;
+		//	it++;
+		//}
+		//qDebug() << "######################################################";
 
 		return true;
 

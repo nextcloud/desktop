@@ -150,7 +150,12 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                 cur->instruction = CSYNC_INSTRUCTION_NEW;
                 break;
             }
-            cur->instruction = CSYNC_INSTRUCTION_REMOVE;
+			if (ctx->statedb->getSyncMode(cur->path) == OCC::SyncJournalDb::SYNCMODE_NONE)
+			{
+				/* Do not remove files in a directory that was not open yet */	
+				break;
+			}
+			cur->instruction = CSYNC_INSTRUCTION_REMOVE;
             break;
         case CSYNC_INSTRUCTION_EVAL_RENAME: {
             // By default, the EVAL_RENAME decays into a NEW
