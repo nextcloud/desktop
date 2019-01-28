@@ -98,6 +98,7 @@ On Release Day (for final release):
 * [ ] Create a (draft) release on https://github.com/owncloud/client/releases
 * [ ] Update https://owncloud.org/changelog/desktop-client/
 * [ ] Update https://owncloud.org/download/#owncloud-desktop-client -> Download ownCloud -> click open 'Desktop Client', edit win/mac/lin, each all three tabs "Production", "Technical Preview" [disabled], "Test pilot" enabled, edit the links.
+* [ ] Update htpps://owncloud.com/download/#desktop-clients (FIXME: who has credentials for this?)
 * [ ] Announce on https://central.owncloud.org
 * [ ] Announce on announcements@owncloud.org Link to the central post so discussion happens there.
 * [ ] Inform packagers @dragotin (openSUSE) @hefee (Debian) @Germano0 (Fedora)
