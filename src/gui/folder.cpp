@@ -547,11 +547,23 @@ void Folder::slotWatchedPathChanged(const QString &path)
     }
 #endif
 
-    // Check that the mtime actually changed.
+    // Check that the mtime/size actually changed or there was
+    // an attribute change (pin state) that caused the notification
+    bool spurious = false;
     SyncJournalFileRecord record;
     if (_journal.getFileRecord(relativePathBytes, &record)
         && record.isValid()
         && !FileSystem::fileChanged(path, record._fileSize, record._modtime)) {
+        spurious = true;
+
+        if (auto pinState = _vfs->pinState(relativePath.toString())) {
+            if (*pinState == PinState::AlwaysLocal && record.isVirtualFile())
+                spurious = false;
+            if (*pinState == PinState::OnlineOnly && record.isFile())
+                spurious = false;
+        }
+    }
+    if (spurious) {
         qCInfo(lcFolder) << "Ignoring spurious notification for file" << relativePath;
         return; // probably a spurious notification
     }
