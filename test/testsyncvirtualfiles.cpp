@@ -65,7 +65,7 @@ QSharedPointer<Vfs> setupVfs(FakeFolder &folder)
     folder.switchToVfs(suffixVfs);
 
     // Using this directly doesn't recursively unpin everything
-    folder.syncJournal().setPinStateForPath("", PinState::OnlineOnly);
+    folder.syncJournal().internalPinStates().setForPath("", PinState::OnlineOnly);
 
     return suffixVfs;
 }
@@ -433,7 +433,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("A/a1.owncloud"));
 
-        fakeFolder.syncJournal().setPinStateForPath("", PinState::AlwaysLocal);
+        fakeFolder.syncJournal().internalPinStates().setForPath("", PinState::AlwaysLocal);
 
         // Create a new remote file, it'll not be virtual
         fakeFolder.remoteModifier().insert("A/a2");
@@ -748,7 +748,7 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         auto setPin = [&] (const QByteArray &path, PinState state) {
-            fakeFolder.syncJournal().setPinStateForPath(path, state);
+            fakeFolder.syncJournal().internalPinStates().setForPath(path, state);
         };
 
         fakeFolder.remoteModifier().mkdir("local");
@@ -774,7 +774,7 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("unspec/file1.owncloud"));
 
         // Test 2: root is AlwaysLocal
-        fakeFolder.syncJournal().setPinStateForPath("", PinState::AlwaysLocal);
+        setPin("", PinState::AlwaysLocal);
 
         fakeFolder.remoteModifier().insert("file2");
         fakeFolder.remoteModifier().insert("online/file2");

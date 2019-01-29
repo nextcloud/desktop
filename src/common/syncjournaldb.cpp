@@ -2018,16 +2018,16 @@ void SyncJournalDb::markVirtualFileForDownloadRecursively(const QByteArray &path
     query.exec();
 }
 
-Optional<PinState> SyncJournalDb::rawPinStateForPath(const QByteArray &path)
+Optional<PinState> SyncJournalDb::PinStateInterface::rawForPath(const QByteArray &path)
 {
-    QMutexLocker lock(&_mutex);
-    if (!checkConnect())
+    QMutexLocker lock(&_db->_mutex);
+    if (!_db->checkConnect())
         return {};
 
-    auto &query = _getRawPinStateQuery;
+    auto &query = _db->_getRawPinStateQuery;
     ASSERT(query.initOrReset(QByteArrayLiteral(
             "SELECT pinState FROM flags WHERE path == ?1;"),
-        _db));
+        _db->_db));
     query.bindValue(1, path);
     query.exec();
 
@@ -2038,13 +2038,13 @@ Optional<PinState> SyncJournalDb::rawPinStateForPath(const QByteArray &path)
     return static_cast<PinState>(query.intValue(0));
 }
 
-Optional<PinState> SyncJournalDb::effectivePinStateForPath(const QByteArray &path)
+Optional<PinState> SyncJournalDb::PinStateInterface::effectiveForPath(const QByteArray &path)
 {
-    QMutexLocker lock(&_mutex);
-    if (!checkConnect())
+    QMutexLocker lock(&_db->_mutex);
+    if (!_db->checkConnect())
         return {};
 
-    auto &query = _getEffectivePinStateQuery;
+    auto &query = _db->_getEffectivePinStateQuery;
     ASSERT(query.initOrReset(QByteArrayLiteral(
             "SELECT pinState FROM flags WHERE"
             // explicitly allow "" to represent the root path
@@ -2052,7 +2052,7 @@ Optional<PinState> SyncJournalDb::effectivePinStateForPath(const QByteArray &pat
             " (" IS_PREFIX_PATH_OR_EQUAL("path", "?1") " OR path == '')"
             " AND pinState is not null AND pinState != 0"
             " ORDER BY length(path) DESC;"),
-        _db));
+        _db->_db));
     query.bindValue(1, path);
     query.exec();
 
@@ -2063,13 +2063,13 @@ Optional<PinState> SyncJournalDb::effectivePinStateForPath(const QByteArray &pat
     return static_cast<PinState>(query.intValue(0));
 }
 
-void SyncJournalDb::setPinStateForPath(const QByteArray &path, PinState state)
+void SyncJournalDb::PinStateInterface::setForPath(const QByteArray &path, PinState state)
 {
-    QMutexLocker lock(&_mutex);
-    if (!checkConnect())
+    QMutexLocker lock(&_db->_mutex);
+    if (!_db->checkConnect())
         return;
 
-    auto &query = _setPinStateQuery;
+    auto &query = _db->_setPinStateQuery;
     ASSERT(query.initOrReset(QByteArrayLiteral(
             // If we had sqlite >=3.24.0 everywhere this could be an upsert,
             // making further flags columns easy
@@ -2077,35 +2077,36 @@ void SyncJournalDb::setPinStateForPath(const QByteArray &path, PinState state)
             //" ON CONFLICT(path) DO UPDATE SET pinState=?2;"),
             // Simple version that doesn't work nicely with multiple columns:
             "INSERT OR REPLACE INTO flags(path, pinState) VALUES(?1, ?2);"),
-        _db));
+        _db->_db));
     query.bindValue(1, path);
     query.bindValue(2, static_cast<int>(state));
     query.exec();
 }
 
-void SyncJournalDb::wipePinStateForPathAndBelow(const QByteArray &path)
+void SyncJournalDb::PinStateInterface::wipeForPathAndBelow(const QByteArray &path)
 {
-    QMutexLocker lock(&_mutex);
-    if (!checkConnect())
+    QMutexLocker lock(&_db->_mutex);
+    if (!_db->checkConnect())
         return;
 
-    auto &query = _wipePinStateQuery;
+    auto &query = _db->_wipePinStateQuery;
     ASSERT(query.initOrReset(QByteArrayLiteral(
             "DELETE FROM flags WHERE "
             // Allow "" to delete everything
             " (" IS_PREFIX_PATH_OR_EQUAL("?1", "path") " OR ?1 == '');"),
-        _db));
+        _db->_db));
     query.bindValue(1, path);
     query.exec();
 }
 
-Optional<QVector<QPair<QByteArray, PinState>>> SyncJournalDb::rawPinStates()
+Optional<QVector<QPair<QByteArray, PinState>>>
+SyncJournalDb::PinStateInterface::rawList()
 {
-    QMutexLocker lock(&_mutex);
-    if (!checkConnect())
+    QMutexLocker lock(&_db->_mutex);
+    if (!_db->checkConnect())
         return {};
 
-    SqlQuery query("SELECT path, pinState FROM flags;", _db);
+    SqlQuery query("SELECT path, pinState FROM flags;", _db->_db);
     query.exec();
 
     QVector<QPair<QByteArray, PinState>> result;
@@ -2113,6 +2114,11 @@ Optional<QVector<QPair<QByteArray, PinState>>> SyncJournalDb::rawPinStates()
         result.append({ query.baValue(0), static_cast<PinState>(query.intValue(1)) });
     }
     return result;
+}
+
+SyncJournalDb::PinStateInterface SyncJournalDb::internalPinStates()
+{
+    return {this};
 }
 
 void SyncJournalDb::commit(const QString &context, bool startTrans)

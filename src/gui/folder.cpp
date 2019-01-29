@@ -650,13 +650,15 @@ void Folder::setSupportsVirtualFiles(bool enabled)
 
 bool Folder::newFilesAreVirtual() const
 {
-    auto pinState = _journal.rawPinStateForPath("");
+    if (!supportsVirtualFiles())
+        return false;
+    auto pinState = _vfs->pinState(QString());
     return pinState && *pinState == PinState::OnlineOnly;
 }
 
 void Folder::setNewFilesAreVirtual(bool enabled)
 {
-    _journal.setPinStateForPath("", enabled ? PinState::OnlineOnly : PinState::AlwaysLocal);
+    _vfs->setPinState(QString(), enabled ? PinState::OnlineOnly : PinState::AlwaysLocal);
 }
 
 bool Folder::supportsSelectiveSync() const

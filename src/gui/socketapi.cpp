@@ -915,7 +915,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         for (const auto &file : files) {
             auto fileData = FileData::get(file);
             auto path = fileData.folderRelativePathNoVfsSuffix();
-            auto pinState = folder->vfs().getPinState(path);
+            auto pinState = folder->vfs().pinState(path);
             if (!pinState) {
                 // db error
                 hasAlwaysLocal = true;

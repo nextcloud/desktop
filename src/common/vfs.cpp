@@ -73,14 +73,14 @@ void VfsDefaults::start(const VfsSetupParams &params)
 bool VfsDefaults::setPinState(const QString &folderPath, PinState state)
 {
     auto path = folderPath.toUtf8();
-    _setupParams.journal->wipePinStateForPathAndBelow(path);
-    _setupParams.journal->setPinStateForPath(path, state);
+    _setupParams.journal->internalPinStates().wipeForPathAndBelow(path);
+    _setupParams.journal->internalPinStates().setForPath(path, state);
     return true;
 }
 
-Optional<PinState> VfsDefaults::getPinState(const QString &folderPath)
+Optional<PinState> VfsDefaults::pinState(const QString &folderPath)
 {
-    return _setupParams.journal->effectivePinStateForPath(folderPath.toUtf8());
+    return _setupParams.journal->internalPinStates().effectiveForPath(folderPath.toUtf8());
 }
 
 VfsOff::VfsOff(QObject *parent)

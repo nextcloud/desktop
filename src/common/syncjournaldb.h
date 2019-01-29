@@ -257,58 +257,78 @@ public:
      */
     void markVirtualFileForDownloadRecursively(const QByteArray &path);
 
-    /**
-     * Gets the PinState for the path without considering parents.
+    /** Grouping for all functions relating to pin states,
      *
-     * If a path has no explicit PinState "Inherited" is returned.
-     *
-     * The path should not have a trailing slash.
-     * It's valid to use the root path "".
-     *
-     * Returns none on db error.
+     * Use internalPinStates() to get at them.
      */
-    Optional<PinState> rawPinStateForPath(const QByteArray &path);
+    struct OCSYNC_EXPORT PinStateInterface
+    {
+        PinStateInterface(const PinStateInterface &) = delete;
+        PinStateInterface(PinStateInterface &&) = delete;
 
-    /**
-     * Gets the PinState for the path after inheriting from parents.
-     *
-     * If the exact path has no entry or has an Inherited state,
-     * the state of the closest parent path is returned.
-     *
-     * The path should not have a trailing slash.
-     * It's valid to use the root path "".
-     *
-     * Never returns PinState::Inherited. If the root is "Inherited"
-     * or there's an error, "AlwaysLocal" is returned.
-     *
-     * Returns none on db error.
-     */
-    Optional<PinState> effectivePinStateForPath(const QByteArray &path);
+        /**
+         * Gets the PinState for the path without considering parents.
+         *
+         * If a path has no explicit PinState "Inherited" is returned.
+         *
+         * The path should not have a trailing slash.
+         * It's valid to use the root path "".
+         *
+         * Returns none on db error.
+         */
+        Optional<PinState> rawForPath(const QByteArray &path);
 
-    /**
-     * Sets a path's pin state.
-     *
-     * The path should not have a trailing slash.
-     * It's valid to use the root path "".
-     */
-    void setPinStateForPath(const QByteArray &path, PinState state);
+        /**
+         * Gets the PinState for the path after inheriting from parents.
+         *
+         * If the exact path has no entry or has an Inherited state,
+         * the state of the closest parent path is returned.
+         *
+         * The path should not have a trailing slash.
+         * It's valid to use the root path "".
+         *
+         * Never returns PinState::Inherited. If the root is "Inherited"
+         * or there's an error, "AlwaysLocal" is returned.
+         *
+         * Returns none on db error.
+         */
+        Optional<PinState> effectiveForPath(const QByteArray &path);
 
-    /**
-     * Wipes pin states for a path and below.
-     *
-     * Used when the user asks a subtree to have a particular pin state.
-     * The path should not have a trailing slash.
-     * The path "" wipes every entry.
-     */
-    void wipePinStateForPathAndBelow(const QByteArray &path);
+        /**
+         * Sets a path's pin state.
+         *
+         * The path should not have a trailing slash.
+         * It's valid to use the root path "".
+         */
+        void setForPath(const QByteArray &path, PinState state);
 
-    /**
-     * Returns list of all paths with their pin state as in the db.
+        /**
+         * Wipes pin states for a path and below.
+         *
+         * Used when the user asks a subtree to have a particular pin state.
+         * The path should not have a trailing slash.
+         * The path "" wipes every entry.
+         */
+        void wipeForPathAndBelow(const QByteArray &path);
+
+        /**
+         * Returns list of all paths with their pin state as in the db.
+         *
+         * Returns nothing on db error.
+         * Note that this will have an entry for "".
+         */
+        Optional<QVector<QPair<QByteArray, PinState>>> rawList();
+
+        SyncJournalDb *_db;
+    };
+    friend struct PinStateInterface;
+
+    /** Access to PinStates stored in the database.
      *
-     * Returns nothing on db error.
-     * Note that this will have an entry for "".
+     * Important: Not all vfs plugins store the pin states in the database,
+     * prefer to use Vfs::pinState() etc.
      */
-    Optional<QVector<QPair<QByteArray, PinState>>> rawPinStates();
+    PinStateInterface internalPinStates();
 
     /**
      * Only used for auto-test:

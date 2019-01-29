@@ -563,9 +563,8 @@ void AccountSettings::slotEnableVfsCurrentFolder()
             folder->setSupportsVirtualFiles(true);
             folder->setVfsOnOffSwitchPending(false);
 
-            // Wipe pin states to be sure
-            folder->journalDb()->wipePinStateForPathAndBelow("");
-            folder->journalDb()->setPinStateForPath("", PinState::OnlineOnly);
+            // Sets pin states to OnlineOnly everywhere
+            folder->setNewFilesAreVirtual(true);
 
             FolderMan::instance()->scheduleFolder(folder);
 
@@ -621,8 +620,7 @@ void AccountSettings::slotDisableVfsCurrentFolder()
             folder->setVfsOnOffSwitchPending(false);
 
             // Wipe pin states and selective sync db
-            folder->journalDb()->wipePinStateForPathAndBelow("");
-            folder->journalDb()->setPinStateForPath("", PinState::AlwaysLocal);
+            folder->setNewFilesAreVirtual(false);
             folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
 
             FolderMan::instance()->scheduleFolder(folder);
@@ -644,6 +642,8 @@ void AccountSettings::slotDisableVfsCurrentFolder()
 
 void AccountSettings::slotSetCurrentFolderAvailability(PinState state)
 {
+    ASSERT(state == PinState::OnlineOnly || state == PinState::AlwaysLocal);
+
     FolderMan *folderMan = FolderMan::instance();
     QPointer<Folder> folder = folderMan->folder(selectedFolderAlias());
     QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
@@ -651,8 +651,7 @@ void AccountSettings::slotSetCurrentFolderAvailability(PinState state)
         return;
 
     // similar to socket api: set pin state, wipe sub pin-states and sync
-    folder->journalDb()->wipePinStateForPathAndBelow("");
-    folder->journalDb()->setPinStateForPath("", state);
+    folder->setNewFilesAreVirtual(state == PinState::OnlineOnly);
 
     if (state == PinState::AlwaysLocal) {
         folder->downloadVirtualFile("");
