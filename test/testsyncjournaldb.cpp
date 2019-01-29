@@ -323,13 +323,13 @@ private slots:
     void testPinState()
     {
         auto make = [&](const QByteArray &path, PinState state) {
-            _db.setPinStateForPath(path, state);
-            auto pinState = _db.rawPinStateForPath(path);
+            _db.internalPinStates().setForPath(path, state);
+            auto pinState = _db.internalPinStates().rawForPath(path);
             QVERIFY(pinState);
             QCOMPARE(*pinState, state);
         };
         auto get = [&](const QByteArray &path) -> PinState {
-            auto state = _db.effectivePinStateForPath(path);
+            auto state = _db.internalPinStates().effectiveForPath(path);
             if (!state) {
                 QTest::qFail("couldn't read pin state", __FILE__, __LINE__);
                 return PinState::Inherited;
@@ -337,7 +337,7 @@ private slots:
             return *state;
         };
         auto getRaw = [&](const QByteArray &path) -> PinState {
-            auto state = _db.rawPinStateForPath(path);
+            auto state = _db.internalPinStates().rawForPath(path);
             if (!state) {
                 QTest::qFail("couldn't read pin state", __FILE__, __LINE__);
                 return PinState::Inherited;
@@ -345,8 +345,8 @@ private slots:
             return *state;
         };
 
-        _db.wipePinStateForPathAndBelow("");
-        auto list = _db.rawPinStates();
+        _db.internalPinStates().wipeForPathAndBelow("");
+        auto list = _db.internalPinStates().rawList();
         QCOMPARE(list->size(), 0);
 
         // Make a thrice-nested setup
@@ -366,7 +366,7 @@ private slots:
             }
         }
 
-        list = _db.rawPinStates();
+        list = _db.internalPinStates().rawList();
         QCOMPARE(list->size(), 4 + 9 + 27);
 
         // Baseline direct checks (the fallback for unset root pinstate is AlwaysLocal)
@@ -413,20 +413,20 @@ private slots:
 
         // Wiping
         QCOMPARE(getRaw("local/local"), PinState::AlwaysLocal);
-        _db.wipePinStateForPathAndBelow("local/local");
+        _db.internalPinStates().wipeForPathAndBelow("local/local");
         QCOMPARE(getRaw("local"), PinState::AlwaysLocal);
         QCOMPARE(getRaw("local/local"), PinState::Inherited);
         QCOMPARE(getRaw("local/local/local"), PinState::Inherited);
         QCOMPARE(getRaw("local/local/online"), PinState::Inherited);
-        list = _db.rawPinStates();
+        list = _db.internalPinStates().rawList();
         QCOMPARE(list->size(), 4 + 9 + 27 - 4);
 
         // Wiping everything
-        _db.wipePinStateForPathAndBelow("");
+        _db.internalPinStates().wipeForPathAndBelow("");
         QCOMPARE(getRaw(""), PinState::Inherited);
         QCOMPARE(getRaw("local"), PinState::Inherited);
         QCOMPARE(getRaw("online"), PinState::Inherited);
-        list = _db.rawPinStates();
+        list = _db.internalPinStates().rawList();
         QCOMPARE(list->size(), 0);
     }
 

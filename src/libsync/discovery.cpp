@@ -1360,7 +1360,7 @@ void ProcessDirectoryJob::computePinState(PinState parentState)
 {
     _pinState = parentState;
     if (_queryLocal != ParentDontExist) {
-        if (auto state = _discoveryData->_syncOptions._vfs->getPinState(_currentFolder._local)) // ouch! pin local or original?
+        if (auto state = _discoveryData->_syncOptions._vfs->pinState(_currentFolder._local)) // ouch! pin local or original?
             _pinState = *state;
     }
 }

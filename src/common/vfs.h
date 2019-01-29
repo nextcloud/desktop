@@ -191,7 +191,7 @@ public:
      *
      * folderPath is relative to the sync folder.
      */
-    virtual Optional<PinState> getPinState(const QString &folderPath) = 0;
+    virtual Optional<PinState> pinState(const QString &folderPath) = 0;
 
 public slots:
     /** Update in-sync state based on SyncFileStatusTracker signal.
@@ -219,7 +219,7 @@ public:
 
     // use the journal to back the pinstates
     bool setPinState(const QString &folderPath, PinState state) override;
-    Optional<PinState> getPinState(const QString &folderPath) override;
+    Optional<PinState> pinState(const QString &folderPath) override;
 
     // access initial setup data
     const VfsSetupParams &params() const { return _setupParams; }
