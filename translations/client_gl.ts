@@ -515,7 +515,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="145"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation>&lt;br/&gt;A conta %1 non ten as actividades habilitadas.</translation>
+        <translation>&lt;br/&gt;A conta %1 non ten as actividades activadas.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="349"/>
@@ -2875,7 +2875,7 @@ Os contidos poden descargarse executando estes ficheiros ou usando o seu menú c
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="105"/>
         <source>Set &amp;expiration date</source>
-        <translation>Definir a &amp;data de caducidade</translation>
+        <translation>Estabelecer a &amp;data de caducidade</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="156"/>
