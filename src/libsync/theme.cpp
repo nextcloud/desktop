@@ -291,7 +291,7 @@ bool Theme::monoIconsAvailable() const
 
 QString Theme::updateCheckUrl() const
 {
-    return QLatin1String("https://updates.nextcloud.org/client/");
+    return APPLICATION_UPDATE_URL;
 }
 
 qint64 Theme::newBigFolderSizeLimit() const
