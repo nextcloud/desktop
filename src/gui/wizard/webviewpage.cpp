@@ -29,15 +29,15 @@ WebViewPage::WebViewPage(QWidget *parent)
 
     connect(_webView, &WebView::urlCatched, this, &WebViewPage::urlCatched);
 
-    _useSystemProxy = QNetworkProxyFactory::usesSystemConfiguration();
+    //_useSystemProxy = QNetworkProxyFactory::usesSystemConfiguration();
 }
 
 WebViewPage::~WebViewPage() {
-    QNetworkProxyFactory::setUseSystemConfiguration(_useSystemProxy);
+    //QNetworkProxyFactory::setUseSystemConfiguration(_useSystemProxy);
 }
 
 void WebViewPage::initializePage() {
-    QNetworkProxy::setApplicationProxy(QNetworkProxy::applicationProxy());
+    //QNetworkProxy::setApplicationProxy(QNetworkProxy::applicationProxy());
 
     QString url;
     if (_ocWizard->registration()) {
