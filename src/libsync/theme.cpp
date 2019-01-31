@@ -244,7 +244,11 @@ QString Theme::conflictHelpUrl() const
 
 QString Theme::overrideServerUrl() const
 {
+#ifdef APPLICATION_SERVER_URL
+    return QString::fromLatin1(APPLICATION_SERVER_URL);
+#else
     return QString();
+#endif
 }
 
 QString Theme::forceConfigAuthType() const

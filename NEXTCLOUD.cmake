@@ -6,6 +6,7 @@ set( APPLICATION_VENDOR     "Nextcloud GmbH" )
 set( APPLICATION_UPDATE_URL "https://updates.nextcloud.org/client/" CACHE string "URL for updater" )
 set( APPLICATION_HELP_URL   "" CACHE string "URL for the help menu" )
 set( APPLICATION_ICON_NAME  "Nextcloud" )
+set( APPLICATION_SERVER_URL "" CACHE string "URL for the server to use. If entered the server can only connect to this instance" )
 
 set( LINUX_PACKAGE_SHORTNAME "nextcloud" )
 
