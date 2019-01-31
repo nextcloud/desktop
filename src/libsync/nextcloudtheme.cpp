@@ -40,22 +40,4 @@ QVariant NextcloudTheme::customMedia(CustomMediaType)
 }
 #endif
 
-#ifndef TOKEN_AUTH_ONLY
-QColor NextcloudTheme::wizardHeaderBackgroundColor() const
-{
-    return QColor("#0082c9");
-}
-
-QColor NextcloudTheme::wizardHeaderTitleColor() const
-{
-    return QColor("#ffffff");
-}
-
-QPixmap NextcloudTheme::wizardHeaderLogo() const
-{
-    return QPixmap(hidpiFileName(":/client/theme/colored/wizard_logo.png"));
-}
-
-#endif
-
 }

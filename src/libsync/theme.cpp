@@ -427,17 +427,21 @@ QIcon Theme::folderOfflineIcon(bool sysTray, bool sysTrayMenuVisible) const
 
 QColor Theme::wizardHeaderTitleColor() const
 {
-    return qApp->palette().text().color();
+    return QColor(APPLICATION_WIZARD_HEADER_TITLE_COLOR);
 }
 
 QColor Theme::wizardHeaderBackgroundColor() const
 {
-    return QColor();
+    return QColor(APPLICATION_WIZARD_HEADER_BACKGROUND_COLOR);
 }
 
 QPixmap Theme::wizardHeaderLogo() const
 {
+#ifdef APPLICATION_WIZARD_USE_CUSTOM_LOGO
+   return QPixmap(hidpiFileName(":/client/theme/colored/wizard_logo.png"));
+#else
     return applicationIcon().pixmap(64);
+#endif
 }
 
 QPixmap Theme::wizardHeaderBanner() const

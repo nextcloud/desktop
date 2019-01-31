@@ -32,12 +32,8 @@ public:
 #ifndef TOKEN_AUTH_ONLY
     QVariant customMedia(CustomMediaType type) override;
 
-    QColor wizardHeaderBackgroundColor() const override;
-    QColor wizardHeaderTitleColor() const override;
-    QPixmap wizardHeaderLogo() const override;
 #endif
 
-private:
 };
 }
 #endif // NEXTCLOUD_THEME_H
