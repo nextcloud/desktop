@@ -518,8 +518,8 @@
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="182"/>
-        <source>Synced </source>
-        <translation>Szinkronizálva</translation>
+        <source>Synced</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="217"/>
