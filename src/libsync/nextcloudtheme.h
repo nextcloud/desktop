@@ -29,11 +29,6 @@ class NextcloudTheme : public Theme
 public:
     NextcloudTheme();
 
-#ifndef TOKEN_AUTH_ONLY
-    QVariant customMedia(CustomMediaType type) override;
-
-#endif
-
 };
 }
 #endif // NEXTCLOUD_THEME_H

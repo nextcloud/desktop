@@ -33,11 +33,4 @@ NextcloudTheme::NextcloudTheme()
 {
 }
 
-#ifndef TOKEN_AUTH_ONLY
-QVariant NextcloudTheme::customMedia(CustomMediaType)
-{
-    return QVariant();
-}
-#endif
-
 }
