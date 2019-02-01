@@ -143,7 +143,14 @@ public:
     virtual bool updateMetadata(const QString &filePath, time_t modtime, quint64 size, const QByteArray &fileId, QString *error) = 0;
 
     /// Create a new dehydrated placeholder. Called from PropagateDownload.
-    virtual void createPlaceholder(const QString &syncFolder, const SyncFileItem &item) = 0;
+    virtual void createPlaceholder(const SyncFileItem &item) = 0;
+
+    /** Convert a hydrated placeholder to a dehydrated one. Called from PropagateDownlaod.
+     *
+     * This is different from delete+create because preserving some file metadata
+     * (like pin states) may be essential for some vfs plugins.
+     */
+    virtual void dehydratePlaceholder(const SyncFileItem &item) = 0;
 
     /** Convert a new file to a hydrated placeholder.
      *
@@ -247,7 +254,8 @@ public:
     bool isHydrating() const override { return false; }
 
     bool updateMetadata(const QString &, time_t, quint64, const QByteArray &, QString *) override { return true; }
-    void createPlaceholder(const QString &, const SyncFileItem &) override {}
+    void createPlaceholder(const SyncFileItem &) override {}
+    void dehydratePlaceholder(const SyncFileItem &) override {}
     void convertToPlaceholder(const QString &, const SyncFileItem &, const QString &) override {}
 
     bool isDehydratedPlaceholder(const QString &) override { return false; }
