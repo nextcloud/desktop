@@ -362,31 +362,29 @@ void PropagateDownloadFile::start()
     auto &syncOptions = propagator()->syncOptions();
     auto &vfs = syncOptions._vfs;
 
-    // For virtual files just create the file and be done
+    // For virtual files just dehydrate or create the file and be done
     if (_item->_type == ItemTypeVirtualFileDehydration) {
-        _item->_type = ItemTypeVirtualFile;
-        // TODO: Could dehydrate without wiping the file entirely
-        // TODO: That would be useful as it could preserve file attributes (pins)
-        auto fn = propagator()->getFilePath(_item->_file);
-        qCDebug(lcPropagateDownload) << "dehydration: wiping base file" << fn;
-        propagator()->_journal->deleteFileRecord(_item->_file);
-        QFile::remove(fn);
-
-        if (vfs->mode() == Vfs::WithSuffix) {
-            // Normally new suffix-virtual files already have the suffix included in the path
-            // but for dehydrations that isn't the case. Adjust it here.
-            _item->_file.append(vfs->fileSuffix());
+        QString fsPath = propagator()->getFilePath(_item->_file);
+        if (!FileSystem::verifyFileUnchanged(fsPath, _item->_previousSize, _item->_previousModtime)) {
+            propagator()->_anotherSyncNeeded = true;
+            done(SyncFileItem::SoftError, tr("File has changed since discovery"));
+            return;
         }
+
+        qCDebug(lcPropagateDownload) << "dehydrating file" << _item->_file;
+        _item->_type = ItemTypeVirtualFile; // Needed?
+        vfs->dehydratePlaceholder(*_item);
+        propagator()->_journal->deleteFileRecord(_item->_file);
+        updateMetadata(false);
+        return;
     }
     if (vfs->mode() == Vfs::Off && _item->_type == ItemTypeVirtualFile) {
         qCWarning(lcPropagateDownload) << "ignored virtual file type of" << _item->_file;
         _item->_type = ItemTypeFile;
     }
     if (_item->_type == ItemTypeVirtualFile) {
-        auto fn = propagator()->getFilePath(_item->_file);
-        qCDebug(lcPropagateDownload) << "creating virtual file" << fn;
-
-        vfs->createPlaceholder(propagator()->_localDir, *_item);
+        qCDebug(lcPropagateDownload) << "creating virtual file" << _item->_file;
+        vfs->createPlaceholder(*_item);
         updateMetadata(false);
         return;
     }

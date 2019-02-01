@@ -39,7 +39,8 @@ public:
 
     bool updateMetadata(const QString &filePath, time_t modtime, quint64 size, const QByteArray &fileId, QString *error) override;
 
-    void createPlaceholder(const QString &syncFolder, const SyncFileItem &item) override;
+    void createPlaceholder(const SyncFileItem &item) override;
+    void dehydratePlaceholder(const SyncFileItem &item) override;
     void convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &) override;
 
     bool isDehydratedPlaceholder(const QString &filePath) override;
