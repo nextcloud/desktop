@@ -35,6 +35,12 @@
 
 #include "vio/csync_vio_local.h"
 
+#include <unistd.h>
+
+#ifndef _WIN32
+#define LINKPATHBUF 2048
+#endif
+
 Q_LOGGING_CATEGORY(lcCSyncVIOLocal, "sync.csync.vio_local", QtInfoMsg)
 
 /*
@@ -47,6 +53,7 @@ typedef struct dhandle_s {
 } dhandle_t;
 
 static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf);
+void _csync_vio_local_proc_filestat(const mbchar_t *wuri, csync_file_stat_t* p_file_stat ) ;
 
 csync_vio_handle_t *csync_vio_local_opendir(const char *name) {
   dhandle_t *handle = NULL;
@@ -90,11 +97,10 @@ int csync_vio_local_closedir(csync_vio_handle_t *dhandle) {
 std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *dhandle) {
 
   dhandle_t *handle = NULL;
-
-  handle = (dhandle_t *) dhandle;
   struct _tdirent *dirent = NULL;
   std::unique_ptr<csync_file_stat_t> file_stat;
 
+  handle = (dhandle_t *) dhandle;
   do {
       dirent = _treaddir(handle->dh);
       if (dirent == NULL)
@@ -133,13 +139,11 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *d
   if (file_stat->path.isNull())
       return file_stat;
 
-  if (_csync_vio_local_stat_mb(fullPath.constData(), file_stat.get()) < 0) {
-      // Will get excluded by _csync_detect_update.
-      file_stat->type = ItemTypeSkip;
-  }
-  return file_stat;
-}
+  _csync_vio_local_proc_filestat( fullPath.constData(), file_stat.get() );
 
+  return file_stat;
+
+}
 
 int csync_vio_local_stat(const char *uri, csync_file_stat_t *buf)
 {
@@ -148,6 +152,49 @@ int csync_vio_local_stat(const char *uri, csync_file_stat_t *buf)
     int rc = _csync_vio_local_stat_mb(wuri, buf);
     c_free_locale_string(wuri);
     return rc;
+}
+
+void _csync_vio_local_proc_filestat(const mbchar_t *wuri, csync_file_stat_t* file_stat ) 
+{
+  if (_csync_vio_local_stat_mb(wuri, file_stat) < 0) {
+      // Will get excluded by _csync_detect_update.
+      file_stat->type = ItemTypeSkip;
+  }
+
+#ifndef _WIN32
+  // Handle symlinks 
+  mbchar_t buf[LINKPATHBUF];
+  const mbchar_t* pbuf = buf;
+  int len;
+  if (file_stat->type == ItemTypeSoftLink) {
+    // Resolve the link,
+    // CASE A: File
+    //   Stat the file
+    // CASE B: Directory
+    //   Stat the directory, also csync_vio_local_readdir should handle symlinks
+    // CASE C: Broken
+    //   Ignore (TypeSoftLink is actually broken/unsupported link)
+
+    // TODO check if readlink combat with mbchar_t
+    if ((len = readlink(wuri, buf, sizeof(buf)-2)) > -1) {
+      buf[len] = '\0';
+      //if (len == sizeof(buf)-1) {
+      //    // CORNER CASE
+      //    // Warning maybe truncated, path too long
+      //    qCWarning(lcCSyncVIOLocal) << "Link set too long, maybe path is truncated:" << wuri << ", " << buf;
+      //}
+      // CASE A
+      // CASE B
+      _csync_vio_local_proc_filestat( pbuf, file_stat);
+      
+    }
+    else {
+      // CASE C:
+      qCWarning(lcCSyncVIOLocal) << "Link read error: " << wuri << ", err: " << errno <<  strerror(errno) ;
+      // file_stat->type = ItemTypeSoftLink;
+    }
+  }
+#endif
 }
 
 static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf)
