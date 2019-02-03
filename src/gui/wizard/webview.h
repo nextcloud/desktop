@@ -23,6 +23,7 @@ public:
     WebView(QWidget *parent = nullptr);
     virtual ~WebView();
     void setUrl(const QUrl &url);
+    void setUserTrustCertificate(bool trust);
 
 signals:
     void urlCatched(const QString user, const QString pass, const QString host);

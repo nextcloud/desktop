@@ -236,6 +236,9 @@ public:
 
     ClientSideEncryption* e2e();
 
+    //let the webviewpage get if the user trust an unvalid ssl certificate
+    bool isCertificateUserTrusted();
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -305,6 +308,9 @@ private:
 
     QString _davPath; // defaults to value from theme, might be overwritten in brandings
     ClientSideEncryption _e2e;
+
+    //true if user accept untrusted certificate
+    bool _userTrustCertificate;
 
     friend class AccountManager;
 };

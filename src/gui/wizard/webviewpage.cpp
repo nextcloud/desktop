@@ -49,6 +49,7 @@ void WebViewPage::initializePage() {
         }
         url += "index.php/login/flow";
     }
+    _webView->setUserTrustCertificate(_ocWizard->account()->isCertificateUserTrusted());
     qCInfo(lcWizardWebiewPage()) << "Url to auth at: " << url;
     _webView->setUrl(QUrl(url));
 }
