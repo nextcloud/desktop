@@ -369,8 +369,13 @@ static void _csync_merge_algorithm_visitor(csync_file_stat_t *cur, CSYNC * ctx) 
                     cur->instruction = CSYNC_INSTRUCTION_NONE;
 					if (is_conflict)
 						other->instruction = CSYNC_INSTRUCTION_CONFLICT;
-					else
-						other->instruction = !cur->is_fuse_created_file ? CSYNC_INSTRUCTION_UPDATE_METADATA : CSYNC_INSTRUCTION_SYNC;
+					else {
+						if(other->type == ItemTypeDirectory && cur->type == ItemTypeDirectory)
+							other->instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+						else
+							other->instruction = (!cur->is_fuse_created_file) ? CSYNC_INSTRUCTION_UPDATE_METADATA : CSYNC_INSTRUCTION_SYNC;
+					}
+						
                 }
 
                 break;
