@@ -179,6 +179,7 @@ void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItem
 
         if(item->_status == SyncFileItem::NoStatus || item->_status == SyncFileItem::Success){
             qCWarning(lcActivity) << "Item " << item->_file << " retrieved successfully.";
+            activity._message.prepend(" ");
             activity._message.prepend(tr("Synced"));
             _model->addSyncFileItemToActivityList(activity);
         } else {
