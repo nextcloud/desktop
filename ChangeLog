@@ -1,7 +1,13 @@
 ChangeLog
 =========
 
-version 2.5.2 (2019-01-??)
+version 2.5.3 (2019-02-xx)
+* Connectivity: Add a noUnauthedRequests branding option
+* Credentials: Warn in log if keychain-write jobs fail (#6776)
+* Database: Move drop-index to after pragmas are set (#6881)
+* Download: Ignore Content-length for compressed HTTP2/SPDY replies (#6885)
+
+version 2.5.2 (2019-01-25)
 * Crash fix: macOS: When opening settings dialog (#6930)
 * Crash fix: macOS: While app is in background
 * Crash fix: When deleting an account (#6893)
