@@ -397,7 +397,6 @@ void Account::slotHandleSslErrors(QNetworkReply *reply, QList<QSslError> errors)
         QSslSocket::addDefaultCaCertificates(approvedCerts);
         addApprovedCerts(approvedCerts);
         emit wantsAccountSaved(this);
-        this->_userTrustCertificate = true;
         // all ssl certs are known and accepted. We can ignore the problems right away.
         qCInfo(lcAccount) << out << "Certs are known and trusted! This is not an actual error.";
 
@@ -504,8 +503,12 @@ void Account::setNonShib(bool nonShib)
     }
 }
 
-bool Account::isCertificateUserTrusted() {
-    return _userTrustCertificate;
+QString Account::getUserTrustedHost() {
+    return _userTrustedHost;
+}
+
+void Account::setUserTrustedHost(QString trustedHost) {
+    this->_userTrustedHost = trustedHost;
 }
 
 } // namespace OCC

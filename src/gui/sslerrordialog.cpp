@@ -48,6 +48,10 @@ bool SslDialogErrorHandler::handleErrors(QList<QSslError> errors, const QSslConf
     if (dlg.exec() == QDialog::Accepted) {
         if (dlg.trustConnection()) {
             *certs = dlg.unknownCerts();
+
+	    //get the certificate then the CN aka url linked to the certificate
+	    QString certHost = dlg.unknownCerts().at(0).subjectInfo(QSslCertificate::CommonName).at(0);
+	    account->setUserTrustedHost(certHost);
             return true;
         }
     }

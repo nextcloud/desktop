@@ -43,14 +43,14 @@ public:
     WebEnginePage(QWebEngineProfile *profile, QObject* parent = nullptr);
     QWebEnginePage * createWindow(QWebEnginePage::WebWindowType type) override;
     void setUrl(const QUrl &url);
-    void setUserTrustCertificate(bool trust);
+    void setUserTrustedHost(QString userTrusted);
 
 protected:
     bool certificateError(const QWebEngineCertificateError &certificateError) override;
 
 private:
     QUrl _rootUrl;
-    bool _userTrustCertificate;
+    QString _userTrustedHost;
 };
 
 // We need a separate class here, since we cannot simply return the same WebEnginePage object
@@ -107,8 +107,8 @@ void WebView::setUrl(const QUrl &url) {
     _page->setUrl(url);
 }
 
-void WebView::setUserTrustCertificate(bool trust) {
-    _page->setUserTrustCertificate(trust);
+void WebView::setUserTrustedHost(QString userTrustedHost) {
+    _page->setUserTrustedHost(userTrustedHost);
 }
 
 WebView::~WebView() {
@@ -190,7 +190,7 @@ void WebEnginePage::setUrl(const QUrl &url) {
 bool WebEnginePage::certificateError(const QWebEngineCertificateError &certificateError) {
     qCInfo(lcWizardWebiew()) << certificateError.errorDescription();
 
-    if (this->_userTrustCertificate) {
+    if (this->_userTrustedHost.compare(certificateError.url().host()) == 0) {
 	qCInfo(lcWizardWebiew()) << "User trust the certificate from " << certificateError.url().host();
 	return true;
     }
@@ -202,8 +202,8 @@ bool WebEnginePage::certificateError(const QWebEngineCertificateError &certifica
     return false;
 }
 
-void WebEnginePage::setUserTrustCertificate(bool trust) {
-    _userTrustCertificate = trust;
+void WebEnginePage::setUserTrustedHost(QString trustedHost) {
+    _userTrustedHost = trustedHost;
 }
 
 ExternalWebEnginePage::ExternalWebEnginePage(QWebEngineProfile *profile, QObject* parent) : QWebEnginePage(profile, parent) {

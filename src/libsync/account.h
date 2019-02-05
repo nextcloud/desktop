@@ -236,8 +236,9 @@ public:
 
     ClientSideEncryption* e2e();
 
-    //let the webviewpage get if the user trust an unvalid ssl certificate
-    bool isCertificateUserTrusted();
+    //let the webviewpage get if the urser forced trust a url
+    QString getUserTrustedHost();
+    void setUserTrustedHost(QString userTrustedHost);
 
 public slots:
     /// Used when forgetting credentials
@@ -310,7 +311,7 @@ private:
     ClientSideEncryption _e2e;
 
     //true if user accept untrusted certificate
-    bool _userTrustCertificate;
+    QString _userTrustedHost;
 
     friend class AccountManager;
 };
