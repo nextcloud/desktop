@@ -3,16 +3,21 @@ site:
 
 content:
   sources:
-  - url: .
+  - url: ../
     branches: HEAD
     start_path: docs/
 
 ui:
-  bundle:
-    url: https://minio.owncloud.com/documentation/ui-bundle.zip
   output_dir: assets
+  bundle:
+    snapshot: true
+    url: https://minio.owncloud.com/documentation/ui-bundle.zip
 
 output:
   clean: true
   dir: public
 
+asciidoc:
+  attributes:
+    idprefix: ''
+    idseparator: '-'
