@@ -648,11 +648,12 @@ void PropagateDownloadFile::slotGetFinished()
     // of the compressed data. See QTBUG-73364.
     const auto contentEncoding = job->reply()->rawHeader("content-encoding").toLower();
     if ((contentEncoding == "gzip" || contentEncoding == "deflate")
-        &&
+        && (
 #if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
-           (job->reply()->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool() ||
+           job->reply()->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool() ||
 #endif
-            job->reply()->attribute(QNetworkRequest::SpdyWasUsedAttribute).toBool())) {
+           job->reply()->attribute(QNetworkRequest::SpdyWasUsedAttribute).toBool()
+         )) {
         bodySize = 0;
         hasSizeHeader = false;
     }
