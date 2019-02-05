@@ -11,6 +11,7 @@
 #include <QLoggingCategory>
 #include <QLocale>
 #include <QWebEngineCertificateError>
+#include <QMessageBox>
 
 #include "common/utility.h"
 
@@ -182,11 +183,28 @@ void WebEnginePage::setUrl(const QUrl &url) {
 }
 
 bool WebEnginePage::certificateError(const QWebEngineCertificateError &certificateError) {
-    if (certificateError.error() == QWebEngineCertificateError::CertificateAuthorityInvalid) {
-        return certificateError.url().host() == _rootUrl.host();
+    if (certificateError.error() == QWebEngineCertificateError::CertificateAuthorityInvalid &&
+        certificateError.url().host() == _rootUrl.host()) {
+        return true;
     }
 
-    return false;
+    /**
+     * TODO properly improve this.
+     * The certificate should be displayed.
+     *
+     * Or rather we should do a request with the QNAM and see if it works (then it is in the store).
+     * This is just a quick fix for now.
+     */
+    QMessageBox messageBox;
+    messageBox.setText(tr("Invalid certificate detected"));
+    messageBox.setInformativeText(tr("The host \"%1\" provided an invalid certitiface. Continue?").arg(certificateError.url().host()));
+    messageBox.setIcon(QMessageBox::Warning);
+    messageBox.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
+    messageBox.setDefaultButton(QMessageBox::No);
+
+    int ret = messageBox.exec();
+
+    return ret == QMessageBox::Yes;
 }
 
 ExternalWebEnginePage::ExternalWebEnginePage(QWebEngineProfile *profile, QObject* parent) : QWebEnginePage(profile, parent) {
