@@ -949,16 +949,6 @@ void PropagateDownloadFile::downloadFinished()
         return;
     }
 
-    bool isConflict = _item->_instruction == CSYNC_INSTRUCTION_CONFLICT
-        && (QFileInfo(fn).isDir() || !FileSystem::fileEquals(fn, _tmpFile.fileName()));
-    if (isConflict) {
-        QString error;
-        if (!propagator()->createConflict(_item, _associatedComposite, &error)) {
-            done(SyncFileItem::SoftError, error);
-            return;
-        }
-    }
-
     FileSystem::setModTime(_tmpFile.fileName(), _item->_modtime);
     // We need to fetch the time again because some file systems such as FAT have worse than a second
     // Accuracy, and we really need the time from the file system. (#3103)
@@ -971,6 +961,9 @@ void PropagateDownloadFile::downloadFinished()
             _tmpFile.setPermissions(existingFile.permissions());
         }
         preserveGroupOwnership(_tmpFile.fileName(), existingFile);
+
+        // Make the file a hydrated placeholder if possible
+        propagator()->syncOptions()._vfs->convertToPlaceholder(_tmpFile.fileName(), *_item, fn);
 
         // Check whether the existing file has changed since the discovery
         // phase by comparing size and mtime to the previous values. This
@@ -988,8 +981,15 @@ void PropagateDownloadFile::downloadFinished()
     // Apply the remote permissions
     FileSystem::setFileReadOnlyWeak(_tmpFile.fileName(), !_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite));
 
-    // Make the file a hydrated placeholder if possible
-    propagator()->syncOptions()._vfs->convertToPlaceholder(_tmpFile.fileName(), *_item, fn);
+    bool isConflict = _item->_instruction == CSYNC_INSTRUCTION_CONFLICT
+        && (QFileInfo(fn).isDir() || !FileSystem::fileEquals(fn, _tmpFile.fileName()));
+    if (isConflict) {
+        QString error;
+        if (!propagator()->createConflict(_item, _associatedComposite, &error)) {
+            done(SyncFileItem::SoftError, error);
+            return;
+        }
+    }
 
     QString error;
     emit propagator()->touchedFile(fn);
