@@ -47,7 +47,7 @@ Rem ****************************************************************************
 rem Reference: https://ss64.com/nt/start.html
 
 echo "* git pull at %PROJECT_PATH%/desktop/."
-start "git pull" /D "%PROJECT_PATH%/desktop/" /B /wait git pull
+start "git pull" /D "%PROJECT_PATH%/desktop/" /B /wait git pull --tags
 
 echo "* git checkout %TAG% at %PROJECT_PATH%/desktop/."
 start "git checkout %TAG%" /D "%PROJECT_PATH%/desktop/" /B /wait git checkout %TAG%
