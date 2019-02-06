@@ -2340,27 +2340,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>A fájl törlésre került a szerverről</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="669"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="673"/>
         <source>The file could not be downloaded completely.</source>
         <translation>A fájl nem tölthető le teljesen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="676"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="680"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>A letöltött fájl üres, annak ellenére, hogy a kiszolgáló bejelentette, hogy %1-nek kell lennie.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="855"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="859"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>A %1 fájl nem menthető el a helyi fájlnév ütközése miatt!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="890"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="894"/>
         <source>File has changed since discovery</source>
         <translation>A fájl felfedezése óta megváltozott</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="957"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="961"/>
         <source>Error writing metadata to the database</source>
         <translation>Hiba történt a metaadatok megadásához a adatbázisban</translation>
     </message>
