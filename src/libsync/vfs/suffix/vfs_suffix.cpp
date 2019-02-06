@@ -74,7 +74,7 @@ void VfsSuffix::dehydratePlaceholder(const SyncFileItem &item)
 {
     QFile::remove(_setupParams.filesystemPath + item._file);
     SyncFileItem virtualItem(item);
-    virtualItem._file.append(fileSuffix());
+    virtualItem._file = item._renameTarget;
     createPlaceholder(virtualItem);
 }
 

@@ -668,9 +668,17 @@ private slots:
             return !fakeFolder.currentLocalState().find(path)
                 && fakeFolder.currentLocalState().find(placeholder);
         };
+        auto hasDehydratedDbEntries = [&](const QString &path) {
+            SyncJournalFileRecord normal, suffix;
+            fakeFolder.syncJournal().getFileRecord(path, &normal);
+            fakeFolder.syncJournal().getFileRecord(path + ".owncloud", &suffix);
+            return !normal.isValid() && suffix.isValid() && suffix._type == ItemTypeVirtualFile;
+        };
 
         QVERIFY(isDehydrated("A/a1"));
+        QVERIFY(hasDehydratedDbEntries("A/a1"));
         QVERIFY(isDehydrated("A/a2"));
+        QVERIFY(hasDehydratedDbEntries("A/a2"));
 
         QVERIFY(!fakeFolder.currentLocalState().find("B/b1"));
         QVERIFY(!fakeFolder.currentRemoteState().find("B/b1"));
@@ -679,6 +687,7 @@ private slots:
         QVERIFY(!fakeFolder.currentLocalState().find("B/b2"));
         QVERIFY(!fakeFolder.currentRemoteState().find("B/b2"));
         QVERIFY(isDehydrated("B/b3"));
+        QVERIFY(hasDehydratedDbEntries("B/b3"));
         QVERIFY(itemInstruction(completeSpy, "B/b2", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(itemInstruction(completeSpy, "B/b3.owncloud", CSYNC_INSTRUCTION_NEW));
 

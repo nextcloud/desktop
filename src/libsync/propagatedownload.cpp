@@ -374,7 +374,9 @@ void PropagateDownloadFile::start()
         qCDebug(lcPropagateDownload) << "dehydrating file" << _item->_file;
         _item->_type = ItemTypeVirtualFile; // Needed?
         vfs->dehydratePlaceholder(*_item);
-        propagator()->_journal->deleteFileRecord(_item->_file);
+        propagator()->_journal->deleteFileRecord(_item->_originalFile);
+        if (!_item->_renameTarget.isEmpty())
+            _item->_file = _item->_renameTarget;
         updateMetadata(false);
         return;
     }

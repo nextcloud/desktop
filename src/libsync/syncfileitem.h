@@ -204,6 +204,8 @@ public:
 
     // Variables useful for everybody
     QString _file;
+    // for renames: the name _file should be renamed to
+    // for dehydrations: the name _file should become after dehydration (like adding a suffix)
     QString _renameTarget;
     ItemType _type BITFIELD(3);
     Direction _direction BITFIELD(3);

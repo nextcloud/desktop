@@ -953,12 +953,19 @@ void ProcessDirectoryJob::processFileFinalize(
     QueryMode recurseQueryLocal, QueryMode recurseQueryServer)
 {
     // Adjust target path for virtual-suffix files
-    if (item->_type == ItemTypeVirtualFile && isVfsWithSuffix()) {
-        addVirtualFileSuffix(path._target);
-        if (item->_instruction == CSYNC_INSTRUCTION_RENAME)
+    if (isVfsWithSuffix()) {
+        if (item->_type == ItemTypeVirtualFile) {
+            addVirtualFileSuffix(path._target);
+            if (item->_instruction == CSYNC_INSTRUCTION_RENAME)
+                addVirtualFileSuffix(item->_renameTarget);
+            else
+                addVirtualFileSuffix(item->_file);
+        }
+        if (item->_type == ItemTypeVirtualFileDehydration
+            && item->_instruction == CSYNC_INSTRUCTION_NEW) {
+            item->_renameTarget = item->_file;
             addVirtualFileSuffix(item->_renameTarget);
-        else
-            addVirtualFileSuffix(item->_file);
+        }
     }
 
     if (path._original != path._target && (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA || item->_instruction == CSYNC_INSTRUCTION_NONE)) {
