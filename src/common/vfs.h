@@ -267,10 +267,8 @@ public:
     bool isDehydratedPlaceholder(const QString &) override { return false; }
     bool statTypeVirtualFile(csync_file_stat_t *, void *) override { return false; }
 
-    bool setPinState(const QString &folderPath, PinState state) override
-    { return setPinStateInDb(folderPath, state); }
-    Optional<PinState> pinState(const QString &folderPath) override
-    { return pinStateInDb(folderPath); }
+    bool setPinState(const QString &, PinState) override { return true; }
+    Optional<PinState> pinState(const QString &) override { return PinState::AlwaysLocal; }
 
 public slots:
     void fileStatusChanged(const QString &, SyncFileStatus) override {}
