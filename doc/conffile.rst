@@ -7,7 +7,7 @@ On Microsoft Windows systems:
         ``%APPDATA%\Nextcloud\nextcloud.cfg``
 
 On macOS systems:
-        ``$HOME/Library/Preferences/Nextcloud/nextcloud.cfg``
+        ``$HOME/Library/Application Support/Nextcloud/nextcloud.cfg``
 
 
 The configuration file contains settings using the Microsoft Windows .ini file
