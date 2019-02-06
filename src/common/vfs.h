@@ -127,6 +127,13 @@ public:
     virtual void unregisterFolder() = 0;
 
 
+    /** Whether the socket api should show pin state options
+     *
+     * Some plugins might provide alternate shell integration, making the normal
+     * context menu actions redundant.
+     */
+    virtual bool socketApiPinStateActionsShown() const = 0;
+
     /** Return true when download of a file's data is currently ongoing.
      *
      * See also the beginHydrating() and doneHydrating() signals.
@@ -251,6 +258,7 @@ public:
     void stop() override {}
     void unregisterFolder() override {}
 
+    bool socketApiPinStateActionsShown() const override { return false; }
     bool isHydrating() const override { return false; }
 
     bool updateMetadata(const QString &, time_t, quint64, const QByteArray &, QString *) override { return true; }

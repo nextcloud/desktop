@@ -1011,7 +1011,9 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
     }
 
     // File availability actions
-    if (syncFolder && syncFolder->supportsVirtualFiles()) {
+    if (syncFolder
+        && syncFolder->supportsVirtualFiles()
+        && syncFolder->vfs().socketApiPinStateActionsShown()) {
         bool hasAlwaysLocal = false;
         bool hasOnlineOnly = false;
         bool hasHydratedOnlineOnly = false;

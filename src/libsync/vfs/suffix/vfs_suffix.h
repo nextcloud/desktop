@@ -35,6 +35,7 @@ public:
     void stop() override;
     void unregisterFolder() override;
 
+    bool socketApiPinStateActionsShown() const override { return true; }
     bool isHydrating() const override;
 
     bool updateMetadata(const QString &filePath, time_t modtime, quint64 size, const QByteArray &fileId, QString *error) override;
