@@ -907,7 +907,9 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
     }
 
     // File availability actions
-    if (folder && folder->supportsVirtualFiles()) {
+    if (folder
+        && folder->supportsVirtualFiles()
+        && folder->vfs().socketApiPinStateActionsShown()) {
         bool hasAlwaysLocal = false;
         bool hasOnlineOnly = false;
         bool hasHydratedOnlineOnly = false;
