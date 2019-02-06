@@ -108,17 +108,15 @@ public:
     /// For WithSuffix modes: the suffix (including the dot)
     virtual QString fileSuffix() const = 0;
 
+    /// Access to the parameters the instance was start()ed with.
+    const VfsSetupParams &params() const { return _setupParams; }
+
 
     /** Initializes interaction with the VFS provider.
      *
-     * For example, the VFS provider might monitor files to be able to start a file
-     * hydration (download of a file's remote contents) when the user wants to open
-     * it.
-     *
-     * Usually some registration needs to be done with the backend. This function
-     * should take care of it if necessary.
+     * The plugin-specific work is done in startImpl().
      */
-    virtual void start(const VfsSetupParams &params) = 0;
+    void start(const VfsSetupParams &params);
 
     /// Stop interaction with VFS provider. Like when the client application quits.
     virtual void stop() = 0;
@@ -221,29 +219,29 @@ signals:
     void beginHydrating();
     /// Emitted when the hydration ends
     void doneHydrating();
-};
-
-class OCSYNC_EXPORT VfsDefaults : public Vfs
-{
-public:
-    explicit VfsDefaults(QObject* parent = nullptr);
-
-    // stores the params
-    void start(const VfsSetupParams &params) override;
-
-    // use the journal to back the pinstates
-    bool setPinState(const QString &folderPath, PinState state) override;
-    Optional<PinState> pinState(const QString &folderPath) override;
-
-    // access initial setup data
-    const VfsSetupParams &params() const { return _setupParams; }
 
 protected:
+    /** Setup the plugin for the folder.
+     *
+     * For example, the VFS provider might monitor files to be able to start a file
+     * hydration (download of a file's remote contents) when the user wants to open
+     * it.
+     *
+     * Usually some registration needs to be done with the backend. This function
+     * should take care of it if necessary.
+     */
+    virtual void startImpl(const VfsSetupParams &params) = 0;
+
+    // Db-backed pin state handling. Derived classes may use it to implement pin states.
+    bool setPinStateInDb(const QString &folderPath, PinState state);
+    Optional<PinState> pinStateInDb(const QString &folderPath);
+
+    // the parameters passed to start()
     VfsSetupParams _setupParams;
 };
 
 /// Implementation of Vfs for Vfs::Off mode - does nothing
-class OCSYNC_EXPORT VfsOff : public VfsDefaults
+class OCSYNC_EXPORT VfsOff : public Vfs
 {
     Q_OBJECT
 
@@ -269,8 +267,16 @@ public:
     bool isDehydratedPlaceholder(const QString &) override { return false; }
     bool statTypeVirtualFile(csync_file_stat_t *, void *) override { return false; }
 
+    bool setPinState(const QString &folderPath, PinState state) override
+    { return setPinStateInDb(folderPath, state); }
+    Optional<PinState> pinState(const QString &folderPath) override
+    { return pinStateInDb(folderPath); }
+
 public slots:
     void fileStatusChanged(const QString &, SyncFileStatus) override {}
+
+protected:
+    void startImpl(const VfsSetupParams &) override {}
 };
 
 /// Check whether the plugin for the mode is available.
