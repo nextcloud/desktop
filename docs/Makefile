@@ -50,4 +50,4 @@ pdf:
 		--base-dir $(CURDIR) \
 		--out-file desktop/$(OUTPUT_VERSION)ownCloud_Desktop_Client_Manual.pdf \
 		--destination-dir $(BUILD_DIR) \
-		books/client.adoc
+		books/ownCloud_Desktop_Client_Manual.adoc
