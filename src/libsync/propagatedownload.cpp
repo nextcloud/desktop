@@ -956,7 +956,8 @@ void PropagateDownloadFile::downloadFinished()
     // Accuracy, and we really need the time from the file system. (#3103)
     _item->_modtime = FileSystem::getModTime(_tmpFile.fileName());
 
-    if (FileSystem::fileExists(fn)) {
+    bool previousFileExists = FileSystem::fileExists(fn);
+    if (previousFileExists) {
         // Preserve the existing file permissions.
         QFileInfo existingFile(fn);
         if (existingFile.permissions() != _tmpFile.permissions()) {
@@ -966,18 +967,6 @@ void PropagateDownloadFile::downloadFinished()
 
         // Make the file a hydrated placeholder if possible
         propagator()->syncOptions()._vfs->convertToPlaceholder(_tmpFile.fileName(), *_item, fn);
-
-        // Check whether the existing file has changed since the discovery
-        // phase by comparing size and mtime to the previous values. This
-        // is necessary to avoid overwriting user changes that happened between
-        // the discovery phase and now.
-        const qint64 expectedSize = _item->_previousSize;
-        const time_t expectedMtime = _item->_previousModtime;
-        if (!FileSystem::verifyFileUnchanged(fn, expectedSize, expectedMtime)) {
-            propagator()->_anotherSyncNeeded = true;
-            done(SyncFileItem::SoftError, tr("File has changed since discovery"));
-            return;
-        }
     }
 
     // Apply the remote permissions
@@ -989,6 +978,21 @@ void PropagateDownloadFile::downloadFinished()
         QString error;
         if (!propagator()->createConflict(_item, _associatedComposite, &error)) {
             done(SyncFileItem::SoftError, error);
+            return;
+        }
+        previousFileExists = false;
+    }
+
+    if (previousFileExists) {
+        // Check whether the existing file has changed since the discovery
+        // phase by comparing size and mtime to the previous values. This
+        // is necessary to avoid overwriting user changes that happened between
+        // the discovery phase and now.
+        const qint64 expectedSize = _item->_previousSize;
+        const time_t expectedMtime = _item->_previousModtime;
+        if (!FileSystem::verifyFileUnchanged(fn, expectedSize, expectedMtime)) {
+            propagator()->_anotherSyncNeeded = true;
+            done(SyncFileItem::SoftError, tr("File has changed since discovery"));
             return;
         }
     }
