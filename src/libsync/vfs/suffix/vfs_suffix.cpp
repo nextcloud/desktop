@@ -22,7 +22,7 @@
 namespace OCC {
 
 VfsSuffix::VfsSuffix(QObject *parent)
-    : VfsDefaults(parent)
+    : Vfs(parent)
 {
 }
 

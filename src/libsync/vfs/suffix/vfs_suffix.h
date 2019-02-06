@@ -21,7 +21,7 @@
 
 namespace OCC {
 
-class VfsSuffix : public VfsDefaults
+class VfsSuffix : public Vfs
 {
     Q_OBJECT
 
@@ -47,8 +47,16 @@ public:
     bool isDehydratedPlaceholder(const QString &filePath) override;
     bool statTypeVirtualFile(csync_file_stat_t *stat, void *stat_data) override;
 
+    bool setPinState(const QString &folderPath, PinState state) override
+    { return setPinStateInDb(folderPath, state); }
+    Optional<PinState> pinState(const QString &folderPath) override
+    { return pinStateInDb(folderPath); }
+
 public slots:
     void fileStatusChanged(const QString &, SyncFileStatus) override {}
+
+protected:
+    void startImpl(const VfsSetupParams &) override {}
 };
 
 class SuffixVfsPluginFactory : public QObject, public DefaultPluginFactory<VfsSuffix>
