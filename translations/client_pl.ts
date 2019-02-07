@@ -1642,7 +1642,7 @@ Pozycje, dla których usuwanie jest dozwolone zostaną usunięte, jeżeli uprawn
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
         <source>Permanently save logs</source>
-        <translation type="unfinished"/>
+        <translation>Zachowaj dzienniki na stałe</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="103"/>

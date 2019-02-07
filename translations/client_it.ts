@@ -207,7 +207,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="324"/>
         <source>Create virtual files for new files (Experimental)</source>
-        <translation type="unfinished"/>
+        <translation>Crea file virtuali per i nuovi file (Sperimentale)</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="426"/>
@@ -364,7 +364,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="696"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>La versione %1 del server non è supportata! Procedi a tuo rischio.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="726"/>
@@ -581,17 +581,17 @@
     <message>
         <location filename="../src/gui/application.cpp" line="123"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Continuare significherà &lt;b&gt;eliminare queste impostazioni&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="125"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Continuare significherà &lt;b&gt;ignorare queste impostazioni&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="131"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Alcune impostazioni erano state configurate in versioni più recenti di questo client ed usano funzioni non disponibili in questa.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;Il file di configurazione attuale è già stato copiato in &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="138"/>
@@ -837,7 +837,11 @@
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile monitorare in modo affidabile le modifiche alle cartelle sincronizzate.
+
+Ciò significa che il client di sincronizzazione potrebbe non inviare le modifiche locali immediatamente e invece scansionerà e invierà le modifiche locali occasionalmente (predefinito ogni due ore).
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
@@ -845,14 +849,19 @@ This means that the synchronization client might not upload local changes immedi
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Tutti i file nella cartella sincronizzata &apos;%1&apos; sono stati eliminati sul server.
+Queste eliminazioni verranno sincronizzate nella tua cartella locale, perdendo questi file a meno che tu non sia autorizzato al ripristino. 
+Se decidi di mantenere i file, saranno risincronizzati con il server se hai l&apos;autorizzazione di farlo.
+Se decidi di eliminarli, non ti saranno più disponibili, a meno che tu non sia il proprietario.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1092"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Tutti i file nella tua cartella locale sincronizzata &apos;%1&apos; sono stati eliminati. Queste eliminazioni verranno sincronizzate con il server, perdendo questi file a meno che non siano ripristinati.
+Sei sicuro di voler sincronizzare queste azioni con il server?
+Se è stato un errore e decidi di mantenere i tuoi file, verranno risincronizzati dal server.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1096"/>
@@ -1057,7 +1066,7 @@ Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tut
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
         <source>New files are being created as virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Creazione di nuovi file come file virtuali.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="900"/>
@@ -1257,7 +1266,7 @@ Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tut
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="489"/>
         <source>Use virtual files instead of downloading content immediately (experimental)</source>
-        <translation type="unfinished"/>
+        <translation>Usa file virtuali invece di scaricare il contenuto immediatamente (sperimentale)</translation>
     </message>
 </context>
 <context>
@@ -1316,12 +1325,12 @@ Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tut
     <message>
         <location filename="../src/gui/generalsettings.ui" line="97"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>stabile</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="102"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>beta</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="228"/>
@@ -1367,12 +1376,12 @@ Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tut
     <message>
         <location filename="../src/gui/generalsettings.ui" line="80"/>
         <source>&amp;Update Channel</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Canale di aggiornamento</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="186"/>
         <source>•</source>
-        <translation type="unfinished"/>
+        <translation>•</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="236"/>
@@ -1397,24 +1406,26 @@ Se continui normalmente la sincronizzazione provocherai la sovrascrittura di tut
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="58"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
-        <translation type="unfinished"/>
+        <translation>Non puoi disattivare l&apos;avvio automatico perchè l&apos;auto-avvio a livello di sistema è attivo.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="187"/>
         <source>Change update channel?</source>
-        <translation type="unfinished"/>
+        <translation>Cambiare canale di aggiornamento?</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="188"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation type="unfinished"/>
+        <translation>Il canale di aggiornamento determina quali aggiornamenti del client saranno offerti da installare. Il canale &quot;stabile&quot; contiene solo aggiornamenti considerati affidabili, mentre le versioni nel canale &quot;beta&quot; possono contenere nuove funzionalità e correzioni, ma che non sono ancora state testate accuratamente.
+
+Nota che ciò seleziona solo da dove vengono presi gli aggiornamenti e che non c&apos;è alcuna regressione: quindi tornare dal canale beta a quello stabile solitamente non può essere fatto immediatamente e significa attendere una versione stabile più recente della versione beta attualmente installata.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="201"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Cambia canale di aggiornamento</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="202"/>
@@ -1427,14 +1438,16 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/socketapi.cpp" line="523"/>
         <source>Sharing error</source>
-        <translation type="unfinished"/>
+        <translation>Errore di condivisione</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="524"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile rilevare o creare il link di condivisione pubblico. Errore:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -1584,7 +1597,7 @@ Gli elementi per i quali è consentita l&apos;eliminazione, saranno eliminati se
     <message>
         <location filename="../src/gui/issueswidget.ui" line="147"/>
         <source>There were conflicts. Check the documentation on how to resolve them.</source>
-        <translation type="unfinished"/>
+        <translation>Ci sono stati conflitti. Controlla la documentazione su come risolverli.</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.ui" line="180"/>
@@ -1614,7 +1627,7 @@ Gli elementi per i quali è consentita l&apos;eliminazione, saranno eliminati se
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="126"/>
         <source>There were conflicts. &lt;a href=&quot;%1&quot;&gt;Check the documentation on how to resolve them.&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Ci sono stati conflitti. &lt;a href=&quot;%1&quot;&gt;Controlla la documentazione su come risolverli.&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -1649,7 +1662,9 @@ Gli elementi per i quali è consentita l&apos;eliminazione, saranno eliminati se
         <source>When this option is enabled and no other logging is configured, logs will be written to a temporary folder and expire after a few hours. This setting persists across client restarts.
 
 Logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Quando questa opzione è attiva e nessun altro log è configurato, i log verranno scritti in una cartella temporanea e scadranno dopo qualche ora. Questa impostazione permane anche dopo il riavvio del client.
+
+I log verranno scritti in %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="115"/>
@@ -1891,7 +1906,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="134"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Utente errato&lt;/h1&gt;&lt;p&gt;Sei entrato con l&apos;utente &lt;em&gt;%1&lt;/em&gt;, ma devi accedere con &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Disconnettiti da %3 in un&apos;altra scheda, poi &lt;a href=&apos;%4&apos;&gt;clicca qui&lt;/a&gt; e accedi come utente %2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2266,24 +2281,26 @@ Non è consigliabile utilizzarlo.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="261"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Attivare la funzione sperimentale?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="262"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny &quot;%1&quot; file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Quando la modalità &quot;file virtuali&quot; è attiva nessun file verrà scaricato inizialmente. Invece, verrà creato un minuscolo file &quot;%1&quot; per ogni file esistente sul server. Il contenuto può essere scaricato aprendo questi file o usando il loro menù contestuale.
+
+Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo di segnalare qualsiasi problema accada.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="269"/>
         <source>Enable experimental mode</source>
-        <translation type="unfinished"/>
+        <translation>Attiva modalità sperimentale</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="270"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Resta sicuro</translation>
     </message>
 </context>
 <context>
@@ -2944,7 +2961,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="542"/>
         <source>I shared %1 with you</source>
-        <translation type="unfinished"/>
+        <translation>Ho condiviso %1 con te</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="556"/>
@@ -2954,7 +2971,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="557"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Vuoi veramente eliminare il link di condivisione pubblico &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Nota: questa azione non può essere annullata.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="564"/>
@@ -2998,7 +3015,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="108"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can direct people to this shared file or folder &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;by giving them a private link&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Puoi indirizzare le persone a questo file o cartella condivisa &lt;a href=&quot;private link menu&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;dando loro un link privato&lt;/span&gt;&lt;/a&gt;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="210"/>
@@ -3131,7 +3148,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi.cpp" line="494"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>Menu contestuale condivisione</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="667"/>
@@ -3164,7 +3181,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/socketapi.cpp" line="721"/>
         <location filename="../src/gui/socketapi.cpp" line="723"/>
         <source>Copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copia link pubblico negli appunti</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="798"/>
@@ -3174,12 +3191,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message numerus="yes">
         <location filename="../src/gui/socketapi.cpp" line="819"/>
         <source>Download file(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Scarica il file</numerusform><numerusform>Scarica i file</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi.cpp" line="822"/>
         <source>Replace file(s) by virtual file</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Sostituisci il file con un file virtuale</numerusform><numerusform>Sostituisci i file con file virtuali</numerusform></translation>
     </message>
 </context>
 <context>
@@ -3578,7 +3595,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="858"/>
         <source>Using virtual files but suffix is not set</source>
-        <translation type="unfinished"/>
+        <translation>Utilizzo di file virtuali ma il suffisso non è impostato</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="870"/>
@@ -3669,7 +3686,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/theme.cpp" line="342"/>
         <source>&lt;p&gt;Version %2. For more information visit &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, and others.&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versione %2. Per altre informazioni visita &lt;a href=&quot;%3&quot;&gt;https://%4&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Per problemi noti e aiuto, visita: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Di Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt ed altri.&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="349"/>
@@ -3759,7 +3776,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="199"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>Il server sull&apos;account %1 esegue una versione %2 non supportata. L&apos;uso di questo client con versioni di server non supportate non è stato testato ed è potenzialmente pericoloso. Procedi a tuo rischio.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="781"/>
@@ -4002,12 +4019,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="394"/>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="397"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;When this option is selected, the wizard will close without synchronizing anything. You can use the &amp;quot;Add Folder Sync Connection&amp;quot; button from the account settings to choose which pair of local and remote folder you wish to synchronize&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Quando questa opzione è selezionata, la procedura guidata si chiuderà senza sincronizzare nulla. Puoi usare il pulsante &amp;quot;Aggiungi connessioni di sincronizzazione cartelle&amp;quot; dalle impostazioni dell&apos;account per scegliere quale coppia di cartelle locali e remote vuoi sincronizzare&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="400"/>
         <source>Manually create folder sync connections </source>
-        <translation type="unfinished"/>
+        <translation>Crea manualmente le connessioni di sincronizzazione cartelle</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="150"/>
@@ -4027,12 +4044,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="243"/>
         <source>S&amp;ynchronize everything from server (recommended)</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Sincronizza tutto dal server (consigliato)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="430"/>
         <source>Use virtual files instead of downloading content immediately (e&amp;xperimental)</source>
-        <translation type="unfinished"/>
+        <translation>Usa file virtuali invece di scaricare il contenuto immediatamente (s&amp;perimentale)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="460"/>

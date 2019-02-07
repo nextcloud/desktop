@@ -2807,7 +2807,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="220"/>
         <source>Public Links</source>
-        <translation type="unfinished"/>
+        <translation>Публічні посилання</translation>
     </message>
 </context>
 <context>
@@ -3167,7 +3167,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message numerus="yes">
         <location filename="../src/gui/socketapi.cpp" line="819"/>
         <source>Download file(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Завантажити файл</numerusform><numerusform>Завантажити файли</numerusform><numerusform>Завантажити файли</numerusform><numerusform>Завантажити файли</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi.cpp" line="822"/>
