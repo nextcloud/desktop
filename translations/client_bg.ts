@@ -3351,12 +3351,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="199"/>
         <source>Invalid certificate detected</source>
-        <translation type="unfinished"/>
+        <translation>Открит е невалиден сертификат</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="200"/>
         <source>The host &quot;%1&quot; provided an invalid certitiface. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>&quot;%1&quot; предостави невалиден сертификат. Желаете ли да продължите?</translation>
     </message>
 </context>
 <context>

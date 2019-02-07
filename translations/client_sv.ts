@@ -519,7 +519,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="183"/>
         <source>Synced</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserad</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="218"/>
@@ -3368,12 +3368,12 @@ Det är inte lämpligt använda den.</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="199"/>
         <source>Invalid certificate detected</source>
-        <translation type="unfinished"/>
+        <translation>Ogiltigt certifikat upptäckt</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="200"/>
         <source>The host &quot;%1&quot; provided an invalid certitiface. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>Servern &quot;%1&quot; tillhandahöll ett ogiltigt certifikat. Fortsätt?</translation>
     </message>
 </context>
 <context>

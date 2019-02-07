@@ -3367,12 +3367,12 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="199"/>
         <source>Invalid certificate detected</source>
-        <translation type="unfinished"/>
+        <translation>Zjištěn neplatný certifikát</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="200"/>
         <source>The host &quot;%1&quot; provided an invalid certitiface. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>Stroj „%1“ předložil neplatný certifikát. Pokračovat i tak?</translation>
     </message>
 </context>
 <context>

@@ -3368,12 +3368,12 @@ Não é aconselhável usá-la.</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="199"/>
         <source>Invalid certificate detected</source>
-        <translation type="unfinished"/>
+        <translation>Certificado inválido detectado</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="200"/>
         <source>The host &quot;%1&quot; provided an invalid certitiface. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>O host &quot;%1&quot; enviou um certificado inválido. Continuar?</translation>
     </message>
 </context>
 <context>

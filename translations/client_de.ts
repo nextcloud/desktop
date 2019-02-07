@@ -3367,12 +3367,12 @@ Es ist nicht ratsam, sie zu benutzen.</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="199"/>
         <source>Invalid certificate detected</source>
-        <translation type="unfinished"/>
+        <translation>Ungültiges Zertifikat gefunden</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="200"/>
         <source>The host &quot;%1&quot; provided an invalid certitiface. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>Host &quot;%1&quot; hat ein ungültiges Zertifikat bereitgestellt. Fortfahren?</translation>
     </message>
 </context>
 <context>
