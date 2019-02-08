@@ -372,11 +372,13 @@ void PropagateDownloadFile::start()
         }
 
         qCDebug(lcPropagateDownload) << "dehydrating file" << _item->_file;
-        _item->_type = ItemTypeVirtualFile; // Needed?
         vfs->dehydratePlaceholder(*_item);
         propagator()->_journal->deleteFileRecord(_item->_originalFile);
-        if (!_item->_renameTarget.isEmpty())
-            _item->_file = _item->_renameTarget;
+        // NOTE: This is only done because other rename-like ops also adjust _file, even though
+        // updateMetadata() will store at destination() anyway. Doing this may not be necessary
+        // but maybe it has an effect on reporting (destination() and moves aren't handled
+        // consistently everywhere)
+        _item->_file = _item->destination();
         updateMetadata(false);
         return;
     }

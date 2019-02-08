@@ -29,7 +29,14 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     SyncJournalFileRecord rec;
     rec._path = destination().toUtf8();
     rec._modtime = _modtime;
+
+    // Some types should never be written to the database when propagation completes
     rec._type = _type;
+    if (rec._type == ItemTypeVirtualFileDownload)
+        rec._type = ItemTypeFile;
+    if (rec._type == ItemTypeVirtualFileDehydration)
+        rec._type = ItemTypeVirtualFile;
+
     rec._etag = _etag;
     rec._fileId = _fileId;
     rec._fileSize = _size;

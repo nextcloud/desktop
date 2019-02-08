@@ -203,10 +203,25 @@ public:
     }
 
     // Variables useful for everybody
+
+    /** The syncfolder-relative filesystem path that the operation is about
+     *
+     * For rename operation this is the rename source and the target is in _renameTarget.
+     */
     QString _file;
-    // for renames: the name _file should be renamed to
-    // for dehydrations: the name _file should become after dehydration (like adding a suffix)
+
+    /** for renames: the name _file should be renamed to
+     * for dehydrations: the name _file should become after dehydration (like adding a suffix)
+     * otherwise empty. Use destination() to find the sync target.
+     */
     QString _renameTarget;
+
+    /** The db-path of this item.
+     *
+     * This can easily differ from _file and _renameTarget if parts of the path were renamed.
+     */
+    QString _originalFile;
+
     ItemType _type BITFIELD(3);
     Direction _direction BITFIELD(3);
     bool _serverHasIgnoredFiles BITFIELD(1);
@@ -236,7 +251,6 @@ public:
 
     // Variables used by the propagator
     csync_instructions_e _instruction;
-    QString _originalFile; // as it is in the csync tree
     time_t _modtime;
     QByteArray _etag;
     quint64 _size;

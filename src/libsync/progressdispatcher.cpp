@@ -29,7 +29,13 @@ QString Progress::asResultString(const SyncFileItem &item)
     case CSYNC_INSTRUCTION_NEW:
     case CSYNC_INSTRUCTION_TYPE_CHANGE:
         if (item._direction != SyncFileItem::Up) {
-            return QCoreApplication::translate("progress", "Downloaded");
+            if (item._type == ItemTypeVirtualFile) {
+                return QCoreApplication::translate("progress", "Virtual file created");
+            } else if (item._type == ItemTypeVirtualFileDehydration) {
+                return QCoreApplication::translate("progress", "Replaced by virtual file");
+            } else {
+                return QCoreApplication::translate("progress", "Downloaded");
+            }
         } else {
             return QCoreApplication::translate("progress", "Uploaded");
         }
