@@ -2,9 +2,11 @@ set(APPLICATION_DOC_DIR "${CMAKE_INSTALL_DOCDIR}")
 
 set(ANTORA_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/public")
 
+find_program (npm NAMES npm)
+
 add_custom_command(OUTPUT "${ANTORA_OUTPUT_DIR}" ALL
     COMMENT "Building documentation... "
-    COMMAND npm run antora
+    COMMAND "${npm}" run antora
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 
