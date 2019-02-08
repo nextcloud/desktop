@@ -581,7 +581,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="123"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
-        <translation>Continuar significa que &lt;b&gt;borrará estes axustes&lt;/b&gt;.</translation>
+        <translation>Continuar significa que &lt;b&gt;eliminará estes axustes&lt;/b&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="125"/>
@@ -998,7 +998,7 @@ Continuando a sincronización como normal fará que todos os seus ficheiros sexa
     <message>
         <location filename="../src/gui/folderman.cpp" line="1367"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>O cartafol local %1 xa conten un cartafol usado nunha conexión de sincronización de cartafoles. Escolla outro!</translation>
+        <translation>O cartafol local %1 xa contén un cartafol usado nunha conexión de sincronización de cartafoles. Escolla outro!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1373"/>
