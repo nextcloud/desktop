@@ -634,7 +634,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             } else if (dbEntry._type == ItemTypeVirtualFileDehydration) {
                 // dehydration requested
                 item->_direction = SyncFileItem::Down;
-                item->_instruction = CSYNC_INSTRUCTION_NEW;
+                item->_instruction = CSYNC_INSTRUCTION_SYNC;
                 item->_type = ItemTypeVirtualFileDehydration;
             }
         } else if (noServerEntry) {
@@ -699,7 +699,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 item->_direction = SyncFileItem::Down;
             } else if (dbEntry._type == ItemTypeVirtualFileDehydration || localEntry.type == ItemTypeVirtualFileDehydration) {
                 item->_direction = SyncFileItem::Down;
-                item->_instruction = CSYNC_INSTRUCTION_NEW;
+                item->_instruction = CSYNC_INSTRUCTION_SYNC;
                 item->_type = ItemTypeVirtualFileDehydration;
             } else if (!serverModified && dbEntry._inode != localEntry.inode) {
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
@@ -962,7 +962,7 @@ void ProcessDirectoryJob::processFileFinalize(
                 addVirtualFileSuffix(item->_file);
         }
         if (item->_type == ItemTypeVirtualFileDehydration
-            && item->_instruction == CSYNC_INSTRUCTION_NEW) {
+            && item->_instruction == CSYNC_INSTRUCTION_SYNC) {
             item->_renameTarget = item->_file;
             addVirtualFileSuffix(item->_renameTarget);
         }
