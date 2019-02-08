@@ -264,6 +264,10 @@ void SocketApi::onLostConnection()
 {
     qCInfo(lcSocketApi) << "Lost connection " << sender();
     sender()->deleteLater();
+
+    auto socket = qobject_cast<QIODevice *>(sender());
+    ASSERT(socket);
+    _listeners.erase(std::remove_if(_listeners.begin(), _listeners.end(), ListenerHasSocketPred(socket)), _listeners.end());
 }
 
 void SocketApi::slotSocketDestroyed(QObject *obj)

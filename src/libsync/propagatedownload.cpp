@@ -730,8 +730,24 @@ void PropagateDownloadFile::slotGetFinished()
      */
     const QByteArray sizeHeader("Content-Length");
     quint64 bodySize = job->reply()->rawHeader(sizeHeader).toULongLong();
+    bool hasSizeHeader = !job->reply()->rawHeader(sizeHeader).isEmpty();
 
-    if (!_isDeltaSyncDownload && !job->reply()->rawHeader(sizeHeader).isEmpty() && _tmpFile.size() > 0 && bodySize == 0) {
+    // Qt removes the content-length header for transparently decompressed HTTP1 replies
+    // but not for HTTP2 or SPDY replies. For these it remains and contains the size
+    // of the compressed data. See QTBUG-73364.
+    const auto contentEncoding = job->reply()->rawHeader("content-encoding").toLower();
+    if ((contentEncoding == "gzip" || contentEncoding == "deflate")
+        && (
+#if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
+           job->reply()->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool() ||
+#endif
+           job->reply()->attribute(QNetworkRequest::SpdyWasUsedAttribute).toBool()
+         )) {
+        bodySize = 0;
+        hasSizeHeader = false;
+    }
+
+    if (!_isDeltaSyncDownload && hasSizeHeader && _tmpFile.size() > 0 && bodySize == 0) {
         // Strange bug with broken webserver or webfirewall https://github.com/owncloud/client/issues/3373#issuecomment-122672322
         // This happened when trying to resume a file. The Content-Range header was files, Content-Length was == 0
         qCDebug(lcPropagateDownload) << bodySize << _item->_size << _tmpFile.size() << job->resumeStart();

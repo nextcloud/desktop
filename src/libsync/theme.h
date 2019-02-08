@@ -358,6 +358,15 @@ public:
      */
     virtual bool showVirtualFilesOption() const;
 
+    /**
+     * @brief Open directly the browser for oauth2 without doing any unauthenticated request
+     *
+     * This is a very specific option which only make sense if overrideServerUrl is set.
+     * It also impact redirect handling
+     * https://github.com/owncloud/enterprise/issues/2951
+     */
+    virtual bool noUnauthedRequests() const;
+
 protected:
 #ifndef TOKEN_AUTH_ONLY
     QIcon themeIcon(const QString &name, bool sysTray = false, bool sysTrayMenuVisible = false) const;

@@ -24,6 +24,7 @@
 #include "networkjobs.h"
 #include "clientproxy.h"
 #include <creds/abstractcredentials.h>
+#include "theme.h"
 
 namespace OCC {
 
@@ -84,6 +85,12 @@ void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy)
 // The actual check
 void ConnectionValidator::slotCheckServerAndAuth()
 {
+    if (Theme::instance()->noUnauthedRequests()) {
+        // Skip status.php, directly do the authentication test
+        checkAuthentication();
+        return;
+    }
+
     CheckServerJob *checkJob = new CheckServerJob(_account, this);
     checkJob->setTimeout(timeoutToUseMsec);
     checkJob->setIgnoreCredentialFailure(true);

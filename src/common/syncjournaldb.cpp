@@ -340,6 +340,19 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("Set PRAGMA case_sensitivity", pragma1);
     }
 
+    {
+        // Future version of the client (2.6) will have an index 'metadata_parent' which
+        // depends on a custom sqlite function which does not exist yet in 2.5.
+        // So make sure to remove the index if it exists, otherwise we will crash when inserting
+        // rows in the metadata database.
+        // The 2.6 client will anyway re-creates this index if it does not exist.
+        SqlQuery query(_db);
+        query.prepare("DROP INDEX IF EXISTS metadata_parent;");
+        if (!query.exec()) {
+            return sqlFail("updateMetadataTableStructure: remove index metadata_parent", query);
+        }
+    }
+
     sqlite3_create_function(_db.sqliteDb(), "parent_hash", 1, SQLITE_UTF8 | SQLITE_DETERMINISTIC, nullptr,
                                 [] (sqlite3_context *ctx,int, sqlite3_value **argv) {
                                     auto text = reinterpret_cast<const char*>(sqlite3_value_text(argv[0]));

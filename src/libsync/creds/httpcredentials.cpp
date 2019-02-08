@@ -479,12 +479,17 @@ void HttpCredentials::persist()
         job->setBinaryData(_clientSslCertificate.toPem());
         job->start();
     } else {
-        slotWriteClientCertPEMJobDone();
+        slotWriteClientCertPEMJobDone(nullptr);
     }
 }
 
-void HttpCredentials::slotWriteClientCertPEMJobDone()
+void HttpCredentials::slotWriteClientCertPEMJobDone(Job *finishedJob)
 {
+    if (finishedJob && finishedJob->error() != QKeychain::NoError) {
+        qCWarning(lcHttpCredentials) << "Could not write client cert to credentials"
+                                     << finishedJob->error() << finishedJob->errorString();
+    }
+
     // write ssl key if there is one
     if (!_clientSslKey.isNull()) {
         WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
@@ -495,12 +500,17 @@ void HttpCredentials::slotWriteClientCertPEMJobDone()
         job->setBinaryData(_clientSslKey.toPem());
         job->start();
     } else {
-        slotWriteClientKeyPEMJobDone();
+        slotWriteClientKeyPEMJobDone(nullptr);
     }
 }
 
-void HttpCredentials::slotWriteClientKeyPEMJobDone()
+void HttpCredentials::slotWriteClientKeyPEMJobDone(Job *finishedJob)
 {
+    if (finishedJob && finishedJob->error() != QKeychain::NoError) {
+        qCWarning(lcHttpCredentials) << "Could not write client key to credentials"
+                                     << finishedJob->error() << finishedJob->errorString();
+    }
+
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
     addSettingsToJob(_account, job);
     job->setInsecureFallback(false);
@@ -512,15 +522,10 @@ void HttpCredentials::slotWriteClientKeyPEMJobDone()
 
 void HttpCredentials::slotWriteJobDone(QKeychain::Job *job)
 {
-    delete job->settings();
-    switch (job->error()) {
-    case NoError:
-        break;
-    default:
-        qCWarning(lcHttpCredentials) << "Error while writing password" << job->errorString();
+    if (job && job->error() != QKeychain::NoError) {
+        qCWarning(lcHttpCredentials) << "Error while writing password"
+                                     << job->error() << job->errorString();
     }
-    WritePasswordJob *wjob = qobject_cast<WritePasswordJob *>(job);
-    wjob->deleteLater();
 }
 
 void HttpCredentials::slotAuthentication(QNetworkReply *reply, QAuthenticator *authenticator)

@@ -182,6 +182,11 @@ void OwncloudSetupWizard::slotSystemProxyLookupDone(const QNetworkProxy &proxy)
 
 void OwncloudSetupWizard::slotFindServer()
 {
+    if (Theme::instance()->noUnauthedRequests()) {
+        _ocWizard->setAuthType(DetermineAuthTypeJob::OAuth);
+        return;
+    }
+
     AccountPtr account = _ocWizard->account();
 
     // Set fake credentials before we check what credential it actually is.
