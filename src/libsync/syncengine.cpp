@@ -37,6 +37,7 @@
 
 #include <climits>
 #include <assert.h>
+#include <chrono>
 
 #include <QCoreApplication>
 #include <QSslSocket>
@@ -57,10 +58,25 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcEngine, "sync.engine", QtInfoMsg)
 
-static const int s_touchedFilesMaxAgeMs = 15 * 1000;
 bool SyncEngine::s_anySyncRunning = false;
 
-qint64 SyncEngine::minimumFileAgeForUpload = 2000;
+/** When the client touches a file, block change notifications for this duration (ms)
+ *
+ * On Linux and Windows the file watcher can't distinguish a change that originates
+ * from the client (like a download during a sync operation) and an external change.
+ * To work around that, all files the client touches are recorded and file change
+ * notifications for these are blocked for some time. This value controls for how
+ * long.
+ *
+ * Reasons this delay can't be very small:
+ * - it takes time for the change notification to arrive and to be processed by the client
+ * - some time could pass between the client recording that a file will be touched
+ *   and its filesystem operation finishing, triggering the notification
+ */
+static const std::chrono::milliseconds s_touchedFilesMaxAgeMs(3 * 1000);
+
+// doc in header
+std::chrono::milliseconds SyncEngine::minimumFileAgeForUpload(2000);
 
 SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
     const QString &remotePath, OCC::SyncJournalDb *journal)
@@ -848,8 +864,9 @@ void SyncEngine::slotAddTouchedFile(const QString &fn)
             break;
         // Compare to our new QElapsedTimer instead of using elapsed().
         // This avoids querying the current time from the OS for every loop.
-        if (now.msecsSinceReference() - first.key().msecsSinceReference() <= s_touchedFilesMaxAgeMs) {
-            // We found the first path younger than 15 second, keep the rest.
+        auto elapsed = std::chrono::milliseconds(now.msecsSinceReference() - first.key().msecsSinceReference());
+        if (elapsed <= s_touchedFilesMaxAgeMs) {
+            // We found the first path younger than the maximum age, keep the rest.
             break;
         }
 
@@ -871,7 +888,7 @@ bool SyncEngine::wasFileTouched(const QString &fn) const
     auto begin = _touchedFiles.constBegin();
     for (auto it = _touchedFiles.constEnd(); it != begin; --it) {
         if ((it-1).value() == fn)
-            return (it-1).key().elapsed() <= s_touchedFilesMaxAgeMs;
+            return std::chrono::milliseconds((it-1).key().elapsed()) <= s_touchedFilesMaxAgeMs;
     }
     return false;
 }

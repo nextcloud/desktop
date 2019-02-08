@@ -507,7 +507,7 @@ int main(int argc, char **argv)
     }
 
     // much lower age than the default since this utility is usually made to be run right after a change in the tests
-    SyncEngine::minimumFileAgeForUpload = 0;
+    SyncEngine::minimumFileAgeForUpload = std::chrono::milliseconds(0);
 
     int restartCount = 0;
 restart_sync:

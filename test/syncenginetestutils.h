@@ -1120,7 +1120,7 @@ public:
         : _localModifier(_tempDir.path())
     {
         // Needs to be done once
-        OCC::SyncEngine::minimumFileAgeForUpload = 0;
+        OCC::SyncEngine::minimumFileAgeForUpload = std::chrono::milliseconds(0);
         OCC::Logger::instance()->setLogFile("-");
 
         QDir rootDir{_tempDir.path()};
