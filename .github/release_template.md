@@ -96,7 +96,7 @@ On Release Day (for final release):
 * [ ] Create same tag for Windows toolchain
 * [ ] Create same tag (actually a symlink) for macOS toolchain
 * [ ] Create a (draft) release on https://github.com/owncloud/client/releases
-* [ ] Update https://owncloud.org/changelog/desktop-client/
+* [ ] Check https://owncloud.org/changelog/desktop-client/ -> it pulls from master branch ChangeLog file (not github releases). 
 * [ ] Update https://owncloud.org/download/#owncloud-desktop-client -> Download ownCloud -> click open 'Desktop Client', edit win/mac/lin, each all three tabs "Production", "Technical Preview" [disabled], "Test pilot" enabled, edit the links.
 * [ ] Update htpps://owncloud.com/download/#desktop-clients (achim)
 * [ ] Announce on https://central.owncloud.org
