@@ -87,12 +87,17 @@ public:
     SyncJournalDb *journal() const { return _journal; }
     QString localPath() const { return _localPath; }
 
-    /**
-     * Minimum age, in milisecond, of a file that can be uploaded.
-     * Files more recent than that are not going to be uploaeded as they are considered
-     * too young and possibly still changing
+    /** Duration in ms that uploads should be delayed after a file change
+     *
+     * In certain situations a file can be written to very regularly over a large
+     * amount of time. Copying a large file could take a while. A logfile could be
+     * updated every second.
+     *
+     * In these cases it isn't desirable to attempt to upload the "unfinished" file.
+     * To avoid that, uploads of files where the distance between the mtime and the
+     * current time is less than this duration are skipped.
      */
-    static qint64 minimumFileAgeForUpload; // in ms
+    static std::chrono::milliseconds minimumFileAgeForUpload;
 
     /**
      * Control whether local discovery should read from filesystem or db.
