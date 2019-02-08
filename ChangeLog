@@ -1,7 +1,7 @@
 ChangeLog
 =========
 
-version 2.5.3 (2019-02-xx)
+version 2.5.3 (2019-02-07)
 * Connectivity: Add a noUnauthedRequests branding option
 * Credentials: Warn in log if keychain-write jobs fail (#6776)
 * Database: Move drop-index to after pragmas are set (#6881)
