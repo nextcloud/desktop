@@ -197,6 +197,7 @@ private slots:
         fakeFolder.localModifier().rename("A/a1", "A/a1m");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(remoteInfo));
         QCOMPARE(nPUT, 0);
 
         // Move-and-change, causing a upload and delete
@@ -204,6 +205,7 @@ private slots:
         fakeFolder.localModifier().appendByte("A/a2m");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(remoteInfo));
         QCOMPARE(nPUT, 1);
         QCOMPARE(nDELETE, 1);
 
@@ -212,6 +214,7 @@ private slots:
         fakeFolder.localModifier().setContents("B/b1m", 'C');
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(remoteInfo));
         QCOMPARE(nPUT, 2);
         QCOMPARE(nDELETE, 2);
 
@@ -222,6 +225,7 @@ private slots:
         fakeFolder.localModifier().setModTime("B/b2m", mtime);
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(remoteInfo));
         QCOMPARE(nPUT, 3);
         QCOMPARE(nDELETE, 3);
 
@@ -241,6 +245,7 @@ private slots:
         fakeFolder.localModifier().insert("C/c3");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(remoteInfo));
         QCOMPARE(nPUT, 4);
         QCOMPARE(nDELETE, 4);
 
@@ -253,6 +258,7 @@ private slots:
         QCOMPARE(nPUT, 5);
         QCOMPARE(nDELETE, 5);
         QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(remoteInfo));
     }
 
     void testDuplicateFileId_data()
@@ -360,6 +366,7 @@ private slots:
         remote.setContents("B/b2m", 'A');
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
         QCOMPARE(counter.nGET, 1);
         QCOMPARE(counter.nPUT, 1);
         QCOMPARE(counter.nMOVE, 0);
@@ -375,6 +382,7 @@ private slots:
         local.setContents("B/b1m", 'B');
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
         QCOMPARE(counter.nGET, 2);
         QCOMPARE(counter.nPUT, 2);
         QCOMPARE(counter.nMOVE, 0);
@@ -402,6 +410,7 @@ private slots:
             QVERIFY(expectAndWipeConflict(local, fakeFolder.currentLocalState(), "A/a1mt"));
             QVERIFY(expectAndWipeConflict(local, fakeFolder.currentLocalState(), "B/b1mt"));
             QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+            QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
             QCOMPARE(counter.nGET, 3);
             QCOMPARE(counter.nPUT, 1);
             QCOMPARE(counter.nMOVE, 0);
@@ -424,6 +433,7 @@ private slots:
             QVERIFY(expectAndWipeConflict(local, fakeFolder.currentLocalState(), "A/a1N"));
             QVERIFY(expectAndWipeConflict(local, fakeFolder.currentLocalState(), "B/b1N"));
             QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+            QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
             QCOMPARE(counter.nGET, 2);
             QCOMPARE(counter.nPUT, 0);
             QCOMPARE(counter.nMOVE, 0);
@@ -441,6 +451,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         // end up with both files
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
         QCOMPARE(counter.nGET, 1);
         QCOMPARE(counter.nPUT, 1);
         QCOMPARE(counter.nMOVE, 0);
@@ -453,6 +464,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         // End up with both folders
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
         QCOMPARE(counter.nGET, 3); // 3 files in C
         QCOMPARE(counter.nPUT, 3);
         QCOMPARE(counter.nMOVE, 0);
@@ -466,6 +478,7 @@ private slots:
             QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
             QVERIFY(fakeFolder.syncOnce());
             QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+            QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
             QCOMPARE(counter.nGET, 0);
             QCOMPARE(counter.nPUT, 0);
             QCOMPARE(counter.nMOVE, 1);
@@ -489,6 +502,7 @@ private slots:
             QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
             QVERIFY(fakeFolder.syncOnce());
             QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+            QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
             QCOMPARE(counter.nGET, 1);
             QCOMPARE(counter.nPUT, 1);
             QCOMPARE(counter.nMOVE, 1);
@@ -511,6 +525,7 @@ private slots:
         remote.rename("B2", "B3");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
         QCOMPARE(counter.nGET, 1);
         QCOMPARE(counter.nPUT, 1);
         QCOMPARE(counter.nMOVE, 1);
@@ -547,6 +562,7 @@ private slots:
             local.remove(c);
         }
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
         QCOMPARE(counter.nGET, 2);
         QCOMPARE(counter.nPUT, 0);
         QCOMPARE(counter.nMOVE, 1);
@@ -562,6 +578,7 @@ private slots:
         remote.rename("B4", "B5");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
         QCOMPARE(counter.nGET, 0);
         QCOMPARE(counter.nPUT, 0);
         QCOMPARE(counter.nMOVE, 2);

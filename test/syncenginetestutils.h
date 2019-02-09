@@ -12,6 +12,7 @@
 #include "filesystem.h"
 #include "syncengine.h"
 #include "common/syncjournaldb.h"
+#include "common/syncjournalfilerecord.h"
 #include "common/vfs.h"
 #include "csync_exclude.h"
 #include <cstring>
@@ -254,17 +255,19 @@ public:
 
     FileInfo *find(PathComponents pathComponents, const bool invalidateEtags = false) {
         if (pathComponents.isEmpty()) {
-            if (invalidateEtags)
+            if (invalidateEtags) {
                 etag = generateEtag();
+            }
             return this;
         }
         QString childName = pathComponents.pathRoot();
         auto it = children.find(childName);
         if (it != children.end()) {
             auto file = it->find(std::move(pathComponents).subComponents(), invalidateEtags);
-            if (file && invalidateEtags)
+            if (file && invalidateEtags) {
                 // Update parents on the way back
                 etag = file->etag;
+            }
             return file;
         }
         return 0;
@@ -1191,6 +1194,7 @@ public:
 
     FileInfo currentRemoteState() { return _fakeQnam->currentRemoteState(); }
     FileInfo &uploadState() { return _fakeQnam->uploadState(); }
+    FileInfo dbState() const;
 
     struct ErrorList {
         FakeQNAM *_qnam;
@@ -1286,6 +1290,42 @@ private:
     }
 };
 
+static FileInfo &findOrCreateDirs(FileInfo &base, PathComponents components)
+{
+    if (components.isEmpty())
+        return base;
+    auto childName = components.pathRoot();
+    auto it = base.children.find(childName);
+    if (it != base.children.end()) {
+        return findOrCreateDirs(*it, components.subComponents());
+    }
+    auto &newDir = base.children[childName] = FileInfo{childName};
+    newDir.parentPath = base.path();
+    return findOrCreateDirs(newDir, components.subComponents());
+}
+
+inline FileInfo FakeFolder::dbState() const
+{
+    FileInfo result;
+    _journalDb->getFilesBelowPath("", [&](const OCC::SyncJournalFileRecord &record) {
+        auto components = PathComponents(QString::fromUtf8(record._path));
+        auto &parentDir = findOrCreateDirs(result, components.parentDirComponents());
+        auto name = components.fileName();
+        auto &item = parentDir.children[name];
+        item.name = name;
+        item.parentPath = parentDir.path();
+        item.size = record._fileSize;
+        item.isDir = record._type == ItemTypeDirectory;
+        item.permissions = record._remotePerm;
+        item.etag = record._etag;
+        item.lastModified = OCC::Utility::qDateTimeFromTime_t(record._modtime);
+        item.fileId = record._fileId;
+        item.checksums = record._checksumHeader;
+        // item.contentChar can't be set from the db
+    });
+    return result;
+}
+
 /* Return the FileInfo for a conflict file for the specified relative filename */
 inline const FileInfo *findConflict(FileInfo &dir, const QString &filename)
 {
@@ -1326,5 +1366,34 @@ inline char *toString(const FileInfo &fi)
     QStringList files;
     foreach (const FileInfo &fi, fi.children)
         addFiles(files, fi);
+    return QTest::toString(QString("FileInfo with %1 files(%2)").arg(files.size()).arg(files.join(", ")));
+}
+
+inline void addFilesDbData(QStringList &dest, const FileInfo &fi)
+{
+    // could include etag, permissions etc, but would need extra work
+    if (fi.isDir) {
+        dest += QString("%1 - %2 %3 %4").arg(
+            fi.name,
+            fi.isDir ? "dir" : "file",
+            QString::number(fi.lastModified.toSecsSinceEpoch()),
+            fi.fileId);
+        foreach (const FileInfo &fi, fi.children)
+            addFilesDbData(dest, fi);
+    } else {
+        dest += QString("%1 - %2 %3 %4 %5").arg(
+            fi.name,
+            fi.isDir ? "dir" : "file",
+            QString::number(fi.size),
+            QString::number(fi.lastModified.toSecsSinceEpoch()),
+            fi.fileId);
+    }
+}
+
+inline char *printDbData(const FileInfo &fi)
+{
+    QStringList files;
+    foreach (const FileInfo &fi, fi.children)
+        addFilesDbData(files, fi);
     return QTest::toString(QString("FileInfo with %1 files(%2)").arg(files.size()).arg(files.join(", ")));
 }
