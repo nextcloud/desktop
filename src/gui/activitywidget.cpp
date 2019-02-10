@@ -179,6 +179,7 @@ void ActivityWidget::slotItemCompleted(const QString &folder, const SyncFileItem
 
         if(item->_status == SyncFileItem::NoStatus || item->_status == SyncFileItem::Success){
             qCWarning(lcActivity) << "Item " << item->_file << " retrieved successfully.";
+            activity._message.prepend(" ");
             activity._message.prepend(tr("Synced"));
             _model->addSyncFileItemToActivityList(activity);
         } else {
@@ -430,19 +431,16 @@ void ActivityWidget::slotOpenFile(QModelIndex indx)
 // collected.
 void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
 {
-    QString listAccountName;
-
     // Whether a new notification was added to the list
     bool newNotificationShown = false;
+
+    _model->clearNotifications();
 
     foreach (auto activity, list) {
         if (_blacklistedNotifications.contains(activity)) {
             qCInfo(lcActivity) << "Activity in blacklist, skip";
             continue;
         }
-
-        // remember the list account name for the strayCat handling below.
-        listAccountName = activity._accName;
 
         // handle gui logs. In order to NOT annoy the user with every fetching of the
         // notifications the notification id is stored in a Set. Only if an id
@@ -468,14 +466,15 @@ void ActivityWidget::slotBuildNotificationDisplay(const ActivityList &list)
                     emit guiLog(activity._subject, activity._accName);
                 }
             }
-
-            _model->addNotificationToActivityList(activity);
         }
+
+        _model->addNotificationToActivityList(activity);
     }
 
     // restart the gui log timer now that we show a new notification
-    if(newNotificationShown)
+    if(newNotificationShown) {
         _guiLogTimer.start();
+    }
 }
 
 void ActivityWidget::slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row)

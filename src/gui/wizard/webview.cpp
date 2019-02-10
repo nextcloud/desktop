@@ -11,6 +11,7 @@
 #include <QLoggingCategory>
 #include <QLocale>
 #include <QWebEngineCertificateError>
+#include <QMessageBox>
 
 #include "common/utility.h"
 
@@ -191,15 +192,31 @@ bool WebEnginePage::certificateError(const QWebEngineCertificateError &certifica
     qCInfo(lcWizardWebiew()) << certificateError.errorDescription();
 
     if (this->_userTrustedHost.compare(certificateError.url().host()) == 0) {
-	qCInfo(lcWizardWebiew()) << "User trust the certificate from " << certificateError.url().host();
-	return true;
+	      qCInfo(lcWizardWebiew()) << "User trust the certificate from " << certificateError.url().host();
+	      return true;
     }
 
     if (certificateError.error() == QWebEngineCertificateError::CertificateAuthorityInvalid) {
         return certificateError.url().host() == _rootUrl.host();
     }
 
-    return false;
+    /**
+     * TODO properly improve this.
+     * The certificate should be displayed.
+     *
+     * Or rather we should do a request with the QNAM and see if it works (then it is in the store).
+     * This is just a quick fix for now.
+     */
+    QMessageBox messageBox;
+    messageBox.setText(tr("Invalid certificate detected"));
+    messageBox.setInformativeText(tr("The host \"%1\" provided an invalid certitiface. Continue?").arg(certificateError.url().host()));
+    messageBox.setIcon(QMessageBox::Warning);
+    messageBox.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
+    messageBox.setDefaultButton(QMessageBox::No);
+
+    int ret = messageBox.exec();
+
+    return ret == QMessageBox::Yes;
 }
 
 void WebEnginePage::setUserTrustedHost(QString trustedHost) {
