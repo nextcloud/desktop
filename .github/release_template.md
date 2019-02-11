@@ -99,7 +99,7 @@ On Release Day (for final release):
 * [ ] Update https://github.com/owncloud/client/blob/master/ChangeLog
 * [ ] 1h later check https://owncloud.org/changelog/desktop-client/ -> it pulls from the master ChangeLog file hourly. 
 * [ ] Update https://owncloud.org/download/#owncloud-desktop-client -> Download ownCloud -> click open 'Desktop Client', edit win/mac/lin, each all three tabs "Production", "Technical Preview" [disabled], "Test pilot" enabled, edit the links.
-* [ ] Update https://owncloud.com/download/#desktop-clients (achim)
+* [ ] Update https://owncloud.com/download/#desktop-clients (both de & en, achim via #marketing)
 * [ ] Announce on https://central.owncloud.org
 * [ ] Announce on announcements@owncloud.org Link to the central post so discussion happens there.
 * [ ] Inform packagers @dragotin (openSUSE) @hefee (Debian) @Germano0 (Fedora)
