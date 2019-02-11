@@ -1,0 +1,16 @@
+= Removing the Desktop Synchronization Client
+
+== Windows Navigation Sidebar
+
+If you have removed the windows synchronization client but still have the owncloud shortcut or symbol in the windows navigation side bar, 
+here is how you can remove it:
+
+1. Open `regedit`. (press the Windows Key and type regedit)
+2. Search (CTL+F) for the name of the client, in this case `owncloud `.
+3. Press `F3` for next search result.
+4. Look for the key `System.IsPinnedToNameSpaceTree`.
+5. Right click on the key name, change, set to `0` instead of `1`.
+
+You have to do this twice. Once for the `x64` and `x32` system settings.
+
+Once this is done, you don't even need a reboot, just open and close your explorer - the sidebar is clean.
