@@ -676,6 +676,33 @@ private slots:
 
         QCOMPARE(nPUT, 3);
     }
+
+#ifndef Q_OS_WIN
+    void testPropagatePermissions()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        auto perm = QFileDevice::Permission(0x7704); // user/owner: rwx, group: r, other: -
+        QFile::setPermissions(fakeFolder.localPath() + "A/a1", perm);
+        QFile::setPermissions(fakeFolder.localPath() + "A/a2", perm);
+        fakeFolder.syncOnce(); // get the metadata-only change out of the way
+        fakeFolder.remoteModifier().appendByte("A/a1");
+        fakeFolder.remoteModifier().appendByte("A/a2");
+        fakeFolder.localModifier().appendByte("A/a2");
+        fakeFolder.localModifier().appendByte("A/a2");
+        fakeFolder.syncOnce(); // perms should be preserved
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1").permissions(), perm);
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a2").permissions(), perm);
+
+        // Currently the umask applies to conflict files
+        auto octmask = umask(0);
+        umask(octmask);
+        // Qt uses 0x1, 0x2, 0x4 for "other"; 0x10, 0x20, 0x40 for "group" etc
+        auto qtmask = (octmask & 07) + 0x10 * ((octmask & 070) >> 3) + 0x100 * ((octmask & 0700) >> 6);
+        auto maskedPerm = QFileDevice::Permission(perm & (~qtmask));
+        auto conflictName = fakeFolder.syncJournal().conflictRecord("A/a2").path;
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + conflictName).permissions(), maskedPerm);
+    }
+#endif
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)
