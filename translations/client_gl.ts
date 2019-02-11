@@ -3581,7 +3581,7 @@ Os contidos poden descargarse executando estes ficheiros ou usando o seu menú c
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="537"/>
         <source>Stat failed.</source>
-        <translation>Fallou a obtención de estatísticas.</translation>
+        <translation>Produciuse un fallo na obtención de estatísticas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="564"/>
