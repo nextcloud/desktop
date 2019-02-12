@@ -1155,7 +1155,7 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie twoje pli
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="87"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Ten problem zwykle występuje, gdy podgląd Inotify są nie działa poprawnie. Sprawdź FAQ w celu uzyskania szczegółowych informacji.</translation>
     </message>
 </context>
 <context>
@@ -3489,7 +3489,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="275"/>
         <source>Disconnected from some accounts</source>
-        <translation type="unfinished"/>
+        <translation>Odłączono kilka kont</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="286"/>
