@@ -166,4 +166,4 @@ pipeline:
     when:
       local: false
       event: [ push ]
-      status: [ success, failure ]
+      status: [ failure, changed ]
