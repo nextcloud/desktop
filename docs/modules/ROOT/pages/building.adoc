@@ -37,6 +37,7 @@ To get the `.deb` source packages, add the source repository for your Debian or 
 [source,console]
 ....
 # Run as root
+echo 'deb http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Debian_9.0/ /' >> /etc/apt/sources.list.d/owncloud-client.list
 echo 'deb-src http://download.opensuse.org/repositories/isv:/ownCloud:/desktop/Debian_9.0/ /' >> /etc/apt/sources.list.d/owncloud-client.list
 ....
 ====
@@ -69,7 +70,7 @@ To get the source dependencies on Debian and Ubuntu, run the following command:
 [source,console]
 ....
 sudo apt install qtdeclarative5-dev libinotifytools-dev \
-  qt5keychain-dev libqt5webkit5-dev python-sphinx \
+  qt5keychain-dev python-sphinx \
   libsqlite3-dev
 ....
 ====
@@ -162,7 +163,7 @@ cd client-build
 +
 [source,console]
 ....
-cmake -G "MinGW Makefiles" -DNO_SHIBBOLETH=1 ../client
+cmake -G "MinGW Makefiles" ../client
 mingw32-make
 ....
 +
@@ -257,7 +258,7 @@ cd client-build
 +
 [source,console]
 ....
-cmake -DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/  -DNO_SHIBBOLETH=1 ..
+cmake -DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1 -DCMAKE_INSTALL_PREFIX=/Users/path/to/client/../install/ ..
 ....
 +
 For Linux builds (using QT5 libraries via build-dep) a typical setting is `-DCMAKE_PREFIX_PATH=/opt/ownCloud/qt-5.10.1/` - version number may vary.
