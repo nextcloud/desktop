@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="129"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation>%1 / %2 szinkronizálása (%3 maradt)</translation>
+        <translation>%1 / %2 szinkronizálása (%3 van hátra)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="134"/>
@@ -24,7 +24,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="141"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation>%1 szinkronizálása (%2 maradt)</translation>
+        <translation>%1 szinkronizálása (%2 van hátra)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="144"/>
@@ -34,7 +34,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="186"/>
         <source>Sync paused</source>
-        <translation>Szinkronizálás megállítva</translation>
+        <translation>Szinkronizálás szüneteltetve</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="189"/>
@@ -47,7 +47,7 @@
     <message>
         <location filename="../src/gui/mnemonicdialog.ui" line="23"/>
         <source>Dialog</source>
-        <translation>Párbeszéd</translation>
+        <translation>Párbeszédablak</translation>
     </message>
     <message>
         <location filename="../src/gui/mnemonicdialog.ui" line="58"/>
@@ -66,7 +66,7 @@
         <location filename="../src/common/filesystembase.cpp" line="459"/>
         <location filename="../src/common/filesystembase.cpp" line="465"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
-        <translation>A(z) „%1” nem helyezhető át ide. „%2”</translation>
+        <translation>A(z) „%1” nem helyezhető át ide: „%2”</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
@@ -89,7 +89,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose...</source>
-        <translation>&amp;Kiválasztás…</translation>
+        <translation>&amp;Válasszon…</translation>
     </message>
 </context>
 <context>
@@ -176,7 +176,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="152"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>A jelöletlen mappák &lt;b&gt;törlésre kerülnek&lt;/b&gt; a helyi fájlrendszerről, és a továbbiakban nem lesznek szinkronizálva erre a számítógépre.</translation>
+        <translation>A ki nem választott mappák &lt;b&gt;törlésre kerülnek&lt;/b&gt; a helyi fájlrendszerről, és a továbbiakban nem lesznek szinkronizálva erre a számítógépre.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
@@ -203,12 +203,12 @@
         <location filename="../src/gui/accountsettings.cpp" line="733"/>
         <location filename="../src/gui/accountsettings.cpp" line="1146"/>
         <source>Cancel</source>
-        <translation>Mégsem</translation>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="42"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation>Kapcsolódva&lt;user&gt; felhasználóval ehhez: &lt;server&gt;</translation>
+        <translation>Kapcsolódva &lt;user&gt; felhasználóval ehhez: &lt;server&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="186"/>
@@ -268,7 +268,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="672"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
-        <translation>&lt;p&gt;Nem lehet helyi mappát létrehozni: &lt;i&gt;%1&lt;/i&gt;.</translation>
+        <translation>&lt;p&gt;A helyi mappa nem hozható létre: &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="725"/>
@@ -373,7 +373,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1145"/>
         <source>Remove connection</source>
-        <translation>Kapcsolat törlése</translation>
+        <translation>Kapcsolat eltávolítása</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="526"/>
@@ -415,12 +415,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="901"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation>Jelenleg nem érhető el tárhelyhasználati információ.</translation>
+        <translation>Jelenleg nem érhetőek el a tárhelyhasználati információk.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="967"/>
         <source>No %1 connection configured.</source>
-        <translation>Nincs beállított kapcsolat: %1.</translation>
+        <translation>Nincs %1 kapcsolat beállítva.</translation>
     </message>
 </context>
 <context>
@@ -463,7 +463,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="134"/>
         <source>Asking Credentials</source>
-        <translation>Hitelesítési adatok</translation>
+        <translation>Hitelesítési adatok kérése</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="136"/>
@@ -517,19 +517,19 @@
         <translation>Elfogadás</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="182"/>
-        <source>Synced </source>
+        <location filename="../src/gui/activitywidget.cpp" line="183"/>
+        <source>Synced</source>
         <translation>Szinkronizálva</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="217"/>
+        <location filename="../src/gui/activitywidget.cpp" line="218"/>
         <source>Retry all uploads</source>
         <translation>Összes feltöltés újrapróbálása</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="332"/>
+        <location filename="../src/gui/activitywidget.cpp" line="333"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation>&lt;br /&gt; A(z) %1 fióknál nincsenek tevékenységek engedélyezve.</translation>
+        <translation>&lt;br/&gt;A(z) %1 fióknál nincsenek tevékenységek engedélyezve.</translation>
     </message>
 </context>
 <context>
@@ -537,7 +537,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="17"/>
         <source>SSL client certificate authentication</source>
-        <translation>SSL ügyféltanúsítvány alapú hitelesítés</translation>
+        <translation>SSL ügyféltanúsítvány-alapú hitelesítés</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="23"/>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation>Tanúsítvány fájlok (*.p12 *.pfx)</translation>
+        <translation>Tanúsítványfájlok (*.p12 *.pfx)</translation>
     </message>
 </context>
 <context>
@@ -575,12 +575,12 @@
     <message>
         <location filename="../src/gui/application.cpp" line="192"/>
         <source>Error accessing the configuration file</source>
-        <translation>Hiba a konfigurációs állomány elérésekor</translation>
+        <translation>Hiba a konfigurációs fájl elérésekor</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="193"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation>Hiba történt az alábbi konfigurációs fájl elérésekor: %1. Győződjön meg róla, hogy a fájlt eléri a felhasználója.</translation>
+        <translation>Hiba történt a következő konfigurációs fájl elérésekor: %1. Győződjön meg róla, hogy a fájlt eléri a felhasználója.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="196"/>
@@ -662,7 +662,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="193"/>
         <source>The provided credentials are not correct</source>
-        <translation>A megadott adatok helytelenek.</translation>
+        <translation>A megadott hitelesítő adatok helytelenek</translation>
     </message>
 </context>
 <context>
@@ -755,17 +755,17 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="404"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>A(z) %1 és %n további fájl szinkronizálási konfliktussal rendelkezik.</numerusform><numerusform>A(z) %1 és %n további fájl szinkronizálási konfliktussal rendelkezik.</numerusform></translation>
+        <translation><numerusform>A(z) %1 és %n további fájl szinkronizálási ütközéssel rendelkezik.</numerusform><numerusform>A(z) %1 és %n további fájl szinkronizálási ütközéssel rendelkezik.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="406"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation>A(z) %1 fájl szinkronizálási ütközéssel rendelkezik. Kérjük ellenőrizze az ütközési fájlt!</translation>
+        <translation>A(z) %1 fájl szinkronizálási ütközéssel rendelkezik. Ellenőrizze az ütközési fájlt!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="411"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>A(z) %1, és %n további fájlt nem sikerült szinkronizálni. Bővebb információ a naplófájlban.</numerusform><numerusform>A(z) %1, és %n további fájlt nem sikerült szinkronizálni. Bővebb információ a naplófájlban.</numerusform></translation>
+        <translation><numerusform>A(z) %1, és %n további fájlt nem sikerült szinkronizálni. Bővebb információk a naplófájlban.</numerusform><numerusform>A(z) %1, és %n további fájlt nem sikerült szinkronizálni. Bővebb információk a naplófájlban.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="413"/>
@@ -876,7 +876,7 @@ A szinkronizálás folytatásával az összes fájlja felül lesz írva egy rég
     <message>
         <location filename="../src/gui/folder.cpp" line="1109"/>
         <source>Normal Synchronisation</source>
-        <translation>Normál szinkronizáció</translation>
+        <translation>Normál szinkronizálás</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1110"/>
@@ -919,17 +919,17 @@ A szinkronizálás folytatásával az összes fájlja felül lesz írva egy rég
     <message>
         <location filename="../src/gui/folderman.cpp" line="1212"/>
         <source>Preparing for sync.</source>
-        <translation>Előkészítés szinkronizációhoz.</translation>
+        <translation>Előkészítés a szinkronizáláshoz.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1215"/>
         <source>Sync is running.</source>
-        <translation>Szinkronizálás fut.</translation>
+        <translation>A szinkronizálás fut.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1220"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation>A szinkronizáció sikeres, feloldhatatlan összeütközések.</translation>
+        <translation>A szinkronizálás sikeres, feloldhatatlan ütközések.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1222"/>
@@ -939,7 +939,7 @@ A szinkronizálás folytatásával az összes fájlja felül lesz írva egy rég
     <message>
         <location filename="../src/gui/folderman.cpp" line="1228"/>
         <source>Setup Error.</source>
-        <translation>Beállítás hiba.</translation>
+        <translation>Beállítási hiba.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1231"/>
@@ -1027,7 +1027,7 @@ A szinkronizálás folytatásával az összes fájlja felül lesz írva egy rég
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="186"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation>Hiba történt a kiszolgálón levő mappák listájának letöltésekor.</translation>
+        <translation>Hiba történt a kiszolgálón levő mappák listájának betöltésekor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="237"/>
@@ -1042,7 +1042,7 @@ A szinkronizálás folytatásával az összes fájlja felül lesz írva egy rég
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation>Nem feloldható ütközések vannak. Kattintson a részletekért.</translation>
+        <translation>Feloldatlan ütközések vannak. Kattintson a részletekért.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="930"/>
@@ -1121,7 +1121,7 @@ A szinkronizálás folytatásával az összes fájlja felül lesz írva egy rég
         <location filename="../src/gui/folderstatusmodel.cpp" line="1039"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>%5 maradt, %1 / %2, %3 / %4 fájl</translation>
+        <translation>%5 van hátra, %1 / %2, %3 / %4 fájl</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1047"/>
@@ -1176,7 +1176,7 @@ A szinkronizálás folytatásával az összes fájlja felül lesz írva egy rég
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="67"/>
         <source>Click to select a local folder to sync.</source>
-        <translation>A szinkronizáláshoz válasszon ki egy helyi mappát.</translation>
+        <translation>A szinkronizáláshoz válasszon egy helyi mappát.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="74"/>
@@ -1204,7 +1204,7 @@ A szinkronizálás folytatásával az összes fájlja felül lesz írva egy rég
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="214"/>
         <source>Folder was successfully created on %1.</source>
-        <translation>A mappa sikeresen létrehozva: %1.</translation>
+        <translation>A mappa sikeresen létrehozva itt: %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="225"/>
@@ -2054,7 +2054,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="398"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation type="unfinished"/>
+        <translation>A hozzáférést megtagadta a kiszolgáló. Annak ellenőrzéséhez, hogy a megfelelő hozzáféréssel rendelkezik, &lt;a href=&quot;%1&quot;&gt;kattintson ide&lt;/a&gt; a szolgáltatás böngészőből történő eléréséhez.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="278"/>
@@ -2161,7 +2161,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="586"/>
         <source>Can&apos;t remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
-        <translation type="unfinished"/>
+        <translation>Nem távolíthatja el és készíthet biztonsági másolatot egy mappáról, mert a mappa, vagy egy benne lévő fájl meg van nyitva egy másik programban. Zárja be a mappát vagy fájlt, és nyomja meg az újrapróbálkozást, vagy szakítsa meg a beállítást.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="633"/>
@@ -2221,17 +2221,17 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
         <source>File %1 can not be downloaded because encryption information is missing.</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 fájl nem tölthető le, mert hiányoznak a titkosítási információk.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="434"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 fájl nem tölthető le, mert ütközik egy helyi fájl nevével.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="484"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation type="unfinished"/>
+        <translation>A letöltés a korlát alá csökkentené a szabad helyi tárterületet</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="488"/>
@@ -2251,12 +2251,12 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="662"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
-        <translation type="unfinished"/>
+        <translation>A letöltött fájl üres, annak ellenére, hogy a kiszolgáló szerint %1 méretű kellene legyen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="847"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 fájl nem menthető, mert ütközik egy helyi fájl nevével.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="882"/>
@@ -2292,7 +2292,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="185"/>
         <source>Attention, possible case sensitivity clash with %1</source>
-        <translation type="unfinished"/>
+        <translation>Figyelem, lehetséges kis- és nagybetűk miatti ütközés ennél: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="191"/>
@@ -2320,7 +2320,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="123"/>
         <source>Could not remove %1 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 nem távolítható el egy helyi fájl névütközése miatt</translation>
     </message>
 </context>
 <context>
@@ -2328,7 +2328,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="241"/>
         <source>File %1 can not be renamed to %2 because of a local file name clash</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 fájl egy helyi fájl névütközése miatt nem nevezhető ár erre: %2, </translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
@@ -2350,7 +2350,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="99"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>A kiszolgáló hibás HTTP kódot adott vissza. 201-es kód várt, de ez érkezett: „%1 %2”.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="151"/>
@@ -2363,7 +2363,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="134"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>A kiszolgáló hibás HTTP kódot adott vissza. 201-es kód várt, de ez érkezett: „%1 %2”.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="166"/>
@@ -2377,12 +2377,12 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="214"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 fájl nem tölthető fel, mert létezik egy fájl ugyanezzel a névvel, úgy hogy csak kis- és nagybetűkben tér el.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="348"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>A helyi fájl megváltozott a szinkronizálás során. Folytatva lesz.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="362"/>
@@ -2393,12 +2393,12 @@ Használata nem ajánlott.</translation>
         <location filename="../src/libsync/propagateupload.cpp" line="225"/>
         <location filename="../src/libsync/propagateupload.cpp" line="602"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 feltöltése túllépi a mappa kvótáját</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="334"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Fájl eltávolítva (feltöltés indítása) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="684"/>
@@ -2454,7 +2454,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="265"/>
         <source>The server did not acknowledge the last chunk. (No e-tag was present)</source>
-        <translation type="unfinished"/>
+        <translation>A kiszolgáló nem ismerte el az utolsó darabot. (Nem volt jelen e-tag)</translation>
     </message>
 </context>
 <context>
@@ -2508,7 +2508,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation type="unfinished"/>
+        <translation>Szüntesse meg azon távoli mappák kijelölését, melyeket nem akar szinkronizálni.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
@@ -2529,7 +2529,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="279"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation type="unfinished"/>
+        <translation>Hiba történt az almappák listájának betöltésekor.</translation>
     </message>
 </context>
 <context>
@@ -3138,7 +3138,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1354"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>Nem engedélyezett, mert nincs megfelelő jogosultsága a fájlok hozzáadásához abban a könyvtárban</translation>
+        <translation>Nem engedélyezett, mert nincs megfelelő jogosultsága a fájlok hozzáadásához abban a mappában</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1687"/>
@@ -3253,7 +3253,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="537"/>
         <source>Stat failed.</source>
-        <translation type="unfinished"/>
+        <translation>Statisztika sikertelen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="564"/>
@@ -3273,12 +3273,12 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="903"/>
         <source>Unable to read from the sync journal.</source>
-        <translation type="unfinished"/>
+        <translation>Nem lehet olvasni a szinkronizálási naplóból.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="966"/>
         <source>Cannot open the sync journal</source>
-        <translation type="unfinished"/>
+        <translation>A szinkronizálási napló nem nyitható meg</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1032"/>
@@ -3289,23 +3289,23 @@ Használata nem ajánlott.</translation>
         <location filename="../src/libsync/syncengine.cpp" line="1273"/>
         <location filename="../src/libsync/syncengine.cpp" line="1313"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation type="unfinished"/>
+        <translation>Mellőzve a „Szinkronizálandó elemek kiválasztása” feketelista miatt</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1332"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation type="unfinished"/>
+        <translation>Nem engedélyezett, mert nincs megfelelő jogosultsága almappák hozzáadásához abban a mappában</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1379"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Nem töltheti fel ezt a fájlt, mert a kiszolgálón csak olvasható, visszaállítás</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1395"/>
         <location filename="../src/libsync/syncengine.cpp" line="1414"/>
         <source>Not allowed to remove, restoring</source>
-        <translation type="unfinished"/>
+        <translation>Nem távolíthatja el, visszaállítás</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1428"/>
@@ -3352,14 +3352,27 @@ Használata nem ajánlott.</translation>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="336"/>
+        <location filename="../src/libsync/theme.cpp" line="344"/>
         <source>&lt;p&gt;Version %1. For more information please visit &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1 verzió. További információkért keresse fel a &lt;a href=&apos;%2&apos;&gt;%3&lt;/a&gt; weboldalt.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="341"/>
+        <location filename="../src/libsync/theme.cpp" line="349"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ezt a kiadást a %1 biztosította&lt;/p&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::WebEnginePage</name>
+    <message>
+        <location filename="../src/gui/wizard/webview.cpp" line="199"/>
+        <source>Invalid certificate detected</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/webview.cpp" line="200"/>
+        <source>The host &quot;%1&quot; provided an invalid certitiface. Continue?</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3465,7 +3478,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="234"/>
         <source>The server on account %1 runs an old and unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
-        <translation type="unfinished"/>
+        <translation>A(z) %1 fiók kiszolgálója egy régi és nem támogatott verziót (%2) használ. A kliens nem támogatott kiszolgálóverzióval történő használata nincs tesztelve, és veszélyes is lehet. A saját felelősségére folytassa.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="273"/>
@@ -3521,17 +3534,17 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="413"/>
         <source>Resume all folders</source>
-        <translation type="unfinished"/>
+        <translation>Összes mappa folytatása</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="418"/>
         <source>Pause all folders</source>
-        <translation>Minden mappa szüneteltetése</translation>
+        <translation>Összes mappa szüneteltetése</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="694"/>
         <source>Resume all synchronization</source>
-        <translation type="unfinished"/>
+        <translation>Összes szinkronizálás folytatása</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="696"/>
@@ -3541,7 +3554,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="704"/>
         <source>Pause all synchronization</source>
-        <translation>Minden szinkronizálás szüneteltetése</translation>
+        <translation>Összes szinkronizálás szüneteltetése</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="706"/>
@@ -3572,12 +3585,12 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="920"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Változások keresése a(z) „%1” távoli mappában</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="923"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Változások keresése a(z) „%1” helyi mappában</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="938"/>
@@ -3647,7 +3660,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
         <source>Ask for confirmation before synchroni&amp;zing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Megerősítés kérése az ennél nagyobb mappák szinkroni&amp;zálása előtt:</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="165"/>
@@ -3658,7 +3671,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="174"/>
         <source>Ask for confirmation before synchronizing e&amp;xternal storages</source>
-        <translation type="unfinished"/>
+        <translation>Megerősítés kérése a &amp;külső tárolók szinkronizálása előtt</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="198"/>
@@ -3959,7 +3972,7 @@ Használata nem ajánlott.</translation>
 <context>
     <name>nextcloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="320"/>
+        <location filename="../src/libsync/theme.cpp" line="328"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Összeállítva a(z) &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; Git verzióból, ekkor: %3, %4, Qt %5 (%6) használatával&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -3979,7 +3992,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation type="unfinished"/>
+        <translation>A kiszolgáló verziója letöltve, a módosított helyi fájl ütközésfájlba másolva</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
@@ -4117,17 +4130,17 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="35"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Hiba történt a böngésző indításakor, amikor a(z) %1 URL megnyitása lett kérve. Lehet, hogy nincs alapértelmezett böngésző beállítva?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="58"/>
         <source>Could not open email client</source>
-        <translation type="unfinished"/>
+        <translation>Az e-mail kliens nem nyitható meg</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="59"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation type="unfinished"/>
+        <translation>Hiba történt a levelezőprogram indításakor, amikor új üzenetet akart létrehozni. Lehet, hogy nincs alapértelmezett levelezőprogram beállítva?</translation>
     </message>
 </context>
 </TS>
