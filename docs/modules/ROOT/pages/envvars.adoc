@@ -1,0 +1,44 @@
+= Advanced Usage - Environment Variables
+
+The behavior of the client can also be controlled using environment variables.
+The value of the environment variables overrides the values in the configuration file.
+
+The environment variables are:
+
+[cols="2,1,4", options="header"]
+|===
+| Setting
+| Default
+| Description
+
+| `OWNCLOUD_CHUNK_SIZE`
+| 5242880 (or 5 MiB)
+| Specifies the chunk size of uploaded files in bytes.
+Increasing this value may help with synchronization problems in certain configurations.
+
+| `OWNCLOUD_TIMEOUT`
+| 300 
+| The timeout for network connections in seconds.
+
+| `OWNCLOUD_CRITICAL_FREE_SPACE_BYTES` 
+| 50*1000*1000 bytes 
+| The minimum disk space needed for operation.
+A fatal error is raised if less free space is available.
+
+| `OWNCLOUD_FREE_SPACE_BYTES` 
+| 250*1000*1000 bytes 
+| Downloads that would reduce the free space below this value are skipped.
+More information available under the "Low Disk Space" section.
+
+| `OWNCLOUD_MAX_PARALLEL` 
+| 6 
+| Maximum number of parallel jobs.
+
+| `OWNCLOUD_BLACKLIST_TIME_MIN` 
+| 25 
+| Minimum timeout, in seconds, for blacklisted files.
+
+| `OWNCLOUD_BLACKLIST_TIME_MAX` 
+| 24*60*60 (or one day)
+| Maximum timeout, in seconds, for blacklisted files.
+|===
