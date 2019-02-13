@@ -46,28 +46,28 @@ private slots:
 
         uploadInfo = fakeFolder.syncEngine().journal()->getUploadInfo("A/a0");
         QCOMPARE(uploadInfo._errorCount, 1);
-        QCOMPARE(uploadInfo._transferid, 1);
+        QCOMPARE(uploadInfo._transferid, 1U);
 
         fakeFolder.syncEngine().journal()->wipeErrorBlacklist();
         QVERIFY(!fakeFolder.syncOnce());
 
         uploadInfo = fakeFolder.syncEngine().journal()->getUploadInfo("A/a0");
         QCOMPARE(uploadInfo._errorCount, 2);
-        QCOMPARE(uploadInfo._transferid, 1);
+        QCOMPARE(uploadInfo._transferid, 1U);
 
         fakeFolder.syncEngine().journal()->wipeErrorBlacklist();
         QVERIFY(!fakeFolder.syncOnce());
 
         uploadInfo = fakeFolder.syncEngine().journal()->getUploadInfo("A/a0");
         QCOMPARE(uploadInfo._errorCount, 3);
-        QCOMPARE(uploadInfo._transferid, 1);
+        QCOMPARE(uploadInfo._transferid, 1U);
 
         fakeFolder.syncEngine().journal()->wipeErrorBlacklist();
         QVERIFY(!fakeFolder.syncOnce());
 
         uploadInfo = fakeFolder.syncEngine().journal()->getUploadInfo("A/a0");
         QCOMPARE(uploadInfo._errorCount, 0);
-        QCOMPARE(uploadInfo._transferid, 0);
+        QCOMPARE(uploadInfo._transferid, 0U);
         QVERIFY(!uploadInfo._valid);
     }
 };

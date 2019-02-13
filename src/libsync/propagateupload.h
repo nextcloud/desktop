@@ -291,7 +291,7 @@ protected:
      *
      * See #6527, enterprise#2480
      */
-    static void adjustLastJobTimeout(AbstractNetworkJob *job, quint64 fileSize);
+    static void adjustLastJobTimeout(AbstractNetworkJob *job, qint64 fileSize);
 
     // Bases headers that need to be sent with every chunk
     QMap<QByteArray, QByteArray> headers();
@@ -321,9 +321,9 @@ private:
      */
     int _currentChunk = 0;
     int _chunkCount = 0; /// Total number of chunks for this file
-    int _transferId = 0; /// transfer id (part of the url)
+    uint _transferId = 0; /// transfer id (part of the url)
 
-    quint64 chunkSize() const {
+    qint64 chunkSize() const {
         // Old chunking does not use dynamic chunking algorithm, and does not adjusts the chunk size respectively,
         // thus this value should be used as the one classifing item to be chunked
         return propagator()->syncOptions()._initialChunkSize;
@@ -359,7 +359,7 @@ private:
      * If this job is resuming an upload, this number includes bytes that were
      * sent in previous jobs.
      */
-    quint64 _sent = 0;
+    qint64 _sent = 0;
 
     /** Amount of data that needs to be sent to the server in bytes.
      *
@@ -370,11 +370,11 @@ private:
      * amount of data that needs to be present at the server to finish the upload -
      * regardless of whether previous jobs have already sent something.
      */
-    quint64 _bytesToUpload;
+    qint64 _bytesToUpload;
 
     uint _transferId = 0; /// transfer id (part of the url)
     int _currentChunkOffset = 0; /// byte offset of the next chunk data that will be sent
-    quint64 _currentChunkSize = 0; /// current chunk size
+    qint64 _currentChunkSize = 0; /// current chunk size
     bool _removeJobError = false; /// if not null, there was an error removing the job
     bool _zsyncSupported = false; /// if zsync is supported this will be set to true
     bool _isZsyncMetadataUploadRunning = false; // flag to ensure that zsync metadata upload is complete before job is
@@ -383,17 +383,17 @@ private:
     // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
     struct ServerChunkInfo
     {
-        quint64 size;
+        qint64 size;
         QString originalName;
     };
-    QMap<quint64, ServerChunkInfo> _serverChunks;
+    QMap<qint64, ServerChunkInfo> _serverChunks;
 
     // Vector with expected PUT ranges.
     struct UploadRangeInfo
     {
-        quint64 start;
-        quint64 size;
-        quint64 end() const { return start + size; }
+        qint64 start;
+        qint64 size;
+        qint64 end() const { return start + size; }
     };
     QVector<UploadRangeInfo> _rangesToUpload;
 
@@ -409,7 +409,7 @@ private:
      *
      * Retuns false if no matching range was found.
      */
-    bool markRangeAsDone(quint64 start, quint64 size);
+    bool markRangeAsDone(qint64 start, qint64 size);
 
 public:
     PropagateUploadFileNG(OwncloudPropagator *propagator, const SyncFileItemPtr &item)

@@ -38,7 +38,7 @@ public:
     bool socketApiPinStateActionsShown() const override { return true; }
     bool isHydrating() const override;
 
-    bool updateMetadata(const QString &filePath, time_t modtime, quint64 size, const QByteArray &fileId, QString *error) override;
+    bool updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId, QString *error) override;
 
     void createPlaceholder(const SyncFileItem &item) override;
     void dehydratePlaceholder(const SyncFileItem &item) override;

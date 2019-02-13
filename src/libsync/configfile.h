@@ -127,15 +127,15 @@ public:
     void setUploadLimit(int kbytes);
     void setDownloadLimit(int kbytes);
     /** [checked, size in MB] **/
-    QPair<bool, quint64> newBigFolderSizeLimit() const;
-    void setNewBigFolderSizeLimit(bool isChecked, quint64 mbytes);
+    QPair<bool, qint64> newBigFolderSizeLimit() const;
+    void setNewBigFolderSizeLimit(bool isChecked, qint64 mbytes);
     bool confirmExternalStorage() const;
     void setConfirmExternalStorage(bool);
     /** delta sync */
     bool deltaSyncEnabled() const;
     void setDeltaSyncEnabled(bool enabled);
-    quint64 deltaSyncMinFileSize() const; // bytes
-    void setDeltaSyncMinFileSize(quint64 bytes);
+    qint64 deltaSyncMinFileSize() const; // bytes
+    void setDeltaSyncMinFileSize(qint64 bytes);
 
 
     /** If we should move the files deleted on the server in the trash  */
@@ -151,9 +151,9 @@ public:
     void setShowInExplorerNavigationPane(bool show);
 
     int timeout() const;
-    quint64 chunkSize() const;
-    quint64 maxChunkSize() const;
-    quint64 minChunkSize() const;
+    qint64 chunkSize() const;
+    qint64 maxChunkSize() const;
+    qint64 minChunkSize() const;
     std::chrono::milliseconds targetChunkUploadDuration() const;
 
     void saveGeometry(QWidget *w);

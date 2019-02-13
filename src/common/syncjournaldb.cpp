@@ -1203,7 +1203,7 @@ bool SyncJournalDb::updateFileRecordChecksum(const QString &filename,
 }
 
 bool SyncJournalDb::updateLocalMetadata(const QString &filename,
-    qint64 modtime, quint64 size, quint64 inode)
+    qint64 modtime, qint64 size, quint64 inode)
 
 {
     QMutexLocker locker(&_mutex);

@@ -70,7 +70,7 @@ public:
         const QByteArray &contentChecksum,
         const QByteArray &contentChecksumType);
     bool updateLocalMetadata(const QString &filename,
-        qint64 modtime, quint64 size, quint64 inode);
+        qint64 modtime, qint64 size, quint64 inode);
     bool exists();
     void walCheckpoint();
 
@@ -107,7 +107,7 @@ public:
         {
         }
         int _chunk;
-        int _transferid;
+        uint _transferid;
         qint64 _size;
         qint64 _modtime;
         int _errorCount;

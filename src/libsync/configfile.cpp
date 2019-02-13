@@ -170,19 +170,19 @@ int ConfigFile::timeout() const
     return settings.value(QLatin1String(timeoutC), 300).toInt(); // default to 5 min
 }
 
-quint64 ConfigFile::chunkSize() const
+qint64 ConfigFile::chunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(chunkSizeC), 10 * 1000 * 1000).toLongLong(); // default to 10 MB
 }
 
-quint64 ConfigFile::maxChunkSize() const
+qint64 ConfigFile::maxChunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(maxChunkSizeC), 100 * 1000 * 1000).toLongLong(); // default to 100 MB
 }
 
-quint64 ConfigFile::minChunkSize() const
+qint64 ConfigFile::minChunkSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(minChunkSizeC), 1000 * 1000).toLongLong(); // default to 1 MB
@@ -714,15 +714,15 @@ void ConfigFile::setDownloadLimit(int kbytes)
     setValue(downloadLimitC, kbytes);
 }
 
-QPair<bool, quint64> ConfigFile::newBigFolderSizeLimit() const
+QPair<bool, qint64> ConfigFile::newBigFolderSizeLimit() const
 {
     auto defaultValue = Theme::instance()->newBigFolderSizeLimit();
     qint64 value = getValue(newBigFolderSizeLimitC, QString(), defaultValue).toLongLong();
     bool use = value >= 0 && getValue(useNewBigFolderSizeLimitC, QString(), true).toBool();
-    return qMakePair(use, quint64(qMax<qint64>(0, value)));
+    return qMakePair(use, qMax<qint64>(0, value));
 }
 
-void ConfigFile::setNewBigFolderSizeLimit(bool isChecked, quint64 mbytes)
+void ConfigFile::setNewBigFolderSizeLimit(bool isChecked, qint64 mbytes)
 {
     setValue(newBigFolderSizeLimitC, mbytes);
     setValue(useNewBigFolderSizeLimitC, isChecked);
@@ -759,13 +759,13 @@ void ConfigFile::setDeltaSyncEnabled(bool enabled)
     setValue(deltaSyncEnabledC, enabled);
 }
 
-quint64 ConfigFile::deltaSyncMinFileSize() const
+qint64 ConfigFile::deltaSyncMinFileSize() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(deltaSyncMinimumFileSizeC), 10 * 1024 * 1024).toLongLong(); // default to 10 MiB
 }
 
-void ConfigFile::setDeltaSyncMinFileSize(quint64 bytes)
+void ConfigFile::setDeltaSyncMinFileSize(qint64 bytes)
 {
     setValue(deltaSyncMinimumFileSizeC, bytes);
 }

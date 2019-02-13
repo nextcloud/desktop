@@ -809,13 +809,13 @@ void SyncEngine::finalize(bool success)
     _clearTouchedFilesTimer.start();
 }
 
-void SyncEngine::slotProgress(const SyncFileItem &item, quint64 current)
+void SyncEngine::slotProgress(const SyncFileItem &item, qint64 current)
 {
     _progressInfo->setProgressItem(item, current);
     emit transmissionProgress(*_progressInfo);
 }
 
-void SyncEngine::updateFileTotal(const SyncFileItem &item, quint64 newSize)
+void SyncEngine::updateFileTotal(const SyncFileItem &item, qint64 newSize)
 {
     _progressInfo->updateTotalsForFile(item, newSize);
     emit transmissionProgress(*_progressInfo);

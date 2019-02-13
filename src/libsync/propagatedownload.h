@@ -49,7 +49,7 @@ public:
     }
 
     virtual qint64 currentDownloadPosition() = 0;
-    virtual quint64 resumeStart() { return 0; }
+    virtual qint64 resumeStart() { return 0; }
 
     QByteArray &etag() { return _etag; }
     time_t lastModified() { return _lastModified; }
@@ -115,7 +115,7 @@ private:
     void seedFinished(void *zs);
     void seedFailed(const QString &errorString);
 
-    void startCurrentRange(quint64 start = 0, quint64 end = 0);
+    void startCurrentRange(qint64 start = 0, qint64 end = 0);
 
 private slots:
     void slotReadyRead();
@@ -141,7 +141,7 @@ class OWNCLOUDSYNC_EXPORT GETFileJob : public GETJob
     QByteArray _expectedEtagForResume;
     qint64 _expectedContentLength;
     qint64 _contentLength;
-    quint64 _resumeStart;
+    qint64 _resumeStart;
     QUrl _directDownloadUrl;
     bool _hasEmittedFinishedSignal;
 
@@ -152,11 +152,11 @@ public:
     // DOES NOT take ownership of the device.
     explicit GETFileJob(AccountPtr account, const QString &path, QIODevice *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-        quint64 resumeStart, QObject *parent = 0);
+        qint64 resumeStart, QObject *parent = 0);
     // For directDownloadUrl:
     explicit GETFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-        quint64 resumeStart, QObject *parent = 0);
+        qint64 resumeStart, QObject *parent = 0);
 
     qint64 currentDownloadPosition() Q_DECL_OVERRIDE;
 
@@ -176,7 +176,7 @@ public:
 
     void newReplyHook(QNetworkReply *reply) override;
 
-    quint64 resumeStart() Q_DECL_OVERRIDE
+    qint64 resumeStart() Q_DECL_OVERRIDE
     {
         return _resumeStart;
     }
@@ -300,7 +300,7 @@ private slots:
 private:
     void deleteExistingFolder();
 
-    quint64 _resumeStart;
+    qint64 _resumeStart;
     qint64 _downloadProgress;
     QPointer<GETJob> _job;
     QFile _tmpFile;

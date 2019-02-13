@@ -11,7 +11,7 @@
 
 using namespace OCC;
 
-static constexpr quint64 stopAfter = 3'123'668;
+static constexpr qint64 stopAfter = 3'123'668;
 
 /* A FakeGetReply that sends max 'fakeSize' bytes, but whose ContentLength has the corect size */
 class BrokenFakeGetReply : public FakeGetReply

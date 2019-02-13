@@ -178,8 +178,8 @@ void PropagateUploadFileCommon::start()
     }
 
     // Check if we believe that the upload will fail due to remote quota limits
-    const quint64 quotaGuess = propagator()->_folderQuota.value(
-        QFileInfo(_item->_file).path(), std::numeric_limits<quint64>::max());
+    const qint64 quotaGuess = propagator()->_folderQuota.value(
+        QFileInfo(_item->_file).path(), std::numeric_limits<qint64>::max());
     if (_item->_size > quotaGuess) {
         // Necessary for blacklisting logic
         _item->_httpErrorCode = 507;
@@ -294,7 +294,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
         return;
     }
 
-    quint64 fileSize = FileSystem::getSize(fullFilePath);
+    qint64 fileSize = FileSystem::getSize(fullFilePath);
     _item->_size = fileSize;
 
     // But skip the file if the mtime is too close to 'now'!
@@ -546,14 +546,14 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
     abortWithError(status, errorString);
 }
 
-void PropagateUploadFileCommon::adjustLastJobTimeout(AbstractNetworkJob *job, quint64 fileSize)
+void PropagateUploadFileCommon::adjustLastJobTimeout(AbstractNetworkJob *job, qint64 fileSize)
 {
     job->setTimeout(qBound(
         job->timeoutMsec(),
         // Calculate 3 minutes for each gigabyte of data
         qint64((3 * 60 * 1000) * fileSize / 1e9),
         // Maximum of 30 minutes
-        qint64(30 * 60 * 1000)));
+        30 * 60 * 1000LL));
 }
 
 void PropagateUploadFileCommon::slotJobDestroyed(QObject *job)

@@ -921,7 +921,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     // item if no items are in progress.
     SyncFileItem curItem = progress._lastCompletedItem;
     qint64 curItemProgress = -1; // -1 means finished
-    quint64 biggerItemSize = -1;
+    qint64 biggerItemSize = 0;
     quint64 estimatedUpBw = 0;
     quint64 estimatedDownBw = 0;
     QString allFilenames;
@@ -1000,13 +1000,11 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     pi->_progressString = fileProgressString;
 
     // overall progress
-    quint64 completedSize = progress.completedSize();
-    quint64 completedFile = progress.completedFiles();
-    quint64 currentFile = progress.currentFile();
-    if (currentFile == ULLONG_MAX)
-        currentFile = 0;
-    quint64 totalSize = qMax(completedSize, progress.totalSize());
-    quint64 totalFileCount = qMax(currentFile, progress.totalFiles());
+    qint64 completedSize = progress.completedSize();
+    qint64 completedFile = progress.completedFiles();
+    qint64 currentFile = progress.currentFile();
+    qint64 totalSize = qMax(completedSize, progress.totalSize());
+    qint64 totalFileCount = qMax(currentFile, progress.totalFiles());
     QString overallSyncString;
     if (totalSize > 0) {
         QString s1 = Utility::octetsToString(completedSize);

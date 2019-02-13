@@ -83,7 +83,7 @@ struct CmdOptions
     int downlimit;
     int uplimit;
     bool deltasync;
-    quint64 deltasyncminfilesize;
+    qint64 deltasyncminfilesize;
 };
 
 // we can't use csync_set_userdata because the SyncEngine sets it already.

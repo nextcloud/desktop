@@ -38,13 +38,13 @@ namespace OCC {
 
 void PropagateUploadFileV1::doStartUpload()
 {
-    _chunkCount = std::ceil(_item->_size / double(chunkSize()));
+    _chunkCount = int(std::ceil(_item->_size / double(chunkSize())));
     _startChunk = 0;
-    _transferId = qrand() ^ _item->_modtime ^ (_item->_size << 16);
+    _transferId = uint(qrand()) ^ uint(_item->_modtime) ^ (uint(_item->_size) << 16);
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
 
-    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime && progressInfo._size == qint64(_item->_size)
+    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime && progressInfo._size == _item->_size
         && (progressInfo._contentChecksum == _item->_checksumHeader || progressInfo._contentChecksum.isEmpty() || _item->_checksumHeader.isEmpty())) {
         _startChunk = progressInfo._chunk;
         _transferId = progressInfo._transferid;
@@ -84,10 +84,10 @@ void PropagateUploadFileV1::startNextChunk()
         // is sent last.
         return;
     }
-    quint64 fileSize = _item->_size;
+    qint64 fileSize = _item->_size;
     auto headers = PropagateUploadFileCommon::headers();
     headers[QByteArrayLiteral("OC-Total-Length")] = QByteArray::number(fileSize);
-    headers[QByteArrayLiteral("OC-Chunk-Size")] = QByteArray::number(quint64(chunkSize()));
+    headers[QByteArrayLiteral("OC-Chunk-Size")] = QByteArray::number(chunkSize());
 
     QString path = _item->_file;
 
@@ -98,13 +98,13 @@ void PropagateUploadFileV1::startNextChunk()
     if (_chunkCount > 1) {
         int sendingChunk = (_currentChunk + _startChunk) % _chunkCount;
         // XOR with chunk size to make sure everything goes well if chunk size changes between runs
-        uint transid = _transferId ^ chunkSize();
+        uint transid = _transferId ^ uint(chunkSize());
         qCInfo(lcPropagateUpload) << "Upload chunk" << sendingChunk << "of" << _chunkCount << "transferid(remote)=" << transid;
         path += QString("-chunking-%1-%2-%3").arg(transid).arg(_chunkCount).arg(sendingChunk);
 
         headers[QByteArrayLiteral("OC-Chunked")] = QByteArrayLiteral("1");
 
-        chunkStart = chunkSize() * quint64(sendingChunk);
+        chunkStart = chunkSize() * sendingChunk;
         currentChunkSize = chunkSize();
         if (sendingChunk == _chunkCount - 1) { // last chunk
             currentChunkSize = (fileSize % chunkSize());
@@ -335,7 +335,7 @@ void PropagateUploadFileV1::slotUploadProgress(qint64 sent, qint64 total)
     // not including this one.
     // FIXME: this assumes all chunks have the same size, which is true only if the last chunk
     // has not been finished (which should not happen because the last chunk is sent sequentially)
-    quint64 amount = progressChunk * chunkSize();
+    qint64 amount = progressChunk * chunkSize();
 
     sender()->setProperty("byteWritten", sent);
     if (_jobs.count() > 1) {

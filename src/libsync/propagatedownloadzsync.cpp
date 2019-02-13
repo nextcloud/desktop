@@ -62,7 +62,7 @@ GETFileZsyncJob::GETFileZsyncJob(OwncloudPropagator *propagator, SyncFileItemPtr
 {
 }
 
-void GETFileZsyncJob::startCurrentRange(quint64 start, quint64 end)
+void GETFileZsyncJob::startCurrentRange(qint64 start, qint64 end)
 {
     // The end of the range might exceed the file size.
     // It's size-1 because the Range header is end-inclusive.
@@ -178,7 +178,7 @@ void GETFileZsyncJob::seedFinished(void *zs)
     qCDebug(lcZsyncGet) << "Number of ranges:" << _nrange;
 
     /* If we have no ranges then we have equal files and we are done */
-    if (_nrange == 0 && _item->_size == quint64(zsync_file_length(_zs.get()))) {
+    if (_nrange == 0 && _item->_size == qint64(zsync_file_length(_zs.get()))) {
         _propagator->reportFileTotal(*_item, 0);
         _errorStatus = SyncFileItem::Success;
         _zr.reset();

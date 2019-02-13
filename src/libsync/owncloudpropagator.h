@@ -417,7 +417,7 @@ public:
      *
      * This allows skipping of uploads that have a very high likelihood of failure.
      */
-    QHash<QString, quint64> _folderQuota;
+    QHash<QString, qint64> _folderQuota;
 
     /* the maximum number of jobs using bandwidth (uploads or downloads, in parallel) */
     int maximumActiveTransferJob();
@@ -428,8 +428,8 @@ public:
      * if Capabilities::desiredChunkUploadDuration has a target
      * chunk-upload duration set.
      */
-    quint64 _chunkSize;
-    quint64 smallFileSize();
+    qint64 _chunkSize;
+    qint64 smallFileSize();
 
     /* The maximum number of active jobs in parallel  */
     int hardMaximumActiveJob();
@@ -457,8 +457,8 @@ public:
     PropagateItemJob *createJob(const SyncFileItemPtr &item);
 
     void scheduleNextJob();
-    void reportProgress(const SyncFileItem &, quint64 bytes);
-    void reportFileTotal(const SyncFileItem &item, quint64 newSize);
+    void reportProgress(const SyncFileItem &, qint64 bytes);
+    void reportFileTotal(const SyncFileItem &item, qint64 newSize);
 
     void abort()
     {
@@ -542,8 +542,8 @@ private slots:
 signals:
     void newItem(const SyncFileItemPtr &);
     void itemCompleted(const SyncFileItemPtr &);
-    void progress(const SyncFileItem &, quint64 bytes);
-    void updateFileTotal(const SyncFileItem &, quint64 newSize);
+    void progress(const SyncFileItem &, qint64 bytes);
+    void updateFileTotal(const SyncFileItem &, qint64 newSize);
     void finished(bool success);
 
     /** Emitted when propagation has problems with a locked file. */

@@ -51,13 +51,13 @@ struct SyncOptions
      * starting value and is then gradually adjusted within the
      * minChunkSize / maxChunkSize bounds.
      */
-    quint64 _initialChunkSize = 10 * 1000 * 1000; // 10MB
+    qint64 _initialChunkSize = 10 * 1000 * 1000; // 10MB
 
     /** The minimum chunk size in bytes for chunked uploads */
-    quint64 _minChunkSize = 1 * 1000 * 1000; // 1MB
+    qint64 _minChunkSize = 1 * 1000 * 1000; // 1MB
 
     /** The maximum chunk size in bytes for chunked uploads */
-    quint64 _maxChunkSize = 100 * 1000 * 1000; // 100MB
+    qint64 _maxChunkSize = 100 * 1000 * 1000; // 100MB
 
     /** The target duration of chunk uploads for dynamic chunk sizing.
      *
@@ -72,7 +72,7 @@ struct SyncOptions
     bool _deltaSyncEnabled = false;
 
     /** What the minimum file size (in Bytes) is for delta-synchronization */
-    quint64 _deltaSyncMinFileSize = 0;
+    qint64 _deltaSyncMinFileSize = 0;
 };
 
 

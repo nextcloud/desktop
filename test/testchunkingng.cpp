@@ -41,7 +41,7 @@ static void partialUpload(FakeFolder &fakeFolder, const QString &name, int size)
 }
 
 // Reduce max chunk size a bit so we get more chunks
-static void setChunkSize(SyncEngine &engine, quint64 size)
+static void setChunkSize(SyncEngine &engine, qint64 size)
 {
     SyncOptions options;
     options._maxChunkSize = size;
@@ -86,7 +86,7 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto &chunkMap = fakeFolder.uploadState().children.first().children;
-        quint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](quint64 s, const FileInfo &f) { return s + f.size; });
+        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.size; });
         QVERIFY(uploadedSize > 2 * 1000 * 1000); // at least 2 MB
 
         // Add a fake chunk to make sure it gets deleted
@@ -95,7 +95,7 @@ private slots:
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (op == QNetworkAccessManager::PutOperation) {
                 // Test that we properly resuming and are not sending past data again.
-                Q_ASSERT(request.rawHeader("OC-Chunk-Offset").toULongLong() >= uploadedSize);
+                Q_ASSERT(request.rawHeader("OC-Chunk-Offset").toLongLong() >= uploadedSize);
             } else if (op == QNetworkAccessManager::DeleteOperation) {
                 Q_ASSERT(request.url().path().endsWith("/10000"));
             }
@@ -121,7 +121,7 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto &chunkMap = fakeFolder.uploadState().children.first().children;
-        quint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](quint64 s, const FileInfo &f) { return s + f.size; });
+        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.size; });
         QVERIFY(uploadedSize > 2 * 1000 * 1000); // at least 50 MB
         QVERIFY(chunkMap.size() >= 3); // at least three chunks
 
@@ -177,7 +177,7 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto &chunkMap = fakeFolder.uploadState().children.first().children;
-        quint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](quint64 s, const FileInfo &f) { return s + f.size; });
+        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.size; });
         QVERIFY(uploadedSize > 5 * 1000 * 1000); // at least 5 MB
 
         // Add a chunk that makes the file completely uploaded
@@ -222,7 +222,7 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto &chunkMap = fakeFolder.uploadState().children.first().children;
-        quint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](quint64 s, const FileInfo &f) { return s + f.size; });
+        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.size; });
         QVERIFY(uploadedSize > 5 * 1000 * 1000); // at least 5 MB
 
         // Add a chunk that makes the file more than completely uploaded

@@ -60,7 +60,7 @@ public:
         QString path;
         QString folderName;
         QDateTime timestamp;
-        quint64 size = 0;
+        qint64 size = 0;
         SyncFileItem::Status status BITFIELD(4);
         SyncFileItem::Direction direction BITFIELD(3);
     };

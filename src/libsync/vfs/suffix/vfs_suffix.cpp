@@ -53,7 +53,7 @@ bool VfsSuffix::isHydrating() const
     return false;
 }
 
-bool VfsSuffix::updateMetadata(const QString &filePath, time_t modtime, quint64, const QByteArray &, QString *)
+bool VfsSuffix::updateMetadata(const QString &filePath, time_t modtime, qint64, const QByteArray &, QString *)
 {
     FileSystem::setModTime(filePath, modtime);
     return true;

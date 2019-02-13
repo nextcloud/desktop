@@ -48,7 +48,7 @@ QUrl PropagateUploadFileNG::chunkUrl(qint64 chunkOffset)
         + QLatin1Char('/') + QString::number(_transferId);
     if (chunkOffset != -1) {
         // We need to do add leading 0 because the server orders the chunk alphabetically
-        path += QLatin1Char('/') + QString::number(quint64(chunkOffset)).rightJustified(16, '0'); // 1e16 is 10 petabyte
+        path += QLatin1Char('/') + QString::number(chunkOffset).rightJustified(16, '0'); // 1e16 is 10 petabyte
     }
     return Utility::concatUrlPath(propagator()->account()->url(), path);
 }
@@ -80,7 +80,7 @@ void PropagateUploadFileNG::slotZsyncSeedFinished(void *_zs)
     qCDebug(lcZsyncPut) << "Number of ranges:" << _nrange;
 
     // The remote file size according to zsync metadata
-    quint64 remoteSize = static_cast<quint64>(zsync_file_length(zs.get()));
+    auto remoteSize = static_cast<qint64>(zsync_file_length(zs.get()));
 
     /* If we have no ranges then we have equal files and we are done */
     if (_nrange == 0 && _item->_size == remoteSize) {
@@ -113,9 +113,9 @@ void PropagateUploadFileNG::slotZsyncSeedFinished(void *_zs)
      * way we only attempt to upload data that's locally available (local smaller)
      * and can easily handle the case of a locally grown file below (remote smaller).
      */
-    quint64 minSize = qMin(_item->_size, remoteSize);
+    qint64 minSize = qMin(_item->_size, remoteSize);
     for (int i = 0; i < _nrange; i++) {
-        UploadRangeInfo rangeinfo = { quint64(zbyterange.get()[(2 * i)]), quint64(zbyterange.get()[(2 * i) + 1]) - quint64(zbyterange.get()[(2 * i)]) + 1 };
+        UploadRangeInfo rangeinfo = { qint64(zbyterange.get()[(2 * i)]), qint64(zbyterange.get()[(2 * i) + 1]) - qint64(zbyterange.get()[(2 * i)]) + 1 };
         if (rangeinfo.start < minSize) {
             if (rangeinfo.end() > minSize)
                 rangeinfo.size = minSize - rangeinfo.start;
@@ -126,7 +126,7 @@ void PropagateUploadFileNG::slotZsyncSeedFinished(void *_zs)
 
     // If the local file has grown, upload the new local data
     if (_item->_size > remoteSize) {
-        quint64 appendedBytes = _item->_size - remoteSize;
+        qint64 appendedBytes = _item->_size - remoteSize;
         // Append to the last range if possible
         if (!_rangesToUpload.isEmpty() && _rangesToUpload.last().end() == remoteSize) {
             _rangesToUpload.last().size += appendedBytes;
@@ -265,7 +265,7 @@ void PropagateUploadFileNG::doStartUploadNext()
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
     if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime
-            && progressInfo._size == qint64(_item->_size)) {
+            && progressInfo._size == _item->_size) {
         _transferId = progressInfo._transferid;
         auto url = chunkUrl();
         auto job = new LsColJob(propagator()->account(), url, this);
@@ -298,15 +298,15 @@ void PropagateUploadFileNG::slotPropfindIterate(const QString &name, const QMap<
     }
     bool ok = false;
     QString chunkName = name.mid(name.lastIndexOf('/') + 1);
-    quint64 chunkOffset = chunkName.toULongLong(&ok);
+    qint64 chunkOffset = chunkName.toLongLong(&ok);
     if (ok) {
-        ServerChunkInfo chunkinfo = { properties["getcontentlength"].toULongLong(), chunkName };
+        ServerChunkInfo chunkinfo = { properties["getcontentlength"].toLongLong(), chunkName };
         _serverChunks[chunkOffset] = chunkinfo;
     }
 }
 
 
-bool PropagateUploadFileNG::markRangeAsDone(quint64 start, quint64 size)
+bool PropagateUploadFileNG::markRangeAsDone(qint64 start, qint64 size)
 {
     bool found = false;
     for (auto iter = _rangesToUpload.begin(); iter != _rangesToUpload.end(); ++iter) {
@@ -315,7 +315,7 @@ bool PropagateUploadFileNG::markRangeAsDone(quint64 start, quint64 size)
             found = true;
             iter->start += size;
             iter->size -= size;
-            if (iter->size == 0) {
+            if (iter->size <= 0) {
                 _rangesToUpload.erase(iter);
                 break;
             }
@@ -443,7 +443,7 @@ void PropagateUploadFileNG::slotDeleteJobFinished()
 void PropagateUploadFileNG::startNewUpload()
 {
     ASSERT(propagator()->_activeJobList.count(this) == 1);
-    _transferId = qrand() ^ _item->_modtime ^ (_item->_size << 16) ^ qHash(_item->_file);
+    _transferId = uint(qrand()) ^ uint(_item->_modtime) ^ (uint(_item->_size) << 16) ^ qHash(_item->_file);
     _sent = 0;
 
     propagator()->reportProgress(*_item, 0);
@@ -677,7 +677,7 @@ void PropagateUploadFileNG::slotPutFinished()
         //
         // We use an exponential moving average here as a cheap way of smoothing
         // the chunk sizes a bit.
-        quint64 targetSize = (propagator()->_chunkSize + predictedGoodSize) / 2;
+        qint64 targetSize = propagator()->_chunkSize / 2 + predictedGoodSize / 2;
 
         // Adjust the dynamic chunk size _chunkSize used for sizing of the item's chunks to be send
         propagator()->_chunkSize = qBound(

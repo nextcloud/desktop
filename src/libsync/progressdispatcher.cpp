@@ -202,7 +202,7 @@ void ProgressInfo::adjustTotalsForFile(const SyncFileItem &item)
     }
 }
 
-void ProgressInfo::updateTotalsForFile(const SyncFileItem &item, quint64 newSize)
+void ProgressInfo::updateTotalsForFile(const SyncFileItem &item, qint64 newSize)
 {
     if (!shouldCountProgress(item)) {
         return;
@@ -218,27 +218,27 @@ void ProgressInfo::updateTotalsForFile(const SyncFileItem &item, quint64 newSize
     _currentItems[item._file]._progress._total = newSize;
 }
 
-quint64 ProgressInfo::totalFiles() const
+qint64 ProgressInfo::totalFiles() const
 {
     return _fileProgress._total;
 }
 
-quint64 ProgressInfo::completedFiles() const
+qint64 ProgressInfo::completedFiles() const
 {
     return _fileProgress._completed;
 }
 
-quint64 ProgressInfo::currentFile() const
+qint64 ProgressInfo::currentFile() const
 {
     return completedFiles() + _currentItems.size();
 }
 
-quint64 ProgressInfo::totalSize() const
+qint64 ProgressInfo::totalSize() const
 {
     return _sizeProgress._total;
 }
 
-quint64 ProgressInfo::completedSize() const
+qint64 ProgressInfo::completedSize() const
 {
     return _sizeProgress._completed;
 }
@@ -258,7 +258,7 @@ void ProgressInfo::setProgressComplete(const SyncFileItem &item)
     _lastCompletedItem = item;
 }
 
-void ProgressInfo::setProgressItem(const SyncFileItem &item, quint64 completed)
+void ProgressInfo::setProgressItem(const SyncFileItem &item, qint64 completed)
 {
     if (!shouldCountProgress(item)) {
         return;
@@ -329,8 +329,8 @@ ProgressInfo::Estimates ProgressInfo::totalProgress() const
                                     1.0);
 
     double beOptimistic = nearMaxFps * slowTransfer;
-    size.estimatedEta = (1.0 - beOptimistic) * size.estimatedEta
-        + beOptimistic * optimisticEta();
+    size.estimatedEta = quint64((1.0 - beOptimistic) * size.estimatedEta
+        + beOptimistic * optimisticEta());
 
     return size;
 }
@@ -375,7 +375,7 @@ void ProgressInfo::updateEstimates()
 
 void ProgressInfo::recomputeCompletedSize()
 {
-    quint64 r = _totalSizeOfCompletedJobs;
+    qint64 r = _totalSizeOfCompletedJobs;
     foreach (const ProgressItem &i, _currentItems) {
         if (isSizeDependent(i._item))
             r += i._progress._completed;
@@ -386,21 +386,21 @@ void ProgressInfo::recomputeCompletedSize()
 ProgressInfo::Estimates ProgressInfo::Progress::estimates() const
 {
     Estimates est;
-    est.estimatedBandwidth = _progressPerSec;
-    if (_progressPerSec != 0) {
-        est.estimatedEta = (_total - _completed) / _progressPerSec * 1000.0;
+    est.estimatedBandwidth = qint64(_progressPerSec);
+    if (_progressPerSec != 0.0) {
+        est.estimatedEta = quint64((_total - _completed) / _progressPerSec * 1000.0);
     } else {
-        est.estimatedEta = 0; // looks better than quint64 max
+        est.estimatedEta = 0; // looks better than qint64 max
     }
     return est;
 }
 
-quint64 ProgressInfo::Progress::completed() const
+qint64 ProgressInfo::Progress::completed() const
 {
     return _completed;
 }
 
-quint64 ProgressInfo::Progress::remaining() const
+qint64 ProgressInfo::Progress::remaining() const
 {
     return _total - _completed;
 }
@@ -421,7 +421,7 @@ void ProgressInfo::Progress::update()
     _prevCompleted = _completed;
 }
 
-void ProgressInfo::Progress::setCompleted(quint64 completed)
+void ProgressInfo::Progress::setCompleted(qint64 completed)
 {
     _completed = qMin(completed, _total);
     _prevCompleted = qMin(_prevCompleted, _completed);

@@ -253,7 +253,7 @@ public:
     csync_instructions_e _instruction;
     time_t _modtime;
     QByteArray _etag;
-    quint64 _size;
+    qint64 _size;
     quint64 _inode;
     QByteArray _fileId;
 
@@ -266,7 +266,7 @@ public:
     QByteArray _checksumHeader;
 
     // The size and modtime of the file getting overwritten (on the disk for downloads, on the server for uploads).
-    quint64 _previousSize;
+    qint64 _previousSize;
     time_t _previousModtime;
 
     QString _directDownloadUrl;

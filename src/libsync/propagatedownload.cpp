@@ -69,7 +69,7 @@ QString OWNCLOUDSYNC_EXPORT createDownloadTmpFileName(const QString &previous)
 // DOES NOT take ownership of the device.
 GETFileJob::GETFileJob(AccountPtr account, const QString &path, QIODevice *device,
     const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-    quint64 resumeStart, QObject *parent)
+    qint64 resumeStart, QObject *parent)
     : GETJob(account, path, parent)
     , _device(device)
     , _headers(headers)
@@ -83,7 +83,7 @@ GETFileJob::GETFileJob(AccountPtr account, const QString &path, QIODevice *devic
 
 GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
     const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-    quint64 resumeStart, QObject *parent)
+    qint64 resumeStart, QObject *parent)
     : GETJob(account, url.toEncoded(), parent)
     , _device(device)
     , _headers(headers)
@@ -205,12 +205,12 @@ void GETFileJob::slotMetaDataChanged()
         return;
     }
 
-    quint64 start = 0;
+    qint64 start = 0;
     QByteArray ranges = reply()->rawHeader("Content-Range");
     if (!ranges.isEmpty()) {
         QRegExp rx("bytes (\\d+)-");
         if (rx.indexIn(ranges) >= 0) {
-            start = rx.cap(1).toULongLong();
+            start = rx.cap(1).toLongLong();
         }
     }
     if (start != _resumeStart) {
@@ -602,7 +602,7 @@ void PropagateDownloadFile::startFullDownload()
 qint64 PropagateDownloadFile::committedDiskSpace() const
 {
     if (_state == Running) {
-        return qBound(0ULL, _item->_size - _resumeStart - _downloadProgress, _item->_size);
+        return qBound(0LL, _item->_size - _resumeStart - _downloadProgress, _item->_size);
     }
     return 0;
 }
@@ -732,7 +732,7 @@ void PropagateDownloadFile::slotGetFinished()
      * truncated, as described here: https://github.com/owncloud/mirall/issues/2528
      */
     const QByteArray sizeHeader("Content-Length");
-    quint64 bodySize = job->reply()->rawHeader(sizeHeader).toULongLong();
+    qint64 bodySize = job->reply()->rawHeader(sizeHeader).toLongLong();
     bool hasSizeHeader = !job->reply()->rawHeader(sizeHeader).isEmpty();
 
     // Qt removes the content-length header for transparently decompressed HTTP1 replies
