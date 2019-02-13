@@ -36,7 +36,7 @@ class GETFileJob : public AbstractNetworkJob
     QByteArray _expectedEtagForResume;
     qint64 _expectedContentLength;
     qint64 _contentLength;
-    quint64 _resumeStart;
+    qint64 _resumeStart;
     SyncFileItem::Status _errorStatus;
     QUrl _directDownloadUrl;
     QByteArray _etag;
@@ -54,11 +54,11 @@ public:
     // DOES NOT take ownership of the device.
     explicit GETFileJob(AccountPtr account, const QString &path, QIODevice *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-        quint64 resumeStart, QObject *parent = nullptr);
+        qint64 resumeStart, QObject *parent = nullptr);
     // For directDownloadUrl:
     explicit GETFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
-        quint64 resumeStart, QObject *parent = nullptr);
+        qint64 resumeStart, QObject *parent = nullptr);
     virtual ~GETFileJob()
     {
         if (_bandwidthManager) {
@@ -100,7 +100,7 @@ public:
     void onTimedOut() override;
 
     QByteArray &etag() { return _etag; }
-    quint64 resumeStart() { return _resumeStart; }
+    qint64 resumeStart() { return _resumeStart; }
     time_t lastModified() { return _lastModified; }
 
     qint64 contentLength() const { return _contentLength; }
@@ -205,7 +205,7 @@ private:
     void startAfterIsEncryptedIsChecked();
     void deleteExistingFolder();
 
-    quint64 _resumeStart;
+    qint64 _resumeStart;
     qint64 _downloadProgress;
     QPointer<GETFileJob> _job;
     QFile _tmpFile;

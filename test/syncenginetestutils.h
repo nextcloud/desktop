@@ -647,12 +647,12 @@ public:
         auto sourceFolder = uploadsFileInfo.find(source);
         Q_ASSERT(sourceFolder);
         Q_ASSERT(sourceFolder->isDir);
-        int count = 0;
-        int size = 0;
+        qint64 count = 0;
+        qint64 size = 0;
         char payload = '\0';
 
         do {
-            QString chunkName = QString::number(count).rightJustified(8, '0');
+            QString chunkName = QString::number(count).rightJustified(16, '0');
             if (!sourceFolder->children.contains(chunkName))
                 break;
             auto &x = sourceFolder->children[chunkName];

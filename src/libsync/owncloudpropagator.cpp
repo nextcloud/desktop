@@ -358,9 +358,9 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
     return nullptr;
 }
 
-quint64 OwncloudPropagator::smallFileSize()
+qint64 OwncloudPropagator::smallFileSize()
 {
-    const quint64 smallFileSize = 100 * 1024; //default to 1 MB. Not dynamic right now.
+    const qint64 smallFileSize = 100 * 1024; //default to 1 MB. Not dynamic right now.
     return smallFileSize;
 }
 
@@ -621,7 +621,7 @@ void OwncloudPropagator::scheduleNextJobImpl()
     }
 }
 
-void OwncloudPropagator::reportProgress(const SyncFileItem &item, quint64 bytes)
+void OwncloudPropagator::reportProgress(const SyncFileItem &item, qint64 bytes)
 {
     emit progress(item, bytes);
 }

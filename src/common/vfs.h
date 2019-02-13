@@ -145,7 +145,7 @@ public:
      *
      * Returning false and setting error indicates an error.
      */
-    virtual bool updateMetadata(const QString &filePath, time_t modtime, quint64 size, const QByteArray &fileId, QString *error) = 0;
+    virtual bool updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId, QString *error) = 0;
 
     /// Create a new dehydrated placeholder. Called from PropagateDownload.
     virtual void createPlaceholder(const SyncFileItem &item) = 0;
@@ -259,7 +259,7 @@ public:
     bool socketApiPinStateActionsShown() const override { return false; }
     bool isHydrating() const override { return false; }
 
-    bool updateMetadata(const QString &, time_t, quint64, const QByteArray &, QString *) override { return true; }
+    bool updateMetadata(const QString &, time_t, qint64, const QByteArray &, QString *) override { return true; }
     void createPlaceholder(const SyncFileItem &) override {}
     void dehydratePlaceholder(const SyncFileItem &) override {}
     void convertToPlaceholder(const QString &, const SyncFileItem &, const QString &) override {}

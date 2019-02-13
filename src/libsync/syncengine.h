@@ -191,7 +191,7 @@ private slots:
     void slotItemCompleted(const SyncFileItemPtr &item);
     void slotDiscoveryFinished();
     void slotPropagationFinished(bool success);
-    void slotProgress(const SyncFileItem &item, quint64 curent);
+    void slotProgress(const SyncFileItem &item, qint64 curent);
     void slotCleanPollsJobAborted(const QString &error);
 
     /** Records that a file was touched by a job. */

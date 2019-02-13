@@ -229,7 +229,7 @@ protected:
     struct UploadFileInfo {
       QString _file; /// I'm still unsure if I should use a SyncFilePtr here.
       QString _path; /// the full path on disk.
-      quint64 _size;
+      qint64 _size;
     };
     UploadFileInfo _fileToUpload;
     QByteArray _transmissionChecksumHeader;
@@ -308,7 +308,7 @@ protected:
      *
      * See #6527, enterprise#2480
      */
-    static void adjustLastJobTimeout(AbstractNetworkJob *job, quint64 fileSize);
+    static void adjustLastJobTimeout(AbstractNetworkJob *job, qint64 fileSize);
 
     // Bases headers that need to be sent with every chunk
     QMap<QByteArray, QByteArray> headers();
@@ -341,9 +341,9 @@ private:
      */
     int _currentChunk = 0;
     int _chunkCount = 0; /// Total number of chunks for this file
-    quint64 _transferId = 0; /// transfer id (part of the url)
+    uint _transferId = 0; /// transfer id (part of the url)
 
-    quint64 chunkSize() const {
+    qint64 chunkSize() const {
         // Old chunking does not use dynamic chunking algorithm, and does not adjusts the chunk size respectively,
         // thus this value should be used as the one classifing item to be chunked
         return propagator()->syncOptions()._initialChunkSize;
@@ -374,20 +374,20 @@ class PropagateUploadFileNG : public PropagateUploadFileCommon
 {
     Q_OBJECT
 private:
-    quint64 _sent = 0; /// amount of data (bytes) that was already sent
+    qint64 _sent = 0; /// amount of data (bytes) that was already sent
     uint _transferId = 0; /// transfer id (part of the url)
     int _currentChunk = 0; /// Id of the next chunk that will be sent
-    quint64 _currentChunkSize = 0; /// current chunk size
+    qint64 _currentChunkSize = 0; /// current chunk size
     bool _removeJobError = false; /// If not null, there was an error removing the job
 
     // Map chunk number with its size  from the PROPFIND on resume.
     // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
     struct ServerChunkInfo
     {
-        quint64 size;
+        qint64 size;
         QString originalName;
     };
-    QMap<int, ServerChunkInfo> _serverChunks;
+    QMap<qint64, ServerChunkInfo> _serverChunks;
 
     /**
      * Return the URL of a chunk.

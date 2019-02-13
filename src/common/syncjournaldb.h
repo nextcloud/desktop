@@ -71,7 +71,7 @@ public:
         const QByteArray &contentChecksum,
         const QByteArray &contentChecksumType);
     bool updateLocalMetadata(const QString &filename,
-        qint64 modtime, quint64 size, quint64 inode);
+        qint64 modtime, qint64 size, quint64 inode);
     bool exists();
     void walCheckpoint();
 
@@ -95,8 +95,8 @@ public:
     struct UploadInfo
     {
         int _chunk = 0;
-        quint64 _transferid = 0;
-        quint64 _size = 0; //currently unused
+        uint _transferid = 0;
+        qint64 _size = 0;
         qint64 _modtime = 0;
         int _errorCount = 0;
         bool _valid = false;

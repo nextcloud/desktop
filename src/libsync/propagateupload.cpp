@@ -284,8 +284,8 @@ void PropagateUploadFileCommon::startUploadFile() {
     }
 
     // Check if we believe that the upload will fail due to remote quota limits
-    const quint64 quotaGuess = propagator()->_folderQuota.value(
-        QFileInfo(_fileToUpload._file).path(), std::numeric_limits<quint64>::max());
+    const qint64 quotaGuess = propagator()->_folderQuota.value(
+        QFileInfo(_fileToUpload._file).path(), std::numeric_limits<qint64>::max());
     if (_fileToUpload._size > quotaGuess) {
         // Necessary for blacklisting logic
         _item->_httpErrorCode = 507;
@@ -417,7 +417,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
         return;
     }
 
-    quint64 fileSize = FileSystem::getSize(fullFilePath);
+    qint64 fileSize = FileSystem::getSize(fullFilePath);
     _item->_size = fileSize;
     _fileToUpload._size = fileSize;
 
@@ -676,7 +676,7 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
     abortWithError(status, errorString);
 }
 
-void PropagateUploadFileCommon::adjustLastJobTimeout(AbstractNetworkJob *job, quint64 fileSize)
+void PropagateUploadFileCommon::adjustLastJobTimeout(AbstractNetworkJob *job, qint64 fileSize)
 {
     constexpr double threeMinutes = 3.0 * 60 * 1000;
 

@@ -42,7 +42,7 @@ QUrl PropagateUploadFileNG::chunkUrl(int chunk)
         + QLatin1Char('/') + QString::number(_transferId);
     if (chunk >= 0) {
         // We need to do add leading 0 because the server orders the chunk alphabetically
-        path += QLatin1Char('/') + QString::number(chunk).rightJustified(8, '0');
+        path += QLatin1Char('/') + QString::number(chunk).rightJustified(16, '0'); // 1e16 is 10 petabyte
     }
     return Utility::concatUrlPath(propagator()->account()->url(), path);
 }
@@ -84,7 +84,7 @@ void PropagateUploadFileNG::doStartUpload()
 
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
     if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime
-            && progressInfo._size == qint64(_item->_size)) {
+            && progressInfo._size == _item->_size) {
         _transferId = progressInfo._transferid;
         auto url = chunkUrl();
         auto job = new LsColJob(propagator()->account(), url, this);
@@ -117,9 +117,9 @@ void PropagateUploadFileNG::slotPropfindIterate(const QString &name, const QMap<
     }
     bool ok = false;
     QString chunkName = name.mid(name.lastIndexOf('/') + 1);
-    auto chunkId = chunkName.toUInt(&ok);
+    auto chunkId = chunkName.toLongLong(&ok);
     if (ok) {
-        ServerChunkInfo chunkinfo = { properties["getcontentlength"].toULongLong(), chunkName };
+        ServerChunkInfo chunkinfo = { properties["getcontentlength"].toLongLong(), chunkName };
         _serverChunks[chunkId] = chunkinfo;
     }
 }
@@ -229,7 +229,7 @@ void PropagateUploadFileNG::slotDeleteJobFinished()
 void PropagateUploadFileNG::startNewUpload()
 {
     ASSERT(propagator()->_activeJobList.count(this) == 1);
-    _transferId = qrand() ^ _item->_modtime ^ (_fileToUpload._size << 16) ^ qHash(_fileToUpload._file);
+    _transferId = uint(qrand() ^ uint(_item->_modtime) ^ (uint(_fileToUpload._size) << 16) ^ qHash(_fileToUpload._file));
     _sent = 0;
     _currentChunk = 0;
 
@@ -278,7 +278,7 @@ void PropagateUploadFileNG::startNextChunk()
     if (propagator()->_abortRequested.fetchAndAddRelaxed(0))
         return;
 
-    quint64 fileSize = _fileToUpload._size;
+    qint64 fileSize = _fileToUpload._size;
     ENFORCE(fileSize >= _sent, "Sent data exceeds file size");
 
     // prevent situation that chunk size is bigger then required one to send
@@ -393,7 +393,7 @@ void PropagateUploadFileNG::slotPutFinished()
         //
         // We use an exponential moving average here as a cheap way of smoothing
         // the chunk sizes a bit.
-        quint64 targetSize = (propagator()->_chunkSize + predictedGoodSize) / 2;
+        qint64 targetSize = propagator()->_chunkSize / 2 + predictedGoodSize / 2;
 
         // Adjust the dynamic chunk size _chunkSize used for sizing of the item's chunks to be send
         propagator()->_chunkSize = qBound(
