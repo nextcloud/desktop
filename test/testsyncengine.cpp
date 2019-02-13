@@ -693,14 +693,9 @@ private slots:
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a1").permissions(), perm);
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a2").permissions(), perm);
 
-        // Currently the umask applies to conflict files
-        auto octmask = umask(0);
-        umask(octmask);
-        // Qt uses 0x1, 0x2, 0x4 for "other"; 0x10, 0x20, 0x40 for "group" etc
-        auto qtmask = (octmask & 07) + 0x10 * ((octmask & 070) >> 3) + 0x100 * ((octmask & 0700) >> 6);
-        auto maskedPerm = QFileDevice::Permission(perm & (~qtmask));
-        auto conflictName = fakeFolder.syncJournal().conflictRecord("A/a2").path;
-        QCOMPARE(QFileInfo(fakeFolder.localPath() + conflictName).permissions(), maskedPerm);
+        auto conflictName = fakeFolder.syncJournal().conflictRecord(fakeFolder.syncJournal().conflictRecordPaths().first()).path;
+        QVERIFY(conflictName.contains("A/a2"));
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + conflictName).permissions(), perm);
     }
 #endif
 };
