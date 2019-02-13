@@ -51,14 +51,14 @@ const char propertyAccountC[] = "oc_account";
 
 ownCloudGui::ownCloudGui(Application *parent)
     : QObject(parent)
-    , _tray(0)
+    , _tray(nullptr)
 #if defined(Q_OS_MAC)
     , _settingsDialog(new SettingsDialogMac(this))
 #else
     , _settingsDialog(new SettingsDialog(this))
 #endif
-    , _logBrowser(0)
-    , _recentActionsMenu(0)
+    , _logBrowser(nullptr)
+    , _recentActionsMenu(nullptr)
     , _app(parent)
 {
     _tray = new Systray();
@@ -808,9 +808,9 @@ void ownCloudGui::setupActions()
         _actionCrashFatal = new QAction("Crash now - qFatal", this);
         connect(_actionCrashFatal, &QAction::triggered, _app, &Application::slotCrashFatal);
     } else {
-        _actionCrash = 0;
-        _actionCrashEnforce = 0;
-        _actionCrashFatal = 0;
+        _actionCrash = nullptr;
+        _actionCrashEnforce = nullptr;
+        _actionCrashFatal = nullptr;
     }
 }
 
@@ -1057,7 +1057,7 @@ void ownCloudGui::slotHelp()
 
 void ownCloudGui::raiseDialog(QWidget *raiseWidget)
 {
-    if (raiseWidget && raiseWidget->parentWidget() == 0) {
+    if (raiseWidget && !raiseWidget->parentWidget()) {
         // Qt has a bug which causes parent-less dialogs to pop-under.
         raiseWidget->showNormal();
         raiseWidget->raise();
@@ -1124,11 +1124,11 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
         | SharePermissionUpdate | SharePermissionCreate | SharePermissionDelete
         | SharePermissionShare;
     if (!resharingAllowed) {
-        maxSharingPermissions = 0;
+        maxSharingPermissions = SharePermission(0);
     }
 
 
-    ShareDialog *w = 0;
+    ShareDialog *w = nullptr;
     if (_shareDialogs.contains(localPath) && _shareDialogs[localPath]) {
         qCInfo(lcApplication) << "Raising share dialog" << sharePath << localPath;
         w = _shareDialogs[localPath];
