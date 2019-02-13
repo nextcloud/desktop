@@ -208,9 +208,6 @@ static DWORD getExplorerID()
     }
 }
 
-
-//static int toyDentro = 0;
-
 static void determinesTypeOfOperation(LPCWSTR FileName, PDOKAN_FILE_INFO DokanFileInfo, DWORD DesiredAccess)
 {
 
@@ -233,10 +230,8 @@ QString QSFileName;
 
 		if (da == 1179776)		//< OpenFile
 		{
-			//toyDentro = 1;
 			QSFileName.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
 			Vfs_windows::instance()->openFileAtPath(QSFileName, error);
-			//toyDentro = 0;
 		}
 		else if (da == 65536)	//< DeleteFile
 		{
@@ -787,29 +782,22 @@ static void DOKAN_CALLBACK MirrorCloseFile(LPCWSTR FileName,
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
 
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
-
-		/*Vfs_windows *m_Vfs_windows = NULL;
-		m_Vfs_windows = Vfs_windows::instance();
-		if (m_Vfs_windows)
+	/*Vfs_windows *m_Vfs_windows = NULL;
+	m_Vfs_windows = Vfs_windows::instance();
+	if (m_Vfs_windows)
+	{
+		if (QSFileName.compare("\\") != 0)
 		{
-			if (QSFileName.compare("\\") != 0)
-			{
-				//qDebug() << Q_FUNC_INFO << " FileName: " << QSFileName;
-				//m_Vfs_windows->getOperationCloseFile(QSFileName, QString("MirrorCloseFile"), QString("InProcess..."));
-			}
+			//m_Vfs_windows->getOperationCloseFile(QSFileName, QString("MirrorCloseFile"), QString("InProcess..."));
 		}
-		else
-		{
-		//lockerMirrorCloseFile.unlock();
-		return;	
-		}
+	}
+	else
+	{
 	//lockerMirrorCloseFile.unlock();
-
-		*/
-
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
-
+	return;	
+	}
+	//lockerMirrorCloseFile.unlock();
+	*/
 
 	WCHAR filePath[DOKAN_MAX_PATH];
 	GetFilePath(filePath, DOKAN_MAX_PATH, FileName);
@@ -836,30 +824,25 @@ static void DOKAN_CALLBACK MirrorCleanup(LPCWSTR FileName,
 #else
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
-
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 	
-		/*
+	/*
 	//QMutexLocker lockerMirrorCleanup(&_mutexMirrorCleanup);
-		Vfs_windows *m_Vfs_windows = NULL;
-		m_Vfs_windows = Vfs_windows::instance();
-		if (m_Vfs_windows)
+	Vfs_windows *m_Vfs_windows = NULL;
+	m_Vfs_windows = Vfs_windows::instance();
+	if (m_Vfs_windows)
+	{
+		if (QSFileName.compare("\\") != 0)
 		{
-			if (QSFileName.compare("\\") != 0)
-			{
-				//qDebug() << Q_FUNC_INFO << " FileName: " << QSFileName;
-				//m_Vfs_windows->getOperationCleanup(QSFileName, QString("MirrorCleanup"), QString("InProcess..."));
-			}
+			//m_Vfs_windows->getOperationCleanup(QSFileName, QString("MirrorCleanup"), QString("InProcess..."));
 		}
-		else
-		{
-		//lockerMirrorCleanup.unlock();
-		return;	
-		}
+	}
+	else
+	{
 	//lockerMirrorCleanup.unlock();
-		*/
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
-
+	return;	
+	}
+	//lockerMirrorCleanup.unlock();
+	*/
 
 	WCHAR filePath[DOKAN_MAX_PATH];
 	GetFilePath(filePath, DOKAN_MAX_PATH, FileName);
@@ -898,8 +881,6 @@ static void DOKAN_CALLBACK MirrorCleanup(LPCWSTR FileName,
 	}
 }
 
-//static int toyDentro = 0;
-
 static NTSTATUS DOKAN_CALLBACK MirrorReadFile(LPCWSTR FileName, LPVOID Buffer,
 	DWORD BufferLength,
 	LPDWORD ReadLength,
@@ -915,51 +896,41 @@ static NTSTATUS DOKAN_CALLBACK MirrorReadFile(LPCWSTR FileName, LPVOID Buffer,
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
 
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
-
-	//if (toyDentro)
-		//return STATUS_SUCCESS;
-
-//QMutexLocker lockerMirrorReadFile(&_mutexMirrorReadFile);
-		Vfs_windows *m_Vfs_windows = NULL;
-		m_Vfs_windows = Vfs_windows::instance();
-		if (m_Vfs_windows)
+	//QMutexLocker lockerMirrorReadFile(&_mutexMirrorReadFile);
+	Vfs_windows *m_Vfs_windows = NULL;
+	m_Vfs_windows = Vfs_windows::instance();
+	if (m_Vfs_windows)
+	{
+		if (QSFileName.compare("\\") != 0)
 		{
-			if (QSFileName.compare("\\") != 0)
+			//m_Vfs_windows->getOperationReadFile(QSFileName, QString("MirrorReadFile"), QString("InProcess..."));
+			if (DokanFileInfo->ProcessId != ((ULONG)GetCurrentProcess()))
 			{
-				//m_Vfs_windows->getOperationReadFile(QSFileName, QString("MirrorReadFile"), QString("InProcess..."));
-				if (DokanFileInfo->ProcessId != ((ULONG)GetCurrentProcess()))
+				//qDebug() << " YYY openFileAtPath  Offset: " << Offset << " BufferLength: " << BufferLength << " ReadLength:" << *ReadLength;
+
+				//int notw = (int)*ReadLength;
+				//if (((notw + Offset) == BufferLength) && !QSFileName.contains("Zone.Identifier") && (QSFileName.count(QLatin1Char('.')) <= 2))
+				if ((Offset == 0) && (QSFileName.count(QLatin1Char('.')) <= 2) && (DokanFileInfo->ProcessId != getExplorerID()) && (BufferLength == 8192))
 				{
-
-					//qDebug() << " YYY openFileAtPath  Offset: " << Offset << " BufferLength: " << BufferLength << " ReadLength:" << *ReadLength;
-
-					//int notw = (int)*ReadLength;
-					//if (((notw + Offset) == BufferLength) && !QSFileName.contains("Zone.Identifier") && (QSFileName.count(QLatin1Char('.')) <= 2))
-					if ((Offset == 0) && (QSFileName.count(QLatin1Char('.')) <= 2) && (DokanFileInfo->ProcessId != getExplorerID()) && (BufferLength == 8192))
-					{
-						//toyDentro = 1;
-						qDebug() << " ZZZ openFileAtPath  Offset: " << Offset << " BufferLength: " << BufferLength << " ReadLength:" << *ReadLength;
-						/*DWORD BufferLength,
-							LPDWORD ReadLength,
-							LONGLONG Offset,*/
+					qDebug() << " ZZZ openFileAtPath  Offset: " << Offset << " BufferLength: " << BufferLength << " ReadLength:" << *ReadLength;
+					/*DWORD BufferLength,
+						LPDWORD ReadLength,
+						LONGLONG Offset,*/
 						
-						QVariantMap error;
-						QString QSFileNametoReal = QSFileName;
-						QSFileNametoReal.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
-						Vfs_windows::instance()->openFileAtPath(QSFileNametoReal, error);
-					}
+					QVariantMap error;
+					QString QSFileNametoReal = QSFileName;
+					QSFileNametoReal.replace(0, 1, QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/");
+					Vfs_windows::instance()->openFileAtPath(QSFileNametoReal, error);
 				}
 			}
 		}
-		else
-		{
-		//lockerMirrorReadFile.unlock();
-		return 0;	
-		}
+	}
+	else
+	{
 	//lockerMirrorReadFile.unlock();
-
-
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;	
+	return 0;	
+	}
+	//lockerMirrorReadFile.unlock();
 
 	WCHAR filePath[DOKAN_MAX_PATH];
 	HANDLE handle = (HANDLE)DokanFileInfo->Context;
@@ -1002,7 +973,6 @@ static NTSTATUS DOKAN_CALLBACK MirrorReadFile(LPCWSTR FileName, LPVOID Buffer,
 
 	}
 	else {
-
 		/*QMutexLocker lockerMirrorReadFile(&_mutexMirrorReadFile);
 				Vfs_windows *m_Vfs_windows = NULL;
 				m_Vfs_windows = Vfs_windows::instance();
@@ -1030,9 +1000,8 @@ static NTSTATUS DOKAN_CALLBACK MirrorReadFile(LPCWSTR FileName, LPVOID Buffer,
 				return 0;
 				}
 			lockerMirrorReadFile.unlock();
-*/
+		*/
 		
-
 		DbgPrint(L"\tByte to read: %d, Byte read %d, offset %d\n\n", BufferLength,
 			*ReadLength, offset);
 	}
@@ -1058,9 +1027,7 @@ static NTSTATUS DOKAN_CALLBACK MirrorWriteFile(LPCWSTR FileName, LPCVOID Buffer,
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
 
-
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
-/*	QVariantMap error;
+	/*	QVariantMap error;
 	QMutexLocker lockerMirrorWriteFile(&_mutexMirrorWriteFile);
 		Vfs_windows *m_Vfs_windows = NULL;
 		m_Vfs_windows = Vfs_windows::instance();
@@ -1079,10 +1046,7 @@ static NTSTATUS DOKAN_CALLBACK MirrorWriteFile(LPCWSTR FileName, LPCVOID Buffer,
 		return 0;	
 		}
 	lockerMirrorWriteFile.unlock();
-*/
-
-
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;	
+	*/
 
 	WCHAR filePath[DOKAN_MAX_PATH];
 	HANDLE handle = (HANDLE)DokanFileInfo->Context;
@@ -1228,10 +1192,7 @@ MirrorFlushFileBuffers(LPCWSTR FileName, PDOKAN_FILE_INFO DokanFileInfo) {
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
 
-
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
-
-		/*
+	/*
 	//QMutexLocker lockerMirrorFlushFileBuffers(&_mutexMirrorFlushFileBuffers);
 		Vfs_windows *m_Vfs_windows = NULL;
 		m_Vfs_windows = Vfs_windows::instance();
@@ -1250,8 +1211,6 @@ MirrorFlushFileBuffers(LPCWSTR FileName, PDOKAN_FILE_INFO DokanFileInfo) {
 		}
 		*/
 	//lockerMirrorFlushFileBuffers.unlock();
-
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 
 	WCHAR filePath[DOKAN_MAX_PATH];
 	HANDLE handle = (HANDLE)DokanFileInfo->Context;
@@ -1288,8 +1247,6 @@ static NTSTATUS DOKAN_CALLBACK MirrorGetFileInformation(
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
 
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
-
 	//QMutexLocker lockerMirrorGetFileInformation(&_mutexMirrorGetFileInformation);
 		/*Vfs_windows *m_Vfs_windows = NULL;
 		m_Vfs_windows = Vfs_windows::instance();
@@ -1307,10 +1264,6 @@ static NTSTATUS DOKAN_CALLBACK MirrorGetFileInformation(
 		}
 		*/
 	//lockerMirrorGetFileInformation.unlock();
-
-
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
-
 
 	WCHAR filePath[DOKAN_MAX_PATH];
 	HANDLE handle = (HANDLE)DokanFileInfo->Context;
@@ -1393,11 +1346,7 @@ MirrorFindFiles(LPCWSTR FileName,
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
 
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
-
-
-
-QVariantMap b_error;
+	QVariantMap b_error;
 	QMutexLocker lockerMirrorFindFiles(&_mutexMirrorFindFiles);
 		Vfs_windows *m_Vfs_windows = NULL;
 		m_Vfs_windows = Vfs_windows::instance();
@@ -1419,10 +1368,6 @@ QVariantMap b_error;
 		return 0;	
 		}
 	lockerMirrorFindFiles.unlock();
-
-	
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
-
 
 	WCHAR filePath[DOKAN_MAX_PATH];
 	size_t fileLen;
@@ -1484,29 +1429,24 @@ MirrorDeleteFile(LPCWSTR FileName, PDOKAN_FILE_INFO DokanFileInfo) {
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
 
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
-
-		/*
+	/*
 	//QMutexLocker lockerMirrorDeleteFile(&_mutexMirrorDeleteFile);
-		Vfs_windows *m_Vfs_windows = NULL;
-		m_Vfs_windows = Vfs_windows::instance();
-		if (m_Vfs_windows)
-		{
-			if(QSFileName.compare("\\") != 0)
-				{ 
-				}
-				//m_Vfs_windows->getOperationDeleteFile(QSFileName, QString("MirrorDeleteFile"), QString("InProcess..."));
-		}
-		else
-		{
-		//lockerMirrorDeleteFile.unlock();
-		return 0;
-		}
-	///lockerMirrorDeleteFile.unlock();
-	
-		*/
-
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
+	Vfs_windows *m_Vfs_windows = NULL;
+	m_Vfs_windows = Vfs_windows::instance();
+	if (m_Vfs_windows)
+	{
+		if(QSFileName.compare("\\") != 0)
+			{ 
+			}
+			//m_Vfs_windows->getOperationDeleteFile(QSFileName, QString("MirrorDeleteFile"), QString("InProcess..."));
+	}
+	else
+	{
+	//lockerMirrorDeleteFile.unlock();
+	return 0;
+	}
+	//lockerMirrorDeleteFile.unlock();
+	*/
 
 	WCHAR filePath[DOKAN_MAX_PATH];
 	HANDLE handle = (HANDLE)DokanFileInfo->Context;
@@ -1545,32 +1485,26 @@ MirrorDeleteDirectory(LPCWSTR FileName, PDOKAN_FILE_INFO DokanFileInfo) {
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
 
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
-
-		/*
+	/*
 	//QMutexLocker lockerMirrorDeleteDirectory(&_mutexMirrorDeleteDirectory);
-		Vfs_windows *m_Vfs_windows = NULL;
-		m_Vfs_windows = Vfs_windows::instance();
-		if (m_Vfs_windows)
+	Vfs_windows *m_Vfs_windows = NULL;
+	m_Vfs_windows = Vfs_windows::instance();
+	if (m_Vfs_windows)
+	{
+		if (QSFileName.compare("\\") != 0)
 		{
-			if (QSFileName.compare("\\") != 0)
-			{
 
-			}
-				//m_Vfs_windows->getOperationDeleteDirectory(QSFileName, QString("MirrorDeleteDirectory"), QString("InProcess..."));
 		}
-		else
-		{
-		//lockerMirrorDeleteDirectory.unlock();
-		return 0;
-		}
+			//m_Vfs_windows->getOperationDeleteDirectory(QSFileName, QString("MirrorDeleteDirectory"), QString("InProcess..."));
+	}
+	else
+	{
 	//lockerMirrorDeleteDirectory.unlock();
-
-		*/
-
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
+	return 0;
+	}
+	//lockerMirrorDeleteDirectory.unlock();
+	*/
 	
-
 	WCHAR filePath[DOKAN_MAX_PATH];
 	// HANDLE	handle = (HANDLE)DokanFileInfo->Context;
 	HANDLE hFind;
@@ -1726,8 +1660,6 @@ static NTSTATUS DOKAN_CALLBACK MirrorLockFile(LPCWSTR FileName,
 #else
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
-	
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
 
 	/*
 	//QMutexLocker lockerMirrorLockFile(&_mutexMirrorLockFile);
@@ -1746,11 +1678,7 @@ static NTSTATUS DOKAN_CALLBACK MirrorLockFile(LPCWSTR FileName,
 		return 0;
 	}
 	//lockerMirrorLockFile.unlock();
-
 	*/
-
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
-
 
 	WCHAR filePath[DOKAN_MAX_PATH];
 	HANDLE handle;
@@ -1793,8 +1721,6 @@ static NTSTATUS DOKAN_CALLBACK MirrorSetEndOfFile(
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
 	
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
-
 	/*
 	//QMutexLocker lockerMirrorSetEndOfFile(&_mutexMirrorSetEndOfFile);
 	Vfs_windows *m_Vfs_windows = NULL;
@@ -1814,9 +1740,6 @@ static NTSTATUS DOKAN_CALLBACK MirrorSetEndOfFile(
 	}
 	*/
 	//lockerMirrorSetEndOfFile.unlock();
-
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
-
 
 	WCHAR filePath[DOKAN_MAX_PATH];
 	HANDLE handle;
@@ -1861,8 +1784,6 @@ static NTSTATUS DOKAN_CALLBACK MirrorSetAllocationSize(
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
 	
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
-
 	/*
 	//QMutexLocker lockerMirrorSetAllocationSize(&_mutexMirrorSetAllocationSize);
 	Vfs_windows *m_Vfs_windows = NULL;
@@ -1881,8 +1802,6 @@ static NTSTATUS DOKAN_CALLBACK MirrorSetAllocationSize(
 	}
 	//lockerMirrorSetAllocationSize.unlock();
 	*/
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
-
 
 	WCHAR filePath[DOKAN_MAX_PATH];
 	HANDLE handle;
@@ -1936,8 +1855,6 @@ static NTSTATUS DOKAN_CALLBACK MirrorSetFileAttributes(
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
 	
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
-
 	/*
 	//QMutexLocker lockerMirrorSetFileAttributes(&_mutexMirrorSetFileAttributes);
 	Vfs_windows *m_Vfs_windows = NULL;
@@ -1957,9 +1874,6 @@ static NTSTATUS DOKAN_CALLBACK MirrorSetFileAttributes(
 	}
 	//lockerMirrorSetFileAttributes.unlock();
 	*/
-
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
-
 
 	WCHAR filePath[DOKAN_MAX_PATH];
 
@@ -2000,8 +1914,6 @@ MirrorSetFileTime(LPCWSTR FileName, CONST FILETIME *CreationTime,
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
 	
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
-
 	//QMutexLocker lockerMirrorSetFileTime(&_mutexMirrorSetFileTime);
 	/*Vfs_windows *m_Vfs_windows = NULL;
 	m_Vfs_windows = Vfs_windows::instance();
@@ -2020,9 +1932,6 @@ MirrorSetFileTime(LPCWSTR FileName, CONST FILETIME *CreationTime,
 	}
 	*/
 	//lockerMirrorSetFileTime.unlock();
-
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
-
 
 	WCHAR filePath[DOKAN_MAX_PATH];
 	HANDLE handle;
@@ -2061,8 +1970,6 @@ MirrorUnlockFile(LPCWSTR FileName, LONGLONG ByteOffset, LONGLONG Length,
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
 	
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
-
 	//QMutexLocker lockerMirrorUnlockFile(&_mutexMirrorUnlockFile);
 	/*Vfs_windows *m_Vfs_windows = NULL;
 	m_Vfs_windows = Vfs_windows::instance();
@@ -2080,8 +1987,6 @@ MirrorUnlockFile(LPCWSTR FileName, LONGLONG ByteOffset, LONGLONG Length,
 	}
 	//lockerMirrorUnlockFile.unlock();
 	*/
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
-
 
 	WCHAR filePath[DOKAN_MAX_PATH];
 	HANDLE handle;
@@ -2126,8 +2031,6 @@ static NTSTATUS DOKAN_CALLBACK MirrorGetFileSecurity(
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
 	
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
-
 	//QMutexLocker lockerMirrorGetFileSecurity(&_mutexMirrorGetFileSecurity);
 	/*Vfs_windows *m_Vfs_windows = NULL;
 	m_Vfs_windows = Vfs_windows::instance();
@@ -2146,8 +2049,6 @@ static NTSTATUS DOKAN_CALLBACK MirrorGetFileSecurity(
 	}
 	*/
 	//lockerMirrorGetFileSecurity.unlock();
-
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 
 	WCHAR filePath[DOKAN_MAX_PATH];
 	BOOLEAN requestingSaclInfo;
@@ -2241,8 +2142,6 @@ static NTSTATUS DOKAN_CALLBACK MirrorSetFileSecurity(
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
 	
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
-
 	//QMutexLocker lockerMirrorSetFileSecurity(&_mutexMirrorSetFileSecurity);
 	/*Vfs_windows *m_Vfs_windows = NULL;
 	m_Vfs_windows = Vfs_windows::instance();
@@ -2261,9 +2160,6 @@ static NTSTATUS DOKAN_CALLBACK MirrorSetFileSecurity(
 	}
 	*/
 	//lockerMirrorSetFileSecurity.unlock();
-
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
-
 
 	HANDLE handle;
 	WCHAR filePath[DOKAN_MAX_PATH];
@@ -2294,8 +2190,6 @@ static NTSTATUS DOKAN_CALLBACK MirrorGetVolumeInformation(
 	LPWSTR FileSystemNameBuffer, DWORD FileSystemNameSize,
 	PDOKAN_FILE_INFO DokanFileInfo) {
 
-//qDebug() << Q_FUNC_INFO << " 1";
-
 	//QMutexLocker lockerMirrorGetVolumeInformation(&_mutexMirrorGetVolumeInformation);
 	/*Vfs_windows *m_Vfs_windows = NULL;
 	m_Vfs_windows = Vfs_windows::instance();
@@ -2310,9 +2204,6 @@ static NTSTATUS DOKAN_CALLBACK MirrorGetVolumeInformation(
 	}
 	*/
 	//lockerMirrorGetVolumeInformation.unlock();
-
-//qDebug() << Q_FUNC_INFO << " 2";
-
 
 	UNREFERENCED_PARAMETER(DokanFileInfo);
 
@@ -2483,8 +2374,6 @@ MirrorFindStreams(LPCWSTR FileName, PFillFindStreamData FillFindStreamData,
 	QSFileName = QString::fromLocal8Bit(FileName);
 #endif
 	
-//qDebug() << Q_FUNC_INFO << " 1 FileName: " << QSFileName;
-
 	/*
 	//QMutexLocker lockerMirrorFindStreams(&_mutexMirrorFindStreams);
 	Vfs_windows *m_Vfs_windows = NULL;
@@ -2504,8 +2393,6 @@ MirrorFindStreams(LPCWSTR FileName, PFillFindStreamData FillFindStreamData,
 	}
 	*/
 	//lockerMirrorFindStreams.unlock();
-
-//qDebug() << Q_FUNC_INFO << " 2 FileName: " << QSFileName;
 
 	WCHAR filePath[DOKAN_MAX_PATH];
 	HANDLE hFind;
@@ -2547,9 +2434,6 @@ MirrorFindStreams(LPCWSTR FileName, PFillFindStreamData FillFindStreamData,
 }
 
 static NTSTATUS DOKAN_CALLBACK MirrorMounted(PDOKAN_FILE_INFO DokanFileInfo) {
-
-	//qDebug() << Q_FUNC_INFO;
-
 	UNREFERENCED_PARAMETER(DokanFileInfo);
 
 	DbgPrint(L"Mounted\n");
@@ -2557,9 +2441,6 @@ static NTSTATUS DOKAN_CALLBACK MirrorMounted(PDOKAN_FILE_INFO DokanFileInfo) {
 }
 
 static NTSTATUS DOKAN_CALLBACK MirrorUnmounted(PDOKAN_FILE_INFO DokanFileInfo) {
-
-//qDebug() << Q_FUNC_INFO;
-
 	UNREFERENCED_PARAMETER(DokanFileInfo);
 
 	DbgPrint(L"Unmounted\n");
@@ -2763,35 +2644,34 @@ qDebug() << Q_FUNC_INFO << " rootPath: " << rootPath_;
 
 	for(unsigned long i=0; i <_fileListMap.value(path)->list.size(); i++)
    	{
-
-       QString completePath = rootPath_ + (path.endsWith("/")?path:(path+"/")) + QString::fromLatin1(_fileListMap.value(path)->list.at(i)->path);
-       QFileInfo fi(completePath);
-       if (!fi.exists())
-       {
-           if(_fileListMap.value(path)->list.at(i)->type == ItemTypeFile)
-           {
-		qDebug() << "kkF:" << completePath;
-		QFile file(completePath);			//< Create empty file
-		if (file.open(QIODevice::ReadWrite))
-			file.close();
-           }
-           else if (_fileListMap.value(path)->list.at(i)->type == ItemTypeDirectory)
-           {
-		qDebug() << "kkD:" << completePath;
-		if (!QDir(completePath).exists()) {
-		QDir().mkdir(completePath);
+		QString completePath = rootPath_ + (path.endsWith("/")?path:(path+"/")) + QString::fromLatin1(_fileListMap.value(path)->list.at(i)->path);
+		QFileInfo fi(completePath);
+		if (!fi.exists())
+		{
+			if(_fileListMap.value(path)->list.at(i)->type == ItemTypeFile)
+			{
+				qDebug() << "kkF:" << completePath;
+				QFile file(completePath);			//< Create empty file
+				if (file.open(QIODevice::ReadWrite))
+					file.close();
+				}
+				else if (_fileListMap.value(path)->list.at(i)->type == ItemTypeDirectory)
+				{
+					qDebug() << "kkD:" << completePath;
+					if (!QDir(completePath).exists()) {
+						QDir().mkdir(completePath);
+					}
+				}
 		}
-           }
-       }
-	   //if (_fileListMap.value(path)->list.at(i)->type == ItemTypeFile)
-	   emit addToFileTree(_fileListMap.value(path)->list.at(i)->type, completePath);
-        //qDebug() << Q_FUNC_INFO << "results: " << r->name << r->type;
-   }
+		//if (_fileListMap.value(path)->list.at(i)->type == ItemTypeFile)
+		emit addToFileTree(_fileListMap.value(path)->list.at(i)->type, completePath);
+		//qDebug() << Q_FUNC_INFO << "results: " << r->name << r->type;
+	}
 	
 	delete(_fileListMap.value(path));
 	_fileListMap.remove(path);
 
-return 0;
+	return 0;
 }
 
 void Vfs_windows::folderFileListFinish(OCC::DiscoveryDirectoryResult *dr)
