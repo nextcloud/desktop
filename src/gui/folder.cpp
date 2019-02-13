@@ -590,8 +590,9 @@ void Folder::downloadVirtualFile(const QString &_relativepath)
     if (record._type == ItemTypeVirtualFile) {
         record._type = ItemTypeVirtualFileDownload;
         _journal.setFileRecord(record);
-        // Make sure we go over that file during the discovery
-        _journal.avoidReadFromDbOnNextSync(relativepath);
+        // Make sure we go over that file during the discovery even if
+        // no actual remote discovery would be necessary
+        _journal.schedulePathForRemoteDiscovery(relativepath);
     } else if (record._type == ItemTypeDirectory || relativepath.isEmpty()) {
         _journal.markVirtualFileForDownloadRecursively(relativepath);
     } else {
@@ -1125,6 +1126,11 @@ void Folder::slotScheduleThisFolder()
 void Folder::slotNextSyncFullLocalDiscovery()
 {
     _timeSinceLastFullLocalDiscovery.invalidate();
+}
+
+void Folder::schedulePathForLocalDiscovery(const QString &relativePath)
+{
+    _localDiscoveryTracker->addTouchedPath(relativePath.toUtf8());
 }
 
 void Folder::slotFolderConflicts(const QString &folder, const QStringList &conflictPaths)

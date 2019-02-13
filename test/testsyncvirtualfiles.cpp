@@ -44,7 +44,7 @@ void triggerDownload(FakeFolder &folder, const QByteArray &path)
         return;
     record._type = ItemTypeVirtualFileDownload;
     journal.setFileRecord(record);
-    journal.avoidReadFromDbOnNextSync(record._path);
+    journal.schedulePathForRemoteDiscovery(record._path);
 }
 
 void markForDehydration(FakeFolder &folder, const QByteArray &path)
@@ -56,7 +56,7 @@ void markForDehydration(FakeFolder &folder, const QByteArray &path)
         return;
     record._type = ItemTypeVirtualFileDehydration;
     journal.setFileRecord(record);
-    journal.avoidReadFromDbOnNextSync(record._path);
+    journal.schedulePathForRemoteDiscovery(record._path);
 }
 
 QSharedPointer<Vfs> setupVfs(FakeFolder &folder)

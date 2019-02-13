@@ -516,7 +516,7 @@ void PropagateUploadFileCommon::commonErrorHandling(AbstractNetworkJob *job)
 
         // Maybe the bad etag is in the database, we need to clear the
         // parent folder etag so we won't read from DB next sync.
-        propagator()->_journal->avoidReadFromDbOnNextSync(_item->_file);
+        propagator()->_journal->schedulePathForRemoteDiscovery(_item->_file);
         propagator()->_anotherSyncNeeded = true;
     }
 

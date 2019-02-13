@@ -490,7 +490,8 @@ void SelectiveSyncDialog::accept()
         auto blackListSet = blackList.toSet();
         auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
         foreach (const auto &it, changes) {
-            _folder->journalDb()->avoidReadFromDbOnNextSync(it);
+            _folder->journalDb()->schedulePathForRemoteDiscovery(it);
+            _folder->schedulePathForLocalDiscovery(it);
         }
         // Also make sure we see the local file that had been ignored before
         _folder->slotNextSyncFullLocalDiscovery();

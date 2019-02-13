@@ -697,7 +697,7 @@ void PropagateDownloadFile::slotGetFinished()
             // As a precaution against bugs that cause our database and the
             // reality on the server to diverge, rediscover this folder on the
             // next sync run.
-            propagator()->_journal->avoidReadFromDbOnNextSync(_item->_file);
+            propagator()->_journal->schedulePathForRemoteDiscovery(_item->_file);
         }
 
         QByteArray errorBody;

@@ -180,8 +180,8 @@ public:
      * Any setFileRecord() call to affected directories before the next sync run will be
      * adjusted to retain the invalid etag via _etagStorageFilter.
      */
-    void avoidReadFromDbOnNextSync(const QString &fileName) { avoidReadFromDbOnNextSync(fileName.toUtf8()); }
-    void avoidReadFromDbOnNextSync(const QByteArray &fileName);
+    void schedulePathForRemoteDiscovery(const QString &fileName) { schedulePathForRemoteDiscovery(fileName.toUtf8()); }
+    void schedulePathForRemoteDiscovery(const QByteArray &fileName);
 
     /**
      * Wipe _etagStorageFilter. Also done implicitly on close().
@@ -191,7 +191,7 @@ public:
     /**
      * Ensures full remote discovery happens on the next sync.
      *
-     * Equivalent to calling avoidReadFromDbOnNextSync() for all files.
+     * Equivalent to calling schedulePathForRemoteDiscovery() for all files.
      */
     void forceRemoteDiscoveryNextSync();
 
@@ -400,7 +400,7 @@ private:
 
     /* Storing etags to these folders, or their parent folders, is filtered out.
      *
-     * When avoidReadFromDbOnNextSync() is called some etags to _invalid_ in the
+     * When schedulePathForRemoteDiscovery() is called some etags to _invalid_ in the
      * database. If this is done during a sync run, a later propagation job might
      * undo that by writing the correct etag to the database instead. This filter
      * will prevent this write and instead guarantee the _invalid_ etag stays in

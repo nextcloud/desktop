@@ -38,7 +38,7 @@ static void updateFolder(const AccountPtr &account, const QString &path)
             // Workaround the fact that the server does not invalidate the etags of parent directories
             // when something is shared.
             auto relative = path.midRef(f->remotePathTrailingSlash().length());
-            f->journalDb()->avoidReadFromDbOnNextSync(relative.toString());
+            f->journalDb()->schedulePathForRemoteDiscovery(relative.toString());
 
             // Schedule a sync so it can update the remote permission flag and let the socket API
             // know about the shared icon.

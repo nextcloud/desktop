@@ -357,6 +357,14 @@ public slots:
     /** Ensures that the next sync performs a full local discovery. */
     void slotNextSyncFullLocalDiscovery();
 
+    /** Adds the path to the local discovery list
+     *
+     * A weaker version of slotNextSyncFullLocalDiscovery() that just
+     * schedules all parent and child items of the path for local
+     * discovery.
+     */
+    void schedulePathForLocalDiscovery(const QString &relativePath);
+
 private slots:
     void slotSyncStarted();
     void slotSyncFinished(bool);

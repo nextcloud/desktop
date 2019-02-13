@@ -1752,10 +1752,10 @@ void SyncJournalDb::avoidRenamesOnNextSync(const QByteArray &path)
 
     // We also need to remove the ETags so the update phase refreshes the directory paths
     // on the next sync
-    avoidReadFromDbOnNextSync(path);
+    schedulePathForRemoteDiscovery(path);
 }
 
-void SyncJournalDb::avoidReadFromDbOnNextSync(const QByteArray &fileName)
+void SyncJournalDb::schedulePathForRemoteDiscovery(const QByteArray &fileName)
 {
     QMutexLocker locker(&_mutex);
 
@@ -2009,7 +2009,7 @@ void SyncJournalDb::markVirtualFileForDownloadRecursively(const QByteArray &path
     query.bindValue(1, path);
     query.exec();
 
-    // We also must make sure we do not read the files from the database (same logic as in avoidReadFromDbOnNextSync)
+    // We also must make sure we do not read the files from the database (same logic as in schedulePathForRemoteDiscovery)
     // This includes all the parents up to the root, but also all the directory within the selected dir.
     static_assert(ItemTypeDirectory == 2, "");
     query.prepare("UPDATE metadata SET md5='_invalid_' WHERE "

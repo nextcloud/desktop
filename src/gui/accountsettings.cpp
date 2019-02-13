@@ -556,7 +556,8 @@ void AccountSettings::slotEnableVfsCurrentFolder()
             auto oldBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
             folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
             for (const auto &entry : oldBlacklist) {
-                folder->journalDb()->avoidReadFromDbOnNextSync(entry);
+                folder->journalDb()->schedulePathForRemoteDiscovery(entry);
+                folder->schedulePathForLocalDiscovery(entry);
             }
 
             // Change the folder vfs mode and load the plugin

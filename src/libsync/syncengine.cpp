@@ -485,7 +485,7 @@ void SyncEngine::startSync()
     }
 
     // Functionality like selective sync might have set up etag storage
-    // filtering via avoidReadFromDbOnNextSync(). This *is* the next sync, so
+    // filtering via schedulePathForRemoteDiscovery(). This *is* the next sync, so
     // undo the filter to allow this sync to retrieve and store the correct etags.
     _journal->clearEtagStorageFilter();
 

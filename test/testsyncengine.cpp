@@ -171,7 +171,7 @@ private slots:
         // Remove subFolderA with selectiveSync:
         fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
                                                                 {"parentFolder/subFolderA/"});
-        fakeFolder.syncEngine().journal()->avoidReadFromDbOnNextSync(QByteArrayLiteral("parentFolder/subFolderA/"));
+        fakeFolder.syncEngine().journal()->schedulePathForRemoteDiscovery(QByteArrayLiteral("parentFolder/subFolderA/"));
         auto getEtag = [&](const QByteArray &file) {
             SyncJournalFileRecord rec;
             fakeFolder.syncJournal().getFileRecord(file, &rec);
