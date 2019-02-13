@@ -745,7 +745,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="390"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>A(z) %1 átnevezve erre: %2, és még %n további fájl átnevezve.</numerusform><numerusform>A(z) %1 átnevezve erre: %2, és még %n további fájl átnevezve.</numerusform></translation>
+        <translation><numerusform>A(z) %1 átnevezve erre: %2, és még %n további fájl lett átnevezve.</numerusform><numerusform>A(z) %1 átnevezve erre: %2, és még %n további fájl lett átnevezve.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="397"/>
@@ -765,7 +765,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="411"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>A(z) %1, és %n további fájlt nem sikerült szinkronizálni. Bővebb információk a naplófájlban.</numerusform><numerusform>A(z) %1, és %n további fájlt nem sikerült szinkronizálni. Bővebb információk a naplófájlban.</numerusform></translation>
+        <translation><numerusform>A(z) %1 és %n további fájl hibák miatt nem szinkronizálható. Bővebb információk a naplófájlban.</numerusform><numerusform>A(z) %1 és %n további fájl hibák miatt nem szinkronizálható. Bővebb információk a naplófájlban.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="413"/>
@@ -1395,7 +1395,7 @@ A szinkronizálás folytatásával az összes fájlja felül lesz írva egy rég
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation>A kulcstartóról olvasás hibával meghiúsult: „%1”</translation>
+        <translation>A kulcstartóról olvasás meghiúsult: „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
@@ -1405,7 +1405,7 @@ A szinkronizálás folytatásával az összes fájlja felül lesz írva egy rég
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Kattintson ide, hogy alkalmazásjelszót kérjen a webes felületről.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Kattintson ide&lt;/a&gt;, hogy alkalmazásjelszót kérjen a webes felületről.</translation>
     </message>
 </context>
 <context>
@@ -1467,7 +1467,7 @@ Ahol a törlés engedélyezett, ott az elemek törölve lesznek, ha megakadályo
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
         <source>Could not open file</source>
-        <translation>Nem sikerült a fájl megnyitása</translation>
+        <translation>A fájl nem nyitható meg</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="134"/>
@@ -1803,7 +1803,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>Could not check for new updates.</source>
-        <translation>Nem lehet ellenőrzi a frissítéseket.</translation>
+        <translation>A frissítések nem ellenőrizhatőek.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
@@ -4125,7 +4125,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
         <source>Could not open browser</source>
-        <translation>Nem lehet megnyitni a böngészőt</translation>
+        <translation>A böngészőt nem lehet megnyitni</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="35"/>
