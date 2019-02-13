@@ -107,11 +107,131 @@ Contrary to earlier versions, version 1.7 and later are packaged as a `pkg` inst
 Do not call `make package` at any time when compiling for OS X, as this will build a disk image, which will not work correctly.
 ====
 
-[[windows-development-build]]
-== Windows Development Build
+[[windows-development-build-craft]]
+== Windows Development Build with KDE Craft
 
-If you want to test some changes and deploy them locally, you can build natively on Windows using xref:http://www.mingw.org/[MinGW].
-If you want to generate an installer for deployment, please follow link:[Windows Installer Build (Cross-Compile)] instead.
+If you want to test some changes, you can build the ownCloud Client natively on Windows using xref:https://community.kde.org/Craft[KDE Craft].
+You can also use it to build unsupported and unoptimized installers.
+
+=== Install KDE Craft
+
+You can find the full installation guide in the https://community.kde.org/Guidelines_and_HOWTOs/Build_from_source/Windows[KDE Community Wiki].
+
+Essentially you need Python 3.6+, Python 2.7, PowerShell 5.0+ and if you want to use Microsoft Visual Studio that too.
+After installing those you can run the following lines in PowerShell to install KDE Craft:
+
+[source,powershell]
+....
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/KDE/craft/master/setup/install_craft.ps1'))
+....
+
+With the first commmand you can acknowledge that you want to allow running scripts from remote sources.
+Afterwards the actual installation of Craft starts. You are asked where you want to put the main folder, called CraftRoot, which will contain all sources, build and install folders.
+So better chose a disk with quite a bit of free space. Last but not least you need to chose the compiler you want to use.
+The official builds use Microsoft Visual Studio 2017, so that's the only supported option.
+If you're feeling adventurous you can also try to use Mingw-w64. In contrast to Visual Studio which you need to install in advance, Craft can install Mingw-w64 for you.
+Unless you need 32bit builds, you should stick to the default of x64 builds.
+
+=== Setup KDE Craft
+
+After you installed Craft, there are two steps left before we can start compiling the ownCloud Client.
+
+==== Launch Craft environment
+We're assuming that you installed KDE Craft into the default path of `C:\CraftRoot`. Then you need to run
+
+[source,powershell]
+....
+C:\CraftRoot\craft\craftenv.ps1
+....
+
+in PowerShell. If you installed KDE Craft to a different directory, you need to adjust the path here accordingly.
+This will provide you with a shell with all the environment variables set that you need to conveniently work with Craft.
+
+This needs to be done every time you want to work with Craft.
+
+==== Setup the ownCloud repository
+
+The last step before we can finally start is adding the ownCloud repository. It provides you with additional dependencies and tools
+which are not available from the standard KDE repository.
+
+[source,powershell]
+....
+craft --add-blueprint-repository https://github.com/owncloud/craft-blueprints-owncloud.git
+....
+
+You only need to do this once.
+
+==== Build the client
+
+Finally we can build the client with:
+
+[source,powershell]
+....
+craft owncloud-client
+....
+
+This will install all required dependencies and build the ownCloud Client from `master` git branch.
+
+If you want to build a different branch, you can first install all deps and clone the source code from git like this:
+
+[source,powershell]
+....
+craft --install-deps owncloud-client
+craft --fetch owncloud-client
+....
+
+Now you can find the git checkout in `C:\CraftRoot\downloads\git\owncloud\owncloud-client`.
+There you can use the usual git commands to switch branches and remotes, e.g.:
+
+[source,powershell]
+....
+git checkout 2.5
+....
+
+to build the `2.5` stable branch.
+
+Afterwards you can build the client like this:
+
+[source,powershell]
+....
+craft --configure --make --install
+....
+
+==== Run the Client
+
+Neither `craft owncloud-client` nor `craft --configure --make --install` make the ownCloud Client available in your PATH,
+they only install to the so called image directory. This is so Craft knows which files belong to which package.
+In order to run the client, you first need to merge the image directory to the regular Craft root (`C:\CraftRoot`).
+Afterwards you can run `owncloud.exe` from your shell.
+
+```
+craft --qmerge owncloud-client
+owncloud.exe
+```
+
+==== Package the Client (Unsupported)
+
+Although this is not officially supported, it is generally possible to build an installer with:
+
+[source,powershell]
+....
+craft nsis
+craft --package owncloud-client
+....
+
+Now you should have a file called `owncloud-client-master-${COMMIT_HASH}-windows-${COMPILER}.exe` in `C:\CraftRoot\tmp`.
+
+[NOTE]
+====
+This is neither supported nor optimised nor regularly tested!
+Fully supported Windows installers are currently only provided by ownBrander.
+====
+
+[[windows-development-build-mingw]]
+== Windows Development Build MinGW without KDE Craft
+
+If you don't want to use Craft, these are the manual steps you need to follow to compile the ownCloud Client natively on Windows.
 
 . Get the required dependencies
 
@@ -172,9 +292,8 @@ Refer to the xref:generic-build-instructions[generic build instructions] section
 The ownCloud binary will appear in the `bin` directory.
 
 [[windows-installer-build-cross-compile]]
-== Windows Installer Build (Cross-Compile)
+== Windows Installer Build (Cross-Compile, deprecated)
 
-Due to the large number of dependencies, building the client installer for Windows is *currently only officially supported on openSUSE*, by using the MinGW cross compiler.
 You can set up any currently supported version of openSUSE in a virtual machine if you do not have it installed already.
 
 In order to make setup simple, you can use the provided Dockerfile to build your own image.
