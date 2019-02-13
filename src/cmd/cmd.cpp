@@ -303,7 +303,7 @@ void selectiveSyncFixup(OCC::SyncJournalDb *journal, const QStringList &newList)
         auto blackListSet = newList.toSet();
         const auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
         for (const auto &it : changes) {
-            journal->avoidReadFromDbOnNextSync(it);
+            journal->schedulePathForRemoteDiscovery(it);
         }
 
         journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, newList);

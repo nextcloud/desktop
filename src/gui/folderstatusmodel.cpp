@@ -871,7 +871,8 @@ void FolderStatusModel::slotApplySelectiveSync()
             //The part that changed should not be read from the DB on next sync because there might be new folders
             // (the ones that are no longer in the blacklist)
             foreach (const auto &it, changes) {
-                folder->journalDb()->avoidReadFromDbOnNextSync(it);
+                folder->journalDb()->schedulePathForRemoteDiscovery(it);
+                folder->schedulePathForLocalDiscovery(it);
             }
             FolderMan::instance()->scheduleFolder(folder);
         }
@@ -1177,7 +1178,8 @@ void FolderStatusModel::slotSyncAllPendingBigFolders()
         // The part that changed should not be read from the DB on next sync because there might be new folders
         // (the ones that are no longer in the blacklist)
         foreach (const auto &it, undecidedList) {
-            folder->journalDb()->avoidReadFromDbOnNextSync(it);
+            folder->journalDb()->schedulePathForRemoteDiscovery(it);
+            folder->schedulePathForLocalDiscovery(it);
         }
         FolderMan::instance()->scheduleFolder(folder);
     }

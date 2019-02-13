@@ -497,7 +497,8 @@ void SelectiveSyncDialog::accept()
         auto blackListSet = blackList.toSet();
         auto changes = (oldBlackListSet - blackListSet) + (blackListSet - oldBlackListSet);
         foreach (const auto &it, changes) {
-            _folder->journalDb()->avoidReadFromDbOnNextSync(it);
+            _folder->journalDb()->schedulePathForRemoteDiscovery(it);
+            _folder->schedulePathForLocalDiscovery(it);
         }
 
         folderMan->scheduleFolder(_folder);

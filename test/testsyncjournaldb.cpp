@@ -236,7 +236,7 @@ private slots:
         makeEntry("foodir/subdir/subsubdir/file", ItemTypeFile);
         makeEntry("foodir/subdir/otherdir", ItemTypeDirectory);
 
-        _db.avoidReadFromDbOnNextSync(QByteArray("foodir/subdir"));
+        _db.schedulePathForRemoteDiscovery(QByteArray("foodir/subdir"));
 
         // Direct effects of parent directories being set to _invalid_
         QCOMPARE(getEtag("foodir"), invalidEtag);

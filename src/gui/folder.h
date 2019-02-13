@@ -348,6 +348,14 @@ public slots:
      */
     void dehydrateFile(const QString &relativepath);
 
+    /** Adds the path to the local discovery list
+     *
+     * A weaker version of slotNextSyncFullLocalDiscovery() that just
+     * schedules all parent and child items of the path for local
+     * discovery.
+     */
+    void schedulePathForLocalDiscovery(const QString &relativePath);
+
 private slots:
     void slotSyncStarted();
     void slotSyncFinished(bool);
