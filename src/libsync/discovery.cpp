@@ -799,9 +799,14 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                // Directories and virtual files don't need size/mtime equality
                || localEntry.isDirectory || localEntry.isVirtualFile);
 
+    auto originalPath = QString::fromUtf8(base._path);
     if (isMove) {
-        //  The old file must have been deleted.
-        isMove = !QFile::exists(_discoveryData->_localDir + base._path);
+        // The old file must have been deleted.
+        isMove = !QFile::exists(_discoveryData->_localDir + base._path)
+                // Exception: If the rename changes case only (like "foo" -> "Foo") the
+                // old filename might still point to the same file.
+                || (Utility::fsCasePreserving()
+                    && originalPath.compare(path._local, Qt::CaseInsensitive) == 0);
     }
 
     // Verify the checksum where possible
@@ -811,7 +816,6 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             isMove = item->_checksumHeader == base._checksumHeader;
         }
     }
-    auto originalPath = QString::fromUtf8(base._path);
     if (isMove && _discoveryData->isRenamed(originalPath))
         isMove = false;
 
