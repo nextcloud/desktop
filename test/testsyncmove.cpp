@@ -585,6 +585,28 @@ private slots:
         QCOMPARE(counter.nDELETE, 0);
     }
 
+    // These renames can be troublesome on windows
+    void testRenameCaseOnly()
+    {
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        auto &local = fakeFolder.localModifier();
+        auto &remote = fakeFolder.remoteModifier();
+
+        OperationCounter counter;
+        fakeFolder.setServerOverride(counter.functor());
+
+        local.rename("A/a1", "A/A1");
+        remote.rename("A/a2", "A/A2");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), remote);
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
+        QCOMPARE(counter.nGET, 0);
+        QCOMPARE(counter.nPUT, 0);
+        QCOMPARE(counter.nMOVE, 1);
+        QCOMPARE(counter.nDELETE, 0);
+    }
+
     // Check interaction of moves with file type changes
     void testMoveAndTypeChange()
     {
