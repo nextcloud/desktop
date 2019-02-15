@@ -665,13 +665,13 @@ void SocketApi::command_REPLACE_VIRTUAL_FILE(const QString &filesArg, SocketList
                     qCWarning(lcSocketApi) << "Unable to rename " << file;
                 }
             });
-            continue;
-        }
-        SyncJournalFileRecord record;
-        if (!folder->journalDb()->getFileRecord(relativePath, &record) || !record.isValid())
-            continue;
-        if (!FileSystem::rename(file, file + suffix)) {
-            qCWarning(lcSocketApi) << "Unable to rename " << file;
+        } else {
+            SyncJournalFileRecord record;
+            if (!folder->journalDb()->getFileRecord(relativePath, &record) || !record.isValid())
+                continue;
+            if (!FileSystem::rename(file, file + suffix)) {
+                qCWarning(lcSocketApi) << "Unable to rename " << file;
+            }
         }
         folder->slotWatchedPathChanged(file); // make sure it is in the _localDiscoveryTracker list
         FolderMan::instance()->scheduleFolder(folder);
