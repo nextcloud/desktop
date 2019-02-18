@@ -123,15 +123,20 @@ private:
 class SocketListener
 {
 public:
-    QIODevice *socket;
+    QPointer<QIODevice> socket;
 
-    SocketListener(QIODevice *socket = nullptr)
+    explicit SocketListener(QIODevice *socket)
         : socket(socket)
     {
     }
 
     void sendMessage(const QString &message, bool doWait = false) const
     {
+        if (!socket) {
+            qCInfo(lcSocketApi) << "Not sending message to dead socket:" << message;
+            return;
+        }
+
         qCInfo(lcSocketApi) << "Sending SocketAPI message -->" << message << "to" << socket;
         QString localMessage = message;
         if (!localMessage.endsWith(QLatin1Char('\n'))) {
@@ -286,7 +291,19 @@ void SocketApi::slotReadSocket()
 {
     auto *socket = qobject_cast<QIODevice *>(sender());
     ASSERT(socket);
-    SocketListener *listener = &*std::find_if(_listeners.begin(), _listeners.end(), ListenerHasSocketPred(socket));
+
+    // Find the SocketListener
+    //
+    // It's possible for the disconnected() signal to be triggered before
+    // the readyRead() signals are received - in that case there won't be a
+    // valid listener. We execute the handler anyway, but it will work with
+    // a SocketListener that doesn't send any messages.
+    static auto noListener = SocketListener(nullptr);
+    SocketListener *listener = &noListener;
+    auto listenerIt = std::find_if(_listeners.begin(), _listeners.end(), ListenerHasSocketPred(socket));
+    if (listenerIt != _listeners.end()) {
+        listener = &*listenerIt;
+    }
 
     while (socket->canReadLine()) {
         // Make sure to normalize the input from the socket to
