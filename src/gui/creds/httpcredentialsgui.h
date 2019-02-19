@@ -33,13 +33,14 @@ public:
         : HttpCredentials()
     {
     }
-    HttpCredentialsGui(const QString &user, const QString &password, const QSslCertificate &certificate, const QSslKey &key)
-        : HttpCredentials(user, password, certificate, key)
+    HttpCredentialsGui(const QString &user, const QString &password,
+            const QByteArray &clientCertBundle, const QByteArray &clientCertPassword)
+        : HttpCredentials(user, password, clientCertBundle, clientCertPassword)
     {
     }
     HttpCredentialsGui(const QString &user, const QString &password, const QString &refreshToken,
-        const QSslCertificate &certificate, const QSslKey &key)
-        : HttpCredentials(user, password, certificate, key)
+            const QByteArray &clientCertBundle, const QByteArray &clientCertPassword)
+        : HttpCredentials(user, password, clientCertBundle, clientCertPassword)
     {
         _refreshToken = refreshToken;
     }
