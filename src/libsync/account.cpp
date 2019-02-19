@@ -327,9 +327,9 @@ QVariant Account::credentialSetting(const QString &key) const
 {
     if (_credentials) {
         QString prefix = _credentials->authType();
-        QString value = _settingsMap.value(prefix + "_" + key).toString();
-        if (value.isEmpty()) {
-            value = _settingsMap.value(key).toString();
+        QVariant value = _settingsMap.value(prefix + "_" + key);
+        if (value.isNull()) {
+            value = _settingsMap.value(key);
         }
         return value;
     }

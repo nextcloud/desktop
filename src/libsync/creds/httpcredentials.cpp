@@ -42,6 +42,8 @@ Q_LOGGING_CATEGORY(lcHttpCredentials, "sync.credentials.http", QtInfoMsg)
 namespace {
     const char userC[] = "user";
     const char isOAuthC[] = "oauth";
+    const char clientCertBundleC[] = "clientCertPkcs12";
+    const char clientCertPasswordC[] = "_clientCertPassword";
     const char clientCertificatePEMC[] = "_clientCertificatePEM";
     const char clientKeyPEMC[] = "_clientKeyPEM";
     const char authenticationFailedC[] = "owncloud-authentication-failed";
@@ -112,15 +114,18 @@ static void addSettingsToJob(Account *account, QKeychain::Job *job)
 }
 
 // From wizard
-HttpCredentials::HttpCredentials(const QString &user, const QString &password, const QSslCertificate &certificate, const QSslKey &key)
+HttpCredentials::HttpCredentials(const QString &user, const QString &password, const QByteArray &clientCertBundle, const QByteArray &clientCertPassword)
     : _user(user)
     , _password(password)
     , _ready(true)
-    , _clientSslKey(key)
-    , _clientSslCertificate(certificate)
+    , _clientCertBundle(clientCertBundle)
+    , _clientCertPassword(clientCertPassword)
     , _keychainMigration(false)
     , _retryOnKeyChainError(false)
 {
+    if (!unpackClientCertBundle()) {
+        ASSERT(false, "pkcs12 client cert bundle passed to HttpCredentials must be valid");
+    }
 }
 
 QString HttpCredentials::authType() const
@@ -191,7 +196,20 @@ void HttpCredentials::fetchFromKeychain()
 
 void HttpCredentials::fetchFromKeychainHelper()
 {
-    // Read client cert from keychain
+    _clientCertBundle = _account->credentialSetting(QLatin1String(clientCertBundleC)).toByteArray();
+    if (!_clientCertBundle.isEmpty()) {
+        // New case (>=2.6): We have a bundle in the settings and read the password from
+        // the keychain
+        ReadPasswordJob *job = new ReadPasswordJob(Theme::instance()->appName());
+        addSettingsToJob(_account, job);
+        job->setInsecureFallback(false);
+        job->setKey(keychainKey(_account->url().toString(), _user + clientCertPasswordC, _account->id()));
+        connect(job, &Job::finished, this, &HttpCredentials::slotReadClientCertPasswordJobDone);
+        job->start();
+        return;
+    }
+
+    // Old case (pre 2.6): Read client cert and then key from keychain
     const QString kck = keychainKey(
         _account->url().toString(),
         _user + clientCertificatePEMC,
@@ -220,7 +238,7 @@ void HttpCredentials::deleteOldKeychainEntries()
     startDeleteJob(_user + clientCertificatePEMC);
 }
 
-void HttpCredentials::slotReadClientCertPEMJobDone(QKeychain::Job *incoming)
+bool HttpCredentials::keychainUnavailableRetryLater(QKeychain::Job *incoming)
 {
 #if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
     Q_ASSERT(!incoming->insecureFallback()); // If insecureFallback is set, the next test would be pointless
@@ -232,10 +250,38 @@ void HttpCredentials::slotReadClientCertPEMJobDone(QKeychain::Job *incoming)
         qCInfo(lcHttpCredentials) << "Backend unavailable (yet?) Retrying in a few seconds." << incoming->errorString();
         QTimer::singleShot(10000, this, &HttpCredentials::fetchFromKeychainHelper);
         _retryOnKeyChainError = false;
-        return;
+        return true;
     }
-    _retryOnKeyChainError = false;
 #endif
+    _retryOnKeyChainError = false;
+    return false;
+}
+
+void HttpCredentials::slotReadClientCertPasswordJobDone(QKeychain::Job *job)
+{
+    if (keychainUnavailableRetryLater(job))
+        return;
+
+    ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(job);
+    if (readJob->error() == NoError) {
+        _clientCertPassword = readJob->binaryData();
+    } else {
+        qCWarning(lcHttpCredentials) << "Could not retrieve client cert password from keychain" << job->errorString();
+    }
+
+    if (!unpackClientCertBundle()) {
+        qCWarning(lcHttpCredentials) << "Could not unpack client cert bundle";
+    }
+    _clientCertBundle.clear();
+    _clientCertPassword.clear();
+
+    slotReadPasswordFromKeychain();
+}
+
+void HttpCredentials::slotReadClientCertPEMJobDone(QKeychain::Job *incoming)
+{
+    if (keychainUnavailableRetryLater(incoming))
+        return;
 
     // Store PEM in memory
     ReadPasswordJob *readJob = static_cast<ReadPasswordJob *>(incoming);
@@ -281,7 +327,11 @@ void HttpCredentials::slotReadClientKeyPEMJobDone(QKeychain::Job *incoming)
         }
     }
 
-    // Now fetch the actual server password
+    slotReadPasswordFromKeychain();
+}
+
+void HttpCredentials::slotReadPasswordFromKeychain()
+{
     const QString kck = keychainKey(
         _account->url().toString(),
         _user,
@@ -467,10 +517,32 @@ void HttpCredentials::persist()
 
     _account->setCredentialSetting(QLatin1String(userC), _user);
     _account->setCredentialSetting(QLatin1String(isOAuthC), isUsingOAuth());
+    if (!_clientCertBundle.isEmpty()) {
+        // Note that the _clientCertBundle will often be cleared after usage,
+        // it's just written if it gets passed into the constructor.
+        _account->setCredentialSetting(QLatin1String(clientCertBundleC), _clientCertBundle);
+    }
     _account->wantsAccountSaved(_account);
 
-    // write cert if there is one
-    if (!_clientSslCertificate.isNull()) {
+    // write secrets to the keychain
+    if (!_clientCertBundle.isEmpty()) {
+        // Option 1: If we have a pkcs12 bundle, that'll be written to the config file
+        // and we'll just store the bundle password in the keychain. That's prefered
+        // since the keychain on older Windows platforms can only store a limited number
+        // of bytes per entry and key/cert may exceed that.
+        WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
+        addSettingsToJob(_account, job);
+        job->setInsecureFallback(false);
+        connect(job, &Job::finished, this, &HttpCredentials::slotWriteClientCertPasswordJobDone);
+        job->setKey(keychainKey(_account->url().toString(), _user + clientCertPasswordC, _account->id()));
+        job->setBinaryData(_clientCertPassword);
+        job->start();
+        _clientCertBundle.clear();
+        _clientCertPassword.clear();
+    } else if (_account->credentialSetting(QLatin1String(clientCertBundleC)).isNull() && !_clientSslCertificate.isNull()) {
+        // Option 2, pre 2.6 configs: We used to store the raw cert/key in the keychain and
+        // still do so if no bundle is available. We can't currently migrate to Option 1
+        // because we have no functions for creating an encrypted pkcs12 bundle.
         WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
         addSettingsToJob(_account, job);
         job->setInsecureFallback(false);
@@ -479,8 +551,19 @@ void HttpCredentials::persist()
         job->setBinaryData(_clientSslCertificate.toPem());
         job->start();
     } else {
-        slotWriteClientCertPEMJobDone(nullptr);
+        // Option 3: no client certificate at all (or doesn't need to be written)
+        slotWritePasswordToKeychain();
     }
+}
+
+void HttpCredentials::slotWriteClientCertPasswordJobDone(Job *finishedJob)
+{
+    if (finishedJob && finishedJob->error() != QKeychain::NoError) {
+        qCWarning(lcHttpCredentials) << "Could not write client cert password to credentials"
+                                     << finishedJob->error() << finishedJob->errorString();
+    }
+
+    slotWritePasswordToKeychain();
 }
 
 void HttpCredentials::slotWriteClientCertPEMJobDone(Job *finishedJob)
@@ -511,6 +594,11 @@ void HttpCredentials::slotWriteClientKeyPEMJobDone(Job *finishedJob)
                                      << finishedJob->error() << finishedJob->errorString();
     }
 
+    slotWritePasswordToKeychain();
+}
+
+void HttpCredentials::slotWritePasswordToKeychain()
+{
     WritePasswordJob *job = new WritePasswordJob(Theme::instance()->appName());
     addSettingsToJob(_account, job);
     job->setInsecureFallback(false);
@@ -558,6 +646,18 @@ bool HttpCredentials::retryIfNeeded(AbstractNetworkJob *job)
         job->retry();
     }
     return true;
+}
+
+bool HttpCredentials::unpackClientCertBundle()
+{
+    if (_clientCertBundle.isEmpty())
+        return true;
+
+    QBuffer certBuffer(&_clientCertBundle);
+    certBuffer.open(QIODevice::ReadOnly);
+    QList<QSslCertificate> clientCaCertificates;
+    return QSslCertificate::importPkcs12(
+            &certBuffer, &_clientSslKey, &_clientSslCertificate, &clientCaCertificates, _clientCertPassword);
 }
 
 } // namespace OCC

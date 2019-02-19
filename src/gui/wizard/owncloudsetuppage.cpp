@@ -22,6 +22,7 @@
 #include <QSsl>
 #include <QSslCertificate>
 #include <QNetworkAccessManager>
+#include <QBuffer>
 
 #include "QProgressIndicator.h"
 
@@ -295,12 +296,20 @@ void OwncloudSetupPage::slotCertificateAccepted()
     QList<QSslCertificate> clientCaCertificates;
     QFile certFile(addCertDial->getCertificatePath());
     certFile.open(QFile::ReadOnly);
-    if (QSslCertificate::importPkcs12(&certFile,
+    QByteArray certData = certFile.readAll();
+    QByteArray certPassword = addCertDial->getCertificatePasswd().toLocal8Bit();
+
+    QBuffer certDataBuffer(&certData);
+    certDataBuffer.open(QIODevice::ReadOnly);
+    if (QSslCertificate::importPkcs12(&certDataBuffer,
             &_ocWizard->_clientSslKey, &_ocWizard->_clientSslCertificate,
-            &clientCaCertificates,
-            addCertDial->getCertificatePasswd().toLocal8Bit())) {
-        // The SSL cert gets added to the QSslConfiguration in checkServer()
+            &clientCaCertificates, certPassword)) {
+        _ocWizard->_clientCertBundle = certData;
+        _ocWizard->_clientCertPassword = certPassword;
+
         addCertDial->reinit(); // FIXME: Why not just have this only created on use?
+
+        // The extracted SSL key and cert gets added to the QSslConfiguration in checkServer()
         validatePage();
     } else {
         addCertDial->showErrorMessage(tr("Could not load certificate. Maybe wrong password?"));

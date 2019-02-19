@@ -123,7 +123,7 @@ AbstractCredentials *OwncloudOAuthCredsPage::getCredentials() const
     OwncloudWizard *ocWizard = qobject_cast<OwncloudWizard *>(wizard());
     Q_ASSERT(ocWizard);
     return new HttpCredentialsGui(_user, _token, _refreshToken,
-        ocWizard->_clientSslCertificate, ocWizard->_clientSslKey);
+        ocWizard->_clientCertBundle, ocWizard->_clientCertPassword);
 }
 
 bool OwncloudOAuthCredsPage::isComplete() const

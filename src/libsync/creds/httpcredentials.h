@@ -80,7 +80,8 @@ public:
     static constexpr QNetworkRequest::Attribute DontAddCredentialsAttribute = QNetworkRequest::User;
 
     HttpCredentials() = default;
-    explicit HttpCredentials(const QString &user, const QString &password, const QSslCertificate &certificate = QSslCertificate(), const QSslKey &key = QSslKey());
+    explicit HttpCredentials(const QString &user, const QString &password,
+            const QByteArray &clientCertBundle = QByteArray(), const QByteArray &clientCertPassword = QByteArray());
 
     QString authType() const Q_DECL_OVERRIDE;
     QNetworkAccessManager *createQNAM() const Q_DECL_OVERRIDE;
@@ -112,12 +113,18 @@ public:
 private Q_SLOTS:
     void slotAuthentication(QNetworkReply *, QAuthenticator *);
 
+    void slotReadClientCertPasswordJobDone(QKeychain::Job *);
     void slotReadClientCertPEMJobDone(QKeychain::Job *);
     void slotReadClientKeyPEMJobDone(QKeychain::Job *);
+
+    void slotReadPasswordFromKeychain();
     void slotReadJobDone(QKeychain::Job *);
 
+    void slotWriteClientCertPasswordJobDone(QKeychain::Job *);
     void slotWriteClientCertPEMJobDone(QKeychain::Job *);
     void slotWriteClientKeyPEMJobDone(QKeychain::Job *);
+
+    void slotWritePasswordToKeychain();
     void slotWriteJobDone(QKeychain::Job *);
 
 protected:
@@ -133,6 +140,22 @@ protected:
     /// Wipes legacy keychain locations
     void deleteOldKeychainEntries();
 
+    /** Whether to bow out now because a retry will happen later
+     *
+     * Sometimes the keychain needs a while to become available.
+     * This function should be called on first keychain-read to check
+     * whether it errored because the keychain wasn't available yet.
+     * If that happens, this function will schedule another try and
+     * return true.
+     */
+    bool keychainUnavailableRetryLater(QKeychain::Job *);
+
+    /** Takes client cert pkcs12 and unwraps the key/cert.
+     *
+     * Returns false on failure.
+     */
+    bool unpackClientCertBundle();
+
     QString _user;
     QString _password; // user's password, or access_token for OAuth
     QString _refreshToken; // OAuth _refreshToken, set if OAuth is used.
@@ -141,6 +164,8 @@ protected:
     QString _fetchErrorString;
     bool _ready = false;
     bool _isRenewingOAuthToken = false;
+    QByteArray _clientCertBundle;
+    QByteArray _clientCertPassword;
     QSslKey _clientSslKey;
     QSslCertificate _clientSslCertificate;
     bool _keychainMigration = false;

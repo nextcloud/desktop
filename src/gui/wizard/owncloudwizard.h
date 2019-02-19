@@ -78,8 +78,10 @@ public:
 
     // FIXME: Can those be local variables?
     // Set from the OwncloudSetupPage, later used from OwncloudHttpCredsPage
-    QSslKey _clientSslKey;
-    QSslCertificate _clientSslCertificate;
+    QByteArray _clientCertBundle; // raw, potentially encrypted pkcs12 bundle provided by the user
+    QByteArray _clientCertPassword; // password for the pkcs12
+    QSslKey _clientSslKey; // key extracted from pkcs12
+    QSslCertificate _clientSslCertificate; // cert extracted from pkcs12
 
 public slots:
     void setAuthType(DetermineAuthTypeJob::AuthType type);
