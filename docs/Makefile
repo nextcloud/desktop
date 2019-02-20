@@ -1,8 +1,8 @@
 # Makefile for the documentation
 
-SHELL ?= bash
+SHELL = bash
 
-FONTS_DIR = fonts
+FONTS_DIR ?= fonts
 STYLES_DIR ?= resources/themes
 
 STYLE ?= owncloud
