@@ -1,6 +1,12 @@
 ChangeLog
 =========
 
+version 2.5.4 (unreleased, changelog up to 710a2af6b5496df4ee5cfe13a9c407cf27979de2)
+* Crash fix: Infinite recursion for bad paths on Windows (#7041)
+* Crash fix: SocketApi mustn't send if readyRead happens after disconnected (#7044)
+* OSX: Opt out of dark mode until problems can be addressed (#7043)
+* Client cert dialog: Avoid incorrect behavior due to multiple signal connections
+
 version 2.5.3 (2019-02-07)
 * Connectivity: Add a noUnauthedRequests branding option
 * Credentials: Warn in log if keychain-write jobs fail (#6776)
