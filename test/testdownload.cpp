@@ -8,6 +8,7 @@
 #include <QtTest>
 #include "syncenginetestutils.h"
 #include <syncengine.h>
+#include <owncloudpropagator.h>
 
 using namespace OCC;
 
@@ -144,6 +145,66 @@ private slots:
         // FatalError means the sync was aborted, which is what we want
         QCOMPARE(getItem(completeSpy, "A/broken")->_status, SyncFileItem::FatalError);
         QVERIFY(getItem(completeSpy, "A/broken")->_errorString.contains("System in maintenance mode"));
+    }
+
+    void testMoveFailsInAConflict() {
+#ifdef Q_OS_WIN
+        QSKIP("Not run on windows because permission on directory does not do what is expected");
+#endif
+        // Test for https://github.com/owncloud/client/issues/7015
+        // We want to test the case in which the renaming of the original to the conflict file succeeds,
+        // but renaming the temporary file fails.
+        // This tests uses the fact that a "touchedFile" notification will be sent at the right moment.
+        // Note that there will be first a notification on the file and the conflict file before.
+
+        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
+        fakeFolder.remoteModifier().setContents("A/a1", 'A');
+        fakeFolder.localModifier().setContents("A/a1", 'B');
+
+        bool propConnected = false;
+        QString conflictFile;
+        auto transProgress = connect(&fakeFolder.syncEngine(), &SyncEngine::transmissionProgress,
+                                     [&](const ProgressInfo &pi) {
+            auto propagator = fakeFolder.syncEngine().getPropagator();
+            if (pi.status() != ProgressInfo::Propagation || propConnected || !propagator)
+                return;
+            propConnected = true;
+            connect(propagator.data(), &OwncloudPropagator::touchedFile, [&](const QString &s) {
+                if (s.contains("conflicted copy")) {
+                    QCOMPARE(conflictFile, QString());
+                    conflictFile = s;
+                    return;
+                }
+                if (!conflictFile.isEmpty()) {
+                    // Check that the temporary file is still there
+                    QCOMPARE(QDir(fakeFolder.localPath() + "A/").entryList({"*.~*"}, QDir::Files | QDir::Hidden).count(), 1);
+                    // Set the permission to read only on the folder, so the rename of the temporary file will fail
+                    QFile(fakeFolder.localPath() + "A/").setPermissions(QFile::Permissions(0x5555));
+                }
+            });
+        });
+
+        QVERIFY(!fakeFolder.syncOnce()); // The sync must fail because the rename failed
+        QVERIFY(!conflictFile.isEmpty());
+
+        // restore permissions
+        QFile(fakeFolder.localPath() + "A/").setPermissions(QFile::Permissions(0x7777));
+
+        QObject::disconnect(transProgress);
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &, QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::GetOperation)
+                QTest::qFail("There shouldn't be any download", __FILE__, __LINE__);
+            return nullptr;
+        });
+        QVERIFY(fakeFolder.syncOnce());
+
+        // The a1 file is still tere and have the right content
+        QVERIFY(fakeFolder.currentRemoteState().find("A/a1"));
+        QCOMPARE(fakeFolder.currentRemoteState().find("A/a1")->contentChar, 'A');
+
+        QVERIFY(QFile::remove(conflictFile)); // So the comparison succeeds;
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 };
 

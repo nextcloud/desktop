@@ -134,6 +134,8 @@ public:
      */
     static void wipeVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs);
 
+    auto getPropagator() { return _propagator; } // for the test
+
 signals:
     // During update, before reconcile
     void rootEtag(QString);

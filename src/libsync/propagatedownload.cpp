@@ -1004,19 +1004,6 @@ void PropagateDownloadFile::downloadFinished()
     // The fileChanged() check is done above to generate better error messages.
     if (!FileSystem::uncheckedRenameReplace(_tmpFile.fileName(), fn, &error)) {
         qCWarning(lcPropagateDownload) << QString("Rename failed: %1 => %2").arg(_tmpFile.fileName()).arg(fn);
-
-        // If we moved away the original file due to a conflict but can't
-        // put the downloaded file in its place, we are in a bad spot:
-        // If we do nothing the next sync run will assume the user deleted
-        // the file!
-        // To avoid that, the file is removed from the metadata table entirely
-        // which makes it look like we're just about to initially download
-        // it.
-        if (isConflict) {
-            propagator()->_journal->deleteFileRecord(fn);
-            propagator()->_journal->commit("download finished");
-        }
-
         // If the file is locked, we want to retry this sync when it
         // becomes available again, otherwise try again directly
         if (FileSystem::isFileLocked(fn)) {
