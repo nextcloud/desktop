@@ -13,7 +13,6 @@ Some weeks before the release:
 * [ ] Ensure up-to-date dependencies (e.g. [latest Qt version](http://qt-project.org/downloads#qt-lib) is installed on the machine and picked up (cmake output)
 * [ ] Ensure the crash reporter server is up
 * [ ] Check crash reporter for bad crashes
-* [ ] Ensure Windows Overlay DLLs are rebuilt
 * [ ] Check nightly builds are up and running, that is Jenkins jobs ownCloud-client-linux, ownCloud-client-osx and ownCloud-client-win32 all green.
 * [ ] Ensure Linux nightlies are built too for all distros https://build.opensuse.org/package/show/isv:ownCloud:community:nightly/owncloud-client
   * Check if patches still apply in the linux packages
