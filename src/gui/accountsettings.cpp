@@ -261,7 +261,12 @@ void AccountSettings::slotToggleSignInState()
 
 void AccountSettings::doExpand()
 {
-    _ui->_folderList->expandToDepth(0);
+    // Make sure at least the root items are expanded
+    for (int i = 0; i < _model->rowCount(); ++i) {
+        auto idx = _model->index(i);
+        if (!_ui->_folderList->isExpanded(idx))
+            _ui->_folderList->setExpanded(idx, true);
+    }
 }
 
 void AccountSettings::slotShowMnemonic(const QString &mnemonic) {
