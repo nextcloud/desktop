@@ -252,7 +252,12 @@ void AccountSettings::slotToggleSignInState()
 
 void AccountSettings::doExpand()
 {
-    ui->_folderList->expandToDepth(0);
+    // Make sure at least the root items are expanded
+    for (int i = 0; i < _model->rowCount(); ++i) {
+        auto idx = _model->index(i);
+        if (!ui->_folderList->isExpanded(idx))
+            ui->_folderList->setExpanded(idx, true);
+    }
 }
 
 void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
