@@ -354,7 +354,7 @@ public:
     }
 };
 
-class OwncloudPropagator : public QObject
+class OWNCLOUDSYNC_EXPORT OwncloudPropagator : public QObject
 {
     Q_OBJECT
 public:

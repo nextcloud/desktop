@@ -126,6 +126,8 @@ public:
     /** Access the last sync run's local discovery style */
     LocalDiscoveryStyle lastLocalDiscoveryStyle() const { return _lastLocalDiscoveryStyle; }
 
+    auto getPropagator() { return _propagator; } // for the test
+
 signals:
     void csyncUnavailable();
 
