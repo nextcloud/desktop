@@ -1,10 +1,14 @@
 ChangeLog
 =========
 
-version 2.5.4 (unreleased, changelog up to 710a2af6b5496df4ee5cfe13a9c407cf27979de2)
+version 2.5.4 (unreleased, changelog up to 62c60f27641d8b80dfc219230348ff92b139e180)
 * Crash fix: Infinite recursion for bad paths on Windows (#7041)
 * Crash fix: SocketApi mustn't send if readyRead happens after disconnected (#7044)
+* Disable HTTP2 support due to bugs in Qt 5.12.1 (#7020, QTBUG-73947)
+* Windows: Fix breaking of unrelated explorer actions (#7004, #7023)
 * OSX: Opt out of dark mode until problems can be addressed (#7043)
+* OSX: Fix folder dehydration requests (#6977)
+* Selective sync: Don't collapse folder tree when changing selection (#7055)
 * Client cert dialog: Avoid incorrect behavior due to multiple signal connections
 
 version 2.5.3 (2019-02-07)
