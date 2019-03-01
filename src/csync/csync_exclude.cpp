@@ -202,8 +202,14 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const char *path, bool excludeC
     }
 
     // Filter out characters not allowed in a filename on windows
+    // see https://docs.microsoft.com/en-us/windows/desktop/fileio/naming-a-file
     for (const char *p = path; *p; p++) {
-        switch (*p) {
+        unsigned char c = *p;
+        if (c < 32) {
+            match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+            goto out;
+        }
+        switch (c) {
         case '\\':
         case ':':
         case '?':

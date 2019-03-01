@@ -197,10 +197,10 @@ static void check_csync_excluded(void **)
 
 #ifdef _WIN32
     assert_int_equal(exclude_check_file("file_trailing_space "), CSYNC_FILE_EXCLUDE_TRAILING_SPACE);
-
     assert_int_equal(exclude_check_file("file_trailing_dot."), CSYNC_FILE_EXCLUDE_INVALID_CHAR);
     assert_int_equal(exclude_check_file("AUX"), CSYNC_FILE_EXCLUDE_INVALID_CHAR);
     assert_int_equal(exclude_check_file("file_invalid_char<"), CSYNC_FILE_EXCLUDE_INVALID_CHAR);
+    assert_int_equal(exclude_check_file("file_invalid_char\n"), CSYNC_FILE_EXCLUDE_INVALID_CHAR);
 #endif
 
     /* ? character */
@@ -301,6 +301,7 @@ static void check_csync_excluded_traversal(void **)
     assert_int_equal(check_file_traversal("file_trailing_dot."), CSYNC_FILE_EXCLUDE_INVALID_CHAR);
     assert_int_equal(check_file_traversal("AUX"), CSYNC_FILE_EXCLUDE_INVALID_CHAR);
     assert_int_equal(check_file_traversal("file_invalid_char<"), CSYNC_FILE_EXCLUDE_INVALID_CHAR);
+    assert_int_equal(check_file_traversal("file_invalid_char\n"), CSYNC_FILE_EXCLUDE_INVALID_CHAR);
 #endif
 
 
