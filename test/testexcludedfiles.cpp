@@ -193,10 +193,10 @@ private slots:
 
     #ifdef _WIN32
         QCOMPARE(check_file_full("file_trailing_space "), CSYNC_FILE_EXCLUDE_TRAILING_SPACE);
-
         QCOMPARE(check_file_full("file_trailing_dot."), CSYNC_FILE_EXCLUDE_INVALID_CHAR);
         QCOMPARE(check_file_full("AUX"), CSYNC_FILE_EXCLUDE_INVALID_CHAR);
         QCOMPARE(check_file_full("file_invalid_char<"), CSYNC_FILE_EXCLUDE_INVALID_CHAR);
+        QCOMPARE(check_file_full("file_invalid_char\n"), CSYNC_FILE_EXCLUDE_INVALID_CHAR);
     #endif
 
         /* ? character */

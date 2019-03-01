@@ -187,7 +187,11 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
 
     // Filter out characters not allowed in a filename on windows
     for (auto p : path) {
-        switch (p.unicode()) {
+        const ushort c = p.unicode();
+        if (c < 32) {
+            return CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+        }
+        switch (c) {
         case '\\':
         case ':':
         case '?':
