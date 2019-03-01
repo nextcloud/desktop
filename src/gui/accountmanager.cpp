@@ -16,6 +16,7 @@
 #include "configfile.h"
 #include "sslerrordialog.h"
 #include "proxyauthhandler.h"
+#include "common/asserts.h"
 #include <theme.h>
 #include <creds/credentialsfactory.h>
 #include <creds/abstractcredentials.h>
@@ -82,6 +83,10 @@ bool AccountManager::restore()
             if (auto acc = loadAccountHelper(*settings)) {
                 acc->_id = accountId;
                 if (auto accState = AccountState::loadFromSettings(acc, *settings)) {
+                    auto jar = qobject_cast<CookieJar*>(acc->_am->cookieJar());
+                    ASSERT(jar);
+                    if (jar)
+                        jar->restore(acc->cookieJarPath());
                     addAccountState(accState);
                 }
             }
