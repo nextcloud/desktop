@@ -3366,7 +3366,7 @@ Uzi ĝin ne konsilindas.</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="199"/>
         <source>Invalid certificate detected</source>
-        <translation type="unfinished"/>
+        <translation>Nevalida atestilo eltrovita</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="200"/>
@@ -3775,7 +3775,7 @@ Uzi ĝin ne konsilindas.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="288"/>
         <source>Server Address</source>
-        <translation type="unfinished"/>
+        <translation>Servila adreso</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="304"/>
