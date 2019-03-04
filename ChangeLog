@@ -4,6 +4,7 @@ ChangeLog
 version 2.5.4 (unreleased)
 * Crash fix: Infinite recursion for bad paths on Windows (#7041)
 * Crash fix: SocketApi mustn't send if readyRead happens after disconnected (#7044)
+* Fix rare sync error causing spurious local deletes (#6677)
 * Disable HTTP2 support due to bugs in Qt 5.12.1 (#7020, QTBUG-73947)
 * Fix loading of persisted cookies when loading accounts (#7054)
 * Windows: Fix breaking of unrelated explorer actions (#7004, #7023)

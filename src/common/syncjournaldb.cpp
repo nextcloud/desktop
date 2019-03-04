@@ -515,7 +515,7 @@ bool SyncJournalDb::checkConnect()
     bool forceRemoteDiscovery = false;
 
     SqlQuery versionQuery("SELECT major, minor, patch FROM version;", _db);
-    if (!versionQuery.next()) {
+    if (!versionQuery.next().hasData) {
         // If there was no entry in the table, it means we are likely upgrading from 1.5
         qCInfo(lcDb) << "possibleUpgradeFromMirall_1_5 detected!";
         forceRemoteDiscovery = true;
@@ -829,7 +829,7 @@ QVector<QByteArray> SyncJournalDb::tableColumns(const QByteArray &table)
     if (!query.exec()) {
         return columns;
     }
-    while (query.next()) {
+    while (query.next().hasData) {
         columns.append(query.baValue(1));
     }
     qCDebug(lcDb) << "Columns in the current journal: " << columns;
@@ -984,15 +984,15 @@ bool SyncJournalDb::getFileRecord(const QByteArray &filename, SyncJournalFileRec
             return false;
         }
 
-        if (_getFileRecordQuery.next()) {
+        auto next = _getFileRecordQuery.next();
+        if (!next.ok) {
+            QString err = _getFileRecordQuery.error();
+            qCWarning(lcDb) << "No journal entry found for " << filename << "Error: " << err;
+            close();
+            return false;
+        }
+        if (next.hasData) {
             fillFileRecordFromGetQuery(*rec, _getFileRecordQuery);
-        } else {
-            int errId = _getFileRecordQuery.errorId();
-            if (errId != SQLITE_DONE) { // only do this if the problem is different from SQLITE_DONE
-                QString err = _getFileRecordQuery.error();
-                qCWarning(lcDb) << "No journal entry found for " << filename << "Error: " << err;
-                close();
-            }
         }
     }
     return true;
@@ -1021,7 +1021,10 @@ bool SyncJournalDb::getFileRecordByInode(quint64 inode, SyncJournalFileRecord *r
     if (!_getFileRecordQueryByInode.exec())
         return false;
 
-    if (_getFileRecordQueryByInode.next())
+    auto next = _getFileRecordQueryByInode.next();
+    if (!next.ok)
+        return false;
+    if (next.hasData)
         fillFileRecordFromGetQuery(*rec, _getFileRecordQueryByInode);
 
     return true;
@@ -1045,7 +1048,13 @@ bool SyncJournalDb::getFileRecordsByFileId(const QByteArray &fileId, const std::
     if (!_getFileRecordQueryByFileId.exec())
         return false;
 
-    while (_getFileRecordQueryByFileId.next()) {
+    forever {
+        auto next = _getFileRecordQueryByFileId.next();
+        if (!next.ok)
+            return false;
+        if (!next.hasData)
+            break;
+
         SyncJournalFileRecord rec;
         fillFileRecordFromGetQuery(rec, _getFileRecordQueryByFileId);
         rowCallback(rec);
@@ -1097,7 +1106,13 @@ bool SyncJournalDb::getFilesBelowPath(const QByteArray &path, const std::functio
         return false;
     }
 
-    while (query->next()) {
+    forever {
+        auto next = query->next();
+        if (!next.ok)
+            return false;
+        if (!next.hasData)
+            break;
+
         SyncJournalFileRecord rec;
         fillFileRecordFromGetQuery(rec, *query);
         rowCallback(rec);
@@ -1124,7 +1139,13 @@ bool SyncJournalDb::postSyncCleanup(const QSet<QString> &filepathsToKeep,
 
     QByteArrayList superfluousItems;
 
-    while (query.next()) {
+    forever {
+        auto next = query.next();
+        if (!next.ok)
+            return false;
+        if (!next.hasData)
+            break;
+
         const QString file = query.baValue(1);
         bool keep = filepathsToKeep.contains(file);
         if (!keep) {
@@ -1167,7 +1188,7 @@ int SyncJournalDb::getFileRecordCount()
         return -1;
     }
 
-    if (query.next()) {
+    if (query.next().hasData) {
         int count = query.intValue(0);
         return count;
     }
@@ -1301,10 +1322,8 @@ SyncJournalDb::DownloadInfo SyncJournalDb::getDownloadInfo(const QString &file)
             return res;
         }
 
-        if (_getDownloadInfoQuery.next()) {
+        if (_getDownloadInfoQuery.next().hasData) {
             toDownloadInfo(_getDownloadInfoQuery, &res);
-        } else {
-            res._valid = false;
         }
     }
     return res;
@@ -1358,7 +1377,7 @@ QVector<SyncJournalDb::DownloadInfo> SyncJournalDb::getAndDeleteStaleDownloadInf
     QStringList superfluousPaths;
     QVector<SyncJournalDb::DownloadInfo> deleted_entries;
 
-    while (query.next()) {
+    while (query.next().hasData) {
         const QString file = query.stringValue(3); // path
         if (!keep.contains(file)) {
             superfluousPaths.append(file);
@@ -1385,7 +1404,7 @@ int SyncJournalDb::downloadInfoCount()
         if (!query.exec()) {
             sqlFail("Count number of downloadinfo entries failed", query);
         }
-        if (query.next()) {
+        if (query.next().hasData) {
             re = query.intValue(0);
         }
     }
@@ -1410,7 +1429,7 @@ SyncJournalDb::UploadInfo SyncJournalDb::getUploadInfo(const QString &file)
             return res;
         }
 
-        if (_getUploadInfoQuery.next()) {
+        if (_getUploadInfoQuery.next().hasData) {
             bool ok = true;
             res._chunk = _getUploadInfoQuery.intValue(0);
             res._transferid = _getUploadInfoQuery.intValue(1);
@@ -1479,7 +1498,7 @@ QVector<uint> SyncJournalDb::deleteStaleUploadInfos(const QSet<QString> &keep)
 
     QStringList superfluousPaths;
 
-    while (query.next()) {
+    while (query.next().hasData) {
         const QString file = query.stringValue(0);
         if (!keep.contains(file)) {
             superfluousPaths.append(file);
@@ -1503,7 +1522,7 @@ SyncJournalErrorBlacklistRecord SyncJournalDb::errorBlacklistEntry(const QString
         _getErrorBlacklistQuery.reset_and_clear_bindings();
         _getErrorBlacklistQuery.bindValue(1, file);
         if (_getErrorBlacklistQuery.exec()) {
-            if (_getErrorBlacklistQuery.next()) {
+            if (_getErrorBlacklistQuery.next().hasData) {
                 entry._lastTryEtag = _getErrorBlacklistQuery.baValue(0);
                 entry._lastTryModtime = _getErrorBlacklistQuery.int64Value(1);
                 entry._retryCount = _getErrorBlacklistQuery.intValue(2);
@@ -1539,7 +1558,7 @@ bool SyncJournalDb::deleteStaleErrorBlacklistEntries(const QSet<QString> &keep)
 
     QStringList superfluousPaths;
 
-    while (query.next()) {
+    while (query.next().hasData) {
         const QString file = query.stringValue(0);
         if (!keep.contains(file)) {
             superfluousPaths.append(file);
@@ -1562,7 +1581,7 @@ int SyncJournalDb::errorBlackListEntryCount()
         if (!query.exec()) {
             sqlFail("Count number of blacklist entries failed", query);
         }
-        if (query.next()) {
+        if (query.next().hasData) {
             re = query.intValue(0);
         }
     }
@@ -1666,7 +1685,7 @@ QVector<SyncJournalDb::PollInfo> SyncJournalDb::getPollInfos()
         return res;
     }
 
-    while (query.next()) {
+    while (query.next().hasData) {
         PollInfo info;
         info._file = query.stringValue(0);
         info._modtime = query.int64Value(1);
@@ -1720,7 +1739,15 @@ QStringList SyncJournalDb::getSelectiveSyncList(SyncJournalDb::SelectiveSyncList
         *ok = false;
         return result;
     }
-    while (_getSelectiveSyncListQuery.next()) {
+    forever {
+        auto next = _getSelectiveSyncListQuery.next();
+        if (!next.ok) {
+            *ok = false;
+            return result;
+        }
+        if (!next.hasData)
+            break;
+
         auto entry = _getSelectiveSyncListQuery.stringValue(0);
         if (!entry.endsWith(QLatin1Char('/'))) {
             entry.append(QLatin1Char('/'));
@@ -1843,12 +1870,12 @@ QByteArray SyncJournalDb::getChecksumType(int checksumTypeId)
         return {};
     query.bindValue(1, checksumTypeId);
     if (!query.exec()) {
-        return 0;
+        return QByteArray();
     }
 
-    if (!query.next()) {
+    if (!query.next().hasData) {
         qCWarning(lcDb) << "No checksum type mapping found for" << checksumTypeId;
-        return 0;
+        return QByteArray();
     }
     return query.baValue(0);
 }
@@ -1875,7 +1902,7 @@ int SyncJournalDb::mapChecksumType(const QByteArray &checksumType)
         return 0;
     }
 
-    if (!_getChecksumTypeIdQuery.next()) {
+    if (!_getChecksumTypeIdQuery.next().hasData) {
         qCWarning(lcDb) << "No checksum type mapping found for" << checksumType;
         return 0;
     }
@@ -1896,7 +1923,7 @@ QByteArray SyncJournalDb::dataFingerprint()
         return QByteArray();
     }
 
-    if (!_getDataFingerprintQuery.next()) {
+    if (!_getDataFingerprintQuery.next().hasData) {
         return QByteArray();
     }
     return _getDataFingerprintQuery.baValue(0);
@@ -1951,7 +1978,7 @@ ConflictRecord SyncJournalDb::conflictRecord(const QByteArray &path)
     ASSERT(query.initOrReset(QByteArrayLiteral("SELECT baseFileId, baseModtime, baseEtag, basePath FROM conflicts WHERE path=?1;"), _db));
     query.bindValue(1, path);
     ASSERT(query.exec());
-    if (!query.next())
+    if (!query.next().hasData)
         return entry;
 
     entry.path = path;
@@ -1984,7 +2011,7 @@ QByteArrayList SyncJournalDb::conflictRecordPaths()
     ASSERT(query.exec());
 
     QByteArrayList paths;
-    while (query.next())
+    while (query.next().hasData)
         paths.append(query.baValue(0));
 
     return paths;

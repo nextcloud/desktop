@@ -71,7 +71,7 @@ private slots:
         q.prepare(sql);
 
         q.exec();
-        while( q.next() ) {
+        while( q.next().hasData ) {
             qDebug() << "Name: " << q.stringValue(1);
             qDebug() << "Address: " << q.stringValue(2);
         }
@@ -83,7 +83,7 @@ private slots:
         q.prepare(sql);
         q.bindValue(1, 2);
         q.exec();
-        if( q.next() ) {
+        if( q.next().hasData ) {
             qDebug() << "Name:" << q.stringValue(1);
             qDebug() << "Address:" << q.stringValue(2);
         }
@@ -96,7 +96,7 @@ private slots:
         int rc = q.prepare(sql);
         qDebug() << "Pragma:" << rc;
         q.exec();
-        if( q.next() ) {
+        if( q.next().hasData ) {
             qDebug() << "P:" << q.stringValue(1);
         }
     }
@@ -118,7 +118,7 @@ private slots:
         SqlQuery q(_db);
         q.prepare(sql);
 
-        if(q.next()) {
+        if(q.next().hasData) {
             QString name = q.stringValue(1);
             QString address = q.stringValue(2);
             QVERIFY( name == QString::fromUtf8("пятницы") );

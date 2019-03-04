@@ -338,10 +338,31 @@ bool SqlQuery::exec()
     return true;
 }
 
-bool SqlQuery::next()
+auto SqlQuery::next() -> NextResult
 {
-    SQLITE_DO(sqlite3_step(_stmt));
-    return _errId == SQLITE_ROW;
+    const bool firstStep = !sqlite3_stmt_busy(_stmt);
+
+    int n = 0;
+    forever {
+        _errId = sqlite3_step(_stmt);
+        if (n < SQLITE_REPEAT_COUNT && firstStep && (_errId == SQLITE_LOCKED || _errId == SQLITE_BUSY)) {
+            sqlite3_reset(_stmt); // not necessary after sqlite version 3.6.23.1
+            n++;
+            OCC::Utility::usleep(SQLITE_SLEEP_TIME_USEC);
+        } else {
+            break;
+        }
+    }
+
+    NextResult result;
+    result.ok = _errId == SQLITE_ROW || _errId == SQLITE_DONE;
+    result.hasData = _errId == SQLITE_ROW;
+    if (!result.ok) {
+        _error = QString::fromUtf8(sqlite3_errmsg(_db));
+        qCWarning(lcSql) << "Sqlite step statement error:" << _errId << _error << "in" << _sql;
+    }
+
+    return result;
 }
 
 void SqlQuery::bindValue(int pos, const QVariant &value)
