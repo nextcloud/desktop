@@ -186,8 +186,14 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
     }
 
     // Filter out characters not allowed in a filename on windows
+    // see https://docs.microsoft.com/en-us/windows/desktop/fileio/naming-a-file
     for (auto p : path) {
-        switch (p.unicode()) {
+        ushort c = p.unicode();
+        if (c < 32) {
+            match = CSYNC_FILE_EXCLUDE_INVALID_CHAR;
+            goto out;
+        }
+        switch (c) {
         case '\\':
         case ':':
         case '?':

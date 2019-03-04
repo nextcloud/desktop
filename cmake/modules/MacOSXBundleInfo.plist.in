@@ -27,7 +27,9 @@
         <key>CFBundleShortVersionString</key>
         <string>@MIRALL_VERSION_STRING@</string>
         <key>NSHumanReadableCopyright</key>
-        <string>(C) 2014-2018 @APPLICATION_VENDOR@</string>
+        <string>(C) 2014-2019 @APPLICATION_VENDOR@</string>
+        <key>NSRequiresAquaSystemAppearance</key>
+        <true/>
         <key>SUShowReleaseNotes</key>
         <false/>
         <key>SUPublicDSAKeyFile</key>

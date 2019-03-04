@@ -14,7 +14,6 @@ Some weeks before the release:
 * [ ] Ensure up-to-date dependencies (e.g. [latest Qt version](http://qt-project.org/downloads#qt-lib) is installed on the machine and picked up (cmake output)
 * [ ] Ensure the crash reporter server is up
 * [ ] Check crash reporter for bad crashes
-* [ ] Ensure Windows Overlay DLLs are rebuilt. Why? How?
 * [ ] Check daily builds are up and running, that is Jenkins.int jobs client-linux, client-osx and client-win32-msvc, client-win32--msvc-msi all green.
 * [ ] Ensure Linux daily builds are built too for all distros https://build.opensuse.org/package/show/isv:ownCloud:desktop:daily:2.X/owncloud-client
 * [ ] Build branded clients through the scripting machine and smoke test one or two branded clients (especially with predefined url)

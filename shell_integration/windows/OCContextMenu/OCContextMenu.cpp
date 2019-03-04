@@ -182,20 +182,38 @@ IFACEMETHODIMP OCContextMenu::InvokeCommand(LPCMINVOKECOMMANDINFO pici)
 {
     std::wstring command;
 
+    CMINVOKECOMMANDINFOEX *piciEx = nullptr;
+    if (pici->cbSize == sizeof(CMINVOKECOMMANDINFOEX))
+        piciEx = (CMINVOKECOMMANDINFOEX*)pici;
+
     // For the Unicode case, if the high-order word is not zero, the 
     // command's verb string is in lpcmi->lpVerbW. 
-    if (HIWORD(((CMINVOKECOMMANDINFOEX*)pici)->lpVerbW))
-    {
-        command = ((CMINVOKECOMMANDINFOEX *)pici)->lpVerbW;
-    } else {
+    if (piciEx
+        && (piciEx->fMask & CMIC_MASK_UNICODE)
+        && HIWORD(((CMINVOKECOMMANDINFOEX*)pici)->lpVerbW)) {
+
+        command = piciEx->lpVerbW;
+
+        // Verify that we handle the verb
+        bool handled = false;
+        for (auto &item : m_info.menuItems) {
+            if (item.command == command) {
+                handled = true;
+                break;
+            }
+        }
+        if (!handled)
+            return E_FAIL;
+    } else if (IS_INTRESOURCE(pici->lpVerb)) {
         // If the command cannot be identified through the verb string, then
         // check the identifier offset.
-
         auto offset = LOWORD(pici->lpVerb);
         if (offset >= m_info.menuItems.size())
             return E_FAIL;
 
         command = m_info.menuItems[offset].command;
+    } else {
+        return E_FAIL;
     }
 
     OCClientInterface::SendRequest(command.data(), m_selectedFiles);

@@ -96,7 +96,11 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
 #if QT_VERSION >= QT_VERSION_CHECK(5, 9, 4)
     // only enable HTTP2 with Qt 5.9.4 because old Qt have too many bugs (e.g. QTBUG-64359 is fixed in >= Qt 5.9.4)
     if (newRequest.url().scheme() == "https") { // Not for "http": QTBUG-61397
-        newRequest.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
+        // Don't enable by default until QTBUG-73947 is fixed
+        static auto http2EnabledEnv = qgetenv("OWNCLOUD_HTTP2_ENABLED");
+        if (http2EnabledEnv == "1") {
+            newRequest.setAttribute(QNetworkRequest::HTTP2AllowedAttribute, true);
+        }
     }
 #endif
 

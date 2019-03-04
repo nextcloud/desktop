@@ -1,6 +1,18 @@
 ChangeLog
 =========
 
+version 2.5.4 (unreleased)
+* Crash fix: Infinite recursion for bad paths on Windows (#7041)
+* Crash fix: SocketApi mustn't send if readyRead happens after disconnected (#7044)
+* Disable HTTP2 support due to bugs in Qt 5.12.1 (#7020, QTBUG-73947)
+* Fix loading of persisted cookies when loading accounts (#7054)
+* Windows: Fix breaking of unrelated explorer actions (#7004, #7023)
+* Windows: Forbid syncing of files with bytes 0x00 to 0x1F in filenames (#6987)
+* OSX: Opt out of dark mode until problems can be addressed (#7043)
+* OSX: Fix folder dehydration requests (#6977)
+* Selective sync: Don't collapse folder tree when changing selection (#7055)
+* Client cert dialog: Avoid incorrect behavior due to multiple signal connections
+
 version 2.5.3 (2019-02-07)
 * Connectivity: Add a noUnauthedRequests branding option
 * Credentials: Warn in log if keychain-write jobs fail (#6776)
