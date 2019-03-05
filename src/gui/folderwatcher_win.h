@@ -74,9 +74,6 @@ public:
     FolderWatcherPrivate(FolderWatcher *p, const QString &path);
     ~FolderWatcherPrivate();
 
-    void addPath(const QString &) {}
-    void removePath(const QString &) {}
-
 private:
     FolderWatcher *_parent;
     WatcherThread *_thread;

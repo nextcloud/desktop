@@ -898,43 +898,6 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
         return;
     }
 
-    // add new directories or remove gone away dirs to the watcher
-    if (_folderWatcher && item->isDirectory()) {
-    switch (item->_instruction) {
-        case CSYNC_INSTRUCTION_NEW:
-                _folderWatcher->addPath(path() + item->_file);
-        break;
-        case CSYNC_INSTRUCTION_REMOVE:
-                _folderWatcher->removePath(path() + item->_file);
-        break;
-        case CSYNC_INSTRUCTION_RENAME:
-                _folderWatcher->removePath(path() + item->_file);
-                _folderWatcher->addPath(path() + item->destination());
-        break;
-        default:
-        break;
-    }
-    }
-
-    // Success and failure of sync items adjust what the next sync is
-    // supposed to do.
-    //
-    // For successes, we want to wipe the file from the list to ensure we don't
-    // rediscover it even if this overall sync fails.
-    //
-    // For failures, we want to add the file to the list so the next sync
-    // will be able to retry it.
-    if (item->_status == SyncFileItem::Success
-        || item->_status == SyncFileItem::FileIgnored
-        || item->_status == SyncFileItem::Restoration
-        || item->_status == SyncFileItem::Conflict) {
-        if (_previousLocalDiscoveryPaths.erase(item->_file.toUtf8()))
-            qCDebug(lcFolder) << "local discovery: wiped" << item->_file;
-    } else {
-        _localDiscoveryPaths.insert(item->_file.toUtf8());
-        qCDebug(lcFolder) << "local discovery: inserted" << item->_file << "due to sync failure";
-    }
-
     _syncResult.processCompletedItem(item);
 
     _fileLog->logItem(*item);
