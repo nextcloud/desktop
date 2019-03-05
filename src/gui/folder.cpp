@@ -925,15 +925,30 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
         return;
     }
 
-    // add new directories or remove gone away dirs to the watcher
+#ifdef Q_OS_LINUX
+    // The linux folderwatcher isn't recursive: it can just watch individual folders.
+    // That means new and removed directories need to be announced to the watcher.
+    // TODO: The watcher wrapper should take care of that itself using the notifications
+    //       it gets! It already updates itself on interior moves and there's no
+    //       reason it couldn't notice new and removed directories too.
     if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_NEW) {
-        if (_folderWatcher)
+        if (_folderWatcher) {
             _folderWatcher->addPath(path() + item->_file);
+
+            // Since there's a delay between folder creation and folder watching, new
+            // local folders need to be discovered again during the next sync because
+            // notifications might have been missed.
+            if (item->_direction == SyncFileItem::Up) {
+                _localDiscoveryTracker->addTouchedPath(item->_file.toUtf8());
+                scheduleThisFolderSoon();
+            }
+        }
     }
     if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
         if (_folderWatcher)
             _folderWatcher->removePath(path() + item->_file);
     }
+#endif
 
     _syncResult.processCompletedItem(item);
 
