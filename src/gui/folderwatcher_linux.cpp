@@ -31,11 +31,6 @@ FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString &path
     , _parent(p)
     , _folder(path)
 {
-    _wipePotentialRenamesSoon = new QTimer(this);
-    _wipePotentialRenamesSoon->setInterval(1000);
-    _wipePotentialRenamesSoon->setSingleShot(true);
-    connect(_wipePotentialRenamesSoon, &QTimer::timeout, this, &FolderWatcherPrivate::wipePotentialRenames);
-
     _fd = inotify_init();
     if (_fd != -1) {
         _socket.reset(new QSocketNotifier(_fd, QSocketNotifier::Read));
@@ -78,44 +73,36 @@ bool FolderWatcherPrivate::findFoldersBelow(const QDir &dir, QStringList &fullLi
 
 void FolderWatcherPrivate::inotifyRegisterPath(const QString &path)
 {
-    if (!path.isEmpty()) {
-        int wd = inotify_add_watch(_fd, path.toUtf8().constData(),
-            IN_CLOSE_WRITE | IN_ATTRIB | IN_MOVE | IN_CREATE | IN_DELETE | IN_DELETE_SELF | IN_MOVE_SELF | IN_UNMOUNT | IN_ONLYDIR);
-        if (wd > -1) {
-            _watches.insert(wd, path);
-        } else {
-            // If we're running out of memory or inotify watches, become
-            // unreliable.
-            if (_parent->_isReliable && (errno == ENOMEM || errno == ENOSPC)) {
-                _parent->_isReliable = false;
-                emit _parent->becameUnreliable(
-                    tr("This problem usually happens when the inotify watches are exhausted. "
-                       "Check the FAQ for details."));
-            }
-        }
-    }
-}
+    if (path.isEmpty())
+        return;
 
-void FolderWatcherPrivate::applyDirectoryRename(const FolderWatcherPrivate::Rename &rename)
-{
-    QString fromSlash = rename.from + "/";
-    qCInfo(lcFolderWatcher) << "Applying rename from" << rename.from << "to" << rename.to;
-    for (auto &watch : _watches) {
-        if (watch == rename.from || watch.startsWith(fromSlash)) {
-            watch = rename.to + watch.mid(rename.from.size());
+    int wd = inotify_add_watch(_fd, path.toUtf8().constData(),
+        IN_CLOSE_WRITE | IN_ATTRIB | IN_MOVE | IN_CREATE | IN_DELETE | IN_DELETE_SELF | IN_MOVE_SELF | IN_UNMOUNT | IN_ONLYDIR);
+    if (wd > -1) {
+        _watchToPath.insert(wd, path);
+        _pathToWatch.insert(path, wd);
+    } else {
+        // If we're running out of memory or inotify watches, become
+        // unreliable.
+        if (_parent->_isReliable && (errno == ENOMEM || errno == ENOSPC)) {
+            _parent->_isReliable = false;
+            emit _parent->becameUnreliable(
+                tr("This problem usually happens when the inotify watches are exhausted. "
+                   "Check the FAQ for details."));
         }
     }
 }
 
 void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
 {
+    if (_pathToWatch.contains(path))
+        return;
+
     int subdirs = 0;
     qCDebug(lcFolderWatcher) << "(+) Watcher:" << path;
 
     QDir inPath(path);
     inotifyRegisterPath(inPath.absolutePath());
-
-    const QStringList watchedFolders = _watches.values();
 
     QStringList allSubfolders;
     if (!findFoldersBelow(QDir(path), allSubfolders)) {
@@ -125,7 +112,7 @@ void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
     while (subfoldersIt.hasNext()) {
         QString subfolder = subfoldersIt.next();
         QDir folder(subfolder);
-        if (folder.exists() && !watchedFolders.contains(folder.absolutePath())) {
+        if (folder.exists() && !_pathToWatch.contains(folder.absolutePath())) {
             subdirs++;
             if (_parent->pathIsIgnored(subfolder)) {
                 qCDebug(lcFolderWatcher) << "* Not adding" << folder.path();
@@ -140,11 +127,6 @@ void FolderWatcherPrivate::slotAddFolderRecursive(const QString &path)
     if (subdirs > 0) {
         qCDebug(lcFolderWatcher) << "    `-> and" << subdirs << "subdirectories";
     }
-}
-
-void FolderWatcherPrivate::wipePotentialRenames()
-{
-    _potentialRenames.clear();
 }
 
 void FolderWatcherPrivate::slotReceivedNotification(int fd)
@@ -195,48 +177,44 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
             || fileName.startsWith(".sync_")) {
             continue;
         }
-        const QString p = _watches[event->wd] + '/' + fileName;
+        const QString p = _watchToPath[event->wd] + '/' + fileName;
         _parent->changeDetected(p);
 
-        // Collect events to form complete renames where possible
-        // and apply directory renames to the cached paths.
-        if ((event->mask & (IN_MOVED_TO | IN_MOVED_FROM)) && (event->mask & IN_ISDIR) && event->cookie > 0) {
-            auto &rename = _potentialRenames[event->cookie];
-            if (event->mask & IN_MOVED_TO)
-                rename.to = p;
-            if (event->mask & IN_MOVED_FROM)
-                rename.from = p;
-            if (!rename.from.isEmpty() && !rename.to.isEmpty()) {
-                applyDirectoryRename(rename);
-                _potentialRenames.remove(event->cookie);
-            } else {
-                _wipePotentialRenamesSoon->start();
-            }
+        if ((event->mask & (IN_MOVED_TO | IN_CREATE))
+            && QFileInfo(p).isDir()
+            && !_parent->pathIsIgnored(p)) {
+            slotAddFolderRecursive(p);
+        }
+        if (event->mask & (IN_MOVED_FROM | IN_DELETE)) {
+            removeFoldersBelow(p);
         }
     }
 }
 
-void FolderWatcherPrivate::addPath(const QString &path)
+void FolderWatcherPrivate::removeFoldersBelow(const QString &path)
 {
-    slotAddFolderRecursive(path);
-}
+    auto it = _pathToWatch.find(path);
+    if (it == _pathToWatch.end())
+        return;
 
-void FolderWatcherPrivate::removePath(const QString &path)
-{
-    int wid = -1;
-    // Remove the inotify watch.
-    QHash<int, QString>::const_iterator i = _watches.constBegin();
+    QString pathSlash = path + '/';
 
-    while (i != _watches.constEnd()) {
-        if (i.value() == path) {
-            wid = i.key();
+    // Remove the entry and all subentries
+    while (it != _pathToWatch.end()) {
+        auto itPath = it.key();
+        if (!itPath.startsWith(path))
             break;
+        if (itPath != path && !itPath.startsWith(pathSlash)) {
+            // order is 'foo', 'foo bar', 'foo/bar'
+            ++it;
+            continue;
         }
-        ++i;
-    }
-    if (wid > -1) {
+
+        auto wid = it.value();
         inotify_rm_watch(_fd, wid);
-        _watches.remove(wid);
+        _watchToPath.remove(wid);
+        it = _pathToWatch.erase(it);
+        qCDebug(lcFolderWatcher) << "Removed watch for" << itPath;
     }
 }
 

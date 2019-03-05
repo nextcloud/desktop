@@ -1061,16 +1061,6 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
         return;
     }
 
-    // add new directories or remove gone away dirs to the watcher
-    if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_NEW) {
-        if (_folderWatcher)
-            _folderWatcher->addPath(path() + item->_file);
-    }
-    if (item->isDirectory() && item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
-        if (_folderWatcher)
-            _folderWatcher->removePath(path() + item->_file);
-    }
-
     _syncResult.processCompletedItem(item);
 
     _fileLog->logItem(*item);

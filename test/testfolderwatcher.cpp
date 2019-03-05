@@ -96,6 +96,12 @@ class TestFolderWatcher : public QObject
         return false;
     }
 
+#ifdef Q_OS_LINUX
+#define CHECK_WATCH_COUNT(n) QCOMPARE(_watcher->testLinuxWatchCount(), (n))
+#else
+#define CHECK_WATCH_COUNT(n) do {} while (false)
+#endif
+
 public:
     TestFolderWatcher() {
         qsrand(QTime::currentTime().msec());
@@ -118,10 +124,24 @@ public:
         _pathChangedSpy.reset(new QSignalSpy(_watcher.data(), SIGNAL(pathChanged(QString))));
     }
 
+    int countFolders(const QString &path)
+    {
+        int n = 0;
+        for (const auto &sub : QDir(path).entryList(QDir::Dirs | QDir::NoDotAndDotDot))
+            n += 1 + countFolders(path + '/' + sub);
+        return n;
+    }
+
 private slots:
     void init()
     {
         _pathChangedSpy->clear();
+        CHECK_WATCH_COUNT(countFolders(_rootPath) + 1);
+    }
+
+    void cleanup()
+    {
+        CHECK_WATCH_COUNT(countFolders(_rootPath) + 1);
     }
 
     void testACreate() { // create a new file
@@ -144,6 +164,11 @@ private slots:
         QString file(_rootPath+"/a1/b1/new_dir");
         mkdir(file);
         QVERIFY(waitForPathChanged(file));
+
+        // Notifications from that new folder arrive too
+        QString file2(_rootPath + "/a1/b1/new_dir/contained");
+        touch(file2);
+        QVERIFY(waitForPathChanged(file2));
     }
 
     void testRemoveADir() {
