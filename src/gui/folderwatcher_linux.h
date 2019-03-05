@@ -39,8 +39,7 @@ public:
     FolderWatcherPrivate(FolderWatcher *p, const QString &path);
     ~FolderWatcherPrivate();
 
-    void addPath(const QString &path);
-    void removePath(const QString &);
+    int testWatchCount() const { return _pathToWatch.size(); }
 
 protected slots:
     void slotReceivedNotification(int fd);
@@ -58,15 +57,14 @@ protected:
 
     bool findFoldersBelow(const QDir &dir, QStringList &fullList);
     void inotifyRegisterPath(const QString &path);
-
-    /// Adjusts the paths in _watches when directories are renamed.
-    void applyDirectoryRename(const Rename &rename);
+    void removeFoldersBelow(const QString &path);
 
 private:
     FolderWatcher *_parent;
 
     QString _folder;
-    QHash<int, QString> _watches;
+    QHash<int, QString> _watchToPath;
+    QMap<QString, int> _pathToWatch;
     QScopedPointer<QSocketNotifier> _socket;
     int _fd;
 
