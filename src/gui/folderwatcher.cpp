@@ -86,6 +86,15 @@ void FolderWatcher::appendSubPaths(QDir dir, QStringList& subPaths) {
     }
 }
 
+int FolderWatcher::testLinuxWatchCount() const
+{
+#ifdef Q_OS_LINUX
+    return _d->testWatchCount();
+#else
+    return -1;
+#endif
+}
+
 void FolderWatcher::changeDetected(const QString &path)
 {
     QFileInfo fileInfo(path);
@@ -133,16 +142,5 @@ void FolderWatcher::changeDetected(const QStringList &paths)
         emit pathChanged(path);
     }
 }
-
-void FolderWatcher::addPath(const QString &path)
-{
-    _d->addPath(path);
-}
-
-void FolderWatcher::removePath(const QString &path)
-{
-    _d->removePath(path);
-}
-
 
 } // namespace OCC
