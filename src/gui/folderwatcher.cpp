@@ -62,7 +62,7 @@ bool FolderWatcher::pathIsIgnored(const QString &path)
         return false;
 
 #ifndef OWNCLOUD_TEST
-    if (_folder->isFileExcludedAbsolute(path)) {
+    if (_folder->isFileExcludedAbsolute(path) && !Utility::isConflictFile(path)) {
         qCDebug(lcFolderWatcher) << "* Ignoring file" << path;
         return true;
     }
