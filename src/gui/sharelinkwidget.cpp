@@ -145,7 +145,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     if (_account->capabilities().sharePublicLinkEnforceExpireDate()) {
         _ui->checkBox_expire->setEnabled(false);
         _ui->calendar->setMaximumDate(QDate::currentDate().addDays(
-            _account->capabilities().sharePublicLinkExpireDateDays()));
+            _account->capabilities().sharePublicLinkDefaultExpireDateDays()));
         _expiryRequired = true;
     }
 

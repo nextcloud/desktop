@@ -60,14 +60,19 @@ bool Capabilities::sharePublicLinkEnforcePassword() const
     return _capabilities["files_sharing"].toMap()["public"].toMap()["password"].toMap()["enforced"].toBool();
 }
 
+bool Capabilities::sharePublicLinkDefaultExpire() const
+{
+    return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date"].toMap()["enabled"].toBool();
+}
+
+int Capabilities::sharePublicLinkDefaultExpireDateDays() const
+{
+    return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date"].toMap()["days"].toInt();
+}
+
 bool Capabilities::sharePublicLinkEnforceExpireDate() const
 {
     return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date"].toMap()["enforced"].toBool();
-}
-
-int Capabilities::sharePublicLinkExpireDateDays() const
-{
-    return _capabilities["files_sharing"].toMap()["public"].toMap()["expire_date"].toMap()["days"].toInt();
 }
 
 bool Capabilities::sharePublicLinkMultiple() const

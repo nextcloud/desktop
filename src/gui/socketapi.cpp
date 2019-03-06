@@ -487,6 +487,7 @@ public:
     GetOrCreatePublicLinkShare(const AccountPtr &account, const QString &localFile,
         std::function<void(const QString &link)> targetFun, QObject *parent)
         : QObject(parent)
+        , _account(account)
         , _shareManager(account)
         , _localFile(localFile)
         , _targetFun(targetFun)
@@ -509,6 +510,12 @@ private slots:
     void sharesFetched(const QList<QSharedPointer<Share>> &shares)
     {
         auto shareName = SocketApi::tr("Context menu share");
+
+        // If shares will expire, create a new one every day.
+        if (_account->capabilities().sharePublicLinkDefaultExpire()) {
+            shareName = SocketApi::tr("Context menu share %1").arg(QDate::currentDate().toString(Qt::ISODate));
+        }
+
         // If there already is a context menu share, reuse it
         for (const auto &share : shares) {
             const auto linkShare = qSharedPointerDynamicCast<LinkShare>(share);
@@ -551,6 +558,7 @@ private:
         deleteLater();
     }
 
+    AccountPtr _account;
     ShareManager _shareManager;
     QString _localFile;
     std::function<void(const QString &url)> _targetFun;
@@ -731,7 +739,6 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
 
         // Is is possible to create a public link without user choices?
         bool canCreateDefaultPublicLink = publicLinksEnabled
-            && !capabilities.sharePublicLinkEnforceExpireDate()
             && !capabilities.sharePublicLinkEnforcePassword();
 
         if (canCreateDefaultPublicLink) {
