@@ -367,6 +367,12 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     }
 }
 
+void ownCloudGui::hideAndShowTray()
+{
+    _tray->hide();
+    _tray->show();
+}
+
 void ownCloudGui::slotShowTrayMessage(const QString &title, const QString &msg)
 {
     if (_tray)
