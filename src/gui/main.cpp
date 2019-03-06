@@ -127,6 +127,7 @@ int main(int argc, char **argv)
         }
         return 0;
     }
+
     // We can't call isSystemTrayAvailable with appmenu-qt5 begause it hides the systemtray
     // (issue #4693)
     if (qgetenv("QT_QPA_PLATFORMTHEME") != "appmenu-qt5")
@@ -135,27 +136,34 @@ int main(int argc, char **argv)
             // If the systemtray is not there, we will wait one second for it to maybe start
             // (eg boot time) then we show the settings dialog if there is still no systemtray.
             // On XFCE however, we show a message box with explainaition how to install a systemtray.
+            qCInfo(lcApplication) << "System tray is not available, waiting...";
             Utility::sleep(1);
+
             auto desktopSession = qgetenv("XDG_CURRENT_DESKTOP").toLower();
             if (desktopSession.isEmpty()) {
                 desktopSession = qgetenv("DESKTOP_SESSION").toLower();
             }
             if (desktopSession == "xfce") {
                 int attempts = 0;
-                forever {
-                    if (!QSystemTrayIcon::isSystemTrayAvailable()) {
-                        Utility::sleep(1);
-                        attempts++;
-                        if (attempts < 30)
-                            continue;
-                    } else {
+                while (!QSystemTrayIcon::isSystemTrayAvailable()) {
+                    attempts++;
+                    if (attempts >= 30) {
+                        qCWarning(lcApplication) << "System tray unavailable (xfce)";
+                        warnSystray();
                         break;
                     }
-                    warnSystray();
+                    Utility::sleep(1);
                 }
             }
-            if (!QSystemTrayIcon::isSystemTrayAvailable() && desktopSession != "ubuntu") {
+
+            if (QSystemTrayIcon::isSystemTrayAvailable()) {
+                app.tryTrayAgain();
+            } else if (desktopSession != "ubuntu") {
+                qCInfo(lcApplication) << "System tray still not available, showing window and trying again later";
                 app.showSettingsDialog();
+                QTimer::singleShot(10000, &app, &Application::tryTrayAgain);
+            } else {
+                qCInfo(lcApplication) << "System tray still not available, but assuming it's fine on 'ubuntu' desktop";
             }
         }
     }

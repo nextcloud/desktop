@@ -61,6 +61,8 @@ public:
     /// Whether the tray menu is visible
     bool contextMenuVisible() const;
 
+    void hideAndShowTray();
+
 signals:
     void setupProxy();
 
