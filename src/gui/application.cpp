@@ -253,6 +253,17 @@ Application::Application(int &argc, char **argv)
     if (!AbstractNetworkJob::httpTimeout)
         AbstractNetworkJob::httpTimeout = cfg.timeout();
 
+#ifdef PLUGINDIR
+    // Setup extra plugin search path
+    QString extraPluginPath = QStringLiteral(PLUGINDIR);
+    if (!extraPluginPath.isEmpty()) {
+        if (QDir::isRelativePath(extraPluginPath))
+            extraPluginPath = QDir(QApplication::applicationDirPath()).filePath(extraPluginPath);
+        qCInfo(lcApplication) << "Adding extra plugin search path:" << extraPluginPath;
+        addLibraryPath(extraPluginPath);
+    }
+#endif
+
     // Check vfs plugins
     if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() == Vfs::Off) {
         qCWarning(lcApplication) << "Theme wants to show vfs mode, but no vfs plugins are available";

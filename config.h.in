@@ -25,5 +25,6 @@
 
 #cmakedefine SYSCONFDIR "@SYSCONFDIR@"
 #cmakedefine SHAREDIR "@SHAREDIR@"
+#cmakedefine PLUGINDIR "@PLUGINDIR@"
 
 #endif

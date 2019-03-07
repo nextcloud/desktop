@@ -69,6 +69,7 @@ if(WIN32)
 set(DATADIR "share")
 endif(WIN32)
 set(SHAREDIR ${DATADIR})
+set(PLUGINDIR "${CMAKE_INSTALL_FULL_LIBDIR}/${APPLICATION_SHORTNAME}/plugins" CACHE STRING "Extra path to look for Qt plugins like for VFS. May be relative to binary.")
 
 #####
 ## handle BUILD_OWNCLOUD_OSX_BUNDLE
