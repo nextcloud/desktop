@@ -553,7 +553,8 @@ private slots:
 
         // If a file is renamed to <name>.nextcloud, it becomes virtual
         fakeFolder.localModifier().rename("A/a1", "A/a1.nextcloud");
-        // If a file is renamed to <random>.nextcloud, the file sticks around (to preserve user data)
+        // If a file is renamed to <random>.nextcloud, the rename propagates but the
+        // file isn't made virtual the first sync run.
         fakeFolder.localModifier().rename("A/a2", "A/rand.nextcloud");
         // dangling virtual files are removed
         fakeFolder.localModifier().insert("A/dangling.nextcloud", 1, ' ');
@@ -567,13 +568,13 @@ private slots:
 
         QVERIFY(!fakeFolder.currentLocalState().find("A/a2"));
         QVERIFY(!fakeFolder.currentLocalState().find("A/a2.nextcloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("A/rand.nextcloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/rand"));
         QVERIFY(!fakeFolder.currentRemoteState().find("A/a2"));
-        QVERIFY(itemInstruction(completeSpy, "A/a2", CSYNC_INSTRUCTION_REMOVE));
-        QVERIFY(!dbRecord(fakeFolder, "A/rand.nextcloud").isValid());
+        QVERIFY(fakeFolder.currentRemoteState().find("A/rand"));
+        QVERIFY(itemInstruction(completeSpy, "A/rand", CSYNC_INSTRUCTION_RENAME));
+        QVERIFY(dbRecord(fakeFolder, "A/rand")._type == ItemTypeFile);
 
         QVERIFY(!fakeFolder.currentLocalState().find("A/dangling.nextcloud"));
-
         cleanup();
     }
 
@@ -591,15 +592,18 @@ private slots:
 
         fakeFolder.remoteModifier().insert("file1", 128, 'C');
         fakeFolder.remoteModifier().insert("file2", 256, 'C');
+        fakeFolder.remoteModifier().insert("file3", 256, 'C');
         QVERIFY(fakeFolder.syncOnce());
 
         QVERIFY(fakeFolder.currentLocalState().find("file1.nextcloud"));
         QVERIFY(fakeFolder.currentLocalState().find("file2.nextcloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("file3.nextcloud"));
         cleanup();
 
         fakeFolder.localModifier().rename("file1.nextcloud", "renamed1.nextcloud");
         fakeFolder.localModifier().rename("file2.nextcloud", "renamed2.nextcloud");
         triggerDownload(fakeFolder, "file2");
+        triggerDownload(fakeFolder, "file3");
         QVERIFY(fakeFolder.syncOnce());
 
         QVERIFY(!fakeFolder.currentLocalState().find("file1.nextcloud"));
@@ -610,12 +614,109 @@ private slots:
         QVERIFY(dbRecord(fakeFolder, "renamed1.nextcloud").isValid());
 
         // file2 has a conflict between the download request and the rename:
-        // currently the download wins
+        // the rename wins, the download is ignored
+        QVERIFY(!fakeFolder.currentLocalState().find("file2"));
         QVERIFY(!fakeFolder.currentLocalState().find("file2.nextcloud"));
-        QVERIFY(fakeFolder.currentLocalState().find("file2"));
-        QVERIFY(fakeFolder.currentRemoteState().find("file2"));
-        QVERIFY(itemInstruction(completeSpy, "file2", CSYNC_INSTRUCTION_NEW));
-        QVERIFY(dbRecord(fakeFolder, "file2").isValid());
+        QVERIFY(fakeFolder.currentLocalState().find("renamed2.nextcloud"));
+        QVERIFY(fakeFolder.currentRemoteState().find("renamed2"));
+        QVERIFY(itemInstruction(completeSpy, "renamed2.nextcloud", CSYNC_INSTRUCTION_RENAME));
+        QVERIFY(dbRecord(fakeFolder, "renamed2.nextcloud")._type == ItemTypeVirtualFile);
+
+        QVERIFY(itemInstruction(completeSpy, "file3", CSYNC_INSTRUCTION_NEW));
+        cleanup();
+
+        // Test rename while adding/removing vfs suffix
+        fakeFolder.localModifier().rename("renamed1.nextcloud", "R1");
+        // Contents of file2 could also change at the same time...
+        fakeFolder.localModifier().rename("file3", "R3.nextcloud");
+        QVERIFY(fakeFolder.syncOnce());
+        cleanup();
+    }
+
+    void testRenameVirtual2()
+    {
+        FakeFolder fakeFolder{ FileInfo() };
+        setupVfs(fakeFolder);
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        auto cleanup = [&]() {
+            completeSpy.clear();
+        };
+        cleanup();
+
+        fakeFolder.remoteModifier().insert("case3", 128, 'C');
+        fakeFolder.remoteModifier().insert("case4", 256, 'C');
+        fakeFolder.remoteModifier().insert("case5", 256, 'C');
+        fakeFolder.remoteModifier().insert("case6", 256, 'C');
+        QVERIFY(fakeFolder.syncOnce());
+
+        triggerDownload(fakeFolder, "case4");
+        triggerDownload(fakeFolder, "case6");
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.currentLocalState().find("case3.nextcloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("case4"));
+        QVERIFY(fakeFolder.currentLocalState().find("case5.nextcloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("case6"));
+        cleanup();
+
+        // Case 1: foo -> bar (tested elsewhere)
+        // Case 2: foo.oc -> bar.oc (tested elsewhere)
+
+        // Case 3: foo.oc -> bar (db unchanged)
+        fakeFolder.localModifier().rename("case3.nextcloud", "case3-rename");
+
+        // Case 4: foo -> bar.oc (db unchanged)
+        fakeFolder.localModifier().rename("case4", "case4-rename.nextcloud");
+
+        // Case 5: foo -> bar (db dehydrate)
+        fakeFolder.localModifier().rename("case5.nextcloud", "case5-rename.nextcloud");
+        triggerDownload(fakeFolder, "case5");
+
+        // Case 6: foo.oc -> bar.oc (db hydrate)
+        fakeFolder.localModifier().rename("case6", "case6-rename");
+        markForDehydration(fakeFolder, "case6");
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        // Case 3: the rename went though, hydration is forgotten
+        QVERIFY(!fakeFolder.currentLocalState().find("case3"));
+        QVERIFY(!fakeFolder.currentLocalState().find("case3.nextcloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("case3-rename"));
+        QVERIFY(fakeFolder.currentLocalState().find("case3-rename.nextcloud"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("case3"));
+        QVERIFY(fakeFolder.currentRemoteState().find("case3-rename"));
+        QVERIFY(itemInstruction(completeSpy, "case3-rename.nextcloud", CSYNC_INSTRUCTION_RENAME));
+        QVERIFY(dbRecord(fakeFolder, "case3-rename.nextcloud")._type == ItemTypeVirtualFile);
+
+        // Case 4: the rename went though, dehydration is forgotten
+        QVERIFY(!fakeFolder.currentLocalState().find("case4"));
+        QVERIFY(!fakeFolder.currentLocalState().find("case4.nextcloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("case4-rename"));
+        QVERIFY(!fakeFolder.currentLocalState().find("case4-rename.nextcloud"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("case4"));
+        QVERIFY(fakeFolder.currentRemoteState().find("case4-rename"));
+        QVERIFY(itemInstruction(completeSpy, "case4-rename", CSYNC_INSTRUCTION_RENAME));
+        QVERIFY(dbRecord(fakeFolder, "case4-rename")._type == ItemTypeFile);
+
+        // Case 5: the rename went though, hydration is forgotten
+        QVERIFY(!fakeFolder.currentLocalState().find("case5"));
+        QVERIFY(!fakeFolder.currentLocalState().find("case5.nextcloud"));
+        QVERIFY(!fakeFolder.currentLocalState().find("case5-rename"));
+        QVERIFY(fakeFolder.currentLocalState().find("case5-rename.nextcloud"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("case5"));
+        QVERIFY(fakeFolder.currentRemoteState().find("case5-rename"));
+        QVERIFY(itemInstruction(completeSpy, "case5-rename.nextcloud", CSYNC_INSTRUCTION_RENAME));
+        QVERIFY(dbRecord(fakeFolder, "case5-rename.nextcloud")._type == ItemTypeVirtualFile);
+
+        // Case 6: the rename went though, dehydration is forgotten
+        QVERIFY(!fakeFolder.currentLocalState().find("case6"));
+        QVERIFY(!fakeFolder.currentLocalState().find("case6.nextcloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("case6-rename"));
+        QVERIFY(!fakeFolder.currentLocalState().find("case6-rename.nextcloud"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("case6"));
+        QVERIFY(fakeFolder.currentRemoteState().find("case6-rename"));
+        QVERIFY(itemInstruction(completeSpy, "case6-rename", CSYNC_INSTRUCTION_RENAME));
+        QVERIFY(dbRecord(fakeFolder, "case6-rename")._type == ItemTypeFile);
     }
 
     // Dehydration via sync works

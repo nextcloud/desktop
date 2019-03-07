@@ -325,10 +325,12 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     // Downloading a virtual file is like a server action and can happen even if
     // server-side nothing has changed
     // NOTE: Normally setting the VirtualFileDownload flag means that local and
-    // remote will be rediscovered. This is just a fallback.
+    // remote will be rediscovered. This is just a fallback for a similar check
+    // in processFileAnalyzeRemoteInfo().
     if (_queryServer == ParentNotChanged
         && (dbEntry._type == ItemTypeVirtualFileDownload
-            || localEntry.type == ItemTypeVirtualFileDownload)) {
+            || localEntry.type == ItemTypeVirtualFileDownload)
+        && (localEntry.isValid() || _queryLocal == ParentNotChanged)) {
         item->_direction = SyncFileItem::Down;
         item->_instruction = CSYNC_INSTRUCTION_NEW;
         item->_type = ItemTypeVirtualFileDownload;
@@ -374,7 +376,10 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
             item->_size = serverEntry.size;
-        } else if (dbEntry._type == ItemTypeVirtualFileDownload || localEntry.type == ItemTypeVirtualFileDownload) {
+        } else if ((dbEntry._type == ItemTypeVirtualFileDownload || localEntry.type == ItemTypeVirtualFileDownload)
+            && (localEntry.isValid() || _queryLocal == ParentNotChanged)) {
+            // The above check for the localEntry existing is important. Otherwise it breaks
+            // the case where a file is moved and simultaneously tagged for download in the db.
             item->_direction = SyncFileItem::Down;
             item->_instruction = CSYNC_INSTRUCTION_NEW;
             item->_type = ItemTypeVirtualFileDownload;
@@ -802,38 +807,65 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         dbError();
         return;
     }
-    bool isMove = base.isValid() && base._type == item->_type
-        && ((base._modtime == localEntry.modtime && base._fileSize == localEntry.size)
-               // Directories and virtual files don't need size/mtime equality
-               || localEntry.isDirectory || localEntry.isVirtualFile);
+    const auto originalPath = QString::fromUtf8(base._path);
 
-    auto originalPath = QString::fromUtf8(base._path);
-    if (isMove) {
-        // The old file must have been deleted.
-        isMove = !QFile::exists(_discoveryData->_localDir + base._path)
-                // Exception: If the rename changes case only (like "foo" -> "Foo") the
-                // old filename might still point to the same file.
-                || (Utility::fsCasePreserving()
-                    && originalPath.compare(path._local, Qt::CaseInsensitive) == 0);
-    }
-
-    // Verify the checksum where possible
-    if (isMove && !base._checksumHeader.isEmpty() && item->_type == ItemTypeFile) {
-        if (computeLocalChecksum(base._checksumHeader, _discoveryData->_localDir + path._original, item)) {
-            qCInfo(lcDisco) << "checking checksum of potential rename " << path._original << item->_checksumHeader << base._checksumHeader;
-            isMove = item->_checksumHeader == base._checksumHeader;
+    // Function to gradually check conditions for accepting a move-candidate
+    auto moveCheck = [&]() {
+        if (!base.isValid()) {
+            qCInfo(lcDisco) << "Not a move, no item in db with inode" << localEntry.inode;
+            return false;
         }
-    }
-    if (isMove && _discoveryData->isRenamed(originalPath))
-        isMove = false;
+        if (base.isDirectory() != item->isDirectory()) {
+            qCInfo(lcDisco) << "Not a move, types don't match" << base._type << item->_type << localEntry.type;
+            return false;
+        }
+        // Directories and virtual files don't need size/mtime equality
+        if (!localEntry.isDirectory && !base.isVirtualFile()
+            && (base._modtime != localEntry.modtime || base._fileSize != localEntry.size)) {
+            qCInfo(lcDisco) << "Not a move, mtime or size differs, "
+                            << "modtime:" << base._modtime << localEntry.modtime << ", "
+                            << "size:" << base._fileSize << localEntry.size;
+            return false;
+        }
 
-    //Check local permission if we are allowed to put move the file here
-    // Technically we should use the one from the server, but we'll assume it is the same
-    if (isMove && !checkMovePermissions(base._remotePerm, originalPath, item->isDirectory()))
-        isMove = false;
+        // The old file must have been deleted.
+        if (QFile::exists(_discoveryData->_localDir + base._path)
+            // Exception: If the rename changes case only (like "foo" -> "Foo") the
+            // old filename might still point to the same file.
+            && !(Utility::fsCasePreserving()
+                 && originalPath.compare(path._local, Qt::CaseInsensitive) == 0)) {
+            qCInfo(lcDisco) << "Not a move, base file still exists at" << originalPath;
+            return false;
+        }
+
+        // Verify the checksum where possible
+        if (!base._checksumHeader.isEmpty() && item->_type == ItemTypeFile) {
+            if (computeLocalChecksum(base._checksumHeader, _discoveryData->_localDir + path._original, item)) {
+                qCInfo(lcDisco) << "checking checksum of potential rename " << path._original << item->_checksumHeader << base._checksumHeader;
+                if (item->_checksumHeader != base._checksumHeader) {
+                    qCInfo(lcDisco) << "Not a move, checksums differ";
+                    return false;
+                }
+            }
+        }
+
+        if (_discoveryData->isRenamed(originalPath)) {
+            qCInfo(lcDisco) << "Not a move, base path already renamed";
+            return false;
+        }
+
+        // Check local permission if we are allowed to put move the file here
+        // Technically we should use the one from the server, but we'll assume it is the same
+        if (!checkMovePermissions(base._remotePerm, originalPath, item->isDirectory())) {
+            qCInfo(lcDisco) << "Not a move, no permission to rename base file";
+            return false;
+        }
+
+        return true;
+    };
 
     // Finally make it a NEW or a RENAME
-    if (!isMove) {
+    if (!moveCheck()) {
        postProcessLocalNew();
     } else {
         auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
@@ -854,6 +886,15 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_remotePerm = base._remotePerm;
             item->_etag = base._etag;
             item->_type = base._type;
+
+            // Discard any download/dehydrate tags on the base file.
+            // They could be preserved and honored in a follow-up sync,
+            // but it complicates handling a lot and will happen rarely.
+            if (item->_type == ItemTypeVirtualFileDownload)
+                item->_type = ItemTypeVirtualFile;
+            if (item->_type == ItemTypeVirtualFileDehydration)
+                item->_type = ItemTypeFile;
+
             qCInfo(lcDisco) << "Rename detected (up) " << item->_file << " -> " << item->_renameTarget;
         };
         if (wasDeletedOnClient.first) {
