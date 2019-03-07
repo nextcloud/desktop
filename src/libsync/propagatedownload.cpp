@@ -659,7 +659,7 @@ void PropagateDownloadFile::slotGetFinished()
     if (_tmpFile.size() == 0 && _item->_size > 0) {
         FileSystem::remove(_tmpFile.fileName());
         done(SyncFileItem::NormalError,
-            tr("The downloaded file is empty despite the server announced it should have been %1.")
+            tr("The downloaded file is empty despite that the server announced it should have been %1.")
                 .arg(Utility::octetsToString(_item->_size)));
         return;
     }
