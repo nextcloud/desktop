@@ -89,21 +89,67 @@ void PropagateRemoteMove::start()
         return;
     }
 
-    QString source = propagator()->_remoteFolder + origin;
-    QString destination = QDir::cleanPath(propagator()->account()->davUrl().path() + propagator()->_remoteFolder + _item->_renameTarget);
+    QString remoteSource = propagator()->_remoteFolder + origin;
+    QString remoteDestination = QDir::cleanPath(propagator()->account()->davUrl().path() + propagator()->_remoteFolder + _item->_renameTarget);
+
     auto &vfs = propagator()->syncOptions()._vfs;
-    if (vfs->mode() == Vfs::WithSuffix
-        && (_item->_type == ItemTypeVirtualFile || _item->_type == ItemTypeVirtualFileDownload)) {
+    auto itype = _item->_type;
+    ASSERT(itype != ItemTypeVirtualFileDownload && itype != ItemTypeVirtualFileDehydration);
+    if (vfs->mode() == Vfs::WithSuffix && itype != ItemTypeDirectory) {
         const auto suffix = vfs->fileSuffix();
-        ASSERT(source.endsWith(suffix) && destination.endsWith(suffix));
-        if (source.endsWith(suffix) && destination.endsWith(suffix)) {
-            source.chop(suffix.size());
-            destination.chop(suffix.size());
+        bool sourceHadSuffix = remoteSource.endsWith(suffix);
+        bool destinationHadSuffix = remoteDestination.endsWith(suffix);
+
+        // Remote source and destination definitely shouldn't have the suffix
+        if (sourceHadSuffix)
+            remoteSource.chop(suffix.size());
+        if (destinationHadSuffix)
+            remoteDestination.chop(suffix.size());
+
+        QString folderTarget = _item->_renameTarget;
+
+        // Users can rename the file *and at the same time* add or remove the vfs
+        // suffix. That's a complicated case where a remote rename plus a local hydration
+        // change is requested. We don't currently deal with that. Instead, the rename
+        // is propagated and the local vfs suffix change is reverted.
+        // The discovery would still set up _renameTarget without the changed
+        // suffix, since that's what must be propagated to the remote but the local
+        // file may have a different name. folderTargetAlt will contain this potential
+        // name.
+        QString folderTargetAlt = folderTarget;
+        if (itype == ItemTypeFile) {
+            ASSERT(!sourceHadSuffix && !destinationHadSuffix);
+
+            // If foo -> bar.owncloud, the rename target will be "bar"
+            folderTargetAlt = folderTarget + suffix;
+
+        } else if (itype == ItemTypeVirtualFile) {
+            ASSERT(sourceHadSuffix && destinationHadSuffix);
+
+            // If foo.owncloud -> bar, the rename target will be "bar.owncloud"
+            folderTargetAlt.chop(suffix.size());
+        }
+
+        QString localTarget = propagator()->getFilePath(folderTarget);
+        QString localTargetAlt = propagator()->getFilePath(folderTargetAlt);
+
+        // If the expected target doesn't exist but a file with different hydration
+        // state does, rename the local file to bring it in line with what the discovery
+        // has set up.
+        if (!FileSystem::fileExists(localTarget) && FileSystem::fileExists(localTargetAlt)) {
+            QString error;
+            if (!FileSystem::uncheckedRenameReplace(localTargetAlt, localTarget, &error)) {
+                done(SyncFileItem::NormalError, tr("Could not rename %1 to %2, error: %3")
+                     .arg(folderTargetAlt, folderTarget, error));
+                return;
+            }
+            qCInfo(lcPropagateRemoteMove) << "Suffix vfs required local rename of"
+                                          << folderTargetAlt << "to" << folderTarget;
         }
     }
-    qCDebug(lcPropagateRemoteMove) << source << destination;
+    qCDebug(lcPropagateRemoteMove) << remoteSource << remoteDestination;
 
-    _job = new MoveJob(propagator()->account(), source, destination, this);
+    _job = new MoveJob(propagator()->account(), remoteSource, remoteDestination, this);
     connect(_job.data(), &MoveJob::finishedSignal, this, &PropagateRemoteMove::slotMoveJobFinished);
     propagator()->_activeJobList.append(this);
     _job->start();
@@ -162,9 +208,9 @@ void PropagateRemoteMove::finalize()
     propagator()->_journal->deleteFileRecord(_item->_originalFile);
 
     SyncFileItem newItem(*_item);
+    newItem._type = _item->_type;
     if (oldRecord.isValid()) {
         newItem._checksumHeader = oldRecord._checksumHeader;
-        newItem._type = oldRecord._type;
         if (newItem._size != oldRecord._fileSize) {
             qCWarning(lcPropagateRemoteMove) << "File sizes differ on server vs sync journal: " << newItem._size << oldRecord._fileSize;
 
