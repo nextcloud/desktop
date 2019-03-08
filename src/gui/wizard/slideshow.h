@@ -24,7 +24,7 @@ namespace OCC {
 
 /**
  * @brief The SlideShow class
- * @ingrouep gui
+ * @ingroup gui
  */
 class SlideShow : public QWidget
 {

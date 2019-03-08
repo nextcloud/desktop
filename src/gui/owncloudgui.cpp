@@ -779,7 +779,7 @@ void ownCloudGui::setupActions()
     _actionStatus->setEnabled(false);
     _actionSettings = new QAction(tr("Settings..."), this);
     _actionNewAccountWizard = new QAction(tr("New account..."), this);
-    _actionRecent = new QAction(tr("View more activity"), this);
+    _actionRecent = new QAction(tr("Details..."), this);
     _actionRecent->setEnabled(true);
 
     QObject::connect(_actionRecent, &QAction::triggered, this, &ownCloudGui::slotShowSyncProtocol);
