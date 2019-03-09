@@ -3776,8 +3776,8 @@ Não é aconselhável usá-la.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="288"/>
-        <source>Ser&amp;ver Address</source>
-        <translation>Endereço do Ser&amp;vidor</translation>
+        <source>Server Address</source>
+        <translation>Endereço do Servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="304"/>

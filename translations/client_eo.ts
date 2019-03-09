@@ -3366,12 +3366,12 @@ Uzi ĝin ne konsilindas.</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="199"/>
         <source>Invalid certificate detected</source>
-        <translation type="unfinished"/>
+        <translation>Nevalida atestilo eltrovita</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="200"/>
         <source>The host &quot;%1&quot; provided an invalid certitiface. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>La gastigo „%1“ provizis nevalidan atestilon. Ĉu daŭrigi?</translation>
     </message>
 </context>
 <context>
@@ -3774,8 +3774,8 @@ Uzi ĝin ne konsilindas.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="288"/>
-        <source>Ser&amp;ver Address</source>
-        <translation>Ser&amp;vila adreso</translation>
+        <source>Server Address</source>
+        <translation>Servila adreso</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="304"/>

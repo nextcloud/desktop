@@ -988,7 +988,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="255"/>
         <source>Synchronized with local folder</source>
-        <translation>ローカルフォルダと同期</translation>
+        <translation>ローカルフォルダーと同期</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="302"/>
@@ -1330,7 +1330,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="250"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation>エクスプローラのナビゲーションペインに同期フォルダを表示</translation>
+        <translation>エクスプローラのナビゲーションペインに同期フォルダーを表示</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="267"/>
@@ -2090,7 +2090,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="508"/>
         <source>creating folder on Nextcloud: %1</source>
-        <translation>Nextcloud上にフォルダを作成中：%1</translation>
+        <translation>Nextcloud上にフォルダーを作成中：%1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="524"/>
@@ -3098,7 +3098,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="517"/>
         <source>Folder hierarchy is too deep</source>
-        <translation>フォルダ階層が深すぎます</translation>
+        <translation>フォルダー階層が深すぎます</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="533"/>
@@ -3114,7 +3114,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="834"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>ローカル同期データベースを開いたり作成したりすることができません。 同期フォルダに書き込み権限があることを確認してください。</translation>
+        <translation>ローカル同期データベースを開いたり作成できません。 同期フォルダーに書き込み権限があることを確認してください。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1347"/>
@@ -3149,7 +3149,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="123"/>
         <source>Failed to load or create the journal file. Make sure you have read and write permissions in the local sync folder.</source>
-        <translation>ジャーナルファイルのロードまたは作成に失敗しました。 ローカル同期フォルダに読み書き権限があることを確認してください。</translation>
+        <translation>ジャーナルファイルのロードまたは作成に失敗しました。 ローカル同期フォルダーに読み書き権限があることを確認してください。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="127"/>
@@ -3169,7 +3169,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="142"/>
         <source>Tried to create a folder that already exists.</source>
-        <translation>既に存在するフォルダを作成しようとしました。</translation>
+        <translation>すでに存在するフォルダーを作成しようとしました。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="145"/>
@@ -3515,12 +3515,12 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="367"/>
         <source>No sync folders configured</source>
-        <translation>同期フォルダが設定されていません</translation>
+        <translation>同期フォルダーが設定されていません</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="413"/>
         <source>Resume all folders</source>
-        <translation>すべてのフォルダを再開する</translation>
+        <translation>すべてのフォルダーを再開する</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="418"/>
@@ -3761,8 +3761,8 @@ It is not advisable to use it.</source>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="288"/>
-        <source>Ser&amp;ver Address</source>
-        <translation>サーバーアドレス(&amp;V)</translation>
+        <source>Server Address</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="304"/>

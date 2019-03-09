@@ -3779,7 +3779,7 @@ Il est déconseillé de l&apos;utiliser.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="288"/>
-        <source>Ser&amp;ver Address</source>
+        <source>Server Address</source>
         <translation>Adresse du serveur</translation>
     </message>
     <message>

@@ -3775,8 +3775,8 @@ Kullanmanız önerilmez.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="288"/>
-        <source>Ser&amp;ver Address</source>
-        <translation>S&amp;unucu Adresi</translation>
+        <source>Server Address</source>
+        <translation>Sunucu Adresi</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="304"/>

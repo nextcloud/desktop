@@ -745,7 +745,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="390"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>A(z) %1 átnevezve erre: %2, és még %n további fájl átnevezve.</numerusform><numerusform>A(z) %1 átnevezve erre: %2, és még %n további fájl átnevezve.</numerusform></translation>
+        <translation><numerusform>A(z) %1 átnevezve erre: %2, és még %n további fájl lett átnevezve.</numerusform><numerusform>A(z) %1 átnevezve erre: %2, és még %n további fájl lett átnevezve.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="397"/>
@@ -765,7 +765,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="411"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>A(z) %1, és %n további fájlt nem sikerült szinkronizálni. Bővebb információk a naplófájlban.</numerusform><numerusform>A(z) %1, és %n további fájlt nem sikerült szinkronizálni. Bővebb információk a naplófájlban.</numerusform></translation>
+        <translation><numerusform>A(z) %1 és %n további fájl hibák miatt nem szinkronizálható. Bővebb információk a naplófájlban.</numerusform><numerusform>A(z) %1 és %n további fájl hibák miatt nem szinkronizálható. Bővebb információk a naplófájlban.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="413"/>
@@ -929,7 +929,7 @@ A szinkronizálás folytatásával az összes fájlja felül lesz írva egy rég
     <message>
         <location filename="../src/gui/folderman.cpp" line="1220"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation>A szinkronizálás sikeres, feloldhatatlan ütközések.</translation>
+        <translation>A szinkronizálás sikeres, feloldatlan ütközések vannak.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1222"/>
@@ -1395,7 +1395,7 @@ A szinkronizálás folytatásával az összes fájlja felül lesz írva egy rég
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="114"/>
         <source>Reading from keychain failed with error: &apos;%1&apos;</source>
-        <translation>A kulcstartóról olvasás hibával meghiúsult: „%1”</translation>
+        <translation>A kulcstartóról olvasás meghiúsult: „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
@@ -1405,7 +1405,7 @@ A szinkronizálás folytatásával az összes fájlja felül lesz írva egy rég
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Kattintson ide, hogy alkalmazásjelszót kérjen a webes felületről.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Kattintson ide&lt;/a&gt;, hogy alkalmazásjelszót kérjen a webes felületről.</translation>
     </message>
 </context>
 <context>
@@ -1467,7 +1467,7 @@ Ahol a törlés engedélyezett, ott az elemek törölve lesznek, ha megakadályo
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
         <source>Could not open file</source>
-        <translation>Nem sikerült a fájl megnyitása</translation>
+        <translation>A fájl nem nyitható meg</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="134"/>
@@ -1577,7 +1577,7 @@ A naplók ide lesznek írva: %1</translation>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="123"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation>A naplófájl mentése a helyi gépre hibakeresési céllal.</translation>
+        <translation>A naplófájl mentése egy fájlba a lemezen, hibakeresési céllal.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="212"/>
@@ -1661,7 +1661,7 @@ A naplók ide lesznek írva: %1</translation>
     <message>
         <location filename="../src/gui/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation>Proxy beállítása kézileg, mint</translation>
+        <translation>Proxy kézi megadása mint</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
@@ -1721,17 +1721,17 @@ A naplók ide lesznek írva: %1</translation>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="37"/>
         <source>Hostname of proxy server</source>
-        <translation>Proxy kiszolgáló</translation>
+        <translation>Proxy kiszolgáló gépneve</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="38"/>
         <source>Username for proxy server</source>
-        <translation>Proxy felhasználónév</translation>
+        <translation>Felhasználónév a proxy kiszolgálóhoz</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="39"/>
         <source>Password for proxy server</source>
-        <translation>Proxy jelszó</translation>
+        <translation>Jelszó a proxy kiszolgálóhoz</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="41"/>
@@ -1749,7 +1749,7 @@ A naplók ide lesznek írva: %1</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="112"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>A kiszolgálót hibát adott vissza: &lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>A kiszolgáló hibát adott vissza: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
@@ -1788,7 +1788,7 @@ A naplók ide lesznek írva: %1</translation>
         <location filename="../src/gui/updater/ocupdater.cpp" line="104"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>Egy új frissítés fog települni a(z) %1 rendszerhez. A frissítő további jogosultságokat kérhet a folyamat során.</translation>
+        <translation>Egy új %1 frissítés fog települni. A frissítő további jogosultságokat kérhet a folyamat során.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
@@ -1803,7 +1803,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>Could not check for new updates.</source>
-        <translation>Nem lehet ellenőrzi a frissítéseket.</translation>
+        <translation>A frissítések nem ellenőrizhatőek.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
@@ -1828,7 +1828,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation>Nincs újabb kiadás. Ez a legfrissebb verzió.</translation>
+        <translation>Nem érhető el frissítés. Az Ön telepítése a legfrissebb verziót használja.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="178"/>
@@ -1846,7 +1846,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="50"/>
         <source>Setup local folder options</source>
-        <translation>Helyi mappa beállítások megadása</translation>
+        <translation>Helyi mappa beállításainak megadása</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="59"/>
@@ -1895,7 +1895,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="14"/>
         <source>Connection failed</source>
-        <translation>A kapcsolódás sikertelen</translation>
+        <translation>Kapcsolódás sikertelen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
@@ -1938,7 +1938,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="60"/>
         <source>Enter user credentials</source>
-        <translation>Adja meg a felhasználói adatokat</translation>
+        <translation>Adja meg a felhasználó hitelesítő adatait</translation>
     </message>
 </context>
 <context>
@@ -3367,12 +3367,12 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="199"/>
         <source>Invalid certificate detected</source>
-        <translation type="unfinished"/>
+        <translation>Érvénytelen tanúsítvány észlelve</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="200"/>
         <source>The host &quot;%1&quot; provided an invalid certitiface. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>A(z) „%1” kiszolgáló érvénytelen tanúsítványt adott meg. Folytatja?</translation>
     </message>
 </context>
 <context>
@@ -3775,8 +3775,8 @@ Használata nem ajánlott.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="288"/>
-        <source>Ser&amp;ver Address</source>
-        <translation>&amp;Kiszolgálócím</translation>
+        <source>Server Address</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="304"/>
@@ -4125,7 +4125,7 @@ Használata nem ajánlott.</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="34"/>
         <source>Could not open browser</source>
-        <translation>Nem lehet megnyitni a böngészőt</translation>
+        <translation>A böngészőt nem lehet megnyitni</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="35"/>

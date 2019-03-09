@@ -519,7 +519,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="183"/>
         <source>Synced</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizado</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="218"/>
@@ -3367,12 +3367,12 @@ No se recomienda usarla.</translation>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="199"/>
         <source>Invalid certificate detected</source>
-        <translation type="unfinished"/>
+        <translation>Certificado inválido detectado</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/webview.cpp" line="200"/>
         <source>The host &quot;%1&quot; provided an invalid certitiface. Continue?</source>
-        <translation type="unfinished"/>
+        <translation>El host &quot;%1&quot; ha ofrecido un certificado inválido. ¿Continuar?</translation>
     </message>
 </context>
 <context>
@@ -3775,8 +3775,8 @@ No se recomienda usarla.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="288"/>
-        <source>Ser&amp;ver Address</source>
-        <translation>Dirección del ser&amp;vidor</translation>
+        <source>Server Address</source>
+        <translation>Dirección del servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="304"/>
