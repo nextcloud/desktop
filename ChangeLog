@@ -1,16 +1,19 @@
 ChangeLog
 =========
 
-version 2.5.4 (unreleased)
+version 2.5.4 (2019-03-xx)
 * Crash fix: Infinite recursion for bad paths on Windows (#7041)
 * Crash fix: SocketApi mustn't send if readyRead happens after disconnected (#7044)
-* Fix rare sync error causing spurious local deletes (#6677)
+* Fix rare error causing spurious local deletes (#6677)
 * Disable HTTP2 support due to bugs in Qt 5.12.1 (#7020, QTBUG-73947)
 * Fix loading of persisted cookies when loading accounts (#7054)
 * Windows: Fix breaking of unrelated explorer actions (#7004, #7023)
 * Windows: Forbid syncing of files with bytes 0x00 to 0x1F in filenames (#6987)
-* OSX: Opt out of dark mode until problems can be addressed (#7043)
-* OSX: Fix folder dehydration requests (#6977)
+* macOS: Opt out of dark mode until problems can be addressed (#7043)
+* macOS: Fix folder dehydration requests (#6977)
+* Linux: Tray: Try to establish tray after 10s if failed initially (#6518)
+* Linux: FolderWatcher: Work around missing notifications (#7068)
+* Shares: "copy link" action can create shares with expiry (#7061)
 * Selective sync: Don't collapse folder tree when changing selection (#7055)
 * Client cert dialog: Avoid incorrect behavior due to multiple signal connections
 
