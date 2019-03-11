@@ -225,7 +225,11 @@ QString Theme::defaultServerFolder() const
 
 QString Theme::helpUrl() const
 {
+#ifdef APPLICATION_HELP_URL
+    return QString::fromLatin1(APPLICATION_HELP_URL);
+#else
     return QString::fromLatin1("https://docs.nextcloud.com/desktop/%1.%2/").arg(MIRALL_VERSION_MAJOR).arg(MIRALL_VERSION_MINOR);
+#endif
 }
 
 QString Theme::conflictHelpUrl() const
@@ -240,7 +244,11 @@ QString Theme::conflictHelpUrl() const
 
 QString Theme::overrideServerUrl() const
 {
+#ifdef APPLICATION_SERVER_URL
+    return QString::fromLatin1(APPLICATION_SERVER_URL);
+#else
     return QString();
+#endif
 }
 
 QString Theme::forceConfigAuthType() const
@@ -291,7 +299,7 @@ bool Theme::monoIconsAvailable() const
 
 QString Theme::updateCheckUrl() const
 {
-    return QLatin1String("https://updates.nextcloud.org/client/");
+    return APPLICATION_UPDATE_URL;
 }
 
 qint64 Theme::newBigFolderSizeLimit() const
@@ -427,17 +435,21 @@ QIcon Theme::folderOfflineIcon(bool sysTray, bool sysTrayMenuVisible) const
 
 QColor Theme::wizardHeaderTitleColor() const
 {
-    return qApp->palette().text().color();
+    return QColor(APPLICATION_WIZARD_HEADER_TITLE_COLOR);
 }
 
 QColor Theme::wizardHeaderBackgroundColor() const
 {
-    return QColor();
+    return QColor(APPLICATION_WIZARD_HEADER_BACKGROUND_COLOR);
 }
 
 QPixmap Theme::wizardHeaderLogo() const
 {
+#ifdef APPLICATION_WIZARD_USE_CUSTOM_LOGO
+   return QPixmap(hidpiFileName(":/client/theme/colored/wizard_logo.png"));
+#else
     return applicationIcon().pixmap(64);
+#endif
 }
 
 QPixmap Theme::wizardHeaderBanner() const

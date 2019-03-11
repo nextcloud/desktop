@@ -198,7 +198,7 @@ X-GNOME-Autostart-Delay=3
 
 
 # Translations
-Icon[he]=@APPLICATION_ICON_NAME@
-Name[he]=@APPLICATION_NAME@ לקוח סנכרון לשולחן העבודה 
-Comment[he]=@APPLICATION_NAME@ לקוח סנכרון לשולחן העבודה
-GenericName[he]=סנכרון תיקיות
+Icon[ro]=@APPLICATION_ICON_NAME@
+Name[ro]=@APPLICATION_NAME@ client de sincronizare pentru desktop
+Comment[ro]=@APPLICATION_NAME@ client de sincronizare pentru desktop
+GenericName[ro]=Sincronizare dosare

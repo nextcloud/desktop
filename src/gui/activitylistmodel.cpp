@@ -233,6 +233,12 @@ void ActivityListModel::addNotificationToActivityList(Activity activity) {
     combineActivityLists();
 }
 
+void ActivityListModel::clearNotifications() {
+    qCInfo(lcActivity) << "Clear the notifications";
+    _notificationLists.clear();
+    combineActivityLists();
+}
+
 void ActivityListModel::removeActivityFromActivityList(int row) {
     Activity activity =  _finalList.at(row);
     removeActivityFromActivityList(activity);

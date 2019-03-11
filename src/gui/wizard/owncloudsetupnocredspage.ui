@@ -300,7 +300,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>Ser&amp;ver Address</string>
+               <string>Server Address</string>
               </property>
               <property name="buddy">
                <cstring>leUrl</cstring>
