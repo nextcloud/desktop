@@ -525,7 +525,7 @@ skráakerfið eða sameignarmöppur, gætu verið með önnur takmörk.</transla
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="183"/>
         <source>Synced</source>
-        <translation type="unfinished"/>
+        <translation>Samstillt</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="218"/>
