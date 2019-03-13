@@ -47,7 +47,7 @@ For all alphas, betas and RCs (Copy this section for each alpha/beta/rc):
 * [ ] Win: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
 * [ ] Linux: Smoke test of one distro package (Install, make sure it does not explode, and check if all version indicators are correct)
 * [ ] Linux: Run https://jenkins.int.owncloud.com/job/client-linux-tests/ with REPO_URL=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing
-* [ ] Linux: add/remove build targets in isv:ownCloud:Qt5121 and isv:ownCloud:desktop:testing to match the list of supported platforms and announced(!) deprecations. Keep in sync with https://doc.owncloud.org/server/latest/admin_manual/installation/system_requirements.html#desktop
+* [ ] Linux: add/remove build targets in isv:ownCloud:Qt5121 and isv:ownCloud:desktop:testing to match the list of supported platforms and announced(!) deprecations. Keep in sync with https://doc.owncloud.org/server/latest/admin_manual/installation/system_requirements.html#desktop and https://github.com/owncloud/ownbrander/blob/master/brand-items.php#L1651
 * [ ] Create a signed tag using ```git tag -u E94E7B37 tagname``` (https://github.com/owncloud/enterprise/wiki/Desktop-Signing-Knowledge)
 * [ ] update the wordpress content at owncloud.org/download (Attention: No staging!)
 * [ ] Inform packagers @dragotin (openSUSE), @hefee (Debian), ??? (Fedora)
