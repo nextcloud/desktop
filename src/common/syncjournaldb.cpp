@@ -442,12 +442,13 @@ bool SyncJournalDb::checkConnect()
         return sqlFail("Create table blacklist", createQuery);
     }
 
-    createQuery.prepare("CREATE TABLE IF NOT EXISTS poll("
+    createQuery.prepare("CREATE TABLE IF NOT EXISTS async_poll("
                         "path VARCHAR(4096),"
                         "modtime INTEGER(8),"
+                        "filesize BIGINT,"
                         "pollpath VARCHAR(4096));");
     if (!createQuery.exec()) {
-        return sqlFail("Create table poll", createQuery);
+        return sqlFail("Create table async_poll", createQuery);
     }
 
     // create the selectivesync table.
@@ -1722,7 +1723,7 @@ QVector<SyncJournalDb::PollInfo> SyncJournalDb::getPollInfos()
     if (!checkConnect())
         return res;
 
-    SqlQuery query("SELECT path, modtime, pollpath FROM poll", _db);
+    SqlQuery query("SELECT path, modtime, filesize, pollpath FROM async_poll", _db);
 
     if (!query.exec()) {
         return res;
@@ -1732,7 +1733,8 @@ QVector<SyncJournalDb::PollInfo> SyncJournalDb::getPollInfos()
         PollInfo info;
         info._file = query.stringValue(0);
         info._modtime = query.int64Value(1);
-        info._url = query.stringValue(2);
+        info._fileSize = query.int64Value(2);
+        info._url = query.stringValue(3);
         res.append(info);
     }
 
@@ -1749,14 +1751,15 @@ void SyncJournalDb::setPollInfo(const SyncJournalDb::PollInfo &info)
 
     if (info._url.isEmpty()) {
         qCDebug(lcDb) << "Deleting Poll job" << info._file;
-        SqlQuery query("DELETE FROM poll WHERE path=?", _db);
+        SqlQuery query("DELETE FROM async_poll WHERE path=?", _db);
         query.bindValue(1, info._file);
         query.exec();
     } else {
-        SqlQuery query("INSERT OR REPLACE INTO poll (path, modtime, pollpath) VALUES( ? , ? , ? )", _db);
+        SqlQuery query("INSERT OR REPLACE INTO async_poll (path, modtime, filesize, pollpath) VALUES( ? , ? , ? , ? )", _db);
         query.bindValue(1, info._file);
         query.bindValue(2, info._modtime);
-        query.bindValue(3, info._url);
+        query.bindValue(3, info._fileSize);
+        query.bindValue(4, info._url);
         query.exec();
     }
 }

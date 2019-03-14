@@ -592,6 +592,7 @@ void PropagateUploadFileCommon::startPollJob(const QString &path)
     info._file = _item->_file;
     info._url = path;
     info._modtime = _item->_modtime;
+    info._fileSize = _item->_size;
     propagator()->_journal->setPollInfo(info);
     propagator()->_journal->commit("add poll info");
     propagator()->_activeJobList.append(this);
