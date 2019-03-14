@@ -1320,7 +1320,10 @@ static QString checkPathValidityRecursive(const QString &path)
     QFileInfo selFile(path);
 
     if (!selFile.exists()) {
-        return checkPathValidityRecursive(selFile.dir().path());
+        QString parentPath = selFile.dir().path();
+        if (parentPath != path)
+            return checkPathValidityRecursive(parentPath);
+        return FolderMan::tr("The selected path does not exist!");
     }
 
     if (!selFile.isDir()) {
