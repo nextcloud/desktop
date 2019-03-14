@@ -129,7 +129,14 @@ public:
     bool isSelect();
     bool isPragma();
     bool exec();
-    bool next();
+
+    struct NextResult
+    {
+        bool ok = false;
+        bool hasData = false;
+    };
+    NextResult next();
+
     void bindValue(int pos, const QVariant &value);
     QString lastQuery() const;
     int numRowsAffected();

@@ -426,6 +426,12 @@ bool ownCloudGui::contextMenuVisible() const
     return _contextMenu->isVisible();
 }
 
+void ownCloudGui::hideAndShowTray()
+{
+    _tray->hide();
+    _tray->show();
+}
+
 static bool minimalTrayMenu()
 {
     static QByteArray var = qgetenv("OWNCLOUD_MINIMAL_TRAY_MENU");

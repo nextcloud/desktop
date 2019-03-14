@@ -31,7 +31,7 @@ static void assertCsyncJournalOk(SyncJournalDb &journal)
     QVERIFY(db.openReadOnly(journal.databaseFilePath()));
     SqlQuery q("SELECT count(*) from metadata where length(fileId) == 0", db);
     QVERIFY(q.exec());
-    QVERIFY(q.next());
+    QVERIFY(q.next().hasData);
     QCOMPARE(q.intValue(0), 0);
 #if defined(Q_OS_WIN) // Make sure the file does not appear in the FileInfo
     FileSystem::setFileHidden(journal.databaseFilePath() + "-shm", true);

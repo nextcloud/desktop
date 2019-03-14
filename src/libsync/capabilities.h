@@ -38,8 +38,9 @@ public:
     bool sharePublicLinkAllowUpload() const;
     bool sharePublicLinkSupportsUploadOnly() const;
     bool sharePublicLinkEnforcePassword() const;
+    bool sharePublicLinkDefaultExpire() const;
+    int sharePublicLinkDefaultExpireDateDays() const;
     bool sharePublicLinkEnforceExpireDate() const;
-    int sharePublicLinkExpireDateDays() const;
     bool sharePublicLinkMultiple() const;
     bool shareResharing() const;
     bool chunkingNg() const;
