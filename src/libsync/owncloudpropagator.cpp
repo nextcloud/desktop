@@ -1020,6 +1020,7 @@ void CleanupPollsJob::start()
     SyncFileItemPtr item(new SyncFileItem);
     item->_file = info._file;
     item->_modtime = info._modtime;
+    item->_size = info._fileSize;
     PollJob *job = new PollJob(_account, info._url, item, _journal, _localPath, this);
     connect(job, &PollJob::finishedSignal, this, &CleanupPollsJob::slotPollFinished);
     job->start();
