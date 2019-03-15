@@ -10,6 +10,3 @@
 [submodule "src/3rdparty/zsync"]
 	path = src/3rdparty/zsync
 	url = https://github.com/owncloud/zsync
-[submodule "doc/docs-themes"]
-	path = doc/docs-themes
-	url = https://github.com/owncloud/docs-themes.git
