@@ -58,8 +58,6 @@ public:
     void postOptionalGuiLog(const QString &title, const QString &message);
     void postGuiMessage(const QString &title, const QString &message);
 
-    void setLogWindowActivated(bool activated);
-
     QString logFile() const;
     void setLogFile(const QString &name);
 
@@ -104,7 +102,6 @@ private:
     ~Logger();
     QList<Log> _logs;
     bool _showTime = true;
-    bool _logWindowActivated = false;
     QFile _logFile;
     bool _doFileFlush = false;
     int _logExpire = 0;

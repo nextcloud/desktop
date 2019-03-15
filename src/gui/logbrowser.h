@@ -30,19 +30,6 @@
 namespace OCC {
 
 /**
- * @brief The LogWidget class
- * @ingroup gui
- */
-class LogWidget : public QPlainTextEdit
-{
-    Q_OBJECT
-public:
-    explicit LogWidget(QWidget *parent = nullptr);
-
-signals:
-};
-
-/**
  * @brief The LogBrowser class
  * @ingroup gui
  */
@@ -53,29 +40,11 @@ public:
     explicit LogBrowser(QWidget *parent = nullptr);
     ~LogBrowser();
 
-    void setLogFile(const QString &, bool);
-
 protected:
-    void showEvent(QShowEvent *) override;
     void closeEvent(QCloseEvent *) override;
 
 protected slots:
-    void slotNewLog(const QString &msg);
-    void slotFind();
-    void slotDebugCheckStateChanged(int);
-    void search(const QString &);
-    void slotSave();
-    void slotClearLog();
     void togglePermanentLogging(bool enabled);
-
-private:
-    LogWidget *_logWidget;
-    QLineEdit *_findTermEdit;
-    QCheckBox *_logDebugCheckBox;
-    QCheckBox *_permanentLogging;
-    QPushButton *_saveBtn;
-    QPushButton *_clearBtn;
-    QLabel *_statusLabel;
 };
 
 } // namespace

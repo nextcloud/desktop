@@ -121,7 +121,7 @@ void Logger::log(Log log)
 bool Logger::isNoop() const
 {
     QMutexLocker lock(&_mutex);
-    return !_logstream && !_logWindowActivated;
+    return !_logstream;
 }
 
 bool Logger::isLoggingToFile() const
@@ -161,12 +161,6 @@ void Logger::mirallLog(const QString &message)
     log_.message = message;
 
     Logger::instance()->log(log_);
-}
-
-void Logger::setLogWindowActivated(bool activated)
-{
-    QMutexLocker locker(&_mutex);
-    _logWindowActivated = activated;
 }
 
 QString Logger::logFile() const
