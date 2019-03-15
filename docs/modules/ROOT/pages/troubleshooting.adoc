@@ -86,9 +86,8 @@ The Log Output window opens.
 +
 image:log_output_window.png[image]
 +
-.  Enable the btn:[Permanently save logs] checkbox.
-.  Look at its tooltip and take note of the directory the logs will be saved to.
-.  Navigate to this directory.
+.  Enable the btn:[Enable logging to temporary folder] checkbox.
+.  Later, to find the log files, click the btn:[Open folder] button.
 .  Select the logs for the time frame in which the issue occurred.
 
 NOTE: That the choice to enable logging will be persist across client restarts.

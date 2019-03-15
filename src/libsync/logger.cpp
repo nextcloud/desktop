@@ -57,7 +57,6 @@ Logger *Logger::instance()
 Logger::Logger(QObject *parent)
     : QObject(parent)
     , _showTime(true)
-    , _logWindowActivated(false)
     , _doFileFlush(false)
     , _logExpire(0)
     , _logDebug(false)
@@ -114,7 +113,7 @@ void Logger::log(Log log)
 bool Logger::isNoop() const
 {
     QMutexLocker lock(&_mutex);
-    return !_logstream && !_logWindowActivated;
+    return !_logstream;
 }
 
 bool Logger::isLoggingToFile() const
@@ -143,12 +142,6 @@ void Logger::mirallLog(const QString &message)
     log_.message = message;
 
     Logger::instance()->log(log_);
-}
-
-void Logger::setLogWindowActivated(bool activated)
-{
-    QMutexLocker locker(&_mutex);
-    _logWindowActivated = activated;
 }
 
 void Logger::setLogFile(const QString &name)

@@ -18,17 +18,16 @@
 #include <iostream>
 
 #include <QDialogButtonBox>
-#include <QTextDocument>
 #include <QLayout>
 #include <QPushButton>
 #include <QLabel>
-#include <QFileDialog>
 #include <QDir>
 #include <QTextStream>
 #include <QMessageBox>
 #include <QCoreApplication>
 #include <QSettings>
 #include <QAction>
+#include <QDesktopServices>
 
 #include "configfile.h"
 #include "logger.h"
@@ -37,21 +36,8 @@ namespace OCC {
 
 // ==============================================================================
 
-LogWidget::LogWidget(QWidget *parent)
-    : QPlainTextEdit(parent)
-{
-    setReadOnly(true);
-    QFont font;
-    font.setFamily(QLatin1String("Courier New"));
-    font.setFixedPitch(true);
-    document()->setDefaultFont(font);
-}
-
-// ==============================================================================
-
 LogBrowser::LogBrowser(QWidget *parent)
     : QDialog(parent)
-    , _logWidget(new LogWidget(parent))
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     setObjectName("LogBrowser"); // for save/restoreGeometry()
@@ -59,78 +45,51 @@ LogBrowser::LogBrowser(QWidget *parent)
     setMinimumWidth(600);
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
-    // mainLayout->setMargin(0);
 
-    mainLayout->addWidget(_logWidget);
+    auto label = new QLabel(
+        tr("The client can write debug logs to a temporary folder. "
+           "These logs are very helpful for diagnosing problems.\n"
+           "Since log files can get large, the client will start a new one for each sync "
+           "run and compress older ones. It will also delete log files after a couple "
+           "of hours to avoid consuming too much disk space.\n"
+           "If enabled, logs will be written to %1")
+        .arg(Logger::instance()->temporaryFolderLogDirPath()));
+    label->setWordWrap(true);
+    label->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
+    mainLayout->addWidget(label);
 
-    QHBoxLayout *toolLayout = new QHBoxLayout;
-    mainLayout->addLayout(toolLayout);
+    // button to permanently save logs
+    auto enableLoggingButton = new QCheckBox;
+    enableLoggingButton->setText(tr("Enable logging to temporary folder"));
+    enableLoggingButton->setChecked(ConfigFile().automaticLogDir());
+    connect(enableLoggingButton, &QCheckBox::toggled, this, &LogBrowser::togglePermanentLogging);
+    mainLayout->addWidget(enableLoggingButton);
 
-    // Search input field
-    QLabel *lab = new QLabel(tr("&Search:") + " ");
-    _findTermEdit = new QLineEdit;
-    lab->setBuddy(_findTermEdit);
-    toolLayout->addWidget(lab);
-    toolLayout->addWidget(_findTermEdit);
+    label = new QLabel(
+        tr("This setting persists across client restarts.\n"
+           "Note that using any logging command line options will override this setting."));
+    label->setWordWrap(true);
+    label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
+    mainLayout->addWidget(label);
 
-    // find button
-    QPushButton *findBtn = new QPushButton;
-    findBtn->setText(tr("&Find"));
-    connect(findBtn, &QAbstractButton::clicked, this, &LogBrowser::slotFind);
-    toolLayout->addWidget(findBtn);
-
-    // stretch
-    toolLayout->addStretch(1);
-    _statusLabel = new QLabel;
-    toolLayout->addWidget(_statusLabel);
-    toolLayout->addStretch(5);
-
-    // Debug logging
-    _logDebugCheckBox = new QCheckBox(tr("&Capture debug messages") + " ");
-    connect(_logDebugCheckBox, &QCheckBox::stateChanged, this, &LogBrowser::slotDebugCheckStateChanged);
-    toolLayout->addWidget(_logDebugCheckBox);
+    auto openFolderButton = new QPushButton;
+    openFolderButton->setText(tr("Open folder"));
+    connect(openFolderButton, &QPushButton::clicked, this, []() {
+        QDesktopServices::openUrl(Logger::instance()->temporaryFolderLogDirPath());
+    });
+    mainLayout->addWidget(openFolderButton);
 
     QDialogButtonBox *btnbox = new QDialogButtonBox;
     QPushButton *closeBtn = btnbox->addButton(QDialogButtonBox::Close);
     connect(closeBtn, &QAbstractButton::clicked, this, &QWidget::close);
 
+    mainLayout->addStretch();
     mainLayout->addWidget(btnbox);
-
-    // button to permanently save logs
-    _permanentLogging = new QCheckBox;
-    _permanentLogging->setText(tr("Permanently save logs"));
-    _permanentLogging->setToolTip(
-        tr("When this option is enabled and no other logging is configured, "
-           "logs will be written to a temporary folder and expire after a few hours. "
-           "This setting persists across client restarts.\n"
-           "\n"
-           "Logs will be written to %1")
-            .arg(Logger::instance()->temporaryFolderLogDirPath()));
-    _permanentLogging->setChecked(ConfigFile().automaticLogDir());
-    btnbox->addButton(_permanentLogging, QDialogButtonBox::ActionRole);
-    connect(_permanentLogging, &QCheckBox::toggled, this, &LogBrowser::togglePermanentLogging);
-
-    // clear button
-    _clearBtn = new QPushButton;
-    _clearBtn->setText(tr("Clear"));
-    _clearBtn->setToolTip(tr("Clear the log display."));
-    btnbox->addButton(_clearBtn, QDialogButtonBox::ActionRole);
-    connect(_clearBtn, &QAbstractButton::clicked, this, &LogBrowser::slotClearLog);
-
-    // save Button
-    _saveBtn = new QPushButton;
-    _saveBtn->setText(tr("S&ave"));
-    _saveBtn->setToolTip(tr("Save the log file to a file on disk for debugging."));
-    btnbox->addButton(_saveBtn, QDialogButtonBox::ActionRole);
-    connect(_saveBtn, &QAbstractButton::clicked, this, &LogBrowser::slotSave);
 
     setLayout(mainLayout);
 
     setModal(false);
-
-    Logger::instance()->setLogWindowActivated(true);
-    // Direct connection for log coming from this thread, and queued for the one in a different thread
-    connect(Logger::instance(), &Logger::logWindowLog, this, &LogBrowser::slotNewLog, Qt::AutoConnection);
 
     QAction *showLogWindow = new QAction(this);
     showLogWindow->setShortcut(QKeySequence("F12"));
@@ -139,95 +98,16 @@ LogBrowser::LogBrowser(QWidget *parent)
 
     ConfigFile cfg;
     cfg.restoreGeometry(this);
-    int lines = cfg.maxLogLines();
-    _logWidget->document()->setMaximumBlockCount(lines);
 }
 
 LogBrowser::~LogBrowser()
 {
 }
 
-void LogBrowser::showEvent(QShowEvent *)
-{
-    // This could have been changed through the --logdebug argument passed through the single application.
-    _logDebugCheckBox->setCheckState(Logger::instance()->logDebug() ? Qt::Checked : Qt::Unchecked);
-}
-
 void LogBrowser::closeEvent(QCloseEvent *)
 {
     ConfigFile cfg;
     cfg.saveGeometry(this);
-}
-
-
-void LogBrowser::slotNewLog(const QString &msg)
-{
-    if (_logWidget->isVisible()) {
-        _logWidget->appendPlainText(msg);
-    }
-}
-
-
-void LogBrowser::slotFind()
-{
-    QString searchText = _findTermEdit->text();
-
-    if (searchText.isEmpty())
-        return;
-
-    search(searchText);
-}
-
-void LogBrowser::slotDebugCheckStateChanged(int checkState)
-{
-    Logger::instance()->setLogDebug(checkState == Qt::Checked);
-}
-
-void LogBrowser::search(const QString &str)
-{
-    QList<QTextEdit::ExtraSelection> extraSelections;
-
-    _logWidget->moveCursor(QTextCursor::Start);
-    QColor color = QColor(Qt::gray).lighter(130);
-    _statusLabel->clear();
-
-    while (_logWidget->find(str)) {
-        QTextEdit::ExtraSelection extra;
-        extra.format.setBackground(color);
-
-        extra.cursor = _logWidget->textCursor();
-        extraSelections.append(extra);
-    }
-
-    QString stat = QString::fromLatin1("Search term %1 with %2 search results.").arg(str).arg(extraSelections.count());
-    _statusLabel->setText(stat);
-
-    _logWidget->setExtraSelections(extraSelections);
-}
-
-void LogBrowser::slotSave()
-{
-    _saveBtn->setEnabled(false);
-
-    QString saveFile = QFileDialog::getSaveFileName(this, tr("Save log file"), QDir::homePath());
-
-    if (!saveFile.isEmpty()) {
-        QFile file(saveFile);
-
-        if (file.open(QIODevice::WriteOnly)) {
-            QTextStream stream(&file);
-            stream << _logWidget->toPlainText();
-            file.close();
-        } else {
-            QMessageBox::critical(this, tr("Error"), tr("Could not write to log file %1").arg(saveFile));
-        }
-    }
-    _saveBtn->setEnabled(true);
-}
-
-void LogBrowser::slotClearLog()
-{
-    _logWidget->clear();
 }
 
 void LogBrowser::togglePermanentLogging(bool enabled)
