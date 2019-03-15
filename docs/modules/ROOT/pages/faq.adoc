@@ -92,3 +92,20 @@ The ownCloud client will check the files in the newly-added sync folder and find
 Make your choice and click "*Connect...*"
 This will then step you through the Connection Wizard, just as you did when you setup the previous sync connection, but giving you the opportunity to choose a new sync directory.
 ====
+
+== I Want To Change My Server Url
+
+Since changing server urls is a potentially dangerous operation the ownCloud desktop client does not provide a user interface for this change.
+Typically, server url changes should be implemented by serving a permanent redirect to the new location on the old url.
+The client will then permanently update the server url the next time it queries the old url.
+
+For situations where arranging for a redirect is impossible, url changes can be done by editing the config file.
+Before doing so make sure that the new url does indeed point to the same server, with the same users and the same data.
+Then go through these steps:
+
+1. Shut down the ownCloud client.
+2. Locate the configuration file. It's usually located in `AppData/Roaming/ownCloud/owncloud.cfg` on Windows or `~/.config/ownCloud/owncloud.cfg` on Linux.
+3. Open it with a text editor.
+4. Find your old server url and adjust it.
+5. Save the file and start the ownCloud client again.
+
