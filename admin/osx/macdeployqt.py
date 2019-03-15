@@ -405,6 +405,9 @@ if LooseVersion(qt_version) >= LooseVersion("5.10.0"):
 for plugin in QT_PLUGINS:
   FixPlugin(FindQtPlugin(plugin), os.path.dirname(plugin))
 
+# The FixPlugin function is actually for Qt plugins, but for now we abuse it for our own plugin
+FixPlugin(bundle_dir+'/Contents/PlugIns/owncloudsync_vfs_suffix.dylib', '')
+
 if LooseVersion(qt_version) >= LooseVersion("5.10.0"):
   args = ['plutil', '-insert', 'LSMinimumSystemVersion', '-string', '10.10.0', os.path.join(bundle_dir, 'Contents', 'Info.plist')]
   commands.append(args)
