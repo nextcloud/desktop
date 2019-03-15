@@ -476,22 +476,22 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="131"/>
         <source>%1</source>
-        <translation type="unfinished"/>
+        <translation>%1</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="179"/>
         <source>More information</source>
-        <translation type="unfinished"/>
+        <translation>Més informació</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="180"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Accepta</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="181"/>
         <source>Join</source>
-        <translation type="unfinished"/>
+        <translation>Uneix</translation>
     </message>
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="198"/>
@@ -514,12 +514,12 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="56"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Accepta</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="183"/>
         <source>Synced</source>
-        <translation type="unfinished"/>
+        <translation>Sincronitzat</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="218"/>
@@ -585,7 +585,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="196"/>
         <source>Quit %1</source>
-        <translation type="unfinished"/>
+        <translation>Surt %1</translation>
     </message>
 </context>
 <context>
