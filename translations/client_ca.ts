@@ -2633,7 +2633,7 @@ No és aconsellada usar-la.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="89"/>
         <source>Enable</source>
-        <translation type="unfinished"/>
+        <translation>Activa</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="118"/>

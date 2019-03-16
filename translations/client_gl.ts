@@ -2127,7 +2127,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="532"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
-        <translation>A creación do cartafol remoto fracasou por por de seren incorrectas as credenciais!&lt;br/&gt;Volva atrás e comprobe as súas credenciais.&lt;/p&gt;</translation>
+        <translation>A creación do cartafol remoto fracasou por mor de seren incorrectas as credenciais!&lt;br/&gt;Volva atrás e comprobe as súas credenciais.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="536"/>
@@ -2243,7 +2243,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="602"/>
         <source>File was deleted from server</source>
-        <translation>O ficheiro vai seren eliminado do servidor</translation>
+        <translation>O ficheiro vai ser eliminado do servidor</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="655"/>
@@ -2263,7 +2263,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="882"/>
         <source>File has changed since discovery</source>
-        <translation>O ficheiro cambiou após seren atopado</translation>
+        <translation>O ficheiro cambiou após ser atopado</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="938"/>
