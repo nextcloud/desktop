@@ -181,7 +181,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
         <source>Synchronize all</source>
-        <translation>同步全部</translation>
+        <translation>同步所有</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="205"/>
