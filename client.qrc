@@ -37,6 +37,8 @@
         <file>resources/confirm.svg</file>
         <file>resources/copy.svg</file>
         <file>resources/state-sync.svg</file>
+        <file>../desktop/resources/next.svg</file>
+        <file>../desktop/resources/previous.svg</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>
