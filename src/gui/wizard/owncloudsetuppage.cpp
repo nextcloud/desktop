@@ -86,8 +86,8 @@ OwncloudSetupPage::OwncloudSetupPage(QWidget *parent)
     _ui.slideShow->addSlide(Theme::hidpiFileName(":/client/theme/colored/wizard-talk.png"), tr("Screensharing, online meetings & web conferences"));
 
     connect(_ui.slideShow, &SlideShow::clicked, _ui.slideShow, &SlideShow::stopShow);
-    connect(_ui.slideshownextButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::nextSlide);
-    connect(_ui.slideshowpreviousButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::previousSlide);
+    connect(_ui.nextButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::nextSlide);
+    connect(_ui.previousButton, &QPushButton::clicked, _ui.slideShow, &SlideShow::previousSlide);
 
 
     _ui.slideShow->startShow();
