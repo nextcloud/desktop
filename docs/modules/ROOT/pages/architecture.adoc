@@ -1,7 +1,5 @@
 = Appendix B: History and Architecture
 
-Architecture
-
 ownCloud provides desktop sync clients to synchronize the contents of local directories from computers, tablets, and handheld devices to the ownCloud server.
 
 Synchronization is accomplished using http://www.csync.org[csync], a bidirectional file synchronizing tool that provides both a command line client as well as a library.
@@ -109,72 +107,7 @@ GET http://localhost:8000/ocs/v1.php/cloud/capabilities?format=json
 
 [source,json]
 ....
-{
-   "ocs":{
-      "meta":{
-         "status":"ok",
-         "statuscode":100,
-         "message":"OK",
-         "totalitems":"",
-         "itemsperpage":""
-      },
-      "data":{
-         "version":{
-            "major":10,
-            "minor":0,
-            "micro":0,
-            "string":"10.0.0 beta",
-            "edition":"Community"
-         },
-         "capabilities":{
-            "core":{
-               "pollinterval":60,
-               "webdav-root":"remote.php/webdav"
-            },
-            "dav":{
-               "chunking":"1.0"
-            },
-            "files_sharing":{
-               "api_enabled":true,
-               "public":{
-                  "enabled":true,
-                  "password":{
-                     "enforced":false
-                  },
-                  "expire_date":{
-                     "enabled":false
-                  },
-                  "send_mail":false,
-                  "upload":true
-               },
-               "user":{
-                  "send_mail":false
-               },
-               "resharing":true,
-               "group_sharing":true,
-               "federation":{
-                  "outgoing":true,
-                  "incoming":true
-               }
-            },
-            "checksums":{
-               "supportedTypes":[
-                  "SHA1"
-               ],
-               "preferredUploadType":"SHA1"
-            },
-            "files":{
-               "bigfilechunking":true,
-               "blacklisted_files":[
-                  ".htaccess"
-               ],
-               "undelete":true,
-               "versioning":true
-            }
-         }
-      }
-   }
-}
+include::example$architecture/cloud-capabilities-json-response.json[]
 ....
 
 === Upload
@@ -230,8 +163,8 @@ By default, the ownCloud Client ignores the following files:
 `.csync_journal.db*`, `.owncloudsync.log*`, as these files are reserved for journalling.
 * Files with a name longer than 254 characters.
 * The file `Desktop.ini` in the root of a synced folder.
-* Files matching the pattern `*_conflict-*` unless conflict file uploading is enabled.
-* Files matching the pattern `*(conflicted copy*` unless conflict file uploading is enabled.
+* Files matching the pattern `_conflict-` unless conflict file uploading is enabled.
+* Files matching the pattern `(conflicted copy` unless conflict file uploading is enabled.
 * Windows only: Files containing characters that do not work on typical Windows filesystems `(\, /, :, ?, *, ", >, <, |)`.
 * Windows only: Files with a trailing space or dot.
 * Windows only: Filenames that are reserved on Windows.
