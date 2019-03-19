@@ -3505,7 +3505,7 @@ Det er ikke tilrådelig å bruke den.</translation>
         <location filename="../src/gui/owncloudgui.cpp" line="308"/>
         <location filename="../src/gui/owncloudgui.cpp" line="361"/>
         <source>Synchronization is paused</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisering er satt på pause</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="356"/>
@@ -3566,7 +3566,7 @@ Det er ikke tilrådelig å bruke den.</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="841"/>
         <source>Apps</source>
-        <translation type="unfinished"/>
+        <translation>Apper</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="898"/>
