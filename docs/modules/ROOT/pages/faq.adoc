@@ -23,7 +23,7 @@ That’s why you should always upgrade your software when there is a new version
 The ownCloud Desktop Client talks to a server, e.g. the ownCloud server, so you don’t only have to upgrade your client when there is a new version for it, also the server has to be kept up-to-date by your sysadmin.
 Starting with version 2.5.0, the client will show a warning message if you connect to an outdated or unsupported server:
 
-image:images/oc-unsupported-version-warning-message.png[image]
+image:oc-unsupported-version-warning-message.png[image]
 
 === Because earlier versions are not maintained anymore, only ownCloud. 10.0.0 or higher is supported 
 
@@ -88,10 +88,10 @@ If it does, after the client creates the new connection, it will have to downloa
 Instead, first move or copy the old local sync folder, containing a copy of the existing files, to the new location.
 Then, when creating the new connection choose "_keep existing data_" instead.
 The ownCloud client will check the files in the newly-added sync folder and find that they match what is on the server and not need to download anything.
+====
 
 Make your choice and click "*Connect...*"
 This will then step you through the Connection Wizard, just as you did when you setup the previous sync connection, but giving you the opportunity to choose a new sync directory.
-====
 
 == I Want To Change My Server Url
 
