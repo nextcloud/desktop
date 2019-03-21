@@ -187,6 +187,72 @@ pipeline:
             matrix:
                 TESTS: qt-5.11-clang
 
+    qt-5.12:
+        image: nextcloudci/client-5.12:client-5.12-2
+        commands:
+            # Install QtKeyChain
+            - /bin/bash -c "
+              export CC=gcc-7 &&
+              export CXX=g++-7 &&
+              source /opt/qt512/bin/qt512-env.sh &&
+              cd /tmp &&
+              git clone https://github.com/frankosterfeld/qtkeychain.git &&
+              cd qtkeychain &&
+              git checkout v0.9.1 &&
+              mkdir build &&
+              cd build &&
+              cmake ../ &&
+              make &&
+              make install"
+            # Build client
+            - /bin/bash -c "
+              export CC=gcc-7 &&
+              export CXX=g++-7 &&
+              source /opt/qt512/bin/qt512-env.sh &&
+              mkdir build &&
+              cd build &&
+              cmake -D NO_SHIBBOLETH=1 -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 ../ &&
+              make &&
+              useradd -m -s /bin/bash test &&
+              chown -R test:test . &&
+              su -c 'ctest --output-on-failure' test"
+        when:
+            matrix:
+                TESTS: qt-5.12
+
+    qt-5.12-clang:
+        image: nextcloudci/client-5.12:client-5.12-2
+        commands:
+            # Install QtKeyChain
+            - /bin/bash -c "
+              export CC=clang-6.0 &&
+              export CXX=clang++-6.0 &&
+              source /opt/qt512/bin/qt512-env.sh &&
+              cd /tmp &&
+              git clone https://github.com/frankosterfeld/qtkeychain.git &&
+              cd qtkeychain &&
+              git checkout v0.9.1 &&
+              mkdir build &&
+              cd build &&
+              cmake ../ &&
+              make &&
+              make install"
+            # Build client
+            - /bin/bash -c "
+              export CC=clang-6.0 &&
+              export CXX=clang++-6.0 &&
+              source /opt/qt512/bin/qt512-env.sh &&
+              mkdir build &&
+              cd build &&
+              cmake -D NO_SHIBBOLETH=1 -DCMAKE_BUILD_TYPE=Debug -DUNIT_TESTING=1 ../ &&
+              make &&
+              useradd -m -s /bin/bash test &&
+              chown -R test:test . &&
+              su -c 'ctest --output-on-failure' test"
+        when:
+            matrix:
+                TESTS: qt-5.12-clang
+
     AppImage:
         image: nextcloudci/client-5.11:client-5.11-3
         commands:
@@ -221,6 +287,8 @@ matrix:
         - TESTS: qt-5.10
         - TESTS: qt-5.11
         - TESTS: qt-5.11-clang
+        - TESTS: qt-5.12
+        - TESTS: qt-5.12-clang
         - BUILD: AppImage
         - BUILD: Debian
         - TESTS: documentation
