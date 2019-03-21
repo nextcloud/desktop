@@ -47,7 +47,7 @@ std::wstring getUserName() {
 std::wstring CommunicationSocket::DefaultPipePath()
 {
     auto pipename = std::wstring(L"\\\\.\\pipe\\");
-    pipename += APPLICATION_SHORTNAME;
+    pipename.append(APPLICATION_SHORTNAME);
     pipename += L"-";
     pipename += getUserName();
     return pipename;
