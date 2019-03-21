@@ -298,7 +298,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="931"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
-        <translation>%1 kun la konto &lt;i&gt;%2&lt;/i&gt;</translation>
+        <translation>%1 per la konto &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="937"/>
@@ -1329,7 +1329,7 @@ Se vi plu sinkronigas, la sinkronigo anstataŭigos ĉiujn viajn dosierojn per an
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>&amp;Uzu unukolorajn piktogramojn</translation>
+        <translation>&amp;Uzi unukolorajn piktogramojn</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="171"/>

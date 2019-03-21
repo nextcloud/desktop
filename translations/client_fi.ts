@@ -39,7 +39,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="189"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Synkronoidaan</translation>
     </message>
 </context>
 <context>
@@ -1507,7 +1507,7 @@ Kohteet, joiden poisto on sallittu, poistetaan, jos ne estävät kansion poistam
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="30"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Lisensoitu GNU General Public -lisenssin (GPL) versiolla 2.0 tai uudemmalla.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1872,7 +1872,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="385"/>
         <source>There is no enough free space in the local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Paikallisessa kansiossa ei ole riittävästi vapaata tilaa!</translation>
     </message>
 </context>
 <context>
@@ -2670,7 +2670,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="205"/>
         <source>File Drop (Upload Only)</source>
-        <translation type="unfinished"/>
+        <translation>Tiedoston pudotus (Vain lähetys)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="212"/>
@@ -3761,7 +3761,7 @@ Osoitteen käyttäminen ei ole suositeltavaa.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="288"/>
         <source>Server Address</source>
-        <translation type="unfinished"/>
+        <translation>Palvelimen osoite</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="304"/>
