@@ -254,7 +254,7 @@ pipeline:
                 TESTS: qt-5.12-clang
 
     AppImage:
-        image: nextcloudci/client-5.11:client-5.11-3
+        image: nextcloudci/client-5.12:client-5.12-2
         commands:
             - /bin/bash -c "./admin/linux/build-appimage.sh"
         when:
