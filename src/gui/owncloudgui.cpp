@@ -520,12 +520,6 @@ void ownCloudGui::slotLogout()
         ai->signOutByUi();
     }
 
-    /*
-    * JP 09/2018.
-    * Down Virtual File System.
-    */
-    ConfigFile cfg;
-    
 #if defined(Q_OS_WIN)
     VfsWindows::instance()->unmount();
 #endif
