@@ -29,23 +29,23 @@
 
 namespace OCC {
 
-class Vfs_windows : public QObject
+class VfsWindows : public QObject
 {
     Q_OBJECT
 public:
-	static Vfs_windows* instance();
+    ~VfsWindows();
+    static VfsWindows *instance();
+    void initialize(QString rootPath, WCHAR mountLetter, AccountState *accountState);
+    void mount();
+    void unmount();
+    bool removeRecursively(const QString &dirName);
+    bool removeDir();
 
-	Vfs_windows(AccountState *);
-	~Vfs_windows();
-	void upDrive(QString, QString);
-	void downDrive(WCHAR DriveLetter);
-	bool removeDir(const QString &);
+	void setNumberOfBytes(unsigned long long numberOfBytes);
+    unsigned long long getNumberOfBytes();
 
-	void DsetTotalNumberOfBytes(unsigned long long n);
-	unsigned long long DgetTotalNumberOfBytes();
-
-	void DsetTotalNumberOfFreeBytes(unsigned long long n);
-	unsigned long long DgetTotalNumberOfFreeBytes();
+    void setNumberOfFreeBytes(unsigned long long numberOfFreeBytes);
+    unsigned long long getNumberOfFreeBytes();
 
 	QStringList* contentsOfDirectoryAtPath(QString path, QVariantMap &error);
 
@@ -61,10 +61,22 @@ public:
 	void endDeleteDirectoryAtPath(QString path, QVariantMap &error);
 
 private:
-	static Vfs_windows *_instance;
-	QMap<QString, OCC::DiscoveryDirectoryResult*> _fileListMap;
-	QPointer<OCC::DiscoveryFolderFileList> _remotefileListJob;
-	QString rootPath_;
+	VfsWindows();
+    static VfsWindows *_instance;
+    QMap<QString, OCC::DiscoveryDirectoryResult *> _fileListMap;
+    QPointer<OCC::DiscoveryFolderFileList> _remotefileListJob;
+    QString rootPath;
+    WCHAR mountLetter;
+
+	// @Capacity
+    //*TotalNumberOfBytes = (ULONGLONG)1024L * 1024 * 1024 * 50;
+    unsigned long long numberOfBytes = 0;
+    // @Used space
+    //*TotalNumberOfFreeBytes = (ULONGLONG)1024L * 1024 * 10;
+    unsigned long long numberOfFreeBytes = 0;
+    // @Free space
+    //*FreeBytesAvailable = (ULONGLONG)(*TotalNumberOfBytes - *TotalNumberOfFreeBytes); / *1024 * 1024 * 10;
+    unsigned long long freeBytesAvailable = 0;
 
 	// To sync
 	OCC::SyncWrapper *_syncWrapper;
@@ -97,4 +109,3 @@ public slots:
 } // namespace OCC
 
 #endif // VFS_WINDOWS_H
-

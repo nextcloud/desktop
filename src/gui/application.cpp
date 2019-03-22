@@ -292,32 +292,27 @@ Application::~Application()
     disconnect(AccountManager::instance(), &AccountManager::accountRemoved,
         this, &Application::slotAccountStateRemoved);
     AccountManager::instance()->shutdown();
-#if defined(Q_OS_MAC)
-    if(cont)
-        cont->unmount();
-#endif
 
 #if defined(Q_OS_WIN)
-    Vfs_windows *_Vfs_windows = NULL;
-    _Vfs_windows = Vfs_windows::instance();
-    if (_Vfs_windows) {
-        qDebug() << Q_FUNC_INFO << " Up drive: " << _Vfs_windows;
-        WCHAR DriveLetter = L'X';
-        _Vfs_windows->downDrive(DriveLetter);
-    } else
-        qDebug() << Q_FUNC_INFO << " Bad up drive";
+    VfsWindows::instance()->unmount();
+#endif
+
+#if defined(Q_OS_MAC)
+    VfsMacController::instance()->unmount();
 #endif
 }
 
 void Application::slotAccountStateRemoved(AccountState *accountState)
 {
-    if (_cronDeleteOnlineFiles)
+    /*
+	if (_cronDeleteOnlineFiles)
     {
         disconnect(_cronDeleteOnlineFiles, SIGNAL(timeout()), this, SLOT(slotDeleteOnlineFiles()));
         _cronDeleteOnlineFiles->stop();
         delete _cronDeleteOnlineFiles;
         _cronDeleteOnlineFiles = NULL;
     }
+	*/
 
     if (_gui) {
         disconnect(accountState, &AccountState::stateChanged,
@@ -325,21 +320,7 @@ void Application::slotAccountStateRemoved(AccountState *accountState)
         disconnect(accountState->account().data(), &Account::serverVersionChanged,
             _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
     }
-#if defined(Q_OS_MAC)
-    if(cont)
-        cont->unmount();
-#endif
 
-#if defined(Q_OS_WIN)
-    Vfs_windows *_Vfs_windows = NULL;
-    _Vfs_windows = Vfs_windows::instance();
-    if (_Vfs_windows) {
-        qDebug() << Q_FUNC_INFO << " Up drive: " << _Vfs_windows;
-        WCHAR DriveLetter = L'X';
-        _Vfs_windows->downDrive(DriveLetter);
-    } else
-        qDebug() << Q_FUNC_INFO << " Bad up drive";
-#endif
     if (_folderManager) {
         disconnect(accountState, &AccountState::stateChanged,
             _folderManager.data(), &FolderMan::slotAccountStateChanged);
@@ -369,53 +350,27 @@ void Application::slotAccountStateAdded(AccountState *accountState)
     _gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
 
     // Mount the virtual FileSystem.
-    #if defined(Q_OS_MAC)
-    ConfigFile cfgFile;
-    cont = new VfsMacController(cfgFile.defaultFileStreamMirrorPath(), cfgFile.defaultFileStreamSyncPath(), accountState, this);
-    #endif
-
+#if defined(Q_OS_MAC)
+    QString rootPath = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + "/.cachedFiles";
+    QString mountPath = "/Volumes/" + _theme->appName() + "fs";
+    VfsMacController::instance()->initialize(rootPath, mountPath, accountState);
+    VfsMacController::instance()->mount();
+#endif
 
 #if defined(Q_OS_WIN)
-    ConfigFile cfgFile;
-    QDir pathDir(cfgFile.defaultFileStreamMirrorPath());
-    while (!pathDir.exists())
-    {
-        qDebug() << "\n dbg_dokan " << Q_FUNC_INFO << " !pathDir.exists() 3-0" << cfgFile.defaultFileStreamMirrorPath();
-        pathDir.mkdir(cfgFile.defaultFileStreamMirrorPath());
-        SetFileAttributes((const wchar_t *) cfgFile.defaultFileStreamMirrorPath().utf16(), FILE_ATTRIBUTE_HIDDEN);
-        Sleep(100);
-    }
-
-    Vfs_windows *_Vfs_windows = NULL;
-    _Vfs_windows = new Vfs_windows(accountState);
-
-    if (_Vfs_windows)
-    {
-        qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " Up drive: " << Vfs_windows::instance();
-        _Vfs_windows->upDrive(cfgFile.defaultFileStreamMirrorPath(), cfgFile.defaultFileStreamLetterDrive());
-        Sleep(1000);
-        cfgFile.createAuxiliarDirectories();
-
-        /* Current owncloudgui::slotLogout */
-        //WCHAR DriveLetter = L'X';
-        //connect(this, SIGNAL(aboutToQuit()), _Vfs_windows, SLOT(unmount(DriveLetter)));
-
-        /* Current QuotaInfo::slotUpdateLastQuota */
-        //QuotaInfo _quotaInfo(accountState);
-        //connect(&_quotaInfo, SIGNAL(quotaUpdated(qint64, qint64)), _Vfs_windows, SLOT(quoting(qint64, qint64)));
-    }
-    else
-        qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " Bad up drive";
+    QString rootPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/cachedFiles/";
+    WCHAR mountLetter = L'X';
+    VfsWindows::instance()->initialize(rootPath, mountLetter, accountState);
+    VfsWindows::instance()->mount();
 #endif
 
     //< For cron delete dir/files online. Execute each 60000 msec
 
-		//< Uncomment for test "Clean local folder" case.
+	//< Uncomment for test "Clean local folder" case.
  	/*_cronDeleteOnlineFiles = new QTimer(this);
 	connect(_cronDeleteOnlineFiles, SIGNAL(timeout()), this, SLOT(slotDeleteOnlineFiles()));
 	_cronDeleteOnlineFiles->start(60000);
 	*/
-	
 
     /* See SocketApi::command_SET_DOWNLOAD_MODE
     //< Dummy example; Not uncomment
