@@ -111,7 +111,7 @@ private slots:
 
         // Callback to be used to finalize the transaction and return the success
         auto successCallback = [](TestCase *tc, const QNetworkRequest &request) {
-            tc->pollRequest = [](auto...) -> QNetworkReply * { std::abort(); }; // shall no longer be called
+            tc->pollRequest = [](TestCase *, const QNetworkRequest &) -> QNetworkReply * { std::abort(); }; // shall no longer be called
             FileInfo *info = tc->perform();
             QByteArray body = "{ \"status\":\"finished\", \"ETag\":\"\\\"" + info->etag.toUtf8() + "\\\"\", \"fileId\":\"" + info->fileId + "\"}\n";
             return new FakePayloadReply(QNetworkAccessManager::GetOperation, request, body, nullptr);
@@ -123,7 +123,7 @@ private slots:
         };
         // Callback that simulate an error.
         auto errorCallback = [](TestCase *tc, const QNetworkRequest &request) {
-            tc->pollRequest = [](auto...) -> QNetworkReply * { std::abort(); }; // shall no longer be called;
+            tc->pollRequest = [](TestCase *, const QNetworkRequest &) -> QNetworkReply * { std::abort(); }; // shall no longer be called;
             QByteArray body = "{\"status\":\"error\",\"errorCode\":500,\"errorMessage\":\"TestingErrors\"}\n";
             return new FakePayloadReply(QNetworkAccessManager::GetOperation, request, body, nullptr);
         };
