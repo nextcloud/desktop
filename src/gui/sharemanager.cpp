@@ -151,6 +151,10 @@ bool LinkShare::isPasswordSet() const
     return _passwordSet;
 }
 
+bool LinkShare::isNoteSet() const
+{
+    return _noteSet;
+}
 LinkShare::LinkShare(AccountPtr account,
     const QString &id,
     const QString &path,
@@ -190,6 +194,25 @@ void LinkShare::setName(const QString &name)
     connect(job, &OcsShareJob::shareJobFinished, this, &LinkShare::slotNameSet);
     connect(job, &OcsJob::ocsError, this, &LinkShare::slotOcsError);
     job->setName(getId(), name);
+}
+
+QString LinkShare::getNote() const
+{
+    return _note;
+}
+
+void LinkShare::setNote(const QString &note)
+{
+    OcsShareJob *job = new OcsShareJob(_account);
+    connect(job, &OcsShareJob::shareJobFinished, this, &LinkShare::slotNoteSet);
+    connect(job, &OcsJob::ocsError, this, &LinkShare::slotOcsError);
+    job->setNote(getId(), note);
+}
+
+void LinkShare::slotNoteSet(const QJsonDocument &, const QVariant &value)
+{
+    _noteSet = value.toString() != "";
+    emit noteSet();
 }
 
 QString LinkShare::getToken() const
@@ -240,9 +263,9 @@ void LinkShare::slotSetPasswordError(int statusCode, const QString &message)
     emit passwordSetError(statusCode, message);
 }
 
-void LinkShare::slotNameSet(const QJsonDocument &, const QVariant &value)
+void LinkShare::slotNameSet(const QJsonDocument &, const QVariant &note)
 {
-    _name = value.toString();
+    _note = note.toString();
     emit nameSet();
 }
 

@@ -64,6 +64,8 @@ private slots:
     void slotCreateOrDeleteShareLink(bool checked);
     void slotCreatePassword();
 
+    void slotCreateNote();
+
     void slotExpireDateChanged(const QDate &date);
     void slotSetExpireDate();
 
@@ -75,6 +77,7 @@ private slots:
     void slotCreateShareRequiresPassword(const QString &message);
 
     void slotPasswordSet();
+    void slotNoteSet();
     void slotExpireDateSet();
 
     void slotServerError(int code, const QString &message);
@@ -86,6 +89,10 @@ private:
     void showPasswordOptions(bool show);
     void togglePasswordOptions(bool enable);
     void setPassword(const QString &password);
+
+    void showNoteOptions(bool show);
+    void toggleNoteOptions(bool enable);
+    void setNote(const QString &note);
 
     void showExpireDateOptions(bool show);
     void toggleExpireDateOptions(bool enable);
@@ -112,6 +119,7 @@ private:
 
     bool _isFile;
     bool _passwordRequired;
+    bool _noteRequired;
     bool _expiryRequired;
     bool _namesSupported;
 
@@ -122,6 +130,7 @@ private:
     QAction *_allowUploadEditingLinkAction;
     QAction *_allowUploadLinkAction;
     QAction *_passwordProtectLinkAction;
+    QAction *_noteLinkAction;
     QAction *_expirationDateLinkAction;
     QAction *_unshareLinkAction;
 };

@@ -62,6 +62,14 @@ public:
     void setExpireDate(const QString &shareId, const QDate &date);
 
     /**
+     * Set note a share
+     *
+     * @param note The note to a share, if the note is empty the
+     * share will be removed
+     */
+    void setNote(const QString &shareId, const QString &note);
+
+    /**
      * Set the password of a share
      *
      * @param password The password of the share, if the password is empty the

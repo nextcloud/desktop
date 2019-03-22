@@ -45,6 +45,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     , _manager(nullptr)
     , _linkShare(nullptr)
     , _passwordRequired(false)
+    , _noteRequired(false)
     , _expiryRequired(false)
     , _namesSupported(true)
     , _linkContextMenu(nullptr)
@@ -54,6 +55,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     , _allowUploadEditingLinkAction(nullptr)
     , _allowUploadLinkAction(nullptr)
     , _passwordProtectLinkAction(nullptr)
+    , _noteLinkAction(nullptr)
     , _expirationDateLinkAction(nullptr)
     , _unshareLinkAction(nullptr)
 {
@@ -71,8 +73,12 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     connect(_ui->enableShareLink, &QCheckBox::toggled, this, &ShareLinkWidget::slotCreateOrDeleteShareLink);
     connect(_ui->lineEdit_password, &QLineEdit::returnPressed, this, &ShareLinkWidget::slotCreatePassword);
     connect(_ui->confirmPassword, &QAbstractButton::clicked, this, &ShareLinkWidget::slotCreatePassword);
+    connect(_ui->textEdit_note, &QTextEdit::textChanged, this, &ShareLinkWidget::slotCreateNote);
+    connect(_ui->confirmNote, &QAbstractButton::clicked, this, &ShareLinkWidget::slotCreateNote);
     connect(_ui->confirmExpirationDate, &QAbstractButton::clicked, this, &ShareLinkWidget::slotSetExpireDate);
     connect(_ui->calendar, &QDateTimeEdit::dateChanged, this, &ShareLinkWidget::slotExpireDateChanged);
+
+
 
     _ui->errorLabel->hide();
 
@@ -96,6 +102,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
 
     togglePasswordOptions(false);
     toggleExpireDateOptions(false);
+    toggleNoteOptions(false);
     _ui->calendar->setMinimumDate(QDate::currentDate().addDays(1));
 
     // check if the file is already inside of a synced folder
@@ -167,6 +174,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         connect(share.data(), &Share::serverError, this, &ShareLinkWidget::slotServerError);
         connect(share.data(), &Share::shareDeleted, this, &ShareLinkWidget::slotDeleteShareFetched);
         connect(_linkShare.data(), &LinkShare::expireDateSet, this, &ShareLinkWidget::slotExpireDateSet);
+        connect(_linkShare.data(), &LinkShare::noteSet, this, &ShareLinkWidget::slotNoteSet);
         connect(_linkShare.data(), &LinkShare::passwordSet, this, &ShareLinkWidget::slotPasswordSet);
         connect(_linkShare.data(), &LinkShare::passwordSetError, this, &ShareLinkWidget::slotPasswordSetError);
 
@@ -238,6 +246,17 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
             _passwordRequired = true;
         }
 
+        // Adds action to display note widget (check box)
+        _noteLinkAction = _linkContextMenu->addAction(tr("Add note to recipient:"));
+        _noteLinkAction->setCheckable(true);
+
+        if(_linkShare->isNoteSet()){
+            _noteLinkAction->setChecked(true);
+            _ui->textEdit_note->setText(_linkShare->getNote());
+            showNoteOptions(true);
+        }
+
+
         // Adds action to display expiration date widget (check box)
         _expirationDateLinkAction = _linkContextMenu->addAction(tr("Expiration Date"));
         _expirationDateLinkAction->setCheckable(true);
@@ -273,6 +292,24 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         _ui->shareLinkToolButton->show();
     }
 
+    toggleAnimation(false);
+}
+
+void ShareLinkWidget::setNote(const QString &note)
+{
+    if (_linkShare) {
+        toggleAnimation(true);
+        _linkShare->setNote(note);
+    }
+}
+
+void ShareLinkWidget::slotCreateNote()
+{
+    _ui->textEdit_note->show();
+}
+
+void ShareLinkWidget::slotNoteSet()
+{
     toggleAnimation(false);
 }
 
@@ -429,12 +466,36 @@ void ShareLinkWidget::togglePasswordOptions(bool enable)
     }
 }
 
+void ShareLinkWidget::showNoteOptions(bool show)
+{
+    _ui->noteLabel->setVisible(show);
+    _ui->textEdit_note->setVisible(show);
+    _ui->confirmNote->setVisible(show);
+}
+
+
+void ShareLinkWidget::toggleNoteOptions(bool enable)
+{
+    showNoteOptions(enable);
+
+    if (enable) {
+        _ui->noteLabel->setVisible(enable);
+        _ui->textEdit_note->setVisible(enable);
+        _ui->confirmNote->setFocus();
+    } else {
+        // 'deletes' note
+        if(_linkShare)
+            _linkShare->setNote(QString());
+    }
+}
+
 void ShareLinkWidget::showExpireDateOptions(bool show)
 {
     _ui->expirationLabel->setVisible(show);
     _ui->calendar->setVisible(show);
     _ui->confirmExpirationDate->setVisible(show);
 }
+
 
 void ShareLinkWidget::toggleExpireDateOptions(bool enable)
 {
@@ -542,5 +603,4 @@ void ShareLinkWidget::displayError(const QString &errMsg)
 {
     _ui->errorLabel->setText(errMsg);
     _ui->errorLabel->show();
-}
-}
+}}

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>350</width>
-    <height>45</height>
+    <height>58</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,23 +19,24 @@
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0,2,2,2">
-   <property name="spacing">
-    <number>5</number>
-   </property>
-   <property name="leftMargin">
-    <number>5</number>
-   </property>
-   <property name="topMargin">
-    <number>5</number>
-   </property>
-   <property name="rightMargin">
-    <number>5</number>
-   </property>
-   <property name="bottomMargin">
-    <number>5</number>
-   </property>
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="4">
+    <widget class="QToolButton" name="permissionToolButton">
+     <property name="icon">
+      <iconset resource="../../client.qrc">
+       <normaloff>:/client/resources/more.svg</normaloff>:/client/resources/more.svg</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="5">
+    <widget class="QToolButton" name="deleteShareButton">
+     <property name="icon">
+      <iconset theme="user-trash">
+       <normaloff>.</normaloff>.</iconset>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
     <widget class="QLabel" name="avatar">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
@@ -54,7 +55,7 @@
      </property>
     </widget>
    </item>
-   <item>
+   <item row="0" column="1">
     <widget class="OCC::ElidedLabel" name="sharedWith">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Ignored" vsizetype="Maximum">
@@ -70,7 +71,7 @@
      </property>
     </widget>
    </item>
-   <item>
+   <item row="0" column="3">
     <widget class="QCheckBox" name="permissionsEdit">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
@@ -80,22 +81,6 @@
      </property>
      <property name="text">
       <string>can edit</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QToolButton" name="permissionToolButton">
-     <property name="icon">
-      <iconset resource="../../client.qrc">
-       <normaloff>:/client/resources/more.svg</normaloff>:/client/resources/more.svg</iconset>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QToolButton" name="deleteShareButton">
-     <property name="icon">
-      <iconset theme="user-trash">
-       <normaloff>.</normaloff>.</iconset>
      </property>
     </widget>
    </item>
