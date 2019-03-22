@@ -524,18 +524,15 @@ void ownCloudGui::slotLogout()
     * JP 09/2018.
     * Down Virtual File System.
     */
-    #if defined(Q_OS_WIN)
-	Vfs_windows *_Vfs_windows = NULL;
-	_Vfs_windows = Vfs_windows::instance();
-	if (_Vfs_windows)
-	{
-		qDebug() << "\n dbg_sync " << Q_FUNC_INFO << "up Drive:  " << _Vfs_windows;
-		WCHAR DriveLetter = L'X';
-		_Vfs_windows->downDrive(DriveLetter);
-	}
-	else
-		qDebug() << "\n dbg_sync " << Q_FUNC_INFO << " BAD up Drive";
-     #endif
+    ConfigFile cfg;
+    
+#if defined(Q_OS_WIN)
+    VfsWindows::instance()->unmount();
+#endif
+    
+#if defined(Q_OS_MAC)
+    VfsMacController::instance()->unmount();
+#endif
 }
 
 void ownCloudGui::slotUnpauseAllFolders()
