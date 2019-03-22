@@ -35,7 +35,7 @@
 #include "filesystem.h"
 #include "encryptfolderjob.h"
 #include "syncresult.h"
-#include "ignorelisttablewidget.h"
+#include "vfs_windows.h"
 
 #include <cmath>
 
@@ -990,6 +990,10 @@ void AccountSettings::slotDeleteAccount()
 
     // IMPORTANT: "this" is deleted from this point on. We should probably remove this synchronous
     // .exec() QMessageBox magic above as it recurses into the event loop.
+
+#if defined(Q_OS_WIN)
+    VfsWindows::instance()->unmount();
+#endif
 }
 
 bool AccountSettings::event(QEvent *e)
