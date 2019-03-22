@@ -120,13 +120,8 @@ void QuotaInfo::slotUpdateLastQuota(const QVariantMap &result)
     _lastQuotaTotalBytes = avail >= 0 ? _lastQuotaUsedBytes + avail : avail;
 
 #if defined(Q_OS_WIN)
-	Vfs_windows *m_Vfs_windows = NULL;
-	m_Vfs_windows = Vfs_windows::instance();
-	if (m_Vfs_windows)
-	{
-		m_Vfs_windows->DsetTotalNumberOfBytes((unsigned long long)_lastQuotaTotalBytes);
-		m_Vfs_windows->DsetTotalNumberOfFreeBytes((unsigned long long)_lastQuotaUsedBytes);
-	}
+    VfsWindows::instance()->setNumberOfBytes((unsigned long long)_lastQuotaTotalBytes);
+    VfsWindows::instance()->setNumberOfFreeBytes((unsigned long long)_lastQuotaUsedBytes);
 #endif
 
     emit quotaUpdated(_lastQuotaTotalBytes, _lastQuotaUsedBytes);
