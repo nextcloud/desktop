@@ -83,7 +83,8 @@ On Release Day (for final release):
 * [ ] Win: Perform smoke test (Install, make sure it does not explode, and check if all version indicators are correct)
 * [ ] Linux: Smoke test of one distro package (Install, make sure it does not explode, and check if all version indicators are correct)
 * [ ] Linux: Run https://jenkins.int.owncloud.com/job/client-linux-tests/ with REPO_URL=https://download.opensuse.org/repositories/isv:/ownCloud:/desktop:/testing
-* [ ] Win/Mac Copy builds from ```testing``` to ```stable``` on download.owncloud.com, double check the download links. (make sure the .asc is there too)
+* [ ] Win/Mac Copy builds from ```testing``` to ```stable``` on download.owncloud.com, double check the download links. (make sure the .asc is there too.
+* [ ] Linux: also copy the *.linux-repo.html files from ```testing``` to ```stable``` **and** edit away the `:testing` strings.
 * [ ] Linux: disable publishing on project isv:ownCloud:desktop
 * [ ] Linux: copy from testing to released in OBS:
   ```obs-deepcopy-prj.sh isv:ownCloud:desktop:testing isv:ownCloud:desktop```
