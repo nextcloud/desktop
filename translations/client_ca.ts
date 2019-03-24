@@ -9,27 +9,27 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="124"/>
         <source>Checking for changes in &apos;%1&apos;</source>
-        <translation>Comprovant canvis a &apos;%1&apos;</translation>
+        <translation>S&apos;estan comprovant canvis a &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="129"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation>Sincronitzant %1 de %2  (%3 pendents)</translation>
+        <translation>S&apos;està sincronitzant %1 de %2  (%3 pendents)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="134"/>
         <source>Syncing %1 of %2</source>
-        <translation>Sincronitzant %1 de %2</translation>
+        <translation>S&apos;està sincronitzant %1 de %2</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="141"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation>Sincronitzant %1 (%2 restants)</translation>
+        <translation>S&apos;està sincronitzant %1 (%2 restants)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="144"/>
         <source>Syncing %1</source>
-        <translation>Sincronitzant %1</translation>
+        <translation>S&apos;està sincronitzant %1</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="186"/>
@@ -39,7 +39,7 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="189"/>
         <source>Syncing</source>
-        <translation>Sincronitzant</translation>
+        <translation>S&apos;està sincronitzant</translation>
     </message>
 </context>
 <context>
@@ -60,7 +60,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Could not make directories in trash</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;han pogut crear directoris a la paperera</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="459"/>
@@ -71,7 +71,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="502"/>
         <source>Moving to the trash is not implemented on this platform</source>
-        <translation type="unfinished"/>
+        <translation>Moure cap a la paperera no està implementat en aquesta plataforma</translation>
     </message>
 </context>
 <context>
@@ -130,12 +130,12 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="249"/>
         <source>Connection timed out</source>
-        <translation>Temps d&apos;espera de la connexió esgotat.</translation>
+        <translation>S&apos;ha exhaurit el temps d&apos;espera de la connexió</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="251"/>
         <source>Unknown error: network reply was deleted</source>
-        <translation>Error desconegut: la resposta del servidor s&apos;ha esborrat</translation>
+        <translation>Error desconegut: la resposta de la xarxa ha estat suprimida</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="403"/>
@@ -148,12 +148,12 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="356"/>
         <source>End to end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Xifratge amb mnemotècnica de punt a punt</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="357"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>Per protegir la vostra identitat Criptogràfica, ho encriptarem amb una mnemotècnica de 12 paraules de diccionari. Si us plau, anoteu-les i deseu-les a un lloc segur. Aquestes paraules us seran necessàries per afegir altres dispositius al vostre compte (com ara telèfons mòbils o portàtils).</translation>
     </message>
 </context>
 <context>
@@ -176,7 +176,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="152"/>
         <source>Unchecked folders will be &lt;b&gt;removed&lt;/b&gt; from your local file system and will not be synchronized to this computer anymore</source>
-        <translation>Les carpetes desmarcades &lt;b&gt;s&apos;eliminaran&lt;/b&gt; del vostre sistema de fitxers local i ja no es sincronitzaran en aquest ordinador</translation>
+        <translation>Les carpetes desmarcades &lt;b&gt;se suprimirian&lt;/b&gt; del vostre sistema de fitxers local i ja no es sincronitzaran en aquest ordinador</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="198"/>
@@ -223,7 +223,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="214"/>
         <source>Remove</source>
-        <translation>Elimina</translation>
+        <translation>Suprimeix</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="218"/>
@@ -233,17 +233,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="234"/>
         <source>Show E2E mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Mostra la mnemotècnica Punt-a-Punt</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="542"/>
         <source>Encrypt</source>
-        <translation type="unfinished"/>
+        <translation>Encripta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="583"/>
         <source>Choose what to sync</source>
-        <translation>Trieu què sincronitzar</translation>
+        <translation>Trieu què voleu sincronitzar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="589"/>
@@ -258,7 +258,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="600"/>
         <source>Remove folder sync connection</source>
-        <translation>Elimina la connexió de la carpeta sincronitzada</translation>
+        <translation>Suprimeix la connexió de la carpeta sincronitzada</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="671"/>
@@ -273,12 +273,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="725"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation>Confirma l&apos;eliminació de la connexió de la carpeta sincronitzada</translation>
+        <translation>Confirmeu la supressió de la connexió de la carpeta sincronitzada</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="732"/>
         <source>Remove Folder Sync Connection</source>
-        <translation>Elimina la connexió de la carpeta sincronitzada</translation>
+        <translation>Suprimeix la connexió de la carpeta sincronitzada</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="814"/>
@@ -288,7 +288,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="815"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
-        <translation>S&apos;està sincronitzant.&lt;br/&gt;Voleu parar-la?</translation>
+        <translation>S&apos;està sincronitzant.&lt;br/&gt;Voleu aturar-ho?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="904"/>
@@ -303,7 +303,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="937"/>
         <source>The server version %1 is old and unsupported! Proceed at your own risk.</source>
-        <translation>La versió del servidor %1 és antiga i fora de suport! Continua sota la teva responsabilitat.</translation>
+        <translation>La versió del servidor %1 és antiga i fora de suport! Continueu sota la vostra responsabilitat.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="939"/>
@@ -313,7 +313,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="941"/>
         <source>Server %1 is temporarily unavailable.</source>
-        <translation>El servidor %1 no està disponible temporalment</translation>
+        <translation>El servidor %1 no està temporalment disponible</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="943"/>
@@ -328,12 +328,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="954"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;està obtenint autorització des del navegador. &lt;a href=&apos;%1&apos;&gt;feu clic aquí&lt;/a&gt; per tornar a obrir el navegador.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="958"/>
         <source>Connecting to %1...</source>
-        <translation>Connectant amb %1...</translation>
+        <translation>S&apos;està connectant amb %1...</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="961"/>
@@ -363,17 +363,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1138"/>
         <source>Confirm Account Removal</source>
-        <translation>Confirmeu l&apos;eliminació del compte</translation>
+        <translation>Confirmeu la supressió del compte</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1139"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Segur que voleu eliminar la connexió al compte &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; això &lt;b&gt;no&lt;/b&gt; esborrarà cap fitxer.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Segur que voleu suprimir la connexió al compte &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; això &lt;b&gt;no&lt;/b&gt; suprimirà cap fitxer.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1145"/>
         <source>Remove connection</source>
-        <translation>Elimina la connexió</translation>
+        <translation>Suprimeix la connexió</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="526"/>
@@ -400,7 +400,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="726"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Segur que voleu aturar la sincronització de la carpeta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; això &lt;b&gt;no&lt;/b&gt; esborrarà cap fitxer.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Segur que voleu aturar la sincronització de la carpeta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Nota:&lt;/b&gt; això &lt;b&gt;no&lt;/b&gt; suprimirà cap fitxer.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="891"/>
@@ -463,7 +463,7 @@
     <message>
         <location filename="../src/gui/accountstate.cpp" line="134"/>
         <source>Asking Credentials</source>
-        <translation>Preguntant les credencials</translation>
+        <translation>S&apos;estan preguntant les credencials</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="136"/>
@@ -496,7 +496,7 @@
     <message>
         <location filename="../src/gui/activityitemdelegate.cpp" line="198"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Obre el navegador</translation>
     </message>
 </context>
 <context>
@@ -524,7 +524,7 @@
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="218"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Torna a provar totes les pujades</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="333"/>
@@ -567,7 +567,7 @@
     <message>
         <location filename="../src/gui/addcertificatedialog.cpp" line="38"/>
         <source>Certificate files (*.p12 *.pfx)</source>
-        <translation>Fitxers de certificats (*.p12 *pfx)</translation>
+        <translation>Fitxers de certificats (*.p12 *.pfx)</translation>
     </message>
 </context>
 <context>
@@ -580,7 +580,7 @@
     <message>
         <location filename="../src/gui/application.cpp" line="193"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your user.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha produït un error mentre s&apos;accedia al fitxer de configuració a %1. Si us pau, assegureu-vos que aquest fitxer pot ser accedit des del vostre usuari.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="196"/>
@@ -598,7 +598,7 @@
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
-        <translation>Introduir nom d&apos;usuari i paraula de pas per &apos;%1&apos; a %2</translation>
+        <translation>Introduïu el nom d&apos;usuari i la contrasenya per &apos;%1&apos; a %2</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -616,7 +616,7 @@
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1020"/>
         <source>Error writing metadata to the database</source>
-        <translation>Error en escriure les metadades a la base de dades</translation>
+        <translation>S&apos;ha produït un error a l&apos;escriure les metadades a la base de dades</translation>
     </message>
 </context>
 <context>
@@ -624,12 +624,12 @@
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="993"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Si us plau, introduïu la contrasenya d&apos;encriptació punt a punt: &lt;br&gt;&lt;br&gt;Usuari: %2&lt;br&gt;Compte: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1001"/>
         <source>Enter E2E passphrase</source>
-        <translation type="unfinished"/>
+        <translation>Introduïu la contrasenya Punt-a-Punt</translation>
     </message>
 </context>
 <context>
@@ -637,7 +637,7 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="47"/>
         <source>No ownCloud account configured</source>
-        <translation>No hi ha cap compte d&apos;OwnCloud configurat</translation>
+        <translation>No hi ha cap compte configurat d&apos;OwnCloud</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="282"/>
@@ -652,12 +652,12 @@
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="144"/>
         <source>Authentication error: Either username or password are wrong.</source>
-        <translation>Error d&apos;autentificació: Aquest nom d&apos;usuari o contrasenya son incorrectes.</translation>
+        <translation>Error d&apos;autentificació: Aquest nom d&apos;usuari o contrasenya són incorrectes.</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="156"/>
         <source>timeout</source>
-        <translation>temps excedit</translation>
+        <translation>S&apos;ha exhaurit el temps</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="193"/>
@@ -678,7 +678,7 @@
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="392"/>
         <source>The server file discovery reply is missing data.</source>
-        <translation type="unfinished"/>
+        <translation>Falten dades a la resposta de detecció de fitxers del servidor.</translation>
     </message>
 </context>
 <context>
@@ -702,7 +702,7 @@
         <location filename="../src/gui/folder.cpp" line="371"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation>S&apos;ha esborrat &apos;%1&apos;</translation>
+        <translation>S&apos;ha suprimit &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="378"/>
@@ -730,7 +730,7 @@
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="369"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 i %n altre fitxer s&apos;ha esborrat.</numerusform><numerusform>%1 i %n altres fitxers s&apos;han esborrat.</numerusform></translation>
+        <translation><numerusform>%1 i %n altre fitxer s&apos;ha esborrat.</numerusform><numerusform>%1 i %n altres fitxers s&apos;han suprimit.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="376"/>
@@ -801,17 +801,17 @@ Consulteu el registre per obtenir més informació.</numerusform></translation>
     <message>
         <location filename="../src/gui/folder.cpp" line="957"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation type="unfinished"/>
+        <translation>Si us plau aneu al paràmetres per seleccionar si voleu descarregar-ho</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1012"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>La carpeta %1 es va crear, però es va excloure de la sincronització anteriorment. Les dades que hi ha dins no es sincronitzaran.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1015"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation type="unfinished"/>
+        <translation>El fitxer %1 es va crear, però es va excloure de la sincronització anteriorment. No es sincronitzarà.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1026"/>
@@ -820,7 +820,11 @@ Consulteu el registre per obtenir més informació.</numerusform></translation>
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>No s’ha pogut fer un seguiment fiable dels canvis en les carpetes sincronitzades.
+
+Això significa que és possible que el client de sincronització no pugui carregar els canvis locals de forma immediata i, en canvi, només escanejarà els canvis locals i els carregarà de tant en tant (cada dues hores per defecte).
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1071"/>
@@ -828,41 +832,48 @@ This means that the synchronization client might not upload local changes immedi
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Tots els fitxers de la carpeta de sincronització &apos;%1&apos; de la carpeta s&apos;han suprimit al servidor.
+Aquestes eliminacions es sincronitzaran amb la vostra carpeta de sincronització local, fent que aquests fitxers no estiguin disponibles a menys que tingueu dret a restaurar-los.
+Si decidiu conservar els fitxers, es tornarà a sincronitzar amb el servidor si teniu drets per fer-ho.
+Si decidiu suprimir els fitxers, no estaran disponibles per a vosaltres, tret que en sigueu el propietari.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1080"/>
         <source>Download new files?</source>
-        <translation type="unfinished"/>
+        <translation>Descarregar nous fitxers?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1083"/>
         <source>Download new files</source>
-        <translation type="unfinished"/>
+        <translation>Descarrega nous fitxers</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1084"/>
         <source>Keep local files</source>
-        <translation type="unfinished"/>
+        <translation>Manté els fitxers locals</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1076"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;han suprimit tots els fitxers de la vostra carpeta de sincronització local &apos;%1&apos;. Aquestes eliminacions es sincronitzaran amb el vostre servidor, cosa que farà que aquests fitxers no estiguin disponibles, tret que s’hagin restaurat.
+Esteu segurs que voleu sincronitzar aquestes accions amb el servidor?
+Si s’ha produït un accident i decidiu conservar els vostres fitxers, es tornaran a sincronitzar des del servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1101"/>
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>Aquesta sincronització restablirà els fitxers a una hora anterior a la carpeta de sincronització &apos;%1&apos;.
+Això pot ser per què es va restablir una còpia de seguretat al servidor.
+Continuar la sincronització com a normal farà que tots els vostres fitxers siguin sobreescrits per un fitxer anterior en un estat anterior. Voleu mantenir els fitxers locals més recents com a fitxers de conflicte?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1106"/>
         <source>Backup detected</source>
-        <translation>Copia de seguretat detectada</translation>
+        <translation>Còpia de seguretat detectada</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1109"/>
@@ -885,17 +896,17 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="275"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>S&apos;ha trobat un diari de sincronització antic &apos;%1&apos;, però no s&apos;ha pogut eliminar. Assegureu-vos que no hi ha cap aplicació que actualment en faci ús.</translation>
+        <translation>S&apos;ha trobat un diari de sincronització antic &apos;%1&apos;, però no s&apos;ha pogut suprimir. Assegureu-vos que no hi ha cap aplicació que actualment en faci ús.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1023"/>
         <source> (backup)</source>
-        <translation>(copia de seguretat)</translation>
+        <translation>(còpia de seguretat)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1028"/>
         <source> (backup %1)</source>
-        <translation>(copia de seguretat %1)</translation>
+        <translation>(còpia de seguretat %1)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1206"/>
@@ -920,7 +931,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1220"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>La sincronització s&apos;ha realitzat correctament, conflictes no resolts.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1222"/>
@@ -960,22 +971,22 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1262"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>No teniu permisos per escriure en la carpeta seleccionada!</translation>
+        <translation>No teniu permís per escriure a la carpeta seleccionada!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1318"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Ja hi ha una sincronització des del servidor cap aquesta carpeta local. Trieu una altra carpeta local!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1298"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>La carpeta local %1 ja conté una carpeta utilitzada en una connexió de sincronització de carpetes. Si us plau, trieu-ne una altra!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1304"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>La carpeta local %1 ja està continguda en una carpeta utilitzada en una connexió de sincronització de carpetes. Si us plau, trieu-ne una altra!</translation>
     </message>
 </context>
 <context>
@@ -988,7 +999,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="255"/>
         <source>Synchronized with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Sincronitzat amb la carpeta local</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="302"/>
@@ -1006,7 +1017,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="146"/>
         <source>Click this button to add a folder to synchronize.</source>
-        <translation>Cliqueu aquest botó per afegir una carpeta per sincronitzar.</translation>
+        <translation>Feu clic a aquest botó per afegir una carpeta per sincronitzar.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="155"/>
@@ -1018,7 +1029,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="186"/>
         <source>Error while loading the list of folders from the server.</source>
-        <translation>Error en carregar la llista de carpetes del servidor.</translation>
+        <translation>S&apos;ha produït un error en carregar la llista de carpetes des del servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="237"/>
@@ -1028,17 +1039,17 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="189"/>
         <source>Fetching folder list from server...</source>
-        <translation>Obtenint la llista de carpetes del servidor...</translation>
+        <translation>S&apos;està obtenint la llista de carpetes del servidor...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="215"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation type="unfinished"/>
+        <translation>Hi ha conflictes no resolts. Feu clic per veure els detalls.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="930"/>
         <source>Reconciling changes</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;estan conciliant els canvis</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="965"/>
@@ -1074,27 +1085,27 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
         <location filename="../src/gui/folderstatusmodel.cpp" line="1008"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>pujada %1/s</translation>
+        <translation>carrega %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="919"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;estan comprovant els canvis en remot &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="923"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;estan comprovant els canvis en local &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
         <source>↓ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↓ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>↑ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↑ %1/s</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
@@ -1146,7 +1157,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwatcher_linux.cpp" line="87"/>
         <source>This problem usually happens when the inotify watches are exhausted. Check the FAQ for details.</source>
-        <translation type="unfinished"/>
+        <translation>Aquest problema normalment passa quan els rellotges inotify s&apos;han exhaurit. Consulteu les PMF per obtenir-ne més informació.</translation>
     </message>
 </context>
 <context>
@@ -1159,7 +1170,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="552"/>
         <source>Add Sync Connection</source>
-        <translation>Afegir una connexió de sincronització</translation>
+        <translation>Afegeix una connexió de sincronització</translation>
     </message>
 </context>
 <context>
@@ -1200,22 +1211,22 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="225"/>
         <source>Authentication failed accessing %1</source>
-        <translation>Autentificació fallida en accedir %1</translation>
+        <translation>Ha fallat l’autenticació en accedir a %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="227"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
-        <translation>No s&apos;ha pogut crear el directori en %1. Si us plau, comproveu-lo manualment.</translation>
+        <translation>No s&apos;ha pogut crear el directori a %1. Si us plau, comproveu-ho manualment.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="236"/>
         <source>Failed to list a folder. Error: %1</source>
-        <translation>Ha fallat en llistar una carpeta. Error: %1</translation>
+        <translation>No s&apos;ha pogut llistar una carpeta. Error: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="317"/>
         <source>Choose this to sync the entire account</source>
-        <translation>Escolliu-ho per sincronitzar el compte sencer</translation>
+        <translation>Trieu això per sincronitzar el compte sencer</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="447"/>
@@ -1261,7 +1272,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="332"/>
         <source>Connection Timeout</source>
-        <translation>Temps de connexió excedit</translation>
+        <translation>S&apos;ha excedit el temps de connexió</translation>
     </message>
 </context>
 <context>
@@ -1274,7 +1285,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Avís legal</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="66"/>
@@ -1289,7 +1300,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Mostra &amp;Notificacions del servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="163"/>
@@ -1315,22 +1326,22 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
         <source>&amp;Launch on System Startup</source>
-        <translation>&amp;Executa en iniciar el sistema</translation>
+        <translation>&amp;Executa a l&apos;iniciar el sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>Usa icones en &amp;monocrom</translation>
+        <translation>Fes servir icones en &amp;Monocrom</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="171"/>
         <source>Edit &amp;Ignored Files</source>
-        <translation>Editeu els fitxers &amp;ignorats</translation>
+        <translation>Edita els fitxers &amp;Ignorats</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="250"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation type="unfinished"/>
+        <translation>Mostra les carpetes de sincronització a la subfinestra de navegació &amp;Explorador</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="267"/>
@@ -1351,12 +1362,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="124"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Reiniciar &amp;&amp; Actualitzar</translation>
+        <translation>&amp;Reinicia &amp;&amp; Actualitza</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="49"/>
         <source>Server notifications that require attention.</source>
-        <translation type="unfinished"/>
+        <translation>Notificacions de servidor que requereixen atenció.</translation>
     </message>
 </context>
 <context>
@@ -1364,14 +1375,16 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/socketapi.cpp" line="520"/>
         <source>Sharing error</source>
-        <translation type="unfinished"/>
+        <translation>Error de compartició</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi.cpp" line="521"/>
         <source>Could not retrieve or create the public link share. Error:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>No s’ha pogut recuperar ni crear el recurs d’enllaços públics. Error:
+
+%1</translation>
     </message>
 </context>
 <context>
@@ -1389,12 +1402,12 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="120"/>
         <source>Enter Password</source>
-        <translation>Escriviu contrasenya</translation>
+        <translation>Introduïu la contrasenya</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;Prem aquí&lt;/a&gt; per sol·licitar una contrasenya d&apos;aplicació des de la interfície web.</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Feu clic aquí&lt;/a&gt; per sol·licitar una contrasenya d&apos;aplicació des de la interfície web.</translation>
     </message>
 </context>
 <context>
@@ -1427,7 +1440,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="126"/>
         <source>Remove all</source>
-        <translation type="unfinished"/>
+        <translation>Suprimeix tot</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="93"/>
@@ -1442,7 +1455,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
     <message>
         <location filename="../src/gui/ignorelisteditor.ui" line="109"/>
         <source>Remove</source>
-        <translation>Elimina</translation>
+        <translation>Suprimeix</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="42"/>
@@ -1451,7 +1464,7 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>Els fitxers o directoris que concordin amb algun patró no es sincronitzaran.
 
-Els elements que poden ser eliminats s&apos;eliminaran si impedeixen que una carpeta sigui eliminada. Això és útil per les metadades.</translation>
+Els elements que poden ser suprimits s&apos;eliminaran si impedeixen que una carpeta sigui suprimida. Això és útil per les metadades.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
@@ -1466,17 +1479,17 @@ Els elements que poden ser eliminats s&apos;eliminaran si impedeixen que una car
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="159"/>
         <source>Add Ignore Pattern</source>
-        <translation>Afegeix una plantilla per ignorar</translation>
+        <translation>Afegeix un patró per ignorar</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="160"/>
         <source>Add a new ignore pattern:</source>
-        <translation>Afegeix una nova plantilla d&apos;ignorats:</translation>
+        <translation>Afegeix un nou patró d&apos;ignorats:</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="46"/>
         <source>This entry is provided by the system at &apos;%1&apos; and cannot be modified in this view.</source>
-        <translation>Això es proporciona completament pel sistema a &apos;%1&apos; i no es pot modificar en aquesta vista.</translation>
+        <translation>Això es proporciona pel sistema a &apos;%1&apos; i no es pot modificar en aquesta vista.</translation>
     </message>
 </context>
 <context>
@@ -1484,17 +1497,17 @@ Els elements que poden ser eliminats s&apos;eliminaran si impedeixen que una car
     <message>
         <location filename="../src/gui/legalnotice.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Diàleg</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="26"/>
         <source>Legal notice</source>
-        <translation type="unfinished"/>
+        <translation>Avís legal</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="36"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="58"/>
@@ -1504,12 +1517,12 @@ Els elements que poden ser eliminats s&apos;eliminaran si impedeixen que una car
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="27"/>
         <source>&lt;p&gt;Copyright 2017-2018 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2018 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2018 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="30"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Llicenciat sota la Llicència Pública General GNU (GPL) versió 2.0 o qualsevol altra versió posterior.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1532,19 +1545,21 @@ Els elements que poden ser eliminats s&apos;eliminaran si impedeixen que una car
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="89"/>
         <source>&amp;Capture debug messages</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Captura els missatges de depuració</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="101"/>
         <source>Permanently save logs</source>
-        <translation type="unfinished"/>
+        <translation>Desa permanentment els registres</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="103"/>
         <source>When this option is enabled and no other logging is configured, logs will be written to a temporary folder and expire after a few hours. This setting persists across client restarts.
 
 Logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Quan aquesta opció està habilitada i no hi ha cap altre registre configurat, els registres s&apos;escriuran en una carpeta temporal i caducaran al cap de poques hores. Aquest paràmetre persisteix encara que es reiniciï el client.
+
+Els registres s’escriuran a %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="115"/>
@@ -1554,7 +1569,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="116"/>
         <source>Clear the log display.</source>
-        <translation>Neteja l&apos;inici de sessió.</translation>
+        <translation>Neteja la pantalla del registre.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="122"/>
@@ -1564,7 +1579,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="123"/>
         <source>Save the log file to a file on disk for debugging.</source>
-        <translation>Desa el fitxer de registre al disc per depuració</translation>
+        <translation>Desa el fitxer de registre a un fitxer al disc per depuració</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="212"/>
@@ -1579,7 +1594,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="222"/>
         <source>Could not write to log file %1</source>
-        <translation>No es pot escriure al fitxer de registre %1</translation>
+        <translation>No s&apos;ha pogut escriure al fitxer de registre %1</translation>
     </message>
 </context>
 <context>
@@ -1605,7 +1620,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="338"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Hi ha una nova versió del client %1 disponible.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; està disponible per a la baixada. La versió instal·lada és la %3.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Hi ha una nova versió del client %1 disponible.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; està disponible per descarregar-se. La versió instal·lada és la %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="352"/>
@@ -1643,12 +1658,12 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
-        <translation>Usa el proxy del sistema</translation>
+        <translation>Fes servir el proxy del sistema</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="52"/>
         <source>Specify proxy manually as</source>
-        <translation>Especifiqueu manualment el proxi com a</translation>
+        <translation>Especifiqueu manualment el proxy com a</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="80"/>
@@ -1736,32 +1751,32 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="112"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha produït un error des del servidor: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha produït un error a l&apos;accedir al punt final &apos;token&apos;: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha pogut analitzar el JSON retornat des del servidor: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="121"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation type="unfinished"/>
+        <translation>La resposta del servidor no contenia tots els camps esperats</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="125"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Error d&apos;inici de sessió&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="131"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Usuari incorrecte&lt;/h1&gt;&lt;p&gt;Heu iniciat la sessió amb l’usuari &lt;em&gt;%1&lt;/em&gt;, però heu d&apos;iniciar la sessió amb l&apos;usuari &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Si us plau, tanqueu la sessió de %3 en una altra pestanya, llavors &lt;a href=&apos;%4&apos;&gt;feu clic aquí&lt;/a&gt; i inicieu la sessió amb l&apos;usuari %2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1775,23 +1790,23 @@ Logs will be written to %1</source>
         <location filename="../src/gui/updater/ocupdater.cpp" line="104"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
-        <translation>S&apos;instal·lara un nova actualització per %1. L&apos;actualitzador pot demanar
+        <translation>S&apos;instal·larà un nova actualització per %1. L&apos;actualitzador pot demanar
 privilegis addicionals durant el procés.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>Downloading version %1. Please wait...</source>
-        <translation>Descarregat la versió %1. Espeu si us play...</translation>
+        <translation>S&apos;està descarregant la versió %1. Espereu si us plau...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="147"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>No s&apos;ha pogut decarregar l&apos;actualització. Si us plau, cliqueu &lt;a href=&apos;%1&apos;&gt;aqui&lt;/a&gt;per descarregar l&apos;actualització manualment.</translation>
+        <translation>No s&apos;ha pogut descarregar l&apos;actualització. Si us plau, feu clic &lt;a href=&apos;%1&apos;&gt;aquí&lt;/a&gt;per descarregar l&apos;actualització manualment.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="149"/>
         <source>Could not check for new updates.</source>
-        <translation>No s&apos;ha pogut comprovar si hi ha actualitzacions.</translation>
+        <translation>No s&apos;ha pogut comprovar si hi ha noves actualitzacions.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
@@ -1806,17 +1821,17 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>Checking update server...</source>
-        <translation>Comprovació d&apos;actualitzacions al servidor</translation>
+        <translation>S&apos;està comprovant el servidor d&apos;actualitzacions...</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation>Es desconeix l&apos;estat de les actualitzacions: no s&apos;ha comprovat si hi ha actualitzacions noves.</translation>
+        <translation>Es desconeix l&apos;estat de les actualitzacions: No s&apos;ha pogut comprovar si hi ha actualitzacions noves.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
         <source>No updates available. Your installation is at the latest version.</source>
-        <translation>No hi ha actualitzacions disponibles. La instal·lació ja es troba en la versió més recent.</translation>
+        <translation>No hi ha actualitzacions disponibles. La vostra instal·lació té la versió més recent.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="178"/>
@@ -1849,22 +1864,22 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="160"/>
         <source>Sync the folder &apos;%1&apos;</source>
-        <translation>Sincronitzar el directori &apos;%1&apos;</translation>
+        <translation>Sincronitza el directori &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="165"/>
         <source>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Atenció:&lt;/strong&gt; La carpeta local no està buida. Trieu una resolució!&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;&lt;strong&gt;Atenció:&lt;/strong&gt; La carpeta local no és buida. Trieu una resolució!&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="174"/>
         <source>Free space: %1</source>
-        <translation type="unfinished"/>
+        <translation>Espai lliure: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="297"/>
         <source>Local Sync Folder</source>
-        <translation>Fitxer local de sincronització</translation>
+        <translation>Carpeta de sincronització local</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="340"/>
@@ -1875,7 +1890,7 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="385"/>
         <source>There is no enough free space in the local folder!</source>
-        <translation type="unfinished"/>
+        <translation>No hi ha prou espai lliure a la carpeta local!</translation>
     </message>
 </context>
 <context>
@@ -1888,17 +1903,17 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="43"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address specified. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ha fallat en connectar a l&apos;adreça segura del servidor especificada. Com voleu procedir?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;No s’ha pogut connectar a l’adreça de servidor segura especificada. Com voleu continuar?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="55"/>
         <source>Select a different URL</source>
-        <translation>Seleccioneu un URL diferent</translation>
+        <translation>Seleccioneu una URL diferent</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="62"/>
         <source>Retry unencrypted over HTTP (insecure)</source>
-        <translation>Torna-ho a provar sense encriptar via HTTP (insegur)</translation>
+        <translation>Torneu-ho a provar sense encriptar via HTTP (és insegur)</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.ui" line="69"/>
@@ -1908,7 +1923,7 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudconnectionmethoddialog.cpp" line="34"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Failed to connect to the secure server address &lt;em&gt;%1&lt;/em&gt;. How do you wish to proceed?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Ha fallat en connectar a l&apos;adreça segura del servidor &lt;em&gt;%1&lt;/em&gt;. Com voleu procedir?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;No s’ha pogut connectar a l’adreça de servidor segura &lt;em&gt;%1&lt;/em&gt;. Com voleu continuar?&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -1926,7 +1941,7 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="60"/>
         <source>Enter user credentials</source>
-        <translation>Escriviu les credencials d&apos;usuari</translation>
+        <translation>Introduïu les credencials de l&apos;usuari</translation>
     </message>
 </context>
 <context>
@@ -1939,12 +1954,12 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="46"/>
         <source>Login in your browser</source>
-        <translation type="unfinished"/>
+        <translation>Inicieu la sessió al vostre navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.cpp" line="56"/>
         <source>Copy link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copia l&apos;enllaç al porta-retalls</translation>
     </message>
 </context>
 <context>
@@ -1962,7 +1977,7 @@ privilegis addicionals durant el procés.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="83"/>
         <source>Keep your data secure and under your control</source>
-        <translation type="unfinished"/>
+        <translation>Manteniu les vostres dades segures i sota el vostre control</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="84"/>

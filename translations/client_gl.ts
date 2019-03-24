@@ -3825,22 +3825,22 @@ Recomendámoslle que non o use.</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="437"/>
         <source>%n day ago</source>
-        <translation><numerusform>vai %n día</numerusform><numerusform>vai %n días</numerusform></translation>
+        <translation><numerusform>hai %n día</numerusform><numerusform>hai %n días</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="439"/>
         <source>%n days ago</source>
-        <translation><numerusform>vai %n día</numerusform><numerusform>vai %n días</numerusform></translation>
+        <translation><numerusform>hai %n día</numerusform><numerusform>hai %n días</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="449"/>
         <source>%n hour ago</source>
-        <translation><numerusform>vai %n hora</numerusform><numerusform>vai %n horas</numerusform></translation>
+        <translation><numerusform>hai %n hora</numerusform><numerusform>hai %n horas</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="451"/>
         <source>%n hours ago</source>
-        <translation><numerusform>vai %n hora</numerusform><numerusform>vai %n horas</numerusform></translation>
+        <translation><numerusform>hai %n hora</numerusform><numerusform>hai %n horas</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="458"/>
@@ -3850,22 +3850,22 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/common/utility.cpp" line="460"/>
         <source>Less than a minute ago</source>
-        <translation>Vai menos dun minuto</translation>
+        <translation>Hai menos dun minuto</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="464"/>
         <source>%n minute ago</source>
-        <translation><numerusform>vai %n minuto</numerusform><numerusform>vai %n minutos</numerusform></translation>
+        <translation><numerusform>hai %n minuto</numerusform><numerusform>hai %n minutos</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="466"/>
         <source>%n minutes ago</source>
-        <translation><numerusform>vai %n minuto</numerusform><numerusform>vai %n minutos</numerusform></translation>
+        <translation><numerusform>hai %n minuto</numerusform><numerusform>hai %n minutos</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="470"/>
         <source>Some time ago</source>
-        <translation>Vai algún tempo</translation>
+        <translation>Hai algún tempo</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="145"/>
@@ -3899,32 +3899,32 @@ Recomendámoslle que non o use.</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="310"/>
         <source>%n year(s)</source>
-        <translation><numerusform>vai %n ano</numerusform><numerusform>vai %n anos</numerusform></translation>
+        <translation><numerusform>vai %n ano</numerusform><numerusform>hai %n anos</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="311"/>
         <source>%n month(s)</source>
-        <translation><numerusform>vai %n mes</numerusform><numerusform>vai %n meses</numerusform></translation>
+        <translation><numerusform>vai %n mes</numerusform><numerusform>hai %n meses</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="312"/>
         <source>%n day(s)</source>
-        <translation><numerusform>vai %n día</numerusform><numerusform>vai %n días</numerusform></translation>
+        <translation><numerusform>vai %n día</numerusform><numerusform>hai %n días</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="313"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>vai %n hora</numerusform><numerusform>vai %n horas</numerusform></translation>
+        <translation><numerusform>vai %n hora</numerusform><numerusform>hai %n horas</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="314"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>vai %n minuto</numerusform><numerusform>vai %n minutos</numerusform></translation>
+        <translation><numerusform>vai %n minuto</numerusform><numerusform>hai %n minutos</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="315"/>
         <source>%n second(s)</source>
-        <translation><numerusform>vai %n segundo</numerusform><numerusform>vai %n segundos</numerusform></translation>
+        <translation><numerusform>vai %n segundo</numerusform><numerusform>hai %n segundos</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="339"/>

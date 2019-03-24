@@ -4137,7 +4137,7 @@ Kliknij</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="58"/>
         <source>Could not open email client</source>
-        <translation>Nie można uruchomić klienta email</translation>
+        <translation>Nie można uruchomić klienta e-mail</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="59"/>
