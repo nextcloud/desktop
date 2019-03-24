@@ -318,6 +318,21 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
     case CSYNC_INSTRUCTION_CONFLICT:
         if (item->isDirectory()) {
             // CONFLICT has _direction == None
+            //check if it is in a dir marked as encrypted
+            QFileInfo tmpFile(item->_file);
+            QString tmpDirName = tmpFile.dir().path() + "/";
+
+            if(account()->e2e()->isFolderEncrypted(tmpDirName)){
+                PropagateUploadFileCommon *job = nullptr;
+                if (item->_size > syncOptions()._initialChunkSize && account()->capabilities().chunkingNg()) {
+                    // Item is above _initialChunkSize, thus will be classified as to be chunked
+                    job = new PropagateUploadFileNG(this, item);
+                } else {
+                    job = new PropagateUploadFileV1(this, item);
+                }
+                job->setDeleteExisting(deleteExisting);
+                return job;
+            }
             if (item->_direction != SyncFileItem::Up) {
                 auto job = new PropagateLocalMkdir(this, item);
                 job->setDeleteExistingFile(deleteExisting);
@@ -431,43 +446,56 @@ void OwncloudPropagator::start(const SyncFileItemVector &items)
             directories.pop();
         }
 
-        if (item->isDirectory()) {
-            PropagateDirectory *dir = new PropagateDirectory(this, item);
 
-            if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE
-                && item->_direction == SyncFileItem::Up) {
-                // Skip all potential uploads to the new folder.
-                // Processing them now leads to problems with permissions:
-                // checkForPermissions() has already run and used the permissions
-                // of the file we're about to delete to decide whether uploading
-                // to the new dir is ok...
-                foreach (const SyncFileItemPtr &item2, items) {
-                    if (item2->destination().startsWith(item->destination() + "/")) {
-                        item2->_instruction = CSYNC_INSTRUCTION_NONE;
-                        _anotherSyncNeeded = true;
+
+
+        if (item->isDirectory()) {
+
+            //check if it is in a dir marked as encrypted
+            QFileInfo tmpFile(item->_file);
+            QString tmpDirName = tmpFile.dir().path() + "/";
+            bool parentDirIsEncrypted = account()->e2e()->isFolderEncrypted(tmpDirName);
+
+            if(parentDirIsEncrypted){
+                directories.top().second->appendTask(item);
+
+            } else {
+                PropagateDirectory *dir = new PropagateDirectory(this, item);
+                if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE
+                    && item->_direction == SyncFileItem::Up) {
+                    // Skip all potential uploads to the new folder.
+                    // Processing them now leads to problems with permissions:
+                    // checkForPermissions() has already run and used the permissions
+                    // of the file we're about to delete to decide whether uploading
+                    // to the new dir is ok...
+                    foreach (const SyncFileItemPtr &item2, items) {
+                        if (item2->destination().startsWith(item->destination() + "/")) {
+                            item2->_instruction = CSYNC_INSTRUCTION_NONE;
+                            _anotherSyncNeeded = true;
+                        }
                     }
                 }
-            }
 
-            if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
-                // We do the removal of directories at the end, because there might be moves from
-                // these directories that will happen later.
-                directoriesToRemove.prepend(dir);
-                removedDirectory = item->_file + "/";
+                if (item->_instruction == CSYNC_INSTRUCTION_REMOVE) {
+                    // We do the removal of directories at the end, because there might be moves from
+                    // these directories that will happen later.
+                    directoriesToRemove.prepend(dir);
+                    removedDirectory = item->_file + "/";
 
-                // We should not update the etag of parent directories of the removed directory
-                // since it would be done before the actual remove (issue #1845)
-                // NOTE: Currently this means that we don't update those etag at all in this sync,
-                //       but it should not be a problem, they will be updated in the next sync.
-                for (int i = 0; i < directories.size(); ++i) {
-                    if (directories[i].second->_item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA)
-                        directories[i].second->_item->_instruction = CSYNC_INSTRUCTION_NONE;
+                    // We should not update the etag of parent directories of the removed directory
+                    // since it would be done before the actual remove (issue #1845)
+                    // NOTE: Currently this means that we don't update those etag at all in this sync,
+                    //       but it should not be a problem, they will be updated in the next sync.
+                    for (int i = 0; i < directories.size(); ++i) {
+                        if (directories[i].second->_item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA)
+                            directories[i].second->_item->_instruction = CSYNC_INSTRUCTION_NONE;
+                    }
+                } else {
+                    PropagateDirectory *currentDirJob = directories.top().second;
+                    currentDirJob->appendJob(dir);
                 }
-            } else {
-                PropagateDirectory *currentDirJob = directories.top().second;
-                currentDirJob->appendJob(dir);
+                directories.push(qMakePair(item->destination() + "/", dir));
             }
-            directories.push(qMakePair(item->destination() + "/", dir));
         } else {
             if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE) {
                 // will delete directories, so defer execution
