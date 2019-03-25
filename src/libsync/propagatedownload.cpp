@@ -1020,9 +1020,6 @@ void PropagateDownloadFile::downloadFinished()
         propagator()->_journal->setConflictRecord(_conflictRecord);
 
     if (_item->_type == ItemTypeVirtualFileDownload) {
-        // A downloaded virtual file becomes normal
-        _item->_type = ItemTypeFile;
-
         // If the virtual file used to have a different name and db
         // entry, wipe both now.
         auto vfs = propagator()->syncOptions()._vfs;

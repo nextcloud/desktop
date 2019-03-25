@@ -332,7 +332,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
             || localEntry.type == ItemTypeVirtualFileDownload)
         && (localEntry.isValid() || _queryLocal == ParentNotChanged)) {
         item->_direction = SyncFileItem::Down;
-        item->_instruction = CSYNC_INSTRUCTION_NEW;
+        item->_instruction = CSYNC_INSTRUCTION_SYNC;
         item->_type = ItemTypeVirtualFileDownload;
     }
 
@@ -381,7 +381,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             // The above check for the localEntry existing is important. Otherwise it breaks
             // the case where a file is moved and simultaneously tagged for download in the db.
             item->_direction = SyncFileItem::Down;
-            item->_instruction = CSYNC_INSTRUCTION_NEW;
+            item->_instruction = CSYNC_INSTRUCTION_SYNC;
             item->_type = ItemTypeVirtualFileDownload;
         } else if (dbEntry._etag != serverEntry.etag) {
             item->_direction = SyncFileItem::Down;

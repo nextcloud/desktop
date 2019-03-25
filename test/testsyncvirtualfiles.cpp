@@ -356,9 +356,11 @@ private slots:
         fakeFolder.localModifier().insert("A/a6");
         fakeFolder.localModifier().remove("A/a6.nextcloud");
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_SYNC));
+        QCOMPARE(findItem(completeSpy, "A/a1")->_type, ItemTypeVirtualFileDownload);
         QVERIFY(itemInstruction(completeSpy, "A/a1.nextcloud", CSYNC_INSTRUCTION_NONE));
-        QVERIFY(itemInstruction(completeSpy, "A/a2", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "A/a2", CSYNC_INSTRUCTION_SYNC));
+        QCOMPARE(findItem(completeSpy, "A/a2")->_type, ItemTypeVirtualFileDownload);
         QVERIFY(itemInstruction(completeSpy, "A/a2.nextcloud", CSYNC_INSTRUCTION_NONE));
         QVERIFY(itemInstruction(completeSpy, "A/a3.nextcloud", CSYNC_INSTRUCTION_REMOVE));
         QVERIFY(itemInstruction(completeSpy, "A/a4m", CSYNC_INSTRUCTION_NEW));
@@ -405,7 +407,7 @@ private slots:
         triggerDownload(fakeFolder, "A/a1");
         fakeFolder.serverErrorPaths().append("A/a1", 500);
         QVERIFY(!fakeFolder.syncOnce());
-        QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_SYNC));
         QVERIFY(itemInstruction(completeSpy, "A/a1.nextcloud", CSYNC_INSTRUCTION_NONE));
         QVERIFY(fakeFolder.currentLocalState().find("A/a1.nextcloud"));
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
@@ -415,7 +417,7 @@ private slots:
 
         fakeFolder.serverErrorPaths().clear();
         QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_SYNC));
         QVERIFY(itemInstruction(completeSpy, "A/a1.nextcloud", CSYNC_INSTRUCTION_NONE));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeFile);
@@ -622,7 +624,8 @@ private slots:
         QVERIFY(itemInstruction(completeSpy, "renamed2.nextcloud", CSYNC_INSTRUCTION_RENAME));
         QVERIFY(dbRecord(fakeFolder, "renamed2.nextcloud")._type == ItemTypeVirtualFile);
 
-        QVERIFY(itemInstruction(completeSpy, "file3", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "file3", CSYNC_INSTRUCTION_SYNC));
+        QVERIFY(dbRecord(fakeFolder, "file3")._type == ItemTypeFile);
         cleanup();
 
         // Test rename while adding/removing vfs suffix
