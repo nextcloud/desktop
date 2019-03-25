@@ -420,9 +420,9 @@ void Folder::createGuiLog(const QString &filename, LogStatus status, int count,
             break;
         case LogStatusNew:
             if (count > 1) {
-                text = tr("%1 and %n other file(s) have been downloaded.", "", count - 1).arg(file);
+                text = tr("%1 and %n other file(s) are new.", "", count - 1).arg(file);
             } else {
-                text = tr("%1 has been downloaded.", "%1 names a file.").arg(file);
+                text = tr("%1 is new.", "%1 names a file.").arg(file);
             }
             break;
         case LogStatusUpdated:
