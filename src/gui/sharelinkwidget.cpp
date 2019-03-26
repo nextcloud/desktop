@@ -252,7 +252,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
 
         if(_linkShare->isNoteSet()){
             _noteLinkAction->setChecked(true);
-            _ui->textEdit_note->setText(_linkShare->getNote());
+            _ui->textEdit_note->toPlainText();
             showNoteOptions(true);
         }
 
@@ -307,7 +307,7 @@ void ShareLinkWidget::setNote(const QString &note)
 
 void ShareLinkWidget::slotCreateNote()
 {
-    _ui->textEdit_note->setText(QString());
+    setNote(_ui->textEdit_note->toPlainText());
 }
 
 void ShareLinkWidget::slotNoteSet()
