@@ -332,16 +332,6 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(QString file, con
         propertyMapToRemoteInfo(map, result);
         if (result.isDirectory)
             result.size = 0;
-        if (result.size == -1
-            || result.remotePerm.isNull()
-            || result.etag.isEmpty()
-            || result.fileId.isEmpty()) {
-            _error = tr("The server file discovery reply is missing data.");
-            qCWarning(lcDiscovery)
-                << "Missing properties:" << file << result.isDirectory << result.size
-                << result.modtime << result.remotePerm.toString()
-                << result.etag << result.fileId;
-        }
 
         if (_isExternalStorage && result.remotePerm.hasPermission(RemotePermissions::IsMounted)) {
             /* All the entries in a external storage have 'M' in their permission. However, for all

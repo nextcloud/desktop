@@ -12,6 +12,16 @@
 
 using namespace OCC;
 
+SyncFileItemPtr findItem(const QSignalSpy &spy, const QString &path)
+{
+    for (const QList<QVariant> &args : spy) {
+        auto item = args[0].value<SyncFileItemPtr>();
+        if (item->destination() == path)
+            return item;
+    }
+    return SyncFileItemPtr(new SyncFileItem);
+}
+
 struct FakeBrokenXmlPropfindReply : FakePropfindReply {
     FakeBrokenXmlPropfindReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op,
                                const QNetworkRequest &request, QObject *parent)
@@ -38,7 +48,6 @@ struct MissingPermissionsPropfindReply : FakePropfindReply {
 enum ErrorKind : int {
     // Lower code are corresponding to HTML error code
     InvalidXML = 1000,
-    MissingPermissions,
     Timeout,
 };
 
@@ -64,7 +73,6 @@ private slots:
         // 200 should be an error since propfind should return 207
         QTest::newRow("200") << 200 << httpErrorMessage;
         QTest::newRow("InvalidXML") << +InvalidXML << "error while reading directory 'B' : Unknown error";
-        QTest::newRow("MissingPermissions") << +MissingPermissions << "error while reading directory 'B' : The server file discovery reply is missing data.";
         QTest::newRow("Timeout") << +Timeout << "error while reading directory 'B' : Operation canceled";
     }
 
@@ -94,8 +102,6 @@ private slots:
             if (req.attribute(QNetworkRequest::CustomVerbAttribute) == "PROPFIND" && req.url().path().endsWith("/B")) {
                 if (errorKind == InvalidXML) {
                     return new FakeBrokenXmlPropfindReply(fakeFolder.remoteModifier(), op, req, this);
-                } else if (errorKind == MissingPermissions) {
-                    return new MissingPermissionsPropfindReply(fakeFolder.remoteModifier(), op, req, this);
                 } else if (errorKind == Timeout) {
                     return new FakeHangingReply(op, req, this);
                 } else if (errorKind < 1000) {
@@ -124,6 +130,37 @@ private slots:
             QCOMPARE(fakeFolder.currentRemoteState().children["A"], fakeFolder.currentLocalState().children["A"]);
             QCOMPARE(fakeFolder.currentRemoteState().children["C"], fakeFolder.currentLocalState().children["C"]);
         }
+    }
+
+    void testMissingData()
+    {
+        FakeFolder fakeFolder{ FileInfo() };
+        fakeFolder.remoteModifier().insert("good");
+        fakeFolder.remoteModifier().insert("noetag");
+        fakeFolder.remoteModifier().find("noetag")->etag.clear();
+        fakeFolder.remoteModifier().insert("nofileid");
+        fakeFolder.remoteModifier().find("nofileid")->fileId.clear();
+        fakeFolder.remoteModifier().mkdir("nopermissions");
+        fakeFolder.remoteModifier().insert("nopermissions/A");
+
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *)
+                -> QNetworkReply *{
+            if (req.attribute(QNetworkRequest::CustomVerbAttribute) == "PROPFIND" && req.url().path().endsWith("nopermissions"))
+                return new MissingPermissionsPropfindReply(fakeFolder.remoteModifier(), op, req, this);
+            return nullptr;
+        });
+
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+        QVERIFY(!fakeFolder.syncOnce());
+
+        QCOMPARE(findItem(completeSpy, "good")->_instruction, CSYNC_INSTRUCTION_NEW);
+        QCOMPARE(findItem(completeSpy, "noetag")->_instruction, CSYNC_INSTRUCTION_ERROR);
+        QCOMPARE(findItem(completeSpy, "nofileid")->_instruction, CSYNC_INSTRUCTION_ERROR);
+        QCOMPARE(findItem(completeSpy, "nopermissions")->_instruction, CSYNC_INSTRUCTION_NEW);
+        QCOMPARE(findItem(completeSpy, "nopermissions/A")->_instruction, CSYNC_INSTRUCTION_ERROR);
+        QVERIFY(findItem(completeSpy, "noetag")->_errorString.contains("etag"));
+        QVERIFY(findItem(completeSpy, "nofileid")->_errorString.contains("file id"));
+        QVERIFY(findItem(completeSpy, "nopermissions/A")->_errorString.contains("permissions"));
     }
 };
 
