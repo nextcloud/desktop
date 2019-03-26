@@ -3379,7 +3379,7 @@ Uzi ĝin ne konsilindas.</translation>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="124"/>
         <source>You have been logged out of %1 as user %2. Please login again</source>
-        <translation>Vi estis ensalutita de %1 kiel uzanto %2. Bv. re-ensaluti.</translation>
+        <translation>Vi estis elsalutita de %1 kiel uzanto %2. Bv. re-ensaluti.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="141"/>
@@ -3991,7 +3991,7 @@ Uzi ĝin ne konsilindas.</translation>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>Servila versio elŝutita, la ŝanĝita loka dosiero estis kopiita en konfliktan dosieron</translation>
+        <translation>Servila versio elŝutita; la ŝanĝita loka dosiero estis kopiita en konfliktan dosieron</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="39"/>
