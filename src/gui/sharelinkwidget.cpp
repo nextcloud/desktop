@@ -247,7 +247,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         }
 
         // Adds action to display note widget (check box)
-        _noteLinkAction = _linkContextMenu->addAction(tr("Add note to recipient:"));
+        _noteLinkAction = _linkContextMenu->addAction(tr("Add note to recipient"));
         _noteLinkAction->setCheckable(true);
 
         if(_linkShare->isNoteSet()){
@@ -260,6 +260,7 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
         // Adds action to display expiration date widget (check box)
         _expirationDateLinkAction = _linkContextMenu->addAction(tr("Expiration Date"));
         _expirationDateLinkAction->setCheckable(true);
+
         if(_linkShare->getExpireDate().isValid()){
             _ui->calendar->setDate(_linkShare->getExpireDate());
             _expirationDateLinkAction->setChecked(true);
@@ -299,13 +300,14 @@ void ShareLinkWidget::setNote(const QString &note)
 {
     if (_linkShare) {
         toggleAnimation(true);
+        _ui->errorLabel->hide();
         _linkShare->setNote(note);
     }
 }
 
 void ShareLinkWidget::slotCreateNote()
 {
-    _ui->textEdit_note->show();
+    _ui->textEdit_note->setText(QString());
 }
 
 void ShareLinkWidget::slotNoteSet()
@@ -421,6 +423,7 @@ void ShareLinkWidget::slotDeleteShareFetched()
     _ui->shareLinkToolButton->setEnabled(false);
     _ui->shareLinkToolButton->hide();
     togglePasswordOptions(false);
+    toggleNoteOptions(false);
     toggleExpireDateOptions(false);
     getShares();
 }
@@ -479,9 +482,7 @@ void ShareLinkWidget::toggleNoteOptions(bool enable)
     showNoteOptions(enable);
 
     if (enable) {
-        _ui->noteLabel->setVisible(enable);
-        _ui->textEdit_note->setVisible(enable);
-        _ui->confirmNote->setFocus();
+        _ui->textEdit_note->setFocus();
     } else {
         // 'deletes' note
         if(_linkShare)
@@ -579,6 +580,9 @@ void ShareLinkWidget::slotLinkContextMenuActionTriggered(QAction *action)
 
     } else if (action == _expirationDateLinkAction) {
         toggleExpireDateOptions(state);
+
+    } else if (action == _noteLinkAction) {
+        toggleNoteOptions(state);
 
     } else if (action == _unshareLinkAction) {
         slotCreateOrDeleteShareLink(state);

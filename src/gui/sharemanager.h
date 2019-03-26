@@ -139,6 +139,7 @@ public:
         const QString &token,
         const Permissions permissions,
         bool passwordSet,
+        bool noteSet,
         const QUrl &url,
         const QDate &expireDate);
 

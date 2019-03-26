@@ -162,12 +162,14 @@ LinkShare::LinkShare(AccountPtr account,
     const QString &token,
     Permissions permissions,
     bool passwordSet,
+    bool noteSet,
     const QUrl &url,
     const QDate &expireDate)
     : Share(account, id, path, Share::TypeLink, permissions)
     , _name(name)
     , _token(token)
     , _passwordSet(passwordSet)
+    , _noteSet(noteSet)
     , _expireDate(expireDate)
     , _url(url)
 {
@@ -421,6 +423,7 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
         data.value("token").toString(),
         (Share::Permissions)data.value("permissions").toInt(),
         data.value("share_with").isString(), // has password?
+        data.value("note").isString(),
         url,
         expireDate));
 }
