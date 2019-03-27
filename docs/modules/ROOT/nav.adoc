@@ -1,6 +1,7 @@
 * xref:index.adoc[Introduction]
 * xref:installing.adoc[Installing the Desktop Synchronization Client]
 * xref:navigating.adoc[Using the Synchronization Client]
+* xref:removing.adoc[Removing the Client]
 * xref:conflicts.adoc[Conflicts]
 * Advanced Usage
 ** xref:advanced_usage/options.adoc[Options]
