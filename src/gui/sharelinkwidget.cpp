@@ -256,6 +256,14 @@ void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shar
             showNoteOptions(true);
         }
 
+        // If note is set display it
+        if (_account->capabilities().sharePublicLinkEnforceNote()) {
+            _noteLinkAction->setChecked(true);
+            _ui->textEdit_note->insertPlainText(QString(_account->capabilities().sharePublicLinkNote()));
+            _noteLinkAction->setEnabled(false);
+            _noteRequired = true;
+        }
+
 
         // Adds action to display expiration date widget (check box)
         _expirationDateLinkAction = _linkContextMenu->addAction(tr("Expiration Date"));

@@ -140,8 +140,7 @@ public:
         const Permissions permissions,
         bool passwordSet,
         const QUrl &url,
-        const QDate &expireDate);
-
+        const QDate &xpireDate);
     /*
      * Get the share link
      */

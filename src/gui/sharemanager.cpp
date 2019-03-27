@@ -155,6 +155,7 @@ bool LinkShare::isNoteSet() const
 {
     return _noteSet;
 }
+
 LinkShare::LinkShare(AccountPtr account,
     const QString &id,
     const QString &path,
@@ -209,9 +210,9 @@ void LinkShare::setNote(const QString &note)
     job->setNote(getId(), note);
 }
 
-void LinkShare::slotNoteSet(const QJsonDocument &, const QVariant &value)
+void LinkShare::slotNoteSet(const QJsonDocument &, const QVariant &note)
 {
-    _noteSet = value.toString() != "";
+    _note = note.toString() != "";
     emit noteSet();
 }
 
@@ -263,9 +264,9 @@ void LinkShare::slotSetPasswordError(int statusCode, const QString &message)
     emit passwordSetError(statusCode, message);
 }
 
-void LinkShare::slotNameSet(const QJsonDocument &, const QVariant &note)
+void LinkShare::slotNameSet(const QJsonDocument &, const QVariant &name)
 {
-    _note = note.toString();
+    _name = name.toString();
     emit nameSet();
 }
 
@@ -420,7 +421,7 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
         data.value("name").toString(),
         data.value("token").toString(),
         (Share::Permissions)data.value("permissions").toInt(),
-        data.value("share_with").isString(), // has password?
+        data.value("share_with").isString(),
         url,
         expireDate));
 }
