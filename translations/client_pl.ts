@@ -1460,9 +1460,9 @@ Kontynuacja synchronizacji w normalny sposób spowoduje, że wszystkie twoje pli
         <source>Files or folders matching a pattern will not be synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Pliki lub foldery pasujące do szablonu nie będą zsynchronizowane.
+        <translation>Pliki lub katalogi pasujące do szablonu nie będą zsynchronizowane.
 
-Pozycje, dla których usuwanie jest dozwolone zostaną usunięte, jeżeli uprawnienia katalogu dopuszczają usuwanie.</translation>
+Elementy, dla których usuwanie jest dozwolone zostaną usunięte, jeżeli uprawnienia katalogu dopuszczają usuwanie. Jest to przydatne dla metadanych.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
@@ -3316,7 +3316,7 @@ Niezalecane jest jego użycie.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1482"/>
         <source>Move not allowed, item restored</source>
-        <translation>Przenoszenie niedozwolone, obiekt przywrócony</translation>
+        <translation>Przenoszenie niedozwolone, element przywrócony</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1493"/>
