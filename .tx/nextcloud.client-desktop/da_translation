@@ -201,4 +201,4 @@ X-GNOME-Autostart-Delay=3
 Icon[da]=@APPLICATION_ICON_NAME@
 Name[da]=@APPLICATION_NAME@ Arbejdsstationsssynkroniseringsklient
 Comment[da]=@APPLICATION_NAME@ Arbejdsstationsssynkroniseringsklient
-GenericName[da]=Mappe sync
+GenericName[da]=Mappesynkronisering
