@@ -175,7 +175,7 @@ void SyncRunFileLog::logItem(const SyncFileItem &item)
     _out << ts << L;
     _out << L;
     if (item._instruction != CSYNC_INSTRUCTION_RENAME) {
-        _out << item._file << L;
+        _out << item.destination() << L;
     } else {
         _out << item._file << QLatin1String(" -> ") << item._renameTarget << L;
     }
