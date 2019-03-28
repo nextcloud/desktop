@@ -780,6 +780,8 @@ private slots:
         QVERIFY(hasDehydratedDbEntries("A/a1"));
         QVERIFY(itemInstruction(completeSpy, "A/a1.nextcloud", CSYNC_INSTRUCTION_SYNC));
         QCOMPARE(findItem(completeSpy, "A/a1.nextcloud")->_type, ItemTypeVirtualFileDehydration);
+        QCOMPARE(findItem(completeSpy, "A/a1.nextcloud")->_file, QStringLiteral("A/a1"));
+        QCOMPARE(findItem(completeSpy, "A/a1.nextcloud")->_renameTarget, QStringLiteral("A/a1.nextcloud"));
         QVERIFY(isDehydrated("A/a2"));
         QVERIFY(hasDehydratedDbEntries("A/a2"));
         QVERIFY(itemInstruction(completeSpy, "A/a2.nextcloud", CSYNC_INSTRUCTION_SYNC));

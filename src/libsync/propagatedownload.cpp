@@ -428,11 +428,6 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
         qCDebug(lcPropagateDownload) << "dehydrating file" << _item->_file;
         vfs->dehydratePlaceholder(*_item);
         propagator()->_journal->deleteFileRecord(_item->_originalFile);
-        // NOTE: This is only done because other rename-like ops also adjust _file, even though
-        // updateMetadata() will store at destination() anyway. Doing this may not be necessary
-        // but maybe it has an effect on reporting (destination() and moves aren't handled
-        // consistently everywhere)
-        _item->_file = _item->destination();
         updateMetadata(false);
         return;
     }

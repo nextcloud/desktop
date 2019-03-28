@@ -958,14 +958,11 @@ void PropagateDirectory::slotFirstJobFinished(SyncFileItem::Status status)
 void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
 {
     if (!_item->isEmpty() && status == SyncFileItem::Success) {
-        if (!_item->_renameTarget.isEmpty()) {
-            if (_item->_instruction == CSYNC_INSTRUCTION_RENAME
-                && _item->_originalFile != _item->_renameTarget) {
-                // Remove the stale entries from the database.
-                propagator()->_journal->deleteFileRecord(_item->_originalFile, true);
-            }
-
-            _item->_file = _item->_renameTarget;
+        // If a directory is renamed, recursively delete any stale items
+        // that may still exist below the old path.
+        if (_item->_instruction == CSYNC_INSTRUCTION_RENAME
+            && _item->_originalFile != _item->_renameTarget) {
+            propagator()->_journal->deleteFileRecord(_item->_originalFile, true);
         }
 
         // For new directories we always want to update the etag once

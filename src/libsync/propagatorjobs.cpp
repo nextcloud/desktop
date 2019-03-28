@@ -283,9 +283,7 @@ void PropagateLocalRename::start()
     propagator()->_journal->getFileRecord(_item->_originalFile, &oldRecord);
     propagator()->_journal->deleteFileRecord(_item->_originalFile);
 
-    // store the rename file name in the item.
     const auto oldFile = _item->_file;
-    _item->_file = _item->_renameTarget;
 
     if (!_item->isDirectory()) { // Directories are saved at the end
         SyncFileItem newItem(*_item);

@@ -356,6 +356,10 @@ private slots:
             QCOMPARE(counter.nDELETE, 0);
             QVERIFY(itemSuccessfulMove(completeSpy, "A/a1m"));
             QVERIFY(itemSuccessfulMove(completeSpy, "B/b1m"));
+            QCOMPARE(findItem(completeSpy, "A/a1m")->_file, QStringLiteral("A/a1"));
+            QCOMPARE(findItem(completeSpy, "A/a1m")->_renameTarget, QStringLiteral("A/a1m"));
+            QCOMPARE(findItem(completeSpy, "B/b1m")->_file, QStringLiteral("B/b1"));
+            QCOMPARE(findItem(completeSpy, "B/b1m")->_renameTarget, QStringLiteral("B/b1m"));
         }
 
         // Touch+Move on same side
@@ -485,6 +489,10 @@ private slots:
             QCOMPARE(counter.nDELETE, 0);
             QVERIFY(itemSuccessfulMove(completeSpy, "AM"));
             QVERIFY(itemSuccessfulMove(completeSpy, "BM"));
+            QCOMPARE(findItem(completeSpy, "AM")->_file, QStringLiteral("A"));
+            QCOMPARE(findItem(completeSpy, "AM")->_renameTarget, QStringLiteral("AM"));
+            QCOMPARE(findItem(completeSpy, "BM")->_file, QStringLiteral("B"));
+            QCOMPARE(findItem(completeSpy, "BM")->_renameTarget, QStringLiteral("BM"));
         }
 
         // Folder move with contents touched on the same side
