@@ -98,11 +98,11 @@ ProtocolItem *ProtocolItem::create(const QString &folder, const SyncFileItem &it
     twitem->setData(0, Qt::SizeHintRole, QSize(0, ActivityItemDelegate::rowHeight()));
     twitem->setIcon(0, icon);
     twitem->setToolTip(0, longTimeStr);
-    twitem->setToolTip(1, item._file);
+    twitem->setToolTip(1, item.destination());
     twitem->setToolTip(3, message);
     ProtocolItem::ExtraData data;
     data.timestamp = timestamp;
-    data.path = item._file;
+    data.path = item.destination();
     data.folderName = folder;
     data.status = item._status;
     data.size = item._size;
