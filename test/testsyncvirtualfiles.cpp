@@ -780,6 +780,8 @@ private slots:
         QVERIFY(hasDehydratedDbEntries("A/a1"));
         QVERIFY(itemInstruction(completeSpy, "A/a1.owncloud", CSYNC_INSTRUCTION_SYNC));
         QCOMPARE(findItem(completeSpy, "A/a1.owncloud")->_type, ItemTypeVirtualFileDehydration);
+        QCOMPARE(findItem(completeSpy, "A/a1.owncloud")->_file, QStringLiteral("A/a1"));
+        QCOMPARE(findItem(completeSpy, "A/a1.owncloud")->_renameTarget, QStringLiteral("A/a1.owncloud"));
         QVERIFY(isDehydrated("A/a2"));
         QVERIFY(hasDehydratedDbEntries("A/a2"));
         QVERIFY(itemInstruction(completeSpy, "A/a2.owncloud", CSYNC_INSTRUCTION_SYNC));
