@@ -980,12 +980,6 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         if (_item->_instruction == CSYNC_INSTRUCTION_RENAME
             || _item->_instruction == CSYNC_INSTRUCTION_NEW
             || _item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA) {
-            if (PropagateRemoteMkdir *mkdir = qobject_cast<PropagateRemoteMkdir *>(_firstJob.data())) {
-                // special case from MKDIR, get the fileId from the job there
-                if (_item->_fileId.isEmpty() && !mkdir->_item->_fileId.isEmpty()) {
-                    _item->_fileId = mkdir->_item->_fileId;
-                }
-            }
             if (!propagator()->updateMetadata(*_item)) {
                 status = _item->_status = SyncFileItem::FatalError;
                 _item->_errorString = tr("Error writing metadata to the database");
