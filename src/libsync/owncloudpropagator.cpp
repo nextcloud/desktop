@@ -965,6 +965,12 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
             propagator()->_journal->deleteFileRecord(_item->_originalFile, true);
         }
 
+        if (_item->_instruction == CSYNC_INSTRUCTION_NEW && _item->_direction == SyncFileItem::Down) {
+            // special case for local MKDIR, set local directory mtime
+            // (it's not synced later at all, but can be nice to have it set initially)
+            FileSystem::setModTime(propagator()->getFilePath(_item->destination()), _item->_modtime);
+        }
+
         // For new directories we always want to update the etag once
         // the directory has been propagated. Otherwise the directory
         // could appear locally without being added to the database.

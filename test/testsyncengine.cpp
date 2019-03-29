@@ -698,6 +698,22 @@ private slots:
         QCOMPARE(QFileInfo(fakeFolder.localPath() + conflictName).permissions(), perm);
     }
 #endif
+
+    // Check that server mtime is set on directories on initial propagation
+    void testDirectoryInitialMtime()
+    {
+        FakeFolder fakeFolder{ FileInfo{} };
+        fakeFolder.remoteModifier().mkdir("foo");
+        fakeFolder.remoteModifier().insert("foo/bar");
+        auto datetime = QDateTime::currentDateTime();
+        datetime.setSecsSinceEpoch(datetime.toSecsSinceEpoch()); // wipe ms
+        fakeFolder.remoteModifier().find("foo")->lastModified = datetime;
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        QCOMPARE(QFileInfo(fakeFolder.localPath() + "foo").lastModified(), datetime);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)
