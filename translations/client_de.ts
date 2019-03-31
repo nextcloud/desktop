@@ -1887,7 +1887,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="385"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Nicht genug freier Platz im lokalen Verzeichnis vorhanden!</translation>
     </message>
 </context>
 <context>
