@@ -146,14 +146,14 @@ QDate LinkShare::getExpireDate() const
     return _expireDate;
 }
 
+QString LinkShare::getNote() const
+{
+    return _note;
+}
+
 bool LinkShare::isPasswordSet() const
 {
     return _passwordSet;
-}
-
-bool LinkShare::isNoteSet() const
-{
-    return _noteSet;
 }
 
 LinkShare::LinkShare(AccountPtr account,
@@ -197,11 +197,6 @@ void LinkShare::setName(const QString &name)
     job->setName(getId(), name);
 }
 
-QString LinkShare::getNote() const
-{
-    return _note;
-}
-
 void LinkShare::setNote(const QString &note)
 {
     OcsShareJob *job = new OcsShareJob(_account);
@@ -212,7 +207,7 @@ void LinkShare::setNote(const QString &note)
 
 void LinkShare::slotNoteSet(const QJsonDocument &, const QVariant &note)
 {
-    _note = note.toString() != "";
+    _note = note.toString();
     emit noteSet();
 }
 
@@ -421,7 +416,7 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
         data.value("name").toString(),
         data.value("token").toString(),
         (Share::Permissions)data.value("permissions").toInt(),
-        data.value("share_with").isString(),
+        data.value("share_with").isString(),  // has password?
         url,
         expireDate));
 }

@@ -140,7 +140,7 @@ public:
         const Permissions permissions,
         bool passwordSet,
         const QUrl &url,
-        const QDate &xpireDate);
+        const QDate &expireDate);
     /*
      * Get the share link
      */
@@ -174,22 +174,20 @@ public:
     void setName(const QString &name);
 
     /*
-     * Returns the token of the link share.
-     */
-
-    QString getNote() const;
-    /*
      * Set the note of the link share.
      */
+
     void setNote(const QString &note);
 
     /*
      * Returns the note of the link share.
      */
-    bool isNoteSet() const;
-   /*
-    * Is the note set?
-    */
+
+    QString getNote() const;
+
+    /*
+     * Returns the token of the link share.
+     */
 
     QString getToken() const;
 
@@ -237,7 +235,6 @@ private:
     QString _name;
     QString _token;
     bool _passwordSet;
-    bool _noteSet;
     QString _note;
     QDate _expireDate;
     QUrl _url;

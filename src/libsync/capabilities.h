@@ -39,7 +39,6 @@ public:
     bool sharePublicLinkSupportsUploadOnly() const;
     bool sharePublicLinkEnforcePassword() const;
     bool sharePublicLinkEnforceExpireDate() const;
-    bool sharePublicLinkEnforceNote() const;
     int sharePublicLinkExpireDateDays() const;
     bool sharePublicLinkMultiple() const;
     bool shareResharing() const;
@@ -126,8 +125,6 @@ public:
     /**
      * Whether conflict files should remain local (default) or should be uploaded.
      */
-      QString sharePublicLinkNote() const;
-
     bool uploadConflictFiles() const;
 
 private:
