@@ -718,11 +718,29 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                 item->_direction = SyncFileItem::Down; // Does not matter
             }
+        } else if (!typeChange && isVfsWithSuffix()
+            && dbEntry.isVirtualFile() && !localEntry.isVirtualFile
+            && dbEntry._inode == localEntry.inode
+            && dbEntry._modtime == localEntry.modtime
+            && localEntry.size == 1) {
+            // A suffix vfs file can be downloaded by renaming it to remove the suffix.
+            // This check leaks some details of VfsSuffix, particularly the size of placeholders.
+            item->_direction = SyncFileItem::Down;
+            if (noServerEntry) {
+                item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+                item->_type = ItemTypeFile;
+            } else {
+                item->_instruction = CSYNC_INSTRUCTION_SYNC;
+                item->_type = ItemTypeVirtualFileDownload;
+                item->_previousSize = 1;
+            }
         } else if (serverModified
-            // If a suffix-file changes we prefer to go into conflict mode - but in-place
-            // placeholders could be replaced by real files and should be a regular SYNC
-            // if there's no server change.
             || (isVfsWithSuffix() && dbEntry.isVirtualFile())) {
+            // There's a local change and a server change: Conflict!
+            // Alternatively, this might be a suffix-file that's virtual in the db but
+            // not locally. These also become conflicts. For in-place placeholders that's
+            // not necessary: they could be replaced by real files and should then trigger
+            // a regular SYNC upwards when there's no server change.
             processFileConflict(item, path, localEntry, serverEntry, dbEntry);
         } else if (typeChange) {
             item->_instruction = CSYNC_INSTRUCTION_TYPE_CHANGE;

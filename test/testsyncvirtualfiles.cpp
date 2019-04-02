@@ -333,6 +333,11 @@ private slots:
         fakeFolder.remoteModifier().insert("A/a4");
         fakeFolder.remoteModifier().insert("A/a5");
         fakeFolder.remoteModifier().insert("A/a6");
+        fakeFolder.remoteModifier().insert("A/a7");
+        fakeFolder.remoteModifier().insert("A/b1");
+        fakeFolder.remoteModifier().insert("A/b2");
+        fakeFolder.remoteModifier().insert("A/b3");
+        fakeFolder.remoteModifier().insert("A/b4");
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(fakeFolder.currentLocalState().find("A/a1.nextcloud"));
         QVERIFY(fakeFolder.currentLocalState().find("A/a2.nextcloud"));
@@ -340,6 +345,11 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("A/a4.nextcloud"));
         QVERIFY(fakeFolder.currentLocalState().find("A/a5.nextcloud"));
         QVERIFY(fakeFolder.currentLocalState().find("A/a6.nextcloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/a7.nextcloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/b1.nextcloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/b2.nextcloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/b3.nextcloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("A/b4.nextcloud"));
         cleanup();
 
         // Download by changing the db entry
@@ -349,12 +359,25 @@ private slots:
         triggerDownload(fakeFolder, "A/a4");
         triggerDownload(fakeFolder, "A/a5");
         triggerDownload(fakeFolder, "A/a6");
+        triggerDownload(fakeFolder, "A/a7");
+        // Download by renaming locally
+        fakeFolder.localModifier().rename("A/b1.nextcloud", "A/b1");
+        fakeFolder.localModifier().rename("A/b2.nextcloud", "A/b2");
+        fakeFolder.localModifier().rename("A/b3.nextcloud", "A/b3");
+        fakeFolder.localModifier().rename("A/b4.nextcloud", "A/b4");
+        // Remote complications
         fakeFolder.remoteModifier().appendByte("A/a2");
         fakeFolder.remoteModifier().remove("A/a3");
         fakeFolder.remoteModifier().rename("A/a4", "A/a4m");
+        fakeFolder.remoteModifier().appendByte("A/b2");
+        fakeFolder.remoteModifier().remove("A/b3");
+        fakeFolder.remoteModifier().rename("A/b4", "A/b4m");
+        // Local complications
         fakeFolder.localModifier().insert("A/a5");
         fakeFolder.localModifier().insert("A/a6");
         fakeFolder.localModifier().remove("A/a6.nextcloud");
+        fakeFolder.localModifier().rename("A/a7.nextcloud", "A/a7");
+
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(itemInstruction(completeSpy, "A/a1", CSYNC_INSTRUCTION_SYNC));
         QCOMPARE(findItem(completeSpy, "A/a1")->_type, ItemTypeVirtualFileDownload);
@@ -368,19 +391,39 @@ private slots:
         QVERIFY(itemInstruction(completeSpy, "A/a5", CSYNC_INSTRUCTION_CONFLICT));
         QVERIFY(itemInstruction(completeSpy, "A/a5.nextcloud", CSYNC_INSTRUCTION_NONE));
         QVERIFY(itemInstruction(completeSpy, "A/a6", CSYNC_INSTRUCTION_CONFLICT));
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(itemInstruction(completeSpy, "A/a7", CSYNC_INSTRUCTION_SYNC));
+        QVERIFY(itemInstruction(completeSpy, "A/b1", CSYNC_INSTRUCTION_SYNC));
+        QVERIFY(itemInstruction(completeSpy, "A/b2", CSYNC_INSTRUCTION_SYNC));
+        QVERIFY(itemInstruction(completeSpy, "A/b3", CSYNC_INSTRUCTION_REMOVE));
+        QVERIFY(itemInstruction(completeSpy, "A/b4m.nextcloud", CSYNC_INSTRUCTION_NEW));
+        QVERIFY(itemInstruction(completeSpy, "A/b4", CSYNC_INSTRUCTION_REMOVE));
         QCOMPARE(dbRecord(fakeFolder, "A/a1")._type, ItemTypeFile);
         QCOMPARE(dbRecord(fakeFolder, "A/a2")._type, ItemTypeFile);
         QVERIFY(!dbRecord(fakeFolder, "A/a3").isValid());
         QCOMPARE(dbRecord(fakeFolder, "A/a4m")._type, ItemTypeFile);
         QCOMPARE(dbRecord(fakeFolder, "A/a5")._type, ItemTypeFile);
         QCOMPARE(dbRecord(fakeFolder, "A/a6")._type, ItemTypeFile);
+        QCOMPARE(dbRecord(fakeFolder, "A/a7")._type, ItemTypeFile);
+        QCOMPARE(dbRecord(fakeFolder, "A/b1")._type, ItemTypeFile);
+        QCOMPARE(dbRecord(fakeFolder, "A/b2")._type, ItemTypeFile);
+        QVERIFY(!dbRecord(fakeFolder, "A/b3").isValid());
+        QCOMPARE(dbRecord(fakeFolder, "A/b4m.nextcloud")._type, ItemTypeVirtualFile);
         QVERIFY(!dbRecord(fakeFolder, "A/a1.nextcloud").isValid());
         QVERIFY(!dbRecord(fakeFolder, "A/a2.nextcloud").isValid());
         QVERIFY(!dbRecord(fakeFolder, "A/a3.nextcloud").isValid());
         QVERIFY(!dbRecord(fakeFolder, "A/a4.nextcloud").isValid());
         QVERIFY(!dbRecord(fakeFolder, "A/a5.nextcloud").isValid());
         QVERIFY(!dbRecord(fakeFolder, "A/a6.nextcloud").isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/a7.nextcloud").isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/b1.nextcloud").isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/b2.nextcloud").isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/b3.nextcloud").isValid());
+        QVERIFY(!dbRecord(fakeFolder, "A/b4.nextcloud").isValid());
+
+        triggerDownload(fakeFolder, "A/b4m");
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
     void testVirtualFileDownloadResume()
