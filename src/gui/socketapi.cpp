@@ -657,7 +657,7 @@ void SocketApi::command_REPLACE_VIRTUAL_FILE(const QString &filesArg, SocketList
     QStringList files = filesArg.split(QLatin1Char('\x1e')); // Record Separator
     auto suffix = QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX);
 
-    for (const auto &file : files) {
+    for (auto file : files) {
         QString relativePath;
         auto folder = FolderMan::instance()->folderForPath(file, &relativePath);
         if (!folder)
@@ -682,7 +682,13 @@ void SocketApi::command_REPLACE_VIRTUAL_FILE(const QString &filesArg, SocketList
                 qCWarning(lcSocketApi) << "Unable to rename " << file;
             }
         }
-        folder->slotWatchedPathChanged(file); // make sure it is in the _localDiscoveryTracker list
+
+        // make sure it is in the _localDiscoveryTracker list
+        // slotWatchedPathChanged() doesn't like a trailing /
+        if (file.endsWith('/'))
+            file.chop(1);
+        folder->slotWatchedPathChanged(file);
+
         FolderMan::instance()->scheduleFolder(folder);
     }
 }
