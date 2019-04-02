@@ -540,6 +540,8 @@ restart_sync:
     }
 
     SyncOptions opt;
+    opt.fillFromEnvironmentVariables();
+    opt.verifyChunkSizes();
     opt._deltaSyncEnabled = options.deltasync;
     opt._deltaSyncMinFileSize = options.deltasyncminfilesize;
     SyncEngine engine(account, options.source_dir, folder, &db);
