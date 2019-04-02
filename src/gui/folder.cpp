@@ -874,42 +874,18 @@ void Folder::setSyncOptions()
     opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
     opt._moveFilesToTrash = cfgFile.moveToTrash();
     opt._vfs = _vfs;
+    opt._parallelNetworkJobs = _accountState->account()->isHttp2Supported() ? 20 : 6;
 
-    QByteArray chunkSizeEnv = qgetenv("OWNCLOUD_CHUNK_SIZE");
-    if (!chunkSizeEnv.isEmpty()) {
-        opt._initialChunkSize = chunkSizeEnv.toUInt();
-    } else {
-        opt._initialChunkSize = cfgFile.chunkSize();
-    }
-    QByteArray minChunkSizeEnv = qgetenv("OWNCLOUD_MIN_CHUNK_SIZE");
-    if (!minChunkSizeEnv.isEmpty()) {
-        opt._minChunkSize = minChunkSizeEnv.toUInt();
-    } else {
-        opt._minChunkSize = cfgFile.minChunkSize();
-    }
-    QByteArray maxChunkSizeEnv = qgetenv("OWNCLOUD_MAX_CHUNK_SIZE");
-    if (!maxChunkSizeEnv.isEmpty()) {
-        opt._maxChunkSize = maxChunkSizeEnv.toUInt();
-    } else {
-        opt._maxChunkSize = cfgFile.maxChunkSize();
-    }
+    opt._initialChunkSize = cfgFile.chunkSize();
+    opt._minChunkSize = cfgFile.minChunkSize();
+    opt._maxChunkSize = cfgFile.maxChunkSize();
+    opt._targetChunkUploadDuration = cfgFile.targetChunkUploadDuration();
 
-    int maxParallel = qgetenv("OWNCLOUD_MAX_PARALLEL").toUInt();
-    opt._parallelNetworkJobs = maxParallel ? maxParallel : _accountState->account()->isHttp2Supported() ? 20 : 6;
+    opt._deltaSyncEnabled = false;
+    opt._deltaSyncMinFileSize = false;
 
-    // Previously min/max chunk size values didn't exist, so users might
-    // have setups where the chunk size exceeds the new min/max default
-    // values. To cope with this, adjust min/max to always include the
-    // initial chunk size value.
-    opt._minChunkSize = qMin(opt._minChunkSize, opt._initialChunkSize);
-    opt._maxChunkSize = qMax(opt._maxChunkSize, opt._initialChunkSize);
-
-    QByteArray targetChunkUploadDurationEnv = qgetenv("OWNCLOUD_TARGET_CHUNK_UPLOAD_DURATION");
-    if (!targetChunkUploadDurationEnv.isEmpty()) {
-        opt._targetChunkUploadDuration = std::chrono::milliseconds(targetChunkUploadDurationEnv.toUInt());
-    } else {
-        opt._targetChunkUploadDuration = cfgFile.targetChunkUploadDuration();
-    }
+    opt.fillFromEnvironmentVariables();
+    opt.verifyChunkSizes();
 
     _engine->setSyncOptions(opt);
 }

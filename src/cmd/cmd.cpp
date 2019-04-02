@@ -505,6 +505,11 @@ restart_sync:
         selectiveSyncFixup(&db, selectiveSyncList);
     }
 
+    SyncOptions opt;
+    opt.fillFromEnvironmentVariables();
+    opt.verifyChunkSizes();
+    opt._deltaSyncEnabled = false;
+    opt._deltaSyncMinFileSize = false;
     SyncEngine engine(account, options.source_dir, folder, &db);
     engine.setIgnoreHiddenFiles(options.ignoreHiddenFiles);
     engine.setNetworkLimits(options.uplimit, options.downlimit);

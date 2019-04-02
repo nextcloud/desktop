@@ -27,9 +27,8 @@ namespace OCC {
  */
 struct OWNCLOUDSYNC_EXPORT SyncOptions
 {
-    SyncOptions()
-        : _vfs(new VfsOff)
-    {}
+    SyncOptions();
+    ~SyncOptions();
 
     /** Maximum size (in Bytes) a folder can have without asking for confirmation.
      * -1 means infinite */
@@ -67,7 +66,28 @@ struct OWNCLOUDSYNC_EXPORT SyncOptions
 
     /** The maximum number of active jobs in parallel  */
     int _parallelNetworkJobs = 6;
-};
 
+    /** Whether delta-synchronization is enabled */
+    bool _deltaSyncEnabled = false;
+
+    /** What the minimum file size (in Bytes) is for delta-synchronization */
+    qint64 _deltaSyncMinFileSize = 0;
+
+    /** Reads settings from env vars where available.
+     *
+     * Currently reads _initialChunkSize, _minChunkSize, _maxChunkSize,
+     * _targetChunkUploadDuration, _parallelNetworkJobs.
+     */
+    void fillFromEnvironmentVariables();
+
+    /** Ensure min <= initial <= max
+     *
+     * Previously min/max chunk size values didn't exist, so users might
+     * have setups where the chunk size exceeds the new min/max default
+     * values. To cope with this, adjust min/max to always include the
+     * initial chunk size value.
+     */
+    void verifyChunkSizes();
+};
 
 }
