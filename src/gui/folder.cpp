@@ -516,18 +516,22 @@ void Folder::downloadVirtualFile(const QString &_relativepath)
     // Set in the database that we should download the file
     SyncJournalFileRecord record;
     _journal.getFileRecord(relativepath, &record);
-    if (!record.isValid())
+    if (!record.isValid()) {
+        qCWarning(lcFolder) << "No journal record for file " << _relativepath;
         return;
+    }
     if (record._type == ItemTypeVirtualFile) {
         record._type = ItemTypeVirtualFileDownload;
         _journal.setFileRecord(record);
-        // Make sure we go over that file during the discovery
-        _journal.avoidReadFromDbOnNextSync(relativepath);
     } else if (record._type == ItemTypeDirectory) {
         _journal.markVirtualFileForDownloadRecursively(relativepath);
     } else {
         qCWarning(lcFolder) << "Invalid existing record " << record._type << " for file " << _relativepath;
     }
+
+    // Make sure we go over that file during the discovery
+    _localDiscoveryTracker->addTouchedPath(relativepath);
+    _journal.avoidReadFromDbOnNextSync(relativepath);
 
     // Schedule a sync (Folder man will start the sync in a few ms)
     slotScheduleThisFolder();
