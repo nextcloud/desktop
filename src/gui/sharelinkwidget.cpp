@@ -68,7 +68,7 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
     QFileInfo fi(localPath);
     _isFile = fi.isFile();
 
-    connect(_ui->enableShareLink, &QCheckBox::toggled, this, &ShareLinkWidget::slotCreateOrDeleteShareLink);
+    connect(_ui->enableShareLink, &QCheckBox::clicked, this, &ShareLinkWidget::slotCreateOrDeleteShareLink);
     connect(_ui->lineEdit_password, &QLineEdit::returnPressed, this, &ShareLinkWidget::slotCreatePassword);
     connect(_ui->confirmPassword, &QAbstractButton::clicked, this, &ShareLinkWidget::slotCreatePassword);
     connect(_ui->confirmExpirationDate, &QAbstractButton::clicked, this, &ShareLinkWidget::slotSetExpireDate);
