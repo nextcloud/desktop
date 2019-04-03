@@ -105,4 +105,13 @@ bool VfsSuffix::statTypeVirtualFile(csync_file_stat_t *stat, void *)
     return false;
 }
 
+Optional<VfsItemAvailability> VfsSuffix::availability(const QString &folderPath)
+{
+    const auto suffix = fileSuffix();
+    QString pinPath = folderPath;
+    if (pinPath.endsWith(suffix))
+        pinPath.chop(suffix.size());
+    return availabilityInDb(folderPath, pinPath);
+}
+
 } // namespace OCC

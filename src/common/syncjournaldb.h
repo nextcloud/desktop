@@ -72,6 +72,10 @@ public:
         const QByteArray &contentChecksumType);
     bool updateLocalMetadata(const QString &filename,
         qint64 modtime, qint64 size, quint64 inode);
+
+    /** Returns whether the item or any subitems are dehydrated */
+    Optional<bool> hasDehydratedFiles(const QByteArray &filename);
+
     bool exists();
     void walCheckpoint();
 
@@ -285,6 +289,21 @@ public:
         Optional<PinState> effectiveForPath(const QByteArray &path);
 
         /**
+         * Like effectiveForPath() but also considers subitem pin states.
+         *
+         * If the path's pin state and all subitem's pin states are identical
+         * then that pin state will be returned.
+         *
+         * If some subitem's pin state is different from the path's state,
+         * PinState::Inherited will be returned. Inherited isn't returned in
+         * any other cases.
+         *
+         * It's valid to use the root path "".
+         * Returns none on db error.
+         */
+        Optional<PinState> effectiveForPathRecursive(const QByteArray &path);
+
+        /**
          * Sets a path's pin state.
          *
          * The path should not have a trailing slash.
@@ -386,6 +405,8 @@ private:
     SqlQuery _deleteConflictRecordQuery;
     SqlQuery _getRawPinStateQuery;
     SqlQuery _getEffectivePinStateQuery;
+    SqlQuery _getSubPinsQuery;
+    SqlQuery _countDehydratedFilesQuery;
     SqlQuery _setPinStateQuery;
     SqlQuery _wipePinStateQuery;
 

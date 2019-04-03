@@ -1024,6 +1024,66 @@ private slots:
         QVERIFY(!fakeFolder.currentLocalState().find("A/file2.nextcloud.nextcloud"));
         cleanup();
     }
+
+    void testAvailability()
+    {
+        FakeFolder fakeFolder{ FileInfo() };
+        auto vfs = setupVfs(fakeFolder);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        auto setPin = [&] (const QByteArray &path, PinState state) {
+            fakeFolder.syncJournal().internalPinStates().setForPath(path, state);
+        };
+
+        fakeFolder.remoteModifier().mkdir("local");
+        fakeFolder.remoteModifier().mkdir("local/sub");
+        fakeFolder.remoteModifier().mkdir("online");
+        fakeFolder.remoteModifier().mkdir("online/sub");
+        fakeFolder.remoteModifier().mkdir("unspec");
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        setPin("local", PinState::AlwaysLocal);
+        setPin("online", PinState::OnlineOnly);
+        setPin("unspec", PinState::Unspecified);
+
+        fakeFolder.remoteModifier().insert("file1");
+        fakeFolder.remoteModifier().insert("online/file1");
+        fakeFolder.remoteModifier().insert("online/file2");
+        fakeFolder.remoteModifier().insert("local/file1");
+        fakeFolder.remoteModifier().insert("local/file2");
+        fakeFolder.remoteModifier().insert("unspec/file1");
+        QVERIFY(fakeFolder.syncOnce());
+
+        // root is unspecified
+        QCOMPARE(*vfs->availability("file1"), VfsItemAvailability::AllHydrated);
+        QCOMPARE(*vfs->availability("local"), VfsItemAvailability::AlwaysLocal);
+        QCOMPARE(*vfs->availability("local/file1"), VfsItemAvailability::AlwaysLocal);
+        QCOMPARE(*vfs->availability("online"), VfsItemAvailability::OnlineOnly);
+        QCOMPARE(*vfs->availability("online/file1.nextcloud"), VfsItemAvailability::OnlineOnly);
+        QCOMPARE(*vfs->availability("unspec"), VfsItemAvailability::SomeDehydrated);
+        QCOMPARE(*vfs->availability("unspec/file1.nextcloud"), VfsItemAvailability::SomeDehydrated);
+
+        // Subitem pin states can ruin "pure" availabilities
+        setPin("local/sub", PinState::OnlineOnly);
+        QCOMPARE(*vfs->availability("local"), VfsItemAvailability::AllHydrated);
+        setPin("online/sub", PinState::Unspecified);
+        QCOMPARE(*vfs->availability("online"), VfsItemAvailability::SomeDehydrated);
+
+        triggerDownload(fakeFolder, "unspec/file1");
+        setPin("local/file2", PinState::OnlineOnly);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(*vfs->availability("unspec"), VfsItemAvailability::AllHydrated);
+        QCOMPARE(*vfs->availability("local"), VfsItemAvailability::SomeDehydrated);
+
+        vfs->setPinState("local", PinState::AlwaysLocal);
+        vfs->setPinState("online", PinState::OnlineOnly);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(*vfs->availability("online"), VfsItemAvailability::OnlineOnly);
+        QCOMPARE(*vfs->availability("local"), VfsItemAvailability::AlwaysLocal);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncVirtualFiles)

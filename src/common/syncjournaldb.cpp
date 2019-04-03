@@ -1320,6 +1320,31 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
     return _setFileRecordLocalMetadataQuery.exec();
 }
 
+Optional<bool> SyncJournalDb::hasDehydratedFiles(const QByteArray &filename)
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect())
+        return {};
+
+    auto &query = _countDehydratedFilesQuery;
+    static_assert(ItemTypeVirtualFile == 4 && ItemTypeVirtualFileDownload == 5, "");
+    if (!query.initOrReset(QByteArrayLiteral(
+            "SELECT count(*) FROM metadata"
+            " WHERE (" IS_PREFIX_PATH_OR_EQUAL("?1", "path") " OR ?1 == '')"
+            " AND (type == 4 OR type == 5);"), _db)) {
+        return {};
+    }
+
+    query.bindValue(1, filename);
+    if (!query.exec())
+        return {};
+
+    if (!query.next().hasData)
+        return {};
+
+    return query.intValue(0) > 0;
+}
+
 static void toDownloadInfo(SqlQuery &query, SyncJournalDb::DownloadInfo *res)
 {
     bool ok = true;
@@ -2152,7 +2177,7 @@ Optional<PinState> SyncJournalDb::PinStateInterface::effectiveForPath(const QByt
             // (it'd be great if paths started with a / and "/" could be the root)
             " (" IS_PREFIX_PATH_OR_EQUAL("path", "?1") " OR path == '')"
             " AND pinState is not null AND pinState != 0"
-            " ORDER BY length(path) DESC;"),
+            " ORDER BY length(path) DESC LIMIT 1;"),
         _db->_db));
     query.bindValue(1, path);
     query.exec();
@@ -2165,6 +2190,43 @@ Optional<PinState> SyncJournalDb::PinStateInterface::effectiveForPath(const QByt
         return PinState::AlwaysLocal;
 
     return static_cast<PinState>(query.intValue(0));
+}
+
+Optional<PinState> SyncJournalDb::PinStateInterface::effectiveForPathRecursive(const QByteArray &path)
+{
+    // Get the item's effective pin state. We'll compare subitem's pin states
+    // against this.
+    const auto basePin = effectiveForPath(path);
+    if (!basePin)
+        return {};
+
+    QMutexLocker lock(&_db->_mutex);
+    if (!_db->checkConnect())
+        return {};
+
+    // Find all the non-inherited pin states below the item
+    auto &query = _db->_getSubPinsQuery;
+    ASSERT(query.initOrReset(QByteArrayLiteral(
+            "SELECT DISTINCT pinState FROM flags WHERE"
+            " (" IS_PREFIX_PATH_OF("?1", "path") " OR ?1 == '')"
+            " AND pinState is not null and pinState != 0;"),
+        _db->_db));
+    query.bindValue(1, path);
+    query.exec();
+
+    // Check if they are all identical
+    forever {
+        auto next = query.next();
+        if (!next.ok)
+            return {};
+        if (!next.hasData)
+            break;
+        const auto subPin = static_cast<PinState>(query.intValue(0));
+        if (subPin != *basePin)
+            return PinState::Inherited;
+    }
+
+    return *basePin;
 }
 
 void SyncJournalDb::PinStateInterface::setForPath(const QByteArray &path, PinState state)

@@ -1042,68 +1042,61 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
     if (syncFolder
         && syncFolder->supportsVirtualFiles()
         && syncFolder->vfs().socketApiPinStateActionsShown()) {
-        bool hasAlwaysLocal = false;
-        bool hasOnlineOnly = false;
-        bool hasHydratedOnlineOnly = false;
-        bool hasDehydratedOnlineOnly = false;
+        ENFORCE(!files.isEmpty());
+
+        // Determine the combined availability status of the files
+        auto combined = Optional<VfsItemAvailability>();
+        auto merge = [](VfsItemAvailability lhs, VfsItemAvailability rhs) {
+            if (lhs == rhs)
+                return lhs;
+            if (lhs == VfsItemAvailability::SomeDehydrated || rhs == VfsItemAvailability::SomeDehydrated
+                || lhs == VfsItemAvailability::OnlineOnly || rhs == VfsItemAvailability::OnlineOnly) {
+                return VfsItemAvailability::SomeDehydrated;
+            }
+            return VfsItemAvailability::AllHydrated;
+        };
+        bool isFolderOrMultiple = false;
         for (const auto &file : files) {
             auto fileData = FileData::get(file);
-            auto path = fileData.folderRelativePathNoVfsSuffix();
-            auto pinState = syncFolder->vfs().pinState(path);
-            if (!pinState) {
-                // db error
-                hasAlwaysLocal = true;
-                hasOnlineOnly = true;
-            } else if (*pinState == PinState::AlwaysLocal) {
-                hasAlwaysLocal = true;
-            } else if (*pinState == PinState::OnlineOnly) {
-                hasOnlineOnly = true;
-                auto record = fileData.journalRecord();
-                if (record._type == ItemTypeFile)
-                    hasHydratedOnlineOnly = true;
-                if (record.isVirtualFile())
-                    hasDehydratedOnlineOnly = true;
+            isFolderOrMultiple = QFileInfo(fileData.localPath).isDir();
+            auto availability = syncFolder->vfs().availability(fileData.folderRelativePath);
+            if (!availability)
+                availability = VfsItemAvailability::SomeDehydrated; // db error
+            if (!combined) {
+                combined = availability;
+            } else {
+                combined = merge(*combined, *availability);
             }
         }
+        ENFORCE(combined);
+        if (files.size() > 1)
+            isFolderOrMultiple = true;
 
-        auto makePinContextMenu = [listener](QString currentState, QString availableLocally, QString onlineOnly) {
-            listener->sendMessage(QLatin1String("MENU_ITEM:CURRENT_PIN:d:") + currentState);
-            if (!availableLocally.isEmpty())
-                listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_AVAILABLE_LOCALLY::") + availableLocally);
-            if (!onlineOnly.isEmpty())
-                listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_ONLINE_ONLY::") + onlineOnly);
+        // TODO: Should be a submenu, should use icons
+        auto makePinContextMenu = [&](bool makeAvailableLocally, bool freeSpace) {
+            listener->sendMessage(QLatin1String("MENU_ITEM:CURRENT_PIN:d:")
+                                  + vfsItemAvailabilityToString(*combined, isFolderOrMultiple));
+            listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_AVAILABLE_LOCALLY:")
+                                  + (makeAvailableLocally ? QLatin1String(":") : QLatin1String("d:"))
+                                  + tr("Make always available locally"));
+            listener->sendMessage(QLatin1String("MENU_ITEM:MAKE_ONLINE_ONLY:")
+                                  + (freeSpace ? QLatin1String(":") : QLatin1String("d:"))
+                                  + tr("Free up local space"));
         };
 
-        // TODO: Should be a submenu, should use menu item checkmarks where available, should use icons
-        if (hasAlwaysLocal) {
-            if (!hasOnlineOnly) {
-                makePinContextMenu(
-                    tr("Currently available locally"),
-                    QString(),
-                    tr("Make available online only"));
-            } else { // local + online
-                makePinContextMenu(
-                    tr("Current availability is mixed"),
-                    tr("Make all available locally"),
-                    tr("Make all available online only"));
-            }
-        } else if (hasOnlineOnly) {
-            if (hasDehydratedOnlineOnly && !hasHydratedOnlineOnly) {
-                makePinContextMenu(
-                    tr("Currently available online only"),
-                    tr("Make available locally"),
-                    QString());
-            } else if (hasHydratedOnlineOnly && !hasDehydratedOnlineOnly) {
-                makePinContextMenu(
-                    tr("Currently available, but marked online only"),
-                    tr("Make available locally"),
-                    tr("Make available online only"));
-            } else { // hydrated + dehydrated
-                makePinContextMenu(
-                    tr("Some currently available, all marked online only"),
-                    tr("Make available locally"),
-                    tr("Make available online only"));
-            }
+        switch (*combined) {
+        case VfsItemAvailability::AlwaysLocal:
+            makePinContextMenu(false, true);
+            break;
+        case VfsItemAvailability::AllHydrated:
+            makePinContextMenu(true, true);
+            break;
+        case VfsItemAvailability::SomeDehydrated:
+            makePinContextMenu(true, true);
+            break;
+        case VfsItemAvailability::OnlineOnly:
+            makePinContextMenu(true, false);
+            break;
         }
     }
 

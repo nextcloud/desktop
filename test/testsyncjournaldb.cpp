@@ -336,6 +336,14 @@ private slots:
             }
             return *state;
         };
+        auto getRecursive = [&](const QByteArray &path) -> PinState {
+            auto state = _db.internalPinStates().effectiveForPathRecursive(path);
+            if (!state) {
+                QTest::qFail("couldn't read pin state", __FILE__, __LINE__);
+                return PinState::Inherited;
+            }
+            return *state;
+        };
         auto getRaw = [&](const QByteArray &path) -> PinState {
             auto state = _db.internalPinStates().rawForPath(path);
             if (!state) {
@@ -370,6 +378,7 @@ private slots:
         QCOMPARE(list->size(), 4 + 9 + 27);
 
         // Baseline direct checks (the fallback for unset root pinstate is AlwaysLocal)
+        QCOMPARE(get(""), PinState::AlwaysLocal);
         QCOMPARE(get("local"), PinState::AlwaysLocal);
         QCOMPARE(get("online"), PinState::OnlineOnly);
         QCOMPARE(get("inherit"), PinState::AlwaysLocal);
@@ -398,6 +407,20 @@ private slots:
         QCOMPARE(get("online/local/nonexistant"), PinState::AlwaysLocal);
         QCOMPARE(get("online/online/inherit"), PinState::OnlineOnly);
         QCOMPARE(get("online/online/nonexistant"), PinState::OnlineOnly);
+
+        // Spot check the recursive variant
+        QCOMPARE(getRecursive(""), PinState::Inherited);
+        QCOMPARE(getRecursive("local"), PinState::Inherited);
+        QCOMPARE(getRecursive("online"), PinState::Inherited);
+        QCOMPARE(getRecursive("inherit"), PinState::Inherited);
+        QCOMPARE(getRecursive("online/local"), PinState::Inherited);
+        QCOMPARE(getRecursive("online/local/inherit"), PinState::AlwaysLocal);
+        QCOMPARE(getRecursive("inherit/inherit/inherit"), PinState::AlwaysLocal);
+        QCOMPARE(getRecursive("inherit/online/inherit"), PinState::OnlineOnly);
+        QCOMPARE(getRecursive("inherit/online/local"), PinState::AlwaysLocal);
+        make("local/local/local/local", PinState::AlwaysLocal);
+        QCOMPARE(getRecursive("local/local/local"), PinState::AlwaysLocal);
+        QCOMPARE(getRecursive("local/local/local/local"), PinState::AlwaysLocal);
 
         // Check changing the root pin state
         make("", PinState::OnlineOnly);

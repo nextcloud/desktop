@@ -79,6 +79,27 @@ Optional<PinState> Vfs::pinStateInDb(const QString &folderPath)
     return _setupParams.journal->internalPinStates().effectiveForPath(folderPath.toUtf8());
 }
 
+Optional<VfsItemAvailability> Vfs::availabilityInDb(const QString &folderPath, const QString &pinPath)
+{
+    auto pin = _setupParams.journal->internalPinStates().effectiveForPathRecursive(pinPath.toUtf8());
+    // not being able to retrieve the pin state isn't too bad
+    Optional<bool> hasDehydrated = _setupParams.journal->hasDehydratedFiles(folderPath.toUtf8());
+    if (!hasDehydrated)
+        return {};
+
+    if (*hasDehydrated) {
+        if (pin && *pin == PinState::OnlineOnly)
+            return VfsItemAvailability::OnlineOnly;
+        else
+            return VfsItemAvailability::SomeDehydrated;
+    } else {
+        if (pin && *pin == PinState::AlwaysLocal)
+            return VfsItemAvailability::AlwaysLocal;
+        else
+            return VfsItemAvailability::AllHydrated;
+    }
+}
+
 VfsOff::VfsOff(QObject *parent)
     : Vfs(parent)
 {
@@ -183,4 +204,23 @@ std::unique_ptr<Vfs> OCC::createVfsFromPlugin(Vfs::Mode mode)
 
     qCInfo(lcPlugin) << "Created VFS instance from plugin" << pluginPath;
     return vfs;
+}
+
+QString OCC::vfsItemAvailabilityToString(VfsItemAvailability availability, bool forFolder)
+{
+    switch(availability) {
+    case VfsItemAvailability::AlwaysLocal:
+        return Vfs::tr("Always available locally");
+    case VfsItemAvailability::AllHydrated:
+        return Vfs::tr("Available locally");
+    case VfsItemAvailability::SomeDehydrated:
+        if (forFolder) {
+            return Vfs::tr("Some available online only");
+        } else {
+            return Vfs::tr("Available online only");
+        }
+    case VfsItemAvailability::OnlineOnly:
+        return Vfs::tr("Available online only");
+    }
+    ENFORCE(false);
 }
