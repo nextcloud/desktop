@@ -58,7 +58,9 @@ enum class PinState {
      * Also known as "unpinned". Unpinned hydrated files shall be dehydrated
      * as soon as possible.
      *
-     * If a unpinned file becomes hydrated its pin state changes to unspecified.
+     * If a unpinned file becomes hydrated (such as due to an implicit hydration
+     * where the user requested access to the file's data) its pin state changes
+     * to Unspecified.
      */
     OnlineOnly = 2,
 

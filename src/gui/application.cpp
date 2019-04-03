@@ -755,7 +755,7 @@ void Application::openVirtualFile(const QString &filename)
         // TODO: show a QMessageBox for errors
         return;
     }
-    folder->downloadVirtualFile(relativePath);
+    folder->implicitlyHydrateFile(relativePath);
     QString normalName = filename.left(filename.size() - virtualFileExt.size());
     auto con = QSharedPointer<QMetaObject::Connection>::create();
     *con = QObject::connect(folder, &Folder::syncFinished, [con, normalName] {

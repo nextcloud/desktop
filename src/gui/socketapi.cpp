@@ -657,8 +657,9 @@ void SocketApi::command_MAKE_AVAILABLE_LOCALLY(const QString &filesArg, SocketLi
         auto pinPath = data.folderRelativePathNoVfsSuffix();
         data.folder->vfs().setPinState(pinPath, PinState::AlwaysLocal);
 
-        // Trigger the recursive download
-        data.folder->downloadVirtualFile(data.folderRelativePath);
+        // Trigger sync
+        data.folder->schedulePathForLocalDiscovery(data.folderRelativePath);
+        data.folder->scheduleThisFolderSoon();
     }
 }
 
@@ -676,8 +677,9 @@ void SocketApi::command_MAKE_ONLINE_ONLY(const QString &filesArg, SocketListener
         auto pinPath = data.folderRelativePathNoVfsSuffix();
         data.folder->vfs().setPinState(pinPath, PinState::OnlineOnly);
 
-        // Trigger recursive dehydration
-        data.folder->dehydrateFile(data.folderRelativePath);
+        // Trigger sync
+        data.folder->schedulePathForLocalDiscovery(data.folderRelativePath);
+        data.folder->scheduleThisFolderSoon();
     }
 }
 
