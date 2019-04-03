@@ -189,10 +189,12 @@ public:
 
     /** Sets the pin state for the item at a path.
      *
+     * The pin state is set on the item and for all items below it.
+     *
      * Usually this would forward to setting the pin state flag in the db table,
      * but some vfs plugins will store the pin state in file attributes instead.
      *
-     * folderPath is relative to the sync folder.
+     * folderPath is relative to the sync folder. Can be "" for root folder.
      */
     virtual bool setPinState(const QString &folderPath, PinState state) = 0;
 
@@ -201,9 +203,18 @@ public:
      * Usually backed by the db's effectivePinState() function but some vfs
      * plugins will override it to retrieve the state from elsewhere.
      *
-     * folderPath is relative to the sync folder.
+     * folderPath is relative to the sync folder. Can be "" for root folder.
      */
     virtual Optional<PinState> pinState(const QString &folderPath) = 0;
+
+    /** Returns availability status of an item at a path.
+     *
+     * The availability is a condensed user-facing version of PinState. See
+     * VfsItemAvailability for details.
+     *
+     * folderPath is relative to the sync folder. Can be "" for root folder.
+     */
+    virtual Optional<VfsItemAvailability> availability(const QString &folderPath) = 0;
 
 public slots:
     /** Update in-sync state based on SyncFileStatusTracker signal.
@@ -235,6 +246,8 @@ protected:
     // Db-backed pin state handling. Derived classes may use it to implement pin states.
     bool setPinStateInDb(const QString &folderPath, PinState state);
     Optional<PinState> pinStateInDb(const QString &folderPath);
+    // sadly for virtual files the path in the metadata table can differ from path in 'flags'
+    Optional<VfsItemAvailability> availabilityInDb(const QString &folderPath, const QString &pinPath);
 
     // the parameters passed to start()
     VfsSetupParams _setupParams;
@@ -269,6 +282,7 @@ public:
 
     bool setPinState(const QString &, PinState) override { return true; }
     Optional<PinState> pinState(const QString &) override { return PinState::AlwaysLocal; }
+    Optional<VfsItemAvailability> availability(const QString &) override { return VfsItemAvailability::AlwaysLocal; }
 
 public slots:
     void fileStatusChanged(const QString &, SyncFileStatus) override {}
@@ -285,5 +299,8 @@ OCSYNC_EXPORT Vfs::Mode bestAvailableVfsMode();
 
 /// Create a VFS instance for the mode, returns nullptr on failure.
 OCSYNC_EXPORT std::unique_ptr<Vfs> createVfsFromPlugin(Vfs::Mode mode);
+
+/// Convert availability to translated string
+OCSYNC_EXPORT QString vfsItemAvailabilityToString(VfsItemAvailability availability, bool forFolder);
 
 } // namespace OCC

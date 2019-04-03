@@ -73,6 +73,47 @@ enum class PinState {
     Unspecified = 3,
 };
 
+/** A user-facing version of PinState.
+ *
+ * PinStates communicate availability intent for an item, but particular
+ * situations can get complex: An AlwaysLocal folder can have OnlineOnly
+ * files or directories.
+ *
+ * For users this is condensed to a few useful cases.
+ *
+ * Note that this is only about *intent*. The file could still be out of date,
+ * or not have been synced for other reasons, like errors.
+ */
+enum class VfsItemAvailability {
+    /** The item and all its subitems are hydrated and pinned AlwaysLocal.
+     *
+     * This guarantees that all contents will be kept in sync.
+     */
+    AlwaysLocal,
+
+    /** The item and all its subitems are hydrated.
+     *
+     * This may change if the platform or client decide to dehydrate items
+     * that have Unspecified pin state.
+     *
+     * A folder with no file contents will have this availability.
+     */
+    AllHydrated,
+
+    /** There are dehydrated items but the pin state isn't all OnlineOnly.
+     *
+     * This would happen if a dehydration happens to a Unspecified item that
+     * used to be hydrated.
+     */
+    SomeDehydrated,
+
+    /** The item and all its subitems are dehydrated and OnlineOnly.
+     *
+     * This guarantees that contents will not take up space.
+     */
+    OnlineOnly,
+};
+
 }
 
 #endif
