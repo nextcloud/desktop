@@ -142,16 +142,26 @@ enum ItemType {
 
     /** A ItemTypeVirtualFile that wants to be hydrated.
      *
-     * Actions may put this in the db as a request to a future sync.
+     * Actions may put this in the db as a request to a future sync, such as
+     * implicit hydration (when the user wants to access file data) when using
+     * suffix vfs. For pin-state driven hydrations changing the database is
+     * not necessary.
+     *
      * For some vfs plugins the placeholder files on disk may be marked for
-     * dehydration (like with a file attribute) and then the local discovery
+     * (de-)hydration (like with a file attribute) and then the local discovery
      * will return this item type.
+     *
+     * The discovery will also use this item type to mark entries for hydration
+     * if an item's pin state mandates it, such as when encountering a AlwaysLocal
+     * file that is dehydrated.
      */
     ItemTypeVirtualFileDownload = 5,
 
     /** A ItemTypeFile that wants to be dehydrated.
      *
-     * May exist in db or local files, similar to ItemTypeVirtualFileDownload.
+     * Similar to ItemTypeVirtualFileDownload, but there's currently no situation
+     * where it's stored in the database since there is no action that triggers a
+     * file dehydration without changing the pin state.
      */
     ItemTypeVirtualFileDehydration = 6,
 };

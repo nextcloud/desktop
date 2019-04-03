@@ -198,12 +198,24 @@ private:
       */
     bool runLocalQuery();
 
-    /** Sets _pinState
+    /** Sets _pinState, the directory's pin state
      *
      * If the folder exists locally its state is retrieved, otherwise the
      * parent's pin state is inherited.
      */
     void computePinState(PinState parentState);
+
+    /** Adjust record._type if the db pin state suggests it.
+     *
+     * If the pin state is stored in the database (suffix vfs only right now)
+     * its effects won't be seen in localEntry._type. Instead the effects
+     * should materialize in dbEntry._type.
+     *
+     * This function checks whether the combination of file type and pin
+     * state suggests a hydration or dehydration action and changes the
+     * _type field accordingly.
+     */
+    void setupDbPinStateActions(SyncJournalFileRecord &record);
 
     QueryMode _queryServer = QueryMode::NormalQuery;
     QueryMode _queryLocal = QueryMode::NormalQuery;
@@ -244,7 +256,7 @@ private:
     PathTuple _currentFolder;
     bool _childModified = false; // the directory contains modified item what would prevent deletion
     bool _childIgnored = false; // The directory contains ignored item that would prevent deletion
-    PinState _pinState = PinState::Unspecified; // The directory's pin-state, see setParentPinState()
+    PinState _pinState = PinState::Unspecified; // The directory's pin-state, see computePinState()
 
 signals:
     void finished();

@@ -332,21 +332,21 @@ public slots:
     void slotWatchedPathChanged(const QString &path);
 
     /**
-     * Mark a virtual file as being ready for download, and start a sync.
-     * relativepath is the path to the file (including the extension)
-     * Passing a folder means that all contained virtual items shall be downloaded.
-     * A relative path of "" downloads everything.
-     */
-    void downloadVirtualFile(const QString &relativepath);
-
-    /**
-     * Turn a regular file into a dehydrated placeholder.
+     * Mark a virtual file as being requested for download, and start a sync.
      *
-     * relativepath is the path to the file
-     * It's allowed to pass a path to a folder: all contained files will be dehydrated.
-     * A relative path of "" dehydrates everything.
+     * "implicit" here means that this download request comes from the user wanting
+     * to access the file's data. The user did not change the file's pin state.
+     * If the file is currently OnlineOnly its state will change to Unspecified.
+     *
+     * The download request is stored by setting ItemTypeVirtualFileDownload
+     * in the database. This is necessary since the hydration is not driven by
+     * the pin state.
+     *
+     * relativepath is the folder-relative path to the file (including the extension)
+     *
+     * Note, passing directories is not supported. Files only.
      */
-    void dehydrateFile(const QString &relativepath);
+    void implicitlyHydrateFile(const QString &relativepath);
 
     /** Adds the path to the local discovery list
      *

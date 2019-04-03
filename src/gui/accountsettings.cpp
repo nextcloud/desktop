@@ -762,14 +762,9 @@ void AccountSettings::slotSetCurrentFolderAvailability(PinState state)
     if (!selected.isValid() || !folder)
         return;
 
-    // similar to socket api: set pin state, wipe sub pin-states and sync
+    // similar to socket api: sets pin state recursively and sync
     folder->setNewFilesAreVirtual(state == PinState::OnlineOnly);
-
-    if (state == PinState::AlwaysLocal) {
-        folder->downloadVirtualFile("");
-    } else {
-        folder->dehydrateFile("");
-    }
+    folder->scheduleThisFolderSoon();
 }
 
 void AccountSettings::showConnectionLabel(const QString &message, QStringList errors)

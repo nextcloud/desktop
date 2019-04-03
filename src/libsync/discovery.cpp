@@ -88,7 +88,9 @@ void ProcessDirectoryJob::process()
             auto name = pathU8.isEmpty() ? rec._path : QString::fromUtf8(rec._path.constData() + (pathU8.size() + 1));
             if (rec.isVirtualFile() && isVfsWithSuffix())
                 chopVirtualFileSuffix(name);
-            entries[name].dbEntry = rec;
+            auto &dbEntry = entries[name].dbEntry;
+            dbEntry = rec;
+            setupDbPinStateActions(dbEntry);
         })) {
         dbError();
         return;
@@ -1454,6 +1456,32 @@ void ProcessDirectoryJob::computePinState(PinState parentState)
         if (auto state = _discoveryData->_syncOptions._vfs->pinState(_currentFolder._local)) // ouch! pin local or original?
             _pinState = *state;
     }
+}
+
+void ProcessDirectoryJob::setupDbPinStateActions(SyncJournalFileRecord &record)
+{
+    // Only suffix-vfs uses the db for pin states.
+    // Other plugins will set localEntry._type according to the file's pin state.
+    if (!isVfsWithSuffix())
+        return;
+
+    QByteArray pinPath = record._path;
+    if (record.isVirtualFile()) {
+        const auto suffix = _discoveryData->_syncOptions._vfs->fileSuffix().toUtf8();
+        if (pinPath.endsWith(suffix))
+            pinPath.chop(suffix.size());
+    }
+    auto pin = _discoveryData->_statedb->internalPinStates().rawForPath(pinPath);
+    if (!pin || *pin == PinState::Inherited)
+        pin = _pinState;
+
+    // OnlineOnly hydrated files want to be dehydrated
+    if (record._type == ItemTypeFile && *pin == PinState::OnlineOnly)
+        record._type = ItemTypeVirtualFileDehydration;
+
+    // AlwaysLocal dehydrated files want to be hydrated
+    if (record._type == ItemTypeVirtualFile && *pin == PinState::AlwaysLocal)
+        record._type = ItemTypeVirtualFileDownload;
 }
 
 }

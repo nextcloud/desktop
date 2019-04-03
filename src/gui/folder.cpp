@@ -590,58 +590,36 @@ void Folder::slotWatchedPathChanged(const QString &path)
     scheduleThisFolderSoon();
 }
 
-void Folder::downloadVirtualFile(const QString &_relativepath)
+void Folder::implicitlyHydrateFile(const QString &relativepath)
 {
-    qCInfo(lcFolder) << "Download virtual file: " << _relativepath;
-    auto relativepath = _relativepath.toUtf8();
+    qCInfo(lcFolder) << "Implicitly hydrate virtual file:" << relativepath;
 
     // Set in the database that we should download the file
     SyncJournalFileRecord record;
-    _journal.getFileRecord(relativepath, &record);
-    if (!record.isValid() && !relativepath.isEmpty())
+    _journal.getFileRecord(relativepath.toUtf8(), &record);
+    if (!record.isValid()) {
+        qCInfo(lcFolder) << "Did not find file in db";
         return;
-    if (record._type == ItemTypeVirtualFile) {
-        record._type = ItemTypeVirtualFileDownload;
-        _journal.setFileRecord(record);
-        // Make sure we go over that file during the discovery even if
-        // no actual remote discovery would be necessary
-        _journal.schedulePathForRemoteDiscovery(relativepath);
-    } else if (record._type == ItemTypeDirectory || relativepath.isEmpty()) {
-        _journal.markVirtualFileForDownloadRecursively(relativepath);
-    } else {
-        qCWarning(lcFolder) << "Invalid existing record " << record._type << " for file " << _relativepath;
+    }
+    if (!record.isVirtualFile()) {
+        qCInfo(lcFolder) << "The file is not virtual";
+        return;
+    }
+    record._type = ItemTypeVirtualFileDownload;
+    _journal.setFileRecord(record);
+
+    // Change the file's pin state if it's contradictory to being hydrated
+    // (suffix-virtual file's pin state is stored at the hydrated path)
+    QString pinPath = relativepath;
+    if (_vfs->mode() == Vfs::WithSuffix && pinPath.endsWith(_vfs->fileSuffix()))
+        pinPath.chop(_vfs->fileSuffix().size());
+    const auto pin = _vfs->pinState(pinPath);
+    if (pin && *pin == PinState::OnlineOnly) {
+        _vfs->setPinState(pinPath, PinState::Unspecified);
     }
 
-    // Schedule a sync (Folder man will start the sync in a few ms)
-    slotScheduleThisFolder();
-}
-
-void Folder::dehydrateFile(const QString &_relativepath)
-{
-    qCInfo(lcFolder) << "Dehydrating file: " << _relativepath;
-    auto relativepath = _relativepath.toUtf8();
-
-    auto markForDehydration = [&](SyncJournalFileRecord rec) {
-        if (rec._type != ItemTypeFile)
-            return;
-        rec._type = ItemTypeVirtualFileDehydration;
-        _journal.setFileRecord(rec);
-        _localDiscoveryTracker->addTouchedPath(relativepath);
-    };
-
-    SyncJournalFileRecord record;
-    _journal.getFileRecord(relativepath, &record);
-    if (!record.isValid() && !relativepath.isEmpty())
-        return;
-    if (record._type == ItemTypeFile) {
-        markForDehydration(record);
-    } else if (record._type == ItemTypeDirectory || relativepath.isEmpty()) {
-        _journal.getFilesBelowPath(relativepath, markForDehydration);
-    } else {
-        qCWarning(lcFolder) << "Invalid existing record " << record._type << " for file " << _relativepath;
-    }
-
-    // Schedule a sync (Folder man will start the sync in a few ms)
+    // Add to local discovery
+    schedulePathForLocalDiscovery(relativepath);
     slotScheduleThisFolder();
 }
 
@@ -684,7 +662,12 @@ bool Folder::newFilesAreVirtual() const
 
 void Folder::setNewFilesAreVirtual(bool enabled)
 {
-    _vfs->setPinState(QString(), enabled ? PinState::OnlineOnly : PinState::AlwaysLocal);
+    const auto newPin = enabled ? PinState::OnlineOnly : PinState::AlwaysLocal;
+    _vfs->setPinState(QString(), newPin);
+
+    // We don't actually need discovery, but it's important to recurse
+    // into all folders, so the changes can be applied.
+    slotNextSyncFullLocalDiscovery();
 }
 
 bool Folder::supportsSelectiveSync() const

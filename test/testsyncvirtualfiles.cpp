@@ -64,8 +64,9 @@ QSharedPointer<Vfs> setupVfs(FakeFolder &folder)
     auto suffixVfs = QSharedPointer<Vfs>(createVfsFromPlugin(Vfs::WithSuffix).release());
     folder.switchToVfs(suffixVfs);
 
-    // Using this directly doesn't recursively unpin everything
-    folder.syncJournal().internalPinStates().setForPath("", PinState::OnlineOnly);
+    // Using this directly doesn't recursively unpin everything and instead leaves
+    // the files in the hydration that that they start with
+    folder.syncJournal().internalPinStates().setForPath("", PinState::Unspecified);
 
     return suffixVfs;
 }
@@ -923,7 +924,7 @@ private slots:
         setPin("online", PinState::OnlineOnly);
         setPin("unspec", PinState::Unspecified);
 
-        // Test 1: root is OnlineOnly
+        // Test 1: root is Unspecified
         fakeFolder.remoteModifier().insert("file1");
         fakeFolder.remoteModifier().insert("online/file1");
         fakeFolder.remoteModifier().insert("local/file1");
@@ -935,7 +936,7 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("local/file1"));
         QVERIFY(fakeFolder.currentLocalState().find("unspec/file1.nextcloud"));
 
-        // Test 2: root is AlwaysLocal
+        // Test 2: change root to AlwaysLocal
         setPin("", PinState::AlwaysLocal);
 
         fakeFolder.remoteModifier().insert("file2");
@@ -949,8 +950,32 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("local/file2"));
         QVERIFY(fakeFolder.currentLocalState().find("unspec/file2.nextcloud"));
 
-        // file1 is unchanged
+        // root file1 was hydrated due to its new pin state
+        QVERIFY(fakeFolder.currentLocalState().find("file1"));
+
+        // file1 is unchanged in the explicitly pinned subfolders
+        QVERIFY(fakeFolder.currentLocalState().find("online/file1.nextcloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("local/file1"));
+        QVERIFY(fakeFolder.currentLocalState().find("unspec/file1.nextcloud"));
+
+        // Test 3: change root to OnlineOnly
+        setPin("", PinState::OnlineOnly);
+
+        fakeFolder.remoteModifier().insert("file3");
+        fakeFolder.remoteModifier().insert("online/file3");
+        fakeFolder.remoteModifier().insert("local/file3");
+        fakeFolder.remoteModifier().insert("unspec/file3");
+        QVERIFY(fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.currentLocalState().find("file3.nextcloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("online/file3.nextcloud"));
+        QVERIFY(fakeFolder.currentLocalState().find("local/file3"));
+        QVERIFY(fakeFolder.currentLocalState().find("unspec/file3.nextcloud"));
+
+        // root file1 was dehydrated due to its new pin state
         QVERIFY(fakeFolder.currentLocalState().find("file1.nextcloud"));
+
+        // file1 is unchanged in the explicitly pinned subfolders
         QVERIFY(fakeFolder.currentLocalState().find("online/file1.nextcloud"));
         QVERIFY(fakeFolder.currentLocalState().find("local/file1"));
         QVERIFY(fakeFolder.currentLocalState().find("unspec/file1.nextcloud"));

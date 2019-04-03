@@ -793,7 +793,7 @@ void Application::openVirtualFile(const QString &filename)
         return;
     }
     QString relativePath = QDir::cleanPath(filename).mid(folder->cleanPath().length() + 1);
-    folder->downloadVirtualFile(relativePath);
+    folder->implicitlyHydrateFile(relativePath);
     QString normalName = filename.left(filename.size() - virtualFileExt.size());
     auto con = QSharedPointer<QMetaObject::Connection>::create();
     *con = QObject::connect(folder, &Folder::syncFinished, [con, normalName] {
