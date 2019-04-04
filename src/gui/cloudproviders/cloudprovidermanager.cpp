@@ -24,7 +24,7 @@ extern "C" {
 
 CloudProvidersProviderExporter *_providerExporter;
 
-void on_bus_acquired (GDBusConnection *connection, const gchar *name, gpointer user_data)
+void on_name_acquired (GDBusConnection *connection, const gchar *name, gpointer user_data)
 {
     Q_UNUSED(name);
     CloudProviderManager *self;
@@ -32,6 +32,14 @@ void on_bus_acquired (GDBusConnection *connection, const gchar *name, gpointer u
     _providerExporter = cloud_providers_provider_exporter_new(connection, LIBCLOUDPROVIDERS_DBUS_BUS_NAME, LIBCLOUDPROVIDERS_DBUS_OBJECT_PATH);
     cloud_providers_provider_exporter_set_name (_providerExporter, APPLICATION_NAME);
     self->registerSignals();
+}
+
+void on_name_lost (GDBusConnection *connection, const gchar *name, gpointer user_data)
+{
+    Q_UNUSED(connection);
+    Q_UNUSED(name);
+    Q_UNUSED(user_data);
+    g_clear_object (&_providerExporter);
 }
 
 void CloudProviderManager::registerSignals()
@@ -45,7 +53,7 @@ CloudProviderManager::CloudProviderManager(QObject *parent) : QObject(parent)
 {
     _map = new QMap<QString, CloudProviderWrapper*>();
     QString busName = QString(LIBCLOUDPROVIDERS_DBUS_BUS_NAME);
-    g_bus_own_name (G_BUS_TYPE_SESSION, busName.toAscii().data(), G_BUS_NAME_OWNER_FLAGS_NONE, on_bus_acquired, nullptr, nullptr, this, nullptr);
+    g_bus_own_name (G_BUS_TYPE_SESSION, busName.toAscii().data(), G_BUS_NAME_OWNER_FLAGS_NONE, nullptr, on_name_acquired, nullptr, this, nullptr);
 }
 
 void CloudProviderManager::slotFolderListChanged(const Folder::Map &folderMap)
