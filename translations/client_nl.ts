@@ -1892,7 +1892,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="385"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
-        <translation type="unfinished"/>
+        <translation>Er is niet genoeg ruimte beschikbaar in de lokale map!</translation>
     </message>
 </context>
 <context>
