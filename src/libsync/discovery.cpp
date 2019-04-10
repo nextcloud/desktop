@@ -382,7 +382,6 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             missingData.append(tr("file id"));
         if (!missingData.isEmpty()) {
             item->_instruction = CSYNC_INSTRUCTION_ERROR;
-            item->_status = SyncFileItem::NormalError;
             _childIgnored = true;
             item->_errorString = tr("server reported no %1").arg(missingData.join(QLatin1String(", ")));
             emit _discoveryData->itemDiscovered(item);
@@ -1145,13 +1144,11 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
         } else if (item->isDirectory() && !perms.hasPermission(RemotePermissions::CanAddSubDirectories)) {
             qCWarning(lcDisco) << "checkForPermission: ERROR" << item->_file;
             item->_instruction = CSYNC_INSTRUCTION_ERROR;
-            item->_status = SyncFileItem::NormalError;
             item->_errorString = tr("Not allowed because you don't have permission to add subfolders to that folder");
             return false;
         } else if (!item->isDirectory() && !perms.hasPermission(RemotePermissions::CanAddFile)) {
             qCWarning(lcDisco) << "checkForPermission: ERROR" << item->_file;
             item->_instruction = CSYNC_INSTRUCTION_ERROR;
-            item->_status = SyncFileItem::NormalError;
             item->_errorString = tr("Not allowed because you don't have permission to add files in that folder");
             return false;
         }
