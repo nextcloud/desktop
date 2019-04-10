@@ -353,7 +353,15 @@ public:
     void start() Q_DECL_OVERRIDE
     {
         SyncFileItem::Status status = _item->_status;
-        done(status == SyncFileItem::NoStatus ? SyncFileItem::FileIgnored : status, _item->_errorString);
+        if (status == SyncFileItem::NoStatus) {
+            if (_item->_instruction == CSYNC_INSTRUCTION_ERROR) {
+                status = SyncFileItem::NormalError;
+            } else {
+                status = SyncFileItem::FileIgnored;
+                ASSERT(_item->_instruction == CSYNC_INSTRUCTION_IGNORE);
+            }
+        }
+        done(status, _item->_errorString);
     }
 };
 
