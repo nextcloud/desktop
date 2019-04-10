@@ -3,11 +3,11 @@
 #--------------------------------------
 
 .PHONY: l10n-push
-l10n-push: ;
+l10n-push:
 	tx -d push -s --skip --no-interactive
 
 .PHONY: l10n-pull
-l10n-pull: ;
+l10n-pull:
 	tx -d pull -r owncloud.client-nsis --skip
 
 .PHONY: l10n-clean
