@@ -25,7 +25,7 @@ namespace OCC {
 /**
  * Value class containing the options given to the sync engine
  */
-struct SyncOptions
+struct OWNCLOUDSYNC_EXPORT SyncOptions
 {
     SyncOptions()
         : _vfs(new VfsOff)
