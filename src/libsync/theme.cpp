@@ -17,6 +17,7 @@
 #include "common/utility.h"
 #include "version.h"
 #include "configfile.h"
+#include "common/vfs.h"
 
 #include <QtCore>
 #ifndef TOKEN_AUTH_ONLY
@@ -353,6 +354,9 @@ QString Theme::about() const
                .arg(Utility::escape(vendor), Utility::escape(APPLICATION_NAME));
 
     devString += gitSHA1();
+    devString += QString("<p><small>Using virtual files plugin: %1</small></p>")
+        .arg(Vfs::modeToString(bestAvailableVfsMode()));
+
     return devString;
 }
 
