@@ -17,6 +17,7 @@
 #include "common/utility.h"
 #include "version.h"
 #include "configfile.h"
+#include "common/vfs.h"
 
 #include <QtCore>
 #ifndef TOKEN_AUTH_ONLY
@@ -418,6 +419,9 @@ QString Theme::about() const
     devString += tr("<p>Version %1. For more information please click <a href='%2'>here</a>.</p>")
               .arg(QString::fromLatin1(MIRALL_STRINGIFY(MIRALL_VERSION)) + QString(" (%1)").arg(osName))
               .arg(helpUrl());
+
+    devString += QString("<p><small>Using virtual files plugin: %1</small></p>")
+        .arg(Vfs::modeToString(bestAvailableVfsMode()));
 
     return devString;
 }
