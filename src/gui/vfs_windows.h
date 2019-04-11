@@ -34,7 +34,7 @@ namespace OCC {
 
 class CleanIgnoredTask : public QObject, public QRunnable
 {
-        Q_OBJECT
+	Q_OBJECT
 public:
         void run();
 };
@@ -58,6 +58,7 @@ public:
     unsigned long long getNumberOfFreeBytes();
 
 	QStringList* contentsOfDirectoryAtPath(QString path, QVariantMap &error);
+	QList<QString> ignoredList;
 
 	void createFileAtPath(QString path, QVariantMap &error);
 	void moveFileAtPath(QString path, QString npath,QVariantMap &error);
@@ -69,8 +70,6 @@ public:
 	void deleteFileAtPath(QString path, QVariantMap &error);
 	void startDeleteDirectoryAtPath(QString path, QVariantMap &error);
 	void endDeleteDirectoryAtPath(QString path, QVariantMap &error);
-
-	QList<QString> ignoredList;
 
 private:
 	VfsWindows();
