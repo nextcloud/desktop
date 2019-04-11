@@ -25,9 +25,18 @@
 
 #include <QMutex>
 #include <QWaitCondition>
+#include <QRunnable>
+#include <QThreadPool>
 #include "syncwrapper.h"
 
 namespace OCC {
+
+class CleanIgnoredTask : public QObject, public QRunnable
+{
+	Q_OBJECT
+public:
+	void run();
+};
 
 class VfsWindows : public QObject
 {
@@ -48,6 +57,7 @@ public:
     unsigned long long getNumberOfFreeBytes();
 
 	QStringList* contentsOfDirectoryAtPath(QString path, QVariantMap &error);
+	QList<QString> ignoredList;
 
 	void createFileAtPath(QString path, QVariantMap &error);
 	void moveFileAtPath(QString path, QString npath,QVariantMap &error);
