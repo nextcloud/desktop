@@ -63,6 +63,7 @@ THE SOFTWARE.
 
 #include <QMessageBox>
 #include <QStandardPaths>
+#include <QApplication>
 
 #include <shlobj_core.h>
 
@@ -1636,6 +1637,10 @@ MirrorMoveFile(LPCWSTR OldFileName, /* existing file name */ LPCWSTR NewFileName
 				//< Move file from oldPath to newPath with real path
 				QVariantMap error;
 				VfsWindows::instance()->moveFileAtPath(transformPath(oldFileName), transformPath(newFileName), error);
+				VfsWindows::instance()->ignoredList.append(transformPath(QString::fromWCharArray(OldFileName)));
+
+				CleanIgnoredTask *task = new CleanIgnoredTask();
+				QThreadPool::globalInstance()->start(task); // takes ownership and deletes
 			}
 		}
 		return STATUS_SUCCESS;
@@ -2482,6 +2487,12 @@ void ShowUsage() {
 	// clang-format on
 }
 
+void CleanIgnoredTask::run() {
+	Sleep(3500);
+
+	VfsWindows::instance()->ignoredList.clear();
+}
+
 void VfsWindows::slotSyncFinish()
 {
     _mutex.lock();
@@ -2626,7 +2637,19 @@ QStringList *VfsWindows::contentsOfDirectoryAtPath(QString path, QVariantMap &er
 
 	for(unsigned long i=0; i <_fileListMap.value(path)->list.size(); i++)
    	{
-		QString completePath = rootPath + (path.endsWith("/")?path:(path+"/")) + QString::fromLatin1(_fileListMap.value(path)->list.at(i)->path);
+		QString root = rootPath;
+		root.endsWith("/") ? root.truncate(root.length() -1) : root;
+		QString completePath = root + (path.endsWith("/") ? path :(path+"/")) + QString::fromLatin1(_fileListMap.value(path)->list.at(i)->path);
+
+		if (!ignoredList.empty()) {
+			foreach(QString item, ignoredList)
+			{
+				if (item == completePath) {
+					completePath = "";
+				}
+			}
+		}
+
 		QFileInfo fi(completePath);
 		if (!fi.exists())
 		{
