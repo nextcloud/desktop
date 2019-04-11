@@ -2316,8 +2316,12 @@ static NTSTATUS DOKAN_CALLBACK MirrorGetVolumeInformation(
 	WCHAR volumeRoot[4];
 	DWORD fsFlags = 0;
 
-	wcscpy_s(VolumeNameBuffer, VolumeNameSize, L"Claro drive FS");
-	//wcscpy_s(VolumeNameBuffer, VolumeNameSize, L"DOKAN");
+	QString applicationName = QApplication::applicationName() + " FS";
+	wchar_t *VolName = new wchar_t[applicationName.length() + 1];
+	applicationName.toWCharArray(VolName);
+	VolName[applicationName.length()] = 0;
+
+	wcscpy_s(VolumeNameBuffer, VolumeNameSize, VolName);
 
 	if (VolumeSerialNumber)
 		*VolumeSerialNumber = 0x19831116;
