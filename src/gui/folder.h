@@ -18,6 +18,7 @@
 #define MIRALL_FOLDER_H
 
 #include "syncresult.h"
+#include "syncengine.h"
 #include "progressdispatcher.h"
 #include "common/syncjournaldb.h"
 #include "networkjobs.h"
@@ -34,8 +35,6 @@ class QThread;
 class QSettings;
 
 namespace OCC {
-
-class SyncEngine;
 class AccountState;
 class SyncRunFileLog;
 class FolderWatcher;
@@ -303,7 +302,7 @@ private slots:
 
     void slotEmitFinishedDelayed();
 
-    void slotNewBigFolderDiscovered(const QString &, bool isExternal);
+    void slotNewProblematicFolderDiscovered(const QString &newF, SyncEngine::ProblemReason reason);
 
     void slotLogPropagationStart();
 

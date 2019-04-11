@@ -25,7 +25,6 @@
 #include "common/syncjournalfilerecord.h"
 #include "syncresult.h"
 #include "clientproxy.h"
-#include "syncengine.h"
 #include "syncrunfilelog.h"
 #include "socketapi.h"
 #include "theme.h"
@@ -96,8 +95,8 @@ Folder::Folder(const FolderDefinition &definition,
     connect(_engine.data(), &SyncEngine::transmissionProgress, this, &Folder::slotTransmissionProgress);
     connect(_engine.data(), &SyncEngine::itemCompleted,
         this, &Folder::slotItemCompleted);
-    connect(_engine.data(), &SyncEngine::newBigFolder,
-        this, &Folder::slotNewBigFolderDiscovered);
+    connect(_engine.data(), &SyncEngine::newProblematicFolder,
+        this, &Folder::slotNewProblematicFolderDiscovered);
     connect(_engine.data(), &SyncEngine::seenLockedFile, FolderMan::instance(), &FolderMan::slotSyncOnceFileUnlocks);
     connect(_engine.data(), &SyncEngine::aboutToPropagate,
         this, &Folder::slotLogPropagationStart);
@@ -685,6 +684,7 @@ void Folder::setSyncOptions()
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
     opt._newBigFolderSizeLimit = newFolderLimit.first ? newFolderLimit.second * 1000LL * 1000LL : -1; // convert from MB to B
     opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
+    opt._confirmSharedFolder = cfgFile.confirmSharedFolder();
     opt._moveFilesToTrash = cfgFile.moveToTrash();
 
     QByteArray chunkSizeEnv = qgetenv("OWNCLOUD_CHUNK_SIZE");
@@ -925,7 +925,7 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
     emit ProgressDispatcher::instance()->itemCompleted(alias(), item);
 }
 
-void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
+void Folder::slotNewProblematicFolderDiscovered(const QString &newF, SyncEngine::ProblemReason reason)
 {
     auto newFolder = newF;
     if (!newFolder.endsWith(QLatin1Char('/'))) {
@@ -950,10 +950,24 @@ void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
             journal->setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, undecidedList);
             emit newBigFolderDiscovered(newFolder);
         }
-        QString message = !isExternal ? (tr("A new folder larger than %1 MB has been added: %2.\n")
+        QString message;
+
+        switch (reason) {
+            case DiscoveryJob::IsBig:
+                message = tr("A new folder larger than %1 MB has been added: %2.\n")
                                                 .arg(ConfigFile().newBigFolderSizeLimit().second)
-                                                .arg(newF))
-                                      : (tr("A folder from an external storage has been added.\n"));
+                                                .arg(newF);
+                break;
+
+            case DiscoveryJob::IsExternal:
+                message = tr("A folder from an external storage has been added.\n");
+                break;
+
+            case DiscoveryJob::IsShared:
+                message = tr("A folder has been shared with you.\n");
+                break;
+        }
+
         message += tr("Please go in the settings to select it if you wish to download it.");
 
         auto logger = Logger::instance();

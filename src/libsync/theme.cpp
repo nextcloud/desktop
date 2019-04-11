@@ -318,6 +318,11 @@ bool Theme::wizardHideFolderSizeLimitCheckbox() const
     return false;
 }
 
+bool Theme::wizardHideSharedFoldersConfirmationCheckbox() const
+{
+    return false;
+}
+
 QString Theme::gitSHA1() const
 {
     QString devString;

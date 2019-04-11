@@ -62,6 +62,8 @@ class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
 {
     Q_OBJECT
 public:
+    using ProblemReason = DiscoveryJob::ProblemReason;
+
     SyncEngine(AccountPtr account, const QString &localPath,
         const QString &remotePath, SyncJournalDb *journal);
     ~SyncEngine();
@@ -159,7 +161,7 @@ signals:
     void aboutToRestoreBackup(bool *restore);
 
     // A new folder was discovered and was not synced because of the confirmation feature
-    void newBigFolder(const QString &folder, bool isExternal);
+    void newProblematicFolder(const QString &folder, DiscoveryJob::ProblemReason reason);
 
     /** Emitted when propagation has problems with a locked file.
      *

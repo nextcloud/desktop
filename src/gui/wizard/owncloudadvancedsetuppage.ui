@@ -124,22 +124,6 @@
           <property name="horizontalSpacing">
            <number>0</number>
           </property>
-          <item row="0" column="0">
-           <spacer name="horizontalSpacer_4">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Minimum</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>10</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
           <item row="0" column="1">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
@@ -168,10 +152,33 @@
             </item>
            </layout>
           </item>
+          <item row="0" column="0">
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Minimum</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>13</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
           <item row="1" column="1">
            <widget class="QCheckBox" name="confCheckBoxExternal">
             <property name="text">
              <string>Ask for confirmation before synchronizing e&amp;xternal storages</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QCheckBox" name="confCheckBoxShared">
+            <property name="text">
+             <string>Ask for confirmation before synchronizing s&amp;hared storages</string>
             </property>
            </widget>
           </item>

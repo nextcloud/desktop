@@ -1085,11 +1085,16 @@ void AccountSettings::refreshSelectiveSyncStatus()
         ui->bigFolderUi->setVisible(false);
     } else {
         ConfigFile cfg;
-        QString info = !cfg.confirmExternalStorage()
-            ? tr("There are folders that were not synchronized because they are too big: ")
-            : !cfg.newBigFolderSizeLimit().first
-                ? tr("There are folders that were not synchronized because they are external storages: ")
-                : tr("There are folders that were not synchronized because they are too big or external storages: ");
+        QString info;
+        if (cfg.confirmExternalStorage() && !cfg.newBigFolderSizeLimit().first && !cfg.confirmSharedFolder()) {
+            info = tr("There are folders that were not synchronized because they are external storages: ");
+        } else if (cfg.newBigFolderSizeLimit().first && !cfg.confirmExternalStorage() && !cfg.confirmSharedFolder()) {
+            info = tr("There are folders that were not synchronized because they are too big: ");
+        } else if (cfg.confirmSharedFolder() && !cfg.newBigFolderSizeLimit().first && !cfg.confirmExternalStorage()) {
+            info = tr("There are folders that were not synchronized because they were shared with you: ");
+        } else {
+            info = tr("There are folders that were excluded as per your settings: ");
+        }
 
         ui->selectiveSyncNotification->setText(info + msg);
         ui->selectiveSyncButtons->setVisible(false);

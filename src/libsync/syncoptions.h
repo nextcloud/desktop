@@ -33,6 +33,9 @@ struct SyncOptions
     /** If a confirmation should be asked for external storages */
     bool _confirmExternalStorage = false;
 
+    /** If a confirmation should be asked for shared folders */
+    bool _confirmSharedFolder = false;
+
     /** If remotely deleted files are needed to move to trash */
     bool _moveFilesToTrash = false;
 

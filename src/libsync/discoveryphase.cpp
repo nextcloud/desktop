@@ -103,13 +103,19 @@ bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString &path, RemotePermis
             return false;
         }
 
-        emit newBigFolder(path, true);
+        emit newProblematicFolder(path, IsExternal);
         return true;
     }
 
     // If this path or the parent is in the white list, then we do not block this file
     if (findPathInList(_selectiveSyncWhiteList, path)) {
         return false;
+    }
+
+    if  (_syncOptions._confirmSharedFolder
+        && remotePerm.hasPermission(RemotePermissions::IsShared)) {
+        emit newProblematicFolder(path, IsShared);
+        return true;
     }
 
     auto limit = _syncOptions._newBigFolderSizeLimit;
@@ -129,7 +135,7 @@ bool DiscoveryJob::checkSelectiveSyncNewFolder(const QString &path, RemotePermis
 
     if (result >= limit) {
         // we tell the UI there is a new folder
-        emit newBigFolder(path, false);
+        emit newProblematicFolder(path, IsBig);
         return true;
     } else {
         // it is not too big, put it in the white list (so we will not do more query for the children)

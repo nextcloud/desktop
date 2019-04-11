@@ -247,6 +247,11 @@ public:
      * in the account wizard
      */
     virtual bool wizardHideExternalStorageConfirmationCheckbox() const;
+    /**
+     * Hide the checkbox that says "Ask for confirmation before synchronizing shared folders"
+     * in the account wizard
+     */
+    virtual bool wizardHideSharedFoldersConfirmationCheckbox() const;
 
     /**
      * Alternative path on the server that provides access to the webdav capabilities

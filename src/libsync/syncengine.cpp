@@ -83,6 +83,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
     qRegisterMetaType<SyncFileStatus>("SyncFileStatus");
     qRegisterMetaType<SyncFileItemVector>("SyncFileItemVector");
     qRegisterMetaType<SyncFileItem::Direction>("SyncFileItem::Direction");
+    qRegisterMetaType<ProblemReason>("ProblemReason");
 
     // Everything in the SyncEngine expects a trailing slash for the localPath.
     ASSERT(localPath.endsWith(QLatin1Char('/')));
@@ -911,8 +912,8 @@ void SyncEngine::startSync()
     connect(discoveryJob, &DiscoveryJob::folderDiscovered,
         this, &SyncEngine::slotFolderDiscovered);
 
-    connect(discoveryJob, &DiscoveryJob::newBigFolder,
-        this, &SyncEngine::newBigFolder);
+    connect(discoveryJob, &DiscoveryJob::newProblematicFolder,
+        this, &SyncEngine::newProblematicFolder);
 
 
     // This is used for the DiscoveryJob to be able to request the main thread/

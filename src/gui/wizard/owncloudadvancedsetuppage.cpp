@@ -76,6 +76,9 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage()
         _ui.confSpinBox->hide();
         _ui.confTraillingSizeLabel->hide();
     }
+    if (theme->wizardHideSharedFoldersConfirmationCheckbox()) {
+        _ui.confCheckBoxShared->hide();
+    }
 }
 
 void OwncloudAdvancedSetupPage::setupCustomization()
@@ -135,6 +138,7 @@ void OwncloudAdvancedSetupPage::initializePage()
     _ui.confCheckBoxSize->setChecked(newFolderLimit.first);
     _ui.confSpinBox->setValue(newFolderLimit.second);
     _ui.confCheckBoxExternal->setChecked(cfgFile.confirmExternalStorage());
+    _ui.confCheckBoxShared->setChecked(cfgFile.confirmSharedFolder());
 }
 
 // Called if the user changes the user- or url field. Adjust the texts and
@@ -252,6 +256,7 @@ bool OwncloudAdvancedSetupPage::validatePage()
             cfgFile.setNewBigFolderSizeLimit(_ui.confCheckBoxSize->isChecked(),
                 _ui.confSpinBox->value());
             cfgFile.setConfirmExternalStorage(_ui.confCheckBoxExternal->isChecked());
+            cfgFile.setConfirmSharedFolder(_ui.confCheckBoxShared->isChecked());
         }
 
         emit createLocalAndRemoteFolders(localFolder(), _remoteFolder);

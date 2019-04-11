@@ -121,6 +121,8 @@ public:
     void setNewBigFolderSizeLimit(bool isChecked, quint64 mbytes);
     bool confirmExternalStorage() const;
     void setConfirmExternalStorage(bool);
+    bool confirmSharedFolder() const;
+    void setConfirmSharedFolder(bool);
 
     /** If we should move the files deleted on the server in the trash  */
     bool moveToTrash() const;

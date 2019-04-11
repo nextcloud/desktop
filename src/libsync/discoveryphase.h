@@ -187,6 +187,11 @@ class DiscoveryJob : public QObject
 
 
 public:
+    enum ProblemReason {
+        IsBig = 1,
+        IsExternal = 2,
+        IsShared = 3
+    };
     explicit DiscoveryJob(CSYNC *ctx, QObject *parent = nullptr)
         : QObject(parent)
         , _csync_ctx(ctx)
@@ -205,6 +210,6 @@ signals:
     void doGetSizeSignal(const QString &path, qint64 *result);
 
     // A new folder was discovered and was not synced because of the confirmation feature
-    void newBigFolder(const QString &folder, bool isExternal);
+    void newProblematicFolder(const QString &folder, ProblemReason reason);
 };
 }

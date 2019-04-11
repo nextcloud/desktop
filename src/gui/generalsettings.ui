@@ -243,6 +243,17 @@
        </layout>
       </item>
       <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QCheckBox" name="newSharedFolder">
+          <property name="text">
+           <string>Ask for confirmation before synchronizing s&amp;hared storages</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_10">
         <item>
          <widget class="QCheckBox" name="showInExplorerNavigationPaneCheckBox">
