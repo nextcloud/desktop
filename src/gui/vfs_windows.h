@@ -27,6 +27,7 @@
 #include <QWaitCondition>
 #include <QRunnable>
 #include <QThreadPool>
+#include <QStorageInfo>
 #include "syncwrapper.h"
 
 namespace OCC {
@@ -72,6 +73,7 @@ public:
 
 private:
 	VfsWindows();
+    QList<QString> getLogicalDrives();
     static VfsWindows *_instance;
     QMap<QString, OCC::DiscoveryDirectoryResult *> _fileListMap;
     QPointer<OCC::DiscoveryFolderFileList> _remotefileListJob;
